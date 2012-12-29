@@ -25,7 +25,8 @@ package com.github.kingargyle.plexapp.model.impl;
 
 import org.simpleframework.xml.Attribute;
 
-public class Location extends AbstractPlexObject{
+public class Location {
+	
 	@Attribute
 	private String path;
 

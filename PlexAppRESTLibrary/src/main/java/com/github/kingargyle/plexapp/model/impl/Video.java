@@ -36,52 +36,52 @@ import org.simpleframework.xml.Root;
 @Root(name="Video")
 public class Video extends AbstractPlexObject {
 	
-	@Attribute
+	@Attribute(required=false)
 	private String summary;
 	
-	@Attribute
+	@Attribute(required=false)
 	private String titleSort;
 	
-	@Attribute
+	@Attribute(required=false)
 	private String title;
 	
-	@Attribute
+	@Attribute(required=false)
 	private int viewCount;
 	
-	@Attribute
+	@Attribute(required=false)
 	private String tagLine;
 	
-	@Attribute
+	@Attribute(required=false)
 	/**
 	 * Point where viewing can be resumed.
 	 */
 	private long viewOffset;
 	
-	@Attribute(name="thumb")
+	@Attribute(name="thumb",required=false)
 	/**
 	 * REST path for obtaining thumbnail image
 	 */
 	private String thumbNailImageKey;
 	
-	@Attribute(name="art")
+	@Attribute(name="art",required=false)
 	private String backgroundImageKey;
 	
-	@Attribute(name="duration")
+	@Attribute(name="duration",required=false)
 	private long duration;
 	
-	@Attribute(name="addedAt")
+	@Attribute(name="addedAt",required=false)
 	private long timeAdded;
 	
-	@Attribute(name="updatedAt")
+	@Attribute(name="updatedAt",required=false)
 	private long timeUpdated;
 	
-	@Attribute(name="originallyAvailableAt")
+	@Attribute(name="originallyAvailableAt",required=false)
 	/**
 	 * Formatted date item was originally available in YYYY-MM-DD format.
 	 */
 	private String originallyAvailableDate;
 	
-	@Element(name="Media")
+	@Element(name="Media",required=true)
 	private Media media;
 	
 

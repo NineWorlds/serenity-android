@@ -23,10 +23,13 @@
 
 package com.github.kingargyle.plexapp.model.impl;
 
+import org.simpleframework.xml.Root;
+
 /**
  * @author dcarver
  *
  */
+@Root
 public class Media {
 
 }

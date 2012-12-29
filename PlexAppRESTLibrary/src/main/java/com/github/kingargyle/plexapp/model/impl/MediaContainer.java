@@ -69,6 +69,9 @@ public class MediaContainer {
 	@ElementList(inline=true,required=false)
 	private List<Directory> directories;
 	
+	@ElementList(inline=true,required=false)
+	private List<Video> videos;
+	
 	public List<Directory> getDirectories() {
 		return directories;
 	}
@@ -168,6 +171,20 @@ public class MediaContainer {
 
 	public void setTitle1(String title1) {
 		this.title1 = title1;
+	}
+
+	/**
+	 * @return the videos
+	 */
+	public List<Video> getVideos() {
+		return videos;
+	}
+
+	/**
+	 * @param videos the videos to set
+	 */
+	public void setVideos(List<Video> videos) {
+		this.videos = videos;
 	}
 	
 }
