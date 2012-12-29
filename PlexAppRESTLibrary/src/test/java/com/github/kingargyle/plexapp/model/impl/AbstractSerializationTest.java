@@ -1,6 +1,8 @@
 /**
  * The MIT License (MIT)
+ * 
  * Copyright (c) 2012 David Carver
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -23,19 +25,28 @@
 
 package com.github.kingargyle.plexapp.model.impl;
 
-import org.simpleframework.xml.Attribute;
+import java.io.ByteArrayOutputStream;
 
-public class Location extends AbstractPlexObject{
-	@Attribute
-	private String path;
+import org.custommonkey.xmlunit.XMLUnit;
+import org.junit.After;
+import org.junit.Before;
 
-	public String getPath() {
-		return path;
+public abstract class AbstractSerializationTest {
+
+	protected MediaContainer mediaContainer;
+	protected ByteArrayOutputStream byteArrayOut;
+
+	@Before
+	public void setUp() throws Exception {
+		mediaContainer = new MediaContainer();
+		byteArrayOut = new ByteArrayOutputStream();
+		XMLUnit.setIgnoreAttributeOrder(true);
+		XMLUnit.setIgnoreWhitespace(true);
 	}
 
-	public void setPath(String path) {
-		this.path = path;
+	@After
+	public void tearDown() throws Exception {
+		
 	}
 
-	
 }

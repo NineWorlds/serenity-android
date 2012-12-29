@@ -23,19 +23,10 @@
 
 package com.github.kingargyle.plexapp.model.impl;
 
-import org.simpleframework.xml.Attribute;
+/**
+ * @author dcarver
+ *
+ */
+public class Media {
 
-public class Location extends AbstractPlexObject{
-	@Attribute
-	private String path;
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	
 }

@@ -23,35 +23,15 @@
 
 package com.github.kingargyle.plexapp.model.impl;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.custommonkey.xmlunit.XMLUnit;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import static org.custommonkey.xmlunit.XMLAssert.*;
 
-public class TestMediaContainerSerialization {
-	
-	private MediaContainer mediaContainer;
-	private ByteArrayOutputStream byteArrayOut;
-
-	@Before
-	public void setUp() throws Exception {
-		mediaContainer = new MediaContainer();
-		byteArrayOut = new ByteArrayOutputStream();
-		XMLUnit.setIgnoreAttributeOrder(true);
-		XMLUnit.setIgnoreWhitespace(true);
-	}
-	
-	@After
-	public void tearDown() throws Exception {
-		
-	}
+public class TestMediaContainerSerialization extends AbstractSerializationTest {
 	
 	@Test
 	public void testSimpleMediaContainer() throws Exception {

@@ -25,17 +25,21 @@ package com.github.kingargyle.plexapp.model.impl;
 
 import org.simpleframework.xml.Attribute;
 
-public class Location extends AbstractPlexObject{
-	@Attribute
-	private String path;
+/**
+ * @author dcarver
+ *
+ */
+public abstract class AbstractPlexObject {
 
-	public String getPath() {
-		return path;
+	@Attribute(required = true)
+	private String key;
+
+	public String getKey() {
+		return key;
 	}
 
-	public void setPath(String path) {
-		this.path = path;
+	public void setKey(String key) {
+		this.key = key;
 	}
 
-	
 }

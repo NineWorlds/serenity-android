@@ -28,11 +28,8 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 @Root(name="Directory")
-public class Directory {
+public class Directory extends AbstractPlexObject {
 
-	@Attribute(required=true)
-	private String key;
-	
 	@Attribute(required=true)
 	private String title;
 	
@@ -63,16 +60,20 @@ public class Directory {
 	@Attribute(required=false)
 	private long createdAt;
 	
+	@Attribute(required=false)
+	/**
+	 * Used for searches.
+	 */
+	private String prompt;
+	
+	@Attribute(required=false)
+	/**
+	 * Only appears with prompt.
+	 */
+	private String search;	
+
 	@Element(name="Location",required=false)
 	private Location location;
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
 
 	public String getTitle() {
 		return title;
@@ -162,5 +163,20 @@ public class Directory {
 		this.location = location;
 	}
 	
+	public String getPrompt() {
+		return prompt;
+	}
+
+	public void setPrompt(String prompt) {
+		this.prompt = prompt;
+	}
+
+	public String getSearch() {
+		return search;
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
+	}
 	
 }
