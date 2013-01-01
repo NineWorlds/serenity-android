@@ -75,6 +75,34 @@ public class TestPlexFactory {
 		assertEquals(10, mediaContainer.getSize());
 	}
 	
+	@Test
+	public void testRetrieveSections() throws Exception {
+		PlexappFactory factory = new PlexappFactory(config);
+		MediaContainer mediaContainer = factory.retrieveSections();
+		assertNotNull(mediaContainer);
+		assertEquals(2, mediaContainer.getSize());
+	}
+	
+	@Test
+	public void testRetrieveSectionByKeyMissing() throws Exception {
+		PlexappFactory factory = new PlexappFactory(config);
+		try {
+			factory.retrieveSections("5");
+			fail("Should not get to this point");
+		} catch (Exception ex) {
+			
+		}		
+	}
+	
+	@Test
+	public void testRetrieveSectionByKey() throws Exception {
+		PlexappFactory factory = new PlexappFactory(config);
+		MediaContainer mediaContainer = factory.retrieveSections("4");
+		assertNotNull(mediaContainer);
+		assertEquals(19, mediaContainer.getSize());
+	}
+	
+	
 	private class MockConfig implements IConfiguration {
 
 		/* (non-Javadoc)

@@ -87,7 +87,37 @@ public class PlexappFactory {
 
 		return mediaContainer;
 	}
+	
+	/**
+	 * This retrieves the available libraries.  This can include such
+	 * things as Movies, and TV shows.
+	 * 
+	 * @return MediaContainer the media container for the library
+	 * @throws Exception
+	 */
+	public MediaContainer retrieveSections() throws Exception {
+		String sectionsURL = resourcePath.getSectionsURL();
+		MediaContainer mediaContainer = serializeResource(sectionsURL);
 
+		return mediaContainer;
+	}
+	
+	/**
+	 * This retrieves the available libraries.  This can include such
+	 * things as Movies, and TV shows.
+	 * 
+	 * @return MediaContainer the media container for the library
+	 * @param key the section key
+	 * @throws Exception
+	 */
+	public MediaContainer retrieveSections(String key) throws Exception {
+		String sectionsURL = resourcePath.getSectionsURL(key);
+		MediaContainer mediaContainer = serializeResource(sectionsURL);
+
+		return mediaContainer;
+	}
+
+	
 	/**
 	 * Given a resource's URL, read and return the serialized MediaContainer
 	 * @param resourceURL
