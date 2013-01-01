@@ -33,11 +33,16 @@ public class ResourcePaths {
 
 	public static final String LIBRARY_PATH = "/library/";
 	public static final String SECTIONS_PATH = LIBRARY_PATH + "sections/";
+	public static final String ROOT_PATH = "/";
 	
 	private IConfiguration config;
 	
 	public ResourcePaths(IConfiguration configuration) {
 		config = configuration;
+	}
+	
+	public String getRoot() {
+		return getHostPort() + ROOT_PATH;
 	}
 	
 	public String getLibraryURL() {

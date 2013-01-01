@@ -59,12 +59,20 @@ public class TestPlexFactory {
 	}
 	
 	@Test
-	public void testPlexAppFactory() throws Exception {
+	public void testRetrieveLibrary() throws Exception {
 		PlexappFactory factory = new PlexappFactory(config);
 		MediaContainer mediaContainer = factory.retrieveLibrary();
 		assertNotNull(mediaContainer);
 		assertEquals(3, mediaContainer.getSize());
 		assertEquals(3, mediaContainer.getDirectories().size());
+	}
+	
+	@Test
+	public void testRetrieveRoot() throws Exception {
+		PlexappFactory factory = new PlexappFactory(config);
+		MediaContainer mediaContainer = factory.retrieveRootData();
+		assertNotNull(mediaContainer);
+		assertEquals(10, mediaContainer.getSize());
 	}
 	
 	private class MockConfig implements IConfiguration {

@@ -23,7 +23,9 @@
 
 package com.github.kingargyle.plexapp;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.simpleframework.xml.Serializer;
@@ -59,8 +61,15 @@ public class PlexappFactory {
 		return instance;
 	}
 
+	/**
+	 * Retrieve the root metadata from the Plex Media Server.
+	 * 
+	 * @return 
+	 * @throws Exception
+	 */
 	public MediaContainer retrieveRootData() throws Exception {
-		MediaContainer mediaContainer = null;
+		String rootURL = resourcePath.getRoot();
+		MediaContainer mediaContainer = serializeResource(rootURL);
 
 		return mediaContainer;
 	}
@@ -73,15 +82,27 @@ public class PlexappFactory {
 	 * @throws Exception
 	 */
 	public MediaContainer retrieveLibrary() throws Exception {
-		MediaContainer mediaContainer = null;
-
 		String libraryURL = resourcePath.getLibraryURL();
+		MediaContainer mediaContainer = serializeResource(libraryURL);
 
-		URL url = new URL(libraryURL);
+		return mediaContainer;
+	}
+
+	/**
+	 * Given a resource's URL, read and return the serialized MediaContainer
+	 * @param resourceURL
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	private MediaContainer serializeResource(String resourceURL)
+			throws MalformedURLException, IOException, Exception {
+		MediaContainer mediaContainer;
+		URL url = new URL(resourceURL);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		mediaContainer = serializer.read(MediaContainer.class,
 				con.getInputStream(), false);
-
 		return mediaContainer;
 	}
 
