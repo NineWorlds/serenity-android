@@ -3,10 +3,13 @@ package com.github.kingargyle.plexapp.model.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import static org.custommonkey.xmlunit.XMLAssert.*;
+import com.xtremelabs.robolectric.RobolectricTestRunner;
 
+//@RunWith(RobolectricTestRunner.class)
 public class TestDirectorySerialization extends AbstractSerializationTest {
 	
 	private Directory directory;
