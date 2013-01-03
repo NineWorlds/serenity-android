@@ -1,6 +1,6 @@
 <project>
    <modelVersion>4.0.0</modelVersion>
-   <name>Maven Default Project</name>
+   <name>Plexapp REST Library</name>
    <parent>
       <groupId>com.github.kingargyle.plexapplibrary</groupId>
       <artifactId>plexapp-parent</artifactId>
