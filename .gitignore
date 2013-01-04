@@ -3,5 +3,7 @@ bin
 *~
 .classpath
 .project
+gen
+
 
 

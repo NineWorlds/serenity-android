@@ -10,6 +10,7 @@
    <modules>
      <module>PlexAppRESTLibrary</module>
      <module>LeftNavBarLibrary</module>
+     <module>PlexAppClient</module>
    </modules>
 
 </project>
