@@ -4,11 +4,14 @@
     android:layout_height="match_parent"
     tools:context=".PlexAppMainActivity" >
 
-    <Button
+    <ImageView
+        android:id="@+id/sectionImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="center"
+        android:src="@drawable/plexapp" />
 
 </RelativeLayout>

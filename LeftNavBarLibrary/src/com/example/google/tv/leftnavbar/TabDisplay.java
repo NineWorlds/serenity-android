@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * Handles the tab navigation mode.
  */
-class TabDisplay {
+public class TabDisplay {
 
     /**
      * Should be used to append a tab at the end of the list.
@@ -63,7 +63,7 @@ class TabDisplay {
         mList.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
     }
 
-    View getView() {
+    public View getView() {
         return mList;
     }
 
