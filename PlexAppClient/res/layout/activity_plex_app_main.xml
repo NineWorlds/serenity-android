@@ -1,17 +1,19 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlexAppMainActivity" >
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:background="@drawable/plexapp" >
 
-    <ImageView
-        android:id="@+id/sectionImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:scaleType="center"
-        android:src="@drawable/plexapp" />
+    <Gallery android:id="@+id/mainGalleryMenu"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="300dp"
+        android:background="#50000000"
+        android:spacing="10dp"
+        />
 
-</RelativeLayout>
+
+</LinearLayout>

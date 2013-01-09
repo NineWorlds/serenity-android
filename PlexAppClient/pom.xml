@@ -10,19 +10,29 @@
    <groupId>com.github.kingargyle.plexapplibraray</groupId>
    <artifactId>PlexappClient</artifactId>
    <version>0.1.0-SNAPSHOT</version>
+   <packaging>apk</packaging>
 
    <dependencies>
       <dependency>
          <groupId>android</groupId>
          <artifactId>android</artifactId>
          <version>3.2_r1</version>
-         <scope>compile</scope>
+         <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>com.google.tv.sample</groupId>
          <artifactId>LeftNavBarLibrary</artifactId>
          <version>0.1.0-SNAPSHOT</version>
-         <scope>runtime</scope>
+      </dependency>
+      <dependency>
+         <groupId>com.github.kingargyle.plexapplibrary</groupId>
+         <artifactId>plexapp-rest-library</artifactId>
+         <version>0.1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>com.novoda.imageloader</groupId>
+        <artifactId>imageloader-core</artifactId>
+       <version>1.5.6</version>
       </dependency>
       <dependency>
          <groupId>junit</groupId>
@@ -39,6 +49,7 @@
    </dependencies>
 
    <build>
+      <sourceDirectory>src</sourceDirectory>
       <pluginManagement>
          <plugins>
             <plugin>
@@ -73,7 +84,7 @@
             <artifactId>android-maven-plugin</artifactId>
             <configuration>
                <sdk>
-                  <platform>Honeycomb</platform>
+                  <platform>13</platform>
                </sdk>
                <deleteConflictingFiles>true</deleteConflictingFiles>
             </configuration>

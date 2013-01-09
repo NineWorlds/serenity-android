@@ -9,6 +9,7 @@
 
    <groupId>com.github.kingargyle.plexapplibrary</groupId>
    <artifactId>plexapp-rest-library</artifactId>
+   <packaging>apk</packaging>
    <version>0.1.0-SNAPSHOT</version>
 
    <dependencies>
@@ -16,7 +17,7 @@
          <groupId>android</groupId>
          <artifactId>android</artifactId>
          <version>3.2_r1</version>
-         <scope>compile</scope>
+         <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>org.simpleframework</groupId>
@@ -92,7 +93,7 @@
             <artifactId>android-maven-plugin</artifactId>
             <configuration>
                <sdk>
-                  <platform>Honeycomb</platform>
+                  <platform>13</platform>
                </sdk>
                <deleteConflictingFiles>true</deleteConflictingFiles>
             </configuration>

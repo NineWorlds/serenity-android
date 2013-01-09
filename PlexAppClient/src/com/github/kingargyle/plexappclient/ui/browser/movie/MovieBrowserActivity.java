@@ -1,4 +1,6 @@
-package com.example.plexappclient;
+package com.github.kingargyle.plexappclient.ui.browser.movie;
+
+import com.github.kingargyle.plexappclient.R;
 
 import android.os.Bundle;
 import android.app.Activity;

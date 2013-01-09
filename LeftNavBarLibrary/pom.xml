@@ -9,17 +9,19 @@
 
    <groupId>com.google.tv.sample</groupId>
    <artifactId>LeftNavBarLibrary</artifactId>
+   <packaging>apk</packaging>
 
    <dependencies>
       <dependency>
          <groupId>android</groupId>
          <artifactId>android</artifactId>
          <version>3.2_r1</version>
-         <scope>compile</scope>
+         <scope>provided</scope>
       </dependency>
    </dependencies>
 
    <build>
+      <sourceDirectory>src</sourceDirectory>
       <pluginManagement>
          <plugins>
             <plugin>
@@ -35,7 +37,7 @@
             <artifactId>android-maven-plugin</artifactId>
             <configuration>
                <sdk>
-                  <platform>Honeycomb</platform>
+                  <platform>13</platform>
                </sdk>
                <deleteConflictingFiles>true</deleteConflictingFiles>
             </configuration>
