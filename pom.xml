@@ -8,9 +8,10 @@
    <packaging>pom</packaging>
 
    <modules>
-     <module>PlexAppRESTLibrary</module>
-     <module>LeftNavBarLibrary</module>
+     <module>plexapp-rest-library</module>
+     <module>leftnavbarlibrary</module>
      <module>PlexAppClient</module>
+     <module>tests</module>
    </modules>
 
 </project>
