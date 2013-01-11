@@ -23,31 +23,36 @@
 
 package com.github.kingargyle.plexappclient;
 
+import com.github.kingargyle.plexappclient.ui.browser.movie.MovieBrowserActivity;
+
 import android.content.Context;
-import android.widget.TextView;
+import android.content.Intent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * @author dcarver
  *
  */
-public class MainMenuTextView extends TextView {
-
-	private int backgroundId;
+public class GalleryOnItemClickListener implements OnItemClickListener {
+	
+	private Context context;
 	
 	/**
-	 * @param context
+	 * 
 	 */
-	public MainMenuTextView(Context context) {
-		super(context);
+	public GalleryOnItemClickListener(Context c) {
+		context = c;
 	}
-	
-	public MainMenuTextView(Context context, int backgroundID) {
-		super(context);
-		this.backgroundId = backgroundID;
+
+	/* (non-Javadoc)
+	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	 */
+	public void onItemClick(AdapterView<?> av, View view, int position, long arg3) {
+		
+		Intent i = new Intent(context, MovieBrowserActivity.class);
+		context.startActivity(i);
 	}
-	
-	public int getBackgroundImageId() {
-		return backgroundId;
-	}
-	
+
 }

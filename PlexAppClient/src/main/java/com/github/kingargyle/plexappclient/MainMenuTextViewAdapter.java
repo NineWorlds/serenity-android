@@ -28,9 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
-import android.widget.ImageView;
-import android.widget.RadioGroup.LayoutParams;
-import android.widget.TextView;
 
 public class MainMenuTextViewAdapter extends BaseAdapter {
 	
@@ -40,7 +37,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	
 	// Put some images to project-folder: /res/drawable/
 	// format: jpg, gif, png, bmp, ...
-	private String[] menuItems = { "Movies", "TV Shows", "Music"};
+	private String[] menuItems = { "Movies", "TV Shows", "Music", "Settings"};
 
 	/** Simple Constructor saving the 'parent' context. */
 	public MainMenuTextViewAdapter(Context c) {
@@ -83,7 +80,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 		v.setText(menuItems[position]);
 		v.setTextSize(30);
 		v.setGravity(Gravity.CENTER_VERTICAL);
-		v.setLayoutParams(new Gallery.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+		v.setLayoutParams(new Gallery.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 
 		return v;
 	}

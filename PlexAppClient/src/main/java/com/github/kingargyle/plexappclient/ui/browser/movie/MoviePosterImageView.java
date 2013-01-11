@@ -21,33 +21,36 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient;
+package com.github.kingargyle.plexappclient.ui.browser.movie;
 
 import android.content.Context;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 /**
  * @author dcarver
  *
  */
-public class MainMenuTextView extends TextView {
+public class MoviePosterImageView extends ImageView {
 
-	private int backgroundId;
+	private MoviePostersInfo posterInfo;
 	
 	/**
-	 * @param context
+	 * 
 	 */
-	public MainMenuTextView(Context context) {
+	public MoviePosterImageView(Context c) {
+		super(c);
+	}
+
+	/**
+	 * 
+	 */
+	public MoviePosterImageView(Context context, MoviePostersInfo posterInfo) {
 		super(context);
+		this.posterInfo = posterInfo;
 	}
 	
-	public MainMenuTextView(Context context, int backgroundID) {
-		super(context);
-		this.backgroundId = backgroundID;
+	public MoviePostersInfo getPosterInfo() {
+		return posterInfo;
 	}
-	
-	public int getBackgroundImageId() {
-		return backgroundId;
-	}
-	
+
 }
