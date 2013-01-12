@@ -46,29 +46,11 @@ public class GalleryOnItemSelectedListener implements
 	 */
 	public void onItemSelected(AdapterView<?> arg0, View v, int position,
 			long arg3) {
-		switch (position) {
-		case 0: {
-			mainView.setBackgroundResource(R.drawable.movies);
-			break;
-		}
-		case 1: {
-			mainView.setBackgroundResource(R.drawable.tvshows);
-			break;
-		}
-		
-		case 2: {
-			mainView.setBackgroundResource(R.drawable.music);
-			break;
-		}
-		
-		default: {
-			mainView.setBackgroundResource(R.drawable.settings);
-		}
-		}
-		mainView.refreshDrawableState();
-		
 		if (v instanceof MainMenuTextView) {
 			MainMenuTextView tv = (MainMenuTextView) v;
+			mainView.setBackgroundResource(tv.getBackgroundImageId());
+			mainView.refreshDrawableState();
+
 			tv.setTextSize(tv.getTextSize() + 20);
 			tv.setTypeface(null, Typeface.BOLD);
 			if (preSelected != null) {

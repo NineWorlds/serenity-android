@@ -35,7 +35,11 @@ import android.graphics.BitmapFactory;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Gallery;
+
+import com.github.kingargyle.plexapp.PlexappFactory;
+import com.github.kingargyle.plexapp.config.IConfiguration;
 import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.core.Config;
 
 public class MainActivity extends Activity {
 
@@ -46,7 +50,7 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_plex_app_main);
-		
+				
 		mainView = findViewById(R.id.mainLayout);
 
 
