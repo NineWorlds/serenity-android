@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp;
+package com.github.kingargyle.plexapp.tests;
 
 import java.io.File;
 import java.net.URL;
@@ -32,9 +32,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexapp.config.IConfiguration;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
-import com.github.kingargyle.plexapp.utils.NanoHTTPD;
+import com.github.kingargyle.plexapp.tests.utils.NanoHTTPD;
 
 /**
  * @author dcarver
@@ -60,7 +61,7 @@ public class TestPlexFactory {
 	
 	@Test
 	public void testRetrieveLibrary() throws Exception {
-		PlexappFactory factory = new PlexappFactory(config);
+		PlexappFactory factory = PlexappFactory.getInstance(config);
 		MediaContainer mediaContainer = factory.retrieveLibrary();
 		assertNotNull(mediaContainer);
 		assertEquals(3, mediaContainer.getSize());
@@ -69,7 +70,7 @@ public class TestPlexFactory {
 	
 	@Test
 	public void testRetrieveRoot() throws Exception {
-		PlexappFactory factory = new PlexappFactory(config);
+		PlexappFactory factory = PlexappFactory.getInstance(config);
 		MediaContainer mediaContainer = factory.retrieveRootData();
 		assertNotNull(mediaContainer);
 		assertEquals(10, mediaContainer.getSize());
@@ -77,7 +78,7 @@ public class TestPlexFactory {
 	
 	@Test
 	public void testRetrieveSections() throws Exception {
-		PlexappFactory factory = new PlexappFactory(config);
+		PlexappFactory factory = PlexappFactory.getInstance(config);
 		MediaContainer mediaContainer = factory.retrieveSections();
 		assertNotNull(mediaContainer);
 		assertEquals(2, mediaContainer.getSize());
@@ -85,7 +86,7 @@ public class TestPlexFactory {
 	
 	@Test
 	public void testRetrieveSectionByKeyMissing() throws Exception {
-		PlexappFactory factory = new PlexappFactory(config);
+		PlexappFactory factory = PlexappFactory.getInstance(config);
 		try {
 			factory.retrieveSections("5");
 			fail("Should not get to this point");
@@ -96,7 +97,7 @@ public class TestPlexFactory {
 	
 	@Test
 	public void testRetrieveSectionByKey() throws Exception {
-		PlexappFactory factory = new PlexappFactory(config);
+		PlexappFactory factory = PlexappFactory.getInstance(config);
 		MediaContainer mediaContainer = factory.retrieveSections("4");
 		assertNotNull(mediaContainer);
 		assertEquals(19, mediaContainer.getSize());

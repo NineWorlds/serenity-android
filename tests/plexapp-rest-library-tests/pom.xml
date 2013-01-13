@@ -1,6 +1,6 @@
 <project>
    <modelVersion>4.0.0</modelVersion>
-   <name>Plexapp REST Library</name>
+   <name>Plexapp REST Library Tests</name>
    <parent>
       <groupId>com.github.kingargyle.plexapplibrary</groupId>
       <artifactId>plexapp-tests-parent</artifactId>

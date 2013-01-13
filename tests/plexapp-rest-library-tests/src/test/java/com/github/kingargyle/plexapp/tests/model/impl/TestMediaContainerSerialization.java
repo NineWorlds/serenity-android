@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp.model.impl;
+package com.github.kingargyle.plexapp.tests.model.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,9 @@ import java.util.List;
 import org.junit.Test;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+
+import com.github.kingargyle.plexapp.model.impl.Directory;
+
 import static org.custommonkey.xmlunit.XMLAssert.*;
 
 public class TestMediaContainerSerialization extends AbstractSerializationTest {

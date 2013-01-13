@@ -23,8 +23,11 @@
 
 package com.github.kingargyle.plexapp.model.impl;
 
+import java.util.List;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 /**
@@ -84,80 +87,75 @@ public class Video extends AbstractPlexObject {
 	@Attribute(name="contentRating",required=false)
 	private String contentRating;
 	
+	@ElementList(inline=true,required=false)
+	private List<Country> countries;
+
+	@ElementList(inline=true,required=false)
+	private List<Director> directors;
+
+	@ElementList(inline=true,required=false)
+	private List<Role> actors;
+
+	@ElementList(inline=true,required=false)
+	private List<Writer> writers;
+
+	@ElementList(inline=true,required=false)
+	private List<Genre> genres;
+
+	@Element(name="Media",required=true)
+	private Media media;
+
+	public List<Role> getActors() {
+		return actors;
+	}
+
+	/**
+	 * @return the backgroundImageKey
+	 */
+	public String getBackgroundImageKey() {
+		return backgroundImageKey;
+	}
+
 	public String getContentRating() {
 		return contentRating;
 	}
 
-	public void setContentRating(String contentRating) {
-		this.contentRating = contentRating;
+	public List<Country> getCountries() {
+		return countries;
 	}
 
+	public List<Director> getDirectors() {
+		return directors;
+	}
+
+	/**
+	 * @return the duration
+	 */
+	public long getDuration() {
+		return duration;
+	}
+	
+	public List<Genre> getGenres() {
+		return genres;
+	}
+	
 	public Media getMedia() {
 		return media;
 	}
-
-	public void setMedia(Media media) {
-		this.media = media;
-	}
-
-	@Element(name="Media",required=true)
-	private Media media;
 	
-
+	/**
+	 * @return the originallyAvailableDate in YYYY-MM-DD format.
+	 */
+	public String getOriginallyAvailableDate() {
+		return originallyAvailableDate;
+	}
+	
+	
 	/**
 	 * @return the summary
 	 */
 	public String getSummary() {
 		return summary;
-	}
-
-	/**
-	 * @param summary the summary to set
-	 */
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-
-	/**
-	 * @return the titleSort
-	 */
-	public String getTitleSort() {
-		return titleSort;
-	}
-
-	/**
-	 * @param titleSort the titleSort to set
-	 */
-	public void setTitleSort(String titleSort) {
-		this.titleSort = titleSort;
-	}
-
-	/**
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
-	}
-
-	/**
-	 * @param title the title to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	/**
-	 * @return the viewCount
-	 */
-	public int getViewCount() {
-		return viewCount;
-	}
-
-	/**
-	 * @param viewCount the viewCount to set
-	 */
-	public void setViewCount(int viewCount) {
-		this.viewCount = viewCount;
 	}
 
 	/**
@@ -168,66 +166,10 @@ public class Video extends AbstractPlexObject {
 	}
 
 	/**
-	 * @param tagLine the tagLine to set
-	 */
-	public void setTagLine(String tagLine) {
-		this.tagLine = tagLine;
-	}
-
-	/**
-	 * @return the viewOffset
-	 */
-	public long getViewOffset() {
-		return viewOffset;
-	}
-
-	/**
-	 * @param viewOffset the viewOffset to set
-	 */
-	public void setViewOffset(long viewOffset) {
-		this.viewOffset = viewOffset;
-	}
-
-	/**
 	 * @return the thumbNailImageKey
 	 */
 	public String getThumbNailImageKey() {
 		return thumbNailImageKey;
-	}
-
-	/**
-	 * @param thumbNailImageKey the thumbNailImageKey to set
-	 */
-	public void setThumbNailImageKey(String thumbNailImageKey) {
-		this.thumbNailImageKey = thumbNailImageKey;
-	}
-
-	/**
-	 * @return the backgroundImageKey
-	 */
-	public String getBackgroundImageKey() {
-		return backgroundImageKey;
-	}
-
-	/**
-	 * @param backgroundImageKey the backgroundImageKey to set
-	 */
-	public void setBackgroundImageKey(String backgroundImageKey) {
-		this.backgroundImageKey = backgroundImageKey;
-	}
-
-	/**
-	 * @return the duration
-	 */
-	public long getDuration() {
-		return duration;
-	}
-
-	/**
-	 * @param duration the duration to set
-	 */
-	public void setDuration(long duration) {
-		this.duration = duration;
 	}
 
 	/**
@@ -238,17 +180,117 @@ public class Video extends AbstractPlexObject {
 	}
 
 	/**
-	 * @param timeAdded the timeAdded to set
-	 */
-	public void setTimeAdded(long timeAdded) {
-		this.timeAdded = timeAdded;
-	}
-
-	/**
 	 * @return the timeUpdated
 	 */
 	public long getTimeUpdated() {
 		return timeUpdated;
+	}
+	
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @return the titleSort
+	 */
+	public String getTitleSort() {
+		return titleSort;
+	}
+
+	/**
+	 * @return the viewCount
+	 */
+	public int getViewCount() {
+		return viewCount;
+	}
+
+	/**
+	 * @return the viewOffset
+	 */
+	public long getViewOffset() {
+		return viewOffset;
+	}
+
+	public List<Writer> getWriters() {
+		return writers;
+	}
+
+	public void setActors(List<Role> actors) {
+		this.actors = actors;
+	}
+
+	/**
+	 * @param backgroundImageKey the backgroundImageKey to set
+	 */
+	public void setBackgroundImageKey(String backgroundImageKey) {
+		this.backgroundImageKey = backgroundImageKey;
+	}
+
+	public void setContentRating(String contentRating) {
+		this.contentRating = contentRating;
+	}
+
+	public void setCountries(List<Country> countries) {
+		this.countries = countries;
+	}
+
+	public void setDirectors(List<Director> directors) {
+		this.directors = directors;
+	}
+
+	/**
+	 * @param duration the duration to set
+	 */
+	public void setDuration(long duration) {
+		this.duration = duration;
+	}
+
+	public void setGenres(List<Genre> genres) {
+		this.genres = genres;
+	}
+
+	public void setMedia(Media media) {
+		this.media = media;
+	}
+
+	/**
+	 * This needs to be formatted in YYYY-MM-DD format.
+	 * @param originallyAvailableDate the originallyAvailableDate to set
+	 */
+	public void setOriginallyAvailableDate(String originallyAvailableDate) {
+		this.originallyAvailableDate = originallyAvailableDate;
+	}
+
+	/**
+	 * @param summary the summary to set
+	 */
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	/**
+	 * @param tagLine the tagLine to set
+	 */
+	public void setTagLine(String tagLine) {
+		this.tagLine = tagLine;
+	}
+
+	/**
+	 * @param thumbNailImageKey the thumbNailImageKey to set
+	 */
+	public void setThumbNailImageKey(String thumbNailImageKey) {
+		this.thumbNailImageKey = thumbNailImageKey;
+	}
+
+	/**
+	 * @param timeAdded the timeAdded to set
+	 */
+	public void setTimeAdded(long timeAdded) {
+		this.timeAdded = timeAdded;
 	}
 
 	/**
@@ -259,18 +301,35 @@ public class Video extends AbstractPlexObject {
 	}
 
 	/**
-	 * @return the originallyAvailableDate in YYYY-MM-DD format.
+	 * @param title the title to set
 	 */
-	public String getOriginallyAvailableDate() {
-		return originallyAvailableDate;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	/**
-	 * This needs to be formatted in YYYY-MM-DD format.
-	 * @param originallyAvailableDate the originallyAvailableDate to set
+	 * @param titleSort the titleSort to set
 	 */
-	public void setOriginallyAvailableDate(String originallyAvailableDate) {
-		this.originallyAvailableDate = originallyAvailableDate;
+	public void setTitleSort(String titleSort) {
+		this.titleSort = titleSort;
+	}
+
+	/**
+	 * @param viewCount the viewCount to set
+	 */
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
+	}
+
+	/**
+	 * @param viewOffset the viewOffset to set
+	 */
+	public void setViewOffset(long viewOffset) {
+		this.viewOffset = viewOffset;
+	}
+
+	public void setWriters(List<Writer> writers) {
+		this.writers = writers;
 	}
 		
 

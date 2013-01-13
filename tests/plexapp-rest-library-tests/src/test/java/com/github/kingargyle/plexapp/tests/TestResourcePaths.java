@@ -21,12 +21,13 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp;
+package com.github.kingargyle.plexapp.tests;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.kingargyle.plexapp.ResourcePaths;
 import com.github.kingargyle.plexapp.config.IConfiguration;
 
 import static org.junit.Assert.*;

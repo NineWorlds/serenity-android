@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp.model.impl;
+package com.github.kingargyle.plexapp.tests.model.impl;
 
 import java.io.InputStream;
 import java.util.List;
@@ -31,6 +31,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+
+import com.github.kingargyle.plexapp.model.impl.Directory;
+import com.github.kingargyle.plexapp.model.impl.Genre;
+import com.github.kingargyle.plexapp.model.impl.MediaContainer;
+import com.github.kingargyle.plexapp.model.impl.Video;
 import static org.junit.Assert.*;
 
 /**
@@ -98,6 +103,21 @@ public class TestMetaDataContainerDeserialization {
 		assertTrue(directories.size() > 0);
 		assertNull("Found unexpected location", directories.get(0).getLocation());
 	}
+	
+	@Test
+	public void testAllMoviesDeserialization() throws Exception {
+		InputStream file = this.getClass().getResourceAsStream("/samples/allmovies.xml");
+		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
+
+		List<Video> videos = mediaContainer.getVideos();
+		assertEquals(184, videos.size());
+		
+		Video video = videos.get(0);
+		List<Genre> genres = video.getGenres();
+		assertEquals(2, genres.size());
+		
+	}
+
 
 	
 

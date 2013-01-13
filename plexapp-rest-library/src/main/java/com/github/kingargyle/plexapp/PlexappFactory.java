@@ -49,7 +49,7 @@ public class PlexappFactory {
 	private ResourcePaths resourcePath = null;
 	private Serializer serializer = null;
 
-	protected PlexappFactory(IConfiguration config) {
+	private PlexappFactory(IConfiguration config) {
 		resourcePath = new ResourcePaths(config);
 		serializer = new Persister();
 	}

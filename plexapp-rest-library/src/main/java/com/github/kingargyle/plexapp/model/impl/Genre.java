@@ -1,8 +1,6 @@
 /**
  * The MIT License (MIT)
- * 
  * Copyright (c) 2012 David Carver
- * 
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -25,28 +23,15 @@
 
 package com.github.kingargyle.plexapp.model.impl;
 
-import java.io.ByteArrayOutputStream;
+import org.simpleframework.xml.Root;
 
-import org.custommonkey.xmlunit.XMLUnit;
-import org.junit.After;
-import org.junit.Before;
-
-public abstract class AbstractSerializationTest {
-
-	protected MediaContainer mediaContainer;
-	protected ByteArrayOutputStream byteArrayOut;
-
-	@Before
-	public void setUp() throws Exception {
-		mediaContainer = new MediaContainer();
-		byteArrayOut = new ByteArrayOutputStream();
-		XMLUnit.setIgnoreAttributeOrder(true);
-		XMLUnit.setIgnoreWhitespace(true);
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		
-	}
+/**
+ * Represents information about the directors
+ * 
+ * @author dcarver
+ *
+ */
+@Root(name="Genre")
+public class Genre extends AbstractCrew {
 
 }

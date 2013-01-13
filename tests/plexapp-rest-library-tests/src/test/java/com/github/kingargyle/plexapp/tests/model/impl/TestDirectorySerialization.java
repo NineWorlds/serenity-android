@@ -1,4 +1,4 @@
-package com.github.kingargyle.plexapp.model.impl;
+package com.github.kingargyle.plexapp.tests.model.impl;
 
 import org.junit.After;
 import org.junit.Before;
@@ -6,6 +6,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+
+import com.github.kingargyle.plexapp.model.impl.Directory;
+
 import static org.custommonkey.xmlunit.XMLAssert.*;
 
 //@RunWith(RobolectricTestRunner.class)
