@@ -24,7 +24,6 @@
 package com.github.kingargyle.plexappclient;
 
 import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
-import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
 
 import android.app.Application;

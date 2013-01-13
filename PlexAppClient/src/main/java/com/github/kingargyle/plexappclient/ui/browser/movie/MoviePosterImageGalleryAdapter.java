@@ -28,9 +28,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
+import com.github.kingargyle.plexapp.model.impl.Director;
+import com.github.kingargyle.plexapp.model.impl.Genre;
 import com.github.kingargyle.plexapp.model.impl.Media;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexapp.model.impl.Video;
+import com.github.kingargyle.plexapp.model.impl.Writer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.Config;
@@ -46,6 +49,7 @@ import android.widget.ImageView;
 import android.widget.RadioGroup.LayoutParams;
 
 /**
+ * 
  * @author dcarver
  *
  */
@@ -104,7 +108,6 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 				}
 				
 				mpi.setPosterURL(turl);
-				mpi.setCastInfo("To be completed");
 				mpi.setTitle(movie.getTitle());
 				
 				mpi.setContentRating(movie.getContentRating());
@@ -113,6 +116,52 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 				mpi.setAudioCodec(media.getAudioCodec());
 				mpi.setVideoCodec(media.getVideoCodec());
 				mpi.setVideoResolution(media.getVideoResolution());
+				
+				String movieDetails = "";
+				
+				if (movie.getYear() != null) {
+					mpi.setYear(movie.getYear());
+					movieDetails = "Year: " + movie.getYear();
+					movieDetails = movieDetails + "\r\n";
+				}
+				
+				if (movie.getGenres() != null && movie.getGenres().size() > 0) {
+					ArrayList<String> g = new ArrayList<String>();
+					for (Genre genre : movie.getGenres()) {
+						g.add(genre.getTag());
+						movieDetails = movieDetails + genre.getTag() + "/";
+					}
+					mpi.setGenres(g);
+					movieDetails = movieDetails.substring(0, movieDetails.lastIndexOf("/"));
+					movieDetails = movieDetails + "\r\n";
+				}
+				
+				
+				if (movie.getWriters() != null && movie.getWriters().size() > 0) {
+					movieDetails = movieDetails + "Writer(s): ";
+					ArrayList<String> w = new ArrayList<String>();
+					for (Writer writer : movie.getWriters()) {
+						w.add(writer.getTag());
+						movieDetails = movieDetails + writer.getTag() + ", ";
+					}
+					mpi.setWriters(w);
+					movieDetails = movieDetails.substring(0, movieDetails.lastIndexOf(","));
+					movieDetails = movieDetails + "\r\n";
+				}
+				
+				if (movie.getDirectors() != null && movie.getDirectors().size() > 0) {
+					movieDetails = movieDetails + "Director(s): ";
+					ArrayList<String> d = new ArrayList<String>();
+					for (Director director : movie.getDirectors()) {
+						d.add(director.getTag());
+						movieDetails = movieDetails + director.getTag() + ", ";
+					}
+					mpi.setDirectors(d);
+					movieDetails = movieDetails.substring(0, movieDetails.lastIndexOf(","));
+					movieDetails = movieDetails + "\r\n";
+				}
+				
+				mpi.setCastInfo(movieDetails);
 			
 				posterList.add(mpi);
 			}
@@ -152,7 +201,7 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL()));
 		} else {
-			mpiv.setTag(imageTagFactory.build("http://192.168.0.108:32400/:/resources/movie-fanart.jpg"));
+			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/movie-fanart.jpg"));
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		mpiv.setLayoutParams(new Gallery.LayoutParams(150, LayoutParams.WRAP_CONTENT));

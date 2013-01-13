@@ -46,7 +46,7 @@ public class Config implements IConfiguration{
 	
 	private Config() throws IOException {
 		Properties properties = new Properties();
-		InputStream in = this.getClass().getResourceAsStream("/config.properties");
+		InputStream in = this.getClass().getResourceAsStream("/com/github/kingargyle/plexappclient/config.properties");
 		properties.load(in);
 		in.close();
 		

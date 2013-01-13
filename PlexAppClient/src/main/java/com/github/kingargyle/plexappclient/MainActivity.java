@@ -81,24 +81,5 @@ public class MainActivity extends Activity {
 	}
 
 
-	public static Bitmap getBitmapFromURL(String src) {
-		try {
-
-			URL url = new URL(src);
-			HttpURLConnection connection = (HttpURLConnection) url
-					.openConnection();
-			connection.setDoInput(true);
-			connection.connect();
-			InputStream input = connection.getInputStream();
-			Bitmap mybitmap = BitmapFactory.decodeStream(input);
-
-			return mybitmap;
-
-		} catch (Exception ex) {
-
-			return null;
-		}
-
-	}
 
 }

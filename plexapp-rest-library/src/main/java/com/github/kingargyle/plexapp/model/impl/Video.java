@@ -87,6 +87,9 @@ public class Video extends AbstractPlexObject {
 	@Attribute(name="contentRating",required=false)
 	private String contentRating;
 	
+	@Attribute(name="year", required=false)
+	private String year;
+	
 	@ElementList(inline=true,required=false)
 	private List<Country> countries;
 
@@ -134,11 +137,11 @@ public class Video extends AbstractPlexObject {
 	public long getDuration() {
 		return duration;
 	}
-	
+
 	public List<Genre> getGenres() {
 		return genres;
 	}
-	
+
 	public Media getMedia() {
 		return media;
 	}
@@ -150,21 +153,21 @@ public class Video extends AbstractPlexObject {
 		return originallyAvailableDate;
 	}
 	
-	
 	/**
 	 * @return the summary
 	 */
 	public String getSummary() {
 		return summary;
 	}
-
+	
 	/**
 	 * @return the tagLine
 	 */
 	public String getTagLine() {
 		return tagLine;
 	}
-
+	
+	
 	/**
 	 * @return the thumbNailImageKey
 	 */
@@ -185,7 +188,6 @@ public class Video extends AbstractPlexObject {
 	public long getTimeUpdated() {
 		return timeUpdated;
 	}
-	
 
 	/**
 	 * @return the title
@@ -200,6 +202,7 @@ public class Video extends AbstractPlexObject {
 	public String getTitleSort() {
 		return titleSort;
 	}
+	
 
 	/**
 	 * @return the viewCount
@@ -217,6 +220,10 @@ public class Video extends AbstractPlexObject {
 
 	public List<Writer> getWriters() {
 		return writers;
+	}
+
+	public String getYear() {
+		return year;
 	}
 
 	public void setActors(List<Role> actors) {
@@ -330,6 +337,10 @@ public class Video extends AbstractPlexObject {
 
 	public void setWriters(List<Writer> writers) {
 		this.writers = writers;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
 	}
 		
 
