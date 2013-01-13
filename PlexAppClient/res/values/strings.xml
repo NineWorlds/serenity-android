@@ -13,5 +13,6 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_movie_browser">MovieBrowserActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_tvbrowser_show">TVBrowserShowActivity</string>
 
 </resources>

@@ -1,0 +1,176 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tvshowBrowserLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_movie_art"
+    android:orientation="vertical"
+    tools:context=".ui.browser.tv.TVShowBrowserActivity" >
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="#A0000000" >
+        
+        <TableRow
+            android:id="@+id/tvShowDetail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp">
+
+            <TextView
+                android:id="@+id/tvShowDetailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TV Shows"
+                android:textSize="20sp"
+                android:textColor="#F0F0F0" >
+            </TextView>
+            <TextView
+                android:id="@+id/tvShowDetailText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="6 Items"
+                android:textSize="20sp"
+                android:gravity="right"
+                android:layout_marginLeft="140dp"
+                android:textColor="#F0F0F0" >
+            </TextView>
+            
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tvshowContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp" >
+
+            <TableLayout
+                android:layout_width="420dp"
+                android:layout_height="match_parent" >
+
+                <TableRow
+                    android:id="@+id/tvshowContainer"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:id="@+id/tvShowImage"
+                        android:layout_width="410dp"
+                        android:layout_height="210dp"
+                        android:scaleType="fitXY"
+                        android:background="#000000"
+                        android:padding="5dp"
+                        android:src="@drawable/background_movie_art" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/tvBrowserTitle"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:text="Title Text"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:textColor="#F0F0F0" >
+                    </TextView>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/tvShowBrowserGenre"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:text="Genre Information"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#F0F0F0" >
+                    </TextView>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/tvShowBrowserGenre"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:text="Watched and Unwatched count"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:textColor="#F0F0F0" >
+                    </TextView>
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="450dp"
+                android:layout_height="300dp"
+                android:layout_marginLeft="40dp"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_margin="5dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/tvshow_banner1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_margin="5dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/tvshow_banner2" />
+                     />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_margin="5dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/tvshow_banner3" />
+                     />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_margin="5dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/tvshow_banner4" />
+                     />
+                     
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tvShowDetail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="40dp" >
+
+            <TextView
+                android:id="@+id/tvShowDetailText"
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:layout_span="2"
+                android:text="This is the area for tv show detail text. The left could be used for Rating and other information."
+                android:textSize="18sp"
+                android:textColor="#F0F0F0" >
+            </TextView>
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

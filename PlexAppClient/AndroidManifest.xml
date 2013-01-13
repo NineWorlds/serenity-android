@@ -11,14 +11,17 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/> 
+
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
 
     <application
+        android:name="com.github.kingargyle.plexappclient.SerenityApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name="SerenityApplication" >
+        android:theme="@style/AppTheme" >
         <activity
             android:name="com.github.kingargyle.plexappclient.ui.browser.movie.MovieBrowserActivity"
             android:label="@string/title_activity_movie_browser" >
@@ -31,6 +34,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.github.kingargyle.plexappclient.ui.browser.tv.TVShowBrowserActivity"
+            android:label="@string/title_activity_tvbrowser_show" >
         </activity>
     </application>
 
