@@ -24,8 +24,13 @@
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
 import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.SerenityApplication;
+import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -44,6 +49,8 @@ public class MoviePosterOnItemSelectedListener implements
 	
 	private View bgLayout;
 	private Activity context;
+	private PlexAppImageManager imageManager;
+	private View previous;
 	
 	/**
 	 * 
@@ -51,6 +58,8 @@ public class MoviePosterOnItemSelectedListener implements
 	public MoviePosterOnItemSelectedListener(View bgv, Activity activity) {
 		bgLayout = bgv;
 		context = activity;
+		
+		imageManager = SerenityApplication.getImageManager();
 	}
 
 	/* (non-Javadoc)
@@ -59,8 +68,18 @@ public class MoviePosterOnItemSelectedListener implements
 	public void onItemSelected(AdapterView<?> av, View v, int position,
 			long id) {
 		
-		createMovieDetail((MoviePosterImageView) v);
+		if (previous != null) {
+			previous.setPadding(0, 0, 0, 0);
+			previous.refreshDrawableState();
+		}
 		
+		previous = v;
+		
+		v.setBackgroundColor(Color.BLUE);
+		v.setPadding(5, 5, 5, 5);
+		v.refreshDrawableState();
+		
+		createMovieDetail((MoviePosterImageView) v);
 		createInfographicDetails(position);
 		changeBackgroundImage(v);
 		
@@ -72,6 +91,9 @@ public class MoviePosterOnItemSelectedListener implements
 		
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
 		summary.setText(v.getPosterInfo().getPlotSummary());
+		
+		TextView title = (TextView) context.findViewById(R.id.movieBrowserPosterTitle);
+		title.setText(v.getPosterInfo().getTitle());
 	}
 
 	/**
@@ -81,7 +103,14 @@ public class MoviePosterOnItemSelectedListener implements
 	 */
 	private void changeBackgroundImage(View v) {
 		MoviePosterImageView mpiv = (MoviePosterImageView) v;
-		bgLayout.setBackgroundResource(mpiv.getPosterInfo().getBackgroundId());
+		MoviePosterInfo mi = mpiv.getPosterInfo();
+		
+		if (mi.getBackgroundURL() != null) {
+			Bitmap bm = imageManager.getImage(mi.getBackgroundURL(), 1280, 720);
+			BitmapDrawable bmd = new BitmapDrawable(bm);
+			
+			bgLayout.setBackgroundDrawable(bmd);
+		}
 	}
 
 	/**

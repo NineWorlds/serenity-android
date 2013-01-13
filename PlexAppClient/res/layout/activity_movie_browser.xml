@@ -96,12 +96,31 @@
 
     </TableRow>
     
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
+     >
+        
+        <TextView android:id="@+id/movieBrowserPosterTitle"
+            android:text="Poster Title"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="#F0F0F0"
+            android:background="@drawable/rounded_corners"
+            android:textSize="16sp"
+            />
+        
+    </TableRow>
 
     <TableRow
         android:id="@+id/tableRow2"
         android:layout_width="900dip"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dip"
+        android:layout_marginTop="30dip"
         android:layout_marginLeft="20dip"
         android:gravity="bottom"
          >

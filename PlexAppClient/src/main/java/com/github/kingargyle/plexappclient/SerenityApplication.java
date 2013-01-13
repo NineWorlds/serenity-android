@@ -21,38 +21,37 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.ui.browser.movie;
+package com.github.kingargyle.plexappclient;
 
-import android.content.Context;
-import android.widget.ImageView;
+import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
+import com.novoda.imageloader.core.ImageManager;
+import com.novoda.imageloader.core.LoaderSettings;
+
+import android.app.Application;
 
 /**
+ * Global manager for the Serenity application
+ * 
  * @author dcarver
  *
  */
-public class MoviePosterImageView extends ImageView {
-
-	private MoviePosterInfo posterInfo;
+public class SerenityApplication extends Application {
 	
-	/**
-	 * 
-	 */
-	public MoviePosterImageView(Context c) {
-		super(c);
-	}
-
-	/**
-	 * 
-	 */
-	public MoviePosterImageView(Context context, MoviePosterInfo posterInfo) {
-		super(context);
-		this.posterInfo = posterInfo;
+	private static PlexAppImageManager imageManager;
+	
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		
+		LoaderSettings settings = new LoaderSettings.SettingsBuilder()
+	      .withDisconnectOnEveryCall(true).build(this);
+	    imageManager = new PlexAppImageManager(this, settings);
+		
 	}
 	
-	public MoviePosterInfo getPosterInfo() {
-		return posterInfo;
-	}
-	
+	public static final PlexAppImageManager getImageManager() {
+	    return imageManager;
+	}	
 	
 
 }

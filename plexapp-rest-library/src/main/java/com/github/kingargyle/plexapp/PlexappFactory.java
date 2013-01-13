@@ -116,6 +116,16 @@ public class PlexappFactory {
 
 		return mediaContainer;
 	}
+	
+	public MediaContainer retrieveSections(String key, String category) throws Exception {
+		String moviesURL = resourcePath.getSectionsURL(key, category);
+		MediaContainer mediaContainer = serializeResource(moviesURL);
+		return mediaContainer;
+	}
+	
+	public String baseURL() {
+		return resourcePath.getRoot();
+	}
 
 	
 	/**

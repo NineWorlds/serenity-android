@@ -57,6 +57,11 @@ public class ResourcePaths {
 		return getHostPort() + SECTIONS_PATH + key + "/";
 	}
 	
+	public String getSectionsURL(String key, String category) {
+		return getHostPort() + SECTIONS_PATH + key + "/" + category + "/";
+	}
+	
+	
 	protected String getHostPort() {
 		return "http://" + config.getHost() + ":" + config.getPort();
 	}
