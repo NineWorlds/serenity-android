@@ -81,6 +81,25 @@ public class Video extends AbstractPlexObject {
 	 */
 	private String originallyAvailableDate;
 	
+	@Attribute(name="contentRating",required=false)
+	private String contentRating;
+	
+	public String getContentRating() {
+		return contentRating;
+	}
+
+	public void setContentRating(String contentRating) {
+		this.contentRating = contentRating;
+	}
+
+	public Media getMedia() {
+		return media;
+	}
+
+	public void setMedia(Media media) {
+		this.media = media;
+	}
+
 	@Element(name="Media",required=true)
 	private Media media;
 	

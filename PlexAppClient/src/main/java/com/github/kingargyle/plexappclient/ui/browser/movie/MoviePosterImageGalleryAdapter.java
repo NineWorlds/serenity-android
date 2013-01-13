@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
+import com.github.kingargyle.plexapp.model.impl.Media;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexapp.model.impl.Video;
 import com.github.kingargyle.plexappclient.R;
@@ -105,6 +106,14 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 				mpi.setPosterURL(turl);
 				mpi.setCastInfo("To be completed");
 				mpi.setTitle(movie.getTitle());
+				
+				mpi.setContentRating(movie.getContentRating());
+				
+				Media media = movie.getMedia();
+				mpi.setAudioCodec(media.getAudioCodec());
+				mpi.setVideoCodec(media.getVideoCodec());
+				mpi.setVideoResolution(media.getVideoResolution());
+			
 				posterList.add(mpi);
 			}
 		}		
