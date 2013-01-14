@@ -60,7 +60,8 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 	
 	private PlexAppImageManager imageManager;
 	private ImageTagFactory imageTagFactory;
-	private static final int SIZE = 400;
+	private static final int SIZE_HEIGHT = 400;
+	private static final int SIZE_WIDTH = 200;
 	private PlexappFactory factory;
 	
 	public MoviePosterImageGalleryAdapter(Context c) {
@@ -69,9 +70,11 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 		posterList = new ArrayList<MoviePosterInfo>();
 		
 		imageManager = SerenityApplication.getImageManager();
-		imageTagFactory = ImageTagFactory.getInstance(SIZE, SIZE, R.drawable.default_video_cover);
+		imageTagFactory = ImageTagFactory.getInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
+		imageTagFactory.setSaveThumbnail(true);
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
+		//imageTagFactory.setUseOnlyCache(false);
 		
 		createPosters();
 	}

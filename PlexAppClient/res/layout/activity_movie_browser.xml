@@ -35,7 +35,7 @@
                    android:text="Movie Details"
                    android:layout_width="450dp"
                    android:layout_height="wrap_content"
-                   android:layout_marginLeft="5dp"
+                   android:layout_marginLeft="30dp"
                    android:layout_marginRight="5dp"
                    
                    android:textColor="#F0F0F0"
@@ -46,7 +46,7 @@
                    android:layout_marginTop="5dp"
                    android:layout_width="450dp"
                    android:layout_height="wrap_content"                   
-                   android:text="Plot"
+                   android:text="Summary"
                    android:textColor="#F0F0F0"
                    android:textSize="20sp"
                    android:textStyle="bold" />
@@ -61,7 +61,8 @@
                <TextView android:id="@+id/movieCastInfo"
                    android:layout_width="400dip"
                    android:layout_height="150dip"
-                   android:layout_marginLeft="5dp"
+                   android:maxWidth="350dp"
+                   android:layout_marginLeft="30dp"
                    android:layout_marginRight="5dp"
                    android:layout_marginTop="5dp"
                    android:textColor="#F0F0F0"
@@ -71,13 +72,15 @@
                
                <TextView android:id="@+id/movieSummary"
                    android:layout_marginTop="5dp"
-                   android:layout_width="400dip"
-                   android:layout_height="150dip"
-                   android:maxWidth="400dip"                   
+                   android:layout_marginRight="30dp"
+                   android:layout_width="350dp"
+                   android:layout_height="150dp"
+                   android:maxWidth="350dp"                   
                    android:textColor="#F0F0F0"
                    android:maxLines="8"
                    android:scrollbars="vertical"
                    android:textSize="15sp"
+                   android:paddingRight="10dp"
                     />              
            </TableRow>
            <TableRow android:id="@+id/movieDetailsContainerRow3" 
@@ -86,7 +89,8 @@
                >
                <LinearLayout android:id="@+id/movieInfoGraphicLayout"
                    android:layout_width="fill_parent"
-                   android:layout_height="wrap_content" 
+                   android:layout_height="wrap_content"
+                   android:layout_span="2" 
                    >
                    
                </LinearLayout>

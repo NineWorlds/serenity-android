@@ -44,6 +44,8 @@ public class SerenityApplication extends Application {
 		
 		LoaderSettings settings = new LoaderSettings.SettingsBuilder()
 	      .withDisconnectOnEveryCall(true).build(this);
+		settings.setAllowUpsampling(true);
+		settings.setUseAsyncTasks(true);
 	    imageManager = new PlexAppImageManager(this, settings);
 		
 	}
