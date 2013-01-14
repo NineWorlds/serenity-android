@@ -71,7 +71,6 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 		
 		imageManager = SerenityApplication.getImageManager();
 		imageTagFactory = ImageTagFactory.getInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
-		imageTagFactory.setSaveThumbnail(true);
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
 		//imageTagFactory.setUseOnlyCache(false);

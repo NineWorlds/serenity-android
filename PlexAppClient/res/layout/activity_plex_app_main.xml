@@ -12,7 +12,8 @@
         android:layout_height="150dp"
         android:layout_marginTop="300dp"
         android:background="#50000000"
-        android:spacing="10dp">
+        android:spacing="50dp"
+        android:animationDuration="0">
         <requestFocus/>
     </Gallery>
 

@@ -23,6 +23,8 @@
 
 package com.github.kingargyle.plexappclient;
 
+import java.io.IOException;
+
 import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
 
@@ -47,6 +49,13 @@ public class SerenityApplication extends Application {
 		settings.setAllowUpsampling(true);
 		settings.setUseAsyncTasks(true);
 	    imageManager = new PlexAppImageManager(this, settings);
+	    
+	    try {
+			PlexImageCacheService service = new PlexImageCacheService(5);
+			service.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
