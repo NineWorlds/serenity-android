@@ -25,11 +25,13 @@
         android:hardwareAccelerated="true" >
         <activity
             android:name="com.github.kingargyle.plexappclient.ui.browser.movie.MovieBrowserActivity"
-            android:label="@string/title_activity_movie_browser" >
+            android:label="@string/title_activity_movie_browser"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name="com.github.kingargyle.plexappclient.MainActivity"
             android:label="@string/title_activity_main"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:hardwareAccelerated="false" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

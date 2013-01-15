@@ -23,6 +23,7 @@
 
 package com.github.kingargyle.plexappclient;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.View;
 import android.widget.AdapterView;
@@ -49,13 +50,14 @@ public class GalleryOnItemSelectedListener implements
 		if (v instanceof MainMenuTextView) {
 			MainMenuTextView tv = (MainMenuTextView) v;
 			mainView.setBackgroundResource(tv.getBackgroundImageId());
-			mainView.refreshDrawableState();
+			//mainView.refreshDrawableState();
 
 			tv.setTextSize(tv.getTextSize() + 20);
 			tv.setTypeface(null, Typeface.BOLD);
+			tv.setTextColor(Color.parseColor("#F0F0F0"));
 			if (preSelected != null) {
 				preSelected.setTextSize(30);
-				preSelected.refreshDrawableState();
+				//preSelected.refreshDrawableState();
 				preSelected.setTypeface(null, Typeface.NORMAL);
 			}
 			preSelected = tv;
