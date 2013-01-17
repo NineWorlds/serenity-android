@@ -33,6 +33,7 @@ import android.widget.TextView;
 public class MainMenuTextView extends TextView {
 
 	private int backgroundId;
+	private String libraryKey;
 	
 	/**
 	 * @param context
@@ -46,8 +47,17 @@ public class MainMenuTextView extends TextView {
 		this.backgroundId = backgroundID;
 	}
 	
+	public String getLibraryKey() {
+		return libraryKey;
+	}
+
+	public void setLibraryKey(String libraryKey) {
+		this.libraryKey = libraryKey;
+	}
+
 	public int getBackgroundImageId() {
 		return backgroundId;
 	}
+	
 	
 }

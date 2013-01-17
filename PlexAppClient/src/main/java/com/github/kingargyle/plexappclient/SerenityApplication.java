@@ -25,6 +25,9 @@ package com.github.kingargyle.plexappclient;
 
 import java.io.IOException;
 
+import com.github.kingargyle.plexapp.PlexappFactory;
+import com.github.kingargyle.plexapp.config.IConfiguration;
+import com.github.kingargyle.plexappclient.core.ServerConfig;
 import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
 
@@ -39,6 +42,7 @@ import android.app.Application;
 public class SerenityApplication extends Application {
 	
 	private static PlexAppImageManager imageManager;
+	private static PlexappFactory plexFactory;
 	
 	@Override
 	public void onCreate() {
@@ -51,6 +55,9 @@ public class SerenityApplication extends Application {
 	    imageManager = new PlexAppImageManager(this, settings);
 	    
 	    try {
+	    	IConfiguration config = ServerConfig.getInstance(this);
+	    	plexFactory = PlexappFactory.getInstance(config);
+	    	
 			PlexImageCacheService service = new PlexImageCacheService(5);
 			service.execute();
 		} catch (IOException e) {
@@ -59,9 +66,13 @@ public class SerenityApplication extends Application {
 		
 	}
 	
-	public static final PlexAppImageManager getImageManager() {
+	public static PlexAppImageManager getImageManager() {
 	    return imageManager;
-	}	
+	}
+	
+	public static PlexappFactory getPlexFactory() {
+		return plexFactory;
+	}
 	
 
 }

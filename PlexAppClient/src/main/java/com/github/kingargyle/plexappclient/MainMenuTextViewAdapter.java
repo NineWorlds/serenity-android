@@ -28,10 +28,11 @@ import java.util.List;
 import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexapp.config.IConfiguration;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
-import com.github.kingargyle.plexappclient.core.Config;
+import com.github.kingargyle.plexappclient.core.ServerConfig;
 import com.github.kingargyle.plexapp.model.impl.Directory;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,11 +78,10 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 				MenuItem m = new MenuItem();
 				m.setTitle(item.getTitle());
 				m.setType(item.getType());
-				m.setSection(Integer.parseInt(item.getKey()));
+				m.setSection(item.getKey());
 				menuItems.add(m);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}
@@ -95,19 +95,19 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 		MenuItem settingsMenuItem = new MenuItem();
 		settingsMenuItem.setTitle("Settings");
 		settingsMenuItem.setType("settings");
-		settingsMenuItem.setSection(0);
+		settingsMenuItem.setSection("0");
 		menuItems.add(settingsMenuItem);
 	}
 
 	/**
-	 * 
+	 * Initialize the REST interface factor to retrieve data from the server.
 	 */
 	private void initializePlexFactory() {
 		try {
-			IConfiguration config = Config.getInstance();
+			IConfiguration config = ServerConfig.getInstance(myContext);
 			factory = PlexappFactory.getInstance(config);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			Log.w("Unable to initialize server config or non existing server address", ex);
 		}
 	}
 
@@ -146,16 +146,19 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 		if ("movie".equals(menuItem.getType())) {
 			v = new MainMenuTextView(this.myContext,
 					R.drawable.movies);
+			v.setLibraryKey(menuItem.getSection());
 			return v;
 		}
 		
 		if ("show".equals(menuItem.getType())) {
 			v = new MainMenuTextView(this.myContext, R.drawable.tvshows);
+			v.setLibraryKey(menuItem.getSection());
 			return v;
 		}
 		
 		if ("settings".equals(menuItem.getType())) {
 			v = new MainMenuTextView(this.myContext, R.drawable.settings);
+			v.setLibraryKey("0");
 			return v;
 		}
 		
@@ -179,7 +182,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	private class MenuItem {
 		private String type;
 		private String title;
-		private int section;
+		private String section;
 
 		public String getType() {
 			return type;
@@ -197,11 +200,11 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 			this.title = title;
 		}
 
-		public int getSection() {
+		public String getSection() {
 			return section;
 		}
 
-		public void setSection(int section) {
+		public void setSection(String section) {
 			this.section = section;
 		}
 

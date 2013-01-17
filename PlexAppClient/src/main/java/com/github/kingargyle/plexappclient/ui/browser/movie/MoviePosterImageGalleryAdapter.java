@@ -36,11 +36,12 @@ import com.github.kingargyle.plexapp.model.impl.Video;
 import com.github.kingargyle.plexapp.model.impl.Writer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
-import com.github.kingargyle.plexappclient.core.Config;
 import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -56,7 +57,7 @@ import android.widget.RadioGroup.LayoutParams;
 public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 	
 	private List<MoviePosterInfo> posterList = null;
-	private Context context;
+	private Activity context;
 	
 	private PlexAppImageManager imageManager;
 	private ImageTagFactory imageTagFactory;
@@ -65,7 +66,7 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 	private PlexappFactory factory;
 	
 	public MoviePosterImageGalleryAdapter(Context c) {
-		context = c;
+		context = (Activity)c;
 		
 		posterList = new ArrayList<MoviePosterInfo>();
 		
@@ -73,7 +74,6 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 		imageTagFactory = ImageTagFactory.getInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
-		//imageTagFactory.setUseOnlyCache(false);
 		
 		createPosters();
 	}
@@ -83,13 +83,14 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 		MediaContainer mc = null;
 		String baseUrl = null;
 		try {
-			factory = PlexappFactory.getInstance(Config.getInstance());
-			mc = factory.retrieveSections("4", "all");
+			factory = SerenityApplication.getPlexFactory();
+			String key = context.getIntent().getExtras().getString("key");
+			mc = factory.retrieveSections(key, "all");
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			Log.w("Unable to talk to server: ", ex);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.w("Oops.", e);
 		}
 		
 		if (mc.getSize() > 0) {

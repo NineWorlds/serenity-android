@@ -21,45 +21,25 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient;
+package com.github.kingargyle.plexappclient.ui.preferences;
 
-import com.github.kingargyle.plexappclient.ui.browser.movie.MovieBrowserActivity;
+import com.github.kingargyle.plexappclient.R;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.os.Bundle;
+import android.preference.PreferenceActivity;
 
 /**
+ * This is the main activity for managing user preferences in the app.
+ * 
  * @author dcarver
  *
  */
-public class GalleryOnItemClickListener implements OnItemClickListener {
-	
-	private Activity context;
-	
-	/**
-	 * 
-	 */
-	public GalleryOnItemClickListener(Context c) {
-		context = (Activity)c;
-	}
+public class SerenityPreferenceActivity extends PreferenceActivity {
 
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
-	 */
-	public void onItemClick(AdapterView<?> av, View view, int position, long arg3) {
-		
-		MainMenuTextView v = (MainMenuTextView) view;
-		String librarySection = v.getLibraryKey();
-		
-		Intent i = new Intent(context, MovieBrowserActivity.class);
-		i.putExtra("key", librarySection);
-		context.startActivityForResult(i, 0);
-		
-		context.startActivity(i);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	    addPreferencesFromResource(R.xml.preferences);	
 	}
 
 }

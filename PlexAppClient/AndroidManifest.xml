@@ -43,6 +43,7 @@
             android:name="com.github.kingargyle.plexappclient.ui.browser.tv.TVShowBrowserActivity"
             android:label="@string/title_activity_tvbrowser_show" >
         </activity>
+        <activity android:name=".ui.preferences.SerenityPreferenceActivity"></activity>
     </application>
 
 </manifest>

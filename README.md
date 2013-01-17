@@ -128,4 +128,19 @@ Unit Testing Frameworks
 * Robolectric (http://pivotal.github.com/robolectric/) - Android Integration/Unit Testing framework that allows testing without launching an emulator.
 * XMLUnit (http://xmlunit.sourceforge.net/) - unit testing framework to enhaced xml file verification.
 
+Skins
+====
+
+Some layouts are influenced by the following skins.  Some icons reused from the Influence skin for XBMC
+
+* Aeon
+* MediaStreamer
+* Influence
+
+Creative Commons
+======
+
+Some icons are used under the Creative Commons Attribution License.
+
+Fuge Icons (http://p.yusukekamiyamane.com/) by Yusuke Kamiyamane
 

@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.util.Log;
+
 import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexapp.model.impl.Directory;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexapp.model.impl.Video;
-import com.github.kingargyle.plexappclient.core.Config;
 import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
 
 /**
@@ -63,7 +64,8 @@ public class PlexImageCacheService {
 			try {
 				imageManager = SerenityApplication.getImageManager();
 				
-				factory = PlexappFactory.getInstance(Config.getInstance());
+				factory = SerenityApplication.getPlexFactory();
+				
 				MediaContainer sections = factory.retrieveSections();
 				List<Directory> dirs =  sections.getDirectories();
 				for (Directory d : dirs) {
@@ -88,9 +90,8 @@ public class PlexImageCacheService {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				Log.w("Can't communicate with server.", e);
 			}
-			
 			
 		}
 		

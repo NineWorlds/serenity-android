@@ -1,0 +1,120 @@
+/**
+ * The MIT License (MIT)
+ * Copyright (c) 2012 David Carver
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+ * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+ * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package com.github.kingargyle.plexappclient.core;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.preference.PreferenceManager;
+
+import com.github.kingargyle.plexapp.config.IConfiguration;
+
+/**
+ * A configuration that reads information from the SharedPreferences
+ * store.  This information contains necessary info for connecting to
+ * the plex media server.
+ *  
+ * @author dcarver
+ *
+ */
+public class ServerConfig implements IConfiguration {
+	
+	private String serveraddress;
+	private String serverport;
+	private SharedPreferences preferences;
+	private static ServerConfig config;
+	private OnSharedPreferenceChangeListener listener;
+	
+	/**
+	 * Sets up the configuration based on the context of the
+	 * activity that called it.
+	 *  
+	 */
+	private ServerConfig(Context context) {
+		preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		
+		serveraddress = preferences.getString("server", "");
+		serverport = preferences.getString("serverport", "32400");
+	}
+
+	public String getHost() {
+		return serveraddress;
+	}
+
+	public String getPort() {
+		return serverport;
+	}
+
+	public void setHost(String hostip) {
+		serveraddress = hostip;
+
+	}
+
+	public void setPort(String port) {
+		serverport = port;
+	}
+	
+	public static IConfiguration getInstance(Context context) {
+		if (config == null) {
+			config = new ServerConfig(context);
+		}
+		
+		return config;
+	}
+	
+	/**
+	 * This should only be called after a context has been set.
+	 * 
+	 * @return
+	 */
+	public static IConfiguration getInstance()  {
+		return config;
+	}
+	
+	public OnSharedPreferenceChangeListener getServerConfigChangeListener() {
+		if (listener == null) {
+			listener = new ServerConfigChangeListener();
+		}
+		return listener;
+	}
+	
+	
+	
+	public class ServerConfigChangeListener implements OnSharedPreferenceChangeListener {
+
+		/* (non-Javadoc)
+		 * @see android.content.SharedPreferences.OnSharedPreferenceChangeListener#onSharedPreferenceChanged(android.content.SharedPreferences, java.lang.String)
+		 */
+		public void onSharedPreferenceChanged(
+				SharedPreferences sharedPreferences, String key) {
+			if ("serverport".equals(key)) {
+				serverport = preferences.getString(key, "32400");
+			} else {
+				serveraddress = preferences.getString(key, "");
+			}
+		}
+		
+	}
+
+}

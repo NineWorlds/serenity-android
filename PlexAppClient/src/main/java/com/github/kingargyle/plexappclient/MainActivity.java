@@ -23,36 +23,34 @@
 
 package com.github.kingargyle.plexappclient;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Gallery;
 
-import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.config.IConfiguration;
 import com.github.kingargyle.plexappclient.R;
-import com.github.kingargyle.plexappclient.core.Config;
+import com.github.kingargyle.plexappclient.core.ServerConfig;
+import com.github.kingargyle.plexappclient.ui.preferences.SerenityPreferenceActivity;
 
 public class MainActivity extends Activity {
 
 	private Gallery mainGallery;
 	private View mainView;
+	private SharedPreferences preferences;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_plex_app_main);
-				
 		mainView = findViewById(R.id.mainLayout);
-
+		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		preferences.registerOnSharedPreferenceChangeListener(((ServerConfig)ServerConfig.getInstance()).getServerConfigChangeListener());
 
 		// Yes I know this is bad, really need to make network activity happen
 		// in AsyncTask.
@@ -71,15 +69,30 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		Intent i = new Intent(MainActivity.this,
+				SerenityPreferenceActivity.class);
+		startActivity(i);
+
+		return true;
+	}
+
 	private void setupGallery() {
 
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
 		mainGallery.setAdapter(new MainMenuTextViewAdapter(this, mainView));
 		mainGallery
-				.setOnItemSelectedListener(new GalleryOnItemSelectedListener(mainView));
-		mainGallery.setOnItemClickListener(new GalleryOnItemClickListener(this));
+				.setOnItemSelectedListener(new GalleryOnItemSelectedListener(
+						mainView));
+		mainGallery
+				.setOnItemClickListener(new GalleryOnItemClickListener(this));
 	}
-
-
-
+	
 }
