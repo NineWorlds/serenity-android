@@ -83,6 +83,18 @@ public class MainActivity extends Activity {
 
 		return true;
 	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		// Hey! This refreshes the whole Activity!
+		this.onCreate(null);
+	}
+	
 
 	private void setupGallery() {
 

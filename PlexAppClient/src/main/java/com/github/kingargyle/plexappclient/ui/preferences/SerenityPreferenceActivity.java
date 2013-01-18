@@ -23,8 +23,10 @@
 
 package com.github.kingargyle.plexappclient.ui.preferences;
 
+import com.github.kingargyle.plexappclient.MainActivity;
 import com.github.kingargyle.plexappclient.R;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
@@ -40,6 +42,17 @@ public class SerenityPreferenceActivity extends PreferenceActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	    addPreferencesFromResource(R.xml.preferences);	
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#finish()
+	 */
+	@Override
+	public void finish() {
+		super.finish();
+		
+		//Intent i = new Intent(this, MainActivity.class);
+		//startActivity(i);
 	}
 
 }

@@ -58,8 +58,6 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
 		Intent i = new Intent(context, MovieBrowserActivity.class);
 		i.putExtra("key", librarySection);
 		context.startActivityForResult(i, 0);
-		
-		context.startActivity(i);
 	}
 
 }
