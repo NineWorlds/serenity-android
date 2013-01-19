@@ -32,6 +32,7 @@ import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
 
 import android.app.Application;
+import android.os.StrictMode;
 
 /**
  * Global manager for the Serenity application
@@ -47,6 +48,13 @@ public class SerenityApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
+		// Yes I know this is bad, really need to make network activity happen
+		// in AsyncTask.
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+				.permitAll().build();
+		StrictMode.setThreadPolicy(policy);
+		
 		
 		LoaderSettings settings = new LoaderSettings.SettingsBuilder()
 	      .withDisconnectOnEveryCall(true).withAsyncTasks(true).withUpsampling(true).build(this);

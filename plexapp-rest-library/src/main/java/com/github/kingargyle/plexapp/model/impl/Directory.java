@@ -40,6 +40,29 @@ public class Directory extends AbstractPlexObject {
 	private String art;
 	
 	@Attribute(required=false)
+	private String banner;
+	
+	@Attribute(required=false)
+	private String thumb;
+
+	
+	public String getThumb() {
+		return thumb;
+	}
+
+	public void setThumb(String thumb) {
+		this.thumb = thumb;
+	}
+
+	public String getBanner() {
+		return banner;
+	}
+
+	public void setBanner(String banner) {
+		this.banner = banner;
+	}
+
+	@Attribute(required=false)
 	private int refreshing;
 		
 	@Attribute(required=false)
@@ -73,8 +96,8 @@ public class Directory extends AbstractPlexObject {
 	/**
 	 * Only appears with prompt.
 	 */
-	private String search;	
-	
+	private String search;
+		
 	public List<Genre> getGenres() {
 		return genres;
 	}

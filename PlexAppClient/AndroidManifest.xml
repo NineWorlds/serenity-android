@@ -42,7 +42,8 @@
         </activity>
         <activity
             android:name="com.github.kingargyle.plexappclient.ui.browser.tv.TVShowBrowserActivity"
-            android:label="@string/title_activity_tvbrowser_show" >
+            android:label="@string/title_activity_tvbrowser_show" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity android:name=".ui.preferences.SerenityPreferenceActivity"></activity>
     </application>

@@ -24,6 +24,8 @@
 package com.github.kingargyle.plexappclient;
 
 import com.github.kingargyle.plexappclient.ui.browser.movie.MovieBrowserActivity;
+import com.github.kingargyle.plexappclient.ui.browser.tv.TVShowBrowserActivity;
+import com.github.kingargyle.plexappclient.ui.preferences.SerenityPreferenceActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -55,7 +57,18 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
 		MainMenuTextView v = (MainMenuTextView) view;
 		String librarySection = v.getLibraryKey();
 		
-		Intent i = new Intent(context, MovieBrowserActivity.class);
+		String activityType = v.getActivityType();
+		
+		Intent i = null;
+		
+		if ("movies".equalsIgnoreCase(activityType)) {
+			i = new Intent(context, MovieBrowserActivity.class);
+		} else if ("show".equalsIgnoreCase(activityType)) {
+			i = new Intent(context, TVShowBrowserActivity.class);			
+		} else {
+			i = new Intent(context, SerenityPreferenceActivity.class);
+		}
+		
 		i.putExtra("key", librarySection);
 		context.startActivityForResult(i, 0);
 	}

@@ -34,7 +34,16 @@ public class MainMenuTextView extends TextView {
 
 	private int backgroundId;
 	private String libraryKey;
+	private String activityType;
 	
+	public String getActivityType() {
+		return activityType;
+	}
+
+	public void setActivityType(String activityType) {
+		this.activityType = activityType;
+	}
+
 	/**
 	 * @param context
 	 */

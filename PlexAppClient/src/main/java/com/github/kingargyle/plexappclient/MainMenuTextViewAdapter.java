@@ -147,18 +147,21 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 			v = new MainMenuTextView(this.myContext,
 					R.drawable.movies);
 			v.setLibraryKey(menuItem.getSection());
+			v.setActivityType(menuItem.getType());
 			return v;
 		}
 		
 		if ("show".equals(menuItem.getType())) {
 			v = new MainMenuTextView(this.myContext, R.drawable.tvshows);
 			v.setLibraryKey(menuItem.getSection());
+			v.setActivityType(menuItem.getType());
 			return v;
 		}
 		
 		if ("settings".equals(menuItem.getType())) {
 			v = new MainMenuTextView(this.myContext, R.drawable.settings);
 			v.setLibraryKey("0");
+			v.setActivityType(menuItem.getType());
 			return v;
 		}
 		

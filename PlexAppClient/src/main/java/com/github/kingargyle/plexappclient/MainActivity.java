@@ -52,12 +52,6 @@ public class MainActivity extends Activity {
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		preferences.registerOnSharedPreferenceChangeListener(((ServerConfig)ServerConfig.getInstance()).getServerConfigChangeListener());
 
-		// Yes I know this is bad, really need to make network activity happen
-		// in AsyncTask.
-		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-				.permitAll().build();
-		StrictMode.setThreadPolicy(policy);
-
 		setupGallery();
 
 	}

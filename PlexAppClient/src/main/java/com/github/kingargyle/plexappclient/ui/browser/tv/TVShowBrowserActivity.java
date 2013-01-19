@@ -23,12 +23,40 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv;
 
+import com.github.kingargyle.plexappclient.GalleryOnItemClickListener;
+import com.github.kingargyle.plexappclient.GalleryOnItemSelectedListener;
+import com.github.kingargyle.plexappclient.MainMenuTextViewAdapter;
+import com.github.kingargyle.plexappclient.R;
+
 import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Gallery;
 
 /**
  * @author dcarver
  *
  */
 public class TVShowBrowserActivity extends Activity {
+	
+	private Gallery tvShowsGallery;
+	private View tvShowMainView;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_tvbrowser_show);
+		tvShowMainView = findViewById(R.id.tvshowBrowserLayout);
+		setupShows();
+		
+	}
+	
+	protected void setupShows() {
+		tvShowsGallery = (Gallery) findViewById(R.id.tvShowBannerGallery);
+
+		tvShowsGallery.setAdapter(new TVShowBannerImageGalleryAdapter(this));
+		tvShowsGallery
+				.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(tvShowMainView, this));
+	}
 
 }
