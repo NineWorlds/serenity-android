@@ -37,6 +37,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -120,7 +121,7 @@ public class TVShowBannerOnItemSelectedListener implements
 			
 			ImageView showImage = (ImageView) context.findViewById(R.id.tvShowImage);			
 			showImage.setScaleType(ScaleType.FIT_XY);
-			showImage.setLayoutParams(new TableRow.LayoutParams(210, 410));
+			showImage.setLayoutParams(new LinearLayout.LayoutParams(400, 500));
 			showImage.setImageDrawable(new BitmapDrawable(tbm));
 			
 		}

@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tvshowBrowserLayout"
     android:layout_width="fill_parent"
@@ -7,159 +7,142 @@
     android:orientation="vertical"
     tools:context=".ui.browser.tv.TVShowBrowserActivity" >
 
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
-        android:background="#A0000000" >
+    <LinearLayout
+        android:id="@+id/tvLine1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#A0000000"
+        android:orientation="horizontal" >
 
-        <TableRow
-            android:id="@+id/tvShowDetail"
+        <TextView
+            android:id="@+id/tvShowDetailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="TV Shows"
+            android:textColor="#F0F0F0"
+            android:textSize="20sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/tvShowItemCount"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp" >
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:text="6 Items"
+            android:textColor="#F0F0F0"
+            android:textSize="20sp" >
+        </TextView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/tvLine1"
+        android:background="#A0000000"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/tvShowInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="100dp"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/tvShowImage"
+                android:layout_width="410dp"
+                android:layout_height="210dp"
+                android:layout_gravity="center_horizontal"
+                android:background="#F0F0F0"
+                android:padding="2dp"
+                android:scaleType="fitXY" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="600dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_toRightOf="@+id/tvShowInfo"
+            android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/tvShowDetailText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TV Shows"
-                android:textColor="#F0F0F0"
-                android:textSize="20sp" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/tvShowItemCount"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:gravity="right"
-                android:text="6 Items"
+                android:layout_marginTop="5dp"
+                android:text="Summary"
+                android:textColor="#F0F0F0"
+                android:textSize="20dp"
+                android:textStyle="bold" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/tvShowSeriesSummary"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:gravity="top"
+                android:text="Summary Information about a Show Goes here."
+                android:textColor="#F0F0F0" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/tvBrowserTitle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Title Text"
                 android:textColor="#F0F0F0"
                 android:textSize="20sp" >
             </TextView>
-        </TableRow>
 
-        <TableRow
-            android:id="@+id/tvshowContainer"
+            <TextView
+                android:id="@+id/tvShowBrowserGenre"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="5dp"
+                android:text="Genre Information"
+                android:textColor="#F0F0F0"
+                android:textSize="15sp" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/tvShowWatchedUnwatched"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="Watched and Unwatched count"
+                android:textColor="#F0F0F0" >
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="5dp" >
-
-            <TableLayout
-                android:layout_width="320dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="40dp">
-
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/tvShowImage"
-                        android:layout_width="410dp"
-                        android:layout_height="210dp"
-                        android:background="#F0F0F0"
-                        android:padding="2dp"
-                        android:scaleType="fitXY"/>
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/tvBrowserTitle"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Title Text"
-                        android:gravity="center"
-                        android:textColor="#F0F0F0"
-                        android:textSize="20sp" >
-
-                    </TextView>
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/tvShowBrowserGenre"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_gravity="center"
-                        android:text="Genre Information"
-                        android:textColor="#F0F0F0"
-                        android:textSize="15sp" >
-                    </TextView>
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/tvShowWatchedUnwatched"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center"
-                        android:text="Watched and Unwatched count"
-                        android:textColor="#F0F0F0" >
-                    </TextView>
-                </TableRow>
-            </TableLayout>
-
-            <LinearLayout
-                android:layout_width="400dp"
-                android:layout_height="300dp"
-                android:orientation="vertical" >
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:gravity="left"
-                        android:text="Summary"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:textColor="#F0F0F0" >
-                    </TextView>           
-                
-                    <TextView
-                        android:id="@+id/tvShowSeriesSummary"
-                        android:layout_width="fill_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:gravity="top"
-                        android:text="Summary Information about a Show Goes here."
-                        android:textColor="#F0F0F0" >
-                    </TextView>
-            </LinearLayout>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp">
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
 
             <Gallery
                 android:id="@+id/tvShowBannerGallery"
                 android:layout_width="fill_parent"
                 android:layout_height="120dp"
+                android:layout_span="2"
                 android:animationDuration="1"
                 android:background="#50000000"
-                android:spacing="10dp"
-                android:layout_span="2" >
+                android:spacing="10dp" >
 
                 <requestFocus />
             </Gallery>
-        </TableRow>
-    </TableLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>
