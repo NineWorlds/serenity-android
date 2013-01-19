@@ -75,6 +75,14 @@ public class TestResourcePaths {
 		assertEquals("http://localhost:32400/library/sections/4/", result);
 	}
 	
+	@Test
+	public void testSectionPathWithKeyTVShows() throws Exception {
+		String result = path.getSectionsURL("6");
+		
+		assertEquals("http://localhost:32400/library/sections/6/", result);
+	}
+
+	
 	private class MockConfiguration implements IConfiguration {
 
 		/* (non-Javadoc)

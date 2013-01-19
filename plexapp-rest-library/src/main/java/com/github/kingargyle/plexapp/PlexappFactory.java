@@ -117,6 +117,15 @@ public class PlexappFactory {
 		return mediaContainer;
 	}
 	
+	/**
+	 * For Movies this will return a MediaContainer with Videos.  For
+	 * TV Shows this will return a MediaContainer with Directories.
+	 * 
+	 * @param key
+	 * @param category
+	 * @return MediaContainer
+	 * @throws Exception
+	 */
 	public MediaContainer retrieveSections(String key, String category) throws Exception {
 		String moviesURL = resourcePath.getSectionsURL(key, category);
 		MediaContainer mediaContainer = serializeResource(moviesURL);

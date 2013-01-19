@@ -25,6 +25,7 @@ package com.github.kingargyle.plexapp.tests;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -34,6 +35,7 @@ import static org.junit.Assert.*;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexapp.config.IConfiguration;
+import com.github.kingargyle.plexapp.model.impl.Directory;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexapp.tests.utils.NanoHTTPD;
 
@@ -96,12 +98,29 @@ public class TestPlexFactory {
 	}
 	
 	@Test
-	public void testRetrieveSectionByKey() throws Exception {
+	public void testRetrieveSectionByKeyMovies() throws Exception {
 		PlexappFactory factory = PlexappFactory.getInstance(config);
 		MediaContainer mediaContainer = factory.retrieveSections("4");
 		assertNotNull(mediaContainer);
 		assertEquals(19, mediaContainer.getSize());
 	}
+	
+	@Test
+	public void testRetrieveSectionByKeyTVShows() throws Exception {
+		PlexappFactory factory = PlexappFactory.getInstance(config);
+		MediaContainer mediaContainer = factory.retrieveSections("6");
+		assertNotNull(mediaContainer);
+		assertEquals(15, mediaContainer.getSize());
+	}
+	
+	@Test
+	public void testRetrieveAllTVShows() throws Exception {
+		PlexappFactory factory = PlexappFactory.getInstance(config);
+		MediaContainer mediaContainer = factory.retrieveSections("6", "all");
+		List<Directory> directories = mediaContainer.getDirectories();
+		assertEquals(6, directories.size());
+	}
+	
 	
 	
 	private class MockConfig implements IConfiguration {
