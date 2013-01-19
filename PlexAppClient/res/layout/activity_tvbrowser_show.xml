@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tvshowBrowserLayout"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_movie_art"
     android:orientation="vertical"
@@ -10,6 +10,7 @@
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
         android:background="#A0000000" >
 
         <TableRow
@@ -28,10 +29,10 @@
             </TextView>
 
             <TextView
-                android:id="@+id/tvShowDetailText"
+                android:id="@+id/tvShowItemCount"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="140dp"
+                android:layout_gravity="left"
                 android:gravity="right"
                 android:text="6 Items"
                 android:textColor="#F0F0F0"
@@ -48,7 +49,7 @@
             android:layout_marginTop="5dp" >
 
             <TableLayout
-                android:layout_width="420dp"
+                android:layout_width="320dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="40dp">
 
@@ -61,7 +62,7 @@
                         android:layout_width="410dp"
                         android:layout_height="210dp"
                         android:background="#F0F0F0"
-                        android:padding="5dp"
+                        android:padding="2dp"
                         android:scaleType="fitXY"/>
                 </TableRow>
 
@@ -142,11 +143,10 @@
         </TableRow>
 
         <TableRow
-            android:layout_width="900dip"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="15dp">
+            android:layout_marginTop="15dp">
 
             <Gallery
                 android:id="@+id/tvShowBannerGallery"
