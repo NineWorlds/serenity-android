@@ -23,8 +23,11 @@
 
 package com.github.kingargyle.plexapp.model.impl;
 
+import java.util.List;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 @Root(name="Directory")
@@ -71,9 +74,110 @@ public class Directory extends AbstractPlexObject {
 	 * Only appears with prompt.
 	 */
 	private String search;	
+	
+	public List<Genre> getGenres() {
+		return genres;
+	}
+
+	public void setGenres(List<Genre> genres) {
+		this.genres = genres;
+	}
+
+	public String getRatingKey() {
+		return ratingKey;
+	}
+
+	public void setRatingKey(String ratingKey) {
+		this.ratingKey = ratingKey;
+	}
+
+	public String getStudio() {
+		return studio;
+	}
+
+	public void setStudio(String studio) {
+		this.studio = studio;
+	}
+
+	public String getRating() {
+		return rating;
+	}
+
+	public void setRating(String rating) {
+		this.rating = rating;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	public String getContentRating() {
+		return contentRating;
+	}
+
+	public void setContentRating(String contentRating) {
+		this.contentRating = contentRating;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public String getLeafCount() {
+		return leafCount;
+	}
+
+	public void setLeafCount(String leafCount) {
+		this.leafCount = leafCount;
+	}
+
+	public String getViewedLeafCount() {
+		return viewedLeafCount;
+	}
+
+	public void setViewedLeafCount(String viewedLeafCount) {
+		this.viewedLeafCount = viewedLeafCount;
+	}
+
+	@ElementList(inline=true,required=false)
+	private List<Genre> genres;
 
 	@Element(name="Location",required=false)
 	private Location location;
+	
+	@Attribute(required=false)
+	private String ratingKey;
+	
+	@Attribute(required=false)
+	private String studio;
+	
+	@Attribute(required=false)
+	private String rating;
+	
+	@Attribute(required=false)
+	private String year;
+	
+	@Attribute(required=false)
+	private String contentRating;
+	
+	@Attribute(required=false)
+	private String summary;
+	
+	@Attribute(required=false)
+	private String leafCount;
+	
+	@Attribute(required=false)
+	private String viewedLeafCount;
+	
+	
 
 	public String getTitle() {
 		return title;
