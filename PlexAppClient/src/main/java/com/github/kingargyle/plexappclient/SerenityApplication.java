@@ -24,14 +24,17 @@
 package com.github.kingargyle.plexappclient;
 
 import java.io.IOException;
+import java.util.WeakHashMap;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexapp.config.IConfiguration;
 import com.github.kingargyle.plexappclient.core.ServerConfig;
 import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.cache.LruBitmapCache;
 
 import android.app.Application;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.StrictMode;
 
 /**
@@ -44,6 +47,8 @@ public class SerenityApplication extends Application {
 	
 	private static PlexAppImageManager imageManager;
 	private static PlexappFactory plexFactory;
+	private WeakHashMap<String, BitmapDrawable> backgroundImageCache;
+
 	
 	@Override
 	public void onCreate() {
@@ -58,6 +63,7 @@ public class SerenityApplication extends Application {
 		
 		LoaderSettings settings = new LoaderSettings.SettingsBuilder()
 	      .withDisconnectOnEveryCall(true).withAsyncTasks(true).withUpsampling(true).build(this);
+		
 	    imageManager = new PlexAppImageManager(this, settings);
 	    
 	    try {

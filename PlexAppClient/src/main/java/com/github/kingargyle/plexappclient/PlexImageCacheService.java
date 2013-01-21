@@ -1,9 +1,11 @@
 package com.github.kingargyle.plexappclient;
 import java.io.IOException;
 import java.util.List;
+import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
@@ -42,9 +44,12 @@ import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
 public class PlexImageCacheService {
 
 	private final ExecutorService pool;
+	
+	private static WeakHashMap<String, Bitmap> cachedImages;
 
 	public PlexImageCacheService(int poolSize) throws IOException {
 		pool = Executors.newFixedThreadPool(poolSize);
+		cachedImages = new WeakHashMap();
 	}
 	
 	public void execute() {
@@ -71,7 +76,7 @@ public class PlexImageCacheService {
 				for (Directory d : dirs) {
 					if ("movie".equals(d.getType())) {
 						String key = d.getKey();
-						MediaContainer movieContainer = factory.retrieveSections(key, "all");
+						MediaContainer movieContainer = factory.retrieveSections(key, "unwatched");
 						List<Video> movies = movieContainer.getVideos();
 						
 						for(Video movie : movies) {
@@ -80,7 +85,8 @@ public class PlexImageCacheService {
 							String movieBackgroundImageKey = movie.getBackgroundImageKey();
 							if (movieBackgroundImageKey != null) {
 								String imageURL = baseUrl + movieBackgroundImageKey.replaceFirst("/", "");
-								imageManager.getImage(imageURL, 1280, 720);
+								Bitmap bm = imageManager.getImage(imageURL, 1280, 720);
+								cachedImages.put(imageURL, bm);
 							}
 							if (movie.getThumbNailImageKey() != null) {
 								String imageURL = baseUrl + movie.getThumbNailImageKey().replaceFirst("/", "");
@@ -95,6 +101,13 @@ public class PlexImageCacheService {
 			
 		}
 		
+	}
+	
+	public static WeakHashMap<String, Bitmap> getMovieCachedImages() {
+		if (cachedImages == null) {
+			cachedImages = new WeakHashMap<String, Bitmap>();
+		}
+		return cachedImages;
 	}
 
 }

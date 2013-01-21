@@ -61,7 +61,7 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
 		
 		Intent i = null;
 		
-		if ("movies".equalsIgnoreCase(activityType)) {
+		if ("movie".equalsIgnoreCase(activityType)) {
 			i = new Intent(context, MovieBrowserActivity.class);
 		} else if ("show".equalsIgnoreCase(activityType)) {
 			i = new Intent(context, TVShowBrowserActivity.class);			

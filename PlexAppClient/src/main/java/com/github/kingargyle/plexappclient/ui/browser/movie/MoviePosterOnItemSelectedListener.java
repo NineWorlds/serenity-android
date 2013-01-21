@@ -23,14 +23,25 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
+import java.io.File;
+import java.lang.ref.WeakReference;
+import java.util.WeakHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import com.github.kingargyle.plexappclient.PlexImageCacheService;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
+import com.novoda.imageloader.core.bitmap.BitmapUtil;
+import com.novoda.imageloader.core.cache.CacheManager;
+import com.novoda.imageloader.core.file.FileManager;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -47,10 +58,19 @@ import android.widget.TextView;
 public class MoviePosterOnItemSelectedListener implements
 		OnItemSelectedListener {
 
+	/**
+	 * 
+	 */
+	private static final int MAX_IMAGE_THREADS = 5;
 	private View bgLayout;
 	private Activity context;
 	private PlexAppImageManager imageManager;
 	private View previous;
+	private WeakHashMap<String, Bitmap> backgroundImageCache;
+	
+
+	// Sets up a Executor service for handling image loading
+	private ExecutorService imageExecutorService;
 
 	/**
 	 * 
@@ -58,8 +78,9 @@ public class MoviePosterOnItemSelectedListener implements
 	public MoviePosterOnItemSelectedListener(View bgv, Activity activity) {
 		bgLayout = bgv;
 		context = activity;
-
 		imageManager = SerenityApplication.getImageManager();
+		imageExecutorService = Executors.newFixedThreadPool(MAX_IMAGE_THREADS);
+		backgroundImageCache = PlexImageCacheService.getMovieCachedImages();
 	}
 
 	/*
@@ -109,12 +130,38 @@ public class MoviePosterOnItemSelectedListener implements
 		MoviePosterImageView mpiv = (MoviePosterImageView) v;
 		MoviePosterInfo mi = mpiv.getPosterInfo();
 
-		if (mi.getBackgroundURL() != null) {
-			Bitmap bm = imageManager.getImage(mi.getBackgroundURL(), 1280, 720);
-			BitmapDrawable bmd = new BitmapDrawable(bm);
-
-			bgLayout.setBackgroundDrawable(bmd);
+		if (mi.getBackgroundURL() == null) {
+			return;
 		}
+		
+		if (backgroundImageCache.containsKey(mi.getBackgroundURL())) {
+			Bitmap bm  = backgroundImageCache.get(mi.getBackgroundURL());			
+			bgLayout.setBackgroundDrawable(new BitmapDrawable(bm));
+			return;
+		}
+
+		CacheManager cm = imageManager.getCacheManager();
+
+		Bitmap bm = cm.get(mi.getBackgroundURL(), 1280, 720);
+		if (bm == null) {
+			imageExecutorService.submit(new ImageLoader(mi));
+			return;
+		}
+
+		BitmapDrawable bmd = new BitmapDrawable(bm);
+		bgLayout.setBackgroundDrawable(bmd);
+		backgroundImageCache.put(mi.getBackgroundURL(), bm);
+	}
+
+	/**
+	 * @param mi
+	 * @param fm
+	 * @param bm
+	 * @return
+	 */
+	protected Bitmap fetchImageFromExternalStorage(MoviePosterInfo mi, FileManager fm) {
+		Bitmap bm = null;
+		return bm;
 	}
 
 	/**
@@ -129,22 +176,15 @@ public class MoviePosterOnItemSelectedListener implements
 		infographicsView.removeAllViews();
 		MoviePosterInfo mpi = v.getPosterInfo();
 
-		// Commenting this out for now. It really doesn't add much info.
-//		ImageView vcv = setVideoCodec(mpi.getVideoCodec());
-//		if (vcv != null) {
-//			infographicsView.addView(vcv);
-//		}
-
 		ImageView acv = setAudioCodec(mpi.getAudioCodec());
 		if (acv != null) {
 			infographicsView.addView(acv);
 		}
-		
+
 		ImageView resv = setVideoResolution(mpi.getVideoResolution());
 		if (resv != null) {
 			infographicsView.addView(resv);
 		}
-		
 
 		ImageView crv = setContentRating(mpi.getContentRating());
 		infographicsView.addView(crv);
@@ -322,17 +362,15 @@ public class MoviePosterOnItemSelectedListener implements
 		return null;
 
 	}
-	
+
 	protected ImageView setVideoResolution(String res) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
 		v.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.MATCH_PARENT));
 
-		if ("sd".equalsIgnoreCase(res) ||
-			"480".equalsIgnoreCase(res) ||
-			"540".equalsIgnoreCase(res) ||
-			"576".equalsIgnoreCase(res)) {
+		if ("sd".equalsIgnoreCase(res) || "480".equalsIgnoreCase(res)
+				|| "540".equalsIgnoreCase(res) || "576".equalsIgnoreCase(res)) {
 			v.setImageResource(R.drawable.sd);
 			return v;
 		}
@@ -341,7 +379,7 @@ public class MoviePosterOnItemSelectedListener implements
 			v.setImageResource(R.drawable.res720);
 			return v;
 		}
-		
+
 		if ("1080".equalsIgnoreCase(res)) {
 			v.setImageResource(R.drawable.res1080);
 			return v;
@@ -350,17 +388,49 @@ public class MoviePosterOnItemSelectedListener implements
 		return null;
 
 	}
-	
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android
-	 * .widget.AdapterView)
-	 */
-	public void onNothingSelected(AdapterView<?> arg0) {
+	public void onNothingSelected(AdapterView<?> av) {
 
 	}
 
+	protected class ImageLoader implements Runnable {
+
+		private MoviePosterInfo mpi;
+
+		/**
+		 * 
+		 */
+		public ImageLoader(MoviePosterInfo mpi) {
+			this.mpi = mpi;
+		}
+
+		/**
+		 * Call and fetch an image directly.
+		 */
+		public void run() {
+			Bitmap bm = imageManager
+					.getImage(mpi.getBackgroundURL(), 1280, 720);
+			backgroundImageCache.put(mpi.getBackgroundURL(), bm);
+			Activity activity = (Activity) bgLayout.getContext();
+			activity.runOnUiThread(new BitmapDisplayer(bm));
+		}
+	}
+
+	protected class BitmapDisplayer implements Runnable {
+
+		private Bitmap bm;
+
+		/**
+		 * 
+		 */
+		public BitmapDisplayer(Bitmap bm) {
+			this.bm = bm;
+		}
+
+		public void run() {
+			BitmapDrawable bmd = new BitmapDrawable(bm);
+			bgLayout.setBackgroundDrawable(bmd);
+		}
+
+	}
 }
