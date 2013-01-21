@@ -1,5 +1,7 @@
 package com.github.kingargyle.plexappclient.ui.browser.tv;
 
+import java.util.List;
+
 public class TVShowBannerInfo {
 	private String plotSummary;
 	private String posterURL;
@@ -9,7 +11,34 @@ public class TVShowBannerInfo {
 	private String year;
 	private String showMetaDataURL;
 	private String thumbNailURL;
+	private List<String> generes;
+	private String showsWatched;
+	private String ShowsUnwatched;
 	
+
+	public List<String> getGeneres() {
+		return generes;
+	}
+
+	public void setGeneres(List<String> generes) {
+		this.generes = generes;
+	}
+
+	public String getShowsWatched() {
+		return showsWatched;
+	}
+
+	public void setShowsWatched(String showsWatched) {
+		this.showsWatched = showsWatched;
+	}
+
+	public String getShowsUnwatched() {
+		return ShowsUnwatched;
+	}
+
+	public void setShowsUnwatched(String showsUnwatched) {
+		ShowsUnwatched = showsUnwatched;
+	}
 
 	public String getBackgroundURL() {
 		return backgroundURL;

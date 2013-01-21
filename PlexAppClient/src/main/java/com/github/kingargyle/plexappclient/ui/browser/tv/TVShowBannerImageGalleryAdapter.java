@@ -49,6 +49,7 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.RadioGroup.LayoutParams;
+import android.widget.TextView;
 
 /**
  * 
@@ -76,13 +77,13 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
 		
-		createPosters();
+		createBanners();
 	}
 	
 	/**
 	 * This all needs to go into an AsyncTask and be done in the background.
 	 */
-	private void createPosters() {
+	private void createBanners() {
 		
 		
 		MediaContainer mc = null;
@@ -101,6 +102,9 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 		}
 		
 		if (mc.getSize() > 0) {
+			TextView itemCount = (TextView) context.findViewById(R.id.tvShowItemCount);
+			itemCount.setText(Integer.toString(mc.getSize()) + " Serie(s)");
+			
 			List<Directory> shows = mc.getDirectories();
 			for (Directory show : shows) {
 				TVShowBannerInfo  mpi = new TVShowBannerInfo();
@@ -127,11 +131,29 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 				mpi.setTitle(show.getTitle());
 				
 				mpi.setContentRating(show.getContentRating());
-								
-			
+				
+				List<String> genres = processGeneres(show);
+				mpi.setGeneres(genres);
+				
+			    mpi.setShowsWatched(show.getViewedLeafCount());
+			    int totalEpisodes = Integer.parseInt(show.getLeafCount());
+			    int unwatched = totalEpisodes - Integer.parseInt(show.getViewedLeafCount());
+			    mpi.setShowsUnwatched(Integer.toString(unwatched));
+			    
 				tvShowList.add(mpi);
 			}
 		}		
+	}
+	
+	protected List<String> processGeneres(Directory show) {
+		ArrayList<String> genres = new ArrayList();
+		if (show.getGenres() != null) {
+			for (Genre genre : show.getGenres()) {
+				genres.add(genre.getTag());
+			}
+		}
+		
+		return genres;
 	}
 
 	/* (non-Javadoc)

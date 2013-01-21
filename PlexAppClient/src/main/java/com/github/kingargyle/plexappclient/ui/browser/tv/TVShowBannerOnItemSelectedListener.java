@@ -23,6 +23,8 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv;
 
+import java.util.List;
+
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
@@ -97,6 +99,21 @@ public class TVShowBannerOnItemSelectedListener implements
 		TextView title = (TextView) context
 				.findViewById(R.id.tvBrowserTitle);
 		title.setText(v.getPosterInfo().getTitle());
+		
+		TextView genreView = (TextView) context.findViewById(R.id.tvShowBrowserGenre);
+		List<String> genres =  v.getPosterInfo().getGeneres();
+		String genreText = "";
+		for (String genre : genres) {
+		   genreText = genreText + genre + "/";
+		}
+		genreText = genreText.substring(0, genreText.lastIndexOf("/"));
+		genreView.setText(genreText);
+		
+		TextView watchedUnwatched = (TextView) context.findViewById(R.id.tvShowWatchedUnwatched);
+		String wu = "Watched: " + v.getPosterInfo().getShowsWatched();
+		wu = wu + " Unwatched: " + v.getPosterInfo().getShowsUnwatched();
+		watchedUnwatched.setText(wu);
+		
 	}
 
 	/**
@@ -108,7 +125,6 @@ public class TVShowBannerOnItemSelectedListener implements
 	 */
 	private void changeBackgroundImage(View v) {
 		
-        //FIXME: Run background image changes in a non-ui thread.
 		TVShowBannerImageView mpiv = (TVShowBannerImageView) v;
 		TVShowBannerInfo mi = mpiv.getPosterInfo();
 

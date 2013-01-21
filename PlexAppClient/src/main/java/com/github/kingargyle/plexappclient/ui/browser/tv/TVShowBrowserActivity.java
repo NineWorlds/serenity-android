@@ -23,9 +23,6 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv;
 
-import com.github.kingargyle.plexappclient.GalleryOnItemClickListener;
-import com.github.kingargyle.plexappclient.GalleryOnItemSelectedListener;
-import com.github.kingargyle.plexappclient.MainMenuTextViewAdapter;
 import com.github.kingargyle.plexappclient.R;
 
 import android.app.Activity;
