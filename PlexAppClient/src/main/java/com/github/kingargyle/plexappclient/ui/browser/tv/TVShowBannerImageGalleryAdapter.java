@@ -37,7 +37,7 @@ import com.github.kingargyle.plexapp.model.impl.Video;
 import com.github.kingargyle.plexapp.model.impl.Writer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
-import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
+import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 
 import android.app.Activity;
@@ -61,7 +61,7 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 	private List<TVShowBannerInfo> tvShowList = null;
 	private Activity context;
 	
-	private PlexAppImageManager imageManager;
+	private ImageManager imageManager;
 	private ImageTagFactory imageTagFactory;
 	private static final int SIZE_HEIGHT = 200;
 	private static final int SIZE_WIDTH = 400;
@@ -73,7 +73,7 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 		tvShowList = new ArrayList<TVShowBannerInfo>();
 		
 		imageManager = SerenityApplication.getImageManager();
-		imageTagFactory = ImageTagFactory.getInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
+		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
 		
@@ -140,6 +140,8 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 			    int unwatched = totalEpisodes - Integer.parseInt(show.getViewedLeafCount());
 			    mpi.setShowsUnwatched(Integer.toString(unwatched));
 			    
+			    mpi.setKey(show.getKey());
+			    
 				tvShowList.add(mpi);
 			}
 		}		
@@ -187,9 +189,9 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 		TVShowBannerInfo pi = tvShowList.get(position);
 		TVShowBannerImageView mpiv = new TVShowBannerImageView(context, pi);
 		if (pi.getPosterURL() != null) {
-			mpiv.setTag(imageTagFactory.build(pi.getPosterURL()));
+			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
 		} else {
-			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/show-fanart.jpg"));
+			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/show-fanart.jpg", context));
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 768;

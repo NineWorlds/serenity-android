@@ -14,7 +14,16 @@ public class TVShowBannerInfo {
 	private List<String> generes;
 	private String showsWatched;
 	private String ShowsUnwatched;
+	private String key;
 	
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
 
 	public List<String> getGeneres() {
 		return generes;

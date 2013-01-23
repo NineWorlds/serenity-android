@@ -12,7 +12,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_movie_browser">Movies</string>
-    <string name="title_activity_main">Serenity->Main Menu</string>
+    <string name="title_activity_main">Serenity for Google TV</string>
     <string name="title_activity_tvbrowser_show">TV Shows</string>
-
+    <string name="title_activity_tvbrowser_show_season">TV Shows Seasons</string>
+    
 </resources>

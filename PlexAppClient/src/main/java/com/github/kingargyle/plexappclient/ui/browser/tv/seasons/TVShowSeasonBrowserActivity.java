@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.ui.browser.tv;
+package com.github.kingargyle.plexappclient.ui.browser.tv.seasons;
 
 import com.github.kingargyle.plexappclient.R;
 
@@ -34,27 +34,26 @@ import android.widget.Gallery;
  * @author dcarver
  *
  */
-public class TVShowBrowserActivity extends Activity {
+public class TVShowSeasonBrowserActivity extends Activity {
 	
-	private Gallery tvShowsGallery;
-	private View tvShowMainView;
+	private Gallery tvShowSeasonsGallery;
+	private View tvShowSeasonsMainView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tvbrowser_show);
-		tvShowMainView = findViewById(R.id.tvshowBrowserLayout);
-		setupShows();
+		setContentView(R.layout.activity_tvbrowser_show_seasons);
+		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
+		setupSeasons();
 		
 	}
 	
-	protected void setupShows() {
-		tvShowsGallery = (Gallery) findViewById(R.id.tvShowBannerGallery);
+	protected void setupSeasons() {
+		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
 
-		tvShowsGallery.setAdapter(new TVShowBannerImageGalleryAdapter(this));
-		tvShowsGallery
-				.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(tvShowMainView, this));
-		tvShowsGallery.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));
+		tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(this));
+		tvShowSeasonsGallery
+				.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this));
 	}
 
 }

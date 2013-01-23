@@ -23,38 +23,41 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv;
 
-import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.ui.browser.tv.seasons.TVShowSeasonBrowserActivity;
 
 import android.app.Activity;
-import android.os.Bundle;
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
-import android.widget.Gallery;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * @author dcarver
  *
  */
-public class TVShowBrowserActivity extends Activity {
+public class TVShowBrowserGalleryOnItemClickListener implements OnItemClickListener {
 	
-	private Gallery tvShowsGallery;
-	private View tvShowMainView;
+	private Activity context;
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tvbrowser_show);
-		tvShowMainView = findViewById(R.id.tvshowBrowserLayout);
-		setupShows();
-		
+	/**
+	 * 
+	 */
+	public TVShowBrowserGalleryOnItemClickListener(Context c) {
+		context = (Activity)c;
 	}
-	
-	protected void setupShows() {
-		tvShowsGallery = (Gallery) findViewById(R.id.tvShowBannerGallery);
 
-		tvShowsGallery.setAdapter(new TVShowBannerImageGalleryAdapter(this));
-		tvShowsGallery
-				.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(tvShowMainView, this));
-		tvShowsGallery.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));
+	/* (non-Javadoc)
+	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	 */
+	public void onItemClick(AdapterView<?> av, View view, int position, long arg3) {
+		
+		TVShowBannerImageView tsi = (TVShowBannerImageView) view;
+		
+		
+		Intent i = new Intent(context, TVShowSeasonBrowserActivity.class);
+		i.putExtra("key", tsi.getPosterInfo().getKey());
+		context.startActivityForResult(i, 0);
 	}
 
 }

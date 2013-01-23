@@ -65,4 +65,8 @@ public class ResourcePaths {
 	protected String getHostPort() {
 		return "http://" + config.getHost() + ":" + config.getPort();
 	}
+	
+	public String getSeasonsURL(String key) {
+		return getHostPort() + key; 
+	}
 }

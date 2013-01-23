@@ -24,17 +24,15 @@
 package com.github.kingargyle.plexappclient;
 
 import java.io.IOException;
-import java.util.WeakHashMap;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexapp.config.IConfiguration;
+import com.github.kingargyle.plexappclient.core.ConcurrentLoader;
+import com.github.kingargyle.plexappclient.core.LoaderSettings;
 import com.github.kingargyle.plexappclient.core.ServerConfig;
-import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
-import com.novoda.imageloader.core.LoaderSettings;
-import com.novoda.imageloader.core.cache.LruBitmapCache;
+import com.novoda.imageloader.core.ImageManager;
 
 import android.app.Application;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.StrictMode;
 
 /**
@@ -45,9 +43,9 @@ import android.os.StrictMode;
  */
 public class SerenityApplication extends Application {
 	
-	private static PlexAppImageManager imageManager;
+	private static ImageManager imageManager;
 	private static PlexappFactory plexFactory;
-	private WeakHashMap<String, BitmapDrawable> backgroundImageCache;
+	private static LoaderSettings settings;
 
 	
 	@Override
@@ -60,30 +58,30 @@ public class SerenityApplication extends Application {
 				.permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 		
+		settings = new LoaderSettings.SettingsBuilder()
+	      .withDisconnectOnEveryCall(true).withUpsampling(true).build(this);
+		settings.setLoader(new ConcurrentLoader(settings));
 		
-		LoaderSettings settings = new LoaderSettings.SettingsBuilder()
-	      .withDisconnectOnEveryCall(true).withAsyncTasks(true).withUpsampling(true).build(this);
-		
-	    imageManager = new PlexAppImageManager(this, settings);
+	    imageManager = new ImageManager(this, settings);
 	    
-	    try {
-	    	IConfiguration config = ServerConfig.getInstance(this);
-	    	plexFactory = PlexappFactory.getInstance(config);
-	    	
-			PlexImageCacheService service = new PlexImageCacheService(5);
-			service.execute();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	    // Temporarily clean the cache
+	    //imageManager.getFileManager().clean();
+	    
+	    IConfiguration config = ServerConfig.getInstance(this);
+		plexFactory = PlexappFactory.getInstance(config);
 		
 	}
 	
-	public static PlexAppImageManager getImageManager() {
+	public static ImageManager getImageManager() {
 	    return imageManager;
 	}
 	
 	public static PlexappFactory getPlexFactory() {
 		return plexFactory;
+	}
+	
+	public static LoaderSettings getLoaderSettings() {
+		return settings;
 	}
 	
 

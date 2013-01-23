@@ -21,70 +21,54 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.ui.browser.tv;
+package com.github.kingargyle.plexappclient.ui.browser.tv.seasons;
 
 import java.io.File;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
-import com.github.kingargyle.plexappclient.ui.browser.movie.MoviePosterInfo;
+import com.github.kingargyle.plexappclient.ui.browser.tv.TVShowBannerInfo;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.bitmap.BitmapUtil;
 import com.novoda.imageloader.core.cache.CacheManager;
 import com.novoda.imageloader.core.file.FileManager;
-import com.novoda.imageloader.core.model.ImageTagFactory;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.widget.Gallery;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 /**
  * @author dcarver
  * 
  */
-public class TVShowBannerOnItemSelectedListener implements
+public class TVShowSeasonOnItemSelectedListener implements
 		OnItemSelectedListener {
 
 	private View bgLayout;
 	private Activity context;
 	private ImageManager imageManager;
 	private View previous;
-	// Sets up a Executor service for handling image loading
 	private ExecutorService imageExecutorService;
 	private static final int MAX_IMAGE_THREADS = 5;
-	private ImageTagFactory imageTagFactory;
+
 
 	/**
 	 * 
 	 */
-	public TVShowBannerOnItemSelectedListener(View bgv, Activity activity) {
+	public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity) {
 		bgLayout = bgv;
 		context = activity;
 
 		imageManager = SerenityApplication.getImageManager();
-		imageTagFactory = ImageTagFactory.newInstance(400, 500,
-				R.drawable.default_video_cover);
-		imageTagFactory.setErrorImageId(R.drawable.default_error);
-		imageTagFactory.setSaveThumbnail(true);
-
 		imageExecutorService = Executors.newFixedThreadPool(MAX_IMAGE_THREADS);
-
 	}
 
 	/*
@@ -95,6 +79,7 @@ public class TVShowBannerOnItemSelectedListener implements
 	 * .widget.AdapterView, android.view.View, int, long)
 	 */
 	public void onItemSelected(AdapterView<?> av, View v, int position, long id) {
+		TVShowSeasonImageView mpiv = (TVShowSeasonImageView) v;
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
@@ -106,38 +91,14 @@ public class TVShowBannerOnItemSelectedListener implements
 		v.setBackgroundColor(Color.BLUE);
 		v.setPadding(5, 5, 5, 5);
 		v.refreshDrawableState();
+		
+		TextView seasonsTitle = (TextView) context.findViewById(R.id.tvShowSeasonsTitle);
+		seasonsTitle.setText(mpiv.getPosterInfo().getTitle());
 
-		createTVShowDetail((TVShowBannerImageView) v);
 		changeBackgroundImage(v);
 
 	}
 
-	private void createTVShowDetail(TVShowBannerImageView v) {
-
-		TextView summary = (TextView) context
-				.findViewById(R.id.tvShowSeriesSummary);
-		summary.setText(v.getPosterInfo().getPlotSummary());
-
-		TextView title = (TextView) context.findViewById(R.id.tvBrowserTitle);
-		title.setText(v.getPosterInfo().getTitle());
-
-		TextView genreView = (TextView) context
-				.findViewById(R.id.tvShowBrowserGenre);
-		List<String> genres = v.getPosterInfo().getGeneres();
-		String genreText = "";
-		for (String genre : genres) {
-			genreText = genreText + genre + "/";
-		}
-		genreText = genreText.substring(0, genreText.lastIndexOf("/"));
-		genreView.setText(genreText);
-
-		TextView watchedUnwatched = (TextView) context
-				.findViewById(R.id.tvShowWatchedUnwatched);
-		String wu = "Watched: " + v.getPosterInfo().getShowsWatched();
-		wu = wu + " Unwatched: " + v.getPosterInfo().getShowsUnwatched();
-		watchedUnwatched.setText(wu);
-
-	}
 
 	/**
 	 * Change the background image of the activity.
@@ -147,29 +108,15 @@ public class TVShowBannerOnItemSelectedListener implements
 	 * @param v
 	 */
 	private void changeBackgroundImage(View v) {
-
-		TVShowBannerImageView mpiv = (TVShowBannerImageView) v;
+		
+		TVShowSeasonImageView mpiv = (TVShowSeasonImageView) v;
 		TVShowBannerInfo mi = mpiv.getPosterInfo();
 
-		ImageLoader im = new ImageLoader(mi);
-		imageExecutorService.submit(im);
-
-		ImageView showImage = (ImageView) context
-				.findViewById(R.id.tvShowImage);
-		showImage.setScaleType(ScaleType.FIT_XY);
-		showImage.setLayoutParams(new LinearLayout.LayoutParams(400, 500));
-
-		if (mi.getThumbNailURL() != null) {
-			showImage.setTag(imageTagFactory.build(mi.getThumbNailURL(),
-					context));
-		} else {
-			showImage.setTag(imageTagFactory.build(SerenityApplication
-					.getPlexFactory().baseURL()
-					+ ":/resources/movie-fanart.jpg", context));
+		if (mi.getBackgroundURL() != null) {
+			ImageLoader im = new ImageLoader(mi);
+			imageExecutorService.submit(im);			
 		}
-
-		imageManager.getLoader().load((ImageView) showImage);
-
+		
 	}
 
 	/*
@@ -182,7 +129,7 @@ public class TVShowBannerOnItemSelectedListener implements
 	public void onNothingSelected(AdapterView<?> arg0) {
 
 	}
-
+	
 	protected class ImageLoader implements Runnable {
 
 		private TVShowBannerInfo mpi;
@@ -235,7 +182,7 @@ public class TVShowBannerOnItemSelectedListener implements
 
 		public void run() {
 			if (bm == null) {
-				bgLayout.setBackgroundResource(R.drawable.movies);
+				bgLayout.setBackgroundResource(R.drawable.tvshows);
 				return;
 			}
 
@@ -243,6 +190,5 @@ public class TVShowBannerOnItemSelectedListener implements
 			bgLayout.setBackgroundDrawable(bmd);
 		}
 
-	}
-
+	}	
 }

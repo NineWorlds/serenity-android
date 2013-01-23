@@ -12,7 +12,7 @@ import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexapp.model.impl.Directory;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexapp.model.impl.Video;
-import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
+import com.novoda.imageloader.core.ImageManager;
 
 /**
  * The MIT License (MIT)
@@ -45,11 +45,9 @@ public class PlexImageCacheService {
 
 	private final ExecutorService pool;
 	
-	private static WeakHashMap<String, Bitmap> cachedImages;
 
 	public PlexImageCacheService(int poolSize) throws IOException {
 		pool = Executors.newFixedThreadPool(poolSize);
-		cachedImages = new WeakHashMap();
 	}
 	
 	public void execute() {
@@ -59,7 +57,7 @@ public class PlexImageCacheService {
 	private class PlexImageFetcherHandler implements Runnable {
 
 		private PlexappFactory factory;
-		private PlexAppImageManager imageManager;
+		private ImageManager imageManager;
 		
 		
 		/* (non-Javadoc)
@@ -85,12 +83,12 @@ public class PlexImageCacheService {
 							String movieBackgroundImageKey = movie.getBackgroundImageKey();
 							if (movieBackgroundImageKey != null) {
 								String imageURL = baseUrl + movieBackgroundImageKey.replaceFirst("/", "");
-								Bitmap bm = imageManager.getImage(imageURL, 1280, 720);
-								cachedImages.put(imageURL, bm);
+								imageManager.cacheImage(imageURL, 1280, 720);
 							}
+							
 							if (movie.getThumbNailImageKey() != null) {
 								String imageURL = baseUrl + movie.getThumbNailImageKey().replaceFirst("/", "");
-								imageManager.getImage(imageURL, 200, 400);
+								imageManager.cacheImage(imageURL, 200, 400);
 							}
 						}
 					}
@@ -100,14 +98,6 @@ public class PlexImageCacheService {
 			}
 			
 		}
-		
 	}
 	
-	public static WeakHashMap<String, Bitmap> getMovieCachedImages() {
-		if (cachedImages == null) {
-			cachedImages = new WeakHashMap<String, Bitmap>();
-		}
-		return cachedImages;
-	}
-
 }

@@ -121,6 +121,20 @@ public class TestPlexFactory {
 		assertEquals(6, directories.size());
 	}
 	
+	@Test
+	public void testRetrieveSeasonsForTVShow() throws Exception {
+		PlexappFactory factory = PlexappFactory.getInstance(config);
+		MediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/209/children/");
+		assertEquals(5, mediaContainer.getSize());
+	}
+
+	@Test
+	public void testRetrieveSeasonsForTVShowBackgroundArt() throws Exception {
+		PlexappFactory factory = PlexappFactory.getInstance(config);
+		MediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/209/children/");
+		assertEquals("/library/metadata/209/art/1354460830",mediaContainer.getArt());
+	}
+	
 	
 	
 	private class MockConfig implements IConfiguration {

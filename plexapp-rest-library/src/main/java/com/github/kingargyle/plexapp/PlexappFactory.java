@@ -132,6 +132,12 @@ public class PlexappFactory {
 		return mediaContainer;
 	}
 	
+	public MediaContainer retrieveSeasons(String key) throws Exception {
+		String seasonsURL = resourcePath.getSeasonsURL(key);
+		MediaContainer mediaContainer = serializeResource(seasonsURL);
+		return mediaContainer;
+	}
+	
 	public String baseURL() {
 		return resourcePath.getRoot();
 	}

@@ -21,21 +21,19 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.ui.browser.movie;
+package com.github.kingargyle.plexappclient.ui.browser.tv.seasons;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.model.impl.Director;
+import com.github.kingargyle.plexapp.model.impl.Directory;
 import com.github.kingargyle.plexapp.model.impl.Genre;
-import com.github.kingargyle.plexapp.model.impl.Media;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
-import com.github.kingargyle.plexapp.model.impl.Video;
-import com.github.kingargyle.plexapp.model.impl.Writer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
+import com.github.kingargyle.plexappclient.ui.browser.tv.TVShowBannerInfo;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 
@@ -48,45 +46,51 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.RadioGroup.LayoutParams;
+import android.widget.TextView;
 
 /**
  * 
  * @author dcarver
  *
  */
-public class MoviePosterImageGalleryAdapter extends BaseAdapter {
+public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	
-	private List<MoviePosterInfo> posterList = null;
+	private List<TVShowBannerInfo> seasonList = null;
 	private Activity context;
 	
 	private ImageManager imageManager;
 	private ImageTagFactory imageTagFactory;
-	private static final int SIZE_HEIGHT = 400;
-	private static final int SIZE_WIDTH = 200;
+	private static final int SIZE_HEIGHT = 200;
+	private static final int SIZE_WIDTH = 400;
 	private PlexappFactory factory;
 	
-	
-	public MoviePosterImageGalleryAdapter(Context c) {
+	public TVShowSeasonImageGalleryAdapter(Context c) {
 		context = (Activity)c;
 		
-		posterList = new ArrayList<MoviePosterInfo>();
+		seasonList = new ArrayList<TVShowBannerInfo>();
 		
 		imageManager = SerenityApplication.getImageManager();
 		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
-				
-		createPosters();
+		
+		createImages();
 	}
 	
-	private void createPosters() {
+	/**
+	 * This all needs to go into an AsyncTask and be done in the background.
+	 */
+	private void createImages() {
+		
 		
 		MediaContainer mc = null;
 		String baseUrl = null;
 		try {
 			factory = SerenityApplication.getPlexFactory();
 			String key = context.getIntent().getExtras().getString("key");
-			mc = factory.retrieveSections(key, "all");
+			
+			// For TV Shows we'll get a Directory container.
+			mc = factory.retrieveSeasons(key);
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
 			Log.w("Unable to talk to server: ", ex);
@@ -95,89 +99,49 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 		}
 		
 		if (mc.getSize() > 0) {
-			List<Video> videos = mc.getVideos();
-			for (Video movie : videos) {
-				MoviePosterInfo  mpi = new MoviePosterInfo();
-				mpi.setPlotSummary(movie.getSummary());
+			TextView itemCount = (TextView) context.findViewById(R.id.tvShowSeasonsItemCount);
+			itemCount.setText(Integer.toString(mc.getSize()) + " Item(s)");
+
+			TextView titleView = (TextView) context.findViewById(R.id.tvShowSeasonsDetailText);
+			
+			if (mc.getTitle2() != null) {
+				titleView.setText(mc.getTitle2());
+			}
+			
+			List<Directory> shows = mc.getDirectories();
+			for (Directory show : shows) {
+				TVShowBannerInfo  mpi = new TVShowBannerInfo();
 				
-				String burl = factory.baseURL() + ":/resources/movie-fanart.jpg"; 
-				if (movie.getBackgroundImageKey() != null) {
-					burl = baseUrl + movie.getBackgroundImageKey().replaceFirst("/", "");
+				String burl = factory.baseURL() + ":/resources/show-fanart.jpg"; 
+				if (mc.getArt() != null) {
+					burl = baseUrl + mc.getArt().replaceFirst("/", "");
 				}
 				mpi.setBackgroundURL(burl);
 				
 				String turl = "";
-				if (movie.getThumbNailImageKey() != null) {
-					turl = baseUrl + movie.getThumbNailImageKey().replaceFirst("/", "");
+				if (show.getThumb() != null) {
+					turl = baseUrl + show.getThumb().replaceFirst("/", "");
 				}
-				
 				mpi.setPosterURL(turl);
-				mpi.setTitle(movie.getTitle());
+								
+				mpi.setTitle(show.getTitle());			
 				
-				mpi.setContentRating(movie.getContentRating());
-				
-				Media media = movie.getMedia();
-				mpi.setAudioCodec(media.getAudioCodec());
-				mpi.setVideoCodec(media.getVideoCodec());
-				mpi.setVideoResolution(media.getVideoResolution());
-				
-				String movieDetails = "";
-				
-				if (movie.getYear() != null) {
-					mpi.setYear(movie.getYear());
-					movieDetails = "Year: " + movie.getYear();
-					movieDetails = movieDetails + "\r\n";
-				}
-				
-				if (movie.getGenres() != null && movie.getGenres().size() > 0) {
-					ArrayList<String> g = new ArrayList<String>();
-					for (Genre genre : movie.getGenres()) {
-						g.add(genre.getTag());
-						movieDetails = movieDetails + genre.getTag() + "/";
-					}
-					mpi.setGenres(g);
-					movieDetails = movieDetails.substring(0, movieDetails.lastIndexOf("/"));
-					movieDetails = movieDetails + "\r\n";
-				}
-				
-				
-				if (movie.getWriters() != null && movie.getWriters().size() > 0) {
-					movieDetails = movieDetails + "Writer(s): ";
-					ArrayList<String> w = new ArrayList<String>();
-					for (Writer writer : movie.getWriters()) {
-						w.add(writer.getTag());
-						movieDetails = movieDetails + writer.getTag() + ", ";
-					}
-					mpi.setWriters(w);
-					movieDetails = movieDetails.substring(0, movieDetails.lastIndexOf(","));
-					movieDetails = movieDetails + "\r\n";
-				}
-				
-				if (movie.getDirectors() != null && movie.getDirectors().size() > 0) {
-					movieDetails = movieDetails + "Director(s): ";
-					ArrayList<String> d = new ArrayList<String>();
-					for (Director director : movie.getDirectors()) {
-						d.add(director.getTag());
-						movieDetails = movieDetails + director.getTag() + ", ";
-					}
-					mpi.setDirectors(d);
-					movieDetails = movieDetails.substring(0, movieDetails.lastIndexOf(","));
-					movieDetails = movieDetails + "\r\n";
-				}
-				
-				mpi.setCastInfo(movieDetails);
-			
-				posterList.add(mpi);
+			    mpi.setShowsWatched(show.getViewedLeafCount());
+			    int totalEpisodes = Integer.parseInt(show.getLeafCount());
+			    int unwatched = totalEpisodes - Integer.parseInt(show.getViewedLeafCount());
+			    mpi.setShowsUnwatched(Integer.toString(unwatched));
+			    
+				seasonList.add(mpi);
 			}
 		}		
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see android.widget.Adapter#getCount()
 	 */
 	public int getCount() {
 		
-		return posterList.size();
+		return seasonList.size();
 	}
 
 	/* (non-Javadoc)
@@ -185,7 +149,7 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 	 */
 	public Object getItem(int position) {
 		
-		return posterList.get(position);
+		return seasonList.get(position);
 	}
 
 	/* (non-Javadoc)
@@ -200,21 +164,22 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		MoviePosterInfo pi = posterList.get(position);
-		MoviePosterImageView mpiv = new MoviePosterImageView(context, pi);
+		TVShowBannerInfo pi = seasonList.get(position);
+		TVShowSeasonImageView mpiv = new TVShowSeasonImageView(context, pi);
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
 		} else {
-			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/movie-fanart.jpg", context));
+			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/show-fanart.jpg", context));
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		mpiv.setLayoutParams(new Gallery.LayoutParams(150, LayoutParams.WRAP_CONTENT));
+		int width = 200;
+		int height = LayoutParams.MATCH_PARENT;
+		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
 		
 		imageManager.getLoader().load((ImageView) mpiv);
-		
-		//imDownload.download(pi.getPosterURL(), mpiv);
-	
 		return mpiv;
 	}
+	
+	
 
 }

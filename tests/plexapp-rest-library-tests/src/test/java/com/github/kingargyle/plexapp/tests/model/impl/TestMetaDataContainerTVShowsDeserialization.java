@@ -88,7 +88,6 @@ public class TestMetaDataContainerTVShowsDeserialization {
 		Genre genre = genres.get(0);
 		assertEquals("Action and Adventure", genre.getTag());
 	}
-
-
+	
 	
 }

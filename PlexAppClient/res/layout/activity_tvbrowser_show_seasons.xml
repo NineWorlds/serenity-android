@@ -1,0 +1,77 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tvshowSeasonBrowserLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tvshows"
+    android:orientation="vertical"
+    tools:context=".ui.browser.tv.TVShowBrowserActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#A0000000"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tvShowSeasonsDetailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="TV Shows->Seasons"
+            android:textColor="#F0F0F0"
+            android:textSize="20sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/tvShowSeasonsItemCount"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:text="6 Items"
+            android:textColor="#F0F0F0"
+            android:textSize="20sp" >
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#A0000000"
+        android:orientation="horizontal"
+        android:layout_above="@+id/tvShowSeasonImageGalleryLayout">
+        
+        <TextView
+            android:id="@+id/tvShowSeasonsTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Season Title"
+            android:textColor="#F0F0F0"
+            android:textSize="20sp" >
+        </TextView>
+        
+        
+    </LinearLayout>        
+    
+     <LinearLayout
+         android:id="@+id/tvShowSeasonImageGalleryLayout"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:orientation="vertical" >
+
+         <Gallery
+             android:id="@+id/tvShowSeasonImageGallery"
+             android:layout_width="fill_parent"
+             android:layout_height="130dp"
+             android:animationDuration="1"
+             android:background="#A0000000"
+             android:spacing="50dp" >
+
+             <requestFocus />
+         </Gallery>
+     </LinearLayout>
+
+</RelativeLayout>

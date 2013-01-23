@@ -23,6 +23,7 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
+import java.io.File;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,12 +31,15 @@ import java.util.concurrent.Executors;
 import com.github.kingargyle.plexappclient.PlexImageCacheService;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
-import com.github.kingargyle.plexappclient.core.imagecache.PlexAppImageManager;
+import com.novoda.imageloader.core.ImageManager;
+import com.novoda.imageloader.core.LoaderSettings;
+import com.novoda.imageloader.core.bitmap.BitmapUtil;
 import com.novoda.imageloader.core.cache.CacheManager;
 import com.novoda.imageloader.core.file.FileManager;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
@@ -46,6 +50,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.os.Process;
 
 /**
  * @author dcarver
@@ -60,9 +65,8 @@ public class MoviePosterOnItemSelectedListener implements
 	private static final int MAX_IMAGE_THREADS = 5;
 	private View bgLayout;
 	private Activity context;
-	private PlexAppImageManager imageManager;
+	private ImageManager imageManager;
 	private View previous;
-	private WeakHashMap<String, Bitmap> backgroundImageCache;
 	
 
 	// Sets up a Executor service for handling image loading
@@ -76,7 +80,6 @@ public class MoviePosterOnItemSelectedListener implements
 		context = activity;
 		imageManager = SerenityApplication.getImageManager();
 		imageExecutorService = Executors.newFixedThreadPool(MAX_IMAGE_THREADS);
-		backgroundImageCache = PlexImageCacheService.getMovieCachedImages();
 	}
 
 	/*
@@ -130,12 +133,6 @@ public class MoviePosterOnItemSelectedListener implements
 			return;
 		}
 		
-		if (backgroundImageCache.containsKey(mi.getBackgroundURL())) {
-			Bitmap bm  = backgroundImageCache.get(mi.getBackgroundURL());			
-			bgLayout.setBackgroundDrawable(new BitmapDrawable(bm));
-			return;
-		}
-
 		CacheManager cm = imageManager.getCacheManager();
 
 		Bitmap bm = cm.get(mi.getBackgroundURL(), 1280, 720);
@@ -146,19 +143,8 @@ public class MoviePosterOnItemSelectedListener implements
 
 		BitmapDrawable bmd = new BitmapDrawable(bm);
 		bgLayout.setBackgroundDrawable(bmd);
-		backgroundImageCache.put(mi.getBackgroundURL(), bm);
 	}
 
-	/**
-	 * @param mi
-	 * @param fm
-	 * @param bm
-	 * @return
-	 */
-	protected Bitmap fetchImageFromExternalStorage(MoviePosterInfo mi, FileManager fm) {
-		Bitmap bm = null;
-		return bm;
-	}
 
 	/**
 	 * Create the images representing info such as sound, ratings, etc based on
@@ -404,9 +390,22 @@ public class MoviePosterOnItemSelectedListener implements
 		 * Call and fetch an image directly.
 		 */
 		public void run() {
-			Bitmap bm = imageManager
-					.getImage(mpi.getBackgroundURL(), 1280, 720);
-			backgroundImageCache.put(mpi.getBackgroundURL(), bm);
+			
+			CacheManager cm = imageManager.getCacheManager();
+			Bitmap bm = cm.get(mpi.getBackgroundURL(), 1280, 720);
+						
+			if (bm == null) {
+				FileManager fm = imageManager.getFileManager();
+				File  f = fm.getFile(mpi.getBackgroundURL());
+				LoaderSettings settings = SerenityApplication.getLoaderSettings();
+                if (!f.exists()) {
+                    settings.getNetworkManager().retrieveImage(mpi.getBackgroundURL(), f);
+                }
+				
+				BitmapUtil bmu = SerenityApplication.getLoaderSettings().getBitmapUtil();
+				bm = bmu.decodeFile(f, 1280, 720);
+			}
+			
 			Activity activity = (Activity) bgLayout.getContext();
 			activity.runOnUiThread(new BitmapDisplayer(bm));
 		}
@@ -424,6 +423,11 @@ public class MoviePosterOnItemSelectedListener implements
 		}
 
 		public void run() {
+			if (bm == null) {
+				bgLayout.setBackgroundResource(R.drawable.movies);
+				return;
+			}
+			
 			BitmapDrawable bmd = new BitmapDrawable(bm);
 			bgLayout.setBackgroundDrawable(bmd);
 		}
