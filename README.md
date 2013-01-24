@@ -11,10 +11,10 @@ Features
 
 What will this support:
 
-* Browsing existing TV Show and Movie Libraries (inprogress)
-* Playing back Movies and TV Shows (inprogress)
+* Browsing existing TV Show and Movie Libraries (implemented)
+* Playing back Movies and TV Shows (implemented)
 * Browsing by Genre for TV Shows and Movies (inprogress)
-* Browsing by Season for TV Shows (inprogress)
+* Browsing by Season for TV Shows (implemented)
 * Queuing of TV Shows for play back (i.e. playback and entire season back to back)
 * Browsing Video Channels
 * Playback of video channels
@@ -30,11 +30,38 @@ With this said, this is an open source project, so if the community wants to con
 code it will be welcomed.  Feature requests and bug reports can be opened on the issue
 tracker.
 
+Releases
+----
+
+0.5.0
+
+This is the first version that can be used to Browse and Playback TV Shows and Movies. Even though in an Alpha state it is stable enough for daily use.
+
+Download: http://kingargyle.github.com/googletv/serenity/alpha/Serenity-0.5.0.apk
+
+_You will need to sideload this app, it is not available in the playstore_
+
+Report Issues at: https://github.com/kingargyle/plexapp-client/issues
+
+* Server Preferences - Plex Media Server IP Address and Port number.  Access either through Menu key, or Settings main menu
+* Tested and developed using a Vizio Costar and Plex Media Server 0.9.7.x, other versions may work.
+* Implements Movie Browsing and playback through external video player.
+  * Works with aVia or ViMu video players for direct play (no transcoding)
+* Browse TV Shows, By Season, or All Episodes.
+* Implements a very visual but simple interface.  When in Episode or Movie Browsing just Click (enter, OK) the episode/movie you want to watch.
+* To leave a screen use the Back key on your remote.
+* This program is very graphic intensive and uses the SD card of your device as a cache. Items are cached for up to 7 days.  It is not uncommon for it to use between 80 to 150 meg for the cache.  The caching and downloading of the images happens as needed so it will greatly depend on the size of your collection.
+
+This needs people test it and kick it's tires.  I only have a Vizio Costar to test and develop with so, I need people with other devices to help test this out.  I have tested against Plex Media Server for Linux v0.9.7.11.  If you run into issues please file a bug with the version of plex media server, and the google tv device (model number as well) that you are using.  Please be as descriptive as possible when reporting issues.
+
+
+
 Plexapp REST Library
 ----
 
 This project includes a module that provides READ access to the plex media server REST API.
-It 
+It can be use outside of the serenity application by others developers to access the metadata provided by a Plex Media Server.  The code is licensed under an MIT License.
+
 
 FAQ
 ===
