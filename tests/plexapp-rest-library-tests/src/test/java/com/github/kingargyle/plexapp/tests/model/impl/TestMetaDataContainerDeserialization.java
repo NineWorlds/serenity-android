@@ -34,7 +34,9 @@ import org.simpleframework.xml.core.Persister;
 
 import com.github.kingargyle.plexapp.model.impl.Directory;
 import com.github.kingargyle.plexapp.model.impl.Genre;
+import com.github.kingargyle.plexapp.model.impl.Media;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
+import com.github.kingargyle.plexapp.model.impl.Part;
 import com.github.kingargyle.plexapp.model.impl.Video;
 import static org.junit.Assert.*;
 
@@ -115,6 +117,19 @@ public class TestMetaDataContainerDeserialization {
 		Video video = videos.get(0);
 		List<Genre> genres = video.getGenres();
 		assertEquals(2, genres.size());
+		
+	}
+	
+	@Test
+	public void testMoviesPartDeserialization() throws Exception {
+		InputStream file = this.getClass().getResourceAsStream("/samples/allmovies.xml");
+		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
+		List<Video> videos = mediaContainer.getVideos();
+		Video video = videos.get(0);
+		Media media = video.getMedia();
+		Part vp = media.getVideoPart();
+		assertNotNull(vp);
+		assertEquals("/library/parts/132/file.avi", vp.getKey());
 		
 	}
 

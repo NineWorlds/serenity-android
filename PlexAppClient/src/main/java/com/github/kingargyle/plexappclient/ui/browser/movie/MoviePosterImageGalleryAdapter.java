@@ -32,6 +32,7 @@ import com.github.kingargyle.plexapp.model.impl.Director;
 import com.github.kingargyle.plexapp.model.impl.Genre;
 import com.github.kingargyle.plexapp.model.impl.Media;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
+import com.github.kingargyle.plexapp.model.impl.Part;
 import com.github.kingargyle.plexapp.model.impl.Video;
 import com.github.kingargyle.plexapp.model.impl.Writer;
 import com.github.kingargyle.plexappclient.R;
@@ -64,10 +65,12 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 	private static final int SIZE_HEIGHT = 400;
 	private static final int SIZE_WIDTH = 200;
 	private PlexappFactory factory;
+	private String key;
 	
 	
-	public MoviePosterImageGalleryAdapter(Context c) {
+	public MoviePosterImageGalleryAdapter(Context c, String key) {
 		context = (Activity)c;
+		this.key = key;
 		
 		posterList = new ArrayList<MoviePosterInfo>();
 		
@@ -79,13 +82,14 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 		createPosters();
 	}
 	
+	
+	
 	private void createPosters() {
 		
 		MediaContainer mc = null;
 		String baseUrl = null;
 		try {
 			factory = SerenityApplication.getPlexFactory();
-			String key = context.getIntent().getExtras().getString("key");
 			mc = factory.retrieveSections(key, "all");
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
@@ -117,9 +121,13 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 				mpi.setContentRating(movie.getContentRating());
 				
 				Media media = movie.getMedia();
+				Part part = media.getVideoPart();
 				mpi.setAudioCodec(media.getAudioCodec());
 				mpi.setVideoCodec(media.getVideoCodec());
 				mpi.setVideoResolution(media.getVideoResolution());
+				
+				String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
+				mpi.setDirectPlayUrl(directPlayUrl);
 				
 				String movieDetails = "";
 				
@@ -165,7 +173,7 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 					movieDetails = movieDetails + "\r\n";
 				}
 				
-				mpi.setCastInfo(movieDetails);
+				mpi.setCastInfo(movieDetails);				
 			
 				posterList.add(mpi);
 			}

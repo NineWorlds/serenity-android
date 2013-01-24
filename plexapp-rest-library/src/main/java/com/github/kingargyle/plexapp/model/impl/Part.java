@@ -24,69 +24,24 @@
 package com.github.kingargyle.plexapp.model.impl;
 
 import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 /**
  * @author dcarver
  *
  */
-@Root(name="Media")
-public class Media {
+@Root(name="Part")
+public class Part {
+
+	@Attribute(name="key", required=true)
+	private String key;
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
 	
-	@Attribute(name="aspectRatio",required=false)
-	private String aspectRatio;
-	
-	@Attribute(name="audioCodec", required=false)
-	private String audioCodec;
-	
-	@Attribute(name="videoCodec", required=false)
-	private String videoCodec;
-	
-	@Attribute(name="videoResolution", required=false)
-	private String videoResolution;
-	
-	@Element(name="Part", required=false)
-	private Part videoPart;
-
-	public Part getVideoPart() {
-		return videoPart;
-	}
-
-	public void setVideoPart(Part videoPart) {
-		this.videoPart = videoPart;
-	}
-
-	public String getAspectRatio() {
-		return aspectRatio;
-	}
-
-	public void setAspectRatio(String aspectRatio) {
-		this.aspectRatio = aspectRatio;
-	}
-
-	public String getAudioCodec() {
-		return audioCodec;
-	}
-
-	public void setAudioCodec(String audioCodec) {
-		this.audioCodec = audioCodec;
-	}
-
-	public String getVideoCodec() {
-		return videoCodec;
-	}
-
-	public void setVideoCodec(String videoCodec) {
-		this.videoCodec = videoCodec;
-	}
-
-	public String getVideoResolution() {
-		return videoResolution;
-	}
-
-	public void setVideoResolution(String videoResolution) {
-		this.videoResolution = videoResolution;
-	}
-
 }

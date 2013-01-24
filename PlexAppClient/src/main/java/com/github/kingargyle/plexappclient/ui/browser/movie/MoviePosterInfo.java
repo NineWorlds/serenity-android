@@ -20,6 +20,16 @@ public class MoviePosterInfo {
 	private List<String> writers;
 	private String year;
 	
+	private String directPlayUrl;
+	
+	public String getDirectPlayUrl() {
+		return directPlayUrl;
+	}
+
+	public void setDirectPlayUrl(String directPlayUrl) {
+		this.directPlayUrl = directPlayUrl;
+	}
+
 	public List<String> getActors() {
 		return actors;
 	}
