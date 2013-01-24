@@ -51,6 +51,11 @@
             android:label="@string/title_activity_tvbrowser_show_season" 
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
+        <activity
+            android:name="com.github.kingargyle.plexappclient.ui.browser.tv.episodes.EpisodeBrowserActivity"
+            android:label="@string/title_activity_tvbrowser_show_episodes" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
         
         <activity android:name=".ui.preferences.SerenityPreferenceActivity"></activity>
     </application>

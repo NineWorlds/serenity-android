@@ -21,40 +21,38 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.ui.browser.tv.seasons;
+package com.github.kingargyle.plexappclient.ui.browser.tv.episodes;
 
-import com.github.kingargyle.plexappclient.R;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Gallery;
+import android.content.Context;
+import android.widget.ImageView;
 
 /**
  * @author dcarver
  *
  */
-public class TVShowSeasonBrowserActivity extends Activity {
-	
-	private Gallery tvShowSeasonsGallery;
-	private View tvShowSeasonsMainView;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tvbrowser_show_seasons);
-		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
-		setupSeasons();
-		
-	}
-	
-	protected void setupSeasons() {
-		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
+public class EpisodePosterImageView extends ImageView {
 
-		tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(this));
-		tvShowSeasonsGallery
-				.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this));
-		tvShowSeasonsGallery.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this));
+	private EpisodePosterInfo posterInfo;
+	
+	/**
+	 * 
+	 */
+	public EpisodePosterImageView(Context c) {
+		super(c);
 	}
+
+	/**
+	 * 
+	 */
+	public EpisodePosterImageView(Context context, EpisodePosterInfo posterInfo) {
+		super(context);
+		this.posterInfo = posterInfo;
+	}
+	
+	public EpisodePosterInfo getPosterInfo() {
+		return posterInfo;
+	}
+	
+	
 
 }

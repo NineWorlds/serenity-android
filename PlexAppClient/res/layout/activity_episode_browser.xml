@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout  
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/episodeBrowserBackgroundLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/movies"
+    android:orientation="vertical"
+    android:padding="5dp"
+    tools:context=".ui.browser.tv.episodes.EpisodeBrowserActivity" >
+
+    <TableRow
+        android:id="@+id/episodeDetailsRow"
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center">
+         
+        <TableLayout android:id="@+id/episodeDetailsLayout"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:background="@drawable/rounded_corners"
+              android:orientation="vertical"
+                       >
+           <TableRow android:id="@+id/episodeDetailsContainerRow" 
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" 
+               >
+
+               <TextView
+                   android:layout_marginTop="5dp"
+                   android:text="Episode Details"
+                   android:layout_width="450dp"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="30dp"
+                   android:layout_marginRight="5dp"
+                   
+                   android:textColor="#F0F0F0"
+                   android:textSize="20sp"
+                   android:textStyle="bold" />
+               
+               <TextView
+                   android:layout_marginTop="5dp"
+                   android:layout_width="450dp"
+                   android:layout_height="wrap_content"                   
+                   android:text="Summary"
+                   android:textColor="#F0F0F0"
+                   android:textSize="20sp"
+                   android:textStyle="bold" />
+               
+               
+           </TableRow>
+           <TableRow android:id="@+id/episodeDetailsContainerRow2" 
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" 
+               >
+
+               <TextView android:id="@+id/episodeCastInfo"
+                   android:layout_width="400dip"
+                   android:layout_height="150dip"
+                   android:maxWidth="350dp"
+                   android:layout_marginLeft="30dp"
+                   android:layout_marginRight="5dp"
+                   android:layout_marginTop="5dp"
+                   android:textColor="#F0F0F0"
+                   android:textSize="16sp"
+                   android:maxLines="8"
+                   android:scrollbars="vertical" />
+               
+               <TextView android:id="@+id/episodeSummary"
+                   android:layout_marginTop="5dp"
+                   android:layout_marginRight="30dp"
+                   android:layout_width="350dp"
+                   android:layout_height="150dp"
+                   android:maxWidth="350dp"                   
+                   android:textColor="#F0F0F0"
+                   android:maxLines="8"
+                   android:scrollbars="vertical"
+                   android:textSize="15sp"
+                   android:paddingRight="10dp"
+                    />              
+           </TableRow>
+           <TableRow android:id="@+id/episodeDetailsContainerRow3" 
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" 
+               >
+               <LinearLayout android:id="@+id/episodeInfoGraphicLayout"
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_span="2" 
+                   >
+                   
+               </LinearLayout>
+           </TableRow>
+            
+        </TableLayout>
+
+    </TableRow>
+    
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
+     >
+        
+        <TextView android:id="@+id/episodeBrowserPosterTitle"
+            android:text="Poster Title"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="#F0F0F0"
+            android:background="@drawable/rounded_corners"
+            android:textSize="16sp"
+            />
+        
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="900dip"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dip"
+        android:layout_marginLeft="20dip"
+        android:gravity="bottom"
+         >
+
+        <Gallery
+            android:id="@+id/episodePosterGallery"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="#50000000"
+            android:spacing="50dp"
+            android:animationDuration="1">
+           <requestFocus/>
+        </Gallery>
+
+    </TableRow>
+
+</TableLayout>

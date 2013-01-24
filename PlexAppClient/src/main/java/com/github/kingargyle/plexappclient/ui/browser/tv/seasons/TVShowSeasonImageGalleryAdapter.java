@@ -123,6 +123,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 					turl = baseUrl + show.getThumb().replaceFirst("/", "");
 				}
 				mpi.setPosterURL(turl);
+				mpi.setKey(show.getKey());
 								
 				mpi.setTitle(show.getTitle());			
 				

@@ -69,4 +69,8 @@ public class ResourcePaths {
 	public String getSeasonsURL(String key) {
 		return getHostPort() + key; 
 	}
+	
+	public String getEpisodesURL(String key) {
+		return getHostPort() + key;
+	}
 }

@@ -21,40 +21,36 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.ui.browser.tv.seasons;
-
-import com.github.kingargyle.plexappclient.R;
+package com.github.kingargyle.plexappclient.ui.browser.tv.episodes;
 
 import android.app.Activity;
-import android.os.Bundle;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
-import android.widget.Gallery;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * @author dcarver
  *
  */
-public class TVShowSeasonBrowserActivity extends Activity {
-	
-	private Gallery tvShowSeasonsGallery;
-	private View tvShowSeasonsMainView;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tvbrowser_show_seasons);
-		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
-		setupSeasons();
-		
-	}
-	
-	protected void setupSeasons() {
-		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
+public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 
-		tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(this));
-		tvShowSeasonsGallery
-				.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this));
-		tvShowSeasonsGallery.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this));
+	/* (non-Javadoc)
+	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	 */
+	public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
+		EpisodePosterImageView epiv = (EpisodePosterImageView) v;
+		
+		//String url = "http://192.168.0.108:32400/library/parts/283/file.avi";
+		//String url = "http://192.168.0.108:32400/library/parts/201/file.mkv";
+		
+		String url = epiv.getPosterInfo().getDirectPlayUrl();
+		Intent vpIntent = new Intent(Intent.ACTION_VIEW);
+		vpIntent.setDataAndType(Uri.parse(url), "video/*");
+		Activity activity = (Activity) epiv.getContext();
+		activity.startActivity(vpIntent);
+		
 	}
 
 }

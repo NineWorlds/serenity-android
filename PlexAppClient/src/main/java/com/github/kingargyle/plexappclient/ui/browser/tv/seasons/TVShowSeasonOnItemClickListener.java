@@ -23,38 +23,40 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv.seasons;
 
-import com.github.kingargyle.plexappclient.R;
-
+import com.github.kingargyle.plexappclient.ui.browser.tv.episodes.EpisodeBrowserActivity;
 import android.app.Activity;
-import android.os.Bundle;
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
-import android.widget.Gallery;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * @author dcarver
  *
  */
-public class TVShowSeasonBrowserActivity extends Activity {
+public class TVShowSeasonOnItemClickListener implements OnItemClickListener {
 	
-	private Gallery tvShowSeasonsGallery;
-	private View tvShowSeasonsMainView;
+	private Activity context;
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tvbrowser_show_seasons);
-		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
-		setupSeasons();
-		
+	/**
+	 * 
+	 */
+	public TVShowSeasonOnItemClickListener(Context c) {
+		context = (Activity)c;
 	}
-	
-	protected void setupSeasons() {
-		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
 
-		tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(this));
-		tvShowSeasonsGallery
-				.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this));
-		tvShowSeasonsGallery.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this));
+	/* (non-Javadoc)
+	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	 */
+	public void onItemClick(AdapterView<?> av, View view, int position, long arg3) {
+		
+		TVShowSeasonImageView tsi = (TVShowSeasonImageView) view;
+		
+		
+		Intent i = new Intent(context, EpisodeBrowserActivity.class);
+		i.putExtra("key", tsi.getPosterInfo().getKey());
+		context.startActivityForResult(i, 0);
 	}
 
 }
