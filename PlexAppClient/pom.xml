@@ -4,7 +4,7 @@
    <parent>
       <groupId>com.github.kingargyle.plexapplibrary</groupId>
       <artifactId>plexapp-parent</artifactId>
-      <version>0.5.0-SNAPSHOT</version>
+      <version>0.5.1-SNAPSHOT</version>
    </parent>
 
    <groupId>com.github.kingargyle.plexapplibraray</groupId>
@@ -21,13 +21,13 @@
       <dependency>
          <groupId>com.google.tv.sample</groupId>
          <artifactId>leftnavbarlibrary</artifactId>
-         <version>0.5.0-SNAPSHOT</version>
+         <version>0.5.1-SNAPSHOT</version>
          <type>apklib</type>
       </dependency>
       <dependency>
          <groupId>com.github.kingargyle.plexapplibrary</groupId>
          <artifactId>plexapp-rest-library</artifactId>
-         <version>0.5.0-SNAPSHOT</version>
+         <version>0.5.1-SNAPSHOT</version>
          <type>apklib</type>
       </dependency>
       <dependency>
@@ -100,7 +100,7 @@
             <dependency>
                <groupId>com.github.kingargyle.plexapplibrary</groupId>
                <artifactId>plexapp-rest-library</artifactId>
-               <version>0.5.0-SNAPSHOT</version>
+               <version>0.5.1-SNAPSHOT</version>
                <type>apklib</type>
                <exclusions>
                   <exclusion>
