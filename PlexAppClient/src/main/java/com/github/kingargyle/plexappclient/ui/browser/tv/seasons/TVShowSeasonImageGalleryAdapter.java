@@ -29,7 +29,6 @@ import java.util.List;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexapp.model.impl.Directory;
-import com.github.kingargyle.plexapp.model.impl.Genre;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
@@ -45,7 +44,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
-import android.widget.RadioGroup.LayoutParams;
+import android.widget.Toast;
 import android.widget.TextView;
 
 /**
@@ -73,6 +72,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
+	    Toast.makeText(context, "Retrieving Seasons Information", Toast.LENGTH_SHORT).show();
 		
 		createImages();
 	}
@@ -93,12 +93,14 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 			mc = factory.retrieveSeasons(key);
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
+ 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL(), Toast.LENGTH_SHORT).show();
 			Log.w("Unable to talk to server: ", ex);
 		} catch (Exception e) {
+ 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL(), Toast.LENGTH_SHORT).show();			
 			Log.w("Oops.", e);
 		}
 		
-		if (mc.getSize() > 0) {
+		if (mc != null && mc.getSize() > 0) {
 			TextView itemCount = (TextView) context.findViewById(R.id.tvShowSeasonsItemCount);
 			itemCount.setText(Integer.toString(mc.getSize()) + " Item(s)");
 
@@ -174,10 +176,10 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 200;
-		int height = LayoutParams.MATCH_PARENT;
+		int height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
 		
-		imageManager.getLoader().load((ImageView) mpiv);
+		imageManager.getLoader().load(mpiv);
 		return mpiv;
 	}
 	

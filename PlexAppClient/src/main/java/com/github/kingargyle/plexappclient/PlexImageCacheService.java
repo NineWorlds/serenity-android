@@ -1,11 +1,9 @@
 package com.github.kingargyle.plexappclient;
 import java.io.IOException;
 import java.util.List;
-import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.github.kingargyle.plexapp.PlexappFactory;

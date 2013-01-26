@@ -48,7 +48,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
-import android.widget.RadioGroup.LayoutParams;
+import android.widget.Toast;
 
 /**
  * 
@@ -78,6 +78,8 @@ public class EpisodePosterImageGalleryAdapter extends BaseAdapter {
 		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
+		
+	    Toast.makeText(context, "Retrieving Episodes", Toast.LENGTH_SHORT).show();
 				
 		createPosters();
 	}
@@ -93,12 +95,15 @@ public class EpisodePosterImageGalleryAdapter extends BaseAdapter {
 			mc = factory.retrieveEpisodes(key);
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
+			Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL(), Toast.LENGTH_LONG).show();
 			Log.w("Unable to talk to server: ", ex);
 		} catch (Exception e) {
+ 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL(), Toast.LENGTH_LONG).show();
+			
 			Log.w("Oops.", e);
 		}
 		
-		if (mc.getSize() > 0) {
+		if (mc != null && mc.getSize() > 0) {
 			List<Video> videos = mc.getVideos();
 			for (Video episode : videos) {
 				EpisodePosterInfo  epi = new EpisodePosterInfo();
@@ -216,9 +221,9 @@ public class EpisodePosterImageGalleryAdapter extends BaseAdapter {
 			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/movie-fanart.jpg", context));
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		mpiv.setLayoutParams(new Gallery.LayoutParams(300, LayoutParams.FILL_PARENT));
+		mpiv.setLayoutParams(new Gallery.LayoutParams(300, android.view.ViewGroup.LayoutParams.FILL_PARENT));
 		
-		imageManager.getLoader().load((ImageView) mpiv);
+		imageManager.getLoader().load(mpiv);
 		
 		//imDownload.download(pi.getPosterURL(), mpiv);
 	

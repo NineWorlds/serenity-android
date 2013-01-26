@@ -24,11 +24,9 @@
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
 import java.io.File;
-import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.github.kingargyle.plexappclient.PlexImageCacheService;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.novoda.imageloader.core.ImageManager;
@@ -39,7 +37,6 @@ import com.novoda.imageloader.core.file.FileManager;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
@@ -50,7 +47,6 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.os.Process;
 
 /**
  * @author dcarver

@@ -23,12 +23,10 @@
 
 package com.github.kingargyle.plexappclient;
 
-import java.io.IOException;
-
 import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexapp.config.IConfiguration;
 import com.github.kingargyle.plexappclient.core.ConcurrentLoader;
-import com.github.kingargyle.plexappclient.core.LoaderSettings;
+import com.github.kingargyle.plexappclient.core.SerenityLoaderSettings;
 import com.github.kingargyle.plexappclient.core.ServerConfig;
 import com.novoda.imageloader.core.ImageManager;
 
@@ -45,7 +43,7 @@ public class SerenityApplication extends Application {
 	
 	private static ImageManager imageManager;
 	private static PlexappFactory plexFactory;
-	private static LoaderSettings settings;
+	private static SerenityLoaderSettings settings;
 
 	
 	@Override
@@ -58,7 +56,7 @@ public class SerenityApplication extends Application {
 				.permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 		
-		settings = new LoaderSettings.SettingsBuilder()
+		settings = new SerenityLoaderSettings.SettingsBuilder()
 	      .withDisconnectOnEveryCall(true).withUpsampling(true).build(this);
 		settings.setLoader(new ConcurrentLoader(settings));
 		
@@ -80,7 +78,7 @@ public class SerenityApplication extends Application {
 		return plexFactory;
 	}
 	
-	public static LoaderSettings getLoaderSettings() {
+	public static SerenityLoaderSettings getLoaderSettings() {
 		return settings;
 	}
 	

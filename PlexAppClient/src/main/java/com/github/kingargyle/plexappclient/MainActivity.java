@@ -24,7 +24,6 @@
 package com.github.kingargyle.plexappclient;
 
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;

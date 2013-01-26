@@ -28,13 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.model.impl.Director;
 import com.github.kingargyle.plexapp.model.impl.Directory;
 import com.github.kingargyle.plexapp.model.impl.Genre;
-import com.github.kingargyle.plexapp.model.impl.Media;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
-import com.github.kingargyle.plexapp.model.impl.Video;
-import com.github.kingargyle.plexapp.model.impl.Writer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.novoda.imageloader.core.ImageManager;
@@ -48,7 +44,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
-import android.widget.RadioGroup.LayoutParams;
+import android.widget.Toast;
 import android.widget.TextView;
 
 /**
@@ -76,6 +72,7 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
+        Toast.makeText(context, "Retrieving Shows.", Toast.LENGTH_SHORT).show();
 		
 		createBanners();
 	}
@@ -96,12 +93,14 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 			mc = factory.retrieveSections(key, "all");
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
+ 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL(), Toast.LENGTH_SHORT).show();
 			Log.w("Unable to talk to server: ", ex);
 		} catch (Exception e) {
+ 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL(), Toast.LENGTH_SHORT).show();
 			Log.w("Oops.", e);
 		}
 		
-		if (mc.getSize() > 0) {
+		if (mc != null && mc.getSize() > 0) {
 			TextView itemCount = (TextView) context.findViewById(R.id.tvShowItemCount);
 			itemCount.setText(Integer.toString(mc.getSize()) + " Serie(s)");
 			
@@ -148,7 +147,7 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 	}
 	
 	protected List<String> processGeneres(Directory show) {
-		ArrayList<String> genres = new ArrayList();
+		ArrayList<String> genres = new ArrayList<String>();
 		if (show.getGenres() != null) {
 			for (Genre genre : show.getGenres()) {
 				genres.add(genre.getTag());
@@ -195,10 +194,10 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 768;
-		int height = LayoutParams.MATCH_PARENT;
+		int height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
 		
-		imageManager.getLoader().load((ImageView) mpiv);
+		imageManager.getLoader().load(mpiv);
 		return mpiv;
 	}
 

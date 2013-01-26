@@ -1,12 +1,6 @@
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
 import com.github.kingargyle.plexappclient.R;
-import com.github.kingargyle.plexappclient.SerenityApplication;
-import com.novoda.imageloader.core.ImageManager;
-import com.novoda.imageloader.core.LoaderSettings;
-import com.novoda.imageloader.core.LoaderSettings.*;
-import com.novoda.imageloader.core.model.ImageTagFactory;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;

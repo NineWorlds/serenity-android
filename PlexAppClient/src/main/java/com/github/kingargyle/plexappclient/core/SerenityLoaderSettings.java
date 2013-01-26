@@ -28,7 +28,7 @@ import java.util.Map;
  * To provide a more user friendly way to set different parameters it is possible to use
  * a builder : SettingsBuilder. 
  */
-public class LoaderSettings extends com.novoda.imageloader.core.LoaderSettings {
+public class SerenityLoaderSettings extends com.novoda.imageloader.core.LoaderSettings {
 
     private static final long DEFAULT_EXPIRATION_PERIOD = 7l * 24l * 3600l * 1000l;
     private static final boolean DEFAULT_INCLUDE_QUERY_IN_HASH = true;
@@ -62,7 +62,7 @@ public class LoaderSettings extends com.novoda.imageloader.core.LoaderSettings {
     /**
      * Constructor with all settings set to default values
      */
-    public LoaderSettings() {
+    public SerenityLoaderSettings() {
         this.setExpirationPeriod(DEFAULT_EXPIRATION_PERIOD);
         this.setQueryIncludedInHash(DEFAULT_INCLUDE_QUERY_IN_HASH);
         this.setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
@@ -73,15 +73,18 @@ public class LoaderSettings extends com.novoda.imageloader.core.LoaderSettings {
         this.setAlwaysUseOriginalSize(DEFAULT_ALWAYS_USE_ORIGINAL_SIZE);
     }
 
-    public BitmapUtil getBitmapUtil() {
+    @Override
+	public BitmapUtil getBitmapUtil() {
         return bitmapUtil;
     }
 
-    public File getCacheDir() {
+    @Override
+	public File getCacheDir() {
         return cacheDir;
     }
 
-    public void setCacheDir(File cacheDir) {
+    @Override
+	public void setCacheDir(File cacheDir) {
         this.cacheDir = cacheDir;
     }
 
@@ -89,11 +92,13 @@ public class LoaderSettings extends com.novoda.imageloader.core.LoaderSettings {
      * Time period in millis how long cached images should be kept in the file storage. 
      * @return
      */
-    public long getExpirationPeriod() {
+    @Override
+	public long getExpirationPeriod() {
         return expirationPeriod;
     }
 
-    public void setExpirationPeriod(long expirationPeriod) {
+    @Override
+	public void setExpirationPeriod(long expirationPeriod) {
         this.expirationPeriod = expirationPeriod;
     }
 
@@ -104,106 +109,128 @@ public class LoaderSettings extends com.novoda.imageloader.core.LoaderSettings {
      *  
      * @return true if urls with different queries refer to different images.
      */
-    public boolean isQueryIncludedInHash() {
+    @Override
+	public boolean isQueryIncludedInHash() {
         return isQueryIncludedInHash;
     }
 
-    public void setQueryIncludedInHash(boolean isQueryIncludedInHash) {
+    @Override
+	public void setQueryIncludedInHash(boolean isQueryIncludedInHash) {
         this.isQueryIncludedInHash = isQueryIncludedInHash;
     }
 
-    public int getConnectionTimeout() {
+    @Override
+	public int getConnectionTimeout() {
         return connectionTimeout;
     }
 
-    public void setConnectionTimeout(int connectionTimeout) {
+    @Override
+	public void setConnectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
     }
 
-    public int getReadTimeout() {
+    @Override
+	public int getReadTimeout() {
         return readTimeout;
     }
 
-    public void setReadTimeout(int readTimeout) {
+    @Override
+	public void setReadTimeout(int readTimeout) {
         this.readTimeout = readTimeout;
     }
     
-    public Map<String, String> getHeaders() {
+    @Override
+	public Map<String, String> getHeaders() {
         return Collections.unmodifiableMap(headers);
     }
 
-    public void addHeader(String key, String value) {
+    @Override
+	public void addHeader(String key, String value) {
         try {
             headers.put(key, URLEncoder.encode(value, "UTF8"));
         } catch (UnsupportedEncodingException e) {
         }
     }
 
-    public boolean getDisconnectOnEveryCall() {
+    @Override
+	public boolean getDisconnectOnEveryCall() {
         return disconnectOnEveryCall;
     }
 
-    public void setDisconnectOnEveryCall(boolean disconnectOnEveryCall) {
+    @Override
+	public void setDisconnectOnEveryCall(boolean disconnectOnEveryCall) {
         this.disconnectOnEveryCall = disconnectOnEveryCall;
     }
 
-    public void setSdkVersion(String sdkVersion) {
+    @Override
+	public void setSdkVersion(String sdkVersion) {
         this.sdkVersion = sdkVersion;
     }
 
-    public String getSdkVersion() {
+    @Override
+	public String getSdkVersion() {
         return this.sdkVersion;
     }
 
-    public CacheManager getCacheManager() {
+    @Override
+	public CacheManager getCacheManager() {
         if (cacheManager == null) {
             cacheManager = new SoftMapCache();
         }
         return cacheManager;
     }
 
-    public void setCacheManager(CacheManager cacheManager) {
+    @Override
+	public void setCacheManager(CacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
 
-    public CacheManager getResCacheManager() {
+    @Override
+	public CacheManager getResCacheManager() {
         if (resCacheManager == null) {
             resCacheManager = new SoftMapCache();
         }
         return resCacheManager;
     }
 
-    public void setResCacheManager(CacheManager resCacheManager) {
+    @Override
+	public void setResCacheManager(CacheManager resCacheManager) {
         this.resCacheManager = resCacheManager;
     }
 
-    public NetworkManager getNetworkManager() {
+    @Override
+	public NetworkManager getNetworkManager() {
         if (networkManager == null) {
             networkManager = new UrlNetworkManager(this);
         }
         return networkManager;
     }
 
-    public void setNetworkManager(NetworkManager networkManager) {
+    @Override
+	public void setNetworkManager(NetworkManager networkManager) {
         this.networkManager = networkManager;
     }
 
-    public FileManager getFileManager() {
+    @Override
+	public FileManager getFileManager() {
         if (fileManager == null) {
             fileManager = new BasicFileManager(this);
         }
         return fileManager;
     }
 
-    public void setFileManager(FileManager fileManager) {
+    @Override
+	public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
     }
 
-    public boolean isUseAsyncTasks() {
+    @Override
+	public boolean isUseAsyncTasks() {
         return useAsyncTasks;
     }
 
-    public void setUseAsyncTasks(boolean useAsyncTasks) {
+    @Override
+	public void setUseAsyncTasks(boolean useAsyncTasks) {
         this.useAsyncTasks = useAsyncTasks;
     }
 
@@ -211,7 +238,8 @@ public class LoaderSettings extends com.novoda.imageloader.core.LoaderSettings {
         this.loader = loader;
     }
 
-    public Loader getLoader() {
+    @Override
+	public Loader getLoader() {
         if (loader == null) {
             if (isUseAsyncTasks()) {
                 this.loader = new ConcurrentLoader(this);
@@ -222,7 +250,8 @@ public class LoaderSettings extends com.novoda.imageloader.core.LoaderSettings {
         return loader;
     }
 
-    public boolean isCleanOnSetup() {
+    @Override
+	public boolean isCleanOnSetup() {
         return true;
     }       
 
@@ -233,10 +262,12 @@ public class LoaderSettings extends com.novoda.imageloader.core.LoaderSettings {
      * 
      * @return true if 
      */
-    public boolean isAllowUpsampling() {
+    @Override
+	public boolean isAllowUpsampling() {
 		return allowUpsampling;
 	}
 
+	@Override
 	public void setAllowUpsampling(boolean allowUpsampling) {
 		this.allowUpsampling = allowUpsampling;
 	}
@@ -248,10 +279,12 @@ public class LoaderSettings extends com.novoda.imageloader.core.LoaderSettings {
 	 * 
 	 * @return true if images are always cached in the original size
 	 */
+	@Override
 	public boolean isAlwaysUseOriginalSize() {
 		return alwaysUseOriginalSize;
 	}
 
+	@Override
 	public void setAlwaysUseOriginalSize(boolean alwaysUseOriginalSize) {
 		this.alwaysUseOriginalSize = alwaysUseOriginalSize;
 	}
@@ -261,10 +294,10 @@ public class LoaderSettings extends com.novoda.imageloader.core.LoaderSettings {
      */
     public static class SettingsBuilder {
 
-        private LoaderSettings settings;
+        private SerenityLoaderSettings settings;
 
         public SettingsBuilder() {
-            settings = new LoaderSettings();
+            settings = new SerenityLoaderSettings();
         }
 
         /**
@@ -370,7 +403,7 @@ public class LoaderSettings extends com.novoda.imageloader.core.LoaderSettings {
             return this;
         }
 
-        public LoaderSettings build(Context context) {
+        public SerenityLoaderSettings build(Context context) {
             File dir = new FileUtil().prepareCacheDirectory(new AndroidFileContext(context));
             settings.setCacheDir(dir);
             settings.setSdkVersion(Build.VERSION.SDK);

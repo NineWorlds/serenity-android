@@ -19,12 +19,6 @@
          <scope>provided</scope>
       </dependency>
       <dependency>
-         <groupId>com.google.tv.sample</groupId>
-         <artifactId>leftnavbarlibrary</artifactId>
-         <version>0.5.1-SNAPSHOT</version>
-         <type>apklib</type>
-      </dependency>
-      <dependency>
          <groupId>com.github.kingargyle.plexapplibrary</groupId>
          <artifactId>plexapp-rest-library</artifactId>
          <version>0.5.1-SNAPSHOT</version>

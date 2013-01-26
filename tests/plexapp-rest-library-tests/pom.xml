@@ -97,6 +97,7 @@
                   <platform>13</platform>
                </sdk>
                <deleteConflictingFiles>true</deleteConflictingFiles>
+               <generateApk>false</generateApk>
             </configuration>
             <extensions>true</extensions>
          </plugin>

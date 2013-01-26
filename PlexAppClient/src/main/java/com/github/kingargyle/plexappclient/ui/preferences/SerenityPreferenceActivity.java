@@ -23,10 +23,8 @@
 
 package com.github.kingargyle.plexappclient.ui.preferences;
 
-import com.github.kingargyle.plexappclient.MainActivity;
 import com.github.kingargyle.plexappclient.R;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 

@@ -30,7 +30,6 @@ import java.util.concurrent.Executors;
 
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
-import com.github.kingargyle.plexappclient.ui.browser.movie.MoviePosterInfo;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.bitmap.BitmapUtil;
@@ -43,15 +42,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.Gallery;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 /**
@@ -168,7 +163,7 @@ public class TVShowBannerOnItemSelectedListener implements
 					+ ":/resources/movie-fanart.jpg", context));
 		}
 
-		imageManager.getLoader().load((ImageView) showImage);
+		imageManager.getLoader().load(showImage);
 
 	}
 

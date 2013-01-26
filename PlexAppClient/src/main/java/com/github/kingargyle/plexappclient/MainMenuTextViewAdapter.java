@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
+import android.widget.Toast;
 
 public class MainMenuTextViewAdapter extends BaseAdapter {
 
@@ -63,6 +64,8 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	
 	protected void fetchMenuItems() {
 		
+		Toast.makeText(myContext, "Retrieving Menu Items", Toast.LENGTH_SHORT).show();
+		
 		if (factory != null) {
 			loadMenuItems();
 		}
@@ -82,9 +85,11 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 				menuItems.add(m);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+		  Toast.makeText(myContext, "Unable to comminicate with server at " + factory.baseURL() + ". Reason: " + e.getMessage(), Toast.LENGTH_LONG).show();
+		  Log.e("MainMenuTextAdapter", "Unable to comminicate to server at " + factory.baseURL(), e);
 		} 
 	}
+	
 
 	/**
 	 * Create the settings MenuItem since there is no option
