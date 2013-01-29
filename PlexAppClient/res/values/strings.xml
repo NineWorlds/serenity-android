@@ -16,5 +16,6 @@
     <string name="title_activity_tvbrowser_show">TV Shows</string>
     <string name="title_activity_tvbrowser_show_season">TV Shows Seasons</string>
     <string name="title_activity_tvbrowser_show_episodes">TV Shows Episodes</string>
+    <string name="video_title">Video Player</string>
     
 </resources>

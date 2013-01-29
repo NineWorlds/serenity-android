@@ -23,6 +23,8 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv.episodes;
 
+import com.github.kingargyle.plexappclient.ui.video.player.SerenitySurfaceViewVideoActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -45,12 +47,21 @@ public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 		//String url = "http://192.168.0.108:32400/library/parts/283/file.avi";
 		//String url = "http://192.168.0.108:32400/library/parts/201/file.mkv";
 		
-		String url = epiv.getPosterInfo().getDirectPlayUrl();
-		Intent vpIntent = new Intent(Intent.ACTION_VIEW);
-		vpIntent.setDataAndType(Uri.parse(url), "video/*");
-		Activity activity = (Activity) epiv.getContext();
-		activity.startActivity(vpIntent);
+//		String url = epiv.getPosterInfo().getDirectPlayUrl();
+//		Intent vpIntent = new Intent(Intent.ACTION_VIEW);
+//		vpIntent.setDataAndType(Uri.parse(url), "video/*");
+//		Activity activity = (Activity) epiv.getContext();
+//		activity.startActivity(vpIntent);
 		
+		String url = epiv.getPosterInfo().getDirectPlayUrl();
+		Intent vpIntent = new Intent(epiv.getContext(), SerenitySurfaceViewVideoActivity.class);
+		//vpIntent.setDataAndType(Uri.parse(url), "video/*");
+		//Activity activity = (Activity) mpiv.getContext();
+		//activity.startActivity(vpIntent);
+		vpIntent.putExtra("videoUrl", url);
+		
+		Activity a = (Activity) epiv.getContext();
+		a.startActivityForResult(vpIntent, 0);
 	}
 
 }

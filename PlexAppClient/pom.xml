@@ -23,7 +23,7 @@
          <artifactId>plexapp-rest-library</artifactId>
          <version>0.5.1-SNAPSHOT</version>
          <type>apklib</type>
-      </dependency>
+      </dependency>      
       <dependency>
          <groupId>com.novoda.imageloader</groupId>
          <artifactId>imageloader-core</artifactId>
@@ -32,6 +32,7 @@
    </dependencies>
 
    <build>
+      <finalName>Serenity-${version}</finalName>
       <pluginManagement>
          <plugins>
             <plugin>
@@ -69,6 +70,10 @@
                   <platform>13</platform>
                </sdk>
                <deleteConflictingFiles>true</deleteConflictingFiles>
+               <proguard>
+                 <skip>true</skip>
+                 <proguardJarPath>${env.ANDROID_HOME}tools/proguard/lib/proguard.jar</proguardJarPath>
+               </proguard>               
             </configuration>
             <extensions>true</extensions>
          </plugin>

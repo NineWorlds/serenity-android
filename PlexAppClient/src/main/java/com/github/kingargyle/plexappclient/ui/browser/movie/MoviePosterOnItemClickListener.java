@@ -23,6 +23,8 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
+import com.github.kingargyle.plexappclient.ui.video.player.SerenitySurfaceViewVideoActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -46,10 +48,14 @@ public class MoviePosterOnItemClickListener  implements OnItemClickListener {
 		//String url = "http://192.168.0.108:32400/library/parts/201/file.mkv";
 		
 		String url = mpiv.getPosterInfo().getDirectPlayUrl();
-		Intent vpIntent = new Intent(Intent.ACTION_VIEW);
-		vpIntent.setDataAndType(Uri.parse(url), "video/*");
-		Activity activity = (Activity) mpiv.getContext();
-		activity.startActivity(vpIntent);
+		Intent vpIntent = new Intent(mpiv.getContext(), SerenitySurfaceViewVideoActivity.class);
+		//vpIntent.setDataAndType(Uri.parse(url), "video/*");
+		//Activity activity = (Activity) mpiv.getContext();
+		//activity.startActivity(vpIntent);
+		vpIntent.putExtra("videoUrl", url);
+		
+		Activity a = (Activity) mpiv.getContext();
+		a.startActivityForResult(vpIntent, 0);
 		
 	}
 
