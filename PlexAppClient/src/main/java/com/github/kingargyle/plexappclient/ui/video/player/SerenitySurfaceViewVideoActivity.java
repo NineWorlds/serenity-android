@@ -24,6 +24,7 @@
 package com.github.kingargyle.plexappclient.ui.video.player;
 
 import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.ui.video.player.MediaController.MediaPlayerControl;
 
 import android.app.Activity;
 import android.media.MediaPlayer;
@@ -46,7 +47,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 	private MediaPlayer mediaPlayer;
 	private String videoURL;
 	private SurfaceView surfaceView;
-	
+	private MediaController mediaController;	
 	
 
 	/* (non-Javadoc)
@@ -54,6 +55,12 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 	 */
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
+		if (mediaController != null) {
+			if (mediaController.isShowing()) {
+				mediaController.hide();
+			}
+			mediaController.show();
+		}
 		
 	}
 
@@ -79,7 +86,13 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 			
 			surfaceView.setLayoutParams(lp);
 			
+			mediaController.setEnabled(true);
+			
 			mediaPlayer.start();
+			if (mediaPlayer.isPlaying()) {
+				mediaController.show();
+			}
+
 			
 		} catch (Exception ex) {
 			Log.e(TAG, "Video Playback Error. ", ex);
@@ -106,7 +119,6 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 		
 		
 		mediaPlayer = new MediaPlayer();
-		
 		surfaceView =  (SurfaceView) findViewById(R.id.surfaceView);
 		surfaceView.setKeepScreenOn(true);
 		
@@ -114,38 +126,52 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 		holder.addCallback(this);
 		holder.setSizeFromLayout();
 		
-		Button playButton = (Button) findViewById(R.id.buttonPlay);
-		playButton.setOnClickListener(new OnClickListener() {
+		mediaController = new MediaController(this);
+		mediaController.setAnchorView(surfaceView);
+		mediaController.setMediaPlayer(new MediaPlayerControl() {
 			
-			public void onClick(View v) {
+			public void start() {
 				mediaPlayer.start();
- 
 			}
-		});
-		
-		Button pauseButton = (Button) findViewById(R.id.buttonPause);
-		pauseButton.setOnClickListener(new OnClickListener() {
 			
-			public void onClick(View v) {
+			public void seekTo(long pos) {
+				mediaPlayer.seekTo((int) pos);
+			}
+			
+			public void pause() {
 				mediaPlayer.pause();
- 
+				
+			}
+			
+			public boolean isPlaying() {
+				return mediaPlayer.isPlaying();
+			}
+			
+			public long getDuration() {
+				return mediaPlayer.getDuration();
+			}
+			
+			public long getCurrentPosition() {
+				return mediaPlayer.getCurrentPosition();
+			}
+			
+			public int getBufferPercentage() {
+				return 0;
+			}
+			
+			public boolean canSeekForward() {
+				return true;
+			}
+			
+			public boolean canSeekBackward() {
+				return true;
+			}
+			
+			public boolean canPause() {
+				return true;
 			}
 		});
 		
-		Button skipButton = (Button) findViewById(R.id.buttonSkip);
-		skipButton.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				mediaPlayer.seekTo(mediaPlayer.getDuration() / 2);
-			}
-		});
-		
-		Button stopButton = (Button) findViewById(R.id.buttonStop);
-		stopButton.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				mediaPlayer.stop();
-			}
-		});
+		//mediaPlayer.start();
 	}
 }
