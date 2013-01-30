@@ -66,11 +66,12 @@
             android:textColor="#F0F0F0"
             android:textSize="15sp" />
 
-        <ProgressBar android:id="@+id/mediacontroller_seekbar"
+        <SeekBar android:id="@+id/mediacontroller_seekbar"
             android:layout_width="600dp"
             android:layout_height="15dp"
             android:minWidth="600dp"
-            android:progress="99"
+            android:focusable="true"
+            android:max="1000"
          />
 
         <TextView android:id="@+id/mediacontroller_time_total"
@@ -93,26 +94,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
-            android:src="@drawable/osd_rewind_nf"/>
+            android:src="@drawable/osd_rewind_nf"
+            android:background="@android:color/transparent"
+            android:focusable="true"/>
         
         <ImageButton android:id="@+id/mediacontroller_play_pause" 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
-            android:src="@drawable/osd_play_nf"/>
+            android:src="@drawable/osd_play_nf"
+            android:background="@android:color/transparent"
+            android:focusable="true"/>
         
         
         <ImageButton android:id="@+id/osd_stop_control" 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
-            android:src="@drawable/osd_stop_nf"/>
+            android:src="@drawable/osd_stop_nf"
+            android:background="@android:color/transparent"
+            android:focusable="true"/>
+            />
         
         <ImageButton android:id="@+id/osd_ff_control" 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
-            android:src="@drawable/osd_forward_nf"/>
+            android:src="@drawable/osd_forward_nf"
+            android:background="@android:color/transparent"
+            android:focusable="true"/>
         
      </LinearLayout>
     

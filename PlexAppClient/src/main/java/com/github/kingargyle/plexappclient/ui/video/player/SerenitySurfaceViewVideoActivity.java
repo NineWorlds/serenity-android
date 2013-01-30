@@ -30,6 +30,7 @@ import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -44,6 +45,7 @@ import android.widget.Button;
 public class SerenitySurfaceViewVideoActivity extends Activity implements SurfaceHolder.Callback {
 	
 	static final String TAG = "SerenitySurfaceViewVideoActivity";
+	static final int CONTROLLER_DELAY = 6000; // Six seconds
 	private MediaPlayer mediaPlayer;
 	private String videoURL;
 	private SurfaceView surfaceView;
@@ -59,7 +61,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 			if (mediaController.isShowing()) {
 				mediaController.hide();
 			}
-			mediaController.show();
+			mediaController.show(CONTROLLER_DELAY);
 		}
 		
 	}
@@ -90,7 +92,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 			
 			mediaPlayer.start();
 			if (mediaPlayer.isPlaying()) {
-				mediaController.show();
+				mediaController.show(CONTROLLER_DELAY);
 			}
 
 			
@@ -121,7 +123,6 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 		mediaPlayer = new MediaPlayer();
 		surfaceView =  (SurfaceView) findViewById(R.id.surfaceView);
 		surfaceView.setKeepScreenOn(true);
-		
 		SurfaceHolder holder = surfaceView.getHolder();
 		holder.addCallback(this);
 		holder.setSizeFromLayout();
@@ -172,6 +173,31 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 			}
 		});
 		
-		//mediaPlayer.start();
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_INFO) {
+			if (mediaController.isShowing()) {
+				mediaController.hide();
+			} else {
+				mediaController.show(CONTROLLER_DELAY);
+			}
+			return true;
+		}
+		if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE || keyCode == KeyEvent.KEYCODE_MEDIA_PLAY) {
+			if (mediaPlayer.isPlaying()) {
+				mediaPlayer.pause();
+				mediaController.show(CONTROLLER_DELAY);
+			} else {
+				mediaPlayer.start();
+				mediaController.hide();
+			}
+		}
+		
+		return super.onKeyDown(keyCode, event);
 	}
 }
