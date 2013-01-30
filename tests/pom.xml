@@ -4,13 +4,13 @@
    <parent>
       <groupId>com.github.kingargyle.plexapplibrary</groupId>
       <artifactId>plexapp-parent</artifactId>
-      <version>0.5.1-SNAPSHOT</version>
+      <version>0.7.0-SNAPSHOT</version>
 
    </parent>
 
    <groupId>com.github.kingargyle.plexapplibrary</groupId>
    <artifactId>plexapp-tests-parent</artifactId>
-   <version>0.5.1-SNAPSHOT</version>
+   <version>0.7.0-SNAPSHOT</version>
    <packaging>pom</packaging>
 
    <modules>
