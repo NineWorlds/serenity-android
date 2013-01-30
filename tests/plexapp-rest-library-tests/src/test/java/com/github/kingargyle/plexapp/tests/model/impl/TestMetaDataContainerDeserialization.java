@@ -92,8 +92,6 @@ public class TestMetaDataContainerDeserialization {
 
 		List<Directory> directories = mediaContainer.getDirectories();
 		assertEquals(2, directories.size());
-		
-		assertNotNull("Missing Location", directories.get(0).getLocation());
 	}
 	
 	@Test
@@ -103,7 +101,7 @@ public class TestMetaDataContainerDeserialization {
 
 		List<Directory> directories = mediaContainer.getDirectories();
 		assertTrue(directories.size() > 0);
-		assertNull("Found unexpected location", directories.get(0).getLocation());
+		assertNull("Found unexpected location", directories.get(0).getLocations());
 	}
 	
 	@Test

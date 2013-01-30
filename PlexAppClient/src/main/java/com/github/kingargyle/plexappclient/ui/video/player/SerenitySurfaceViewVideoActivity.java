@@ -27,6 +27,7 @@ import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.ui.video.player.MediaController.MediaPlayerControl;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +38,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewDebug.HierarchyTraceType;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 /**
  * @author dcarver
@@ -45,7 +47,7 @@ import android.widget.Button;
 public class SerenitySurfaceViewVideoActivity extends Activity implements SurfaceHolder.Callback {
 	
 	static final String TAG = "SerenitySurfaceViewVideoActivity";
-	static final int CONTROLLER_DELAY = 6000; // Six seconds
+	static final int CONTROLLER_DELAY = 16000; // Six seconds
 	private MediaPlayer mediaPlayer;
 	private String videoURL;
 	private SurfaceView surfaceView;
@@ -118,6 +120,8 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 		setContentView(R.layout.video_playback);
 		
 		videoURL = getIntent().getExtras().getString("videoUrl");
+		String summary = getIntent().getExtras().getString("summary");
+		String title = getIntent().getExtras().getString("title");
 		
 		
 		mediaPlayer = new MediaPlayer();
@@ -127,7 +131,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 		holder.addCallback(this);
 		holder.setSizeFromLayout();
 		
-		mediaController = new MediaController(this);
+		mediaController = new MediaController(this, summary, title);
 		mediaController.setAnchorView(surfaceView);
 		mediaController.setMediaPlayer(new MediaPlayerControl() {
 			
@@ -180,6 +184,38 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (mediaController.isShowing() && keyCode != KeyEvent.KEYCODE_BACK) {
+			View controllerButton = mediaController.findFocus();
+			if (controllerButton == null) {
+				controllerButton = mediaController.focusSearch(View.FOCUS_LEFT);
+			}
+			if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+				moveFocusAndHighlight(controllerButton, View.FOCUS_LEFT);
+				return true;
+			}
+			
+			if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+				moveFocusAndHighlight(controllerButton, View.FOCUS_DOWN);
+				return true;
+			}
+			
+			if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+				moveFocusAndHighlight(controllerButton, View.FOCUS_RIGHT);
+				return true;
+			}
+			
+			if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+				moveFocusAndHighlight(controllerButton, View.FOCUS_UP);
+				return true;
+			}
+			
+			if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+				controllerButton.performClick();
+				return true;
+			}
+			
+		}
+		
 		if (keyCode == KeyEvent.KEYCODE_INFO) {
 			if (mediaController.isShowing()) {
 				mediaController.hide();
@@ -196,8 +232,33 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 				mediaPlayer.start();
 				mediaController.hide();
 			}
+			return true;
 		}
 		
+		
 		return super.onKeyDown(keyCode, event);
+	}
+
+	/**
+	 * @param controllerButton
+	 */
+	void moveFocusAndHighlight(View controllerButton, int direction) {
+		
+		if (!controllerButton.requestFocus(direction)) {
+			return;
+		}
+		
+		View newFocus = mediaController.findFocus();
+		
+		if (newFocus instanceof ImageButton) {
+			ImageButton button = (ImageButton) newFocus;
+			button.setBackgroundColor(Color.GRAY);
+			button.refreshDrawableState();
+			if (controllerButton instanceof ImageButton) {
+				ImageButton oldButton = (ImageButton) controllerButton;
+				oldButton.setBackgroundColor(Color.TRANSPARENT);
+				oldButton.refreshDrawableState();
+			}
+		}
 	}
 }

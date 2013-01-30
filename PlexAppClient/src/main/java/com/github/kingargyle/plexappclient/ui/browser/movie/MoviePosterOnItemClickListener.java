@@ -27,7 +27,9 @@ import com.github.kingargyle.plexappclient.ui.video.player.SerenitySurfaceViewVi
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -44,19 +46,27 @@ public class MoviePosterOnItemClickListener  implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
 		MoviePosterImageView mpiv = (MoviePosterImageView) v;
 		
-		//String url = "http://192.168.0.108:32400/library/parts/283/file.avi";
-		//String url = "http://192.168.0.108:32400/library/parts/201/file.mkv";
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(v.getContext());
+		boolean externalPlayer = prefs.getBoolean("external_player", false);
+		
+		if (externalPlayer) {
+			String url = mpiv.getPosterInfo().getDirectPlayUrl();
+			Intent vpIntent = new Intent(Intent.ACTION_VIEW);
+			vpIntent.setDataAndType(Uri.parse(url), "video/*");
+			Activity activity = (Activity) mpiv.getContext();
+			activity.startActivity(vpIntent);			
+			return;
+		}
 		
 		String url = mpiv.getPosterInfo().getDirectPlayUrl();
 		Intent vpIntent = new Intent(mpiv.getContext(), SerenitySurfaceViewVideoActivity.class);
-		//vpIntent.setDataAndType(Uri.parse(url), "video/*");
-		//Activity activity = (Activity) mpiv.getContext();
-		//activity.startActivity(vpIntent);
 		vpIntent.putExtra("videoUrl", url);
+		vpIntent.putExtra("title", mpiv.getPosterInfo().getTitle());
+		vpIntent.putExtra("summary", mpiv.getPosterInfo().getPlotSummary());
+		vpIntent.putExtra("posterUrl", mpiv.getPosterInfo().getPosterURL());
 		
 		Activity a = (Activity) mpiv.getContext();
 		a.startActivityForResult(vpIntent, 0);
-		
 	}
 
 }

@@ -1,64 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mediacontroller"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/mediacontroller">
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#50000000"  >
+        android:background="#50000000" >
 
         <DigitalClock
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:textColor="#F0F0F0"
             android:textSize="30sp" />
 
-        <TextView
-            android:layout_width="600dp"
-            android:layout_height="50dp"
+        <TextView android:id="@+id/mediacontroller_summary"
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="-10dp"
+            android:layout_marginTop="5dp"
             android:gravity="top"
             android:text="This is some show/movie summary info"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="Playing"
-            android:textColor="#F0F0F0"
-            android:textSize="30sp" />
     </LinearLayout>
-    
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_above="@+id/mediacontroller_progress_layout"
-        android:background="#50000000"  >
-        <TextView
+        android:layout_centerHorizontal="true"
+        android:background="#50000000" >
+
+        <TextView android:id="@+id/mediacontroller_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="top"
             android:text="Show Title"
-            android:textSize="20sp"
-            />
-   </LinearLayout>
-        
+            android:textSize="20sp" />
+    </LinearLayout>
 
-    <LinearLayout android:id="@+id/mediacontroller_progress_layout"
+    <LinearLayout
+        android:id="@+id/mediacontroller_progress_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/mediacontroller_controls_layout"
-        android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:background="#50000000"  >
+        android:background="#50000000"
+        android:orientation="horizontal" >
 
-        <TextView android:id="@+id/mediacontroller_time_current"
+        <TextView
+            android:id="@+id/mediacontroller_time_current"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
@@ -66,64 +61,81 @@
             android:textColor="#F0F0F0"
             android:textSize="15sp" />
 
-        <SeekBar android:id="@+id/mediacontroller_seekbar"
+        <SeekBar
+            android:id="@+id/mediacontroller_seekbar"
             android:layout_width="600dp"
             android:layout_height="15dp"
-            android:minWidth="600dp"
             android:focusable="true"
             android:max="1000"
-         />
+            android:minWidth="600dp"
+            android:nextFocusDown="@+id/mediacontroller_play_pause" />
 
-        <TextView android:id="@+id/mediacontroller_time_total"
+        <TextView
+            android:id="@+id/mediacontroller_time_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="99:99:99"
             android:textColor="#F0F0F0"
             android:textSize="15sp" />
     </LinearLayout>
-    
-    <LinearLayout android:id="@+id/mediacontroller_controls_layout"
+
+    <LinearLayout
+        android:id="@+id/mediacontroller_controls_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:background="#50000000" >
-        
-        <ImageButton android:id="@+id/osd_rewind_control" 
+        android:background="#50000000"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/osd_rewind_control"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:focusable="true"
             android:scaleType="fitXY"
             android:src="@drawable/osd_rewind_nf"
-            android:background="@android:color/transparent"
-            android:focusable="true"/>
-        
-        <ImageButton android:id="@+id/mediacontroller_play_pause" 
+            android:nextFocusUp="@id/mediacontroller_seekbar"
+            android:nextFocusRight="@id/mediacontroller_play_pause" />
+
+        <ImageButton
+            android:id="@+id/mediacontroller_play_pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:focusable="true"
             android:scaleType="fitXY"
             android:src="@drawable/osd_play_nf"
-            android:background="@android:color/transparent"
-            android:focusable="true"/>
-        
-        
-        <ImageButton android:id="@+id/osd_stop_control" 
+            android:nextFocusLeft="@id/osd_rewind_control"
+            android:nextFocusUp="@id/mediacontroller_seekbar"
+            android:nextFocusRight="@+id/osd_stop_control">
+            <requestFocus/>
+        </ImageButton>
+            
+
+        <ImageButton
+            android:id="@+id/osd_stop_control"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:focusable="true"
             android:scaleType="fitXY"
             android:src="@drawable/osd_stop_nf"
-            android:background="@android:color/transparent"
-            android:focusable="true"/>
-            />
-        
-        <ImageButton android:id="@+id/osd_ff_control" 
+            android:nextFocusLeft="@id/mediacontroller_play_pause"
+            android:nextFocusUp="@id/mediacontroller_seekbar"
+            android:nextFocusRight="@+id/osd_ff_control" />
+
+        <ImageButton
+            android:id="@+id/osd_ff_control"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:focusable="true"
             android:scaleType="fitXY"
             android:src="@drawable/osd_forward_nf"
-            android:background="@android:color/transparent"
-            android:focusable="true"/>
-        
-     </LinearLayout>
-    
+            android:nextFocusLeft="@id/osd_stop_control"
+            android:nextFocusUp="@id/mediacontroller_seekbar" />
+    </LinearLayout>
+
 </RelativeLayout>

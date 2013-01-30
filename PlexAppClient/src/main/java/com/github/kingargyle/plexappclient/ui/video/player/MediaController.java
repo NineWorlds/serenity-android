@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.ui.browser.movie.MoviePosterInfo;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -85,6 +86,8 @@ public class MediaController extends FrameLayout {
 	private static final int SHOW_PROGRESS = 2;
 	private boolean mFromXml = false;
 	private ImageButton mPauseButton;
+	private String summary;
+	private String title;
 
 	private AudioManager mAM;
 
@@ -95,10 +98,13 @@ public class MediaController extends FrameLayout {
 		initController(context);
 	}
 
-	public MediaController(Context context) {
+	public MediaController(Context context, String summary, String title) {
 		super(context);
-		if (!mFromXml && initController(context))
+		if (!mFromXml && initController(context)) {
 			initFloatingWindow();
+		}
+		this.summary = summary;
+		this.title = title;
 	}
 
 	private boolean initController(Context context) {
@@ -168,8 +174,12 @@ public class MediaController extends FrameLayout {
 
 		mEndTime = (TextView) v.findViewById(R.id.mediacontroller_time_total);
 		mCurrentTime = (TextView) v.findViewById(R.id.mediacontroller_time_current);
-		if (mFileName != null)
-			mFileName.setText(mTitle);
+		
+		TextView textTitle = (TextView) v.findViewById(R.id.mediacontroller_title);
+		textTitle.setText(title);
+		
+		TextView summaryView = (TextView) v.findViewById(R.id.mediacontroller_summary);
+		summaryView.setText(summary);
 	}
 
 	public void setMediaPlayer(MediaPlayerControl player) {
@@ -397,10 +407,77 @@ public class MediaController extends FrameLayout {
 		} else if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU || keyCode == KeyEvent.KEYCODE_INFO) {
 			hide();
 			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+			View button = this.getFocusedChild();
+			button.requestFocus(FOCUS_LEFT);
+			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+			View button = this.getFocusedChild();
+			button.requestFocus(FOCUS_DOWN);
+			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+			View button = this.getFocusedChild();
+			button.requestFocus(FOCUS_RIGHT);
+			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+			View button = this.getFocusedChild();
+			button.requestFocus(FOCUS_UP);
+			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+			View button = this.getFocusedChild();
+			button.performClick();
+			return true;
 		} else {
 			show(sDefaultTimeout);
 		}
 		return super.dispatchKeyEvent(event);
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.view.View#onKeyDown(int, android.view.KeyEvent)
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (event.getRepeatCount() == 0 && (keyCode == KeyEvent.KEYCODE_HEADSETHOOK || keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || keyCode == KeyEvent.KEYCODE_SPACE)) {
+			doPauseResume();
+			show(sDefaultTimeout);
+			if (mPauseButton != null)
+				mPauseButton.requestFocus();
+			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_MEDIA_STOP) {
+			if (mPlayer.isPlaying()) {
+				mPlayer.pause();
+				updatePausePlay();
+			}
+			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU || keyCode == KeyEvent.KEYCODE_INFO) {
+			hide();
+			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+			View button = this.getFocusedChild();
+			button.requestFocus(FOCUS_LEFT);
+			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+			View button = this.getFocusedChild();
+			button.requestFocus(FOCUS_DOWN);
+			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+			View button = this.getFocusedChild();
+			button.requestFocus(FOCUS_RIGHT);
+			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+			View button = this.getFocusedChild();
+			button.requestFocus(FOCUS_UP);
+			return true;
+		} else if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+			View button = this.getFocusedChild();
+			button.performClick();
+			return true;
+		} else {
+			show(sDefaultTimeout);
+		}
+		// TODO Auto-generated method stub
+		return super.onKeyDown(keyCode, event);
 	}
 
 	private View.OnClickListener mPauseListener = new View.OnClickListener() {

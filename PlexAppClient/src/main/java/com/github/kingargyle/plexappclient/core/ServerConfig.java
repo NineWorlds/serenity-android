@@ -110,7 +110,7 @@ public class ServerConfig implements IConfiguration {
 				SharedPreferences sharedPreferences, String key) {
 			if ("serverport".equals(key)) {
 				serverport = preferences.getString(key, "32400");
-			} else {
+			} else if ("server".equals(key)){
 				serveraddress = preferences.getString(key, "");
 			}
 		}

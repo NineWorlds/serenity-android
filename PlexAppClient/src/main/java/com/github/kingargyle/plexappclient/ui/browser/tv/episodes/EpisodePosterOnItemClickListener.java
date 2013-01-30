@@ -23,11 +23,14 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv.episodes;
 
+import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.ui.video.player.SerenitySurfaceViewVideoActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -43,22 +46,26 @@ public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 	 */
 	public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
 		EpisodePosterImageView epiv = (EpisodePosterImageView) v;
+	
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(v.getContext());
+		boolean externalPlayer = prefs.getBoolean("external_player", false);
 		
-		//String url = "http://192.168.0.108:32400/library/parts/283/file.avi";
-		//String url = "http://192.168.0.108:32400/library/parts/201/file.mkv";
+		if (externalPlayer) {
+			String url = epiv.getPosterInfo().getDirectPlayUrl();
+			Intent vpIntent = new Intent(Intent.ACTION_VIEW);
+			vpIntent.setDataAndType(Uri.parse(url), "video/*");
+			Activity activity = (Activity) epiv.getContext();
+			activity.startActivity(vpIntent);			
+			return;
+		}
 		
-//		String url = epiv.getPosterInfo().getDirectPlayUrl();
-//		Intent vpIntent = new Intent(Intent.ACTION_VIEW);
-//		vpIntent.setDataAndType(Uri.parse(url), "video/*");
-//		Activity activity = (Activity) epiv.getContext();
-//		activity.startActivity(vpIntent);
 		
 		String url = epiv.getPosterInfo().getDirectPlayUrl();
 		Intent vpIntent = new Intent(epiv.getContext(), SerenitySurfaceViewVideoActivity.class);
-		//vpIntent.setDataAndType(Uri.parse(url), "video/*");
-		//Activity activity = (Activity) mpiv.getContext();
-		//activity.startActivity(vpIntent);
 		vpIntent.putExtra("videoUrl", url);
+		vpIntent.putExtra("summary", epiv.getPosterInfo().getPlotSummary());
+		vpIntent.putExtra("title", epiv.getPosterInfo().getTitle());
+		vpIntent.putExtra("posterUrl", epiv.getPosterInfo().getPosterURL());
 		
 		Activity a = (Activity) epiv.getContext();
 		a.startActivityForResult(vpIntent, 0);

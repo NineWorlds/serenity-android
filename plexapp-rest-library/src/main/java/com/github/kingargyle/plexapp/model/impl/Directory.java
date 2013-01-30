@@ -173,8 +173,8 @@ public class Directory extends AbstractPlexObject {
 	@ElementList(inline=true,required=false)
 	private List<Genre> genres;
 
-	@Element(name="Location",required=false)
-	private Location location;
+	@ElementList(inline=true,name="Location",required=false)
+	private List<Location> locations;
 	
 	@Attribute(required=false)
 	private String ratingKey;
@@ -282,12 +282,12 @@ public class Directory extends AbstractPlexObject {
 		this.createdAt = createdAt;
 	}
 
-	public Location getLocation() {
-		return location;
+	public List<Location> getLocations() {
+		return locations;
 	}
 
-	public void setLocation(Location location) {
-		this.location = location;
+	public void setLocation(List<Location> location) {
+		this.locations = location;
 	}
 	
 	public String getPrompt() {
