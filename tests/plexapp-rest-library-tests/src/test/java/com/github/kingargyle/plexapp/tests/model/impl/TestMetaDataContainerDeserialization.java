@@ -125,8 +125,10 @@ public class TestMetaDataContainerDeserialization {
 		List<Video> videos = mediaContainer.getVideos();
 		Video video = videos.get(0);
 		Media media = video.getMedia();
-		Part vp = media.getVideoPart();
-		assertNotNull(vp);
+		List<Part> parts = media.getVideoPart();
+		assertNotNull(parts);
+		assertTrue(parts.size() > 0);
+		Part vp = parts.get(0);
 		assertEquals("/library/parts/132/file.avi", vp.getKey());
 		
 	}

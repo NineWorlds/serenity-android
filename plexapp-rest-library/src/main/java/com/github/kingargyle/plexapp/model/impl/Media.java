@@ -23,8 +23,11 @@
 
 package com.github.kingargyle.plexapp.model.impl;
 
+import java.util.List;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 /**
@@ -46,15 +49,15 @@ public class Media {
 	@Attribute(name="videoResolution", required=false)
 	private String videoResolution;
 	
-	@Element(name="Part", required=false)
-	private Part videoPart;
+	@ElementList(inline=true,name="Part", required=false)
+	private List<Part> videoParts;
 
-	public Part getVideoPart() {
-		return videoPart;
+	public List<Part> getVideoPart() {
+		return videoParts;
 	}
 
-	public void setVideoPart(Part videoPart) {
-		this.videoPart = videoPart;
+	public void setVideoPart(List<Part> videoParts) {
+		this.videoParts = videoParts;
 	}
 
 	public String getAspectRatio() {

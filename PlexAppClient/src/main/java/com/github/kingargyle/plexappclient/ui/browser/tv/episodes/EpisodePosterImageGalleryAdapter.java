@@ -126,7 +126,9 @@ public class EpisodePosterImageGalleryAdapter extends BaseAdapter {
 				epi.setContentRating(episode.getContentRating());
 				
 				Media media = episode.getMedia();
-				Part part = media.getVideoPart();
+				List<Part> parts = media.getVideoPart();
+				Part part = parts.get(0);
+	
 				epi.setAudioCodec(media.getAudioCodec());
 				epi.setVideoCodec(media.getVideoCodec());
 				epi.setVideoResolution(media.getVideoResolution());

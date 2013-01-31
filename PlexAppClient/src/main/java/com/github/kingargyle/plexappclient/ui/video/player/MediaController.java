@@ -13,9 +13,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import com.github.kingargyle.plexappclient.R;
-import com.github.kingargyle.plexappclient.ui.browser.movie.MoviePosterInfo;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
 import android.media.AudioManager;
@@ -406,7 +404,6 @@ public class MediaController extends FrameLayout {
 	 * @param duration number of milliseconds that have passed.
 	 * @return formatted string
 	 */
-	@SuppressLint("DefaultLocale")
 	protected String formatDuration(long duration) {
 		long tempdur = duration;
 		long hours = TimeUnit.MILLISECONDS.toHours(duration);

@@ -124,7 +124,8 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 				mpi.setContentRating(movie.getContentRating());
 				
 				Media media = movie.getMedia();
-				Part part = media.getVideoPart();
+				List<Part> parts = media.getVideoPart();
+				Part part = parts.get(0);
 				mpi.setAudioCodec(media.getAudioCodec());
 				mpi.setVideoCodec(media.getVideoCodec());
 				mpi.setVideoResolution(media.getVideoResolution());
