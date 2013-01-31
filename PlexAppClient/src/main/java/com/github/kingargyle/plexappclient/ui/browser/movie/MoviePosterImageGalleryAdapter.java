@@ -94,11 +94,11 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 			mc = factory.retrieveSections(key, "all");
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
- 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL(), Toast.LENGTH_SHORT).show();
-			Log.w("Unable to talk to server: ", ex);
+ 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL() + ". Reason: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+			Log.e("MoviePosterImageGalleryAdapter","Unable to talk to server: ", ex);
 		} catch (Exception e) {
- 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL(), Toast.LENGTH_SHORT).show();
-			Log.w("Oops.", e);
+ 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL() + ". Reason: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+			Log.e("MoviePosterImageGalleryAdapter","Oops.", e);
 		}
 		
 		if (mc != null && mc.getSize() > 0) {
