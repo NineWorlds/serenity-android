@@ -7,14 +7,15 @@
 
 package com.github.kingargyle.plexappclient.ui.video.player;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.ui.browser.movie.MoviePosterInfo;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
 import android.media.AudioManager;
@@ -34,7 +35,6 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-
 
 /**
  * A view containing controls for a MediaPlayer. Typically contains the buttons
@@ -66,6 +66,14 @@ import android.widget.TextView;
  * created in an xml layout.
  */
 public class MediaController extends FrameLayout {
+	/**
+	 * 
+	 */
+	private static final int MILLISECONDS_PER_MINUTE = 60000;
+	/**
+	 * 
+	 */
+	private static final int MILLISECONDS_PER_HOUR = 3600000;
 	private MediaPlayerControl mPlayer;
 	private Context mContext;
 	private PopupWindow mWindow;
@@ -75,7 +83,7 @@ public class MediaController extends FrameLayout {
 	private ProgressBar mProgress;
 	private TextView mEndTime, mCurrentTime;
 	private TextView mFileName;
-	//private OutlineTextView mInfoView;
+	// private OutlineTextView mInfoView;
 	private String mTitle;
 	private long mDuration;
 	private boolean mShowing;
@@ -131,7 +139,8 @@ public class MediaController extends FrameLayout {
 	 * Set the view that acts as the anchor for the control view. This can for
 	 * example be a VideoView, or your Activity's main view.
 	 * 
-	 * @param view The view to which to anchor the controller when it is visible.
+	 * @param view
+	 *            The view to which to anchor the controller when it is visible.
 	 */
 	public void setAnchorView(View view) {
 		mAnchor = view;
@@ -152,11 +161,14 @@ public class MediaController extends FrameLayout {
 	 * @return The controller view.
 	 */
 	protected View makeControllerView() {
-		return ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.serenity_media_controller, this);
+		return ((LayoutInflater) mContext
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
+				R.layout.serenity_media_controller, this);
 	}
 
 	private void initControllerView(View v) {
-		mPauseButton = (ImageButton) v.findViewById(R.id.mediacontroller_play_pause);
+		mPauseButton = (ImageButton) v
+				.findViewById(R.id.mediacontroller_play_pause);
 		if (mPauseButton != null) {
 			mPauseButton.requestFocus();
 			mPauseButton.setOnClickListener(mPauseListener);
@@ -173,12 +185,15 @@ public class MediaController extends FrameLayout {
 		}
 
 		mEndTime = (TextView) v.findViewById(R.id.mediacontroller_time_total);
-		mCurrentTime = (TextView) v.findViewById(R.id.mediacontroller_time_current);
-		
-		TextView textTitle = (TextView) v.findViewById(R.id.mediacontroller_title);
+		mCurrentTime = (TextView) v
+				.findViewById(R.id.mediacontroller_time_current);
+
+		TextView textTitle = (TextView) v
+				.findViewById(R.id.mediacontroller_title);
 		textTitle.setText(title);
-		
-		TextView summaryView = (TextView) v.findViewById(R.id.mediacontroller_summary);
+
+		TextView summaryView = (TextView) v
+				.findViewById(R.id.mediacontroller_summary);
 		summaryView.setText(summary);
 	}
 
@@ -190,7 +205,8 @@ public class MediaController extends FrameLayout {
 	/**
 	 * Control the action when the seekbar dragged by user
 	 * 
-	 * @param seekWhenDragging True the media will seek periodically
+	 * @param seekWhenDragging
+	 *            True the media will seek periodically
 	 */
 	public void setInstantSeeking(boolean seekWhenDragging) {
 		mInstantSeeking = seekWhenDragging;
@@ -218,7 +234,7 @@ public class MediaController extends FrameLayout {
 	 * @param v
 	 */
 	public void setInfoView(TextView v) {
-		//mInfoView = v;
+		// mInfoView = v;
 	}
 
 	private void disableUnsupportedButtons() {
@@ -235,13 +251,14 @@ public class MediaController extends FrameLayout {
 	 * </p>
 	 * 
 	 * <p>
-	 * If the controller is showing, calling this method will take effect only the
-	 * next time the controller is shown.
+	 * If the controller is showing, calling this method will take effect only
+	 * the next time the controller is shown.
 	 * </p>
 	 * 
-	 * @param animationStyle animation style to use when the controller appears
-	 * and disappears. Set to -1 for the default animation, 0 for no animation, or
-	 * a resource identifier for an explicit animation.
+	 * @param animationStyle
+	 *            animation style to use when the controller appears and
+	 *            disappears. Set to -1 for the default animation, 0 for no
+	 *            animation, or a resource identifier for an explicit animation.
 	 * 
 	 */
 	public void setAnimationStyle(int animationStyle) {
@@ -252,8 +269,9 @@ public class MediaController extends FrameLayout {
 	 * Show the controller on screen. It will go away automatically after
 	 * 'timeout' milliseconds of inactivity.
 	 * 
-	 * @param timeout The timeout in milliseconds. Use 0 to show the controller
-	 * until hide() is called.
+	 * @param timeout
+	 *            The timeout in milliseconds. Use 0 to show the controller
+	 *            until hide() is called.
 	 */
 	public void show(int timeout) {
 		if (!mShowing && mAnchor != null && mAnchor.getWindowToken() != null) {
@@ -267,10 +285,13 @@ public class MediaController extends FrameLayout {
 				int[] location = new int[2];
 
 				mAnchor.getLocationOnScreen(location);
-				Rect anchorRect = new Rect(location[0], location[1], location[0] + mAnchor.getWidth(), location[1] + mAnchor.getHeight());
+				Rect anchorRect = new Rect(location[0], location[1],
+						location[0] + mAnchor.getWidth(), location[1]
+								+ mAnchor.getHeight());
 
 				mWindow.setAnimationStyle(mAnimStyle);
-				mWindow.showAtLocation(mAnchor, Gravity.NO_GRAVITY, anchorRect.left, anchorRect.bottom);
+				mWindow.showAtLocation(mAnchor, Gravity.NO_GRAVITY,
+						anchorRect.left, anchorRect.bottom);
 			}
 			mShowing = true;
 			if (mShownListener != null)
@@ -281,7 +302,8 @@ public class MediaController extends FrameLayout {
 
 		if (timeout != 0) {
 			mHandler.removeMessages(FADE_OUT);
-			mHandler.sendMessageDelayed(mHandler.obtainMessage(FADE_OUT), timeout);
+			mHandler.sendMessageDelayed(mHandler.obtainMessage(FADE_OUT),
+					timeout);
 		}
 	}
 
@@ -301,7 +323,8 @@ public class MediaController extends FrameLayout {
 				else
 					mWindow.dismiss();
 			} catch (IllegalArgumentException ex) {
-				Log.d("SerentityMediaController","MediaController already removed", ex);
+				Log.d("SerentityMediaController",
+						"MediaController already removed", ex);
 			}
 			mShowing = false;
 			if (mHiddenListener != null)
@@ -365,16 +388,37 @@ public class MediaController extends FrameLayout {
 		}
 
 		mDuration = duration;
-		
-		
 
-		if (mEndTime != null)
-			
-			mEndTime.setText(new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(mDuration)));
-		if (mCurrentTime != null)
-			mCurrentTime.setText(new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(position)));
+		if (mEndTime != null) {
+			mEndTime.setText(formatDuration(mDuration));
+		}
+
+		if (mCurrentTime != null) {
+			mCurrentTime.setText(formatDuration(position));
+		}
 
 		return position;
+	}
+
+	
+	/**
+	 * Return a formated duration in hh:mm:ss format.
+	 * @param duration number of milliseconds that have passed.
+	 * @return formatted string
+	 */
+	@SuppressLint("DefaultLocale")
+	protected String formatDuration(long duration) {
+		long tempdur = duration;
+		long hours = TimeUnit.MILLISECONDS.toHours(duration);
+		
+        tempdur = tempdur - (hours * MILLISECONDS_PER_HOUR);
+        
+        long minutes = tempdur / MILLISECONDS_PER_MINUTE;
+        tempdur = tempdur - (minutes * MILLISECONDS_PER_MINUTE);
+        
+        long seconds = tempdur / 1000;
+        
+		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
 	}
 
 	@Override
@@ -392,7 +436,9 @@ public class MediaController extends FrameLayout {
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		int keyCode = event.getKeyCode();
-		if (event.getRepeatCount() == 0 && (keyCode == KeyEvent.KEYCODE_HEADSETHOOK || keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || keyCode == KeyEvent.KEYCODE_SPACE)) {
+		if (event.getRepeatCount() == 0
+				&& (keyCode == KeyEvent.KEYCODE_HEADSETHOOK
+						|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || keyCode == KeyEvent.KEYCODE_SPACE)) {
 			doPauseResume();
 			show(sDefaultTimeout);
 			if (mPauseButton != null)
@@ -404,7 +450,9 @@ public class MediaController extends FrameLayout {
 				updatePausePlay();
 			}
 			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU || keyCode == KeyEvent.KEYCODE_INFO) {
+		} else if (keyCode == KeyEvent.KEYCODE_BACK
+				|| keyCode == KeyEvent.KEYCODE_MENU
+				|| keyCode == KeyEvent.KEYCODE_INFO) {
 			hide();
 			return true;
 		} else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
@@ -432,13 +480,17 @@ public class MediaController extends FrameLayout {
 		}
 		return super.dispatchKeyEvent(event);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.view.View#onKeyDown(int, android.view.KeyEvent)
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (event.getRepeatCount() == 0 && (keyCode == KeyEvent.KEYCODE_HEADSETHOOK || keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || keyCode == KeyEvent.KEYCODE_SPACE)) {
+		if (event.getRepeatCount() == 0
+				&& (keyCode == KeyEvent.KEYCODE_HEADSETHOOK
+						|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || keyCode == KeyEvent.KEYCODE_SPACE)) {
 			doPauseResume();
 			show(sDefaultTimeout);
 			if (mPauseButton != null)
@@ -450,7 +502,9 @@ public class MediaController extends FrameLayout {
 				updatePausePlay();
 			}
 			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU || keyCode == KeyEvent.KEYCODE_INFO) {
+		} else if (keyCode == KeyEvent.KEYCODE_BACK
+				|| keyCode == KeyEvent.KEYCODE_MENU
+				|| keyCode == KeyEvent.KEYCODE_INFO) {
 			hide();
 			return true;
 		} else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
@@ -512,22 +566,24 @@ public class MediaController extends FrameLayout {
 			mHandler.removeMessages(SHOW_PROGRESS);
 			if (mInstantSeeking)
 				mAM.setStreamMute(AudioManager.STREAM_MUSIC, true);
-//			if (mInfoView != null) {
-//				mInfoView.setText("");
-//				mInfoView.setVisibility(View.VISIBLE);
-//			}
+			// if (mInfoView != null) {
+			// mInfoView.setText("");
+			// mInfoView.setVisibility(View.VISIBLE);
+			// }
 		}
 
-		public void onProgressChanged(SeekBar bar, int progress, boolean fromuser) {
+		public void onProgressChanged(SeekBar bar, int progress,
+				boolean fromuser) {
 			if (!fromuser)
 				return;
 
 			long newposition = (mDuration * progress) / 1000;
-			String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(newposition));
+			String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+					.format(new Date(newposition));
 			if (mInstantSeeking)
 				mPlayer.seekTo(newposition);
-//			if (mInfoView != null)
-//				mInfoView.setText(time);
+			// if (mInfoView != null)
+			// mInfoView.setText(time);
 			if (mCurrentTime != null)
 				mCurrentTime.setText(time);
 		}
@@ -535,10 +591,10 @@ public class MediaController extends FrameLayout {
 		public void onStopTrackingTouch(SeekBar bar) {
 			if (!mInstantSeeking)
 				mPlayer.seekTo((mDuration * bar.getProgress()) / 1000);
-//			if (mInfoView != null) {
-//				mInfoView.setText("");
-//				mInfoView.setVisibility(View.GONE);
-//			}
+			// if (mInfoView != null) {
+			// mInfoView.setText("");
+			// mInfoView.setVisibility(View.GONE);
+			// }
 			show(sDefaultTimeout);
 			mHandler.removeMessages(SHOW_PROGRESS);
 			mAM.setStreamMute(AudioManager.STREAM_MUSIC, false);
