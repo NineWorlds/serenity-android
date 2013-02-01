@@ -29,6 +29,7 @@ import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexapp.config.IConfiguration;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexappclient.core.ServerConfig;
+import com.github.kingargyle.plexappclient.ui.views.MainMenuTextView;
 import com.github.kingargyle.plexapp.model.impl.Directory;
 
 import android.content.Context;

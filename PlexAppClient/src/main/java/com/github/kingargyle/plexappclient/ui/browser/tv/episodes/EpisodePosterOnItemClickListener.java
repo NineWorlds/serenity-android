@@ -25,6 +25,7 @@ package com.github.kingargyle.plexappclient.ui.browser.tv.episodes;
 
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.ui.video.player.SerenitySurfaceViewVideoActivity;
+import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -45,7 +46,7 @@ public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
 	 */
 	public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
-		EpisodePosterImageView epiv = (EpisodePosterImageView) v;
+		SerenityPosterImageView epiv = (SerenityPosterImageView) v;
 	
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(v.getContext());
 		boolean externalPlayer = prefs.getBoolean("external_player", false);

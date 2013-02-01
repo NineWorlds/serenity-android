@@ -37,6 +37,9 @@ import com.github.kingargyle.plexapp.model.impl.Video;
 import com.github.kingargyle.plexapp.model.impl.Writer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
+import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
+import com.github.kingargyle.plexappclient.core.model.impl.EpisodePosterInfo;
+import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 
@@ -57,7 +60,7 @@ import android.widget.Toast;
  */
 public class EpisodePosterImageGalleryAdapter extends BaseAdapter {
 	
-	private List<EpisodePosterInfo> posterList = null;
+	private List<VideoContentInfo> posterList = null;
 	private Activity context;
 	
 	private ImageManager imageManager;
@@ -72,7 +75,7 @@ public class EpisodePosterImageGalleryAdapter extends BaseAdapter {
 		context = (Activity)c;
 		this.key = key;
 		
-		posterList = new ArrayList<EpisodePosterInfo>();
+		posterList = new ArrayList<VideoContentInfo>();
 		
 		imageManager = SerenityApplication.getImageManager();
 		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
@@ -106,7 +109,7 @@ public class EpisodePosterImageGalleryAdapter extends BaseAdapter {
 		if (mc != null && mc.getSize() > 0) {
 			List<Video> videos = mc.getVideos();
 			for (Video episode : videos) {
-				EpisodePosterInfo  epi = new EpisodePosterInfo();
+				VideoContentInfo  epi = new EpisodePosterInfo();
 				epi.setPlotSummary(episode.getSummary());
 				
 				String burl = factory.baseURL() + ":/resources/show-fanart.jpg"; 
@@ -215,8 +218,8 @@ public class EpisodePosterImageGalleryAdapter extends BaseAdapter {
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		EpisodePosterInfo pi = posterList.get(position);
-		EpisodePosterImageView mpiv = new EpisodePosterImageView(context, pi);
+		VideoContentInfo pi = posterList.get(position);
+		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
 		} else {

@@ -21,44 +21,16 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.ui.browser.tv.seasons;
+package com.github.kingargyle.plexappclient.core.model.impl;
 
-import com.github.kingargyle.plexappclient.ui.browser.tv.episodes.EpisodeBrowserActivity;
-import com.github.kingargyle.plexappclient.ui.views.TVShowSeasonImageView;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 
 /**
+ * Representation of Video content information for Movies.
+ * 
  * @author dcarver
  *
  */
-public class TVShowSeasonOnItemClickListener implements OnItemClickListener {
+public class MoviePosterInfo extends AbstractVideoContentInfo {
 	
-	private Activity context;
-	
-	/**
-	 * 
-	 */
-	public TVShowSeasonOnItemClickListener(Context c) {
-		context = (Activity)c;
-	}
-
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
-	 */
-	public void onItemClick(AdapterView<?> av, View view, int position, long arg3) {
-		
-		TVShowSeasonImageView tsi = (TVShowSeasonImageView) view;
-		
-		
-		Intent i = new Intent(context, EpisodeBrowserActivity.class);
-		i.putExtra("key", tsi.getPosterInfo().getKey());
-		context.startActivityForResult(i, 0);
-	}
 
 }

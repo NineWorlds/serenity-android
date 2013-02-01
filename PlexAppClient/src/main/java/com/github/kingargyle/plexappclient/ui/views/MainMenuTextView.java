@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient;
+package com.github.kingargyle.plexappclient.ui.views;
 
 import android.content.Context;
 import android.widget.TextView;

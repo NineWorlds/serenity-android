@@ -29,7 +29,9 @@ import java.util.concurrent.Executors;
 
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
-import com.github.kingargyle.plexappclient.ui.browser.tv.TVShowBannerInfo;
+import com.github.kingargyle.plexappclient.core.imageloader.BackgroundImageLoader;
+import com.github.kingargyle.plexappclient.core.model.SeriesContentInfo;
+import com.github.kingargyle.plexappclient.ui.views.TVShowSeasonImageView;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.bitmap.BitmapUtil;
@@ -110,13 +112,12 @@ public class TVShowSeasonOnItemSelectedListener implements
 	private void changeBackgroundImage(View v) {
 		
 		TVShowSeasonImageView mpiv = (TVShowSeasonImageView) v;
-		TVShowBannerInfo mi = mpiv.getPosterInfo();
+		SeriesContentInfo mi = mpiv.getPosterInfo();
 
 		if (mi.getBackgroundURL() != null) {
-			ImageLoader im = new ImageLoader(mi);
+			BackgroundImageLoader im = new BackgroundImageLoader(mi.getBackgroundURL(), bgLayout, R.drawable.tvshows);
 			imageExecutorService.submit(im);			
 		}
-		
 	}
 
 	/*
@@ -130,65 +131,4 @@ public class TVShowSeasonOnItemSelectedListener implements
 
 	}
 	
-	protected class ImageLoader implements Runnable {
-
-		private TVShowBannerInfo mpi;
-
-		/**
-		 * 
-		 */
-		public ImageLoader(TVShowBannerInfo mpi) {
-			this.mpi = mpi;
-		}
-
-		/**
-		 * Call and fetch an image directly.
-		 */
-		public void run() {
-
-			CacheManager cm = imageManager.getCacheManager();
-			Bitmap bm = cm.get(mpi.getBackgroundURL(), 1280, 720);
-
-			if (bm == null) {
-				FileManager fm = imageManager.getFileManager();
-				File f = fm.getFile(mpi.getBackgroundURL());
-				LoaderSettings settings = SerenityApplication
-						.getLoaderSettings();
-				if (!f.exists()) {
-					settings.getNetworkManager().retrieveImage(
-							mpi.getBackgroundURL(), f);
-				}
-
-				BitmapUtil bmu = SerenityApplication.getLoaderSettings()
-						.getBitmapUtil();
-				bm = bmu.decodeFile(f, 1280, 720);
-			}
-
-			Activity activity = (Activity) bgLayout.getContext();
-			activity.runOnUiThread(new BitmapDisplayer(bm));
-		}
-	}
-
-	protected class BitmapDisplayer implements Runnable {
-
-		private Bitmap bm;
-
-		/**
-		 * 
-		 */
-		public BitmapDisplayer(Bitmap bm) {
-			this.bm = bm;
-		}
-
-		public void run() {
-			if (bm == null) {
-				bgLayout.setBackgroundResource(R.drawable.tvshows);
-				return;
-			}
-
-			BitmapDrawable bmd = new BitmapDrawable(bm);
-			bgLayout.setBackgroundDrawable(bmd);
-		}
-
-	}	
 }

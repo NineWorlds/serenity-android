@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2013 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -37,6 +37,9 @@ import com.github.kingargyle.plexapp.model.impl.Video;
 import com.github.kingargyle.plexapp.model.impl.Writer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
+import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
+import com.github.kingargyle.plexappclient.core.model.impl.MoviePosterInfo;
+import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 
@@ -57,7 +60,7 @@ import android.widget.Toast;
  */
 public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 	
-	private List<MoviePosterInfo> posterList = null;
+	private List<VideoContentInfo> posterList = null;
 	private Activity context;
 	
 	private ImageManager imageManager;
@@ -72,7 +75,7 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 		context = (Activity)c;
 		this.key = key;
 		
-		posterList = new ArrayList<MoviePosterInfo>();
+		posterList = new ArrayList<VideoContentInfo>();
 		
 		imageManager = SerenityApplication.getImageManager();
 		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
@@ -104,7 +107,7 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 		if (mc != null && mc.getSize() > 0) {
 			List<Video> videos = mc.getVideos();
 			for (Video movie : videos) {
-				MoviePosterInfo  mpi = new MoviePosterInfo();
+				VideoContentInfo  mpi = new MoviePosterInfo();
 				mpi.setPlotSummary(movie.getSummary());
 				
 				String burl = factory.baseURL() + ":/resources/movie-fanart.jpg"; 
@@ -212,8 +215,8 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		MoviePosterInfo pi = posterList.get(position);
-		MoviePosterImageView mpiv = new MoviePosterImageView(context, pi);
+		VideoContentInfo pi = posterList.get(position);
+		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
 		} else {

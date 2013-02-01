@@ -29,6 +29,9 @@ import java.util.concurrent.Executors;
 
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
+import com.github.kingargyle.plexappclient.core.imageloader.BackgroundImageLoader;
+import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
+import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.LoaderSettings;
 import com.novoda.imageloader.core.bitmap.BitmapUtil;
@@ -98,13 +101,13 @@ public class MoviePosterOnItemSelectedListener implements
 		v.setPadding(5, 5, 5, 5);
 		v.refreshDrawableState();
 
-		createMovieDetail((MoviePosterImageView) v);
-		createInfographicDetails((MoviePosterImageView) v);
+		createMovieDetail((SerenityPosterImageView) v);
+		createInfographicDetails((SerenityPosterImageView) v);
 		changeBackgroundImage(v);
 
 	}
 
-	private void createMovieDetail(MoviePosterImageView v) {
+	private void createMovieDetail(SerenityPosterImageView v) {
 		TextView castinfo = (TextView) context.findViewById(R.id.movieCastInfo);
 		castinfo.setText(v.getPosterInfo().getCastInfo());
 
@@ -122,8 +125,8 @@ public class MoviePosterOnItemSelectedListener implements
 	 * @param v
 	 */
 	private void changeBackgroundImage(View v) {
-		MoviePosterImageView mpiv = (MoviePosterImageView) v;
-		MoviePosterInfo mi = mpiv.getPosterInfo();
+		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
+		VideoContentInfo mi = mpiv.getPosterInfo();
 
 		if (mi.getBackgroundURL() == null) {
 			return;
@@ -133,7 +136,7 @@ public class MoviePosterOnItemSelectedListener implements
 
 		Bitmap bm = cm.get(mi.getBackgroundURL(), 1280, 720);
 		if (bm == null) {
-			imageExecutorService.submit(new ImageLoader(mi));
+			imageExecutorService.submit(new BackgroundImageLoader(mi.getBackgroundURL(), bgLayout, R.drawable.movies));
 			return;
 		}
 
@@ -148,11 +151,11 @@ public class MoviePosterOnItemSelectedListener implements
 	 * 
 	 * @param position
 	 */
-	private void createInfographicDetails(MoviePosterImageView v) {
+	private void createInfographicDetails(SerenityPosterImageView v) {
 		LinearLayout infographicsView = (LinearLayout) context
 				.findViewById(R.id.movieInfoGraphicLayout);
 		infographicsView.removeAllViews();
-		MoviePosterInfo mpi = v.getPosterInfo();
+		VideoContentInfo mpi = v.getPosterInfo();
 
 		ImageView acv = setAudioCodec(mpi.getAudioCodec());
 		if (acv != null) {
@@ -371,62 +374,4 @@ public class MoviePosterOnItemSelectedListener implements
 
 	}
 
-	protected class ImageLoader implements Runnable {
-
-		private MoviePosterInfo mpi;
-
-		/**
-		 * 
-		 */
-		public ImageLoader(MoviePosterInfo mpi) {
-			this.mpi = mpi;
-		}
-
-		/**
-		 * Call and fetch an image directly.
-		 */
-		public void run() {
-			
-			CacheManager cm = imageManager.getCacheManager();
-			Bitmap bm = cm.get(mpi.getBackgroundURL(), 1280, 720);
-						
-			if (bm == null) {
-				FileManager fm = imageManager.getFileManager();
-				File  f = fm.getFile(mpi.getBackgroundURL());
-				LoaderSettings settings = SerenityApplication.getLoaderSettings();
-                if (!f.exists()) {
-                    settings.getNetworkManager().retrieveImage(mpi.getBackgroundURL(), f);
-                }
-				
-				BitmapUtil bmu = SerenityApplication.getLoaderSettings().getBitmapUtil();
-				bm = bmu.decodeFile(f, 1280, 720);
-			}
-			
-			Activity activity = (Activity) bgLayout.getContext();
-			activity.runOnUiThread(new BitmapDisplayer(bm));
-		}
-	}
-
-	protected class BitmapDisplayer implements Runnable {
-
-		private Bitmap bm;
-
-		/**
-		 * 
-		 */
-		public BitmapDisplayer(Bitmap bm) {
-			this.bm = bm;
-		}
-
-		public void run() {
-			if (bm == null) {
-				bgLayout.setBackgroundResource(R.drawable.movies);
-				return;
-			}
-			
-			BitmapDrawable bmd = new BitmapDrawable(bm);
-			bgLayout.setBackgroundDrawable(bmd);
-		}
-
-	}
 }

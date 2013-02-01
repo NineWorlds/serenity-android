@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2013 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -21,40 +21,11 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.ui.browser.tv;
+package com.github.kingargyle.plexappclient.core.model.impl;
 
-import com.github.kingargyle.plexappclient.core.model.impl.AbstractSeriesContentInfo;
 
-import android.content.Context;
-import android.widget.ImageView;
+public class TVShowSeriesInfo extends AbstractSeriesContentInfo {
 
-/**
- * @author dcarver
- *
- */
-public class TVShowBannerImageView extends ImageView {
 
-	private AbstractSeriesContentInfo posterInfo;
 	
-	/**
-	 * 
-	 */
-	public TVShowBannerImageView(Context c) {
-		super(c);
-	}
-
-	/**
-	 * 
-	 */
-	public TVShowBannerImageView(Context context, AbstractSeriesContentInfo posterInfo) {
-		super(context);
-		this.posterInfo = posterInfo;
-	}
-	
-	public AbstractSeriesContentInfo getPosterInfo() {
-		return posterInfo;
-	}
-	
-	
-
 }

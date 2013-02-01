@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2013 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -24,6 +24,7 @@
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
 import com.github.kingargyle.plexappclient.ui.video.player.SerenitySurfaceViewVideoActivity;
+import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -44,7 +45,7 @@ public class MoviePosterOnItemClickListener  implements OnItemClickListener {
 	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
 	 */
 	public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
-		MoviePosterImageView mpiv = (MoviePosterImageView) v;
+		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(v.getContext());
 		boolean externalPlayer = prefs.getBoolean("external_player", false);

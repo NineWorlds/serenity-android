@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2013 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -33,6 +33,8 @@ import com.github.kingargyle.plexapp.model.impl.Genre;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
+import com.github.kingargyle.plexappclient.core.model.impl.AbstractSeriesContentInfo;
+import com.github.kingargyle.plexappclient.core.model.impl.TVShowSeriesInfo;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 
@@ -54,7 +56,7 @@ import android.widget.TextView;
  */
 public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 	
-	private List<TVShowBannerInfo> tvShowList = null;
+	private List<TVShowSeriesInfo> tvShowList = null;
 	private Activity context;
 	
 	private ImageManager imageManager;
@@ -66,7 +68,7 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 	public TVShowBannerImageGalleryAdapter(Context c) {
 		context = (Activity)c;
 		
-		tvShowList = new ArrayList<TVShowBannerInfo>();
+		tvShowList = new ArrayList<TVShowSeriesInfo>();
 		
 		imageManager = SerenityApplication.getImageManager();
 		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
@@ -106,7 +108,7 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 			
 			List<Directory> shows = mc.getDirectories();
 			for (Directory show : shows) {
-				TVShowBannerInfo  mpi = new TVShowBannerInfo();
+				TVShowSeriesInfo  mpi = new TVShowSeriesInfo();
 				mpi.setPlotSummary(show.getSummary());
 				
 				String burl = factory.baseURL() + ":/resources/show-fanart.jpg"; 
@@ -185,7 +187,7 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		TVShowBannerInfo pi = tvShowList.get(position);
+		AbstractSeriesContentInfo pi = tvShowList.get(position);
 		TVShowBannerImageView mpiv = new TVShowBannerImageView(context, pi);
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));

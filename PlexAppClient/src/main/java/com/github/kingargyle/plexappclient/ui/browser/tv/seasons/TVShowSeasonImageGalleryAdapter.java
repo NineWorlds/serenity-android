@@ -32,7 +32,9 @@ import com.github.kingargyle.plexapp.model.impl.Directory;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
-import com.github.kingargyle.plexappclient.ui.browser.tv.TVShowBannerInfo;
+import com.github.kingargyle.plexappclient.core.model.SeriesContentInfo;
+import com.github.kingargyle.plexappclient.core.model.impl.TVShowSeriesInfo;
+import com.github.kingargyle.plexappclient.ui.views.TVShowSeasonImageView;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 
@@ -54,7 +56,7 @@ import android.widget.TextView;
  */
 public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	
-	private List<TVShowBannerInfo> seasonList = null;
+	private List<TVShowSeriesInfo> seasonList = null;
 	private Activity context;
 	
 	private ImageManager imageManager;
@@ -66,7 +68,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	public TVShowSeasonImageGalleryAdapter(Context c) {
 		context = (Activity)c;
 		
-		seasonList = new ArrayList<TVShowBannerInfo>();
+		seasonList = new ArrayList<TVShowSeriesInfo>();
 		
 		imageManager = SerenityApplication.getImageManager();
 		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
@@ -112,7 +114,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 			
 			List<Directory> shows = mc.getDirectories();
 			for (Directory show : shows) {
-				TVShowBannerInfo  mpi = new TVShowBannerInfo();
+				TVShowSeriesInfo  mpi = new TVShowSeriesInfo();
 				
 				String burl = factory.baseURL() + ":/resources/show-fanart.jpg"; 
 				if (mc.getArt() != null) {
@@ -167,7 +169,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		TVShowBannerInfo pi = seasonList.get(position);
+		SeriesContentInfo pi = seasonList.get(position);
 		TVShowSeasonImageView mpiv = new TVShowSeasonImageView(context, pi);
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));

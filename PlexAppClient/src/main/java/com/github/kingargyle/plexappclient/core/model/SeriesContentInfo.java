@@ -21,38 +21,46 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.ui.browser.movie;
+package com.github.kingargyle.plexappclient.core.model;
 
-import android.content.Context;
-import android.widget.ImageView;
+import java.util.List;
 
 /**
  * @author dcarver
  *
  */
-public class MoviePosterImageView extends ImageView {
+public interface SeriesContentInfo extends ContentInfo {
 
-	private MoviePosterInfo posterInfo;
-	
-	/**
-	 * 
-	 */
-	public MoviePosterImageView(Context c) {
-		super(c);
-	}
+	public void setKey(String key);
 
-	/**
-	 * 
-	 */
-	public MoviePosterImageView(Context context, MoviePosterInfo posterInfo) {
-		super(context);
-		this.posterInfo = posterInfo;
-	}
+	public String getKey();
 	
-	public MoviePosterInfo getPosterInfo() {
-		return posterInfo;
-	}
+	public List<String> getGeneres();
+
+	public void setGeneres(List<String> generes);
+
+	public String getShowsWatched();
+
+	public void setShowsWatched(String showsWatched);
+
+	public String getShowsUnwatched();
+
+	public void setShowsUnwatched(String showsUnwatched);
 	
+	public String getShowMetaDataURL();
+
+	public void setShowMetaDataURL(String showMetaDataURL);
+
+	public String getThumbNailURL();
+
+	public void setThumbNailURL(String thumbNailURL);
+
+	public String getContentRating();
 	
+	public String getYear();
+
+	public void setContentRating(String contentRating);
+
+	public void setYear(String year);
 
 }

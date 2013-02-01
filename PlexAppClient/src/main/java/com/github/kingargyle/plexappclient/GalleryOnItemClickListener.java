@@ -26,6 +26,7 @@ package com.github.kingargyle.plexappclient;
 import com.github.kingargyle.plexappclient.ui.browser.movie.MovieBrowserActivity;
 import com.github.kingargyle.plexappclient.ui.browser.tv.TVShowBrowserActivity;
 import com.github.kingargyle.plexappclient.ui.preferences.SerenityPreferenceActivity;
+import com.github.kingargyle.plexappclient.ui.views.MainMenuTextView;
 
 import android.app.Activity;
 import android.content.Context;

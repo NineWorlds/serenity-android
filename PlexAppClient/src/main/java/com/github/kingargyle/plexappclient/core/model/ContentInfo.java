@@ -21,44 +21,35 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.ui.browser.tv.seasons;
-
-import com.github.kingargyle.plexappclient.ui.browser.tv.episodes.EpisodeBrowserActivity;
-import com.github.kingargyle.plexappclient.ui.views.TVShowSeasonImageView;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+package com.github.kingargyle.plexappclient.core.model;
 
 /**
  * @author dcarver
  *
  */
-public class TVShowSeasonOnItemClickListener implements OnItemClickListener {
+public interface ContentInfo {
 	
-	private Activity context;
+	public String getPlotSummary();
 	
-	/**
-	 * 
-	 */
-	public TVShowSeasonOnItemClickListener(Context c) {
-		context = (Activity)c;
-	}
-
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
-	 */
-	public void onItemClick(AdapterView<?> av, View view, int position, long arg3) {
-		
-		TVShowSeasonImageView tsi = (TVShowSeasonImageView) view;
-		
-		
-		Intent i = new Intent(context, EpisodeBrowserActivity.class);
-		i.putExtra("key", tsi.getPosterInfo().getKey());
-		context.startActivityForResult(i, 0);
-	}
+	public String getBackgroundURL();
+	
+	public String getPosterURL();
+	
+	public String getTitle();
+	
+	public void setTitle(String title);
+	
+	public void setPosterURL(String posterURL);
+	
+	public void setPlotSummary(String plotSummary);
+	
+	public void setBackgroundURL(String backgroundURL);
+	
+	
+	
+	
+	
+	
+	
 
 }

@@ -21,7 +21,9 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.ui.browser.tv.episodes;
+package com.github.kingargyle.plexappclient.ui.views;
+
+import com.github.kingargyle.plexappclient.core.model.SeriesContentInfo;
 
 import android.content.Context;
 import android.widget.ImageView;
@@ -30,26 +32,26 @@ import android.widget.ImageView;
  * @author dcarver
  *
  */
-public class EpisodePosterImageView extends ImageView {
+public class TVShowSeasonImageView extends ImageView {
 
-	private EpisodePosterInfo posterInfo;
+	private SeriesContentInfo posterInfo;
 	
 	/**
 	 * 
 	 */
-	public EpisodePosterImageView(Context c) {
+	public TVShowSeasonImageView(Context c) {
 		super(c);
 	}
 
 	/**
 	 * 
 	 */
-	public EpisodePosterImageView(Context context, EpisodePosterInfo posterInfo) {
+	public TVShowSeasonImageView(Context context, SeriesContentInfo posterInfo) {
 		super(context);
 		this.posterInfo = posterInfo;
 	}
 	
-	public EpisodePosterInfo getPosterInfo() {
+	public SeriesContentInfo getPosterInfo() {
 		return posterInfo;
 	}
 	

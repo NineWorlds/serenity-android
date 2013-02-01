@@ -23,6 +23,8 @@
 
 package com.github.kingargyle.plexappclient;
 
+import com.github.kingargyle.plexappclient.ui.views.MainMenuTextView;
+
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.View;
