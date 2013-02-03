@@ -134,9 +134,16 @@ public class TestMetaDataContainerDeserialization {
 		assertEquals("/library/parts/132/file.avi", vp.getKey());
 		
 	}
-
-
 	
-
+	@Test
+	public void testMalformedTVShows() {
+		InputStream file = this.getClass().getResourceAsStream("/samples/issue9_tvshows_bad.xml");
+		try {
+			MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
+			fail("Parsing was allowed to occur, check the file to make sure it is still bad.");
+		} catch (Exception ex) {
+			
+		}		
+	}
 
 }
