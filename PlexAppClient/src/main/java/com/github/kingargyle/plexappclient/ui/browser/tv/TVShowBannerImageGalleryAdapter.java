@@ -109,7 +109,9 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 			List<Directory> shows = mc.getDirectories();
 			for (Directory show : shows) {
 				TVShowSeriesInfo  mpi = new TVShowSeriesInfo();
-				mpi.setPlotSummary(show.getSummary());
+				if (show.getSummary() != null) {
+					mpi.setPlotSummary(show.getSummary());
+				}
 				
 				String burl = factory.baseURL() + ":/resources/show-fanart.jpg"; 
 				if (show.getArt() != null) {
@@ -124,7 +126,7 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 				mpi.setPosterURL(turl);
 				
 				String thumbURL = "";
-				if (show.getBanner() != null) {
+				if (show.getThumb() != null) {
 					thumbURL = baseUrl + show.getThumb().replaceFirst("/", "");
 				}
 				mpi.setThumbNailURL(thumbURL);
