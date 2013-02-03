@@ -229,7 +229,7 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/movie-fanart.jpg", context));
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		mpiv.setLayoutParams(new Gallery.LayoutParams(150, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+		mpiv.setLayoutParams(new Gallery.LayoutParams(200, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 		
 		imageManager.getLoader().load(mpiv);
 		
