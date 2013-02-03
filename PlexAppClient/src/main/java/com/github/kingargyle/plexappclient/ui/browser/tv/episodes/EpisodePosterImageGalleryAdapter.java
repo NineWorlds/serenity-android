@@ -128,16 +128,20 @@ public class EpisodePosterImageGalleryAdapter extends BaseAdapter {
 				
 				epi.setContentRating(episode.getContentRating());
 				
-				Media media = episode.getMedia();
-				List<Part> parts = media.getVideoPart();
-				Part part = parts.get(0);
-	
-				epi.setAudioCodec(media.getAudioCodec());
-				epi.setVideoCodec(media.getVideoCodec());
-				epi.setVideoResolution(media.getVideoResolution());
-				
-				String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
-				epi.setDirectPlayUrl(directPlayUrl);
+				List<Media> mediacont = episode.getMedias();
+				if (mediacont != null && !mediacont.isEmpty()) {
+					// We grab the first media container until we know more about why there can be multiples.
+					Media media = mediacont.get(0);
+					List<Part> parts = media.getVideoPart();
+					Part part = parts.get(0);
+					epi.setAudioCodec(media.getAudioCodec());
+					epi.setVideoCodec(media.getVideoCodec());
+					epi.setVideoResolution(media.getVideoResolution());
+					
+					String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
+					epi.setDirectPlayUrl(directPlayUrl);
+					
+				}
 				
 				String episodeDetails = "";
 				

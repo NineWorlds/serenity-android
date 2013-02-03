@@ -26,7 +26,6 @@ package com.github.kingargyle.plexapp.model.impl;
 import java.util.List;
 
 import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
@@ -105,8 +104,8 @@ public class Video extends AbstractPlexObject {
 	@ElementList(inline=true,required=false)
 	private List<Genre> genres;
 
-	@Element(name="Media",required=true)
-	private Media media;
+	@ElementList(inline=true,name="Media",required=true)
+	private List<Media> medias;
 
 	public List<Role> getActors() {
 		return actors;
@@ -142,8 +141,8 @@ public class Video extends AbstractPlexObject {
 		return genres;
 	}
 
-	public Media getMedia() {
-		return media;
+	public List<Media> getMedias() {
+		return medias;
 	}
 	
 	/**
@@ -260,8 +259,8 @@ public class Video extends AbstractPlexObject {
 		this.genres = genres;
 	}
 
-	public void setMedia(Media media) {
-		this.media = media;
+	public void setMedias(List<Media> medias) {
+		this.medias = medias;
 	}
 
 	/**

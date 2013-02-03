@@ -125,16 +125,22 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 				mpi.setTitle(movie.getTitle());
 				
 				mpi.setContentRating(movie.getContentRating());
+		
+				List<Media> mediacont = movie.getMedias();
+				if (mediacont != null && !mediacont.isEmpty()) {
+					// We grab the first media container until we know more about why there can be multiples.
+					Media media = mediacont.get(0);
+					List<Part> parts = media.getVideoPart();
+					Part part = parts.get(0);
+					mpi.setAudioCodec(media.getAudioCodec());
+					mpi.setVideoCodec(media.getVideoCodec());
+					mpi.setVideoResolution(media.getVideoResolution());
+					
+					String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
+					mpi.setDirectPlayUrl(directPlayUrl);
+					
+				}
 				
-				Media media = movie.getMedia();
-				List<Part> parts = media.getVideoPart();
-				Part part = parts.get(0);
-				mpi.setAudioCodec(media.getAudioCodec());
-				mpi.setVideoCodec(media.getVideoCodec());
-				mpi.setVideoResolution(media.getVideoResolution());
-				
-				String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
-				mpi.setDirectPlayUrl(directPlayUrl);
 				
 				String movieDetails = "";
 				

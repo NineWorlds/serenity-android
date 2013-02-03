@@ -124,7 +124,9 @@ public class TestMetaDataContainerDeserialization {
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 		List<Video> videos = mediaContainer.getVideos();
 		Video video = videos.get(0);
-		Media media = video.getMedia();
+		List<Media> medias = video.getMedias();
+		assertFalse(medias.isEmpty());
+		Media media = medias.get(0); 
 		List<Part> parts = media.getVideoPart();
 		assertNotNull(parts);
 		assertTrue(parts.size() > 0);
