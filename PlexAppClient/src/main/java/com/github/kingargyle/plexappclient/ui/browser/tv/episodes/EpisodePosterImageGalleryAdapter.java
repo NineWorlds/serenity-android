@@ -227,14 +227,12 @@ public class EpisodePosterImageGalleryAdapter extends BaseAdapter {
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
 		} else {
-			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/movie-fanart.jpg", context));
+			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/show-fanart.jpg", context));
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		mpiv.setLayoutParams(new Gallery.LayoutParams(300, android.view.ViewGroup.LayoutParams.FILL_PARENT));
 		
 		imageManager.getLoader().load(mpiv);
-		
-		//imDownload.download(pi.getPosterURL(), mpiv);
 	
 		return mpiv;
 	}

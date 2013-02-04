@@ -41,12 +41,12 @@ public class EpisodeBrowserActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
 
-		setContentView(R.layout.activity_episode_browser);
+		setContentView(R.layout.activity_movie_browser);
 		
 		
-		bgLayout = findViewById(R.id.episodeBrowserBackgroundLayout);
+		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
 		
-		posterGallery = (Gallery) findViewById(R.id.episodePosterGallery);
+		posterGallery = (Gallery) findViewById(R.id.moviePosterGallery);
 		posterGallery.setAdapter(new EpisodePosterImageGalleryAdapter(this, key));
 		posterGallery.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(bgLayout, this));
 		posterGallery.setOnItemClickListener(new EpisodePosterOnItemClickListener());

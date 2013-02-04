@@ -108,14 +108,14 @@ public class EpisodePosterOnItemSelectedListener implements
 	}
 
 	private void createMovieDetail(SerenityPosterImageView v) {
-		TextView castinfo = (TextView) context.findViewById(R.id.episodeCastInfo);
+		TextView castinfo = (TextView) context.findViewById(R.id.movieCastInfo);
 		castinfo.setText(v.getPosterInfo().getCastInfo());
 
-		TextView summary = (TextView) context.findViewById(R.id.episodeSummary);
+		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
 		summary.setText(v.getPosterInfo().getPlotSummary());
 
 		TextView title = (TextView) context
-				.findViewById(R.id.episodeBrowserPosterTitle);
+				.findViewById(R.id.movieBrowserPosterTitle);
 		title.setText(v.getPosterInfo().getTitle());
 	}
 
@@ -153,7 +153,7 @@ public class EpisodePosterOnItemSelectedListener implements
 	 */
 	private void createInfographicDetails(SerenityPosterImageView v) {
 		LinearLayout infographicsView = (LinearLayout) context
-				.findViewById(R.id.episodeInfoGraphicLayout);
+				.findViewById(R.id.movieInfoGraphicLayout);
 		infographicsView.removeAllViews();
 		VideoContentInfo epi = v.getPosterInfo();
 
