@@ -50,6 +50,15 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	private List<String> writers;
 	private String year;
 	private String directPlayUrl;
+	private String aspectRatio;
+
+	public String getAspectRatio() {
+		return aspectRatio;
+	}
+
+	public void setAspectRatio(String aspectRatio) {
+		this.aspectRatio = aspectRatio;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getDirectPlayUrl()

@@ -54,6 +54,8 @@ public interface VideoContentInfo extends ContentInfo {
 	public List<String> getWriters();
 
 	public String getYear();
+	
+	public String getAspectRatio();
 
 	public void setActors(List<String> actors);
 
@@ -82,5 +84,7 @@ public interface VideoContentInfo extends ContentInfo {
 	public void setWriters(List<String> writers);
 
 	public void setYear(String year);
+	
+	public void setAspectRatio(String ratio);
 
 }

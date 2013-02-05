@@ -23,7 +23,6 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv.episodes;
 
-import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,10 +32,7 @@ import com.github.kingargyle.plexappclient.core.imageloader.BackgroundImageLoade
 import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
 import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 import com.novoda.imageloader.core.ImageManager;
-import com.novoda.imageloader.core.LoaderSettings;
-import com.novoda.imageloader.core.bitmap.BitmapUtil;
 import com.novoda.imageloader.core.cache.CacheManager;
-import com.novoda.imageloader.core.file.FileManager;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -157,7 +153,7 @@ public class EpisodePosterOnItemSelectedListener implements
 		infographicsView.removeAllViews();
 		VideoContentInfo epi = v.getPosterInfo();
 
-		ImageView acv = setAudioCodec(epi.getAudioCodec());
+		ImageView acv = setAudioCodec(epi.getAudioCodec());		
 		if (acv != null) {
 			infographicsView.addView(acv);
 		}
@@ -166,9 +162,16 @@ public class EpisodePosterOnItemSelectedListener implements
 		if (resv != null) {
 			infographicsView.addView(resv);
 		}
+		
+		ImageView aspectv = setAspectRatio(epi.getAspectRatio());
+		if (aspectv != null) {
+			infographicsView.addView(aspectv);
+		}
+		
 
-		ImageView crv = setContentRating(epi.getContentRating());
-		infographicsView.addView(crv);
+		// Currently can't find appropriate logo for this.
+		//ImageView crv = setContentRating(epi.getContentRating());
+		//infographicsView.addView(crv);
 
 		infographicsView.refreshDrawableState();
 	}
@@ -176,8 +179,8 @@ public class EpisodePosterOnItemSelectedListener implements
 	protected ImageView setContentRating(String contentRating) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.MATCH_PARENT));
+		v.setLayoutParams(new LayoutParams(154, 58));
+		
 
 		if ("G".equals(contentRating)) {
 			v.setImageResource(R.drawable.mpaa_general);
@@ -208,12 +211,51 @@ public class EpisodePosterOnItemSelectedListener implements
 		return v;
 
 	}
+	
+	protected ImageView setAspectRatio(String ratio) {
+		ImageView v = new ImageView(context);
+		v.setScaleType(ScaleType.FIT_XY);
+		v.setLayoutParams(new LayoutParams(154, 58));
+
+		if ("1.33".equals(ratio)) {
+			v.setImageResource(R.drawable.aspect_1_33);
+			return v;
+		}
+
+		if ("1.66".equals(ratio)) {
+			v.setImageResource(R.drawable.aspect_1_66);
+			return v;
+		}
+		
+		if ("1.78".equals(ratio)) {
+			v.setImageResource(R.drawable.aspect_1_78);
+			return v;
+		}
+		
+		if ("1.85".equals(ratio)) {
+			v.setImageResource(R.drawable.aspect_1_85);
+			return v;
+		}
+		
+		if ("2.20".equals(ratio)) {
+			v.setImageResource(R.drawable.aspect_2_20);
+			return v;
+		}
+		
+		if ("2.35".equals(ratio)) {
+			v.setImageResource(R.drawable.aspect_2_35);
+			return v;
+		}
+
+		return null;
+
+	}	
+	
 
 	protected ImageView setAudioCodec(String codec) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.MATCH_PARENT));
+		v.setLayoutParams(new LayoutParams(154, 58));
 
 		if ("aac".equals(codec)) {
 			v.setImageResource(R.drawable.aac);
@@ -307,8 +349,8 @@ public class EpisodePosterOnItemSelectedListener implements
 	protected ImageView setVideoCodec(String codec) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.MATCH_PARENT));
+		v.setLayoutParams(new LayoutParams(154, 58));
+		
 
 		if ("divx".equalsIgnoreCase(codec)) {
 			v.setImageResource(R.drawable.divx);
@@ -347,8 +389,8 @@ public class EpisodePosterOnItemSelectedListener implements
 	protected ImageView setVideoResolution(String res) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.MATCH_PARENT));
+		v.setLayoutParams(new LayoutParams(154, 58));
+		
 
 		if ("sd".equalsIgnoreCase(res) || "480".equalsIgnoreCase(res)
 				|| "540".equalsIgnoreCase(res) || "576".equalsIgnoreCase(res)) {

@@ -25,7 +25,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:text="Movie Details"
+            android:text="Video Details"
             android:textColor="#F0F0F0"
             android:textSize="20sp"
             android:textStyle="bold" />

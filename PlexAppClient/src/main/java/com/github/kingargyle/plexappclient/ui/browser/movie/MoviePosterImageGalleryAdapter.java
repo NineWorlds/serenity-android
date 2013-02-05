@@ -24,21 +24,18 @@
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.model.impl.Director;
-import com.github.kingargyle.plexapp.model.impl.Genre;
 import com.github.kingargyle.plexapp.model.impl.Media;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexapp.model.impl.Part;
 import com.github.kingargyle.plexapp.model.impl.Video;
-import com.github.kingargyle.plexapp.model.impl.Writer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
 import com.github.kingargyle.plexappclient.core.model.impl.MoviePosterInfo;
+import com.github.kingargyle.plexappclient.ui.adapters.AbstractPosterImageGalleryAdapter;
 import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
@@ -58,164 +55,12 @@ import android.widget.Toast;
  * @author dcarver
  *
  */
-public class MoviePosterImageGalleryAdapter extends BaseAdapter {
-	
-	private List<VideoContentInfo> posterList = null;
-	private Activity context;
-	
-	private ImageManager imageManager;
-	private ImageTagFactory imageTagFactory;
-	private static final int SIZE_HEIGHT = 400;
-	private static final int SIZE_WIDTH = 200;
-	private PlexappFactory factory;
-	private String key;
-	
-	
+public class MoviePosterImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
+		
 	public MoviePosterImageGalleryAdapter(Context c, String key) {
-		context = (Activity)c;
-		this.key = key;
-		
-		posterList = new ArrayList<VideoContentInfo>();
-		
-		imageManager = SerenityApplication.getImageManager();
-		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
-		imageTagFactory.setErrorImageId(R.drawable.default_error);
-		imageTagFactory.setSaveThumbnail(true);
-		
-		Toast.makeText(context, "Retrieving Movies", Toast.LENGTH_SHORT).show();		
-		createPosters();
+		super(c, key);
 	}
-	
-	
-	
-	private void createPosters() {
 		
-		MediaContainer mc = null;
-		String baseUrl = null;
-		try {
-			factory = SerenityApplication.getPlexFactory();
-			mc = factory.retrieveSections(key, "all");
-			baseUrl = factory.baseURL();
-		} catch (IOException ex) {
- 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL() + ". Reason: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
-			Log.e("MoviePosterImageGalleryAdapter","Unable to talk to server: ", ex);
-		} catch (Exception e) {
- 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL() + ". Reason: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-			Log.e("MoviePosterImageGalleryAdapter","Oops.", e);
-		}
-		
-		if (mc != null && mc.getSize() > 0) {
-			List<Video> videos = mc.getVideos();
-			for (Video movie : videos) {
-				VideoContentInfo  mpi = new MoviePosterInfo();
-				mpi.setPlotSummary(movie.getSummary());
-				
-				String burl = factory.baseURL() + ":/resources/movie-fanart.jpg"; 
-				if (movie.getBackgroundImageKey() != null) {
-					burl = baseUrl + movie.getBackgroundImageKey().replaceFirst("/", "");
-				}
-				mpi.setBackgroundURL(burl);
-				
-				String turl = "";
-				if (movie.getThumbNailImageKey() != null) {
-					turl = baseUrl + movie.getThumbNailImageKey().replaceFirst("/", "");
-				}
-				
-				mpi.setPosterURL(turl);
-				mpi.setTitle(movie.getTitle());
-				
-				mpi.setContentRating(movie.getContentRating());
-		
-				List<Media> mediacont = movie.getMedias();
-				if (mediacont != null && !mediacont.isEmpty()) {
-					// We grab the first media container until we know more about why there can be multiples.
-					Media media = mediacont.get(0);
-					List<Part> parts = media.getVideoPart();
-					Part part = parts.get(0);
-					mpi.setAudioCodec(media.getAudioCodec());
-					mpi.setVideoCodec(media.getVideoCodec());
-					mpi.setVideoResolution(media.getVideoResolution());
-					
-					String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
-					mpi.setDirectPlayUrl(directPlayUrl);
-					
-				}
-				
-				
-				String movieDetails = "";
-				
-				if (movie.getYear() != null) {
-					mpi.setYear(movie.getYear());
-					movieDetails = "Year: " + movie.getYear();
-					movieDetails = movieDetails + "\r\n";
-				}
-				
-				if (movie.getGenres() != null && movie.getGenres().size() > 0) {
-					ArrayList<String> g = new ArrayList<String>();
-					for (Genre genre : movie.getGenres()) {
-						g.add(genre.getTag());
-						movieDetails = movieDetails + genre.getTag() + "/";
-					}
-					mpi.setGenres(g);
-					movieDetails = movieDetails.substring(0, movieDetails.lastIndexOf("/"));
-					movieDetails = movieDetails + "\r\n";
-				}
-				
-				
-				if (movie.getWriters() != null && movie.getWriters().size() > 0) {
-					movieDetails = movieDetails + "Writer(s): ";
-					ArrayList<String> w = new ArrayList<String>();
-					for (Writer writer : movie.getWriters()) {
-						w.add(writer.getTag());
-						movieDetails = movieDetails + writer.getTag() + ", ";
-					}
-					mpi.setWriters(w);
-					movieDetails = movieDetails.substring(0, movieDetails.lastIndexOf(","));
-					movieDetails = movieDetails + "\r\n";
-				}
-				
-				if (movie.getDirectors() != null && movie.getDirectors().size() > 0) {
-					movieDetails = movieDetails + "Director(s): ";
-					ArrayList<String> d = new ArrayList<String>();
-					for (Director director : movie.getDirectors()) {
-						d.add(director.getTag());
-						movieDetails = movieDetails + director.getTag() + ", ";
-					}
-					mpi.setDirectors(d);
-					movieDetails = movieDetails.substring(0, movieDetails.lastIndexOf(","));
-					movieDetails = movieDetails + "\r\n";
-				}
-				
-				mpi.setCastInfo(movieDetails);				
-			
-				posterList.add(mpi);
-			}
-		}		
-	}
-
-	/* (non-Javadoc)
-	 * @see android.widget.Adapter#getCount()
-	 */
-	public int getCount() {
-		
-		return posterList.size();
-	}
-
-	/* (non-Javadoc)
-	 * @see android.widget.Adapter#getItem(int)
-	 */
-	public Object getItem(int position) {
-		
-		return posterList.get(position);
-	}
-
-	/* (non-Javadoc)
-	 * @see android.widget.Adapter#getItemId(int)
-	 */
-	public long getItemId(int position) {
-		return position;
-	}
-
 	/* (non-Javadoc)
 	 * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
@@ -233,9 +78,68 @@ public class MoviePosterImageGalleryAdapter extends BaseAdapter {
 		
 		imageManager.getLoader().load(mpiv);
 		
-		//imDownload.download(pi.getPosterURL(), mpiv);
-	
 		return mpiv;
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see com.github.kingargyle.plexappclient.ui.adapters.AbstractPosterImageGalleryAdapter#createVideoContent(com.github.kingargyle.plexapp.model.impl.MediaContainer)
+	 */
+	@Override
+	protected void createVideoContent(MediaContainer mc) {
+		String baseUrl = factory.baseURL();
+		List<Video> videos = mc.getVideos();
+		for (Video movie : videos) {
+			VideoContentInfo  mpi = new MoviePosterInfo();
+			mpi.setPlotSummary(movie.getSummary());
+			
+			String burl = baseUrl + ":/resources/movie-fanart.jpg"; 
+			if (movie.getBackgroundImageKey() != null) {
+				burl = baseUrl + movie.getBackgroundImageKey().replaceFirst("/", "");
+			}
+			mpi.setBackgroundURL(burl);
+			
+			String turl = "";
+			if (movie.getThumbNailImageKey() != null) {
+				turl = baseUrl + movie.getThumbNailImageKey().replaceFirst("/", "");
+			}
+			
+			mpi.setPosterURL(turl);
+			mpi.setTitle(movie.getTitle());
+			
+			mpi.setContentRating(movie.getContentRating());
+	
+			List<Media> mediacont = movie.getMedias();
+			if (mediacont != null && !mediacont.isEmpty()) {
+				// We grab the first media container until we know more about why there can be multiples.
+				Media media = mediacont.get(0);
+				List<Part> parts = media.getVideoPart();
+				Part part = parts.get(0);
+				mpi.setAudioCodec(media.getAudioCodec());
+				mpi.setVideoCodec(media.getVideoCodec());
+				mpi.setVideoResolution(media.getVideoResolution());
+				mpi.setAspectRatio(media.getAspectRatio());
+				
+				String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
+				mpi.setDirectPlayUrl(directPlayUrl);
+				
+			}
+			
+			String movieDetails = createVideoDetails(movie, mpi);	
+			mpi.setCastInfo(movieDetails);				
+		
+			posterList.add(mpi);
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.github.kingargyle.plexappclient.ui.adapters.AbstractPosterImageGalleryAdapter#retrieveVideos()
+	 */
+	@Override
+	protected MediaContainer retrieveVideos() throws Exception {
+		return factory.retrieveSections(key, "all");
 	}
 
 }
