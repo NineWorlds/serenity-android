@@ -8,14 +8,53 @@
     android:orientation="vertical"
     android:padding="5dp"
     tools:context=".ui.browser.movie.MovieBrowserActivity" >
-
+    
     <LinearLayout
-        android:id="@+id/movieDetailsLayout"
+        android:id="@+id/metaDataRow"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginRight="10dp"
+        android:background="#80000000"
+        android:orientation="horizontal" >
+        
+        <TextView android:id="@+id/screenName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="Category:"
+            android:focusable="false"/>
+        
+        <Spinner android:id="@+id/movieCategoryFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:prompt="@string/movie_category_prompt"
+            android:spinnerMode="dropdown"
+            android:layout_marginLeft="5dp"
+            android:gravity="left"
+            android:background="@drawable/spinner_background"
+            android:focusable="true"/>
+        
+         <Spinner android:id="@+id/movieCategoryFilter2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:prompt="@string/movie_category_prompt2"
+            android:spinnerMode="dropdown"
+            android:visibility="invisible"/>
+        
+            
+        
+   </LinearLayout>        
+    
+
+    <LinearLayout
+        android:id="@+id/movieDetailsLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/metaDataRow"
         android:background="#80000000"
         android:orientation="horizontal" >
 

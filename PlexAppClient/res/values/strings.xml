@@ -17,5 +17,24 @@
     <string name="title_activity_tvbrowser_show_season">TV Shows Seasons</string>
     <string name="title_activity_tvbrowser_show_episodes">TV Shows Episodes</string>
     <string name="video_title">Video Player</string>
+    <string name="movie_category_prompt">Choose a Category</string>
+    <string name="movie_category_prompt2">Genre/Collection</string>
+    
+    <string-array name="plex_video_categories">
+        <item>All</item>
+        <item>Unwatched</item>
+        <item>Newest</item>
+        <item>On Deck</item>
+        <item>Genre</item>
+        <item>Year</item>
+        <item>Decade</item>
+        <item>Director</item>
+        <item>Actor</item>
+        <item>Country</item>
+        <item>Content Rating</item>
+        <item>Rating</item>
+        <item>Resolution</item>
+        <item>First Letter</item>
+    </string-array>
     
 </resources>

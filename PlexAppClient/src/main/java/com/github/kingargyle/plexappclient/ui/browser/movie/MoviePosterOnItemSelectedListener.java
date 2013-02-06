@@ -407,6 +407,10 @@ public class MoviePosterOnItemSelectedListener implements
 	}
 
 	public void onNothingSelected(AdapterView<?> av) {
+		if (previous != null) {
+			previous.setPadding(0, 0, 0, 0);
+			previous.refreshDrawableState();
+		}
 
 	}
 

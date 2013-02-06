@@ -26,9 +26,12 @@ package com.github.kingargyle.plexappclient.ui.browser.movie;
 import com.github.kingargyle.plexappclient.R;
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Gallery;
+import android.widget.Spinner;
 
 public class MovieBrowserActivity extends Activity {
 	
@@ -38,6 +41,22 @@ public class MovieBrowserActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		String categories[] = { "All",
+				"Unwatched",
+				"Newest",
+				"On Deck",
+				"Genre",
+				"Year",
+				"Decade",
+				"Director",
+				"Actor",
+				"Country",
+				"Content Rating",
+				"Rating",
+				"Resolution",
+				"First Letter"};
+		
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
 
@@ -50,6 +69,12 @@ public class MovieBrowserActivity extends Activity {
 		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(this, key));
 		posterGallery.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(bgLayout, this));
 		posterGallery.setOnItemClickListener(new MoviePosterOnItemClickListener());
+		
+		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.serenity_spinner_textview, categories);
+		spinnerArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+		Spinner categorySpinner =(Spinner) findViewById(R.id.movieCategoryFilter);
+		categorySpinner.setAdapter(spinnerArrayAdapter);
+		
 		
 	}
 	
