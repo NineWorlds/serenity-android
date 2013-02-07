@@ -51,6 +51,9 @@ public class EpisodeBrowserActivity extends Activity {
 		posterGallery.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(bgLayout, this));
 		posterGallery.setOnItemClickListener(new EpisodePosterOnItemClickListener());
 		
+		View l = findViewById(R.id.metaDataRow);
+		l.setVisibility(View.INVISIBLE);
+		
 	}
 	
 
