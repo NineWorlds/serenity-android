@@ -23,9 +23,19 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.github.kingargyle.plexapp.PlexappFactory;
+import com.github.kingargyle.plexapp.model.impl.Directory;
+import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.SerenityApplication;
+import com.github.kingargyle.plexappclient.core.model.CategoryInfo;
+
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -39,11 +49,7 @@ public class MovieBrowserActivity extends Activity {
 	private View bgLayout;
 	private Spinner categorySpinner;
 	private boolean restarted_state = false;
-	String categories[] = { "all",
-			"unwatched",
-			"newest",
-			"onDeck",
-     };
+	private ArrayList<CategoryInfo> categories;
 	
 
 	@Override
@@ -55,7 +61,31 @@ public class MovieBrowserActivity extends Activity {
 
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
 		posterGallery = (Gallery) findViewById(R.id.moviePosterGallery);
+		
+		populateCategories();
 
+	}
+	
+	protected void populateCategories() {
+		PlexappFactory factory = SerenityApplication.getPlexFactory();
+		try {
+			MediaContainer mediaContainer = factory.retrieveSections(key);
+			List<Directory> dirs = mediaContainer.getDirectories();
+			categories = new ArrayList<CategoryInfo>();
+			for(Directory dir : dirs) {
+				if (!"folder".equals(dir.getKey()) && !"Search...".equals(dir.getTitle())) {
+					CategoryInfo category = new CategoryInfo();
+					category.setCategory(dir.getKey());
+					category.setCategoryDetail(dir.getTitle());
+					if (dir.getSecondary() > 0) {
+						category.setLevel(dir.getSecondary());
+					}
+					categories.add(category);
+				}
+			}
+		} catch (Exception e) {
+			Log.e("MovieBrowserActivity", e.getMessage(), e);
+		}		
 	}
 	
 	@Override
@@ -76,7 +106,7 @@ public class MovieBrowserActivity extends Activity {
 		posterGallery.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(bgLayout, this));
 		posterGallery.setOnItemClickListener(new MoviePosterOnItemClickListener());
 		
-		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.serenity_spinner_textview, categories);
+		ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(this, R.layout.serenity_spinner_textview, categories);
 		spinnerArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 		
 		categorySpinner =(Spinner) findViewById(R.id.movieCategoryFilter);

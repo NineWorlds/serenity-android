@@ -142,6 +142,7 @@ public class MoviePosterImageGalleryAdapter extends AbstractPosterImageGalleryAd
 		if (category == null) {
 			category = "all";
 		}
+		
 		return factory.retrieveSections(key, category);
 	}
 
