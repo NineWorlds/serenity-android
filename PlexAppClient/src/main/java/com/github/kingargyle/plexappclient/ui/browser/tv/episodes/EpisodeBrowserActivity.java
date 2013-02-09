@@ -35,6 +35,8 @@ public class EpisodeBrowserActivity extends Activity {
 	private Gallery posterGallery;
 	private String key;
 	private View bgLayout;
+	private View metaData;
+	private boolean restarted_state = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +44,30 @@ public class EpisodeBrowserActivity extends Activity {
 		key = getIntent().getExtras().getString("key");
 
 		setContentView(R.layout.activity_movie_browser);
-		
-		
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
-		
 		posterGallery = (Gallery) findViewById(R.id.moviePosterGallery);
+		metaData = findViewById(R.id.metaDataRow);
+		metaData.setVisibility(View.INVISIBLE);
+				
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		if (restarted_state == false) {
+			setupEpisodeBrowser();
+		}
+		restarted_state = false;
+	}
+
+
+	/**
+	 * Populate the episode browser with data
+	 */
+	protected void setupEpisodeBrowser() {
 		posterGallery.setAdapter(new EpisodePosterImageGalleryAdapter(this, key));
 		posterGallery.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(bgLayout, this));
 		posterGallery.setOnItemClickListener(new EpisodePosterOnItemClickListener());
-		
-		View l = findViewById(R.id.metaDataRow);
-		l.setVisibility(View.INVISIBLE);
-		
 	}
 	
 
@@ -64,15 +78,10 @@ public class EpisodeBrowserActivity extends Activity {
 		return true;
 	}
 	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onResume()
-	 */
 	@Override
-	protected void onResume() {
-		super.onResume();
-		posterGallery.setAdapter(new EpisodePosterImageGalleryAdapter(this, key));
-		posterGallery.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(bgLayout, this));
-		posterGallery.setOnItemClickListener(new EpisodePosterOnItemClickListener());		
+	protected void onRestart() {
+		super.onRestart();
+		restarted_state = true;
 	}
-	
+		
 }
