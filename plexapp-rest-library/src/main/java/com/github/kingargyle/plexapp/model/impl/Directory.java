@@ -26,7 +26,6 @@ package com.github.kingargyle.plexapp.model.impl;
 import java.util.List;
 
 import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
@@ -97,7 +96,18 @@ public class Directory extends AbstractPlexObject {
 	 * Only appears with prompt.
 	 */
 	private String search;
+	
+	@Attribute(required=false)
+	private int secondary;
 		
+	public int getSecondary() {
+		return secondary;
+	}
+
+	public void setSecondary(int secondary) {
+		this.secondary = secondary;
+	}
+
 	public List<Genre> getGenres() {
 		return genres;
 	}
@@ -305,5 +315,10 @@ public class Directory extends AbstractPlexObject {
 	public void setSearch(String search) {
 		this.search = search;
 	}
+	
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
+	}
+	
 	
 }

@@ -16,10 +16,10 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/spinner_borders_focused" android:state_focused="true" android:state_pressed="false"/>
-    <item android:drawable="@drawable/spinner_borders" android:state_focused="true" android:state_pressed="true"/>
-    <item android:drawable="@android:color/black" android:state_focused="false" android:state_pressed="true"/>
-    <item android:drawable="@drawable/spinner_borders" android:state_selected="true"/>
-    <item android:drawable="@drawable/spinner_borders"/>
+    <item android:drawable="@drawable/spinner_focused_holo_dark" android:state_focused="true" android:state_pressed="false"/>
+    <item android:drawable="@drawable/spinner_pressed_holo_dark" android:state_focused="true" android:state_pressed="true"/>
+    <item android:drawable="@drawable/spinner_default_holo_dark" android:state_focused="false" android:state_pressed="true"/>
+    <item android:drawable="@drawable/spinner_default_holo_dark" android:state_selected="true"/>
+    <item android:drawable="@drawable/spinner_default_holo_dark"/>
 
 </selector>

@@ -49,7 +49,7 @@ public class TestMediaContainerSerialization extends AbstractSerializationTest {
 	@Test
 	public void testSimpleMediaContainerDirectory() throws Exception {
 		String expectedResult = "<MediaContainer size=\"0\" allowSync=\"0\" mediaTagVersion=\"0\" sortAsc=\"0\" viewMode=\"0\">" +
-				"<Directory key=\"sections\" title=\"Test Directory\" refreshing=\"0\" updatedAt=\"0\" createdAt=\"0\"/>" +
+				"<Directory key=\"sections\" title=\"Test Directory\" refreshing=\"0\" updatedAt=\"0\" createdAt=\"0\" secondary=\"0\"/>" +
 				"</MediaContainer>";
 
 		mediaContainer.setSize(0);
@@ -69,8 +69,8 @@ public class TestMediaContainerSerialization extends AbstractSerializationTest {
 	@Test
 	public void testMultipleDirectories() throws Exception {
 		String expectedResult = "<MediaContainer size=\"0\" allowSync=\"0\" mediaTagVersion=\"0\" sortAsc=\"0\" viewMode=\"0\">" +
-              "<Directory key=\"sections\" title=\"Test Directory\" refreshing=\"0\" updatedAt=\"0\" createdAt=\"0\"/>" +
-              "<Directory key=\"recentlyAdded\" title=\"Test Directory 2\" refreshing=\"0\" updatedAt=\"0\" createdAt=\"0\"/>" +
+              "<Directory key=\"sections\" title=\"Test Directory\" refreshing=\"0\" updatedAt=\"0\" createdAt=\"0\" secondary=\"0\"/>" +
+              "<Directory key=\"recentlyAdded\" title=\"Test Directory 2\" refreshing=\"0\" updatedAt=\"0\" createdAt=\"0\" secondary=\"0\"/>" +
               "</MediaContainer>";
 		
 		mediaContainer.setSize(0);

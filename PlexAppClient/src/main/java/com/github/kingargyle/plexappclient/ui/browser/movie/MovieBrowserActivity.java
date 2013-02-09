@@ -42,20 +42,11 @@ public class MovieBrowserActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
-		String categories[] = { "All",
-				"Unwatched",
-				"Newest",
-				"On Deck",
-				"Genre",
-				"Year",
-				"Decade",
-				"Director",
-				"Actor",
-				"Country",
-				"Content Rating",
-				"Rating",
-				"Resolution",
-				"First Letter"};
+		String categories[] = { "all",
+				"unwatched",
+				"newest",
+				"onDeck",
+         };
 		
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
@@ -66,7 +57,7 @@ public class MovieBrowserActivity extends Activity {
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
 		
 		posterGallery = (Gallery) findViewById(R.id.moviePosterGallery);
-		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(this, key));
+		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(this, key, "all"));
 		posterGallery.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(bgLayout, this));
 		posterGallery.setOnItemClickListener(new MoviePosterOnItemClickListener());
 		
@@ -74,8 +65,7 @@ public class MovieBrowserActivity extends Activity {
 		spinnerArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 		Spinner categorySpinner =(Spinner) findViewById(R.id.movieCategoryFilter);
 		categorySpinner.setAdapter(spinnerArrayAdapter);
-		
-		
+		categorySpinner.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener("all", key));
 	}
 	
 
@@ -92,7 +82,7 @@ public class MovieBrowserActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(this, key));
+		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(this, key, "all"));
 		posterGallery.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(bgLayout, this));
 		posterGallery.setOnItemClickListener(new MoviePosterOnItemClickListener());		
 	}

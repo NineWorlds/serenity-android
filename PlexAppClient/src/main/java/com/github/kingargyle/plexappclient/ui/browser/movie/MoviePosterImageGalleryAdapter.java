@@ -56,9 +56,9 @@ import android.widget.Toast;
  *
  */
 public class MoviePosterImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
-		
-	public MoviePosterImageGalleryAdapter(Context c, String key) {
-		super(c, key);
+	
+	public MoviePosterImageGalleryAdapter(Context c, String key, String category) {
+		super(c, key, category);
 	}
 		
 	/* (non-Javadoc)
@@ -139,7 +139,10 @@ public class MoviePosterImageGalleryAdapter extends AbstractPosterImageGalleryAd
 	 */
 	@Override
 	protected MediaContainer retrieveVideos() throws Exception {
-		return factory.retrieveSections(key, "all");
+		if (category == null) {
+			category = "all";
+		}
+		return factory.retrieveSections(key, category);
 	}
 
 }

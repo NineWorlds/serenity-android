@@ -64,6 +64,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	protected static final int SIZE_WIDTH = 200;
 	protected PlexappFactory factory;
 	protected String key;
+	protected String category;
 	
 	
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
@@ -81,6 +82,25 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 				
 		createPosters();
 	}
+
+	public AbstractPosterImageGalleryAdapter(Context c, String key, String category) {
+		context = (Activity)c;
+		this.key = key;
+		this.category = category;
+		
+		posterList = new ArrayList<VideoContentInfo>();
+		
+		imageManager = SerenityApplication.getImageManager();
+		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
+		imageTagFactory.setErrorImageId(R.drawable.default_error);
+		imageTagFactory.setSaveThumbnail(true);
+		
+	    Toast.makeText(context, "Retrieving Episodes", Toast.LENGTH_SHORT).show();
+				
+		createPosters();
+	}
+
+	
 	
 	
 	protected void createPosters() {
