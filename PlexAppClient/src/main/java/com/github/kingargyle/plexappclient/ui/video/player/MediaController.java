@@ -359,8 +359,8 @@ public class MediaController extends FrameLayout {
 				hide();
 				break;
 			case SHOW_PROGRESS:
-				pos = setProgress();
 				if (!mDragging && mShowing) {
+					pos = setProgress();
 					msg = obtainMessage(SHOW_PROGRESS);
 					sendMessageDelayed(msg, 1000 - (pos % 1000));
 					updatePausePlay();
@@ -371,7 +371,7 @@ public class MediaController extends FrameLayout {
 	};
 
 	private long setProgress() {
-		if (mPlayer == null || mDragging)
+		if (mPlayer == null || mDragging || !mPlayer.isPlaying())
 			return 0;
 
 		long position = mPlayer.getCurrentPosition();

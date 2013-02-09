@@ -216,6 +216,21 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 			
 		}
 		
+		if (mediaController.isShowing() && keyCode == KeyEvent.KEYCODE_BACK) {
+			if (mediaPlayer.isPlaying()) {
+				mediaPlayer.stop();
+				mediaController.hide();
+				return super.onKeyDown(keyCode, event);
+			}
+		}
+		
+		if (!mediaController.isShowing() && keyCode == KeyEvent.KEYCODE_BACK) {
+			if (mediaPlayer.isPlaying()) {
+				mediaPlayer.stop();
+				return super.onKeyDown(keyCode, event);
+			}
+		}
+		
 		if (keyCode == KeyEvent.KEYCODE_INFO) {
 			if (mediaController.isShowing()) {
 				mediaController.hide();
@@ -234,7 +249,6 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements Surfac
 			}
 			return true;
 		}
-		
 		
 		return super.onKeyDown(keyCode, event);
 	}
