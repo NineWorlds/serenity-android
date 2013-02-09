@@ -26,7 +26,6 @@ package com.github.kingargyle.plexappclient.ui.browser.movie;
 import com.github.kingargyle.plexappclient.R;
 import android.os.Bundle;
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -38,32 +37,49 @@ public class MovieBrowserActivity extends Activity {
 	private Gallery posterGallery;
 	private String key;
 	private View bgLayout;
+	private Spinner categorySpinner;
+	private boolean restarted_state = false;
+	String categories[] = { "all",
+			"unwatched",
+			"newest",
+			"onDeck",
+     };
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
-		String categories[] = { "all",
-				"unwatched",
-				"newest",
-				"onDeck",
-         };
-		
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
-
 		setContentView(R.layout.activity_movie_browser);
-		
-		
+
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
-		
 		posterGallery = (Gallery) findViewById(R.id.moviePosterGallery);
+
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		if (restarted_state == false) {
+			setupMovieBrowser();
+		}
+		restarted_state = false;
+	}
+
+
+	/**
+	 * Setup the Gallery and Category spinners 
+	 */
+	protected void setupMovieBrowser() {
 		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(this, key, "all"));
 		posterGallery.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(bgLayout, this));
 		posterGallery.setOnItemClickListener(new MoviePosterOnItemClickListener());
 		
 		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.serenity_spinner_textview, categories);
 		spinnerArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
-		Spinner categorySpinner =(Spinner) findViewById(R.id.movieCategoryFilter);
+		
+		categorySpinner =(Spinner) findViewById(R.id.movieCategoryFilter);
 		categorySpinner.setAdapter(spinnerArrayAdapter);
 		categorySpinner.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener("all", key));
 	}
@@ -75,16 +91,14 @@ public class MovieBrowserActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_movie_browser, menu);
 		return true;
 	}
-	
+		
 	/* (non-Javadoc)
-	 * @see android.app.Activity#onResume()
+	 * @see android.app.Activity#onRestart()
 	 */
 	@Override
-	protected void onResume() {
-		super.onResume();
-		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(this, key, "all"));
-		posterGallery.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(bgLayout, this));
-		posterGallery.setOnItemClickListener(new MoviePosterOnItemClickListener());		
+	protected void onRestart() {
+		super.onRestart();
+		restarted_state = true;
 	}
 	
 }

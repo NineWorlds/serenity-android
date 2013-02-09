@@ -23,6 +23,7 @@
 
 package com.github.kingargyle.plexappclient.ui.preferences;
 
+import com.github.kingargyle.plexappclient.MainActivity;
 import com.github.kingargyle.plexappclient.R;
 
 import android.os.Bundle;
@@ -47,10 +48,8 @@ public class SerenityPreferenceActivity extends PreferenceActivity {
 	 */
 	@Override
 	public void finish() {
+		setResult(MainActivity.MAIN_MENU_PREFERENCE_RESULT_CODE);
 		super.finish();
-		
-		//Intent i = new Intent(this, MainActivity.class);
-		//startActivity(i);
 	}
 
 }

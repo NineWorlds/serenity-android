@@ -23,6 +23,7 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
+import com.github.kingargyle.plexappclient.MainActivity;
 import com.github.kingargyle.plexappclient.ui.video.player.SerenitySurfaceViewVideoActivity;
 import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 
@@ -67,7 +68,7 @@ public class MoviePosterOnItemClickListener  implements OnItemClickListener {
 		vpIntent.putExtra("posterUrl", mpiv.getPosterInfo().getPosterURL());
 		
 		Activity a = (Activity) mpiv.getContext();
-		a.startActivityForResult(vpIntent, 0);
+		a.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
 	}
 
 }

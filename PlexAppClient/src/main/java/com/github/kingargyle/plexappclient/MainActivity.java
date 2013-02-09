@@ -42,17 +42,19 @@ public class MainActivity extends Activity {
 	private Gallery mainGallery;
 	private View mainView;
 	private SharedPreferences preferences;
+	public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
+	public static int BROWSER_RESULT_CODE = 200;
+	private boolean restarted_state = false;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_plex_app_main);
 		mainView = findViewById(R.id.mainLayout);
+		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);	
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		preferences.registerOnSharedPreferenceChangeListener(((ServerConfig)ServerConfig.getInstance()).getServerConfigChangeListener());
-
-		setupGallery();
-
 	}
 
 	@Override
@@ -72,7 +74,7 @@ public class MainActivity extends Activity {
 
 		Intent i = new Intent(MainActivity.this,
 				SerenityPreferenceActivity.class);
-		startActivity(i);
+		startActivityForResult(i, 0);
 
 		return true;
 	}
@@ -83,15 +85,45 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
 		// Hey! This refreshes the whole Activity!
-		this.onCreate(null);
+		//this.onCreate(null);
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onStart()
+	 */
+	@Override
+	protected void onStart() {
+		super.onStart();
+		if (restarted_state == false) {
+			setupGallery();
+		}
+		restarted_state = false;
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onRestart()
+	 */
+	@Override
+	protected void onRestart() {
+		restarted_state = true;
+		super.onRestart();
+		
+	}
+
+	/**
+	 * Refresh the screen after coming back from the preferences screen.
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == MAIN_MENU_PREFERENCE_RESULT_CODE) {
+			setupGallery();
+		}
+		
 	}
 	
 
 	private void setupGallery() {
-
-		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
 		mainGallery.setAdapter(new MainMenuTextViewAdapter(this, mainView));
 		mainGallery
 				.setOnItemSelectedListener(new GalleryOnItemSelectedListener(
