@@ -38,23 +38,38 @@ public class TVShowBrowserActivity extends Activity {
 	
 	private Gallery tvShowsGallery;
 	private View tvShowMainView;
+	private boolean restarted_state = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tvbrowser_show);
 		tvShowMainView = findViewById(R.id.tvshowBrowserLayout);
-		setupShows();
+		tvShowsGallery = (Gallery) findViewById(R.id.tvShowBannerGallery);
+
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
 		
+		if (restarted_state == false) {
+			setupShows();
+		}
+		restarted_state = false;
 	}
 	
 	protected void setupShows() {
-		tvShowsGallery = (Gallery) findViewById(R.id.tvShowBannerGallery);
-
 		tvShowsGallery.setAdapter(new TVShowBannerImageGalleryAdapter(this));
 		tvShowsGallery
 				.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(tvShowMainView, this));
 		tvShowsGallery.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		restarted_state = true;
 	}
 
 }

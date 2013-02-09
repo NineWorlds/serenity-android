@@ -38,23 +38,40 @@ public class TVShowSeasonBrowserActivity extends Activity {
 	
 	private Gallery tvShowSeasonsGallery;
 	private View tvShowSeasonsMainView;
+	private boolean restarted_state = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tvbrowser_show_seasons);
 		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
-		setupSeasons();
-		
+		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		if (restarted_state == false) {
+			setupSeasons();
+		}
+		restarted_state = false;
 	}
 	
 	protected void setupSeasons() {
-		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
 
 		tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(this));
 		tvShowSeasonsGallery
 				.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this));
 		tvShowSeasonsGallery.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this));
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onRestart()
+	 */
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		restarted_state = true;
 	}
 
 }
