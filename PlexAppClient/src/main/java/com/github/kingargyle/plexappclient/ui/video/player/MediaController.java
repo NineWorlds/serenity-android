@@ -371,7 +371,7 @@ public class MediaController extends FrameLayout {
 	};
 
 	private long setProgress() {
-		if (mPlayer == null || mDragging || !mPlayer.isPlaying())
+		if (mPlayer == null || mDragging)
 			return 0;
 
 		long position = mPlayer.getCurrentPosition();
