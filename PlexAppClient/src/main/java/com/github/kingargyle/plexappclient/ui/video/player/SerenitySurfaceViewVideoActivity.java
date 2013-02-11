@@ -119,6 +119,10 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		float ratioWidth = surfaceViewWidth / videoWidth;
 		float ratioHeight = surfaceViewHeight / videoHeight;
 		float aspectRatio = videoWidth / videoHeight;
+		
+		if (videoHeight == 480 && videoWidth == 720) {
+			aspectRatio = (float)1.78;
+		}
 
 		if (ratioWidth > ratioHeight) {
 			lp.width = (int) (surfaceViewHeight * aspectRatio);
@@ -126,6 +130,14 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		} else {
 			lp.width = surfaceViewWidth;
 			lp.height = (int) (surfaceViewWidth / aspectRatio);
+		}
+		
+		if (lp.width > surfaceViewWidth) {
+			lp.width = surfaceViewWidth;
+		}
+		
+		if (lp.height > surfaceViewHeight) {
+			lp.height = surfaceViewHeight;
 		}
 
 		// lp.height = (int) (((float)height / (float) width ) * (float) swidth
