@@ -106,7 +106,12 @@ public class TVShowBannerOnItemSelectedListener implements
 
 		TextView summary = (TextView) context
 				.findViewById(R.id.tvShowSeriesSummary);
-		summary.setText(v.getPosterInfo().getPlotSummary());
+		String plotSummary = v.getPosterInfo().getPlotSummary();
+		if (plotSummary == null) {
+			summary.setText("");
+		} else {
+			summary.setText(plotSummary);
+		}
 
 		TextView title = (TextView) context.findViewById(R.id.tvBrowserTitle);
 		title.setText(v.getPosterInfo().getTitle());
@@ -115,16 +120,30 @@ public class TVShowBannerOnItemSelectedListener implements
 				.findViewById(R.id.tvShowBrowserGenre);
 		List<String> genres = v.getPosterInfo().getGeneres();
 		String genreText = "";
-		for (String genre : genres) {
-			genreText = genreText + genre + "/";
+		if (genres != null) {
+			for (String genre : genres) {
+				genreText = genreText + genre + "/";
+			}
+			genreText = genreText.substring(0, genreText.lastIndexOf("/"));
 		}
-		genreText = genreText.substring(0, genreText.lastIndexOf("/"));
 		genreView.setText(genreText);
 
 		TextView watchedUnwatched = (TextView) context
 				.findViewById(R.id.tvShowWatchedUnwatched);
-		String wu = "Watched: " + v.getPosterInfo().getShowsWatched();
-		wu = wu + " Unwatched: " + v.getPosterInfo().getShowsUnwatched();
+		
+		String watched = v.getPosterInfo().getShowsWatched();
+		String unwatched = v.getPosterInfo().getShowsUnwatched();
+		
+		String wu = "";
+		if (watched != null) {
+			wu = "Watched: " + watched;
+		}
+		
+		if (unwatched != null) {
+			wu = wu + " Unwatched: " + unwatched;
+			
+		}
+		
 		watchedUnwatched.setText(wu);
 
 	}
@@ -140,9 +159,13 @@ public class TVShowBannerOnItemSelectedListener implements
 
 		TVShowBannerImageView mpiv = (TVShowBannerImageView) v;
 		AbstractSeriesContentInfo mi = mpiv.getPosterInfo();
-
-		BackgroundImageLoader im = new BackgroundImageLoader(mi.getBackgroundURL(), bgLayout, R.drawable.tvshows);
-		imageExecutorService.submit(im);
+		
+		if (mi.getBackgroundURL() != null) {
+			BackgroundImageLoader im = new BackgroundImageLoader(mi.getBackgroundURL(), bgLayout, R.drawable.tvshows);
+			imageExecutorService.submit(im);
+		} else {
+			bgLayout.setBackgroundResource(R.drawable.tvshows);
+		}
 
 		ImageView showImage = (ImageView) context
 				.findViewById(R.id.tvShowImage);
@@ -155,7 +178,7 @@ public class TVShowBannerOnItemSelectedListener implements
 		} else {
 			showImage.setTag(imageTagFactory.build(SerenityApplication
 					.getPlexFactory().baseURL()
-					+ ":/resources/movie-fanart.jpg", context));
+					+ ":/resources/show-fanart.jpg", context));
 		}
 
 		imageManager.getLoader().load(showImage);
