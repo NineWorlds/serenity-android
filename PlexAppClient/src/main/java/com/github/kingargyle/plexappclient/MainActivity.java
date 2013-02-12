@@ -24,6 +24,7 @@
 package com.github.kingargyle.plexappclient;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
@@ -50,6 +51,10 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+		.permitAll().build();
+		StrictMode.setThreadPolicy(policy);
+		
 		setContentView(R.layout.activity_plex_app_main);
 		mainView = findViewById(R.id.mainLayout);
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);	
