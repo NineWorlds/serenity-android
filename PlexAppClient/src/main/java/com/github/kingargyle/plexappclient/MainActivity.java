@@ -60,7 +60,15 @@ public class MainActivity extends Activity {
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);	
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		preferences.registerOnSharedPreferenceChangeListener(((ServerConfig)ServerConfig.getInstance()).getServerConfigChangeListener());
+		
+		boolean googletv = SerenityApplication.isGoogleTV(this);
+		if (!googletv) {
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putBoolean("external_player", true);
+			editor.commit();
+		}
 	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

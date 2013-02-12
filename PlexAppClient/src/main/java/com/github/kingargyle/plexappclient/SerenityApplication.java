@@ -31,6 +31,8 @@ import com.github.kingargyle.plexappclient.core.ServerConfig;
 import com.novoda.imageloader.core.ImageManager;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.StrictMode;
 
 /**
@@ -81,6 +83,12 @@ public class SerenityApplication extends Application {
 	public static SerenityLoaderSettings getLoaderSettings() {
 		return settings;
 	}
+	
+	public static boolean isGoogleTV(Context context) {
+	    final PackageManager pm = context.getPackageManager();
+	    return pm.hasSystemFeature("com.google.android.tv");
+	}	
+	
 	
 
 }
