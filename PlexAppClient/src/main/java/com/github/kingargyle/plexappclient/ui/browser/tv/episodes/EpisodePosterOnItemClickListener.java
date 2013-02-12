@@ -67,6 +67,7 @@ public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 		vpIntent.putExtra("summary", epiv.getPosterInfo().getPlotSummary());
 		vpIntent.putExtra("title", epiv.getPosterInfo().getTitle());
 		vpIntent.putExtra("posterUrl", epiv.getPosterInfo().getPosterURL());
+		vpIntent.putExtra("aspectRatio", epiv.getPosterInfo().getAspectRatio());
 		
 		Activity a = (Activity) epiv.getContext();
 		a.startActivityForResult(vpIntent, 0);

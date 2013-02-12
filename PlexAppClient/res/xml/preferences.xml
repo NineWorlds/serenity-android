@@ -4,6 +4,7 @@
         <EditTextPreference android:summary="The domain name or IP Address for your server" android:title="Server Address" android:key="server" android:defaultValue=""/>
         <EditTextPreference android:summary="The port number for the server (usually 32400)" android:title="Server Port" android:key="serverport" android:defaultValue="32400"/>
         <CheckBoxPreference android:summary="Use external media player" android:title="External Player" android:key="external_player"/>
+        <CheckBoxPreference android:summary="Prefer plex medias server's aspect ratio" android:title="Plex Aspect Ratio" android:key="plex_aspect_ratio"/>
     </PreferenceCategory>
     
 

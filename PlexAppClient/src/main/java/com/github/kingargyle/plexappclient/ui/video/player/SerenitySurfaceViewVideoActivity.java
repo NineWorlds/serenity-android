@@ -27,10 +27,13 @@ import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.ui.video.player.MediaController.MediaPlayerControl;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -39,6 +42,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewDebug.HierarchyTraceType;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 /**
  * @author dcarver
@@ -53,6 +58,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 	private String videoURL;
 	private SurfaceView surfaceView;
 	private MediaController mediaController;
+	private String aspectRatio;
 
 	/*
 	 * (non-Javadoc)
@@ -108,7 +114,10 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 	 * @return
 	 */
 	protected android.view.ViewGroup.LayoutParams setupAspectRatio() {
-		android.view.ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
+		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
+				
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean preferPlexAspectRatio = prefs.getBoolean("plex_aspect_ratio", false);
 
 		int surfaceViewHeight = surfaceView.getHeight();
 		int surfaceViewWidth = surfaceView.getWidth();
@@ -119,6 +128,10 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		float ratioWidth = surfaceViewWidth / videoWidth;
 		float ratioHeight = surfaceViewHeight / videoHeight;
 		float aspectRatio = videoWidth / videoHeight;
+		
+		if (preferPlexAspectRatio && this.aspectRatio != null) {
+			aspectRatio = Float.parseFloat(this.aspectRatio);
+		}
 		
 		if (videoHeight == 480 && videoWidth == 720) {
 			aspectRatio = (float)1.78;
@@ -139,9 +152,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		if (lp.height > surfaceViewHeight) {
 			lp.height = surfaceViewHeight;
 		}
-
-		// lp.height = (int) (((float)height / (float) width ) * (float) swidth
-		// );
+		
 		return lp;
 	}
 
@@ -168,6 +179,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		videoURL = getIntent().getExtras().getString("videoUrl");
 		String summary = getIntent().getExtras().getString("summary");
 		String title = getIntent().getExtras().getString("title");
+		aspectRatio = getIntent().getExtras().getString("aspectRatio");
 
 		mediaPlayer = new MediaPlayer();
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
