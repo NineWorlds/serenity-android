@@ -23,31 +23,35 @@
 package com.github.kingargyle.plexappclient;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.config.IConfiguration;
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
-import com.github.kingargyle.plexappclient.core.ServerConfig;
+import com.github.kingargyle.plexappclient.core.model.impl.MenuItem;
+import com.github.kingargyle.plexappclient.core.services.MainMenuIntentService;
 import com.github.kingargyle.plexappclient.ui.views.MainMenuTextView;
-import com.github.kingargyle.plexapp.model.impl.Directory;
 
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
-import android.widget.Toast;
 
 public class MainMenuTextViewAdapter extends BaseAdapter {
 
 	/** The parent context */
 	private Context myContext;
-	private View mainView;
-	private PlexappFactory factory;
-	private ArrayList<MenuItem> menuItems;
+	
+	private static Handler menuItemhandler;
+	
+	private static MainMenuTextViewAdapter notifyAdapter;
+	
+	private static ArrayList<MenuItem> menuItems;
+	
+	private static ProgressDialog pd;
 
 	/** Simple Constructor saving the 'parent' context. */
 	public MainMenuTextViewAdapter(Context c) {
@@ -56,69 +60,22 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 
 	public MainMenuTextViewAdapter(Context c, View v) {
 		this.myContext = c;
-		this.mainView = v;
 		menuItems = new ArrayList<MenuItem>();
-
-		initializePlexFactory();
-		fetchMenuItems();
+		fetchData();
+		pd = ProgressDialog.show(myContext, "Build Menus", "Loading Menus");
 	}
 	
-	protected void fetchMenuItems() {
-		
-		Toast.makeText(myContext, "Retrieving Menu Items", Toast.LENGTH_SHORT).show();
-		
-		if (factory != null) {
-			loadMenuItems();
-		}
-		createSettingsMenu();
+	protected void fetchData() {
+		menuItemhandler = new MenuItemHandler();
+		Messenger messenger = new Messenger(menuItemhandler);
+		Intent intent = new Intent(myContext, MainMenuIntentService.class);
+		intent.putExtra("MESSENGER", messenger);
+		myContext.startService(intent);
+		notifyAdapter = this;
 	}
 	
-	void loadMenuItems() {
-		// Fetch TV Shows and Movies
-		try {
-			MediaContainer mc = factory.retrieveSections();
-			List<Directory> dirs = mc.getDirectories();
-			for (Directory item : dirs) {
-				MenuItem m = new MenuItem();
-				m.setTitle(item.getTitle());
-				m.setType(item.getType());
-				m.setSection(item.getKey());
-				menuItems.add(m);
-			}
-		} catch (Exception e) {
-		  Toast.makeText(myContext, "Unable to comminicate with server at " + factory.baseURL() + ". Reason: " + e.getMessage(), Toast.LENGTH_LONG).show();
-		  Log.e("MainMenuTextAdapter", "Unable to comminicate to server at " + factory.baseURL(), e);
-		} 
-	}
-	
-
-	/**
-	 * Create the settings MenuItem since there is no option
-	 * to retrieve this from Plex itself.
-	 *  
-	 */
-	void createSettingsMenu() {
-		MenuItem settingsMenuItem = new MenuItem();
-		settingsMenuItem.setTitle("Settings");
-		settingsMenuItem.setType("settings");
-		settingsMenuItem.setSection("0");
-		menuItems.add(settingsMenuItem);
-	}
-
-	/**
-	 * Initialize the REST interface factor to retrieve data from the server.
-	 */
-	private void initializePlexFactory() {
-		try {
-			IConfiguration config = ServerConfig.getInstance(myContext);
-			factory = PlexappFactory.getInstance(config);
-		} catch (Exception ex) {
-			Log.w("Unable to initialize server config or non existing server address", ex);
-		}
-	}
-
 	public int getCount() {
-		return this.menuItems.size();
+		return menuItems.size();
 	}
 
 	public Object getItem(int position) {
@@ -171,7 +128,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 			return v;
 		}
 		
-		return new MainMenuTextView(myContext, R.drawable.plexapp);
+		return new MainMenuTextView(myContext, R.drawable.serenity_logo2);
 	}
 
 	/**
@@ -187,35 +144,19 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 				android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
 				android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 	}
-
-	private class MenuItem {
-		private String type;
-		private String title;
-		private String section;
-
-		public String getType() {
-			return type;
+	
+	
+	private static class MenuItemHandler extends Handler {
+		
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.obj != null) {
+				menuItems = (ArrayList<MenuItem>) msg.obj;
+			}
+			notifyAdapter.notifyDataSetChanged();
+			pd.dismiss();
 		}
-
-		public void setType(String type) {
-			this.type = type;
-		}
-
-		public String getTitle() {
-			return title;
-		}
-
-		public void setTitle(String title) {
-			this.title = title;
-		}
-
-		public String getSection() {
-			return section;
-		}
-
-		public void setSection(String section) {
-			this.section = section;
-		}
-
+		
 	}
+
 }

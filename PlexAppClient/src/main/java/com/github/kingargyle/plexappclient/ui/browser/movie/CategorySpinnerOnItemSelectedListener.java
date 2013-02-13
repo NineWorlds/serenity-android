@@ -23,19 +23,18 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.model.impl.Directory;
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexappclient.R;
-import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.model.CategoryInfo;
 import com.github.kingargyle.plexappclient.core.model.SecondaryCategoryInfo;
+import com.github.kingargyle.plexappclient.core.services.MovieSecondaryCategoryRetrievalIntentService;
 
 import android.app.Activity;
-import android.util.Log;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,85 +45,114 @@ import android.widget.Toast;
 
 /**
  * @author dcarver
- *
+ * 
  */
-public class CategorySpinnerOnItemSelectedListener implements OnItemSelectedListener{
-	
-	private String selected;
-	private String key;	
-	private boolean firstSelection = true;
-	private ArrayList<SecondaryCategoryInfo> secondaryCategories;
+public class CategorySpinnerOnItemSelectedListener implements
+		OnItemSelectedListener {
 
-	
-	
-	public CategorySpinnerOnItemSelectedListener(String defaultSelection, String key) {
+	private String selected;
+	private static String key;
+	private boolean firstSelection = true;
+	private static Activity context;
+	private static String category;
+	private Handler secondaryCategoryHandler;
+
+	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
+			String key) {
 		selected = defaultSelection;
 		this.key = key;
+		secondaryCategoryHandler = new SecondaryCategoryHandler();
 	}
 
-	public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
-		
-		// This is so we skip it during the onCreate event from the Activity;
+	public void onItemSelected(AdapterView<?> viewAdapter, View view,
+			int position, long id) {
+		context = (Activity) view.getContext();
+		CategoryInfo item = (CategoryInfo) viewAdapter
+				.getItemAtPosition(position);
+
 		if (firstSelection) {
+			View bgLayout = context
+					.findViewById(R.id.movieBrowserBackgroundLayout);
+			Gallery posterGallery = (Gallery) context
+					.findViewById(R.id.moviePosterGallery);
+			posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(
+					context, key, item.getCategory()));
+			posterGallery
+					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
+							bgLayout, context));
+			posterGallery
+					.setOnItemClickListener(new MoviePosterOnItemClickListener());
 			firstSelection = false;
 			return;
 		}
-		
-		CategoryInfo item = (CategoryInfo) viewAdapter.getItemAtPosition(position);
+
 		if (selected.equalsIgnoreCase(item.getCategory())) {
 			return;
 		}
 
-		selected = item.getCategory();		
-		Activity c = (Activity)view.getContext();
-		Spinner secondarySpinner = (Spinner) c.findViewById(R.id.movieCategoryFilter2);
-		
+		selected = item.getCategory();
+		category = item.getCategory();
+
+		Spinner secondarySpinner = (Spinner) context
+				.findViewById(R.id.movieCategoryFilter2);
+
 		if (item.getLevel() == 0) {
 			secondarySpinner.setVisibility(View.INVISIBLE);
-			View bgLayout = c.findViewById(R.id.movieBrowserBackgroundLayout);
-			Gallery posterGallery = (Gallery) c.findViewById(R.id.moviePosterGallery);
-			posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(c, key, item.getCategory()));
-			posterGallery.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(bgLayout, c));
-			posterGallery.setOnItemClickListener(new MoviePosterOnItemClickListener());			
+			View bgLayout = context
+					.findViewById(R.id.movieBrowserBackgroundLayout);
+			Gallery posterGallery = (Gallery) context
+					.findViewById(R.id.moviePosterGallery);
+			posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(
+					context, key, item.getCategory()));
+			posterGallery
+					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
+							bgLayout, context));
+			posterGallery
+					.setOnItemClickListener(new MoviePosterOnItemClickListener());
 		} else {
-			populateSecondaryCategories(item.getCategory());
-			
-			if (secondaryCategories.isEmpty()) {
-				Toast.makeText(c, "No Entries available for category: " + item.getCategoryDetail(), Toast.LENGTH_LONG).show();
-				return;
-			}
-			secondarySpinner.setVisibility(View.VISIBLE);
-
-			ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(c, R.layout.serenity_spinner_textview, secondaryCategories);
-			spinnerSecArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
-			secondarySpinner.setAdapter(spinnerSecArrayAdapter);
-			secondarySpinner.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(item.getCategory(), key));
+			Messenger messenger = new Messenger(secondaryCategoryHandler);
+			Intent categoriesIntent = new Intent(context,
+					MovieSecondaryCategoryRetrievalIntentService.class);
+			categoriesIntent.putExtra("key", key);
+			categoriesIntent.putExtra("category", category);
+			categoriesIntent.putExtra("MESSENGER", messenger);
+			context.startService(categoriesIntent);
 		}
-		
-	}
-	
-	protected void populateSecondaryCategories(String categoryKey) {
-		try {
-			PlexappFactory factory = SerenityApplication.getPlexFactory();
-			MediaContainer mediaContainer = factory.retrieveSections(key, categoryKey);
-			List<Directory> dirs = mediaContainer.getDirectories();
-			secondaryCategories = new ArrayList<SecondaryCategoryInfo>();
-			for (Directory dir : dirs) {
-				SecondaryCategoryInfo category = new SecondaryCategoryInfo();
-				category.setCategory(dir.getKey());
-				category.setCategoryDetail(dir.getTitle());
-				category.setParentCategory(categoryKey);
-				secondaryCategories.add(category);
-			}
-		} catch (Exception e) {
-			Log.e("CategorySpinnerOnItemSelected", e.getMessage(), e);
-		}
-	}
 
+	}
 
 	public void onNothingSelected(AdapterView<?> va) {
-		
+
 	}
 
+	private static class SecondaryCategoryHandler extends Handler {
+
+		@Override
+		public void handleMessage(Message msg) {
+			List<SecondaryCategoryInfo> secondaryCategories = (List<SecondaryCategoryInfo>) msg.obj;
+
+			if (secondaryCategories == null || secondaryCategories.isEmpty()) {
+				Toast.makeText(context, "No Entries available for category.",
+						Toast.LENGTH_LONG).show();
+				return;
+			}
+
+			Spinner secondarySpinner = (Spinner) context
+					.findViewById(R.id.movieCategoryFilter2);
+			secondarySpinner.setVisibility(View.VISIBLE);
+
+			ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(
+					context, R.layout.serenity_spinner_textview,
+					secondaryCategories);
+			spinnerSecArrayAdapter
+					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+			secondarySpinner.setAdapter(spinnerSecArrayAdapter);
+			secondarySpinner
+					.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
+							category, key));
+
+		}
+
+	}
 
 }

@@ -23,16 +23,11 @@
 
 package com.github.kingargyle.plexappclient.ui.adapters;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.model.impl.Director;
-import com.github.kingargyle.plexapp.model.impl.Genre;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
-import com.github.kingargyle.plexapp.model.impl.Video;
-import com.github.kingargyle.plexapp.model.impl.Writer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
@@ -41,9 +36,8 @@ import com.novoda.imageloader.core.model.ImageTagFactory;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
+import android.os.Handler;
 import android.widget.BaseAdapter;
-import android.widget.Toast;
 
 /**
  * An abstract class for handling the creation of video content
@@ -56,89 +50,45 @@ import android.widget.Toast;
  */
 public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
-	protected List<VideoContentInfo> posterList = null;
-	protected Activity context;
+	protected static List<VideoContentInfo> posterList = null;
+	protected static Activity context;
 	protected ImageManager imageManager;
 	protected ImageTagFactory imageTagFactory;
 	protected static final int SIZE_HEIGHT = 400;
 	protected static final int SIZE_WIDTH = 200;
 	protected PlexappFactory factory;
+	protected Handler handler;
 	protected String key;
 	protected String category;
 	
 	
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
 		context = (Activity)c;
-		this.key = key;
-		
 		posterList = new ArrayList<VideoContentInfo>();
-		
 		imageManager = SerenityApplication.getImageManager();
 		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
-		
-	    Toast.makeText(context, "Retrieving Episodes", Toast.LENGTH_SHORT).show();
-				
-		createPosters();
+		this.key = key;
+		fetchDataFromService();
 	}
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key, String category) {
 		context = (Activity)c;
 		this.key = key;
 		this.category = category;
-		
 		posterList = new ArrayList<VideoContentInfo>();
 		
 		imageManager = SerenityApplication.getImageManager();
 		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
-		
-	    Toast.makeText(context, "Retrieving Episodes", Toast.LENGTH_SHORT).show();
-				
-		createPosters();
-	}
-
-	
-	
-	
-	protected void createPosters() {
-		MediaContainer mc = null;
-		try {
-			factory = SerenityApplication.getPlexFactory();
-			mc = retrieveVideos();
-		} catch (IOException ex) {
- 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL() + ". Reason: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
-			Log.e("AbstractPosterImageGalleryAdapter","Unable to talk to server: ", ex);
-		} catch (Exception e) {
- 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL() + ". Reason: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-			Log.e("AbstractPosterImageGalleryAdapter","Oops.", e);
-		}
-		
-		if (mc != null && mc.getSize() > 0) {
-			createVideoContent(mc);
-		}		
-		
+		fetchDataFromService();
 	}
 	
-	/**
-	 * Populates the video content List with video or episode information.
-	 * This information is later used by the video browser.
-	 * 
-	 * @param mc
-	 */
-	protected abstract void createVideoContent(MediaContainer mc);
+	protected abstract void fetchDataFromService();
 	
-	/**
-	 * The videos to be retrieved. This typically retrieves all videos.
-	 * 
-	 * @return The container with all videos
-	 * 
-	 * @throws Exception
-	 */
-	protected abstract MediaContainer retrieveVideos() throws Exception;
-	
+		
 	/* (non-Javadoc)
 	 * @see android.widget.Adapter#getCount()
 	 */
@@ -160,59 +110,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	 */
 	public long getItemId(int position) {
 		return position;
-	}
-
-
-	/**
-	 * @param video
-	 * @param videoContentInfo
-	 * @return
-	 */
-	protected String createVideoDetails(Video video, VideoContentInfo videoContentInfo) {
-		String videoDetails = "";
-		
-		if (video.getYear() != null) {
-			videoContentInfo.setYear(video.getYear());
-			videoDetails = "Year: " + video.getYear();
-			videoDetails = videoDetails + "\r\n";
-		}
-		
-		if (video.getGenres() != null && video.getGenres().size() > 0) {
-			ArrayList<String> g = new ArrayList<String>();
-			for (Genre genre : video.getGenres()) {
-				g.add(genre.getTag());
-				videoDetails = videoDetails + genre.getTag() + "/";
-			}
-			videoContentInfo.setGenres(g);
-			videoDetails = videoDetails.substring(0, videoDetails.lastIndexOf("/"));
-			videoDetails = videoDetails + "\r\n";
-		}
-		
-		
-		if (video.getWriters() != null && video.getWriters().size() > 0) {
-			videoDetails = videoDetails + "Writer(s): ";
-			ArrayList<String> w = new ArrayList<String>();
-			for (Writer writer : video.getWriters()) {
-				w.add(writer.getTag());
-				videoDetails = videoDetails + writer.getTag() + ", ";
-			}
-			videoContentInfo.setWriters(w);
-			videoDetails = videoDetails.substring(0, videoDetails.lastIndexOf(","));
-			videoDetails = videoDetails + "\r\n";
-		}
-		
-		if (video.getDirectors() != null && video.getDirectors().size() > 0) {
-			videoDetails = videoDetails + "Director(s): ";
-			ArrayList<String> d = new ArrayList<String>();
-			for (Director director : video.getDirectors()) {
-				d.add(director.getTag());
-				videoDetails = videoDetails + director.getTag() + ", ";
-			}
-			videoContentInfo.setDirectors(d);
-			videoDetails = videoDetails.substring(0, videoDetails.lastIndexOf(","));
-			videoDetails = videoDetails + "\r\n";
-		}
-		return videoDetails;
 	}
 	
 }

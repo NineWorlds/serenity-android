@@ -23,127 +23,83 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
-import java.io.IOException;
 import java.util.List;
 
-import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.model.impl.Media;
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
-import com.github.kingargyle.plexapp.model.impl.Part;
-import com.github.kingargyle.plexapp.model.impl.Video;
 import com.github.kingargyle.plexappclient.R;
-import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
-import com.github.kingargyle.plexappclient.core.model.impl.MoviePosterInfo;
+import com.github.kingargyle.plexappclient.core.services.MoviesRetrievalIntentService;
 import com.github.kingargyle.plexappclient.ui.adapters.AbstractPosterImageGalleryAdapter;
 import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
-import com.novoda.imageloader.core.ImageManager;
-import com.novoda.imageloader.core.model.ImageTagFactory;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 /**
  * 
  * @author dcarver
- *
+ * 
  */
-public class MoviePosterImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
-	
+public class MoviePosterImageGalleryAdapter extends
+		AbstractPosterImageGalleryAdapter {
+
+	protected static MoviePosterImageGalleryAdapter notifyAdapter;
+	protected static ProgressDialog pd;
+	private Handler posterGalleryHandler;
+
 	public MoviePosterImageGalleryAdapter(Context c, String key, String category) {
 		super(c, key, category);
+		pd = ProgressDialog.show(c, "Movie Retrieval", "Retrieving Movies");
+		notifyAdapter = this;
 	}
-		
-	/* (non-Javadoc)
-	 * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
-	 */
+
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
+
 		VideoContentInfo pi = posterList.get(position);
 		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
 		} else {
-			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/movie-fanart.jpg", context));
+			mpiv.setTag(imageTagFactory.build(factory.baseURL()
+					+ ":/resources/movie-fanart.jpg", context));
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		mpiv.setLayoutParams(new Gallery.LayoutParams(200, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-		
+		mpiv.setLayoutParams(new Gallery.LayoutParams(200,
+				android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+
 		imageManager.getLoader().load(mpiv);
-		
+
 		return mpiv;
 	}
 
-
-
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.ui.adapters.AbstractPosterImageGalleryAdapter#createVideoContent(com.github.kingargyle.plexapp.model.impl.MediaContainer)
-	 */
-	@Override
-	protected void createVideoContent(MediaContainer mc) {
-		String baseUrl = factory.baseURL();
-		List<Video> videos = mc.getVideos();
-		for (Video movie : videos) {
-			VideoContentInfo  mpi = new MoviePosterInfo();
-			mpi.setPlotSummary(movie.getSummary());
-			
-			String burl = baseUrl + ":/resources/movie-fanart.jpg"; 
-			if (movie.getBackgroundImageKey() != null) {
-				burl = baseUrl + movie.getBackgroundImageKey().replaceFirst("/", "");
-			}
-			mpi.setBackgroundURL(burl);
-			
-			String turl = "";
-			if (movie.getThumbNailImageKey() != null) {
-				turl = baseUrl + movie.getThumbNailImageKey().replaceFirst("/", "");
-			}
-			
-			mpi.setPosterURL(turl);
-			mpi.setTitle(movie.getTitle());
-			
-			mpi.setContentRating(movie.getContentRating());
-	
-			List<Media> mediacont = movie.getMedias();
-			if (mediacont != null && !mediacont.isEmpty()) {
-				// We grab the first media container until we know more about why there can be multiples.
-				Media media = mediacont.get(0);
-				List<Part> parts = media.getVideoPart();
-				Part part = parts.get(0);
-				mpi.setAudioCodec(media.getAudioCodec());
-				mpi.setVideoCodec(media.getVideoCodec());
-				mpi.setVideoResolution(media.getVideoResolution());
-				mpi.setAspectRatio(media.getAspectRatio());
-				
-				String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
-				mpi.setDirectPlayUrl(directPlayUrl);
-				
-			}
-			
-			String movieDetails = createVideoDetails(movie, mpi);	
-			mpi.setCastInfo(movieDetails);				
-		
-			posterList.add(mpi);
-		}
-		
+	protected void fetchDataFromService() {
+		posterGalleryHandler = new MoviePosterHandler();
+		Messenger messenger = new Messenger(posterGalleryHandler);
+		Intent intent = new Intent(context, MoviesRetrievalIntentService.class);
+		intent.putExtra("MESSENGER", messenger);
+		intent.putExtra("key", key);
+		intent.putExtra("category", category);
+		context.startService(intent);
 	}
+	
+	private static class MoviePosterHandler extends Handler {
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.ui.adapters.AbstractPosterImageGalleryAdapter#retrieveVideos()
-	 */
-	@Override
-	protected MediaContainer retrieveVideos() throws Exception {
-		if (category == null) {
-			category = "all";
+		@Override
+		public void handleMessage(Message msg) {
+			posterList = (List<VideoContentInfo>) msg.obj;
+			Gallery posterGallery = (Gallery) context.findViewById(R.id.moviePosterGallery);
+			notifyAdapter.notifyDataSetChanged();
+			posterGallery.requestFocus();
+			pd.dismiss();
 		}
-		
-		return factory.retrieveSections(key, category);
+
 	}
 
 }

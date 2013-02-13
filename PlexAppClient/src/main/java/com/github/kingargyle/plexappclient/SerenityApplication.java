@@ -52,12 +52,6 @@ public class SerenityApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		
-		// Yes I know this is bad, really need to make network activity happen
-		// in AsyncTask.
-		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-				.permitAll().build();
-		StrictMode.setThreadPolicy(policy);
-		
 		settings = new SerenityLoaderSettings.SettingsBuilder()
 	      .withDisconnectOnEveryCall(true).withUpsampling(true).build(this);
 		settings.setLoader(new ConcurrentLoader(settings));
@@ -89,6 +83,4 @@ public class SerenityApplication extends Application {
 	    return pm.hasSystemFeature("com.google.android.tv");
 	}	
 	
-	
-
 }

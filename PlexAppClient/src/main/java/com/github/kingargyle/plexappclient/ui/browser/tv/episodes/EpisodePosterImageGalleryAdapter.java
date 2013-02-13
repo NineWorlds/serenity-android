@@ -25,16 +25,18 @@ package com.github.kingargyle.plexappclient.ui.browser.tv.episodes;
 
 import java.util.List;
 
-import com.github.kingargyle.plexapp.model.impl.Media;
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
-import com.github.kingargyle.plexapp.model.impl.Part;
-import com.github.kingargyle.plexapp.model.impl.Video;
+import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
-import com.github.kingargyle.plexappclient.core.model.impl.EpisodePosterInfo;
+import com.github.kingargyle.plexappclient.core.services.EpisodeRetrievalIntentService;
 import com.github.kingargyle.plexappclient.ui.adapters.AbstractPosterImageGalleryAdapter;
 import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
@@ -48,70 +50,12 @@ import android.widget.ImageView;
  */
 public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 	
+	private static EpisodePosterImageGalleryAdapter notifyAdapter;
+	private static ProgressDialog pd;
+	
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
-	}
-	
-	/**
-	 * 
-	 * @return A media container with episodes or videos
-	 * 
-	 * @throws Exception
-	 */
-	protected MediaContainer retrieveVideos() throws Exception {
-		MediaContainer mc;
-		mc = factory.retrieveEpisodes(key);
-		return mc;
-	}
-
-	/**
-	 * @param mc
-	 * @param baseUrl
-	 */
-	protected void createVideoContent(MediaContainer mc) {
-		String baseUrl = factory.baseURL();
-		List<Video> videos = mc.getVideos();
-		for (Video episode : videos) {
-			VideoContentInfo  epi = new EpisodePosterInfo();
-			epi.setPlotSummary(episode.getSummary());
-			
-			String burl = factory.baseURL() + ":/resources/show-fanart.jpg"; 
-			if (mc.getArt() != null) {
-				burl = baseUrl + mc.getArt().replaceFirst("/", "");
-			}
-			epi.setBackgroundURL(burl);
-			
-			String turl = "";
-			if (episode.getThumbNailImageKey() != null) {
-				turl = baseUrl + episode.getThumbNailImageKey().replaceFirst("/", "");
-			}
-			
-			epi.setPosterURL(turl);
-			epi.setTitle(episode.getTitle());
-			
-			epi.setContentRating(episode.getContentRating());
-			
-			List<Media> mediacont = episode.getMedias();
-			if (mediacont != null && !mediacont.isEmpty()) {
-				// We grab the first media container until we know more about why there can be multiples.
-				Media media = mediacont.get(0);
-				List<Part> parts = media.getVideoPart();
-				Part part = parts.get(0);
-				epi.setAudioCodec(media.getAudioCodec());
-				epi.setVideoCodec(media.getVideoCodec());
-				epi.setVideoResolution(media.getVideoResolution());
-				epi.setAspectRatio(media.getAspectRatio());
-				
-				String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
-				epi.setDirectPlayUrl(directPlayUrl);
-				
-			}
-			
-			String episodeDetails = createVideoDetails(episode, epi);
-			epi.setCastInfo(episodeDetails);				
-		
-			posterList.add(epi);
-		}
+		notifyAdapter = this;
 	}
 
 
@@ -132,4 +76,33 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
 		return mpiv;
 	}
 
+	@Override
+	protected void fetchDataFromService() {
+		pd = ProgressDialog.show(context, "", "Retrieving Episodes");
+		handler = new EpisodeHandler();
+		Messenger messenger = new Messenger(handler);
+		Intent intent = new Intent(context, EpisodeRetrievalIntentService.class);
+		intent.putExtra("MESSENGER", messenger);
+		intent.putExtra("key", key);
+		
+		context.startService(intent);
+		notifyAdapter = this;
+
+	}
+	
+	private static class EpisodeHandler extends Handler {
+		
+		/* (non-Javadoc)
+		 * @see android.os.Handler#handleMessage(android.os.Message)
+		 */
+		@Override
+		public void handleMessage(Message msg) {
+			posterList = (List<VideoContentInfo>) msg.obj;
+			pd.dismiss();			
+			Gallery gallery = (Gallery) context.findViewById(R.id.moviePosterGallery);
+			gallery.requestFocus();
+			notifyAdapter.notifyDataSetChanged();
+			
+		}
+	}
 }

@@ -21,50 +21,36 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.core.model;
+package com.github.kingargyle.plexappclient.core.services;
 
-import java.util.List;
+import android.app.IntentService;
+import android.content.Intent;
+
+import com.github.kingargyle.plexapp.PlexappFactory;
+import com.github.kingargyle.plexappclient.SerenityApplication;
 
 /**
  * @author dcarver
  *
  */
-public interface SeriesContentInfo extends ContentInfo {
-
-	public void setKey(String key);
-
-	public String getKey();
+public abstract class AbstractPlexRESTIntentService extends IntentService {
 	
-	public List<String> getGeneres();
+	protected PlexappFactory factory;
 
-	public void setGeneres(List<String> generes);
-
-	public String getShowsWatched();
-
-	public void setShowsWatched(String showsWatched);
-
-	public String getShowsUnwatched();
-
-	public void setShowsUnwatched(String showsUnwatched);
+	/**
+	 * @param name
+	 */
+	public AbstractPlexRESTIntentService(String name) {
+		super(name);
+		factory = SerenityApplication.getPlexFactory();
+	}
 	
-	public String getShowMetaDataURL();
+	/**
+	 * Send a message back to the calling code with the results
+	 */
+	public abstract void sendMessageResults(Intent intent);
 
-	public void setShowMetaDataURL(String showMetaDataURL);
-
-	public String getThumbNailURL();
-
-	public void setThumbNailURL(String thumbNailURL);
-
-	public String getContentRating();
 	
-	public String getYear();
-
-	public void setContentRating(String contentRating);
-
-	public void setYear(String year);
 	
-	public String getParentShowTitle();
 	
-	public void setParentShowTitle(String title);
-
 }

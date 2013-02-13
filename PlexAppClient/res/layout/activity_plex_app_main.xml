@@ -3,7 +3,7 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/plexapp"
+    android:background="@drawable/serenity_logo2"
     android:orientation="vertical"
     tools:context=".MainActivity" >
 

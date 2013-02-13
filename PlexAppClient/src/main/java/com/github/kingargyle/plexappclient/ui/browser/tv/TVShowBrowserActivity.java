@@ -24,6 +24,7 @@
 package com.github.kingargyle.plexappclient.ui.browser.tv;
 
 import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.SerenityApplication;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -39,10 +40,12 @@ public class TVShowBrowserActivity extends Activity {
 	private Gallery tvShowsGallery;
 	private View tvShowMainView;
 	private boolean restarted_state = false;
+	private String key;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		key = getIntent().getExtras().getString("key");
 		setContentView(R.layout.activity_tvbrowser_show);
 		tvShowMainView = findViewById(R.id.tvshowBrowserLayout);
 		tvShowsGallery = (Gallery) findViewById(R.id.tvShowBannerGallery);
@@ -60,7 +63,7 @@ public class TVShowBrowserActivity extends Activity {
 	}
 	
 	protected void setupShows() {
-		tvShowsGallery.setAdapter(new TVShowBannerImageGalleryAdapter(this));
+		tvShowsGallery.setAdapter(new TVShowBannerImageGalleryAdapter(this, key));
 		tvShowsGallery
 				.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(tvShowMainView, this));
 		tvShowsGallery.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));

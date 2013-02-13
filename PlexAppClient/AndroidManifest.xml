@@ -64,6 +64,15 @@
         
         
         <activity android:name=".ui.preferences.SerenityPreferenceActivity"></activity>
+        
+        <service android:name=".core.services.MainMenuIntentService"/>
+        <service android:name=".core.services.MoviesRetrievalIntentService"/>
+        <service android:name=".core.services.EpisodeRetrievalIntentService"/>
+        <service android:name=".core.services.MovieCategoryRetrievalIntentService"/>
+        <service android:name=".core.services.MovieSecondaryCategoryRetrievalIntentService"/>
+        <service android:name=".core.services.ShowRetrievalIntentService"/>
+        <service android:name=".core.services.ShowSeasonRetrievalIntentService"/>
+        
     </application>
 
 </manifest>

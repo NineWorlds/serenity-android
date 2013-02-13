@@ -34,6 +34,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Gallery;
 
 /**
+ * Populate the movie posters based on the information from the 
+ * Secondary categories.
+ * 
  * @author dcarver
  *
  */

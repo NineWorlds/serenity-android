@@ -39,11 +39,15 @@ public class TVShowSeasonBrowserActivity extends Activity {
 	private Gallery tvShowSeasonsGallery;
 	private View tvShowSeasonsMainView;
 	private boolean restarted_state = false;
+	private String key;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tvbrowser_show_seasons);
+		
+		key = getIntent().getExtras().getString("key");
+		
 		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
 		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
 	}
@@ -59,7 +63,7 @@ public class TVShowSeasonBrowserActivity extends Activity {
 	
 	protected void setupSeasons() {
 
-		tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(this));
+		tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(this, key));
 		tvShowSeasonsGallery
 				.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this));
 		tvShowSeasonsGallery.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this));

@@ -45,6 +45,19 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
 	private String showsWatched;
 	private String ShowsUnwatched;
 	private String key;
+	private String parentShowTitle;
+
+	public String getParentShowTitle() {
+		return parentShowTitle;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.github.kingargyle.plexappclient.core.model.SeriesContentInfo#setParentShowTitle(java.lang.String)
+	 */
+	public void setParentShowTitle(String title) {
+		parentShowTitle = title;
+	}
+	
 
 	public String getKey() {
 		return key;

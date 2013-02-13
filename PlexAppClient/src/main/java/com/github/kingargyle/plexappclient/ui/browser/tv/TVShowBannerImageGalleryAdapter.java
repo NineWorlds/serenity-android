@@ -35,11 +35,18 @@ import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.model.impl.AbstractSeriesContentInfo;
 import com.github.kingargyle.plexappclient.core.model.impl.TVShowSeriesInfo;
+import com.github.kingargyle.plexappclient.core.services.MoviesRetrievalIntentService;
+import com.github.kingargyle.plexappclient.core.services.ShowRetrievalIntentService;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,116 +63,53 @@ import android.widget.TextView;
  */
 public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 	
-	private List<TVShowSeriesInfo> tvShowList = null;
-	private Activity context;
+	private static List<TVShowSeriesInfo> tvShowList = null;
+	private static Activity context;
 	
 	private ImageManager imageManager;
 	private ImageTagFactory imageTagFactory;
 	private static final int SIZE_HEIGHT = 200;
 	private static final int SIZE_WIDTH = 400;
-	private PlexappFactory factory;
+	private Handler handler;
+	private String baseUrl;
+	private String key;
+	private static TVShowBannerImageGalleryAdapter notifyAdapter;
+	private static ProgressDialog pd;
 	
-	public TVShowBannerImageGalleryAdapter(Context c) {
+	public TVShowBannerImageGalleryAdapter(Context c, String key) {
 		context = (Activity)c;
-		
 		tvShowList = new ArrayList<TVShowSeriesInfo>();
 		
 		imageManager = SerenityApplication.getImageManager();
 		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
-        Toast.makeText(context, "Retrieving Shows.", Toast.LENGTH_SHORT).show();
+		this.key = key;
 		
-		createBanners();
-	}
-	
-	/**
-	 * This all needs to go into an AsyncTask and be done in the background.
-	 */
-	private void createBanners() {
-		
-		
-		MediaContainer mc = null;
-		String baseUrl = null;
+		notifyAdapter = this;
 		try {
-			factory = SerenityApplication.getPlexFactory();
-			String key = context.getIntent().getExtras().getString("key");
-			
-			// For TV Shows we'll get a Directory container.
-			mc = factory.retrieveSections(key, "all");
-			baseUrl = factory.baseURL();
-		} catch (IOException ex) {
- 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL(), Toast.LENGTH_SHORT).show();
-			Log.w("Unable to talk to server: ", ex);
-		} catch (Exception e) {
- 		    Toast.makeText(context, "Unable to comminicate with server at " + factory.baseURL(), Toast.LENGTH_SHORT).show();
-			Log.w("Oops.", e);
+			baseUrl = SerenityApplication.getPlexFactory().baseURL();
+			fetchData();
+		} catch (Exception ex) {
+			Log.e(getClass().getName(), "Error connecting to plex.", ex);
 		}
-		
-		if (mc != null && mc.getSize() > 0) {
-			TextView itemCount = (TextView) context.findViewById(R.id.tvShowItemCount);
-			itemCount.setText(Integer.toString(mc.getSize()) + " Serie(s)");
-			
-			List<Directory> shows = mc.getDirectories();
-			for (Directory show : shows) {
-				TVShowSeriesInfo  mpi = new TVShowSeriesInfo();
-				if (show.getSummary() != null) {
-					mpi.setPlotSummary(show.getSummary());
-				}
-				
-				String burl = factory.baseURL() + ":/resources/show-fanart.jpg"; 
-				if (show.getArt() != null) {
-					burl = baseUrl + show.getArt().replaceFirst("/", "");
-				}
-				mpi.setBackgroundURL(burl);
-				
-				String turl = "";
-				if (show.getBanner() != null) {
-					turl = baseUrl + show.getBanner().replaceFirst("/", "");
-				}
-				mpi.setPosterURL(turl);
-				
-				String thumbURL = "";
-				if (show.getThumb() != null) {
-					thumbURL = baseUrl + show.getThumb().replaceFirst("/", "");
-				}
-				mpi.setThumbNailURL(thumbURL);
-				
-				mpi.setTitle(show.getTitle());
-				
-				mpi.setContentRating(show.getContentRating());
-				
-				List<String> genres = processGeneres(show);
-				mpi.setGeneres(genres);
-				
-			    mpi.setShowsWatched(show.getViewedLeafCount());
-			    int totalEpisodes = Integer.parseInt(show.getLeafCount());
-			    int unwatched = totalEpisodes - Integer.parseInt(show.getViewedLeafCount());
-			    mpi.setShowsUnwatched(Integer.toString(unwatched));
-			    
-			    mpi.setKey(show.getKey());
-			    
-				tvShowList.add(mpi);
-			}
-		}		
 	}
 	
-	protected List<String> processGeneres(Directory show) {
-		ArrayList<String> genres = new ArrayList<String>();
-		if (show.getGenres() != null) {
-			for (Genre genre : show.getGenres()) {
-				genres.add(genre.getTag());
-			}
-		}
-		
-		return genres;
+	protected void fetchData() {
+		pd = ProgressDialog.show(context, "", "Retrieving Shows.");
+		handler = new ShowRetrievalHandler();
+		Messenger messenger = new Messenger(handler);
+		Intent intent = new Intent(context, ShowRetrievalIntentService.class);
+		intent.putExtra("MESSENGER", messenger);
+		intent.putExtra("key", key);
+		context.startService(intent);
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see android.widget.Adapter#getCount()
 	 */
 	public int getCount() {
-		
 		return tvShowList.size();
 	}
 
@@ -173,7 +117,6 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 	 * @see android.widget.Adapter#getItem(int)
 	 */
 	public Object getItem(int position) {
-		
 		return tvShowList.get(position);
 	}
 
@@ -194,7 +137,7 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
 		} else {
-			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/show-fanart.jpg", context));
+			mpiv.setTag(imageTagFactory.build(baseUrl + ":/resources/show-fanart.jpg", context));
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 768;
@@ -203,6 +146,21 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 		
 		imageManager.getLoader().load(mpiv);
 		return mpiv;
+	}
+	
+	private static class ShowRetrievalHandler extends Handler {
+		
+		@Override
+		public void handleMessage(Message msg) {
+			
+			tvShowList = (List<TVShowSeriesInfo>) msg.obj;
+			if (tvShowList != null) {
+				TextView tv = (TextView)context.findViewById(R.id.tvShowItemCount);
+				tv.setText(Integer.toString(tvShowList.size()) + " Item(s)");
+				notifyAdapter.notifyDataSetChanged();
+				pd.dismiss();
+			}
+		}
 	}
 
 }
