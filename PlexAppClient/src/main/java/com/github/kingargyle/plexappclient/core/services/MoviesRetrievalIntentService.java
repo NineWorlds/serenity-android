@@ -143,6 +143,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 				mpi.setVideoCodec(media.getVideoCodec());
 				mpi.setVideoResolution(media.getVideoResolution());
 				mpi.setAspectRatio(media.getAspectRatio());
+				mpi.setAudioChannels(media.getAudioChannels());
 
 				String directPlayUrl = factory.baseURL()
 						+ part.getKey().replaceFirst("/", "");

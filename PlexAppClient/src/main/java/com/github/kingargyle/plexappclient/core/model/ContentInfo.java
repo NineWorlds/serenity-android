@@ -48,5 +48,6 @@ public interface ContentInfo {
 	public void setBackgroundURL(String backgroundURL);
 	
 	public void setId(String id);
+	
 
 }

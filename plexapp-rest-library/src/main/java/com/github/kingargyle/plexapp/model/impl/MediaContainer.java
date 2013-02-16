@@ -76,6 +76,9 @@ public class MediaContainer {
 	@Attribute(required=false)
 	private int viewMode;
 	
+	@Attribute(name="thumb",required=false)
+	private String parentPosterURL;
+	
 
 	@ElementList(inline=true,required=false)
 	private List<Directory> directories;
@@ -197,5 +200,15 @@ public class MediaContainer {
 	public void setVideos(List<Video> videos) {
 		this.videos = videos;
 	}
+
+	public String getParentPosterURL() {
+		return parentPosterURL;
+	}
+
+	public void setParentPosterURL(String parentPosterURL) {
+		this.parentPosterURL = parentPosterURL;
+	}
+	
+	
 	
 }

@@ -10,9 +10,13 @@ package com.github.kingargyle.plexappclient.ui.video.player;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.core.imageloader.OSDImageLoader;
+import com.github.kingargyle.plexappclient.ui.util.ImageInfographicUtils;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -26,10 +30,15 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Gallery;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -94,23 +103,39 @@ public class MediaController extends FrameLayout {
 	private ImageButton mPauseButton;
 	private String summary;
 	private String title;
+	private String posterURL;
+	private String resolution;
+	private String videoFormat;
+	private String audioFormat;
+	private String audioChannels;
 
 	private AudioManager mAM;
+	
+	// Sets up a Executor service for handling image loading
+	private ExecutorService imageExecutorService;
+
 
 	public MediaController(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mRoot = this;
 		mFromXml = true;
 		initController(context);
+		imageExecutorService = Executors.newSingleThreadExecutor();
 	}
 
-	public MediaController(Context context, String summary, String title) {
+	public MediaController(Context context, String summary, String title, String posterURL, String resolution, String videoFormat, String audioFormat, String audioChannels) {
 		super(context);
+		imageExecutorService = Executors.newSingleThreadExecutor();
 		if (!mFromXml && initController(context)) {
 			initFloatingWindow();
 		}
 		this.summary = summary;
 		this.title = title;
+		this.posterURL = posterURL;
+		this.resolution = resolution;
+		this.audioChannels = audioChannels;
+		this.videoFormat = videoFormat;
+		this.audioFormat = audioFormat;
 	}
 
 	private boolean initController(Context context) {
@@ -193,6 +218,43 @@ public class MediaController extends FrameLayout {
 		TextView summaryView = (TextView) v
 				.findViewById(R.id.mediacontroller_summary);
 		summaryView.setText(summary);
+		
+		LinearLayout infoGraphic = (LinearLayout) v.findViewById(R.id.mediacontroller_infographic_layout);
+		ImageInfographicUtils iiu = new ImageInfographicUtils(75, 70);
+		if (resolution != null) {
+			ImageView rv = iiu.createVideoResolutionImage(resolution, v.getContext());
+			if (rv != null) {
+				infoGraphic.addView(rv);
+			}
+		}
+		
+		if (videoFormat != null) {
+			ImageView vr = iiu.createVideoCodec(videoFormat, v.getContext());
+			if (vr != null) {
+				infoGraphic.addView(vr);
+			}
+		}
+		
+		if (audioFormat != null) {
+			ImageView ar = iiu.createAudioCodecImage(audioFormat, v.getContext());
+			if (ar != null) {
+				infoGraphic.addView(ar);
+			}
+		}
+		
+		if (audioChannels != null) {
+			ImageView ar = iiu.createAudioChannlesImage(audioChannels, v.getContext());
+			if (ar != null) {
+				infoGraphic.addView(ar);
+			}
+		}
+		
+		
+		ImageView posterView = (ImageView) v.findViewById(R.id.mediacontroller_poster_art);
+		posterView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+		imageExecutorService.execute(new OSDImageLoader(posterURL, posterView, R.drawable.default_video_cover));
+
+		
 	}
 
 	public void setMediaPlayer(MediaPlayerControl player) {

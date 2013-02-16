@@ -26,7 +26,6 @@ package com.github.kingargyle.plexapp.model.impl;
 import java.util.List;
 
 import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
@@ -49,6 +48,17 @@ public class Media {
 	@Attribute(name="videoResolution", required=false)
 	private String videoResolution;
 	
+	@Attribute(name="audioChannels", required=false)
+	private String audioChannels;
+	
+	public String getAudioChannels() {
+		return audioChannels;
+	}
+
+	public void setAudioChannels(String audioChannels) {
+		this.audioChannels = audioChannels;
+	}
+
 	@ElementList(inline=true,name="Part", required=false)
 	private List<Part> videoParts;
 

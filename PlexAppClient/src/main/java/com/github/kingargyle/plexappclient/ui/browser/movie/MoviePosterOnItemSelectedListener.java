@@ -30,6 +30,7 @@ import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.imageloader.BackgroundImageLoader;
 import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
+import com.github.kingargyle.plexappclient.ui.util.ImageInfographicUtils;
 import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.cache.CacheManager;
@@ -164,261 +165,35 @@ public class MoviePosterOnItemSelectedListener implements
 		}
 		infographicsView.addView(viewed);
 		
+		ImageInfographicUtils imageUtilsWide = new ImageInfographicUtils(154, 58);
+		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100, 58);
 
-		ImageView acv = setAudioCodec(mpi.getAudioCodec());
+		ImageView acv = imageUtilsWide.createAudioCodecImage(mpi.getAudioCodec(), context);
 		if (acv != null) {
 			infographicsView.addView(acv);
 		}
+		
+		ImageView achannelsv = imageUtilsWide.createAudioChannlesImage(mpi.getAudioChannels(), v.getContext());		
+		if (achannelsv != null) {
+			infographicsView.addView(achannelsv);
+		}
+		
 
-		ImageView resv = setVideoResolution(mpi.getVideoResolution());
+		ImageView resv = imageUtilsWide.createVideoResolutionImage(mpi.getVideoResolution(), context);
 		if (resv != null) {
 			infographicsView.addView(resv);
 		}
 		
-		ImageView aspectv = setAspectRatio(mpi.getAspectRatio());
+		ImageView aspectv = imageUtilsNormal.createAspectRatioImage(mpi.getAspectRatio(), context);
 		if (aspectv != null) {
 			infographicsView.addView(aspectv);
 		}
-		
-		
 
-		ImageView crv = setContentRating(mpi.getContentRating());
+		ImageView crv = imageUtilsWide.createContentRatingImage(mpi.getContentRating(), context);
 		infographicsView.addView(crv);
 		
 
 		infographicsView.refreshDrawableState();
-	}
-
-	protected ImageView setContentRating(String contentRating) {
-		ImageView v = new ImageView(context);
-		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(154, 58));
-
-		if ("G".equals(contentRating)) {
-			v.setImageResource(R.drawable.mpaa_general);
-			return v;
-		}
-
-		if ("PG".equals(contentRating)) {
-			v.setImageResource(R.drawable.mpaa_pg);
-			return v;
-		}
-
-		if ("PG-13".equals(contentRating)) {
-			v.setImageResource(R.drawable.mpaa_pg13);
-			return v;
-		}
-
-		if ("R".equals(contentRating)) {
-			v.setImageResource(R.drawable.mpaa_restricted);
-			return v;
-		}
-
-		if ("NC-17".equals(contentRating)) {
-			v.setImageResource(R.drawable.mpaa_nc17);
-			return v;
-		}
-
-		v.setImageResource(R.drawable.mpaa_notrated);
-		return v;
-
-	}
-
-	protected ImageView setAudioCodec(String codec) {
-		ImageView v = new ImageView(context);
-		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(154, 58));
-
-		if ("aac".equals(codec)) {
-			v.setImageResource(R.drawable.aac);
-			return v;
-		}
-
-		if ("ac3".equals(codec)) {
-			v.setImageResource(R.drawable.dolbydigital);
-			return v;
-		}
-
-		if ("aif".equals(codec)) {
-			v.setImageResource(R.drawable.aif);
-			return v;
-		}
-
-		if ("aifc".equals(codec)) {
-			v.setImageResource(R.drawable.aifc);
-			return v;
-		}
-
-		if ("aiff".equals(codec)) {
-			v.setImageResource(R.drawable.aiff);
-			return v;
-		}
-
-		if ("ape".equals(codec)) {
-			v.setImageResource(R.drawable.ape);
-			return v;
-		}
-
-		if ("avc".equals(codec)) {
-			v.setImageResource(R.drawable.avc);
-			return v;
-		}
-
-		if ("cdda".equals(codec)) {
-			v.setImageResource(R.drawable.cdda);
-			return v;
-		}
-
-		if ("dca".equals(codec)) {
-			v.setImageResource(R.drawable.dca);
-			return v;
-		}
-
-		if ("dts".equals(codec)) {
-			v.setImageResource(R.drawable.dts);
-			return v;
-		}
-
-		if ("eac3".equals(codec)) {
-			v.setImageResource(R.drawable.eac3);
-			return v;
-		}
-
-		if ("flac".equals(codec)) {
-			v.setImageResource(R.drawable.flac);
-			return v;
-		}
-
-		if ("mp1".equals(codec)) {
-			v.setImageResource(R.drawable.mp1);
-			return v;
-		}
-
-		if ("mp2".equals(codec)) {
-			v.setImageResource(R.drawable.mp2);
-			return v;
-		}
-
-		if ("mp3".equals(codec)) {
-			v.setImageResource(R.drawable.mp3);
-			return v;
-		}
-
-		if ("ogg".equals(codec)) {
-			v.setImageResource(R.drawable.ogg);
-			return v;
-		}
-
-		if ("wma".equals(codec)) {
-			v.setImageResource(R.drawable.wma);
-			return v;
-		}
-
-		return null;
-
-	}
-	
-	protected ImageView setAspectRatio(String ratio) {
-		ImageView v = new ImageView(context);
-		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(100, 58));
-
-		if ("1.33".equals(ratio)) {
-			v.setImageResource(R.drawable.aspect_1_33);
-			return v;
-		}
-
-		if ("1.66".equals(ratio)) {
-			v.setImageResource(R.drawable.aspect_1_66);
-			return v;
-		}
-		
-		if ("1.78".equals(ratio)) {
-			v.setImageResource(R.drawable.aspect_1_78);
-			return v;
-		}
-		
-		if ("1.85".equals(ratio)) {
-			v.setImageResource(R.drawable.aspect_1_85);
-			return v;
-		}
-		
-		if ("2.20".equals(ratio)) {
-			v.setImageResource(R.drawable.aspect_2_20);
-			return v;
-		}
-		
-		if ("2.35".equals(ratio)) {
-			v.setImageResource(R.drawable.aspect_2_35);
-			return v;
-		}
-
-		return null;
-
-	}	
-
-	protected ImageView setVideoCodec(String codec) {
-		ImageView v = new ImageView(context);
-		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(154, 58));
-
-		if ("divx".equalsIgnoreCase(codec)) {
-			v.setImageResource(R.drawable.divx);
-			return v;
-		}
-
-		if ("vc-1".equalsIgnoreCase(codec)) {
-			v.setImageResource(R.drawable.vc_1);
-			return v;
-		}
-
-		if ("h264".equalsIgnoreCase(codec) || "mpeg4".equalsIgnoreCase(codec)) {
-			v.setImageResource(R.drawable.h264);
-			return v;
-		}
-
-		if ("mpeg2".equalsIgnoreCase(codec)) {
-			v.setImageResource(R.drawable.mpeg2video);
-			return v;
-		}
-
-		if ("mpeg1".equalsIgnoreCase(codec)) {
-			v.setImageResource(R.drawable.mpeg1video);
-			return v;
-		}
-
-		if ("xvid".equalsIgnoreCase(codec)) {
-			v.setImageResource(R.drawable.xvid);
-			return v;
-		}
-
-		return null;
-
-	}
-
-	protected ImageView setVideoResolution(String res) {
-		ImageView v = new ImageView(context);
-		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(154, 58));
-
-		if ("sd".equalsIgnoreCase(res) || "480".equalsIgnoreCase(res)
-				|| "540".equalsIgnoreCase(res) || "576".equalsIgnoreCase(res)) {
-			v.setImageResource(R.drawable.sd);
-			return v;
-		}
-
-		if ("720".equalsIgnoreCase(res)) {
-			v.setImageResource(R.drawable.res720);
-			return v;
-		}
-
-		if ("1080".equalsIgnoreCase(res)) {
-			v.setImageResource(R.drawable.res1080);
-			return v;
-		}
-
-		return null;
-
 	}
 
 	public void onNothingSelected(AdapterView<?> av) {

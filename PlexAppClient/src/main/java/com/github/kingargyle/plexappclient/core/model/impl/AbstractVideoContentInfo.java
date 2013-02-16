@@ -40,6 +40,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	private String plotSummary;
 	private String castInfo;
 	private String posterURL;
+	private String parentPosterURL;
 	private String backgroundURL;
 	private String title;
 	private String contentRating;
@@ -54,9 +55,14 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	private String directPlayUrl;
 	private String aspectRatio;
 	private int viewCount;
+	private String audioChannels;
 	
 	public String id() {
 		return id;
+	}
+	
+	public String getParentPosterURL() {
+		return parentPosterURL;
 	}
 
 	public int getViewCount() {
@@ -287,6 +293,18 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public void setParentPosterURL(String parentPosterURL) {
+		this.parentPosterURL = parentPosterURL;
+	}
+	
+	public String getAudioChannels() {
+		return this.audioChannels;
+	}
+	
+	public void setAudioChannels(String audioChannels) {
+		this.audioChannels = audioChannels;
 	}
 
 }

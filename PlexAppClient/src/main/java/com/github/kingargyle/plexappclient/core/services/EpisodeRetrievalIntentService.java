@@ -123,12 +123,21 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 	 */
 	protected void createVideoContent(MediaContainer mc) {
 		String baseUrl = factory.baseURL();
+		String parentPosterURL = null;
+		if (mc.getParentPosterURL() != null) {
+			parentPosterURL = baseUrl + mc.getParentPosterURL().substring(1);
+		}
 		List<Video> videos = mc.getVideos();
 		for (Video episode : videos) {
 			VideoContentInfo  epi = new EpisodePosterInfo();
+			epi.setParentPosterURL(parentPosterURL);
 			epi.setId(episode.getRatingKey());
 			epi.setPlotSummary(episode.getSummary());
 			epi.setViewCount(episode.getViewCount());
+			
+			if (episode.getParentThumbNailImageKey() != null) {
+				epi.setParentPosterURL(baseUrl + episode.getParentThumbNailImageKey().substring(1));
+			}
 			
 			String burl = factory.baseURL() + ":/resources/show-fanart.jpg"; 
 			if (mc.getArt() != null) {
@@ -156,6 +165,7 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 				epi.setVideoCodec(media.getVideoCodec());
 				epi.setVideoResolution(media.getVideoResolution());
 				epi.setAspectRatio(media.getAspectRatio());
+				epi.setAudioChannels(media.getAudioChannels());
 				
 				String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
 				epi.setDirectPlayUrl(directPlayUrl);

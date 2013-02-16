@@ -66,9 +66,14 @@ public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 		vpIntent.putExtra("videoUrl", url);
 		vpIntent.putExtra("summary", epiv.getPosterInfo().getPlotSummary());
 		vpIntent.putExtra("title", epiv.getPosterInfo().getTitle());
-		vpIntent.putExtra("posterUrl", epiv.getPosterInfo().getPosterURL());
+		String posterUrl = epiv.getPosterInfo().getParentPosterURL();
+		vpIntent.putExtra("posterUrl", posterUrl);
 		vpIntent.putExtra("id", epiv.getPosterInfo().id());
 		vpIntent.putExtra("aspectRatio", epiv.getPosterInfo().getAspectRatio());
+		vpIntent.putExtra("videoResolution", epiv.getPosterInfo().getVideoResolution());
+		vpIntent.putExtra("audioFormat", epiv.getPosterInfo().getAudioCodec());
+		vpIntent.putExtra("videoFormat", epiv.getPosterInfo().getVideoCodec());
+		vpIntent.putExtra("audioChannels", epiv.getPosterInfo().getAudioChannels());
 		
 		Activity a = (Activity) epiv.getContext();
 		a.startActivityForResult(vpIntent, 0);

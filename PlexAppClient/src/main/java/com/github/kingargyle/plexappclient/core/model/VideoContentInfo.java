@@ -58,6 +58,8 @@ public interface VideoContentInfo extends ContentInfo {
 	public String getAspectRatio();
 	
 	public int getViewCount();
+	
+	public String getParentPosterURL();
 
 	public void setActors(List<String> actors);
 
@@ -90,5 +92,11 @@ public interface VideoContentInfo extends ContentInfo {
 	public void setAspectRatio(String ratio);
 	
 	public void setViewCount(int viewCount);
+	
+	public void setParentPosterURL(String parentPosterURL);
+	
+	public String getAudioChannels();
+	
+	public void setAudioChannels(String audioChannels);
 
 }

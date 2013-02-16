@@ -29,6 +29,7 @@ import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.ui.video.player.MediaController.MediaPlayerControl;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -55,6 +56,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 	private MediaController mediaController;
 	private String aspectRatio;
 	private String videoId;
+	private String posterURL;
 
 	/*
 	 * (non-Javadoc)
@@ -177,12 +179,20 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.video_playback);
+		
+		Bundle extras = getIntent().getExtras();
 
-		videoURL = getIntent().getExtras().getString("videoUrl");
-		videoId = getIntent().getExtras().getString("id");
-		String summary = getIntent().getExtras().getString("summary");
-		String title = getIntent().getExtras().getString("title");
-		aspectRatio = getIntent().getExtras().getString("aspectRatio");
+		videoURL = extras.getString("videoUrl");
+		videoId = extras.getString("id");
+		String summary = extras.getString("summary");
+		String title = extras.getString("title");
+		String posterURL = extras.getString("posterUrl");
+		aspectRatio = extras.getString("aspectRatio");
+		String videoFormat = extras.getString("videoFormat");
+		String videoResolution = extras.getString("videoResolution");
+		String audioFormat = extras.getString("audioFormat");
+		String audioChannels = extras.getString("audioChannels");
+		
 
 		mediaPlayer = new MediaPlayer();
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
@@ -191,7 +201,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		holder.addCallback(this);
 		holder.setSizeFromLayout();
 
-		mediaController = new MediaController(this, summary, title);
+		mediaController = new MediaController(this, summary, title, posterURL, videoResolution, videoFormat, audioFormat, audioChannels );
 		mediaController.setAnchorView(surfaceView);
 		mediaController.setMediaPlayer(new MediaPlayerControl() {
 
