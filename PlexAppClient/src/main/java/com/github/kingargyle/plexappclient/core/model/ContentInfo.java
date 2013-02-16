@@ -29,6 +29,8 @@ package com.github.kingargyle.plexappclient.core.model;
  */
 public interface ContentInfo {
 	
+	public String id();
+	
 	public String getPlotSummary();
 	
 	public String getBackgroundURL();
@@ -45,11 +47,6 @@ public interface ContentInfo {
 	
 	public void setBackgroundURL(String backgroundURL);
 	
-	
-	
-	
-	
-	
-	
+	public void setId(String id);
 
 }

@@ -81,6 +81,19 @@ public class TestResourcePaths {
 		
 		assertEquals("http://localhost:32400/library/sections/6/", result);
 	}
+	
+	@Test
+	public void testWatched() throws Exception {
+		String result = path.getWatchedUrl("131");
+		assertEquals("http://localhost:32400/:/scrobble?key=131&identifier=com.plexapp.plugins.library", result);
+	}
+
+	@Test
+	public void testUnwatched() throws Exception {
+		String result = path.getUnwatchedUrl("131");
+		assertEquals("http://localhost:32400/:/unscrobble?key=131&identifier=com.plexapp.plugins.library", result);
+	}
+
 
 	
 	private class MockConfiguration implements IConfiguration {

@@ -23,26 +23,21 @@
 
 package com.github.kingargyle.plexappclient.ui.video.player;
 
+import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.ui.video.player.MediaController.MediaPlayerControl;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewDebug.HierarchyTraceType;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 /**
@@ -59,6 +54,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 	private SurfaceView surfaceView;
 	private MediaController mediaController;
 	private String aspectRatio;
+	private String videoId;
 
 	/*
 	 * (non-Javadoc)
@@ -98,6 +94,9 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 			mediaController.setEnabled(true);
 
 			mediaPlayer.start();
+			
+			new WatchedVideoRequest(videoId).execute();
+			
 			if (mediaPlayer.isPlaying()) {
 				mediaController.show(CONTROLLER_DELAY);
 			}
@@ -114,10 +113,13 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 	 * @return
 	 */
 	protected android.view.ViewGroup.LayoutParams setupAspectRatio() {
-		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
-				
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		boolean preferPlexAspectRatio = prefs.getBoolean("plex_aspect_ratio", false);
+		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) surfaceView
+				.getLayoutParams();
+
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		boolean preferPlexAspectRatio = prefs.getBoolean("plex_aspect_ratio",
+				false);
 
 		int surfaceViewHeight = surfaceView.getHeight();
 		int surfaceViewWidth = surfaceView.getWidth();
@@ -128,13 +130,13 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		float ratioWidth = surfaceViewWidth / videoWidth;
 		float ratioHeight = surfaceViewHeight / videoHeight;
 		float aspectRatio = videoWidth / videoHeight;
-		
+
 		if (preferPlexAspectRatio && this.aspectRatio != null) {
 			aspectRatio = Float.parseFloat(this.aspectRatio);
 		}
-		
+
 		if (videoHeight == 480 && videoWidth == 720) {
-			aspectRatio = (float)1.78;
+			aspectRatio = (float) 1.78;
 		}
 
 		if (ratioWidth > ratioHeight) {
@@ -144,15 +146,15 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 			lp.width = surfaceViewWidth;
 			lp.height = (int) (surfaceViewWidth / aspectRatio);
 		}
-		
+
 		if (lp.width > surfaceViewWidth) {
 			lp.width = surfaceViewWidth;
 		}
-		
+
 		if (lp.height > surfaceViewHeight) {
 			lp.height = surfaceViewHeight;
 		}
-		
+
 		return lp;
 	}
 
@@ -177,6 +179,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		setContentView(R.layout.video_playback);
 
 		videoURL = getIntent().getExtras().getString("videoUrl");
+		videoId = getIntent().getExtras().getString("id");
 		String summary = getIntent().getExtras().getString("summary");
 		String title = getIntent().getExtras().getString("title");
 		aspectRatio = getIntent().getExtras().getString("aspectRatio");
@@ -268,7 +271,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 			}
 			return true;
 		}
-		
+
 		if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY) {
@@ -285,26 +288,19 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		return super.onKeyDown(keyCode, event);
 	}
 
-	/**
-	 * @param controllerButton
-	 */
-	void moveFocusAndHighlight(View controllerButton, int direction) {
+	protected class WatchedVideoRequest extends AsyncTask<Void, Void, Void> {
 
-		if (!controllerButton.requestFocus(direction)) {
-			return;
+		protected String scrobbleKey;
+
+		public WatchedVideoRequest(String key) {
+			scrobbleKey = key;
 		}
 
-		View newFocus = mediaController.findFocus();
-
-		if (newFocus instanceof ImageButton) {
-			ImageButton button = (ImageButton) newFocus;
-			button.setBackgroundColor(Color.GRAY);
-			button.refreshDrawableState();
-			if (controllerButton instanceof ImageButton) {
-				ImageButton oldButton = (ImageButton) controllerButton;
-				oldButton.setBackgroundColor(Color.TRANSPARENT);
-				oldButton.refreshDrawableState();
-			}
+		@Override
+		protected Void doInBackground(Void... params) {
+			PlexappFactory factory = SerenityApplication.getPlexFactory();
+			boolean result = factory.setWatched(scrobbleKey);
+			return null;
 		}
 	}
 }

@@ -66,6 +66,7 @@ public class MoviePosterOnItemClickListener  implements OnItemClickListener {
 		vpIntent.putExtra("title", mpiv.getPosterInfo().getTitle());
 		vpIntent.putExtra("summary", mpiv.getPosterInfo().getPlotSummary());
 		vpIntent.putExtra("posterUrl", mpiv.getPosterInfo().getPosterURL());
+		vpIntent.putExtra("id", mpiv.getPosterInfo().id());
 		vpIntent.putExtra("aspectRatio", mpiv.getPosterInfo().getAspectRatio());
 		
 		Activity a = (Activity) mpiv.getContext();

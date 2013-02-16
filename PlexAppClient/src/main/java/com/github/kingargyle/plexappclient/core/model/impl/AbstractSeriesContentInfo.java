@@ -33,6 +33,7 @@ import com.github.kingargyle.plexappclient.core.model.SeriesContentInfo;
  */
 public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
 
+	private String id;
 	private String plotSummary;
 	private String posterURL;
 	private String backgroundURL;
@@ -46,6 +47,10 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
 	private String ShowsUnwatched;
 	private String key;
 	private String parentShowTitle;
+	
+	public String id() {
+		return id;
+	}
 
 	public String getParentShowTitle() {
 		return parentShowTitle;
@@ -160,6 +165,10 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
 
 	public void setBackgroundURL(String backgroundURL) {
 		this.backgroundURL = backgroundURL;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

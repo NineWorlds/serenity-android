@@ -78,4 +78,12 @@ public class ResourcePaths {
 	public String getEpisodesURL(String key) {
 		return getHostPort() + key;
 	}
+	
+	public String getWatchedUrl(String key) {
+		return getRoot() + ":/scrobble?key=" + key + "&identifier=com.plexapp.plugins.library";
+	}
+	
+	public String getUnwatchedUrl(String key) {
+		return getRoot() + ":/unscrobble?key=" + key + "&identifier=com.plexapp.plugins.library";
+	}
 }

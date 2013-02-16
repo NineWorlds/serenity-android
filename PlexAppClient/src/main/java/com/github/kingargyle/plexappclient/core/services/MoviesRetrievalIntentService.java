@@ -109,7 +109,10 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 		List<Video> videos = mc.getVideos();
 		for (Video movie : videos) {
 			VideoContentInfo mpi = new MoviePosterInfo();
+			mpi.setId(movie.getRatingKey());
 			mpi.setPlotSummary(movie.getSummary());
+			
+			mpi.setViewCount(movie.getViewCount());
 
 			String burl = baseUrl + ":/resources/movie-fanart.jpg";
 			if (movie.getBackgroundImageKey() != null) {

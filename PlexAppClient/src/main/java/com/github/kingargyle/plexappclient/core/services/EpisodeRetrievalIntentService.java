@@ -126,7 +126,9 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 		List<Video> videos = mc.getVideos();
 		for (Video episode : videos) {
 			VideoContentInfo  epi = new EpisodePosterInfo();
+			epi.setId(episode.getRatingKey());
 			epi.setPlotSummary(episode.getSummary());
+			epi.setViewCount(episode.getViewCount());
 			
 			String burl = factory.baseURL() + ":/resources/show-fanart.jpg"; 
 			if (mc.getArt() != null) {

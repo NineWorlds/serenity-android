@@ -152,6 +152,18 @@ public class EpisodePosterOnItemSelectedListener implements
 				.findViewById(R.id.movieInfoGraphicLayout);
 		infographicsView.removeAllViews();
 		VideoContentInfo epi = v.getPosterInfo();
+		
+		ImageView viewed = new ImageView(context);
+		viewed.setScaleType(ScaleType.FIT_XY);
+		viewed.setLayoutParams(new LayoutParams(80, 58));
+		
+		if (epi.getViewCount() > 0) {
+			viewed.setImageResource(R.drawable.watched_small);
+		} else {
+			viewed.setImageResource(R.drawable.unwatched_small);
+		}
+		infographicsView.addView(viewed);
+		
 
 		ImageView acv = setAudioCodec(epi.getAudioCodec());		
 		if (acv != null) {
@@ -215,7 +227,7 @@ public class EpisodePosterOnItemSelectedListener implements
 	protected ImageView setAspectRatio(String ratio) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(154, 58));
+		v.setLayoutParams(new LayoutParams(100, 58));
 
 		if ("1.33".equals(ratio)) {
 			v.setImageResource(R.drawable.aspect_1_33);

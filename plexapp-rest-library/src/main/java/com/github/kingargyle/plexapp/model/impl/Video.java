@@ -89,6 +89,9 @@ public class Video extends AbstractPlexObject {
 	@Attribute(name="year", required=false)
 	private String year;
 	
+	@Attribute(name="ratingKey", required=false)
+	private String ratingKey;
+	
 	@ElementList(inline=true,required=false)
 	private List<Country> countries;
 
@@ -106,6 +109,7 @@ public class Video extends AbstractPlexObject {
 
 	@ElementList(inline=true,name="Media",required=true)
 	private List<Media> medias;
+	
 
 	public List<Role> getActors() {
 		return actors;
@@ -341,6 +345,16 @@ public class Video extends AbstractPlexObject {
 	public void setYear(String year) {
 		this.year = year;
 	}
+
+	public String getRatingKey() {
+		return ratingKey;
+	}
+
+	public void setRatingKey(String ratingKey) {
+		this.ratingKey = ratingKey;
+	}
+	
+	
 		
 
 }

@@ -156,6 +156,52 @@ public class PlexappFactory {
 		return resourcePath.getRoot();
 	}
 
+	/**
+	 * Sets a video as watched. viewCount will be 1.
+	 * @param key
+	 * @return
+	 */
+	public boolean setWatched(String key) {
+		String resourceURL = resourcePath.getWatchedUrl(key);
+		return requestSuccessful(resourceURL);
+	}
+	
+	/**
+	 * Sets a vide as unwatched. viewCount will not be present.
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean setUnWatched(String key) {
+		String resourceURL = resourcePath.getUnwatchedUrl(key);
+		return requestSuccessful(resourceURL);
+	}
+	
+
+	/**
+	 * @param resourceURL
+	 * @param con
+	 * @return
+	 */
+	protected boolean requestSuccessful(String resourceURL) {
+		HttpURLConnection con = null;
+		try {
+			URL url = new URL(resourceURL);
+			con = (HttpURLConnection) url.openConnection();
+			int responseCode = con.getResponseCode();
+			if (responseCode == 200) {
+				return true;
+			}
+		} catch (Exception ex) {
+			return false;
+		} finally {
+			if (con != null) {
+				con.disconnect();
+			}
+		}
+		return false;
+	}
+
 	
 	/**
 	 * Given a resource's URL, read and return the serialized MediaContainer

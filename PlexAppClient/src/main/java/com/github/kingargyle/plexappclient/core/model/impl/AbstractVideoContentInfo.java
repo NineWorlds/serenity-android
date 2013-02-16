@@ -35,6 +35,8 @@ import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
  */
 public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 
+	private String id;
+	
 	private String plotSummary;
 	private String castInfo;
 	private String posterURL;
@@ -51,6 +53,19 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	private String year;
 	private String directPlayUrl;
 	private String aspectRatio;
+	private int viewCount;
+	
+	public String id() {
+		return id;
+	}
+
+	public int getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
+	}
 
 	public String getAspectRatio() {
 		return aspectRatio;
@@ -268,6 +283,10 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	 */
 	public void setYear(String year) {
 		this.year = year;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }
