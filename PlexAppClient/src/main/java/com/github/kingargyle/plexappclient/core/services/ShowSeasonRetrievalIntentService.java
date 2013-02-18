@@ -97,7 +97,11 @@ public class ShowSeasonRetrievalIntentService extends AbstractPlexRESTIntentServ
 		} catch (Exception e) {
 			Log.e(getClass().getName(),"Oops.", e);
 		}
-				
+		
+		if (mc == null ) {
+			return;
+		}
+		
 		List<Directory> shows = mc.getDirectories();
 		for (Directory show : shows) {
 			TVShowSeriesInfo  mpi = new TVShowSeriesInfo();

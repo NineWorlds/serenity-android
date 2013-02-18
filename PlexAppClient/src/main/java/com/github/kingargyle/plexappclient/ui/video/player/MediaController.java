@@ -353,6 +353,7 @@ public class MediaController extends FrameLayout {
 				mWindow.showAtLocation(mAnchor, Gravity.NO_GRAVITY,
 						anchorRect.left, anchorRect.bottom);
 			}
+			mAnchor.setSystemUiVisibility(View.STATUS_BAR_VISIBLE);
 			mShowing = true;
 			if (mShownListener != null)
 				mShownListener.onShown();
@@ -378,10 +379,12 @@ public class MediaController extends FrameLayout {
 		if (mShowing) {
 			try {
 				mHandler.removeMessages(SHOW_PROGRESS);
-				if (mFromXml)
+				if (mFromXml) {
 					setVisibility(View.GONE);
-				else
+				} else {
 					mWindow.dismiss();
+				}
+				mAnchor.setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
 			} catch (IllegalArgumentException ex) {
 				Log.d("SerentityMediaController",
 						"MediaController already removed", ex);

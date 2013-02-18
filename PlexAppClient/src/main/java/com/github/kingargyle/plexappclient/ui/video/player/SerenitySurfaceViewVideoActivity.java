@@ -24,18 +24,17 @@
 package com.github.kingargyle.plexappclient.ui.video.player;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.ResourcePaths;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.ui.video.player.MediaController.MediaPlayerControl;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,13 +42,15 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 /**
- * A view that handles the internal video playback and representation
- * of a movie or tv show.
+ * A view that handles the internal video playback and representation of a movie
+ * or tv show.
  * 
  * @author dcarver
  * 
@@ -57,6 +58,10 @@ import android.widget.RelativeLayout;
 public class SerenitySurfaceViewVideoActivity extends Activity implements
 		SurfaceHolder.Callback {
 
+	/**
+	 * 
+	 */
+	private static final int PROGRESS_UPDATE_DELAY = 5000;
 	static final String TAG = "SerenitySurfaceViewVideoActivity";
 	static final int CONTROLLER_DELAY = 16000; // Sixteen seconds
 	private MediaPlayer mediaPlayer;
@@ -66,14 +71,16 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 	private String aspectRatio;
 	private String videoId;
 	private int resumeOffset;
-	
+
 	private Handler progressReportinghandler = new Handler();
 	private Runnable progressRunnable = new Runnable() {
-		
+
 		public void run() {
 			if (mediaPlayer != null && mediaPlayer.isPlaying()) {
 				new UpdateProgressRequest().execute();
-				progressReportinghandler.postDelayed(this, 5000); // Update progress every 5 seconds
+				progressReportinghandler.postDelayed(this,
+						PROGRESS_UPDATE_DELAY); // Update progress every 5
+												// seconds
 			}
 		};
 	};
@@ -87,12 +94,6 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 	 */
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
-//		if (mediaController != null) {
-//			if (mediaController.isShowing()) {
-//				mediaController.hide();
-//			}
-//			mediaController.show(CONTROLLER_DELAY);
-//		}
 
 	}
 
@@ -141,12 +142,12 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		float ratioHeight = surfaceViewHeight / videoHeight;
 		float aspectRatio = videoWidth / videoHeight;
 
-		if (preferPlexAspectRatio && this.aspectRatio != null) {
-			aspectRatio = Float.parseFloat(this.aspectRatio);
-		}
-
 		if (videoHeight == 480 && videoWidth == 720) {
 			aspectRatio = (float) 1.78;
+		}
+
+		if (preferPlexAspectRatio && this.aspectRatio != null) {
+			aspectRatio = Float.parseFloat(this.aspectRatio);
 		}
 
 		if (ratioWidth > ratioHeight) {
@@ -187,6 +188,13 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.video_playback);
+		init();
+	}
+
+	/**
+	 * Initialize the mediaplayer and mediacontroller.
+	 */
+	protected void init() {
 		Bundle extras = getIntent().getExtras();
 
 		videoURL = extras.getString("videoUrl");
@@ -202,6 +210,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		resumeOffset = extras.getInt("resumeOffset");
 
 		mediaPlayer = new MediaPlayer();
+		mediaPlayer.setOnErrorListener(new SerenityOnErrorListener());
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 		surfaceView.setKeepScreenOn(true);
 		SurfaceHolder holder = surfaceView.getHolder();
@@ -211,52 +220,12 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		mediaController = new MediaController(this, summary, title, posterURL,
 				videoResolution, videoFormat, audioFormat, audioChannels);
 		mediaController.setAnchorView(surfaceView);
-		mediaController.setMediaPlayer(new MediaPlayerControl() {
-
-			public void start() {
-				mediaPlayer.start();
-			}
-
-			public void seekTo(long pos) {
-				mediaPlayer.seekTo((int) pos);				
-			}
-
-			public void pause() {
-				mediaPlayer.pause();
-			}
-
-			public boolean isPlaying() {
-				return mediaPlayer.isPlaying();
-			}
-
-			public long getDuration() {
-				return mediaPlayer.getDuration();
-			}
-
-			public long getCurrentPosition() {
-				return mediaPlayer.getCurrentPosition();
-			}
-
-			public int getBufferPercentage() {
-				return 0;
-			}
-
-			public boolean canSeekForward() {
-				return true;
-			}
-
-			public boolean canSeekBackward() {
-				return true;
-			}
-
-			public boolean canPause() {
-				return true;
-			}
-		});
-
+		mediaController.setMediaPlayer(new SerenityMediaPlayerControl());
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#finish()
 	 */
 	@Override
@@ -313,9 +282,101 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 			return true;
 		}
 
+		if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+			int skipOffset = 10000 + mediaPlayer.getCurrentPosition();
+			int duration = mediaPlayer.getDuration();
+			if (skipOffset > duration) {
+				skipOffset = duration - 1;
+			}
+			if (!mediaController.isShowing()) {
+				mediaController.show(CONTROLLER_DELAY);
+			}
+			mediaPlayer.seekTo(skipOffset);
+			return true;
+		}
+
+		if (keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+			int skipOffset = mediaPlayer.getCurrentPosition() - 10000;
+			if (skipOffset < 0) {
+				skipOffset = 0;
+			}
+			if (!mediaController.isShowing()) {
+				mediaController.show(CONTROLLER_DELAY);
+			}
+			mediaPlayer.seekTo(skipOffset);
+			return true;
+		}
+		
+		if (keyCode == KeyEvent.KEYCODE_MEDIA_STOP) {
+			if (mediaPlayer.isPlaying()) {
+				mediaPlayer.pause();
+				if (!mediaController.isShowing()) {
+					mediaController.show(CONTROLLER_DELAY);
+				}
+			}
+			return true;
+		}
+
 		return super.onKeyDown(keyCode, event);
 	}
 
+	/**
+	 * A simple media player control. Handles the main events that can occur
+	 * while using the player to play a video.
+	 * 
+	 * @author dcarver
+	 * 
+	 */
+	protected class SerenityMediaPlayerControl implements MediaPlayerControl {
+		public void start() {
+			mediaPlayer.start();
+		}
+
+		public void seekTo(long pos) {
+			mediaPlayer.seekTo((int) pos);
+		}
+
+		public void pause() {
+			mediaPlayer.pause();
+		}
+
+		public boolean isPlaying() {
+			return mediaPlayer.isPlaying();
+		}
+
+		public long getDuration() {
+			return mediaPlayer.getDuration();
+		}
+
+		public long getCurrentPosition() {
+			return mediaPlayer.getCurrentPosition();
+		}
+
+		public int getBufferPercentage() {
+			return 0;
+		}
+
+		public boolean canSeekForward() {
+			return true;
+		}
+
+		public boolean canSeekBackward() {
+			return true;
+		}
+
+		public boolean canPause() {
+			return true;
+		}
+	}
+
+	/**
+	 * A task that updates the watched status of a video.
+	 * 
+	 * @author dcarver
+	 * 
+	 */
 	protected class WatchedVideoRequest extends AsyncTask<Void, Void, Void> {
 
 		protected String scrobbleKey;
@@ -327,28 +388,44 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		@Override
 		protected Void doInBackground(Void... params) {
 			PlexappFactory factory = SerenityApplication.getPlexFactory();
-			boolean result = factory.setWatched(scrobbleKey);
+			factory.setWatched(scrobbleKey);
 			return null;
 		}
 	}
-	
-	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
 
+	/**
+	 * A task that updates the progress position of a video while it is being
+	 * played.
+	 * 
+	 * @author dcarver
+	 * 
+	 */
+	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
 
 		@Override
 		protected Void doInBackground(Void... params) {
 			PlexappFactory factory = SerenityApplication.getPlexFactory();
 			if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-				String offset = Integer.valueOf(mediaPlayer.getCurrentPosition()).toString();
-				boolean success = factory.setProgress(videoId, offset);
+				String offset = Integer.valueOf(
+						mediaPlayer.getCurrentPosition()).toString();
+				factory.setProgress(videoId, offset);
 			}
 			return null;
 		}
 	}
-	
-	
-	
 
+	/**
+	 * A prepare listener that handles how a video should start playing.
+	 * 
+	 * It checks to see if the video has been previously viewed and if so will
+	 * present a dialog to allow resuming of a video from where it was
+	 * previously last viewed. Otherwise it will start play back of the video.
+	 * It also launches the Watched status update task and the progress update
+	 * handler.
+	 * 
+	 * @author dcarver
+	 * 
+	 */
 	protected class VideoPlayerPrepareListener implements OnPreparedListener {
 
 		private Context context;
@@ -379,16 +456,16 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 											mediaPlayer.start();
 										}
 										mediaPlayer.seekTo(resumeOffset);
-										setMetaData();										
+										setMetaData();
 									}
 								})
-						.setNegativeButton("Play from Start",
+						.setNegativeButton("Restart",
 								new DialogInterface.OnClickListener() {
 
 									public void onClick(DialogInterface dialog,
 											int which) {
 										mediaPlayer.start();
-										setMetaData();										
+										setMetaData();
 									}
 								});
 
@@ -412,5 +489,52 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 			}
 		}
 
+	}
+
+	protected class SerenityOnErrorListener implements OnErrorListener {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.media.MediaPlayer.OnErrorListener#onError(android.media.
+		 * MediaPlayer, int, int)
+		 */
+		public boolean onError(MediaPlayer mp, int what, int extra) {
+
+			String error_msg = "What: " + what + "Extra: " + extra;
+			if (what == MediaPlayer.MEDIA_ERROR_UNKNOWN) {
+				error_msg = "Unknown Media Player Error. Extra Code: " + extra;
+			}
+
+			if (what == MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK) {
+				error_msg = "Media not valid for progessive playback. Extra Code: "
+						+ extra;
+			}
+
+			if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
+				error_msg = "Server croaked. Extra Code: " + extra;
+			}
+
+			Log.e(getClass().getName(), error_msg);
+			return true;
+		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onTouchEvent(android.view.MotionEvent)
+	 */
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			if (mediaController.isShowing()) {
+				mediaController.hide();
+			} else {
+				mediaController.show();
+			}
+		}
+		return super.onTouchEvent(event);
 	}
 }

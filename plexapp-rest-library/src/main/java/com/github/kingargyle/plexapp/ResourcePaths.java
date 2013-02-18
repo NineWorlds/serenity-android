@@ -92,7 +92,6 @@ public class ResourcePaths {
 	public String getProgressUrl(String key, String offset) {
 		String offseturl = getRoot() + ":/progress?key=" + key + "&identifier=com.plexapp.plugins.library" + 
 		        "&time=" + offset;
-		Log.w(getClass().getName(), offseturl);
 		return offseturl;
 	}
 	

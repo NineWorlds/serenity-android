@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.kingargyle.plexappclient"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="0.8.0" >
 
     <uses-sdk
         android:minSdkVersion="12"
@@ -27,13 +27,16 @@
         <activity
             android:name="com.github.kingargyle.plexappclient.ui.browser.movie.MovieBrowserActivity"
             android:label="@string/title_activity_movie_browser"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:screenOrientation="landscape" >
         </activity>
+        
         <activity
             android:name="com.github.kingargyle.plexappclient.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:hardwareAccelerated="false" >
+            android:hardwareAccelerated="false"
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,29 +44,37 @@
             </intent-filter>
             
         </activity>
+        
         <activity
             android:name="com.github.kingargyle.plexappclient.ui.browser.tv.TVShowBrowserActivity"
             android:label="@string/title_activity_tvbrowser_show" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:screenOrientation="landscape" >
         </activity>
+        
         <activity
             android:name="com.github.kingargyle.plexappclient.ui.browser.tv.seasons.TVShowSeasonBrowserActivity"
             android:label="@string/title_activity_tvbrowser_show_season" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:screenOrientation="landscape" >
         </activity>
+        
         <activity
             android:name="com.github.kingargyle.plexappclient.ui.browser.tv.episodes.EpisodeBrowserActivity"
             android:label="@string/title_activity_tvbrowser_show_episodes" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:screenOrientation="landscape" >
         </activity>
+        
         <activity
             android:name="com.github.kingargyle.plexappclient.ui.video.player.SerenitySurfaceViewVideoActivity"
             android:label="@string/video_title" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:screenOrientation="landscape" >
+        </activity>  
         
-        
-        <activity android:name=".ui.preferences.SerenityPreferenceActivity"></activity>
+        <activity android:name=".ui.preferences.SerenityPreferenceActivity"
+            android:screenOrientation="landscape"></activity>
         
         <service android:name=".core.services.MainMenuIntentService"/>
         <service android:name=".core.services.MoviesRetrievalIntentService"/>

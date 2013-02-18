@@ -56,7 +56,7 @@ public class MoviePosterImageGalleryAdapter extends
 
 	public MoviePosterImageGalleryAdapter(Context c, String key, String category) {
 		super(c, key, category);
-		pd = ProgressDialog.show(c, "Movie Retrieval", "Retrieving Movies");
+		pd = ProgressDialog.show(c, "", "Retrieving Movies");
 		notifyAdapter = this;
 	}
 
