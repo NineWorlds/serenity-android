@@ -27,6 +27,7 @@ package com.github.kingargyle.plexappclient.core.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.github.kingargyle.plexapp.model.impl.Directory;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexappclient.core.model.impl.MenuItem;
@@ -90,6 +91,7 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 			}
 		} catch (Exception e) {
 		  Log.e("MainMenuIntentService", "Unable to comminicate to server at " + factory.baseURL(), e);
+		  BugSenseHandler.sendExceptionMessage("MainMenuIntentService", "loadMenuItems from " + factory.baseURL(), e);
 		} 
 	}
 	
@@ -118,6 +120,7 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 				messenger.send(msg);
 			} catch (RemoteException ex) {
 				Log.e(getClass().getName(), "Unable to send message", ex);
+			  BugSenseHandler.sendExceptionMessage("MainMenuIntentService", "sendMessageResults", ex);
 			}
 		}
 		

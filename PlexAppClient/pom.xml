@@ -29,6 +29,11 @@
          <artifactId>imageloader-core</artifactId>
          <version>1.5.8</version> 
        </dependency>
+      <dependency>
+          <groupId>com.bugsense</groupId>
+          <artifactId>bugsense</artifactId>
+          <version>3.2</version>
+      </dependency>
    </dependencies>
 
    <build>

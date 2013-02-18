@@ -23,6 +23,7 @@
 
 package com.github.kingargyle.plexappclient;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexapp.config.IConfiguration;
 import com.github.kingargyle.plexappclient.core.ConcurrentLoader;
@@ -46,12 +47,14 @@ public class SerenityApplication extends Application {
 	private static ImageManager imageManager;
 	private static PlexappFactory plexFactory;
 	private static SerenityLoaderSettings settings;
+	private static String BUGSENSE_KEY = "e4c454b0";
 
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+		BugSenseHandler.initAndStartSession(this, BUGSENSE_KEY);
+
 		settings = new SerenityLoaderSettings.SettingsBuilder()
 	      .withDisconnectOnEveryCall(true).withUpsampling(true).build(this);
 		settings.setLoader(new ConcurrentLoader(settings));
@@ -63,7 +66,6 @@ public class SerenityApplication extends Application {
 	    
 	    IConfiguration config = ServerConfig.getInstance(this);
 		plexFactory = PlexappFactory.getInstance(config);
-		
 	}
 	
 	public static ImageManager getImageManager() {

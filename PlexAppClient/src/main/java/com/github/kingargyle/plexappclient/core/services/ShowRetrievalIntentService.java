@@ -27,18 +27,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.kingargyle.plexapp.model.impl.Director;
+import com.bugsense.trace.BugSenseHandler;
 import com.github.kingargyle.plexapp.model.impl.Directory;
 import com.github.kingargyle.plexapp.model.impl.Genre;
-import com.github.kingargyle.plexapp.model.impl.Media;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
-import com.github.kingargyle.plexapp.model.impl.Part;
-import com.github.kingargyle.plexapp.model.impl.Video;
-import com.github.kingargyle.plexapp.model.impl.Writer;
-import com.github.kingargyle.plexappclient.R;
-import com.github.kingargyle.plexappclient.SerenityApplication;
-import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
-import com.github.kingargyle.plexappclient.core.model.impl.MoviePosterInfo;
 import com.github.kingargyle.plexappclient.core.model.impl.TVShowSeriesInfo;
 
 import android.content.Intent;
@@ -47,8 +39,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * @author dcarver
@@ -75,6 +65,7 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 				messenger.send(msg);
 			} catch (RemoteException ex) {
 				Log.e(getClass().getName(), "Unable to send message", ex);
+				BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "sendMessageResults", ex);							
 			}
 		}
 	}
@@ -94,8 +85,10 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
 			Log.e(getClass().getName(),"Unable to talk to server: ", ex);
+			BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "createBanners", ex);						
 		} catch (Exception e) {
 			Log.e(getClass().getName(),"Oops.", e);
+			BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "createBanners", e);						
 		}
 		
 		if (mc != null && mc.getSize() > 0) {			
@@ -150,7 +143,6 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 				genres.add(genre.getTag());
 			}
 		}
-		
 		return genres;
 	}
 

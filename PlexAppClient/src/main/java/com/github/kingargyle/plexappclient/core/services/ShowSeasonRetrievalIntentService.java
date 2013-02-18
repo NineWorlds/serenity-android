@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.github.kingargyle.plexapp.model.impl.Director;
 import com.github.kingargyle.plexapp.model.impl.Directory;
 import com.github.kingargyle.plexapp.model.impl.Genre;
@@ -94,8 +95,10 @@ public class ShowSeasonRetrievalIntentService extends AbstractPlexRESTIntentServ
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
 			Log.e(getClass().getName(),"Unable to talk to server: ", ex);
+			BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "createSeries", ex);			
 		} catch (Exception e) {
 			Log.e(getClass().getName(),"Oops.", e);
+			BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "createSeries", e);			
 		}
 		
 		if (mc == null ) {

@@ -26,6 +26,7 @@ package com.github.kingargyle.plexappclient.core.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.github.kingargyle.plexapp.model.impl.Directory;
 import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexappclient.core.model.CategoryInfo;
@@ -69,6 +70,8 @@ public class MovieCategoryRetrievalIntentService extends
 				messenger.send(msg);
 			} catch (RemoteException ex) {
 				Log.e(getClass().getName(), "Unable to send message", ex);
+				BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "sendMessageResults", ex);			
+				
 			}
 		}
 	}
@@ -101,6 +104,7 @@ public class MovieCategoryRetrievalIntentService extends
 			}
 		} catch (Exception e) {
 			Log.e(getClass().getName(), e.getMessage(), e);
+			BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "populateCategories", e);			
 		}		
 	}
 	

@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.github.kingargyle.plexapp.model.impl.Director;
 import com.github.kingargyle.plexapp.model.impl.Genre;
 import com.github.kingargyle.plexapp.model.impl.Media;
@@ -72,6 +73,7 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 				messenger.send(msg);
 			} catch (RemoteException ex) {
 				Log.e(getClass().getName(), "Unable to send message", ex);
+				BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "sendMessageResults", ex);			
 			}
 		}
 		
@@ -93,6 +95,8 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 		} catch (IOException ex) {
 			Log.e(getClass().getName(),
 					"Unable to talk to server: ", ex);
+			BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "createPosters", ex);			
+			
 		} catch (Exception e) {
 			Log.e(getClass().getName(), "Oops.", e);
 		}
