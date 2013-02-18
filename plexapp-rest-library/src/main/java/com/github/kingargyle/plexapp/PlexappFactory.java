@@ -177,6 +177,11 @@ public class PlexappFactory {
 		return requestSuccessful(resourceURL);
 	}
 	
+	public boolean setProgress(String key, String offset) {
+		String resourceURL = resourcePath.getProgressUrl(key, offset);
+		return requestSuccessful(resourceURL);
+	}
+	
 
 	/**
 	 * @param resourceURL
@@ -200,6 +205,10 @@ public class PlexappFactory {
 			}
 		}
 		return false;
+	}
+	
+	public String getProgressURL(String key, String offset) {
+		return resourcePath.getProgressUrl(key, offset);
 	}
 
 	

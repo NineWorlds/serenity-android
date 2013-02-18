@@ -23,7 +23,6 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv.episodes;
 
-import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.ui.video.player.SerenitySurfaceViewVideoActivity;
 import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 
@@ -74,6 +73,7 @@ public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 		vpIntent.putExtra("audioFormat", epiv.getPosterInfo().getAudioCodec());
 		vpIntent.putExtra("videoFormat", epiv.getPosterInfo().getVideoCodec());
 		vpIntent.putExtra("audioChannels", epiv.getPosterInfo().getAudioChannels());
+		vpIntent.putExtra("resumeOffset", epiv.getPosterInfo().getResumeOffset());
 		
 		Activity a = (Activity) epiv.getContext();
 		a.startActivityForResult(vpIntent, 0);

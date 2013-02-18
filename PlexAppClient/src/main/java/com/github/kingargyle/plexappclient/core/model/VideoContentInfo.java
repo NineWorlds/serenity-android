@@ -98,5 +98,9 @@ public interface VideoContentInfo extends ContentInfo {
 	public String getAudioChannels();
 	
 	public void setAudioChannels(String audioChannels);
+	
+	public void setResumeOffset(int offset );
+	
+	public int getResumeOffset();
 
 }

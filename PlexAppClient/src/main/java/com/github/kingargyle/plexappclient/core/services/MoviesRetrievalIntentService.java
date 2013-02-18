@@ -112,6 +112,8 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 			mpi.setId(movie.getRatingKey());
 			mpi.setPlotSummary(movie.getSummary());
 			
+			mpi.setResumeOffset(Long.valueOf(movie.getViewOffset()).intValue());
+			
 			mpi.setViewCount(movie.getViewCount());
 
 			String burl = baseUrl + ":/resources/movie-fanart.jpg";

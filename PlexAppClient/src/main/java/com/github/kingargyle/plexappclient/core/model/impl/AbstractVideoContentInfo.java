@@ -56,7 +56,16 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	private String aspectRatio;
 	private int viewCount;
 	private String audioChannels;
+	private int resumeOffset;
 	
+	public int getResumeOffset() {
+		return resumeOffset;
+	}
+
+	public void setResumeOffset(int resumeOffset) {
+		this.resumeOffset = resumeOffset;
+	}
+
 	public String id() {
 		return id;
 	}
@@ -306,5 +315,6 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	public void setAudioChannels(String audioChannels) {
 		this.audioChannels = audioChannels;
 	}
+	
 
 }

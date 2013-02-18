@@ -72,6 +72,7 @@ public class MoviePosterOnItemClickListener  implements OnItemClickListener {
 		vpIntent.putExtra("audioFormat", mpiv.getPosterInfo().getAudioCodec());
 		vpIntent.putExtra("videoFormat", mpiv.getPosterInfo().getVideoCodec());
 		vpIntent.putExtra("audioChannels", mpiv.getPosterInfo().getAudioChannels());
+		vpIntent.putExtra("resumeOffset", mpiv.getPosterInfo().getResumeOffset());
 		
 		
 		Activity a = (Activity) mpiv.getContext();

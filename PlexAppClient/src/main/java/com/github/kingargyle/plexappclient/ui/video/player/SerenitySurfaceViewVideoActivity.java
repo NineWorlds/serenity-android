@@ -24,16 +24,22 @@
 package com.github.kingargyle.plexappclient.ui.video.player;
 
 import com.github.kingargyle.plexapp.PlexappFactory;
+import com.github.kingargyle.plexapp.ResourcePaths;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.ui.video.player.MediaController.MediaPlayerControl;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -42,6 +48,9 @@ import android.view.SurfaceView;
 import android.widget.RelativeLayout;
 
 /**
+ * A view that handles the internal video playback and representation
+ * of a movie or tv show.
+ * 
  * @author dcarver
  * 
  */
@@ -49,14 +58,25 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		SurfaceHolder.Callback {
 
 	static final String TAG = "SerenitySurfaceViewVideoActivity";
-	static final int CONTROLLER_DELAY = 16000; // Six seconds
+	static final int CONTROLLER_DELAY = 16000; // Sixteen seconds
 	private MediaPlayer mediaPlayer;
 	private String videoURL;
 	private SurfaceView surfaceView;
 	private MediaController mediaController;
 	private String aspectRatio;
 	private String videoId;
-	private String posterURL;
+	private int resumeOffset;
+	
+	private Handler progressReportinghandler = new Handler();
+	private Runnable progressRunnable = new Runnable() {
+		
+		public void run() {
+			if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+				new UpdateProgressRequest().execute();
+				progressReportinghandler.postDelayed(this, 5000); // Update progress every 5 seconds
+			}
+		};
+	};
 
 	/*
 	 * (non-Javadoc)
@@ -67,12 +87,12 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 	 */
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
-		if (mediaController != null) {
-			if (mediaController.isShowing()) {
-				mediaController.hide();
-			}
-			mediaController.show(CONTROLLER_DELAY);
-		}
+//		if (mediaController != null) {
+//			if (mediaController.isShowing()) {
+//				mediaController.hide();
+//			}
+//			mediaController.show(CONTROLLER_DELAY);
+//		}
 
 	}
 
@@ -87,21 +107,9 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		try {
 			mediaPlayer.setDisplay(holder);
 			mediaPlayer.setDataSource(videoURL);
-			mediaPlayer.prepare();
-
-			android.view.ViewGroup.LayoutParams lp = setupAspectRatio();
-
-			surfaceView.setLayoutParams(lp);
-
-			mediaController.setEnabled(true);
-
-			mediaPlayer.start();
-			
-			new WatchedVideoRequest(videoId).execute();
-			
-			if (mediaPlayer.isPlaying()) {
-				mediaController.show(CONTROLLER_DELAY);
-			}
+			mediaPlayer.setOnPreparedListener(new VideoPlayerPrepareListener(
+					this));
+			mediaPlayer.prepareAsync();
 
 		} catch (Exception ex) {
 			Log.e(TAG, "Video Playback Error. ", ex);
@@ -179,7 +187,6 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.video_playback);
-		
 		Bundle extras = getIntent().getExtras();
 
 		videoURL = extras.getString("videoUrl");
@@ -192,7 +199,7 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		String videoResolution = extras.getString("videoResolution");
 		String audioFormat = extras.getString("audioFormat");
 		String audioChannels = extras.getString("audioChannels");
-		
+		resumeOffset = extras.getInt("resumeOffset");
 
 		mediaPlayer = new MediaPlayer();
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
@@ -201,7 +208,8 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		holder.addCallback(this);
 		holder.setSizeFromLayout();
 
-		mediaController = new MediaController(this, summary, title, posterURL, videoResolution, videoFormat, audioFormat, audioChannels );
+		mediaController = new MediaController(this, summary, title, posterURL,
+				videoResolution, videoFormat, audioFormat, audioChannels);
 		mediaController.setAnchorView(surfaceView);
 		mediaController.setMediaPlayer(new MediaPlayerControl() {
 
@@ -210,12 +218,11 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 			}
 
 			public void seekTo(long pos) {
-				mediaPlayer.seekTo((int) pos);
+				mediaPlayer.seekTo((int) pos);				
 			}
 
 			public void pause() {
 				mediaPlayer.pause();
-
 			}
 
 			public boolean isPlaying() {
@@ -247,6 +254,15 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 			}
 		});
 
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#finish()
+	 */
+	@Override
+	public void finish() {
+		super.finish();
+		progressReportinghandler.removeCallbacks(progressRunnable);
 	}
 
 	/*
@@ -288,9 +304,11 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 			if (mediaPlayer.isPlaying()) {
 				mediaPlayer.pause();
 				mediaController.show(CONTROLLER_DELAY);
+				progressReportinghandler.removeCallbacks(progressRunnable);
 			} else {
 				mediaPlayer.start();
 				mediaController.hide();
+				progressReportinghandler.postDelayed(progressRunnable, 5000);
 			}
 			return true;
 		}
@@ -312,5 +330,87 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 			boolean result = factory.setWatched(scrobbleKey);
 			return null;
 		}
+	}
+	
+	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
+
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			PlexappFactory factory = SerenityApplication.getPlexFactory();
+			if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+				String offset = Integer.valueOf(mediaPlayer.getCurrentPosition()).toString();
+				boolean success = factory.setProgress(videoId, offset);
+			}
+			return null;
+		}
+	}
+	
+	
+	
+
+	protected class VideoPlayerPrepareListener implements OnPreparedListener {
+
+		private Context context;
+
+		public VideoPlayerPrepareListener(Context context) {
+			this.context = context;
+		}
+
+		public void onPrepared(MediaPlayer mp) {
+			android.view.ViewGroup.LayoutParams lp = setupAspectRatio();
+			surfaceView.setLayoutParams(lp);
+			mediaController.setEnabled(true);
+
+			if (resumeOffset > 0) {
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+						context);
+
+				alertDialogBuilder.setTitle("Resume Video");
+				alertDialogBuilder
+						.setMessage("Resume the video or start from beginning?")
+						.setCancelable(false)
+						.setPositiveButton("Resume",
+								new DialogInterface.OnClickListener() {
+
+									public void onClick(DialogInterface dialog,
+											int which) {
+										if (!mediaPlayer.isPlaying()) {
+											mediaPlayer.start();
+										}
+										mediaPlayer.seekTo(resumeOffset);
+										setMetaData();										
+									}
+								})
+						.setNegativeButton("Play from Start",
+								new DialogInterface.OnClickListener() {
+
+									public void onClick(DialogInterface dialog,
+											int which) {
+										mediaPlayer.start();
+										setMetaData();										
+									}
+								});
+
+				alertDialogBuilder.create();
+				alertDialogBuilder.show();
+				return;
+			} else {
+				mediaPlayer.start();
+				setMetaData();
+			}
+		}
+
+		/**
+		 * 
+		 */
+		protected void setMetaData() {
+			new WatchedVideoRequest(videoId).execute();
+			mediaController.show(CONTROLLER_DELAY);
+			if (progressReportinghandler != null) {
+				progressReportinghandler.postDelayed(progressRunnable, 5000);
+			}
+		}
+
 	}
 }

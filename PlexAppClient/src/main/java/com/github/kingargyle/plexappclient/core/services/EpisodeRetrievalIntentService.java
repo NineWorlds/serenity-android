@@ -37,7 +37,6 @@ import com.github.kingargyle.plexapp.model.impl.Writer;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
 import com.github.kingargyle.plexappclient.core.model.impl.EpisodePosterInfo;
-import com.github.kingargyle.plexappclient.core.model.impl.MoviePosterInfo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -134,6 +133,7 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 			epi.setId(episode.getRatingKey());
 			epi.setPlotSummary(episode.getSummary());
 			epi.setViewCount(episode.getViewCount());
+			epi.setResumeOffset(Long.valueOf(episode.getViewOffset()).intValue());			
 			
 			if (episode.getParentThumbNailImageKey() != null) {
 				epi.setParentPosterURL(baseUrl + episode.getParentThumbNailImageKey().substring(1));
