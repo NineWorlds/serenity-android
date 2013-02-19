@@ -23,6 +23,7 @@
 
 package com.github.kingargyle.plexappclient.ui.video.player;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
@@ -76,11 +77,16 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 	private Runnable progressRunnable = new Runnable() {
 
 		public void run() {
-			if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-				new UpdateProgressRequest().execute();
-				progressReportinghandler.postDelayed(this,
-						PROGRESS_UPDATE_DELAY); // Update progress every 5
-												// seconds
+			try {
+				if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+					new UpdateProgressRequest().execute();
+					progressReportinghandler.postDelayed(this,
+							PROGRESS_UPDATE_DELAY); // Update progress every 5
+													// seconds
+				}
+			} catch (IllegalStateException ex) {
+				Log.w(getClass().getName(), "Illegalstate exception occurred durring progress update. No further updates will occur.", ex);
+				BugSenseHandler.sendException(ex);
 			}
 		};
 	};
