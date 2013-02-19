@@ -4,7 +4,8 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:id="@+id/video_playeback"
-    android:background="#000000" >
+    android:background="#000000"
+    android:keepScreenOn="true" >
     
     <SurfaceView android:id="@+id/surfaceView"
         android:layout_width="wrap_content"
