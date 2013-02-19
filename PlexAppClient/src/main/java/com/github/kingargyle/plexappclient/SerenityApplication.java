@@ -53,7 +53,9 @@ public class SerenityApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		BugSenseHandler.initAndStartSession(this, BUGSENSE_KEY);
+		if (!android.os.Build.MODEL.contains("emulator")) {
+			BugSenseHandler.initAndStartSession(this, BUGSENSE_KEY);
+		}
 
 		settings = new SerenityLoaderSettings.SettingsBuilder()
 	      .withDisconnectOnEveryCall(true).withUpsampling(true).build(this);
