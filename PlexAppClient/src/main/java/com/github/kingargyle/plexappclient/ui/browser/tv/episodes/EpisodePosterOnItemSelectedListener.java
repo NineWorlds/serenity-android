@@ -99,15 +99,13 @@ public class EpisodePosterOnItemSelectedListener implements
 		v.refreshDrawableState();
 
 		createMovieDetail((SerenityPosterImageView) v);
+		createMovieMetaData((SerenityPosterImageView) v);
 		createInfographicDetails((SerenityPosterImageView) v);
 		changeBackgroundImage(v);
 
 	}
 
 	private void createMovieDetail(SerenityPosterImageView v) {
-		TextView castinfo = (TextView) context.findViewById(R.id.movieCastInfo);
-		castinfo.setText(v.getPosterInfo().getCastInfo());
-
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
 		summary.setText(v.getPosterInfo().getPlotSummary());
 
@@ -115,6 +113,50 @@ public class EpisodePosterOnItemSelectedListener implements
 				.findViewById(R.id.movieBrowserPosterTitle);
 		title.setText(v.getPosterInfo().getTitle());
 	}
+	
+	private void createMovieMetaData(SerenityPosterImageView v) {
+		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
+		VideoContentInfo mi = mpiv.getPosterInfo();
+		TextView ty  = (TextView) context.findViewById(R.id.video_year);
+		TextView tg  = (TextView) context.findViewById(R.id.video_genre);
+		TextView tw  = (TextView) context.findViewById(R.id.video_writers);
+		TextView td  = (TextView) context.findViewById(R.id.video_directors);
+
+		ty.setText("Unknown");
+		tg.setText("Unknown");
+		tw.setText("Unknown");
+		td.setText("Unknown");
+		
+		if (mi.getYear() != null) {
+			ty.setText(mi.getYear());
+		}
+		
+		if (mi.getGenres() != null) {
+			String details = "";
+			for (String genre : mi.getGenres()) {
+				details = details + genre + "\r\n";
+			}
+			tg.setText(details);
+		}
+		
+		if (mi.getWriters() != null) {
+			String details = "";
+			for (String writers : mi.getWriters()) {
+				details = details + writers + "\r\n";
+			}
+			tw.setText(details);			
+		}
+		
+		if (mi.getDirectors() != null) {
+			String details = "";
+			for (String directors : mi.getDirectors()) {
+				details = details + directors + "\r\n";
+			}
+			td.setText(details);			
+		}
+		
+	}
+	
 
 	/**
 	 * Change the background image of the activity.

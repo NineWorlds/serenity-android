@@ -26,6 +26,7 @@ package com.github.kingargyle.plexappclient.ui.browser.movie;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.github.kingargyle.plexapp.model.impl.Genre;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.imageloader.BackgroundImageLoader;
@@ -99,21 +100,62 @@ public class MoviePosterOnItemSelectedListener implements
 		v.refreshDrawableState();
 
 		createMovieDetail((SerenityPosterImageView) v);
+		createMovieMetaData((SerenityPosterImageView) v);
 		createInfographicDetails((SerenityPosterImageView) v);
 		changeBackgroundImage(v);
 
 	}
 
 	private void createMovieDetail(SerenityPosterImageView v) {
-		TextView castinfo = (TextView) context.findViewById(R.id.movieCastInfo);
-		castinfo.setText(v.getPosterInfo().getCastInfo());
-
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
 		summary.setText(v.getPosterInfo().getPlotSummary());
 
 		TextView title = (TextView) context
 				.findViewById(R.id.movieBrowserPosterTitle);
 		title.setText(v.getPosterInfo().getTitle());
+	}
+	
+	private void createMovieMetaData(SerenityPosterImageView v) {
+		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
+		VideoContentInfo mi = mpiv.getPosterInfo();
+		TextView ty  = (TextView) context.findViewById(R.id.video_year);
+		TextView tg  = (TextView) context.findViewById(R.id.video_genre);
+		TextView tw  = (TextView) context.findViewById(R.id.video_writers);
+		TextView td  = (TextView) context.findViewById(R.id.video_directors);
+
+		ty.setText("Unknown");
+		tg.setText("Unknown");
+		tw.setText("Unknown");
+		td.setText("Unknown");
+		
+		if (mi.getYear() != null) {
+			ty.setText(mi.getYear());
+		}
+		
+		if (mi.getGenres() != null) {
+			String details = "";
+			for (String genre : mi.getGenres()) {
+				details = details + genre + "\r\n";
+			}
+			tg.setText(details);
+		}
+		
+		if (mi.getWriters() != null) {
+			String details = "";
+			for (String writers : mi.getWriters()) {
+				details = details + writers + "\r\n";
+			}
+			tw.setText(details);			
+		}
+		
+		if (mi.getDirectors() != null) {
+			String details = "";
+			for (String directors : mi.getDirectors()) {
+				details = details + directors + "\r\n";
+			}
+			td.setText(details);			
+		}
+		
 	}
 
 	/**
@@ -156,7 +198,9 @@ public class MoviePosterOnItemSelectedListener implements
 		
 		ImageView viewed = new ImageView(context);
 		viewed.setScaleType(ScaleType.FIT_XY);
-		viewed.setLayoutParams(new LayoutParams(80, 58));
+		LinearLayout.LayoutParams viewedlp = new LinearLayout.LayoutParams(80, 58);
+		viewedlp.setMargins(10, 0, 5, 5);
+		viewed.setLayoutParams(viewedlp);
 		
 		if (mpi.getViewCount() > 0) {
 			viewed.setImageResource(R.drawable.watched_small);

@@ -184,11 +184,13 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 		if (video.getYear() != null) {
 			videoContentInfo.setYear(video.getYear());
 			videoDetails = "Year: " + video.getYear();
-			videoDetails = videoDetails + "\r\n";
+			videoDetails = videoDetails + "  ";
 		}
 
 		if (video.getGenres() != null && video.getGenres().size() > 0) {
+			videoDetails = videoDetails + "Genre(s): ";
 			ArrayList<String> g = new ArrayList<String>();
+			
 			for (Genre genre : video.getGenres()) {
 				g.add(genre.getTag());
 				videoDetails = videoDetails + genre.getTag() + "/";
@@ -196,7 +198,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 			videoContentInfo.setGenres(g);
 			videoDetails = videoDetails.substring(0,
 					videoDetails.lastIndexOf("/"));
-			videoDetails = videoDetails + "\r\n";
+			videoDetails = videoDetails + "  ";
 		}
 
 		if (video.getWriters() != null && video.getWriters().size() > 0) {
@@ -209,7 +211,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 			videoContentInfo.setWriters(w);
 			videoDetails = videoDetails.substring(0,
 					videoDetails.lastIndexOf(","));
-			videoDetails = videoDetails + "\r\n";
+			videoDetails = videoDetails + "  ";
 		}
 
 		if (video.getDirectors() != null && video.getDirectors().size() > 0) {
