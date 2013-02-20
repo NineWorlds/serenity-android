@@ -120,7 +120,7 @@ public class TVShowBannerOnItemSelectedListener implements
 				.findViewById(R.id.tvShowBrowserGenre);
 		List<String> genres = v.getPosterInfo().getGeneres();
 		String genreText = "";
-		if (genres != null) {
+		if (genres != null && !genres.isEmpty()) {
 			for (String genre : genres) {
 				genreText = genreText + genre + "/";
 			}
