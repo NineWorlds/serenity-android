@@ -14,4 +14,17 @@
      <module>tests</module>
    </modules>
 
+   <repositories>
+      <repository>
+        <id>serenity-thirdparty-repo</id>
+        <url>http://kingargyle.github.com/repo</url>
+        <layout>default</layout>
+        <releases>
+           <enabled>true</enabled>
+           <updatePolicy>always</updatePolicy>
+           <checksumPolicy>warn</checksumPolicy>
+        </releases>
+      </repository>
+   </repositories>
+
 </project>
