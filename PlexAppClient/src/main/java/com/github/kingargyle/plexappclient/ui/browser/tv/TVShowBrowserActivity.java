@@ -23,13 +23,23 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv;
 
+import java.util.ArrayList;
+
 import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.core.model.CategoryInfo;
+import com.github.kingargyle.plexappclient.core.services.TVShowCategoryRetrievalIntentService;
 import com.github.kingargyle.plexappclient.ui.activity.SerenityActivity;
 import com.google.analytics.tracking.android.EasyTracker;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.view.View;
-import android.widget.Gallery;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 /**
  * @author dcarver
@@ -37,18 +47,18 @@ import android.widget.Gallery;
  */
 public class TVShowBrowserActivity extends SerenityActivity {
 	
-	private Gallery tvShowsGallery;
-	private View tvShowMainView;
+	private static Spinner categorySpinner;
 	private boolean restarted_state = false;
-	private String key;
+	private static String key;
+	private Handler categoryHandler;
+
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
 		setContentView(R.layout.activity_tvbrowser_show);
-		tvShowMainView = findViewById(R.id.tvshowBrowserLayout);
-		tvShowsGallery = (Gallery) findViewById(R.id.tvShowBannerGallery);
 
 	}
 	
@@ -58,7 +68,13 @@ public class TVShowBrowserActivity extends SerenityActivity {
 		EasyTracker.getInstance().activityStart(this);
 		
 		if (restarted_state == false) {
-			setupShows();
+			categoryHandler = new CategoryHandler(this);
+			Messenger messenger = new Messenger(categoryHandler);
+			Intent categoriesIntent = new Intent(this, TVShowCategoryRetrievalIntentService.class);
+			categoriesIntent.putExtra("key", key);
+			categoriesIntent.putExtra("MESSENGER", messenger);
+			startService(categoriesIntent);
+			
 		}
 		restarted_state = false;
 	}
@@ -69,17 +85,46 @@ public class TVShowBrowserActivity extends SerenityActivity {
 		EasyTracker.getInstance().activityStop(this);
 	}
 	
-	protected void setupShows() {
-		tvShowsGallery.setAdapter(new TVShowBannerImageGalleryAdapter(this, key));
-		tvShowsGallery
-				.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(tvShowMainView, this));
-		tvShowsGallery.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));
-	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		restarted_state = true;
 	}
+	
+	private static class CategoryHandler extends Handler {
+		
+		private ArrayList<CategoryInfo> categories;
+		private Activity context;
+		
+		public CategoryHandler(Activity context) {
+			this.context = context;
+		}
+
+		
+		/* (non-Javadoc)
+		 * @see android.os.Handler#handleMessage(android.os.Message)
+		 */
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.obj != null) {
+				categories = (ArrayList<CategoryInfo>)msg.obj;
+				setupShows();
+			}
+		}
+		
+		protected void setupShows() {
+			ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(context, R.layout.serenity_spinner_textview, categories);
+			spinnerArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+			
+			categorySpinner =(Spinner) context.findViewById(R.id.tvshow_CategoryFilter);
+			categorySpinner.setVisibility(View.VISIBLE);
+			categorySpinner.setAdapter(spinnerArrayAdapter);
+			categorySpinner.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener("all", key));
+			categorySpinner.requestFocus();		
+		}
+		
+	}	
+	
 
 }

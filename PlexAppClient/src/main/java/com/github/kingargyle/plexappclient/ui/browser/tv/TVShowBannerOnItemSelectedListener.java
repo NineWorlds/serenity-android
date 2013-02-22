@@ -68,7 +68,7 @@ public class TVShowBannerOnItemSelectedListener implements
 		context = activity;
 
 		imageManager = SerenityApplication.getImageManager();
-		imageTagFactory = ImageTagFactory.newInstance(400, 500,
+		imageTagFactory = ImageTagFactory.newInstance(250, 350,
 				R.drawable.default_video_cover);
 		imageTagFactory.setErrorImageId(R.drawable.default_error);
 		imageTagFactory.setSaveThumbnail(true);
@@ -170,7 +170,7 @@ public class TVShowBannerOnItemSelectedListener implements
 		ImageView showImage = (ImageView) context
 				.findViewById(R.id.tvShowImage);
 		showImage.setScaleType(ScaleType.FIT_XY);
-		showImage.setLayoutParams(new LinearLayout.LayoutParams(400, 500));
+		showImage.setLayoutParams(new LinearLayout.LayoutParams(250, 350));
 
 		if (mi.getThumbNailURL() != null) {
 			showImage.setTag(imageTagFactory.build(mi.getThumbNailURL(),

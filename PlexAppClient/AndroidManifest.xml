@@ -83,6 +83,7 @@
         <service android:name=".core.services.MovieSecondaryCategoryRetrievalIntentService"/>
         <service android:name=".core.services.ShowRetrievalIntentService"/>
         <service android:name=".core.services.ShowSeasonRetrievalIntentService"/>
+        <service android:name=".core.services.TVShowCategoryRetrievalIntentService"/>
         
     </application>
 

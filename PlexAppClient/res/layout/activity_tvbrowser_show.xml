@@ -6,7 +6,7 @@
     android:background="@drawable/tvshows"
     android:orientation="vertical"
     tools:context=".ui.browser.tv.TVShowBrowserActivity" >
-
+    
     <LinearLayout
         android:id="@+id/tvLine1"
         android:layout_width="match_parent"
@@ -19,10 +19,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="TV Shows"
+            android:text="TV Shows:"
             android:textColor="#F0F0F0"
             android:textSize="20sp" >
         </TextView>
+        
+        <TextView
+            android:id="@+id/tvshow_CategoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:focusable="false"
+            android:text="Category:"
+            android:textSize="15sp" />
+
+        <Spinner
+            android:id="@+id/tvshow_CategoryFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/spinner_background"
+            android:focusable="true"
+            android:gravity="left"
+            android:prompt="@string/movie_category_prompt"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/tvshow_movieCategoryFilter2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/spinner_background"
+            android:focusable="true"
+            android:gravity="left"
+            android:prompt="@string/movie_category_prompt2"
+            android:spinnerMode="dropdown"
+            android:visibility="invisible" />  
 
         <TextView
             android:id="@+id/tvShowItemCount"
@@ -35,7 +67,6 @@
             android:textSize="20sp" >
         </TextView>
     </LinearLayout>
-
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -64,18 +95,19 @@
         <LinearLayout
             android:layout_width="600dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:layout_marginLeft="80dp"
             android:layout_toRightOf="@+id/tvShowInfo"
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/tvBrowserTitle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Summary"
+                android:gravity="left"
+                android:text="Title Text"
                 android:textColor="#F0F0F0"
-                android:textSize="20dp"
-                android:textStyle="bold" >
+                android:textSize="20sp" >
             </TextView>
 
             <TextView
@@ -89,17 +121,6 @@
                 android:textColor="#F0F0F0" >
             </TextView>
 
-            <TextView
-                android:id="@+id/tvBrowserTitle"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="Title Text"
-                android:textColor="#F0F0F0"
-                android:textSize="20sp" >
-            </TextView>
 
             <TextView
                 android:id="@+id/tvShowBrowserGenre"

@@ -23,20 +23,16 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.model.impl.Directory;
-import com.github.kingargyle.plexapp.model.impl.Genre;
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
+import com.github.kingargyle.plexappclient.core.model.CategoryInfo;
 import com.github.kingargyle.plexappclient.core.model.impl.AbstractSeriesContentInfo;
 import com.github.kingargyle.plexappclient.core.model.impl.TVShowSeriesInfo;
-import com.github.kingargyle.plexappclient.core.services.MoviesRetrievalIntentService;
 import com.github.kingargyle.plexappclient.core.services.ShowRetrievalIntentService;
+import com.github.kingargyle.plexappclient.ui.adapters.AbstractPosterImageGalleryAdapter;
 import com.novoda.imageloader.core.ImageManager;
 import com.novoda.imageloader.core.model.ImageTagFactory;
 
@@ -61,23 +57,18 @@ import android.widget.TextView;
  * @author dcarver
  *
  */
-public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
+public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 	
 	private static List<TVShowSeriesInfo> tvShowList = null;
-	private static Activity context;
 	
-	private ImageManager imageManager;
-	private ImageTagFactory imageTagFactory;
 	private static final int SIZE_HEIGHT = 200;
 	private static final int SIZE_WIDTH = 400;
-	private Handler handler;
 	private String baseUrl;
 	private String key;
-	private static TVShowBannerImageGalleryAdapter notifyAdapter;
 	private static ProgressDialog pd;
 	
-	public TVShowBannerImageGalleryAdapter(Context c, String key) {
-		context = (Activity)c;
+	public TVShowBannerImageGalleryAdapter(Context c, String key, String category) {
+		super(c, key, category);
 		tvShowList = new ArrayList<TVShowSeriesInfo>();
 		
 		imageManager = SerenityApplication.getImageManager();
@@ -86,7 +77,6 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 		imageTagFactory.setSaveThumbnail(true);
 		this.key = key;
 		
-		notifyAdapter = this;
 		try {
 			baseUrl = SerenityApplication.getPlexFactory().baseURL();
 			fetchData();
@@ -102,6 +92,7 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 		Intent intent = new Intent(context, ShowRetrievalIntentService.class);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("key", key);
+		intent.putExtra("category", category);
 		context.startService(intent);
 	}
 	
@@ -148,19 +139,34 @@ public class TVShowBannerImageGalleryAdapter extends BaseAdapter {
 		return mpiv;
 	}
 	
-	private static class ShowRetrievalHandler extends Handler {
+	private class ShowRetrievalHandler extends Handler {
 		
 		@Override
 		public void handleMessage(Message msg) {
 			
 			tvShowList = (List<TVShowSeriesInfo>) msg.obj;
 			if (tvShowList != null) {
+				if (tvShowList.isEmpty()) {
+					Toast.makeText(context, "No Shows found for the category: " + category, Toast.LENGTH_LONG).show();
+				} else {
+					Gallery posterGallery = (Gallery) context.findViewById(R.id.tvShowBannerGallery);
+					posterGallery.requestFocus();
+				}
 				TextView tv = (TextView)context.findViewById(R.id.tvShowItemCount);
 				tv.setText(Integer.toString(tvShowList.size()) + " Item(s)");
-				notifyAdapter.notifyDataSetChanged();
-				pd.dismiss();
 			}
+			notifyDataSetChanged();
+			pd.dismiss();			
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.github.kingargyle.plexappclient.ui.adapters.AbstractPosterImageGalleryAdapter#fetchDataFromService()
+	 */
+	@Override
+	protected void fetchDataFromService() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
