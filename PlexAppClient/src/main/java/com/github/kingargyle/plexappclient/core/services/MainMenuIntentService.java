@@ -82,12 +82,16 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 			MediaContainer mc = factory.retrieveSections();
 			List<Directory> dirs = mc.getDirectories();
 			
-			for (Directory item : dirs) {
-				MenuItem m = new MenuItem();
-				m.setTitle(item.getTitle());
-				m.setType(item.getType());
-				m.setSection(item.getKey());
-				menuItems.add(m);
+			if (dirs != null) {
+				for (Directory item : dirs) {
+					MenuItem m = new MenuItem();
+					m.setTitle(item.getTitle());
+					m.setType(item.getType());
+					m.setSection(item.getKey());
+					menuItems.add(m);
+				}
+			} else {
+				BugSenseHandler.sendEvent("loadMenuItems: No Directories for library/sections found. Server URL " + factory.baseURL() + "/library/sections");
 			}
 		} catch (Exception e) {
 		  Log.e("MainMenuIntentService", "Unable to comminicate to server at " + factory.baseURL(), e);
