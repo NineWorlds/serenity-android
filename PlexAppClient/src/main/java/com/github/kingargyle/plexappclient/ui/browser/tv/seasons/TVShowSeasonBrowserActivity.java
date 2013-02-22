@@ -24,6 +24,8 @@
 package com.github.kingargyle.plexappclient.ui.browser.tv.seasons;
 
 import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.ui.activity.SerenityActivity;
+import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -34,7 +36,7 @@ import android.widget.Gallery;
  * @author dcarver
  *
  */
-public class TVShowSeasonBrowserActivity extends Activity {
+public class TVShowSeasonBrowserActivity extends SerenityActivity {
 	
 	private Gallery tvShowSeasonsGallery;
 	private View tvShowSeasonsMainView;
@@ -55,6 +57,7 @@ public class TVShowSeasonBrowserActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		EasyTracker.getInstance().activityStart(this);
 		if (restarted_state == false) {
 			setupSeasons();
 		}
@@ -67,6 +70,15 @@ public class TVShowSeasonBrowserActivity extends Activity {
 		tvShowSeasonsGallery
 				.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this));
 		tvShowSeasonsGallery.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this));
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this);
 	}
 	
 	/* (non-Javadoc)

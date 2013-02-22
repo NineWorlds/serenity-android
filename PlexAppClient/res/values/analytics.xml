@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="ga_trackingId">UA-38658181-1</string>
+
+    <bool name="ga_autoActivityTracking">true</bool>
+    <bool name="ga_reportUncaughtExceptions">false</bool>
+
+    <string name="com.github.kingargyle.plexappclient">Main Menu</string>
+    <string name="com.github.kingargyle.plexappclient.ui.browser.movie">Movie Browser</string>
+    <string name="com.github.kingargyle.plexappclient.ui.browser.tv">TV Show Browser</string>
+    <string name="com.github.kingargyle.plexappclient.ui.browser.tv.season">Season Browser</string>
+    <string name="com.github.kingargyle.plexappclient.ui.browser.tv.episode">Episode Browser</string>
+    <string name="com.github.kingargyle.plexappclient.ui.preferences">Settings</string>
+    <string name="com.github.kingargyle.plexappclient.ui.video.player">Internal Video Player</string>
+    
+</resources>

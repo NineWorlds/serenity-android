@@ -24,9 +24,7 @@
 package com.github.kingargyle.plexappclient;
 
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
@@ -36,9 +34,11 @@ import android.widget.Gallery;
 
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.core.ServerConfig;
+import com.github.kingargyle.plexappclient.ui.activity.SerenityActivity;
 import com.github.kingargyle.plexappclient.ui.preferences.SerenityPreferenceActivity;
+import com.google.analytics.tracking.android.EasyTracker;
 
-public class MainActivity extends Activity {
+public class MainActivity extends SerenityActivity {
 
 	private Gallery mainGallery;
 	private View mainView;
@@ -105,11 +105,19 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		EasyTracker.getInstance().activityStart(this);
 		if (restarted_state == false) {
 			setupGallery();
 		}
 		restarted_state = false;
 	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this);
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onRestart()

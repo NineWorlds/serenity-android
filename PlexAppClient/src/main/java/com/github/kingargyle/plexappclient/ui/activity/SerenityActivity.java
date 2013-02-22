@@ -21,54 +21,20 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexappclient.ui.preferences;
+package com.github.kingargyle.plexappclient.ui.activity;
 
-import com.github.kingargyle.plexappclient.MainActivity;
-import com.github.kingargyle.plexappclient.R;
 import com.google.analytics.tracking.android.EasyTracker;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 
 /**
- * This is the main activity for managing user preferences in the app.
- * 
  * @author dcarver
  *
  */
-public class SerenityPreferenceActivity extends PreferenceActivity {
+public abstract class SerenityActivity extends Activity {
+	
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	    addPreferencesFromResource(R.xml.preferences);	
-	}
 	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#finish()
-	 */
-	@Override
-	public void finish() {
-		setResult(MainActivity.MAIN_MENU_PREFERENCE_RESULT_CODE);
-		super.finish();
-	}
-	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onStart()
-	 */
-	@Override
-	protected void onStart() {
-		super.onStart();
-		EasyTracker.getInstance().activityStart(this);		
-	}
-	
-	/* (non-Javadoc)
-	 * @see android.preference.PreferenceActivity#onStop()
-	 */
-	@Override
-	protected void onStop() {
-		super.onStop();
-		EasyTracker.getInstance().activityStop(this);
-	}
 
 }

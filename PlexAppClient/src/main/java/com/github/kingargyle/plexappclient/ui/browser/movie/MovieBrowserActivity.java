@@ -24,17 +24,12 @@
 package com.github.kingargyle.plexappclient.ui.browser.movie;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.model.impl.Directory;
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexappclient.R;
-import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.model.CategoryInfo;
-import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
 import com.github.kingargyle.plexappclient.core.services.MovieCategoryRetrievalIntentService;
-import com.github.kingargyle.plexappclient.core.services.MoviesRetrievalIntentService;
+import com.github.kingargyle.plexappclient.ui.activity.SerenityActivity;
+import com.google.analytics.tracking.android.EasyTracker;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,14 +37,12 @@ import android.os.Message;
 import android.os.Messenger;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Gallery;
 import android.widget.Spinner;
 
-public class MovieBrowserActivity extends Activity {
+public class MovieBrowserActivity extends SerenityActivity {
 	
 	private static String key;
 	private static View bgLayout;
@@ -75,6 +68,7 @@ public class MovieBrowserActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		EasyTracker.getInstance().activityStart(this);
 		if (restarted_state == false) {
 			categoryHandler = new CategoryHandler();
 			Messenger messenger = new Messenger(categoryHandler);
@@ -88,6 +82,14 @@ public class MovieBrowserActivity extends Activity {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this);
+	}
 	
 
 	@Override

@@ -24,13 +24,15 @@
 package com.github.kingargyle.plexappclient.ui.browser.tv.episodes;
 
 import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.ui.activity.SerenityActivity;
+import com.google.analytics.tracking.android.EasyTracker;
+
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Gallery;
 
-public class EpisodeBrowserActivity extends Activity {
+public class EpisodeBrowserActivity extends SerenityActivity {
 	
 	private Gallery posterGallery;
 	private String key;
@@ -58,6 +60,15 @@ public class EpisodeBrowserActivity extends Activity {
 			setupEpisodeBrowser();
 		}
 		restarted_state = false;
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this);
 	}
 
 

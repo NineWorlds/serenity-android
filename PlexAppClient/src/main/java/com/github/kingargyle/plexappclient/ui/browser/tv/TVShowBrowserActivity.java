@@ -24,9 +24,9 @@
 package com.github.kingargyle.plexappclient.ui.browser.tv;
 
 import com.github.kingargyle.plexappclient.R;
-import com.github.kingargyle.plexappclient.SerenityApplication;
+import com.github.kingargyle.plexappclient.ui.activity.SerenityActivity;
+import com.google.analytics.tracking.android.EasyTracker;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Gallery;
@@ -35,7 +35,7 @@ import android.widget.Gallery;
  * @author dcarver
  *
  */
-public class TVShowBrowserActivity extends Activity {
+public class TVShowBrowserActivity extends SerenityActivity {
 	
 	private Gallery tvShowsGallery;
 	private View tvShowMainView;
@@ -55,11 +55,18 @@ public class TVShowBrowserActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		EasyTracker.getInstance().activityStart(this);
 		
 		if (restarted_state == false) {
 			setupShows();
 		}
 		restarted_state = false;
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this);
 	}
 	
 	protected void setupShows() {

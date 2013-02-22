@@ -27,9 +27,10 @@ import com.bugsense.trace.BugSenseHandler;
 import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
+import com.github.kingargyle.plexappclient.ui.activity.SerenityActivity;
 import com.github.kingargyle.plexappclient.ui.video.player.MediaController.MediaPlayerControl;
+import com.google.analytics.tracking.android.EasyTracker;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -46,7 +47,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 /**
@@ -56,7 +56,7 @@ import android.widget.RelativeLayout;
  * @author dcarver
  * 
  */
-public class SerenitySurfaceViewVideoActivity extends Activity implements
+public class SerenitySurfaceViewVideoActivity extends SerenityActivity implements
 		SurfaceHolder.Callback {
 
 	/**
@@ -326,6 +326,24 @@ public class SerenitySurfaceViewVideoActivity extends Activity implements
 		}
 
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onStart()
+	 */
+	@Override
+	protected void onStart() {
+		super.onStart();
+		EasyTracker.getInstance().activityStart(this);
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this);
 	}
 
 	/**

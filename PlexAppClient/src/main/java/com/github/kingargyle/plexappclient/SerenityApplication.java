@@ -29,6 +29,7 @@ import com.github.kingargyle.plexapp.config.IConfiguration;
 import com.github.kingargyle.plexappclient.core.ConcurrentLoader;
 import com.github.kingargyle.plexappclient.core.SerenityLoaderSettings;
 import com.github.kingargyle.plexappclient.core.ServerConfig;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.novoda.imageloader.core.ImageManager;
 
 import android.app.Application;
@@ -53,6 +54,7 @@ public class SerenityApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		EasyTracker.getInstance().setContext(this);
 		if (!android.os.Build.MODEL.contains("emulator")) {
 			BugSenseHandler.initAndStartSession(this, BUGSENSE_KEY);
 		}
