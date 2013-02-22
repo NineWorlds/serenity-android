@@ -39,11 +39,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
+import android.widget.Toast;
 
 public class MainMenuTextViewAdapter extends BaseAdapter {
 
 	/** The parent context */
-	private Context myContext;
+	private static Context myContext;
 	
 	private static Handler menuItemhandler;
 	
@@ -152,6 +153,9 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 		public void handleMessage(Message msg) {
 			if (msg.obj != null) {
 				menuItems = (ArrayList<MenuItem>) msg.obj;
+			}
+			if (menuItems.size() == 1) {
+				Toast.makeText(myContext, "No Movies or TV Show Libraries found.", Toast.LENGTH_LONG).show();
 			}
 			notifyAdapter.notifyDataSetChanged();
 			pd.dismiss();
