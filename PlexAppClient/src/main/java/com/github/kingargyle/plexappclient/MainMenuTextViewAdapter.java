@@ -155,7 +155,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 				menuItems = (ArrayList<MenuItem>) msg.obj;
 			}
 			if (menuItems.size() == 1) {
-				Toast.makeText(myContext, "No Movies or TV Show Libraries found.", Toast.LENGTH_LONG).show();
+				Toast.makeText(myContext, "No Movies or TV Show Libraries found. Use the Plex Web App to add some.", Toast.LENGTH_LONG).show();
 			}
 			notifyAdapter.notifyDataSetChanged();
 			pd.dismiss();
