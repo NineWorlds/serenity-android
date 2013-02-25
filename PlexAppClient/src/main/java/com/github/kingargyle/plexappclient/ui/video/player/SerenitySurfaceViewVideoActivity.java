@@ -23,6 +23,7 @@
 
 package com.github.kingargyle.plexappclient.ui.video.player;
 
+import com.bugsense.trace.BugSense;
 import com.bugsense.trace.BugSenseHandler;
 import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexappclient.R;
@@ -72,13 +73,15 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 	private String aspectRatio;
 	private String videoId;
 	private int resumeOffset;
+	private boolean mediaplayer_error_state = false;
+	private boolean mediaplayer_released = false;
 
 	private Handler progressReportinghandler = new Handler();
 	private Runnable progressRunnable = new Runnable() {
 
 		public void run() {
 			try {
-				if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 					new UpdateProgressRequest().execute();
 					progressReportinghandler.postDelayed(this,
 							PROGRESS_UPDATE_DELAY); // Update progress every 5
@@ -183,6 +186,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 	 */
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		mediaPlayer.release();
+		mediaplayer_released = true;
 	}
 
 	/*
@@ -250,14 +254,15 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 		if (mediaController.isShowing()) {
 			if (keyCode == KeyEvent.KEYCODE_BACK) {
 				mediaController.hide();
-				if (mediaPlayer.isPlaying()) {
+				
+				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 					mediaPlayer.stop();
 				}
 				return super.onKeyDown(keyCode, event);
 			}
 		} else {
 			if (keyCode == KeyEvent.KEYCODE_BACK) {
-				if (mediaPlayer.isPlaying()) {
+				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 					mediaPlayer.stop();
 				}
 				return super.onKeyDown(keyCode, event);
@@ -265,10 +270,12 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 		}
 
 		if (keyCode == KeyEvent.KEYCODE_INFO) {
-			if (mediaController.isShowing()) {
-				mediaController.hide();
-			} else {
-				mediaController.show(CONTROLLER_DELAY);
+			if (isMediaPlayerStateValid()) {
+				if (mediaController.isShowing()) {
+					mediaController.hide();
+				} else {
+					mediaController.show(CONTROLLER_DELAY);
+				}
 			}
 			return true;
 		}
@@ -276,7 +283,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 		if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY) {
-			if (mediaPlayer.isPlaying()) {
+			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 				mediaPlayer.pause();
 				mediaController.show(CONTROLLER_DELAY);
 				progressReportinghandler.removeCallbacks(progressRunnable);
@@ -288,8 +295,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 			return true;
 		}
 
-		if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+		if ((keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) && isMediaPlayerStateValid()) {
 			int skipOffset = 10000 + mediaPlayer.getCurrentPosition();
 			int duration = mediaPlayer.getDuration();
 			if (skipOffset > duration) {
@@ -302,8 +309,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 			return true;
 		}
 
-		if (keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+		if ((keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) && isMediaPlayerStateValid()) {
 			int skipOffset = mediaPlayer.getCurrentPosition() - 10000;
 			if (skipOffset < 0) {
 				skipOffset = 0;
@@ -315,7 +322,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 			return true;
 		}
 		
-		if (keyCode == KeyEvent.KEYCODE_MEDIA_STOP) {
+		if (keyCode == KeyEvent.KEYCODE_MEDIA_STOP && isMediaPlayerStateValid()) {
 			if (mediaPlayer.isPlaying()) {
 				mediaPlayer.pause();
 				if (!mediaController.isShowing()) {
@@ -326,6 +333,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 		}
 
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	protected boolean isMediaPlayerStateValid() {
+		if (mediaPlayer != null && mediaplayer_error_state == false && mediaplayer_released == false) {
+			return true;
+		}
+		return false;
 	}
 	
 	/* (non-Javadoc)
@@ -429,7 +443,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 		@Override
 		protected Void doInBackground(Void... params) {
 			PlexappFactory factory = SerenityApplication.getPlexFactory();
-			if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 				String offset = Integer.valueOf(
 						mediaPlayer.getCurrentPosition()).toString();
 				factory.setProgress(videoId, offset);
@@ -524,6 +538,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 		 * MediaPlayer, int, int)
 		 */
 		public boolean onError(MediaPlayer mp, int what, int extra) {
+			
+			mediaplayer_error_state = true;
 
 			String error_msg = "What: " + what + "Extra: " + extra;
 			if (what == MediaPlayer.MEDIA_ERROR_UNKNOWN) {
@@ -538,7 +554,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 			if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
 				error_msg = "Server croaked. Extra Code: " + extra;
 			}
-
+			
+			BugSenseHandler.sendEvent(error_msg);
 			Log.e(getClass().getName(), error_msg);
 			return true;
 		}

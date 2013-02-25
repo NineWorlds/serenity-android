@@ -436,28 +436,35 @@ public class MediaController extends FrameLayout {
 	};
 
 	private long setProgress() {
-		if (mPlayer == null || mDragging)
+		if (mPlayer == null || mDragging) {
 			return 0;
+		}
+		
+		long position = 0;
 
-		long position = mPlayer.getCurrentPosition();
-		long duration = mPlayer.getDuration();
-		if (mProgress != null) {
-			if (duration > 0) {
-				long pos = 1000L * position / duration;
-				mProgress.setProgress((int) pos);
+		try {
+			position = mPlayer.getCurrentPosition();
+			long duration = mPlayer.getDuration();
+			if (mProgress != null) {
+				if (duration > 0) {
+					long pos = 1000L * position / duration;
+					mProgress.setProgress((int) pos);
+				}
+				int percent = mPlayer.getBufferPercentage();
+				mProgress.setSecondaryProgress(percent * 10);
 			}
-			int percent = mPlayer.getBufferPercentage();
-			mProgress.setSecondaryProgress(percent * 10);
-		}
-
-		mDuration = duration;
-
-		if (mEndTime != null) {
-			mEndTime.setText(formatDuration(mDuration));
-		}
-
-		if (mCurrentTime != null) {
-			mCurrentTime.setText(formatDuration(position));
+	
+			mDuration = duration;
+	
+			if (mEndTime != null) {
+				mEndTime.setText(formatDuration(mDuration));
+			}
+	
+			if (mCurrentTime != null) {
+				mCurrentTime.setText(formatDuration(position));
+			}
+		} catch (IllegalStateException ex) {
+			Log.i(getClass().getName(), "Player has been either released or in an error state.");
 		}
 
 		return position;
