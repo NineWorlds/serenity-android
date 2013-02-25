@@ -111,7 +111,15 @@ public class EpisodePosterOnItemSelectedListener implements
 
 		TextView title = (TextView) context
 				.findViewById(R.id.movieBrowserPosterTitle);
-		title.setText(v.getPosterInfo().getTitle());
+		String epTitle = v.getPosterInfo().getTitle();
+		String season = v.getPosterInfo().getSeason();
+		String episode = v.getPosterInfo().getEpisodeNumber();
+		
+		if (season != null && episode != null) {
+			epTitle = epTitle + " - " + season + " " + episode;
+		}
+		
+		title.setText(epTitle);
 	}
 	
 	private void createMovieMetaData(SerenityPosterImageView v) {

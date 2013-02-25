@@ -102,5 +102,17 @@ public interface VideoContentInfo extends ContentInfo {
 	public void setResumeOffset(int offset );
 	
 	public int getResumeOffset();
+	
+	public String getSeason();
+	
+	public void setSeason(String season);
+	
+	public String getEpisodeNumber();
+	
+	public void setEpisodeNumber(String episodeNum);
+	
+	public void setOriginalAirDate(String airDate);
+	
+	public String getOriginalAirDate();
 
 }

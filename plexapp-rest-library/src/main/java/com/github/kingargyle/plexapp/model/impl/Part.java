@@ -35,6 +35,9 @@ public class Part {
 
 	@Attribute(name="key", required=true)
 	private String key;
+	
+	@Attribute(name="file", required=false)
+	private String filename;
 
 	public String getKey() {
 		return key;
@@ -42,6 +45,15 @@ public class Part {
 
 	public void setKey(String key) {
 		this.key = key;
+	}
+	
+	public String getFilename() {
+		return filename;
+	}
+	
+	
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 	
 }

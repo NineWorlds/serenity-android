@@ -95,7 +95,7 @@ public class Video extends AbstractPlexObject {
 	
 	@Attribute(name="ratingKey", required=false)
 	private String ratingKey;
-	
+		
 	@ElementList(inline=true,required=false)
 	private List<Country> countries;
 

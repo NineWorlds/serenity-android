@@ -26,6 +26,8 @@ package com.github.kingargyle.plexappclient.core.services;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.github.kingargyle.plexapp.model.impl.Director;
@@ -54,6 +56,9 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 
 	protected List<VideoContentInfo> posterList = null;
 	protected String key;
+	private static final Pattern season = Pattern.compile("S\\d+");
+	private static final Pattern episode = Pattern.compile("E\\d+");
+	
 	
 
 	public EpisodeRetrievalIntentService() {
@@ -165,6 +170,9 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 				Media media = mediacont.get(0);
 				List<Part> parts = media.getVideoPart();
 				Part part = parts.get(0);
+				
+				setSeasonEpisode(epi, part);
+				
 				epi.setAudioCodec(media.getAudioCodec());
 				epi.setVideoCodec(media.getVideoCodec());
 				epi.setVideoResolution(media.getVideoResolution());
@@ -180,6 +188,39 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 			epi.setCastInfo(episodeDetails);				
 		
 			posterList.add(epi);
+		}
+	}
+	
+	protected void setSeasonEpisode(VideoContentInfo epi, Part part) {
+		if (part == null) {
+			return;
+		}
+		
+		// Extract the Season/Episode information from the filename since
+		// Plex doesn't actually store this information anywhere else
+		// It stores the season information in the 
+		String filename = part.getFilename();
+		if (filename == null) {
+			epi.setSeason("Unknown");
+			epi.setEpisodeNumber("Unknown");
+		}
+				
+		Matcher mseason = season.matcher(filename);
+		Matcher mepisode = episode.matcher(filename);
+		
+		if (mseason.find()) {
+			String sn = mseason.group();
+			String number = sn.substring(1);
+			String season = "Season " + Integer.toString(Integer.parseInt(number));  
+			epi.setSeason(season);
+		}
+		
+		
+		if (mepisode.find()) {
+			String en = mepisode.group();
+			String number = en.substring(1);
+			String episode = "Episode " + Integer.toString(Integer.parseInt(number)) ;
+			epi.setEpisodeNumber(episode);
 		}
 	}
 	

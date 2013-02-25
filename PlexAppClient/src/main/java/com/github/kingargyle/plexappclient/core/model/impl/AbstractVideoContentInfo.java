@@ -57,7 +57,34 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	private int viewCount;
 	private String audioChannels;
 	private int resumeOffset;
+	private String season;
+	private String episodeNumber;
+	private String originalAirDate;
 	
+	public String getSeason() {
+		return season;
+	}
+
+	public void setSeason(String season) {
+		this.season = season;
+	}
+
+	public String getEpisodeNumber() {
+		return episodeNumber;
+	}
+
+	public void setEpisodeNumber(String episodeNumber) {
+		this.episodeNumber = episodeNumber;
+	}
+
+	public String getOriginalAirDate() {
+		return originalAirDate;
+	}
+
+	public void setOriginalAirDate(String originalAirDate) {
+		this.originalAirDate = originalAirDate;
+	}
+
 	public int getResumeOffset() {
 		return resumeOffset;
 	}
