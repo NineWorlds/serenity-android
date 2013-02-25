@@ -63,7 +63,7 @@ public class BackgroundImageLoader implements Runnable {
 		CacheManager cm = imageManager.getCacheManager();
 		Bitmap bm = cm.get(imageURL, 1280, 720);
 
-		if (bm == null) {
+		if (imageURL != null && bm == null) {
 			FileManager fm = imageManager.getFileManager();
 			File f = fm.getFile(imageURL);
 			LoaderSettings settings = SerenityApplication.getLoaderSettings();

@@ -62,13 +62,12 @@ public class OSDImageLoader implements Runnable {
 		CacheManager cm = imageManager.getCacheManager();
 		Bitmap bm = cm.get(imageURL, 100, 200);
 
-		if (bm == null) {
+		if (imageURL != null && bm == null) {
 			FileManager fm = imageManager.getFileManager();
 			File f = fm.getFile(imageURL);
 			LoaderSettings settings = SerenityApplication.getLoaderSettings();
 			if (!f.exists()) {
-				settings.getNetworkManager().retrieveImage(
-						imageURL, f);
+				settings.getNetworkManager().retrieveImage(imageURL, f);
 			}
 
 			BitmapUtil bmu = SerenityApplication.getLoaderSettings()
