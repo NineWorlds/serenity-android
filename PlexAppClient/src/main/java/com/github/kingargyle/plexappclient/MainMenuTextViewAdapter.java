@@ -39,6 +39,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
+import android.widget.Gallery.LayoutParams;
 import android.widget.Toast;
 
 public class MainMenuTextViewAdapter extends BaseAdapter {
@@ -141,9 +142,15 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 		v.setText(title);
 		v.setTextSize(30);
 		v.setGravity(Gravity.CENTER_VERTICAL);
-		v.setLayoutParams(new Gallery.LayoutParams(
-				android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-				android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+		v.setLines(1);
+		if (title.length() < 10) {
+			v.setLayoutParams(new Gallery.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+					android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+		} else {
+			v.setLayoutParams(new Gallery.LayoutParams(
+					200,
+					android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+		}
 	}
 	
 	
