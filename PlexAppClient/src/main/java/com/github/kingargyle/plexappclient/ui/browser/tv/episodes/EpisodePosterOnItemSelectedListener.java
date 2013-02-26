@@ -23,6 +23,9 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv.episodes;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -39,6 +42,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -120,6 +124,21 @@ public class EpisodePosterOnItemSelectedListener implements
 		}
 		
 		title.setText(epTitle);
+		TextView vte = (TextView) context.findViewById(R.id.videoTextExtra);
+		vte.setVisibility(View.INVISIBLE);
+		if (v.getPosterInfo().getOriginalAirDate() != null) {
+			try {
+				Date airDate = new SimpleDateFormat("yyyy-MM-dd").parse(v.getPosterInfo().getOriginalAirDate());
+				SimpleDateFormat format = new SimpleDateFormat("MMMMMMMMM d, yyyy");
+				String formatedDate = format.format(airDate);
+				vte.setVisibility(View.VISIBLE);
+				vte.setText("Aired " + formatedDate);
+			} catch (ParseException ex) {
+				Log.i(getClass().getName(), "Unable to parse date");
+			}
+					
+		}
+		
 	}
 	
 	private void createMovieMetaData(SerenityPosterImageView v) {

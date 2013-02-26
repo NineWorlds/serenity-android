@@ -142,7 +142,8 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 			epi.setId(episode.getRatingKey());
 			epi.setPlotSummary(episode.getSummary());
 			epi.setViewCount(episode.getViewCount());
-			epi.setResumeOffset(Long.valueOf(episode.getViewOffset()).intValue());			
+			epi.setResumeOffset(Long.valueOf(episode.getViewOffset()).intValue());
+			epi.setOriginalAirDate(episode.getOriginallyAvailableDate());
 			
 			if (episode.getParentThumbNailImageKey() != null) {
 				epi.setParentPosterURL(baseUrl + episode.getParentThumbNailImageKey().substring(1));
