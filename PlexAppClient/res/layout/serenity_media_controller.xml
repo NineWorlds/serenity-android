@@ -13,7 +13,7 @@
         android:layout_marginRight="10dp"
         android:gravity="top"
         android:text="Show Title"
-        android:textSize="20sp"
+        style="@android:style/TextAppearance.Large"
         android:textStyle="bold"
         android:background="#80000000"
          />
@@ -27,7 +27,8 @@
         android:layout_marginRight="10dp"
         android:gravity="top"
         android:text="This is some show/movie summary info"
-        android:textSize="15sp"
+        android:maxLines="5"
+        style="@android:style/TextAppearance.Medium"
         android:background="#80000000"
          />
     
@@ -75,7 +76,7 @@
             android:layout_marginRight="10dp"
             android:text="00:00:00"
             android:textColor="#F0F0F0"
-            android:textSize="15sp" />
+            style="@android:style/TextAppearance.Medium" />
 
         <SeekBar
             android:id="@+id/mediacontroller_seekbar"
@@ -93,7 +94,7 @@
             android:layout_marginLeft="10dp"
             android:text="99:99:99"
             android:textColor="#F0F0F0"
-            android:textSize="15sp" />
+            style="@android:style/TextAppearance.Medium" />
     </LinearLayout>
 
     <LinearLayout

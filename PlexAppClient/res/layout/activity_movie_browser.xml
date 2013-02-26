@@ -25,7 +25,7 @@
             android:layout_marginLeft="10dp"
             android:focusable="false"
             android:text="Category:"
-            android:textSize="15sp" />
+            style="@android:style/TextAppearance.Medium" />
 
         <Spinner
             android:id="@+id/movieCategoryFilter"
@@ -70,7 +70,7 @@
             android:paddingLeft="10dp"
             android:text="Poster Title"
             android:textColor="#F0F0F0"
-            android:textSize="20sp"
+            style="@android:style/TextAppearance.Large"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -93,7 +93,7 @@
                 android:layout_marginRight="10dp"
                 android:minWidth="50dp"
                 android:text="Year"
-                android:textSize="16sp"
+                style="@android:style/TextAppearance.Medium"
                 android:textStyle="bold"
                 />
 
@@ -107,7 +107,7 @@
                 android:minWidth="50dp"
                 android:text="2004"
                 android:lines="2"
-                android:textSize="15sp"
+                style="@android:style/TextAppearance.Medium"
                 />
 
             <TextView
@@ -118,7 +118,7 @@
                 
                 android:minWidth="100dp"
                 android:text="Genre"
-                android:textSize="16sp"
+                style="@android:style/TextAppearance.Medium"
                 android:textStyle="bold"
                 />
 
@@ -132,7 +132,7 @@
                 android:gravity="left"
                 android:minWidth="100dp"
                 android:text="Comedy/Science Fiction"
-                android:textSize="15sp"
+                style="@android:style/TextAppearance.Medium"
                 />
 
         
@@ -155,7 +155,7 @@
                 
                 android:minWidth="50dp"
                 android:text="Writers"
-                android:textSize="16sp"
+                style="@android:style/TextAppearance.Medium"
                 android:textStyle="bold"
                 />
 
@@ -169,7 +169,7 @@
                 android:lines="2"
                 android:minWidth="50dp"
                 android:text="Cathy Yuspa, Josh Goldsmith"
-                android:textSize="15sp"
+                style="@android:style/TextAppearance.Medium"
                 />
 
             <TextView
@@ -180,7 +180,7 @@
                 
                 android:minWidth="50dp"
                 android:text="Directors"
-                android:textSize="16sp"
+                style="@android:style/TextAppearance.Medium"
                 android:textStyle="bold"
                 />
 
@@ -194,7 +194,7 @@
                 android:gravity="left"
                 android:minWidth="50dp"
                 android:text="Gary Winick"
-                android:textSize="15sp"
+                style="@android:style/TextAppearance.Medium"
                 />
         
     </LinearLayout>
@@ -221,7 +221,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textColor="#F0F0F0"
-                android:textSize="15sp" />
+                style="@android:style/TextAppearance.Medium" />
         
     </LinearLayout>
 
@@ -252,7 +252,7 @@
             android:gravity="center"
             android:visibility="invisible"
             android:background="#D0000000"
-            android:textSize="15sp"
+            style="@android:style/TextAppearance.Medium"
             android:textStyle="bold"
             />
     </LinearLayout>
