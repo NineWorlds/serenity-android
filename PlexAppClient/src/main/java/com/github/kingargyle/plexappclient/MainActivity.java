@@ -23,14 +23,32 @@
 
 package com.github.kingargyle.plexappclient;
 
+import java.net.URI;
+import java.net.URL;
+
+import org.teleal.cling.android.AndroidUpnpService;
+import org.teleal.cling.android.AndroidUpnpServiceImpl;
+import org.teleal.cling.model.meta.Device;
+import org.teleal.cling.model.meta.DeviceDetails;
+import org.teleal.cling.model.meta.LocalDevice;
+import org.teleal.cling.model.meta.RemoteDevice;
+import org.teleal.cling.model.meta.Service;
+import org.teleal.cling.registry.DefaultRegistryListener;
+import org.teleal.cling.registry.Registry;
+
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Gallery;
+import android.widget.Toast;
 
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.core.ServerConfig;
@@ -46,6 +64,33 @@ public class MainActivity extends SerenityActivity {
 	public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
 	public static int BROWSER_RESULT_CODE = 200;
 	private boolean restarted_state = false;
+	
+	private AndroidUpnpService upnpService;
+	private BrowseRegistryListener registryListener = new BrowseRegistryListener();
+	
+	private ServiceConnection serviceConnection = new ServiceConnection() {
+
+		public void onServiceConnected(ComponentName className, IBinder service) {
+	        upnpService = (AndroidUpnpService) service;
+
+	        // Refresh the list with all known devices
+	        for (Device device : upnpService.getRegistry().getDevices()) {
+	            registryListener.deviceAdded(device);
+	        }
+
+	        // Getting ready for future device advertisements
+	        upnpService.getRegistry().addListener(registryListener);
+
+	        // Search asynchronously for all devices
+	        upnpService.getControlPoint().search();
+	    }
+
+	    public void onServiceDisconnected(ComponentName className) {
+	        upnpService = null;
+	    }		
+		
+	};
+
 	
 
 	@Override
@@ -64,6 +109,12 @@ public class MainActivity extends SerenityActivity {
 			editor.putBoolean("external_player", true);
 			editor.commit();
 		}
+		
+		getApplicationContext().bindService(
+	            new Intent(this, AndroidUpnpServiceImpl.class),
+	            serviceConnection,
+	            Context.BIND_AUTO_CREATE
+	        );
 	}
 	
 
@@ -149,5 +200,114 @@ public class MainActivity extends SerenityActivity {
 		mainGallery
 				.setOnItemClickListener(new GalleryOnItemClickListener(this));
 	}
+	
+	public class BrowseRegistryListener extends DefaultRegistryListener {
+
+	    @Override
+	    public void remoteDeviceDiscoveryStarted(Registry registry, RemoteDevice device) {
+	        //deviceAdded(device);
+	    }
+
+	    @Override
+	    public void remoteDeviceDiscoveryFailed(Registry registry, final RemoteDevice device, final Exception ex) {
+	        runOnUiThread(new Runnable() {
+	            public void run() {
+	                Toast.makeText(
+	                        MainActivity.this,
+	                        "Discovery failed of '" + device.getDisplayString() + "': " +
+	                                (ex != null ? ex.toString() : "Couldn't retrieve device/service descriptors"),
+	                        Toast.LENGTH_LONG
+	                ).show();
+	            }
+	        });
+	        deviceRemoved(device);
+	    }
+
+	    @Override
+	    public void remoteDeviceAdded(Registry registry, RemoteDevice device) {
+	        deviceAdded(device);
+	    }
+
+	    @Override
+	    public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
+	        deviceRemoved(device);
+	    }
+
+	    @Override
+	    public void localDeviceAdded(Registry registry, LocalDevice device) {
+	        //deviceAdded(device);
+	    }
+
+	    @Override
+	    public void localDeviceRemoved(Registry registry, LocalDevice device) {
+	        //deviceRemoved(device);
+	    }
+
+	    public void deviceAdded(final Device device) {
+	    	String friendlyName = device.getDetails().getFriendlyName();
+	    	if (friendlyName.contains("Plex Media Server")) {
+	    		DeviceDetails details = device.getDetails();
+	    		URL deviceUri = null;
+	    		if (device instanceof RemoteDevice) {
+	    			RemoteDevice rm = (RemoteDevice) device;
+	    			deviceUri = rm.getIdentity().getDescriptorURL();
+	    		}
+	    		if (deviceUri != null) {
+	    			String host = deviceUri.getHost();
+	    			int port = deviceUri.getDefaultPort();
+	    		}
+	    		if (device.hasServices()) {
+	    			Service services[] = device.getServices();
+	    		}
+	    		SerenityApplication.getPlexMediaServers().put(friendlyName, device);
+	    	}
+	        runOnUiThread(new Runnable() {
+	            public void run() {
+	                DeviceDisplay d = new DeviceDisplay(device);
+	                Toast.makeText(MainActivity.this, d.toString(), Toast.LENGTH_LONG).show();
+	            }
+	        });
+	    }
+
+	    public void deviceRemoved(final Device device) {
+	        runOnUiThread(new Runnable() {
+	            public void run() {
+	            	
+	            }
+	        });
+	    }
+	}
+	
+	class DeviceDisplay {
+	    Device device;
+
+	    public DeviceDisplay(Device device) {
+	        this.device = device;
+	    }
+
+	    public Device getDevice() {
+	        return device;
+	    }
+
+	    @Override
+	    public boolean equals(Object o) {
+	        if (this == o) return true;
+	        if (o == null || getClass() != o.getClass()) return false;
+	        DeviceDisplay that = (DeviceDisplay) o;
+	        return device.equals(that.device);
+	    }
+
+	    @Override
+	    public int hashCode() {
+	        return device.hashCode();
+	    }
+
+	    @Override
+	    public String toString() {
+	        // Display a little star while the device is being loaded
+	        return device.isFullyHydrated() ? device.getDisplayString() : device.getDisplayString() + " *";
+	    }
+	}	
+	
 	
 }

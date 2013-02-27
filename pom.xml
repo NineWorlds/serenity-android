@@ -25,6 +25,16 @@
            <checksumPolicy>warn</checksumPolicy>
         </releases>
       </repository>
+      <repository>
+        <id>cling</id>
+        <url>http://4thline.org/m2/</url>
+        <layout>default</layout>
+        <releases>
+           <enabled>true</enabled>
+           <updatePolicy>always</updatePolicy>
+           <checksumPolicy>warn</checksumPolicy>
+        </releases>
+      </repository>
    </repositories>
 
 </project>

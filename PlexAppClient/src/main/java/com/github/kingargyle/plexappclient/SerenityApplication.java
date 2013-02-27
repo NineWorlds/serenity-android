@@ -23,6 +23,11 @@
 
 package com.github.kingargyle.plexappclient;
 
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.teleal.cling.model.meta.Device;
+
 import com.bugsense.trace.BugSenseHandler;
 import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexapp.config.IConfiguration;
@@ -35,7 +40,6 @@ import com.novoda.imageloader.core.ImageManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.StrictMode;
 
 /**
  * Global manager for the Serenity application
@@ -49,6 +53,9 @@ public class SerenityApplication extends Application {
 	private static PlexappFactory plexFactory;
 	private static SerenityLoaderSettings settings;
 	private static String BUGSENSE_KEY = "e4c454b0";
+	
+	private static ConcurrentHashMap<String, Device> plexmediaServers = new ConcurrentHashMap<String, Device>();
+	
 
 	
 	@Override
@@ -87,6 +94,11 @@ public class SerenityApplication extends Application {
 	public static boolean isGoogleTV(Context context) {
 	    final PackageManager pm = context.getPackageManager();
 	    return pm.hasSystemFeature("com.google.android.tv");
-	}	
+	}
+	
+	public static ConcurrentHashMap getPlexMediaServers() {
+		return plexmediaServers;
+	}
+	
 	
 }
