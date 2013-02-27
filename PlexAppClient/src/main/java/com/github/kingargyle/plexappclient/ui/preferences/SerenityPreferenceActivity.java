@@ -23,28 +23,41 @@
 
 package com.github.kingargyle.plexappclient.ui.preferences;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.teleal.cling.model.meta.Device;
+import org.teleal.cling.model.meta.RemoteDevice;
+
 import com.github.kingargyle.plexappclient.MainActivity;
 import com.github.kingargyle.plexappclient.R;
+import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 
 /**
  * This is the main activity for managing user preferences in the app.
  * 
  * @author dcarver
- *
+ * 
  */
 public class SerenityPreferenceActivity extends PreferenceActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	    addPreferencesFromResource(R.xml.preferences);	
+		addPreferencesFromResource(R.xml.preferences);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#finish()
 	 */
 	@Override
@@ -52,17 +65,66 @@ public class SerenityPreferenceActivity extends PreferenceActivity {
 		setResult(MainActivity.MAIN_MENU_PREFERENCE_RESULT_CODE);
 		super.finish();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onStart()
 	 */
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance().activityStart(this);		
+		EasyTracker.getInstance().activityStart(this);
+		populateAvailablePlexMediaServers();
 	}
-	
-	/* (non-Javadoc)
+
+	/**
+	 * Populates the Discovered Devices preference list with available
+	 * Plex Media Servers.   The name of the Device and the device's IP
+	 * address are used as values in the entry.   The user friendly name
+	 * is used from the device itself.
+	 *  
+	 */
+	protected void populateAvailablePlexMediaServers() {
+		ListPreference discoveredServers = (ListPreference) findPreference("discoveredServer");
+		ConcurrentHashMap<String, Device> plexMediaServers = SerenityApplication
+				.getPlexMediaServers();
+		if (plexMediaServers.isEmpty()) {
+			discoveredServers.setEnabled(false);
+			return;
+		}
+
+		discoveredServers.setEnabled(true);
+		String entries[] = new String[plexMediaServers.size()];
+		String values[] = new String[plexMediaServers.size()];
+
+		plexMediaServers.keySet().toArray(entries);
+		discoveredServers.setEntries(entries);
+
+		ArrayList<String> ipAddresses = new ArrayList<String>();
+		Iterator<Map.Entry<String, Device>> entIt = plexMediaServers.entrySet()
+				.iterator();
+		while (entIt.hasNext()) {
+			Map.Entry<String, Device> servers = (Map.Entry<String, Device>) entIt
+					.next();
+			Device device = servers.getValue();
+			if (device instanceof RemoteDevice) {
+				RemoteDevice plexServer = (RemoteDevice) device;
+				URL serverURL = plexServer.getIdentity().getDescriptorURL();
+				String serverIPAddress = serverURL.getHost();
+				ipAddresses.add(serverIPAddress);
+			}
+		}
+		if (!ipAddresses.isEmpty()) {
+			ipAddresses.toArray(values);
+			discoveredServers.setEntryValues(values);
+		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.preference.PreferenceActivity#onStop()
 	 */
 	@Override

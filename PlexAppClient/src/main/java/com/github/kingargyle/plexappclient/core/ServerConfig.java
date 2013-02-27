@@ -25,6 +25,7 @@ package com.github.kingargyle.plexappclient.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
@@ -42,6 +43,7 @@ public class ServerConfig implements IConfiguration {
 	
 	private String serveraddress;
 	private String serverport;
+	private String discoveredServers;
 	private SharedPreferences preferences;
 	private static ServerConfig config;
 	private OnSharedPreferenceChangeListener listener;
@@ -55,10 +57,14 @@ public class ServerConfig implements IConfiguration {
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		
 		serveraddress = preferences.getString("server", "");
+		discoveredServers = preferences.getString("discoveredServer", "");
 		serverport = preferences.getString("serverport", "32400");
 	}
 
 	public String getHost() {
+		if (serveraddress.length() == 0) {
+			return discoveredServers;
+		}
 		return serveraddress;
 	}
 
@@ -100,19 +106,45 @@ public class ServerConfig implements IConfiguration {
 	}
 	
 	
-	
+
+	/**
+	 * Listen for Server Configuration Changes from the SharedPreferences.
+	 * 
+	 * This handles updating the variables for accesing a plex media server.
+	 * 
+	 * @author dcarver
+	 *
+	 */
 	public class ServerConfigChangeListener implements OnSharedPreferenceChangeListener {
 
-		/* (non-Javadoc)
-		 * @see android.content.SharedPreferences.OnSharedPreferenceChangeListener#onSharedPreferenceChanged(android.content.SharedPreferences, java.lang.String)
-		 */
 		public void onSharedPreferenceChanged(
 				SharedPreferences sharedPreferences, String key) {
 			if ("serverport".equals(key)) {
 				serverport = preferences.getString(key, "32400");
-			} else if ("server".equals(key)){
-				serveraddress = preferences.getString(key, "");
+				return;
 			}
+			
+			if ("server".equals(key)){
+				serveraddress = preferences.getString(key, "");
+				return;
+		    }
+			
+			if ("discoveredServer".equals(key)) {
+				discoveredServers = preferences.getString(key, "");
+				serveraddress = discoveredServers;
+				storeServerAddress();
+				return;
+			}
+		}
+
+		/**
+		 * Store the server address if the discoveredServers has been set.
+		 * Users can override this in the preference setting. 
+		 */
+		protected void storeServerAddress() {
+			Editor edit = preferences.edit();
+			edit.putString("server", discoveredServers);
+			edit.commit();
 		}
 		
 	}
