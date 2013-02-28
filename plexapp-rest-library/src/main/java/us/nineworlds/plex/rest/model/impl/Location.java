@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp.model.impl;
+package us.nineworlds.plex.rest.model.impl;
 
 import org.simpleframework.xml.Attribute;
 

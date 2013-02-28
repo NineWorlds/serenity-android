@@ -21,17 +21,39 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp.model.impl;
+package us.nineworlds.plex.rest.model.impl;
 
+import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
 /**
- * Represents information about the directors
- * 
  * @author dcarver
  *
  */
-@Root(name="Director")
-public class Director extends AbstractCrew {
+@Root(name="Part")
+public class Part {
 
+	@Attribute(name="key", required=true)
+	private String key;
+	
+	@Attribute(name="file", required=false)
+	private String filename;
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+	
+	public String getFilename() {
+		return filename;
+	}
+	
+	
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	
 }

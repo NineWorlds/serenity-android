@@ -21,32 +21,46 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp.config;
+package us.nineworlds.plex.rest.config.impl;
+
+import us.nineworlds.plex.rest.config.IConfiguration;
 
 /**
  * @author dcarver
  *
  */
-public interface IConfiguration {
+public class Configuration implements IConfiguration {
+	
+	private String host;
+	
+	private String port;
 
-	/**
-	 * @return the host
+	/* (non-Javadoc)
+	 * @see com.github.kingargyle.plexapp.config.IConfiguration#getHost()
 	 */
-	public abstract String getHost();
+	public String getHost() {
+		return host;
+	}
 
-	/**
-	 * @param host the host to set
+	/* (non-Javadoc)
+	 * @see com.github.kingargyle.plexapp.config.IConfiguration#setHost(java.lang.String)
 	 */
-	public abstract void setHost(String host);
+	public void setHost(String host) {
+		this.host = host;
+	}
 
-	/**
-	 * @return the port
+	/* (non-Javadoc)
+	 * @see com.github.kingargyle.plexapp.config.IConfiguration#getPort()
 	 */
-	public abstract String getPort();
+	public String getPort() {
+		return port;
+	}
 
-	/**
-	 * @param port the port to set
+	/* (non-Javadoc)
+	 * @see com.github.kingargyle.plexapp.config.IConfiguration#setPort(java.lang.String)
 	 */
-	public abstract void setPort(String port);
+	public void setPort(String port) {
+		this.port = port;
+	}
 
 }

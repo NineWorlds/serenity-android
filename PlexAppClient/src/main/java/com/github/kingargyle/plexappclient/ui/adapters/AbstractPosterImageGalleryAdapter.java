@@ -26,8 +26,8 @@ package com.github.kingargyle.plexappclient.ui.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
+import us.nineworlds.plex.rest.PlexappFactory;
+
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;

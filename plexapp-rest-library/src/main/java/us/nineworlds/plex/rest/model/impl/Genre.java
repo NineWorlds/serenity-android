@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp.model.impl;
+package us.nineworlds.plex.rest.model.impl;
 
 import org.simpleframework.xml.Root;
 
@@ -31,7 +31,7 @@ import org.simpleframework.xml.Root;
  * @author dcarver
  *
  */
-@Root(name="Role")
-public class Role extends AbstractCrew {
+@Root(name="Genre")
+public class Genre extends AbstractCrew {
 
 }

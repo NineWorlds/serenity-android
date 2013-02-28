@@ -31,12 +31,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.plex.rest.config.IConfiguration;
+import us.nineworlds.plex.rest.model.impl.Directory;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+
 import static org.junit.Assert.*;
 
-import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.config.IConfiguration;
-import com.github.kingargyle.plexapp.model.impl.Directory;
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexapp.tests.utils.NanoHTTPD;
 
 /**

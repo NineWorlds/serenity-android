@@ -23,10 +23,10 @@
 
 package com.github.kingargyle.plexappclient.core.services;
 
+import us.nineworlds.plex.rest.PlexappFactory;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 
 /**

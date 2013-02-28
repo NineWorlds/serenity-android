@@ -31,7 +31,7 @@ import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.After;
 import org.junit.Before;
 
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
 
 public abstract class AbstractSerializationTest {
 

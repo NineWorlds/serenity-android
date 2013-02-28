@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp;
+package us.nineworlds.plex.rest;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -31,8 +31,9 @@ import java.net.URL;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
-import com.github.kingargyle.plexapp.config.IConfiguration;
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
+import us.nineworlds.plex.rest.config.IConfiguration;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+
 
 /**
  * This class acts as a factory for retrieving items from Plex.

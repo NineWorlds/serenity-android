@@ -27,8 +27,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.kingargyle.plexapp.ResourcePaths;
-import com.github.kingargyle.plexapp.config.IConfiguration;
+import us.nineworlds.plex.rest.ResourcePaths;
+import us.nineworlds.plex.rest.config.IConfiguration;
+
 
 import static org.junit.Assert.*;
 

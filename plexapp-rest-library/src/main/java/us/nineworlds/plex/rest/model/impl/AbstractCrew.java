@@ -21,46 +21,28 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp.config.impl;
+package us.nineworlds.plex.rest.model.impl;
 
-import com.github.kingargyle.plexapp.config.IConfiguration;
+import org.simpleframework.xml.Attribute;
 
 /**
+ * An abstract class that represents Crew information for a movie or
+ * tv show.
+ * 
  * @author dcarver
  *
  */
-public class Configuration implements IConfiguration {
+public class AbstractCrew {
 	
-	private String host;
-	
-	private String port;
+	@Attribute(name="tag")
+	private String tag;
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexapp.config.IConfiguration#getHost()
-	 */
-	public String getHost() {
-		return host;
+	public String getTag() {
+		return tag;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexapp.config.IConfiguration#setHost(java.lang.String)
-	 */
-	public void setHost(String host) {
-		this.host = host;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexapp.config.IConfiguration#getPort()
-	 */
-	public String getPort() {
-		return port;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexapp.config.IConfiguration#setPort(java.lang.String)
-	 */
-	public void setPort(String port) {
-		this.port = port;
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 
 }

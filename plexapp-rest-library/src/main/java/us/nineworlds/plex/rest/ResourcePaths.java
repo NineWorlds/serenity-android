@@ -21,11 +21,11 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp;
+package us.nineworlds.plex.rest;
 
+import us.nineworlds.plex.rest.config.IConfiguration;
 import android.util.Log;
 
-import com.github.kingargyle.plexapp.config.IConfiguration;
 
 /**
  * @author dcarver

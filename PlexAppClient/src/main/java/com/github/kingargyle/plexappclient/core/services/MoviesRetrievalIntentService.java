@@ -27,14 +27,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import us.nineworlds.plex.rest.model.impl.Director;
+import us.nineworlds.plex.rest.model.impl.Genre;
+import us.nineworlds.plex.rest.model.impl.Media;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.plex.rest.model.impl.Part;
+import us.nineworlds.plex.rest.model.impl.Video;
+import us.nineworlds.plex.rest.model.impl.Writer;
+
 import com.bugsense.trace.BugSenseHandler;
-import com.github.kingargyle.plexapp.model.impl.Director;
-import com.github.kingargyle.plexapp.model.impl.Genre;
-import com.github.kingargyle.plexapp.model.impl.Media;
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
-import com.github.kingargyle.plexapp.model.impl.Part;
-import com.github.kingargyle.plexapp.model.impl.Video;
-import com.github.kingargyle.plexapp.model.impl.Writer;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.model.VideoContentInfo;
 import com.github.kingargyle.plexappclient.core.model.impl.MoviePosterInfo;

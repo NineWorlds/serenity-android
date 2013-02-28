@@ -23,13 +23,13 @@
 
 package com.github.kingargyle.plexappclient.core;
 
+import us.nineworlds.plex.rest.config.IConfiguration;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
-import com.github.kingargyle.plexapp.config.IConfiguration;
 
 /**
  * A configuration that reads information from the SharedPreferences

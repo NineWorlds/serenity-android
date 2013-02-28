@@ -21,39 +21,32 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp.model.impl;
-
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Root;
+package us.nineworlds.plex.rest.config;
 
 /**
  * @author dcarver
  *
  */
-@Root(name="Part")
-public class Part {
+public interface IConfiguration {
 
-	@Attribute(name="key", required=true)
-	private String key;
-	
-	@Attribute(name="file", required=false)
-	private String filename;
+	/**
+	 * @return the host
+	 */
+	public abstract String getHost();
 
-	public String getKey() {
-		return key;
-	}
+	/**
+	 * @param host the host to set
+	 */
+	public abstract void setHost(String host);
 
-	public void setKey(String key) {
-		this.key = key;
-	}
-	
-	public String getFilename() {
-		return filename;
-	}
-	
-	
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
-	
+	/**
+	 * @return the port
+	 */
+	public abstract String getPort();
+
+	/**
+	 * @param port the port to set
+	 */
+	public abstract void setPort(String port);
+
 }

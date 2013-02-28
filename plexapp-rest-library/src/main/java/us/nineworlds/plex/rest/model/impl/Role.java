@@ -21,25 +21,17 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp.model.impl;
+package us.nineworlds.plex.rest.model.impl;
 
-import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Root;
 
 /**
+ * Represents information about the directors
+ * 
  * @author dcarver
  *
  */
-public abstract class AbstractPlexObject {
-
-	@Attribute(required = true)
-	private String key;
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
+@Root(name="Role")
+public class Role extends AbstractCrew {
 
 }

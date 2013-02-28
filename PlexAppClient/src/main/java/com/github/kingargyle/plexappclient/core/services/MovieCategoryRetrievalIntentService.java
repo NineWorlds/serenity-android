@@ -26,9 +26,10 @@ package com.github.kingargyle.plexappclient.core.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import us.nineworlds.plex.rest.model.impl.Directory;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+
 import com.bugsense.trace.BugSenseHandler;
-import com.github.kingargyle.plexapp.model.impl.Directory;
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
 import com.github.kingargyle.plexappclient.core.model.CategoryInfo;
 
 import android.content.Intent;

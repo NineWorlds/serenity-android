@@ -32,12 +32,13 @@ import org.junit.Test;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
-import com.github.kingargyle.plexapp.model.impl.Directory;
-import com.github.kingargyle.plexapp.model.impl.Genre;
-import com.github.kingargyle.plexapp.model.impl.Media;
-import com.github.kingargyle.plexapp.model.impl.MediaContainer;
-import com.github.kingargyle.plexapp.model.impl.Part;
-import com.github.kingargyle.plexapp.model.impl.Video;
+import us.nineworlds.plex.rest.model.impl.Directory;
+import us.nineworlds.plex.rest.model.impl.Genre;
+import us.nineworlds.plex.rest.model.impl.Media;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.plex.rest.model.impl.Part;
+import us.nineworlds.plex.rest.model.impl.Video;
+
 import static org.junit.Assert.*;
 
 /**

@@ -21,28 +21,25 @@
  * SOFTWARE.
  */
 
-package com.github.kingargyle.plexapp.model.impl;
+package us.nineworlds.plex.rest.model.impl;
 
 import org.simpleframework.xml.Attribute;
 
 /**
- * An abstract class that represents Crew information for a movie or
- * tv show.
- * 
  * @author dcarver
  *
  */
-public class AbstractCrew {
-	
-	@Attribute(name="tag")
-	private String tag;
+public abstract class AbstractPlexObject {
 
-	public String getTag() {
-		return tag;
+	@Attribute(required = true)
+	private String key;
+
+	public String getKey() {
+		return key;
 	}
 
-	public void setTag(String tag) {
-		this.tag = tag;
+	public void setKey(String key) {
+		this.key = key;
 	}
 
 }

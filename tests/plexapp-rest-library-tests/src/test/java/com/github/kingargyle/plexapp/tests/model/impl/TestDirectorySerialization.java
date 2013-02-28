@@ -7,7 +7,8 @@ import org.junit.runner.RunWith;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
-import com.github.kingargyle.plexapp.model.impl.Directory;
+import us.nineworlds.plex.rest.model.impl.Directory;
+
 
 import static org.custommonkey.xmlunit.XMLAssert.*;
 

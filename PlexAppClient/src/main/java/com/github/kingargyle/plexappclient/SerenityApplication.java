@@ -27,9 +27,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.teleal.cling.model.meta.Device;
 
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.plex.rest.config.IConfiguration;
+
 import com.bugsense.trace.BugSenseHandler;
-import com.github.kingargyle.plexapp.PlexappFactory;
-import com.github.kingargyle.plexapp.config.IConfiguration;
 import com.github.kingargyle.plexappclient.core.ConcurrentLoader;
 import com.github.kingargyle.plexappclient.core.SerenityLoaderSettings;
 import com.github.kingargyle.plexappclient.core.ServerConfig;

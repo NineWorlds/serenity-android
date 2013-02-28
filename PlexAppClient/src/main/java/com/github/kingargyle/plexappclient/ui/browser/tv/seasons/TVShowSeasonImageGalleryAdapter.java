@@ -26,7 +26,6 @@ package com.github.kingargyle.plexappclient.ui.browser.tv.seasons;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.kingargyle.plexapp.PlexappFactory;
 import com.github.kingargyle.plexappclient.R;
 import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.core.model.SeriesContentInfo;
