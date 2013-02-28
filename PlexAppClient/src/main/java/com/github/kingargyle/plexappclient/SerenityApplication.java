@@ -23,7 +23,6 @@
 
 package com.github.kingargyle.plexappclient;
 
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.teleal.cling.model.meta.Device;
@@ -77,6 +76,9 @@ public class SerenityApplication extends Application {
 	    
 	    IConfiguration config = ServerConfig.getInstance(this);
 		plexFactory = PlexappFactory.getInstance(config);
+		String deviceModel = android.os.Build.MODEL;
+		
+		EasyTracker.getTracker().sendEvent("Devices", "Started Application", deviceModel, (long)0);
 	}
 	
 	public static ImageManager getImageManager() {
