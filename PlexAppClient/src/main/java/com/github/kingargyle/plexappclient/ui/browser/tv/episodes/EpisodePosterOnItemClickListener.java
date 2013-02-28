@@ -23,6 +23,7 @@
 
 package com.github.kingargyle.plexappclient.ui.browser.tv.episodes;
 
+import com.github.kingargyle.plexappclient.SerenityApplication;
 import com.github.kingargyle.plexappclient.ui.video.player.SerenitySurfaceViewVideoActivity;
 import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 
@@ -34,6 +35,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import com.github.kingargyle.plexappclient.core.services.*;
 
 /**
  * @author dcarver
@@ -54,8 +56,13 @@ public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 			String url = epiv.getPosterInfo().getDirectPlayUrl();
 			Intent vpIntent = new Intent(Intent.ACTION_VIEW);
 			vpIntent.setDataAndType(Uri.parse(url), "video/*");
+			
+			mxVideoPlayerOptions(epiv, vpIntent);
+			vimuVideoPlayerOptions(epiv, vpIntent);
+			
 			Activity activity = (Activity) epiv.getContext();
-			activity.startActivity(vpIntent);			
+			activity.startActivity(vpIntent);
+			new WatchedEpisodeAsyncTask().execute(epiv.getPosterInfo().id());
 			return;
 		}
 		
@@ -78,5 +85,28 @@ public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 		Activity a = (Activity) epiv.getContext();
 		a.startActivityForResult(vpIntent, 0);
 	}
+
+	/**
+	 * @param epiv
+	 * @param vpIntent
+	 */
+	protected void vimuVideoPlayerOptions(SerenityPosterImageView epiv,
+			Intent vpIntent) {
+		vpIntent.putExtra("forcename", epiv.getPosterInfo().getTitle());
+		vpIntent.putExtra("forcedirect", true);
+	}
+
+	/**
+	 * @param epiv
+	 * @param vpIntent
+	 */
+	protected void mxVideoPlayerOptions(SerenityPosterImageView epiv,
+			Intent vpIntent) {
+		// MX Video Player options
+		vpIntent.putExtra("decode_mode", 1);
+		vpIntent.putExtra("title", epiv.getPosterInfo().getTitle());
+		vpIntent.putExtra("return_result", true);
+	}
+	
 
 }
