@@ -29,6 +29,7 @@ import java.util.concurrent.Executors;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.BackgroundImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 
@@ -200,6 +201,7 @@ public class MoviePosterOnItemSelectedListener implements
 		LinearLayout.LayoutParams viewedlp = new LinearLayout.LayoutParams(80, 58);
 		viewedlp.setMargins(10, 0, 5, 5);
 		viewed.setLayoutParams(viewedlp);
+		viewed.setId(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
 		
 		if (mpi.getViewCount() > 0) {
 			viewed.setImageResource(R.drawable.watched_small);

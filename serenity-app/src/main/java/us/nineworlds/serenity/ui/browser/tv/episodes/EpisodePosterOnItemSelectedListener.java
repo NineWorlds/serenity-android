@@ -64,6 +64,10 @@ public class EpisodePosterOnItemSelectedListener implements
 	/**
 	 * 
 	 */
+	public static final int WATCHED_VIEW_ID = 1000;
+	/**
+	 * 
+	 */
 	private static final int MAX_IMAGE_THREADS = 5;
 	private View bgLayout;
 	private Activity context;
@@ -228,6 +232,7 @@ public class EpisodePosterOnItemSelectedListener implements
 		ImageView viewed = new ImageView(context);
 		viewed.setScaleType(ScaleType.FIT_XY);
 		viewed.setLayoutParams(new LayoutParams(80, 58));
+		viewed.setId(WATCHED_VIEW_ID);
 		
 		if (epi.getViewCount() > 0) {
 			viewed.setImageResource(R.drawable.watched_small);

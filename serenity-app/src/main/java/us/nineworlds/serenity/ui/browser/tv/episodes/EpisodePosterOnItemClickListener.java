@@ -23,7 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.services.*;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
@@ -36,6 +36,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 
 /**
  * @author dcarver
@@ -63,6 +64,7 @@ public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 			Activity activity = (Activity) epiv.getContext();
 			activity.startActivity(vpIntent);
 			new WatchedEpisodeAsyncTask().execute(epiv.getPosterInfo().id());
+			updatedWatchedCount(epiv, activity);
 			return;
 		}
 		
@@ -84,6 +86,19 @@ public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 		
 		Activity a = (Activity) epiv.getContext();
 		a.startActivityForResult(vpIntent, 0);
+		
+		updatedWatchedCount(epiv, a);
+	}
+
+	/**
+	 * @param epiv
+	 * @param a
+	 */
+	protected void updatedWatchedCount(SerenityPosterImageView epiv, Activity a) {
+		ImageView watchedView = (ImageView)a.findViewById(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
+		watchedView.setImageResource(R.drawable.watched_small);
+		int watchedCount = epiv.getPosterInfo().getViewCount();
+		epiv.getPosterInfo().setViewCount(watchedCount + 1);
 	}
 
 	/**
