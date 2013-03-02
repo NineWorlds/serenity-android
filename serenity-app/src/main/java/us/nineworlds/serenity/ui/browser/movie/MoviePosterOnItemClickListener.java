@@ -123,7 +123,5 @@ public class MoviePosterOnItemClickListener  implements OnItemClickListener {
 		vpIntent.putExtra("title", epiv.getPosterInfo().getTitle());
 		vpIntent.putExtra("return_result", true);
 	}
-	
-	
 
 }

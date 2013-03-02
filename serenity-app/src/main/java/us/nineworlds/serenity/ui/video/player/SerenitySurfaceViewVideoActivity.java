@@ -23,6 +23,9 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
@@ -36,6 +39,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
@@ -209,6 +213,12 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 		Bundle extras = getIntent().getExtras();
 
 		videoURL = extras.getString("videoUrl");
+		if (videoURL == null) {
+			videoURL = extras.getString("encodedvideoUrl");
+			if (videoURL != null) {
+				videoURL = URLDecoder.decode(videoURL);
+			}
+		}
 		videoId = extras.getString("id");
 		String summary = extras.getString("summary");
 		String title = extras.getString("title");

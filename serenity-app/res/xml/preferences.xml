@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     <PreferenceCategory android:title="Server Settings">
-        <EditTextPreference android:summary="The domain name or IP Address for your main plex media server. This takes preference over any Discovered Servers selected." android:title="Server Address" android:key="server" android:defaultValue=""/>
         <ListPreference android:summary="A list of available plex media servers on the network. A prefered server takes priority." android:title="Discovered Servers"  android:entryValues="@array/plex_video_categories" android:entries="@array/plex_video_categories" android:key="discoveredServer" android:defaultValue=""/>
+        <EditTextPreference android:summary="The domain name or IP Address for your main plex media server. This takes preference over any Discovered Servers selected." android:title="Preferred Server Address" android:key="server" android:defaultValue=""/>
         <EditTextPreference android:summary="The port number for the server (usually 32400)" android:title="Server Port" android:key="serverport" android:defaultValue="32400"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="Media Player">

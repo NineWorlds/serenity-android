@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
@@ -84,7 +86,7 @@ public class MoviePosterOnItemLongClickListener implements
 		context = (Activity) mpiv.getContext();
 
 		dialog = new Dialog(context);
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Holo_Dialog));
 		builder.setTitle("Video Options");
 
 		ListView modeList = new ListView(context);
@@ -146,8 +148,23 @@ public class MoviePosterOnItemLongClickListener implements
 				sharingIntent.setClassName("com.entertailion.android.remote",
 						"com.entertailion.android.remote.MainActivity");
 				sharingIntent.setAction("android.intent.action.SEND");
-				Uri uri = Uri.parse(info.getDirectPlayUrl());
-				sharingIntent.setDataAndType(uri, "video/*");
+//				String intentString = "intent:#Intent;" +
+//				"action=android.intent.action.VIEW;" +
+//				"category=android.intent.category.DEFAULT" +
+//				"component=us.nineworlds.serenity/.ui.video.player.SerenitySurfaceViewVideoActivity;" +
+//				"S.encodedvideoUrl=" + URLEncoder.encode(mpiv.getPosterInfo().getDirectPlayUrl()) + ";" +
+//				"S.title=" + URLEncoder.encode(mpiv.getPosterInfo().getTitle()) + ";" +
+//				"S.resumeOffset=" + URLEncoder.encode(Integer.toString(mpiv.getPosterInfo().getResumeOffset())) + ";" +
+//				"S.posterUrl=" + URLEncoder.encode(mpiv.getPosterInfo().getPosterURL()) + ";" +
+//				"S.aspectRatio=" + URLEncoder.encode(mpiv.getPosterInfo().getAspectRatio()) + ";" +
+//				"S.videoFormat=" + URLEncoder.encode(mpiv.getPosterInfo().getVideoCodec()) + ";" +
+//				"S.videoResolution=" + URLEncoder.encode(mpiv.getPosterInfo().getVideoResolution()) + ";" +
+//				"S.audioFormat=" + URLEncoder.encode(mpiv.getPosterInfo().getAudioCodec()) + ";" +
+//				"S.audioChannels=" + URLEncoder.encode(mpiv.getPosterInfo().getAudioChannels()) + ";" +
+//				"end";
+				sharingIntent.putExtra(Intent.EXTRA_TEXT, mpiv.getPosterInfo().getDirectPlayUrl());
+//				sharingIntent.putExtra(Intent.EXTRA_TEXT, intentString);
+				
 				context.startActivity(sharingIntent);
 			}
 			
