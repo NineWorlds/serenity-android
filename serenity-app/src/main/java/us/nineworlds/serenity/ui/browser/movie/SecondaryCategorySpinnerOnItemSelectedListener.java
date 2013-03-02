@@ -68,7 +68,10 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements OnItemSel
 		
 		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(c, key, item.getParentCategory() + "/" + item.getCategory()));
 		posterGallery.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(bgLayout, c));
-		posterGallery.setOnItemClickListener(new MoviePosterOnItemClickListener());			
+		posterGallery.setOnItemClickListener(new MoviePosterOnItemClickListener());
+		posterGallery.setOnItemLongClickListener(new MoviePosterOnItemLongClickListener());
+		posterGallery.setLongClickable(true);
+		
 		
 	}
 

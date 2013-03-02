@@ -23,12 +23,15 @@
 
 package us.nineworlds.serenity.ui.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
+import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 
 
 /**
@@ -342,8 +345,22 @@ public class ImageInfographicUtils {
 		}
 
 		return null;
-
 	}
+	
+	public static void setWatchedCount(SerenityPosterImageView epiv, Activity a) {
+		ImageView watchedView = (ImageView)a.findViewById(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
+		watchedView.setImageResource(R.drawable.watched_small);
+		int watchedCount = epiv.getPosterInfo().getViewCount();
+		epiv.getPosterInfo().setViewCount(watchedCount + 1);
+	}
+	
+	public static void setUnwatched(SerenityPosterImageView epiv, Activity a) {
+		ImageView watchedView = (ImageView)a.findViewById(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
+		watchedView.setImageResource(R.drawable.unwatched_small);
+		epiv.getPosterInfo().setViewCount(0);
+	}
+	
+	
 	
 }
 	

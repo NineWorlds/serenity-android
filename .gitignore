@@ -5,6 +5,8 @@ bin
 .project
 gen
 bin
+signing.sh
+zip.txt
 
 
 

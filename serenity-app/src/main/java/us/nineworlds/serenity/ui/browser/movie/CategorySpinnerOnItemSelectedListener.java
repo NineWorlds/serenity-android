@@ -74,15 +74,8 @@ public class CategorySpinnerOnItemSelectedListener implements
 		if (firstSelection) {
 			View bgLayout = context
 					.findViewById(R.id.movieBrowserBackgroundLayout);
-			Gallery posterGallery = (Gallery) context
-					.findViewById(R.id.moviePosterGallery);
-			posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(
-					context, key, item.getCategory()));
-			posterGallery
-					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
-							bgLayout, context));
-			posterGallery
-					.setOnItemClickListener(new MoviePosterOnItemClickListener());
+			createGallery(item, bgLayout);
+			
 			firstSelection = false;
 			return;
 		}
@@ -101,15 +94,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 			secondarySpinner.setVisibility(View.INVISIBLE);
 			View bgLayout = context
 					.findViewById(R.id.movieBrowserBackgroundLayout);
-			Gallery posterGallery = (Gallery) context
-					.findViewById(R.id.moviePosterGallery);
-			posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(
-					context, key, item.getCategory()));
-			posterGallery
-					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
-							bgLayout, context));
-			posterGallery
-					.setOnItemClickListener(new MoviePosterOnItemClickListener());
+			createGallery(item, bgLayout);
 		} else {
 			Messenger messenger = new Messenger(secondaryCategoryHandler);
 			Intent categoriesIntent = new Intent(context,
@@ -120,6 +105,23 @@ public class CategorySpinnerOnItemSelectedListener implements
 			context.startService(categoriesIntent);
 		}
 
+	}
+
+	/**
+	 * @param item
+	 * @param bgLayout
+	 */
+	protected void createGallery(CategoryInfo item, View bgLayout) {
+		Gallery posterGallery = (Gallery) context
+				.findViewById(R.id.moviePosterGallery);
+		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(
+				context, key, item.getCategory()));
+		posterGallery
+				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
+						bgLayout, context));
+		posterGallery
+				.setOnItemClickListener(new MoviePosterOnItemClickListener());
+		posterGallery.setOnItemLongClickListener(new MoviePosterOnItemLongClickListener());
 	}
 
 	public void onNothingSelected(AdapterView<?> va) {

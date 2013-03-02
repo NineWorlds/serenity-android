@@ -76,7 +76,7 @@ public class MoviePosterImageGalleryAdapter extends
 				android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 
 		imageManager.getLoader().load(mpiv);
-
+		
 		return mpiv;
 	}
 
