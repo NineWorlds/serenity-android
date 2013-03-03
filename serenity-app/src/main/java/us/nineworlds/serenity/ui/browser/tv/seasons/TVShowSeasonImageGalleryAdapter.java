@@ -41,6 +41,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -128,6 +129,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		
 		SeriesContentInfo pi = seasonList.get(position);
 		TVShowSeasonImageView mpiv = new TVShowSeasonImageView(context, pi);
+		mpiv.setBackgroundColor(Color.BLACK);
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
 		} else {

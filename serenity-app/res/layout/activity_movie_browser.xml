@@ -269,16 +269,16 @@
         android:layout_marginTop="10dip"
         android:gravity="bottom" >
 
-        <Gallery
+        <us.nineworlds.serenity.widgets.SerenityGallery
             android:id="@+id/moviePosterGallery"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:animationDuration="1"
-            android:background="#80000000"
+            android:background="#D0000000"
             android:spacing="25dp" >
 
             <requestFocus />
-        </Gallery>
+        </us.nineworlds.serenity.widgets.SerenityGallery>
     </LinearLayout>
 
 </RelativeLayout>

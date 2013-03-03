@@ -28,6 +28,7 @@ import java.util.List;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.MovieSecondaryCategoryRetrievalIntentService;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
 
@@ -38,10 +39,9 @@ import android.os.Message;
 import android.os.Messenger;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Gallery;
 import android.widget.Toast;
 
 /**
@@ -112,7 +112,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	 * @param bgLayout
 	 */
 	protected void createGallery(CategoryInfo item, View bgLayout) {
-		Gallery posterGallery = (Gallery) context
+		SerenityGallery posterGallery = (SerenityGallery) context
 				.findViewById(R.id.moviePosterGallery);
 		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(
 				context, key, item.getCategory()));
@@ -122,6 +122,8 @@ public class CategorySpinnerOnItemSelectedListener implements
 		posterGallery
 				.setOnItemClickListener(new MoviePosterOnItemClickListener());
 		posterGallery.setOnItemLongClickListener(new MoviePosterOnItemLongClickListener());
+		posterGallery.setSpacing(25);
+		posterGallery.setAnimationDuration(1);
 	}
 
 	public void onNothingSelected(AdapterView<?> va) {

@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
 
@@ -32,7 +33,6 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Gallery;
 
 /**
  * Populate the movie posters based on the information from the 
@@ -64,15 +64,15 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements OnItemSel
 		Activity c = (Activity)view.getContext();
 		
 		View bgLayout = c.findViewById(R.id.movieBrowserBackgroundLayout);
-		Gallery posterGallery = (Gallery) c.findViewById(R.id.moviePosterGallery);
+		SerenityGallery posterGallery = (SerenityGallery) c.findViewById(R.id.moviePosterGallery);
 		
 		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(c, key, item.getParentCategory() + "/" + item.getCategory()));
 		posterGallery.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(bgLayout, c));
 		posterGallery.setOnItemClickListener(new MoviePosterOnItemClickListener());
 		posterGallery.setOnItemLongClickListener(new MoviePosterOnItemLongClickListener());
-		posterGallery.setLongClickable(true);
-		
-		
+		posterGallery.setAnimationDuration(1);
+		posterGallery.setSpacing(25);
+		posterGallery.setAnimationCacheEnabled(false);
 	}
 
 

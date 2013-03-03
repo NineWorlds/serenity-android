@@ -29,6 +29,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.EpisodeRetrievalIntentService;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
 
@@ -36,12 +37,12 @@ import us.nineworlds.serenity.R;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Gallery;
 import android.widget.ImageView;
 
 /**
@@ -65,13 +66,14 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
 		
 		VideoContentInfo pi = posterList.get(position);
 		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
+		mpiv.setBackgroundColor(Color.BLACK);
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
 		} else {
 			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/show-fanart.jpg", context));
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		mpiv.setLayoutParams(new Gallery.LayoutParams(300, android.view.ViewGroup.LayoutParams.FILL_PARENT));
+		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(300, android.view.ViewGroup.LayoutParams.FILL_PARENT));
 		
 		imageManager.getLoader().load(mpiv);
 	
@@ -101,7 +103,7 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
 		public void handleMessage(Message msg) {
 			posterList = (List<VideoContentInfo>) msg.obj;
 			pd.dismiss();			
-			Gallery gallery = (Gallery) context.findViewById(R.id.moviePosterGallery);
+			SerenityGallery gallery = (SerenityGallery) context.findViewById(R.id.moviePosterGallery);
 			gallery.requestFocus();
 			notifyAdapter.notifyDataSetChanged();
 			

@@ -33,6 +33,9 @@ import us.nineworlds.serenity.core.services.UnWatchEpisodeAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedEpisodeAsyncTask;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
+import us.nineworlds.serenity.widgets.SerenityAdapterView;
+import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemLongClickListener;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -44,12 +47,8 @@ import android.net.Uri;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.View.OnLongClickListener;
-import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Gallery;
 import android.widget.ListView;
 
 /**
@@ -64,20 +63,20 @@ public class MoviePosterOnItemLongClickListener implements
 	private VideoContentInfo info;
 	private SerenityPosterImageView mpiv;
 	
-	public boolean onItemLongClick(AdapterView<?> av, View v, int position,
+	public boolean onItemLongClick(SerenityAdapterView<?> av, View v, int position,
 			long arg3) {
 		
 		// Google TV is sending back different results than Nexus 7
 		// So we try to handle the different results.
 		
 		if (v == null) {
-			Gallery g = (Gallery) av;
+			SerenityGallery g = (SerenityGallery) av;
 			mpiv = (SerenityPosterImageView) g.getSelectedView();
 		} else {
 			if (v instanceof SerenityPosterImageView) {
 				mpiv = (SerenityPosterImageView) v;
 			} else {
-				Gallery g = (Gallery) v;
+				SerenityGallery g = (SerenityGallery) v;
 				mpiv = (SerenityPosterImageView) g.getSelectedView();
 			}
 		}
@@ -133,7 +132,7 @@ public class MoviePosterOnItemLongClickListener implements
 		/* (non-Javadoc)
 		 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
 		 */
-		public void onItemClick(AdapterView<?> arg0, View v, int position,
+		public void onItemClick(android.widget.AdapterView<?> arg0, View v, int position,
 				long arg3) {
 			if (position == 0) {
 				if (info.getViewCount() > 0) {

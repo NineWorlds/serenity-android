@@ -94,7 +94,7 @@ public class TVShowBannerOnItemSelectedListener implements
 
 		previous = v;
 
-		v.setBackgroundColor(Color.BLUE);
+		v.setBackgroundColor(Color.CYAN);
 		v.setPadding(5, 5, 5, 5);
 		v.refreshDrawableState();
 

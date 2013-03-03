@@ -29,6 +29,8 @@ import us.nineworlds.serenity.core.services.WatchedEpisodeAsyncTask;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
+import us.nineworlds.serenity.widgets.SerenityAdapterView;
+import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemClickListener;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -36,9 +38,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * @author dcarver
@@ -49,7 +49,7 @@ public class MoviePosterOnItemClickListener  implements OnItemClickListener {
 	/* (non-Javadoc)
 	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
 	 */
-	public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
+	public void onItemClick(SerenityAdapterView<?> av, View v, int arg2, long arg3) {
 		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(v.getContext());

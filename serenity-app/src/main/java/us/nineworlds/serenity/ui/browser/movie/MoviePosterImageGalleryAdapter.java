@@ -29,18 +29,19 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Gallery;
 import android.widget.ImageView;
 
 /**
@@ -65,6 +66,7 @@ public class MoviePosterImageGalleryAdapter extends
 
 		VideoContentInfo pi = posterList.get(position);
 		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
+		mpiv.setBackgroundColor(Color.BLACK);
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
 		} else {
@@ -72,7 +74,7 @@ public class MoviePosterImageGalleryAdapter extends
 					+ ":/resources/movie-fanart.jpg", context));
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		mpiv.setLayoutParams(new Gallery.LayoutParams(200,
+		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(200,
 				android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 
 		imageManager.getLoader().load(mpiv);
@@ -95,7 +97,7 @@ public class MoviePosterImageGalleryAdapter extends
 		@Override
 		public void handleMessage(Message msg) {
 			posterList = (List<VideoContentInfo>) msg.obj;
-			Gallery posterGallery = (Gallery) context.findViewById(R.id.moviePosterGallery);
+			SerenityGallery posterGallery = (SerenityGallery) context.findViewById(R.id.moviePosterGallery);
 			notifyAdapter.notifyDataSetChanged();
 			posterGallery.requestFocus();
 			pd.dismiss();

@@ -38,6 +38,7 @@ import com.novoda.imageloader.core.model.ImageTagFactory;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -122,6 +123,7 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 		
 		AbstractSeriesContentInfo pi = tvShowList.get(position);
 		TVShowBannerImageView mpiv = new TVShowBannerImageView(context, pi);
+		mpiv.setBackgroundColor(Color.BLACK);
 		if (pi.getPosterURL() != null) {
 			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
 		} else {

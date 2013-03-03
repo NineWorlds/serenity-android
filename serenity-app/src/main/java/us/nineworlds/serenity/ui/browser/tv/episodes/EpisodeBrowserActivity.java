@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -31,11 +32,10 @@ import com.google.analytics.tracking.android.EasyTracker;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Gallery;
 
 public class EpisodeBrowserActivity extends SerenityActivity {
 	
-	private Gallery posterGallery;
+	private SerenityGallery posterGallery;
 	private String key;
 	private View bgLayout;
 	private View metaData;
@@ -48,7 +48,7 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 
 		setContentView(R.layout.activity_movie_browser);
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
-		posterGallery = (Gallery) findViewById(R.id.moviePosterGallery);
+		posterGallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
 		metaData = findViewById(R.id.metaDataRow);
 		metaData.setVisibility(View.INVISIBLE);
 				
@@ -80,6 +80,8 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 		posterGallery.setAdapter(new EpisodePosterImageGalleryAdapter(this, key));
 		posterGallery.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(bgLayout, this));
 		posterGallery.setOnItemClickListener(new EpisodePosterOnItemClickListener());
+		posterGallery.setAnimationDuration(1);
+		posterGallery.setSpacing(25);
 	}
 	
 

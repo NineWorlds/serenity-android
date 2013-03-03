@@ -34,6 +34,8 @@ import us.nineworlds.serenity.core.imageloader.BackgroundImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
+import us.nineworlds.serenity.widgets.SerenityAdapterView;
+import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 
 import us.nineworlds.serenity.R;
 
@@ -47,8 +49,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -95,18 +95,17 @@ public class EpisodePosterOnItemSelectedListener implements
 	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
 	 * .widget.AdapterView, android.view.View, int, long)
 	 */
-	public void onItemSelected(AdapterView<?> av, View v, int position, long id) {
+	public void onItemSelected(SerenityAdapterView<?> av, View v, int position, long id) {
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
-			previous.refreshDrawableState();
+			previous.setBackgroundColor(Color.BLACK);
 		}
 
 		previous = v;
 
-		v.setBackgroundColor(Color.BLUE);
+		v.setBackgroundColor(Color.CYAN);
 		v.setPadding(5, 5, 5, 5);
-		v.refreshDrawableState();
 
 		createMovieDetail((SerenityPosterImageView) v);
 		createMovieMetaData((SerenityPosterImageView) v);
@@ -270,12 +269,10 @@ public class EpisodePosterOnItemSelectedListener implements
 		// Currently can't find appropriate logo for this.
 		//ImageView crv = setContentRating(epi.getContentRating());
 		//infographicsView.addView(crv);
-
-		infographicsView.refreshDrawableState();
 	}
 
 
-	public void onNothingSelected(AdapterView<?> av) {
+	public void onNothingSelected(SerenityAdapterView<?> av) {
 
 	}
 

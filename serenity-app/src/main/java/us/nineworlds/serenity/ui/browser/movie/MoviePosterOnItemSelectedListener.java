@@ -32,6 +32,8 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
+import us.nineworlds.serenity.widgets.SerenityAdapterView;
+import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 
 import us.nineworlds.serenity.R;
 import com.novoda.imageloader.core.ImageManager;
@@ -42,8 +44,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -86,7 +86,7 @@ public class MoviePosterOnItemSelectedListener implements
 	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
 	 * .widget.AdapterView, android.view.View, int, long)
 	 */
-	public void onItemSelected(AdapterView<?> av, View v, int position, long id) {
+	public void onItemSelected(SerenityAdapterView<?> av, View v, int position, long id) {
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
@@ -95,7 +95,7 @@ public class MoviePosterOnItemSelectedListener implements
 
 		previous = v;
 
-		v.setBackgroundColor(Color.BLUE);
+		v.setBackgroundColor(Color.CYAN);
 		v.setPadding(5, 5, 5, 5);
 		v.refreshDrawableState();
 
@@ -241,7 +241,7 @@ public class MoviePosterOnItemSelectedListener implements
 		infographicsView.refreshDrawableState();
 	}
 
-	public void onNothingSelected(AdapterView<?> av) {
+	public void onNothingSelected(SerenityAdapterView<?> av) {
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
 			previous.refreshDrawableState();
