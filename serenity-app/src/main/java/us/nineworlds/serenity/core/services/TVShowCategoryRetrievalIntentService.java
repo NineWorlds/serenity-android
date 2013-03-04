@@ -30,8 +30,6 @@ import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 
-import com.bugsense.trace.BugSenseHandler;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -80,8 +78,6 @@ public class TVShowCategoryRetrievalIntentService extends
 				messenger.send(msg);
 			} catch (RemoteException ex) {
 				Log.e(getClass().getName(), "Unable to send message", ex);
-				BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "sendMessageResults", ex);			
-				
 			}
 		}
 	}
@@ -114,7 +110,6 @@ public class TVShowCategoryRetrievalIntentService extends
 			}
 		} catch (Exception e) {
 			Log.e(getClass().getName(), e.getMessage(), e);
-			BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "populateCategories", e);			
 		}		
 	}
 	

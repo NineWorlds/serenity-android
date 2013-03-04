@@ -33,7 +33,6 @@ import us.nineworlds.serenity.core.ConcurrentLoader;
 import us.nineworlds.serenity.core.SerenityLoaderSettings;
 import us.nineworlds.serenity.core.ServerConfig;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.novoda.imageloader.core.ImageManager;
 
@@ -52,19 +51,12 @@ public class SerenityApplication extends Application {
 	private static ImageManager imageManager;
 	private static PlexappFactory plexFactory;
 	private static SerenityLoaderSettings settings;
-	private static String BUGSENSE_KEY = "e4c454b0";
 	
 	private static ConcurrentHashMap<String, Device> plexmediaServers = new ConcurrentHashMap<String, Device>();
-	
-
-	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		EasyTracker.getInstance().setContext(this);
-		if (!android.os.Build.MODEL.contains("emulator")) {
-			BugSenseHandler.initAndStartSession(this, BUGSENSE_KEY);
-		}
 
 		settings = new SerenityLoaderSettings.SettingsBuilder()
 	      .withDisconnectOnEveryCall(true).withUpsampling(true).build(this);

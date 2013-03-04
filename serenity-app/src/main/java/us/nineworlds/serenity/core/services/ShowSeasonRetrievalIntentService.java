@@ -34,7 +34,6 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 
-import com.bugsense.trace.BugSenseHandler;
 import us.nineworlds.serenity.R;
 
 import android.content.Intent;
@@ -90,10 +89,8 @@ public class ShowSeasonRetrievalIntentService extends AbstractPlexRESTIntentServ
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
 			Log.e(getClass().getName(),"Unable to talk to server: ", ex);
-			BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "createSeries", ex);			
 		} catch (Exception e) {
 			Log.e(getClass().getName(),"Oops.", e);
-			BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "createSeries", e);			
 		}
 		
 		if (mc == null ) {

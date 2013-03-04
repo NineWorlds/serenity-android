@@ -32,15 +32,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -103,6 +100,8 @@ public class MediaController extends FrameLayout {
 	private static final int SHOW_PROGRESS = 2;
 	private boolean mFromXml = false;
 	private ImageButton mPauseButton;
+	private ImageButton mSkipForwardButton;
+	private ImageButton mSkipBackwardButton;
 	private String summary;
 	private String title;
 	private String posterURL;
@@ -197,6 +196,16 @@ public class MediaController extends FrameLayout {
 		if (mPauseButton != null) {
 			mPauseButton.requestFocus();
 			mPauseButton.setOnClickListener(mPauseListener);
+		}
+		
+		mSkipBackwardButton = (ImageButton) v.findViewById(R.id.osd_rewind_control);
+		if (mSkipBackwardButton != null) {
+			mSkipBackwardButton.setOnClickListener(mSkipBackwardListener);
+		}
+		
+		mSkipForwardButton = (ImageButton) v.findViewById(R.id.osd_ff_control);
+		if (mSkipForwardButton != null) {
+			mSkipForwardButton.setOnClickListener(mSkipForwardListener);
 		}
 
 		mProgress = (ProgressBar) v.findViewById(R.id.mediacontroller_seekbar);
@@ -601,7 +610,6 @@ public class MediaController extends FrameLayout {
 		} else {
 			show(sDefaultTimeout);
 		}
-		// TODO Auto-generated method stub
 		return super.onKeyDown(keyCode, event);
 	}
 
@@ -673,6 +681,34 @@ public class MediaController extends FrameLayout {
 			mHandler.sendEmptyMessageDelayed(SHOW_PROGRESS, 1000);
 		}
 	};
+	
+	
+	private View.OnClickListener mSkipForwardListener = new View.OnClickListener() {
+		
+		public void onClick(View v) {
+		    long skipOffset = (long)10000 +  mPlayer.getCurrentPosition();
+			long duration = mPlayer.getDuration();
+			if (skipOffset > duration) {
+				skipOffset = duration - 1;
+			}
+			mPlayer.seekTo(skipOffset);
+			show();
+		}
+	};
+	
+	private View.OnClickListener mSkipBackwardListener = new View.OnClickListener() {
+		
+		public void onClick(View v) {
+		    long skipOffset = mPlayer.getCurrentPosition() - 10000;
+			long duration = mPlayer.getDuration();
+			if (skipOffset < 0) {
+				skipOffset = 1;
+			}
+			mPlayer.seekTo(skipOffset);
+			show();
+		}
+	};
+	
 
 	@Override
 	public void setEnabled(boolean enabled) {

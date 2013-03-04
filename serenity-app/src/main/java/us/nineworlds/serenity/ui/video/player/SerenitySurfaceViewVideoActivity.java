@@ -31,7 +31,6 @@ import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.video.player.MediaController.MediaPlayerControl;
 
-import com.bugsense.trace.BugSenseHandler;
 import us.nineworlds.serenity.R;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -94,7 +93,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 				}
 			} catch (IllegalStateException ex) {
 				Log.w(getClass().getName(), "Illegalstate exception occurred durring progress update. No further updates will occur.", ex);
-				BugSenseHandler.sendException(ex);
 			}
 		};
 	};
@@ -566,7 +564,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 				error_msg = "Server croaked. Extra Code: " + extra;
 			}
 			
-			BugSenseHandler.sendEvent(error_msg);
+			EasyTracker.getTracker().sendEvent("Video Error", "Playback", error_msg, (long)0);
+			
 			Log.e(getClass().getName(), error_msg);
 			return true;
 		}

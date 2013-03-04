@@ -129,7 +129,7 @@
             android:background="@android:color/transparent"
             android:focusable="true"
             android:nextFocusLeft="@id/osd_rewind_control"
-            android:nextFocusRight="@+id/osd_stop_control"
+            android:nextFocusRight="@+id/osd_ff_control"
             android:nextFocusUp="@id/mediacontroller_seekbar"
             android:scaleType="fitXY"
             android:src="@drawable/osd_play_nf" >
@@ -137,17 +137,6 @@
             <requestFocus />
         </ImageButton>
 
-        <ImageButton
-            android:id="@+id/osd_stop_control"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:focusable="true"
-            android:nextFocusLeft="@id/mediacontroller_play_pause"
-            android:nextFocusRight="@+id/osd_ff_control"
-            android:nextFocusUp="@id/mediacontroller_seekbar"
-            android:scaleType="fitXY"
-            android:src="@drawable/osd_stop_nf" />
 
         <ImageButton
             android:id="@+id/osd_ff_control"
@@ -155,7 +144,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:focusable="true"
-            android:nextFocusLeft="@id/osd_stop_control"
+            android:nextFocusLeft="@id/mediacontroller_play_pause"
             android:nextFocusUp="@id/mediacontroller_seekbar"
             android:scaleType="fitXY"
             android:src="@drawable/osd_forward_nf" />

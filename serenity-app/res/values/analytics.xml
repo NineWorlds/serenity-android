@@ -4,7 +4,7 @@
     <string name="ga_trackingId">UA-38658181-1</string>
 
     <bool name="ga_autoActivityTracking">true</bool>
-    <bool name="ga_reportUncaughtExceptions">false</bool>
+    <bool name="ga_reportUncaughtExceptions">true</bool>
 
     <string name="com.github.kingargyle.plexappclient">Main Menu</string>
     <string name="com.github.kingargyle.plexappclient.ui.browser.movie">Movie Browser</string>

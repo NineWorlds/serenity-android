@@ -38,8 +38,6 @@ import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 
-import com.bugsense.trace.BugSenseHandler;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -74,7 +72,6 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 				messenger.send(msg);
 			} catch (RemoteException ex) {
 				Log.e(getClass().getName(), "Unable to send message", ex);
-				BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "sendMessageResults", ex);			
 			}
 		}
 		
@@ -97,7 +94,6 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 		} catch (IOException ex) {
 			Log.e("AbstractPosterImageGalleryAdapter",
 					"Unable to talk to server: ", ex);
-			BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "createPosters", ex);			
 		} catch (Exception e) {
 			Log.e("AbstractPosterImageGalleryAdapter", "Oops.", e);
 		}

@@ -32,8 +32,6 @@ import us.nineworlds.plex.rest.model.impl.Genre;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 
-import com.bugsense.trace.BugSenseHandler;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -67,7 +65,6 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 				messenger.send(msg);
 			} catch (RemoteException ex) {
 				Log.e(getClass().getName(), "Unable to send message", ex);
-				BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "sendMessageResults", ex);							
 			}
 		}
 	}
@@ -88,10 +85,8 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
 			Log.e(getClass().getName(),"Unable to talk to server: ", ex);
-			BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "createBanners", ex);						
 		} catch (Exception e) {
 			Log.e(getClass().getName(),"Oops.", e);
-			BugSenseHandler.sendExceptionMessage(this.getClass().getName(), "createBanners", e);						
 		}
 		
 		if (mc != null && mc.getSize() > 0) {			

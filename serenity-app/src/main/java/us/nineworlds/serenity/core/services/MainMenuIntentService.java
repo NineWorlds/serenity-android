@@ -31,9 +31,6 @@ import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.impl.MenuItem;
 
-import com.bugsense.trace.BugSenseHandler;
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -91,12 +88,9 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 					m.setSection(item.getKey());
 					menuItems.add(m);
 				}
-			} else {
-				BugSenseHandler.sendEvent("loadMenuItems: No Directories for library/sections found. Server URL " + factory.baseURL() + "/library/sections");
-			}
+			} 
 		} catch (Exception e) {
 		  Log.e("MainMenuIntentService", "Unable to comminicate to server at " + factory.baseURL(), e);
-		  BugSenseHandler.sendExceptionMessage("MainMenuIntentService", "loadMenuItems from " + factory.baseURL(), e);
 		} 
 	}
 	
@@ -125,7 +119,6 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 				messenger.send(msg);
 			} catch (RemoteException ex) {
 				Log.e(getClass().getName(), "Unable to send message", ex);
-			  BugSenseHandler.sendExceptionMessage("MainMenuIntentService", "sendMessageResults", ex);
 			}
 		}
 		
