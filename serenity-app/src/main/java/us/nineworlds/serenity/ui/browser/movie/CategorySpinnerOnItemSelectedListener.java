@@ -28,6 +28,8 @@ import java.util.List;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.MovieSecondaryCategoryRetrievalIntentService;
+import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
@@ -120,8 +122,8 @@ public class CategorySpinnerOnItemSelectedListener implements
 				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
 						bgLayout, context));
 		posterGallery
-				.setOnItemClickListener(new MoviePosterOnItemClickListener());
-		posterGallery.setOnItemLongClickListener(new MoviePosterOnItemLongClickListener());
+				.setOnItemClickListener(new PlexVideoOnItemClickListener());
+		posterGallery.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
 		posterGallery.setSpacing(25);
 		posterGallery.setAnimationDuration(1);
 	}

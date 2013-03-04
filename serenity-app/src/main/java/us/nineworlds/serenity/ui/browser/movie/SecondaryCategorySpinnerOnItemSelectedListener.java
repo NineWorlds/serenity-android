@@ -25,6 +25,8 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
@@ -68,8 +70,8 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements OnItemSel
 		
 		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(c, key, item.getParentCategory() + "/" + item.getCategory()));
 		posterGallery.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(bgLayout, c));
-		posterGallery.setOnItemClickListener(new MoviePosterOnItemClickListener());
-		posterGallery.setOnItemLongClickListener(new MoviePosterOnItemLongClickListener());
+		posterGallery.setOnItemClickListener(new PlexVideoOnItemClickListener());
+		posterGallery.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
 		posterGallery.setAnimationDuration(1);
 		posterGallery.setSpacing(25);
 		posterGallery.setAnimationCacheEnabled(false);

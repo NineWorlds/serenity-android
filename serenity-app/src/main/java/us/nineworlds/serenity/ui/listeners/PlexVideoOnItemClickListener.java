@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2013 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -21,10 +21,12 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.browser.tv.episodes;
+package us.nineworlds.serenity.ui.listeners;
 
+import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.services.*;
+import us.nineworlds.serenity.core.services.WatchedEpisodeAsyncTask;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
@@ -42,54 +44,52 @@ import android.widget.ImageView;
  * @author dcarver
  *
  */
-public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
+public class PlexVideoOnItemClickListener  implements OnItemClickListener {
 
 	/* (non-Javadoc)
 	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
 	 */
 	public void onItemClick(SerenityAdapterView<?> av, View v, int arg2, long arg3) {
-		SerenityPosterImageView epiv = (SerenityPosterImageView) v;
-	
+		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
+		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(v.getContext());
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
 		
 		if (externalPlayer) {
-			String url = epiv.getPosterInfo().getDirectPlayUrl();
+			String url = mpiv.getPosterInfo().getDirectPlayUrl();
 			Intent vpIntent = new Intent(Intent.ACTION_VIEW);
 			vpIntent.setDataAndType(Uri.parse(url), "video/*");
 			
-			mxVideoPlayerOptions(epiv, vpIntent);
-			vimuVideoPlayerOptions(epiv, vpIntent);
+			mxVideoPlayerOptions(mpiv, vpIntent);
+			vimuVideoPlayerOptions(mpiv, vpIntent);
 			
-			Activity activity = (Activity) epiv.getContext();
+			Activity activity = (Activity) mpiv.getContext();
 			activity.startActivity(vpIntent);
-			new WatchedEpisodeAsyncTask().execute(epiv.getPosterInfo().id());
-			updatedWatchedCount(epiv, activity);
+			new WatchedEpisodeAsyncTask().execute(mpiv.getPosterInfo().id());
+			updatedWatchedCount(mpiv, activity);
 			return;
 		}
 		
-		
-		String url = epiv.getPosterInfo().getDirectPlayUrl();
-		Intent vpIntent = new Intent(epiv.getContext(), SerenitySurfaceViewVideoActivity.class);
+		String url = mpiv.getPosterInfo().getDirectPlayUrl();
+		Intent vpIntent = new Intent(mpiv.getContext(), SerenitySurfaceViewVideoActivity.class);
 		vpIntent.putExtra("videoUrl", url);
-		vpIntent.putExtra("summary", epiv.getPosterInfo().getPlotSummary());
-		vpIntent.putExtra("title", epiv.getPosterInfo().getTitle());
-		String posterUrl = epiv.getPosterInfo().getParentPosterURL();
-		vpIntent.putExtra("posterUrl", posterUrl);
-		vpIntent.putExtra("id", epiv.getPosterInfo().id());
-		vpIntent.putExtra("aspectRatio", epiv.getPosterInfo().getAspectRatio());
-		vpIntent.putExtra("videoResolution", epiv.getPosterInfo().getVideoResolution());
-		vpIntent.putExtra("audioFormat", epiv.getPosterInfo().getAudioCodec());
-		vpIntent.putExtra("videoFormat", epiv.getPosterInfo().getVideoCodec());
-		vpIntent.putExtra("audioChannels", epiv.getPosterInfo().getAudioChannels());
-		vpIntent.putExtra("resumeOffset", epiv.getPosterInfo().getResumeOffset());
+		vpIntent.putExtra("title", mpiv.getPosterInfo().getTitle());
+		vpIntent.putExtra("summary", mpiv.getPosterInfo().getPlotSummary());
+		vpIntent.putExtra("posterUrl", mpiv.getPosterInfo().getPosterURL());
+		vpIntent.putExtra("id", mpiv.getPosterInfo().id());
+		vpIntent.putExtra("aspectRatio", mpiv.getPosterInfo().getAspectRatio());
+		vpIntent.putExtra("videoResolution", mpiv.getPosterInfo().getVideoResolution());
+		vpIntent.putExtra("audioFormat", mpiv.getPosterInfo().getAudioCodec());
+		vpIntent.putExtra("videoFormat", mpiv.getPosterInfo().getVideoCodec());
+		vpIntent.putExtra("audioChannels", mpiv.getPosterInfo().getAudioChannels());
+		vpIntent.putExtra("resumeOffset", mpiv.getPosterInfo().getResumeOffset());
 		
-		Activity a = (Activity) epiv.getContext();
-		a.startActivityForResult(vpIntent, 0);
 		
-		updatedWatchedCount(epiv, a);
+		Activity a = (Activity) mpiv.getContext();
+		a.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
+		updatedWatchedCount(mpiv, a);
 	}
-
+	
 	/**
 	 * @param epiv
 	 * @param a
@@ -100,7 +100,8 @@ public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 		int watchedCount = epiv.getPosterInfo().getViewCount();
 		epiv.getPosterInfo().setViewCount(watchedCount + 1);
 	}
-
+	
+	
 	/**
 	 * @param epiv
 	 * @param vpIntent
@@ -122,6 +123,5 @@ public class EpisodePosterOnItemClickListener  implements OnItemClickListener {
 		vpIntent.putExtra("title", epiv.getPosterInfo().getTitle());
 		vpIntent.putExtra("return_result", true);
 	}
-	
 
 }
