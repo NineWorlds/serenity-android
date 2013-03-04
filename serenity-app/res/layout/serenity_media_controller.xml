@@ -1,100 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mediacontroller"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <TextView
         android:id="@+id/mediacontroller_title"
+        style="@android:style/TextAppearance.Large"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:background="#80000000"
         android:gravity="top"
         android:text="Show Title"
-        style="@android:style/TextAppearance.Large"
-        android:textStyle="bold"
-        android:background="#80000000"
-         />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/mediacontroller_summary"
+        style="@android:style/TextAppearance.Medium"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/mediacontroller_title"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:gravity="top"
-        android:text="This is some show/movie summary info"
-        android:maxLines="5"
-        style="@android:style/TextAppearance.Medium"
         android:background="#80000000"
-         />
-    
-    <ImageView android:id="@+id/mediacontroller_poster_art"
+        android:gravity="top"
+        android:maxLines="5"
+        android:text="This is some show/movie summary info" />
+
+    <ImageView
+        android:id="@+id/mediacontroller_poster_art"
         android:layout_width="150dp"
         android:layout_height="200dp"
-        android:paddingBottom="10dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/default_video_cover"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        />
-    
+        android:paddingBottom="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/default_video_cover" />
 
-    <LinearLayout android:id="@+id/mediacontroller_infographic_layout"
+    <LinearLayout
+        android:id="@+id/mediacontroller_infographic_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:background="#50000000"
-        android:layout_toRightOf="@+id/mediacontroller_poster_art"
         android:layout_above="@+id/mediacontroller_progress_layout"
-        >
-              
-        
+        android:layout_marginBottom="15dp"
+        android:layout_toRightOf="@+id/mediacontroller_poster_art"
+        android:background="#50000000" >
     </LinearLayout>
-    
 
     <LinearLayout
         android:id="@+id/mediacontroller_progress_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/mediacontroller_controls_layout"
-        android:layout_toRightOf="@+id/mediacontroller_poster_art"
         android:layout_centerHorizontal="true"
         android:layout_marginRight="10dp"
+        android:layout_toRightOf="@+id/mediacontroller_poster_art"
         android:background="#50000000"
         android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/mediacontroller_time_current"
+            style="@android:style/TextAppearance.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:text="00:00:00"
-            android:textColor="#F0F0F0"
-            style="@android:style/TextAppearance.Medium" />
+            android:textColor="#F0F0F0" />
 
         <SeekBar
             android:id="@+id/mediacontroller_seekbar"
             android:layout_width="500dp"
             android:layout_height="15dp"
-            android:focusable="true"       
+            android:focusable="true"
             android:max="1000"
             android:minWidth="500dp"
             android:nextFocusDown="@+id/mediacontroller_play_pause" />
 
         <TextView
             android:id="@+id/mediacontroller_time_total"
+            style="@android:style/TextAppearance.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="99:99:99"
-            android:textColor="#F0F0F0"
-            style="@android:style/TextAppearance.Medium" />
+            android:textColor="#F0F0F0" />
     </LinearLayout>
 
     <LinearLayout
@@ -105,11 +100,13 @@
         android:layout_centerHorizontal="true"
         android:background="#50000000"
         android:orientation="horizontal" >
-        
-        <TextView android:id="@+id/useless_spacer"
-            android:layout_marginLeft="50dp"
+
+        <TextView
+            android:id="@+id/useless_spacer"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
+            tools:ignore="SelectableText" />
 
         <ImageButton
             android:id="@+id/osd_rewind_control"
@@ -136,7 +133,6 @@
 
             <requestFocus />
         </ImageButton>
-
 
         <ImageButton
             android:id="@+id/osd_ff_control"

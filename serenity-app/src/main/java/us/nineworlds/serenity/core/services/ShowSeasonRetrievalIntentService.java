@@ -29,12 +29,8 @@ import java.util.List;
 
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 
-import us.nineworlds.serenity.R;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,8 +38,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * @author dcarver

@@ -53,6 +53,10 @@ import android.util.Log;
  */
 public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService {
 
+	/**
+	 * 
+	 */
+	private static final String SEASON_EPISODE_UNKNOWN = "Unknown";
 	protected List<VideoContentInfo> posterList = null;
 	protected String key;
 	private static final Pattern season = Pattern.compile("S\\d+");
@@ -182,8 +186,8 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 				
 			}
 			
-			String episodeDetails = createVideoDetails(episode, epi);
-			epi.setCastInfo(episodeDetails);				
+			createVideoDetails(episode, epi);
+			epi.setCastInfo("");				
 		
 			posterList.add(epi);
 		}
@@ -194,13 +198,10 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 			return;
 		}
 		
-		// Extract the Season/Episode information from the filename since
-		// Plex doesn't actually store this information anywhere else
-		// It stores the season information in the 
 		String filename = part.getFilename();
 		if (filename == null) {
-			epi.setSeason("Unknown");
-			epi.setEpisodeNumber("Unknown");
+			epi.setSeason(SEASON_EPISODE_UNKNOWN);
+			epi.setEpisodeNumber(SEASON_EPISODE_UNKNOWN);
 		}
 				
 		Matcher mseason = season.matcher(filename);
@@ -228,54 +229,37 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 	 * @param videoContentInfo
 	 * @return
 	 */
-	protected String createVideoDetails(Video video,
+	protected void createVideoDetails(Video video,
 			VideoContentInfo videoContentInfo) {
-		String videoDetails = "";
 
 		if (video.getYear() != null) {
 			videoContentInfo.setYear(video.getYear());
-			videoDetails = "Year: " + video.getYear();
-			videoDetails = videoDetails + "\r\n";
 		}
 
 		if (video.getGenres() != null && video.getGenres().size() > 0) {
 			ArrayList<String> g = new ArrayList<String>();
 			for (Genre genre : video.getGenres()) {
 				g.add(genre.getTag());
-				videoDetails = videoDetails + genre.getTag() + "/";
 			}
 			videoContentInfo.setGenres(g);
-			videoDetails = videoDetails.substring(0,
-					videoDetails.lastIndexOf("/"));
-			videoDetails = videoDetails + "\r\n";
 		}
 
 		if (video.getWriters() != null && video.getWriters().size() > 0) {
-			videoDetails = videoDetails + "Writer(s): ";
 			ArrayList<String> w = new ArrayList<String>();
 			for (Writer writer : video.getWriters()) {
 				w.add(writer.getTag());
-				videoDetails = videoDetails + writer.getTag() + ", ";
 			}
 			videoContentInfo.setWriters(w);
-			videoDetails = videoDetails.substring(0,
-					videoDetails.lastIndexOf(","));
-			videoDetails = videoDetails + "\r\n";
 		}
 
 		if (video.getDirectors() != null && video.getDirectors().size() > 0) {
-			videoDetails = videoDetails + "Director(s): ";
 			ArrayList<String> d = new ArrayList<String>();
 			for (Director director : video.getDirectors()) {
 				d.add(director.getTag());
-				videoDetails = videoDetails + director.getTag() + ", ";
 			}
 			videoContentInfo.setDirectors(d);
-			videoDetails = videoDetails.substring(0,
-					videoDetails.lastIndexOf(","));
-			videoDetails = videoDetails + "\r\n";
 		}
-		return videoDetails;
+		
 	}
 
 }

@@ -50,12 +50,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
+ * When a poster is selected, update the information displayed
+ * in the browser.
+ * 
  * @author dcarver
  * 
  */
 public class MoviePosterOnItemSelectedListener implements
 		OnItemSelectedListener {
 
+	/**
+	 * 
+	 */
+	private static final String CRLF = "\r\n";
+	/**
+	 * 
+	 */
+	private static final String DEFAULT_UNKNOWN = "Unknown";
 	/**
 	 * 
 	 */
@@ -123,37 +134,40 @@ public class MoviePosterOnItemSelectedListener implements
 		TextView tw  = (TextView) context.findViewById(R.id.video_writers);
 		TextView td  = (TextView) context.findViewById(R.id.video_directors);
 
-		ty.setText("Unknown");
-		tg.setText("Unknown");
-		tw.setText("Unknown");
-		td.setText("Unknown");
+		ty.setText(DEFAULT_UNKNOWN);
+		tg.setText(DEFAULT_UNKNOWN);
+		tw.setText(DEFAULT_UNKNOWN);
+		td.setText(DEFAULT_UNKNOWN);
 		
 		if (mi.getYear() != null) {
 			ty.setText(mi.getYear());
 		}
 		
 		if (mi.getGenres() != null) {
-			String details = "";
+			StringBuilder details = new StringBuilder();
 			for (String genre : mi.getGenres()) {
-				details = details + genre + "\r\n";
+				details.append(genre);
+				details.append(CRLF);
 			}
-			tg.setText(details);
+			tg.setText(details.toString());
 		}
 		
 		if (mi.getWriters() != null) {
-			String details = "";
+			StringBuilder details = new StringBuilder();
 			for (String writers : mi.getWriters()) {
-				details = details + writers + "\r\n";
+				details.append(writers);
+				details.append(CRLF);
 			}
-			tw.setText(details);			
+			tw.setText(details.toString());			
 		}
 		
 		if (mi.getDirectors() != null) {
-			String details = "";
+			StringBuilder details = new StringBuilder();
 			for (String directors : mi.getDirectors()) {
-				details = details + directors + "\r\n";
+				details.append(directors);
+				details.append(CRLF);
 			}
-			td.setText(details);			
+			td.setText(details.toString());			
 		}
 		
 	}

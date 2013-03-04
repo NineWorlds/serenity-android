@@ -61,13 +61,11 @@ import android.widget.TextView;
 public class EpisodePosterOnItemSelectedListener implements
 		OnItemSelectedListener {
 
-	/**
-	 * 
-	 */
+	private static final String CRLF = "\r\n";
+	private static final String DEFAULT_UNKNOWN = "Unknown";
+	private static final String DISPLAY_DATE_FORMAT = "MMMMMMMMM d, yyyy";
+	private static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final int WATCHED_VIEW_ID = 1000;
-	/**
-	 * 
-	 */
 	private static final int MAX_IMAGE_THREADS = 5;
 	private View bgLayout;
 	private Activity context;
@@ -88,13 +86,6 @@ public class EpisodePosterOnItemSelectedListener implements
 		imageExecutorService = Executors.newFixedThreadPool(MAX_IMAGE_THREADS);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
-	 * .widget.AdapterView, android.view.View, int, long)
-	 */
 	public void onItemSelected(SerenityAdapterView<?> av, View v, int position, long id) {
 
 		if (previous != null) {
@@ -133,8 +124,8 @@ public class EpisodePosterOnItemSelectedListener implements
 		vte.setVisibility(View.INVISIBLE);
 		if (v.getPosterInfo().getOriginalAirDate() != null) {
 			try {
-				Date airDate = new SimpleDateFormat("yyyy-MM-dd").parse(v.getPosterInfo().getOriginalAirDate());
-				SimpleDateFormat format = new SimpleDateFormat("MMMMMMMMM d, yyyy");
+				Date airDate = new SimpleDateFormat(DATE_FORMAT).parse(v.getPosterInfo().getOriginalAirDate());
+				SimpleDateFormat format = new SimpleDateFormat(DISPLAY_DATE_FORMAT);
 				String formatedDate = format.format(airDate);
 				vte.setVisibility(View.VISIBLE);
 				vte.setText("Aired " + formatedDate);
@@ -154,37 +145,40 @@ public class EpisodePosterOnItemSelectedListener implements
 		TextView tw  = (TextView) context.findViewById(R.id.video_writers);
 		TextView td  = (TextView) context.findViewById(R.id.video_directors);
 
-		ty.setText("Unknown");
-		tg.setText("Unknown");
-		tw.setText("Unknown");
-		td.setText("Unknown");
+		ty.setText(DEFAULT_UNKNOWN);
+		tg.setText(DEFAULT_UNKNOWN);
+		tw.setText(DEFAULT_UNKNOWN);
+		td.setText(DEFAULT_UNKNOWN);
 		
 		if (mi.getYear() != null) {
 			ty.setText(mi.getYear());
 		}
 		
 		if (mi.getGenres() != null) {
-			String details = "";
+			StringBuilder details = new StringBuilder();
 			for (String genre : mi.getGenres()) {
-				details = details + genre + "\r\n";
+				details.append(genre);
+				details.append(CRLF);
 			}
-			tg.setText(details);
+			tg.setText(details.toString());
 		}
 		
 		if (mi.getWriters() != null) {
-			String details = "";
+			StringBuilder details = new StringBuilder();
 			for (String writers : mi.getWriters()) {
-				details = details + writers + "\r\n";
+				details.append(writers);
+				details.append(CRLF);
 			}
-			tw.setText(details);			
+			tw.setText(details.toString());			
 		}
 		
 		if (mi.getDirectors() != null) {
-			String details = "";
+			StringBuilder details = new StringBuilder();
 			for (String directors : mi.getDirectors()) {
-				details = details + directors + "\r\n";
+				details.append(directors);
+				details.append(CRLF);
 			}
-			td.setText(details);			
+			td.setText(details.toString());			
 		}
 		
 	}
@@ -263,12 +257,7 @@ public class EpisodePosterOnItemSelectedListener implements
 		ImageView aspectv = imageUtilsAR.createAspectRatioImage(epi.getAspectRatio(), v.getContext());
 		if (aspectv != null) {
 			infographicsView.addView(aspectv);
-		}
-		
-
-		// Currently can't find appropriate logo for this.
-		//ImageView crv = setContentRating(epi.getContentRating());
-		//infographicsView.addView(crv);
+		}		
 	}
 
 

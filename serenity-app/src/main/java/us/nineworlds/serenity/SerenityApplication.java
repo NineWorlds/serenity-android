@@ -53,6 +53,7 @@ public class SerenityApplication extends Application {
 	private static SerenityLoaderSettings settings;
 	
 	private static ConcurrentHashMap<String, Device> plexmediaServers = new ConcurrentHashMap<String, Device>();
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();

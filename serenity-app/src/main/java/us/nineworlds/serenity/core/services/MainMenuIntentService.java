@@ -47,6 +47,18 @@ import android.util.Log;
  */
 public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 	
+	/**
+	 * 
+	 */
+	private static final String SETTINGS_SECTION_KEY = "0";
+	/**
+	 * 
+	 */
+	private static final String SETTINGS_TYPE = "settings";
+	/**
+	 * 
+	 */
+	private static final String SETTINGS_MENU = "Settings";
 	private ArrayList<MenuItem> menuItems;
 
 	/**
@@ -101,9 +113,9 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 	 */
 	protected void createSettingsMenu() {
 		MenuItem settingsMenuItem = new MenuItem();
-		settingsMenuItem.setTitle("Settings");
-		settingsMenuItem.setType("settings");
-		settingsMenuItem.setSection("0");
+		settingsMenuItem.setTitle(SETTINGS_MENU);
+		settingsMenuItem.setType(SETTINGS_TYPE);
+		settingsMenuItem.setSection(SETTINGS_SECTION_KEY);
 		menuItems.add(settingsMenuItem);
 	}
 

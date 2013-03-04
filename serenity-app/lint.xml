@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
+    <issue id="SelectableText">
+        <ignore path="res/layout/serenity_spinner_textview_dropdown.xml" />
+    </issue>
     <issue id="WrongCall" severity="ignore" />
 </lint>

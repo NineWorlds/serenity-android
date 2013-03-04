@@ -46,16 +46,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
+ * Display selected TV Show Information.
+ * 
  * @author dcarver
  * 
  */
 public class TVShowBannerOnItemSelectedListener implements
 		OnItemSelectedListener {
 
+	private static final String UNWATCHED_PREFIX = " Unwatched: ";
+	private static final String WATCHED_PREFIX = "Watched: ";
+	private static final String SEPERATOR = "/";
 	private View bgLayout;
 	private Activity context;
 	private ImageManager imageManager;
 	private View previous;
+	
 	// Sets up a Executor service for handling image loading
 	private ExecutorService imageExecutorService;
 	private static final int MAX_IMAGE_THREADS = 5;
@@ -120,14 +126,14 @@ public class TVShowBannerOnItemSelectedListener implements
 		TextView genreView = (TextView) context
 				.findViewById(R.id.tvShowBrowserGenre);
 		List<String> genres = v.getPosterInfo().getGeneres();
-		String genreText = "";
+		StringBuilder genreText = new StringBuilder();
 		if (genres != null && !genres.isEmpty()) {
 			for (String genre : genres) {
-				genreText = genreText + genre + "/";
+				genreText.append(genre).append(SEPERATOR);
 			}
-			genreText = genreText.substring(0, genreText.lastIndexOf("/"));
+			genreText = genreText.replace(0, genreText.length(), genreText.substring(0, genreText.lastIndexOf(SEPERATOR)));
 		}
-		genreView.setText(genreText);
+		genreView.setText(genreText.toString());
 
 		TextView watchedUnwatched = (TextView) context
 				.findViewById(R.id.tvShowWatchedUnwatched);
@@ -137,11 +143,11 @@ public class TVShowBannerOnItemSelectedListener implements
 		
 		String wu = "";
 		if (watched != null) {
-			wu = "Watched: " + watched;
+			wu = WATCHED_PREFIX + watched;
 		}
 		
 		if (unwatched != null) {
-			wu = wu + " Unwatched: " + unwatched;
+			wu = wu + UNWATCHED_PREFIX + unwatched;
 			
 		}
 		

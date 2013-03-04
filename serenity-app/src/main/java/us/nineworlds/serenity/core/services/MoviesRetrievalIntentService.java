@@ -46,18 +46,24 @@ import android.os.RemoteException;
 import android.util.Log;
 
 /**
+ * A service that retrieves movies information from the Plex Media Server.
+ * 
  * @author dcarver
  * 
  */
 public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService {
 
-	protected List<VideoContentInfo> posterList = null;
+	private static final String MOVIES_RETRIEVAL_INTENT_SERVICE = "MoviesRetrievalIntentService";
+	
+	private static final String DEFAULT_CATEGORY = "all";
+	
+	protected List<VideoContentInfo> videoContentList = null;
 	protected String key;
 	protected String category;
 
 	public MoviesRetrievalIntentService() {
-		super("MoviesRetrievalIntentService");
-		posterList = new ArrayList<VideoContentInfo>();
+		super(MOVIES_RETRIEVAL_INTENT_SERVICE);
+		videoContentList = new ArrayList<VideoContentInfo>();
 
 	}
 
@@ -67,7 +73,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 		if (extras != null) {
 			Messenger messenger = (Messenger) extras.get("MESSENGER");
 			Message msg = Message.obtain();
-			msg.obj = posterList;
+			msg.obj = videoContentList;
 			try {
 				messenger.send(msg);
 			} catch (RemoteException ex) {
@@ -81,7 +87,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		key = intent.getExtras().getString("key", "");
-		category = intent.getExtras().getString("category", "all");
+		category = intent.getExtras().getString("category", DEFAULT_CATEGORY);
 		createPosters();
 		sendMessageResults(intent);
 	}
@@ -153,77 +159,59 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 
 			}
 
-			String movieDetails = createVideoDetails(movie, mpi);
-			mpi.setCastInfo(movieDetails);
+			createVideoDetails(movie, mpi);
 
-			posterList.add(mpi);
+			videoContentList.add(mpi);
 		}
 
 	}
 
 	protected MediaContainer retrieveVideos() throws Exception {
 		if (category == null) {
-			category = "all";
+			category = DEFAULT_CATEGORY;
 		}
 
 		return factory.retrieveSections(key, category);
 	}
 
 	/**
+	 * Create the video meta data around cast, direct, year produced, etc.
+	 * 
 	 * @param video
 	 * @param videoContentInfo
 	 * @return
 	 */
-	protected String createVideoDetails(Video video,
+	protected void createVideoDetails(Video video,
 			VideoContentInfo videoContentInfo) {
-		String videoDetails = "";
 
 		if (video.getYear() != null) {
 			videoContentInfo.setYear(video.getYear());
-			videoDetails = "Year: " + video.getYear();
-			videoDetails = videoDetails + "  ";
 		}
 
 		if (video.getGenres() != null && video.getGenres().size() > 0) {
-			videoDetails = videoDetails + "Genre(s): ";
 			ArrayList<String> g = new ArrayList<String>();
 			
 			for (Genre genre : video.getGenres()) {
 				g.add(genre.getTag());
-				videoDetails = videoDetails + genre.getTag() + "/";
 			}
 			videoContentInfo.setGenres(g);
-			videoDetails = videoDetails.substring(0,
-					videoDetails.lastIndexOf("/"));
-			videoDetails = videoDetails + "  ";
 		}
 
 		if (video.getWriters() != null && video.getWriters().size() > 0) {
-			videoDetails = videoDetails + "Writer(s): ";
 			ArrayList<String> w = new ArrayList<String>();
 			for (Writer writer : video.getWriters()) {
 				w.add(writer.getTag());
-				videoDetails = videoDetails + writer.getTag() + ", ";
 			}
 			videoContentInfo.setWriters(w);
-			videoDetails = videoDetails.substring(0,
-					videoDetails.lastIndexOf(","));
-			videoDetails = videoDetails + "  ";
 		}
 
 		if (video.getDirectors() != null && video.getDirectors().size() > 0) {
-			videoDetails = videoDetails + "Director(s): ";
 			ArrayList<String> d = new ArrayList<String>();
 			for (Director director : video.getDirectors()) {
 				d.add(director.getTag());
-				videoDetails = videoDetails + director.getTag() + ", ";
 			}
 			videoContentInfo.setDirectors(d);
-			videoDetails = videoDetails.substring(0,
-					videoDetails.lastIndexOf(","));
-			videoDetails = videoDetails + "\r\n";
 		}
-		return videoDetails;
 	}
 
 }
