@@ -48,6 +48,17 @@ public class Media {
 	@Attribute(name="videoResolution", required=false)
 	private String videoResolution;
 	
+	@Attribute(name="container", required=false)
+	private String container;
+	
+	public String getContainer() {
+		return container;
+	}
+
+	public void setContainer(String container) {
+		this.container = container;
+	}
+
 	@Attribute(name="audioChannels", required=false)
 	private String audioChannels;
 	

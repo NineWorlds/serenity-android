@@ -59,6 +59,8 @@ public interface VideoContentInfo extends ContentInfo {
 	
 	public int getViewCount();
 	
+	public String getContainer();
+	
 	public String getParentPosterURL();
 
 	public void setActors(List<String> actors);
@@ -114,5 +116,7 @@ public interface VideoContentInfo extends ContentInfo {
 	public void setOriginalAirDate(String airDate);
 	
 	public String getOriginalAirDate();
+	
+	public void setContainer(String container);
 
 }

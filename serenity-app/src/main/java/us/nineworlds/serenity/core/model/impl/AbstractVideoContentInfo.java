@@ -61,7 +61,16 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	private String season;
 	private String episodeNumber;
 	private String originalAirDate;
+	private String container;
 	
+	public String getContainer() {
+		return container;
+	}
+
+	public void setContainer(String container) {
+		this.container = container;
+	}
+
 	public String getSeason() {
 		return season;
 	}

@@ -145,6 +145,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 				// We grab the first media container until we know more about
 				// why there can be multiples.
 				Media media = mediacont.get(0);
+				mpi.setContainer(media.getContainer());
 				List<Part> parts = media.getVideoPart();
 				Part part = parts.get(0);
 				mpi.setAudioCodec(media.getAudioCodec());

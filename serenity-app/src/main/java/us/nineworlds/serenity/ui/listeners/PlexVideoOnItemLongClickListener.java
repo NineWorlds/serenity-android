@@ -38,14 +38,19 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DownloadManager;
+import android.app.DownloadManager.Request;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.os.Environment;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * A listener that handles long press for video content.  Includes
@@ -91,6 +96,7 @@ public class PlexVideoOnItemLongClickListener implements
 		ListView modeList = new ListView(context);
 		ArrayList<String> options = new ArrayList<String>();
 		options.add("Toggle Watched Status");
+		options.add("Download Video to Device");
 		if (!SerenityApplication.isGoogleTV(context)) {
 			options.add("Play on TV");
 		}
@@ -134,7 +140,9 @@ public class PlexVideoOnItemLongClickListener implements
 		 */
 		public void onItemClick(android.widget.AdapterView<?> arg0, View v, int position,
 				long arg3) {
-			if (position == 0) {
+			
+			switch (position) {
+			case 0:
 				if (info.getViewCount() > 0) {
 					new UnWatchEpisodeAsyncTask().execute(info.id());
 					ImageInfographicUtils.setUnwatched(vciv, context);
@@ -142,19 +150,38 @@ public class PlexVideoOnItemLongClickListener implements
 					new WatchedEpisodeAsyncTask().execute(info.id());
 					ImageInfographicUtils.setWatchedCount(vciv, context);
 				}
-			} else if (hasAbleRemote(context)) {
-				Intent sharingIntent = new Intent();
-				sharingIntent.setClassName("com.entertailion.android.remote",
-						"com.entertailion.android.remote.MainActivity");
-				sharingIntent.setAction("android.intent.action.SEND");
-				sharingIntent.putExtra(Intent.EXTRA_TEXT, vciv.getPosterInfo().getDirectPlayUrl());
-				
-				context.startActivity(sharingIntent);
-			}
-			
+				break;
+			case 1:
+				startDownload();
+				break;
+			default:
+				if (hasAbleRemote(context)) {
+					Intent sharingIntent = new Intent();
+					sharingIntent.setClassName("com.entertailion.android.remote",
+							"com.entertailion.android.remote.MainActivity");
+					sharingIntent.setAction("android.intent.action.SEND");
+					sharingIntent.putExtra(Intent.EXTRA_TEXT, vciv.getPosterInfo().getDirectPlayUrl());
+					
+					context.startActivity(sharingIntent);
+				}				
+			}			
 			dialog.dismiss();
 		}
 
+	}
+	
+	protected void startDownload() {
+		String serviceString = context.DOWNLOAD_SERVICE;
+		DownloadManager downloadManager;
+		downloadManager = (DownloadManager) context.getSystemService(serviceString);
+		
+		Uri uri = Uri.parse(info.getDirectPlayUrl());
+		DownloadManager.Request request = new Request(uri);
+		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, info.getTitle() + "." + info.getContainer());
+		request.setDescription(info.getTitle());
+		request.setAllowedNetworkTypes(Request.NETWORK_WIFI);
+		long reference = downloadManager.enqueue(request);
+		Toast.makeText(context, "Starting download of " + info.getTitle(), Toast.LENGTH_LONG).show();
 	}
 
 }

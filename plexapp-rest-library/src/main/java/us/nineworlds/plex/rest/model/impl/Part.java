@@ -38,6 +38,17 @@ public class Part {
 	
 	@Attribute(name="file", required=false)
 	private String filename;
+	
+	@Attribute(name="container", required=false)
+	private String container;
+
+	public String getContainer() {
+		return container;
+	}
+
+	public void setContainer(String container) {
+		this.container = container;
+	}
 
 	public String getKey() {
 		return key;
