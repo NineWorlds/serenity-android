@@ -30,6 +30,7 @@ import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchEpisodeAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedEpisodeAsyncTask;
+import us.nineworlds.serenity.ui.dialogs.DialogChooseDirectory;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
@@ -41,6 +42,7 @@ import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -177,11 +179,36 @@ public class PlexVideoOnItemLongClickListener implements
 		
 		Uri uri = Uri.parse(info.getDirectPlayUrl());
 		DownloadManager.Request request = new Request(uri);
+		
+		DirectoryResult result = new DirectoryResult();
+		
+		DialogChooseDirectory dir = new DialogChooseDirectory(context, result, null);
+		
+		if (result.getDirectoryPath() != null) {
+			
+		}
+		
 		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, info.getTitle() + "." + info.getContainer());
 		request.setDescription(info.getTitle());
 		request.setAllowedNetworkTypes(Request.NETWORK_WIFI);
 		long reference = downloadManager.enqueue(request);
 		Toast.makeText(context, "Starting download of " + info.getTitle(), Toast.LENGTH_LONG).show();
+	}
+	
+	public class DirectoryResult implements DialogChooseDirectory.Result {
+
+		private String directoryPath;
+		
+		public String getDirectoryPath() {
+			return directoryPath;
+		}
+
+		/* (non-Javadoc)
+		 * @see us.nineworlds.serenity.ui.dialogs.DialogChooseDirectory.Result#onChooseDirectory(java.lang.String)
+		 */
+		public void onChooseDirectory(String dir) {
+			directoryPath = dir;
+		}		
 	}
 
 }

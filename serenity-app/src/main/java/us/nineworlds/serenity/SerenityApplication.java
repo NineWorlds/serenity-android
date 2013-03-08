@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2012-2013 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -23,6 +23,8 @@
 
 package us.nineworlds.serenity;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.teleal.cling.model.meta.Device;
@@ -34,67 +36,89 @@ import us.nineworlds.serenity.core.SerenityLoaderSettings;
 import us.nineworlds.serenity.core.ServerConfig;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Log;
 import com.novoda.imageloader.core.ImageManager;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 
 /**
  * Global manager for the Serenity application
  * 
  * @author dcarver
- *
+ * 
  */
 public class SerenityApplication extends Application {
-	
+
 	private static ImageManager imageManager;
 	private static PlexappFactory plexFactory;
 	private static SerenityLoaderSettings settings;
-	
+
 	private static ConcurrentHashMap<String, Device> plexmediaServers = new ConcurrentHashMap<String, Device>();
-	
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		installHttpCache();
+
 		EasyTracker.getInstance().setContext(this);
 
 		settings = new SerenityLoaderSettings.SettingsBuilder()
-	      .withDisconnectOnEveryCall(true).withUpsampling(true).build(this);
+				.withDisconnectOnEveryCall(true).withUpsampling(true)
+				.build(this);
 		settings.setLoader(new ConcurrentLoader(settings));
-		
-	    imageManager = new ImageManager(this, settings);
-	    
-	    // Temporarily clean the cache
-	    //imageManager.getFileManager().clean();
-	    
-	    IConfiguration config = ServerConfig.getInstance(this);
+
+		imageManager = new ImageManager(this, settings);
+
+		// Temporarily clean the cache
+		// imageManager.getFileManager().clean();
+
+		IConfiguration config = ServerConfig.getInstance(this);
 		plexFactory = PlexappFactory.getInstance(config);
 		String deviceModel = android.os.Build.MODEL;
-		
-		EasyTracker.getTracker().sendEvent("Devices", "Started Application", deviceModel, (long)0);
+
+		EasyTracker.getTracker().sendEvent("Devices", "Started Application",
+				deviceModel, (long) 0);
 	}
-	
+
+	/**
+	 * Install an HTTPResponseCache. This is using an open source library
+	 * so that caching occurs across all platforms not just 4.x.
+	 * 
+	 */
+	protected void installHttpCache() {
+		final long cacheMaxSize = 10 * 1024 * 1024;
+		final File httpCacheDir = new File(Environment.getDownloadCacheDirectory(), "http-cache");
+
+		try {
+			com.integralblue.httpresponsecache.HttpResponseCache.install(httpCacheDir
+					, cacheMaxSize);
+		} catch (IOException ex) {
+			Log.e("Unable to install Response Cache.");
+		}
+	}
+
 	public static ImageManager getImageManager() {
-	    return imageManager;
+		return imageManager;
 	}
-	
+
 	public static PlexappFactory getPlexFactory() {
 		return plexFactory;
 	}
-	
+
 	public static SerenityLoaderSettings getLoaderSettings() {
 		return settings;
 	}
-	
+
 	public static boolean isGoogleTV(Context context) {
-	    final PackageManager pm = context.getPackageManager();
-	    return pm.hasSystemFeature("com.google.android.tv");
+		final PackageManager pm = context.getPackageManager();
+		return pm.hasSystemFeature("com.google.android.tv");
 	}
-	
+
 	public static ConcurrentHashMap<String, Device> getPlexMediaServers() {
 		return plexmediaServers;
 	}
-	
-	
+
 }

@@ -75,7 +75,7 @@ public class MoviePosterImageGalleryAdapter extends
 		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(200,
-				android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+				android.view.ViewGroup.LayoutParams.FILL_PARENT));
 
 		imageManager.getLoader().load(mpiv);
 		
