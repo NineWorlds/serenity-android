@@ -23,8 +23,6 @@
 
 package us.nineworlds.serenity;
 
-import java.net.URI;
-import java.net.URL;
 
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.android.AndroidUpnpServiceImpl;
@@ -32,7 +30,6 @@ import org.teleal.cling.model.meta.Device;
 import org.teleal.cling.model.meta.DeviceDetails;
 import org.teleal.cling.model.meta.LocalDevice;
 import org.teleal.cling.model.meta.RemoteDevice;
-import org.teleal.cling.model.meta.Service;
 import org.teleal.cling.registry.DefaultRegistryListener;
 import org.teleal.cling.registry.Registry;
 
@@ -43,11 +40,16 @@ import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.app.DownloadManager;
+import android.app.DownloadManager.Query;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,6 +70,7 @@ public class MainActivity extends SerenityActivity {
 	
 	private AndroidUpnpService upnpService;
 	private BrowseRegistryListener registryListener = new BrowseRegistryListener();
+	private BroadcastReceiver downloadReceiver;
 	
 	private ServiceConnection serviceConnection = new ServiceConnection() {
 
@@ -116,6 +119,7 @@ public class MainActivity extends SerenityActivity {
 	            serviceConnection,
 	            Context.BIND_AUTO_CREATE
 	        );
+		broadCastReceivers();
 	}
 	
 
@@ -147,8 +151,6 @@ public class MainActivity extends SerenityActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// Hey! This refreshes the whole Activity!
-		//this.onCreate(null);
 	}
 	
 	/* (non-Javadoc)
@@ -212,6 +214,36 @@ public class MainActivity extends SerenityActivity {
 		mainGallery
 				.setOnItemClickListener(new GalleryOnItemClickListener(this));
 	}
+	
+	protected void broadCastReceivers() {
+		downloadReceiver = new BroadcastReceiver() {
+
+			public void onReceive(Context context, Intent intent) {
+				String action = intent.getAction();
+				if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+					long downloadId = intent.getLongExtra(
+							DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+					Query query = new Query();
+					DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+					query.setFilterById(downloadId);
+					Cursor c = dm.query(query);
+					if (c.moveToFirst()) {
+						int columnIndex = c
+                                .getColumnIndex(DownloadManager.COLUMN_STATUS);
+						if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
+							int titleIndex = c.getColumnIndex(DownloadManager.COLUMN_TITLE);
+							String title = c.getString(titleIndex);
+							Toast.makeText(context, "Download complete for " + title + ".", Toast.LENGTH_LONG).show();
+						}
+					}
+				}
+			}
+		};
+
+		registerReceiver(downloadReceiver, new IntentFilter(
+				DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+	}
+	
 	
 	/**
 	 * This class is taken from the example code for cling.

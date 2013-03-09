@@ -57,6 +57,7 @@ public class SerenityApplication extends Application {
 	private static SerenityLoaderSettings settings;
 
 	private static ConcurrentHashMap<String, Device> plexmediaServers = new ConcurrentHashMap<String, Device>();
+	
 
 	@Override
 	public void onCreate() {
@@ -81,20 +82,23 @@ public class SerenityApplication extends Application {
 
 		EasyTracker.getTracker().sendEvent("Devices", "Started Application",
 				deviceModel, (long) 0);
+
 	}
 
+
 	/**
-	 * Install an HTTPResponseCache. This is using an open source library
-	 * so that caching occurs across all platforms not just 4.x.
+	 * Install an HTTPResponseCache. This is using an open source library so
+	 * that caching occurs across all platforms not just 4.x.
 	 * 
 	 */
 	protected void installHttpCache() {
 		final long cacheMaxSize = 10 * 1024 * 1024;
-		final File httpCacheDir = new File(Environment.getDownloadCacheDirectory(), "http-cache");
+		final File httpCacheDir = new File(
+				Environment.getDownloadCacheDirectory(), "http-cache");
 
 		try {
-			com.integralblue.httpresponsecache.HttpResponseCache.install(httpCacheDir
-					, cacheMaxSize);
+			com.integralblue.httpresponsecache.HttpResponseCache.install(
+					httpCacheDir, cacheMaxSize);
 		} catch (IOException ex) {
 			Log.e("Unable to install Response Cache.");
 		}

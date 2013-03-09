@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,8 @@ import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchEpisodeAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedEpisodeAsyncTask;
-import us.nineworlds.serenity.ui.dialogs.DialogChooseDirectory;
+import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
+import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog.ChosenDirectoryListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
@@ -42,7 +44,6 @@ import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -55,9 +56,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 /**
- * A listener that handles long press for video content.  Includes
- * displaying a dialog for toggling watched and unwatched status
- * as well for possibly playing on the TV.
+ * A listener that handles long press for video content. Includes displaying a
+ * dialog for toggling watched and unwatched status as well for possibly playing
+ * on the TV.
  * 
  * @author dcarver
  * 
@@ -69,13 +70,13 @@ public class PlexVideoOnItemLongClickListener implements
 	private Activity context;
 	private VideoContentInfo info;
 	private SerenityPosterImageView vciv;
-	
-	public boolean onItemLongClick(SerenityAdapterView<?> av, View v, int position,
-			long arg3) {
-		
+
+	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
+			int position, long arg3) {
+
 		// Google TV is sending back different results than Nexus 7
 		// So we try to handle the different results.
-		
+
 		if (v == null) {
 			SerenityGallery g = (SerenityGallery) av;
 			vciv = (SerenityPosterImageView) g.getSelectedView();
@@ -87,12 +88,14 @@ public class PlexVideoOnItemLongClickListener implements
 				vciv = (SerenityPosterImageView) g.getSelectedView();
 			}
 		}
-	
+
 		info = vciv.getPosterInfo();
 		context = (Activity) vciv.getContext();
 
 		dialog = new Dialog(context);
-		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Holo_Dialog));
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				new ContextThemeWrapper(context,
+						android.R.style.Theme_Holo_Dialog));
 		builder.setTitle("Video Options");
 
 		ListView modeList = new ListView(context);
@@ -106,7 +109,7 @@ public class PlexVideoOnItemLongClickListener implements
 		ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context,
 				android.R.layout.simple_list_item_1, android.R.id.text1,
 				options);
-		
+
 		modeList.setAdapter(modeAdapter);
 		modeList.setOnItemClickListener(new DialogOnItemSelected());
 
@@ -136,13 +139,16 @@ public class PlexVideoOnItemLongClickListener implements
 
 	protected class DialogOnItemSelected implements OnItemClickListener {
 
-
-		/* (non-Javadoc)
-		 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * android.widget.AdapterView.OnItemClickListener#onItemClick(android
+		 * .widget.AdapterView, android.view.View, int, long)
 		 */
-		public void onItemClick(android.widget.AdapterView<?> arg0, View v, int position,
-				long arg3) {
-			
+		public void onItemClick(android.widget.AdapterView<?> arg0, View v,
+				int position, long arg3) {
+
 			switch (position) {
 			case 0:
 				if (info.getViewCount() > 0) {
@@ -159,56 +165,60 @@ public class PlexVideoOnItemLongClickListener implements
 			default:
 				if (hasAbleRemote(context)) {
 					Intent sharingIntent = new Intent();
-					sharingIntent.setClassName("com.entertailion.android.remote",
+					sharingIntent.setClassName(
+							"com.entertailion.android.remote",
 							"com.entertailion.android.remote.MainActivity");
 					sharingIntent.setAction("android.intent.action.SEND");
-					sharingIntent.putExtra(Intent.EXTRA_TEXT, vciv.getPosterInfo().getDirectPlayUrl());
-					
+					sharingIntent.putExtra(Intent.EXTRA_TEXT, vciv
+							.getPosterInfo().getDirectPlayUrl());
+
 					context.startActivity(sharingIntent);
-				}				
-			}			
+				}
+			}
 			dialog.dismiss();
 		}
 
 	}
-	
+
 	protected void startDownload() {
-		String serviceString = context.DOWNLOAD_SERVICE;
+		directoryChooser();
+	}
+
+	/**
+	 * @param downloadManager
+	 */
+	protected void startDownload(String destination) {
+		String serviceString = Context.DOWNLOAD_SERVICE;
 		DownloadManager downloadManager;
-		downloadManager = (DownloadManager) context.getSystemService(serviceString);
+		downloadManager = (DownloadManager) context
+				.getSystemService(serviceString);
 		
 		Uri uri = Uri.parse(info.getDirectPlayUrl());
 		DownloadManager.Request request = new Request(uri);
-		
-		DirectoryResult result = new DirectoryResult();
-		
-		DialogChooseDirectory dir = new DialogChooseDirectory(context, result, null);
-		
-		if (result.getDirectoryPath() != null) {
-			
-		}
-		
-		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES, info.getTitle() + "." + info.getContainer());
 		request.setDescription(info.getTitle());
 		request.setAllowedNetworkTypes(Request.NETWORK_WIFI);
+		request.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+		File file = new File(destination, info.getTitle() + "." + info.getContainer());
+		request.setDestinationUri(Uri.parse(file.toURI().toString()));
+		request.setShowRunningNotification(true);
 		long reference = downloadManager.enqueue(request);
-		Toast.makeText(context, "Starting download of " + info.getTitle(), Toast.LENGTH_LONG).show();
+		Toast.makeText(context, "Starting download of " + info.getTitle(),
+				Toast.LENGTH_LONG).show();
 	}
-	
-	public class DirectoryResult implements DialogChooseDirectory.Result {
 
-		private String directoryPath;
-		
-		public String getDirectoryPath() {
-			return directoryPath;
-		}
-
-		/* (non-Javadoc)
-		 * @see us.nineworlds.serenity.ui.dialogs.DialogChooseDirectory.Result#onChooseDirectory(java.lang.String)
-		 */
-		public void onChooseDirectory(String dir) {
-			directoryPath = dir;
-		}		
+	protected void directoryChooser() {
+		// Create DirectoryChooserDialog and register a callback
+		DirectoryChooserDialog directoryChooserDialog = new DirectoryChooserDialog(
+				context, new DirectoryChooserDialog.ChosenDirectoryListener() {
+					public void onChosenDir(String chosenDir) {
+						Toast.makeText(context,
+								"Chosen directory: " + chosenDir,
+								Toast.LENGTH_LONG).show();
+						startDownload(chosenDir);
+					}
+				});
+		directoryChooserDialog.setNewFolderEnabled(true);
+		directoryChooserDialog.chooseDirectory("");
 	}
 
 }
