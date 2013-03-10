@@ -150,10 +150,13 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 				epi.setParentPosterURL(baseUrl + episode.getParentThumbNailImageKey().substring(1));
 			}
 			
-			String burl = factory.baseURL() + ":/resources/show-fanart.jpg"; 
-			if (mc.getArt() != null) {
+			String burl = factory.baseURL() + ":/resources/show-fanart.jpg";
+			if (episode.getBackgroundImageKey() != null) {
+				burl = baseUrl + episode.getBackgroundImageKey().replaceFirst("/", "");
+			} else if (mc.getArt() != null) {
 				burl = baseUrl + mc.getArt().replaceFirst("/", "");
-			}
+			} 
+			
 			epi.setBackgroundURL(burl);
 			
 			String turl = "";

@@ -28,6 +28,7 @@ import java.util.List;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.MovieSecondaryCategoryRetrievalIntentService;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
 
 import us.nineworlds.serenity.R;
 
@@ -72,8 +73,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 				.getItemAtPosition(position);
 
 		if (firstSelection) {
-			View bgLayout = context
-					.findViewById(R.id.tvshowBrowserLayout);
+			View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
 			Gallery posterGallery = (Gallery) context
 					.findViewById(R.id.tvShowBannerGallery);
 			posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
@@ -82,7 +82,8 @@ public class CategorySpinnerOnItemSelectedListener implements
 					.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(
 							bgLayout, context));
 			posterGallery
-					.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(context));
+					.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
+							context));
 			firstSelection = false;
 			return;
 		}
@@ -98,18 +99,28 @@ public class CategorySpinnerOnItemSelectedListener implements
 				.findViewById(R.id.tvshow_movieCategoryFilter2);
 
 		if (item.getLevel() == 0) {
-			secondarySpinner.setVisibility(View.INVISIBLE);
-			View bgLayout = context
-					.findViewById(R.id.tvshowBrowserLayout);
-			Gallery posterGallery = (Gallery) context
-					.findViewById(R.id.tvShowBannerGallery);
-			posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
-					context, key, item.getCategory()));
-			posterGallery
-					.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(
-							bgLayout, context));
-			posterGallery
-					.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(context));
+
+			if (item.getCategory().equals("newest")
+					|| item.getCategory().equals("recentlyAdded")
+					|| item.getCategory().equals("recentlyViewed")
+					|| item.getCategory().equals("onDeck")) {
+				Intent i = new Intent(context, EpisodeBrowserActivity.class);
+				i.putExtra("key", "/library/sections/" + key + "/" + item.getCategory());
+				context.startActivityForResult(i, 0);
+			} else {
+				secondarySpinner.setVisibility(View.INVISIBLE);
+				View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
+				Gallery posterGallery = (Gallery) context
+						.findViewById(R.id.tvShowBannerGallery);
+				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
+						context, key, item.getCategory()));
+				posterGallery
+						.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(
+								bgLayout, context));
+				posterGallery
+						.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
+								context));
+			}
 		} else {
 			Messenger messenger = new Messenger(secondaryCategoryHandler);
 			Intent categoriesIntent = new Intent(context,

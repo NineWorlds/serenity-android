@@ -53,12 +53,8 @@ public class TVShowCategoryRetrievalIntentService extends
 	
 	
 	public TVShowCategoryRetrievalIntentService() {
-		super("MovieCategoryRetrievalIntentService");
+		super("TVCategoryRetrievalIntentService");
 		excludeCategories = new ArrayList<String>();
-		excludeCategories.add("onDeck");
-		excludeCategories.add("recentlyAdded");
-		excludeCategories.add("recentlyViewed");
-		excludeCategories.add("newest");
 		excludeCategories.add("search?type=2");
 		excludeCategories.add("search?type=4");
 		excludeCategories.add("folder");
