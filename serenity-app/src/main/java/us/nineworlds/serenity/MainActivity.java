@@ -24,6 +24,9 @@
 package us.nineworlds.serenity;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.android.AndroidUpnpServiceImpl;
 import org.teleal.cling.model.meta.Device;
@@ -214,7 +217,7 @@ public class MainActivity extends SerenityActivity {
 		mainGallery
 				.setOnItemClickListener(new GalleryOnItemClickListener(this));
 	}
-	
+		
 	protected void broadCastReceivers() {
 		downloadReceiver = new BroadcastReceiver() {
 

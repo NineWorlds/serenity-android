@@ -59,6 +59,10 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 	 * 
 	 */
 	private static final String SETTINGS_MENU = "Settings";
+	
+	private static final String SEARCH_MENU = "Search";
+	private static final String SEARCH_TYPE = "search";
+	
 	private ArrayList<MenuItem> menuItems;
 
 	/**
@@ -73,7 +77,11 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		fetchMenuItems();
+		if (!menuItems.isEmpty()) {
+			createSearchMenu();
+		}
 		createSettingsMenu();
+		
 		sendMessageResults(intent);
 	}
 		
@@ -118,6 +126,20 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 		settingsMenuItem.setSection(SETTINGS_SECTION_KEY);
 		menuItems.add(settingsMenuItem);
 	}
+	
+	/**
+	 * Create the settings MenuItem since there is no option
+	 * to retrieve this from Plex itself.
+	 *  
+	 */
+	protected void createSearchMenu() {
+		MenuItem settingsMenuItem = new MenuItem();
+		settingsMenuItem.setTitle(SEARCH_MENU);
+		settingsMenuItem.setType(SEARCH_TYPE);
+		settingsMenuItem.setSection(SETTINGS_SECTION_KEY);
+		menuItems.add(settingsMenuItem);
+	}
+	
 
 
 	@Override

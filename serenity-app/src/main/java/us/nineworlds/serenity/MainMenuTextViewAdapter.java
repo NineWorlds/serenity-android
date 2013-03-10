@@ -53,7 +53,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	
 	private static MainMenuTextViewAdapter notifyAdapter;
 	
-	private static ArrayList<MenuItem> menuItems;
+	public static ArrayList<MenuItem> menuItems;
 	
 	private static ProgressDialog pd;
 
@@ -130,6 +130,13 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 			v.setLibraryKey("0");
 			v.setActivityType(menuItem.getType());
 			return v;
+		}
+		
+		if ("search".equals(menuItem.getType())) {
+			v = new MainMenuTextView(this.myContext, R.drawable.search);
+			v.setLibraryKey("0");
+			v.setActivityType(menuItem.getType());
+			return v;			
 		}
 		
 		return new MainMenuTextView(myContext, R.drawable.serenity_logo2);

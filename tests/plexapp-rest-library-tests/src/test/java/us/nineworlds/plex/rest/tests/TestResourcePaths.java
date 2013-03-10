@@ -94,6 +94,12 @@ public class TestResourcePaths {
 		String result = path.getUnwatchedUrl("131");
 		assertEquals("http://localhost:32400/:/unscrobble?key=131&identifier=com.plexapp.plugins.library", result);
 	}
+	
+	@Test
+	public void testSearchMovies() throws Exception {
+		String result = path.getMovieSearchURL("4", "Blackhawk");
+		assertEquals("http://localhost:32400/library/sections/4/search?type=1&query=Blackhawk", result);
+	}
 
 
 	

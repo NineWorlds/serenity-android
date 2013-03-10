@@ -152,6 +152,17 @@ public class PlexappFactory {
 		return mediaContainer;
 	}
 	
+	public MediaContainer searchMovies(String key, String query) throws Exception {
+		String searchURL = resourcePath.getMovieSearchURL(key, query);
+		MediaContainer mediaContainer = serializeResource(searchURL);
+		return mediaContainer;
+	}
+	
+	public MediaContainer searchEpisodes(String key, String query) throws Exception {
+		String searchURL = resourcePath.getEpisodeSearchURL(key, query);
+		MediaContainer mediaContainer = serializeResource(searchURL);
+		return mediaContainer;
+	}
 	
 	public String baseURL() {
 		return resourcePath.getRoot();
@@ -211,6 +222,18 @@ public class PlexappFactory {
 	public String getProgressURL(String key, String offset) {
 		return resourcePath.getProgressUrl(key, offset);
 	}
+	
+	public String getMovieSearchURL(String key, String query) {
+		return resourcePath.getMovieSearchURL(key, query);
+	}
+	
+	public String getTVShowSearchURL(String key, String query) {
+		return resourcePath.getMovieSearchURL(key, query);
+	}
+
+	public String getEpisodeSearchURL(String key, String query) {
+		return resourcePath.getMovieSearchURL(key, query);
+	}
 
 	
 	/**
@@ -230,5 +253,6 @@ public class PlexappFactory {
 				con.getInputStream(), false);
 		return mediaContainer;
 	}
+	
 
 }

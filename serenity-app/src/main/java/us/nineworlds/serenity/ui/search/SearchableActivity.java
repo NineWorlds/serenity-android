@@ -1,0 +1,146 @@
+/**
+ * The MIT License (MIT)
+ * Copyright (c) 2012 David Carver
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+ * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+ * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package us.nineworlds.serenity.ui.search;
+
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
+import android.provider.SearchRecentSuggestions;
+import android.view.View;
+import android.widget.Toast;
+import us.nineworlds.serenity.MainMenuTextViewAdapter;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.MenuItem;
+import us.nineworlds.serenity.core.services.MovieSearchIntentService;
+import us.nineworlds.serenity.ui.activity.SerenityActivity;
+import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
+import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemLongClickListener;
+import us.nineworlds.serenity.widgets.SerenityGallery;
+
+/**
+ * @author dcarver
+ * 
+ */
+public class SearchableActivity extends SerenityActivity {
+
+	protected Handler searchHandler;
+	protected static View bgLayout;
+	protected static Activity context;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		context = this;
+
+		setContentView(R.layout.activity_movie_browser);
+		View v = findViewById(R.id.metaDataRow);
+		v.setVisibility(View.INVISIBLE);
+		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
+		handleIntent(getIntent());
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		setIntent(intent);
+		handleIntent(intent);
+	}
+
+	protected void handleIntent(Intent intent) {
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			String key = null;
+			
+			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+	                SerenitySuggestionProvider.AUTHORITY, SerenitySuggestionProvider.MODE);
+			suggestions.saveRecentQuery(query, null);
+
+			searchHandler = new MovieSearchHandler();
+			Messenger messenger = new Messenger(searchHandler);
+
+			List<MenuItem> menuItems = MainMenuTextViewAdapter.menuItems;
+
+			if (menuItems != null) {
+
+				for (MenuItem menuItem : menuItems) {
+					if ("movie".equals(menuItem.getType())) {
+						key = menuItem.getSection();
+					}
+				}
+			}
+
+			Intent searchIntent = new Intent(this,
+					MovieSearchIntentService.class);
+						
+			searchIntent.putExtra("key", key);
+			searchIntent.putExtra("query", URLEncoder.encode(query));
+			searchIntent.putExtra("MESSENGER", messenger);
+			startService(searchIntent);
+		}
+
+	}
+
+	/**
+	 * @param item
+	 * @param bgLayout
+	 */
+	protected static void createGallery(List<VideoContentInfo> videos, View bgLayout) {
+		SerenityGallery posterGallery = (SerenityGallery) context.findViewById(R.id.moviePosterGallery);
+		posterGallery.setAdapter(new SearchAdapter(context, videos));
+		posterGallery
+				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
+						bgLayout, context));
+		posterGallery
+				.setOnItemClickListener(new PlexVideoOnItemClickListener());
+		posterGallery
+				.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
+		posterGallery.setSpacing(25);
+		posterGallery.setAnimationDuration(1);
+	}
+
+	protected static class MovieSearchHandler extends Handler {
+
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.obj != null) {
+				ArrayList<VideoContentInfo> videos = (ArrayList<VideoContentInfo>) msg.obj;
+				if (videos != null && videos.isEmpty()) {
+					Toast.makeText(context, "No videos found that match the search criteria", Toast.LENGTH_LONG).show();
+					context.finish();
+				} else {
+					createGallery(videos, bgLayout);
+				}
+			}
+		}
+	}
+}

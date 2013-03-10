@@ -95,4 +95,21 @@ public class ResourcePaths {
 		return offseturl;
 	}
 	
+	public String getMovieSearchURL(String key, String query) {
+		String searchURL = getHostPort() + SECTIONS_PATH + key + "/search?type=1&query=" + query;
+		return searchURL;
+	}
+	
+	public String getTVShowSearchURL(String key, String query) {
+		String searchURL = getSectionsURL(key) + "search?type=2&query=" + query;
+		return searchURL;
+	}
+	
+	public String getEpisodeSearchURL(String key, String query) {
+		String searchURL = getSectionsURL(key) + "search?type=4&query=" + query;
+		return searchURL;
+	}
+	
+	
+	
 }

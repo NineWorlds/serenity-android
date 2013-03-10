@@ -26,6 +26,11 @@
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true"
         android:largeHeap="true">
+                        
+        <meta-data android:name="android.app.default_searchable"
+                android:value="us.nineworlds.serenity.ui.search.SearchableActivity"/>
+            
+        
         <activity
             android:name="us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity" android:label="@string/title_activity_movie_browser"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
@@ -72,11 +77,24 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>                        
+            </intent-filter>    
         </activity>  
         
         <activity android:name=".ui.preferences.SerenityPreferenceActivity"
             android:screenOrientation="landscape">
+        </activity>
+        
+        <activity android:name="us.nineworlds.serenity.ui.search.SearchableActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:screenOrientation="landscape">
+            
+            <intent-filter >
+                <action android:name="android.intent.action.SEARCH"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+            
         </activity>
             
         <service android:name=".core.services.MainMenuIntentService"/>
@@ -87,8 +105,12 @@
         <service android:name=".core.services.ShowRetrievalIntentService"/>
         <service android:name=".core.services.ShowSeasonRetrievalIntentService"/>
         <service android:name=".core.services.TVShowCategoryRetrievalIntentService"/>
+        <service android:name=".core.services.MovieSearchIntentService"/>
         
-        <service android:name="org.teleal.cling.android.AndroidUpnpServiceImpl" tools:ignore="MissingRegistered"/>         
+        <service android:name="org.teleal.cling.android.AndroidUpnpServiceImpl" tools:ignore="MissingRegistered"/>
+        
+         <provider android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
+              android:authorities="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider" />        
     </application>
 
 </manifest>
