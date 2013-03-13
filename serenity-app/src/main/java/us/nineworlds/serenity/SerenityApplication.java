@@ -38,6 +38,7 @@ import us.nineworlds.serenity.core.ServerConfig;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Log;
 import com.novoda.imageloader.core.ImageManager;
+import com.novoda.imageloader.core.cache.LruBitmapCache;
 
 import android.app.Application;
 import android.content.Context;

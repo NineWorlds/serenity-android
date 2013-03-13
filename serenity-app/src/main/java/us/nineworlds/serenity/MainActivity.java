@@ -203,6 +203,7 @@ public class MainActivity extends SerenityActivity {
 		if (upnpService != null) {
             upnpService.getRegistry().removeListener(registryListener);
         }
+		unregisterReceiver(downloadReceiver);
         getApplicationContext().unbindService(serviceConnection);		
 	}
 
