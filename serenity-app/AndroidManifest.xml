@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="us.nineworlds.serenity"
     android:versionCode="1"
-    android:versionName="0.11.0" xmlns:tools="http://schemas.android.com/tools">
+    android:versionName="1.0.0-SNAPSHOT" xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk
         android:minSdkVersion="12"
