@@ -8,5 +8,5 @@
     <PreferenceCategory android:title="Media Player">
         <CheckBoxPreference android:summary="Use external media player." android:title="External Player" android:key="external_player"/>
         <CheckBoxPreference android:summary="Prefer plex media server's aspect ratio." android:title="Plex Aspect Ratio" android:key="plex_aspect_ratio"/>
-    </PreferenceCategory>    
+    </PreferenceCategory>
 </PreferenceScreen>

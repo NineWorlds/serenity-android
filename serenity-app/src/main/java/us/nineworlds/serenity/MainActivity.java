@@ -24,9 +24,6 @@
 package us.nineworlds.serenity;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.android.AndroidUpnpServiceImpl;
 import org.teleal.cling.model.meta.Device;
@@ -74,6 +71,7 @@ public class MainActivity extends SerenityActivity {
 	private AndroidUpnpService upnpService;
 	private BrowseRegistryListener registryListener = new BrowseRegistryListener();
 	private BroadcastReceiver downloadReceiver;
+	public final int ABOUT = 1;
 	
 	private ServiceConnection serviceConnection = new ServiceConnection() {
 
@@ -130,6 +128,7 @@ public class MainActivity extends SerenityActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_plex_app_main, menu);
+		menu.add(0, ABOUT,0, "About");
 		return true;
 	}
 
@@ -141,9 +140,19 @@ public class MainActivity extends SerenityActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		Intent i = new Intent(MainActivity.this,
-				SerenityPreferenceActivity.class);
-		startActivityForResult(i, 0);
+		switch(item.getItemId()) {
+		case ABOUT:
+			AboutDialog about = new AboutDialog(this);
+			about.setTitle("Serenity for Google TV");
+			about.show();
+			break;
+		
+		default:
+			Intent i = new Intent(MainActivity.this,
+					SerenityPreferenceActivity.class);
+			startActivityForResult(i, 0);
+			break;
+		}
 
 		return true;
 	}

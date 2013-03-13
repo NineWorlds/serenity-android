@@ -1,0 +1,6 @@
+<h1>Serenity for Google TV</h1>
+<p>Copyright 2013</p>
+<p>
+https://github.com/NineWorlds/serenity-android
+</p>
+

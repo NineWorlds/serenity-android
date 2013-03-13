@@ -27,12 +27,17 @@ import android.content.SearchRecentSuggestionsProvider;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class SerenitySuggestionProvider extends SearchRecentSuggestionsProvider {
-	
-	public final static String AUTHORITY = "us.nineworlds.serenity.ui.search.SerenitySuggestionProvider";
-    public final static int MODE = DATABASE_MODE_QUERIES;
-	
 
+	public final static String AUTHORITY = "us.nineworlds.serenity.ui.search.SerenitySuggestionProvider";
+	public final static int MODE = DATABASE_MODE_QUERIES;
+
+	/**
+	 * 
+	 */
+	public SerenitySuggestionProvider() {
+		setupSuggestions(AUTHORITY, MODE);
+	}
 }

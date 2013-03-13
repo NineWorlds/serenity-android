@@ -105,12 +105,13 @@
         <service android:name=".core.services.ShowRetrievalIntentService"/>
         <service android:name=".core.services.ShowSeasonRetrievalIntentService"/>
         <service android:name=".core.services.TVShowCategoryRetrievalIntentService"/>
-        <service android:name=".core.services.MovieSearchIntentService"/>
-        
+        <service android:name=".core.services.MovieSearchIntentService"/>    
         <service android:name="org.teleal.cling.android.AndroidUpnpServiceImpl" tools:ignore="MissingRegistered"/>
         
-         <provider android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
-              android:authorities="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider" />        
+        <provider android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
+            android:authorities="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
+            ></provider>
+        
     </application>
 
 </manifest>

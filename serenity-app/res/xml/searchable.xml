@@ -4,7 +4,6 @@
     android:hint="Search for Movies and Episodes"
     android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
     android:searchSuggestAuthority="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
-    android:searchSuggestSelection=" ?"
-    android:includeInGlobalSearch="false">
+    android:searchSuggestSelection=" ?">
        
 </searchable>

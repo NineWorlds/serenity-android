@@ -1,0 +1,27 @@
+<p>Serenity is an open source application licensed under an MIT public license.</p>
+
+<p>While the source code is free the application can be sold commercially. As long as the MIT license and attribution requirements are followed.</p>
+
+<p>Serenity makes use of several open source projects and their code is licensed under their project licenses.  See individual projects for the license specific to each of the projects.</p>  
+
+<p>Licenses include Apache Public License 2.0, LGPL V2.0, Creative Commons, and GPL.</p>
+
+<pThe source for Serenity will always be available and can be forked or modified as long as proper attribution and the existing license sources are kept in tack.</p>
+
+<h2>Projects used:</h2>
+
+<p>Code from the following projects has been used or modified in accordance with each
+projects license.</p>
+
+avideo - https://github.com/denivip/avideo<br/>
+ImageLoader - https://github.com/novoda/ImageLoader<br/>
+
+cling - http://4thline.org/projects/cling/<br/>
+
+simple xml - http://simple.sourceforge.net/<br/>
+
+influence - http://code.google.com/p/influence/<br/>
+
+httpresponsecache - https://github.com/candrews/HttpResponseCache<br/>
+
+<p>If you find code that has not been properly attributed please contact the project and you will be added to the list.</p>
