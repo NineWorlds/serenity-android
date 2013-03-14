@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.listeners;
 
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.WatchedEpisodeAsyncTask;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
@@ -70,19 +71,26 @@ public class PlexVideoOnItemClickListener  implements OnItemClickListener {
 			return;
 		}
 		
-		String url = mpiv.getPosterInfo().getDirectPlayUrl();
+		VideoContentInfo video = mpiv.getPosterInfo();
+		
+		String url = video.getDirectPlayUrl();
 		Intent vpIntent = new Intent(mpiv.getContext(), SerenitySurfaceViewVideoActivity.class);
 		vpIntent.putExtra("videoUrl", url);
-		vpIntent.putExtra("title", mpiv.getPosterInfo().getTitle());
-		vpIntent.putExtra("summary", mpiv.getPosterInfo().getPlotSummary());
-		vpIntent.putExtra("posterUrl", mpiv.getPosterInfo().getPosterURL());
-		vpIntent.putExtra("id", mpiv.getPosterInfo().id());
-		vpIntent.putExtra("aspectRatio", mpiv.getPosterInfo().getAspectRatio());
-		vpIntent.putExtra("videoResolution", mpiv.getPosterInfo().getVideoResolution());
-		vpIntent.putExtra("audioFormat", mpiv.getPosterInfo().getAudioCodec());
-		vpIntent.putExtra("videoFormat", mpiv.getPosterInfo().getVideoCodec());
-		vpIntent.putExtra("audioChannels", mpiv.getPosterInfo().getAudioChannels());
-		vpIntent.putExtra("resumeOffset", mpiv.getPosterInfo().getResumeOffset());
+		vpIntent.putExtra("title", video.getTitle());
+		vpIntent.putExtra("summary", video.getPlotSummary());
+		
+		if (video.getParentPosterURL() != null) {
+			vpIntent.putExtra("posterUrl", video.getParentPosterURL());
+		} else {
+			vpIntent.putExtra("posterUrl", video.getPosterURL());
+		}
+		vpIntent.putExtra("id", video.id());
+		vpIntent.putExtra("aspectRatio", video.getAspectRatio());
+		vpIntent.putExtra("videoResolution", video.getVideoResolution());
+		vpIntent.putExtra("audioFormat", video.getAudioCodec());
+		vpIntent.putExtra("videoFormat", video.getVideoCodec());
+		vpIntent.putExtra("audioChannels", video.getAudioChannels());
+		vpIntent.putExtra("resumeOffset", video.getResumeOffset());
 		
 		
 		Activity a = (Activity) mpiv.getContext();
