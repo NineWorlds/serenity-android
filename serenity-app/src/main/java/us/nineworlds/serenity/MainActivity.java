@@ -104,7 +104,7 @@ public class MainActivity extends SerenityActivity {
 		
 		setContentView(R.layout.activity_plex_app_main);
 		mainView = findViewById(R.id.mainLayout);
-		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);	
+		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		preferences.registerOnSharedPreferenceChangeListener(((ServerConfig)ServerConfig.getInstance()).getServerConfigChangeListener());
 		

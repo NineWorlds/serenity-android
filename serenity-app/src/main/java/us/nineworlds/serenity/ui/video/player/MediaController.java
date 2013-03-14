@@ -10,19 +10,25 @@ package us.nineworlds.serenity.ui.video.player;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import us.nineworlds.serenity.core.imageloader.OSDImageLoader;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.media.AudioManager;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -37,7 +43,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -109,27 +114,41 @@ public class MediaController extends FrameLayout {
 	private String videoFormat;
 	private String audioFormat;
 	private String audioChannels;
-
 	private AudioManager mAM;
 	
-	// Sets up a Executor service for handling image loading
-	private ExecutorService imageExecutorService;
+	private ImageLoader imageLoader;
 
 
 	public MediaController(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mRoot = this;
 		mFromXml = true;
-		initController(context);
-		imageExecutorService = Executors.newSingleThreadExecutor();
+		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+        .cacheInMemory()
+        .cacheOnDisc()
+        .bitmapConfig(Bitmap.Config.RGB_565)
+        .showImageOnFail(R.drawable.default_error)
+        .showStubImage(R.drawable.default_video_cover)
+        .build();
+		
+		 ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(context)
+		 .memoryCacheExtraOptions(1280,720)
+		 .taskExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+		 .taskExecutorForCachedImages(AsyncTask.THREAD_POOL_EXECUTOR)
+		 .threadPoolSize(5)
+     	 .tasksProcessingOrder(QueueProcessingType.FIFO)
+		 .denyCacheImageMultipleSizesInMemory()
+		 .defaultDisplayImageOptions(defaultOptions)
+		 .memoryCache(new WeakMemoryCache())
+		 .build();		
+
+		 imageLoader = ImageLoader.getInstance();
+		 imageLoader.init(imageLoaderconfig);
+ 		initController(context);
 	}
 
 	public MediaController(Context context, String summary, String title, String posterURL, String resolution, String videoFormat, String audioFormat, String audioChannels) {
 		super(context);
-		imageExecutorService = Executors.newSingleThreadExecutor();
-		if (!mFromXml && initController(context)) {
-			initFloatingWindow();
-		}
 		this.summary = summary;
 		this.title = title;
 		this.posterURL = posterURL;
@@ -137,6 +156,11 @@ public class MediaController extends FrameLayout {
 		this.audioChannels = audioChannels;
 		this.videoFormat = videoFormat;
 		this.audioFormat = audioFormat;
+		 imageLoader = SerenityApplication.getImageLoader();
+		
+		if (!mFromXml && initController(context)) {
+			initFloatingWindow();
+		}
 	}
 
 	private boolean initController(Context context) {
@@ -263,9 +287,8 @@ public class MediaController extends FrameLayout {
 		
 		ImageView posterView = (ImageView) v.findViewById(R.id.mediacontroller_poster_art);
 		posterView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-		imageExecutorService.execute(new OSDImageLoader(posterURL, posterView, R.drawable.default_video_cover));
-
 		
+		imageLoader.displayImage(posterURL, posterView);
 	}
 
 	public void setMediaPlayer(MediaPlayerControl player) {
