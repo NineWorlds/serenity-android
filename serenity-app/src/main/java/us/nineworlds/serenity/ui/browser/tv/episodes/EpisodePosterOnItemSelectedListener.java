@@ -30,9 +30,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.imageloader.BackgroundImageLoader;
+import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
@@ -43,9 +44,7 @@ import us.nineworlds.serenity.R;
 
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -66,15 +65,13 @@ public class EpisodePosterOnItemSelectedListener implements
 	private static final String DISPLAY_DATE_FORMAT = "MMMMMMMMM d, yyyy";
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final int WATCHED_VIEW_ID = 1000;
-	private static final int MAX_IMAGE_THREADS = 5;
 	private View bgLayout;
 	private Activity context;
 	private ImageLoader imageLoader;
 	private View previous;
+	private ImageSize bgImageSize = new ImageSize(1280, 720);
 	
 
-	// Sets up a Executor service for handling image loading
-	private ExecutorService imageExecutorService;
 
 	/**
 	 * 
@@ -83,7 +80,6 @@ public class EpisodePosterOnItemSelectedListener implements
 		bgLayout = bgv;
 		context = activity;
 		imageLoader = SerenityApplication.getImageLoader();
-		imageExecutorService = Executors.newFixedThreadPool(MAX_IMAGE_THREADS);
 	}
 
 	public void onItemSelected(SerenityAdapterView<?> av, View v, int position, long id) {
@@ -197,7 +193,7 @@ public class EpisodePosterOnItemSelectedListener implements
 			return;
 		}
 		
-		imageExecutorService.submit(new BackgroundImageLoader(ei.getBackgroundURL(), bgLayout, R.drawable.tvshows ));
+		imageLoader.loadImage(ei.getBackgroundURL(), bgImageSize, new SerenityBackgroundLoaderListener(bgLayout, R.drawable.tvshows));
 	}
 
 

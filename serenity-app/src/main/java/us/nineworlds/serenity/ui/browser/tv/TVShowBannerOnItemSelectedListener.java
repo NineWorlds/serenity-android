@@ -24,13 +24,12 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.imageloader.BackgroundImageLoader;
+import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 
 import us.nineworlds.serenity.R;
@@ -61,10 +60,7 @@ public class TVShowBannerOnItemSelectedListener implements
 	private Activity context;
 	private ImageLoader imageLoader;
 	private View previous;
-	
-	// Sets up a Executor service for handling image loading
-	private ExecutorService imageExecutorService;
-	private static final int MAX_IMAGE_THREADS = 5;
+	private ImageSize bgImageSize = new ImageSize(1280, 720);	
 
 	/**
 	 * 
@@ -74,7 +70,6 @@ public class TVShowBannerOnItemSelectedListener implements
 		context = activity;
 
 		imageLoader = SerenityApplication.getImageLoader();
-		imageExecutorService = Executors.newFixedThreadPool(MAX_IMAGE_THREADS);
 
 	}
 
@@ -161,12 +156,7 @@ public class TVShowBannerOnItemSelectedListener implements
 		TVShowBannerImageView mpiv = (TVShowBannerImageView) v;
 		AbstractSeriesContentInfo mi = mpiv.getPosterInfo();
 		
-		if (mi.getBackgroundURL() != null) {
-			BackgroundImageLoader im = new BackgroundImageLoader(mi.getBackgroundURL(), bgLayout, R.drawable.tvshows);
-			imageExecutorService.submit(im);
-		} else {
-			bgLayout.setBackgroundResource(R.drawable.tvshows);
-		}
+		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize, new SerenityBackgroundLoaderListener(bgLayout, R.drawable.tvshows));
 
 		ImageView showImage = (ImageView) context
 				.findViewById(R.id.tvShowImage);

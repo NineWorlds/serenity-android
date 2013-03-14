@@ -23,23 +23,19 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-import java.io.File;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.imageloader.BackgroundImageLoader;
+import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.views.TVShowSeasonImageView;
 
 import us.nineworlds.serenity.R;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -56,9 +52,7 @@ public class TVShowSeasonOnItemSelectedListener implements
 	private Activity context;
 	private ImageLoader imageLoader;
 	private View previous;
-	private ExecutorService imageExecutorService;
-	private static final int MAX_IMAGE_THREADS = 5;
-
+	private ImageSize bgImageSize = new ImageSize(1280, 720);
 
 	/**
 	 * 
@@ -68,7 +62,6 @@ public class TVShowSeasonOnItemSelectedListener implements
 		context = activity;
 
 		imageLoader = SerenityApplication.getImageLoader();
-		imageExecutorService = Executors.newFixedThreadPool(MAX_IMAGE_THREADS);
 	}
 
 	/*
@@ -113,8 +106,7 @@ public class TVShowSeasonOnItemSelectedListener implements
 		SeriesContentInfo mi = mpiv.getPosterInfo();
 
 		if (mi.getBackgroundURL() != null) {
-			BackgroundImageLoader im = new BackgroundImageLoader(mi.getBackgroundURL(), bgLayout, R.drawable.tvshows);
-			imageExecutorService.submit(im);			
+			imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize, new SerenityBackgroundLoaderListener(bgLayout, R.drawable.tvshows));
 		}
 	}
 

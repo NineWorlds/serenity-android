@@ -23,13 +23,11 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.imageloader.BackgroundImageLoader;
+import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
@@ -40,9 +38,7 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -67,18 +63,12 @@ public class MoviePosterOnItemSelectedListener implements
 	 * 
 	 */
 	private static final String DEFAULT_UNKNOWN = "Unknown";
-	/**
-	 * 
-	 */
-	private static final int MAX_IMAGE_THREADS = 5;
+	
 	private View bgLayout;
 	private Activity context;
 	private ImageLoader imageLoader;
 	private View previous;
-	
-
-	// Sets up a Executor service for handling image loading
-	private ExecutorService imageExecutorService;
+	private ImageSize bgImageSize = new ImageSize(1280, 720);
 
 	/**
 	 * 
@@ -87,7 +77,6 @@ public class MoviePosterOnItemSelectedListener implements
 		bgLayout = bgv;
 		context = activity;
 		imageLoader = SerenityApplication.getImageLoader();
-		imageExecutorService = Executors.newFixedThreadPool(MAX_IMAGE_THREADS);
 	}
 
 	/*
@@ -185,7 +174,10 @@ public class MoviePosterOnItemSelectedListener implements
 			return;
 		}
 	
-		imageExecutorService.submit(new BackgroundImageLoader(mi.getBackgroundURL(), bgLayout, R.drawable.movies));
+		//imageExecutorService.submit(new BackgroundImageLoader(mi.getBackgroundURL(), bgLayout, R.drawable.movies));
+		
+		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
+				new SerenityBackgroundLoaderListener(bgLayout, R.drawable.movies ));
 	}
 
 
