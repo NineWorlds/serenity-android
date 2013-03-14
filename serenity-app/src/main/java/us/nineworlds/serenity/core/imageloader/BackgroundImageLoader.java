@@ -23,27 +23,40 @@
 
 package us.nineworlds.serenity.core.imageloader;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import us.nineworlds.serenity.SerenityApplication;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 
-import com.novoda.imageloader.core.ImageManager;
-import com.novoda.imageloader.core.LoaderSettings;
-import com.novoda.imageloader.core.bitmap.BitmapUtil;
-import com.novoda.imageloader.core.cache.CacheManager;
-import com.novoda.imageloader.core.file.FileManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.DiscCacheUtil;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.core.assist.MemoryCacheUtil;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.nostra13.universalimageloader.core.download.HttpClientImageDownloader;
+import com.nostra13.universalimageloader.utils.IoUtils;
 
 public class BackgroundImageLoader implements Runnable {
 
-	ImageManager imageManager;
+	ImageLoader imageLoader;
 	View bgLayout;
 	int defaultBGDrawableImageId;
 	String imageURL;
+	BaseImageDownloader httpLoader;
 
 	/**
 	 * 
@@ -51,7 +64,8 @@ public class BackgroundImageLoader implements Runnable {
 	public BackgroundImageLoader(String url, View bgLayout,
 			int defaultBGDrawalbleId) {
 		imageURL = url;
-		imageManager = SerenityApplication.getImageManager();
+		imageLoader = SerenityApplication.getImageLoader();
+		httpLoader = new BaseImageDownloader(bgLayout.getContext());
 		this.bgLayout = bgLayout;
 		defaultBGDrawableImageId = defaultBGDrawalbleId;
 	}
@@ -61,25 +75,56 @@ public class BackgroundImageLoader implements Runnable {
 	 */
 	public void run() {
 
-		CacheManager cm = imageManager.getCacheManager();
-		Bitmap bm = cm.get(imageURL, 1280, 720);
+		if (imageURL != null) {
+			Bitmap bmp;
+			ImageSize size = new ImageSize(1280, 720);
+			String memoryCacheKey = MemoryCacheUtil.generateKey(imageURL, size);
 
-		if (imageURL != null && bm == null) {
-			FileManager fm = imageManager.getFileManager();
-			File f = fm.getFile(imageURL);
-			LoaderSettings settings = SerenityApplication.getLoaderSettings();
-			if (!f.exists()) {
-				settings.getNetworkManager().retrieveImage(
-						imageURL, f);
+			bmp = imageLoader.getMemoryCache().get(memoryCacheKey);
+			if (bmp != null && !bmp.isRecycled()) {
+				BitmapDisplayer displayer = new BitmapDisplayer(bmp);
+				Activity activity = (Activity) bgLayout.getContext();
+				activity.runOnUiThread(displayer);
+			} else {
+				File image = imageLoader.getDiscCache().get(imageURL);
+				if (image.exists()) {
+					InputStream is;
+					try {
+						is = new FileInputStream(image);
+						bmp = BitmapFactory.decodeStream(is);
+					} catch (FileNotFoundException e) {
+
+					}
+				} else {
+					InputStream is;
+					try {
+						is = httpLoader.getStream(imageURL, null);
+						try {
+							OutputStream os = new BufferedOutputStream(
+									new FileOutputStream(image));
+							try {
+								IoUtils.copyStream(is, os);
+							} finally {
+								IoUtils.closeSilently(os);
+							}
+							imageLoader.getDiscCache().put(imageURL, image);
+							File fetchLoadedImage = imageLoader.getDiscCache().get(imageURL);
+							InputStream fis = new FileInputStream(fetchLoadedImage);
+							bmp = BitmapFactory.decodeStream(new FileInputStream(fetchLoadedImage));
+							IoUtils.closeSilently(fis);
+						} finally {
+							IoUtils.closeSilently(is);
+						}
+					} catch (IOException e) {
+					}
+				}
 			}
+			BitmapDisplayer bd = new BitmapDisplayer(bmp);
+			Activity activity = (Activity) bgLayout.getContext();
+			activity.runOnUiThread(bd);
 
-			BitmapUtil bmu = SerenityApplication.getLoaderSettings()
-					.getBitmapUtil();
-			bm = bmu.decodeFile(f, 1280, 720);
 		}
 
-		Activity activity = (Activity) bgLayout.getContext();
-		activity.runOnUiThread(new BitmapDisplayer(bm));
 	}
 
 	protected class BitmapDisplayer implements Runnable {

@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.BackgroundImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -39,8 +41,6 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener
 
 import us.nineworlds.serenity.R;
 
-import com.novoda.imageloader.core.ImageManager;
-import com.novoda.imageloader.core.cache.CacheManager;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -69,7 +69,7 @@ public class EpisodePosterOnItemSelectedListener implements
 	private static final int MAX_IMAGE_THREADS = 5;
 	private View bgLayout;
 	private Activity context;
-	private ImageManager imageManager;
+	private ImageLoader imageLoader;
 	private View previous;
 	
 
@@ -82,7 +82,7 @@ public class EpisodePosterOnItemSelectedListener implements
 	public EpisodePosterOnItemSelectedListener(View bgv, Activity activity) {
 		bgLayout = bgv;
 		context = activity;
-		imageManager = SerenityApplication.getImageManager();
+		imageLoader = SerenityApplication.getImageLoader();
 		imageExecutorService = Executors.newFixedThreadPool(MAX_IMAGE_THREADS);
 	}
 
@@ -197,16 +197,7 @@ public class EpisodePosterOnItemSelectedListener implements
 			return;
 		}
 		
-		CacheManager cm = imageManager.getCacheManager();
-
-		Bitmap bm = cm.get(ei.getBackgroundURL(), 1280, 720);
-		if (bm == null) {
-			imageExecutorService.submit(new BackgroundImageLoader(ei.getBackgroundURL(), bgLayout, R.drawable.tvshows ));
-			return;
-		}
-
-		BitmapDrawable bmd = new BitmapDrawable(bm);
-		bgLayout.setBackgroundDrawable(bmd);
+		imageExecutorService.submit(new BackgroundImageLoader(ei.getBackgroundURL(), bgLayout, R.drawable.tvshows ));
 	}
 
 

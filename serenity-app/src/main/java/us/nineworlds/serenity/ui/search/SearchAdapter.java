@@ -26,8 +26,6 @@ package us.nineworlds.serenity.ui.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.novoda.imageloader.core.model.ImageTagFactory;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -58,17 +56,11 @@ public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
 		VideoContentInfo pi = posterList.get(position);
 		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
 		mpiv.setBackgroundColor(Color.BLACK);
-		if (pi.getPosterURL() != null) {
-			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
-		} else {
-			mpiv.setTag(imageTagFactory.build(factory.baseURL()
-					+ ":/resources/movie-fanart.jpg", context));
-		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(200,
 				android.view.ViewGroup.LayoutParams.FILL_PARENT));
 
-		imageManager.getLoader().load(mpiv);
+		imageLoader.displayImage(pi.getPosterURL(), mpiv);
 		
 		return mpiv;
 	}

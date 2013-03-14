@@ -34,11 +34,7 @@ import us.nineworlds.serenity.ui.views.TVShowSeasonImageView;
 
 import us.nineworlds.serenity.R;
 
-import com.novoda.imageloader.core.ImageManager;
-import com.novoda.imageloader.core.LoaderSettings;
-import com.novoda.imageloader.core.bitmap.BitmapUtil;
-import com.novoda.imageloader.core.cache.CacheManager;
-import com.novoda.imageloader.core.file.FileManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -58,7 +54,7 @@ public class TVShowSeasonOnItemSelectedListener implements
 
 	private View bgLayout;
 	private Activity context;
-	private ImageManager imageManager;
+	private ImageLoader imageLoader;
 	private View previous;
 	private ExecutorService imageExecutorService;
 	private static final int MAX_IMAGE_THREADS = 5;
@@ -71,7 +67,7 @@ public class TVShowSeasonOnItemSelectedListener implements
 		bgLayout = bgv;
 		context = activity;
 
-		imageManager = SerenityApplication.getImageManager();
+		imageLoader = SerenityApplication.getImageLoader();
 		imageExecutorService = Executors.newFixedThreadPool(MAX_IMAGE_THREADS);
 	}
 

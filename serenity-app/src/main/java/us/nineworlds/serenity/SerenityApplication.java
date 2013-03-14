@@ -31,19 +31,22 @@ import org.teleal.cling.model.meta.Device;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
-import us.nineworlds.serenity.core.ConcurrentLoader;
-import us.nineworlds.serenity.core.SerenityLoaderSettings;
 import us.nineworlds.serenity.core.ServerConfig;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.Log;
-import com.novoda.imageloader.core.ImageManager;
-import com.novoda.imageloader.core.cache.LruBitmapCache;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Environment;
+import android.util.Log;
 
 /**
  * Global manager for the Serenity application
@@ -53,12 +56,10 @@ import android.os.Environment;
  */
 public class SerenityApplication extends Application {
 
-	private static ImageManager imageManager;
 	private static PlexappFactory plexFactory;
-	private static SerenityLoaderSettings settings;
 
 	private static ConcurrentHashMap<String, Device> plexmediaServers = new ConcurrentHashMap<String, Device>();
-	
+	private static ImageLoader imageLoader;
 
 	@Override
 	public void onCreate() {
@@ -66,13 +67,28 @@ public class SerenityApplication extends Application {
 		installHttpCache();
 
 		EasyTracker.getInstance().setContext(this);
+		
+		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+        .cacheInMemory()
+        .cacheOnDisc()
+        .bitmapConfig(Bitmap.Config.RGB_565)
+        .showImageOnFail(R.drawable.default_error)
+        .showStubImage(R.drawable.default_video_cover)
+        .build();
+		
+		 ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(this)
+		 .memoryCacheExtraOptions(1280,720)
+		 .taskExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+		 .taskExecutorForCachedImages(AsyncTask.THREAD_POOL_EXECUTOR)
+		 .threadPoolSize(5)
+     	 .tasksProcessingOrder(QueueProcessingType.FIFO)
+		 .denyCacheImageMultipleSizesInMemory()
+		 .defaultDisplayImageOptions(defaultOptions)
+		 .memoryCache(new WeakMemoryCache())
+		 .build();		
 
-		settings = new SerenityLoaderSettings.SettingsBuilder()
-				.withDisconnectOnEveryCall(true).withUpsampling(true)
-				.build(this);
-		settings.setLoader(new ConcurrentLoader(settings));
-
-		imageManager = new ImageManager(this, settings);
+		 imageLoader = ImageLoader.getInstance();
+		 imageLoader.init(imageLoaderconfig);
 
 		// Temporarily clean the cache
 		// imageManager.getFileManager().clean();
@@ -94,27 +110,16 @@ public class SerenityApplication extends Application {
 	 */
 	protected void installHttpCache() {
 		final long cacheMaxSize = 10 * 1024 * 1024;
-		final File httpCacheDir = new File(
-				Environment.getDownloadCacheDirectory(), "http-cache");
-
 		try {
 			com.integralblue.httpresponsecache.HttpResponseCache.install(
-					httpCacheDir, cacheMaxSize);
+					Environment.getDownloadCacheDirectory(), cacheMaxSize);
 		} catch (IOException ex) {
-			Log.e("Unable to install Response Cache.");
+			Log.e(getClass().getName(), "Unable to install cache", ex);
 		}
-	}
-
-	public static ImageManager getImageManager() {
-		return imageManager;
 	}
 
 	public static PlexappFactory getPlexFactory() {
 		return plexFactory;
-	}
-
-	public static SerenityLoaderSettings getLoaderSettings() {
-		return settings;
 	}
 
 	public static boolean isGoogleTV(Context context) {
@@ -124,6 +129,10 @@ public class SerenityApplication extends Application {
 
 	public static ConcurrentHashMap<String, Device> getPlexMediaServers() {
 		return plexmediaServers;
+	}
+	
+	public static ImageLoader getImageLoader() {
+		return imageLoader;
 	}
 
 }

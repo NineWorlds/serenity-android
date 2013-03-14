@@ -26,6 +26,8 @@ package us.nineworlds.serenity.ui.browser.movie;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.BackgroundImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -36,8 +38,6 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 
 import us.nineworlds.serenity.R;
-import com.novoda.imageloader.core.ImageManager;
-import com.novoda.imageloader.core.cache.CacheManager;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -73,7 +73,7 @@ public class MoviePosterOnItemSelectedListener implements
 	private static final int MAX_IMAGE_THREADS = 5;
 	private View bgLayout;
 	private Activity context;
-	private ImageManager imageManager;
+	private ImageLoader imageLoader;
 	private View previous;
 	
 
@@ -86,7 +86,7 @@ public class MoviePosterOnItemSelectedListener implements
 	public MoviePosterOnItemSelectedListener(View bgv, Activity activity) {
 		bgLayout = bgv;
 		context = activity;
-		imageManager = SerenityApplication.getImageManager();
+		imageLoader = SerenityApplication.getImageLoader();
 		imageExecutorService = Executors.newFixedThreadPool(MAX_IMAGE_THREADS);
 	}
 
@@ -184,17 +184,8 @@ public class MoviePosterOnItemSelectedListener implements
 		if (mi.getBackgroundURL() == null) {
 			return;
 		}
-		
-		CacheManager cm = imageManager.getCacheManager();
-
-		Bitmap bm = cm.get(mi.getBackgroundURL(), 1280, 720);
-		if (bm == null) {
-			imageExecutorService.submit(new BackgroundImageLoader(mi.getBackgroundURL(), bgLayout, R.drawable.movies));
-			return;
-		}
-
-		BitmapDrawable bmd = new BitmapDrawable(bm);
-		bgLayout.setBackgroundDrawable(bmd);
+	
+		imageExecutorService.submit(new BackgroundImageLoader(mi.getBackgroundURL(), bgLayout, R.drawable.movies));
 	}
 
 

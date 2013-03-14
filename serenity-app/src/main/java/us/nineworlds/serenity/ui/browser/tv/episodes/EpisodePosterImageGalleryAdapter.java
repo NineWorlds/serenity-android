@@ -67,15 +67,10 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
 		VideoContentInfo pi = posterList.get(position);
 		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
 		mpiv.setBackgroundColor(Color.BLACK);
-		if (pi.getPosterURL() != null) {
-			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
-		} else {
-			mpiv.setTag(imageTagFactory.build(factory.baseURL() + ":/resources/show-fanart.jpg", context));
-		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(300, android.view.ViewGroup.LayoutParams.FILL_PARENT));
 		
-		imageManager.getLoader().load(mpiv);
+		imageLoader.displayImage(pi.getPosterURL(), mpiv);
 	
 		return mpiv;
 	}

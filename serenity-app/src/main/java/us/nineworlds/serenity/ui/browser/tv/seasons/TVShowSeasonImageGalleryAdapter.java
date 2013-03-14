@@ -34,8 +34,7 @@ import us.nineworlds.serenity.ui.views.TVShowSeasonImageView;
 
 import us.nineworlds.serenity.R;
 
-import com.novoda.imageloader.core.ImageManager;
-import com.novoda.imageloader.core.model.ImageTagFactory;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -62,8 +61,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	private static List<TVShowSeriesInfo> seasonList = null;
 	private static Activity context;
 	
-	private ImageManager imageManager;
-	private ImageTagFactory imageTagFactory;
+	private ImageLoader imageLoader;
 	private static final int SIZE_HEIGHT = 200;
 	private static final int SIZE_WIDTH = 400;
 	private static ProgressDialog pd;
@@ -78,10 +76,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		
 		seasonList = new ArrayList<TVShowSeriesInfo>();
 		
-		imageManager = SerenityApplication.getImageManager();
-		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
-		imageTagFactory.setErrorImageId(R.drawable.default_error);
-		imageTagFactory.setSaveThumbnail(true);
+		imageLoader = SerenityApplication.getImageLoader();
 		notifyAdapter = this;
 		
 		baseUrl = SerenityApplication.getPlexFactory().baseURL();
@@ -130,17 +125,12 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		SeriesContentInfo pi = seasonList.get(position);
 		TVShowSeasonImageView mpiv = new TVShowSeasonImageView(context, pi);
 		mpiv.setBackgroundColor(Color.BLACK);
-		if (pi.getPosterURL() != null) {
-			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
-		} else {
-			mpiv.setTag(imageTagFactory.build(baseUrl + ":/resources/show-fanart.jpg", context));
-		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 200;
 		int height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
 		
-		imageManager.getLoader().load(mpiv);
+		imageLoader.displayImage(pi.getPosterURL(), mpiv);
 		return mpiv;
 	}
 	

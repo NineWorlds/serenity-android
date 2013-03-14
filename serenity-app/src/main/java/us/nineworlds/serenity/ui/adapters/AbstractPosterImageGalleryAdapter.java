@@ -26,18 +26,19 @@ package us.nineworlds.serenity.ui.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 import us.nineworlds.serenity.R;
-import com.novoda.imageloader.core.ImageManager;
-import com.novoda.imageloader.core.model.ImageTagFactory;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.widget.BaseAdapter;
+
 
 /**
  * An abstract class for handling the creation of video content
@@ -52,8 +53,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
 	protected static List<VideoContentInfo> posterList = null;
 	protected static Activity context;
-	protected ImageManager imageManager;
-	protected ImageTagFactory imageTagFactory;
+	protected ImageLoader imageLoader;
 	protected static final int SIZE_HEIGHT = 400;
 	protected static final int SIZE_WIDTH = 200;
 	protected PlexappFactory factory;
@@ -65,10 +65,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
 		context = (Activity)c;
 		posterList = new ArrayList<VideoContentInfo>();
-		imageManager = SerenityApplication.getImageManager();
-		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
-		imageTagFactory.setErrorImageId(R.drawable.default_error);
-		imageTagFactory.setSaveThumbnail(true);
+		imageLoader = SerenityApplication.getImageLoader();
 		this.key = key;
 		fetchDataFromService();
 	}
@@ -79,10 +76,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 		this.category = category;
 		posterList = new ArrayList<VideoContentInfo>();
 		
-		imageManager = SerenityApplication.getImageManager();
-		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
-		imageTagFactory.setErrorImageId(R.drawable.default_error);
-		imageTagFactory.setSaveThumbnail(true);
+		imageLoader = SerenityApplication.getImageLoader();
 		fetchDataFromService();
 	}
 	

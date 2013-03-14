@@ -27,13 +27,13 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.BackgroundImageLoader;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 
 import us.nineworlds.serenity.R;
-import com.novoda.imageloader.core.ImageManager;
-import com.novoda.imageloader.core.model.ImageTagFactory;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -59,13 +59,12 @@ public class TVShowBannerOnItemSelectedListener implements
 	private static final String SEPERATOR = "/";
 	private View bgLayout;
 	private Activity context;
-	private ImageManager imageManager;
+	private ImageLoader imageLoader;
 	private View previous;
 	
 	// Sets up a Executor service for handling image loading
 	private ExecutorService imageExecutorService;
 	private static final int MAX_IMAGE_THREADS = 5;
-	private ImageTagFactory imageTagFactory;
 
 	/**
 	 * 
@@ -74,12 +73,7 @@ public class TVShowBannerOnItemSelectedListener implements
 		bgLayout = bgv;
 		context = activity;
 
-		imageManager = SerenityApplication.getImageManager();
-		imageTagFactory = ImageTagFactory.newInstance(250, 350,
-				R.drawable.default_video_cover);
-		imageTagFactory.setErrorImageId(R.drawable.default_error);
-		imageTagFactory.setSaveThumbnail(true);
-
+		imageLoader = SerenityApplication.getImageLoader();
 		imageExecutorService = Executors.newFixedThreadPool(MAX_IMAGE_THREADS);
 
 	}
@@ -179,16 +173,7 @@ public class TVShowBannerOnItemSelectedListener implements
 		showImage.setScaleType(ScaleType.FIT_XY);
 		showImage.setLayoutParams(new LinearLayout.LayoutParams(250, 350));
 
-		if (mi.getThumbNailURL() != null) {
-			showImage.setTag(imageTagFactory.build(mi.getThumbNailURL(),
-					context));
-		} else {
-			showImage.setTag(imageTagFactory.build(SerenityApplication
-					.getPlexFactory().baseURL()
-					+ ":/resources/show-fanart.jpg", context));
-		}
-
-		imageManager.getLoader().load(showImage);
+		imageLoader.displayImage(mi.getThumbNailURL(), showImage);
 
 	}
 

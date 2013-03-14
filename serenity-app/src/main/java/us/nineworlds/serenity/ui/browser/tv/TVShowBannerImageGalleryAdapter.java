@@ -33,7 +33,6 @@ import us.nineworlds.serenity.core.services.ShowRetrievalIntentService;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 import us.nineworlds.serenity.R;
-import com.novoda.imageloader.core.model.ImageTagFactory;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -59,8 +58,6 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 	
 	private static List<TVShowSeriesInfo> tvShowList = null;
 	
-	private static final int SIZE_HEIGHT = 200;
-	private static final int SIZE_WIDTH = 400;
 	private String baseUrl;
 	private String key;
 	private static ProgressDialog pd;
@@ -69,10 +66,7 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 		super(c, key, category);
 		tvShowList = new ArrayList<TVShowSeriesInfo>();
 		
-		imageManager = SerenityApplication.getImageManager();
-		imageTagFactory = ImageTagFactory.newInstance(SIZE_WIDTH, SIZE_HEIGHT, R.drawable.default_video_cover);
-		imageTagFactory.setErrorImageId(R.drawable.default_error);
-		imageTagFactory.setSaveThumbnail(true);
+		imageLoader = SerenityApplication.getImageLoader();
 		this.key = key;
 		
 		try {
@@ -124,17 +118,12 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 		AbstractSeriesContentInfo pi = tvShowList.get(position);
 		TVShowBannerImageView mpiv = new TVShowBannerImageView(context, pi);
 		mpiv.setBackgroundColor(Color.BLACK);
-		if (pi.getPosterURL() != null) {
-			mpiv.setTag(imageTagFactory.build(pi.getPosterURL(), context));
-		} else {
-			mpiv.setTag(imageTagFactory.build(baseUrl + ":/resources/show-fanart.jpg", context));
-		}
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 768;
 		int height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
 		
-		imageManager.getLoader().load(mpiv);
+		imageLoader.displayImage(pi.getPosterURL(), mpiv);
 		return mpiv;
 	}
 	
