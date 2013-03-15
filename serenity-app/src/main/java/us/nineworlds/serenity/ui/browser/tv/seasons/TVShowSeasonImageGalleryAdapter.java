@@ -62,13 +62,10 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	private static Activity context;
 	
 	private ImageLoader imageLoader;
-	private static final int SIZE_HEIGHT = 200;
-	private static final int SIZE_WIDTH = 400;
 	private static ProgressDialog pd;
 	private Handler handler;
 	private String key;
 	private static TVShowSeasonImageGalleryAdapter notifyAdapter;
-	private String baseUrl;
 	
 	public TVShowSeasonImageGalleryAdapter(Context c, String key) {
 		context = (Activity)c;
@@ -79,7 +76,6 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		imageLoader = SerenityApplication.getImageLoader();
 		notifyAdapter = this;
 		
-		baseUrl = SerenityApplication.getPlexFactory().baseURL();
 		fetchData();
 	}
 	

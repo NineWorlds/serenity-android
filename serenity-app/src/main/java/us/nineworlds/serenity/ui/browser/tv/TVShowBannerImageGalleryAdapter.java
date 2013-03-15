@@ -58,7 +58,6 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 	
 	private static List<TVShowSeriesInfo> tvShowList = null;
 	
-	private String baseUrl;
 	private String key;
 	private static ProgressDialog pd;
 	
@@ -70,7 +69,6 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 		this.key = key;
 		
 		try {
-			baseUrl = SerenityApplication.getPlexFactory().baseURL();
 			fetchData();
 		} catch (Exception ex) {
 			Log.e(getClass().getName(), "Error connecting to plex.", ex);

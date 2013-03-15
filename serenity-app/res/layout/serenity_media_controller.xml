@@ -15,8 +15,8 @@
         android:layout_marginRight="10dp"
         android:background="#80000000"
         android:gravity="top"
-        android:text="Show Title"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:ignore="SelectableText" />
 
     <TextView
         android:id="@+id/mediacontroller_summary"
@@ -29,7 +29,7 @@
         android:background="#80000000"
         android:gravity="top"
         android:maxLines="5"
-        android:text="This is some show/movie summary info" />
+        tools:ignore="SelectableText" />
 
     <ImageView
         android:id="@+id/mediacontroller_poster_art"
@@ -39,7 +39,8 @@
         android:layout_alignParentLeft="true"
         android:paddingBottom="10dp"
         android:scaleType="centerInside"
-        android:src="@drawable/default_video_cover" />
+        android:src="@drawable/default_video_cover"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:id="@+id/mediacontroller_infographic_layout"
@@ -70,8 +71,8 @@
             android:layout_gravity="left"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="00:00:00"
-            android:textColor="#F0F0F0" />
+            android:textColor="#F0F0F0"
+            tools:ignore="SelectableText" />
 
         <SeekBar
             android:id="@+id/mediacontroller_seekbar"
@@ -88,8 +89,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="99:99:99"
-            android:textColor="#F0F0F0" />
+            android:textColor="#F0F0F0"
+            tools:ignore="SelectableText" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -117,7 +119,8 @@
             android:nextFocusRight="@id/mediacontroller_play_pause"
             android:nextFocusUp="@id/mediacontroller_seekbar"
             android:scaleType="fitXY"
-            android:src="@drawable/osd_rewind_nf" />
+            android:src="@drawable/osd_rewind_nf"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/mediacontroller_play_pause"
@@ -129,7 +132,8 @@
             android:nextFocusRight="@+id/osd_ff_control"
             android:nextFocusUp="@id/mediacontroller_seekbar"
             android:scaleType="fitXY"
-            android:src="@drawable/osd_play_nf" >
+            android:src="@drawable/osd_play_nf"
+            tools:ignore="ContentDescription" >
 
             <requestFocus />
         </ImageButton>
@@ -143,7 +147,9 @@
             android:nextFocusLeft="@id/mediacontroller_play_pause"
             android:nextFocusUp="@id/mediacontroller_seekbar"
             android:scaleType="fitXY"
-            android:src="@drawable/osd_forward_nf" />
+            android:src="@drawable/osd_forward_nf"
+            tools:ignore="ContentDescription" />
+
     </LinearLayout>
 
 </RelativeLayout>

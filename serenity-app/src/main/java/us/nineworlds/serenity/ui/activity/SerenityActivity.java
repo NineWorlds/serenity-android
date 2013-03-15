@@ -23,10 +23,8 @@
 
 package us.nineworlds.serenity.ui.activity;
 
-import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.Activity;
-import android.os.Bundle;
 
 /**
  * @author dcarver

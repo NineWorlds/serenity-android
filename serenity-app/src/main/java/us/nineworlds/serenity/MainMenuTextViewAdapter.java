@@ -41,7 +41,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
-import android.widget.Gallery.LayoutParams;
 import android.widget.Toast;
 
 public class MainMenuTextViewAdapter extends BaseAdapter {
@@ -59,11 +58,11 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 
 	/** Simple Constructor saving the 'parent' context. */
 	public MainMenuTextViewAdapter(Context c) {
-		this.myContext = c;
+		myContext = c;
 	}
 
 	public MainMenuTextViewAdapter(Context c, View v) {
-		this.myContext = c;
+		myContext = c;
 		menuItems = new ArrayList<MenuItem>();
 		fetchData();
 		pd = ProgressDialog.show(myContext, "Build Menus", "Loading Menus");
@@ -111,7 +110,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	MainMenuTextView createView(MenuItem menuItem) {
 		MainMenuTextView v = null;
 		if ("movie".equals(menuItem.getType())) {
-			v = new MainMenuTextView(this.myContext,
+			v = new MainMenuTextView(myContext,
 					R.drawable.movies);
 			v.setLibraryKey(menuItem.getSection());
 			v.setActivityType(menuItem.getType());
@@ -119,21 +118,21 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 		}
 		
 		if ("show".equals(menuItem.getType())) {
-			v = new MainMenuTextView(this.myContext, R.drawable.tvshows);
+			v = new MainMenuTextView(myContext, R.drawable.tvshows);
 			v.setLibraryKey(menuItem.getSection());
 			v.setActivityType(menuItem.getType());
 			return v;
 		}
 		
 		if ("settings".equals(menuItem.getType())) {
-			v = new MainMenuTextView(this.myContext, R.drawable.settings);
+			v = new MainMenuTextView(myContext, R.drawable.settings);
 			v.setLibraryKey("0");
 			v.setActivityType(menuItem.getType());
 			return v;
 		}
 		
 		if ("search".equals(menuItem.getType())) {
-			v = new MainMenuTextView(this.myContext, R.drawable.search);
+			v = new MainMenuTextView(myContext, R.drawable.search);
 			v.setLibraryKey("0");
 			v.setActivityType(menuItem.getType());
 			return v;			

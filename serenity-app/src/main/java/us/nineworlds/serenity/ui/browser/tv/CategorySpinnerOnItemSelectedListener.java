@@ -60,9 +60,9 @@ public class CategorySpinnerOnItemSelectedListener implements
 	private Handler secondaryCategoryHandler;
 
 	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
-			String key) {
+			String ckey) {
 		selected = defaultSelection;
-		this.key = key;
+		key = ckey;
 		secondaryCategoryHandler = new SecondaryCategoryHandler();
 	}
 

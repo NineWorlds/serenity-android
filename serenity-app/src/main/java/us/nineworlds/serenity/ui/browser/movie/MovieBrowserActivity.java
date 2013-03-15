@@ -46,7 +46,6 @@ import android.widget.Spinner;
 public class MovieBrowserActivity extends SerenityActivity {
 	
 	private static String key;
-	private static View bgLayout;
 	private static Spinner categorySpinner;
 	private boolean restarted_state = false;
 	private Handler categoryHandler;
@@ -59,10 +58,7 @@ public class MovieBrowserActivity extends SerenityActivity {
 		
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
-		setContentView(R.layout.activity_movie_browser);
-
-		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
-		
+		setContentView(R.layout.activity_movie_browser);		
 	}
 	
 	

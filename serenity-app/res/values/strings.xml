@@ -4,13 +4,6 @@
     <string name="app_name">Serenity for Google TV</string>
     <string name="app_label">Serenity for Google TV</string>
     <string name="search_hint">Enter a word or phrase in a Movie, TV Show, or Episode.</string>
-    <string name="list_c">George</string>
-    <string name="list_b">Obama</string>
-    <string name="list_a">Lincoln</string>
-    <string name="tab_d">Local Media</string>
-    <string name="tab_c">Home</string>
-    <string name="tab_b">My Friends</string>
-    <string name="tab_a">My Photos</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_search">Search</string>
     <string name="title_activity_movie_browser">Movies</string>
@@ -22,34 +15,12 @@
     <string name="movie_category_prompt">Choose a Category</string>
     <string name="movie_category_prompt2">Genre/Collection</string>
     
-    <string name="about_serenity">
-Serenity is an open source application licensed under an MIT public licenses.
+    <string name="category">Category:</string>
+    <string name="year">Year</string>
+    <string name="genre">Genre</string>
+    <string name="writers">Writers</string>
+    <string name="directors">Directors</string>
+    <string name="tvshows">TV Shows:</string>
+    
 
-While the source code is free the application can be sold commercially. As
-long as the MIT license and attribution requirements are followed.
-
-Serenity makes use of several open source projects and their code is licensed
-under their project licenses.  See individual projects for the license specific
-to each of the projects.  
-
-Licenses include Apache Public License 2.0, LGPL V2.0, Creative Commons, and GPL.
-
-The source for Serenity will always be available and can be forked or modified
-as long as proper attribution and the existing license sources are kept in tack.
-
-Projects used:
-
-Code from the following projects has been used or modified in accordance with each
-projects license.
-
-avideo - https://github.com/denivip/avideo
-ImageLoader - https://github.com/novoda/ImageLoader
-cling - http://4thline.org/projects/cling/
-simple xml - http://simple.sourceforge.net/
-httpresponsecache - https://github.com/candrews/HttpResponseCache
-
-If you find code that has not been properly attributed please contact the project
-and you will be added to the list.
-    </string>
-        
 </resources>

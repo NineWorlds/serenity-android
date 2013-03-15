@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:focusable="false"
-            android:text="Category:"
+            android:text="@string/category"
             style="@android:style/TextAppearance.Medium" />
 
         <Spinner
@@ -63,15 +63,16 @@
 
         <TextView
             android:id="@+id/movieBrowserPosterTitle"
+            style="@android:style/TextAppearance.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:gravity="left"
             android:paddingLeft="10dp"
-            android:text="Poster Title"
             android:textColor="#F0F0F0"
-            style="@android:style/TextAppearance.Large"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="SelectableText" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -92,22 +93,22 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:minWidth="50dp"
-                android:text="Year"
+                android:text="@string/year"
                 style="@android:style/TextAppearance.Medium"
                 android:textStyle="bold"
                 />
 
             <TextView
                 android:id="@+id/video_year"
+                style="@android:style/TextAppearance.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:gravity="left"
-                android:minWidth="50dp"
                 android:lines="2"
-                style="@android:style/TextAppearance.Medium"
-                />
+                android:minWidth="50dp"
+                tools:ignore="SelectableText" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -116,23 +117,22 @@
                 android:layout_marginLeft="10dp"
                 
                 android:minWidth="100dp"
-                android:text="Genre"
+                android:text="@string/genre"
                 style="@android:style/TextAppearance.Medium"
                 android:textStyle="bold"
                 />
 
             <TextView
                 android:id="@+id/video_genre"
+                style="@android:style/TextAppearance.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:lines="5"
+                android:layout_marginRight="10dp"
                 android:gravity="left"
+                android:lines="5"
                 android:minWidth="100dp"
-                style="@android:style/TextAppearance.Medium"
-                />
-
+                tools:ignore="SelectableText" />
         
     </LinearLayout>
     <LinearLayout
@@ -152,22 +152,22 @@
                 android:layout_marginLeft="10dp"
                 
                 android:minWidth="50dp"
-                android:text="Writers"
+                android:text="@string/writers"
                 style="@android:style/TextAppearance.Medium"
                 android:textStyle="bold"
                 />
 
             <TextView
                 android:id="@+id/video_writers"
+                style="@android:style/TextAppearance.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"                
                 android:gravity="left"
                 android:lines="2"
                 android:minWidth="50dp"
-                style="@android:style/TextAppearance.Medium"
-                />
+                tools:ignore="SelectableText" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -176,22 +176,22 @@
                 android:layout_marginLeft="10dp"
                 
                 android:minWidth="50dp"
-                android:text="Directors"
+                android:text="@string/directors"
                 style="@android:style/TextAppearance.Medium"
                 android:textStyle="bold"
                 />
 
             <TextView
                 android:id="@+id/video_directors"
+                style="@android:style/TextAppearance.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:lines="5"
+                android:layout_marginRight="10dp"
                 android:gravity="left"
+                android:lines="5"
                 android:minWidth="50dp"
-                style="@android:style/TextAppearance.Medium"
-                />
+                tools:ignore="SelectableText" />
         
     </LinearLayout>
     

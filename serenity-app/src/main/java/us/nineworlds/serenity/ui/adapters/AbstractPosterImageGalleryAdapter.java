@@ -32,8 +32,6 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
-import us.nineworlds.serenity.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;

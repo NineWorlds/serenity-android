@@ -29,7 +29,6 @@ import us.nineworlds.serenity.R;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Gallery;

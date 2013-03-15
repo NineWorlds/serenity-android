@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="TV Shows:"
+            android:text="@string/tvshows"
             android:textColor="#F0F0F0"
             android:textSize="20sp" >
         </TextView>
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:focusable="false"
-            android:text="Category:"
+            android:text="@string/category"
             style="@android:style/TextAppearance.Medium" />
 
         <Spinner
@@ -63,7 +63,9 @@
             android:layout_gravity="right"
             android:gravity="right"
             android:textColor="#F0F0F0"
-            android:textSize="20sp" >
+            android:textSize="20sp"
+            tools:ignore="SelectableText" >
+
         </TextView>
     </LinearLayout>
     <RelativeLayout
@@ -88,7 +90,9 @@
                 android:layout_gravity="center_horizontal"
                 android:background="#F0F0F0"
                 android:padding="2dp"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                tools:ignore="ContentDescription" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -101,49 +105,52 @@
 
             <TextView
                 android:id="@+id/tvBrowserTitle"
+                style="@android:style/TextAppearance.Large"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="Title Text"
                 android:textColor="#F0F0F0"
-                style="@android:style/TextAppearance.Large" >
+                tools:ignore="SelectableText" >
+
             </TextView>
 
             <TextView
                 android:id="@+id/tvShowSeriesSummary"
+                style="@android:style/TextAppearance.Medium"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="5dp"
                 android:gravity="top"
-                android:text="Summary Information about a Show Goes here."
-                style="@android:style/TextAppearance.Medium"
-                android:textColor="#F0F0F0" >
-            </TextView>
+                android:textColor="#F0F0F0"
+                tools:ignore="SelectableText" >
 
+            </TextView>
 
             <TextView
                 android:id="@+id/tvShowBrowserGenre"
+                style="@android:style/TextAppearance.Small"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginLeft="40dp"
                 android:layout_marginTop="5dp"
-                android:text="Genre Information"
+                android:gravity="center"
                 android:textColor="#F0F0F0"
-                style="@android:style/TextAppearance.Small" >
+                tools:ignore="SelectableText" >
+
             </TextView>
 
             <TextView
                 android:id="@+id/tvShowWatchedUnwatched"
+                style="@android:style/TextAppearance.Small"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="Watched and Unwatched count"
-                style="@android:style/TextAppearance.Small"
-                android:textColor="#F0F0F0" >
+                android:textColor="#F0F0F0"
+                tools:ignore="SelectableText" >
+
             </TextView>
         </LinearLayout>
 

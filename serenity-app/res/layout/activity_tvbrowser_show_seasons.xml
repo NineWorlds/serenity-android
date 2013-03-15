@@ -18,9 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="TV Shows->Seasons"
             android:textColor="#F0F0F0"
-            android:textSize="20sp" >
+            android:textSize="20sp"
+            tools:ignore="SelectableText" >
+
         </TextView>
 
         <TextView
@@ -30,7 +31,9 @@
             android:layout_gravity="right"
             android:gravity="right"
             android:textColor="#F0F0F0"
-            android:textSize="20sp" >
+            android:textSize="20sp"
+            tools:ignore="SelectableText" >
+
         </TextView>
     </LinearLayout>
 
@@ -46,9 +49,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Season Title"
             android:textColor="#F0F0F0"
-            android:textSize="20sp" >
+            android:textSize="20sp"
+            tools:ignore="SelectableText" >
+
         </TextView>
         
         

@@ -23,12 +23,9 @@
 
 package us.nineworlds.serenity.core.services;
 
-import java.io.IOException;
 
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.SerenityApplication;
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * @author dcarver
