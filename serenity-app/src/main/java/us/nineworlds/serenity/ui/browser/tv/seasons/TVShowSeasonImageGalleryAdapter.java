@@ -144,10 +144,14 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 				if (!seasonList.isEmpty()) {
 					TextView titleView = (TextView)context.findViewById(R.id.tvShowSeasonsDetailText);
 					titleView.setText(seasonList.get(0).getParentShowTitle());
+					TextView textView = (TextView) context.findViewById(R.id.tvShowSeasonsItemCount);
+					textView.setText(Integer.toString(seasonList.size()) + " Item(s)");
+					
 				}
 				notifyAdapter.notifyDataSetChanged();
 				pd.dismiss();
 			}
+			
 			
 		}
 	}
