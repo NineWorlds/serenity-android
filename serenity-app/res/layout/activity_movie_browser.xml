@@ -131,7 +131,6 @@
                 android:lines="5"
                 android:gravity="left"
                 android:minWidth="100dp"
-                android:text="Comedy/Science Fiction"
                 style="@android:style/TextAppearance.Medium"
                 />
 
@@ -168,7 +167,6 @@
                 android:gravity="left"
                 android:lines="2"
                 android:minWidth="50dp"
-                android:text="Cathy Yuspa, Josh Goldsmith"
                 style="@android:style/TextAppearance.Medium"
                 />
 
@@ -193,7 +191,6 @@
                 android:lines="5"
                 android:gravity="left"
                 android:minWidth="50dp"
-                android:text="Gary Winick"
                 style="@android:style/TextAppearance.Medium"
                 />
         

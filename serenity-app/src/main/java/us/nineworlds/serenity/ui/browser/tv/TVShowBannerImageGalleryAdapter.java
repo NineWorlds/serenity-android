@@ -133,17 +133,16 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 		public void handleMessage(Message msg) {
 			
 			tvShowList = (List<TVShowSeriesInfo>) msg.obj;
+			Gallery posterGallery = (Gallery) context.findViewById(R.id.tvShowBannerGallery);
 			if (tvShowList != null) {
 				if (tvShowList.isEmpty()) {
 					Toast.makeText(context, "No Shows found for the category: " + category, Toast.LENGTH_LONG).show();
-				} else {
-					Gallery posterGallery = (Gallery) context.findViewById(R.id.tvShowBannerGallery);
-					posterGallery.requestFocus();
 				}
 				TextView tv = (TextView)context.findViewById(R.id.tvShowItemCount);
 				tv.setText(Integer.toString(tvShowList.size()) + " Item(s)");
-			}
+			}			
 			notifyDataSetChanged();
+			posterGallery.requestFocus();			
 			pd.dismiss();			
 		}
 	}

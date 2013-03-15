@@ -62,7 +62,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:gravity="right"
-            android:text="6 Items"
             android:textColor="#F0F0F0"
             android:textSize="20sp" >
         </TextView>
