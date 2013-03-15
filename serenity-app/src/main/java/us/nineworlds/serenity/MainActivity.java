@@ -95,13 +95,12 @@ public class MainActivity extends SerenityActivity {
 	    }		
 		
 	};
-
 	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+				
 		setContentView(R.layout.activity_plex_app_main);
 		mainView = findViewById(R.id.mainLayout);
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);

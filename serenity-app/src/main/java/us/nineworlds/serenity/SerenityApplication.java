@@ -64,8 +64,10 @@ public class SerenityApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
 		installHttpCache();
-
+		
+		
 		EasyTracker.getInstance().setContext(this);
 		
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
@@ -101,8 +103,7 @@ public class SerenityApplication extends Application {
 				deviceModel, (long) 0);
 
 	}
-
-
+	
 	/**
 	 * Install an HTTPResponseCache. This is using an open source library so
 	 * that caching occurs across all platforms not just 4.x.
@@ -110,13 +111,18 @@ public class SerenityApplication extends Application {
 	 */
 	protected void installHttpCache() {
 		final long cacheMaxSize = 10 * 1024 * 1024;
+		final File httpCacheDir = new File(getCacheDir(), "httpcache");
 		try {
 			com.integralblue.httpresponsecache.HttpResponseCache.install(
-					Environment.getDownloadCacheDirectory(), cacheMaxSize);
+					httpCacheDir, cacheMaxSize);
 		} catch (IOException ex) {
 			Log.e(getClass().getName(), "Unable to install cache", ex);
 		}
 	}
+	
+
+	
+	
 
 	public static PlexappFactory getPlexFactory() {
 		return plexFactory;
