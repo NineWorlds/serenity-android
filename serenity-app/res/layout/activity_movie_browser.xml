@@ -105,7 +105,6 @@
                 android:layout_marginRight="10dp"
                 android:gravity="left"
                 android:minWidth="50dp"
-                android:text="2004"
                 android:lines="2"
                 style="@android:style/TextAppearance.Medium"
                 />

@@ -56,6 +56,8 @@ import android.util.Log;
  */
 public class SerenityApplication extends Application {
 
+	private static final String HTTPCACHE = "httpcache";
+
 	private static PlexappFactory plexFactory;
 
 	private static ConcurrentHashMap<String, Device> plexmediaServers = new ConcurrentHashMap<String, Device>();
@@ -111,7 +113,7 @@ public class SerenityApplication extends Application {
 	 */
 	protected void installHttpCache() {
 		final long cacheMaxSize = 10 * 1024 * 1024;
-		final File httpCacheDir = new File(getCacheDir(), "httpcache");
+		final File httpCacheDir = new File(getCacheDir(), HTTPCACHE);
 		try {
 			com.integralblue.httpresponsecache.HttpResponseCache.install(
 					httpCacheDir, cacheMaxSize);
