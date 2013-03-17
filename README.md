@@ -9,51 +9,25 @@ donation to that project to help fund continued development.
 Features
 ----
 
-What will this support:
+What does this support
 
-* Browsing existing TV Show and Movie Libraries (implemented)
-* Playing back Movies and TV Shows (implemented)
-* Browsing by Genre for TV Shows and Movies (inprogress)
-* Browsing by Season for TV Shows (implemented)
-* Queuing of TV Shows for play back (i.e. playback and entire season back to back)
-* Browsing Video Channels
-* Playback of video channels
-* Browsing Music
+* Browsing existing TV Show and Movie Libraries
+* Playing back Movies and TV Shows
+* Browsing by Genre for TV Shows and Movies
+* Browsing by Season for TV Shows
+* Download Videos for offline playback
+* Tablets and Google TVs
 
 What is currently not targeted:
 
 * MyPlex access
+* Transcoding
 * Photo Browsing
 * Adding/Managing Channels and addins
 
 With this said, this is an open source project, so if the community wants to contribute
 code it will be welcomed.  Feature requests and bug reports can be opened on the issue
 tracker.
-
-Releases
-----
-
-0.5.0
-
-This is the first version that can be used to Browse and Playback TV Shows and Movies. Even though in an Alpha state it is stable enough for daily use.
-
-Download: http://kingargyle.github.com/googletv/serenity/alpha/Serenity-0.5.0.apk
-
-_You will need to sideload this app, it is not available in the playstore_
-
-Report Issues at: https://github.com/kingargyle/plexapp-client/issues
-
-* Server Preferences - Plex Media Server IP Address and Port number.  Access either through Menu key, or Settings main menu
-* Tested and developed using a Vizio Costar and Plex Media Server 0.9.7.x, other versions may work.
-* Implements Movie Browsing and playback through external video player.
-  * Works with aVia or ViMu video players for direct play (no transcoding)
-* Browse TV Shows, By Season, or All Episodes.
-* Implements a very visual but simple interface.  When in Episode or Movie Browsing just Click (enter, OK) the episode/movie you want to watch.
-* To leave a screen use the Back key on your remote.
-* This program is very graphic intensive and uses the SD card of your device as a cache. Items are cached for up to 7 days.  It is not uncommon for it to use between 80 to 150 meg for the cache.  The caching and downloading of the images happens as needed so it will greatly depend on the size of your collection.
-
-This needs people test it and kick it's tires.  I only have a Vizio Costar to test and develop with so, I need people with other devices to help test this out.  I have tested against Plex Media Server for Linux v0.9.7.11.  If you run into issues please file a bug with the version of plex media server, and the google tv device (model number as well) that you are using.  Please be as descriptive as possible when reporting issues.
-
 
 
 Plexapp REST Library
@@ -93,19 +67,6 @@ one of the reasons this project is open source and will probably stay free in th
 released there.
 
 
-Will this be on play store?
------
-
-Eventually it will be.  It needs to get to a point where it is feature rich enough and stable enough
-to put it out there for the masses.
-
-Do you need testers?
------
-
-Eventually yes. Currently the project isn't to the point where there is much beyond movie browsing to test.
-Once play back is implemented, then I'll put out an APK that can be downloaded for those that want to test
-it out.
-
 How can I help?
 -----
 
@@ -119,7 +80,7 @@ Building from Source
 =============
 
 This requires that you have used the maven-android-sdk-deployer project to
-install and deploy the Android 3.2 SDK to your maven repository.  
+install and deploy the Android 3.2 SDK to your maven repository. 
 
 https://github.com/mosabua/maven-android-sdk-deployer
 
@@ -134,11 +95,7 @@ To build the APK and APKLibraries from the command line:
 
 mvn clean install
 
-The application APK will be in PlexAppClient/target.  You can sideload this APK on your Google TV device.
-
-Note: Currently you need to change the config.properties file in the PlexAppClient/src/main/resources directory
-so that it points to your Plex Media Server's ip address.  A Settings configuration screen will be provided
-in the future to all you to set this through the app.
+The application APK will be in serenity-app/target.  You can sideload this APK on your Google TV device.
 
 
 Open Source Projects:
@@ -147,7 +104,8 @@ Open Source Projects:
 This project uses several open source projects and source code:
 
 * LeftNavBarLibrary (http://code.google.com/p/googletv-android-samples/) from the google tv project.  This is packaged as a apklib for reuse.
-* ImageLoader (https://github.com/novoda/ImageLoader) - a nice library for managing image caches and downloading of images in the background.
+* Android-Universal-ImageLoader (https://github.com/nostra13/Android-Universal-Image-Loader) - a nice library for managing image caches and downloading of images in the background.  Extremely fast response times both in the library and from the developer.
+* cling - http://4thline.org/projects/cling/ - Used for DLNA server discovery.
 * Simple (http://simple.sourceforge.net/) - provides a nice interface to Serialize and Deserialize XML information.
 
 Unit Testing Frameworks
@@ -163,11 +121,4 @@ Some layouts are influenced by the following skins.  Some icons reused from the 
 * Aeon
 * MediaStreamer
 * Influence
-
-Creative Commons
-======
-
-Some icons are used under the Creative Commons Attribution License.
-
-Fuge Icons (http://p.yusukekamiyamane.com/) by Yusuke Kamiyamane
 
