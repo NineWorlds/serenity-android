@@ -90,14 +90,11 @@ public class MoviePosterOnItemSelectedListener implements
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
-			previous.refreshDrawableState();
 		}
 
 		previous = v;
 
-		v.setBackgroundColor(Color.CYAN);
 		v.setPadding(5, 5, 5, 5);
-		v.refreshDrawableState();
 
 		createMovieDetail((SerenityPosterImageView) v);
 		createMovieMetaData((SerenityPosterImageView) v);

@@ -120,7 +120,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		
 		SeriesContentInfo pi = seasonList.get(position);
 		TVShowSeasonImageView mpiv = new TVShowSeasonImageView(context, pi);
-		mpiv.setBackgroundColor(Color.BLACK);
+		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 200;
 		int height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;

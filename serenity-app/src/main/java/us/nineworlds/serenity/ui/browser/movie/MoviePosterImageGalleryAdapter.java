@@ -25,6 +25,8 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import java.util.List;
 
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -32,6 +34,7 @@ import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -66,11 +69,12 @@ public class MoviePosterImageGalleryAdapter extends
 
 		VideoContentInfo pi = posterList.get(position);
 		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
-		mpiv.setBackgroundColor(Color.BLACK);
+		//mpiv.setBackgroundColor(Color.BLACK);
+		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(200,
 				android.view.ViewGroup.LayoutParams.FILL_PARENT));
-		imageLoader.displayImage(pi.getPosterURL(), mpiv);
+		imageLoader.displayImage(pi.getPosterURL(), mpiv, SerenityApplication.getReflectiveOptions());
 		
 		return mpiv;
 	}

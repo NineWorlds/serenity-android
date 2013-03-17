@@ -135,6 +135,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 			v = new MainMenuTextView(myContext, R.drawable.search);
 			v.setLibraryKey("0");
 			v.setActivityType(menuItem.getType());
+			
 			return v;			
 		}
 		

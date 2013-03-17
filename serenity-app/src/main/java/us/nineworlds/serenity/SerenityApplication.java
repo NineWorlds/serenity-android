@@ -32,6 +32,7 @@ import org.teleal.cling.model.meta.Device;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.core.ServerConfig;
+import us.nineworlds.serenity.widgets.ReflectedBitmapDisplayer;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -39,6 +40,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import android.app.Application;
 import android.content.Context;
@@ -61,6 +63,11 @@ public class SerenityApplication extends Application {
 
 	private static ConcurrentHashMap<String, Device> plexmediaServers = new ConcurrentHashMap<String, Device>();
 	private static ImageLoader imageLoader;
+	private static DisplayImageOptions reflectiveOptions;
+
+	public static DisplayImageOptions getReflectiveOptions() {
+		return reflectiveOptions;
+	}
 
 	@Override
 	public void onCreate() {
@@ -79,6 +86,16 @@ public class SerenityApplication extends Application {
         .showStubImage(R.drawable.default_video_cover)
         .build();
 		
+		reflectiveOptions = new DisplayImageOptions.Builder()
+        .cacheInMemory()
+        .cacheOnDisc()
+        .bitmapConfig(Bitmap.Config.RGB_565)
+        .showImageOnFail(R.drawable.default_error)
+        .showStubImage(R.drawable.default_video_cover)
+        .displayer(new RoundedBitmapDisplayer(10))
+        .build();
+		
+		
 		 ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(this)
 		 .memoryCacheExtraOptions(1280,720)
 		 .taskExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
@@ -92,7 +109,7 @@ public class SerenityApplication extends Application {
 
 		 imageLoader = ImageLoader.getInstance();
 		 imageLoader.init(imageLoaderconfig);
-
+		 
 		// Temporarily clean the cache
 		// imageManager.getFileManager().clean();
 

@@ -27,6 +27,7 @@ import us.nineworlds.serenity.ui.views.MainMenuTextView;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -57,10 +58,11 @@ public class GalleryOnItemSelectedListener implements
 			tv.setTextSize(tv.getTextSize() + 20);
 			tv.setTypeface(null, Typeface.BOLD);
 			tv.setTextColor(Color.parseColor("#F0F0F0"));
+			tv.setGravity(Gravity.CENTER_VERTICAL);
 			if (preSelected != null) {
 				preSelected.setTextSize(30);
-				//preSelected.refreshDrawableState();
 				preSelected.setTypeface(null, Typeface.NORMAL);
+				preSelected.setGravity(Gravity.CENTER_VERTICAL);
 			}
 			preSelected = tv;
 		}

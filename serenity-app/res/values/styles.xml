@@ -23,5 +23,17 @@
         <item name="android:gravity">center</item>
         <item name="android:background">#80000000</item>
     </style>
+    
+    <style name="selected_main_menu_text">
+        <item name="android:textSize">50sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="normal_main_menu_text">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    
 
 </resources>

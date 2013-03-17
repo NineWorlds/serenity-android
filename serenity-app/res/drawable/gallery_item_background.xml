@@ -13,14 +13,15 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <color name="custom_normal">#3300FF00</color>
-    <color name="custom_activated">#33FF0000</color>
-
-    <color name="list_normal">#80000000</color>
-    <color name="list_activated">#F0F0F0</color>
-    <color name="orange">#FF6600</color>
-    <color name="holo_color">#33b5e5</color>   
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="true"
+        android:drawable="@android:color/black"
+        />
+    <item android:state_selected="true" android:drawable="@color/holo_color" android:state_pressed="false"/>
+    <item android:state_selected="true" android:drawable="@android:color/background_light" android:state_pressed="true"/>
     
-</resources>
+    <item
+        android:drawable="@android:color/black"
+        />
+</selector>
+

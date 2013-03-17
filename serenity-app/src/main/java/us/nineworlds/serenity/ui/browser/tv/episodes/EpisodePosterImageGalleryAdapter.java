@@ -66,7 +66,7 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
 		
 		VideoContentInfo pi = posterList.get(position);
 		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
-		mpiv.setBackgroundColor(Color.BLACK);
+		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(300, android.view.ViewGroup.LayoutParams.FILL_PARENT));
 		

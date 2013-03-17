@@ -115,7 +115,7 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 		
 		AbstractSeriesContentInfo pi = tvShowList.get(position);
 		TVShowBannerImageView mpiv = new TVShowBannerImageView(context, pi);
-		mpiv.setBackgroundColor(Color.BLACK);
+		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 768;
 		int height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;

@@ -84,14 +84,11 @@ public class TVShowBannerOnItemSelectedListener implements
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
-			previous.refreshDrawableState();
 		}
 
 		previous = v;
 
-		v.setBackgroundColor(Color.CYAN);
 		v.setPadding(5, 5, 5, 5);
-		v.refreshDrawableState();
 
 		createTVShowDetail((TVShowBannerImageView) v);
 		changeBackgroundImage(v);
