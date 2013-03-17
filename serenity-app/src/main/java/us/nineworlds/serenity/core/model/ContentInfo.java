@@ -25,29 +25,28 @@ package us.nineworlds.serenity.core.model;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public interface ContentInfo {
-	
+
 	public String id();
-	
+
 	public String getPlotSummary();
-	
+
 	public String getBackgroundURL();
-	
+
 	public String getPosterURL();
-	
+
 	public String getTitle();
-	
+
 	public void setTitle(String title);
-	
+
 	public void setPosterURL(String posterURL);
-	
+
 	public void setPlotSummary(String plotSummary);
-	
+
 	public void setBackgroundURL(String backgroundURL);
-	
+
 	public void setId(String id);
-	
 
 }

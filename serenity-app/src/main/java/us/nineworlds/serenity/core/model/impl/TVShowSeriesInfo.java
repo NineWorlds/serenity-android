@@ -23,9 +23,6 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-
 public class TVShowSeriesInfo extends AbstractSeriesContentInfo {
 
-
-	
 }

@@ -34,7 +34,6 @@ public class AboutDialog extends Dialog {
 		tv.setMovementMethod(new ScrollingMovementMethod());
 		Linkify.addLinks(tv, Linkify.ALL);
 
-		
 		tv = (TextView) findViewById(R.id.info_text);
 		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info)));
 		tv.setLinkTextColor(Color.WHITE);

@@ -23,28 +23,47 @@
 
 package us.nineworlds.serenity.core.services;
 
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import android.content.Intent;
+import org.teleal.cling.android.AndroidUpnpService;
+import org.teleal.cling.model.meta.Device;
+
+import us.nineworlds.serenity.ui.listeners.BrowseRegistryListener;
+
+import android.content.ComponentName;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 
 /**
  * @author dcarver
  * 
  */
-public class MovieSearchIntentService extends MoviesRetrievalIntentService {
+public class DLNAServiceConnection implements ServiceConnection {
 
-	protected String query;
+	private AndroidUpnpService upnpService;
+	private BrowseRegistryListener registryListener;
 
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		key = intent.getExtras().getString("key", "");
-		query = intent.getExtras().getString("query");
-		createPosters();
-		sendMessageResults(intent);
+	public DLNAServiceConnection(AndroidUpnpService service,
+			BrowseRegistryListener listener) {
+		upnpService = service;
+		registryListener = listener;
 	}
 
-	@Override
-	protected MediaContainer retrieveVideos() throws Exception {
-		return factory.searchMovies(key, query);
+	public void onServiceConnected(ComponentName className, IBinder service) {
+		upnpService = (AndroidUpnpService) service;
+
+		// Refresh the list with all known devices
+		for (Device device : upnpService.getRegistry().getDevices()) {
+			registryListener.deviceAdded(device);
+		}
+
+		// Getting ready for future device advertisements
+		upnpService.getRegistry().addListener(registryListener);
+
+		// Search asynchronously for all devices
+		upnpService.getControlPoint().search();
+	}
+
+	public void onServiceDisconnected(ComponentName className) {
+		upnpService = null;
 	}
 
 }

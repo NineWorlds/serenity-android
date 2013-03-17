@@ -32,18 +32,22 @@ import android.widget.ImageView;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class ReflectedBitmapDisplayer implements BitmapDisplayer {
 
-	/* (non-Javadoc)
-	 * @see com.nostra13.universalimageloader.core.display.BitmapDisplayer#display(android.graphics.Bitmap, android.widget.ImageView)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.nostra13.universalimageloader.core.display.BitmapDisplayer#display
+	 * (android.graphics.Bitmap, android.widget.ImageView)
 	 */
 	public Bitmap display(Bitmap bitmap, ImageView imageView) {
-		Bitmap reflection = ImageUtils.createReflectedImage(imageView.getContext(), bitmap);
+		Bitmap reflection = ImageUtils.createReflectedImage(
+				imageView.getContext(), bitmap);
 		imageView.setImageBitmap(reflection);
 		return reflection;
 	}
-
 
 }

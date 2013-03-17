@@ -36,8 +36,8 @@ import android.widget.ListView;
  * An AdapterView is a view whose children are determined by an {@link Adapter}.
  * 
  * <p>
- * See {@link ListView}, {@link GridView}, {@link Spinner} and {@link SerenityGallery}
- * for commonly used subclasses of AdapterView.
+ * See {@link ListView}, {@link GridView}, {@link Spinner} and
+ * {@link SerenityGallery} for commonly used subclasses of AdapterView.
  * 
  * <div class="special reference">
  * <h3>Developer Guides</h3>
@@ -262,7 +262,8 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 		 * @param id
 		 *            The row id of the item that was clicked.
 		 */
-		void onItemClick(SerenityAdapterView<?> parent, View view, int position, long id);
+		void onItemClick(SerenityAdapterView<?> parent, View view,
+				int position, long id);
 	}
 
 	/**
@@ -329,8 +330,8 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 		 * 
 		 * @return true if the callback consumed the long click, false otherwise
 		 */
-		boolean onItemLongClick(SerenityAdapterView<?> parent, View view, int position,
-				long id);
+		boolean onItemLongClick(SerenityAdapterView<?> parent, View view,
+				int position, long id);
 	}
 
 	/**
@@ -380,8 +381,8 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 		 * @param id
 		 *            The row id of the item that is selected
 		 */
-		void onItemSelected(SerenityAdapterView<?> parent, View view, int position,
-				long id);
+		void onItemSelected(SerenityAdapterView<?> parent, View view,
+				int position, long id);
 
 		/**
 		 * Callback method to be invoked when the selection disappears from this

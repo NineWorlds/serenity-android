@@ -63,14 +63,13 @@ public class ImageUtils {
 
 		// Create a Bitmap with the flip matrix applied to it.
 		// We only want the bottom half of the image
-		
-		
+
 		Bitmap reflectionImage = Bitmap.createBitmap(originalImage, 0,
-				(int)(height * .3), width, (int)(height * .3), matrix, false);
+				(int) (height * .3), width, (int) (height * .3), matrix, false);
 
 		// Create a new bitmap with same width but taller to fit reflection
 		Bitmap bitmapWithReflection = Bitmap.createBitmap(width,
-				(height + (int)(height * .3)), Config.ARGB_8888);
+				(height + (int) (height * .3)), Config.ARGB_8888);
 
 		// Create a new Canvas with the bitmap that's big enough for
 		// the image plus gap plus reflection

@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public interface VideoContentInfo extends ContentInfo {
 
@@ -44,7 +44,7 @@ public interface VideoContentInfo extends ContentInfo {
 	public String getContentRating();
 
 	public List<String> getDirectors();
-	
+
 	public List<String> getGenres();
 
 	public String getVideoCodec();
@@ -54,13 +54,13 @@ public interface VideoContentInfo extends ContentInfo {
 	public List<String> getWriters();
 
 	public String getYear();
-	
+
 	public String getAspectRatio();
-	
+
 	public int getViewCount();
-	
+
 	public String getContainer();
-	
+
 	public String getParentPosterURL();
 
 	public void setActors(List<String> actors);
@@ -72,7 +72,7 @@ public interface VideoContentInfo extends ContentInfo {
 	public void setCastInfo(String castInfo);
 
 	public void setContentRating(String contentRating);
-	
+
 	public void setDirectors(List<String> directors);
 
 	public void setGenres(List<String> genres);
@@ -90,33 +90,33 @@ public interface VideoContentInfo extends ContentInfo {
 	public void setWriters(List<String> writers);
 
 	public void setYear(String year);
-	
+
 	public void setAspectRatio(String ratio);
-	
+
 	public void setViewCount(int viewCount);
-	
+
 	public void setParentPosterURL(String parentPosterURL);
-	
+
 	public String getAudioChannels();
-	
+
 	public void setAudioChannels(String audioChannels);
-	
-	public void setResumeOffset(int offset );
-	
+
+	public void setResumeOffset(int offset);
+
 	public int getResumeOffset();
-	
+
 	public String getSeason();
-	
+
 	public void setSeason(String season);
-	
+
 	public String getEpisodeNumber();
-	
+
 	public void setEpisodeNumber(String episodeNum);
-	
+
 	public void setOriginalAirDate(String airDate);
-	
+
 	public String getOriginalAirDate();
-	
+
 	public void setContainer(String container);
 
 }

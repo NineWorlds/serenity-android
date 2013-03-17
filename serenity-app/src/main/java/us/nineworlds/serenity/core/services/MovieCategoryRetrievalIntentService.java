@@ -42,21 +42,23 @@ import android.util.Log;
  * calling service.
  * 
  * @author dcarver
- *
+ * 
  */
 public class MovieCategoryRetrievalIntentService extends
 		AbstractPlexRESTIntentService {
-	
+
 	private ArrayList<CategoryInfo> categories;
 	private String key;
-	
-	
+
 	public MovieCategoryRetrievalIntentService() {
 		super("MovieCategoryRetrievalIntentService");
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.services.AbstractPlexRESTIntentService#sendMessageResults(android.content.Intent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.services.
+	 * AbstractPlexRESTIntentService#sendMessageResults(android.content.Intent)
 	 */
 	@Override
 	public void sendMessageResults(Intent intent) {
@@ -73,7 +75,9 @@ public class MovieCategoryRetrievalIntentService extends
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.IntentService#onHandleIntent(android.content.Intent)
 	 */
 	@Override
@@ -82,14 +86,15 @@ public class MovieCategoryRetrievalIntentService extends
 		populateCategories();
 		sendMessageResults(intent);
 	}
-	
+
 	protected void populateCategories() {
 		try {
 			MediaContainer mediaContainer = factory.retrieveSections(key);
 			List<Directory> dirs = mediaContainer.getDirectories();
 			categories = new ArrayList<CategoryInfo>();
-			for(Directory dir : dirs) {
-				if (!"folder".equals(dir.getKey()) && !"Search...".equals(dir.getTitle())) {
+			for (Directory dir : dirs) {
+				if (!"folder".equals(dir.getKey())
+						&& !"Search...".equals(dir.getTitle())) {
 					CategoryInfo category = new CategoryInfo();
 					category.setCategory(dir.getKey());
 					category.setCategoryDetail(dir.getTitle());
@@ -101,8 +106,7 @@ public class MovieCategoryRetrievalIntentService extends
 			}
 		} catch (Exception e) {
 			Log.e(getClass().getName(), e.getMessage(), e);
-		}		
+		}
 	}
-	
 
 }

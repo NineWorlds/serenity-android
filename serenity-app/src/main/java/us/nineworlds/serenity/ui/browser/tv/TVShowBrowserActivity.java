@@ -44,17 +44,15 @@ import android.widget.Spinner;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class TVShowBrowserActivity extends SerenityActivity {
-	
+
 	private static Spinner categorySpinner;
 	private boolean restarted_state = false;
 	private static String key;
 	private Handler categoryHandler;
 
-
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,70 +60,75 @@ public class TVShowBrowserActivity extends SerenityActivity {
 		setContentView(R.layout.activity_tvbrowser_show);
 
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
 		EasyTracker.getInstance().activityStart(this);
-		
+
 		if (restarted_state == false) {
 			categoryHandler = new CategoryHandler(this);
 			Messenger messenger = new Messenger(categoryHandler);
-			Intent categoriesIntent = new Intent(this, TVShowCategoryRetrievalIntentService.class);
+			Intent categoriesIntent = new Intent(this,
+					TVShowCategoryRetrievalIntentService.class);
 			categoriesIntent.putExtra("key", key);
 			categoriesIntent.putExtra("MESSENGER", messenger);
 			startService(categoriesIntent);
-			
+
 		}
 		restarted_state = false;
 	}
-	
+
 	@Override
 	protected void onStop() {
 		super.onStop();
 		EasyTracker.getInstance().activityStop(this);
 	}
-	
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		restarted_state = true;
 	}
-	
+
 	private static class CategoryHandler extends Handler {
-		
+
 		private ArrayList<CategoryInfo> categories;
 		private Activity context;
-		
+
 		public CategoryHandler(Activity context) {
 			this.context = context;
 		}
 
-		
-		/* (non-Javadoc)
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see android.os.Handler#handleMessage(android.os.Message)
 		 */
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.obj != null) {
-				categories = (ArrayList<CategoryInfo>)msg.obj;
+				categories = (ArrayList<CategoryInfo>) msg.obj;
 				setupShows();
 			}
 		}
-		
+
 		protected void setupShows() {
-			ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(context, R.layout.serenity_spinner_textview, categories);
-			spinnerArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
-			
-			categorySpinner =(Spinner) context.findViewById(R.id.tvshow_CategoryFilter);
+			ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
+					context, R.layout.serenity_spinner_textview, categories);
+			spinnerArrayAdapter
+					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+
+			categorySpinner = (Spinner) context
+					.findViewById(R.id.tvshow_CategoryFilter);
 			categorySpinner.setVisibility(View.VISIBLE);
 			categorySpinner.setAdapter(spinnerArrayAdapter);
-			categorySpinner.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener("all", key));
-			categorySpinner.requestFocus();		
+			categorySpinner
+					.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+							"all", key));
+			categorySpinner.requestFocus();
 		}
-		
-	}	
-	
+
+	}
 
 }

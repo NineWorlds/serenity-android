@@ -36,7 +36,7 @@ import android.view.Menu;
 import android.view.View;
 
 public class EpisodeBrowserActivity extends SerenityActivity {
-	
+
 	private SerenityGallery posterGallery;
 	private String key;
 	private View bgLayout;
@@ -53,9 +53,9 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 		posterGallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
 		metaData = findViewById(R.id.metaDataRow);
 		metaData.setVisibility(View.INVISIBLE);
-				
+
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -64,8 +64,10 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 		}
 		restarted_state = false;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -74,19 +76,22 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 		EasyTracker.getInstance().activityStop(this);
 	}
 
-
 	/**
 	 * Populate the episode browser with data
 	 */
 	protected void setupEpisodeBrowser() {
-		posterGallery.setAdapter(new EpisodePosterImageGalleryAdapter(this, key));
-		posterGallery.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(bgLayout, this));
-		posterGallery.setOnItemClickListener(new PlexVideoOnItemClickListener());
-		posterGallery.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
+		posterGallery
+				.setAdapter(new EpisodePosterImageGalleryAdapter(this, key));
+		posterGallery
+				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(
+						bgLayout, this));
+		posterGallery
+				.setOnItemClickListener(new PlexVideoOnItemClickListener());
+		posterGallery
+				.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
 		posterGallery.setAnimationDuration(1);
 		posterGallery.setSpacing(25);
 	}
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,11 +99,11 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 		getMenuInflater().inflate(R.menu.activity_movie_browser, menu);
 		return true;
 	}
-	
+
 	@Override
 	protected void onRestart() {
 		super.onRestart();
 		restarted_state = true;
 	}
-		
+
 }

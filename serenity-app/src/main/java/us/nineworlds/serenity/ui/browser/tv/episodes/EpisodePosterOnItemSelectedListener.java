@@ -40,7 +40,6 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener
 
 import us.nineworlds.serenity.R;
 
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.util.Log;
@@ -68,8 +67,6 @@ public class EpisodePosterOnItemSelectedListener implements
 	private ImageLoader imageLoader;
 	private View previous;
 	private ImageSize bgImageSize = new ImageSize(1280, 720);
-	
-
 
 	/**
 	 * 
@@ -80,7 +77,8 @@ public class EpisodePosterOnItemSelectedListener implements
 		imageLoader = SerenityApplication.getImageLoader();
 	}
 
-	public void onItemSelected(SerenityAdapterView<?> av, View v, int position, long id) {
+	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
+			long id) {
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
@@ -108,46 +106,48 @@ public class EpisodePosterOnItemSelectedListener implements
 		String epTitle = v.getPosterInfo().getTitle();
 		String season = v.getPosterInfo().getSeason();
 		String episode = v.getPosterInfo().getEpisodeNumber();
-		
+
 		if (season != null && episode != null) {
 			epTitle = epTitle + " - " + season + " " + episode;
 		}
-		
+
 		title.setText(epTitle);
 		TextView vte = (TextView) context.findViewById(R.id.videoTextExtra);
 		vte.setVisibility(View.INVISIBLE);
 		if (v.getPosterInfo().getOriginalAirDate() != null) {
 			try {
-				Date airDate = new SimpleDateFormat(DATE_FORMAT).parse(v.getPosterInfo().getOriginalAirDate());
-				SimpleDateFormat format = new SimpleDateFormat(DISPLAY_DATE_FORMAT);
+				Date airDate = new SimpleDateFormat(DATE_FORMAT).parse(v
+						.getPosterInfo().getOriginalAirDate());
+				SimpleDateFormat format = new SimpleDateFormat(
+						DISPLAY_DATE_FORMAT);
 				String formatedDate = format.format(airDate);
 				vte.setVisibility(View.VISIBLE);
 				vte.setText("Aired " + formatedDate);
 			} catch (ParseException ex) {
 				Log.i(getClass().getName(), "Unable to parse date");
 			}
-					
+
 		}
-		
+
 	}
-	
+
 	private void createMovieMetaData(SerenityPosterImageView v) {
 		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
 		VideoContentInfo mi = mpiv.getPosterInfo();
-		TextView ty  = (TextView) context.findViewById(R.id.video_year);
-		TextView tg  = (TextView) context.findViewById(R.id.video_genre);
-		TextView tw  = (TextView) context.findViewById(R.id.video_writers);
-		TextView td  = (TextView) context.findViewById(R.id.video_directors);
+		TextView ty = (TextView) context.findViewById(R.id.video_year);
+		TextView tg = (TextView) context.findViewById(R.id.video_genre);
+		TextView tw = (TextView) context.findViewById(R.id.video_writers);
+		TextView td = (TextView) context.findViewById(R.id.video_directors);
 
 		ty.setText(DEFAULT_UNKNOWN);
 		tg.setText(DEFAULT_UNKNOWN);
 		tw.setText(DEFAULT_UNKNOWN);
 		td.setText(DEFAULT_UNKNOWN);
-		
+
 		if (mi.getYear() != null) {
 			ty.setText(mi.getYear());
 		}
-		
+
 		if (mi.getGenres() != null) {
 			StringBuilder details = new StringBuilder();
 			for (String genre : mi.getGenres()) {
@@ -156,27 +156,26 @@ public class EpisodePosterOnItemSelectedListener implements
 			}
 			tg.setText(details.toString());
 		}
-		
+
 		if (mi.getWriters() != null) {
 			StringBuilder details = new StringBuilder();
 			for (String writers : mi.getWriters()) {
 				details.append(writers);
 				details.append(CRLF);
 			}
-			tw.setText(details.toString());			
+			tw.setText(details.toString());
 		}
-		
+
 		if (mi.getDirectors() != null) {
 			StringBuilder details = new StringBuilder();
 			for (String directors : mi.getDirectors()) {
 				details.append(directors);
 				details.append(CRLF);
 			}
-			td.setText(details.toString());			
+			td.setText(details.toString());
 		}
-		
+
 	}
-	
 
 	/**
 	 * Change the background image of the activity.
@@ -190,10 +189,11 @@ public class EpisodePosterOnItemSelectedListener implements
 		if (ei.getBackgroundURL() == null) {
 			return;
 		}
-		
-		imageLoader.loadImage(ei.getBackgroundURL(), bgImageSize, new SerenityBackgroundLoaderListener(bgLayout, R.drawable.tvshows));
-	}
 
+		imageLoader.loadImage(ei.getBackgroundURL(), bgImageSize,
+				new SerenityBackgroundLoaderListener(bgLayout,
+						R.drawable.tvshows));
+	}
 
 	/**
 	 * Create the images representing info such as sound, ratings, etc based on
@@ -206,45 +206,46 @@ public class EpisodePosterOnItemSelectedListener implements
 				.findViewById(R.id.movieInfoGraphicLayout);
 		infographicsView.removeAllViews();
 		VideoContentInfo epi = v.getPosterInfo();
-		
+
 		ImageView viewed = new ImageView(context);
 		viewed.setScaleType(ScaleType.FIT_XY);
 		viewed.setLayoutParams(new LayoutParams(80, 58));
 		viewed.setId(WATCHED_VIEW_ID);
-		
+
 		if (epi.getViewCount() > 0) {
 			viewed.setImageResource(R.drawable.watched_small);
 		} else {
 			viewed.setImageResource(R.drawable.unwatched_small);
 		}
 		infographicsView.addView(viewed);
-		
-		ImageInfographicUtils imageUtils = new ImageInfographicUtils(158, 58);
-		
 
-		ImageView acv = imageUtils.createAudioCodecImage(epi.getAudioCodec(), v.getContext());		
+		ImageInfographicUtils imageUtils = new ImageInfographicUtils(158, 58);
+
+		ImageView acv = imageUtils.createAudioCodecImage(epi.getAudioCodec(),
+				v.getContext());
 		if (acv != null) {
 			infographicsView.addView(acv);
 		}
-		
-		ImageView achannelsv = imageUtils.createAudioChannlesImage(epi.getAudioChannels(), v.getContext());		
+
+		ImageView achannelsv = imageUtils.createAudioChannlesImage(
+				epi.getAudioChannels(), v.getContext());
 		if (achannelsv != null) {
 			infographicsView.addView(achannelsv);
 		}
-		
 
-		ImageView resv = imageUtils.createVideoResolutionImage(epi.getVideoResolution(), v.getContext());
+		ImageView resv = imageUtils.createVideoResolutionImage(
+				epi.getVideoResolution(), v.getContext());
 		if (resv != null) {
 			infographicsView.addView(resv);
 		}
-		
+
 		ImageInfographicUtils imageUtilsAR = new ImageInfographicUtils(100, 58);
-		ImageView aspectv = imageUtilsAR.createAspectRatioImage(epi.getAspectRatio(), v.getContext());
+		ImageView aspectv = imageUtilsAR.createAspectRatioImage(
+				epi.getAspectRatio(), v.getContext());
 		if (aspectv != null) {
 			infographicsView.addView(aspectv);
-		}		
+		}
 	}
-
 
 	public void onNothingSelected(SerenityAdapterView<?> av) {
 

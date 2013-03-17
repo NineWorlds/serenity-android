@@ -38,25 +38,27 @@ import android.os.RemoteException;
 import android.util.Log;
 
 /**
- * Retrieves the available secondary categories for filtering and returns them to the
- * calling service.
+ * Retrieves the available secondary categories for filtering and returns them
+ * to the calling service.
  * 
  * @author dcarver
- *
+ * 
  */
 public class MovieSecondaryCategoryRetrievalIntentService extends
 		AbstractPlexRESTIntentService {
-	
+
 	private ArrayList<SecondaryCategoryInfo> secondaryCategories;
 	private String key;
-	
-	
+
 	public MovieSecondaryCategoryRetrievalIntentService() {
 		super("MovieSecondaryCategoryRetrievalIntentService");
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.services.AbstractPlexRESTIntentService#sendMessageResults(android.content.Intent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.services.
+	 * AbstractPlexRESTIntentService#sendMessageResults(android.content.Intent)
 	 */
 	@Override
 	public void sendMessageResults(Intent intent) {
@@ -80,10 +82,11 @@ public class MovieSecondaryCategoryRetrievalIntentService extends
 		populateSecondaryCategories(category);
 		sendMessageResults(intent);
 	}
-	
+
 	protected void populateSecondaryCategories(String categoryKey) {
 		try {
-			MediaContainer mediaContainer = factory.retrieveSections(key, categoryKey);
+			MediaContainer mediaContainer = factory.retrieveSections(key,
+					categoryKey);
 			List<Directory> dirs = mediaContainer.getDirectories();
 			secondaryCategories = new ArrayList<SecondaryCategoryInfo>();
 			for (Directory dir : dirs) {

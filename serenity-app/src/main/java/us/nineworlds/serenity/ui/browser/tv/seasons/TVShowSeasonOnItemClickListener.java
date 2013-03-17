@@ -35,27 +35,31 @@ import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class TVShowSeasonOnItemClickListener implements OnItemClickListener {
-	
+
 	private Activity context;
-	
+
 	/**
 	 * 
 	 */
 	public TVShowSeasonOnItemClickListener(Context c) {
-		context = (Activity)c;
+		context = (Activity) c;
 	}
 
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
+	 * .AdapterView, android.view.View, int, long)
 	 */
-	public void onItemClick(AdapterView<?> av, View view, int position, long arg3) {
-		
+	public void onItemClick(AdapterView<?> av, View view, int position,
+			long arg3) {
+
 		TVShowSeasonImageView tsi = (TVShowSeasonImageView) view;
-		
-		
+
 		Intent i = new Intent(context, EpisodeBrowserActivity.class);
 		i.putExtra("key", tsi.getPosterInfo().getKey());
 		context.startActivityForResult(i, 0);

@@ -37,15 +37,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.widget.BaseAdapter;
 
-
 /**
- * An abstract class for handling the creation of video content
- * for use during browsing.  Implementations need to implement the
- * abstract methods to provide functionality for retrieval and 
- * display of video content when browsing the episodes.
+ * An abstract class for handling the creation of video content for use during
+ * browsing. Implementations need to implement the abstract methods to provide
+ * functionality for retrieval and display of video content when browsing the
+ * episodes.
  * 
  * @author dcarver
- *
+ * 
  */
 public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
@@ -58,50 +57,55 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	protected Handler handler;
 	protected String key;
 	protected String category;
-	
-	
+
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
-		context = (Activity)c;
+		context = (Activity) c;
 		posterList = new ArrayList<VideoContentInfo>();
 		imageLoader = SerenityApplication.getImageLoader();
 		this.key = key;
 		fetchDataFromService();
 	}
 
-	public AbstractPosterImageGalleryAdapter(Context c, String key, String category) {
-		context = (Activity)c;
+	public AbstractPosterImageGalleryAdapter(Context c, String key,
+			String category) {
+		context = (Activity) c;
 		this.key = key;
 		this.category = category;
 		posterList = new ArrayList<VideoContentInfo>();
-		
+
 		imageLoader = SerenityApplication.getImageLoader();
 		fetchDataFromService();
 	}
-	
+
 	protected abstract void fetchDataFromService();
-	
-		
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getCount()
 	 */
 	public int getCount() {
-		
+
 		return posterList.size();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getItem(int)
 	 */
 	public Object getItem(int position) {
-		
+
 		return posterList.get(position);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
 	public long getItemId(int position) {
 		return position;
 	}
-	
+
 }

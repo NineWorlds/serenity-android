@@ -69,13 +69,14 @@ public class MoviePosterImageGalleryAdapter extends
 
 		VideoContentInfo pi = posterList.get(position);
 		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
-		//mpiv.setBackgroundColor(Color.BLACK);
+		// mpiv.setBackgroundColor(Color.BLACK);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(200,
 				android.view.ViewGroup.LayoutParams.FILL_PARENT));
-		imageLoader.displayImage(pi.getPosterURL(), mpiv, SerenityApplication.getReflectiveOptions());
-		
+		imageLoader.displayImage(pi.getPosterURL(), mpiv,
+				SerenityApplication.getReflectiveOptions());
+
 		return mpiv;
 	}
 
@@ -88,13 +89,14 @@ public class MoviePosterImageGalleryAdapter extends
 		intent.putExtra("category", category);
 		context.startService(intent);
 	}
-	
+
 	private static class MoviePosterHandler extends Handler {
 
 		@Override
 		public void handleMessage(Message msg) {
 			posterList = (List<VideoContentInfo>) msg.obj;
-			SerenityGallery posterGallery = (SerenityGallery) context.findViewById(R.id.moviePosterGallery);
+			SerenityGallery posterGallery = (SerenityGallery) context
+					.findViewById(R.id.moviePosterGallery);
 			notifyAdapter.notifyDataSetChanged();
 			posterGallery.requestFocus();
 			pd.dismiss();

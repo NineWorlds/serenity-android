@@ -23,7 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
@@ -84,14 +83,14 @@ public class TVShowSeasonOnItemSelectedListener implements
 		v.setBackgroundColor(Color.CYAN);
 		v.setPadding(5, 5, 5, 5);
 		v.refreshDrawableState();
-		
-		TextView seasonsTitle = (TextView) context.findViewById(R.id.tvShowSeasonsTitle);
+
+		TextView seasonsTitle = (TextView) context
+				.findViewById(R.id.tvShowSeasonsTitle);
 		seasonsTitle.setText(mpiv.getPosterInfo().getTitle());
 
 		changeBackgroundImage(v);
 
 	}
-
 
 	/**
 	 * Change the background image of the activity.
@@ -101,12 +100,14 @@ public class TVShowSeasonOnItemSelectedListener implements
 	 * @param v
 	 */
 	private void changeBackgroundImage(View v) {
-		
+
 		TVShowSeasonImageView mpiv = (TVShowSeasonImageView) v;
 		SeriesContentInfo mi = mpiv.getPosterInfo();
 
 		if (mi.getBackgroundURL() != null) {
-			imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize, new SerenityBackgroundLoaderListener(bgLayout, R.drawable.tvshows));
+			imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
+					new SerenityBackgroundLoaderListener(bgLayout,
+							R.drawable.tvshows));
 		}
 	}
 
@@ -120,5 +121,5 @@ public class TVShowSeasonOnItemSelectedListener implements
 	public void onNothingSelected(AdapterView<?> arg0) {
 
 	}
-	
+
 }

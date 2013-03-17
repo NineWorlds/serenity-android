@@ -108,7 +108,7 @@ public class DirectoryChooserDialog {
 				m_subdirs, new DirectoryOnClickListener());
 
 		dialogBuilder.setPositiveButton("OK", new OnClickListener() {
-			
+
 			public void onClick(DialogInterface dialog, int which) {
 				// Current directory chosen
 				if (m_chosenDirectoryListener != null) {
@@ -118,8 +118,7 @@ public class DirectoryChooserDialog {
 				}
 			}
 		}).setNegativeButton("Cancel", null);
-		
-		
+
 		final AlertDialog dirsDialog = dialogBuilder.create();
 
 		dirsDialog.setOnKeyListener(new OnKeyListener() {
@@ -186,7 +185,8 @@ public class DirectoryChooserDialog {
 	private AlertDialog.Builder createDirectoryChooserDialog(String title,
 			List<String> listItems,
 			DialogInterface.OnClickListener onClickListener) {
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(m_context, android.R.style.Theme_Holo_Dialog);
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(m_context,
+				android.R.style.Theme_Holo_Dialog);
 
 		// Create custom view for AlertDialog title containing
 		// current directory TextView and possible 'New folder' button.
@@ -211,7 +211,7 @@ public class DirectoryChooserDialog {
 				LayoutParams.WRAP_CONTENT));
 		newDirButton.setText("New folder");
 		newDirButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			public void onClick(View v) {
 				final EditText input = new EditText(m_context);
 

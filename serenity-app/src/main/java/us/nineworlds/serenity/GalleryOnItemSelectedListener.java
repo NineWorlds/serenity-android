@@ -32,12 +32,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class GalleryOnItemSelectedListener implements
-		OnItemSelectedListener {
-	
+public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
+
 	private View mainView;
 	private MainMenuTextView preSelected;
-	
+
 	/**
 	 * 
 	 */
@@ -45,15 +44,19 @@ public class GalleryOnItemSelectedListener implements
 		mainView = v;
 	}
 
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android.widget.AdapterView, android.view.View, int, long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
+	 * .widget.AdapterView, android.view.View, int, long)
 	 */
 	public void onItemSelected(AdapterView<?> arg0, View v, int position,
 			long arg3) {
 		if (v instanceof MainMenuTextView) {
 			MainMenuTextView tv = (MainMenuTextView) v;
 			mainView.setBackgroundResource(tv.getBackgroundImageId());
-			//mainView.refreshDrawableState();
+			// mainView.refreshDrawableState();
 
 			tv.setTextSize(tv.getTextSize() + 20);
 			tv.setTypeface(null, Typeface.BOLD);
@@ -66,15 +69,18 @@ public class GalleryOnItemSelectedListener implements
 			}
 			preSelected = tv;
 		}
-		
+
 	}
 
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android.widget.AdapterView)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android
+	 * .widget.AdapterView)
 	 */
 	public void onNothingSelected(AdapterView<?> arg0) {
-		
-	}
 
+	}
 
 }

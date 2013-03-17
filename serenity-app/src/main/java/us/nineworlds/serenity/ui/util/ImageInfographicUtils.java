@@ -33,21 +33,20 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 
-
 /**
  * @author dcarver
- *
+ * 
  */
 public class ImageInfographicUtils {
-	
+
 	private int width;
 	private int height;
-	
+
 	public ImageInfographicUtils(int width, int height) {
 		this.width = width;
 		this.height = height;
 	}
-	
+
 	public ImageView createAudioCodecImage(String codec, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
@@ -141,7 +140,7 @@ public class ImageInfographicUtils {
 		return null;
 
 	}
-	
+
 	public ImageView createVideoResolutionImage(String res, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
@@ -166,7 +165,7 @@ public class ImageInfographicUtils {
 		return null;
 
 	}
-	
+
 	public ImageView createAspectRatioImage(String ratio, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
@@ -181,22 +180,22 @@ public class ImageInfographicUtils {
 			v.setImageResource(R.drawable.aspect_1_66);
 			return v;
 		}
-		
+
 		if ("1.78".equals(ratio)) {
 			v.setImageResource(R.drawable.aspect_1_78);
 			return v;
 		}
-		
+
 		if ("1.85".equals(ratio)) {
 			v.setImageResource(R.drawable.aspect_1_85);
 			return v;
 		}
-		
+
 		if ("2.20".equals(ratio)) {
 			v.setImageResource(R.drawable.aspect_2_20);
 			return v;
 		}
-		
+
 		if ("2.35".equals(ratio)) {
 			v.setImageResource(R.drawable.aspect_2_35);
 			return v;
@@ -204,9 +203,10 @@ public class ImageInfographicUtils {
 
 		return null;
 
-	}	
-	
-	public ImageView createContentRatingImage(String contentRating, Context context) {
+	}
+
+	public ImageView createContentRatingImage(String contentRating,
+			Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
 		v.setLayoutParams(new LayoutParams(width, height));
@@ -240,7 +240,7 @@ public class ImageInfographicUtils {
 		return v;
 
 	}
-	
+
 	public ImageView createVideoCodec(String codec, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
@@ -260,7 +260,7 @@ public class ImageInfographicUtils {
 			v.setImageResource(R.drawable.h264);
 			return v;
 		}
-		
+
 		if ("mpeg2".equalsIgnoreCase(codec)) {
 			v.setImageResource(R.drawable.mpeg2video);
 			return v;
@@ -279,11 +279,11 @@ public class ImageInfographicUtils {
 		return null;
 
 	}
-	
+
 	public ImageView createTVContentRating(String contentRating, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(width, height));	
+		v.setLayoutParams(new LayoutParams(width, height));
 
 		if ("G".equals(contentRating)) {
 			v.setImageResource(R.drawable.mpaa_general);
@@ -313,7 +313,7 @@ public class ImageInfographicUtils {
 		v.setImageResource(R.drawable.mpaa_notrated);
 		return v;
 	}
-	
+
 	public ImageView createAudioChannlesImage(String channels, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
@@ -346,21 +346,20 @@ public class ImageInfographicUtils {
 
 		return null;
 	}
-	
+
 	public static void setWatchedCount(SerenityPosterImageView epiv, Activity a) {
-		ImageView watchedView = (ImageView)a.findViewById(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
+		ImageView watchedView = (ImageView) a
+				.findViewById(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
 		watchedView.setImageResource(R.drawable.watched_small);
 		int watchedCount = epiv.getPosterInfo().getViewCount();
 		epiv.getPosterInfo().setViewCount(watchedCount + 1);
 	}
-	
+
 	public static void setUnwatched(SerenityPosterImageView epiv, Activity a) {
-		ImageView watchedView = (ImageView)a.findViewById(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
+		ImageView watchedView = (ImageView) a
+				.findViewById(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
 		watchedView.setImageResource(R.drawable.unwatched_small);
 		epiv.getPosterInfo().setViewCount(0);
 	}
-	
-	
-	
+
 }
-	

@@ -35,26 +35,26 @@ import android.widget.Gallery;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class TVShowSeasonBrowserActivity extends SerenityActivity {
-	
+
 	private Gallery tvShowSeasonsGallery;
 	private View tvShowSeasonsMainView;
 	private boolean restarted_state = false;
 	private String key;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tvbrowser_show_seasons);
-		
+
 		key = getIntent().getExtras().getString("key");
-		
+
 		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
 		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -64,16 +64,22 @@ public class TVShowSeasonBrowserActivity extends SerenityActivity {
 		}
 		restarted_state = false;
 	}
-	
+
 	protected void setupSeasons() {
 
-		tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(this, key));
+		tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(
+				this, key));
 		tvShowSeasonsGallery
-				.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this));
-		tvShowSeasonsGallery.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this));
+				.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(
+						tvShowSeasonsMainView, this));
+		tvShowSeasonsGallery
+				.setOnItemClickListener(new TVShowSeasonOnItemClickListener(
+						this));
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -81,8 +87,10 @@ public class TVShowSeasonBrowserActivity extends SerenityActivity {
 		super.onStop();
 		EasyTracker.getInstance().activityStop(this);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onRestart()
 	 */
 	@Override

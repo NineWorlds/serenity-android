@@ -52,29 +52,31 @@ import android.widget.TextView;
 /**
  * 
  * @author dcarver
- *
+ * 
  */
-public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
-	
+public class TVShowBannerImageGalleryAdapter extends
+		AbstractPosterImageGalleryAdapter {
+
 	private static List<TVShowSeriesInfo> tvShowList = null;
-	
+
 	private String key;
 	private static ProgressDialog pd;
-	
-	public TVShowBannerImageGalleryAdapter(Context c, String key, String category) {
+
+	public TVShowBannerImageGalleryAdapter(Context c, String key,
+			String category) {
 		super(c, key, category);
 		tvShowList = new ArrayList<TVShowSeriesInfo>();
-		
+
 		imageLoader = SerenityApplication.getImageLoader();
 		this.key = key;
-		
+
 		try {
 			fetchData();
 		} catch (Exception ex) {
 			Log.e(getClass().getName(), "Error connecting to plex.", ex);
 		}
 	}
-	
+
 	protected void fetchData() {
 		pd = ProgressDialog.show(context, "", "Retrieving Shows.");
 		handler = new ShowRetrievalHandler();
@@ -85,34 +87,42 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 		intent.putExtra("category", category);
 		context.startService(intent);
 	}
-	
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getCount()
 	 */
 	public int getCount() {
 		return tvShowList.size();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getItem(int)
 	 */
 	public Object getItem(int position) {
 		return tvShowList.get(position);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
 	public long getItemId(int position) {
 		return position;
 	}
 
-	/* (non-Javadoc)
-	 * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getView(int, android.view.View,
+	 * android.view.ViewGroup)
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
+
 		AbstractSeriesContentInfo pi = tvShowList.get(position);
 		TVShowBannerImageView mpiv = new TVShowBannerImageView(context, pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
@@ -120,38 +130,45 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 		int width = 768;
 		int height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
-		
+
 		imageLoader.displayImage(pi.getPosterURL(), mpiv);
 		return mpiv;
 	}
-	
+
 	private class ShowRetrievalHandler extends Handler {
-		
+
 		@Override
 		public void handleMessage(Message msg) {
-			
+
 			tvShowList = (List<TVShowSeriesInfo>) msg.obj;
-			Gallery posterGallery = (Gallery) context.findViewById(R.id.tvShowBannerGallery);
+			Gallery posterGallery = (Gallery) context
+					.findViewById(R.id.tvShowBannerGallery);
 			if (tvShowList != null) {
 				if (tvShowList.isEmpty()) {
-					Toast.makeText(context, "No Shows found for the category: " + category, Toast.LENGTH_LONG).show();
+					Toast.makeText(context,
+							"No Shows found for the category: " + category,
+							Toast.LENGTH_LONG).show();
 				}
-				TextView tv = (TextView)context.findViewById(R.id.tvShowItemCount);
+				TextView tv = (TextView) context
+						.findViewById(R.id.tvShowItemCount);
 				tv.setText(Integer.toString(tvShowList.size()) + " Item(s)");
-			}			
+			}
 			notifyDataSetChanged();
-			posterGallery.requestFocus();			
-			pd.dismiss();			
+			posterGallery.requestFocus();
+			pd.dismiss();
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.ui.adapters.AbstractPosterImageGalleryAdapter#fetchDataFromService()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.ui.adapters.
+	 * AbstractPosterImageGalleryAdapter#fetchDataFromService()
 	 */
 	@Override
 	protected void fetchDataFromService() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

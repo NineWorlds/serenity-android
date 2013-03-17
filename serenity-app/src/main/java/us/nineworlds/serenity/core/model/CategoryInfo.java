@@ -27,17 +27,16 @@ package us.nineworlds.serenity.core.model;
  * Represents a set of Categories
  * 
  * @author dcarver
- *
+ * 
  */
 public class CategoryInfo {
 
 	private int level;
-	
+
 	private String category;
-	
+
 	private String categoryDetail;
-	
-	
+
 	public int getLevel() {
 		return level;
 	}
@@ -66,5 +65,5 @@ public class CategoryInfo {
 	public String toString() {
 		return categoryDetail;
 	}
-		
+
 }

@@ -43,42 +43,49 @@ import android.widget.ImageView;
 
 /**
  * @author dcarver
- *
+ * 
  */
-public class PlexVideoOnItemClickListener  implements OnItemClickListener {
+public class PlexVideoOnItemClickListener implements OnItemClickListener {
 
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
+	 * .AdapterView, android.view.View, int, long)
 	 */
-	public void onItemClick(SerenityAdapterView<?> av, View v, int arg2, long arg3) {
+	public void onItemClick(SerenityAdapterView<?> av, View v, int arg2,
+			long arg3) {
 		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
-		
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(v.getContext());
+
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(v.getContext());
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
-		
+
 		if (externalPlayer) {
 			String url = mpiv.getPosterInfo().getDirectPlayUrl();
 			Intent vpIntent = new Intent(Intent.ACTION_VIEW);
 			vpIntent.setDataAndType(Uri.parse(url), "video/*");
-			
+
 			mxVideoPlayerOptions(mpiv, vpIntent);
 			vimuVideoPlayerOptions(mpiv, vpIntent);
-			
+
 			Activity activity = (Activity) mpiv.getContext();
 			activity.startActivity(vpIntent);
 			new WatchedEpisodeAsyncTask().execute(mpiv.getPosterInfo().id());
 			updatedWatchedCount(mpiv, activity);
 			return;
 		}
-		
+
 		VideoContentInfo video = mpiv.getPosterInfo();
-		
+
 		String url = video.getDirectPlayUrl();
-		Intent vpIntent = new Intent(mpiv.getContext(), SerenitySurfaceViewVideoActivity.class);
+		Intent vpIntent = new Intent(mpiv.getContext(),
+				SerenitySurfaceViewVideoActivity.class);
 		vpIntent.putExtra("videoUrl", url);
 		vpIntent.putExtra("title", video.getTitle());
 		vpIntent.putExtra("summary", video.getPlotSummary());
-		
+
 		if (video.getParentPosterURL() != null) {
 			vpIntent.putExtra("posterUrl", video.getParentPosterURL());
 		} else {
@@ -91,25 +98,24 @@ public class PlexVideoOnItemClickListener  implements OnItemClickListener {
 		vpIntent.putExtra("videoFormat", video.getVideoCodec());
 		vpIntent.putExtra("audioChannels", video.getAudioChannels());
 		vpIntent.putExtra("resumeOffset", video.getResumeOffset());
-		
-		
+
 		Activity a = (Activity) mpiv.getContext();
 		a.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
 		updatedWatchedCount(mpiv, a);
 	}
-	
+
 	/**
 	 * @param epiv
 	 * @param a
 	 */
 	protected void updatedWatchedCount(SerenityPosterImageView epiv, Activity a) {
-		ImageView watchedView = (ImageView)a.findViewById(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
+		ImageView watchedView = (ImageView) a
+				.findViewById(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
 		watchedView.setImageResource(R.drawable.watched_small);
 		int watchedCount = epiv.getPosterInfo().getViewCount();
 		epiv.getPosterInfo().setViewCount(watchedCount + 1);
 	}
-	
-	
+
 	/**
 	 * @param epiv
 	 * @param vpIntent

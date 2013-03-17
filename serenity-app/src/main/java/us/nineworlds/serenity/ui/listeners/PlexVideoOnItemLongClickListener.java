@@ -190,13 +190,14 @@ public class PlexVideoOnItemLongClickListener implements
 		DownloadManager downloadManager;
 		downloadManager = (DownloadManager) context
 				.getSystemService(serviceString);
-		
+
 		Uri uri = Uri.parse(info.getDirectPlayUrl());
 		DownloadManager.Request request = new Request(uri);
 		request.setDescription(info.getTitle());
 		request.setAllowedNetworkTypes(Request.NETWORK_WIFI);
 		request.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-		File file = new File(destination, info.getTitle() + "." + info.getContainer());
+		File file = new File(destination, info.getTitle() + "."
+				+ info.getContainer());
 		request.setDestinationUri(Uri.parse(file.toURI().toString()));
 		request.setShowRunningNotification(true);
 		long reference = downloadManager.enqueue(request);

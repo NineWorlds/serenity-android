@@ -105,7 +105,8 @@ public class CategorySpinnerOnItemSelectedListener implements
 					|| item.getCategory().equals("recentlyViewed")
 					|| item.getCategory().equals("onDeck")) {
 				Intent i = new Intent(context, EpisodeBrowserActivity.class);
-				i.putExtra("key", "/library/sections/" + key + "/" + item.getCategory());
+				i.putExtra("key",
+						"/library/sections/" + key + "/" + item.getCategory());
 				context.startActivityForResult(i, 0);
 			} else {
 				secondarySpinner.setVisibility(View.INVISIBLE);

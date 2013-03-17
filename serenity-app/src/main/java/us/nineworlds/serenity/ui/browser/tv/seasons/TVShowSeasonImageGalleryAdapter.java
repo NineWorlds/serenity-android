@@ -54,70 +54,80 @@ import android.widget.TextView;
 /**
  * 
  * @author dcarver
- *
+ * 
  */
 public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
-	
+
 	private static List<TVShowSeriesInfo> seasonList = null;
 	private static Activity context;
-	
+
 	private ImageLoader imageLoader;
 	private static ProgressDialog pd;
 	private Handler handler;
 	private String key;
 	private static TVShowSeasonImageGalleryAdapter notifyAdapter;
-	
+
 	public TVShowSeasonImageGalleryAdapter(Context c, String key) {
-		context = (Activity)c;
+		context = (Activity) c;
 		this.key = key;
-		
+
 		seasonList = new ArrayList<TVShowSeriesInfo>();
-		
+
 		imageLoader = SerenityApplication.getImageLoader();
 		notifyAdapter = this;
-		
+
 		fetchData();
 	}
-	
+
 	protected void fetchData() {
 		pd = ProgressDialog.show(context, "", "Retrieving Seasons");
 		handler = new ShowSeasonRetrievalHandler();
 		Messenger messenger = new Messenger(handler);
-		Intent intent = new Intent(context, ShowSeasonRetrievalIntentService.class);
+		Intent intent = new Intent(context,
+				ShowSeasonRetrievalIntentService.class);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("key", key);
 		context.startService(intent);
-		
+
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getCount()
 	 */
 	public int getCount() {
-		
+
 		return seasonList.size();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getItem(int)
 	 */
 	public Object getItem(int position) {
-		
+
 		return seasonList.get(position);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
 	public long getItemId(int position) {
 		return position;
 	}
 
-	/* (non-Javadoc)
-	 * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getView(int, android.view.View,
+	 * android.view.ViewGroup)
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
+
 		SeriesContentInfo pi = seasonList.get(position);
 		TVShowSeasonImageView mpiv = new TVShowSeasonImageView(context, pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
@@ -125,30 +135,32 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		int width = 200;
 		int height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
-		
+
 		imageLoader.displayImage(pi.getPosterURL(), mpiv);
 		return mpiv;
 	}
-	
+
 	private static class ShowSeasonRetrievalHandler extends Handler {
-		
+
 		@Override
 		public void handleMessage(Message msg) {
 			seasonList = (List<TVShowSeriesInfo>) msg.obj;
-			
+
 			if (seasonList != null) {
 				if (!seasonList.isEmpty()) {
-					TextView titleView = (TextView)context.findViewById(R.id.tvShowSeasonsDetailText);
+					TextView titleView = (TextView) context
+							.findViewById(R.id.tvShowSeasonsDetailText);
 					titleView.setText(seasonList.get(0).getParentShowTitle());
-					TextView textView = (TextView) context.findViewById(R.id.tvShowSeasonsItemCount);
-					textView.setText(Integer.toString(seasonList.size()) + " Item(s)");
-					
+					TextView textView = (TextView) context
+							.findViewById(R.id.tvShowSeasonsItemCount);
+					textView.setText(Integer.toString(seasonList.size())
+							+ " Item(s)");
+
 				}
 				notifyAdapter.notifyDataSetChanged();
 				pd.dismiss();
 			}
-			
-			
+
 		}
 	}
 

@@ -28,14 +28,14 @@ import android.widget.TextView;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class MainMenuTextView extends TextView {
 
 	private int backgroundId;
 	private String libraryKey;
 	private String activityType;
-	
+
 	public String getActivityType() {
 		return activityType;
 	}
@@ -50,12 +50,12 @@ public class MainMenuTextView extends TextView {
 	public MainMenuTextView(Context context) {
 		super(context);
 	}
-	
+
 	public MainMenuTextView(Context context, int backgroundID) {
 		super(context);
 		this.backgroundId = backgroundID;
 	}
-	
+
 	public String getLibraryKey() {
 		return libraryKey;
 	}
@@ -67,6 +67,5 @@ public class MainMenuTextView extends TextView {
 	public int getBackgroundImageId() {
 		return backgroundId;
 	}
-	
-	
+
 }

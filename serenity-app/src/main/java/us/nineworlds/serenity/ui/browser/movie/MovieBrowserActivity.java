@@ -44,24 +44,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class MovieBrowserActivity extends SerenityActivity {
-	
+
 	private static String key;
 	private static Spinner categorySpinner;
 	private boolean restarted_state = false;
 	private Handler categoryHandler;
-	
+
 	private static Activity context;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
-		setContentView(R.layout.activity_movie_browser);		
+		setContentView(R.layout.activity_movie_browser);
 	}
-	
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -69,7 +67,8 @@ public class MovieBrowserActivity extends SerenityActivity {
 		if (restarted_state == false) {
 			categoryHandler = new CategoryHandler();
 			Messenger messenger = new Messenger(categoryHandler);
-			Intent categoriesIntent = new Intent(this, MovieCategoryRetrievalIntentService.class);
+			Intent categoriesIntent = new Intent(this,
+					MovieCategoryRetrievalIntentService.class);
 			categoriesIntent.putExtra("key", key);
 			categoriesIntent.putExtra("MESSENGER", messenger);
 			startService(categoriesIntent);
@@ -78,8 +77,9 @@ public class MovieBrowserActivity extends SerenityActivity {
 		restarted_state = false;
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -87,7 +87,6 @@ public class MovieBrowserActivity extends SerenityActivity {
 		super.onStop();
 		EasyTracker.getInstance().activityStop(this);
 	}
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,8 +94,10 @@ public class MovieBrowserActivity extends SerenityActivity {
 		getMenuInflater().inflate(R.menu.activity_movie_browser, menu);
 		return true;
 	}
-		
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onRestart()
 	 */
 	@Override
@@ -104,35 +105,42 @@ public class MovieBrowserActivity extends SerenityActivity {
 		super.onRestart();
 		restarted_state = true;
 	}
-	
+
 	private static class CategoryHandler extends Handler {
-		
+
 		private ArrayList<CategoryInfo> categories;
-		
-		/* (non-Javadoc)
+
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see android.os.Handler#handleMessage(android.os.Message)
 		 */
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.obj != null) {
-				categories = (ArrayList<CategoryInfo>)msg.obj;
+				categories = (ArrayList<CategoryInfo>) msg.obj;
 				setupMovieBrowser();
 			}
 		}
-		
+
 		/**
-		 * Setup the Gallery and Category spinners 
+		 * Setup the Gallery and Category spinners
 		 */
 		protected void setupMovieBrowser() {
-			ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(context, R.layout.serenity_spinner_textview, categories);
-			spinnerArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
-			
-			categorySpinner =(Spinner) context.findViewById(R.id.movieCategoryFilter);
+			ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
+					context, R.layout.serenity_spinner_textview, categories);
+			spinnerArrayAdapter
+					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+
+			categorySpinner = (Spinner) context
+					.findViewById(R.id.movieCategoryFilter);
 			categorySpinner.setVisibility(View.VISIBLE);
 			categorySpinner.setAdapter(spinnerArrayAdapter);
-			categorySpinner.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener("all", key));
+			categorySpinner
+					.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+							"all", key));
 			categorySpinner.requestFocus();
 		}
-		
-	}	
+
+	}
 }

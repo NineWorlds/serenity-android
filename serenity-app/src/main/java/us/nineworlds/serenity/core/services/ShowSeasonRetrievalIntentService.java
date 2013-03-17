@@ -31,7 +31,6 @@ import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -43,7 +42,8 @@ import android.util.Log;
  * @author dcarver
  * 
  */
-public class ShowSeasonRetrievalIntentService extends AbstractPlexRESTIntentService {
+public class ShowSeasonRetrievalIntentService extends
+		AbstractPlexRESTIntentService {
 
 	private List<TVShowSeriesInfo> seriesList = null;
 	protected String key;
@@ -82,43 +82,44 @@ public class ShowSeasonRetrievalIntentService extends AbstractPlexRESTIntentServ
 			mc = factory.retrieveSeasons(key);
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
-			Log.e(getClass().getName(),"Unable to talk to server: ", ex);
+			Log.e(getClass().getName(), "Unable to talk to server: ", ex);
 		} catch (Exception e) {
-			Log.e(getClass().getName(),"Oops.", e);
+			Log.e(getClass().getName(), "Oops.", e);
 		}
-		
-		if (mc == null ) {
+
+		if (mc == null) {
 			return;
 		}
-		
+
 		List<Directory> shows = mc.getDirectories();
 		for (Directory show : shows) {
-			TVShowSeriesInfo  mpi = new TVShowSeriesInfo();
-			
+			TVShowSeriesInfo mpi = new TVShowSeriesInfo();
+
 			if (mc.getTitle2() != null) {
 				mpi.setParentShowTitle(mc.getTitle2());
 			}
-			
-			String burl = baseUrl + ":/resources/show-fanart.jpg"; 
+
+			String burl = baseUrl + ":/resources/show-fanart.jpg";
 			if (mc.getArt() != null) {
 				burl = baseUrl + mc.getArt().replaceFirst("/", "");
 			}
 			mpi.setBackgroundURL(burl);
-			
+
 			String turl = "";
 			if (show.getThumb() != null) {
 				turl = baseUrl + show.getThumb().replaceFirst("/", "");
 			}
 			mpi.setPosterURL(turl);
 			mpi.setKey(show.getKey());
-							
-			mpi.setTitle(show.getTitle());			
-			
-		    mpi.setShowsWatched(show.getViewedLeafCount());
-		    int totalEpisodes = Integer.parseInt(show.getLeafCount());
-		    int unwatched = totalEpisodes - Integer.parseInt(show.getViewedLeafCount());
-		    mpi.setShowsUnwatched(Integer.toString(unwatched));
-		    
+
+			mpi.setTitle(show.getTitle());
+
+			mpi.setShowsWatched(show.getViewedLeafCount());
+			int totalEpisodes = Integer.parseInt(show.getLeafCount());
+			int unwatched = totalEpisodes
+					- Integer.parseInt(show.getViewedLeafCount());
+			mpi.setShowsUnwatched(Integer.toString(unwatched));
+
 			seriesList.add(mpi);
 		}
 	}

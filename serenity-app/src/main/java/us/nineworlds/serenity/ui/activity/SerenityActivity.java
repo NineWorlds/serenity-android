@@ -23,16 +23,12 @@
 
 package us.nineworlds.serenity.ui.activity;
 
-
 import android.app.Activity;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public abstract class SerenityActivity extends Activity {
-	
-
-	
 
 }

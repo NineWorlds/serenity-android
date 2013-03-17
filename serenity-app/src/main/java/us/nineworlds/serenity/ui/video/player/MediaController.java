@@ -23,7 +23,6 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -115,39 +114,37 @@ public class MediaController extends FrameLayout {
 	private String audioFormat;
 	private String audioChannels;
 	private AudioManager mAM;
-	
-	private ImageLoader imageLoader;
 
+	private ImageLoader imageLoader;
 
 	public MediaController(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mRoot = this;
 		mFromXml = true;
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-        .cacheInMemory()
-        .cacheOnDisc()
-        .bitmapConfig(Bitmap.Config.RGB_565)
-        .showImageOnFail(R.drawable.default_error)
-        .showStubImage(R.drawable.default_video_cover)
-        .build();
-		
-		 ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(context)
-		 .memoryCacheExtraOptions(1280,720)
-		 .taskExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-		 .taskExecutorForCachedImages(AsyncTask.THREAD_POOL_EXECUTOR)
-		 .threadPoolSize(5)
-     	 .tasksProcessingOrder(QueueProcessingType.FIFO)
-		 .denyCacheImageMultipleSizesInMemory()
-		 .defaultDisplayImageOptions(defaultOptions)
-		 .memoryCache(new WeakMemoryCache())
-		 .build();		
+				.cacheInMemory().cacheOnDisc()
+				.bitmapConfig(Bitmap.Config.RGB_565)
+				.showImageOnFail(R.drawable.default_error)
+				.showStubImage(R.drawable.default_video_cover).build();
 
-		 imageLoader = ImageLoader.getInstance();
-		 imageLoader.init(imageLoaderconfig);
- 		initController(context);
+		ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(
+				context).memoryCacheExtraOptions(1280, 720)
+				.taskExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+				.taskExecutorForCachedImages(AsyncTask.THREAD_POOL_EXECUTOR)
+				.threadPoolSize(5)
+				.tasksProcessingOrder(QueueProcessingType.FIFO)
+				.denyCacheImageMultipleSizesInMemory()
+				.defaultDisplayImageOptions(defaultOptions)
+				.memoryCache(new WeakMemoryCache()).build();
+
+		imageLoader = ImageLoader.getInstance();
+		imageLoader.init(imageLoaderconfig);
+		initController(context);
 	}
 
-	public MediaController(Context context, String summary, String title, String posterURL, String resolution, String videoFormat, String audioFormat, String audioChannels) {
+	public MediaController(Context context, String summary, String title,
+			String posterURL, String resolution, String videoFormat,
+			String audioFormat, String audioChannels) {
 		super(context);
 		this.summary = summary;
 		this.title = title;
@@ -156,8 +153,8 @@ public class MediaController extends FrameLayout {
 		this.audioChannels = audioChannels;
 		this.videoFormat = videoFormat;
 		this.audioFormat = audioFormat;
-		 imageLoader = SerenityApplication.getImageLoader();
-		
+		imageLoader = SerenityApplication.getImageLoader();
+
 		if (!mFromXml && initController(context)) {
 			initFloatingWindow();
 		}
@@ -221,12 +218,13 @@ public class MediaController extends FrameLayout {
 			mPauseButton.requestFocus();
 			mPauseButton.setOnClickListener(mPauseListener);
 		}
-		
-		mSkipBackwardButton = (ImageButton) v.findViewById(R.id.osd_rewind_control);
+
+		mSkipBackwardButton = (ImageButton) v
+				.findViewById(R.id.osd_rewind_control);
 		if (mSkipBackwardButton != null) {
 			mSkipBackwardButton.setOnClickListener(mSkipBackwardListener);
 		}
-		
+
 		mSkipForwardButton = (ImageButton) v.findViewById(R.id.osd_ff_control);
 		if (mSkipForwardButton != null) {
 			mSkipForwardButton.setOnClickListener(mSkipForwardListener);
@@ -253,41 +251,45 @@ public class MediaController extends FrameLayout {
 		TextView summaryView = (TextView) v
 				.findViewById(R.id.mediacontroller_summary);
 		summaryView.setText(summary);
-		
-		LinearLayout infoGraphic = (LinearLayout) v.findViewById(R.id.mediacontroller_infographic_layout);
+
+		LinearLayout infoGraphic = (LinearLayout) v
+				.findViewById(R.id.mediacontroller_infographic_layout);
 		ImageInfographicUtils iiu = new ImageInfographicUtils(75, 70);
 		if (resolution != null) {
-			ImageView rv = iiu.createVideoResolutionImage(resolution, v.getContext());
+			ImageView rv = iiu.createVideoResolutionImage(resolution,
+					v.getContext());
 			if (rv != null) {
 				infoGraphic.addView(rv);
 			}
 		}
-		
+
 		if (videoFormat != null) {
 			ImageView vr = iiu.createVideoCodec(videoFormat, v.getContext());
 			if (vr != null) {
 				infoGraphic.addView(vr);
 			}
 		}
-		
+
 		if (audioFormat != null) {
-			ImageView ar = iiu.createAudioCodecImage(audioFormat, v.getContext());
+			ImageView ar = iiu.createAudioCodecImage(audioFormat,
+					v.getContext());
 			if (ar != null) {
 				infoGraphic.addView(ar);
 			}
 		}
-		
+
 		if (audioChannels != null) {
-			ImageView ar = iiu.createAudioChannlesImage(audioChannels, v.getContext());
+			ImageView ar = iiu.createAudioChannlesImage(audioChannels,
+					v.getContext());
 			if (ar != null) {
 				infoGraphic.addView(ar);
 			}
 		}
-		
-		
-		ImageView posterView = (ImageView) v.findViewById(R.id.mediacontroller_poster_art);
+
+		ImageView posterView = (ImageView) v
+				.findViewById(R.id.mediacontroller_poster_art);
 		posterView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-		
+
 		imageLoader.displayImage(posterURL, posterView);
 	}
 
@@ -471,7 +473,7 @@ public class MediaController extends FrameLayout {
 		if (mPlayer == null || mDragging) {
 			return 0;
 		}
-		
+
 		long position = 0;
 
 		try {
@@ -485,40 +487,42 @@ public class MediaController extends FrameLayout {
 				int percent = mPlayer.getBufferPercentage();
 				mProgress.setSecondaryProgress(percent * 10);
 			}
-	
+
 			mDuration = duration;
-	
+
 			if (mEndTime != null) {
 				mEndTime.setText(formatDuration(mDuration));
 			}
-	
+
 			if (mCurrentTime != null) {
 				mCurrentTime.setText(formatDuration(position));
 			}
 		} catch (IllegalStateException ex) {
-			Log.i(getClass().getName(), "Player has been either released or in an error state.");
+			Log.i(getClass().getName(),
+					"Player has been either released or in an error state.");
 		}
 
 		return position;
 	}
 
-	
 	/**
 	 * Return a formated duration in hh:mm:ss format.
-	 * @param duration number of milliseconds that have passed.
+	 * 
+	 * @param duration
+	 *            number of milliseconds that have passed.
 	 * @return formatted string
 	 */
 	protected String formatDuration(long duration) {
 		long tempdur = duration;
 		long hours = TimeUnit.MILLISECONDS.toHours(duration);
-		
-        tempdur = tempdur - (hours * MILLISECONDS_PER_HOUR);
-        
-        long minutes = tempdur / MILLISECONDS_PER_MINUTE;
-        tempdur = tempdur - (minutes * MILLISECONDS_PER_MINUTE);
-        
-        long seconds = tempdur / 1000;
-        
+
+		tempdur = tempdur - (hours * MILLISECONDS_PER_HOUR);
+
+		long minutes = tempdur / MILLISECONDS_PER_MINUTE;
+		tempdur = tempdur - (minutes * MILLISECONDS_PER_MINUTE);
+
+		long seconds = tempdur / 1000;
+
 		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
 	}
 
@@ -702,12 +706,11 @@ public class MediaController extends FrameLayout {
 			mHandler.sendEmptyMessageDelayed(SHOW_PROGRESS, 1000);
 		}
 	};
-	
-	
+
 	private View.OnClickListener mSkipForwardListener = new View.OnClickListener() {
-		
+
 		public void onClick(View v) {
-		    long skipOffset = (long)10000 +  mPlayer.getCurrentPosition();
+			long skipOffset = (long) 10000 + mPlayer.getCurrentPosition();
 			long duration = mPlayer.getDuration();
 			if (skipOffset > duration) {
 				skipOffset = duration - 1;
@@ -716,12 +719,11 @@ public class MediaController extends FrameLayout {
 			show();
 		}
 	};
-	
+
 	private View.OnClickListener mSkipBackwardListener = new View.OnClickListener() {
-		
+
 		public void onClick(View v) {
-		    long skipOffset = mPlayer.getCurrentPosition() - 10000;
-			long duration = mPlayer.getDuration();
+			long skipOffset = mPlayer.getCurrentPosition() - 10000;
 			if (skipOffset < 0) {
 				skipOffset = 1;
 			}
@@ -729,7 +731,6 @@ public class MediaController extends FrameLayout {
 			show();
 		}
 	};
-	
 
 	@Override
 	public void setEnabled(boolean enabled) {

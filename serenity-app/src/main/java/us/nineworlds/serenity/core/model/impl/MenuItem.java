@@ -1,4 +1,5 @@
 package us.nineworlds.serenity.core.model.impl;
+
 public class MenuItem {
 	private String type;
 	private String title;

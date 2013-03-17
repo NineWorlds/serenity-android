@@ -23,14 +23,12 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-
 /**
  * Representation of Video content information for Movies.
  * 
  * @author dcarver
- *
+ * 
  */
 public class MoviePosterInfo extends AbstractVideoContentInfo {
-	
 
 }

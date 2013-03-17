@@ -30,12 +30,12 @@ import android.widget.ImageView;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class TVShowSeasonImageView extends ImageView {
 
 	private SeriesContentInfo posterInfo;
-	
+
 	/**
 	 * 
 	 */
@@ -50,11 +50,9 @@ public class TVShowSeasonImageView extends ImageView {
 		super(context);
 		this.posterInfo = posterInfo;
 	}
-	
+
 	public SeriesContentInfo getPosterInfo() {
 		return posterInfo;
 	}
-	
-	
 
 }

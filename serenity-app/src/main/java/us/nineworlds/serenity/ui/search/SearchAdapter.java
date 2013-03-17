@@ -23,30 +23,24 @@
 
 package us.nineworlds.serenity.ui.search;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
-		
+
 	public SearchAdapter(Context c, List<VideoContentInfo> videos) {
 		super(c, null);
 		posterList = videos;
@@ -61,16 +55,20 @@ public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
 				android.view.ViewGroup.LayoutParams.FILL_PARENT));
 
 		imageLoader.displayImage(pi.getPosterURL(), mpiv);
-		
+
 		return mpiv;
 	}
 
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter#fetchDataFromService()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter#
+	 * fetchDataFromService()
 	 */
 	@Override
 	protected void fetchDataFromService() {
-		
+
 	}
 
 }

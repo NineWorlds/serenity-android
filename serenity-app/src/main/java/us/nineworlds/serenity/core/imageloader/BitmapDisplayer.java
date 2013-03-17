@@ -9,7 +9,6 @@ public class BitmapDisplayer implements Runnable {
 	private Bitmap bm;
 	private int defaultImage;
 	private View bgLayout;
-	
 
 	/**
 	 * 

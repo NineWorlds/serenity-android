@@ -28,13 +28,12 @@ import us.nineworlds.serenity.SerenityApplication;
 import android.app.IntentService;
 import android.content.Intent;
 
-
 /**
  * @author dcarver
- *
+ * 
  */
 public abstract class AbstractPlexRESTIntentService extends IntentService {
-	
+
 	protected PlexappFactory factory;
 
 	/**
@@ -44,13 +43,10 @@ public abstract class AbstractPlexRESTIntentService extends IntentService {
 		super(name);
 		factory = SerenityApplication.getPlexFactory();
 	}
-	
+
 	/**
 	 * Send a message back to the calling code with the results
 	 */
 	public abstract void sendMessageResults(Intent intent);
 
-	
-	
-	
 }

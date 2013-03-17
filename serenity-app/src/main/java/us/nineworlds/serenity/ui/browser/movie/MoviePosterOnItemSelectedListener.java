@@ -46,8 +46,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * When a poster is selected, update the information displayed
- * in the browser.
+ * When a poster is selected, update the information displayed in the browser.
  * 
  * @author dcarver
  * 
@@ -63,7 +62,7 @@ public class MoviePosterOnItemSelectedListener implements
 	 * 
 	 */
 	private static final String DEFAULT_UNKNOWN = "Unknown";
-	
+
 	private View bgLayout;
 	private Activity context;
 	private ImageLoader imageLoader;
@@ -86,7 +85,8 @@ public class MoviePosterOnItemSelectedListener implements
 	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
 	 * .widget.AdapterView, android.view.View, int, long)
 	 */
-	public void onItemSelected(SerenityAdapterView<?> av, View v, int position, long id) {
+	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
+			long id) {
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
@@ -111,24 +111,24 @@ public class MoviePosterOnItemSelectedListener implements
 				.findViewById(R.id.movieBrowserPosterTitle);
 		title.setText(v.getPosterInfo().getTitle());
 	}
-	
+
 	private void createMovieMetaData(SerenityPosterImageView v) {
 		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
 		VideoContentInfo mi = mpiv.getPosterInfo();
-		TextView ty  = (TextView) context.findViewById(R.id.video_year);
-		TextView tg  = (TextView) context.findViewById(R.id.video_genre);
-		TextView tw  = (TextView) context.findViewById(R.id.video_writers);
-		TextView td  = (TextView) context.findViewById(R.id.video_directors);
+		TextView ty = (TextView) context.findViewById(R.id.video_year);
+		TextView tg = (TextView) context.findViewById(R.id.video_genre);
+		TextView tw = (TextView) context.findViewById(R.id.video_writers);
+		TextView td = (TextView) context.findViewById(R.id.video_directors);
 
 		ty.setText(DEFAULT_UNKNOWN);
 		tg.setText(DEFAULT_UNKNOWN);
 		tw.setText(DEFAULT_UNKNOWN);
 		td.setText(DEFAULT_UNKNOWN);
-		
+
 		if (mi.getYear() != null) {
 			ty.setText(mi.getYear());
 		}
-		
+
 		if (mi.getGenres() != null) {
 			StringBuilder details = new StringBuilder();
 			for (String genre : mi.getGenres()) {
@@ -137,25 +137,25 @@ public class MoviePosterOnItemSelectedListener implements
 			}
 			tg.setText(details.toString());
 		}
-		
+
 		if (mi.getWriters() != null) {
 			StringBuilder details = new StringBuilder();
 			for (String writers : mi.getWriters()) {
 				details.append(writers);
 				details.append(CRLF);
 			}
-			tw.setText(details.toString());			
+			tw.setText(details.toString());
 		}
-		
+
 		if (mi.getDirectors() != null) {
 			StringBuilder details = new StringBuilder();
 			for (String directors : mi.getDirectors()) {
 				details.append(directors);
 				details.append(CRLF);
 			}
-			td.setText(details.toString());			
+			td.setText(details.toString());
 		}
-		
+
 	}
 
 	/**
@@ -170,13 +170,15 @@ public class MoviePosterOnItemSelectedListener implements
 		if (mi.getBackgroundURL() == null) {
 			return;
 		}
-	
-		//imageExecutorService.submit(new BackgroundImageLoader(mi.getBackgroundURL(), bgLayout, R.drawable.movies));
-		
-		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
-				new SerenityBackgroundLoaderListener(bgLayout, R.drawable.movies ));
-	}
 
+		// imageExecutorService.submit(new
+		// BackgroundImageLoader(mi.getBackgroundURL(), bgLayout,
+		// R.drawable.movies));
+
+		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
+				new SerenityBackgroundLoaderListener(bgLayout,
+						R.drawable.movies));
+	}
 
 	/**
 	 * Create the images representing info such as sound, ratings, etc based on
@@ -189,48 +191,54 @@ public class MoviePosterOnItemSelectedListener implements
 				.findViewById(R.id.movieInfoGraphicLayout);
 		infographicsView.removeAllViews();
 		VideoContentInfo mpi = v.getPosterInfo();
-		
+
 		ImageView viewed = new ImageView(context);
 		viewed.setScaleType(ScaleType.FIT_XY);
-		LinearLayout.LayoutParams viewedlp = new LinearLayout.LayoutParams(80, 58);
+		LinearLayout.LayoutParams viewedlp = new LinearLayout.LayoutParams(80,
+				58);
 		viewedlp.setMargins(10, 0, 5, 5);
 		viewed.setLayoutParams(viewedlp);
 		viewed.setId(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
-		
+
 		if (mpi.getViewCount() > 0) {
 			viewed.setImageResource(R.drawable.watched_small);
 		} else {
 			viewed.setImageResource(R.drawable.unwatched_small);
 		}
 		infographicsView.addView(viewed);
-		
-		ImageInfographicUtils imageUtilsWide = new ImageInfographicUtils(154, 58);
-		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100, 58);
 
-		ImageView acv = imageUtilsWide.createAudioCodecImage(mpi.getAudioCodec(), context);
+		ImageInfographicUtils imageUtilsWide = new ImageInfographicUtils(154,
+				58);
+		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100,
+				58);
+
+		ImageView acv = imageUtilsWide.createAudioCodecImage(
+				mpi.getAudioCodec(), context);
 		if (acv != null) {
 			infographicsView.addView(acv);
 		}
-		
-		ImageView achannelsv = imageUtilsWide.createAudioChannlesImage(mpi.getAudioChannels(), v.getContext());		
+
+		ImageView achannelsv = imageUtilsWide.createAudioChannlesImage(
+				mpi.getAudioChannels(), v.getContext());
 		if (achannelsv != null) {
 			infographicsView.addView(achannelsv);
 		}
-		
 
-		ImageView resv = imageUtilsWide.createVideoResolutionImage(mpi.getVideoResolution(), context);
+		ImageView resv = imageUtilsWide.createVideoResolutionImage(
+				mpi.getVideoResolution(), context);
 		if (resv != null) {
 			infographicsView.addView(resv);
 		}
-		
-		ImageView aspectv = imageUtilsNormal.createAspectRatioImage(mpi.getAspectRatio(), context);
+
+		ImageView aspectv = imageUtilsNormal.createAspectRatioImage(
+				mpi.getAspectRatio(), context);
 		if (aspectv != null) {
 			infographicsView.addView(aspectv);
 		}
 
-		ImageView crv = imageUtilsWide.createContentRatingImage(mpi.getContentRating(), context);
+		ImageView crv = imageUtilsWide.createContentRatingImage(
+				mpi.getContentRating(), context);
 		infographicsView.addView(crv);
-		
 
 		infographicsView.refreshDrawableState();
 	}

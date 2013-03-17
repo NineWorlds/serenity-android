@@ -30,32 +30,30 @@ import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
-
 /**
- * A configuration that reads information from the SharedPreferences
- * store.  This information contains necessary info for connecting to
- * the plex media server.
- *  
+ * A configuration that reads information from the SharedPreferences store. This
+ * information contains necessary info for connecting to the plex media server.
+ * 
  * @author dcarver
- *
+ * 
  */
 public class ServerConfig implements IConfiguration {
-	
+
 	private String serveraddress;
 	private String serverport;
 	private String discoveredServers;
 	private SharedPreferences preferences;
 	private static ServerConfig config;
 	private OnSharedPreferenceChangeListener listener;
-	
+
 	/**
-	 * Sets up the configuration based on the context of the
-	 * activity that called it.
-	 *  
+	 * Sets up the configuration based on the context of the activity that
+	 * called it.
+	 * 
 	 */
 	private ServerConfig(Context context) {
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		
+
 		serveraddress = preferences.getString("server", "");
 		discoveredServers = preferences.getString("discoveredServer", "");
 		serverport = preferences.getString("serverport", "32400");
@@ -80,32 +78,30 @@ public class ServerConfig implements IConfiguration {
 	public void setPort(String port) {
 		serverport = port;
 	}
-	
+
 	public static IConfiguration getInstance(Context context) {
 		if (config == null) {
 			config = new ServerConfig(context);
 		}
-		
+
 		return config;
 	}
-	
+
 	/**
 	 * This should only be called after a context has been set.
 	 * 
 	 * @return
 	 */
-	public static IConfiguration getInstance()  {
+	public static IConfiguration getInstance() {
 		return config;
 	}
-	
+
 	public OnSharedPreferenceChangeListener getServerConfigChangeListener() {
 		if (listener == null) {
 			listener = new ServerConfigChangeListener();
 		}
 		return listener;
 	}
-	
-	
 
 	/**
 	 * Listen for Server Configuration Changes from the SharedPreferences.
@@ -113,9 +109,10 @@ public class ServerConfig implements IConfiguration {
 	 * This handles updating the variables for accesing a plex media server.
 	 * 
 	 * @author dcarver
-	 *
+	 * 
 	 */
-	public class ServerConfigChangeListener implements OnSharedPreferenceChangeListener {
+	public class ServerConfigChangeListener implements
+			OnSharedPreferenceChangeListener {
 
 		public void onSharedPreferenceChanged(
 				SharedPreferences sharedPreferences, String key) {
@@ -123,12 +120,12 @@ public class ServerConfig implements IConfiguration {
 				serverport = preferences.getString(key, "32400");
 				return;
 			}
-			
-			if ("server".equals(key)){
+
+			if ("server".equals(key)) {
 				serveraddress = preferences.getString(key, "");
 				return;
-		    }
-			
+			}
+
 			if ("discoveredServer".equals(key)) {
 				discoveredServers = preferences.getString(key, "");
 				serveraddress = discoveredServers;
@@ -138,15 +135,15 @@ public class ServerConfig implements IConfiguration {
 		}
 
 		/**
-		 * Store the server address if the discoveredServers has been set.
-		 * Users can override this in the preference setting. 
+		 * Store the server address if the discoveredServers has been set. Users
+		 * can override this in the preference setting.
 		 */
 		protected void storeServerAddress() {
 			Editor edit = preferences.edit();
 			edit.putString("server", discoveredServers);
 			edit.commit();
 		}
-		
+
 	}
 
 }

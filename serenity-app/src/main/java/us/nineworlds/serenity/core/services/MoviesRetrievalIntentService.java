@@ -54,9 +54,9 @@ import android.util.Log;
 public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService {
 
 	private static final String MOVIES_RETRIEVAL_INTENT_SERVICE = "MoviesRetrievalIntentService";
-	
+
 	private static final String DEFAULT_CATEGORY = "all";
-	
+
 	protected List<VideoContentInfo> videoContentList = null;
 	protected String key;
 	protected String category;
@@ -80,7 +80,6 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 				Log.e(getClass().getName(), "Unable to send message", ex);
 			}
 		}
-		
 
 	}
 
@@ -117,9 +116,9 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 			VideoContentInfo mpi = new MoviePosterInfo();
 			mpi.setId(movie.getRatingKey());
 			mpi.setPlotSummary(movie.getSummary());
-			
+
 			mpi.setResumeOffset(Long.valueOf(movie.getViewOffset()).intValue());
-			
+
 			mpi.setViewCount(movie.getViewCount());
 
 			String burl = baseUrl + ":/resources/movie-fanart.jpg";
@@ -191,7 +190,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 
 		if (video.getGenres() != null && video.getGenres().size() > 0) {
 			ArrayList<String> g = new ArrayList<String>();
-			
+
 			for (Genre genre : video.getGenres()) {
 				g.add(genre.getTag());
 			}

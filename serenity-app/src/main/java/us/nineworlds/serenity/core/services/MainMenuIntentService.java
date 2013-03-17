@@ -39,14 +39,14 @@ import android.os.RemoteException;
 import android.util.Log;
 
 /**
- * A IntentService that fetches the available Libraries used
- * for menu options from the Plex Media Server.
+ * A IntentService that fetches the available Libraries used for menu options
+ * from the Plex Media Server.
  * 
  * @author dcarver
- *
+ * 
  */
 public class MainMenuIntentService extends AbstractPlexRESTIntentService {
-	
+
 	/**
 	 * 
 	 */
@@ -59,10 +59,10 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 	 * 
 	 */
 	private static final String SETTINGS_MENU = "Settings";
-	
+
 	private static final String SEARCH_MENU = "Search";
 	private static final String SEARCH_TYPE = "search";
-	
+
 	private ArrayList<MenuItem> menuItems;
 
 	/**
@@ -72,7 +72,6 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 		super("MainMenuIntentService");
 		menuItems = new ArrayList<MenuItem>();
 	}
-		
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
@@ -81,25 +80,24 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 			createSearchMenu();
 		}
 		createSettingsMenu();
-		
+
 		sendMessageResults(intent);
 	}
-		
-	
+
 	protected void fetchMenuItems() {
 		Log.i("MainMenuInterntService", "Retrieving Menu Items");
-		
+
 		if (factory != null) {
 			loadMenuItems();
 		}
 	}
-	
+
 	protected void loadMenuItems() {
 		// Fetch TV Shows and Movies
 		try {
 			MediaContainer mc = factory.retrieveSections();
 			List<Directory> dirs = mc.getDirectories();
-			
+
 			if (dirs != null) {
 				for (Directory item : dirs) {
 					MenuItem m = new MenuItem();
@@ -108,16 +106,18 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 					m.setSection(item.getKey());
 					menuItems.add(m);
 				}
-			} 
+			}
 		} catch (Exception e) {
-		  Log.e("MainMenuIntentService", "Unable to comminicate to server at " + factory.baseURL(), e);
-		} 
+			Log.e("MainMenuIntentService",
+					"Unable to comminicate to server at " + factory.baseURL(),
+					e);
+		}
 	}
-	
+
 	/**
-	 * Create the settings MenuItem since there is no option
-	 * to retrieve this from Plex itself.
-	 *  
+	 * Create the settings MenuItem since there is no option to retrieve this
+	 * from Plex itself.
+	 * 
 	 */
 	protected void createSettingsMenu() {
 		MenuItem settingsMenuItem = new MenuItem();
@@ -126,11 +126,11 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 		settingsMenuItem.setSection(SETTINGS_SECTION_KEY);
 		menuItems.add(settingsMenuItem);
 	}
-	
+
 	/**
-	 * Create the settings MenuItem since there is no option
-	 * to retrieve this from Plex itself.
-	 *  
+	 * Create the settings MenuItem since there is no option to retrieve this
+	 * from Plex itself.
+	 * 
 	 */
 	protected void createSearchMenu() {
 		MenuItem settingsMenuItem = new MenuItem();
@@ -139,8 +139,6 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 		settingsMenuItem.setSection(SETTINGS_SECTION_KEY);
 		menuItems.add(settingsMenuItem);
 	}
-	
-
 
 	@Override
 	public void sendMessageResults(Intent intent) {
@@ -155,7 +153,7 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 				Log.e(getClass().getName(), "Unable to send message", ex);
 			}
 		}
-		
+
 	}
-	
+
 }

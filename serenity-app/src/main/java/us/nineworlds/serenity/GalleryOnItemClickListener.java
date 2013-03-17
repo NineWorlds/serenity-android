@@ -37,42 +37,47 @@ import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class GalleryOnItemClickListener implements OnItemClickListener {
-	
+
 	private Activity context;
-	
+
 	/**
 	 * 
 	 */
 	public GalleryOnItemClickListener(Context c) {
-		context = (Activity)c;
+		context = (Activity) c;
 	}
 
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
+	 * .AdapterView, android.view.View, int, long)
 	 */
-	public void onItemClick(AdapterView<?> av, View view, int position, long arg3) {
-		
+	public void onItemClick(AdapterView<?> av, View view, int position,
+			long arg3) {
+
 		MainMenuTextView v = (MainMenuTextView) view;
 		String librarySection = v.getLibraryKey();
-		
+
 		String activityType = v.getActivityType();
-		
+
 		Intent i = null;
-		
+
 		if ("movie".equalsIgnoreCase(activityType)) {
 			i = new Intent(context, MovieBrowserActivity.class);
 		} else if ("show".equalsIgnoreCase(activityType)) {
-			i = new Intent(context, TVShowBrowserActivity.class);			
-		} else if ("search".equalsIgnoreCase(activityType)){
+			i = new Intent(context, TVShowBrowserActivity.class);
+		} else if ("search".equalsIgnoreCase(activityType)) {
 			context.onSearchRequested();
 			return;
 		} else {
 			i = new Intent(context, SerenityPreferenceActivity.class);
 		}
-		
+
 		i.putExtra("key", librarySection);
 		context.startActivityForResult(i, 0);
 	}

@@ -27,14 +27,14 @@ import java.util.List;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public interface SeriesContentInfo extends ContentInfo {
 
 	public void setKey(String key);
 
 	public String getKey();
-	
+
 	public List<String> getGeneres();
 
 	public void setGeneres(List<String> generes);
@@ -46,7 +46,7 @@ public interface SeriesContentInfo extends ContentInfo {
 	public String getShowsUnwatched();
 
 	public void setShowsUnwatched(String showsUnwatched);
-	
+
 	public String getShowMetaDataURL();
 
 	public void setShowMetaDataURL(String showMetaDataURL);
@@ -56,15 +56,15 @@ public interface SeriesContentInfo extends ContentInfo {
 	public void setThumbNailURL(String thumbNailURL);
 
 	public String getContentRating();
-	
+
 	public String getYear();
 
 	public void setContentRating(String contentRating);
 
 	public void setYear(String year);
-	
+
 	public String getParentShowTitle();
-	
+
 	public void setParentShowTitle(String title);
 
 }

@@ -84,58 +84,61 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 			mc = retrieveVideos();
 			baseUrl = factory.baseURL();
 		} catch (IOException ex) {
-			Log.e(getClass().getName(),"Unable to talk to server: ", ex);
+			Log.e(getClass().getName(), "Unable to talk to server: ", ex);
 		} catch (Exception e) {
-			Log.e(getClass().getName(),"Oops.", e);
+			Log.e(getClass().getName(), "Oops.", e);
 		}
-		
-		if (mc != null && mc.getSize() > 0) {			
+
+		if (mc != null && mc.getSize() > 0) {
 			List<Directory> shows = mc.getDirectories();
 			if (shows != null) {
 				for (Directory show : shows) {
-					TVShowSeriesInfo  mpi = new TVShowSeriesInfo();
+					TVShowSeriesInfo mpi = new TVShowSeriesInfo();
 					if (show.getSummary() != null) {
 						mpi.setPlotSummary(show.getSummary());
 					}
-					
-					String burl = factory.baseURL() + ":/resources/show-fanart.jpg"; 
+
+					String burl = factory.baseURL()
+							+ ":/resources/show-fanart.jpg";
 					if (show.getArt() != null) {
 						burl = baseUrl + show.getArt().replaceFirst("/", "");
 					}
 					mpi.setBackgroundURL(burl);
-					
+
 					String turl = "";
 					if (show.getBanner() != null) {
 						turl = baseUrl + show.getBanner().replaceFirst("/", "");
 					}
 					mpi.setPosterURL(turl);
-					
+
 					String thumbURL = "";
 					if (show.getThumb() != null) {
-						thumbURL = baseUrl + show.getThumb().replaceFirst("/", "");
+						thumbURL = baseUrl
+								+ show.getThumb().replaceFirst("/", "");
 					}
 					mpi.setThumbNailURL(thumbURL);
-					
+
 					mpi.setTitle(show.getTitle());
-					
+
 					mpi.setContentRating(show.getContentRating());
-					
+
 					List<String> genres = processGeneres(show);
 					mpi.setGeneres(genres);
-					
-				    mpi.setShowsWatched(show.getViewedLeafCount());
-				    int totalEpisodes = Integer.parseInt(show.getLeafCount());
-				    int unwatched = totalEpisodes - Integer.parseInt(show.getViewedLeafCount());
-				    mpi.setShowsUnwatched(Integer.toString(unwatched));
-				    
-				    mpi.setKey(show.getKey());
-				    
+
+					mpi.setShowsWatched(show.getViewedLeafCount());
+					int totalEpisodes = Integer.parseInt(show.getLeafCount());
+					int unwatched = totalEpisodes
+							- Integer.parseInt(show.getViewedLeafCount());
+					mpi.setShowsUnwatched(Integer.toString(unwatched));
+
+					mpi.setKey(show.getKey());
+
 					tvShowList.add(mpi);
 				}
 			}
-		}		
+		}
 	}
-	
+
 	protected MediaContainer retrieveVideos() throws Exception {
 		if (category == null) {
 			category = "all";
@@ -143,8 +146,7 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 
 		return factory.retrieveSections(key, category);
 	}
-	
-	
+
 	protected List<String> processGeneres(Directory show) {
 		ArrayList<String> genres = new ArrayList<String>();
 		if (show.getGenres() != null) {

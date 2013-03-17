@@ -35,5 +35,5 @@ public class UnWatchEpisodeAsyncTask extends AsyncTask<String, Void, Void> {
 		SerenityApplication.getPlexFactory().setUnWatched(id);
 		return null;
 	}
-	
+
 }

@@ -30,19 +30,19 @@ import android.widget.ImageView;
 
 /**
  * @author dcarver
- *
+ * 
  */
-public class SerenityPosterImageView  extends ImageView {
-	
+public class SerenityPosterImageView extends ImageView {
+
 	private VideoContentInfo posterInfo;
-	
+
 	/**
 	 * 
 	 */
 	public SerenityPosterImageView(Context c) {
 		super(c);
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -50,10 +50,9 @@ public class SerenityPosterImageView  extends ImageView {
 		super(context);
 		this.posterInfo = posterInfo;
 	}
-	
+
 	public VideoContentInfo getPosterInfo() {
 		return posterInfo;
 	}
-
 
 }

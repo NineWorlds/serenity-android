@@ -23,8 +23,6 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-
-public class EpisodePosterInfo  extends AbstractVideoContentInfo {
-	
+public class EpisodePosterInfo extends AbstractVideoContentInfo {
 
 }

@@ -72,44 +72,36 @@ public class SerenityApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
-		installHttpCache();
-		
-		
-		EasyTracker.getInstance().setContext(this);
-		
-		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-        .cacheInMemory()
-        .cacheOnDisc()
-        .bitmapConfig(Bitmap.Config.RGB_565)
-        .showImageOnFail(R.drawable.default_error)
-        .showStubImage(R.drawable.default_video_cover)
-        .build();
-		
-		reflectiveOptions = new DisplayImageOptions.Builder()
-        .cacheInMemory()
-        .cacheOnDisc()
-        .bitmapConfig(Bitmap.Config.RGB_565)
-        .showImageOnFail(R.drawable.default_error)
-        .showStubImage(R.drawable.default_video_cover)
-        .displayer(new RoundedBitmapDisplayer(10))
-        .build();
-		
-		
-		 ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(this)
-		 .memoryCacheExtraOptions(1280,720)
-		 .taskExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-		 .taskExecutorForCachedImages(AsyncTask.THREAD_POOL_EXECUTOR)
-		 .threadPoolSize(5)
-     	 .tasksProcessingOrder(QueueProcessingType.FIFO)
-		 .denyCacheImageMultipleSizesInMemory()
-		 .defaultDisplayImageOptions(defaultOptions)
-		 .memoryCache(new WeakMemoryCache())
-		 .build();		
 
-		 imageLoader = ImageLoader.getInstance();
-		 imageLoader.init(imageLoaderconfig);
-		 
+		installHttpCache();
+
+		EasyTracker.getInstance().setContext(this);
+
+		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+				.cacheInMemory().cacheOnDisc()
+				.bitmapConfig(Bitmap.Config.RGB_565)
+				.showImageOnFail(R.drawable.default_error)
+				.showStubImage(R.drawable.default_video_cover).build();
+
+		reflectiveOptions = new DisplayImageOptions.Builder().cacheInMemory()
+				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
+				.showImageOnFail(R.drawable.default_error)
+				.showStubImage(R.drawable.default_video_cover)
+				.displayer(new RoundedBitmapDisplayer(10)).build();
+
+		ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(
+				this).memoryCacheExtraOptions(1280, 720)
+				.taskExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+				.taskExecutorForCachedImages(AsyncTask.THREAD_POOL_EXECUTOR)
+				.threadPoolSize(5)
+				.tasksProcessingOrder(QueueProcessingType.FIFO)
+				.denyCacheImageMultipleSizesInMemory()
+				.defaultDisplayImageOptions(defaultOptions)
+				.memoryCache(new WeakMemoryCache()).build();
+
+		imageLoader = ImageLoader.getInstance();
+		imageLoader.init(imageLoaderconfig);
+
 		// Temporarily clean the cache
 		// imageManager.getFileManager().clean();
 
@@ -121,7 +113,7 @@ public class SerenityApplication extends Application {
 				deviceModel, (long) 0);
 
 	}
-	
+
 	/**
 	 * Install an HTTPResponseCache. This is using an open source library so
 	 * that caching occurs across all platforms not just 4.x.
@@ -137,10 +129,6 @@ public class SerenityApplication extends Application {
 			Log.e(getClass().getName(), "Unable to install cache", ex);
 		}
 	}
-	
-
-	
-	
 
 	public static PlexappFactory getPlexFactory() {
 		return plexFactory;
@@ -154,7 +142,7 @@ public class SerenityApplication extends Application {
 	public static ConcurrentHashMap<String, Device> getPlexMediaServers() {
 		return plexmediaServers;
 	}
-	
+
 	public static ImageLoader getImageLoader() {
 		return imageLoader;
 	}

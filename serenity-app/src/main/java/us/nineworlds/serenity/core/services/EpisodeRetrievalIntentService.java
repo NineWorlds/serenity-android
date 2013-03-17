@@ -51,7 +51,8 @@ import android.util.Log;
  * @author dcarver
  * 
  */
-public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService {
+public class EpisodeRetrievalIntentService extends
+		AbstractPlexRESTIntentService {
 
 	/**
 	 * 
@@ -61,8 +62,6 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 	protected String key;
 	private static final Pattern season = Pattern.compile("S\\d+");
 	private static final Pattern episode = Pattern.compile("E\\d+");
-	
-	
 
 	public EpisodeRetrievalIntentService() {
 		super("EpisodeRetrievalIntentService");
@@ -83,7 +82,6 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 				Log.e(getClass().getName(), "Unable to send message", ex);
 			}
 		}
-		
 
 	}
 
@@ -100,9 +98,8 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 			factory = SerenityApplication.getPlexFactory();
 			mc = retrieveVideos();
 		} catch (IOException ex) {
-			Log.e(getClass().getName(),
-					"Unable to talk to server: ", ex);
-			
+			Log.e(getClass().getName(), "Unable to talk to server: ", ex);
+
 		} catch (Exception e) {
 			Log.e(getClass().getName(), "Oops.", e);
 		}
@@ -112,7 +109,6 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 		}
 
 	}
-
 
 	/**
 	 * 
@@ -125,7 +121,7 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 		mc = factory.retrieveEpisodes(key);
 		return mc;
 	}
-	
+
 	/**
 	 * @param mc
 	 * @param baseUrl
@@ -138,95 +134,101 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 		}
 		List<Video> videos = mc.getVideos();
 		for (Video episode : videos) {
-			VideoContentInfo  epi = new EpisodePosterInfo();
+			VideoContentInfo epi = new EpisodePosterInfo();
 			epi.setParentPosterURL(parentPosterURL);
 			epi.setId(episode.getRatingKey());
 			epi.setPlotSummary(episode.getSummary());
 			epi.setViewCount(episode.getViewCount());
-			epi.setResumeOffset(Long.valueOf(episode.getViewOffset()).intValue());
+			epi.setResumeOffset(Long.valueOf(episode.getViewOffset())
+					.intValue());
 			epi.setOriginalAirDate(episode.getOriginallyAvailableDate());
-			
+
 			if (episode.getParentThumbNailImageKey() != null) {
-				epi.setParentPosterURL(baseUrl + episode.getParentThumbNailImageKey().substring(1));
+				epi.setParentPosterURL(baseUrl
+						+ episode.getParentThumbNailImageKey().substring(1));
 			}
-			
+
 			String burl = factory.baseURL() + ":/resources/show-fanart.jpg";
 			if (episode.getBackgroundImageKey() != null) {
-				burl = baseUrl + episode.getBackgroundImageKey().replaceFirst("/", "");
+				burl = baseUrl
+						+ episode.getBackgroundImageKey().replaceFirst("/", "");
 			} else if (mc.getArt() != null) {
 				burl = baseUrl + mc.getArt().replaceFirst("/", "");
-			} 
-			
+			}
+
 			epi.setBackgroundURL(burl);
-			
+
 			String turl = "";
 			if (episode.getThumbNailImageKey() != null) {
-				turl = baseUrl + episode.getThumbNailImageKey().replaceFirst("/", "");
+				turl = baseUrl
+						+ episode.getThumbNailImageKey().replaceFirst("/", "");
 			}
-			
+
 			epi.setPosterURL(turl);
 			epi.setTitle(episode.getTitle());
-			
+
 			epi.setContentRating(episode.getContentRating());
-			
+
 			List<Media> mediacont = episode.getMedias();
 			if (mediacont != null && !mediacont.isEmpty()) {
-				// We grab the first media container until we know more about why there can be multiples.
+				// We grab the first media container until we know more about
+				// why there can be multiples.
 				Media media = mediacont.get(0);
 				epi.setContainer(media.getContainer());
 				List<Part> parts = media.getVideoPart();
 				Part part = parts.get(0);
-				
+
 				setSeasonEpisode(epi, part);
-				
+
 				epi.setAudioCodec(media.getAudioCodec());
 				epi.setVideoCodec(media.getVideoCodec());
 				epi.setVideoResolution(media.getVideoResolution());
 				epi.setAspectRatio(media.getAspectRatio());
 				epi.setAudioChannels(media.getAudioChannels());
-				
-				String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
+
+				String directPlayUrl = factory.baseURL()
+						+ part.getKey().replaceFirst("/", "");
 				epi.setDirectPlayUrl(directPlayUrl);
-				
+
 			}
-			
+
 			createVideoDetails(episode, epi);
-			epi.setCastInfo("");				
-		
+			epi.setCastInfo("");
+
 			posterList.add(epi);
 		}
 	}
-	
+
 	protected void setSeasonEpisode(VideoContentInfo epi, Part part) {
 		if (part == null) {
 			return;
 		}
-		
+
 		String filename = part.getFilename();
 		if (filename == null) {
 			epi.setSeason(SEASON_EPISODE_UNKNOWN);
 			epi.setEpisodeNumber(SEASON_EPISODE_UNKNOWN);
 		}
-				
+
 		Matcher mseason = season.matcher(filename);
 		Matcher mepisode = episode.matcher(filename);
-		
+
 		if (mseason.find()) {
 			String sn = mseason.group();
 			String number = sn.substring(1);
-			String season = "Season " + Integer.toString(Integer.parseInt(number));  
+			String season = "Season "
+					+ Integer.toString(Integer.parseInt(number));
 			epi.setSeason(season);
 		}
-		
-		
+
 		if (mepisode.find()) {
 			String en = mepisode.group();
 			String number = en.substring(1);
-			String episode = "Episode " + Integer.toString(Integer.parseInt(number)) ;
+			String episode = "Episode "
+					+ Integer.toString(Integer.parseInt(number));
 			epi.setEpisodeNumber(episode);
 		}
 	}
-	
 
 	/**
 	 * @param video
@@ -263,7 +265,7 @@ public class EpisodeRetrievalIntentService extends AbstractPlexRESTIntentService
 			}
 			videoContentInfo.setDirectors(d);
 		}
-		
+
 	}
 
 }

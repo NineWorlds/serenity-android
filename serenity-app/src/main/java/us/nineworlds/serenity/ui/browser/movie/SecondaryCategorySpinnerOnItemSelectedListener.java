@@ -23,7 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemLongClickListener;
@@ -37,51 +36,56 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 /**
- * Populate the movie posters based on the information from the 
- * Secondary categories.
+ * Populate the movie posters based on the information from the Secondary
+ * categories.
  * 
  * @author dcarver
- *
+ * 
  */
-public class SecondaryCategorySpinnerOnItemSelectedListener implements OnItemSelectedListener{
-	
-	private String selected;
-	private String key;	
+public class SecondaryCategorySpinnerOnItemSelectedListener implements
+		OnItemSelectedListener {
 
-	
-	
-	public SecondaryCategorySpinnerOnItemSelectedListener(String defaultSelection, String key) {
+	private String selected;
+	private String key;
+
+	public SecondaryCategorySpinnerOnItemSelectedListener(
+			String defaultSelection, String key) {
 		selected = defaultSelection;
 		this.key = key;
 	}
 
-	public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
-				
-		SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(position);
+	public void onItemSelected(AdapterView<?> viewAdapter, View view,
+			int position, long id) {
+
+		SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter
+				.getItemAtPosition(position);
 		if (selected.equalsIgnoreCase(item.getCategory())) {
 			return;
 		}
 
-		selected = item.getCategory();		
-		Activity c = (Activity)view.getContext();
-		
+		selected = item.getCategory();
+		Activity c = (Activity) view.getContext();
+
 		View bgLayout = c.findViewById(R.id.movieBrowserBackgroundLayout);
-		SerenityGallery posterGallery = (SerenityGallery) c.findViewById(R.id.moviePosterGallery);
-		
-		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(c, key, item.getParentCategory() + "/" + item.getCategory()));
-		posterGallery.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(bgLayout, c));
-		posterGallery.setOnItemClickListener(new PlexVideoOnItemClickListener());
-		posterGallery.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
+		SerenityGallery posterGallery = (SerenityGallery) c
+				.findViewById(R.id.moviePosterGallery);
+
+		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(c, key,
+				item.getParentCategory() + "/" + item.getCategory()));
+		posterGallery
+				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
+						bgLayout, c));
+		posterGallery
+				.setOnItemClickListener(new PlexVideoOnItemClickListener());
+		posterGallery
+				.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
 		posterGallery.setAnimationDuration(1);
 		posterGallery.setSpacing(25);
 		posterGallery.setAnimationCacheEnabled(false);
 	}
 
-
-
 	public void onNothingSelected(AdapterView<?> va) {
-		
-	}
 
+	}
 
 }

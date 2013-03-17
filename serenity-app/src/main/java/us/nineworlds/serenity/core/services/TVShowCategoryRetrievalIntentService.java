@@ -42,16 +42,15 @@ import android.util.Log;
  * calling service.
  * 
  * @author dcarver
- *
+ * 
  */
 public class TVShowCategoryRetrievalIntentService extends
 		AbstractPlexRESTIntentService {
-	
+
 	private ArrayList<CategoryInfo> categories;
 	private String key;
 	private ArrayList<String> excludeCategories;
-	
-	
+
 	public TVShowCategoryRetrievalIntentService() {
 		super("TVCategoryRetrievalIntentService");
 		excludeCategories = new ArrayList<String>();
@@ -60,8 +59,11 @@ public class TVShowCategoryRetrievalIntentService extends
 		excludeCategories.add("folder");
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.services.AbstractPlexRESTIntentService#sendMessageResults(android.content.Intent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.services.
+	 * AbstractPlexRESTIntentService#sendMessageResults(android.content.Intent)
 	 */
 	@Override
 	public void sendMessageResults(Intent intent) {
@@ -78,7 +80,9 @@ public class TVShowCategoryRetrievalIntentService extends
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.IntentService#onHandleIntent(android.content.Intent)
 	 */
 	@Override
@@ -87,13 +91,13 @@ public class TVShowCategoryRetrievalIntentService extends
 		populateCategories();
 		sendMessageResults(intent);
 	}
-	
+
 	protected void populateCategories() {
 		try {
 			MediaContainer mediaContainer = factory.retrieveSections(key);
 			List<Directory> dirs = mediaContainer.getDirectories();
 			categories = new ArrayList<CategoryInfo>();
-			for(Directory dir : dirs) {
+			for (Directory dir : dirs) {
 				if (!excludeCategories.contains(dir.getKey())) {
 					CategoryInfo category = new CategoryInfo();
 					category.setCategory(dir.getKey());
@@ -106,8 +110,7 @@ public class TVShowCategoryRetrievalIntentService extends
 			}
 		} catch (Exception e) {
 			Log.e(getClass().getName(), e.getMessage(), e);
-		}		
+		}
 	}
-	
 
 }

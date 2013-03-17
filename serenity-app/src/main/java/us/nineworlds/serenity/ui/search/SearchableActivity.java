@@ -49,6 +49,8 @@ import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 /**
+ * Implements basic search functionality for movies.
+ * 
  * @author dcarver
  * 
  */
@@ -80,9 +82,10 @@ public class SearchableActivity extends SerenityActivity {
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			String key = null;
-			
-			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
-	                SerenitySuggestionProvider.AUTHORITY, SerenitySuggestionProvider.MODE);
+
+			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
+					this, SerenitySuggestionProvider.AUTHORITY,
+					SerenitySuggestionProvider.MODE);
 			suggestions.saveRecentQuery(query, null);
 
 			searchHandler = new MovieSearchHandler();
@@ -101,7 +104,7 @@ public class SearchableActivity extends SerenityActivity {
 
 			Intent searchIntent = new Intent(this,
 					MovieSearchIntentService.class);
-						
+
 			searchIntent.putExtra("key", key);
 			searchIntent.putExtra("query", URLEncoder.encode(query));
 			searchIntent.putExtra("MESSENGER", messenger);
@@ -114,8 +117,10 @@ public class SearchableActivity extends SerenityActivity {
 	 * @param item
 	 * @param bgLayout
 	 */
-	protected static void createGallery(List<VideoContentInfo> videos, View bgLayout) {
-		SerenityGallery posterGallery = (SerenityGallery) context.findViewById(R.id.moviePosterGallery);
+	protected static void createGallery(List<VideoContentInfo> videos,
+			View bgLayout) {
+		SerenityGallery posterGallery = (SerenityGallery) context
+				.findViewById(R.id.moviePosterGallery);
 		posterGallery.setAdapter(new SearchAdapter(context, videos));
 		posterGallery
 				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
@@ -135,7 +140,9 @@ public class SearchableActivity extends SerenityActivity {
 			if (msg.obj != null) {
 				ArrayList<VideoContentInfo> videos = (ArrayList<VideoContentInfo>) msg.obj;
 				if (videos != null && videos.isEmpty()) {
-					Toast.makeText(context, "No videos found that match the search criteria", Toast.LENGTH_LONG).show();
+					Toast.makeText(context,
+							"No videos found that match the search criteria",
+							Toast.LENGTH_LONG).show();
 					context.finish();
 				} else {
 					createGallery(videos, bgLayout);

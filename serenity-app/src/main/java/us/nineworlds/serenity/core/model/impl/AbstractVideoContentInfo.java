@@ -27,17 +27,16 @@ import java.util.List;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
-
 /**
  * General information common t TV Shows and Videos/Movies
  * 
  * @author dcarver
- *
+ * 
  */
 public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 
 	private String id;
-	
+
 	private String plotSummary;
 	private String castInfo;
 	private String posterURL;
@@ -62,7 +61,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	private String episodeNumber;
 	private String originalAirDate;
 	private String container;
-	
+
 	public String getContainer() {
 		return container;
 	}
@@ -106,7 +105,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	public String id() {
 		return id;
 	}
-	
+
 	public String getParentPosterURL() {
 		return parentPosterURL;
 	}
@@ -127,231 +126,339 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 		this.aspectRatio = aspectRatio;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getDirectPlayUrl()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
+	 * getDirectPlayUrl()
 	 */
 	public String getDirectPlayUrl() {
 		return directPlayUrl;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setDirectPlayUrl(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
+	 * setDirectPlayUrl(java.lang.String)
 	 */
 	public void setDirectPlayUrl(String directPlayUrl) {
 		this.directPlayUrl = directPlayUrl;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getActors()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getActors
+	 * ()
 	 */
 	public List<String> getActors() {
 		return actors;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getAudioCodec()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getAudioCodec
+	 * ()
 	 */
 	public String getAudioCodec() {
 		return audioCodec;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getBackgroundURL()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
+	 * getBackgroundURL()
 	 */
 	public String getBackgroundURL() {
 		return backgroundURL;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getCastInfo()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getCastInfo
+	 * ()
 	 */
 	public String getCastInfo() {
 		return castInfo;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getContentRating()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
+	 * getContentRating()
 	 */
 	public String getContentRating() {
 		return contentRating;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getDirectors()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getDirectors
+	 * ()
 	 */
 	public List<String> getDirectors() {
 		return directors;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getGenres()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getGenres
+	 * ()
 	 */
 	public List<String> getGenres() {
 		return genres;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getPlotSummary()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
+	 * getPlotSummary()
 	 */
 	public String getPlotSummary() {
 		return plotSummary;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getPosterURL()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getPosterURL
+	 * ()
 	 */
 	public String getPosterURL() {
 		return posterURL;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getTitle()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getTitle
+	 * ()
 	 */
 	public String getTitle() {
 		return title;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getVideoCodec()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getVideoCodec
+	 * ()
 	 */
 	public String getVideoCodec() {
 		return videoCodec;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getVideoResolution()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
+	 * getVideoResolution()
 	 */
 	public String getVideoResolution() {
 		return videoResolution;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getWriters()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getWriters
+	 * ()
 	 */
 	public List<String> getWriters() {
 		return writers;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getYear()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getYear()
 	 */
 	public String getYear() {
 		return year;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setActors(java.util.List)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setActors
+	 * (java.util.List)
 	 */
 	public void setActors(List<String> actors) {
 		this.actors = actors;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setAudioCodec(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setAudioCodec
+	 * (java.lang.String)
 	 */
 	public void setAudioCodec(String audioCodec) {
 		this.audioCodec = audioCodec;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setBackgroundURL(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
+	 * setBackgroundURL(java.lang.String)
 	 */
 	public void setBackgroundURL(String backgroundURL) {
 		this.backgroundURL = backgroundURL;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setCastInfo(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setCastInfo
+	 * (java.lang.String)
 	 */
 	public void setCastInfo(String castInfo) {
 		this.castInfo = castInfo;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setContentRating(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
+	 * setContentRating(java.lang.String)
 	 */
 	public void setContentRating(String contentRating) {
 		this.contentRating = contentRating;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setDirectors(java.util.List)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setDirectors
+	 * (java.util.List)
 	 */
 	public void setDirectors(List<String> directors) {
 		this.directors = directors;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setGenres(java.util.List)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setGenres
+	 * (java.util.List)
 	 */
 	public void setGenres(List<String> genres) {
 		this.genres = genres;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setPlotSummary(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
+	 * setPlotSummary(java.lang.String)
 	 */
 	public void setPlotSummary(String plotSummary) {
 		this.plotSummary = plotSummary;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setPosterURL(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setPosterURL
+	 * (java.lang.String)
 	 */
 	public void setPosterURL(String posterURL) {
 		this.posterURL = posterURL;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setTitle(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setTitle
+	 * (java.lang.String)
 	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setVideoCodec(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setVideoCodec
+	 * (java.lang.String)
 	 */
 	public void setVideoCodec(String videoCodec) {
 		this.videoCodec = videoCodec;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setVideoResolution(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
+	 * setVideoResolution(java.lang.String)
 	 */
 	public void setVideoResolution(String videoResolution) {
 		this.videoResolution = videoResolution;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setWriters(java.util.List)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setWriters
+	 * (java.util.List)
 	 */
 	public void setWriters(List<String> writers) {
 		this.writers = writers;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setYear(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setYear
+	 * (java.lang.String)
 	 */
 	public void setYear(String year) {
 		this.year = year;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public void setParentPosterURL(String parentPosterURL) {
 		this.parentPosterURL = parentPosterURL;
 	}
-	
+
 	public String getAudioChannels() {
 		return this.audioChannels;
 	}
-	
+
 	public void setAudioChannels(String audioChannels) {
 		this.audioChannels = audioChannels;
 	}
-	
 
 }

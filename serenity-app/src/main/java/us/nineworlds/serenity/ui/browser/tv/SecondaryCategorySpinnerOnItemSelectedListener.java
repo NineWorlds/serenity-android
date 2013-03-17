@@ -23,7 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 
 import us.nineworlds.serenity.R;
@@ -35,48 +34,53 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Gallery;
 
 /**
- * Populate the tv show banners based on the information from the 
- * Secondary categories.
+ * Populate the tv show banners based on the information from the Secondary
+ * categories.
  * 
  * @author dcarver
- *
+ * 
  */
-public class SecondaryCategorySpinnerOnItemSelectedListener implements OnItemSelectedListener{
-	
-	private String selected;
-	private String key;	
+public class SecondaryCategorySpinnerOnItemSelectedListener implements
+		OnItemSelectedListener {
 
-	
-	
-	public SecondaryCategorySpinnerOnItemSelectedListener(String defaultSelection, String key) {
+	private String selected;
+	private String key;
+
+	public SecondaryCategorySpinnerOnItemSelectedListener(
+			String defaultSelection, String key) {
 		selected = defaultSelection;
 		this.key = key;
 	}
 
-	public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
-				
-		SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(position);
+	public void onItemSelected(AdapterView<?> viewAdapter, View view,
+			int position, long id) {
+
+		SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter
+				.getItemAtPosition(position);
 		if (selected.equalsIgnoreCase(item.getCategory())) {
 			return;
 		}
 
-		selected = item.getCategory();		
-		Activity c = (Activity)view.getContext();
-		
+		selected = item.getCategory();
+		Activity c = (Activity) view.getContext();
+
 		View bgLayout = c.findViewById(R.id.tvshowBrowserLayout);
-		Gallery posterGallery = (Gallery) c.findViewById(R.id.tvShowBannerGallery);
-		
-		posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(c, key, item.getParentCategory() + "/" + item.getCategory()));
-		posterGallery.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(bgLayout, c));
-		posterGallery.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(c));			
-		
+		Gallery posterGallery = (Gallery) c
+				.findViewById(R.id.tvShowBannerGallery);
+
+		posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(c, key,
+				item.getParentCategory() + "/" + item.getCategory()));
+		posterGallery
+				.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(
+						bgLayout, c));
+		posterGallery
+				.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
+						c));
+
 	}
-
-
 
 	public void onNothingSelected(AdapterView<?> va) {
-		
-	}
 
+	}
 
 }

@@ -24,7 +24,6 @@
 package us.nineworlds.serenity.ui.video.player;
 
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
@@ -38,7 +37,6 @@ import com.google.analytics.tracking.android.EasyTracker;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
@@ -61,8 +59,8 @@ import android.widget.RelativeLayout;
  * @author dcarver
  * 
  */
-public class SerenitySurfaceViewVideoActivity extends SerenityActivity implements
-		SurfaceHolder.Callback {
+public class SerenitySurfaceViewVideoActivity extends SerenityActivity
+		implements SurfaceHolder.Callback {
 
 	/**
 	 * 
@@ -92,30 +90,18 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 													// seconds
 				}
 			} catch (IllegalStateException ex) {
-				Log.w(getClass().getName(), "Illegalstate exception occurred durring progress update. No further updates will occur.", ex);
+				Log.w(getClass().getName(),
+						"Illegalstate exception occurred durring progress update. No further updates will occur.",
+						ex);
 			}
 		};
 	};
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.view.SurfaceHolder.Callback#surfaceChanged(android.view.SurfaceHolder
-	 * , int, int, int)
-	 */
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.view.SurfaceHolder.Callback#surfaceCreated(android.view.SurfaceHolder
-	 * )
-	 */
 	public void surfaceCreated(SurfaceHolder holder) {
 		try {
 			mediaPlayer.setDisplay(holder);
@@ -192,11 +178,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 		mediaplayer_released = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
-	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -242,28 +223,18 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 		mediaController.setMediaPlayer(new SerenityMediaPlayerControl());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#finish()
-	 */
 	@Override
 	public void finish() {
 		super.finish();
 		progressReportinghandler.removeCallbacks(progressRunnable);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
-	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (mediaController.isShowing()) {
 			if (keyCode == KeyEvent.KEYCODE_BACK) {
 				mediaController.hide();
-				
+
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 					mediaPlayer.stop();
 				}
@@ -304,8 +275,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 			return true;
 		}
 
-		if ((keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) && isMediaPlayerStateValid()) {
+		if ((keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD || keyCode == KeyEvent.KEYCODE_MEDIA_NEXT)
+				&& isMediaPlayerStateValid()) {
 			int skipOffset = 10000 + mediaPlayer.getCurrentPosition();
 			int duration = mediaPlayer.getDuration();
 			if (skipOffset > duration) {
@@ -318,8 +289,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 			return true;
 		}
 
-		if ((keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) && isMediaPlayerStateValid()) {
+		if ((keyCode == KeyEvent.KEYCODE_MEDIA_REWIND || keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS)
+				&& isMediaPlayerStateValid()) {
 			int skipOffset = mediaPlayer.getCurrentPosition() - 10000;
 			if (skipOffset < 0) {
 				skipOffset = 0;
@@ -330,7 +301,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 			mediaPlayer.seekTo(skipOffset);
 			return true;
 		}
-		
+
 		if (keyCode == KeyEvent.KEYCODE_MEDIA_STOP && isMediaPlayerStateValid()) {
 			if (mediaPlayer.isPlaying()) {
 				mediaPlayer.pause();
@@ -343,26 +314,21 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	protected boolean isMediaPlayerStateValid() {
-		if (mediaPlayer != null && mediaplayer_error_state == false && mediaplayer_released == false) {
+		if (mediaPlayer != null && mediaplayer_error_state == false
+				&& mediaplayer_released == false) {
 			return true;
 		}
 		return false;
 	}
-	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onStart()
-	 */
+
 	@Override
 	protected void onStart() {
 		super.onStart();
 		EasyTracker.getInstance().activityStart(this);
 	}
-	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onStop()
-	 */
+
 	@Override
 	protected void onStop() {
 		super.onStop();
@@ -488,7 +454,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 
 			if (resumeOffset > 0) {
 				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-						context);
+						context, android.R.style.Theme_Holo_Dialog);
 
 				alertDialogBuilder.setTitle("Resume Video");
 				alertDialogBuilder
@@ -547,7 +513,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 		 * MediaPlayer, int, int)
 		 */
 		public boolean onError(MediaPlayer mp, int what, int extra) {
-			
+
 			mediaplayer_error_state = true;
 
 			String error_msg = "What: " + what + "Extra: " + extra;
@@ -563,9 +529,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 			if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
 				error_msg = "Server croaked. Extra Code: " + extra;
 			}
-			
-			EasyTracker.getTracker().sendEvent("Video Error", "Playback", error_msg, (long)0);
-			
+
+			EasyTracker.getTracker().sendEvent("Video Error", "Playback",
+					error_msg, (long) 0);
+
 			Log.e(getClass().getName(), error_msg);
 			return true;
 		}

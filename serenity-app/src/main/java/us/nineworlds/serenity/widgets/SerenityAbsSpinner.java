@@ -36,7 +36,8 @@ import android.widget.SpinnerAdapter;
  * 
  * @attr ref android.R.styleable#AbsSpinner_entries
  */
-public abstract class SerenityAbsSpinner extends SerenityAdapterView<SpinnerAdapter> {
+public abstract class SerenityAbsSpinner extends
+		SerenityAdapterView<SpinnerAdapter> {
 	SpinnerAdapter mAdapter;
 
 	int mHeightMeasureSpec;
@@ -369,7 +370,8 @@ public abstract class SerenityAbsSpinner extends SerenityAdapterView<SpinnerAdap
 		int position;
 
 		/**
-		 * Constructor called from {@link SerenityAbsSpinner#onSaveInstanceState()}
+		 * Constructor called from
+		 * {@link SerenityAbsSpinner#onSaveInstanceState()}
 		 */
 		SavedState(Parcelable superState) {
 			super(superState);

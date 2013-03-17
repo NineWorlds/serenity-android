@@ -60,7 +60,7 @@ public class TVShowBannerOnItemSelectedListener implements
 	private Activity context;
 	private ImageLoader imageLoader;
 	private View previous;
-	private ImageSize bgImageSize = new ImageSize(1280, 720);	
+	private ImageSize bgImageSize = new ImageSize(1280, 720);
 
 	/**
 	 * 
@@ -117,26 +117,27 @@ public class TVShowBannerOnItemSelectedListener implements
 			for (String genre : genres) {
 				genreText.append(genre).append(SEPERATOR);
 			}
-			genreText = genreText.replace(0, genreText.length(), genreText.substring(0, genreText.lastIndexOf(SEPERATOR)));
+			genreText = genreText.replace(0, genreText.length(),
+					genreText.substring(0, genreText.lastIndexOf(SEPERATOR)));
 		}
 		genreView.setText(genreText.toString());
 
 		TextView watchedUnwatched = (TextView) context
 				.findViewById(R.id.tvShowWatchedUnwatched);
-		
+
 		String watched = v.getPosterInfo().getShowsWatched();
 		String unwatched = v.getPosterInfo().getShowsUnwatched();
-		
+
 		String wu = "";
 		if (watched != null) {
 			wu = WATCHED_PREFIX + watched;
 		}
-		
+
 		if (unwatched != null) {
 			wu = wu + UNWATCHED_PREFIX + unwatched;
-			
+
 		}
-		
+
 		watchedUnwatched.setText(wu);
 
 	}
@@ -152,8 +153,10 @@ public class TVShowBannerOnItemSelectedListener implements
 
 		TVShowBannerImageView mpiv = (TVShowBannerImageView) v;
 		AbstractSeriesContentInfo mi = mpiv.getPosterInfo();
-		
-		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize, new SerenityBackgroundLoaderListener(bgLayout, R.drawable.tvshows));
+
+		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
+				new SerenityBackgroundLoaderListener(bgLayout,
+						R.drawable.tvshows));
 
 		ImageView showImage = (ImageView) context
 				.findViewById(R.id.tvShowImage);

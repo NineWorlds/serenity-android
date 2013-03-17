@@ -77,7 +77,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 			View bgLayout = context
 					.findViewById(R.id.movieBrowserBackgroundLayout);
 			createGallery(item, bgLayout);
-			
+
 			firstSelection = false;
 			return;
 		}
@@ -116,14 +116,15 @@ public class CategorySpinnerOnItemSelectedListener implements
 	protected void createGallery(CategoryInfo item, View bgLayout) {
 		SerenityGallery posterGallery = (SerenityGallery) context
 				.findViewById(R.id.moviePosterGallery);
-		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(
-				context, key, item.getCategory()));
+		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(context,
+				key, item.getCategory()));
 		posterGallery
 				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
 						bgLayout, context));
 		posterGallery
 				.setOnItemClickListener(new PlexVideoOnItemClickListener());
-		posterGallery.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
+		posterGallery
+				.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
 		posterGallery.setSpacing(25);
 		posterGallery.setAnimationDuration(1);
 	}

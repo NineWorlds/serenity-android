@@ -30,12 +30,12 @@ import android.widget.ImageView;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class TVShowBannerImageView extends ImageView {
 
 	private AbstractSeriesContentInfo posterInfo;
-	
+
 	/**
 	 * 
 	 */
@@ -46,15 +46,14 @@ public class TVShowBannerImageView extends ImageView {
 	/**
 	 * 
 	 */
-	public TVShowBannerImageView(Context context, AbstractSeriesContentInfo posterInfo) {
+	public TVShowBannerImageView(Context context,
+			AbstractSeriesContentInfo posterInfo) {
 		super(context);
 		this.posterInfo = posterInfo;
 	}
-	
+
 	public AbstractSeriesContentInfo getPosterInfo() {
 		return posterInfo;
 	}
-	
-	
 
 }

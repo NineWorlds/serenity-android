@@ -33,7 +33,6 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
 
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -47,31 +46,32 @@ import android.widget.ImageView;
 
 /**
  * Implementation of the Poster Image Gallery class for TV Shows.
- *  
+ * 
  * @author dcarver
- *
+ * 
  */
-public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
-	
+public class EpisodePosterImageGalleryAdapter extends
+		AbstractPosterImageGalleryAdapter {
+
 	private static EpisodePosterImageGalleryAdapter notifyAdapter;
 	private static ProgressDialog pd;
-	
+
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
 	}
 
-
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
+
 		VideoContentInfo pi = posterList.get(position);
 		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(300, android.view.ViewGroup.LayoutParams.FILL_PARENT));
-		
+		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(300,
+				android.view.ViewGroup.LayoutParams.FILL_PARENT));
+
 		imageLoader.displayImage(pi.getPosterURL(), mpiv);
-	
+
 		return mpiv;
 	}
 
@@ -83,25 +83,28 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
 		Intent intent = new Intent(context, EpisodeRetrievalIntentService.class);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("key", key);
-		
+
 		context.startService(intent);
 		notifyAdapter = this;
 
 	}
-	
+
 	private static class EpisodeHandler extends Handler {
-		
-		/* (non-Javadoc)
+
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see android.os.Handler#handleMessage(android.os.Message)
 		 */
 		@Override
 		public void handleMessage(Message msg) {
 			posterList = (List<VideoContentInfo>) msg.obj;
-			pd.dismiss();			
-			SerenityGallery gallery = (SerenityGallery) context.findViewById(R.id.moviePosterGallery);
+			pd.dismiss();
+			SerenityGallery gallery = (SerenityGallery) context
+					.findViewById(R.id.moviePosterGallery);
 			gallery.requestFocus();
 			notifyAdapter.notifyDataSetChanged();
-			
+
 		}
 	}
 }

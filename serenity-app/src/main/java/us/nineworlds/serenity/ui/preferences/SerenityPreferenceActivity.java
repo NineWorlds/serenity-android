@@ -81,11 +81,11 @@ public class SerenityPreferenceActivity extends PreferenceActivity {
 	}
 
 	/**
-	 * Populates the Discovered Devices preference list with available
-	 * Plex Media Servers.   The name of the Device and the device's IP
-	 * address are used as values in the entry.   The user friendly name
-	 * is used from the device itself.
-	 *  
+	 * Populates the Discovered Devices preference list with available Plex
+	 * Media Servers. The name of the Device and the device's IP address are
+	 * used as values in the entry. The user friendly name is used from the
+	 * device itself.
+	 * 
 	 */
 	protected void populateAvailablePlexMediaServers() {
 		ListPreference discoveredServers = (ListPreference) findPreference("discoveredServer");
