@@ -163,7 +163,7 @@
             <Gallery
                 android:id="@+id/tvShowBannerGallery"
                 android:layout_width="fill_parent"
-                android:layout_height="120dp"
+                android:layout_height="wrap_content"
                 android:animationDuration="1"
                 android:background="#50000000"
                 android:spacing="10dp" >

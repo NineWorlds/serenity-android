@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -33,6 +34,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader.TileMode;
+import android.util.DisplayMetrics;
 
 /**
  * @author dcarver
@@ -97,4 +99,43 @@ public class ImageUtils {
 
 		return bitmapWithReflection;
 	}
+	
+	/**
+	 * Takes a value in pixels and converts it to a dpi value.  It adjusts
+	 * the dpi size based on the screen density that is returned by 
+	 * android.
+	 * 
+	 * @param originalHeight
+	 * @param context The activity context
+	 * @return
+	 */
+	public static int getDPI(int pixelsize, Activity context) {
+		DisplayMetrics metrics = new DisplayMetrics();
+		context.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		float sizeMultiplier = 1;
+		switch (metrics.densityDpi) {
+		case DisplayMetrics.DENSITY_LOW: {
+			break;
+		}
+		case DisplayMetrics.DENSITY_MEDIUM: {
+			break;
+		}
+		case DisplayMetrics.DENSITY_TV: {
+			sizeMultiplier = 1.5f;
+			break;
+		}
+		case DisplayMetrics.DENSITY_XHIGH: {
+			sizeMultiplier = 3;
+			break;
+		}
+		default: {
+			sizeMultiplier = 3;
+			break;
+		}
+		}
+		
+		int dpi = Math.round((pixelsize * sizeMultiplier) / metrics.density);
+		return dpi;
+	}
+	
 }

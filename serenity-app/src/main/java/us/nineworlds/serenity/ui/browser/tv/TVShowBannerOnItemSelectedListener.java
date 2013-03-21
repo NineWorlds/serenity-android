@@ -31,6 +31,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 
 import us.nineworlds.serenity.R;
 
@@ -161,7 +162,9 @@ public class TVShowBannerOnItemSelectedListener implements
 		ImageView showImage = (ImageView) context
 				.findViewById(R.id.tvShowImage);
 		showImage.setScaleType(ScaleType.FIT_XY);
-		showImage.setLayoutParams(new LinearLayout.LayoutParams(250, 350));
+		int width = ImageUtils.getDPI(250, context);
+		int height = ImageUtils.getDPI(350, context);
+		showImage.setLayoutParams(new LinearLayout.LayoutParams(width, height));
 
 		imageLoader.displayImage(mi.getThumbNailURL(), showImage);
 
