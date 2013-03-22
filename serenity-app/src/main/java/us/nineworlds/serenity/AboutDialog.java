@@ -38,7 +38,7 @@ public class AboutDialog extends Dialog {
 		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info)));
 		tv.setLinkTextColor(Color.WHITE);
 		Linkify.addLinks(tv, Linkify.ALL);
-		setTitle("Serenity for Google TV");
+		setTitle(R.string.about_title_serenity_for_google_tv);
 	}
 
 	public static String readRawTextFile(int id) {

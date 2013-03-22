@@ -154,7 +154,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 					TextView textView = (TextView) context
 							.findViewById(R.id.tvShowSeasonsItemCount);
 					textView.setText(Integer.toString(seasonList.size())
-							+ " Item(s)");
+							+ context.getString(R.string._item_s_));
 
 				}
 				notifyAdapter.notifyDataSetChanged();

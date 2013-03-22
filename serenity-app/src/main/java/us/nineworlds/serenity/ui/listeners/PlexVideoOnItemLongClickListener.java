@@ -27,6 +27,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchEpisodeAsyncTask;
@@ -98,10 +99,10 @@ public class PlexVideoOnItemLongClickListener implements
 
 		ListView modeList = new ListView(context);
 		ArrayList<String> options = new ArrayList<String>();
-		options.add("Toggle Watched Status");
-		options.add("Download Video to Device");
+		options.add(context.getString(R.string.toggle_watched_status));
+		options.add(context.getString(R.string.download_video_to_device));
 		if (!SerenityApplication.isGoogleTV(context)) {
-			options.add("Play on TV");
+			options.add(context.getString(R.string.play_on_tv));
 		}
 
 		ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context,
@@ -201,7 +202,7 @@ public class PlexVideoOnItemLongClickListener implements
 		request.setDestinationUri(Uri.parse(file.toURI().toString()));
 		request.setShowRunningNotification(true);
 		long reference = downloadManager.enqueue(request);
-		Toast.makeText(context, "Starting download of " + info.getTitle(),
+		Toast.makeText(context, R.string.starting_download_of_ + info.getTitle(),
 				Toast.LENGTH_LONG).show();
 	}
 
@@ -211,7 +212,7 @@ public class PlexVideoOnItemLongClickListener implements
 				context, new DirectoryChooserDialog.ChosenDirectoryListener() {
 					public void onChosenDir(String chosenDir) {
 						Toast.makeText(context,
-								"Chosen directory: " + chosenDir,
+								R.string.chosen_directory_ + chosenDir,
 								Toast.LENGTH_LONG).show();
 						startDownload(chosenDir);
 					}

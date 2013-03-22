@@ -36,6 +36,7 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Part;
 import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.plex.rest.model.impl.Writer;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
@@ -54,10 +55,6 @@ import android.util.Log;
 public class EpisodeRetrievalIntentService extends
 		AbstractPlexRESTIntentService {
 
-	/**
-	 * 
-	 */
-	private static final String SEASON_EPISODE_UNKNOWN = "Unknown";
 	protected List<VideoContentInfo> posterList = null;
 	protected String key;
 	private static final Pattern season = Pattern.compile("S\\d+");
@@ -206,8 +203,8 @@ public class EpisodeRetrievalIntentService extends
 
 		String filename = part.getFilename();
 		if (filename == null) {
-			epi.setSeason(SEASON_EPISODE_UNKNOWN);
-			epi.setEpisodeNumber(SEASON_EPISODE_UNKNOWN);
+			epi.setSeason(getString(R.string.unknown));
+			epi.setEpisodeNumber(getString(R.string.unknown));
 		}
 
 		Matcher mseason = season.matcher(filename);
@@ -216,7 +213,7 @@ public class EpisodeRetrievalIntentService extends
 		if (mseason.find()) {
 			String sn = mseason.group();
 			String number = sn.substring(1);
-			String season = "Season "
+			String season = getString(R.string.season_)
 					+ Integer.toString(Integer.parseInt(number));
 			epi.setSeason(season);
 		}
@@ -224,7 +221,7 @@ public class EpisodeRetrievalIntentService extends
 		if (mepisode.find()) {
 			String en = mepisode.group();
 			String number = en.substring(1);
-			String episode = "Episode "
+			String episode = getString(R.string.episode_)
 					+ Integer.toString(Integer.parseInt(number));
 			epi.setEpisodeNumber(episode);
 		}

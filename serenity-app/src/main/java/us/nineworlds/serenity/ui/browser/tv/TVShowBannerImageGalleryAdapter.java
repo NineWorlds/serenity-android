@@ -159,12 +159,12 @@ public class TVShowBannerImageGalleryAdapter extends
 			if (tvShowList != null) {
 				if (tvShowList.isEmpty()) {
 					Toast.makeText(context,
-							"No Shows found for the category: " + category,
+							R.string.no_shows_found_for_the_category_ + category,
 							Toast.LENGTH_LONG).show();
 				}
 				TextView tv = (TextView) context
 						.findViewById(R.id.tvShowItemCount);
-				tv.setText(Integer.toString(tvShowList.size()) + " Item(s)");
+				tv.setText(Integer.toString(tvShowList.size()) + R.string._item_s_);
 			}
 			notifyDataSetChanged();
 			posterGallery.requestFocus();

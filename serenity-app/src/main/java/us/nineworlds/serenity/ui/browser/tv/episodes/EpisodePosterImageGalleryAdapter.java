@@ -77,7 +77,7 @@ public class EpisodePosterImageGalleryAdapter extends
 
 	@Override
 	protected void fetchDataFromService() {
-		pd = ProgressDialog.show(context, "", "Retrieving Episodes");
+		pd = ProgressDialog.show(context, "", context.getString(R.string.retrieving_episodes));
 		handler = new EpisodeHandler();
 		Messenger messenger = new Messenger(handler);
 		Intent intent = new Intent(context, EpisodeRetrievalIntentService.class);

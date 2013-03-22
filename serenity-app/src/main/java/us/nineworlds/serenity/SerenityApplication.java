@@ -57,6 +57,11 @@ import android.util.Log;
  */
 public class SerenityApplication extends Application {
 
+	/**
+	 * 
+	 */
+	private static final String COM_GOOGLE_ANDROID_TV = "com.google.android.tv";
+
 	private static final String HTTPCACHE = "httpcache";
 
 	private static PlexappFactory plexFactory;
@@ -136,7 +141,7 @@ public class SerenityApplication extends Application {
 
 	public static boolean isGoogleTV(Context context) {
 		final PackageManager pm = context.getPackageManager();
-		return pm.hasSystemFeature("com.google.android.tv");
+		return pm.hasSystemFeature(COM_GOOGLE_ANDROID_TV);
 	}
 
 	public static ConcurrentHashMap<String, Device> getPlexMediaServers() {

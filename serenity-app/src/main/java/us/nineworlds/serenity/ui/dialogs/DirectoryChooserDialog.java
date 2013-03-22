@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import us.nineworlds.serenity.R;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -107,7 +108,7 @@ public class DirectoryChooserDialog {
 		AlertDialog.Builder dialogBuilder = createDirectoryChooserDialog(dir,
 				m_subdirs, new DirectoryOnClickListener());
 
-		dialogBuilder.setPositiveButton("OK", new OnClickListener() {
+		dialogBuilder.setPositiveButton(R.string.button_ok, new OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
 				// Current directory chosen
@@ -117,7 +118,7 @@ public class DirectoryChooserDialog {
 					m_chosenDirectoryListener.onChosenDir(m_dir);
 				}
 			}
-		}).setNegativeButton("Cancel", null);
+		}).setNegativeButton(R.string.cancel, null);
 
 		final AlertDialog dirsDialog = dialogBuilder.create();
 
@@ -209,7 +210,7 @@ public class DirectoryChooserDialog {
 		Button newDirButton = new Button(m_context);
 		newDirButton.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
 				LayoutParams.WRAP_CONTENT));
-		newDirButton.setText("New folder");
+		newDirButton.setText(R.string.new_folder);
 		newDirButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
@@ -217,9 +218,9 @@ public class DirectoryChooserDialog {
 
 				// Show new folder name input dialog
 				new AlertDialog.Builder(m_context)
-						.setTitle("New folder name")
+						.setTitle(R.string.new_folder_name)
 						.setView(input)
-						.setPositiveButton("OK",
+						.setPositiveButton(R.string.button_ok,
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int whichButton) {
@@ -240,7 +241,7 @@ public class DirectoryChooserDialog {
 													Toast.LENGTH_SHORT).show();
 										}
 									}
-								}).setNegativeButton("Cancel", null).show();
+								}).setNegativeButton(R.string.cancel, null).show();
 			}
 		});
 

@@ -102,8 +102,8 @@ public class MainActivity extends SerenityActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_plex_app_main, menu);
-		menu.add(0, ABOUT, 0, "About");
-		menu.add(0, CLEAR_CACHE, 0, "Clear Image Cache");
+		menu.add(0, ABOUT, 0, R.string.options_main_about);
+		menu.add(0, CLEAR_CACHE, 0, R.string.options_main_clear_image_cache);
 		return true;
 	}
 
@@ -116,7 +116,7 @@ public class MainActivity extends SerenityActivity {
 			break;
 		case ABOUT:
 			AboutDialog about = new AboutDialog(this);
-			about.setTitle("Serenity for Google TV");
+			about.setTitle(R.string.about_title_serenity_for_google_tv);
 			about.show();
 			break;
 
@@ -134,11 +134,11 @@ public class MainActivity extends SerenityActivity {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,
 				android.R.style.Theme_Holo_Dialog);
 
-		alertDialogBuilder.setTitle("Clear Image Cache");
+		alertDialogBuilder.setTitle(R.string.options_main_clear_image_cache);
 		alertDialogBuilder
-				.setMessage("Clear the Image Cache?")
+				.setMessage(R.string.option_clear_the_image_cache_)
 				.setCancelable(true)
-				.setPositiveButton("Clear",
+				.setPositiveButton(R.string.clear,
 						new DialogInterface.OnClickListener() {
 
 							public void onClick(DialogInterface dialog,
@@ -150,7 +150,7 @@ public class MainActivity extends SerenityActivity {
 								imageLoader.clearMemoryCache();
 							}
 						})
-				.setNegativeButton("Cancel",
+				.setNegativeButton(R.string.cancel,
 						new DialogInterface.OnClickListener() {
 
 							public void onClick(DialogInterface dialog,
@@ -245,7 +245,7 @@ public class MainActivity extends SerenityActivity {
 									.getColumnIndex(DownloadManager.COLUMN_TITLE);
 							String title = c.getString(titleIndex);
 							Toast.makeText(context,
-									"Download complete for " + title + ".",
+									R.string.download_manager_download_complete_for_ + title + ".",
 									Toast.LENGTH_LONG).show();
 						}
 					}

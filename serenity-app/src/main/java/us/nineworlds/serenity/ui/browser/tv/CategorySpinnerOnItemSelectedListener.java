@@ -145,7 +145,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 			List<SecondaryCategoryInfo> secondaryCategories = (List<SecondaryCategoryInfo>) msg.obj;
 
 			if (secondaryCategories == null || secondaryCategories.isEmpty()) {
-				Toast.makeText(context, "No Entries available for category.",
+				Toast.makeText(context, R.string.no_entries_available_for_category_,
 						Toast.LENGTH_LONG).show();
 				return;
 			}

@@ -41,6 +41,9 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class GalleryOnItemClickListener implements OnItemClickListener {
 
+	private static final String MENU_TYPE_SEARCH = "search";
+	private static final String MENU_TYPE_SHOW = "show";
+	private static final String MENU_TYPE_MOVIE = "movie";
 	private Activity context;
 
 	/**
@@ -67,11 +70,11 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
 
 		Intent i = null;
 
-		if ("movie".equalsIgnoreCase(activityType)) {
+		if (MENU_TYPE_MOVIE.equalsIgnoreCase(activityType)) {
 			i = new Intent(context, MovieBrowserActivity.class);
-		} else if ("show".equalsIgnoreCase(activityType)) {
+		} else if (MENU_TYPE_SHOW.equalsIgnoreCase(activityType)) {
 			i = new Intent(context, TVShowBrowserActivity.class);
-		} else if ("search".equalsIgnoreCase(activityType)) {
+		} else if (MENU_TYPE_SEARCH.equalsIgnoreCase(activityType)) {
 			context.onSearchRequested();
 			return;
 		} else {

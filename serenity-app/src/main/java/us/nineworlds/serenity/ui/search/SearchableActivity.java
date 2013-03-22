@@ -141,7 +141,7 @@ public class SearchableActivity extends SerenityActivity {
 				ArrayList<VideoContentInfo> videos = (ArrayList<VideoContentInfo>) msg.obj;
 				if (videos != null && videos.isEmpty()) {
 					Toast.makeText(context,
-							"No videos found that match the search criteria",
+							R.string.no_videos_found_that_match_the_search_criteria,
 							Toast.LENGTH_LONG).show();
 					context.finish();
 				} else {

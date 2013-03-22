@@ -52,6 +52,11 @@ import us.nineworlds.serenity.SerenityApplication;
  */
 public class BrowseRegistryListener extends DefaultRegistryListener {
 
+	/**
+	 * 
+	 */
+	private static final String PLEX_MEDIA_SERVER = "Plex Media Server";
+
 	@Override
 	public void remoteDeviceDiscoveryStarted(Registry registry,
 			RemoteDevice device) {
@@ -86,7 +91,7 @@ public class BrowseRegistryListener extends DefaultRegistryListener {
 
 	public void deviceAdded(final Device device) {
 		String friendlyName = device.getDetails().getFriendlyName();
-		if (friendlyName.contains("Plex Media Server")) {
+		if (friendlyName.contains(PLEX_MEDIA_SERVER)) {
 			DeviceDetails details = device.getDetails();
 			SerenityApplication.getPlexMediaServers().put(friendlyName, device);
 		}

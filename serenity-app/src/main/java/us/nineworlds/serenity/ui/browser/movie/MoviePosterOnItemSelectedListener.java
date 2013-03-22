@@ -54,15 +54,7 @@ import android.widget.TextView;
 public class MoviePosterOnItemSelectedListener implements
 		OnItemSelectedListener {
 
-	/**
-	 * 
-	 */
 	private static final String CRLF = "\r\n";
-	/**
-	 * 
-	 */
-	private static final String DEFAULT_UNKNOWN = "Unknown";
-
 	private View bgLayout;
 	private Activity context;
 	private ImageLoader imageLoader;
@@ -120,10 +112,10 @@ public class MoviePosterOnItemSelectedListener implements
 		TextView tw = (TextView) context.findViewById(R.id.video_writers);
 		TextView td = (TextView) context.findViewById(R.id.video_directors);
 
-		ty.setText(DEFAULT_UNKNOWN);
-		tg.setText(DEFAULT_UNKNOWN);
-		tw.setText(DEFAULT_UNKNOWN);
-		td.setText(DEFAULT_UNKNOWN);
+		ty.setText(context.getString(R.string.unknown));
+		tg.setText(context.getString(R.string.unknown));
+		tw.setText(context.getString(R.string.unknown));
+		td.setText(context.getString(R.string.unknown));
 
 		if (mi.getYear() != null) {
 			ty.setText(mi.getYear());
@@ -170,10 +162,6 @@ public class MoviePosterOnItemSelectedListener implements
 		if (mi.getBackgroundURL() == null) {
 			return;
 		}
-
-		// imageExecutorService.submit(new
-		// BackgroundImageLoader(mi.getBackgroundURL(), bgLayout,
-		// R.drawable.movies));
 
 		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
 				new SerenityBackgroundLoaderListener(bgLayout,

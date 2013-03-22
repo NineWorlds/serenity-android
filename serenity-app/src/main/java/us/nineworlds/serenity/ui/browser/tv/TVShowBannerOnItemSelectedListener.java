@@ -54,8 +54,6 @@ import android.widget.TextView;
 public class TVShowBannerOnItemSelectedListener implements
 		OnItemSelectedListener {
 
-	private static final String UNWATCHED_PREFIX = " Unwatched: ";
-	private static final String WATCHED_PREFIX = "Watched: ";
 	private static final String SEPERATOR = "/";
 	private View bgLayout;
 	private Activity context;
@@ -131,11 +129,11 @@ public class TVShowBannerOnItemSelectedListener implements
 
 		String wu = "";
 		if (watched != null) {
-			wu = WATCHED_PREFIX + watched;
+			wu = context.getString(R.string.watched_) + " " + watched;
 		}
 
 		if (unwatched != null) {
-			wu = wu + UNWATCHED_PREFIX + unwatched;
+			wu = wu + " " + context.getString(R.string.unwatched_) + " " + unwatched;
 
 		}
 
@@ -170,13 +168,6 @@ public class TVShowBannerOnItemSelectedListener implements
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android
-	 * .widget.AdapterView)
-	 */
 	public void onNothingSelected(AdapterView<?> arg0) {
 
 	}

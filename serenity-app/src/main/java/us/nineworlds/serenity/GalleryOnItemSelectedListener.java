@@ -37,20 +37,10 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 	private View mainView;
 	private MainMenuTextView preSelected;
 
-	/**
-	 * 
-	 */
 	public GalleryOnItemSelectedListener(View v) {
 		mainView = v;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
-	 * .widget.AdapterView, android.view.View, int, long)
-	 */
 	public void onItemSelected(AdapterView<?> arg0, View v, int position,
 			long arg3) {
 		if (v instanceof MainMenuTextView) {
@@ -72,13 +62,6 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android
-	 * .widget.AdapterView)
-	 */
 	public void onNothingSelected(AdapterView<?> arg0) {
 
 	}

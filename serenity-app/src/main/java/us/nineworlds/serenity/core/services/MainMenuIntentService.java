@@ -29,6 +29,7 @@ import java.util.List;
 
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.impl.MenuItem;
 
 import android.content.Intent;
@@ -55,12 +56,6 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 	 * 
 	 */
 	private static final String SETTINGS_TYPE = "settings";
-	/**
-	 * 
-	 */
-	private static final String SETTINGS_MENU = "Settings";
-
-	private static final String SEARCH_MENU = "Search";
 	private static final String SEARCH_TYPE = "search";
 
 	private ArrayList<MenuItem> menuItems;
@@ -121,7 +116,7 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 	 */
 	protected void createSettingsMenu() {
 		MenuItem settingsMenuItem = new MenuItem();
-		settingsMenuItem.setTitle(SETTINGS_MENU);
+		settingsMenuItem.setTitle(getString(R.string.settings));
 		settingsMenuItem.setType(SETTINGS_TYPE);
 		settingsMenuItem.setSection(SETTINGS_SECTION_KEY);
 		menuItems.add(settingsMenuItem);
@@ -134,7 +129,7 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 	 */
 	protected void createSearchMenu() {
 		MenuItem settingsMenuItem = new MenuItem();
-		settingsMenuItem.setTitle(SEARCH_MENU);
+		settingsMenuItem.setTitle(getString(R.string.search));
 		settingsMenuItem.setType(SEARCH_TYPE);
 		settingsMenuItem.setSection(SETTINGS_SECTION_KEY);
 		menuItems.add(settingsMenuItem);
