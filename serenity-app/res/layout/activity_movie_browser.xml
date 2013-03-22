@@ -269,9 +269,9 @@
         <us.nineworlds.serenity.widgets.SerenityGallery
             android:id="@+id/moviePosterGallery"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:animationDuration="1"
-            android:background="#D0000000"
+            android:background="@android:color/background_dark"
             android:spacing="25dp" >
 
             <requestFocus />
