@@ -164,7 +164,7 @@ public class TVShowBannerImageGalleryAdapter extends
 				}
 				TextView tv = (TextView) context
 						.findViewById(R.id.tvShowItemCount);
-				tv.setText(Integer.toString(tvShowList.size()) + R.string._item_s_);
+				tv.setText(Integer.toString(tvShowList.size()) + context.getString(R.string._item_s_));
 			}
 			notifyDataSetChanged();
 			posterGallery.requestFocus();

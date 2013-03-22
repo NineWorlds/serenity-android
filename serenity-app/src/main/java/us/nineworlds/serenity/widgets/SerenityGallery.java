@@ -19,6 +19,7 @@ package us.nineworlds.serenity.widgets;
 import java.lang.reflect.Field;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -391,16 +392,21 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		long now = SystemClock.uptimeMillis();
-		if (Math.abs(now - mLastScrollEvent) > 100) {
-			super.onLayout(changed, l, t, r, b);
+		if (!SerenityApplication.isGoogleTV(getContext())) {
+			if (Math.abs(now - mLastScrollEvent) > 50) {
+				super.onLayout(changed, l, t, r, b);
 
-			/*
-			 * Remember that we are in layout to prevent more layout request
-			 * from being generated.
-			 */
-			mInLayout = true;
-			layout(0, false);
-			mInLayout = false;
+				/*
+				 * Remember that we are in layout to prevent more layout request
+				 * from being generated.
+				 */
+				mInLayout = true;
+				layout(0, false);
+				mInLayout = false;
+			}
+		} else {
+			super.onLayout(changed, l, t, r, b);
+			layout(0, true);
 		}
 	}
 

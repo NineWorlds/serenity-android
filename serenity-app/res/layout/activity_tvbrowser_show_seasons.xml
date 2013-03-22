@@ -63,15 +63,17 @@
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:layout_alignParentBottom="true"
-         android:orientation="vertical" >
+         android:background="#A0000000"
+         android:orientation="vertical"
+         android:layout_marginBottom="10dp" >
 
          <Gallery
              android:id="@+id/tvShowSeasonImageGallery"
              android:layout_width="fill_parent"
-             android:layout_height="130dp"
+             android:layout_height="wrap_content"
              android:animationDuration="1"
-             android:background="#A0000000"
-             android:spacing="50dp" >
+             android:spacing="50dp"
+             android:padding="5dp" >
 
              <requestFocus />
          </Gallery>

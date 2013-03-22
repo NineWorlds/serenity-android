@@ -257,21 +257,22 @@
 
     <LinearLayout
         android:id="@+id/tableRow2"
-        android:layout_width="900dip"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dip"
-        android:gravity="bottom" >
+        android:padding="5dp"
+        android:gravity="bottom"
+        android:background="#AA000000" >
 
         <us.nineworlds.serenity.widgets.SerenityGallery
             android:id="@+id/moviePosterGallery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animationDuration="1"
-            android:background="@android:color/background_dark"
             android:spacing="25dp" >
 
             <requestFocus />
