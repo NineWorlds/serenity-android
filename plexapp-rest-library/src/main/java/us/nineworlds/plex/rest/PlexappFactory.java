@@ -205,6 +205,7 @@ public class PlexappFactory {
 		try {
 			URL url = new URL(resourceURL);
 			con = (HttpURLConnection) url.openConnection();
+			con.setDefaultUseCaches(false);
 			int responseCode = con.getResponseCode();
 			if (responseCode == 200) {
 				return true;
@@ -249,6 +250,8 @@ public class PlexappFactory {
 		MediaContainer mediaContainer;
 		URL url = new URL(resourceURL);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		// We only want the updated data if something has changed.
+		con.addRequestProperty("Cache-Control", "max-age=0");
 		mediaContainer = serializer.read(MediaContainer.class,
 				con.getInputStream(), false);
 		return mediaContainer;

@@ -118,6 +118,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 			mpi.setPlotSummary(movie.getSummary());
 
 			mpi.setResumeOffset(Long.valueOf(movie.getViewOffset()).intValue());
+			mpi.setDuration(Long.valueOf(movie.getDuration()).intValue());
 
 			mpi.setViewCount(movie.getViewCount());
 

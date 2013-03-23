@@ -138,6 +138,8 @@ public class EpisodeRetrievalIntentService extends
 			epi.setViewCount(episode.getViewCount());
 			epi.setResumeOffset(Long.valueOf(episode.getViewOffset())
 					.intValue());
+			epi.setDuration(Long.valueOf(episode.getDuration()).intValue());
+
 			epi.setOriginalAirDate(episode.getOriginallyAvailableDate());
 
 			if (episode.getParentThumbNailImageKey() != null) {

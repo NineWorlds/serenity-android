@@ -102,6 +102,10 @@ public interface VideoContentInfo extends ContentInfo {
 	public void setAudioChannels(String audioChannels);
 
 	public void setResumeOffset(int offset);
+	
+	public void setDuration(int duration);
+	
+	public int getDuration();
 
 	public int getResumeOffset();
 

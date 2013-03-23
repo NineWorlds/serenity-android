@@ -78,6 +78,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private int resumeOffset;
 	private boolean mediaplayer_error_state = false;
 	private boolean mediaplayer_released = false;
+	private int duration;
 
 	private Handler progressReportinghandler = new Handler();
 	private Runnable progressRunnable = new Runnable() {
@@ -206,6 +207,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		String audioFormat = extras.getString("audioFormat");
 		String audioChannels = extras.getString("audioChannels");
 		resumeOffset = extras.getInt("resumeOffset");
+		duration = extras.getInt("duration");
 
 		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setOnErrorListener(new SerenityOnErrorListener());
@@ -424,6 +426,25 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			return null;
 		}
 	}
+	
+	protected class CompletedVideoRequest extends AsyncTask<Void, Void, Void> {
+		
+		private String uvideoId;
+		public CompletedVideoRequest(String videoId) {
+			uvideoId = videoId;
+		}
+
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
+		@Override
+		protected Void doInBackground(Void... params) {
+			PlexappFactory factory = SerenityApplication.getPlexFactory();
+			factory.setProgress(uvideoId, "0");
+			return null;
+		}
+		
+	}
 
 	/**
 	 * A prepare listener that handles how a video should start playing.
@@ -557,12 +578,17 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	protected class VideoPlayerOnCompletionListener implements OnCompletionListener {
 
 		public void onCompletion(MediaPlayer mp) {
+			new CompletedVideoRequest(videoId).execute();
 			if (!mediaplayer_released) {
+				if (isMediaPlayerStateValid()) {
+					if (mediaController.isShowing()) {
+						mediaController.hide();
+					}
+				}
 				mp.release();
 				mediaplayer_released = true;
 			}
 			finish();
 		}
-		
 	}
 }

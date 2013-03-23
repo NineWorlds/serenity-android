@@ -103,6 +103,14 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
+		if (key != null && key.contains("onDeck")) {
+			restarted_state = false;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+			return;
+		}
 		restarted_state = true;
 	}
 

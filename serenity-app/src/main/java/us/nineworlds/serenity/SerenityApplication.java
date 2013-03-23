@@ -78,7 +78,7 @@ public class SerenityApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 
-		installHttpCache();
+		//installHttpCache();
 
 		EasyTracker.getInstance().setContext(this);
 

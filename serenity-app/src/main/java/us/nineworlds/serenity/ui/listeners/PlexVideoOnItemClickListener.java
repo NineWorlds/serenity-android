@@ -98,6 +98,7 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 		vpIntent.putExtra("videoFormat", video.getVideoCodec());
 		vpIntent.putExtra("audioChannels", video.getAudioChannels());
 		vpIntent.putExtra("resumeOffset", video.getResumeOffset());
+		vpIntent.putExtra("duration", video.getDuration());
 
 		Activity a = (Activity) mpiv.getContext();
 		a.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);

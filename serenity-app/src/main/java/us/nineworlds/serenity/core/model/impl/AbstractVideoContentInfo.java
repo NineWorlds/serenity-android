@@ -57,6 +57,8 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	private int viewCount;
 	private String audioChannels;
 	private int resumeOffset;
+	private int duration;
+
 	private String season;
 	private String episodeNumber;
 	private String originalAirDate;
@@ -460,5 +462,14 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	public void setAudioChannels(String audioChannels) {
 		this.audioChannels = audioChannels;
 	}
+	
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+	
 
 }
