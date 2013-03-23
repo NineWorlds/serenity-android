@@ -69,8 +69,20 @@ public class Video extends AbstractPlexObject {
 	private String backgroundImageKey;
 	
 	@Attribute(name="parentThumb", required=false)
-	String parentThumbNailImageKey;
+	private String parentThumbNailImageKey;
 	
+	@Attribute(name="grandparentThumb", required=false)
+	private String grandParentThumbNailImageKey;
+
+	
+
+	public String getGrandParentThumbNailImageKey() {
+		return grandParentThumbNailImageKey;
+	}
+
+	public void setGrandParentThumbNailImageKey(String grandParentThumbNailImageKey) {
+		this.grandParentThumbNailImageKey = grandParentThumbNailImageKey;
+	}
 
 	@Attribute(name="duration",required=false)
 	private long duration;

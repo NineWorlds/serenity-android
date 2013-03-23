@@ -41,6 +41,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	private String castInfo;
 	private String posterURL;
 	private String parentPosterURL;
+	private String grandeParentPosterURL;
 	private String backgroundURL;
 	private String title;
 	private String contentRating;
@@ -453,6 +454,14 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 
 	public void setParentPosterURL(String parentPosterURL) {
 		this.parentPosterURL = parentPosterURL;
+	}
+	
+	public void setGrandParentPosterURL(String posterURL) {
+		this.grandeParentPosterURL = posterURL;
+	}
+	
+	public String getGrandParentPosterURL() {
+		return this.grandeParentPosterURL;
 	}
 
 	public String getAudioChannels() {

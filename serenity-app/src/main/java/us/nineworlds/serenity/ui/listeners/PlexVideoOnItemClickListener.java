@@ -86,7 +86,9 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 		vpIntent.putExtra("title", video.getTitle());
 		vpIntent.putExtra("summary", video.getPlotSummary());
 
-		if (video.getParentPosterURL() != null) {
+		if (video.getGrandParentPosterURL() != null) {
+			vpIntent.putExtra("posterUrl", video.getGrandParentPosterURL());
+		} else if (video.getParentPosterURL() != null) {
 			vpIntent.putExtra("posterUrl", video.getParentPosterURL());
 		} else {
 			vpIntent.putExtra("posterUrl", video.getPosterURL());

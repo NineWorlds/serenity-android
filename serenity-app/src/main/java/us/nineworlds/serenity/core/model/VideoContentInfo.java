@@ -62,6 +62,8 @@ public interface VideoContentInfo extends ContentInfo {
 	public String getContainer();
 
 	public String getParentPosterURL();
+	
+	public String getGrandParentPosterURL();
 
 	public void setActors(List<String> actors);
 
@@ -97,6 +99,8 @@ public interface VideoContentInfo extends ContentInfo {
 
 	public void setParentPosterURL(String parentPosterURL);
 
+	public void setGrandParentPosterURL(String parentPosterURL);
+	
 	public String getAudioChannels();
 
 	public void setAudioChannels(String audioChannels);

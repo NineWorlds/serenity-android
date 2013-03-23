@@ -126,7 +126,7 @@ public class EpisodeRetrievalIntentService extends
 	protected void createVideoContent(MediaContainer mc) {
 		String baseUrl = factory.baseURL();
 		String parentPosterURL = null;
-		if (mc.getParentPosterURL() != null && !mc.getParentPosterURL().contains("shows")) {
+		if (mc.getParentPosterURL() != null && !mc.getParentPosterURL().contains("show")) {
 			parentPosterURL = baseUrl + mc.getParentPosterURL().substring(1);
 		}
 		List<Video> videos = mc.getVideos();
@@ -147,6 +147,11 @@ public class EpisodeRetrievalIntentService extends
 			if (episode.getParentThumbNailImageKey() != null) {
 				epi.setParentPosterURL(baseUrl
 						+ episode.getParentThumbNailImageKey().substring(1));
+			}
+			
+			if (episode.getGrandParentThumbNailImageKey() != null) {
+				epi.setGrandParentPosterURL(baseUrl
+						+ episode.getGrandParentThumbNailImageKey().substring(1));
 			}
 
 			String burl = factory.baseURL() + ":/resources/show-fanart.jpg";
