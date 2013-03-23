@@ -39,6 +39,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
@@ -108,6 +109,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			mediaPlayer.setDataSource(videoURL);
 			mediaPlayer.setOnPreparedListener(new VideoPlayerPrepareListener(
 					this));
+			mediaPlayer.setOnCompletionListener(new VideoPlayerOnCompletionListener());
 			mediaPlayer.prepareAsync();
 
 		} catch (Exception ex) {
@@ -167,15 +169,11 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		return lp;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.view.SurfaceHolder.Callback#surfaceDestroyed(android.view.
-	 * SurfaceHolder)
-	 */
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		mediaPlayer.release();
-		mediaplayer_released = true;
+		if (!mediaplayer_released) {
+			mediaPlayer.release();
+			mediaplayer_released = true;
+		}
 	}
 
 	@Override
@@ -554,5 +552,17 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 		}
 		return super.onTouchEvent(event);
+	}
+	
+	protected class VideoPlayerOnCompletionListener implements OnCompletionListener {
+
+		public void onCompletion(MediaPlayer mp) {
+			if (!mediaplayer_released) {
+				mp.release();
+				mediaplayer_released = true;
+			}
+			finish();
+		}
+		
 	}
 }
