@@ -126,13 +126,15 @@ public class EpisodeRetrievalIntentService extends
 	protected void createVideoContent(MediaContainer mc) {
 		String baseUrl = factory.baseURL();
 		String parentPosterURL = null;
-		if (mc.getParentPosterURL() != null) {
+		if (mc.getParentPosterURL() != null && !mc.getParentPosterURL().contains("shows")) {
 			parentPosterURL = baseUrl + mc.getParentPosterURL().substring(1);
 		}
 		List<Video> videos = mc.getVideos();
 		for (Video episode : videos) {
 			VideoContentInfo epi = new EpisodePosterInfo();
-			epi.setParentPosterURL(parentPosterURL);
+			if (parentPosterURL != null) {
+				epi.setParentPosterURL(parentPosterURL);
+			}
 			epi.setId(episode.getRatingKey());
 			epi.setPlotSummary(episode.getSummary());
 			epi.setViewCount(episode.getViewCount());
