@@ -95,7 +95,7 @@ public class PlexVideoOnItemLongClickListener implements
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 				new ContextThemeWrapper(context,
 						android.R.style.Theme_Holo_Dialog));
-		builder.setTitle("Video Options");
+		builder.setTitle(context.getString(R.string.video_options));
 
 		ListView modeList = new ListView(context);
 		ArrayList<String> options = new ArrayList<String>();
@@ -202,7 +202,7 @@ public class PlexVideoOnItemLongClickListener implements
 		request.setDestinationUri(Uri.parse(file.toURI().toString()));
 		request.setShowRunningNotification(true);
 		long reference = downloadManager.enqueue(request);
-		Toast.makeText(context, R.string.starting_download_of_ + info.getTitle(),
+		Toast.makeText(context, context.getString(R.string.starting_download_of_) + info.getTitle(),
 				Toast.LENGTH_LONG).show();
 	}
 
@@ -212,7 +212,7 @@ public class PlexVideoOnItemLongClickListener implements
 				context, new DirectoryChooserDialog.ChosenDirectoryListener() {
 					public void onChosenDir(String chosenDir) {
 						Toast.makeText(context,
-								R.string.chosen_directory_ + chosenDir,
+								context.getString(R.string.chosen_directory_) + chosenDir,
 								Toast.LENGTH_LONG).show();
 						startDownload(chosenDir);
 					}

@@ -245,7 +245,7 @@ public class MainActivity extends SerenityActivity {
 									.getColumnIndex(DownloadManager.COLUMN_TITLE);
 							String title = c.getString(titleIndex);
 							Toast.makeText(context,
-									R.string.download_manager_download_complete_for_ + title + ".",
+									getString(R.string.download_manager_download_complete_for_) + title + ".",
 									Toast.LENGTH_LONG).show();
 						}
 					}
