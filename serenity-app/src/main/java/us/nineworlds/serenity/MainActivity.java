@@ -81,9 +81,15 @@ public class MainActivity extends SerenityActivity {
 		mainView = findViewById(R.id.mainLayout);
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		preferences
-				.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
-						.getInstance()).getServerConfigChangeListener());
+		if (preferences != null) {
+			ServerConfig config = (ServerConfig) ServerConfig
+			.getInstance();
+			if (config != null) {
+				preferences
+						.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
+								.getInstance()).getServerConfigChangeListener());
+			}
+		}
 
 		boolean googletv = SerenityApplication.isGoogleTV(this);
 		if (!googletv) {

@@ -1,47 +1,42 @@
 <project>
    <modelVersion>4.0.0</modelVersion>
-   <name>Plexapp REST Library Tests</name>
+   <name>Serenity App Tests</name>
    <parent>
       <groupId>us.nineworlds.serenity</groupId>
       <artifactId>plexapp-tests-parent</artifactId>
       <version>1.1.0-SNAPSHOT</version>
    </parent>
 
-   <artifactId>plexapp-rest-library-tests</artifactId>
-   <packaging>apk</packaging>
-   
+   <artifactId>serenity-app-tests</artifactId>
+   <packaging>apklib</packaging>
+
 
    <dependencies>
       <dependency>
          <groupId>android</groupId>
          <artifactId>android</artifactId>
-         <version>3.2_r1</version>
+<!--         <version>3.2_r1</version> -->
+         <version>4.1.2_r4</version>
+
          <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
-         <artifactId>plexapp-rest-library</artifactId>
+         <artifactId>serenity-app</artifactId>
          <version>1.1.0-SNAPSHOT</version>
-         <type>apklib</type>
-         <exclusions>
-            <exclusion>
-               <artifactId>stax</artifactId>
-               <groupId>stax</groupId>
-            </exclusion>
-            <exclusion>
-               <artifactId>stax-api</artifactId>
-               <groupId>stax</groupId>
-            </exclusion>
-            <exclusion>
-               <artifactId>xpp3</artifactId>
-               <groupId>xpp3</groupId>
-            </exclusion>
-         </exclusions>
+         <type>apk</type>
+      </dependency>
+      <dependency>
+         <groupId>us.nineworlds.serenity</groupId>
+         <artifactId>serenity-app</artifactId>
+         <version>1.1.0-SNAPSHOT</version>
+         <type>jar</type>
+         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
-         <version>4.11</version>
+         <version>4.8.2</version>
          <scope>test</scope>
       </dependency>
       <dependency>
@@ -53,7 +48,7 @@
       <dependency>
          <groupId>com.pivotallabs</groupId>
          <artifactId>robolectric</artifactId>
-         <version>1.1</version>
+         <version>1.2</version>
          <scope>test</scope>
       </dependency>
 
@@ -71,23 +66,23 @@
       </pluginManagement>
       <plugins>
          <plugin>
-           <groupId>org.jacoco</groupId>
-           <artifactId>jacoco-maven-plugin</artifactId>
-           <version>0.5.10.201208310627</version>
-           <executions>
-              <execution>
-                 <goals>
-                    <goal>prepare-agent</goal>
-                 </goals>
-              </execution>
-              <execution>
-                <id>report</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>report</goal>
-                </goals>
-              </execution>
-           </executions>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.5.10.201208310627</version>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>prepare-agent</goal>
+                  </goals>
+               </execution>
+               <execution>
+                  <id>report</id>
+                  <phase>prepare-package</phase>
+                  <goals>
+                     <goal>report</goal>
+                  </goals>
+               </execution>
+            </executions>
          </plugin>
          <plugin>
             <groupId>com.jayway.maven.plugins.android.generation2</groupId>
@@ -109,14 +104,33 @@
             </configuration>
          </plugin>
          <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.13</version>
-            <configuration>
-               <classpathDependencyExcludes>
-                  <exclude>android:android:*</exclude>
-               </classpathDependencyExcludes>
-            </configuration>
-         </plugin>
+             <artifactId>maven-surefire-plugin</artifactId>
+             <version>2.13</version>
+             <configuration>
+                <workingDirectory>../../serenity-app</workingDirectory>
+             </configuration>
+          </plugin>
       </plugins>
    </build>
+   <profiles>
+      <profile>
+         <id>eclipse</id>
+         <dependencies>
+            <dependency>
+               <groupId>android</groupId>
+               <artifactId>android</artifactId>
+<!--          <version>3.2_r1</version> -->
+              <version>4.1.2_r4</version>
+              <scope>compile</scope>
+            </dependency>
+            <dependency>
+               <groupId>us.nineworlds.serenity</groupId>
+               <artifactId>serenity-app</artifactId>
+               <version>1.1.0-SNAPSHOT</version>
+               <type>jar</type>
+               <scope>provided</scope>
+            </dependency>
+         </dependencies>
+      </profile>
+   </profiles>
 </project>

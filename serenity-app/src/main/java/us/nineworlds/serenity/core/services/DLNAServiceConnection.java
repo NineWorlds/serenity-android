@@ -49,6 +49,9 @@ public class DLNAServiceConnection implements ServiceConnection {
 
 	public void onServiceConnected(ComponentName className, IBinder service) {
 		upnpService = (AndroidUpnpService) service;
+		if (upnpService == null) {
+			return;
+		}
 
 		// Refresh the list with all known devices
 		for (Device device : upnpService.getRegistry().getDevices()) {

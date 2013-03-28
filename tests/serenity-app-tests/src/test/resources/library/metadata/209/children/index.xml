@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MediaContainer size="5" allowSync="1" art="/library/metadata/209/art/1354460830" banner="/library/metadata/209/banner/1354460830" identifier="com.plexapp.plugins.library" key="209" mediaTagPrefix="/system/bundle/media/flags/" mediaTagVersion="1358288345" nocache="1" parentIndex="1" parentTitle="Star Wars: The Clone Wars" parentYear="2008" summary="As the Clone Wars sweep through the galaxy, the heroic Jedi Knights struggle to maintain order and restore peace. More and more systems are falling prey to the forces of the dark side as the Galactic Republic slips further and further under the sway of the Separatists and their never-ending droid army." theme="/library/metadata/209/theme/1354460830" thumb="/library/metadata/209/thumb/1354460830" title1="TV Shows" title2="Star Wars: The Clone Wars" viewGroup="season" viewMode="65593">
+<Directory leafCount="85" thumb="/library/metadata/209/thumb/1354460830" viewedLeafCount="83" key="/library/metadata/209/allLeaves" title="All episodes" />
+<Directory ratingKey="210" key="/library/metadata/210/children" parentRatingKey="209" type="season" title="Season 1" parentKey="/library/metadata/209" summary="" index="1" thumb="/library/metadata/210/thumb/1353423397" leafCount="22" viewedLeafCount="22" addedAt="1353423337" updatedAt="1353423397">
+</Directory>
+<Directory ratingKey="234" key="/library/metadata/234/children" parentRatingKey="209" type="season" title="Season 2" parentKey="/library/metadata/209" summary="" index="2" thumb="/library/metadata/234/thumb/1353513105" leafCount="19" viewedLeafCount="18" addedAt="1353513073" updatedAt="1353513105">
+</Directory>
+<Directory ratingKey="254" key="/library/metadata/254/children" parentRatingKey="209" type="season" title="Season 3" parentKey="/library/metadata/209" summary="" index="3" thumb="/library/metadata/254/thumb/1353526743" leafCount="22" viewedLeafCount="22" addedAt="1353526705" updatedAt="1353526743">
+</Directory>
+<Directory ratingKey="296" key="/library/metadata/296/children" parentRatingKey="209" type="season" title="Season 4" parentKey="/library/metadata/209" summary="" index="4" thumb="/library/metadata/296/thumb/1354460830" leafCount="22" viewedLeafCount="21" addedAt="1354460781" updatedAt="1354460830">
+</Directory>
+</MediaContainer>
