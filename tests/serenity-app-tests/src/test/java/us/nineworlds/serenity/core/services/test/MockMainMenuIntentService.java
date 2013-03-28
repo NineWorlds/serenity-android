@@ -21,39 +21,35 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.services;
+package us.nineworlds.serenity.core.services.test;
 
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.SerenityApplication;
-import android.app.IntentService;
 import android.content.Intent;
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.MockSerenityApplication;
+import us.nineworlds.serenity.core.services.MainMenuIntentService;
 
 /**
  * @author dcarver
- * 
+ *
  */
-public abstract class AbstractPlexRESTIntentService extends IntentService {
+public class MockMainMenuIntentService extends MainMenuIntentService {
 
-	protected PlexappFactory factory;
-
-	/**
-	 * @param name
-	 */
-	public AbstractPlexRESTIntentService(String name) {
-		super(name);
-		factory = getPlexFactoryInstance();
-	}
-
-	/**
-	 * 
-	 */
+	@Override
 	protected PlexappFactory getPlexFactoryInstance() {
-		return SerenityApplication.getPlexFactory();
+		MockSerenityApplication app = new MockSerenityApplication();
+		app.onCreate();
+		return MockSerenityApplication.getPlexFactory();
 	}
-
-	/**
-	 * Send a message back to the calling code with the results
-	 */
-	public abstract void sendMessageResults(Intent intent);
-
+	
+	@Override
+	public void sendMessageResults(Intent intent) {
+		
+	}
+	
+	@Override
+	public void onHandleIntent(Intent intent) {
+		super.onHandleIntent(intent);
+	}
+	
+	
 }

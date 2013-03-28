@@ -52,6 +52,7 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 	 * 
 	 */
 	private static final String SETTINGS_SECTION_KEY = "0";
+
 	/**
 	 * 
 	 */
@@ -150,5 +151,8 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 		}
 
 	}
-
+	
+	public ArrayList<MenuItem> getMenuItems() {
+		return menuItems;
+	}
 }

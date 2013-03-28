@@ -57,14 +57,11 @@ import android.util.Log;
  */
 public class SerenityApplication extends Application {
 
-	/**
-	 * 
-	 */
 	private static final String COM_GOOGLE_ANDROID_TV = "com.google.android.tv";
 
 	private static final String HTTPCACHE = "httpcache";
 
-	private static PlexappFactory plexFactory;
+	protected static PlexappFactory plexFactory;
 
 	private static ConcurrentHashMap<String, Device> plexmediaServers = new ConcurrentHashMap<String, Device>();
 	private static ImageLoader imageLoader;
@@ -80,8 +77,13 @@ public class SerenityApplication extends Application {
 
 		//installHttpCache();
 
-		EasyTracker.getInstance().setContext(this);
+		installAnalytics();
+		configureImageLoader();
+		initializePlexappFactory();
+		sendStartedApplicationEvent();
+	}
 
+	protected void configureImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
 				.cacheInMemory().cacheOnDisc()
 				.bitmapConfig(Bitmap.Config.RGB_565)
@@ -106,17 +108,30 @@ public class SerenityApplication extends Application {
 
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(imageLoaderconfig);
+	}
 
-		// Temporarily clean the cache
-		// imageManager.getFileManager().clean();
-
-		IConfiguration config = ServerConfig.getInstance(this);
-		plexFactory = PlexappFactory.getInstance(config);
+	/**
+	 * @param deviceModel
+	 */
+	protected void sendStartedApplicationEvent() {
 		String deviceModel = android.os.Build.MODEL;
-
 		EasyTracker.getTracker().sendEvent("Devices", "Started Application",
 				deviceModel, (long) 0);
+	}
 
+	/**
+	 * 
+	 */
+	protected void installAnalytics() {
+		EasyTracker.getInstance().setContext(this);
+	}
+
+	/**
+	 * 
+	 */
+	protected void initializePlexappFactory() {
+		IConfiguration config = ServerConfig.getInstance(this);
+		plexFactory = PlexappFactory.getInstance(config);
 	}
 
 	/**
