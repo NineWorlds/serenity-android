@@ -5,6 +5,31 @@
  * http://code.google.com/p/android-oplayer/
  */
 
+/**
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2012-2013 David Carver
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+ * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+ * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package us.nineworlds.serenity.ui.video.player;
 
 import java.text.SimpleDateFormat;
@@ -23,6 +48,7 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -37,6 +63,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -74,6 +101,11 @@ import android.widget.TextView;
  * <p>
  * Functions like show() and hide() have no effect when MediaController is
  * created in an xml layout.
+ * 
+ * DAC - 2013-03-28 - Cleaned up the code and removed the handling of the key events.
+ *    Also made it so that the mediacontroller popup windows is focusable otherwise
+ *    no keyevents were being fired.
+ *    
  */
 public class MediaController extends FrameLayout {
 	/**
@@ -174,10 +206,15 @@ public class MediaController extends FrameLayout {
 
 	private void initFloatingWindow() {
 		mWindow = new PopupWindow(mContext);
-		mWindow.setFocusable(false);
+		mWindow.setFocusable(true);
 		mWindow.setBackgroundDrawable(null);
 		mWindow.setOutsideTouchable(true);
+		mWindow.update();
 		mAnimStyle = android.R.style.Animation;
+		setFocusable(true);
+		setFocusableInTouchMode(true);
+		setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+		requestFocus();
 	}
 
 	/**
@@ -297,7 +334,6 @@ public class MediaController extends FrameLayout {
 
 	public void setMediaPlayer(MediaPlayerControl player) {
 		mPlayer = player;
-		updatePausePlay();
 	}
 
 	/**
@@ -371,8 +407,9 @@ public class MediaController extends FrameLayout {
 	 */
 	public void show(int timeout) {
 		if (!mShowing && mAnchor != null && mAnchor.getWindowToken() != null) {
-			if (mPauseButton != null)
+			if (mPauseButton != null) {
 				mPauseButton.requestFocus();
+			}
 			disableUnsupportedButtons();
 
 			if (mFromXml) {
@@ -394,7 +431,6 @@ public class MediaController extends FrameLayout {
 			if (mShownListener != null)
 				mShownListener.onShown();
 		}
-		updatePausePlay();
 		mHandler.sendEmptyMessage(SHOW_PROGRESS);
 
 		if (timeout != 0) {
@@ -464,7 +500,6 @@ public class MediaController extends FrameLayout {
 					pos = setProgress();
 					msg = obtainMessage(SHOW_PROGRESS);
 					sendMessageDelayed(msg, 1000 - (pos % 1000));
-					updatePausePlay();
 				}
 				break;
 			}
@@ -543,47 +578,13 @@ public class MediaController extends FrameLayout {
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		int keyCode = event.getKeyCode();
-		if (event.getRepeatCount() == 0
-				&& (keyCode == KeyEvent.KEYCODE_HEADSETHOOK
-						|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || keyCode == KeyEvent.KEYCODE_SPACE)) {
-			doPauseResume();
-			show(sDefaultTimeout);
-			if (mPauseButton != null)
-				mPauseButton.requestFocus();
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_MEDIA_STOP) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			Activity c = (Activity) getContext();
 			if (mPlayer.isPlaying()) {
 				mPlayer.pause();
-				updatePausePlay();
 			}
+			c.finish();
 			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_BACK
-				|| keyCode == KeyEvent.KEYCODE_MENU
-				|| keyCode == KeyEvent.KEYCODE_INFO) {
-			hide();
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-			View button = this.getFocusedChild();
-			button.requestFocus(FOCUS_LEFT);
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-			View button = this.getFocusedChild();
-			button.requestFocus(FOCUS_DOWN);
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-			View button = this.getFocusedChild();
-			button.requestFocus(FOCUS_RIGHT);
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-			View button = this.getFocusedChild();
-			button.requestFocus(FOCUS_UP);
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
-			View button = this.getFocusedChild();
-			button.performClick();
-			return true;
-		} else {
-			show(sDefaultTimeout);
 		}
 		return super.dispatchKeyEvent(event);
 	}
@@ -595,48 +596,6 @@ public class MediaController extends FrameLayout {
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (event.getRepeatCount() == 0
-				&& (keyCode == KeyEvent.KEYCODE_HEADSETHOOK
-						|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || keyCode == KeyEvent.KEYCODE_SPACE)) {
-			doPauseResume();
-			show(sDefaultTimeout);
-			if (mPauseButton != null)
-				mPauseButton.requestFocus();
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_MEDIA_STOP) {
-			if (mPlayer.isPlaying()) {
-				mPlayer.pause();
-				updatePausePlay();
-			}
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_BACK
-				|| keyCode == KeyEvent.KEYCODE_MENU
-				|| keyCode == KeyEvent.KEYCODE_INFO) {
-			hide();
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-			View button = this.getFocusedChild();
-			button.requestFocus(FOCUS_LEFT);
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-			View button = this.getFocusedChild();
-			button.requestFocus(FOCUS_DOWN);
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-			View button = this.getFocusedChild();
-			button.requestFocus(FOCUS_RIGHT);
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-			View button = this.getFocusedChild();
-			button.requestFocus(FOCUS_UP);
-			return true;
-		} else if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
-			View button = this.getFocusedChild();
-			button.performClick();
-			return true;
-		} else {
-			show(sDefaultTimeout);
-		}
 		return super.onKeyDown(keyCode, event);
 	}
 
@@ -647,22 +606,12 @@ public class MediaController extends FrameLayout {
 		}
 	};
 
-	private void updatePausePlay() {
-		if (mRoot == null || mPauseButton == null)
-			return;
 
-		if (mPlayer.isPlaying())
-			mPauseButton.setImageResource(R.drawable.osd_pause_nf);
-		else
-			mPauseButton.setImageResource(R.drawable.osd_play_nf);
-	}
-
-	private void doPauseResume() {
+	public void doPauseResume() {
 		if (mPlayer.isPlaying())
 			mPlayer.pause();
 		else
 			mPlayer.start();
-		updatePausePlay();
 	}
 
 	private OnSeekBarChangeListener mSeekListener = new OnSeekBarChangeListener() {
@@ -672,10 +621,6 @@ public class MediaController extends FrameLayout {
 			mHandler.removeMessages(SHOW_PROGRESS);
 			if (mInstantSeeking)
 				mAM.setStreamMute(AudioManager.STREAM_MUSIC, true);
-			// if (mInfoView != null) {
-			// mInfoView.setText("");
-			// mInfoView.setVisibility(View.VISIBLE);
-			// }
 		}
 
 		public void onProgressChanged(SeekBar bar, int progress,

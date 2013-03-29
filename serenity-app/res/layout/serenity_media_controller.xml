@@ -116,10 +116,10 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:focusable="true"
-            android:nextFocusRight="@id/mediacontroller_play_pause"
-            android:nextFocusUp="@id/mediacontroller_seekbar"
+            android:nextFocusRight="@+id/mediacontroller_play_pause"
+            android:nextFocusUp="@+id/mediacontroller_seekbar"
             android:scaleType="fitXY"
-            android:src="@drawable/osd_rewind_nf"
+            android:src="@drawable/skipback_selector"
             tools:ignore="ContentDescription" />
 
         <ImageButton
@@ -127,27 +127,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:src="@drawable/pause_selector"
             android:focusable="true"
             android:nextFocusLeft="@id/osd_rewind_control"
             android:nextFocusRight="@+id/osd_ff_control"
-            android:nextFocusUp="@id/mediacontroller_seekbar"
+            android:nextFocusUp="@+id/mediacontroller_seekbar"
             android:scaleType="fitXY"
-            android:src="@drawable/osd_play_nf"
             tools:ignore="ContentDescription" >
-
-            <requestFocus />
         </ImageButton>
-
+        
         <ImageButton
             android:id="@+id/osd_ff_control"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:src="@drawable/skipforward_selector"
             android:focusable="true"
-            android:nextFocusLeft="@id/mediacontroller_play_pause"
-            android:nextFocusUp="@id/mediacontroller_seekbar"
+            android:nextFocusLeft="@+id/mediacontroller_play_pause"
+            android:nextFocusUp="@+id/mediacontroller_seekbar"
             android:scaleType="fitXY"
-            android:src="@drawable/osd_forward_nf"
             tools:ignore="ContentDescription" />
 
     </LinearLayout>
