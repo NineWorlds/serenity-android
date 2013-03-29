@@ -30,8 +30,8 @@ import java.util.List;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.UnWatchEpisodeAsyncTask;
-import us.nineworlds.serenity.core.services.WatchedEpisodeAsyncTask;
+import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
+import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
@@ -151,10 +151,10 @@ public class PlexVideoOnItemLongClickListener implements
 			switch (position) {
 			case 0:
 				if (info.getViewCount() > 0) {
-					new UnWatchEpisodeAsyncTask().execute(info.id());
+					new UnWatchVideoAsyncTask().execute(info.id());
 					ImageInfographicUtils.setUnwatched(vciv, context);
 				} else {
-					new WatchedEpisodeAsyncTask().execute(info.id());
+					new WatchedVideoAsyncTask().execute(info.id());
 					ImageInfographicUtils.setWatchedCount(vciv, context);
 				}
 				break;

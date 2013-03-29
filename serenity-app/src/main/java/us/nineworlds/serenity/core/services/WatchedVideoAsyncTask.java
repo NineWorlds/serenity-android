@@ -27,12 +27,12 @@ import us.nineworlds.serenity.SerenityApplication;
 
 import android.os.AsyncTask;
 
-public class UnWatchEpisodeAsyncTask extends AsyncTask<String, Void, Void> {
+public class WatchedVideoAsyncTask extends AsyncTask<String, Void, Void> {
 
 	@Override
 	protected Void doInBackground(String... params) {
 		String id = params[0];
-		SerenityApplication.getPlexFactory().setUnWatched(id);
+		SerenityApplication.getPlexFactory().setWatched(id);
 		return null;
 	}
 

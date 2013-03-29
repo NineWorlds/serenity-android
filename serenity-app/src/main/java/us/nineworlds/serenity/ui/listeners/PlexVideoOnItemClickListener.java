@@ -26,7 +26,7 @@ package us.nineworlds.serenity.ui.listeners;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.WatchedEpisodeAsyncTask;
+import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
@@ -72,7 +72,7 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 
 			Activity activity = (Activity) mpiv.getContext();
 			activity.startActivity(vpIntent);
-			new WatchedEpisodeAsyncTask().execute(mpiv.getPosterInfo().id());
+			new WatchedVideoAsyncTask().execute(mpiv.getPosterInfo().id());
 			updatedWatchedCount(mpiv, activity);
 			return;
 		}

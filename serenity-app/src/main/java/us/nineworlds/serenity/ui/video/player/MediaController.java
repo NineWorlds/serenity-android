@@ -289,8 +289,10 @@ public class MediaController extends FrameLayout {
 		ImageView posterView = (ImageView) v
 				.findViewById(R.id.mediacontroller_poster_art);
 		posterView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-
-		imageLoader.displayImage(posterURL, posterView);
+		
+		if (posterURL != null) {
+			imageLoader.displayImage(posterURL, posterView);
+		}
 	}
 
 	public void setMediaPlayer(MediaPlayerControl player) {
@@ -742,26 +744,5 @@ public class MediaController extends FrameLayout {
 		super.setEnabled(enabled);
 	}
 
-	public interface MediaPlayerControl {
-		void start();
-
-		void pause();
-
-		long getDuration();
-
-		long getCurrentPosition();
-
-		void seekTo(long pos);
-
-		boolean isPlaying();
-
-		int getBufferPercentage();
-
-		boolean canPause();
-
-		boolean canSeekBackward();
-
-		boolean canSeekForward();
-	}
 
 }
