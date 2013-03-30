@@ -50,7 +50,9 @@ public class ImageInfographicUtils {
 	public ImageView createAudioCodecImage(String codec, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(width, height));
+		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		v.setLayoutParams(new LayoutParams(w, h));
 
 		if ("aac".equals(codec)) {
 			v.setImageResource(R.drawable.aac);
@@ -144,8 +146,10 @@ public class ImageInfographicUtils {
 	public ImageView createVideoResolutionImage(String res, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(width, height));
-
+		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		v.setLayoutParams(new LayoutParams(w, h));
+		
 		if ("sd".equalsIgnoreCase(res) || "480".equalsIgnoreCase(res)
 				|| "540".equalsIgnoreCase(res) || "576".equalsIgnoreCase(res)) {
 			v.setImageResource(R.drawable.sd);
@@ -169,7 +173,9 @@ public class ImageInfographicUtils {
 	public ImageView createAspectRatioImage(String ratio, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(width, height));
+		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		v.setLayoutParams(new LayoutParams(w, h));
 
 		if ("1.33".equals(ratio)) {
 			v.setImageResource(R.drawable.aspect_1_33);
@@ -209,7 +215,9 @@ public class ImageInfographicUtils {
 			Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(width, height));
+		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		v.setLayoutParams(new LayoutParams(w, h));
 
 		if ("G".equals(contentRating)) {
 			v.setImageResource(R.drawable.mpaa_general);
@@ -244,7 +252,9 @@ public class ImageInfographicUtils {
 	public ImageView createVideoCodec(String codec, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(width, height));
+		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		v.setLayoutParams(new LayoutParams(w, h));
 
 		if ("divx".equalsIgnoreCase(codec)) {
 			v.setImageResource(R.drawable.divx);
@@ -283,7 +293,9 @@ public class ImageInfographicUtils {
 	public ImageView createTVContentRating(String contentRating, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(width, height));
+		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		v.setLayoutParams(new LayoutParams(w, h));
 
 		if ("G".equals(contentRating)) {
 			v.setImageResource(R.drawable.mpaa_general);
@@ -317,7 +329,9 @@ public class ImageInfographicUtils {
 	public ImageView createAudioChannlesImage(String channels, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		v.setLayoutParams(new LayoutParams(width, height));
+		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		v.setLayoutParams(new LayoutParams(w, h));
 
 		if ("0".equalsIgnoreCase(channels)) {
 			v.setImageResource(R.drawable.audio_0);
