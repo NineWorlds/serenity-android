@@ -296,33 +296,30 @@ public class ImageInfographicUtils {
 		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
 		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
 		v.setLayoutParams(new LayoutParams(w, h));
-
-		if ("G".equals(contentRating)) {
-			v.setImageResource(R.drawable.mpaa_general);
+		
+		if ("TV-G".equals(contentRating)) {
+			v.setImageResource(R.drawable.tvg);
 			return v;
 		}
-
-		if ("PG".equals(contentRating)) {
-			v.setImageResource(R.drawable.mpaa_pg);
+		
+		if ("TV-PG".equals(contentRating)) {
+			v.setImageResource(R.drawable.tvpg);
 			return v;
 		}
-
-		if ("PG-13".equals(contentRating)) {
-			v.setImageResource(R.drawable.mpaa_pg13);
+		
+		if ("TV-14".equals(contentRating)) {
+			v.setImageResource(R.drawable.tv14);
 			return v;
 		}
+		
 
-		if ("R".equals(contentRating)) {
-			v.setImageResource(R.drawable.mpaa_restricted);
+		if ("TV-MA".equals(contentRating)) {
+			v.setImageResource(R.drawable.tvma);
 			return v;
 		}
+		
 
-		if ("NC-17".equals(contentRating)) {
-			v.setImageResource(R.drawable.mpaa_nc17);
-			return v;
-		}
-
-		v.setImageResource(R.drawable.mpaa_notrated);
+		v.setImageResource(R.drawable.tvnr);
 		return v;
 	}
 

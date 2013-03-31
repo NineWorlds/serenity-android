@@ -31,6 +31,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
+import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
 import us.nineworlds.serenity.R;
@@ -38,6 +39,7 @@ import us.nineworlds.serenity.R;
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
@@ -138,7 +140,21 @@ public class TVShowBannerOnItemSelectedListener implements
 		}
 
 		watchedUnwatched.setText(wu);
-
+		
+		ImageView imageView = (ImageView) context.findViewById(R.id.tvShowRating);
+		ImageInfographicUtils info = new ImageInfographicUtils(74, 34);
+		
+		int w = ImageUtils.getDPI(74, (Activity)v.getContext());
+		int h = ImageUtils.getDPI(34, (Activity)v.getContext());
+		
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w, h);
+		params.leftMargin = 10;
+		
+		imageView.setLayoutParams(params);
+		
+		ImageView content = info.createTVContentRating(v.getPosterInfo().getContentRating(), context);
+		imageView.setImageDrawable(content.getDrawable());
+		imageView.setScaleType(ScaleType.FIT_XY);
 	}
 
 	/**
