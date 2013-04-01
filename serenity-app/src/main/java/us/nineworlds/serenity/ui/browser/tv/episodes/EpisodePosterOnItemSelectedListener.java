@@ -97,6 +97,14 @@ public class EpisodePosterOnItemSelectedListener implements
 	}
 
 	private void createMovieDetail(SerenityPosterImageView v) {
+		TextView seriesTitle = (TextView) context.findViewById(R.id.episodeTVSeriesTitle);
+		if (v.getPosterInfo().getSeriesTitle() != null) {
+			seriesTitle.setVisibility(View.VISIBLE);
+			seriesTitle.setText(v.getPosterInfo().getSeriesTitle());
+		} else {
+			seriesTitle.setVisibility(View.GONE);
+		}
+		
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
 		summary.setText(v.getPosterInfo().getPlotSummary());
 

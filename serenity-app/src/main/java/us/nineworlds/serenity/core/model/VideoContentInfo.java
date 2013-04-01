@@ -126,5 +126,9 @@ public interface VideoContentInfo extends ContentInfo {
 	public String getOriginalAirDate();
 
 	public void setContainer(String container);
+	
+	public void setSeriesTitle(String title);
+	
+	public String getSeriesTitle();
 
 }

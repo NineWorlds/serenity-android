@@ -172,7 +172,11 @@ public class EpisodeRetrievalIntentService extends
 
 			epi.setPosterURL(turl);
 			epi.setTitle(episode.getTitle());
-
+			
+			if (episode.getGrandParentTitle() != null) {
+				epi.setSeriesTitle(episode.getGrandParentTitle());
+			}
+			
 			epi.setContentRating(episode.getContentRating());
 
 			List<Media> mediacont = episode.getMedias();
