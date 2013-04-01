@@ -195,7 +195,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (mediaController.isShowing()) {
-			if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (isKeyCodeBack(keyCode)) {
 				mediaController.hide();
 
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
@@ -204,7 +204,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				return super.onKeyDown(keyCode, event);
 			}
 		} else {
-			if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (isKeyCodeBack(keyCode)) {
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 					mediaPlayer.stop();
 				}
@@ -212,7 +212,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 		}
 
-		if (keyCode == KeyEvent.KEYCODE_INFO) {
+		if (isKeyCodeInfo(keyCode)) {
 			if (isMediaPlayerStateValid()) {
 				if (mediaController.isShowing()) {
 					mediaController.hide();
@@ -223,9 +223,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			return true;
 		}
 
-		if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY) {
+		if (isKeyCodePauseResume(keyCode)) {
 			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 				mediaPlayer.pause();
 				mediaController.show(CONTROLLER_DELAY);
@@ -238,7 +236,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			return true;
 		}
 
-		if ((keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD || keyCode == KeyEvent.KEYCODE_MEDIA_NEXT)
+		if (isKeyCodeSkipForward(keyCode)
 				&& isMediaPlayerStateValid()) {
 			int skipOffset = 10000 + mediaPlayer.getCurrentPosition();
 			int duration = mediaPlayer.getDuration();
@@ -252,7 +250,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			return true;
 		}
 
-		if ((keyCode == KeyEvent.KEYCODE_MEDIA_REWIND || keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS)
+		if (isKeyCodeSkipBack(keyCode)
 				&& isMediaPlayerStateValid()) {
 			int skipOffset = mediaPlayer.getCurrentPosition() - 10000;
 			if (skipOffset < 0) {
@@ -265,7 +263,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			return true;
 		}
 
-		if (keyCode == KeyEvent.KEYCODE_MEDIA_STOP && isMediaPlayerStateValid()) {
+		if (isKeyCodeStop(keyCode) && isMediaPlayerStateValid()) {
 			if (mediaPlayer.isPlaying()) {
 				mediaPlayer.pause();
 				if (!mediaController.isShowing()) {
@@ -276,6 +274,55 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 
 		return super.onKeyDown(keyCode, event);
+	}
+
+	/**
+	 * @param keyCode
+	 * @return
+	 */
+	protected boolean isKeyCodeStop(int keyCode) {
+		return keyCode == KeyEvent.KEYCODE_MEDIA_STOP ||
+			   keyCode == KeyEvent.KEYCODE_S;
+	}
+
+	/**
+	 * @param keyCode
+	 * @return
+	 */
+	protected boolean isKeyCodeSkipBack(int keyCode) {
+		return keyCode == KeyEvent.KEYCODE_MEDIA_REWIND || 
+			   keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS ||
+			   keyCode == KeyEvent.KEYCODE_R;
+	}
+
+	/**
+	 * @param keyCode
+	 * @return
+	 */
+	protected boolean isKeyCodeSkipForward(int keyCode) {
+		return keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD ||
+			   keyCode == KeyEvent.KEYCODE_MEDIA_NEXT ||
+			   keyCode == KeyEvent.KEYCODE_F;
+	}
+
+	/**
+	 * @param keyCode
+	 * @return
+	 */
+	protected boolean isKeyCodePauseResume(int keyCode) {
+		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
+				|| keyCode == KeyEvent.KEYCODE_P
+				|| keyCode == KeyEvent.KEYCODE_SPACE;
+	}
+
+	protected boolean isKeyCodeInfo(int keyCode) {
+		return keyCode == KeyEvent.KEYCODE_INFO || keyCode == KeyEvent.KEYCODE_I;
+	}
+
+	protected boolean isKeyCodeBack(int keyCode) {
+		return keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE;
 	}
 
 	protected boolean isMediaPlayerStateValid() {

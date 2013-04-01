@@ -213,7 +213,6 @@ public class MediaController extends FrameLayout {
 		mAnimStyle = android.R.style.Animation;
 		setFocusable(true);
 		setFocusableInTouchMode(true);
-		setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 		requestFocus();
 	}
 
@@ -578,15 +577,15 @@ public class MediaController extends FrameLayout {
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		int keyCode = event.getKeyCode();
+		Activity c = (Activity) getContext();
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Activity c = (Activity) getContext();
 			if (mPlayer.isPlaying()) {
 				mPlayer.pause();
 			}
 			c.finish();
 			return true;
 		}
-		return super.dispatchKeyEvent(event);
+		return c.dispatchKeyEvent(event);
 	}
 
 	/*
@@ -596,7 +595,8 @@ public class MediaController extends FrameLayout {
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		return super.onKeyDown(keyCode, event);
+		Activity c = (Activity) getContext();
+		return c.onKeyDown(keyCode, event);
 	}
 
 	private View.OnClickListener mPauseListener = new View.OnClickListener() {

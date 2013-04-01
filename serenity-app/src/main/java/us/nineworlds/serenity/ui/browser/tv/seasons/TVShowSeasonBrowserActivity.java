@@ -23,12 +23,11 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-import us.nineworlds.serenity.ui.activity.SerenityActivity;
-
 import us.nineworlds.serenity.R;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Gallery;
@@ -37,7 +36,7 @@ import android.widget.Gallery;
  * @author dcarver
  * 
  */
-public class TVShowSeasonBrowserActivity extends SerenityActivity {
+public class TVShowSeasonBrowserActivity extends Activity {
 
 	private Gallery tvShowSeasonsGallery;
 	private View tvShowSeasonsMainView;

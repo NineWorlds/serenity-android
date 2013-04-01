@@ -46,7 +46,7 @@ import android.widget.Spinner;
  * @author dcarver
  * 
  */
-public class TVShowBrowserActivity extends SerenityActivity {
+public class TVShowBrowserActivity extends Activity {
 
 	private static Spinner categorySpinner;
 	private boolean restarted_state = false;

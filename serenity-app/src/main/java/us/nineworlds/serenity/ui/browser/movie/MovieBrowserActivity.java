@@ -105,7 +105,7 @@ public class MovieBrowserActivity extends SerenityActivity {
 		super.onRestart();
 		restarted_state = true;
 	}
-
+	
 	private static class CategoryHandler extends Handler {
 
 		private ArrayList<CategoryInfo> categories;
