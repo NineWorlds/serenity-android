@@ -32,11 +32,13 @@ import us.nineworlds.plex.rest.model.impl.Genre;
 import us.nineworlds.plex.rest.model.impl.Media;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Part;
+import us.nineworlds.plex.rest.model.impl.Stream;
 import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.plex.rest.model.impl.Writer;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
+import us.nineworlds.serenity.core.model.impl.Subtitle;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -161,11 +163,12 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 			}
 
 			createVideoDetails(movie, mpi);
-
+			
 			videoContentList.add(mpi);
 		}
 
 	}
+
 
 	protected MediaContainer retrieveVideos() throws Exception {
 		if (category == null) {

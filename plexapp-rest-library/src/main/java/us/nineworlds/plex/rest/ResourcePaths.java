@@ -81,6 +81,11 @@ public class ResourcePaths {
 		return getHostPort() + key;
 	}
 	
+	public String getMovieMetaDataURL(String key) {
+		return getHostPort() + key;
+	}
+	
+	
 	public String getWatchedUrl(String key) {
 		return getRoot() + ":/scrobble?key=" + key + "&identifier=com.plexapp.plugins.library";
 	}

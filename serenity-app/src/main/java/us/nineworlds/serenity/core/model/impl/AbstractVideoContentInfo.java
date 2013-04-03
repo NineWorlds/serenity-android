@@ -65,9 +65,19 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	private String originalAirDate;
 	private String container;
 	private String seriesTitle;
+	
+	private Subtitle subtitle;
 
 	public String getSeriesTitle() {
 		return seriesTitle;
+	}
+
+	public Subtitle getSubtitle() {
+		return subtitle;
+	}
+
+	public void setSubtitle(Subtitle subtitle) {
+		this.subtitle = subtitle;
 	}
 
 	public void setSeriesTitle(String seriesTitle) {

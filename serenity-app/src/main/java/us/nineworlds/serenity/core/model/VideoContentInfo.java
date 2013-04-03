@@ -25,6 +25,8 @@ package us.nineworlds.serenity.core.model;
 
 import java.util.List;
 
+import us.nineworlds.serenity.core.model.impl.Subtitle;
+
 /**
  * @author dcarver
  * 
@@ -130,5 +132,10 @@ public interface VideoContentInfo extends ContentInfo {
 	public void setSeriesTitle(String title);
 	
 	public String getSeriesTitle();
+	
+	public Subtitle getSubtitle();
+	
+	public void setSubtitle(Subtitle subtitle);
+	
 
 }

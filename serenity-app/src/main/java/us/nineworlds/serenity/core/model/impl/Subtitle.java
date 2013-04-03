@@ -21,50 +21,17 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.plex.rest.model.impl;
-
-import java.util.List;
-
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
+package us.nineworlds.serenity.core.model.impl;
 
 /**
  * @author dcarver
  *
  */
-@Root(name="Part")
-public class Part {
+public class Subtitle {
 
-	@Attribute(name="key", required=true)
 	private String key;
+	private String format;
 	
-	@Attribute(name="file", required=false)
-	private String filename;
-	
-	@Attribute(name="container", required=false)
-	private String container;
-	
-	@ElementList(inline=true,required=false)
-	private List<Stream> streams;
-	
-
-	public List<Stream> getStreams() {
-		return streams;
-	}
-
-	public void setStreams(List<Stream> streams) {
-		this.streams = streams;
-	}
-
-	public String getContainer() {
-		return container;
-	}
-
-	public void setContainer(String container) {
-		this.container = container;
-	}
-
 	public String getKey() {
 		return key;
 	}
@@ -72,14 +39,14 @@ public class Part {
 	public void setKey(String key) {
 		this.key = key;
 	}
-	
-	public String getFilename() {
-		return filename;
+
+	public String getFormat() {
+		return format;
 	}
-	
-	
-	public void setFilename(String filename) {
-		this.filename = filename;
+
+	public void setFormat(String format) {
+		this.format = format;
 	}
+
 	
 }

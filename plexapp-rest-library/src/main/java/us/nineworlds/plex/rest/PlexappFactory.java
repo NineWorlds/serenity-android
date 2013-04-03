@@ -152,6 +152,12 @@ public class PlexappFactory {
 		return mediaContainer;
 	}
 	
+	public MediaContainer retrieveMovieMetaData(String key) throws Exception {
+		String episodesURL = resourcePath.getMovieMetaDataURL(key);
+		MediaContainer mediaContainer = serializeResource(episodesURL);
+		return mediaContainer;
+	}
+	
 	public MediaContainer searchMovies(String key, String query) throws Exception {
 		String searchURL = resourcePath.getMovieSearchURL(key, query);
 		MediaContainer mediaContainer = serializeResource(searchURL);

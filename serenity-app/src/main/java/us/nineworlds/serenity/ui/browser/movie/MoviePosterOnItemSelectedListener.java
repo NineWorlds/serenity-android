@@ -23,26 +23,37 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import java.util.List;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.Subtitle;
+import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
+import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -56,10 +67,11 @@ public class MoviePosterOnItemSelectedListener implements
 
 	private static final String CRLF = "\r\n";
 	private View bgLayout;
-	private Activity context;
+	private static Activity context;
 	private ImageLoader imageLoader;
 	private View previous;
 	private ImageSize bgImageSize = new ImageSize(1280, 720);
+	private Handler subtitleHandler;
 
 	/**
 	 * 
@@ -229,6 +241,17 @@ public class MoviePosterOnItemSelectedListener implements
 		infographicsView.addView(crv);
 
 		infographicsView.refreshDrawableState();
+		
+		fetchSubtitle(mpi);
+	}
+	
+	protected void fetchSubtitle(VideoContentInfo mpi) {
+			subtitleHandler = new SubtitleHandler();
+			Messenger messenger = new Messenger(subtitleHandler);
+			Intent intent = new Intent(context, MovieMetaDataRetrievalIntentService.class);
+			intent.putExtra("MESSENGER", messenger);
+			intent.putExtra("key", mpi.id());
+			context.startService(intent);
 	}
 
 	public void onNothingSelected(SerenityAdapterView<?> av) {
@@ -238,5 +261,23 @@ public class MoviePosterOnItemSelectedListener implements
 		}
 
 	}
+	
+	private static class SubtitleHandler extends Handler {
+
+		@Override
+		public void handleMessage(Message msg) {
+			Subtitle subtitle = (Subtitle) msg.obj;
+			TextView subtitleText = (TextView) context.findViewById(R.id.subtitleFilter);
+			subtitleText.setVisibility(View.VISIBLE);
+						
+			Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);
+			
+			
+			
+			
+		}
+
+	}
+	
 
 }

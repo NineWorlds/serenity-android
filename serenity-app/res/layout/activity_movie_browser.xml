@@ -50,6 +50,29 @@
             android:prompt="@string/movie_category_prompt2"
             android:spinnerMode="dropdown"
             android:visibility="invisible" />
+        
+        <TextView
+            android:id="@+id/subtitleFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:focusable="false"
+            android:text="Subtitle"
+            android:visibility="gone"
+            style="@android:style/TextAppearance.Medium" />
+        
+        <Spinner
+            android:id="@+id/videoSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/spinner_background"
+            android:focusable="true"
+            android:gravity="left"
+            android:prompt="@string/movie_category_prompt2"
+            android:spinnerMode="dropdown"
+            android:visibility="gone" />
+        
     </LinearLayout>
     
 

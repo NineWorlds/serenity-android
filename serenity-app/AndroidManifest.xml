@@ -107,6 +107,7 @@
             
         <service android:name=".core.services.MainMenuIntentService"/>
         <service android:name=".core.services.MoviesRetrievalIntentService"/>
+        <service android:name=".core.services.MovieMetaDataRetrievalIntentService"/>
         <service android:name=".core.services.EpisodeRetrievalIntentService"/>
         <service android:name=".core.services.MovieCategoryRetrievalIntentService"/>
         <service android:name=".core.services.MovieSecondaryCategoryRetrievalIntentService"/>
@@ -115,6 +116,7 @@
         <service android:name=".core.services.TVShowCategoryRetrievalIntentService"/>
         <service android:name=".core.services.MovieSearchIntentService"/>    
         <service android:name="org.teleal.cling.android.AndroidUpnpServiceImpl" tools:ignore="MissingRegistered"/>
+        
         
         <provider android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
             android:authorities="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
