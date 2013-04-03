@@ -4,6 +4,10 @@
     <issue id="HandlerLeak">
         <ignore path="src/main/java/us/nineworlds/serenity/ui/video/player/MediaController.java" />
     </issue>
+    <issue id="NewApi">
+        <ignore path="src/main/java/us/nineworlds/serenity/ui/video/player/SerenitySurfaceViewVideoActivity.java" />
+        <ignore path="src/main/java/us/nineworlds/serenity/ui/video/player/VideoPlayerPrepareListener.java" />
+    </issue>
     <issue id="SelectableText">
         <ignore path="res/layout/serenity_spinner_textview_dropdown.xml" />
     </issue>

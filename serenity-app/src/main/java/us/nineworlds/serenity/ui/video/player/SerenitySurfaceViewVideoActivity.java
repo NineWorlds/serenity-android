@@ -28,6 +28,7 @@ import java.net.URLDecoder;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.services.CompletedVideoRequest;
+import us.nineworlds.serenity.core.subtitles.formats.TimedTextObject;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.R;
 
@@ -35,14 +36,21 @@ import com.google.analytics.tracking.android.EasyTracker;
 
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnTimedTextListener;
+import android.media.MediaPlayer.TrackInfo;
+import android.media.TimedText;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.TextView;
 
 /**
  * A view that handles the internal video playback and representation of a movie
@@ -69,6 +77,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private int resumeOffset;
 	private boolean mediaplayer_error_state = false;
 	private boolean mediaplayer_released = false;
+	private String subtitleURL;
 
 	private Handler progressReportinghandler = new Handler();
 	private Runnable progressRunnable = new Runnable() {
@@ -101,9 +110,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			mediaPlayer.setOnPreparedListener(new VideoPlayerPrepareListener(
 					this, mediaPlayer, mediaController, surfaceView,
 					resumeOffset, videoId, aspectRatio,
-					progressReportinghandler, progressRunnable));
+					progressReportinghandler, progressRunnable, subtitleURL));
 			mediaPlayer
 					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
+//			mediaPlayer.setOnTimedTextListener(this);
 			mediaPlayer.prepareAsync();
 
 		} catch (Exception ex) {
@@ -137,10 +147,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		SurfaceHolder holder = surfaceView.getHolder();
 		holder.addCallback(this);
 		holder.setSizeFromLayout();
-		
+
 		retrieveIntentExtras();
 	}
-	
+
 	protected void retrieveIntentExtras() {
 		Bundle extras = getIntent().getExtras();
 
@@ -161,11 +171,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		String audioFormat = extras.getString("audioFormat");
 		String audioChannels = extras.getString("audioChannels");
 		resumeOffset = extras.getInt("resumeOffset");
+		subtitleURL = extras.getString("subtitleURL");
 		
+
 		initMediaController(summary, title, posterURL, videoFormat,
 				videoResolution, audioFormat, audioChannels);
 	}
-
+	
 	/**
 	 * @param summary
 	 * @param title
@@ -178,7 +190,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	protected void initMediaController(String summary, String title,
 			String posterURL, String videoFormat, String videoResolution,
 			String audioFormat, String audioChannels) {
-		
+
 		mediaController = new MediaController(this, summary, title, posterURL,
 				videoResolution, videoFormat, audioFormat, audioChannels);
 		mediaController.setAnchorView(surfaceView);
@@ -236,8 +248,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			return true;
 		}
 
-		if (isKeyCodeSkipForward(keyCode)
-				&& isMediaPlayerStateValid()) {
+		if (isKeyCodeSkipForward(keyCode) && isMediaPlayerStateValid()) {
 			int skipOffset = 10000 + mediaPlayer.getCurrentPosition();
 			int duration = mediaPlayer.getDuration();
 			if (skipOffset > duration) {
@@ -250,8 +261,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			return true;
 		}
 
-		if (isKeyCodeSkipBack(keyCode)
-				&& isMediaPlayerStateValid()) {
+		if (isKeyCodeSkipBack(keyCode) && isMediaPlayerStateValid()) {
 			int skipOffset = mediaPlayer.getCurrentPosition() - 10000;
 			if (skipOffset < 0) {
 				skipOffset = 0;
@@ -281,8 +291,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 * @return
 	 */
 	protected boolean isKeyCodeStop(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_MEDIA_STOP ||
-			   keyCode == KeyEvent.KEYCODE_S;
+		return keyCode == KeyEvent.KEYCODE_MEDIA_STOP
+				|| keyCode == KeyEvent.KEYCODE_S;
 	}
 
 	/**
@@ -290,9 +300,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 * @return
 	 */
 	protected boolean isKeyCodeSkipBack(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_MEDIA_REWIND || 
-			   keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS ||
-			   keyCode == KeyEvent.KEYCODE_R;
+		return keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
+				|| keyCode == KeyEvent.KEYCODE_R;
 	}
 
 	/**
@@ -300,9 +310,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 * @return
 	 */
 	protected boolean isKeyCodeSkipForward(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD ||
-			   keyCode == KeyEvent.KEYCODE_MEDIA_NEXT ||
-			   keyCode == KeyEvent.KEYCODE_F;
+		return keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_NEXT
+				|| keyCode == KeyEvent.KEYCODE_F;
 	}
 
 	/**
@@ -318,11 +328,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	}
 
 	protected boolean isKeyCodeInfo(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_INFO || keyCode == KeyEvent.KEYCODE_I;
+		return keyCode == KeyEvent.KEYCODE_INFO
+				|| keyCode == KeyEvent.KEYCODE_I;
 	}
 
 	protected boolean isKeyCodeBack(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE;
+		return keyCode == KeyEvent.KEYCODE_BACK
+				|| keyCode == KeyEvent.KEYCODE_ESCAPE;
 	}
 
 	protected boolean isMediaPlayerStateValid() {
@@ -366,7 +378,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 	}
 
-
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -396,5 +407,18 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			finish();
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media.MediaPlayer, android.media.TimedText)
+	 */
+	public void onTimedText(MediaPlayer mp, TimedText text) {
+		TextView subtitles = (TextView) findViewById(R.id.txtSubtitles);
+		if (text == null) {
+			subtitles.setVisibility(View.INVISIBLE);
+			return;
+		}
+		subtitles.setText(Html.fromHtml(text.getText()));
+		subtitles.setVisibility(View.VISIBLE);
 	}
 }
