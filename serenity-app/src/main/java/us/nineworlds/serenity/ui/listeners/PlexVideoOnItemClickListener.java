@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.listeners;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
@@ -101,6 +102,13 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 		vpIntent.putExtra("audioChannels", video.getAudioChannels());
 		vpIntent.putExtra("resumeOffset", video.getResumeOffset());
 		vpIntent.putExtra("duration", video.getDuration());
+		if (video.getSubtitle() != null) {
+			Subtitle subtitle = video.getSubtitle();
+			if (!"none".equals(subtitle.getFormat())) {
+				vpIntent.putExtra("subtitleURL", subtitle.getKey());
+				vpIntent.putExtra("subtitleFormat", subtitle.getFormat());
+			}
+		}
 
 		Activity a = (Activity) mpiv.getContext();
 		a.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
@@ -127,6 +135,12 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 			Intent vpIntent) {
 		vpIntent.putExtra("forcename", epiv.getPosterInfo().getTitle());
 		vpIntent.putExtra("forcedirect", true);
+		if (epiv.getPosterInfo().getSubtitle() != null ) {
+			Subtitle subtitle = epiv.getPosterInfo().getSubtitle();
+			if (!"none".equals(subtitle.getFormat())) {
+				vpIntent.putExtra("forcedsrt", subtitle.getKey());
+			}			
+		}
 	}
 
 	/**
@@ -139,6 +153,15 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 		vpIntent.putExtra("decode_mode", 1);
 		vpIntent.putExtra("title", epiv.getPosterInfo().getTitle());
 		vpIntent.putExtra("return_result", true);
+		if (epiv.getPosterInfo().getSubtitle() != null ) {
+			Subtitle subtitle = epiv.getPosterInfo().getSubtitle();
+			if (!"none".equals(subtitle.getFormat())) {
+				Uri[] subt = { Uri.parse(subtitle.getKey()) };
+				vpIntent.putExtra("subs", subt);
+				vpIntent.putExtra("subs.enable", subt);
+			}
+			
+		}
 	}
 
 }

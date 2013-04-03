@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -50,6 +51,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -123,6 +125,10 @@ public class MoviePosterOnItemSelectedListener implements
 		TextView tg = (TextView) context.findViewById(R.id.video_genre);
 		TextView tw = (TextView) context.findViewById(R.id.video_writers);
 		TextView td = (TextView) context.findViewById(R.id.video_directors);
+		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
+		subt.setVisibility(View.GONE);
+		Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);
+		subtitleSpinner.setVisibility(View.GONE);
 
 		ty.setText(context.getString(R.string.unknown));
 		tg.setText(context.getString(R.string.unknown));
@@ -246,7 +252,7 @@ public class MoviePosterOnItemSelectedListener implements
 	}
 	
 	protected void fetchSubtitle(VideoContentInfo mpi) {
-			subtitleHandler = new SubtitleHandler();
+			subtitleHandler = new SubtitleHandler(mpi);
 			Messenger messenger = new Messenger(subtitleHandler);
 			Intent intent = new Intent(context, MovieMetaDataRetrievalIntentService.class);
 			intent.putExtra("MESSENGER", messenger);
@@ -263,21 +269,42 @@ public class MoviePosterOnItemSelectedListener implements
 	}
 	
 	private static class SubtitleHandler extends Handler {
+		
+		private VideoContentInfo video;
+		
+		public SubtitleHandler(VideoContentInfo video) {
+			this.video = video;
+		}
 
 		@Override
 		public void handleMessage(Message msg) {
 			Subtitle subtitle = (Subtitle) msg.obj;
+			if (subtitle == null) {
+				return;
+			}
+			
 			TextView subtitleText = (TextView) context.findViewById(R.id.subtitleFilter);
-			subtitleText.setVisibility(View.VISIBLE);
-						
+			subtitleText.setVisibility(View.VISIBLE);			
 			Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);
 			
+			ArrayList<Subtitle> subtitles = new ArrayList<Subtitle>();
+			Subtitle noSubtitle = new Subtitle();
+			noSubtitle.setDescription("None");
+			noSubtitle.setFormat("none");
+			noSubtitle.setKey(null);
+			subtitles.add(noSubtitle);
+			subtitles.add(subtitle);
 			
-			
+			ArrayAdapter<Subtitle> subtitleAdapter = new ArrayAdapter<Subtitle>(context, R.layout.serenity_spinner_textview,
+					subtitles);
+			subtitleAdapter
+			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+			subtitleSpinner.setAdapter(subtitleAdapter);
+			subtitleSpinner.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(video));
+			subtitleSpinner.setVisibility(View.VISIBLE);
 			
 		}
 
 	}
-	
 
 }

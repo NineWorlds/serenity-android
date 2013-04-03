@@ -78,6 +78,7 @@ public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentS
 		try {
 			MediaContainer mc = factory.retrieveMovieMetaData("/library/metadata/" + key);
 			findSubtitle(mc);
+			sendMessageResults(intent);			
 		} catch (Exception ex) {
 			Log.e(getClass().getName(), ex.getMessage(), ex);
 		}
@@ -90,7 +91,8 @@ public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentS
 			if ("srt".equals(stream.getFormat())) {
 				subtitle = new Subtitle();
 				subtitle.setFormat(stream.getFormat());
-				subtitle.setKey(stream.getKey());
+				subtitle.setKey(factory.baseURL() + stream.getKey().replaceFirst("/", ""));
+				subtitle.setDescription("Unknown (" + stream.getFormat() + ")");
 			}
 		}
 	}

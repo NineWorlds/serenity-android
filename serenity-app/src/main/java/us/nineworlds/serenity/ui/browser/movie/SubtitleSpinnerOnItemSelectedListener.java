@@ -21,49 +21,38 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.model.impl;
+package us.nineworlds.serenity.ui.browser.movie;
+
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.Subtitle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 /**
  * @author dcarver
  *
  */
-public class Subtitle {
+public class SubtitleSpinnerOnItemSelectedListener implements OnItemSelectedListener {
+	
+	private VideoContentInfo video;
+	
+	public SubtitleSpinnerOnItemSelectedListener(VideoContentInfo video) {
+		this.video = video;
+	}
+	
 
-	private String key;
-	private String format;
-	private String description;
-	
-	public String getKey() {
-		return key;
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+		Subtitle subtitle = (Subtitle) parent.getItemAtPosition(position);
+		video.setSubtitle(subtitle);
 	}
 
-	public void setKey(String key) {
-		this.key = key;
-	}
-	
-	public String getDescription() {
-		return this.description;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
 	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	 * @see android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android.widget.AdapterView)
 	 */
-	@Override
-	public String toString() {
-		return description;
+	public void onNothingSelected(AdapterView<?> parent) {
+		
 	}
 
-	public String getFormat() {
-		return format;
-	}
-
-	public void setFormat(String format) {
-		this.format = format;
-	}
-
-	
 }
