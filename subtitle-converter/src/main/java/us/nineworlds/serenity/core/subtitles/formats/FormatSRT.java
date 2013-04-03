@@ -37,6 +37,10 @@ import java.util.Iterator;
 public class FormatSRT implements TimedTextFileFormat {
 
 
+	public TimedTextObject parseFile(InputStream is) throws IOException {
+		return parseFile(null, is);
+	}
+	
 	public TimedTextObject parseFile(String fileName, InputStream is) throws IOException {
 
 		TimedTextObject tto = new TimedTextObject();

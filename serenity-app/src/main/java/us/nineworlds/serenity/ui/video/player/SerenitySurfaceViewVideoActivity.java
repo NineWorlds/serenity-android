@@ -23,11 +23,16 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.net.URLDecoder;
+import java.util.Collection;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.services.CompletedVideoRequest;
+import us.nineworlds.serenity.core.subtitles.formats.Caption;
+import us.nineworlds.serenity.core.subtitles.formats.FormatSRT;
 import us.nineworlds.serenity.core.subtitles.formats.TimedTextObject;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.R;
@@ -36,10 +41,6 @@ import com.google.analytics.tracking.android.EasyTracker;
 
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.media.MediaPlayer.OnTimedTextListener;
-import android.media.MediaPlayer.TrackInfo;
-import android.media.TimedText;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -66,6 +67,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 * 
 	 */
 	static final int PROGRESS_UPDATE_DELAY = 5000;
+	static final int SUBTITLE_DISPLAY_CHECK = 100;
+	
 	static final String TAG = "SerenitySurfaceViewVideoActivity";
 	static final int CONTROLLER_DELAY = 16000; // Sixteen seconds
 	private MediaPlayer mediaPlayer;
@@ -78,6 +81,26 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private boolean mediaplayer_error_state = false;
 	private boolean mediaplayer_released = false;
 	private String subtitleURL;
+	private TimedTextObject srt;
+	
+	private Handler subtitleDisplayHandler = new Handler();
+	private Runnable subtitle = new Runnable() {
+		public void run() {
+			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+				int currentPos = mediaPlayer.getCurrentPosition();
+				Collection<Caption> subtitles =  srt.captions.values();
+				for(Caption caption : subtitles) {
+					if (currentPos >= caption.start.getMilliseconds() && currentPos <= caption.end.getMilliseconds()) {
+						onTimedText(caption);
+						break;
+					} else if (currentPos > caption.end.getMilliseconds()) {
+						onTimedText(null);
+					}
+				}
+			}
+			subtitleDisplayHandler.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+		};
+	};
 
 	private Handler progressReportinghandler = new Handler();
 	private Runnable progressRunnable = new Runnable() {
@@ -113,7 +136,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					progressReportinghandler, progressRunnable, subtitleURL));
 			mediaPlayer
 					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
-//			mediaPlayer.setOnTimedTextListener(this);
 			mediaPlayer.prepareAsync();
 
 		} catch (Exception ex) {
@@ -173,9 +195,12 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		resumeOffset = extras.getInt("resumeOffset");
 		subtitleURL = extras.getString("subtitleURL");
 		
+		new SubtitleAsyncTask().execute();
+		
 
 		initMediaController(summary, title, posterURL, videoFormat,
 				videoResolution, audioFormat, audioChannels);
+		
 	}
 	
 	/**
@@ -201,6 +226,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	@Override
 	public void finish() {
 		super.finish();
+		subtitleDisplayHandler.removeCallbacks(subtitle);
 		progressReportinghandler.removeCallbacks(progressRunnable);
 	}
 
@@ -412,13 +438,34 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	/* (non-Javadoc)
 	 * @see android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media.MediaPlayer, android.media.TimedText)
 	 */
-	public void onTimedText(MediaPlayer mp, TimedText text) {
+	public void onTimedText(Caption text) {
 		TextView subtitles = (TextView) findViewById(R.id.txtSubtitles);
 		if (text == null) {
 			subtitles.setVisibility(View.INVISIBLE);
 			return;
 		}
-		subtitles.setText(Html.fromHtml(text.getText()));
+		subtitles.setText(Html.fromHtml(text.content));
 		subtitles.setVisibility(View.VISIBLE);
+	}
+	
+	public class SubtitleAsyncTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			if (subtitleURL != null) {
+				try {
+					URL url = new URL(subtitleURL);
+					InputStream stream = url.openStream();
+					FormatSRT formatSRT = new FormatSRT();
+					srt = formatSRT.parseFile(stream);
+					subtitleDisplayHandler.post(subtitle);
+				} catch (Exception e) {
+					Log.e(getClass().getName(), e.getMessage(), e);
+				}
+			}
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
 	}
 }

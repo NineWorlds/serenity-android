@@ -161,6 +161,10 @@ public class Time {
 		return time.toString();
 	}
 	
+	public int getMilliseconds() {
+		return mseconds;
+	}
+	
 	
 
 }

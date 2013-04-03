@@ -579,9 +579,6 @@ public class MediaController extends FrameLayout {
 		int keyCode = event.getKeyCode();
 		Activity c = (Activity) getContext();
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (mPlayer.isPlaying()) {
-				mPlayer.pause();
-			}
 			c.finish();
 			return true;
 		}

@@ -20,6 +20,6 @@
         android:gravity="center"
         android:layout_centerHorizontal="true"
         android:visibility="invisible"
-        style="@android:style/TextAppearance.Medium"/>
+        style="@android:style/TextAppearance.Large"/>
 
 </RelativeLayout>
