@@ -41,6 +41,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
+import android.widget.Gallery.LayoutParams;
 import android.widget.Toast;
 
 public class MainMenuTextViewAdapter extends BaseAdapter {
@@ -134,7 +135,6 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 			v = new MainMenuTextView(myContext, R.drawable.search);
 			v.setLibraryKey("0");
 			v.setActivityType(menuItem.getType());
-
 			return v;
 		}
 
@@ -152,7 +152,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 		v.setTextSize(30);
 		v.setGravity(Gravity.CENTER_VERTICAL);
 		v.setLines(1);
-		if (title.length() < 10) {
+		if (title.length() < 20) {
 			v.setLayoutParams(new Gallery.LayoutParams(
 					android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
 					android.view.ViewGroup.LayoutParams.MATCH_PARENT));
