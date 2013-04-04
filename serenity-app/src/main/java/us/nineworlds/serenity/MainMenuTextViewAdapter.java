@@ -36,6 +36,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,12 +153,14 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 		v.setTextSize(30);
 		v.setGravity(Gravity.CENTER_VERTICAL);
 		v.setLines(1);
-		if (title.length() < 20) {
+		v.setHorizontallyScrolling(true);
+		v.setEllipsize(TruncateAt.MARQUEE);
+		if (title.length() < 10) {
 			v.setLayoutParams(new Gallery.LayoutParams(
 					android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
 					android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 		} else {
-			v.setLayoutParams(new Gallery.LayoutParams(200,
+			v.setLayoutParams(new Gallery.LayoutParams(250,
 					android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 		}
 	}
