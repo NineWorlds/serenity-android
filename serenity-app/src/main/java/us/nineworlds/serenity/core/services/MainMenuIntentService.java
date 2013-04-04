@@ -96,11 +96,13 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 
 			if (dirs != null) {
 				for (Directory item : dirs) {
-					MenuItem m = new MenuItem();
-					m.setTitle(item.getTitle());
-					m.setType(item.getType());
-					m.setSection(item.getKey());
-					menuItems.add(m);
+					if (isImplemented(item)) {
+						MenuItem m = new MenuItem();
+						m.setTitle(item.getTitle());
+						m.setType(item.getType());
+						m.setSection(item.getKey());
+						menuItems.add(m);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -108,6 +110,18 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 					"Unable to comminicate to server at " + factory.baseURL(),
 					e);
 		}
+		
+	}
+	
+	protected boolean isImplemented(Directory item) {
+		if ("music".equals(item.getType())) {
+			return false;
+		}
+		if ("photos".equals(item.getType()) ||
+			"photo".equals(item.getType())) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
