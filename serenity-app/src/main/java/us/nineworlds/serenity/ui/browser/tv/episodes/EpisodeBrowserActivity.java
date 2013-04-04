@@ -52,7 +52,7 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
 		posterGallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
 		metaData = findViewById(R.id.metaDataRow);
-		metaData.setVisibility(View.INVISIBLE);
+		metaData.setVisibility(View.GONE);
 
 	}
 

@@ -25,7 +25,9 @@ package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
@@ -33,6 +35,9 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.Subtitle;
+import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
+import us.nineworlds.serenity.ui.listeners.SubtitleSpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
@@ -41,13 +46,19 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -62,10 +73,12 @@ public class EpisodePosterOnItemSelectedListener implements
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final int WATCHED_VIEW_ID = 1000;
 	private View bgLayout;
-	private Activity context;
+	private static  Activity context;
 	private ImageLoader imageLoader;
 	private View previous;
 	private ImageSize bgImageSize = new ImageSize(1280, 720);
+	private Handler subtitleHandler;
+
 
 	/**
 	 * 
@@ -97,6 +110,9 @@ public class EpisodePosterOnItemSelectedListener implements
 	}
 
 	private void createMovieDetail(SerenityPosterImageView v) {
+		View metaData = context.findViewById(R.id.metaDataRow);
+		metaData.setVisibility(View.GONE);
+		
 		TextView seriesTitle = (TextView) context.findViewById(R.id.episodeTVSeriesTitle);
 		if (v.getPosterInfo().getSeriesTitle() != null) {
 			seriesTitle.setVisibility(View.VISIBLE);
@@ -252,10 +268,73 @@ public class EpisodePosterOnItemSelectedListener implements
 		if (aspectv != null) {
 			infographicsView.addView(aspectv);
 		}
+		
+		fetchSubtitle(epi);
 	}
+	
+	protected void fetchSubtitle(VideoContentInfo mpi) {
+		subtitleHandler = new SubtitleHandler(mpi);
+		Messenger messenger = new Messenger(subtitleHandler);
+		Intent intent = new Intent(context, MovieMetaDataRetrievalIntentService.class);
+		intent.putExtra("MESSENGER", messenger);
+		intent.putExtra("key", mpi.id());
+		context.startService(intent);
+}
+	
 
 	public void onNothingSelected(SerenityAdapterView<?> av) {
 
 	}
+	
+	private static class SubtitleHandler extends Handler {
+		
+		private VideoContentInfo video;
+		
+		public SubtitleHandler(VideoContentInfo video) {
+			this.video = video;
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+			List<Subtitle> subtitles = (List<Subtitle>) msg.obj;
+			if (subtitles == null || subtitles.isEmpty()) {
+				return;
+			}
+			
+			View metaData = context.findViewById(R.id.metaDataRow);
+			metaData.setVisibility(View.VISIBLE);
+			View category = context.findViewById(R.id.movieCategoryName);
+			category.setVisibility(View.GONE);
+			View categoryFilter = context.findViewById(R.id.movieCategoryFilter);
+			categoryFilter.setVisibility(View.GONE);
+			View categoryFilter2 = context.findViewById(R.id.movieCategoryFilter2);
+			categoryFilter2.setVisibility(View.GONE);
+					
+			
+			TextView subtitleText = (TextView) context.findViewById(R.id.subtitleFilter);
+			subtitleText.setVisibility(View.VISIBLE);			
+			Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);
+			
+			ArrayList<Subtitle> spinnerSubtitles = new ArrayList<Subtitle>();
+			Subtitle noSubtitle = new Subtitle();
+			noSubtitle.setDescription("None");
+			noSubtitle.setFormat("none");
+			noSubtitle.setKey(null);
+			
+			spinnerSubtitles.add(noSubtitle);
+			spinnerSubtitles.addAll(subtitles);
+			
+			ArrayAdapter<Subtitle> subtitleAdapter = new ArrayAdapter<Subtitle>(context, R.layout.serenity_spinner_textview,
+					spinnerSubtitles);
+			subtitleAdapter
+			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+			subtitleSpinner.setAdapter(subtitleAdapter);
+			subtitleSpinner.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(video));
+			subtitleSpinner.setVisibility(View.VISIBLE);
+			
+		}
+
+	}
+	
 
 }
