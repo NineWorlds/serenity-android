@@ -278,8 +278,8 @@ public class MoviePosterOnItemSelectedListener implements
 
 		@Override
 		public void handleMessage(Message msg) {
-			Subtitle subtitle = (Subtitle) msg.obj;
-			if (subtitle == null) {
+			List<Subtitle> subtitles = (List<Subtitle>) msg.obj;
+			if (subtitles == null || subtitles.isEmpty()) {
 				return;
 			}
 			
@@ -287,16 +287,17 @@ public class MoviePosterOnItemSelectedListener implements
 			subtitleText.setVisibility(View.VISIBLE);			
 			Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);
 			
-			ArrayList<Subtitle> subtitles = new ArrayList<Subtitle>();
+			ArrayList<Subtitle> spinnerSubtitles = new ArrayList<Subtitle>();
 			Subtitle noSubtitle = new Subtitle();
 			noSubtitle.setDescription("None");
 			noSubtitle.setFormat("none");
 			noSubtitle.setKey(null);
-			subtitles.add(noSubtitle);
-			subtitles.add(subtitle);
+			
+			spinnerSubtitles.add(noSubtitle);
+			spinnerSubtitles.addAll(subtitles);
 			
 			ArrayAdapter<Subtitle> subtitleAdapter = new ArrayAdapter<Subtitle>(context, R.layout.serenity_spinner_textview,
-					subtitles);
+					spinnerSubtitles);
 			subtitleAdapter
 			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 			subtitleSpinner.setAdapter(subtitleAdapter);

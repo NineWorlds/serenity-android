@@ -57,6 +57,41 @@ public class Stream {
 	@Attribute(name="bitrateMode",required=false)
 	private String bitrateMode;
 	
+	@Attribute(name="profile",required=false)
+	private String profile;
+	
+	@Attribute(name="optimizedForStreaming",required=false)
+	private String optimizedForStreaming;
+	
+	@Attribute(name="format",required=false)
+	private String format;
+	
+	@Attribute(name="key",required=false)
+	private String key;
+	
+	@Attribute(name="language",required=false)
+	private String language;
+
+	@Attribute(name="languageCode",required=false)
+	private String languageCode;
+	
+	
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getLanguageCode() {
+		return languageCode;
+	}
+
+	public void setLanguageCode(String languageCode) {
+		this.languageCode = languageCode;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -153,16 +188,5 @@ public class Stream {
 		this.key = key;
 	}
 
-	@Attribute(name="profile",required=false)
-	private String profile;
-	
-	@Attribute(name="optimizedForStreaming",required=false)
-	private String optimizedForStreaming;
-	
-	@Attribute(name="format",required=false)
-	private String format;
-	
-	@Attribute(name="key",required=false)
-	private String key;
 	
 }

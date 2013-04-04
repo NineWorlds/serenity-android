@@ -32,12 +32,8 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
-import android.media.MediaPlayer.OnTimedTextListener;
-import android.media.MediaPlayer.TrackInfo;
-import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.RelativeLayout;
 
@@ -98,7 +94,6 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 								public void onClick(DialogInterface dialog,
 										int which) {
 									if (!mediaPlayer.isPlaying()) {
-										initSubtitles();
 										mediaPlayer.start();
 									}
 									mediaPlayer.seekTo(resumeOffset);
@@ -110,7 +105,6 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 
 								public void onClick(DialogInterface dialog,
 										int which) {
-									initSubtitles();
 									mediaPlayer.start();
 									setMetaData();
 								}
@@ -120,48 +114,11 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 			alertDialogBuilder.show();
 			return;
 		} else {
-			initSubtitles();						
 			mediaPlayer.start();			
 			setMetaData();
 		}
 	}
-
-	/**
-	 * 
-	 */
-	protected void initSubtitles() {
-		return;
-//		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-//			if (subtitleURL != null) {
-//				try {
-//					mediaPlayer.addTimedTextSource(context,
-//							Uri.parse(subtitleURL + ".srt").,
-//							MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
-//					int textTrackIndex = findTrackIndexFor(
-//							TrackInfo.MEDIA_TRACK_TYPE_TIMEDTEXT,
-//							mediaPlayer.getTrackInfo());
-//					if (textTrackIndex >= 0) {
-//						mediaPlayer.selectTrack(textTrackIndex);
-//					} else {
-//						Log.w(getClass().getName(), "Cannot find text track!");
-//					}
-//				} catch (Exception e) {
-//					Log.e(getClass().getName(), e.getMessage(), e);
-//				}
-//			}
-//		}
-	}
 	
-	private int findTrackIndexFor(int mediaTrackType, TrackInfo[] trackInfo) {
-		int index = -1;
-		for (int i = 0; i < trackInfo.length; i++) {
-			if (trackInfo[i].getTrackType() == mediaTrackType) {
-				return i;
-			}
-		}
-		return index;
-	}
-
 	
 	/**
 	 * 

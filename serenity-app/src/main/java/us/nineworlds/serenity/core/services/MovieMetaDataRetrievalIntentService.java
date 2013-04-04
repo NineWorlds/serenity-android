@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.core.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
@@ -42,7 +43,7 @@ import us.nineworlds.serenity.core.model.impl.Subtitle;
 public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentService {
 
 	private String key;
-	private Subtitle subtitle;
+	private ArrayList<Subtitle> subtitles;
 	private static final String MOVIES_RETRIEVAL_INTENT_SERVICE = "MovieMetaDataRetrievalIntentService";
 
 
@@ -62,7 +63,7 @@ public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentS
 		if (extras != null) {
 			Messenger messenger = (Messenger) extras.get("MESSENGER");
 			Message msg = Message.obtain();
-			msg.obj = subtitle;
+			msg.obj = subtitles;
 			try {
 				messenger.send(msg);
 			} catch (RemoteException ex) {
@@ -87,12 +88,19 @@ public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentS
 	
 	protected void findSubtitle(MediaContainer mc) {
 		List<Stream> streams = mc.getVideos().get(0).getMedias().get(0).getVideoPart().get(0).getStreams();
+		subtitles = new ArrayList<Subtitle>();
 		for (Stream stream : streams) {
 			if ("srt".equals(stream.getFormat())) {
+				Subtitle subtitle = new Subtitle();
 				subtitle = new Subtitle();
 				subtitle.setFormat(stream.getFormat());
 				subtitle.setKey(factory.baseURL() + stream.getKey().replaceFirst("/", ""));
-				subtitle.setDescription("Unknown (" + stream.getFormat() + ")");
+				if (stream.getLanguage() == null) {
+					subtitle.setDescription("Unknown (" + stream.getFormat() + ")");
+				} else {
+					subtitle.setDescription(stream.getLanguage() + " (" + stream.getFormat() + ")");
+				}
+				subtitles.add(subtitle);
 			}
 		}
 	}

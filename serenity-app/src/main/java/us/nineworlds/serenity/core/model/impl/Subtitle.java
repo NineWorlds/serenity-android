@@ -64,6 +64,8 @@ public class Subtitle {
 	public void setFormat(String format) {
 		this.format = format;
 	}
+	
+	
 
 	
 }
