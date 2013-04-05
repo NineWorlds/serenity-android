@@ -3,7 +3,7 @@ package com.castillo.dd;
 interface DSInterface {
 
     void clearDownloadlist();
-    void addFileDownloadlist( in String url, in int position );
+    void addFileDownloadlist( in String url, in String destination, in String filename, in int position );
     void downloadFile( in int position );
     int getDownloadStatus (in int position);
     String getDownloadFilename (in int position);

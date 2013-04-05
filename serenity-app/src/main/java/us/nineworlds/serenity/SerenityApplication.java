@@ -25,6 +25,8 @@ package us.nineworlds.serenity;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.teleal.cling.model.meta.Device;
@@ -34,6 +36,10 @@ import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.widgets.ReflectedBitmapDisplayer;
 
+import com.castillo.dd.DSInterface;
+import com.castillo.dd.Download;
+import com.castillo.dd.DownloadService;
+import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -43,10 +49,17 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import android.app.Application;
+import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 
 /**
@@ -58,13 +71,18 @@ import android.util.Log;
 public class SerenityApplication extends Application {
 
 	private static final String COM_GOOGLE_ANDROID_TV = "com.google.android.tv";
-
 	private static final String HTTPCACHE = "httpcache";
-
 	protected static PlexappFactory plexFactory;
-
 	private static ConcurrentHashMap<String, Device> plexmediaServers = new ConcurrentHashMap<String, Device>();
 	private static ImageLoader imageLoader;
+	public static final int PROGRESS = 0xDEADBEEF;
+
+	private static List<PendingDownload> pendingDownloads;
+
+	public static List<PendingDownload> getPendingDownloads() {
+		return pendingDownloads;
+	}
+
 	private static DisplayImageOptions reflectiveOptions;
 
 	public static DisplayImageOptions getReflectiveOptions() {
@@ -75,13 +93,16 @@ public class SerenityApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 
-		//installHttpCache();
+		// installHttpCache();
 
 		installAnalytics();
 		configureImageLoader();
 		initializePlexappFactory();
 		sendStartedApplicationEvent();
+		pendingDownloads = new ArrayList<PendingDownload>();
 	}
+	
+	
 
 	protected void configureImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()

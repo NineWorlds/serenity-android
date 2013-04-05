@@ -10,12 +10,13 @@ import java.util.Calendar;
 import java.util.Observable;
 import java.util.TimeZone;
 
+import android.util.Log;
 
 // This class downloads a file from a URL.
 public class Download extends Observable implements Runnable {
 
 	// Max size of download buffer.
-	private static final int MAX_BUFFER_SIZE = 1024;
+	private static final int MAX_BUFFER_SIZE = 8192;
 
 	// These are the status names.
 	public static final String STATUSES[] = { "Downloading", "Paused",
@@ -34,6 +35,8 @@ public class Download extends Observable implements Runnable {
 	private long downloaded; // number of bytes downloaded
 	private int status; // current status of download
 	private String fileName;
+	private String destination;
+
 	private int i;
 	private long launchTime = 0;
 	private long startTime = 0;
@@ -57,6 +60,14 @@ public class Download extends Observable implements Runnable {
 
 		// Begin the download.
 		// download();
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
 	}
 
 	// Get this download's URL.
@@ -140,6 +151,8 @@ public class Download extends Observable implements Runnable {
 	// Mark this download as having an error.
 	private void error() {
 		status = ERROR;
+		Log.e(getClass().getName(),
+				"Aborting download due to content legnth issue");
 		stateChanged();
 	}
 
@@ -195,8 +208,14 @@ public class Download extends Observable implements Runnable {
 				connection.connect();
 
 				// Check for valid content length.
-				int contentLength = connection.getContentLength();
-				if (contentLength < 1 || !realUrl) {
+				String contentLengthValue = connection
+						.getHeaderField("Content-Length");
+				long contentLength = 0;
+				if (contentLengthValue != null) {
+					contentLength = Long.parseLong(contentLengthValue);
+				}
+
+				if (contentLength < 1) {
 					error();
 				}
 
@@ -207,12 +226,13 @@ public class Download extends Observable implements Runnable {
 					size = contentLength;
 					stateChanged();
 				}
-
+				
 				// Open file and seek to the end of it.
-				fileName = getFileName(connection.getURL());
-				if (startTime == 0)
+				fileName = getFileName();
+				if (startTime == 0) {
 					startTime = Calendar.getInstance().getTimeInMillis();
-				file = new RandomAccessFile("/sdcard/dd/" + fileName, "rw");
+				}
+				file = new RandomAccessFile(destination + "/" + fileName, "rw");
 				file.seek(downloaded);
 
 				stream = connection.getInputStream();
@@ -222,7 +242,7 @@ public class Download extends Observable implements Runnable {
 					 * download.
 					 */
 					byte buffer[];
-				    buffer = new byte[MAX_BUFFER_SIZE];
+					buffer = new byte[MAX_BUFFER_SIZE];
 
 					// Read from server into buffer.
 					int read = stream.read(buffer);

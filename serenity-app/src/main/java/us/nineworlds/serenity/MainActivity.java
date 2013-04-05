@@ -23,6 +23,8 @@
 
 package us.nineworlds.serenity;
 
+import java.util.List;
+
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.android.AndroidUpnpServiceImpl;
 
@@ -33,11 +35,18 @@ import us.nineworlds.serenity.ui.listeners.BrowseRegistryListener;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.DownloadManager.Query;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,6 +54,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,6 +62,11 @@ import android.widget.Gallery;
 import android.widget.Toast;
 
 import us.nineworlds.serenity.R;
+
+import com.castillo.dd.DSInterface;
+import com.castillo.dd.Download;
+import com.castillo.dd.DownloadService;
+import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -64,7 +79,6 @@ public class MainActivity extends SerenityActivity {
 	public static int BROWSER_RESULT_CODE = 200;
 	private boolean restarted_state = false;
 
-	private BroadcastReceiver downloadReceiver;
 	public final int ABOUT = 1;
 	public final int CLEAR_CACHE = 2;
 
@@ -73,17 +87,41 @@ public class MainActivity extends SerenityActivity {
 	private ServiceConnection serviceConnection = new DLNAServiceConnection(
 			upnpService, registryListener);
 
+	private static int downloadIndex;
+	private static Context context;
+
+	private static NotificationManager notificationManager;
+
+	private static DSInterface dsInterface;
+
+	public static DSInterface getDsInterface() {
+		return dsInterface;
+	}
+
+	private ServiceConnection downloadService = new ServiceConnection() {
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			dsInterface = DSInterface.Stub.asInterface((IBinder) service);
+		}
+
+		public void onServiceDisconnected(ComponentName className) {
+			dsInterface = null;
+		}
+	};
+
+	private static boolean downloadsCancelled = false;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		context = this;
 
 		setContentView(R.layout.activity_plex_app_main);
 		mainView = findViewById(R.id.mainLayout);
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		if (preferences != null) {
-			ServerConfig config = (ServerConfig) ServerConfig
-			.getInstance();
+			ServerConfig config = (ServerConfig) ServerConfig.getInstance();
 			if (config != null) {
 				preferences
 						.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
@@ -101,7 +139,16 @@ public class MainActivity extends SerenityActivity {
 		getApplicationContext().bindService(
 				new Intent(this, AndroidUpnpServiceImpl.class),
 				serviceConnection, Context.BIND_AUTO_CREATE);
-		broadCastReceivers();
+
+		getApplicationContext().bindService(
+				new Intent(this, DownloadService.class), downloadService,
+				Context.BIND_AUTO_CREATE);
+
+		mHandler.sendMessage(mHandler
+				.obtainMessage(SerenityApplication.PROGRESS));
+
+		String svcName = Context.NOTIFICATION_SERVICE;
+		notificationManager = (NotificationManager) getSystemService(svcName);
 	}
 
 	@Override
@@ -206,8 +253,10 @@ public class MainActivity extends SerenityActivity {
 		if (upnpService != null) {
 			upnpService.getRegistry().removeListener(registryListener);
 		}
-		unregisterReceiver(downloadReceiver);
+		mHandler.removeMessages(SerenityApplication.PROGRESS);
+
 		getApplicationContext().unbindService(serviceConnection);
+		getApplicationContext().unbindService(downloadService);
 	}
 
 	/**
@@ -230,36 +279,83 @@ public class MainActivity extends SerenityActivity {
 				.setOnItemClickListener(new GalleryOnItemClickListener(this));
 	}
 
-	protected void broadCastReceivers() {
-		downloadReceiver = new BroadcastReceiver() {
+	private static class DownloadHandler extends Handler {
+		@Override
+		public void handleMessage(Message msg) {
+			if ((msg.what == SerenityApplication.PROGRESS)
+					&& (!downloadsCancelled)) {
+				List<PendingDownload> pendingDownloads = SerenityApplication
+						.getPendingDownloads();
+				for (int i = 0; i < pendingDownloads.size(); i++) {
+					if (i == downloadIndex) {
+						try {
+							int status = dsInterface.getDownloadStatus(i);
+							pendingDownloads.get(i).setStatus(status);
+							if (status == Download.START) {
+								dsInterface.downloadFile(i);
+								notification(pendingDownloads.get(i)
+										.getFilename() + " has started.",
+										"Downloading "
+												+ pendingDownloads.get(i)
+														.getFilename());
+								pendingDownloads.get(i).setLaunchTime(
+										dsInterface.getDownloadLaunchTime(i));
 
-			public void onReceive(Context context, Intent intent) {
-				String action = intent.getAction();
-				if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
-					long downloadId = intent.getLongExtra(
-							DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-					Query query = new Query();
-					DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-					query.setFilterById(downloadId);
-					Cursor c = dm.query(query);
-					if (c.moveToFirst()) {
-						int columnIndex = c
-								.getColumnIndex(DownloadManager.COLUMN_STATUS);
-						if (DownloadManager.STATUS_SUCCESSFUL == c
-								.getInt(columnIndex)) {
-							int titleIndex = c
-									.getColumnIndex(DownloadManager.COLUMN_TITLE);
-							String title = c.getString(titleIndex);
-							Toast.makeText(context,
-									getString(R.string.download_manager_download_complete_for_) + title + ".",
-									Toast.LENGTH_LONG).show();
+							} else if (status == Download.COMPLETE) {
+								Toast.makeText(
+										context,
+										pendingDownloads.get(i).getFilename()
+												+ " has completed.",
+										Toast.LENGTH_LONG).show();
+
+								downloadIndex++;
+								if (downloadIndex >= pendingDownloads.size()
+										|| pendingDownloads.size() == 0) {
+									notificationManager.cancel(1);
+								}
+							}
+							if (status != Download.COMPLETE) {
+								pendingDownloads.get(i).setProgress(
+										dsInterface.getDownloadProgress(i));
+								pendingDownloads.get(i).setEllapsedTime(
+										dsInterface.getDownloadEllapsedTime(i));
+								pendingDownloads
+										.get(i)
+										.setRemainingTime(
+												dsInterface
+														.getDownloadRemainingTime(i));
+								pendingDownloads.get(i).setSpeed(
+										dsInterface.getDownloadSpeed(i));
+							} else {
+								pendingDownloads.get(i).setProgress(100);
+							}
+						} catch (Exception e) {
+							Log.e(getClass().getName(),
+									Log.getStackTraceString(e));
 						}
 					}
 				}
+				sendMessageDelayed(obtainMessage(SerenityApplication.PROGRESS),
+						50);
 			}
-		};
+		}
 
-		registerReceiver(downloadReceiver, new IntentFilter(
-				DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+		protected void notification(String tickerText, String expandedText) {
+			int icon = R.drawable.serenity_logo2_250;
+			long when = System.currentTimeMillis();
+			Notification notification = new Notification(icon, tickerText, when);
+			String expandedTitle = "Serenity Download";
+			Intent intent = new Intent(context, MainActivity.class);
+			PendingIntent launchIntent = PendingIntent.getActivity(context, 0,
+					intent, 0);
+			notification.setLatestEventInfo(context, expandedTitle,
+					expandedText, launchIntent);
+			int notificationRef = 1;
+			notificationManager.notify(notificationRef, notification);
+		}
+
 	}
+
+	protected Handler mHandler = new DownloadHandler();
+
 }

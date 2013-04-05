@@ -57,11 +57,13 @@ public class DownloadService extends Service {
 			}
 		}
 
-		public void addFileDownloadlist(String url, int position)
+		public void addFileDownloadlist(String url, String destination, String filename, int position)
 				throws DeadObjectException {
 			try {
-				downloads.add(new Download(new URL(url),
-						position));
+				Download download = new Download(new URL(url), position);
+				download.setDestination(destination);
+				download.setFileName(filename);
+				downloads.add(download);
 			} catch (Exception e) {
 				Log.e(getClass().getName(), e.getMessage(), e);
 			}

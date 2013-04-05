@@ -23,10 +23,14 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.castillo.dd.DSInterface;
+import com.castillo.dd.PendingDownload;
+import com.google.analytics.tracking.android.Log;
+
+import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -41,12 +45,9 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DownloadManager;
-import android.app.DownloadManager.Request;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
@@ -183,27 +184,30 @@ public class PlexVideoOnItemLongClickListener implements
 		directoryChooser();
 	}
 
-	/**
-	 * @param downloadManager
-	 */
 	protected void startDownload(String destination) {
-		String serviceString = Context.DOWNLOAD_SERVICE;
-		DownloadManager downloadManager;
-		downloadManager = (DownloadManager) context
-				.getSystemService(serviceString);
 
-		Uri uri = Uri.parse(info.getDirectPlayUrl());
-		DownloadManager.Request request = new Request(uri);
-		request.setDescription(info.getTitle());
-		request.setAllowedNetworkTypes(Request.NETWORK_WIFI);
-		request.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-		File file = new File(destination, info.getTitle() + "."
-				+ info.getContainer());
-		request.setDestinationUri(Uri.parse(file.toURI().toString()));
-		request.setShowRunningNotification(true);
-		long reference = downloadManager.enqueue(request);
-		Toast.makeText(context, context.getString(R.string.starting_download_of_) + info.getTitle(),
-				Toast.LENGTH_LONG).show();
+		List<PendingDownload> pendingDownloads = SerenityApplication
+				.getPendingDownloads();
+		PendingDownload pendingDownload = new PendingDownload();
+		String filename = info.getTitle() + "." + info.getContainer();
+		pendingDownload
+				.setFilename(filename);
+		pendingDownload.setUrl(info.getDirectPlayUrl());
+
+		pendingDownloads.add(pendingDownload);
+		int pos = pendingDownloads.size() - 1;
+
+		try {
+			DSInterface downloadService = MainActivity.getDsInterface();
+			downloadService.addFileDownloadlist(info.getDirectPlayUrl(), destination, filename, pos);
+			Toast.makeText(
+					context,
+					context.getString(R.string.starting_download_of_)
+							+ info.getTitle(), Toast.LENGTH_LONG).show();
+		} catch (Exception ex) {
+			Log.e("Unable to download " + info.getTitle() + "."
+					+ info.getContainer());
+		}
 	}
 
 	protected void directoryChooser() {
@@ -211,9 +215,10 @@ public class PlexVideoOnItemLongClickListener implements
 		DirectoryChooserDialog directoryChooserDialog = new DirectoryChooserDialog(
 				context, new DirectoryChooserDialog.ChosenDirectoryListener() {
 					public void onChosenDir(String chosenDir) {
-						Toast.makeText(context,
-								context.getString(R.string.chosen_directory_) + chosenDir,
-								Toast.LENGTH_LONG).show();
+						Toast.makeText(
+								context,
+								context.getString(R.string.chosen_directory_)
+										+ chosenDir, Toast.LENGTH_LONG).show();
 						startDownload(chosenDir);
 					}
 				});

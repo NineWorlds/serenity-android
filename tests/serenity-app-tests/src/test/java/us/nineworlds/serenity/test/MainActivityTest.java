@@ -30,6 +30,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -83,6 +84,7 @@ public class MainActivityTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testFindMainMenu() throws Exception {
 		activity.onCreate(null);
 		View menuView = activity.findViewById(R.id.mainGalleryMenu);
