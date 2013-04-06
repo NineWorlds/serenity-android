@@ -34,6 +34,7 @@ import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.listeners.BrowseRegistryListener;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -81,6 +82,7 @@ public class MainActivity extends SerenityActivity {
 
 	public final int ABOUT = 1;
 	public final int CLEAR_CACHE = 2;
+	public final int TUTORIAL = 3;
 
 	private AndroidUpnpService upnpService;
 	private BrowseRegistryListener registryListener = new BrowseRegistryListener();
@@ -157,6 +159,7 @@ public class MainActivity extends SerenityActivity {
 		getMenuInflater().inflate(R.menu.activity_plex_app_main, menu);
 		menu.add(0, ABOUT, 0, R.string.options_main_about);
 		menu.add(0, CLEAR_CACHE, 0, R.string.options_main_clear_image_cache);
+		menu.add(0, TUTORIAL, 0, "Tutorial");
 		return true;
 	}
 
@@ -172,7 +175,10 @@ public class MainActivity extends SerenityActivity {
 			about.setTitle(R.string.about_title_serenity_for_google_tv);
 			about.show();
 			break;
-
+		case TUTORIAL:
+			Intent youTubei = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=_yKc8ymXerg"));
+			startActivity(youTubei);
+			break;
 		default:
 			Intent i = new Intent(MainActivity.this,
 					SerenityPreferenceActivity.class);
