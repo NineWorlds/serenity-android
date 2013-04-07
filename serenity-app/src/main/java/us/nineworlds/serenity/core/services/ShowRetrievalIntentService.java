@@ -125,7 +125,6 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 					List<String> genres = processGeneres(show);
 					mpi.setGeneres(genres);
 
-					mpi.setShowsWatched(show.getViewedLeafCount());
 					int totalEpisodes = 0;
 					int viewedEpisodes = 0;
 					if (show.getLeafCount() != null) {
@@ -136,6 +135,7 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 					}
 					int unwatched = totalEpisodes - viewedEpisodes;
 					mpi.setShowsUnwatched(Integer.toString(unwatched));
+					mpi.setShowsWatched(Integer.toString(viewedEpisodes));
 
 					mpi.setKey(show.getKey());
 
