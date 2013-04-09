@@ -114,7 +114,7 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 	}
 	
 	protected boolean isImplemented(Directory item) {
-		if ("music".equals(item.getType())) {
+		if ("artist".equals(item.getType())) {
 			return false;
 		}
 		if ("photos".equals(item.getType()) ||
