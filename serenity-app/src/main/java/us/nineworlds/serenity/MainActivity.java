@@ -347,7 +347,7 @@ public class MainActivity extends SerenityActivity {
 		}
 
 		protected void notification(String tickerText, String expandedText) {
-			int icon = R.drawable.serenity_logo2_250;
+			int icon = R.drawable.serenity_bonsai_logo;
 			long when = System.currentTimeMillis();
 			Notification notification = new Notification(icon, tickerText, when);
 			String expandedTitle = "Serenity Download";
