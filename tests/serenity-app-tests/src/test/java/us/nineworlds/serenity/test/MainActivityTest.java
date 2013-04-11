@@ -74,7 +74,7 @@ public class MainActivityTest {
 	public void getApplicationName() throws Exception {
 		String appname = Robolectric.application.getResources().getString(R.string.app_name);
 		assertNotNull(appname);
-		assertEquals("Serenity for Google TV", appname);
+		assertEquals("Serenity for Android", appname);
 	}
 	
 	@Test
