@@ -28,6 +28,7 @@ import java.util.List;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
@@ -155,6 +156,19 @@ public class TVShowBannerOnItemSelectedListener implements
 		ImageView content = info.createTVContentRating(v.getPosterInfo().getContentRating(), context);
 		imageView.setImageDrawable(content.getDrawable());
 		imageView.setScaleType(ScaleType.FIT_XY);
+		
+		ImageView studiov = (ImageView) context.findViewById(R.id.tvShowStudio);
+		if (v.getPosterInfo().getStudio() != null ) {
+			studiov.setVisibility(View.VISIBLE);
+			studiov.setLayoutParams(params);
+			PlexappFactory factory = SerenityApplication.getPlexFactory();
+			String studioUrl = factory.getMediaTagURL("studio", v.getPosterInfo().getStudio(), v.getPosterInfo().getMediaTagIdentifier());
+			SerenityApplication.getImageLoader().displayImage(studioUrl, studiov);
+		} else {
+			studiov.setVisibility(View.GONE);
+		}
+		
+		
 	}
 
 	/**

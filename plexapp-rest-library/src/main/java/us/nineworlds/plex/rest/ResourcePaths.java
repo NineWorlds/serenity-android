@@ -23,6 +23,8 @@
 
 package us.nineworlds.plex.rest;
 
+import java.net.URLEncoder;
+
 import us.nineworlds.plex.rest.config.IConfiguration;
 import android.util.Log;
 
@@ -115,6 +117,9 @@ public class ResourcePaths {
 		return searchURL;
 	}
 	
-	
+	public String getMediaTagURL(String resourceType, String resourceName, String identifier) {
+		String mediaTagURL = getHostPort() + "/system/bundle/media/flags/" + resourceType + "/" + URLEncoder.encode(resourceName) + "?t=" + identifier;
+		return mediaTagURL;
+	}
 	
 }

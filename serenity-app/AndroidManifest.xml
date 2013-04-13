@@ -9,7 +9,8 @@
         android:normalScreens="false"
         android:largeScreens="true"
         android:xlargeScreens="true"
-        android:requiresSmallestWidthDp="200"/>
+        android:requiresSmallestWidthDp="600"
+        />
     
 
     <uses-sdk

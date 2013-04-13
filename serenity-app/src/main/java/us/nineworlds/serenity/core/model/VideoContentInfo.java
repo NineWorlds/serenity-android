@@ -137,5 +137,9 @@ public interface VideoContentInfo extends ContentInfo {
 	
 	public void setSubtitle(Subtitle subtitle);
 	
+	public void setStudio(String studio);
+	
+	public String getStudio();
+	
 
 }

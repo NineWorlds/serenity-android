@@ -37,6 +37,9 @@ import org.simpleframework.xml.Root;
  */
 @Root(name="Video")
 public class Video extends AbstractPlexObject {
+
+	@Attribute(required=false)
+	private String studio;
 	
 	@Attribute(required=false)
 	private String summary;
@@ -385,6 +388,14 @@ public class Video extends AbstractPlexObject {
 
 	public void setParentThumbNailImageKey(String parentThumbNailImageKey) {
 		this.parentThumbNailImageKey = parentThumbNailImageKey;
+	}
+
+	public String getStudio() {
+		return studio;
+	}
+
+	public void setStudio(String studio) {
+		this.studio = studio;
 	}
 	
 	

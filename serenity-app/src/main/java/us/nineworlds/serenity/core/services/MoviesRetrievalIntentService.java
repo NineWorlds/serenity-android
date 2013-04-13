@@ -32,13 +32,11 @@ import us.nineworlds.plex.rest.model.impl.Genre;
 import us.nineworlds.plex.rest.model.impl.Media;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Part;
-import us.nineworlds.plex.rest.model.impl.Stream;
 import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.plex.rest.model.impl.Writer;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
-import us.nineworlds.serenity.core.model.impl.Subtitle;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -114,9 +112,12 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 	protected void createVideoContent(MediaContainer mc) {
 		String baseUrl = factory.baseURL();
 		List<Video> videos = mc.getVideos();
+		String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
 		for (Video movie : videos) {
 			VideoContentInfo mpi = new MoviePosterInfo();
+			mpi.setMediaTagIdentifier(mediaTagId);
 			mpi.setId(movie.getRatingKey());
+			mpi.setStudio(movie.getStudio());
 			mpi.setPlotSummary(movie.getSummary());
 
 			mpi.setResumeOffset(Long.valueOf(movie.getViewOffset()).intValue());

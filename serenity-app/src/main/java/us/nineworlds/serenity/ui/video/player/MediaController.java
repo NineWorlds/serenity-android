@@ -145,6 +145,7 @@ public class MediaController extends FrameLayout {
 	private String videoFormat;
 	private String audioFormat;
 	private String audioChannels;
+	private String mediaTagIdentifier;
 	private AudioManager mAM;
 
 	private ImageLoader imageLoader;
@@ -176,7 +177,7 @@ public class MediaController extends FrameLayout {
 
 	public MediaController(Context context, String summary, String title,
 			String posterURL, String resolution, String videoFormat,
-			String audioFormat, String audioChannels) {
+			String audioFormat, String audioChannels, String mediaTagId) {
 		super(context);
 		this.summary = summary;
 		this.title = title;
@@ -185,6 +186,7 @@ public class MediaController extends FrameLayout {
 		this.audioChannels = audioChannels;
 		this.videoFormat = videoFormat;
 		this.audioFormat = audioFormat;
+		this.mediaTagIdentifier = mediaTagId;
 		imageLoader = SerenityApplication.getImageLoader();
 
 		if (!mFromXml && initController(context)) {

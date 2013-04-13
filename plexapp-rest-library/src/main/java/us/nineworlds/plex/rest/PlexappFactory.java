@@ -157,7 +157,7 @@ public class PlexappFactory {
 		MediaContainer mediaContainer = serializeResource(episodesURL);
 		return mediaContainer;
 	}
-	
+		
 	public MediaContainer searchMovies(String key, String query) throws Exception {
 		String searchURL = resourcePath.getMovieSearchURL(key, query);
 		MediaContainer mediaContainer = serializeResource(searchURL);
@@ -240,6 +240,10 @@ public class PlexappFactory {
 
 	public String getEpisodeSearchURL(String key, String query) {
 		return resourcePath.getMovieSearchURL(key, query);
+	}
+	
+	public String getMediaTagURL(String resourceType, String resourceName, String identifier) {
+		return resourcePath.getMediaTagURL(resourceType, resourceName, identifier);
 	}
 
 	

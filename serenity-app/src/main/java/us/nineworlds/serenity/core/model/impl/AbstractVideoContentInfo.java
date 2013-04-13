@@ -67,6 +67,9 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	private String seriesTitle;
 	
 	private Subtitle subtitle;
+	
+	private String mediaTagIdentifier;
+	private String studio;
 
 	public String getSeriesTitle() {
 		return seriesTitle;
@@ -497,6 +500,22 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 
 	public void setDuration(int duration) {
 		this.duration = duration;
+	}
+
+	public String getMediaTagIdentifier() {
+		return mediaTagIdentifier;
+	}
+
+	public void setMediaTagIdentifier(String mediaTagIdentifier) {
+		this.mediaTagIdentifier = mediaTagIdentifier;
+	}
+	
+	public void setStudio(String studio) {
+		this.studio = studio;
+	}
+	
+	public String getStudio() {
+		return studio;
 	}
 	
 

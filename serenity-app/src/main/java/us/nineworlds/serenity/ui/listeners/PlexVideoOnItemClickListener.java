@@ -102,6 +102,7 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 		vpIntent.putExtra("audioChannels", video.getAudioChannels());
 		vpIntent.putExtra("resumeOffset", video.getResumeOffset());
 		vpIntent.putExtra("duration", video.getDuration());
+		vpIntent.putExtra("mediaTagId", video.getMediaTagIdentifier());
 		if (video.getSubtitle() != null) {
 			Subtitle subtitle = video.getSubtitle();
 			if (!"none".equals(subtitle.getFormat())) {

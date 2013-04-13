@@ -219,6 +219,11 @@ public class MoviePosterOnItemSelectedListener implements
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100,
 				58);
 
+		ImageView studiov = imageUtilsNormal.createStudioImage(mpi.getStudio(), context, mpi.getMediaTagIdentifier());
+		if (studiov != null) {
+			infographicsView.addView(studiov);
+		}
+		
 		ImageView acv = imageUtilsWide.createAudioCodecImage(
 				mpi.getAudioCodec(), context);
 		if (acv != null) {
@@ -242,11 +247,11 @@ public class MoviePosterOnItemSelectedListener implements
 		if (aspectv != null) {
 			infographicsView.addView(aspectv);
 		}
-
+		
 		ImageView crv = imageUtilsWide.createContentRatingImage(
 				mpi.getContentRating(), context);
 		infographicsView.addView(crv);
-
+		
 		infographicsView.refreshDrawableState();
 		
 		fetchSubtitle(mpi);

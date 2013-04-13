@@ -66,5 +66,9 @@ public interface SeriesContentInfo extends ContentInfo {
 	public String getParentShowTitle();
 
 	public void setParentShowTitle(String title);
+	
+	public String getStudio();
+	
+	public void setStudio(String studio);
 
 }

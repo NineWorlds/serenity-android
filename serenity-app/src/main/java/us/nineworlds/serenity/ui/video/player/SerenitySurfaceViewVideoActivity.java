@@ -81,6 +81,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private boolean mediaplayer_error_state = false;
 	private boolean mediaplayer_released = false;
 	private String subtitleURL;
+	private String mediaTagIdentifier;
 	private TimedTextObject srt;
 	
 	private Handler subtitleDisplayHandler = new Handler();
@@ -194,6 +195,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		String audioChannels = extras.getString("audioChannels");
 		resumeOffset = extras.getInt("resumeOffset");
 		subtitleURL = extras.getString("subtitleURL");
+		mediaTagIdentifier = extras.getString("mediaTagId");
 		
 		new SubtitleAsyncTask().execute();
 		
@@ -217,7 +219,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			String audioFormat, String audioChannels) {
 
 		mediaController = new MediaController(this, summary, title, posterURL,
-				videoResolution, videoFormat, audioFormat, audioChannels);
+				videoResolution, videoFormat, audioFormat, audioChannels, mediaTagIdentifier);
 		mediaController.setAnchorView(surfaceView);
 		mediaController.setMediaPlayer(new SerenityMediaPlayerControl(
 				mediaPlayer));

@@ -23,13 +23,17 @@
 
 package us.nineworlds.serenity.ui.util;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 
@@ -372,5 +376,24 @@ public class ImageInfographicUtils {
 		watchedView.setImageResource(R.drawable.unwatched_small);
 		epiv.getPosterInfo().setViewCount(0);
 	}
+	
+	public ImageView createStudioImage(String studio,
+			Context context, String identifier) {
+		if (studio == null) {
+			return null;
+		}
+		
+		ImageLoader imageLoader = SerenityApplication.getImageLoader();
+		PlexappFactory factory = SerenityApplication.getPlexFactory();
+		ImageView v = new ImageView(context);
+		v.setScaleType(ScaleType.FIT_XY);
+		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		v.setLayoutParams(new LayoutParams(w, h));
+		String mediaTagUrl = factory.getMediaTagURL("studio", studio, identifier);
+		imageLoader.displayImage(mediaTagUrl, v);
+		return v;
+	}
+	
 
 }

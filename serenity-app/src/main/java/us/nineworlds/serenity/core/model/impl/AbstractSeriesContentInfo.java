@@ -47,6 +47,8 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
 	private String ShowsUnwatched;
 	private String key;
 	private String parentShowTitle;
+	private String mediaTagIdentifier;
+	private String studio;
 
 	public String id() {
 		return id;
@@ -172,5 +174,21 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	public String getMediaTagIdentifier() {
+		return mediaTagIdentifier;
+	}
+
+	public void setMediaTagIdentifier(String mediaTagIdentifier) {
+		this.mediaTagIdentifier = mediaTagIdentifier;
+	}
+
+	public String getStudio() {
+		return studio;
+	}
+
+	public void setStudio(String studio) {
+		this.studio = studio;
+	}	
 
 }

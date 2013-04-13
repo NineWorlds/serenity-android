@@ -90,13 +90,17 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 		}
 
 		if (mc != null && mc.getSize() > 0) {
+			String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
 			List<Directory> shows = mc.getDirectories();
 			if (shows != null) {
 				for (Directory show : shows) {
 					TVShowSeriesInfo mpi = new TVShowSeriesInfo();
+					mpi.setMediaTagIdentifier(mediaTagId);
 					if (show.getSummary() != null) {
 						mpi.setPlotSummary(show.getSummary());
 					}
+					
+					mpi.setStudio(show.getStudio());
 
 					String burl = factory.baseURL()
 							+ ":/resources/show-fanart.jpg";
