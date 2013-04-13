@@ -149,7 +149,8 @@ public class TVShowBannerOnItemSelectedListener implements
 		int h = ImageUtils.getDPI(34, (Activity)v.getContext());
 		
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w, h);
-		params.leftMargin = 10;
+		params.rightMargin = 15;
+		params.bottomMargin = 5;
 		
 		imageView.setLayoutParams(params);
 		
