@@ -131,7 +131,7 @@ public class ShowOnItemLongClickListener implements OnItemLongClickListener {
 
 			switch (position) {
 			case 0:
-				if (Integer.valueOf(info.getShowsWatched()) > 0) {
+				if (watched > 0) {
 					new UnWatchVideoAsyncTask().execute(info.id());
 					info.setShowsWatched("0");
 					info.setShowsUnwatched(Integer.valueOf(total).toString());
