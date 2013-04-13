@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.listeners;
 
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
@@ -35,6 +36,7 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemClickListener;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -72,7 +74,26 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 			vimuVideoPlayerOptions(mpiv, vpIntent);
 
 			Activity activity = (Activity) mpiv.getContext();
-			activity.startActivity(vpIntent);
+			if (SerenityApplication.isGoogleTV(activity)) {
+				activity.startActivity(vpIntent);
+			} else {
+				try {
+					vpIntent.setPackage("com.mxtech.videoplayer.ad");
+					vpIntent.setClassName("com.mxtech.videoplayer.ad","com.mxtech.videoplayer.ad.ActivityScreen");
+					activity.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);				
+				} catch (ActivityNotFoundException ex) {
+					try {
+						vpIntent.setPackage("com.mxtech.videoplayer.pro");
+						vpIntent.setClassName("com.mxtech.videoplayer.pro","com.mxtech.videoplayer.ActivityScreen");
+						activity.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);				
+					} catch (ActivityNotFoundException ex2) {
+						vpIntent.setPackage(null);
+						vpIntent.setComponent(null);
+						activity.startActivity(vpIntent);
+					}
+				}
+			}
+			
 			new WatchedVideoAsyncTask().execute(mpiv.getPosterInfo().id());
 			updatedWatchedCount(mpiv, activity);
 			return;
@@ -110,7 +131,7 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 				vpIntent.putExtra("subtitleFormat", subtitle.getFormat());
 			}
 		}
-
+		
 		Activity a = (Activity) mpiv.getContext();
 		a.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
 		updatedWatchedCount(mpiv, a);

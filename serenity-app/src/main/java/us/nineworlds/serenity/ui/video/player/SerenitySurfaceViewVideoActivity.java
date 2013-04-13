@@ -465,7 +465,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					Log.e(getClass().getName(), e.getMessage(), e);
 				}
 			}
-			// TODO Auto-generated method stub
 			return null;
 		}
 		

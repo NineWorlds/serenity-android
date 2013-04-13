@@ -24,10 +24,12 @@
 package us.nineworlds.serenity.ui.activity;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageGalleryAdapter;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 
@@ -36,7 +38,7 @@ import android.widget.ImageView;
  * 
  */
 public abstract class SerenityActivity extends Activity {
-
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 			SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
@@ -92,6 +94,19 @@ public abstract class SerenityActivity extends Activity {
 		return keyCode == KeyEvent.KEYCODE_R ||
 			   keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS ||
 			   keyCode == KeyEvent.KEYCODE_MEDIA_REWIND;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == Activity.RESULT_OK) {
+			if (data != null && data.getAction().equals("com.mxtech.intent.result.VIEW")) {
+				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
+				VideoContentInfo video = (VideoContentInfo) gallery.getSelectedItem();
+				long position = data.getIntExtra("position", 0);
+				UpdateProgressRequest request = new UpdateProgressRequest(position, video.id());
+				request.execute();
+			}
+		}
 	}
 
 }

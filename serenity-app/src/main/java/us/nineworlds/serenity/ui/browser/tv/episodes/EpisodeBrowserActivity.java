@@ -75,7 +75,7 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 		super.onStop();
 		EasyTracker.getInstance().activityStop(this);
 	}
-
+	
 	/**
 	 * Populate the episode browser with data
 	 */
