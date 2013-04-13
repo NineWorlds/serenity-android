@@ -161,14 +161,26 @@ public class TVShowBannerOnItemSelectedListener implements
 		if (v.getPosterInfo().getStudio() != null ) {
 			studiov.setVisibility(View.VISIBLE);
 			studiov.setLayoutParams(params);
+			String studio = v.getPosterInfo().getStudio();
+			studio = fixStudio(studio);
 			PlexappFactory factory = SerenityApplication.getPlexFactory();
-			String studioUrl = factory.getMediaTagURL("studio", v.getPosterInfo().getStudio(), v.getPosterInfo().getMediaTagIdentifier());
+			String studioUrl = factory.getMediaTagURL("studio", studio, v.getPosterInfo().getMediaTagIdentifier());
 			SerenityApplication.getImageLoader().displayImage(studioUrl, studiov);
 		} else {
 			studiov.setVisibility(View.GONE);
 		}
 		
 		
+	}
+	
+	private String fixStudio(String studio) {
+		if ("FOX".equals(studio)) {
+			return "Fox";
+		}
+		if ("Starz!".equals(studio)) {
+			return "Starz";
+		}
+		return studio;
 	}
 
 	/**
