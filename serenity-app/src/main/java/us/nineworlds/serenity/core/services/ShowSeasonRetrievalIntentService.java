@@ -94,7 +94,7 @@ public class ShowSeasonRetrievalIntentService extends
 		List<Directory> shows = mc.getDirectories();
 		for (Directory show : shows) {
 			TVShowSeriesInfo mpi = new TVShowSeriesInfo();
-
+			mpi.setId(show.getRatingKey());
 			if (mc.getTitle2() != null) {
 				mpi.setParentShowTitle(mc.getTitle2());
 			}

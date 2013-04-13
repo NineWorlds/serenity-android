@@ -36,6 +36,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
+import us.nineworlds.serenity.ui.views.TVShowSeasonImageView;
 
 /**
  * @author dcarver
@@ -376,6 +377,7 @@ public class ImageInfographicUtils {
 		watchedView.setImageResource(R.drawable.unwatched_small);
 		epiv.getPosterInfo().setViewCount(0);
 	}
+	
 	
 	public ImageView createStudioImage(String studio,
 			Context context, String identifier) {

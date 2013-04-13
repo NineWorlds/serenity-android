@@ -95,6 +95,7 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 			if (shows != null) {
 				for (Directory show : shows) {
 					TVShowSeriesInfo mpi = new TVShowSeriesInfo();
+					mpi.setId(show.getRatingKey());
 					mpi.setMediaTagIdentifier(mediaTagId);
 					if (show.getSummary() != null) {
 						mpi.setPlotSummary(show.getSummary());

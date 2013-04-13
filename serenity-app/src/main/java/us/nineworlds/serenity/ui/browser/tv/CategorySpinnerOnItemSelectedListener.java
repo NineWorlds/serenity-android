@@ -84,6 +84,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 			posterGallery
 					.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
 							context));
+			posterGallery.setOnItemLongClickListener(new ShowOnItemLongClickListener());
 			firstSelection = false;
 			return;
 		}
@@ -121,6 +122,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 				posterGallery
 						.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
 								context));
+				posterGallery.setOnItemLongClickListener(new ShowOnItemLongClickListener());
 			}
 		} else {
 			Messenger messenger = new Messenger(secondaryCategoryHandler);

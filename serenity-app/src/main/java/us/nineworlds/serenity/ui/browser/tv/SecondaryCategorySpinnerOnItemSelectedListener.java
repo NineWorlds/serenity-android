@@ -76,6 +76,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		posterGallery
 				.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
 						c));
+		posterGallery.setOnItemLongClickListener(new ShowOnItemLongClickListener());
 
 	}
 
