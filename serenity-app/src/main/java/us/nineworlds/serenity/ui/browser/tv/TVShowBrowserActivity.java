@@ -27,17 +27,18 @@ import java.util.ArrayList;
 
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.services.TVShowCategoryRetrievalIntentService;
-import us.nineworlds.serenity.ui.activity.SerenityActivity;
 
 import us.nineworlds.serenity.R;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -52,13 +53,21 @@ public class TVShowBrowserActivity extends Activity {
 	private boolean restarted_state = false;
 	private static String key;
 	private Handler categoryHandler;
+	private SharedPreferences preferences;
+	public static boolean USE_POSTER_LAYOUT = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
-		setContentView(R.layout.activity_tvbrowser_show);
-
+		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		USE_POSTER_LAYOUT = preferences.getBoolean("series_layout_posters", false);
+		if (USE_POSTER_LAYOUT) {
+			setContentView(R.layout.activity_tvbrowser_show_posters);
+		} else {
+			setContentView(R.layout.activity_tvbrowser_show_banners);
+		}
 	}
 
 	@Override

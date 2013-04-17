@@ -67,11 +67,17 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		View bgLayout = c.findViewById(R.id.tvshowBrowserLayout);
 		Gallery posterGallery = (Gallery) c
 				.findViewById(R.id.tvShowBannerGallery);
-
-		posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(c, key,
+		
+		if (!TVShowBrowserActivity.USE_POSTER_LAYOUT) {
+			posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(c, key,
 				item.getParentCategory() + "/" + item.getCategory()));
+		} else {
+			posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(c, key,
+					item.getParentCategory() + "/" + item.getCategory()));
+		}
+		
 		posterGallery
-				.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(
+				.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
 						bgLayout, c));
 		posterGallery
 				.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(

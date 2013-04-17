@@ -56,7 +56,7 @@ import android.widget.TextView;
  * @author dcarver
  * 
  */
-public class TVShowBannerImageGalleryAdapter extends
+public class TVShowPosterImageGalleryAdapter extends
 		AbstractPosterImageGalleryAdapter {
 
 	/**
@@ -74,7 +74,7 @@ public class TVShowBannerImageGalleryAdapter extends
 	private String key;
 	private static ProgressDialog pd;
 
-	public TVShowBannerImageGalleryAdapter(Context c, String key,
+	public TVShowPosterImageGalleryAdapter(Context c, String key,
 			String category) {
 		super(c, key, category);
 		tvShowList = new ArrayList<TVShowSeriesInfo>();
@@ -139,11 +139,11 @@ public class TVShowBannerImageGalleryAdapter extends
 		TVShowImageView mpiv = new TVShowImageView(context, pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(BANNER_PIXEL_WIDTH, context);
-		int height = ImageUtils.getDPI(BANNER_PIXEL_HEIGHT, context);
+		int width = ImageUtils.getDPI(160, context);
+		int height = ImageUtils.getDPI(200, context);
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
 
-		imageLoader.displayImage(pi.getPosterURL(), mpiv);
+		imageLoader.displayImage(pi.getThumbNailURL(), mpiv);
 		return mpiv;
 	}
 	

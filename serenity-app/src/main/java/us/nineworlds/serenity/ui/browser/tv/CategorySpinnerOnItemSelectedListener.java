@@ -73,18 +73,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 				.getItemAtPosition(position);
 
 		if (firstSelection) {
-			View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
-			Gallery posterGallery = (Gallery) context
-					.findViewById(R.id.tvShowBannerGallery);
-			posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
-					context, key, item.getCategory()));
-			posterGallery
-					.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(
-							bgLayout, context));
-			posterGallery
-					.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
-							context));
-			posterGallery.setOnItemLongClickListener(new ShowOnItemLongClickListener());
+			setupImageGallery(item);
 			firstSelection = false;
 			return;
 		}
@@ -111,18 +100,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 				context.startActivityForResult(i, 0);
 			} else {
 				secondarySpinner.setVisibility(View.INVISIBLE);
-				View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
-				Gallery posterGallery = (Gallery) context
-						.findViewById(R.id.tvShowBannerGallery);
-				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
-						context, key, item.getCategory()));
-				posterGallery
-						.setOnItemSelectedListener(new TVShowBannerOnItemSelectedListener(
-								bgLayout, context));
-				posterGallery
-						.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
-								context));
-				posterGallery.setOnItemLongClickListener(new ShowOnItemLongClickListener());
+				setupImageGallery(item);
 			}
 		} else {
 			Messenger messenger = new Messenger(secondaryCategoryHandler);
@@ -133,6 +111,32 @@ public class CategorySpinnerOnItemSelectedListener implements
 			categoriesIntent.putExtra("MESSENGER", messenger);
 			context.startService(categoriesIntent);
 		}
+
+	}
+
+	/**
+	 * @param item
+	 */
+	protected void setupImageGallery(CategoryInfo item) {
+		View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
+		Gallery posterGallery = (Gallery) context
+				.findViewById(R.id.tvShowBannerGallery);
+
+		if (!TVShowBrowserActivity.USE_POSTER_LAYOUT) {
+			posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
+					context, key, item.getCategory()));
+		} else {
+			posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(
+					context, key, item.getCategory()));
+		}
+		posterGallery
+				.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
+						bgLayout, context));
+		posterGallery
+				.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
+						context));
+		posterGallery
+				.setOnItemLongClickListener(new ShowOnItemLongClickListener());
 
 	}
 
@@ -147,7 +151,8 @@ public class CategorySpinnerOnItemSelectedListener implements
 			List<SecondaryCategoryInfo> secondaryCategories = (List<SecondaryCategoryInfo>) msg.obj;
 
 			if (secondaryCategories == null || secondaryCategories.isEmpty()) {
-				Toast.makeText(context, R.string.no_entries_available_for_category_,
+				Toast.makeText(context,
+						R.string.no_entries_available_for_category_,
 						Toast.LENGTH_LONG).show();
 				return;
 			}

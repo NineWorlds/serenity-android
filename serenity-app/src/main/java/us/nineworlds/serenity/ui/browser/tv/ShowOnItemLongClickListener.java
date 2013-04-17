@@ -57,7 +57,7 @@ public class ShowOnItemLongClickListener implements OnItemLongClickListener {
 	private Dialog dialog;
 	private Activity context;
 	private SeriesContentInfo info;
-	private TVShowBannerImageView tvsv;
+	private TVShowImageView tvsv;
 
 	public boolean onItemLongClick(AdapterView<?> av, View v,
 			int position, long arg3) {
@@ -67,13 +67,13 @@ public class ShowOnItemLongClickListener implements OnItemLongClickListener {
 
 		if (v == null) {
 			Gallery g = (Gallery) av;
-			tvsv = (TVShowBannerImageView) g.getSelectedView();
+			tvsv = (TVShowImageView) g.getSelectedView();
 		} else {
-			if (v instanceof TVShowBannerImageView) {
-				tvsv = (TVShowBannerImageView) v;
+			if (v instanceof TVShowImageView) {
+				tvsv = (TVShowImageView) v;
 			} else {
 				Gallery g = (Gallery) v;
-				tvsv = (TVShowBannerImageView) g.getSelectedView();
+				tvsv = (TVShowImageView) g.getSelectedView();
 			}
 		}
 

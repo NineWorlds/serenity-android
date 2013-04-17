@@ -39,13 +39,16 @@ import us.nineworlds.serenity.R;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -54,7 +57,7 @@ import android.widget.TextView;
  * @author dcarver
  * 
  */
-public class TVShowBannerOnItemSelectedListener implements
+public class TVShowGalleryOnItemSelectedListener implements
 		OnItemSelectedListener {
 
 	private static final String SEPERATOR = "/";
@@ -67,7 +70,7 @@ public class TVShowBannerOnItemSelectedListener implements
 	/**
 	 * 
 	 */
-	public TVShowBannerOnItemSelectedListener(View bgv, Activity activity) {
+	public TVShowGalleryOnItemSelectedListener(View bgv, Activity activity) {
 		bgLayout = bgv;
 		context = activity;
 
@@ -92,12 +95,12 @@ public class TVShowBannerOnItemSelectedListener implements
 
 		v.setPadding(5, 5, 5, 5);
 
-		createTVShowDetail((TVShowBannerImageView) v);
+		createTVShowDetail((TVShowImageView) v);
 		changeBackgroundImage(v);
 
 	}
 
-	private void createTVShowDetail(TVShowBannerImageView v) {
+	private void createTVShowDetail(TVShowImageView v) {
 
 		TextView summary = (TextView) context
 				.findViewById(R.id.tvShowSeriesSummary);
@@ -149,9 +152,8 @@ public class TVShowBannerOnItemSelectedListener implements
 		int h = ImageUtils.getDPI(34, (Activity)v.getContext());
 		
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w, h);
-		params.rightMargin = 15;
-		params.bottomMargin = 5;
-		
+		params.topMargin = 10;
+		params.rightMargin = 5;			
 		imageView.setLayoutParams(params);
 		
 		ImageView content = info.createTVContentRating(v.getPosterInfo().getContentRating(), context);
@@ -161,7 +163,13 @@ public class TVShowBannerOnItemSelectedListener implements
 		ImageView studiov = (ImageView) context.findViewById(R.id.tvShowStudio);
 		if (v.getPosterInfo().getStudio() != null ) {
 			studiov.setVisibility(View.VISIBLE);
-			studiov.setLayoutParams(params);
+			LinearLayout.LayoutParams sparams = new LinearLayout.LayoutParams(w, h);
+			sparams.rightMargin = 5;
+			sparams.topMargin = 10;
+			sparams.leftMargin = 30;
+			imageView.setLayoutParams(params);
+			
+			studiov.setLayoutParams(sparams);
 			String studio = v.getPosterInfo().getStudio();
 			studio = fixStudio(studio);
 			PlexappFactory factory = SerenityApplication.getPlexFactory();
@@ -193,21 +201,22 @@ public class TVShowBannerOnItemSelectedListener implements
 	 */
 	private void changeBackgroundImage(View v) {
 
-		TVShowBannerImageView mpiv = (TVShowBannerImageView) v;
+		TVShowImageView mpiv = (TVShowImageView) v;
 		AbstractSeriesContentInfo mi = mpiv.getPosterInfo();
 
 		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
 				new SerenityBackgroundLoaderListener(bgLayout,
 						R.drawable.tvshows));
 
-		ImageView showImage = (ImageView) context
-				.findViewById(R.id.tvShowImage);
-		showImage.setScaleType(ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(250, context);
-		int height = ImageUtils.getDPI(350, context);
-		showImage.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-
-		imageLoader.displayImage(mi.getThumbNailURL(), showImage);
+		if (!TVShowBrowserActivity.USE_POSTER_LAYOUT) {
+			ImageView showImage = (ImageView) context
+					.findViewById(R.id.tvShowImage);
+			showImage.setScaleType(ScaleType.FIT_XY);
+			int width = ImageUtils.getDPI(250, context);
+			int height = ImageUtils.getDPI(350, context);
+			showImage.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+			imageLoader.displayImage(mi.getThumbNailURL(), showImage);
+		}
 
 	}
 

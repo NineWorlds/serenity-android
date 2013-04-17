@@ -58,7 +58,7 @@ public class TVShowBrowserGalleryOnItemClickListener implements
 	public void onItemClick(AdapterView<?> av, View view, int position,
 			long arg3) {
 
-		TVShowBannerImageView tsi = (TVShowBannerImageView) view;
+		TVShowImageView tsi = (TVShowImageView) view;
 
 		Intent i = new Intent(context, TVShowSeasonBrowserActivity.class);
 		i.putExtra("key", tsi.getPosterInfo().getKey());
