@@ -6,43 +6,27 @@
     android:background="@drawable/serenity_bonsai_logo"
     android:orientation="vertical"
     tools:context=".MainActivity" >
-
-    <LinearLayout
-        android:id="@+id/main_menu_row1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal" >
-
-        <DigitalClock
+    
+    <DigitalClock
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#50000000"
             android:textColor="#F0F0F0"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
             android:textSize="20sp" />
-    </LinearLayout>
-    
-    
 
-    <LinearLayout
-        android:id="@+id/menu_gallery"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="100dp"
-         >
+     <Gallery
+         android:id="@+id/mainGalleryMenu"
+         android:layout_width="match_parent"
+         android:layout_height="150dp"
+         android:animationDuration="1"
+         android:background="#50000000"
+         android:spacing="50dp"
+         android:layout_centerInParent="true"
+         android:layout_gravity="center_vertical">
 
-        <Gallery
-            android:id="@+id/mainGalleryMenu"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:animationDuration="1"
-            android:background="#50000000"
-            android:spacing="50dp"
-            android:layout_gravity="center_vertical">
-
-            <requestFocus />
-        </Gallery>
-    </LinearLayout>
+         <requestFocus />
+     </Gallery>
 
 </RelativeLayout>
