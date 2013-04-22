@@ -32,6 +32,7 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.services.CompletedVideoRequest;
 import us.nineworlds.serenity.core.subtitles.formats.Caption;
+import us.nineworlds.serenity.core.subtitles.formats.FormatASS;
 import us.nineworlds.serenity.core.subtitles.formats.FormatSRT;
 import us.nineworlds.serenity.core.subtitles.formats.TimedTextObject;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
@@ -82,14 +83,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private boolean mediaplayer_released = false;
 	private String subtitleURL;
 	private String mediaTagIdentifier;
-	private TimedTextObject srt;
+	private TimedTextObject subtitleTimedText;
 	
 	private Handler subtitleDisplayHandler = new Handler();
 	private Runnable subtitle = new Runnable() {
 		public void run() {
 			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 				int currentPos = mediaPlayer.getCurrentPosition();
-				Collection<Caption> subtitles =  srt.captions.values();
+				Collection<Caption> subtitles =  subtitleTimedText.captions.values();
 				for(Caption caption : subtitles) {
 					if (currentPos >= caption.start.getMilliseconds() && currentPos <= caption.end.getMilliseconds()) {
 						onTimedText(caption);
@@ -457,9 +458,15 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			if (subtitleURL != null) {
 				try {
 					URL url = new URL(subtitleURL);
-					InputStream stream = url.openStream();
-					FormatSRT formatSRT = new FormatSRT();
-					srt = formatSRT.parseFile(stream);
+					InputStream stream = url.openStream();	
+					
+					if (subtitleURL.endsWith("srt")) {
+						FormatSRT formatSRT = new FormatSRT();
+						subtitleTimedText = formatSRT.parseFile(stream);
+					} else if (subtitleURL.endsWith("ass")) {
+						FormatASS formatASS = new FormatASS();
+						subtitleTimedText = formatASS.parseFile(stream);
+					}
 					subtitleDisplayHandler.post(subtitle);
 				} catch (Exception e) {
 					Log.e(getClass().getName(), e.getMessage(), e);

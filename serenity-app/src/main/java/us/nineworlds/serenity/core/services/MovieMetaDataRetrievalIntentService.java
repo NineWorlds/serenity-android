@@ -90,7 +90,8 @@ public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentS
 		List<Stream> streams = mc.getVideos().get(0).getMedias().get(0).getVideoPart().get(0).getStreams();
 		subtitles = new ArrayList<Subtitle>();
 		for (Stream stream : streams) {
-			if ("srt".equals(stream.getFormat())) {
+			if ("srt".equals(stream.getFormat()) ||
+				"ass".equals(stream.getFormat())) {
 				Subtitle subtitle = new Subtitle();
 				subtitle = new Subtitle();
 				subtitle.setFormat(stream.getFormat());
