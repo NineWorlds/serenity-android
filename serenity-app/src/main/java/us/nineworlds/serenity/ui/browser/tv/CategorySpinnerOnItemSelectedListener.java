@@ -34,9 +34,11 @@ import us.nineworlds.serenity.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -73,6 +75,32 @@ public class CategorySpinnerOnItemSelectedListener implements
 				.getItemAtPosition(position);
 
 		if (firstSelection) {
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+			String filter = prefs.getString("serenity_category_filter", "all");
+			
+			int count = viewAdapter.getCount();
+			for (int i = 0; i < count; i++) {
+				CategoryInfo citem = (CategoryInfo) viewAdapter
+						.getItemAtPosition(i);
+				if (citem.getCategory().equals(filter)) {
+					item = citem;
+					selected = citem.getCategory();
+					viewAdapter.setSelection(i);
+					continue;
+				}
+			}
+			
+			if (item.getCategory().equals("newest")
+					|| item.getCategory().equals("recentlyAdded")
+					|| item.getCategory().equals("recentlyViewed")
+					|| item.getCategory().equals("onDeck")) {
+				Intent i = new Intent(context, EpisodeBrowserActivity.class);
+				i.putExtra("key",
+						"/library/sections/" + key + "/" + item.getCategory());
+				context.startActivityForResult(i, 0);
+			} else {
+				setupImageGallery(item);
+			}			
 			setupImageGallery(item);
 			firstSelection = false;
 			return;

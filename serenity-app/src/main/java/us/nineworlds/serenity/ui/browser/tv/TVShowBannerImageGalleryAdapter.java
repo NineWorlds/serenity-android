@@ -157,13 +157,15 @@ public class TVShowBannerImageGalleryAdapter extends
 			Gallery posterGallery = (Gallery) context
 					.findViewById(R.id.tvShowBannerGallery);
 			if (tvShowList != null) {
-				if (tvShowList.isEmpty()) {
-					Toast.makeText(context,
-							R.string.no_shows_found_for_the_category_ + category,
-							Toast.LENGTH_LONG).show();
-				}
 				TextView tv = (TextView) context
 						.findViewById(R.id.tvShowItemCount);
+				if (tv == null) {
+					pd.dismiss();
+					return;
+				}
+				if (tvShowList.isEmpty()) {
+					Toast.makeText(context, context.getString(R.string.no_shows_found_for_the_category_) + category, Toast.LENGTH_LONG).show();
+				}
 				tv.setText(Integer.toString(tvShowList.size()) + context.getString(R.string._item_s_));
 			}
 			notifyDataSetChanged();
