@@ -51,6 +51,23 @@
     <string name="chosen_directory_">"Chosen directory: "</string>
     <string name="no_videos_found_that_match_the_search_criteria">No videos found that match the search criteria</string>
     <string name="video_options">Video Options</string>
-    
+
+   <string-array name="categoryListNames">
+        <item>All</item>
+        <item>Newest</item>
+        <item>On Deck</item>
+        <item>Recently Added</item>
+        <item>Recently Viewed</item>
+        <item>Unwatched</item>
+    </string-array>
+
+    <string-array name="categoryListValues">
+        <item>all</item>
+        <item>newest</item>
+        <item>onDeck</item>
+        <item>recentlyAdded</item>
+        <item>recentlyViewed</item>
+        <item>unwatched</item>
+    </string-array>    
 
 </resources>
