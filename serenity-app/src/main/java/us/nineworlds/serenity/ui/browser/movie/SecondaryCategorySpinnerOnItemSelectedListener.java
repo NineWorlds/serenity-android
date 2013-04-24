@@ -23,7 +23,10 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import com.jess.ui.TwoWayGridView;
+
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.ui.listeners.PlexGridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -69,19 +72,29 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		View bgLayout = c.findViewById(R.id.movieBrowserBackgroundLayout);
 		SerenityGallery posterGallery = (SerenityGallery) c
 				.findViewById(R.id.moviePosterGallery);
+		MoviePosterImageGalleryAdapter adapter = new MoviePosterImageGalleryAdapter(c, key,
+				item.getParentCategory() + "/" + item.getCategory());
 
-		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(c, key,
-				item.getParentCategory() + "/" + item.getCategory()));
-		posterGallery
-				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
-						bgLayout, c));
-		posterGallery
-				.setOnItemClickListener(new PlexVideoOnItemClickListener());
-		posterGallery
-				.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
-		posterGallery.setAnimationDuration(1);
-		posterGallery.setSpacing(25);
-		posterGallery.setAnimationCacheEnabled(false);
+		if (!MovieBrowserActivity.IS_GRID_VIEW) {
+			posterGallery.setAdapter(adapter);
+			posterGallery
+					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
+							bgLayout, c));
+			posterGallery
+					.setOnItemClickListener(new PlexVideoOnItemClickListener());
+			posterGallery
+					.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
+			posterGallery.setAnimationDuration(1);
+			posterGallery.setSpacing(25);
+			posterGallery.setAnimationCacheEnabled(false);
+		} else {
+			TwoWayGridView gridView = (TwoWayGridView) c
+					.findViewById(R.id.movieGridView);
+			gridView.setAdapter(adapter);
+			gridView.setOnItemClickListener(new PlexGridVideoOnItemClickListener());
+			gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener(
+					bgLayout, c));
+		}
 	}
 
 	public void onNothingSelected(AdapterView<?> va) {

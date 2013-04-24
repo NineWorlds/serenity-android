@@ -31,13 +31,17 @@ import us.nineworlds.serenity.ui.activity.SerenityActivity;
 
 import us.nineworlds.serenity.R;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.jess.ui.TwoWayGridView;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -49,6 +53,7 @@ public class MovieBrowserActivity extends SerenityActivity {
 	private static Spinner categorySpinner;
 	private boolean restarted_state = false;
 	private Handler categoryHandler;
+	public static boolean IS_GRID_VIEW = false;
 
 	private static Activity context;
 
@@ -57,7 +62,14 @@ public class MovieBrowserActivity extends SerenityActivity {
 
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
-		setContentView(R.layout.activity_movie_browser);
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		IS_GRID_VIEW = prefs.getBoolean("movie_layout_grid", false);
+		if (IS_GRID_VIEW) {
+			setContentView(R.layout.activity_movie_browser_gridview);
+		} else {
+			setContentView(R.layout.activity_movie_browser);
+		}
 	}
 
 	@Override
@@ -76,6 +88,7 @@ public class MovieBrowserActivity extends SerenityActivity {
 		}
 		restarted_state = false;
 	}
+	
 
 	/*
 	 * (non-Javadoc)

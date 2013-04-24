@@ -25,9 +25,12 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import java.util.List;
 
+import com.jess.ui.TwoWayGridView;
+
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.MovieSecondaryCategoryRetrievalIntentService;
+import us.nineworlds.serenity.ui.listeners.PlexGridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -133,19 +136,29 @@ public class CategorySpinnerOnItemSelectedListener implements
 	 * @param bgLayout
 	 */
 	protected void createGallery(CategoryInfo item, View bgLayout) {
-		SerenityGallery posterGallery = (SerenityGallery) context
-				.findViewById(R.id.moviePosterGallery);
-		posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(context,
-				key, item.getCategory()));
-		posterGallery
-				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
-						bgLayout, context));
-		posterGallery
-				.setOnItemClickListener(new PlexVideoOnItemClickListener());
-		posterGallery
-				.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
-		posterGallery.setSpacing(25);
-		posterGallery.setAnimationDuration(1);
+		MoviePosterImageGalleryAdapter adapter = new MoviePosterImageGalleryAdapter(context,
+				key, item.getCategory());
+		PlexVideoOnItemClickListener onClick = new PlexVideoOnItemClickListener(); 
+		PlexVideoOnItemLongClickListener onLongClick = new PlexVideoOnItemLongClickListener();
+		if (!MovieBrowserActivity.IS_GRID_VIEW) {
+			SerenityGallery posterGallery = (SerenityGallery) context
+					.findViewById(R.id.moviePosterGallery);
+			posterGallery.setAdapter(adapter);
+			posterGallery
+					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
+							bgLayout, context));
+			posterGallery
+					.setOnItemClickListener(onClick);
+			posterGallery
+					.setOnItemLongClickListener(onLongClick);
+			posterGallery.setSpacing(25);
+			posterGallery.setAnimationDuration(1);
+		} else {
+			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.movieGridView);
+			gridView.setAdapter(adapter);
+			gridView.setOnItemClickListener(new PlexGridVideoOnItemClickListener());
+			gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener(bgLayout, context));
+		}
 	}
 
 	public void onNothingSelected(AdapterView<?> va) {

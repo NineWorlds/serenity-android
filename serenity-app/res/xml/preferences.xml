@@ -16,7 +16,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="Layouts" >
         <CheckBoxPreference android:summary="Prefer Poster Layout for Series (TV Shows)." android:title="Series Poster Layout" android:key="series_layout_posters"/>
-        <CheckBoxPreference android:summary="Poster grid layout for movies." android:title="Grid Poster Layout" android:key="series_layout_grid"/>
+        <CheckBoxPreference android:summary="Poster grid layout for movies." android:title="Grid Poster Layout" android:key="movie_layout_grid"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="Media Player">
         <CheckBoxPreference android:summary="Use external media player." android:title="External Player" android:key="external_player"/>

@@ -25,6 +25,8 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import java.util.List;
 
+import com.jess.ui.TwoWayAbsListView;
+import com.jess.ui.TwoWayGridView;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -47,6 +49,7 @@ import android.os.Messenger;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
 
 /**
  * 
@@ -75,8 +78,14 @@ public class MoviePosterImageGalleryAdapter extends
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(160, context);
 		int height = ImageUtils.getDPI(220, context);
-		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width,
-				height));
+		if (!MovieBrowserActivity.IS_GRID_VIEW) {
+			mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width,
+					height));
+		} else {
+			width = ImageUtils.getDPI(120, context);
+			height = ImageUtils.getDPI(180, context);
+			mpiv.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
+		}
 		imageLoader.displayImage(pi.getPosterURL(), mpiv);
 
 		return mpiv;
@@ -97,10 +106,15 @@ public class MoviePosterImageGalleryAdapter extends
 		@Override
 		public void handleMessage(Message msg) {
 			posterList = (List<VideoContentInfo>) msg.obj;
-			SerenityGallery posterGallery = (SerenityGallery) context
-					.findViewById(R.id.moviePosterGallery);
+			if (!MovieBrowserActivity.IS_GRID_VIEW) {
+				SerenityGallery posterGallery = (SerenityGallery) context
+						.findViewById(R.id.moviePosterGallery);
+				posterGallery.requestFocus();
+			} else {
+				TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.movieGridView);
+				gridView.requestFocus();
+			}
 			notifyAdapter.notifyDataSetChanged();
-			posterGallery.requestFocus();
 			pd.dismiss();
 		}
 

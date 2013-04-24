@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-
-    <declare-styleable name="EcoGallery">
-        <attr name="gravity" />
-        <attr name="animationDuration" format="integer" />
-        <attr name="unselectedAlpha" format="float" />
-        <attr name="spacing" format="dimension" />
-    </declare-styleable>
-
-    <attr name="ecoGalleryStyle" format="reference" />
-
-    <declare-styleable name="CustomAbsSpinner">
-        <attr name="entries" format="reference" />
-    </declare-styleable>
-
-    <attr name="customAbsSpinnerStyle" format="reference" />
-    
-<!-- Specifies how to place the content of an object, both
+    <!-- Specifies how to place the content of an object, both
          on the x- and y-axis, within the object itself. -->
     <attr name="gravity">
         <!-- Push object to the top of its container, not changing its size. -->
@@ -131,6 +116,6 @@
             <enum name="auto_fit" value="-1" />
         </attr>
         <attr name="gravity" />
-    </declare-styleable>    
-
+    </declare-styleable>
+    
 </resources>
