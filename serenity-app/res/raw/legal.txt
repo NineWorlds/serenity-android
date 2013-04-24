@@ -14,14 +14,11 @@
 projects license.</p>
 
 avideo - https://github.com/denivip/avideo<br/>
-ImageLoader - https://github.com/novoda/ImageLoader<br/>
-
 cling - http://4thline.org/projects/cling/<br/>
-
 simple xml - http://simple.sourceforge.net/<br/>
-
 influence - http://code.google.com/p/influence/<br/>
-
 httpresponsecache - https://github.com/candrews/HttpResponseCache<br/>
+
+Using Universal Image Loader (c) 2011-2013, Sergey Tarasevich<br/>
 
 <p>If you find code that has not been properly attributed please contact the project and you will be added to the list.</p>
