@@ -41,6 +41,7 @@ import com.castillo.dd.Download;
 import com.castillo.dd.DownloadService;
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.nostra13.universalimageloader.cache.memory.impl.LRULimitedMemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -124,8 +125,9 @@ public class SerenityApplication extends Application {
 				.threadPoolSize(5)
 				.tasksProcessingOrder(QueueProcessingType.FIFO)
 				.denyCacheImageMultipleSizesInMemory()
-				.defaultDisplayImageOptions(defaultOptions)
-				.memoryCache(new WeakMemoryCache()).build();
+				.defaultDisplayImageOptions(defaultOptions).build();
+//				.memoryCache(new WeakMemoryCache()).build();
+
 
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(imageLoaderconfig);

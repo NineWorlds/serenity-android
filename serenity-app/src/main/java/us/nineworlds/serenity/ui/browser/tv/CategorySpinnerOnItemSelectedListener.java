@@ -101,7 +101,6 @@ public class CategorySpinnerOnItemSelectedListener implements
 			} else {
 				setupImageGallery(item);
 			}			
-			setupImageGallery(item);
 			firstSelection = false;
 			return;
 		}
