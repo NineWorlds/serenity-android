@@ -2,7 +2,6 @@ package us.nineworlds.serenity.core.imageloader;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.View;
 
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -11,8 +10,8 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 public class SerenityBackgroundLoaderListener extends
 		SimpleImageLoadingListener {
 
-	View bgLayout;
-	int defaultImage;
+	private View bgLayout;
+	private int defaultImage;
 
 	/**
 	 * 
@@ -31,12 +30,5 @@ public class SerenityBackgroundLoaderListener extends
 				bgLayout));
 
 	}
-
-	@Override
-	public void onLoadingFailed(String imageUri, View view,
-			FailReason failReason) {
-		Log.e(getClass().getName(), failReason.getCause().getMessage(),
-				failReason.getCause());
-	}
-
+	
 }
