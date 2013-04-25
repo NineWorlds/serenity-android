@@ -30,9 +30,10 @@ import com.jess.ui.TwoWayGridView;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.MovieSecondaryCategoryRetrievalIntentService;
-import us.nineworlds.serenity.ui.listeners.PlexGridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
@@ -138,8 +139,8 @@ public class CategorySpinnerOnItemSelectedListener implements
 	protected void createGallery(CategoryInfo item, View bgLayout) {
 		MoviePosterImageGalleryAdapter adapter = new MoviePosterImageGalleryAdapter(context,
 				key, item.getCategory());
-		PlexVideoOnItemClickListener onClick = new PlexVideoOnItemClickListener(); 
-		PlexVideoOnItemLongClickListener onLongClick = new PlexVideoOnItemLongClickListener();
+		GalleryVideoOnItemClickListener onClick = new GalleryVideoOnItemClickListener(); 
+		GalleryVideoOnItemLongClickListener onLongClick = new GalleryVideoOnItemLongClickListener();
 		if (!MovieBrowserActivity.IS_GRID_VIEW) {
 			SerenityGallery posterGallery = (SerenityGallery) context
 					.findViewById(R.id.moviePosterGallery);
@@ -156,8 +157,9 @@ public class CategorySpinnerOnItemSelectedListener implements
 		} else {
 			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.movieGridView);
 			gridView.setAdapter(adapter);
-			gridView.setOnItemClickListener(new PlexGridVideoOnItemClickListener());
+			gridView.setOnItemClickListener(new GridVideoOnItemClickListener());
 			gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener(bgLayout, context));
+			gridView.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
 		}
 	}
 

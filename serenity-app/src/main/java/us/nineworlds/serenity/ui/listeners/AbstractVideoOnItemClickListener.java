@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2013 David Carver
+ * Copyright (c) 2012 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -24,17 +24,12 @@
 package us.nineworlds.serenity.ui.listeners;
 
 import us.nineworlds.serenity.MainActivity;
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
-import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemClickListener;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -42,37 +37,34 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.ImageView;
 
 /**
- * @author dcarver
+ * Common class used by both the Poster Gallery view for itemClicks and the
+ * Grid View.  It launches video play back when a poster is selected.
  * 
+ * @author dcarver
+ *
  */
-public class PlexVideoOnItemClickListener implements OnItemClickListener {
+public class AbstractVideoOnItemClickListener {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
-	 * .AdapterView, android.view.View, int, long)
+	/**
+	 * @param v
 	 */
-	public void onItemClick(SerenityAdapterView<?> av, View v, int arg2,
-			long arg3) {
+	protected void onItemClick(View v) {
 		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
-
+	
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(v.getContext());
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
-
+	
 		if (externalPlayer) {
 			String url = mpiv.getPosterInfo().getDirectPlayUrl();
 			Intent vpIntent = new Intent(Intent.ACTION_VIEW);
 			vpIntent.setDataAndType(Uri.parse(url), "video/*");
-
+	
 			mxVideoPlayerOptions(mpiv, vpIntent);
 			vimuVideoPlayerOptions(mpiv, vpIntent);
-
+	
 			Activity activity = (Activity) mpiv.getContext();
 			if (SerenityApplication.isGoogleTV(activity)) {
 				activity.startActivity(vpIntent);
@@ -98,16 +90,25 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 			updatedWatchedCount(mpiv, activity);
 			return;
 		}
+	
+		Activity a = launchInternalPlayer(mpiv);
+		updatedWatchedCount(mpiv, a);
+	}
 
+	/**
+	 * @param mpiv
+	 * @return
+	 */
+	protected Activity launchInternalPlayer(SerenityPosterImageView mpiv) {
 		VideoContentInfo video = mpiv.getPosterInfo();
-
+	
 		String url = video.getDirectPlayUrl();
 		Intent vpIntent = new Intent(mpiv.getContext(),
 				SerenitySurfaceViewVideoActivity.class);
 		vpIntent.putExtra("videoUrl", url);
 		vpIntent.putExtra("title", video.getTitle());
 		vpIntent.putExtra("summary", video.getPlotSummary());
-
+	
 		if (video.getGrandParentPosterURL() != null) {
 			vpIntent.putExtra("posterUrl", video.getGrandParentPosterURL());
 		} else if (video.getParentPosterURL() != null) {
@@ -134,7 +135,7 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 		
 		Activity a = (Activity) mpiv.getContext();
 		a.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
-		updatedWatchedCount(mpiv, a);
+		return a;
 	}
 
 	/**
@@ -142,9 +143,6 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 	 * @param a
 	 */
 	protected void updatedWatchedCount(SerenityPosterImageView epiv, Activity a) {
-		ImageView watchedView = (ImageView) a
-				.findViewById(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
-		watchedView.setImageResource(R.drawable.watched_small);
 		int watchedCount = epiv.getPosterInfo().getViewCount();
 		epiv.getPosterInfo().setViewCount(watchedCount + 1);
 	}
@@ -153,8 +151,7 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 	 * @param epiv
 	 * @param vpIntent
 	 */
-	protected void vimuVideoPlayerOptions(SerenityPosterImageView epiv,
-			Intent vpIntent) {
+	protected void vimuVideoPlayerOptions(SerenityPosterImageView epiv, Intent vpIntent) {
 		vpIntent.putExtra("forcename", epiv.getPosterInfo().getTitle());
 		vpIntent.putExtra("forcedirect", true);
 		if (epiv.getPosterInfo().getSubtitle() != null ) {
@@ -169,8 +166,7 @@ public class PlexVideoOnItemClickListener implements OnItemClickListener {
 	 * @param epiv
 	 * @param vpIntent
 	 */
-	protected void mxVideoPlayerOptions(SerenityPosterImageView epiv,
-			Intent vpIntent) {
+	protected void mxVideoPlayerOptions(SerenityPosterImageView epiv, Intent vpIntent) {
 		// MX Video Player options
 		vpIntent.putExtra("decode_mode", 1);
 		vpIntent.putExtra("title", epiv.getPosterInfo().getTitle());

@@ -26,9 +26,10 @@ package us.nineworlds.serenity.ui.browser.movie;
 import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
-import us.nineworlds.serenity.ui.listeners.PlexGridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
@@ -81,9 +82,9 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
 							bgLayout, c));
 			posterGallery
-					.setOnItemClickListener(new PlexVideoOnItemClickListener());
+					.setOnItemClickListener(new GalleryVideoOnItemClickListener());
 			posterGallery
-					.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
+					.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
 			posterGallery.setAnimationDuration(1);
 			posterGallery.setSpacing(25);
 			posterGallery.setAnimationCacheEnabled(false);
@@ -91,9 +92,10 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 			TwoWayGridView gridView = (TwoWayGridView) c
 					.findViewById(R.id.movieGridView);
 			gridView.setAdapter(adapter);
-			gridView.setOnItemClickListener(new PlexGridVideoOnItemClickListener());
+			gridView.setOnItemClickListener(new GridVideoOnItemClickListener());
 			gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener(
 					bgLayout, c));
+			gridView.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
 		}
 	}
 

@@ -24,8 +24,8 @@
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
-import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
@@ -86,9 +86,9 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(
 						bgLayout, this));
 		posterGallery
-				.setOnItemClickListener(new PlexVideoOnItemClickListener());
+				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
 		posterGallery
-				.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
+				.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
 		posterGallery.setAnimationDuration(1);
 		posterGallery.setSpacing(25);
 	}

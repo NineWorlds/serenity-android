@@ -44,8 +44,8 @@ import us.nineworlds.serenity.core.model.impl.MenuItem;
 import us.nineworlds.serenity.core.services.MovieSearchIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
-import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.PlexVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 /**
@@ -126,9 +126,9 @@ public class SearchableActivity extends SerenityActivity {
 				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
 						bgLayout, context));
 		posterGallery
-				.setOnItemClickListener(new PlexVideoOnItemClickListener());
+				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
 		posterGallery
-				.setOnItemLongClickListener(new PlexVideoOnItemLongClickListener());
+				.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
 		posterGallery.setSpacing(25);
 		posterGallery.setAnimationDuration(1);
 	}
