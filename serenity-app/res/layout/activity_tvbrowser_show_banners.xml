@@ -81,6 +81,7 @@
                 android:background="#F0F0F0"
                 android:padding="2dp"
                 android:scaleType="fitXY"
+                android:visibility="gone"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
 

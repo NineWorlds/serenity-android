@@ -48,7 +48,7 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 			mainView.setBackgroundResource(tv.getBackgroundImageId());
 			// mainView.refreshDrawableState();
 
-			tv.setTextSize(tv.getTextSize() + 20);
+			tv.setTextSize(tv.getTextSize() + 10);
 			tv.setTypeface(null, Typeface.BOLD);
 			tv.setTextColor(Color.parseColor("#F0F0F0"));
 			tv.setGravity(Gravity.CENTER_VERTICAL);

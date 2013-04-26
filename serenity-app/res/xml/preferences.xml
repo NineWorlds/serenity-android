@@ -20,6 +20,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="Media Player">
         <CheckBoxPreference android:summary="Use external media player." android:title="External Player" android:key="external_player"/>
+        <CheckBoxPreference android:title="Force MX Player Resume Position." android:summary="Forces MX Player to  use Plex last played position instead of it's own.  This will always forces play back to start from Plex's recorded position." android:key="mxplayer_plex_offset"/>
         <CheckBoxPreference android:summary="Prefer plex media server's aspect ratio." android:title="Plex Aspect Ratio" android:key="plex_aspect_ratio"/>
     </PreferenceCategory>
 </PreferenceScreen>

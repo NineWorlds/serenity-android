@@ -46,6 +46,8 @@ import android.view.View;
  *
  */
 public class AbstractVideoOnItemClickListener {
+	
+	private SharedPreferences prefs;
 
 	/**
 	 * @param v
@@ -53,7 +55,7 @@ public class AbstractVideoOnItemClickListener {
 	protected void onItemClick(View v) {
 		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
 	
-		SharedPreferences prefs = PreferenceManager
+		prefs = PreferenceManager
 				.getDefaultSharedPreferences(v.getContext());
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
 	
@@ -178,8 +180,13 @@ public class AbstractVideoOnItemClickListener {
 				vpIntent.putExtra("subs", subt);
 				vpIntent.putExtra("subs.enable", subt);
 			}
-			
 		}
+		
+		boolean usePlexResumeOffset = prefs.getBoolean("mxplayer_plex_offset", false);
+		if (usePlexResumeOffset) {
+			vpIntent.putExtra("position", epiv.getPosterInfo().getResumeOffset());
+		}
+		
 	}
 
 }

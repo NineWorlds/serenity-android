@@ -211,6 +211,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 		if (!TVShowBrowserActivity.USE_POSTER_LAYOUT) {
 			ImageView showImage = (ImageView) context
 					.findViewById(R.id.tvShowImage);
+			showImage.setVisibility(View.VISIBLE);
 			showImage.setScaleType(ScaleType.FIT_XY);
 			int width = ImageUtils.getDPI(250, context);
 			int height = ImageUtils.getDPI(350, context);
