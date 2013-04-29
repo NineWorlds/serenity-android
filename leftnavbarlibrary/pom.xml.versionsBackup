@@ -1,15 +1,15 @@
 <project>
    <modelVersion>4.0.0</modelVersion>
-   <name>Plexapp REST Library</name>
+   <name>Google TV Left Navigation Bar Library</name>
    <parent>
       <groupId>us.nineworlds.serenity</groupId>
       <artifactId>serenity-parent</artifactId>
-      <version>1.2.1</version>
+      <version>1.2.1-SNAPSHOT</version>
    </parent>
 
-   <artifactId>plexapp-rest-library</artifactId>
+   <groupId>com.google.tv.sample</groupId>
+   <artifactId>leftnavbarlibrary</artifactId>
    <packaging>apklib</packaging>
-   
 
    <dependencies>
       <dependency>
@@ -17,25 +17,6 @@
          <artifactId>android</artifactId>
          <version>3.2_r1</version>
          <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.simpleframework</groupId>
-         <artifactId>simple-xml</artifactId>
-         <version>2.7</version>
-         <exclusions>
-            <exclusion>
-               <artifactId>stax</artifactId>
-               <groupId>stax</groupId>
-            </exclusion>
-            <exclusion>
-               <artifactId>stax-api</artifactId>
-               <groupId>stax</groupId>
-            </exclusion>
-            <exclusion>
-               <artifactId>xpp3</artifactId>
-               <groupId>xpp3</groupId>
-            </exclusion>
-         </exclusions>
       </dependency>
    </dependencies>
 
