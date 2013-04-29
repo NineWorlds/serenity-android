@@ -54,6 +54,9 @@
             <version>1.0-alpha7</version>
             <configuration>
                <autoVersionSubmodules>true</autoVersionSubmodules>
+               <pushChanges>false</pushChanges>
+               <noDeploy>true</noDeploy>
+               <keepBranch>true</keepBranch>
             </configuration>
         </plugin>
       </plugins>
