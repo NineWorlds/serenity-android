@@ -32,28 +32,21 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
-import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.SubtitleSpinnerOnItemSelectedListener;
-import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -102,8 +95,6 @@ public class MovieGridPosterOnItemSelectedListener implements
 		v.setPadding(5, 5, 5, 5);
 
 		createMovieMetaData((SerenityPosterImageView) v);
-		changeBackgroundImage(v);
-
 	}
 
 
@@ -121,25 +112,6 @@ public class MovieGridPosterOnItemSelectedListener implements
 		//fetchSubtitle(mi);
 
 	}
-
-	/**
-	 * Change the background image of the activity.
-	 * 
-	 * @param v
-	 */
-	private void changeBackgroundImage(View v) {
-		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
-		VideoContentInfo mi = mpiv.getPosterInfo();
-
-		if (mi.getBackgroundURL() == null) {
-			return;
-		}
-
-		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
-				new SerenityBackgroundLoaderListener(bgLayout,
-						R.drawable.movies));
-	}
-
 	
 	protected void fetchSubtitle(VideoContentInfo mpi) {
 			subtitleHandler = new SubtitleHandler(mpi);
