@@ -52,4 +52,11 @@
       </plugins>
    </build>
 
+    <scm>
+        <connection>scm:git:ssh://git@github.com:NineWorlds/serenity-android.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:NineWorlds/serenity-android.git</developerConnection>
+        <url>https://github.com/nineworlds/serenity-android</url>
+        <tag>HEAD</tag>
+    </scm>
+
 </project>
