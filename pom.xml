@@ -5,7 +5,7 @@
 
    <groupId>us.nineworlds.serenity</groupId>
    <artifactId>serenity-parent</artifactId>
-   <version>1.2.1</version>
+   <version>1.2.2</version>
    <packaging>pom</packaging>
 
    <modules>
@@ -66,7 +66,7 @@
         <connection>scm:git:git@github.com:NineWorlds/serenity-android.git</connection>
         <developerConnection>scm:git:git@github.com:NineWorlds/serenity-android.git</developerConnection>
         <url>https://github.com/nineworlds/serenity-android</url>
-        <tag>1.2.1</tag>
+        <tag>1.2.2</tag>
     </scm>
 
 </project>

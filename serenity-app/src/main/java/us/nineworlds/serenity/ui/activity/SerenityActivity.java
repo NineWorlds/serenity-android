@@ -23,6 +23,8 @@
 
 package us.nineworlds.serenity.ui.activity;
 
+import com.jess.ui.TwoWayGridView;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
@@ -101,12 +103,28 @@ public abstract class SerenityActivity extends Activity {
 		if (resultCode == Activity.RESULT_OK) {
 			if (data != null && data.getAction().equals("com.mxtech.intent.result.VIEW")) {
 				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
-				VideoContentInfo video = (VideoContentInfo) gallery.getSelectedItem();
-				long position = data.getIntExtra("position", 0);
-				UpdateProgressRequest request = new UpdateProgressRequest(position, video.id());
-				request.execute();
+				if (gallery != null) {
+					VideoContentInfo video = (VideoContentInfo) gallery.getSelectedItem();
+					updateProgress(data, video);
+				} else {
+					TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
+					if (gridView != null) {
+						VideoContentInfo video = (VideoContentInfo) gridView.getSelectedItem();
+						updateProgress(data, video);
+					}
+				}
 			}
 		}
+	}
+
+	/**
+	 * @param data
+	 * @param video
+	 */
+	protected void updateProgress(Intent data, VideoContentInfo video) {
+		long position = data.getIntExtra("position", 0);
+		UpdateProgressRequest request = new UpdateProgressRequest(position, video.id());
+		request.execute();
 	}
 
 }
