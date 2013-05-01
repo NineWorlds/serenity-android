@@ -26,8 +26,10 @@ package us.nineworlds.serenity.ui.browser.movie;
 import java.util.ArrayList;
 
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MovieCategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -54,6 +56,7 @@ public class MovieBrowserActivity extends SerenityActivity {
 	private boolean restarted_state = false;
 	private Handler categoryHandler;
 	public static boolean IS_GRID_VIEW = false;
+	public static int CLICKED_GRID_VIEW_ITEM = 0;
 
 	private static Activity context;
 
@@ -118,6 +121,32 @@ public class MovieBrowserActivity extends SerenityActivity {
 		super.onRestart();
 		restarted_state = true;
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == Activity.RESULT_OK) {
+			if (data != null && data.getAction().equals("com.mxtech.intent.result.VIEW")) {
+				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
+				if (gallery != null) {
+					VideoContentInfo video = (VideoContentInfo) gallery.getSelectedItem();
+					if (video != null) {
+						updateProgress(data, video);
+					}
+				} else {
+					TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
+					if (gridView != null) {
+						VideoContentInfo video = (VideoContentInfo) gridView.getSelectedItem();
+						if (video == null) {
+							video = (VideoContentInfo) gridView.getItemAtPosition(CLICKED_GRID_VIEW_ITEM);
+						}
+						if (video != null) {
+							updateProgress(data, video);
+						}
+					}
+				}
+			}
+		}
+	}	
 	
 	private static class CategoryHandler extends Handler {
 

@@ -105,12 +105,16 @@ public abstract class SerenityActivity extends Activity {
 				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
 				if (gallery != null) {
 					VideoContentInfo video = (VideoContentInfo) gallery.getSelectedItem();
-					updateProgress(data, video);
+					if (video != null) {
+						updateProgress(data, video);
+					}
 				} else {
 					TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
 					if (gridView != null) {
 						VideoContentInfo video = (VideoContentInfo) gridView.getSelectedItem();
-						updateProgress(data, video);
+						if (video != null) {
+							updateProgress(data, video);
+						}
 					}
 				}
 			}
