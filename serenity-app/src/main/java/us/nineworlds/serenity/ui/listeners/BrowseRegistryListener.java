@@ -91,7 +91,7 @@ public class BrowseRegistryListener extends DefaultRegistryListener {
 
 	public void deviceAdded(final Device device) {
 		String friendlyName = device.getDetails().getFriendlyName();
-		if (friendlyName.contains(PLEX_MEDIA_SERVER)) {
+		if (friendlyName != null && friendlyName.contains(PLEX_MEDIA_SERVER)) {
 			DeviceDetails details = device.getDetails();
 			SerenityApplication.getPlexMediaServers().put(friendlyName, device);
 		}
@@ -99,6 +99,8 @@ public class BrowseRegistryListener extends DefaultRegistryListener {
 
 	public void deviceRemoved(final Device device) {
 		String friendlyName = device.getDetails().getFriendlyName();
-		SerenityApplication.getPlexMediaServers().remove(friendlyName);
+		if (friendlyName != null) {
+			SerenityApplication.getPlexMediaServers().remove(friendlyName);
+		}
 	}
 }

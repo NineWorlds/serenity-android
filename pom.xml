@@ -54,14 +54,17 @@
             <version>1.0-alpha7</version>
             <configuration>
                <autoVersionSubmodules>true</autoVersionSubmodules>
+               <pushChanges>false</pushChanges>
+               <noDeploy>true</noDeploy>
+               <keepBranch>true</keepBranch>
             </configuration>
         </plugin>
       </plugins>
    </build>
 
     <scm>
-        <connection>scm:git:ssh://git@github.com:NineWorlds/serenity-android.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:NineWorlds/serenity-android.git</developerConnection>
+        <connection>scm:git:git@github.com:NineWorlds/serenity-android.git</connection>
+        <developerConnection>scm:git:git@github.com:NineWorlds/serenity-android.git</developerConnection>
         <url>https://github.com/nineworlds/serenity-android</url>
         <tag>HEAD</tag>
     </scm>
