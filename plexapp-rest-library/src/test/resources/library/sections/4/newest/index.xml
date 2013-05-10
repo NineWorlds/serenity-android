@@ -1,0 +1,951 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MediaContainer size="70" allowSync="1" art="/:/resources/movie-fanart.jpg" identifier="com.plexapp.plugins.library" mediaTagPrefix="/system/bundle/media/flags/" mediaTagVersion="1343603771" title1="Movies" title2="Recently Released" viewGroup="movie" viewMode="65592">
+<Video ratingKey="205" key="/library/metadata/205" studio="Marvel Studios" type="movie" title="The Avengers" titleSort="Avengers" contentRating="PG-13" summary="Marvel&apos;s The Avengers (classified as Marvel Avengers Assemble in the UK and Ireland), or simply The Avengers is a 2012 American superhero film produced by Marvel Studios and distributed by Walt Disney Pictures, based on the Marvel Comics superhero team of the same name. It is the sixth installment in the Marvel Cinematic Universe. The film is scripted and directed by Joss Whedon and features an ensemble cast that includes Robert Downey, Jr., Chris Evans, Mark Ruffalo, Chris Hemsworth, Scarlett Johansson, Jeremy Renner, Tom Hiddleston, Clark Gregg, Cobie Smulders, Stellan Skarsgård and Samuel L. Jackson. In The Avengers, Nick Fury, director of the peacekeeping organization S.H.I.E.L.D., recruits Iron Man, Captain America, the Hulk, and Thor to form a team that must stop Thor&apos;s adoptive brother Loki from subjugating Earth.&#xA;&#xA;Development of The Avengers began when Marvel Studios received a loan from Merrill Lynch in April 2005. After the success of the film Iron Man in May 2008, Marvel announced that The Avengers would be released in July 2011. With the signing of Johansson in March 2009, the film was pushed back for a 2012 release. Whedon was brought on board in April 2010 and rewrote the screenplay originally written by Zak Penn. Production began in April 2011 in Albuquerque, New Mexico, before moving to Cleveland, Ohio, in August and New York City in September. The film was converted to 3D in post-production.&#xA;&#xA;The Avengers premiered on April 11, 2012, at the El Capitan Theatre in Hollywood, California. The film received positive reviews from most film critics and set or tied numerous box office records, including the biggest opening weekend in North America and the fastest film to gross $1 billion. The Avengers grossed $1.51 billion worldwide, and became the third highest-grossing film of all time. The film was released on Blu-ray Disc and DVD on September 25, 2012. A sequel to be written and directed by Whedon is scheduled for release on May 1, 2015." rating="8.6000003814697301" viewOffset="9053" viewCount="1" year="2012" tagline="Some assembly required." thumb="/library/metadata/205/thumb/1352054773" art="/library/metadata/205/art/1352054773" duration="8220000" originallyAvailableAt="2012-04-11" addedAt="1351993032" updatedAt="1352054773">
+<Media id="200" duration="8575666" bitrate="1589" width="720" height="480" aspectRatio="1.78" audioChannels="6" audioCodec="ac3" videoCodec="h264" videoResolution="480" container="mkv" videoFrameRate="24p">
+<Part id="200" key="/library/parts/200/file.mkv" duration="8575666" file="/var/lib/plexmediaserver/Movies/Marvels The Avengers.mkv" size="1703160140" container="mkv" />
+</Media>
+<Genre tag="Action" />
+<Genre tag="Science Fiction" />
+<Writer tag="Joss Whedon" />
+<Director tag="Joss Whedon" />
+<Country tag="USA" />
+<Role tag="Robert Downey Jr." />
+<Role tag="Chris Evans" />
+<Role tag="Chris Evans" />
+</Video>
+<Video ratingKey="188" key="/library/metadata/188" studio="The Walt Disney Company" type="movie" title="John Carter" contentRating="PG-13" summary="John Carter is a 2012 American science fiction action film that tells the first interplanetary adventure of John Carter, the heroic protagonist of Edgar Rice Burroughs&apos; 11-volume Barsoom series of novels (1912–43). The film marks the centennial of the character&apos;s first appearance. &#xA;&#xA;The film is the live-action debut of director/writer Andrew Stanton; his previous work includes the Pixar animated films Finding Nemo (2003) and WALL-E (2008). Co-written by Mark Andrews and Michael Chabon, it is produced by Jim Morris, Colin Wilson, and Lindsey Collins, and scored by Michael Giacchino.&#xA;&#xA;Walt Disney Pictures distributed the film and released it in the United States on March 9, 2012; the film was shown in regular 2D and in the Disney Digital 3D and IMAX 3D formats. Filming began in November 2009 with principal photography underway in January 2010, wrapping seven months later in July 2010.&#xA;&#xA;Upon release, John Carter received a mixed critical reception and performed poorly at the domestic box office, although it did show strength overseas, particularly in Russia where it set box office records. Disney attributed the $160 million swing from profit to loss in its Studio Entertainment division in the quarter ending March 2012 &quot;primarily&quot; to the performance of John Carter." rating="7.9000000953674299" viewCount="1" year="2012" tagline="Lost in Our World. Found in Another." thumb="/library/metadata/188/thumb/1342911904" art="/library/metadata/188/art/1342911904" duration="7920000" originallyAvailableAt="2012-03-08" addedAt="1342895794" updatedAt="1342911904">
+<Media id="183" duration="7921663" bitrate="1379" width="720" height="360" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="h264" videoResolution="480" container="mkv" videoFrameRate="24p">
+<Part id="183" key="/library/parts/183/file.mkv" duration="7921663" file="/var/lib/plexmediaserver/Movies/John Carter.mkv" size="1365520199" container="mkv" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Action" />
+<Writer tag="Andrew Stanton" />
+<Writer tag="Mark Andrews" />
+<Director tag="Andrew Stanton" />
+<Country tag="USA" />
+<Role tag="Taylor Kitsch" />
+<Role tag="Lynn Collins" />
+<Role tag="Willem Dafoe" />
+</Video>
+<Video ratingKey="191" key="/library/metadata/191" studio="Lakeshore Entertainment" type="movie" title="Underworld: Awakening" contentRating="R" summary="Underworld: Awakening is a 2012 American 3D action horror film directed by Måns Mårlind and Björn Stein. It is the fourth installment in the Underworld film series, with Kate Beckinsale reprising her role as Selene. Theo James, Michael Ealy, and India Eisley appeared in new roles to the series. Filming began March 2011 in Vancouver, British Columbia. The film was released in Digital 3D, IMAX 3D and 2D theatres on January 20, 2012." rating="7.5" viewOffset="163612" viewCount="1" year="2012" tagline="Vengeance Returns" thumb="/library/metadata/191/thumb/1345228541" art="/library/metadata/191/art/1345228541" duration="5280000" originallyAvailableAt="2012-01-19" addedAt="1345228485" updatedAt="1345228541">
+<Media id="186" duration="5313984" bitrate="1443" width="716" height="356" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="h264" videoResolution="480" container="mkv" videoFrameRate="24p">
+<Part id="186" key="/library/parts/186/file.mkv" duration="5313984" file="/var/lib/plexmediaserver/Movies/Underworld Awakening.mkv" size="958410478" container="mkv" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Thriller" />
+<Writer tag="John Hlavin" />
+<Writer tag="Allison Burnett" />
+<Director tag="Måns Mårlind" />
+<Director tag="Björn Stein" />
+<Country tag="USA" />
+<Role tag="Kate Beckinsale" />
+<Role tag="Sandrine Holt" />
+<Role tag="India Eisley" />
+</Video>
+<Video ratingKey="190" key="/library/metadata/190" studio="Silver Pictures" type="movie" title="Sherlock Holmes: A Game of Shadows" contentRating="PG-13" summary="Sherlock Holmes: A Game of Shadows is a 2011 British-American action mystery film directed by Guy Ritchie and produced by Joel Silver, Lionel Wigram, Susan Downey and Dan Lin. It is a sequel to the 2009 film Sherlock Holmes, based on the titular character created by Sir Arthur Conan Doyle. The screenplay is written by Kieran Mulroney and Michele Mulroney. Robert Downey, Jr. and Jude Law reprise their roles as Sherlock Holmes and Dr. John Watson and are joined by Noomi Rapace as Simza and Jared Harris as Professor Moriarty.&#xA;&#xA;Holmes and Watson join forces to outwit and bring down their most cunning adversary, Professor James Moriarty. Although influenced by Conan Doyle&apos;s short story &quot;The Final Problem&quot;, the film follows an original story and is not a strict adaptation.&#xA;&#xA;Sherlock Holmes: A Game of Shadows, despite receiving generally mixed reviews from critics, was commercially successful with a worldwide gross of over $543 million." rating="7.3000001907348597" viewCount="3" year="2011" thumb="/library/metadata/190/thumb/1344479432" art="/library/metadata/190/art/1344479432" duration="7740000" originallyAvailableAt="2011-12-15" addedAt="1344479396" updatedAt="1344479432">
+<Media id="185" duration="7724860" bitrate="1889" width="720" height="360" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="h264" videoResolution="480" container="mkv" videoFrameRate="24p">
+<Part id="185" key="/library/parts/185/file.mkv" duration="7724860" file="/var/lib/plexmediaserver/Movies/Sherlockholmes Game Of Shadows.mkv" size="1824052362" container="mkv" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Comedy" />
+<Writer tag="Michele Mulroney" />
+<Writer tag="Kieran Mulroney" />
+<Director tag="Guy Ritchie" />
+<Country tag="USA" />
+<Role tag="Robert Downey Jr." />
+<Role tag="Stephen Fry" />
+<Role tag="Jared Harris" />
+</Video>
+<Video ratingKey="194" key="/library/metadata/194" studio="Relativity Media" type="movie" title="Tower Heist" contentRating="PG-13" summary="Tower Heist is a 2011 crime comedy film directed by Brett Ratner and written by Ted Griffin and Jeff Nathanson, based on a story by Bill Collage, Adam Cooper, and Griffin. It was released on November 2, 2011, in the United Kingdom, with a United States release following two days later. Tower Heist follows Josh (Ben Stiller), Charlie (Casey Affleck), and Dev&apos;reaux (Michael Peña), employees of an exclusive apartment building who lose their pensions in the Ponzi scheme of Wall Street businessman Arthur Shaw (Alan Alda). The group enlist the aid of criminal Slide (Eddie Murphy), bankrupt businessman Mr. Fitzhugh (Matthew Broderick), and another employee of the apartment building, Odessa (Gabourey Sidibe), to break into Shaw&apos;s apartment and steal back their money while avoiding the FBI agent in charge of his case, Claire Denham (Téa Leoni).&#xA;&#xA;Tower Heist began development as early as 2005, based on an idea by Murphy that would star himself and an all-black cast of comedians as a heist group who rob Trump Plaza. As the script developed and changed into an Ocean&apos;s Eleven&amp;ndash;style caper, Murphy left the project. Ratner continued to develop the idea into what would eventually become Tower Heist, with Murphy later rejoining the production. Filming took place entirely in New York City on a budget of $85 million, with several buildings provided by Donald Trump used to represent the titular tower. The film score was composed by Christophe Beck and released commercially on November 1, 2011.&#xA;&#xA;The film received a generally positive critical reception with much of the praise going to the cast, including Sidibe, Leoni, and Stiller. However, Murphy was repeatedly singled out by critics as the star of the film, with critics feeling that he displayed a welcome return to the comedic style of his early career. Much of the criticism received by the film was focused on the plot which was considered &quot;formulaic,&quot; &quot;rushed,&quot; &quot;dull,&quot; and &quot;laborious.&quot;, the film has earned $152 million during its theatrical run.&#xA;&#xA;Prior to release, the film was involved in a controversy over plans by Universal Pictures to release it for home viewing on video on demand to 500,000 Comcast customers, only three weeks after its theatrical debut. Concern over the implementation&apos;s harming ticket sales and inspiring further films to follow suit resulted in several theater chains&apos; refusal to show the film at all if the plan went ahead, forcing Universal to abandon the idea." rating="6.1999998092651403" viewOffset="32796" year="2011" tagline="It&apos;s not just a robbery. It&apos;s payback." thumb="/library/metadata/194/thumb/1347765579" art="/library/metadata/194/art/1347765579" duration="6240000" originallyAvailableAt="2011-11-02" addedAt="1347765179" updatedAt="1347765579">
+<Media id="189" duration="6274210" bitrate="1488" width="720" height="356" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="h264" videoResolution="480" container="mkv" videoFrameRate="24p">
+<Part id="189" key="/library/parts/189/file.mkv" duration="6274210" file="/var/lib/plexmediaserver/Movies/Tower Heist.mkv" size="1166690627" container="mkv" />
+</Media>
+<Genre tag="Comedy" />
+<Genre tag="Action" />
+<Writer tag="Jeff Nathanson" />
+<Writer tag="Ted Griffin" />
+<Director tag="Brett Ratner" />
+<Country tag="USA" />
+<Role tag="Ben Stiller" />
+<Role tag="Matthew Broderick" />
+<Role tag="Eddie Murphy" />
+</Video>
+<Video ratingKey="294" key="/library/metadata/294" studio="20th Century Fox" type="movie" title="X-Men: First Class" contentRating="PG-13" summary="Before Charles Xavier and Erik Lensherr took the names Professor X and Magneto, they were two young men discovering their powers for the first time. Before they were arch-enemies, they were closest of friends, working together with other mutants (some familiar, some new), to stop the greatest threat the world has ever known." rating="8" viewOffset="6352000" viewCount="2" year="2011" tagline="Witness the moment that will change our world." thumb="/library/metadata/294/thumb/1354326097" art="/library/metadata/294/art/1354326097" duration="7920000" originallyAvailableAt="2011-05-25" addedAt="1354321020" updatedAt="1354326097">
+<Media id="282" duration="7579280" bitrate="1909" width="720" height="288" aspectRatio="2.35" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="PAL">
+<Part id="282" key="/library/parts/282/file.avi" duration="7579280" file="/var/lib/plexmediaserver/Movies/X-Men First Class.avi" size="1808293310" container="avi" />
+</Media>
+<Genre tag="Action" />
+<Genre tag="Fantasy" />
+<Writer tag="Jane Goldman" />
+<Writer tag="Matthew Vaughn" />
+<Director tag="Matthew Vaughn" />
+<Country tag="USA" />
+<Role tag="James McAvoy" />
+<Role tag="Michael Fassbender" />
+<Role tag="Rose Byrne" />
+</Video>
+<Video ratingKey="185" key="/library/metadata/185" studio="Marvel Studios" type="movie" title="Thor" contentRating="PG-13" summary="Thor is a 2011 American superhero film based on the comic book character of the same name published by Marvel Comics. It is the fourth film released as part of the Marvel Cinematic Universe. The film was directed by Kenneth Branagh, written by Ashley Edward Miller, Zack Stentz and Don Payne, and stars Chris Hemsworth, Natalie Portman, Tom Hiddleston, Anthony Hopkins, Idris Elba and Stellan Skarsgård. The film tells the story of Thor, a god who is exiled from his homeland of Asgard to Earth. While there, he forms a relationship with Jane Foster, a scientist. However, Thor must stop his brother Loki, who intends to become the new king of Asgard.&#xA;&#xA;Sam Raimi first developed the concept of a film adaptation of Thor in 2001, but soon abandoned the project, leaving it in &quot;development hell&quot; for several years. During this time, the rights were picked up by various film studios until Marvel Studios signed Mark Protosevich to develop the project in 2006, and planned to finance it and release it through Paramount Pictures. Matthew Vaughn was originally assigned to direct the film for a tentative 2010 release. However, after Vaughn was released from his holding deal in 2008, Branagh was approached and the film&apos;s release was rescheduled into 2011. The main characters were cast in 2009, and principal photography took place in California and New Mexico from January to May 2010. The film was converted to 3D in post-production.&#xA;&#xA;Thor was released on April 21, 2011, in Australia, and on May 6, 2011, in the United States. The film was a financial and critical success. The DVD and Blu-ray sets were released on September 13, 2011. A sequel, Thor 2, is set for release November 15, 2013." rating="7.0999999046325701" viewOffset="185896" year="2011" tagline="Two Worlds. One hero." thumb="/library/metadata/185/thumb/1338603026" art="/library/metadata/185/art/1338603026" duration="6840000" originallyAvailableAt="2011-05-06" addedAt="1338587531" updatedAt="1338603026">
+<Media id="180" duration="6890800" bitrate="1156" width="720" height="368" aspectRatio="2.35" audioChannels="2" audioCodec="aac" videoCodec="h264" videoResolution="480" container="mkv" videoFrameRate="24p">
+<Part id="180" key="/library/parts/180/file.mkv" duration="6890800" file="/var/lib/plexmediaserver/Movies/thor.mkv" size="995696743" container="mkv" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Action" />
+<Writer tag="Don Payne" />
+<Writer tag="Zack Stentz" />
+<Director tag="Kenneth Branagh" />
+<Country tag="USA" />
+<Role tag="Chris Hemsworth" />
+<Role tag="Stellan Skarsgård" />
+<Role tag="Tom Hiddleston" />
+</Video>
+<Video ratingKey="178" key="/library/metadata/178" studio="Village Roadshow Pictures" type="movie" title="Sherlock Holmes" contentRating="PG-13" summary="After finally catching serial killer and occult &quot;sorcerer&quot; Lord Blackwood, legendary sleuth Sherlock Holmes and his assistant Dr. Watson can close yet another successful case. But when Blackwood mysteriously returns from the grave and resumes his killing spree, Holmes must take up the hunt once again. Contending with his partner&apos;s new fiancée and the dimwitted head of Scotland Yard, the dauntless detective must unravel the clues that will lead him into a twisted web of murder, deceit, and black magic - and the deadly embrace of temptress Irene Adler." rating="7.5999999046325701" viewOffset="5629797" viewCount="1" year="2009" tagline="Dangerously Alluring" thumb="/library/metadata/178/thumb/1338589153" art="/library/metadata/178/art/1338589153" duration="7680000" originallyAvailableAt="2009-12-24" addedAt="1325603571" updatedAt="1338589153">
+<Media id="173" duration="7709008" bitrate="384" width="720" height="480" aspectRatio="1.78" audioChannels="6" audioCodec="ac3" videoCodec="h264" videoResolution="480" container="mkv" videoFrameRate="24p">
+<Part id="173" key="/library/parts/173/file.mkv" duration="7709008" file="/var/lib/plexmediaserver/Movies/Sherlock Holmes.mkv" size="1610984501" container="mkv" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Comedy" />
+<Writer tag="Anthony Peckham" />
+<Writer tag="Michael Robert Johnson" />
+<Director tag="Guy Ritchie" />
+<Country tag="USA" />
+<Role tag="Rachel McAdams" />
+<Role tag="Jude Law" />
+<Role tag="Robert Downey Jr." />
+</Video>
+<Video ratingKey="54" key="/library/metadata/54" studio="Columbia Pictures" type="movie" title="Quantum of Solace" contentRating="PG-13" summary="Quantum of Solace (2008) is the twenty-second James Bond film, produced by Eon Productions for MGM and Columbia Pictures, and is the direct sequel to the 2006 film Casino Royale. Directed by Marc Forster, it features Daniel Craig&apos;s second performance as James Bond. In the film, Bond battles wealthy businessman Dominic Greene (Mathieu Amalric), a member of the Quantum organisation, posing as an environmentalist who intends to stage a coup d&apos;état in Bolivia to seize control of the nation&apos;s water supply. Bond seeks revenge for the death of his lover, Vesper Lynd (Eva Green), and is assisted by Camille Montes (Olga Kurylenko), who is also seeking revenge.&#xA;&#xA;Producer Michael G. Wilson developed the film&apos;s plot while Casino Royale was being shot. Neal Purvis, Robert Wade, Paul Haggis, and Joshua Zetumer contributed to the script. The title was chosen from a 1960 short story in Ian Fleming&apos;s For Your Eyes Only, though the film does not contain any elements of the original story. Location filming took place in Mexico, Panama, Chile, Italy, Austria, and Wales while interior sets were built and filmed at Pinewood Studios. Foster aimed to make a modern film that also featured classic cinema motifs: a vintage Douglas DC-3 was used for a flight sequence, and Dennis Gassner&apos;s set designs are reminiscent of Ken Adam&apos;s work on several early Bond films. Taking a course away from the usual Bond villains, Forster rejected any grotesque appearance for the character Dominic Greene to emphasise the hidden and secret nature of the film&apos;s contemporary villains.&#xA;&#xA;The film premiered at the Odeon Leicester Square on 29 October 2008, gathering mixed reviews which mainly praised Craig&apos;s gritty performance and the film&apos;s action sequences while feeling that Quantum of Solace was not as impressive as the predecessor Casino Royale. It is also the second highest-grossing James Bond film, without adjusting for inflation, earning $586,090,727 worldwide, while becoming one of the highest grossing Bond films in the United States." rating="7.1999998092651403" viewCount="3" year="2008" tagline="For love, for hate, for justice, for revenge." thumb="/library/metadata/54/thumb/1335314180" art="/library/metadata/54/art/1335314180" duration="6360000" originallyAvailableAt="2008-10-29" addedAt="1325294779" updatedAt="1335314180">
+<Media id="54" duration="6373451" bitrate="1303" width="720" height="304" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="54" key="/library/parts/54/file.avi" duration="6373451" file="/var/lib/plexmediaserver/Movies/Quantum of Solace.avi" size="1038034944" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Action" />
+<Writer tag="Robert Wade" />
+<Writer tag="Neal Purvis" />
+<Director tag="Marc Forster" />
+<Country tag="United Kingdom" />
+<Role tag="Jeffrey Wright" />
+<Role tag="Gemma Arterton" />
+<Role tag="Judi Dench" />
+</Video>
+<Video ratingKey="64" key="/library/metadata/64" studio="Universal Studios" type="movie" title="The Mummy: Tomb of the Dragon Emperor" titleSort="Mummy: Tomb of the Dragon Emperor" contentRating="PG-13" summary="The Mummy: Tomb of the Dragon Emperor is a 2008 American action adventure film and sequel to The Mummy (1999) and The Mummy Returns (2001). The film stars Brendan Fraser, Maria Bello, John Hannah, Luke Ford, and Jet Li, and was released on August 1, 2008 in the United States. The film was directed by Rob Cohen, written by Alfred Gough and Miles Millar, and produced by Stephen Sommers (director of the previous two installments), Bob Ducsay, Sean Daniel, and James Jacks. This film departed from the previous Egyptian setting.&#xA;&#xA;The story has Rick O&apos;Connell&apos;s son Alex, now an adult, discovering the tomb of The First Emperor of China, Emperor Han. This leads Rick and his wife Evelyn to travel to China, where an evil Chinese general causes the resurrection of the Emperor. The Emperor then tries to break an ancient curse set on him by the witch Zi Yuan so he can use his magical powers to bring his army back to life to conquer the world. The emperor, &quot;Emperor Han&quot; in the film, is based on Qin Shi Huangdi of the Qin Dynasty, and the first emperor of China, not the first Emperor of the Han Dynasty, Emperor Gaozu of Han." rating="6.5999999046325701" viewOffset="1165300" viewCount="1" year="2008" tagline="A New Evil Awakens." thumb="/library/metadata/64/thumb/1325297524" art="/library/metadata/64/art/1325297524" duration="6720000" originallyAvailableAt="2008-07-31" addedAt="1325294780" updatedAt="1325297524">
+<Media id="64" duration="6706688" bitrate="1239" width="608" height="256" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="64" key="/library/parts/64/file.avi" duration="6706688" file="/var/lib/plexmediaserver/Movies/The Mummy 3.avi" size="1038616576" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Thriller" />
+<Writer tag="Alfred Gough" />
+<Writer tag="Miles Millar" />
+<Director tag="Rob Cohen" />
+<Country tag="Germany" />
+<Role tag="Maria Bello" />
+<Role tag="Michelle Yeoh" />
+<Role tag="Brendan Fraser" />
+</Video>
+<Video ratingKey="98" key="/library/metadata/98" studio="Relativity Media" type="movie" title="Hellboy 2: The Golden Army" contentRating="PG-13" summary="In this continuation to the adventure of the demon superhero, an evil elf breaks an ancient pact between humans and creatures, as he declares war against humanity. He is on a mission to release The Golden Army, a deadly group of fighting machines that can destroy the human race. As Hell on Earth is ready to erupt, Hellboy and his crew set out to defeat the evil prince." rating="8.3999996185302699" year="2008" tagline="Saving the world is a hell of a job." thumb="/library/metadata/98/thumb/1325371214" art="/library/metadata/98/art/1325371214" duration="7140000" originallyAvailableAt="2008-07-11" addedAt="1325302548" updatedAt="1325371214">
+<Media id="98" duration="7186784" bitrate="1156" width="592" height="320" aspectRatio="1.85" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="98" key="/library/parts/98/file.avi" duration="7186784" file="/var/lib/plexmediaserver/Movies/Hellboy II - The Golden Army.avi" size="1038712832" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Thriller" />
+<Writer tag="Guillermo del Toro" />
+<Director tag="Guillermo del Toro" />
+<Country tag="USA" />
+<Role tag="Doug Jones" />
+<Role tag="Luke Goss" />
+<Role tag="Anna Walton" />
+</Video>
+<Video ratingKey="67" key="/library/metadata/67" studio="Walt Disney Pictures" type="movie" title="WALL-E" contentRating="G" summary="WALL-E, promoted with an interpunct as WALL•E, is a 2008 American computer-animated science fiction film produced by Pixar Animation Studios and directed by Andrew Stanton. The story follows a robot named WALL-E, who is designed to clean up a waste-covered Earth far in the future. He falls in love with another robot named EVE, who also has a programmed task, and follows her into outer space on an adventure that changes the destiny of both his kind and humanity. Both robots exhibit an appearance of free will and emotions similar to humans, which develop further as the film progresses.&#xA;&#xA;After directing Finding Nemo, Stanton felt Pixar had created believable simulations of underwater physics and was willing to direct a film largely set in space. Most of the characters do not have actual human voices, but instead communicate with body language and robotic sounds, designed by Ben Burtt, that resemble voices. In addition, it is the first animated feature by Pixar to have segments featuring live-action characters.&#xA;&#xA;Walt Disney Pictures released it in the United States and Canada on June 27, 2008. The film grossed $23.2 million on its opening day, and $63.1 million during its opening weekend in 3,992 theaters, ranking #1 at the box office. This ranks as the fifth highest-grossing opening weekend for a Pixar film. Following Pixar tradition, WALL-E was paired with a short film, Presto, for its theatrical release.&#xA;&#xA;WALL-E has been met with overwhelmingly positive reviews among critics, scoring an approval rating of 96% on the review aggregator Rotten Tomatoes. It grossed $521.3 million worldwide, won the 2008 Golden Globe Award for Best Animated Feature Film, the 2009 Hugo Award for Best Dramatic Presentation, Long Form, the Academy Award for Best Animated Feature as well as being nominated for five other Academy Awards at the 81st Academy Awards. WALL-E ranks first in TIME&apos;s &quot;Best Movies of the Decade&quot;." rating="8.8000001907348597" viewOffset="513000" year="2008" tagline="An Adventure Beyond the Ordinar-E" thumb="/library/metadata/67/thumb/1325295089" art="/library/metadata/67/art/1325295089" duration="5880000" originallyAvailableAt="2008-06-23" addedAt="1325294781" updatedAt="1325295089">
+<Media id="67" duration="5885696" bitrate="1411" width="624" height="272" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="67" key="/library/parts/67/file.avi" duration="5885696" file="/var/lib/plexmediaserver/Movies/Wall-E.avi" size="1037841560" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Comedy" />
+<Writer tag="Andrew Stanton" />
+<Writer tag="Jim Reardon" />
+<Director tag="Andrew Stanton" />
+<Country tag="USA" />
+<Role tag="Fred Willard" />
+<Role tag="Jeff Garlin" />
+<Role tag="John Ratzenberger" />
+</Video>
+<Video ratingKey="45" key="/library/metadata/45" studio="Marvel Studios" type="movie" title="Iron Man" contentRating="PG-13" summary="Iron Man is a 2008 American superhero film based on the Marvel Comics character of the same name. Directed by Jon Favreau, the film stars Robert Downey, Jr. as Tony Stark, an industrialist and master engineer who builds a powered exoskeleton and becomes the technologically advanced superhero, Iron Man. Gwyneth Paltrow plays his personal assistant Pepper Potts, Terrence Howard plays military liaison James Rhodes and Jeff Bridges plays Stark Industries executive Obadiah Stane.&#xA;&#xA;The film was in development since 1990 at Universal Studios, 20th Century Fox, and New Line Cinema, before Marvel Studios reacquired the rights in 2006. Marvel put the project in production as its first self-financed film. Favreau signed on as director, aiming for a naturalistic feel, and he chose to shoot the film primarily in California, rejecting the East Coast setting of the comics to differentiate the film from numerous superhero films set in New York City-esque environments. During filming, the actors were free to create their own dialogue because pre-production was focused on the story and action. Rubber and metal versions of the armors, created by Stan Winston&apos;s company, were mixed with computer-generated imagery to create the title character. Hasbro and Sega sold merchandise, and product placement deals were made with Audi, Burger King, LG and 7-Eleven. &#xA;&#xA;Reviews were very positive, particularly praising Downey&apos;s performance. The American Film Institute selected the film as one of the ten best of the year. Downey, Favreau and Paltrow returned in the sequel Iron Man 2, released on May 7, 2010. Downey also made a cameo appearance as Stark in The Incredible Hulk and is scheduled to appear in the 2012 crossover film The Avengers. The film is the first installment of the Marvel Cinematic Universe. Another sequel, Iron Man 3 is set for a 2013 release, with Downey reprising his role." rating="8.3999996185302699" viewOffset="40000" viewCount="1" year="2008" tagline="Heroes aren&apos;t born. They&apos;re built." thumb="/library/metadata/45/thumb/1338589698" art="/library/metadata/45/art/1338589698" duration="7560000" originallyAvailableAt="2008-04-30" addedAt="1325294777" updatedAt="1338589698">
+<Media id="45" duration="7561221" bitrate="1099" width="608" height="256" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="45" key="/library/parts/45/file.avi" duration="7561221" file="/var/lib/plexmediaserver/Movies/Ironman.avi" size="1038628864" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Action" />
+<Writer tag="Arthur Marcum" />
+<Writer tag="Hawk Ostby" />
+<Director tag="Jon Favreau" />
+<Country tag="USA" />
+<Role tag="Gwyneth Paltrow" />
+<Role tag="Jeff Bridges" />
+<Role tag="Bill Smitrovich" />
+</Video>
+<Video ratingKey="65" key="/library/metadata/65" studio="Spyglass Entertainment" type="movie" title="The Ruins" titleSort="Ruins" contentRating="R" summary="The Ruins is a 2008 Australian-American horror film directed by Carter Smith and starring Jonathan Tucker, Shawn Ashmore, Jena Malone, Laura Ramsey and Joe Anderson. The film is based on the novel of the same name by Scott Smith, who also wrote the screenplay. It is also the first non-comedy related movie to have as its executive producer Ben Stiller." year="2008" tagline="Terror has evolved." thumb="/library/metadata/65/thumb/1325294999" art="/library/metadata/65/art/1325294999" duration="5640000" originallyAvailableAt="2008-04-02" addedAt="1325294781" updatedAt="1325294999">
+<Media id="65" duration="5605608" bitrate="1043" width="640" height="272" aspectRatio="2.35" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="65" key="/library/parts/65/file.avi" duration="5605608" file="/var/lib/plexmediaserver/Movies/The.Ruins.(2008).UNRATED.DVDRip.XviD-Larceny.(PeerWeb.org)(1).avi" size="730884096" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Drama" />
+<Writer tag="Scott Smith" />
+<Director tag="Carter Smith" />
+<Country tag="Germany" />
+<Role tag="Joe Anderson" />
+<Role tag="Laura Ramsey" />
+<Role tag="Jonathan Tucker" />
+</Video>
+<Video ratingKey="29" key="/library/metadata/29" studio="Relativity Media" type="movie" title="21" contentRating="PG-13" summary="21 is a 2008 American drama film directed by Robert Luketic and stars Jim Sturgess, Kevin Spacey, Laurence Fishburne, Kate Bosworth, Liza Lapira, Jacob Pitts, and Aaron Yoo. The film is inspired by the true story of the MIT Blackjack Team as told in Bringing Down the House, the best-selling book by Ben Mezrich. Despite its largely mixed reviews and controversy over the film&apos;s casting choices, 21 was a box office success, and was the number one film in the United States and Canada during its first and second weekends of release." rating="7" year="2008" tagline="What an age." thumb="/library/metadata/29/thumb/1328837025" art="/library/metadata/29/art/1328837025" duration="7380000" originallyAvailableAt="2008-03-07" addedAt="1325292813" updatedAt="1328837025">
+<Media id="29" duration="7060032" bitrate="829" width="608" height="336" aspectRatio="1.78" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="PAL">
+<Part id="29" key="/library/parts/29/file.avi" duration="7060032" file="/var/lib/plexmediaserver/Movies/21 Black Jack.avi" size="731336704" container="avi" />
+</Media>
+<Genre tag="Drama" />
+<Genre tag="Action/Adventure" />
+<Writer tag="Allan Loeb" />
+<Writer tag="Peter Steinfeld" />
+<Director tag="Robert Luketic" />
+<Country tag="USA" />
+<Role tag="Laurence Fishburne" />
+<Role tag="Kate Bosworth" />
+<Role tag="Kevin Spacey" />
+</Video>
+<Video ratingKey="62" key="/library/metadata/62" studio="Relativity Media" type="movie" title="The Bank Job" titleSort="Bank Job" contentRating="R" summary="The Bank Job is a 2008 British crime film written by Dick Clement and Ian La Frenais, directed by Roger Donaldson, and starring Jason Statham, based on the 1971 Baker Street robbery in central London, from which the money and valuables stolen were never recovered. The producers allege that the story was prevented from being told because of a D-Notice (now known as a DA-Notice) government gagging request, allegedly to protect a prominent member of the British Royal Family. According to the producers, this movie is intended to reveal the truth for the first time, although it includes significant elements of fiction.&#xA;&#xA;The premiere was held in London on 18 February 2008, and the film was released in both the UK and USA on 29 February 2008." rating="8.1999998092651403" viewOffset="1274589" viewCount="1" year="2008" tagline="The true story of a heist gone wrong... in all the right ways." thumb="/library/metadata/62/thumb/1332038862" art="/library/metadata/62/art/1332038862" duration="6660000" originallyAvailableAt="2008-02-19" addedAt="1325294780" updatedAt="1332038862">
+<Media id="62" duration="6423960" bitrate="916" width="608" height="332" aspectRatio="1.85" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="PAL">
+<Part id="62" key="/library/parts/62/file.avi" duration="6423960" file="/var/lib/plexmediaserver/Movies/The Bank Job.avi" size="735819776" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Crime" />
+<Writer tag="Ian La Frenais" />
+<Writer tag="Dick Clement" />
+<Director tag="Roger Donaldson" />
+<Country tag="United Kingdom" />
+<Role tag="Craig Fairbrass" />
+<Role tag="Jason Statham" />
+<Role tag="David Suchet" />
+</Video>
+<Video ratingKey="180" key="/library/metadata/180" studio="Walt Disney Pictures" type="movie" title="National Treasure: Book of Secrets" contentRating="PG" summary="National Treasure: Book of Secrets (titled National Treasure 2: Book of Secrets on the DVD/Blu-ray Disc release) is a 2007 mystery adventure film. It is a sequel to the 2004 film National Treasure and is part of the National Treasure franchise. It was directed by Jon Turteltaub and produced by Jerry Bruckheimer.&#xA;&#xA;It was stated in the first film&apos;s commentary that there were no plans for a sequel, but due to the first film&apos;s impressive box-office performance, earning $347.5 million worldwide, a sequel was given the go-ahead in 2005. It took just 38 days of release for the sequel to out-gross the original.&#xA;&#xA;The film premiered in New York City on December 13, 2007 and was first released in Korea and Taiwan on December 19, 2007. It was then released in Australia and the Middle East on December 20, 2007. The film opened in the United States, Canada, Japan, Spain, and Italy on December 21, 2007. It was released in Germany and The Netherlands on January 24, 2008 and in the United Kingdom and Denmark on February 8, 2008." rating="6.8000001907348597" viewCount="1" year="2007" thumb="/library/metadata/180/thumb/1338589104" art="/library/metadata/180/art/1338589104" duration="7860000" originallyAvailableAt="2007-12-13" addedAt="1325632370" updatedAt="1338589104">
+<Media id="175" duration="7473008" bitrate="448" width="720" height="368" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="h264" videoResolution="480" container="mkv" videoFrameRate="24p">
+<Part id="175" key="/library/parts/175/file.mkv" duration="7473008" file="/var/lib/plexmediaserver/Movies/National Treasure 2.mkv" size="946645202" container="mkv" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Action" />
+<Writer tag="Ted Elliott" />
+<Writer tag="Gregory Poirier" />
+<Director tag="Jerry Bruckheimer" />
+<Director tag="Jon Turteltaub" />
+<Country tag="USA" />
+<Role tag="Jon Voight" />
+<Role tag="Helen Mirren" />
+<Role tag="Alicia Coppola" />
+</Video>
+<Video ratingKey="34" key="/library/metadata/34" studio="Universal Studios" type="movie" title="The Bourne Ultimatum" titleSort="Bourne Ultimatum" contentRating="PG-13" summary="The Bourne Ultimatum is a 2007 American action thriller spy film directed by Paul Greengrass and loosely based on the Robert Ludlum novel of the same title. This film is the third in the Bourne film series, being preceded by The Bourne Identity (2002) and The Bourne Supremacy (2004). The fourth movie, The Bourne Legacy, is scheduled for release in July 2012. &#xA;&#xA;Matt Damon reprises his role as Ludlum&apos;s signature character, former CIA assassin and psychogenic amnesiac Jason Bourne. The film picks up the storyline from the previous film, and continues Bourne&apos;s saga after he escapes from authorities in Moscow. The script was written by Tony Gilroy, Scott Z. Burns, George Nolfi and an uncredited Tom Stoppard. The producers were Frank Marshall, Pat Crowley and Paul L. Sandberg.&#xA;&#xA;The Bourne Ultimatum was produced by Universal Pictures and was released on August 3, 2007, in North America, where it grossed $69.3 million in ticket sales in its first weekend of release, making it the highest August opening in the U.S. and Matt Damon&apos;s highest grossing film with him in the lead. Although all three films have been commercially successful and critically acclaimed, The Bourne Ultimatum is the only film in the trilogy to have been nominated for any Academy Award, winning all three of its nominations for Best Film Editing, Best Sound Mixing, and Best Sound Editing at the 80th Academy Awards." rating="8.3999996185302699" viewOffset="3363702" year="2007" tagline="Remember everything. Forgive nothing." thumb="/library/metadata/34/thumb/1329175690" art="/library/metadata/34/art/1329175690" duration="6660000" originallyAvailableAt="2007-07-25" addedAt="1325292814" updatedAt="1329175690">
+<Media id="34" duration="6919392" bitrate="1201" width="608" height="256" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="34" key="/library/parts/34/file.avi" duration="6919392" file="/var/lib/plexmediaserver/Movies/Bourne Ultimatum.avi" size="1038929920" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Drama" />
+<Writer tag="Tony Gilroy" />
+<Writer tag="George Nolfi" />
+<Director tag="Paul Greengrass" />
+<Country tag="Germany" />
+<Role tag="Matt Damon" />
+<Role tag="Julia Stiles" />
+<Role tag="David Strathairn" />
+</Video>
+<Video ratingKey="55" key="/library/metadata/55" studio="Pixar" type="movie" title="Ratatouille" contentRating="G" summary="Ratatouille (, ) is a 2007 American computer-animated comedy film produced by Pixar Animation Studios and distributed by Walt Disney Pictures. It is the eighth film produced by Pixar, and was directed by Brad Bird, who took over from Jan Pinkava in 2005. The title refers to a French dish (ratatouille) which is served in the film, and is also a play on words about the species of the main character. The film stars the voices of Patton Oswalt as Remy, a rat who is interested in cooking; Lou Romano as Linguini, a young garbage boy who befriends Remy; Ian Holm as Skinner, the head chef of Auguste Gusteau&apos;s restaurant; Janeane Garofalo as Colette, a rôtisseur at Gusteau&apos;s restaurant; Peter O&apos;Toole as Anton Ego, a restaurant critic; Brian Dennehy as Django, Remy&apos;s father and leader of his clan; Peter Sohn as Emile, Remy&apos;s brother; Brad Garrett as Auguste Gusteau, a recently deceased chef; and Will Arnett as Horst, the sous-chef at Gusteau&apos;s restaurant.&#xA;&#xA;The plot follows Remy, a rat who dreams of becoming a chef and tries to achieve his goal by forming an alliance with a Parisian restaurant&apos;s garbage boy. Ratatouille was released on June 29, 2007 in the United States, to both critical acclaim and box office success, and later won the Academy Award for Best Animated Feature, among other honors." rating="7.8000001907348597" year="2007" tagline="Dinner is served... Summer 2007" thumb="/library/metadata/55/thumb/1325295044" art="/library/metadata/55/art/1325295044" duration="6660000" originallyAvailableAt="2007-06-22" addedAt="1325294779" updatedAt="1325295044">
+<Media id="55" duration="6156240" bitrate="957" width="592" height="256" aspectRatio="2.35" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="PAL">
+<Part id="55" key="/library/parts/55/file.avi" duration="6156240" file="/var/lib/plexmediaserver/Movies/Ratatouille.(2007).TS.XViD-VIDEO_TS.(PeerWeb.org).avi" size="736612352" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Coming of age" />
+<Writer tag="Brad Bird" />
+<Writer tag="Kathy Greenberg" />
+<Director tag="Jan Pinkava" />
+<Director tag="Brad Bird" />
+<Country tag="USA" />
+<Role tag="Peter O&apos;Toole" />
+<Role tag="Lou Romano" />
+<Role tag="Will Arnett" />
+</Video>
+<Video ratingKey="25" key="/library/metadata/25" studio="Universal Studios" type="movie" title="Transformers" contentRating="PG-13" summary="Transformers is a 2007 American science fiction action film based on the Transformers toy line. The film, which combines computer animation with live-action, is directed by Michael Bay, with Steven Spielberg serving as executive producer. It stars Shia LaBeouf as Sam Witwicky, a teenager involved in a war between the heroic Autobots and the evil Decepticons, two factions of alien robots who can disguise themselves by transforming into everyday machinery. The Decepticons desire control of the AllSpark, the object that created their robotic race, with the intention of using it to build an army by giving life to the machines of Earth. Megan Fox, Josh Duhamel, Tyrese Gibson, Jon Voight, Anthony Anderson and John Turturro also star, while voice actors Peter Cullen and Hugo Weaving voice Optimus Prime and Megatron respectively.&#xA;&#xA;Produced by Don Murphy and Tom DeSanto, they developed the project in 2003 and DeSanto wrote a treatment. Steven Spielberg came on board the following year, hiring Roberto Orci and Alex Kurtzman to write the screenplay. The United States Armed Forces and General Motors (GM) loaned vehicles and aircraft during filming, which saved money for the production and added realism to the battle scenes. Hasbro organized an enormous promotional campaign for the film, making deals with hundreds of companies. This advertising blitz included a viral marketing campaign, coordinated releases of prequel comic books, toys and books and, as well as product placement deals with GM, Burger King, and eBay.&#xA;&#xA;Despite mixed critical reaction to the radical redesigns of the characters, and reviews criticizing the focus on the humans at the expense of the robots, Transformers was a box office success. It is the forty-fifth most successful film released and the fifth most successful of 2007, grossing approximately US$709 million worldwide. The film won four awards from the Visual Effects Society and was nominated for three Academy Awards for Best Sound, Best Visual Effects, and Best Sound Editing. A sequel, Transformers: Revenge of the Fallen, was released on June 24, 2009, despite the film being panned by critics, it was a commercial success and grossed more than its predecessor. A third film, Transformers: Dark of the Moon, was released on June 29, 2011, in 3-D and went on to gross over $1 billion dollars, despite mixed and negative reviews." rating="7.1999998092651403" viewOffset="1688181" year="2007" tagline="Destroy" thumb="/library/metadata/25/thumb/1335538525" art="/library/metadata/25/art/1335538525" duration="8640000" originallyAvailableAt="2007-06-12" addedAt="1325285658" updatedAt="1335538525">
+<Media id="25" duration="8607040" bitrate="965" width="720" height="304" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="25" key="/library/parts/25/file.avi" duration="8607040" file="/var/lib/plexmediaserver/Movies/Transformers.avi" size="1038292992" container="avi" />
+</Media>
+<Genre tag="Disaster" />
+<Genre tag="Thriller" />
+<Writer tag="Roberto Orci" />
+<Writer tag="Alex Kurtzman" />
+<Director tag="Michael Bay" />
+<Country tag="USA" />
+<Role tag="Jon Voight" />
+<Role tag="Hugo Weaving" />
+<Role tag="John Turturro" />
+</Video>
+<Video ratingKey="42" key="/library/metadata/42" studio="Constantin Film" type="movie" title="Fantastic 4: Rise of the Silver Surfer" contentRating="PG" summary="Fantastic Four: Rise of the Silver Surfer is a 2007 American superhero film, and the sequel to the 2005 film Fantastic Four. Both films are based on the Fantastic Four comic book and were directed by Tim Story. Ioan Gruffudd as Reed Richards, Jessica Alba as Sue Storm, Chris Evans as Johnny Storm, and Michael Chiklis as Ben Grimm are the film series&apos; recurring protagonists, while Julian McMahon and Kerry Washington reprised their roles from the first film as, respectively, Victor Von Doom and Alicia Masters. Beau Garrett appears in the sequel as the Frankie Raye, along with Doug Jones as the Silver Surfer and Laurence Fishburne as the voice of the Silver Surfer. The plot follows the Fantastic Four as they confront, and later ally with, the Silver Surfer to save Earth from Galactus.&#xA;&#xA;While the film was the highest-grossing film during the week that immediately followed its release on June 15, 2007 in North America and was the recipient of two out of fifteen awards nominations, it was received with unfavorable reviews by critics with critics noting an improvement on the first film, but continuing to criticize the film&apos;s flimsy direction and lack of humor. The film was released onto Blu-ray Disc and DVD on October 2, 2007." rating="6.5999999046325701" year="2007" tagline="Rise" thumb="/library/metadata/42/thumb/1325442956" art="/library/metadata/42/art/1325442956" duration="5460000" originallyAvailableAt="2007-06-12" addedAt="1325294777" updatedAt="1325442956">
+<Media id="42" duration="5512424" bitrate="1507" width="656" height="272" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="42" key="/library/parts/42/file.avi" duration="5512424" file="/var/lib/plexmediaserver/Movies/Fantastic Four 2.avi" size="1038522368" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Thriller" />
+<Writer tag="Don Payne" />
+<Writer tag="Mark Frost" />
+<Director tag="Tim Story" />
+<Country tag="USA" />
+<Role tag="Doug Jones" />
+<Role tag="Beau Garrett" />
+<Role tag="Andre Braugher" />
+</Video>
+<Video ratingKey="40" key="/library/metadata/40" studio="Dune Entertainment" type="movie" title="Live Free or Die Hard" contentRating="PG-13" summary="Live Free or Die Hard (released as Die Hard 4.0 outside North America), is a 2007 American action film, and the fourth installment in the Die Hard series. The film was directed by Len Wiseman and stars Bruce Willis as John McClane. The name was adapted from the state motto of New Hampshire, &quot;Live Free or Die&quot;. The main plot finds McClane fighting a gang of cyber terrorists who plan to hack FBI computers. The film was based on the 1997 article &quot;A Farewell to Arms&quot; written for Wired magazine by John Carlin. The film&apos;s North American release date was June 27, 2007.&#xA;&#xA;After the project was stalled due to the September 11, 2001 attacks, production eventually began, and the film&apos;s title was switched several times. A variety of visual effects were used for action sequences, even though Wiseman and Willis stated that they wanted to limit the amount of CGI in the film. In separate incidents during filming, both Willis and his stunt double were injured. Unlike the prior three films in the series, the US rating was PG-13 rather than R. An unrated version of Live Free or Die Hard containing profanity and violence not included in the theatrical version was made available for the DVD release.&#xA;&#xA;The film received generally positive reviews, earning an 82% approval rating on Rotten Tomatoes and 69/100 from Metacritic. The film had total international box office gross receipts of $383.4 million. For the DVD release, 20th Century Fox pioneered a new kind of DRM, Digital Copy, that tries to weaken the incentives for consumers to learn how to rip discs by offering them a downloadable version with studio-imposed restrictions. The score for the film was released on July 2, 2007." rating="7.8000001907348597" viewOffset="171000" year="2007" tagline="Yippee Ki Yay Mo - John 6:27" thumb="/library/metadata/40/thumb/1325443311" art="/library/metadata/40/art/1325443311" duration="7740000" originallyAvailableAt="2007-06-12" addedAt="1325294777" updatedAt="1325443311">
+<Media id="40" duration="7719200" bitrate="1077" width="608" height="256" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="40" key="/library/parts/40/file.avi" duration="7719200" file="/var/lib/plexmediaserver/Movies/Die Hard 4 - Live Free Die Hard.avi" size="1039247360" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Action" />
+<Writer tag="Mark Bomback" />
+<Director tag="Len Wiseman" />
+<Country tag="USA" />
+<Role tag="Justin Long" />
+<Role tag="Timothy Olyphant" />
+<Role tag="Mary Elizabeth Winstead" />
+</Video>
+<Video ratingKey="30" key="/library/metadata/30" studio="20th Century Fox" type="movie" title="Night at the Museum" contentRating="PG" summary="Night at the Museum is a 2006 fantasy adventure-comedy film based on the 1993 children&apos;s book The Night at the Museum by Milan Trenc. It follows a divorced father trying to settle down, impress his son, and find his destiny. He applies for a job as a night watchman at New York City&apos;s American Museum of Natural History and subsequently discovers that the exhibits, animated by a magical Egyptian artifact, come to life at night.&#xA;&#xA;Released on December 22, 2006 by 20th Century Fox, which presented the 1492 Pictures/21 Laps Entertainment Production in association with Ingenious Film Partners, the film was written by Robert Ben Garant and Thomas Lennon of Comedy Central&apos;s Reno 911! and MTV&apos;s The State and produced and directed by Shawn Levy. Also producing for 1492 Pictures were Chris Columbus and Michael Barnathan. The cast includes Ben Stiller, Carla Gugino, Dick Van Dyke, Mickey Rooney, Bill Cobbs, Jake Cherry, Ricky Gervais, Owen Wilson, Steve Coogan, and Robin Williams. A new novelization of the screenplay by Leslie Goldman was published as a film tie-in.&#xA;&#xA;A sequel titled Night at the Museum: Battle of the Smithsonian was released on May 22, 2009." rating="6.8000001907348597" viewOffset="1359000" year="2006" tagline="Where History Comes To Life" thumb="/library/metadata/30/thumb/1338589867" art="/library/metadata/30/art/1338589867" duration="6480000" originallyAvailableAt="2006-12-17" addedAt="1325292813" updatedAt="1338589867">
+<Media id="30" duration="6516218" bitrate="1279" width="608" height="336" aspectRatio="1.78" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="30" key="/library/parts/30/file.avi" duration="6516218" file="/var/lib/plexmediaserver/Movies/A Night at the Museum.avi" size="1041475584" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Comedy" />
+<Writer tag="Thomas Lennon" />
+<Writer tag="Ben Garant" />
+<Director tag="Shawn Levy" />
+<Country tag="USA" />
+<Role tag="Charlie Murphy" />
+<Role tag="Mickey Rooney" />
+<Role tag="Bill Cobbs" />
+</Video>
+<Video ratingKey="197" key="/library/metadata/197" studio="MGM" type="movie" title="Casino Royale" contentRating="PG-13" summary="In his first mission, James Bond must stop Le Chiffre, a banker to the world&apos;s terrorist organizations, from winning a high-stakes poker tournament at Casino Royale in Montenegro." rating="8.6000003814697301" viewOffset="2101565" viewCount="2" year="2006" tagline="Everyone has a past. Every legend has a beginning." thumb="/library/metadata/197/thumb/1354743533" art="/library/metadata/197/art/1354743533" duration="8640000" originallyAvailableAt="2006-11-17" addedAt="1348623958" updatedAt="1354743533">
+<Media id="192" duration="8650976" bitrate="947" width="400" height="304" aspectRatio="1.33" audioChannels="6" audioCodec="ac3" videoCodec="h264" videoResolution="sd" container="mkv" videoFrameRate="24p">
+<Part id="192" key="/library/parts/192/file.mkv" duration="8650976" file="/var/lib/plexmediaserver/Movies/Casino Royale.mkv" size="1023897858" container="mkv" />
+</Media>
+<Genre tag="Adventure" />
+<Genre tag="Action" />
+<Writer tag="Robert Wade" />
+<Writer tag="Paul Haggis" />
+<Director tag="Martin Campbell" />
+<Country tag="Bahamas" />
+<Role tag="Daniel Craig" />
+<Role tag="Eva Green" />
+<Role tag="Mads Mikkelsen" />
+</Video>
+<Video ratingKey="63" key="/library/metadata/63" type="movie" title="The Marine" titleSort="Marine" contentRating="PG-13" summary="A group of diamond thieves on the run kidnap the wife of a recently discharged marine who goes on a chase through the South Carolinian wilderness to retrieve her." rating="5" viewOffset="5042088" viewCount="1" year="2006" thumb="/library/metadata/63/thumb/1335499433" art="/library/metadata/63/art/1335499433" duration="5580000" originallyAvailableAt="2006-10-03" addedAt="1325294780" updatedAt="1335499433">
+<Media id="63" duration="5481024" bitrate="1516" width="512" height="384" aspectRatio="1.33" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="63" key="/library/parts/63/file.avi" duration="5481024" file="/var/lib/plexmediaserver/Movies/The Marine.avi" size="1038491648" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Drama" />
+<Writer tag="Michelle Gallagher" />
+<Writer tag="Alan B. McElroy" />
+<Director tag="John Bonito" />
+<Country tag="USA" />
+<Role tag="Drew Powell" />
+<Role tag="Anthony Ray Parker" />
+<Role tag="Jeff Chase" />
+</Video>
+<Video ratingKey="33" key="/library/metadata/33" studio="Legendary Pictures" type="movie" title="Beerfest" contentRating="R" summary="Beerfest is a 2006 beer-themed comedy film by the comedy group Broken Lizard. Along with the regular members of Broken Lizard, other actors who appear in the movie include Will Forte, M. C. Gainey, Cloris Leachman, Kendra C. Johnson, Jürgen Prochnow, Donald Sutherland, and Willie Nelson.&#xA;&#xA;Beerfest was filmed in Albuquerque, New Mexico." rating="6.4000000953674299" viewOffset="87000" viewCount="4" year="2006" tagline="Comedy on tap" thumb="/library/metadata/33/thumb/1325293432" art="/library/metadata/33/art/1325293432" duration="6960000" originallyAvailableAt="2006-08-25" addedAt="1325292814" updatedAt="1325293432">
+<Media id="33" duration="6728000" bitrate="1235" width="720" height="304" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="33" key="/library/parts/33/file.avi" duration="6728000" file="/var/lib/plexmediaserver/Movies/Beerfest.avi" size="1038417920" container="avi" />
+</Media>
+<Genre tag="Comedy" />
+<Writer tag="Paul Soter" />
+<Writer tag="Jay Chandrasekhar" />
+<Director tag="Jay Chandrasekhar" />
+<Country tag="Australia" />
+<Role tag="Philippe Brenninkmeyer" />
+<Role tag="Ralf Moeller" />
+<Role tag="Donald Sutherland" />
+</Video>
+<Video ratingKey="31" key="/library/metadata/31" studio="Universal Pictures" type="movie" title="Accepted" contentRating="PG-13" summary="After receiving rejection letters from eight colleges, Bartleby Gaines and his slacker friends fool their parents into thinking they&apos;ve been accepted at the South Harmon Institute of Technology, a university of their own invention. The only problem is, the boys have somehow managed to attract a freshman class of rejects just like them. Can the South Harmon coeds compete in a battle of wits with students from a neighboring college?" rating="8.1999998092651403" viewCount="1" year="2006" tagline="When every college turned them down. . . they made one up." thumb="/library/metadata/31/thumb/1355264306" art="/library/metadata/31/art/1355264306" duration="5400000" originallyAvailableAt="2006-08-18" addedAt="1325292813" updatedAt="1355264306">
+<Media id="31" duration="5585472" bitrate="1489" width="512" height="384" aspectRatio="1.33" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="31" key="/library/parts/31/file.avi" duration="5585472" file="/var/lib/plexmediaserver/Movies/Accepted.avi" size="1039716352" container="avi" />
+</Media>
+<Genre tag="Comedy" />
+<Writer tag="Adam Cooper" />
+<Writer tag="Bill Collage" />
+<Director tag="Steve Pink" />
+<Country tag="USA" />
+<Role tag="Justin Long" />
+<Role tag="Jonah Hill" />
+<Role tag="Adam Herschman" />
+</Video>
+<Video ratingKey="7" key="/library/metadata/7" studio="Dune Entertainment" type="movie" title="The Devil Wears Prada" titleSort="Devil Wears Prada" contentRating="PG-13" summary="The Devil Wears Prada is a 2006 comedy-drama film, a loose screen adaptation of Lauren Weisberger&apos;s 2003 novel of the same name. It stars Anne Hathaway as Andrea Sachs, a recent college graduate who goes to New York City and gets a job as a co-assistant to powerful and demanding fashion magazine editor Miranda Priestly, played by Meryl Streep. Emily Blunt and Stanley Tucci co-star in support of the two leads, as catty co-assistant Emily Charlton, and critical yet supportive Art Director Nigel, respectively. Adrian Grenier, Simon Baker and Tracie Thoms play key supporting roles. Wendy Finerman produced and David Frankel directed; the film was distributed by 20th Century Fox.&#xA;&#xA;Streep&apos;s performance drew rave reviews from critics and later earned her many award nominations, including her record-setting 14th Oscar bid, as well as the Golden Globe for Best Actress in a Comedy or Musical. Blunt also drew favorable notice and nominations, as did many of those involved in the film&apos;s production. While critical reaction to the film as a whole was more measured, it was well received by the public, becoming a surprise summer box-office hit following its June 30 North American release. The commercial success and critical praise for Streep&apos;s performance continued in foreign markets, with the film leading the international box office for most of October. The U.S. DVD release likewise was the top rental during December. Ultimately, it would gross over $300 million, mostly from its international run, and finish in 2006&apos;s top 20 both in the U.S. and overseas. It is also the second highest-grossing film in Streep&apos;s career (the first being Mamma Mia!) and the third highest in Hathaway&apos;s career, the first two being Alice in Wonderland and Rio.&#xA;&#xA;Although the movie is set in the fashion world, most designers and other fashion notables avoided appearing as themselves for fear of displeasing U.S. Vogue editor Anna Wintour, who is widely believed to have been the inspiration for Priestly. Many designers allowed their clothes and accessories to be used in the film, making it the most expensively costumed film in history.Whitworth, Melissa; June 9, 2006; &quot;[http://www.telegraph.co.uk/fashion/main.jhtml?xml=/fashion/2006/09/06/efpatricia06.xml The Devil has all the best costumes]&quot;; The Daily Telegraph; retrieved January 10, 2007. Wintour later overcame her initial skepticism,Walters, Barbara; December 12, 2006; [http://abcnews.go.com/2020/story?id=2716887&amp;page=3 Anna Wintour: Always in Vogue]; &quot;The 10 Most Fascinating People of 2006&quot;; retrieved from abcnews.go.com December 18, 2006. saying she liked the film and Streep in particular." rating="6.1999998092651403" year="2006" tagline="Meet Andy Sachs. A million girls would kill to have her job. She&apos;s not one of them." thumb="/library/metadata/7/thumb/1325285716" art="/library/metadata/7/art/1325285716" duration="6540000" originallyAvailableAt="2006-06-29" addedAt="1325285656" updatedAt="1325285716">
+<Media id="7" duration="6561952" bitrate="896" width="448" height="336" aspectRatio="1.33" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="7" key="/library/parts/7/file.avi" duration="6561952" file="/var/lib/plexmediaserver/Movies/The Devil Wears Prada.avi" size="735047680" container="avi" />
+</Media>
+<Genre tag="Comedy-drama" />
+<Genre tag="Comedy" />
+<Writer tag="Aline Brosh McKenna" />
+<Director tag="David Frankel" />
+<Country tag="USA" />
+<Role tag="James Naughton" />
+<Role tag="Adrian Grenier" />
+<Role tag="Gisele Bündchen" />
+</Video>
+<Video ratingKey="181" key="/library/metadata/181" studio="Warner Bros. Entertainment" type="movie" title="V for Vendetta" contentRating="R" summary="V for Vendetta is a 2005 dystopian thriller film directed by James McTeigue and produced by Joel Silver and the Wachowski brothers, who also wrote the screenplay. It is an adaptation of the V for Vendetta comic book by Alan Moore and David Lloyd. Set in London in a near-future dystopian society, Natalie Portman stars as Evey, a working-class girl who must determine if her hero has become the very menace he is fighting against. Hugo Weaving plays V—a bold, charismatic freedom fighter driven to exact revenge on those who disfigured him. Stephen Rea portrays the detective leading a desperate quest to capture V before he ignites a revolution.&#xA;&#xA;The film was originally scheduled for release by Warner Bros. on Friday, November 4, 2005 (a day before the 400th Guy Fawkes Night), but was delayed; it opened on March 17, 2006 to positive reviews. Alan Moore, having already been disappointed with the film adaptations of two of his other graphic novels, From Hell and The League of Extraordinary Gentlemen, after reading the script for V for Vendetta refused to view the film and subsequently distanced himself from it.&#xA;&#xA;The film had been seen by many political groups as an allegory of oppression by government; libertarians and anarchists have used it to promote their beliefs. Activists belonging to the group Anonymous use the same Guy Fawkes mask popularized by the film when they appear in public at numerous high-profile events, emulating one of its key scenes. Artist David Lloyd is quoted saying: &quot;The Guy Fawkes mask has now become a common brand and a convenient placard to use in protest against tyranny – and I&apos;m happy with people using it, it seems quite unique, an icon of popular culture being used this way.&quot;" rating="8.3999996185302699" viewCount="1" year="2006" tagline="People should not be afraid of their governments. Governments should be afraid of their people." thumb="/library/metadata/181/thumb/1338589090" art="/library/metadata/181/art/1338589090" duration="7920000" originallyAvailableAt="2006-02-13" addedAt="1325639571" updatedAt="1338589090">
+<Media id="176" duration="7951332" bitrate="448" width="720" height="352" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="h264" videoResolution="480" container="mkv" videoFrameRate="24p">
+<Part id="176" key="/library/parts/176/file.mkv" duration="7951332" file="/var/lib/plexmediaserver/Movies/V for Vendetta.mkv" size="1262483916" container="mkv" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Dystopia" />
+<Writer tag="Larry Wachowski" />
+<Writer tag="Andy Wachowski" />
+<Director tag="James McTeigue" />
+<Country tag="Germany" />
+<Role tag="Sinéad Cusack" />
+<Role tag="Hugo Weaving" />
+<Role tag="Imogen Poots" />
+</Video>
+<Video ratingKey="47" key="/library/metadata/47" studio="New Line Cinema" type="movie" title="Just Friends" contentRating="PG-13" summary="Just Friends is a 2005 romantic comedy Christmas film directed by Roger Kumble. The film stars Ryan Reynolds, Amy Smart, Anna Faris, Chris Klein, and Christopher Maquette and deals with friend zone relationships. The film was shot in Regina, Saskatchewan." rating="8" year="2005" tagline="He loves her. She loves him not." thumb="/library/metadata/47/thumb/1325294934" art="/library/metadata/47/art/1325294934" duration="5760000" originallyAvailableAt="2005-11-23" addedAt="1325294778" updatedAt="1325294934">
+<Media id="47" duration="5667000" bitrate="1333" width="624" height="352" aspectRatio="1.78" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="47" key="/library/parts/47/file.avi" duration="5667000" file="/var/lib/plexmediaserver/Movies/Just Friends.avi" size="944189440" container="avi" />
+</Media>
+<Genre tag="Comedy" />
+<Genre tag="Romance Film" />
+<Writer tag="Adam &apos;Tex&apos; Davis" />
+<Director tag="Roger Kumble" />
+<Country tag="USA" />
+<Role tag="Julie Hagerty" />
+<Role tag="Chris Klein" />
+<Role tag="Fred Ewanuick" />
+</Video>
+<Video ratingKey="106" key="/library/metadata/106" studio="Warner Bros." type="movie" title="North Country" contentRating="R" summary="North Country is a 2005 American drama film directed by Niki Caro. The screenplay by Michael Seitzman was inspired by the 2002 book Class Action: The Story of Lois Jenson and the Landmark Case That Changed Sexual Harassment Law by Clara Bingham and Laura Leedy Gansler, which chronicled the case of Jenson v. Eveleth Taconite Company." year="2005" tagline="All She Wanted Was To Make A Living. Instead She Made History." thumb="/library/metadata/106/thumb/1325304664" art="/library/metadata/106/art/1325304664" duration="7560000" originallyAvailableAt="2005-10-21" addedAt="1325304643" updatedAt="1325304664">
+<Media id="106" duration="7581077" bitrate="997" width="608" height="256" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="106" key="/library/parts/106/file.avi" duration="7581077" file="/var/lib/plexmediaserver/Movies/North Country.avi" size="944324608" container="avi" />
+</Media>
+<Genre tag="Drama" />
+<Genre tag="Courtroom Drama" />
+<Writer tag="Michael Seitzman" />
+<Director tag="Niki Caro" />
+<Country tag="USA" />
+<Role tag="Jeremy Renner" />
+<Role tag="Richard Jenkins" />
+<Role tag="Michelle Monaghan" />
+</Video>
+<Video ratingKey="26" key="/library/metadata/26" studio="EuropaCorp" type="movie" title="The Transporter 2" titleSort="Transporter 2" contentRating="PG-13" summary="Transporter 2 is a 2005 action film directed by Louis Leterrier and produced by Luc Besson. It is the sequel to The Transporter (2002). It is itself followed by Transporter 3 (2008).&#xA;&#xA;Jason Statham returns as Frank Martin, a professional &quot;transporter&quot; who delivers packages without questions. Set in Miami, Florida, he chauffeurs a young boy who is soon kidnapped. Frank tries to save the boy. The film also stars Jason Flemyng, who previously worked with Jason Statham in the films Lock, Stock and Two Smoking Barrels and Snatch.&#xA;&#xA;Director Louis Leterrier said that Frank Martin is &quot;the first gay action movie hero&quot;, suggesting that the character comes out when he refuses a woman&apos;s advances by saying, &quot;It&apos;s because of who I am.&quot; However, this appears at odds with Frank&apos;s heterosexual relationships in the first and third films, and his explicit statement in the third that he is not gay." rating="7.8000001907348597" viewOffset="2043639" year="2005" tagline="The Best In The Business Is Back In The Game." thumb="/library/metadata/26/thumb/1329840641" art="/library/metadata/26/art/1329840641" duration="5220000" originallyAvailableAt="2005-08-03" addedAt="1325285658" updatedAt="1329840641">
+<Media id="26" duration="5258175" bitrate="1436" width="608" height="272" aspectRatio="2.20" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="26" key="/library/parts/26/file.avi" duration="5258175" file="/var/lib/plexmediaserver/Movies/Transporter 2.avi" size="944162816" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Action" />
+<Writer tag="Robert Mark Kamen" />
+<Writer tag="Luc Besson" />
+<Director tag="Louis Leterrier" />
+<Country tag="France" />
+<Role tag="Jason Flemyng" />
+<Role tag="Keith David" />
+<Role tag="François Berléand" />
+</Video>
+<Video ratingKey="52" key="/library/metadata/52" studio="Warner Brothers" type="movie" title="Must Love Dogs" contentRating="PG-13" summary="Must Love Dogs is a 2005 romantic comedy film based on the book written by Claire Cook. It is the third film directed and written by Gary David Goldberg. The film, starring Diane Lane and John Cusack, was produced on a budget of $30 million. The film focuses on a woman&apos;s struggle with divorce and meeting new people afterward.&#xA;&#xA;Production started on October 12, 2004 and the film was released on July 29, 2005. Critics opinions were mostly negative giving the general opinion that the actors were not to blame. Must Love Dogs took the fifth spot on its opening weekend and has grossed more than $58 million worldwide. The film was released on VHS and DVD on December 20, 2005." year="2005" tagline="The hardest trick is making them stay." thumb="/library/metadata/52/thumb/1325294966" art="/library/metadata/52/art/1325294966" duration="5880000" originallyAvailableAt="2005-07-29" addedAt="1325294778" updatedAt="1325294966">
+<Media id="52" duration="5877511" bitrate="1416" width="560" height="416" aspectRatio="1.33" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="52" key="/library/parts/52/file.avi" duration="5877511" file="/var/lib/plexmediaserver/Movies/Must Love Dogs.avi" size="1040156672" container="avi" />
+</Media>
+<Genre tag="Comedy" />
+<Genre tag="Romance Film" />
+<Writer tag="Gary David Goldberg" />
+<Director tag="Gary David Goldberg" />
+<Country tag="USA" />
+<Role tag="Julie Gonzalo" />
+<Role tag="Victor H. Webster" />
+<Role tag="Shana Hiatt" />
+</Video>
+<Video ratingKey="95" key="/library/metadata/95" studio="Marvel Studios" type="movie" title="Fantastic Four" contentRating="PG-13" summary="Fantastic Four is a 2005 American superhero film based on the Marvel Comics comic Fantastic Four. It was directed by Tim Story, and released by 20th Century Fox. It is the second live-action Fantastic Four film to be filmed. The previous attempt, a B-movie produced by Roger Corman only for the purpose of retaining the film rights, was never intended for a theatrical release. Despite getting major hype on its release and becoming a box office success, the film was negatively received by critics.&#xA;&#xA;The film was released in the United States on July 8, 2005. It was the third superhero film of the year, after Elektra and Batman Begins.&#xA;&#xA;In 2007, a sequel, Fantastic Four: Rise of the Silver Surfer, was released." rating="7" year="2005" tagline="Prepare for the Fantastic." thumb="/library/metadata/95/thumb/1325348556" art="/library/metadata/95/art/1325348556" duration="6360000" originallyAvailableAt="2005-06-29" addedAt="1325301225" updatedAt="1325348556">
+<Media id="95" duration="6354048" bitrate="1188" width="720" height="544" aspectRatio="1.33" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="576" container="avi" videoFrameRate="24p">
+<Part id="95" key="/library/parts/95/file.avi" duration="6354048" file="/var/lib/plexmediaserver/Movies/Fantastic Four.avi" size="943464448" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Action" />
+<Writer tag="Mark Frost" />
+<Writer tag="Michael France" />
+<Director tag="Tim Story" />
+<Country tag="USA" />
+<Role tag="Laurie Holden" />
+<Role tag="Kerry Washington" />
+<Role tag="Hamish Linklater" />
+</Video>
+<Video ratingKey="51" key="/library/metadata/51" studio="Summit Entertainment" type="movie" title="Mr. &amp; Mrs. Smith" contentRating="PG-13" summary="Mr. &amp; Mrs. Smith is a 2005 American romantic comedy action film directed by Doug Liman and written by Simon Kinberg. The original music score was composed by John Powell. The film stars Angelina Jolie and Brad Pitt as a bored married couple who learn that they are both master assassins when they are sent on the same job." rating="7" viewCount="1" year="2005" thumb="/library/metadata/51/thumb/1336357408" art="/library/metadata/51/art/1336357408" duration="7320000" originallyAvailableAt="2005-06-07" addedAt="1325294778" updatedAt="1336357408">
+<Media id="51" duration="7198324" bitrate="1157" width="608" height="256" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="51" key="/library/parts/51/file.avi" duration="7198324" file="/var/lib/plexmediaserver/Movies/Mr and Mrs Smith.avi" size="1040783360" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Comedy" />
+<Writer tag="Simon Kinberg" />
+<Director tag="Doug Liman" />
+<Country tag="USA" />
+<Role tag="Kerry Washington" />
+<Role tag="Keith David" />
+<Role tag="Chris Weitz" />
+</Video>
+<Video ratingKey="145" key="/library/metadata/145" type="movie" title="Nirvana: Nevermind" summary="Classic Albums: Nirvana – Nevermind is a documentary DVD released by Eagle Vision in March 2005, as part of the Classic Albums series. It features interviews specifically for this release with members of the band and Nevermind album producer Butch Vig about the recording of the album. Other interview highlights include Thurston Moore from Sonic Youth, and Steve Diggle from the Buzzcocks." year="2005" tagline="Making of:" thumb="/library/metadata/145/thumb/1325350381" art="/library/metadata/145/art/1325350381" duration="4080000" originallyAvailableAt="2005-03-22" addedAt="1325350366" updatedAt="1325350381">
+<Media id="145" duration="2936976" bitrate="1999" width="688" height="400" aspectRatio="1.78" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="NTSC">
+<Part id="145" key="/library/parts/145/file.avi" duration="2936976" file="/var/lib/plexmediaserver/Movies/Nirvana Nevermind.avi" size="733808640" container="avi" />
+</Media>
+<Genre tag="Rockumentary" />
+<Director tag="Bob Smeaton" />
+<Country tag="USA" />
+<Role tag="Dave Grohl" />
+<Role tag="Thurston Moore" />
+<Role tag="Jack Endino" />
+</Video>
+<Video ratingKey="5" key="/library/metadata/5" studio="Revolution Studios" type="movie" title="Are We There Yet" contentRating="PG" summary="Are We There Yet? is a 2005 American family comedy film which was produced by Revolution Studios and was distributed by Columbia Pictures, directed by Brian Levant. Although it was panned by critics, it grossed $82 million in North America alone and sold 3.7 million DVDs.&#xA;&#xA;The film, while set in Portland, Oregon, Vancouver, British Columbia and other parts of the Pacific Northwest, was mostly shot on location in Vancouver, British Columbia, Canada, including a view of the Lions&apos; Gate Bridge, the Financial District skyscrapers and the downtown scene near the film&apos;s conclusion. A sequel, Are We Done Yet?, was released in 2007, and a television series based around the film&apos;s main characters premiered in 2010." viewCount="1" year="2005" thumb="/library/metadata/5/thumb/1329290161" art="/library/metadata/5/art/1329290161" duration="5700000" originallyAvailableAt="2005-01-21" addedAt="1325285655" updatedAt="1329290161">
+<Media id="5" duration="5685024" bitrate="1033" width="720" height="400" aspectRatio="1.78" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="5" key="/library/parts/5/file.avi" duration="5685024" file="/var/lib/plexmediaserver/Movies/Are We There Yet.avi" size="734144512" container="avi" />
+</Media>
+<Genre tag="Comedy" />
+<Genre tag="Drama" />
+<Writer tag="David N. Weiss" />
+<Writer tag="Claudia Graziolo" />
+<Director tag="Brian Levant" />
+<Country tag="USA" />
+<Role tag="Nichelle Nichols" />
+<Role tag="Daniel Cudmore" />
+<Role tag="Henry Simmons" />
+</Video>
+<Video ratingKey="91" key="/library/metadata/91" studio="Marvel Studios" type="movie" title="Elektra" contentRating="PG-13" summary="Elektra the warrior survives a near-death experience, becomes an assassin-for-hire, and tries to protect her two latest targets, a single father and his young daughter, from a group of supernatural assassins." rating="6.8000001907348597" year="2005" tagline="Looks can kill" thumb="/library/metadata/91/thumb/1325300574" art="/library/metadata/91/art/1325300574" duration="6240000" originallyAvailableAt="2005-01-08" addedAt="1325300511" updatedAt="1325300574">
+<Media id="91" duration="5808704" bitrate="1430" width="720" height="544" aspectRatio="1.33" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="576" container="avi" videoFrameRate="24p">
+<Part id="91" key="/library/parts/91/file.avi" duration="5808704" file="/var/lib/plexmediaserver/Movies/Elektra.avi" size="1038452736" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Thriller" />
+<Writer tag="Stuart Zicherman" />
+<Writer tag="Raven Metzner" />
+<Director tag="Rob Bowman" />
+<Country tag="Canada" />
+<Role tag="Jason Isaacs" />
+<Role tag="Colin Cunningham" />
+<Role tag="Natassia Malthe" />
+</Video>
+<Video ratingKey="121" key="/library/metadata/121" studio="Columbia Pictures" type="movie" title="Spanglish" contentRating="PG-13" summary="Spanglish is a 2004 American comedy-drama film written and directed by James L. Brooks, and starring Adam Sandler, Paz Vega, and Téa Leoni. It was released in the United States on December 17, 2004 by Columbia Pictures and by Gracie Films, and in other countries over the first several months of 2005." rating="7.8000001907348597" year="2004" tagline="Every family has a hero." thumb="/library/metadata/121/thumb/1325348465" art="/library/metadata/121/art/1325348465" duration="7860000" originallyAvailableAt="2004-12-17" addedAt="1325348303" updatedAt="1325348465">
+<Media id="121" duration="7866000" bitrate="747" width="720" height="400" aspectRatio="1.78" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="121" key="/library/parts/121/file.avi" duration="7866000" file="/var/lib/plexmediaserver/Movies/Spanglish.avi" size="734253056" container="avi" />
+</Media>
+<Genre tag="Comedy-drama" />
+<Genre tag="Comedy" />
+<Writer tag="James L. Brooks" />
+<Director tag="James L. Brooks" />
+<Country tag="USA" />
+<Role tag="Angela Goethals" />
+<Role tag="Shelbie Bruce" />
+<Role tag="Sarah Steele" />
+</Video>
+<Video ratingKey="111" key="/library/metadata/111" studio="Universal Studios" type="movie" title="The Phantom of the Opera" titleSort="Phantom of the Opera" contentRating="PG-13" summary="The Phantom of the Opera is a 2004 film adaptation of Andrew Lloyd Webber&apos;s 1986 musical of the same name, which in turn was based on the French novel Le Fantôme de l&apos;Opéra by Gaston Leroux.&#xA;Directed by Joel Schumacher, the film was also produced and co-written by Lloyd Webber. The Phantom of the Opera stars Gerard Butler in the title role, Emmy Rossum as Christine Daaé, as well as Patrick Wilson, Miranda Richardson, Minnie Driver and Jennifer Ellison.&#xA;&#xA;The film was announced as early as 1989, but production only started in 2002 due to Webber&apos;s divorce and Schumacher&apos;s busy career. It was entirely shot at Pinewood Studios, with scenarios also being depicted with the help of miniatures and computer graphics. Most of the actors had no singing experience, and had to receive music lessons. The Phantom of the Opera grossed approximately $154 million worldwide, and received mixed to negative reviews, praising the visuals but criticizing the writing and directing." rating="8.1999998092651403" year="2004" thumb="/library/metadata/111/thumb/1325305729" art="/library/metadata/111/art/1325305729" duration="8580000" originallyAvailableAt="2004-12-09" addedAt="1325305703" updatedAt="1325305729">
+<Media id="111" duration="8464301" bitrate="982" width="720" height="304" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="111" key="/library/parts/111/file.avi" duration="8464301" file="/var/lib/plexmediaserver/Movies/Phantom of the Opera.avi" size="1038522368" container="avi" />
+</Media>
+<Genre tag="Drama" />
+<Genre tag="Romance Film" />
+<Writer tag="Joel Schumacher" />
+<Writer tag="Andrew Lloyd Webber" />
+<Director tag="Joel Schumacher" />
+<Country tag="United Kingdom" />
+<Role tag="Jennifer Ellison" />
+<Role tag="Simon Callow" />
+<Role tag="James Fleet" />
+</Video>
+<Video ratingKey="138" key="/library/metadata/138" studio="New Line Cinema" type="movie" title="Blade: Trinity" contentRating="R" summary="Blade: Trinity (also known as Blade III or Blade III: Trinity) is a 2004 American vampire superhero action film, written and directed by David S. Goyer, who also wrote the screenplays to the first two Blade films. It is the third film in the Blade film series, following on from Blade and Blade II and it is based on the Marvel Comics character Blade, played by Wesley Snipes. The story continues in Blade: The Series." rating="7.8000001907348597" year="2004" tagline="The final hunt begins." thumb="/library/metadata/138/thumb/1325349655" art="/library/metadata/138/art/1325349655" duration="7380000" originallyAvailableAt="2004-12-08" addedAt="1325349624" updatedAt="1325349655">
+<Media id="138" duration="6772512" bitrate="1227" width="720" height="304" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="138" key="/library/parts/138/file.avi" duration="6772512" file="/var/lib/plexmediaserver/Movies/Blade Trinity.avi" size="1038581760" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Thriller" />
+<Writer tag="David S. Goyer" />
+<Director tag="David S. Goyer" />
+<Country tag="USA" />
+<Role tag="Dominic Purcell" />
+<Role tag="Parker Posey" />
+<Role tag="Patton Oswalt" />
+</Video>
+<Video ratingKey="195" key="/library/metadata/195" studio="Warner Bros. Entertainment" type="movie" title="Ocean&apos;s Twelve" contentRating="PG-13" summary="Ocean&apos;s Twelve is a 2004 American crime comedy film, the sequel to 2001&apos;s Ocean&apos;s Eleven. Like its predecessor, which was a remake of the 1960 film Ocean&apos;s 11, the film used a celebrity ensemble cast. It was released in the United States on December 10, 2004. A third film, Ocean&apos;s Thirteen, was released on June 8, 2007 in the United States. The film starred George Clooney, Brad Pitt, Matt Damon, Catherine Zeta-Jones, Andy García, Julia Roberts, Don Cheadle, Bernie Mac and others." rating="7.4000000953674299" year="2004" tagline="You cross one ocean, you face them all" thumb="/library/metadata/195/thumb/1347833582" art="/library/metadata/195/art/1347833582" duration="6900000" originallyAvailableAt="2004-12-08" addedAt="1347833273" updatedAt="1347833582">
+<Media id="190" duration="7517518" bitrate="1077" width="720" height="304" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="h264" videoResolution="480" container="mkv" videoFrameRate="24p">
+<Part id="190" key="/library/parts/190/file.mkv" duration="7517518" file="/var/lib/plexmediaserver/Movies/Ocean&apos;s 12.mkv" size="1012420888" container="mkv" />
+</Media>
+<Genre tag="Caper story" />
+<Genre tag="Thriller" />
+<Writer tag="George Nolfi" />
+<Director tag="Steven Soderbergh" />
+<Country tag="USA" />
+<Role tag="Eddie Izzard" />
+<Role tag="Vincent Cassel" />
+<Role tag="Robbie Coltrane" />
+</Video>
+<Video ratingKey="84" key="/library/metadata/84" studio="Columbia Pictures" type="movie" title="Closer" contentRating="R" summary="Closer is a 2004 romantic drama film written by Patrick Marber, based on his award-winning 1997 play of the same name. It was produced and directed by Mike Nichols and stars Natalie Portman, Julia Roberts, Jude Law and Clive Owen. The film, like the play on which it is based, has been seen by some as a modern and tragic version of Mozart&apos;s opera Così fan tutte, with references to that opera in both the plot and the soundtrack. Owen starred in the play as Dan, the role assumed by Law in the film.&#xA;&#xA;The film was recognized with a number of awards and nominations, including Oscar nominations and Golden Globe wins for both Portman and Owen for their performances in supporting roles." rating="6.8000001907348597" viewOffset="45186" year="2004" tagline="If you believe in love at first sight, you never stop looking." thumb="/library/metadata/84/thumb/1335496555" art="/library/metadata/84/art/1335496555" duration="6240000" originallyAvailableAt="2004-12-03" addedAt="1325299402" updatedAt="1335496555">
+<Media id="84" duration="6233016" bitrate="942" width="640" height="352" aspectRatio="1.85" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="84" key="/library/parts/84/file.avi" duration="6233016" file="/var/lib/plexmediaserver/Movies/Closer.avi" size="734019584" container="avi" />
+</Media>
+<Genre tag="Drama" />
+<Genre tag="Romance Film" />
+<Writer tag="Patrick Marber" />
+<Director tag="Mike Nichols" />
+<Country tag="United Kingdom" />
+<Role tag="Colin Stinton" />
+<Role tag="Michael Haley" />
+<Role tag="Nick Hobbs" />
+</Video>
+<Video ratingKey="134" key="/library/metadata/134" studio="Warner Bros. Entertainment" type="movie" title="Alexander" contentRating="R" summary="Alexander is a 2004 epic film based on the life of Alexander the Great. It is not a remake of the 1956 film which starred Richard Burton. It was directed by Oliver Stone, with Colin Farrell in the title role. The film was an original screenplay based in part on the book Alexander the Great, written in the 1970s by historian Robin Lane Fox, Professor of Ancient History at Oxford.&#xA;&#xA;The film was critically derided upon its release and failed at the American box office. It grossed only US$34 million domestically, while costing $155 million to produce. However, it did better internationally in recovering its losses, grossing a total of $132 million in overseas revenue.&#xA;&#xA;The two earlier DVD versions of Alexander (&quot;director&apos;s cut&quot; version and the theatrical version) sold over 3.5 million copies in the United States. Oliver Stone&apos;s third version, Alexander Revisited: The Final Cut (2007) has sold close to one million copies." rating="6.8000001907348597" year="2004" tagline="Fortune favors the bold" thumb="/library/metadata/134/thumb/1325349262" art="/library/metadata/134/art/1325349262" duration="10020000" originallyAvailableAt="2004-11-16" addedAt="1325349219" updatedAt="1325349262">
+<Media id="134" duration="10012008" bitrate="590" width="336" height="256" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="134" key="/library/parts/134/file.avi" duration="10012008" file="/var/lib/plexmediaserver/Movies/Alexander.avi" size="738555904" container="avi" />
+</Media>
+<Genre tag="Biography" />
+<Genre tag="Drama" />
+<Writer tag="Christopher Kyle" />
+<Writer tag="Laeta Kalogridis" />
+<Director tag="Oliver Stone" />
+<Country tag="Germany" />
+<Role tag="Gary Stretch" />
+<Role tag="Connor Paolo" />
+<Role tag="Joseph Morgan" />
+</Video>
+<Video ratingKey="105" key="/library/metadata/105" studio="The Walt Disney Company" type="movie" title="National Treasure" contentRating="PG" summary="National Treasure is a 2004 mystery adventure heist film from the Walt Disney Studios under Walt Disney Pictures. It was written by Jim Kouf, Ted Elliott, Terry Rossio, Cormac Wibberley, and Marianne Wibberley, produced by Jerry Bruckheimer, and directed by Jon Turteltaub. It is the first film in the National Treasure franchise and stars Nicolas Cage, Diane Kruger, Justin Bartha, Sean Bean, Jon Voight, Harvey Keitel, and Christopher Plummer. Cage plays Benjamin Gates, a historian and amateur cryptologist searching for a lost treasure, once protected by the Knights Templar and hidden by the Freemasons during the early years of the United States. A coded map on the back of the Declaration of Independence points to the location of the &quot;national treasure&quot;, but Gates is not alone in his quest. Whoever can steal the Declaration and decode it first will find the greatest treasure in history." rating="7.4000000953674299" year="2004" tagline="The greatest adventure history has ever revealed." thumb="/library/metadata/105/thumb/1325632406" art="/library/metadata/105/art/1325632406" duration="7860000" originallyAvailableAt="2004-11-08" addedAt="1325304643" updatedAt="1325632406">
+<Media id="105" duration="7864608" bitrate="1057" width="720" height="304" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="105" key="/library/parts/105/file.avi" duration="7864608" file="/var/lib/plexmediaserver/Movies/National Treasure.avi" size="1038714880" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Drama" />
+<Writer tag="Cormac Wibberly" />
+<Writer tag="Jim Kouf" />
+<Director tag="Jon Turteltaub" />
+<Country tag="USA" />
+<Role tag="Harvey Keitel" />
+<Role tag="Christopher Plummer" />
+<Role tag="Jason Earles" />
+</Video>
+<Video ratingKey="100" key="/library/metadata/100" studio="Pixar" type="movie" title="The Incredibles" titleSort="Incredibles" contentRating="PG" summary="The Incredibles is a 2004 American computer-animated action-comedy superhero film about a family of superheroes who are forced to hide their powers. It was written and directed by Brad Bird, a former director and executive consultant of The Simpsons, and was produced by Pixar and distributed by Walt Disney Pictures. The starring voices are Craig T. Nelson as Bob Parr, Holly Hunter as his wife Helen Parr; Sarah Vowell as their teenage daughter Violet; Spencer Fox as their young son Dash; Jason Lee as the supervillain Syndrome; Samuel L. Jackson as Frozone; and Elizabeth Peña as Syndrome&apos;s beautiful assistant, Mirage. Bob&apos;s yearning to help people draws the entire Parr family into a battle with the villain and his killer robot.&#xA;&#xA;The film won the 2004 Annie Award for Best Animated Feature, along with two 2004 Academy Awards, Best Animated Feature and Best Sound Editing. It also received nominations for two other Academy Awards, won the Saturn Award for Best Animated Film, and became the first entirely animated film to win the prestigious Hugo Award for Best Dramatic Presentation. It was also nominated for Best Motion Picture – Musical or Comedy at the 2004 Golden Globes." rating="8.8000001907348597" viewOffset="201018" year="2004" tagline="Save The Day." thumb="/library/metadata/100/thumb/1325370836" art="/library/metadata/100/art/1325370836" duration="6960000" originallyAvailableAt="2004-10-27" addedAt="1325302548" updatedAt="1325370836">
+<Media id="100" duration="6924000" bitrate="1200" width="720" height="304" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="100" key="/library/parts/100/file.avi" duration="6924000" file="/var/lib/plexmediaserver/Movies/Incredibiles.avi" size="1038798848" container="avi" />
+</Media>
+<Genre tag="Comedy" />
+<Genre tag="Computer Animation" />
+<Writer tag="Brad Bird" />
+<Director tag="Brad Bird" />
+<Country tag="USA" />
+<Role tag="John Ratzenberger" />
+<Role tag="Elizabeth Peña" />
+<Role tag="Kimberly Adair Clark" />
+</Video>
+<Video ratingKey="126" key="/library/metadata/126" studio="DreamWorks" type="movie" title="Surviving Christmas" contentRating="PG-13" summary="Surviving Christmas is a 2004 comedy film, directed by Mike Mitchell and starring Ben Affleck. Despite being a Christmas movie, DreamWorks SKG released the movie towards the end of October. This was due to it being advanced from December 2003 to avoid clashing with Affleck&apos;s other film, Paycheck. The movie had negative reviews and was a box office failure. It was released on DVD on December 21, 2004, just two months after it had its theatrical release." year="2004" thumb="/library/metadata/126/thumb/1325348503" art="/library/metadata/126/art/1325348503" duration="5400000" originallyAvailableAt="2004-10-22" addedAt="1325348304" updatedAt="1325348503">
+<Media id="126" duration="5440056" bitrate="1080" width="720" height="384" aspectRatio="1.85" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="126" key="/library/parts/126/file.avi" duration="5440056" file="/var/lib/plexmediaserver/Movies/Surviving Christmas.avi" size="734234624" container="avi" />
+</Media>
+<Genre tag="Comedy" />
+<Genre tag="Romance Film" />
+<Writer tag="Jeffrey Ventimilia" />
+<Writer tag="Joshua Sternin" />
+<Director tag="Mike Mitchell" />
+<Country tag="USA" />
+<Role tag="James Gandolfini" />
+<Role tag="Christina Applegate" />
+<Role tag="David Selby" />
+</Video>
+<Video ratingKey="147" key="/library/metadata/147" studio="Paramount Pictures" type="movie" title="Sky Captain and the World of Tomorrow" contentRating="PG" summary="Sky Captain and the World of Tomorrow is a 2004 American pulp adventure science-fiction film written and directed by Kerry Conran in his directorial debut. The film is set in an alternative 1939 and follows the adventures of Polly Perkins (Gwyneth Paltrow), a newspaper reporter, and Harry Joseph &quot;Joe&quot; Sullivan (Jude Law), alias &quot;Sky Captain,&quot; as they track down the mysterious Dr. Totenkopf (Laurence Olivier), who is seeking to build the &quot;World of Tomorrow&quot;.&#xA;&#xA;Conran spent four years making a black and white teaser trailer with a bluescreen set up in his living room and using a Macintosh IIci personal computer. He was able to show it to producer Jon Avnet, who was so impressed that he spent two years working with the aspiring filmmaker on his screenplay. No major studio was interested in financing such an unusual film with a first-time director. Avnet convinced Aurelio De Laurentiis to finance Sky Captain without a distribution deal.&#xA;&#xA;Almost 100 digital artists, modelers, animators and compositors created the multi-layered 2D and 3D backgrounds for the live-action footage while the entire movie was sketched out via hand-drawn storyboards and then re-created as computer-generated 3D animatics. Ten months before Conran made the movie with his cast, he shot it entirely with stand-ins in Los Angeles and then created it in animatics so the actors had an idea of what the film would look like. Sky Captain is notable as one of the first major films (along with Sin City (2005), Casshern (2004), and Immortal (2004) to be shot entirely on a &quot;digital backlot&quot;, blending live actors with computer generated surroundings.&#xA;&#xA;Sky Captain grossed $37.7 million in North America and $20.1 million in the rest of the world, totalling $57.9 million, below its estimated $70 million budget. Since the overhead of theater, marketing, and other costs raises the break-even point of a film to roughly double its production cost, it likely lost about $80,000,000 prior to TV and DVD revenues." rating="7.1999998092651403" year="2004" tagline="The world will tremble this September!" thumb="/library/metadata/147/thumb/1325350588" art="/library/metadata/147/art/1325350588" duration="6360000" originallyAvailableAt="2004-09-14" addedAt="1325350564" updatedAt="1325350588">
+<Media id="147" duration="6396981" bitrate="1299" width="720" height="416" aspectRatio="1.78" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="147" key="/library/parts/147/file.avi" duration="6396981" file="/var/lib/plexmediaserver/Movies/Sky Captain and the World of Tomorrow.avi" size="1038532608" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Airplanes and airports" />
+<Writer tag="Kerry Conran" />
+<Director tag="Kerry Conran" />
+<Country tag="Italy" />
+<Role tag="Omid Djalili" />
+<Role tag="Peter Law" />
+<Role tag="Khan Bonfils" />
+</Video>
+<Video ratingKey="119" key="/library/metadata/119" studio="Fox Searchlight Pictures" type="movie" title="Sideways" contentRating="R" summary="Sideways is a 2004 comedy-drama film written by Jim Taylor and Alexander Payne and directed by Payne. Adapted from Rex Pickett&apos;s 2004 novel of the same name, Sideways follows two forty-something year old men, portrayed by Paul Giamatti and Thomas Haden Church, who take a week-long road trip to Santa Barbara County Wine Country. Payne and Taylor won multiple awards for their screenplay. Giamatti and Church, as well as actresses Virginia Madsen and Sandra Oh, playing local women who become romantically involved with the men, all received accolades for their performances.&#xA;&#xA;Sideways won the Academy Award for Best Adapted Screenplay, and was nominated for four other awards." rating="9" year="2004" tagline="In search of wine. In search of women. In search of themselves." thumb="/library/metadata/119/thumb/1325348422" art="/library/metadata/119/art/1325348422" duration="7320000" originallyAvailableAt="2004-09-13" addedAt="1325348302" updatedAt="1325348422">
+<Media id="119" duration="7623912" bitrate="771" width="720" height="544" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="576" container="avi" videoFrameRate="24p">
+<Part id="119" key="/library/parts/119/file.avi" duration="7623912" file="/var/lib/plexmediaserver/Movies/Sideways.avi" size="734322688" container="avi" />
+</Media>
+<Genre tag="Comedy-drama" />
+<Genre tag="Comedy" />
+<Writer tag="Jim Taylor" />
+<Writer tag="Alexander Payne" />
+<Director tag="Alexander Payne" />
+<Country tag="USA" />
+<Role tag="Lee Brooks" />
+<Role tag="Missy Doty" />
+<Role tag="Shaun Duke" />
+</Video>
+<Video ratingKey="99" key="/library/metadata/99" studio="Overbrook Entertainment" type="movie" title="I, Robot" contentRating="PG-13" summary="I, Robot is a 2004 science-fiction action film directed by Alex Proyas. The screenplay was written by Jeff Vintar, Akiva Goldsman and Hillary Seitz, and is very loosely based on (&quot;suggested by&quot;, according to the end credits) Isaac Asimov&apos;s short-story collection of the same name. Will Smith stars in the lead role of the film as Detective Del Spooner. The supporting cast includes Bridget Moynahan, Bruce Greenwood, James Cromwell, Chi McBride, Alan Tudyk, and Shia LaBeouf. It was nominated for the 2004 Academy Award for Best Visual Effects, but lost to Spider-Man 2.&#xA;&#xA;I, Robot was released in North America on July 16, 2004, in Australia on July 22, 2004, in United Kingdom on August 6, 2004 and in other countries between July 2004 to October 2004. Produced with a budget of USD $120 million, the film grossed $144 million domestically and $202 million in foreign markets for a worldwide total of $347 million." rating="8.1999998092651403" viewCount="3" year="2004" tagline="What will you do with yours?" thumb="/library/metadata/99/thumb/1331794064" art="/library/metadata/99/art/1331794064" duration="6900000" originallyAvailableAt="2004-07-15" addedAt="1325302548" updatedAt="1331794064">
+<Media id="99" duration="6883520" bitrate="1207" width="720" height="320" aspectRatio="2.20" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="99" key="/library/parts/99/file.avi" duration="6883520" file="/var/lib/plexmediaserver/Movies/I Robot.avi" size="1038622720" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Drama" />
+<Writer tag="Jeff Vintar" />
+<Writer tag="Akiva Goldsman" />
+<Director tag="Alex Proyas" />
+<Country tag="USA" />
+<Role tag="Chi McBride" />
+<Role tag="James Cromwell" />
+<Role tag="Bruce Greenwood" />
+</Video>
+<Video ratingKey="81" key="/library/metadata/81" studio="Universal Studios" type="movie" title="The Bourne Supremacy" titleSort="Bourne Supremacy" contentRating="PG-13" summary="The Bourne Supremacy is a 2004 American action thriller spy film very loosely based on Robert Ludlum&apos;s novel of the same name. The film was directed by Paul Greengrass, written by Tony Gilroy and Brian Helgeland, and produced by Frank Marshall and Pat Crowley. Universal Pictures released the film to theaters in the United States on 23 July 2004. It is the second in the Bourne film series. It was preceded by The Bourne Identity and is followed by The Bourne Ultimatum.&#xA;&#xA;The Bourne Supremacy continues the story of Jason Bourne, a former CIA paramilitary operative and assassin suffering from psychogenic amnesia. Bourne is portrayed by Matt Damon. The film focuses on his attempt to learn more of his past as he is once more enveloped in a conspiracy surrounding the CIA and Operation Treadstone. The film also stars Brian Cox as Ward Abbott, Joan Allen as Pamela Landy and Julia Stiles as Nicky Parsons." rating="8.3999996185302699" viewCount="3" year="2004" tagline="They should have left him alone." thumb="/library/metadata/81/thumb/1333194649" art="/library/metadata/81/art/1333194649" duration="6480000" originallyAvailableAt="2004-07-15" addedAt="1325298889" updatedAt="1333194649">
+<Media id="81" duration="6512512" bitrate="1276" width="624" height="272" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="81" key="/library/parts/81/file.avi" duration="6512512" file="/var/lib/plexmediaserver/Movies/Bourne Supremacy.avi" size="1038632960" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Drama" />
+<Writer tag="Tony Gilroy" />
+<Director tag="Paul Greengrass" />
+<Country tag="Germany" />
+<Role tag="Tom Gallop" />
+<Role tag="Gabriel Mann" />
+<Role tag="Marton Csokas" />
+</Video>
+<Video ratingKey="123" key="/library/metadata/123" studio="Marvel Entertainment" type="movie" title="Spider-Man 2" contentRating="PG-13" summary="Spider-Man 2 is a 2004 American superhero film directed by Sam Raimi, written by Alvin Sargent and developed by Alfred Gough, Miles Millar, and Michael Chabon. It is the second film in the Spider-Man film franchise based on the fictional Marvel Comics character Spider-Man. It saw the return of Tobey Maguire as Peter Parker, Kirsten Dunst as Mary Jane Watson and James Franco as Harry Osborn.&#xA;&#xA;Set two years after the original, the film focuses on Peter Parker struggling to manage both his personal life and his duties as Spider-Man. The main villain in this film is Dr. Otto Octavius (Alfred Molina), who takes a turn for the diabolical following a failed experiment and the death of his wife. Using his mechanical tentacles, Octavius is dubbed &quot;Doctor Octopus&quot; and threatens to endanger the lives of the people of New York City.&#xA;&#xA;The film was released in 2004 in the United States by Columbia Pictures, and received high acclaim from critics. It grossed over $783 million worldwide, and won the Academy Award for Best Visual Effects. The film&apos;s success led to the final sequel, Spider-Man 3." rating="8.3999996185302699" viewOffset="254003" year="2004" tagline="Sacrifice. Destiny. Choice." thumb="/library/metadata/123/thumb/1336935663" art="/library/metadata/123/art/1336935663" duration="7680000" originallyAvailableAt="2004-06-30" addedAt="1325348303" updatedAt="1336935663">
+<Media id="123" duration="7645952" bitrate="1087" width="720" height="304" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="123" key="/library/parts/123/file.avi" duration="7645952" file="/var/lib/plexmediaserver/Movies/Spiderman 2.avi" size="1038579712" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Thriller" />
+<Writer tag="Michael Chabon" />
+<Writer tag="Alfred Gough" />
+<Director tag="Sam Raimi" />
+<Country tag="USA" />
+<Role tag="Bruce Campbell" />
+<Role tag="Stan Lee" />
+<Role tag="Willem Dafoe" />
+</Video>
+<Video ratingKey="89" key="/library/metadata/89" studio="Red Hour Productions" type="movie" title="Dodgeball: A True Underdog Story" contentRating="PG-13" summary="DodgeBall: A True Underdog Story, commonly referred to as simply DodgeBall, is a 2004 American sports comedy film produced by 20th Century Fox and Red Hour Productions, written and directed by Rawson Marshall Thurber and starring Vince Vaughn, Ben Stiller, Christine Taylor, and Rip Torn. The film focuses on a rivalry between the owners of Average Joe&apos;s, a small gym, and Globo-Gym, a competing big-budget gym located across the street. Peter LaFleur (Vaughn), the owner of the smaller gym, has defaulted on his mortgage and enters a dodgeball tournament in an attempt to earn the money necessary to prevent his gym from being purchased by Globo-Gym. Globo-Gym enters a team in the tournament in an effort to ensure that Average Joe&apos;s gym fails.&#xA;&#xA;Dodgeball received generally good reviews, with a 70% aggregate rating on Rotten Tomatoes. The film was a commercial success, grossing over $30 million in its first week and eventually grossed more than $114 million domestically." rating="7.5999999046325701" year="2004" tagline="A true underdog story." thumb="/library/metadata/89/thumb/1325303676" art="/library/metadata/89/art/1325303676" duration="5520000" originallyAvailableAt="2004-06-18" addedAt="1325300054" updatedAt="1325303676">
+<Media id="89" duration="5522112" bitrate="1064" width="576" height="256" aspectRatio="2.20" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="89" key="/library/parts/89/file.avi" duration="5522112" file="/var/lib/plexmediaserver/Movies/Dodgeball.avi" size="734124032" container="avi" />
+</Media>
+<Genre tag="Sports" />
+<Genre tag="Comedy" />
+<Writer tag="Rawson Marshall Thurber" />
+<Director tag="Rawson Marshall Thurber" />
+<Country tag="USA" />
+<Role tag="Alan Tudyk" />
+<Role tag="Chris Williams" />
+<Role tag="Brandon Molale" />
+</Video>
+<Video ratingKey="6" key="/library/metadata/6" studio="20th Century Fox" type="movie" title="The Day After Tomorrow" titleSort="Day After Tomorrow" contentRating="PG-13" summary="The Day After Tomorrow is a 2004 American science-fiction disaster film that depicts the catastrophic effects of global warming in a series of extreme weather events that usher in global cooling which leads to a new ice age. The film did well at the box office, grossing $542,771,772 internationally. Domestically, it is the sixth highest grossing movie not to be #1 in the US box office (behind My Big Fat Greek Wedding, Alvin and the Chipmunks and its sequel, Sherlock Holmes, and Ice Age: Dawn of the Dinosaurs), but worldwide, it is third behind only Ice Age 3 and Casino Royale. The movie was filmed in Montreal, and is the highest grossing Hollywood film in history to be filmed in Canada (if adjusted for inflation).&#xA;&#xA;The Day After Tomorrow premiered in Mexico City on May 17, 2004 and was released worldwide from May 26 to May 28 except in South Korea and Japan, where it was released June 4 and June 5, respectively. The film was originally planned for release in summer 2003.&#xA;The film made $110,000,000 in global DVD sales, bringing its total film gross to $654,771,772." rating="6.4000000953674299" viewOffset="1336797" viewCount="1" year="2004" tagline="This year, a sweater won&apos;t do." thumb="/library/metadata/6/thumb/1336353219" art="/library/metadata/6/art/1336353219" duration="7380000" originallyAvailableAt="2004-05-17" addedAt="1325285656" updatedAt="1336353219">
+<Media id="6" duration="7420448" bitrate="1121" width="720" height="304" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="6" key="/library/parts/6/file.avi" duration="7420448" file="/var/lib/plexmediaserver/Movies/The Day After Tomorrow.avi" size="1039562752" container="avi" />
+</Media>
+<Genre tag="Disaster" />
+<Genre tag="Thriller" />
+<Writer tag="Jeffrey Nachmanoff" />
+<Writer tag="Roland Emmerich" />
+<Director tag="Roland Emmerich" />
+<Country tag="USA" />
+<Role tag="Jay O. Sanders" />
+<Role tag="Kenneth Welsh" />
+<Role tag="Tamlyn Tomita" />
+</Video>
+<Video ratingKey="27" key="/library/metadata/27" studio="Warner Bros. Entertainment" type="movie" title="Troy" contentRating="R" summary="Troy is a 2004 epic war film written by David Benioff and directed by Wolfgang Petersen based on Homer&apos;s The Iliad. Its cast includes Brad Pitt as Achilles, Eric Bana as Hector, Orlando Bloom as Paris, Diane Kruger as Helen, Sean Bean as Odysseus, Brian Cox as Agamemnon, Rose Byrne as Briseis, Garrett Hedlund as Patroclus, Peter O&apos;Toole as Priam, Brendan Gleeson as Menelaus, and Tyler Mane as Ajax.&#xA;&#xA;It was nominated for the Academy Award for Costume Design." rating="7.1999998092651403" year="2004" tagline="For Honor" thumb="/library/metadata/27/thumb/1325285862" art="/library/metadata/27/art/1325285862" duration="8760000" originallyAvailableAt="2004-05-13" addedAt="1325285658" updatedAt="1325285862">
+<Media id="27" duration="9765927" bitrate="851" width="720" height="304" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="27" key="/library/parts/27/file.avi" duration="9765927" file="/var/lib/plexmediaserver/Movies/Troy.avi" size="1038798848" container="avi" />
+</Media>
+<Genre tag="Sword and Sandal" />
+<Genre tag="Action" />
+<Writer tag="David Benioff" />
+<Director tag="Wolfgang Petersen" />
+<Country tag="USA" />
+<Role tag="Diane Kruger" />
+<Role tag="Julian Glover" />
+<Role tag="Garrett Hedlund" />
+</Video>
+<Video ratingKey="125" key="/library/metadata/125" studio="Samuel Goldwyn Films" type="movie" title="Super Size Me" contentRating="PG-13" summary="Super Size Me is a 2004 American documentary film directed by and starring Morgan Spurlock, an American independent filmmaker. Spurlock&apos;s film follows a 30-day period from February 1 to March 2, 2003 during which he eats only McDonald&apos;s food. The film documents this lifestyle&apos;s drastic effect on Spurlock&apos;s physical and psychological well-being, and explores the fast food industry&apos;s corporate influence, including how it encourages poor nutrition for its own profit. &#xA;&#xA;Spurlock dined at McDonald&apos;s restaurants three times per day, eating every item on the chain&apos;s menu. Spurlock consumed an average of 20.92 megajoules or 5,000 kcal (the equivalent of 9.26 Big Macs) per day during the experiment. &#xA;&#xA;As a result, the then-32-year-old Spurlock gained 24½ lbs. (11.1 kg), a 13% body mass increase, a cholesterol level of 230, and experienced mood swings, sexual dysfunction, and fat accumulation in his liver. It took Spurlock fourteen months to lose the weight gained from his experiment using a vegan diet supervised by his future wife, a chef who specializes in gourmet vegan dishes.&#xA;&#xA;The reason for Spurlock&apos;s investigation was the increasing spread of obesity throughout U.S. society, which the Surgeon General has declared &quot;epidemic,&quot; and the corresponding lawsuit brought against McDonald&apos;s on behalf of two overweight girls, who, it was alleged, became obese as a result of eating McDonald&apos;s food [Pelman v. McDonald&apos;s Corp., 237 F. Supp. 2d 512]. Spurlock points out that although the lawsuit against McDonald&apos;s failed (and subsequently many state legislatures have legislated against product liability actions against producers and distributors of &quot;fast food&quot;), much of the same criticism leveled against the tobacco companies applies to fast food franchises whose product is both physiologically addictive and physically harmful.&#xA;&#xA;The documentary was nominated for an Academy Award for Documentary Feature.&#xA;&#xA;A comic book related to the movie has been made with Dark Horse as the publisher. It contains stories about various cases of fast food health scares." rating="8" year="2004" tagline="A film of epic portions." thumb="/library/metadata/125/thumb/1325348493" art="/library/metadata/125/art/1325348493" duration="6000000" originallyAvailableAt="2004-05-07" addedAt="1325348304" updatedAt="1325348493">
+<Media id="125" duration="6000672" bitrate="979" width="608" height="352" aspectRatio="1.78" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="125" key="/library/parts/125/file.avi" duration="6000672" file="/var/lib/plexmediaserver/Movies/Super Size Me.avi" size="734224384" container="avi" />
+</Media>
+<Genre tag="Comedy" />
+<Genre tag="Indie" />
+<Writer tag="Morgan Spurlock" />
+<Director tag="Morgan Spurlock" />
+<Country tag="USA" />
+<Role tag="Morgan Spurlock" />
+</Video>
+<Video ratingKey="71" key="/library/metadata/71" studio="SNL Studios" type="movie" title="Mean Girls" contentRating="PG-13" summary="Mean Girls is a 2004 American dark comedy film directed by Mark Waters. The screenplay was written by Tina Fey and is based in part on the non-fiction book Queen Bees and Wannabes by Rosalind Wiseman, which describes how female high school social cliques operate and the effect they can have on girls. The film stars Lindsay Lohan and features a supporting cast of Rachel McAdams, Amanda Seyfried, Lacey Chabert and Lizzy Caplan. The film is produced by Saturday Night Live creator Lorne Michaels. Screenwriter and co-star of the film, Tina Fey, was a longtime castmember and writer for SNL. The film also features appearances from SNL cast members Tim Meadows, Ana Gasteyer and Amy Poehler.&#xA;&#xA;The film was generally well-received by critics and was a box office success, grossing $129,042,871 worldwide. Mean Girls has been praised as Lohan&apos;s break-out film role. Mean Moms, a quasi-spin-off, based on Wiseman&apos;s second book, Queen Bee Moms &amp; King Pin Dads, is also in development." rating="7.1999998092651403" year="2004" tagline="Watch your back." thumb="/library/metadata/71/thumb/1325297814" art="/library/metadata/71/art/1325297814" duration="5820000" originallyAvailableAt="2004-04-30" addedAt="1325297766" updatedAt="1325297814">
+<Media id="71" duration="5810019" bitrate="1430" width="720" height="416" aspectRatio="1.78" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="71" key="/library/parts/71/file.avi" duration="5810019" file="/var/lib/plexmediaserver/Movies/Mean Girls.avi" size="1038526464" container="avi" />
+</Media>
+<Genre tag="Coming of age" />
+<Genre tag="Comedy-drama" />
+<Writer tag="Tina Fey" />
+<Director tag="Mark Waters" />
+<Country tag="USA" />
+<Role tag="Daniel Franzese" />
+<Role tag="Lizzy Caplan" />
+<Role tag="Amy Poehler" />
+</Video>
+<Video ratingKey="153" key="/library/metadata/153" studio="Marvel Entertainment" type="movie" title="The Punisher" titleSort="Punisher" contentRating="R" summary="The Punisher is a 2004 American comic book action film, based on the Marvel Comics character of the same name, starring Thomas Jane as the antihero Frank Castle / The Punisher and John Travolta as the villain Howard Saint, a money launderer who orders the death of Castle&apos;s entire family. The story and plot were mainly based on two Punisher comic book stories; The Punisher: Year One and Welcome Back, Frank along with scenes from other Punisher stories such as Marvel Preview Presents: The Punisher #2, Marvel Super Action Featuring: The Punisher #1, The Punisher War Zone, and The Punisher War Journal.&#xA;&#xA;The film was an attempt at rebooting the character after the failure of the 1989 film of the same name. The Punisher was shot on location in Tampa, Florida, and surrounding environs in mid- to late 2003. It was distributed by Lions Gate Entertainment in North America, although Artisan Entertainment, which produced 1989&apos;s The Punisher, financed and co-distributed the film with Lionsgate, while Columbia Pictures distributed the film in non-North American countries. Director Jonathan Hensleigh agreed to helm the film during its development stage despite a dispute with Marvel Studios.&#xA;&#xA;The film was released on April 16, 2004, by Lions Gate Entertainment, grossing $13,834,527 in the United States over its opening weekend. A DVD release followed on September 7, 2004 - with $10.8 million in copies sold. The success of the DVD sales prompted Marvel Comics and Lionsgate to start development on a sequel titled The Punisher 2, which instead became a reboot titled Punisher: War Zone after Jane and Hensleigh left the project due to creative differences. This was the last film produced by Artisan Entertainment." rating="7.4000000953674299" year="2004" tagline="The punishment has begun" thumb="/library/metadata/153/thumb/1325351258" art="/library/metadata/153/art/1325351258" duration="7440000" originallyAvailableAt="2004-04-16" addedAt="1325351234" updatedAt="1325351258">
+<Media id="153" duration="7405536" bitrate="1122" width="720" height="320" aspectRatio="2.20" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="153" key="/library/parts/153/file.avi" duration="7405536" file="/var/lib/plexmediaserver/Movies/The Punisher.avi" size="1038583808" container="avi" />
+</Media>
+<Genre tag="Thriller" />
+<Genre tag="Drama" />
+<Writer tag="Michael France" />
+<Writer tag="Jonathan Hensleigh" />
+<Director tag="Jonathan Hensleigh" />
+<Country tag="Germany" />
+<Role tag="Roy Scheider" />
+<Role tag="Laura Harring" />
+<Role tag="Thomas Jane" />
+</Video>
+<Video ratingKey="132" key="/library/metadata/132" studio="Enigma Pictures" type="movie" title="13 Going on 30" contentRating="PG-13" summary="After total humiliation at her thirteenth birthday party, Jenna Rink wants to just hide until she&apos;s thirty. Thanks to some wishing dust, Jenna&apos;s prayer has been answered. With a knockout body, a dream apartment, a fabulous wardrobe, an athlete boyfriend, a dream job, and superstar friends, this can&apos;t be a better life. Unfortunetly, Jenna realizes that this is not what she wanted. The only one that she needs is her childhood best friend, Matt, a boy that she thought destroyed her party. But when she finds him, he&apos;s a grown up, and not the same person that she knew." rating="7" year="2004" tagline="For some, 13 feels like it was just yesterday. For Jenna, it was." thumb="/library/metadata/132/thumb/1355265684" art="/library/metadata/132/art/1355265684" duration="5640000" originallyAvailableAt="2004-04-14" addedAt="1325349034" updatedAt="1355265684">
+<Media id="132" duration="5868336" bitrate="1001" width="576" height="320" aspectRatio="1.78" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="132" key="/library/parts/132/file.avi" duration="5868336" file="/var/lib/plexmediaserver/Movies/13 Going on 30.avi" size="734199808" container="avi" />
+</Media>
+<Genre tag="Comedy" />
+<Genre tag="Fantasy" />
+<Writer tag="Cathy Yuspa" />
+<Writer tag="Josh Goldsmith" />
+<Director tag="Gary Winick" />
+<Country tag="USA" />
+<Role tag="Jennifer Garner" />
+<Role tag="Mark Ruffalo" />
+<Role tag="Judy Greer" />
+</Video>
+<Video ratingKey="150" key="/library/metadata/150" studio="Village Roadshow Pictures" type="movie" title="Taking Lives" contentRating="R" summary="Taking Lives is a 2004 psychological thriller film starring Angelina Jolie and Ethan Hawke. The film was marketed with the tagline &quot;He would kill to be you.&quot;&#xA;&#xA;The original music score was composed by Philip Glass and the main title&apos;s theme was composed by Austrian Walter Werzowa, best known for the Intel jingle and his work in the band Edelweiss. The film was loosely adapted from a 1999 thriller novel by Michael Pye of the same title." year="2004" tagline="He would kill to be you." thumb="/library/metadata/150/thumb/1325351003" art="/library/metadata/150/art/1325351003" duration="6180000" originallyAvailableAt="2004-03-16" addedAt="1325350976" updatedAt="1325351003">
+<Media id="150" duration="6179472" bitrate="951" width="560" height="416" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="150" key="/library/parts/150/file.avi" duration="6179472" file="/var/lib/plexmediaserver/Movies/Taking Lives.avi" size="734226432" container="avi" />
+</Media>
+<Genre tag="Slasher" />
+<Genre tag="Thriller" />
+<Writer tag="Jon Bokenkamp" />
+<Director tag="D.J. Caruso" />
+<Country tag="USA" />
+<Role tag="Paul Dano" />
+<Role tag="Justin Chatwin" />
+<Role tag="Olivier Martinez" />
+</Video>
+<Video ratingKey="3" key="/library/metadata/3" studio="Red Hour Productions" type="movie" title="Along Came Polly" contentRating="PG-13" summary="Along Came Polly is a 2004 American romantic comedy film written and directed by John Hamburg, starring Ben Stiller and Jennifer Aniston in the lead roles." year="2004" tagline="or the most cautious man on Earth, life is about to get interesting." thumb="/library/metadata/3/thumb/1325285698" art="/library/metadata/3/art/1325285698" duration="5400000" originallyAvailableAt="2004-01-12" addedAt="1325285655" updatedAt="1325285698">
+<Media id="3" duration="5416488" bitrate="1394" width="672" height="368" aspectRatio="1.85" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="3" key="/library/parts/3/file.avi" duration="5416488" file="/var/lib/plexmediaserver/Movies/Along Came Polly.avi" size="943943680" container="avi" />
+</Media>
+<Genre tag="Comedy" />
+<Genre tag="Romance Film" />
+<Writer tag="John Hamburg" />
+<Director tag="John Hamburg" />
+<Country tag="USA" />
+<Role tag="Masi Oka" />
+<Role tag="Jsu Garcia" />
+<Role tag="Michele Lee" />
+</Video>
+<Video ratingKey="83" key="/library/metadata/83" studio="20th Century Fox" type="movie" title="Cheaper by the Dozen" contentRating="PG" summary="Cheaper by the Dozen is a 2003 American comedy film about a family with 12 children (seven boys and five girls). The film takes its title from the 1948 biography of the same name of Frank Bunker Gilbreth and Lillian Moller Gilbreth and their 12 children, but other than the title and the concept of a family with 12 children, the film bears no resemblance to the book nor its movie adaption. The film was directed by Shawn Levy, who also helped produce the sequel Cheaper by the Dozen 2. It was released on Thursday, December 25, 2003 by 20th Century Fox." rating="4.8000001907348597" viewOffset="1891947" year="2003" tagline="This Christmas The More... The Scarier!" thumb="/library/metadata/83/thumb/1329291799" art="/library/metadata/83/art/1329291799" duration="5880000" originallyAvailableAt="2003-12-25" addedAt="1325299402" updatedAt="1329291799">
+<Media id="83" duration="5925968" bitrate="1402" width="720" height="400" aspectRatio="1.78" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="83" key="/library/parts/83/file.avi" duration="5925968" file="/var/lib/plexmediaserver/Movies/Cheaper By the Dozen.avi" size="1038616576" container="avi" />
+</Media>
+<Genre tag="Comedy" />
+<Genre tag="Drama" />
+<Writer tag="Joel Cohen" />
+<Writer tag="Alec Sokolow" />
+<Director tag="Shawn Levy" />
+<Country tag="USA" />
+<Role tag="Forrest Landis" />
+<Role tag="Richard Jenkins" />
+<Role tag="Blake Woodruff" />
+</Video>
+<Video ratingKey="203" key="/library/metadata/203" studio="New Line Cinema" type="movie" title="The Lord of the Rings: The Return of the King" titleSort="Lord of the Rings: The Return of the King" contentRating="PG-13" summary="The Lord of the Rings: The Return of the King is a 2003 epic fantasy-drama film directed by Peter Jackson based on the second and third volumes of J. R. R. Tolkien&apos;s The Lord of the Rings. It is the concluding film in The Lord of the Rings film trilogy, following The Fellowship of the Ring (2001) and The Two Towers (2002).&#xA;&#xA;As Sauron launches the final stages of his conquest of Middle-earth, Gandalf the Wizard, and Théoden King of Rohan rally their forces to help defend Gondor&apos;s capital Minas Tirith from the looming threat. Aragorn finally claims the throne of Gondor and summons an army of ghosts to help him defeat Sauron. Ultimately, even with full strength of arms, they realise they cannot win; so it comes down to the Hobbits, Frodo and Sam, to bear the burden of the Ring and deal with the treachery of Gollum. After a long journey they finally arrive in the dangerous lands of Mordor, seeking to destroy the One Ring in the place it was created, the volcanic fires of Mount Doom.&#xA;&#xA;Released on 17 December 2003, The Lord of the Rings: The Return of the King received rave reviews and became one of the greatest critical and box-office successes of all time, being only the second film to gross $1 billion worldwide, becoming the highest grossing film from New Line Cinema, as well as the biggest financial success for Time Warner in general, until Harry Potter and the Deathly Hallows – Part 2 surpassed The Return of the Kings final gross in 2011. Notably, it won all eleven Academy Awards for which it was nominated, an Oscar record, and tied for largest number of awards won with Ben-Hur and Titanic. It also won the Academy Award for Best Picture, the first and only time a fantasy film has done so; it was also the second sequel to win a Best Picture Oscar (following The Godfather Part II) and the only time a sequel has won without a predecessor winning the award. It was the highest-grossing film of 2003." rating="9" viewOffset="405114" year="2003" tagline="The Journey Ends." thumb="/library/metadata/203/thumb/1351801822" art="/library/metadata/203/art/1351801822" duration="12000000" originallyAvailableAt="2003-12-17" addedAt="1351801736" updatedAt="1351801822">
+<Media id="198" duration="15794162" bitrate="1449" width="720" height="358" aspectRatio="2.35" audioChannels="6" audioCodec="ac3" videoCodec="h264" videoResolution="480" container="mkv" videoFrameRate="24p">
+<Part id="198" key="/library/parts/198/file.mkv" duration="15794162" file="/var/lib/plexmediaserver/Movies/Lord of the Rings the Return King.mkv" size="2860679845" container="mkv" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Action/Adventure" />
+<Writer tag="Philippa Boyens" />
+<Writer tag="Fran Walsh" />
+<Director tag="Peter Jackson" />
+<Country tag="USA" />
+<Role tag="Andy Serkis" />
+<Role tag="Billy Boyd" />
+<Role tag="Bernard Hill" />
+</Video>
+<Video ratingKey="49" key="/library/metadata/49" studio="20th Century Fox" type="movie" title="Master and Commander: The Far Side of the World" contentRating="PG-13" summary="Master and Commander: The Far Side of the World is a 2003 film directed by Peter Weir, starring Russell Crowe as Jack Aubrey, with Paul Bettany as Stephen Maturin and released by 20th Century Fox, Miramax Films and Universal Studios. The film&apos;s plot and characters are adapted from three novels in author Patrick O&apos;Brian&apos;s Aubrey–Maturin series, which has a total of 20 novels of Jack Aubrey&apos;s naval career.&#xA;&#xA;At the 76th Academy Awards, the film was nominated for 10 Oscars, including Best Picture. It won in two categories, Best Cinematography and Best Sound Editing and lost in all other categories to The Lord of the Rings: The Return of the King." rating="8" viewOffset="7861723" viewCount="2" year="2003" tagline="The Courage To Do The Impossible Lies In The Hearts of Men." thumb="/library/metadata/49/thumb/1325389491" art="/library/metadata/49/art/1325389491" duration="8280000" originallyAvailableAt="2003-11-14" addedAt="1325294778" updatedAt="1325389491">
+<Media id="49" duration="8301000" bitrate="1035" width="512" height="384" aspectRatio="1.33" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="49" key="/library/parts/49/file.avi" duration="8301000" file="/var/lib/plexmediaserver/Movies/Master and Commander.avi" size="1074421760" container="avi" />
+</Media>
+<Genre tag="Drama" />
+<Genre tag="Action" />
+<Writer tag="Peter Weir" />
+<Writer tag="John Collee" />
+<Director tag="Peter Weir" />
+<Country tag="USA" />
+<Role tag="Bryan Dick" />
+<Role tag="Robert Pugh" />
+<Role tag="David Threlfall" />
+</Video>
+<Video ratingKey="92" key="/library/metadata/92" studio="New Line Cinema" type="movie" title="Elf" contentRating="PG" summary="Elf (stylized as elf) is a 2003 American Christmas comedy film directed by Jon Favreau, written by David Berenbaum and starring Will Ferrell, James Caan and Zooey Deschanel. It was released in the United States on November 7, 2003 and grossed over $220,400,000 worldwide. The story is about one of Santa&apos;s elves who learns of his true identity as a human and goes to New York City to meet his biological father, spreading Christmas cheer in a world of cynics as he goes." rating="6.1999998092651403" year="2003" tagline="This holiday, discover your inner elf." thumb="/library/metadata/92/thumb/1325300599" art="/library/metadata/92/art/1325300599" duration="5820000" originallyAvailableAt="2003-11-07" addedAt="1325300511" updatedAt="1325300599">
+<Media id="92" duration="5802048" bitrate="1012" width="720" height="544" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="576" container="avi" videoFrameRate="24p">
+<Part id="92" key="/library/parts/92/file.avi" duration="5802048" file="/var/lib/plexmediaserver/Movies/Elf.avi" size="734193664" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Comedy" />
+<Writer tag="David Berenbaum" />
+<Director tag="Jon Favreau" />
+<Country tag="USA" />
+<Role tag="Andy Richter" />
+<Role tag="Peter Dinklage" />
+<Role tag="Faizon Love" />
+</Video>
+<Video ratingKey="80" key="/library/metadata/80" studio="Mandalay Pictures" type="movie" title="Beyond Borders" contentRating="R" summary="Beyond Borders is a 2003 drama film about aid workers, directed by Martin Campbell and starring Angelina Jolie and Clive Owen. The original music score was composed by James Horner.&#xA;&#xA;Although it reflected Jolie&apos;s real-life interest in promoting humanitarian relief, the film was critically and financially unsuccessful. The film was marketed with the tagline &quot;In a place she didn&apos;t belong, among people she never knew, she found a way to make a difference.&quot;&#xA;&#xA;Concurrently with the release of the film, Jolie published Notes from My Travels, a collection of journal entries from her real-life experiences as a Goodwill Ambassador for the United Nations High Commissioner for Refugees (UNHCR) &amp;mdash; similar to what the character she plays in the movie does." year="2003" tagline="In A Place She Didn&apos;t Belong, Among People She Never Knew, She Found A Way To Make A Difference." thumb="/library/metadata/80/thumb/1336353059" art="/library/metadata/80/art/1336353059" duration="7620000" originallyAvailableAt="2003-10-24" addedAt="1325298889" updatedAt="1336353059">
+<Media id="80" duration="7610688" bitrate="849" width="480" height="368" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="80" key="/library/parts/80/file.avi" duration="7610688" file="/var/lib/plexmediaserver/Movies/Beyond Borders.avi" size="807659520" container="avi" />
+</Media>
+<Genre tag="Drama" />
+<Genre tag="Romance Film" />
+<Writer tag="Caspian Tredwell-Owen" />
+<Director tag="Martin Campbell" />
+<Country tag="Germany" />
+<Role tag="Noah Emmerich" />
+<Role tag="Linus Roache" />
+<Role tag="Elizabeth Whitmere" />
+</Video>
+<Video ratingKey="127" key="/library/metadata/127" studio="Touchstone Pictures" type="movie" title="Under the Tuscan Sun" contentRating="PG-13" summary="Under the Tuscan Sun is a 2003 film based on Frances Mayes&apos; 1996 memoir of the same name. The film was directed by Audrey Wells and starred Diane Lane." rating="5.4000000953674299" year="2003" tagline="The Only Thing More Surprising Than The Chance She&apos;s Taking...Is Where It&apos;s Taking Her" thumb="/library/metadata/127/thumb/1329851435" art="/library/metadata/127/art/1329851435" duration="6780000" originallyAvailableAt="2003-09-26" addedAt="1325348304" updatedAt="1329851435">
+<Media id="127" duration="6760392" bitrate="894" width="720" height="544" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="576" container="avi" videoFrameRate="24p">
+<Part id="127" key="/library/parts/127/file.avi" duration="6760392" file="/var/lib/plexmediaserver/Movies/Under the Tuscan Sun.avi" size="755073024" container="avi" />
+</Media>
+<Genre tag="Comedy" />
+<Genre tag="Drama" />
+<Writer tag="Audrey Wells" />
+<Director tag="Audrey Wells" />
+<Country tag="Italy" />
+<Role tag="Kate Walsh" />
+<Role tag="Raoul Bova" />
+<Role tag="Vincent Riotta" />
+</Video>
+<Video ratingKey="128" key="/library/metadata/128" studio="Lakeshore Entertainment" type="movie" title="Underworld" contentRating="R" summary="Vampires and werewolves have waged a nocturnal war against each other for centuries. But all bets are off when a female vampire warrior named Selene, who&apos;s famous for her strength and werewolf-hunting prowess, becomes smitten with a peace-loving male werewolf, Michael, who wants to end the war." rating="7.4000000953674299" year="2003" tagline="An immortal battle for supremacy." thumb="/library/metadata/128/thumb/1325348511" art="/library/metadata/128/art/1325348511" duration="7680000" originallyAvailableAt="2003-09-19" addedAt="1325348305" updatedAt="1325348511">
+<Media id="128" duration="7272256" bitrate="1385" width="608" height="272" aspectRatio="2.20" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="sd" container="avi" videoFrameRate="24p">
+<Part id="128" key="/library/parts/128/file.avi" duration="7272256" file="/var/lib/plexmediaserver/Movies/Underworld.avi" size="1258893312" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Thriller" />
+<Writer tag="Danny McBride" />
+<Director tag="Len Wiseman" />
+<Country tag="Germany" />
+<Role tag="Robbie Gee" />
+<Role tag="Wentworth Miller" />
+<Role tag="Bill Nighy" />
+</Video>
+<Video ratingKey="23" key="/library/metadata/23" studio="Paramount Pictures" type="movie" title="Lara Croft Tomb Raider: The Cradle of Life" contentRating="PG-13" summary="Lara Croft Tomb Raider: The Cradle of Life is a 2003 action film directed by Jan de Bont, and starring Angelina Jolie as Lara Croft. It is a sequel to the 2001 film Lara Croft: Tomb Raider. Like the first film, the film received mostly negative reviews, but critics noted an improvement on its predecessor particularly in the action-sequences and continued to praise Jolie&apos;s performance." rating="7" year="2003" thumb="/library/metadata/23/thumb/1325285817" art="/library/metadata/23/art/1325285817" duration="6960000" originallyAvailableAt="2003-07-25" addedAt="1325285658" updatedAt="1325285817">
+<Media id="23" duration="7037288" bitrate="1181" width="720" height="544" aspectRatio="1.33" audioChannels="6" audioCodec="ac3" videoCodec="mpeg4" videoResolution="576" container="avi" videoFrameRate="24p">
+<Part id="23" key="/library/parts/23/file.avi" duration="7037288" file="/var/lib/plexmediaserver/Movies/Tomb Raider The Cradle of Life.avi" size="1038520320" container="avi" />
+</Media>
+<Genre tag="Fantasy" />
+<Genre tag="Thriller" />
+<Writer tag="Dean Georgaris" />
+<Director tag="Jan de Bont" />
+<Country tag="Germany" />
+<Role tag="Djimon Hounsou" />
+<Role tag="Simon Yam" />
+<Role tag="Jonathan Coyne" />
+</Video>
+<Video ratingKey="117" key="/library/metadata/117" studio="Universal Studios" type="movie" title="Seabiscuit" contentRating="PG-13" summary="Seabiscuit is a 2003 American biographical film based on the best-selling non-fiction book Seabiscuit: An American Legend by Laura Hillenbrand. The film is loosely based on the life and racing career of Seabiscuit, an undersized and overlooked thoroughbred race horse, whose unexpected successes made him a hugely popular media sensation in the United States near the end of the Great Depression." rating="7.5999999046325701" year="2003" tagline="The dreams of a nation rode on a long shot" thumb="/library/metadata/117/thumb/1325348410" art="/library/metadata/117/art/1325348410" duration="8400000" originallyAvailableAt="2003-07-22" addedAt="1325348302" updatedAt="1325348410">
+<Media id="117" duration="8425560" bitrate="699" width="720" height="304" aspectRatio="2.35" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" videoResolution="480" container="avi" videoFrameRate="24p">
+<Part id="117" key="/library/parts/117/file.avi" duration="8425560" file="/var/lib/plexmediaserver/Movies/Seabiscuit.avi" size="736454656" container="avi" />
+</Media>
+<Genre tag="Sports" />
+<Genre tag="Drama" />
+<Writer tag="Gary Ross" />
+<Director tag="Gary Ross" />
+<Country tag="USA" />
+<Role tag="David McCullough" />
+<Role tag="Eddie Jones" />
+<Role tag="Elizabeth Banks" />
+</Video>
+</MediaContainer>

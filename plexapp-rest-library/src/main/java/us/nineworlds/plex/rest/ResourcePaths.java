@@ -26,7 +26,6 @@ package us.nineworlds.plex.rest;
 import java.net.URLEncoder;
 
 import us.nineworlds.plex.rest.config.IConfiguration;
-import android.util.Log;
 
 
 /**

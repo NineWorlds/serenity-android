@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MediaContainer size="15" allowSync="0" art="/:/resources/show-fanart.jpg" content="secondary" identifier="com.plexapp.plugins.library" mediaTagPrefix="/system/bundle/media/flags/" mediaTagVersion="1358288345" nocache="1" sortAsc="1" title1="TV Shows" viewGroup="secondary" viewMode="65592">
+<Directory key="all" title="All Shows"/>
+<Directory key="unwatched" title="Unwatched"/>
+<Directory key="newest" title="Recently Aired"/>
+<Directory key="recentlyAdded" title="Recently Added"/>
+<Directory key="recentlyViewed" title="Recently Viewed Episodes"/>
+<Directory key="recentlyViewedShows" title="Recently Viewed Shows"/>
+<Directory key="onDeck" title="On Deck"/>
+<Directory key="collection" title="By Collection"/>
+<Directory key="firstCharacter" title="By First Letter"/>
+<Directory key="genre" title="By Genre"/>
+<Directory key="year" title="By Year"/>
+<Directory key="contentRating" title="By Content Rating"/>
+<Directory key="folder" title="By Folder"/>
+<Directory prompt="Search for Shows" search="1" key="search?type=2" title="Search Shows..."/>
+<Directory prompt="Search for Episodes" search="1" key="search?type=4" title="Search Episodes..."/>
+</MediaContainer>
