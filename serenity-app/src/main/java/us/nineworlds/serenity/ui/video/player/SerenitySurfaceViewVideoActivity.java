@@ -53,6 +53,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A view that handles the internal video playback and representation of a movie
@@ -69,7 +70,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 */
 	static final int PROGRESS_UPDATE_DELAY = 5000;
 	static final int SUBTITLE_DISPLAY_CHECK = 100;
-	
+
 	static final String TAG = "SerenitySurfaceViewVideoActivity";
 	static final int CONTROLLER_DELAY = 16000; // Sixteen seconds
 	private MediaPlayer mediaPlayer;
@@ -82,25 +83,45 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private boolean mediaplayer_error_state = false;
 	private boolean mediaplayer_released = false;
 	private String subtitleURL;
+	private String subtitleType;
 	private String mediaTagIdentifier;
 	private TimedTextObject subtitleTimedText;
-	
+	private boolean subtitlesPlaybackEnabled = true;
+
 	private Handler subtitleDisplayHandler = new Handler();
 	private Runnable subtitle = new Runnable() {
 		public void run() {
 			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-				int currentPos = mediaPlayer.getCurrentPosition();
-				Collection<Caption> subtitles =  subtitleTimedText.captions.values();
-				for(Caption caption : subtitles) {
-					if (currentPos >= caption.start.getMilliseconds() && currentPos <= caption.end.getMilliseconds()) {
-						onTimedText(caption);
-						break;
-					} else if (currentPos > caption.end.getMilliseconds()) {
-						onTimedText(null);
+				if (hasSubtitles()) {
+					int currentPos = mediaPlayer.getCurrentPosition();
+					Collection<Caption> subtitles = subtitleTimedText.captions
+							.values();
+					for (Caption caption : subtitles) {
+						if (currentPos >= caption.start.getMilliseconds()
+								&& currentPos <= caption.end.getMilliseconds()) {
+							onTimedText(caption);
+							break;
+						} else if (currentPos > caption.end.getMilliseconds()) {
+							onTimedText(null);
+						}
 					}
+				} else {
+					subtitlesPlaybackEnabled = false;
+					Toast.makeText(getApplicationContext(), "Invalid or Missing Subtitle. Subtitle playback disabled.", Toast.LENGTH_LONG).show();
 				}
 			}
-			subtitleDisplayHandler.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+			if (subtitlesPlaybackEnabled) {
+				subtitleDisplayHandler.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+			}
+
+		}
+
+		/**
+		 * @return
+		 */
+		protected boolean hasSubtitles() {
+			return subtitleTimedText != null
+					&& subtitleTimedText.captions != null;
 		};
 	};
 
@@ -196,16 +217,16 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		String audioChannels = extras.getString("audioChannels");
 		resumeOffset = extras.getInt("resumeOffset");
 		subtitleURL = extras.getString("subtitleURL");
+		subtitleType = extras.getString("subtitleFormat");
 		mediaTagIdentifier = extras.getString("mediaTagId");
-		
+
 		new SubtitleAsyncTask().execute();
-		
 
 		initMediaController(summary, title, posterURL, videoFormat,
 				videoResolution, audioFormat, audioChannels);
-		
+
 	}
-	
+
 	/**
 	 * @param summary
 	 * @param title
@@ -220,7 +241,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			String audioFormat, String audioChannels) {
 
 		mediaController = new MediaController(this, summary, title, posterURL,
-				videoResolution, videoFormat, audioFormat, audioChannels, mediaTagIdentifier);
+				videoResolution, videoFormat, audioFormat, audioChannels,
+				mediaTagIdentifier);
 		mediaController.setAnchorView(surfaceView);
 		mediaController.setMediaPlayer(new SerenityMediaPlayerControl(
 				mediaPlayer));
@@ -438,8 +460,12 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media.MediaPlayer, android.media.TimedText)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media
+	 * .MediaPlayer, android.media.TimedText)
 	 */
 	public void onTimedText(Caption text) {
 		TextView subtitles = (TextView) findViewById(R.id.txtSubtitles);
@@ -450,7 +476,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		subtitles.setText(Html.fromHtml(text.content));
 		subtitles.setVisibility(View.VISIBLE);
 	}
-	
+
 	public class SubtitleAsyncTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -458,12 +484,12 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			if (subtitleURL != null) {
 				try {
 					URL url = new URL(subtitleURL);
-					InputStream stream = url.openStream();	
-					
-					if (subtitleURL.endsWith("srt")) {
+					InputStream stream = url.openStream();
+
+					if ("srt".equals(subtitleType)) {
 						FormatSRT formatSRT = new FormatSRT();
 						subtitleTimedText = formatSRT.parseFile(stream);
-					} else if (subtitleURL.endsWith("ass")) {
+					} else if ("ass".equals(subtitleType)) {
 						FormatASS formatASS = new FormatASS();
 						subtitleTimedText = formatASS.parseFile(stream);
 					}
@@ -474,6 +500,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			return null;
 		}
-		
+
 	}
 }
