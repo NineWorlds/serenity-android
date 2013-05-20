@@ -53,6 +53,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A view that handles the internal video playback and representation of a movie
@@ -82,14 +83,16 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private boolean mediaplayer_error_state = false;
 	private boolean mediaplayer_released = false;
 	private String subtitleURL;
+	private String subtitleType;
 	private String mediaTagIdentifier;
 	private TimedTextObject subtitleTimedText;
+	private boolean subtitlesPlaybackEnabled = true;
 
 	private Handler subtitleDisplayHandler = new Handler();
 	private Runnable subtitle = new Runnable() {
 		public void run() {
-			if (hasSubtitles()) {
-				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+				if (hasSubtitles()) {
 					int currentPos = mediaPlayer.getCurrentPosition();
 					Collection<Caption> subtitles = subtitleTimedText.captions
 							.values();
@@ -102,18 +105,23 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 							onTimedText(null);
 						}
 					}
-
+				} else {
+					subtitlesPlaybackEnabled = false;
+					Toast.makeText(getApplicationContext(), "Invalid or Missing Subtitle. Subtitle playback disabled.", Toast.LENGTH_LONG).show();
 				}
-				subtitleDisplayHandler
-						.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
 			}
+			if (subtitlesPlaybackEnabled) {
+				subtitleDisplayHandler.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+			}
+
 		}
 
 		/**
 		 * @return
 		 */
 		protected boolean hasSubtitles() {
-			return subtitleTimedText != null && subtitleTimedText.captions != null;
+			return subtitleTimedText != null
+					&& subtitleTimedText.captions != null;
 		};
 	};
 
@@ -209,6 +217,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		String audioChannels = extras.getString("audioChannels");
 		resumeOffset = extras.getInt("resumeOffset");
 		subtitleURL = extras.getString("subtitleURL");
+		subtitleType = extras.getString("subtitleFormat");
 		mediaTagIdentifier = extras.getString("mediaTagId");
 
 		new SubtitleAsyncTask().execute();
@@ -477,10 +486,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					URL url = new URL(subtitleURL);
 					InputStream stream = url.openStream();
 
-					if (subtitleURL.endsWith("srt")) {
+					if ("srt".equals(subtitleType)) {
 						FormatSRT formatSRT = new FormatSRT();
 						subtitleTimedText = formatSRT.parseFile(stream);
-					} else if (subtitleURL.endsWith("ass")) {
+					} else if ("ass".equals(subtitleType)) {
 						FormatASS formatASS = new FormatASS();
 						subtitleTimedText = formatASS.parseFile(stream);
 					}
