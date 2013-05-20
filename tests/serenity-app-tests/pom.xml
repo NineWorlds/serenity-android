@@ -28,6 +28,13 @@
       </dependency>
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
+         <artifactId>plexapp-rest-library</artifactId>
+         <version>1.3.0-SNAPSHOT</version>
+         <type>jar</type>
+      </dependency>
+      
+      <dependency>
+         <groupId>us.nineworlds.serenity</groupId>
          <artifactId>serenity-app</artifactId>
          <version>1.3.0-SNAPSHOT</version>
          <type>jar</type>

@@ -13,7 +13,6 @@
    <packaging>pom</packaging>
 
    <modules>
-     <module>plexapp-rest-library-tests</module>
      <module>serenity-app-tests</module>
    </modules>
 
