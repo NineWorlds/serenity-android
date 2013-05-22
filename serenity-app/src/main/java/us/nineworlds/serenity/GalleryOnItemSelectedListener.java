@@ -23,10 +23,16 @@
 
 package us.nineworlds.serenity;
 
+import us.nineworlds.serenity.core.imageloader.BitmapDisplayer;
 import us.nineworlds.serenity.ui.views.MainMenuTextView;
 
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,7 +51,11 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 			long arg3) {
 		if (v instanceof MainMenuTextView) {
 			MainMenuTextView tv = (MainMenuTextView) v;
-			mainView.setBackgroundResource(tv.getBackgroundImageId());
+			//mainView.setBackgroundResource(tv.getBackgroundImageId());
+						
+			Bitmap background = BitmapFactory.decodeResource(v.getContext().getResources(), tv.getBackgroundImageId());
+			new ImageLoader((Activity)v.getContext(), mainView, background).doInBackground();
+			//mainView.setBackgroundDrawable(new BitmapDrawable(background));
 			// mainView.refreshDrawableState();
 
 			tv.setTextSize(tv.getTextSize() + 10);
@@ -65,5 +75,26 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 	public void onNothingSelected(AdapterView<?> arg0) {
 
 	}
+	
+	private class ImageLoader extends AsyncTask<Void, Void, Void> {
+		
+		Activity context;
+		View view;
+		Bitmap bm;
+		
+		public ImageLoader(Activity context, View view, Bitmap bm) {
+			this.view = view;
+			this.context = context;
+			this.bm = bm;
+		}
 
+		@Override
+		protected Void doInBackground(Void... params) {
+			context.runOnUiThread(new BitmapDisplayer(bm, R.drawable.serenity_bonsai_logo, view));
+			return null;
+		}
+		
+	}
+	
+	
 }

@@ -34,6 +34,7 @@
     <string name="episode_">"Episode "</string>
     <string name="settings">Settings</string>
     <string name="search">Search</string>
+    <string name="options">Options</string>
     <string name="no_entries_available_for_category_">No Entries available for category.</string>
     <string name="retrieving_movies">Retrieving Movies</string>
     <string name="no_shows_found_for_the_category_">"No Shows found for the category: "</string>

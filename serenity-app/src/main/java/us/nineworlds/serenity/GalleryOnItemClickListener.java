@@ -44,6 +44,7 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
 	private static final String MENU_TYPE_SEARCH = "search";
 	private static final String MENU_TYPE_SHOW = "show";
 	private static final String MENU_TYPE_MOVIE = "movie";
+	private static final String MENU_TYPE_OPTIONS = "options";
 	private Activity context;
 
 	/**
@@ -76,6 +77,9 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
 			i = new Intent(context, TVShowBrowserActivity.class);
 		} else if (MENU_TYPE_SEARCH.equalsIgnoreCase(activityType)) {
 			context.onSearchRequested();
+			return;
+		} else if (MENU_TYPE_OPTIONS.equalsIgnoreCase(activityType)) {
+			context.openOptionsMenu();
 			return;
 		} else {
 			i = new Intent(context, SerenityPreferenceActivity.class);

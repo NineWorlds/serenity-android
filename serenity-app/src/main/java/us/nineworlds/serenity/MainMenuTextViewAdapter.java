@@ -131,6 +131,14 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 			v.setActivityType(menuItem.getType());
 			return v;
 		}
+		
+		if ("options".equals(menuItem.getType())) {
+			v = new MainMenuTextView(myContext, R.drawable.settings);
+			v.setLibraryKey("0");
+			v.setActivityType(menuItem.getType());
+			return v;
+		}
+		
 
 		if ("search".equals(menuItem.getType())) {
 			v = new MainMenuTextView(myContext, R.drawable.search);
@@ -138,6 +146,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 			v.setActivityType(menuItem.getType());
 			return v;
 		}
+		
 
 		return new MainMenuTextView(myContext, R.drawable.serenity_bonsai_logo);
 	}
