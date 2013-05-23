@@ -3,12 +3,14 @@ package us.nineworlds.serenity.core.imageloader;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 public class BitmapDisplayer implements Runnable {
 
-	private Bitmap bm;
-	private int defaultImage;
-	private View bgLayout;
+	protected Bitmap bm;
+	protected int defaultImage;
+	protected View bgLayout;
 
 	/**
 	 * 

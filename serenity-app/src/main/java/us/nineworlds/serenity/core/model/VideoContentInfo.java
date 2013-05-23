@@ -141,5 +141,9 @@ public interface VideoContentInfo extends ContentInfo {
 	
 	public String getStudio();
 	
+	public double getRating();
+	
+	public void setRating(double rating);
+	
 
 }

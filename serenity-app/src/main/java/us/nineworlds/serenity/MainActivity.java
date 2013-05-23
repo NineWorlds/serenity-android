@@ -59,6 +59,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Gallery;
 import android.widget.Toast;
 
@@ -74,7 +76,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class MainActivity extends SerenityActivity {
 
 	private Gallery mainGallery;
-	private View mainView;
+	private View mainGalleryBackgroundView;
 	private SharedPreferences preferences;
 	public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
 	public static int BROWSER_RESULT_CODE = 200;
@@ -119,7 +121,8 @@ public class MainActivity extends SerenityActivity {
 		context = this;
 
 		setContentView(R.layout.activity_plex_app_main);
-		mainView = findViewById(R.id.mainLayout);
+		mainGalleryBackgroundView = findViewById(R.id.mainGalleryBackground);
+		
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		if (preferences != null) {
@@ -277,10 +280,10 @@ public class MainActivity extends SerenityActivity {
 	}
 
 	private void setupGallery() {
-		mainGallery.setAdapter(new MainMenuTextViewAdapter(this, mainView));
+		mainGallery.setAdapter(new MainMenuTextViewAdapter(this, mainGalleryBackgroundView));
 		mainGallery
 				.setOnItemSelectedListener(new GalleryOnItemSelectedListener(
-						mainView));
+						mainGalleryBackgroundView));
 		mainGallery
 				.setOnItemClickListener(new GalleryOnItemClickListener(this));
 	}

@@ -70,6 +70,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	
 	private String mediaTagIdentifier;
 	private String studio;
+	private double rating;
 
 	public String getSeriesTitle() {
 		return seriesTitle;
@@ -516,6 +517,14 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	
 	public String getStudio() {
 		return studio;
+	}
+
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 	
 

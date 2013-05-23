@@ -119,6 +119,12 @@ public class Video extends AbstractPlexObject {
 	
 	@Attribute(name="ratingKey", required=false)
 	private String ratingKey;
+	
+	/**
+	 * 
+	 */
+	@Attribute(name="rating", required=false)
+	private double rating;
 		
 	@ElementList(inline=true,required=false)
 	private List<Country> countries;
@@ -396,6 +402,14 @@ public class Video extends AbstractPlexObject {
 
 	public void setStudio(String studio) {
 		this.studio = studio;
+	}
+
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 	
 	

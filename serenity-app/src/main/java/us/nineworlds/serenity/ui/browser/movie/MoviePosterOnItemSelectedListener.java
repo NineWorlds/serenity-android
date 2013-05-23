@@ -55,7 +55,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -198,6 +200,8 @@ public class MoviePosterOnItemSelectedListener implements
 				.findViewById(R.id.movieInfoGraphicLayout);
 		infographicsView.removeAllViews();
 		VideoContentInfo mpi = v.getPosterInfo();
+		
+		fetchSubtitle(mpi);
 
 		ImageView viewed = new ImageView(context);
 		viewed.setScaleType(ScaleType.FIT_XY);
@@ -252,9 +256,16 @@ public class MoviePosterOnItemSelectedListener implements
 				mpi.getContentRating(), context);
 		infographicsView.addView(crv);
 		
-		infographicsView.refreshDrawableState();
+		RatingBar ratingBar = new RatingBar(context, null, android.R.attr.ratingBarStyleIndicator);
+		ratingBar.setMax(4);
+		ratingBar.setIsIndicator(true);
+		ratingBar.setStepSize(0.1f);
+		ratingBar.setNumStars(4);
+		ratingBar.setPadding(0, 0, 5, 0);
+		double rating = mpi.getRating();
+		ratingBar.setRating((float) (rating / 2.5));
 		
-		fetchSubtitle(mpi);
+		infographicsView.addView(ratingBar);
 	}
 	
 	protected void fetchSubtitle(VideoContentInfo mpi) {

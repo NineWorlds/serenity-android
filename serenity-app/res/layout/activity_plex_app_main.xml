@@ -3,9 +3,14 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/serenity_bonsai_logo"
     android:orientation="vertical"
     tools:context=".MainActivity" >
+    
+    <ImageView android:id="@+id/mainGalleryBackground" 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:src="@drawable/serenity_bonsai_logo"/>
     
     <DigitalClock
             android:layout_width="wrap_content"
