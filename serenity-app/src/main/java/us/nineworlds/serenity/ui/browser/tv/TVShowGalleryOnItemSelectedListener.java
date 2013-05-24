@@ -48,6 +48,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -178,6 +179,15 @@ public class TVShowGalleryOnItemSelectedListener implements
 		} else {
 			studiov.setVisibility(View.GONE);
 		}
+		
+		RatingBar ratingBar = (RatingBar) context.findViewById(R.id.tvRatingbar);
+		ratingBar.setMax(4);
+		ratingBar.setIsIndicator(true);
+		ratingBar.setStepSize(0.1f);
+		ratingBar.setNumStars(4);
+		ratingBar.setPadding(0, 0, 5, 0);
+		double rating = v.getPosterInfo().getRating();
+		ratingBar.setRating((float) (rating / 2.5));
 		
 		
 	}

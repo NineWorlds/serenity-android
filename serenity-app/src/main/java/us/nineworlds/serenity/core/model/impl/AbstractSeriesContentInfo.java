@@ -49,6 +49,7 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
 	private String parentShowTitle;
 	private String mediaTagIdentifier;
 	private String studio;
+	private double rating;
 
 	public String id() {
 		return id;
@@ -189,6 +190,14 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
 
 	public void setStudio(String studio) {
 		this.studio = studio;
+	}
+
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
 	}	
 
 }

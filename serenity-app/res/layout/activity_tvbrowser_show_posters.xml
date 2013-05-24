@@ -86,6 +86,15 @@
                 android:id="@+id/tvShowStudio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <RatingBar
+                android:id="@+id/tvRatingbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="4"
+                android:stepSize="0.1"
+                style="?android:attr/ratingBarStyleIndicator" >
+            </RatingBar>
         </LinearLayout>
 
         <TextView
@@ -132,9 +141,9 @@
             style="@android:style/TextAppearance.Medium"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dip"
             android:gravity="center"
             android:textColor="#F0F0F0"
             tools:ignore="SelectableText" >

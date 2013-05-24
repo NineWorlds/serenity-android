@@ -70,5 +70,9 @@ public interface SeriesContentInfo extends ContentInfo {
 	public String getStudio();
 	
 	public void setStudio(String studio);
+	
+	public void setRating(double ratings);
+	
+	public double getRating();
 
 }
