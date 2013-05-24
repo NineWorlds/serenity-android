@@ -47,6 +47,11 @@
          <artifactId>plexapp-rest-library</artifactId>
          <version>1.3.0-SNAPSHOT</version>
       </dependency>
+      <dependency>
+        <groupId>com.google.code.android-rome-feed-reader</groupId>
+        <artifactId>android-rome-feed-reader</artifactId>
+        <version>1.0.0-r2</version>
+      </dependency>      
 
    </dependencies>
 
