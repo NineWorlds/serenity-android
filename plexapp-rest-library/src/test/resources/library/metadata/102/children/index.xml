@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MediaContainer size="21" allowSync="1" art="/:/resources/artist-fanart.jpg" grandparentTitle="Alan Menken"
+   identifier="com.plexapp.plugins.library" key="102" librarySectionID="3" librarySectionUUID="37ec4e93-e3aa-41e4-8af6-ca4e4019481d"
+   mediaTagPrefix="/system/bundle/media/flags/" mediaTagVersion="1365390478" nocache="1" parentIndex="1" parentTitle="Aladdin"
+   parentYear="1993" thumb="/library/metadata/102/thumb/1365521039" title1="Alan Menken" title2="Aladdin" viewGroup="track"
+   viewMode="65593">
+   <Track ratingKey="103" key="/library/metadata/103" parentRatingKey="102" type="track" title="Arabian Nights"
+      parentKey="/library/metadata/102" summary="" index="1" duration="79856" addedAt="1365520969" updatedAt="1365521031">
+      <Media id="84" duration="79856" bitrate="125" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="84" key="/library/parts/84/file.mp3" duration="79856"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/1 - Arabian Nights.mp3" size="1246500" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="114" key="/library/metadata/114" parentRatingKey="102" type="track" title="Legend of the Lamp"
+      parentKey="/library/metadata/102" summary="" index="2" duration="85237" addedAt="1365520981" updatedAt="1365521031">
+      <Media id="95" duration="85237" bitrate="121" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="95" key="/library/parts/95/file.mp3" duration="85237"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/2 - Legend of the Lamp.mp3" size="1295566" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="117" key="/library/metadata/117" parentRatingKey="102" type="track" title="One Jump Ahead"
+      parentKey="/library/metadata/102" summary="" index="3" duration="142602" addedAt="1365520984" updatedAt="1365521031">
+      <Media id="98" duration="142602" bitrate="130" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="98" key="/library/parts/98/file.mp3" duration="142602"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/3 - One Jump Ahead.mp3" size="2321504" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="118" key="/library/metadata/118" parentRatingKey="102" type="track" title="Street Urchins"
+      parentKey="/library/metadata/102" summary="" index="4" duration="112796" addedAt="1365520985" updatedAt="1365521032">
+      <Media id="99" duration="112796" bitrate="122" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="99" key="/library/parts/99/file.mp3" duration="112796"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/4 - Street Urchins.mp3" size="1715272" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="119" key="/library/metadata/119" parentRatingKey="102" type="track" title="One Jump Ahead (reprise)"
+      parentKey="/library/metadata/102" summary="" index="5" duration="61753" addedAt="1365520986" updatedAt="1365521032">
+      <Media id="100" duration="61753" bitrate="110" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="100" key="/library/parts/100/file.mp3" duration="61753"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/5 - One Jump Ahead (reprise).mp3" size="854326" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="120" key="/library/metadata/120" parentRatingKey="102" type="track" title="Friend Like Me"
+      parentKey="/library/metadata/102" summary="" index="6" duration="146416" addedAt="1365520988" updatedAt="1365521033">
+      <Media id="101" duration="146416" bitrate="124" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="101" key="/library/parts/101/file.mp3" duration="146416"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/6 - Friend Like Me.mp3" size="2275203" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="121" key="/library/metadata/121" parentRatingKey="102" type="track" title="To Be Free"
+      parentKey="/library/metadata/102" summary="" index="7" duration="99291" addedAt="1365520989" updatedAt="1365521033">
+      <Media id="102" duration="99291" bitrate="122" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="102" key="/library/parts/102/file.mp3" duration="99291"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/7 - To Be Free.mp3" size="1520898" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="122" key="/library/metadata/122" parentRatingKey="102" type="track" title="Prince Ali"
+      parentKey="/library/metadata/102" summary="" index="8" duration="171885" addedAt="1365520990" updatedAt="1365521033">
+      <Media id="103" duration="171885" bitrate="130" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="103" key="/library/parts/103/file.mp3" duration="171885"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/8 - Prince Ali.mp3" size="2803260" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="123" key="/library/metadata/123" parentRatingKey="102" type="track" title="A Whole New World"
+      titleSort="Whole New World" parentKey="/library/metadata/102" summary="" index="9" duration="160940" addedAt="1365520991"
+      updatedAt="1365521034">
+      <Media id="104" duration="160940" bitrate="119" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="104" key="/library/parts/104/file.mp3" duration="160940"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/9 - A Whole New World.mp3" size="2390949" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="104" key="/library/metadata/104" parentRatingKey="102" type="track" title="Jafar's Hour"
+      parentKey="/library/metadata/102" summary="" index="10" duration="163160" addedAt="1365520969" updatedAt="1365521034">
+      <Media id="85" duration="163160" bitrate="128" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="85" key="/library/parts/85/file.mp3" duration="163160"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/10 - Jafar's Hour.mp3" size="2617179" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="105" key="/library/metadata/105" parentRatingKey="102" type="track" title="Prince Ali (reprise)"
+      parentKey="/library/metadata/102" summary="" index="11" duration="67343" addedAt="1365520971" updatedAt="1365521034">
+      <Media id="86" duration="67343" bitrate="128" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="86" key="/library/parts/86/file.mp3" duration="67343"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/11 - Prince Ali (reprise).mp3" size="1078390" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="106" key="/library/metadata/106" parentRatingKey="102" type="track" title="The Ends of the Earth"
+      titleSort="Ends of the Earth" parentKey="/library/metadata/102" summary="" index="12" duration="95451" addedAt="1365520972"
+      updatedAt="1365521034">
+      <Media id="87" duration="95451" bitrate="124" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="87" key="/library/parts/87/file.mp3" duration="95451"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/12 - The Ends of the Earth.mp3" size="1476874" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="107" key="/library/metadata/107" parentRatingKey="102" type="track" title="The Kiss"
+      titleSort="Kiss" parentKey="/library/metadata/102" summary="" index="13" duration="111151" addedAt="1365520974"
+      updatedAt="1365521035">
+      <Media id="88" duration="111151" bitrate="122" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="88" key="/library/parts/88/file.mp3" duration="111151"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/13 - The Kiss.mp3" size="1701236" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="108" key="/library/metadata/108" parentRatingKey="102" type="track" title="On a Dark Night"
+      parentKey="/library/metadata/102" summary="" index="14" duration="175751" addedAt="1365520975" updatedAt="1365521035">
+      <Media id="89" duration="175751" bitrate="120" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="89" key="/library/parts/89/file.mp3" duration="175751"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/14 - On a Dark Night.mp3" size="2641044" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="109" key="/library/metadata/109" parentRatingKey="102" type="track" title="Jasmine Runs Away"
+      parentKey="/library/metadata/102" summary="" index="15" duration="46968" addedAt="1365520976" updatedAt="1365521036">
+      <Media id="90" duration="46968" bitrate="118" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="90" key="/library/parts/90/file.mp3" duration="46968"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/15 - Jasmine Runs Away.mp3" size="695939" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="110" key="/library/metadata/110" parentRatingKey="102" type="track" title="Marketplace"
+      parentKey="/library/metadata/102" summary="" index="16" duration="157283" addedAt="1365520977" updatedAt="1365521036">
+      <Media id="91" duration="157283" bitrate="122" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="91" key="/library/parts/91/file.mp3" duration="157283"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/16 - Marketplace.mp3" size="2408796" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="111" key="/library/metadata/111" parentRatingKey="102" type="track" title="The Cave of Wonders"
+      titleSort="Cave of Wonders" parentKey="/library/metadata/102" summary="" index="17" duration="297952" addedAt="1365520978"
+      updatedAt="1365521036">
+      <Media id="92" duration="297952" bitrate="128" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="92" key="/library/parts/92/file.mp3" duration="297952"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/17 - The Cave of Wonders.mp3" size="4776183" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="112" key="/library/metadata/112" parentRatingKey="102" type="track" title="Aladdin's Word"
+      parentKey="/library/metadata/102" summary="" index="18" duration="111621" addedAt="1365520979" updatedAt="1365521036">
+      <Media id="93" duration="111621" bitrate="121" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="93" key="/library/parts/93/file.mp3" duration="111621"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/18 - Aladdin's Word.mp3" size="1687266" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="113" key="/library/metadata/113" parentRatingKey="102" type="track" title="The Battle"
+      titleSort="Battle" parentKey="/library/metadata/102" summary="" index="19" duration="218331" addedAt="1365520980"
+      updatedAt="1365521037">
+      <Media id="94" duration="218331" bitrate="129" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="94" key="/library/parts/94/file.mp3" duration="218331"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/19 - The Battle.mp3" size="3516979" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="115" key="/library/metadata/115" parentRatingKey="102" type="track" title="Happy End in Agrabah"
+      parentKey="/library/metadata/102" summary="" index="20" duration="252630" addedAt="1365520982" updatedAt="1365521037">
+      <Media id="96" duration="252630" bitrate="125" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="96" key="/library/parts/96/file.mp3" duration="252630"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/20 - Happy End in Agrabah.mp3" size="3943911" container="mp3" />
+      </Media>
+   </Track>
+   <Track ratingKey="116" key="/library/metadata/116" parentRatingKey="102" type="track"
+      title="A Whole New World (Aladdin's Theme)" titleSort="Whole New World (Aladdin's Theme)" parentKey="/library/metadata/102"
+      summary="" index="21" duration="247379" addedAt="1365520983" updatedAt="1365521037">
+      <Media id="97" duration="247379" bitrate="114" audioChannels="2" audioCodec="mp3" container="mp3">
+         <Part id="97" key="/library/parts/97/file.mp3" duration="247379"
+            file="/home/dcarver/Music/Alan Menken/Aladdin/21 - A Whole New World (Aladdin's Theme).mp3" size="3519132"
+            container="mp3" />
+      </Media>
+   </Track>
+</MediaContainer>

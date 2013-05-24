@@ -114,7 +114,7 @@ public class MoviePosterOnItemSelectedListener implements
 
 	private void createMovieDetail(SerenityPosterImageView v) {
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
-		summary.setText(v.getPosterInfo().getPlotSummary());
+		summary.setText(v.getPosterInfo().getSummary());
 
 		TextView title = (TextView) context
 				.findViewById(R.id.movieBrowserPosterTitle);

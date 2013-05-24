@@ -109,14 +109,14 @@ public class AbstractVideoOnItemClickListener {
 				SerenitySurfaceViewVideoActivity.class);
 		vpIntent.putExtra("videoUrl", url);
 		vpIntent.putExtra("title", video.getTitle());
-		vpIntent.putExtra("summary", video.getPlotSummary());
+		vpIntent.putExtra("summary", video.getSummary());
 	
 		if (video.getGrandParentPosterURL() != null) {
 			vpIntent.putExtra("posterUrl", video.getGrandParentPosterURL());
 		} else if (video.getParentPosterURL() != null) {
 			vpIntent.putExtra("posterUrl", video.getParentPosterURL());
 		} else {
-			vpIntent.putExtra("posterUrl", video.getPosterURL());
+			vpIntent.putExtra("posterUrl", video.getImageURL());
 		}
 		vpIntent.putExtra("id", video.id());
 		vpIntent.putExtra("aspectRatio", video.getAspectRatio());

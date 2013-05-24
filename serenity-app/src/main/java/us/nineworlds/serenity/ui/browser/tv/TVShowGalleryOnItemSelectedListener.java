@@ -105,7 +105,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 
 		TextView summary = (TextView) context
 				.findViewById(R.id.tvShowSeriesSummary);
-		String plotSummary = v.getPosterInfo().getPlotSummary();
+		String plotSummary = v.getPosterInfo().getSummary();
 		if (plotSummary == null) {
 			summary.setText("");
 		} else {

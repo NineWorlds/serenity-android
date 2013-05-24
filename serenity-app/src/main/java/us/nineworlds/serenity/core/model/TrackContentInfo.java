@@ -23,56 +23,38 @@
 
 package us.nineworlds.serenity.core.model;
 
-import java.util.List;
-
 /**
  * @author dcarver
- * 
+ *
  */
-public interface SeriesContentInfo extends ContentInfo {
+public interface TrackContentInfo extends ContentInfo {
 
-	public void setKey(String key);
+	public String getAudioChannels();
 
-	public String getKey();
+	public void setAudioChannels(String audioChannels);
+	
+	public void setOriginalAirDate(String airDate);
 
-	public List<String> getGeneres();
-
-	public void setGeneres(List<String> generes);
-
-	public String getShowsWatched();
-
-	public void setShowsWatched(String showsWatched);
-
-	public String getShowsUnwatched();
-
-	public void setShowsUnwatched(String showsUnwatched);
-
-	public String getShowMetaDataURL();
-
-	public void setShowMetaDataURL(String showMetaDataURL);
-
-	public String getThumbNailURL();
-
-	public void setThumbNailURL(String thumbNailURL);
-
-	public String getContentRating();
-
-	public String getYear();
-
-	public void setContentRating(String contentRating);
-
+	public String getOriginalAirDate();
+	
+	public void setDuration(int duration);
+	
+	public int getDuration();
+	
 	public void setYear(String year);
+	
+	public String getYear();
+	
+	public void setParentPosterURL(String parentPosterURL);
+	
+	public String getParentPosterURL();
+	
+	public void setGrandParentPosterURL(String grandparentPosterURL);
+	
+	public String getGrandParentPosterURL();
+	
+	public String getDirectPlayUrl();
 
-	public String getParentTitle();
-
-	public void setParentTitle(String title);
-	
-	public String getStudio();
-	
-	public void setStudio(String studio);
-	
-	public void setRating(double ratings);
-	
-	public double getRating();
+	public void setDirectPlayUrl(String directPlayUrl);
 
 }

@@ -122,7 +122,7 @@ public class EpisodePosterOnItemSelectedListener implements
 		}
 		
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
-		summary.setText(v.getPosterInfo().getPlotSummary());
+		summary.setText(v.getPosterInfo().getSummary());
 
 		TextView title = (TextView) context
 				.findViewById(R.id.movieBrowserPosterTitle);

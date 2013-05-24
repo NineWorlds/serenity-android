@@ -57,7 +57,7 @@ public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
 		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width,
 				height));
 		
-		imageLoader.displayImage(pi.getPosterURL(), mpiv);
+		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
 		return mpiv;
 	}

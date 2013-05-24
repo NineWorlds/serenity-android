@@ -21,58 +21,12 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.model;
-
-import java.util.List;
+package us.nineworlds.serenity.core.model.impl;
 
 /**
  * @author dcarver
- * 
+ *
  */
-public interface SeriesContentInfo extends ContentInfo {
-
-	public void setKey(String key);
-
-	public String getKey();
-
-	public List<String> getGeneres();
-
-	public void setGeneres(List<String> generes);
-
-	public String getShowsWatched();
-
-	public void setShowsWatched(String showsWatched);
-
-	public String getShowsUnwatched();
-
-	public void setShowsUnwatched(String showsUnwatched);
-
-	public String getShowMetaDataURL();
-
-	public void setShowMetaDataURL(String showMetaDataURL);
-
-	public String getThumbNailURL();
-
-	public void setThumbNailURL(String thumbNailURL);
-
-	public String getContentRating();
-
-	public String getYear();
-
-	public void setContentRating(String contentRating);
-
-	public void setYear(String year);
-
-	public String getParentTitle();
-
-	public void setParentTitle(String title);
-	
-	public String getStudio();
-	
-	public void setStudio(String studio);
-	
-	public void setRating(double ratings);
-	
-	public double getRating();
+public class MusicAlbumContentInfo extends AbstractSeriesContentInfo {
 
 }

@@ -143,7 +143,7 @@ public class TVShowBannerImageGalleryAdapter extends
 		int height = ImageUtils.getDPI(BANNER_PIXEL_HEIGHT, context);
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
 
-		imageLoader.displayImage(pi.getPosterURL(), mpiv);
+		imageLoader.displayImage(pi.getImageURL(), mpiv);
 		return mpiv;
 	}
 	

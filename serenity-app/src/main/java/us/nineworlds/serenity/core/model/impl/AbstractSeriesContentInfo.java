@@ -55,7 +55,7 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
 		return id;
 	}
 
-	public String getParentShowTitle() {
+	public String getParentTitle() {
 		return parentShowTitle;
 	}
 
@@ -65,7 +65,7 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
 	 * @see com.github.kingargyle.plexappclient.core.model.SeriesContentInfo#
 	 * setParentShowTitle(java.lang.String)
 	 */
-	public void setParentShowTitle(String title) {
+	public void setParentTitle(String title) {
 		parentShowTitle = title;
 	}
 
@@ -125,11 +125,11 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
 		return contentRating;
 	}
 
-	public String getPlotSummary() {
+	public String getSummary() {
 		return plotSummary;
 	}
 
-	public String getPosterURL() {
+	public String getImageURL() {
 		return posterURL;
 	}
 
@@ -160,11 +160,11 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
 		this.title = title;
 	}
 
-	public void setPosterURL(String posterURL) {
+	public void setImageURL(String posterURL) {
 		this.posterURL = posterURL;
 	}
 
-	public void setPlotSummary(String plotSummary) {
+	public void setSummary(String plotSummary) {
 		this.plotSummary = plotSummary;
 	}
 

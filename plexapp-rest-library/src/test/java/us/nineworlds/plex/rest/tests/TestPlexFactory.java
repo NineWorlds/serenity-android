@@ -35,6 +35,7 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.plex.rest.model.impl.Track;
 import us.nineworlds.plex.rest.tests.utils.NanoHTTPD;
 
 import static org.junit.Assert.*;
@@ -115,6 +116,15 @@ public class TestPlexFactory {
 	}
 	
 	@Test
+	public void testRetrieveSectionByKeyMusic() throws Exception {
+		PlexappFactory factory = PlexappFactory.getInstance(config);
+		MediaContainer mediaContainer = factory.retrieveSections("3");
+		assertNotNull(mediaContainer);
+		assertEquals(11, mediaContainer.getSize());
+	}
+	
+	
+	@Test
 	public void testRetrieveAllTVShows() throws Exception {
 		PlexappFactory factory = PlexappFactory.getInstance(config);
 		MediaContainer mediaContainer = factory.retrieveSections("6", "all");
@@ -123,10 +133,37 @@ public class TestPlexFactory {
 	}
 	
 	@Test
+	public void testRetrieveAllMusic() throws Exception {
+		PlexappFactory factory = PlexappFactory.getInstance(config);
+		MediaContainer mediaContainer = factory.retrieveSections("3", "all");
+		List<Directory> directories = mediaContainer.getDirectories();
+		assertEquals(4, directories.size());
+	}
+	
+	
+	@Test
 	public void testRetrieveSeasonsForTVShow() throws Exception {
 		PlexappFactory factory = PlexappFactory.getInstance(config);
 		MediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/209/children/");
 		assertEquals(5, mediaContainer.getSize());
+	}
+	
+	@Test
+	public void testRetrieveMusicMetaData() throws Exception {
+		PlexappFactory factory = PlexappFactory.getInstance(config);
+		MediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/101/children/");
+		assertEquals(1, mediaContainer.getSize());
+	}
+	
+	@Test
+	public void testRetrieveMusicTrackMetaData() throws Exception {
+		PlexappFactory factory = PlexappFactory.getInstance(config);
+		MediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/102/children/");
+		assertEquals(21, mediaContainer.getSize());
+		assertNotNull(mediaContainer.getTracks());
+		Track track = mediaContainer.getTracks().get(0);
+		assertNotNull(track);
+		assertEquals("Arabian Nights", track.getTitle());
 	}
 
 	@Test

@@ -72,7 +72,7 @@ public class EpisodePosterImageGalleryAdapter extends
 		int height = ImageUtils.getDPI(195, context);
 		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
 
-		imageLoader.displayImage(pi.getPosterURL(), mpiv);
+		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
 		return mpiv;
 	}

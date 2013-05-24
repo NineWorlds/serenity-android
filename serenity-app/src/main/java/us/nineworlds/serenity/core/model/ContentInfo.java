@@ -31,19 +31,19 @@ public interface ContentInfo {
 
 	public String id();
 
-	public String getPlotSummary();
+	public String getSummary();
 
 	public String getBackgroundURL();
 
-	public String getPosterURL();
+	public String getImageURL();
 
 	public String getTitle();
 
 	public void setTitle(String title);
 
-	public void setPosterURL(String posterURL);
+	public void setImageURL(String imageURL);
 
-	public void setPlotSummary(String plotSummary);
+	public void setSummary(String summary);
 
 	public void setBackgroundURL(String backgroundURL);
 

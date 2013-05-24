@@ -146,6 +146,13 @@ public class PlexappFactory {
 		return mediaContainer;
 	}
 	
+	public MediaContainer retrieveMusicMetaData(String key) throws Exception {
+		String seasonsURL = resourcePath.getSeasonsURL(key);
+		MediaContainer mediaContainer = serializeResource(seasonsURL);
+		return mediaContainer;
+	}
+	
+	
 	public MediaContainer retrieveEpisodes(String key) throws Exception {
 		String episodesURL = resourcePath.getEpisodesURL(key);
 		MediaContainer mediaContainer = serializeResource(episodesURL);

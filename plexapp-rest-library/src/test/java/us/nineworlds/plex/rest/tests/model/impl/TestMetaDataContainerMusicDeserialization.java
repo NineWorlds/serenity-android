@@ -21,58 +21,45 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.model;
+package us.nineworlds.plex.rest.tests.model.impl;
 
+import java.io.InputStream;
 import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import us.nineworlds.plex.rest.model.impl.Directory;
+import us.nineworlds.plex.rest.model.impl.Genre;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+
+import static org.junit.Assert.*;
 
 /**
  * @author dcarver
- * 
+ *
  */
-public interface SeriesContentInfo extends ContentInfo {
-
-	public void setKey(String key);
-
-	public String getKey();
-
-	public List<String> getGeneres();
-
-	public void setGeneres(List<String> generes);
-
-	public String getShowsWatched();
-
-	public void setShowsWatched(String showsWatched);
-
-	public String getShowsUnwatched();
-
-	public void setShowsUnwatched(String showsUnwatched);
-
-	public String getShowMetaDataURL();
-
-	public void setShowMetaDataURL(String showMetaDataURL);
-
-	public String getThumbNailURL();
-
-	public void setThumbNailURL(String thumbNailURL);
-
-	public String getContentRating();
-
-	public String getYear();
-
-	public void setContentRating(String contentRating);
-
-	public void setYear(String year);
-
-	public String getParentTitle();
-
-	public void setParentTitle(String title);
+public class TestMetaDataContainerMusicDeserialization {
 	
-	public String getStudio();
+	private Serializer serializer;
 	
-	public void setStudio(String studio);
+	@Before
+	public void setUp() throws Exception {
+		serializer = new Persister();
+	}
 	
-	public void setRating(double ratings);
+	@After
+	public void tearDown() throws Exception {
+		serializer = null;
+	}
 	
-	public double getRating();
-
+	@Test
+	public void testSimpleDeserialization() throws Exception {
+		InputStream file = this.getClass().getResourceAsStream("/library/sections/3/all/index.xml");
+		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
+		assertEquals(4, mediaContainer.getSize());
+	}
 }

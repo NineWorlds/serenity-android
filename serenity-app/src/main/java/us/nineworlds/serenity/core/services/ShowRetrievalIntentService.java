@@ -98,7 +98,7 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 					mpi.setId(show.getRatingKey());
 					mpi.setMediaTagIdentifier(mediaTagId);
 					if (show.getSummary() != null) {
-						mpi.setPlotSummary(show.getSummary());
+						mpi.setSummary(show.getSummary());
 					}
 					
 					mpi.setStudio(show.getStudio());
@@ -115,7 +115,7 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 					if (show.getBanner() != null) {
 						turl = baseUrl + show.getBanner().replaceFirst("/", "");
 					}
-					mpi.setPosterURL(turl);
+					mpi.setImageURL(turl);
 
 					String thumbURL = "";
 					if (show.getThumb() != null) {

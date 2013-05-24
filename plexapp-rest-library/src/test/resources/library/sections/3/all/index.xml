@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MediaContainer size="4" allowSync="1" art="/:/resources/artist-fanart.jpg" identifier="com.plexapp.plugins.library" librarySectionID="3" librarySectionUUID="37ec4e93-e3aa-41e4-8af6-ca4e4019481d" mediaTagPrefix="/system/bundle/media/flags/" mediaTagVersion="1365390478" nocache="1" thumb="/:/resources/artist.png" title1="Music" title2="All Artists" viewGroup="artist" viewMode="65592">
+<Directory ratingKey="50" key="/library/metadata/50/children" type="artist" title="[Unknown Artist]" summary="" index="1" addedAt="1365520909">
+</Directory>
+<Directory ratingKey="101" key="/library/metadata/101/children" type="artist" title="Alan Menken" summary="Alan Menken (born July 22, 1949 in New Rochelle, New York) is an American musical theatre and film composer and pianist. Menken has collaborated with several renowned lyricists including Howard Ashman (1950-1991), Tim Rice and Stephen Schwartz. For his work he has won eight Academy Awards as well as ten additional nominations.  His best known work includes the Disney animated movies, The Little Mermaid, Beauty and the Beast, Aladdin and Pocahontas, as well as Little Shop of Horrors, Enchanted, Tangled and most recently, Sister Act the Musical." index="1" thumb="/library/metadata/101/thumb/1365521012" addedAt="1365520969" updatedAt="1365521012">
+</Directory>
+<Directory ratingKey="87" key="/library/metadata/87/children" type="artist" title="Various Artists" summary="Warning! Deleting this artist may remove other artists and scrobbles from your library - please handle with caution!  You can recover lost scrobbles here.  The term Various Artists is used in the record industry when numerous singers and musicians collaborate on a song or collection of songs.    Most often on Last.fm, compilation album tracks appear under the name of Various Artists erroneously because the individual artist is not listed in the album's ID3 information." index="1" thumb="/library/metadata/87/thumb/1365521019" art="/library/metadata/87/art/1365521019" addedAt="1365520955" updatedAt="1365521019">
+</Directory>
+<Directory ratingKey="21" key="/library/metadata/21/children" type="artist" title="www,freeplaymusic.com" summary="" index="1" addedAt="1365520885" updatedAt="1365521010">
+</Directory>
+</MediaContainer>

@@ -137,7 +137,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		int height = ImageUtils.getDPI(220, context);
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
 
-		imageLoader.displayImage(pi.getPosterURL(), mpiv);
+		imageLoader.displayImage(pi.getImageURL(), mpiv);
 		return mpiv;
 	}
 
@@ -151,7 +151,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 				if (!seasonList.isEmpty()) {
 					TextView titleView = (TextView) context
 							.findViewById(R.id.tvShowSeasonsDetailText);
-					titleView.setText(seasonList.get(0).getParentShowTitle());
+					titleView.setText(seasonList.get(0).getParentTitle());
 					TextView textView = (TextView) context
 							.findViewById(R.id.tvShowSeasonsItemCount);
 					textView.setText(Integer.toString(seasonList.size())

@@ -118,7 +118,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 			mpi.setMediaTagIdentifier(mediaTagId);
 			mpi.setId(movie.getRatingKey());
 			mpi.setStudio(movie.getStudio());
-			mpi.setPlotSummary(movie.getSummary());
+			mpi.setSummary(movie.getSummary());
 
 			mpi.setResumeOffset(Long.valueOf(movie.getViewOffset()).intValue());
 			mpi.setDuration(Long.valueOf(movie.getDuration()).intValue());
@@ -140,7 +140,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 						+ movie.getThumbNailImageKey().replaceFirst("/", "");
 			}
 
-			mpi.setPosterURL(turl);
+			mpi.setImageURL(turl);
 			mpi.setTitle(movie.getTitle());
 
 			mpi.setContentRating(movie.getContentRating());

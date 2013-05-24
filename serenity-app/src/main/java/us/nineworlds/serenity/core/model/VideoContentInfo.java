@@ -81,9 +81,9 @@ public interface VideoContentInfo extends ContentInfo {
 
 	public void setGenres(List<String> genres);
 
-	public void setPlotSummary(String plotSummary);
+	public void setSummary(String plotSummary);
 
-	public void setPosterURL(String posterURL);
+	public void setImageURL(String posterURL);
 
 	public void setTitle(String title);
 

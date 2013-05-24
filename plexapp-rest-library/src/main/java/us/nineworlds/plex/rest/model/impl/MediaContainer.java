@@ -86,6 +86,10 @@ public class MediaContainer {
 	@ElementList(inline=true,required=false)
 	private List<Video> videos;
 	
+	@ElementList(inline=true,required=false)
+	private List<Track> tracks;
+	
+	
 	public List<Directory> getDirectories() {
 		return directories;
 	}
@@ -207,6 +211,14 @@ public class MediaContainer {
 
 	public void setParentPosterURL(String parentPosterURL) {
 		this.parentPosterURL = parentPosterURL;
+	}
+
+	public List<Track> getTracks() {
+		return tracks;
+	}
+
+	public void setTracks(List<Track> tracks) {
+		this.tracks = tracks;
 	}
 	
 	

@@ -136,7 +136,7 @@ public class EpisodeRetrievalIntentService extends
 				epi.setParentPosterURL(parentPosterURL);
 			}
 			epi.setId(episode.getRatingKey());
-			epi.setPlotSummary(episode.getSummary());
+			epi.setSummary(episode.getSummary());
 			epi.setViewCount(episode.getViewCount());
 			epi.setResumeOffset(Long.valueOf(episode.getViewOffset())
 					.intValue());
@@ -170,7 +170,7 @@ public class EpisodeRetrievalIntentService extends
 						+ episode.getThumbNailImageKey().replaceFirst("/", "");
 			}
 
-			epi.setPosterURL(turl);
+			epi.setImageURL(turl);
 			epi.setTitle(episode.getTitle());
 			
 			if (episode.getGrandParentTitle() != null) {

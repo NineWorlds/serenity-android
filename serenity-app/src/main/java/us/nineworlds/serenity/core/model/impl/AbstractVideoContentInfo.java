@@ -253,7 +253,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
 	 * getPlotSummary()
 	 */
-	public String getPlotSummary() {
+	public String getSummary() {
 		return plotSummary;
 	}
 
@@ -264,7 +264,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getPosterURL
 	 * ()
 	 */
-	public String getPosterURL() {
+	public String getImageURL() {
 		return posterURL;
 	}
 
@@ -402,7 +402,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
 	 * setPlotSummary(java.lang.String)
 	 */
-	public void setPlotSummary(String plotSummary) {
+	public void setSummary(String plotSummary) {
 		this.plotSummary = plotSummary;
 	}
 
@@ -413,7 +413,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo {
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setPosterURL
 	 * (java.lang.String)
 	 */
-	public void setPosterURL(String posterURL) {
+	public void setImageURL(String posterURL) {
 		this.posterURL = posterURL;
 	}
 

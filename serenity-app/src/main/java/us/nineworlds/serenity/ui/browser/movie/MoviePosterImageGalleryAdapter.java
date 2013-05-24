@@ -86,7 +86,7 @@ public class MoviePosterImageGalleryAdapter extends
 			height = ImageUtils.getDPI(180, context);
 			mpiv.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
 		}
-		imageLoader.displayImage(pi.getPosterURL(), mpiv);
+		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
 		return mpiv;
 	}

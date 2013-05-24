@@ -84,6 +84,13 @@ public class TestResourcePaths {
 	}
 	
 	@Test
+	public void testSectionPathWithKeyMusic() throws Exception {
+		String result = path.getSectionsURL("3");
+		
+		assertEquals("http://localhost:32400/library/sections/3/", result);
+	}
+	
+	@Test
 	public void testWatched() throws Exception {
 		String result = path.getWatchedUrl("131");
 		assertEquals("http://localhost:32400/:/scrobble?key=131&identifier=com.plexapp.plugins.library", result);

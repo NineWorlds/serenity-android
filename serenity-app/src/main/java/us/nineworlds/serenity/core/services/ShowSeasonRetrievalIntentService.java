@@ -96,7 +96,7 @@ public class ShowSeasonRetrievalIntentService extends
 			TVShowSeriesInfo mpi = new TVShowSeriesInfo();
 			mpi.setId(show.getRatingKey());
 			if (mc.getTitle2() != null) {
-				mpi.setParentShowTitle(mc.getTitle2());
+				mpi.setParentTitle(mc.getTitle2());
 			}
 
 			String burl = baseUrl + ":/resources/show-fanart.jpg";
@@ -109,7 +109,7 @@ public class ShowSeasonRetrievalIntentService extends
 			if (show.getThumb() != null) {
 				turl = baseUrl + show.getThumb().replaceFirst("/", "");
 			}
-			mpi.setPosterURL(turl);
+			mpi.setImageURL(turl);
 			mpi.setKey(show.getKey());
 
 			mpi.setTitle(show.getTitle());
