@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.browser.music;
+package us.nineworlds.serenity.ui.browser.music.albums;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +32,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.MusicAlbumContentInfo;
 import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
 import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
+import us.nineworlds.serenity.core.services.MusicAlbumRetrievalIntentService;
 import us.nineworlds.serenity.core.services.MusicRetrievalIntentService;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.ui.views.MusicAlbumImageView;
 import us.nineworlds.serenity.ui.views.SerenityMusicImageView;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -63,32 +66,30 @@ import android.widget.LinearLayout.LayoutParams;
  * @author dcarver
  * 
  */
-public class MusicPosterAdapter extends
+public class MusicAlbumsCoverAdapter extends
 		BaseAdapter {
 
-	protected static MusicPosterAdapter notifyAdapter;
+	protected static MusicAlbumsCoverAdapter notifyAdapter;
 	protected static ProgressDialog pd;
 	private Handler posterGalleryHandler;
 	protected ImageLoader imageLoader;
-	private static List<MusicArtistContentInfo> posterList;
+	private static List<MusicAlbumContentInfo> posterList;
 	private static Activity context;
 	private String key;
-	private String category;
 
-	public MusicPosterAdapter(Activity context, String key, String category) {
+	public MusicAlbumsCoverAdapter(Activity context, String key) {
 		notifyAdapter = this;
 		this.context = context;
 		this.key = key;
-		this.category = category;
 		imageLoader = SerenityApplication.getImageLoader();
-		posterList = new ArrayList<MusicArtistContentInfo>();
+		posterList = new ArrayList<MusicAlbumContentInfo>();
 		fetchDataFromService();
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		MusicArtistContentInfo pi = posterList.get(position);
-		SerenityMusicImageView mpiv = new SerenityMusicImageView(context, pi);
+		MusicAlbumContentInfo pi = posterList.get(position);
+		MusicAlbumImageView mpiv = new MusicAlbumImageView(context, pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(180, context);
@@ -102,10 +103,9 @@ public class MusicPosterAdapter extends
 	protected void fetchDataFromService() {
 		posterGalleryHandler = new MusicHandler();
 		Messenger messenger = new Messenger(posterGalleryHandler);
-		Intent intent = new Intent(context, MusicRetrievalIntentService.class);
+		Intent intent = new Intent(context, MusicAlbumRetrievalIntentService.class);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("key", key);
-		intent.putExtra("category", category);
 		context.startService(intent);
 	}
 
@@ -113,7 +113,7 @@ public class MusicPosterAdapter extends
 
 		@Override
 		public void handleMessage(Message msg) {
-			posterList = (List<MusicArtistContentInfo>) msg.obj;
+			posterList = (List<MusicAlbumContentInfo>) msg.obj;
 			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.musicGridView);
 			gridView.requestFocus();
 			notifyAdapter.notifyDataSetChanged();

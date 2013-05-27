@@ -89,6 +89,12 @@ public class SerenityApplication extends Application {
 	public static DisplayImageOptions getReflectiveOptions() {
 		return reflectiveOptions;
 	}
+	
+	private static DisplayImageOptions musicOptions;
+	
+	public static DisplayImageOptions getMusicOptions() {
+		return musicOptions;
+	}
 
 	@Override
 	public void onCreate() {
@@ -109,8 +115,17 @@ public class SerenityApplication extends Application {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
 				.cacheInMemory().cacheOnDisc()
 				.bitmapConfig(Bitmap.Config.RGB_565)
+				.showImageForEmptyUri(R.drawable.default_video_cover)
 				.showImageOnFail(R.drawable.default_error)
 				.showStubImage(R.drawable.default_video_cover).build();
+		
+		musicOptions = new DisplayImageOptions.Builder()
+		.cacheInMemory().cacheOnDisc()
+		.bitmapConfig(Bitmap.Config.RGB_565)
+		.showImageForEmptyUri(R.drawable.default_music)
+		.showImageOnFail(R.drawable.default_error)
+		.showStubImage(R.drawable.default_music).build();
+		
 
 		reflectiveOptions = new DisplayImageOptions.Builder().cacheInMemory()
 				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)

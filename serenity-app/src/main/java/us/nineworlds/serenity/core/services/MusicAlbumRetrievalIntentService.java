@@ -30,7 +30,7 @@ import java.util.List;
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
+import us.nineworlds.serenity.core.model.impl.MusicAlbumContentInfo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,19 +45,19 @@ import android.util.Log;
  * @author dcarver
  * 
  */
-public class MusicRetrievalIntentService extends AbstractPlexRESTIntentService {
+public class MusicAlbumRetrievalIntentService extends AbstractPlexRESTIntentService {
 
-	private static final String MUSIC_RETRIEVAL_INTENT_SERVICE = "MusicRetrievalIntentService";
+	private static final String MUSIC_RETRIEVAL_INTENT_SERVICE = "MusicAlbumRetrievalIntentService";
 
 	private static final String DEFAULT_CATEGORY = "all";
 
-	protected List<MusicArtistContentInfo> musicContentList = null;
+	protected List<MusicAlbumContentInfo> musicContentList = null;
 	protected String key;
 	protected String category;
 
-	public MusicRetrievalIntentService() {
+	public MusicAlbumRetrievalIntentService() {
 		super(MUSIC_RETRIEVAL_INTENT_SERVICE);
-		musicContentList = new ArrayList<MusicArtistContentInfo>();
+		musicContentList = new ArrayList<MusicAlbumContentInfo>();
 
 	}
 
@@ -80,7 +80,6 @@ public class MusicRetrievalIntentService extends AbstractPlexRESTIntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		key = intent.getExtras().getString("key", "");
-		category = intent.getExtras().getString("category", DEFAULT_CATEGORY);
 		createPosters();
 		sendMessageResults(intent);
 	}
@@ -108,10 +107,15 @@ public class MusicRetrievalIntentService extends AbstractPlexRESTIntentService {
 		List<Directory> videos = mc.getDirectories();
 		String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
 		for (Directory music : videos) {
-			MusicArtistContentInfo mpi = new MusicArtistContentInfo();
+			MusicAlbumContentInfo mpi = new MusicAlbumContentInfo();
 			mpi.setMediaTagIdentifier(mediaTagId);
 			mpi.setId(music.getRatingKey());
 			mpi.setSummary(music.getSummary());
+			//int watched = Integer.parseInt(music.getViewedLeafCount());
+			//int totalTracks = Integer.parseInt(music.getLeafCount());
+			//mpi.setShowsWatched(music.getViewedLeafCount());
+			//mpi.setShowsUnwatched(Integer.toString(totalTracks - watched));
+			mpi.setYear(music.getYear());
 			
 			String turl = "";
 			if (music.getThumb() != null) {
@@ -134,7 +138,7 @@ public class MusicRetrievalIntentService extends AbstractPlexRESTIntentService {
 			category = DEFAULT_CATEGORY;
 		}
 
-		return factory.retrieveSections(key, category);
+		return factory.retrieveMusicMetaData("/library/metadata/" + key + "/children");
 	}
 
 }

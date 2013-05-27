@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.browser.music;
+package us.nineworlds.serenity.ui.browser.music.albums;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jess.ui.TwoWayGridView;
@@ -36,7 +36,7 @@ import android.preference.PreferenceManager;
  * @author dcarver
  * 
  */
-public class MusicActivity extends Activity {
+public class MusicAlbumsActivity extends Activity {
 
 	private String key;
 	private boolean restarted_state = false;
@@ -71,20 +71,10 @@ public class MusicActivity extends Activity {
 		}
 		restarted_state = false;
 	}
-	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onRestart()
-	 */
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		restarted_state = true;
-	}
 
 	protected void setupMusicAdapters() {
 			TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.musicGridView);
-			gridView.setAdapter(new MusicPosterAdapter(this, key, "all"));
-			gridView.setOnItemSelectedListener(new MusicGridOnItemSelectedListener(this));
-			gridView.setOnItemClickListener(new MusicGridOnItemClickListener());
+			gridView.setAdapter(new MusicAlbumsCoverAdapter(this, key));
+			gridView.setOnItemSelectedListener(new MusicAlbumsGridOnItemSelectedListener(this));
 	}
 }
