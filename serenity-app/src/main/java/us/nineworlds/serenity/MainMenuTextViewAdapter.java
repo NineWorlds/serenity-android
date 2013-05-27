@@ -124,6 +124,14 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 			v.setActivityType(menuItem.getType());
 			return v;
 		}
+		
+		if ("artist".equals(menuItem.getType())) {
+			v = new MainMenuTextView(myContext, R.drawable.music);
+			v.setLibraryKey(menuItem.getSection());
+			v.setActivityType(menuItem.getType());
+			return v;
+		}
+		
 
 		if ("settings".equals(menuItem.getType())) {
 			v = new MainMenuTextView(myContext, R.drawable.settings);

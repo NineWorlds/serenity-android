@@ -24,6 +24,7 @@
 package us.nineworlds.serenity;
 
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
+import us.nineworlds.serenity.ui.browser.music.MusicActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 import us.nineworlds.serenity.ui.views.MainMenuTextView;
@@ -44,6 +45,7 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
 	private static final String MENU_TYPE_SEARCH = "search";
 	private static final String MENU_TYPE_SHOW = "show";
 	private static final String MENU_TYPE_MOVIE = "movie";
+	private static final String MENU_TYPE_MUSIC = "artist";
 	private static final String MENU_TYPE_OPTIONS = "options";
 	private Activity context;
 
@@ -81,6 +83,8 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
 		} else if (MENU_TYPE_OPTIONS.equalsIgnoreCase(activityType)) {
 			context.openOptionsMenu();
 			return;
+		} else if (MENU_TYPE_MUSIC.equalsIgnoreCase(activityType)) {
+			i = new Intent(context, MusicActivity.class);
 		} else {
 			i = new Intent(context, SerenityPreferenceActivity.class);
 		}

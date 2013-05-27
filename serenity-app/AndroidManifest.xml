@@ -66,6 +66,14 @@
         </activity>
         
         <activity
+            android:name="us.nineworlds.serenity.ui.browser.music.MusicActivity" 
+            android:label="@string/title_activity_tvbrowser_show" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:screenOrientation="landscape" >
+        </activity>
+        
+        
+        <activity
             android:name="us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity" android:label="@string/title_activity_tvbrowser_show_season" 
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" >
@@ -108,6 +116,7 @@
             
         <service android:name=".core.services.MainMenuIntentService"/>
         <service android:name=".core.services.MoviesRetrievalIntentService"/>
+        <service android:name=".core.services.MusicRetrievalIntentService"/>
         <service android:name=".core.services.MovieMetaDataRetrievalIntentService"/>
         <service android:name=".core.services.EpisodeRetrievalIntentService"/>
         <service android:name=".core.services.MovieCategoryRetrievalIntentService"/>
