@@ -39,7 +39,7 @@ public class AudioTrackContentInfo implements TrackContentInfo {
 	private String mediaTagIdentifer;
 	private String audioChannels;
 	private String originalAirDate;
-	private int duration;
+	private long duration;
 	private String year;
 	private String parentImageURL;
 	private String grandparentImageURL;
@@ -127,13 +127,13 @@ public class AudioTrackContentInfo implements TrackContentInfo {
 	}
 
 	@Override
-	public void setDuration(int duration) {
+	public void setDuration(long duration) {
 		this.duration = duration;
 		
 	}
 
 	@Override
-	public int getDuration() {
+	public long getDuration() {
 		return duration;
 	}
 

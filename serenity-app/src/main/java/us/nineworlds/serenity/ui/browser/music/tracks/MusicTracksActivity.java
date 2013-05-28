@@ -21,40 +21,58 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.model;
+package us.nineworlds.serenity.ui.browser.music.tracks;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import com.jess.ui.TwoWayGridView;
+
+import us.nineworlds.serenity.R;
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 /**
  * @author dcarver
- *
+ * 
  */
-public interface TrackContentInfo extends ContentInfo {
+public class MusicTracksActivity extends Activity {
 
-	public String getAudioChannels();
+	private String key;
+	private boolean restarted_state = false;
 
-	public void setAudioChannels(String audioChannels);
-	
-	public void setOriginalAirDate(String airDate);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		key = getIntent().getExtras().getString("key");
 
-	public String getOriginalAirDate();
-	
-	public void setDuration(long duration);
-	
-	public long getDuration();
-	
-	public void setYear(String year);
-	
-	public String getYear();
-	
-	public void setParentPosterURL(String parentPosterURL);
-	
-	public String getParentPosterURL();
-	
-	public void setGrandParentPosterURL(String grandparentPosterURL);
-	
-	public String getGrandParentPosterURL();
-	
-	public String getDirectPlayUrl();
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		setContentView(R.layout.activity_music_track);
 
-	public void setDirectPlayUrl(String directPlayUrl);
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onStart()
+	 */
+	@Override
+	protected void onStart() {
+		super.onStart();
+		EasyTracker.getInstance().activityStart(this);
+		if (restarted_state == false) {
+			setupMusicAdapters();
+		}
+		restarted_state = false;
+	}
+
+	protected void setupMusicAdapters() {
+		
+	}
 }

@@ -124,6 +124,7 @@
         <service android:name=".core.services.MoviesRetrievalIntentService"/>
         <service android:name=".core.services.MusicRetrievalIntentService"/>
         <service android:name=".core.services.MusicAlbumRetrievalIntentService"/>
+        <service android:name=".core.services.MusicTrackRetrievalIntentService"/>
         <service android:name=".core.services.MovieMetaDataRetrievalIntentService"/>
         <service android:name=".core.services.EpisodeRetrievalIntentService"/>
         <service android:name=".core.services.MovieCategoryRetrievalIntentService"/>
