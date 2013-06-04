@@ -176,5 +176,13 @@ public class AudioTrackContentInfo implements TrackContentInfo {
 	public void setGrandParentPosterURL(String grandparentURL) {
 		this.grandparentImageURL = grandparentURL;
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return title;
+	}
 
 }

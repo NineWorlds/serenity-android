@@ -131,7 +131,7 @@ public class MusicTrackRetrievalIntentService extends AbstractPlexRESTIntentServ
 
 
 	protected MediaContainer retrieveVideos() throws Exception {
-		return factory.retrieveMusicMetaData("/library/metadata/" + key + "/children");
+		return factory.retrieveMusicMetaData(key);
 	}
 
 }

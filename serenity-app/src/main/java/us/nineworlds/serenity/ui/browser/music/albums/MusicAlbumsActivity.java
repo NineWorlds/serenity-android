@@ -76,5 +76,6 @@ public class MusicAlbumsActivity extends Activity {
 			TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.musicGridView);
 			gridView.setAdapter(new MusicAlbumsCoverAdapter(this, key));
 			gridView.setOnItemSelectedListener(new MusicAlbumsGridOnItemSelectedListener(this));
+			gridView.setOnItemClickListener(new MusicAlbumGridOnItemClickListener());
 	}
 }

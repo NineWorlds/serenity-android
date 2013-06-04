@@ -111,6 +111,7 @@ public class MusicAlbumRetrievalIntentService extends AbstractPlexRESTIntentServ
 			mpi.setMediaTagIdentifier(mediaTagId);
 			mpi.setId(music.getRatingKey());
 			mpi.setSummary(music.getSummary());
+			mpi.setKey(music.getKey());
 			//int watched = Integer.parseInt(music.getViewedLeafCount());
 			//int totalTracks = Integer.parseInt(music.getLeafCount());
 			//mpi.setShowsWatched(music.getViewedLeafCount());
