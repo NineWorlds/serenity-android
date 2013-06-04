@@ -12,20 +12,25 @@
 
     <ImageView
         android:id="@+id/musicAlbumImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/default_music"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="20dp" />
 
     <ListView
         android:id="@+id/audioTracksListview"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/musicAlbumImage"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
         android:descendantFocusability="afterDescendants"
         android:scrollbars="vertical"
         android:scrollingCache="true" />

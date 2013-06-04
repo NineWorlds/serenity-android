@@ -57,20 +57,22 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.text.format.DateUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 
 /**
  * 
  * @author dcarver
  * 
  */
-public class TracksAdapter extends
-		ArrayAdapter<AudioTrackContentInfo> {
+public class TracksAdapter extends ArrayAdapter<AudioTrackContentInfo> {
 
 	protected static TracksAdapter notifyAdapter;
 	protected static ProgressDialog pd;
@@ -94,12 +96,28 @@ public class TracksAdapter extends
 	protected void fetchDataFromService() {
 		posterGalleryHandler = new MusicHandler();
 		Messenger messenger = new Messenger(posterGalleryHandler);
-		Intent intent = new Intent(context, MusicTrackRetrievalIntentService.class);
+		Intent intent = new Intent(context,
+				MusicTrackRetrievalIntentService.class);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("key", key);
 		context.startService(intent);
 	}
-	
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		LayoutInflater inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = inflater.inflate(R.layout.track_listview_layout, parent, false);
+		TextView textView = (TextView) rowView.findViewById(R.id.trackTitle);
+		TextView durationView = (TextView) rowView.findViewById(R.id.trackDuration);
+		ImageView imageView = (ImageView) rowView.findViewById(R.id.trackPlayed);
+		imageView.setImageResource(R.drawable.unwatched_small);
+		textView.setText(getItem(position).getTitle());
+		durationView.setText(DateUtils.formatElapsedTime(getItem(position).getDuration() / 1000));
+
+		return rowView;
+	}
+
 	private class MusicHandler extends Handler {
 
 		@Override
@@ -107,6 +125,11 @@ public class TracksAdapter extends
 			posterList = (List<AudioTrackContentInfo>) msg.obj;
 			clear();
 			addAll(posterList);
+			ImageView imageView = (ImageView) context.findViewById(R.id.musicAlbumImage);
+			if (posterList != null && !posterList.isEmpty()) {
+				ImageLoader imageLoader = SerenityApplication.getImageLoader();
+				imageLoader.displayImage(posterList.get(0).getImageURL(), imageView);
+			}
 			notifyAdapter.notifyDataSetChanged();
 		}
 

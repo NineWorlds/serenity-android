@@ -23,59 +23,44 @@
 
 package us.nineworlds.serenity.ui.browser.music.tracks;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import com.jess.ui.TwoWayGridView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
 import android.app.Activity;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ImageView;
 
 /**
  * @author dcarver
- * 
+ *
  */
-public class MusicTracksActivity extends Activity {
+public class TracksOnItemSelectedListener implements OnItemSelectedListener {
 
-	private String key;
-	private boolean restarted_state = false;
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	/* (non-Javadoc)
+	 * @see android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android.widget.AdapterView, android.view.View, int, long)
 	 */
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		key = getIntent().getExtras().getString("key");
-
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		setContentView(R.layout.activity_music_track);
-
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+		Activity context = (Activity) view.getContext();
+		view.setSelected(true);
+		AudioTrackContentInfo track =  (AudioTrackContentInfo) parent.getAdapter().getItem(position);
+		ImageView album = (ImageView) context.findViewById(R.id.musicAlbumImage);
+		ImageLoader imageLoader = SerenityApplication.getImageLoader();
+		imageLoader.displayImage(track.getParentPosterURL(), album);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onStart()
+	/* (non-Javadoc)
+	 * @see android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android.widget.AdapterView)
 	 */
 	@Override
-	protected void onStart() {
-		super.onStart();
-		EasyTracker.getInstance().activityStart(this);
-		if (restarted_state == false) {
-			setupMusicAdapters();
-		}
-		restarted_state = false;
+	public void onNothingSelected(AdapterView<?> parent) {
+		// TODO Auto-generated method stub
+
 	}
 
-	protected void setupMusicAdapters() {
-		ListView lview = (ListView) findViewById(R.id.audioTracksListview);
-		lview.setAdapter(new TracksAdapter(this, key));
-		lview.setOnItemSelectedListener(new TracksOnItemSelectedListener());
-	}
 }
