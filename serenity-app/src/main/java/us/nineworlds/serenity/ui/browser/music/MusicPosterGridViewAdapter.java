@@ -63,10 +63,10 @@ import android.widget.LinearLayout.LayoutParams;
  * @author dcarver
  * 
  */
-public class MusicPosterAdapter extends
+public class MusicPosterGridViewAdapter extends
 		BaseAdapter {
 
-	protected static MusicPosterAdapter notifyAdapter;
+	protected static MusicPosterGridViewAdapter notifyAdapter;
 	protected static ProgressDialog pd;
 	private Handler posterGalleryHandler;
 	protected ImageLoader imageLoader;
@@ -75,7 +75,7 @@ public class MusicPosterAdapter extends
 	private String key;
 	private String category;
 
-	public MusicPosterAdapter(Activity context, String key, String category) {
+	public MusicPosterGridViewAdapter(Activity context, String key, String category) {
 		notifyAdapter = this;
 		this.context = context;
 		this.key = key;

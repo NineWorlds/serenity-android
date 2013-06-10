@@ -119,6 +119,10 @@ public class MusicRetrievalIntentService extends AbstractPlexRESTIntentService {
 						+ music.getThumb().replaceFirst("/", "");
 				mpi.setImageURL(turl);
 			}
+			if (music.getArt() != null) {
+				String burl = baseUrl + music.getArt().replaceFirst("/", "");
+				mpi.setBackgroundURL(burl);
+			}
 
 			mpi.setTitle(music
 					.getTitle());

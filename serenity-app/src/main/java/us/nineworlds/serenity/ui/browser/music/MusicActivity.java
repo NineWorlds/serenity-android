@@ -31,6 +31,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.widget.Gallery;
 
 /**
  * @author dcarver
@@ -40,6 +41,7 @@ public class MusicActivity extends Activity {
 
 	private String key;
 	private boolean restarted_state = false;
+	private boolean detailView = true;
 
 	/*
 	 * (non-Javadoc)
@@ -53,7 +55,12 @@ public class MusicActivity extends Activity {
 
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		setContentView(R.layout.activity_music_artist_gridview);
+		
+		if (detailView) {
+			setContentView(R.layout.activity_music_artist_posters);
+		} else {
+			setContentView(R.layout.activity_music_artist_gridview);
+		}
 
 	}
 
@@ -82,9 +89,16 @@ public class MusicActivity extends Activity {
 	}
 
 	protected void setupMusicAdapters() {
+		if (detailView) {
+			Gallery artistGallery = (Gallery) findViewById(R.id.musicArtistGallery);
+			artistGallery.setAdapter(new MusicPosterGalleryAdapter(this, key, "all"));
+			artistGallery.setOnItemSelectedListener(new MusicPosterGalleryOnItemSelectedListener(this));
+			artistGallery.setOnItemClickListener(new MusicPosterGalleryOnItemClickListener());
+		} else {
 			TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.musicGridView);
-			gridView.setAdapter(new MusicPosterAdapter(this, key, "all"));
+			gridView.setAdapter(new MusicPosterGridViewAdapter(this, key, "all"));
 			gridView.setOnItemSelectedListener(new MusicGridOnItemSelectedListener(this));
 			gridView.setOnItemClickListener(new MusicGridOnItemClickListener());
+		}
 	}
 }
