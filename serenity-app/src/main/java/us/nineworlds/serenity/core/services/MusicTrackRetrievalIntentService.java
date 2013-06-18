@@ -122,6 +122,7 @@ public class MusicTrackRetrievalIntentService extends AbstractPlexRESTIntentServ
 			mpi.setDirectPlayUrl(baseUrl + part.getKey());
 			mpi.setTitle(track
 					.getTitle());
+			mpi.setParentPosterURL(baseUrl + mc.getParentPosterURL().substring(1));
 			mpi.setImageURL(baseUrl + mc.getParentPosterURL().substring(1));
 			
 			musicContentList.add(mpi);
