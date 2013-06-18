@@ -41,7 +41,7 @@ public class MusicActivity extends Activity {
 
 	private String key;
 	private boolean restarted_state = false;
-	private boolean detailView = true;
+	private boolean gridView = true;
 
 	/*
 	 * (non-Javadoc)
@@ -56,7 +56,9 @@ public class MusicActivity extends Activity {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		
-		if (detailView) {
+		gridView = prefs.getBoolean("music_layout_grid", false);
+		
+		if (!gridView) {
 			setContentView(R.layout.activity_music_artist_posters);
 		} else {
 			setContentView(R.layout.activity_music_artist_gridview);
@@ -89,7 +91,7 @@ public class MusicActivity extends Activity {
 	}
 
 	protected void setupMusicAdapters() {
-		if (detailView) {
+		if (!gridView) {
 			Gallery artistGallery = (Gallery) findViewById(R.id.musicArtistGallery);
 			artistGallery.setAdapter(new MusicPosterGalleryAdapter(this, key, "all"));
 			artistGallery.setOnItemSelectedListener(new MusicPosterGalleryOnItemSelectedListener(this));
