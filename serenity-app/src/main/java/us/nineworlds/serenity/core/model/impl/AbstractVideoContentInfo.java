@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -33,7 +34,9 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
  * @author dcarver
  * 
  */
-public abstract class AbstractVideoContentInfo implements VideoContentInfo {
+public abstract class AbstractVideoContentInfo implements VideoContentInfo, Serializable {
+
+	private static final long serialVersionUID = 4744447508883279194L;
 
 	private String id;
 

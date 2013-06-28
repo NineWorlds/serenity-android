@@ -1,6 +1,10 @@
 package us.nineworlds.serenity.core.model.impl;
 
-public class MenuItem {
+import java.io.Serializable;
+
+public class MenuItem implements Serializable {
+	
+	private static final long serialVersionUID = -5394624840598604518L;
 	private String type;
 	private String title;
 	private String section;

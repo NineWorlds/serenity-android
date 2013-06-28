@@ -23,14 +23,17 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
+import java.io.Serializable;
+
 import us.nineworlds.serenity.core.model.ArtistContentInfo;
 
 /**
  * @author dcarver
  *
  */
-public class MusicArtistContentInfo implements ArtistContentInfo {
+public class MusicArtistContentInfo implements ArtistContentInfo, Serializable {
 	
+	private static final long serialVersionUID = -3671771266686596176L;
 	private String id;
 	private String summary;
 	private String backgroundImageURL;

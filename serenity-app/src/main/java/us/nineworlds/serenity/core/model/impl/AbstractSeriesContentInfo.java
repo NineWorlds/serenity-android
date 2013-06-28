@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
@@ -31,8 +32,10 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
  * @author dcarver
  * 
  */
-public abstract class AbstractSeriesContentInfo implements SeriesContentInfo {
+public abstract class AbstractSeriesContentInfo implements SeriesContentInfo, Serializable {
 
+	private static final long serialVersionUID = 9068543270225774788L;
+	
 	private String id;
 	private String plotSummary;
 	private String posterURL;

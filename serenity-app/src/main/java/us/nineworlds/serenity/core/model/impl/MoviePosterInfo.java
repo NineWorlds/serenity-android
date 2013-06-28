@@ -23,12 +23,16 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
+import java.io.Serializable;
+
 /**
  * Representation of Video content information for Movies.
  * 
  * @author dcarver
  * 
  */
-public class MoviePosterInfo extends AbstractVideoContentInfo {
+public class MoviePosterInfo extends AbstractVideoContentInfo implements Serializable {
+
+	private static final long serialVersionUID = -5130137073328403644L;
 
 }

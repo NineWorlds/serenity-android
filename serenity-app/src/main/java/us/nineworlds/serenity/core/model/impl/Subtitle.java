@@ -23,12 +23,16 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
+import java.io.Serializable;
+
 /**
  * @author dcarver
  *
  */
-public class Subtitle {
+public class Subtitle implements Serializable{
 
+	private static final long serialVersionUID = -8913477697639140949L;
+	
 	private String key;
 	private String format;
 	private String description;

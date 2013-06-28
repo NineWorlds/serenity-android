@@ -23,10 +23,14 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
+import java.io.Serializable;
+
 /**
  * @author dcarver
  *
  */
-public class MusicAlbumContentInfo extends AbstractSeriesContentInfo {
+public class MusicAlbumContentInfo extends AbstractSeriesContentInfo implements Serializable {
+
+	private static final long serialVersionUID = 3733745552612405472L;
 
 }

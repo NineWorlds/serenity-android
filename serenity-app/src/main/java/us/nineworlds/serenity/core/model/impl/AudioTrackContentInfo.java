@@ -23,14 +23,17 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
+import java.io.Serializable;
+
 import us.nineworlds.serenity.core.model.TrackContentInfo;
 
 /**
  * @author dcarver
  *
  */
-public class AudioTrackContentInfo implements TrackContentInfo {
+public class AudioTrackContentInfo implements TrackContentInfo, Serializable {
 	
+	private static final long serialVersionUID = 6634497246548416813L;
 	private String id;
 	private String summary;
 	private String backgroundURL;
