@@ -30,7 +30,6 @@ import us.nineworlds.serenity.ui.views.MainMenuTextView;
 
 import us.nineworlds.serenity.R;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -42,7 +41,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
-import android.widget.Gallery.LayoutParams;
 import android.widget.Toast;
 
 public class MainMenuTextViewAdapter extends BaseAdapter {
@@ -56,8 +54,6 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 
 	public static ArrayList<MenuItem> menuItems;
 
-	private static ProgressDialog pd;
-
 	/** Simple Constructor saving the 'parent' context. */
 	public MainMenuTextViewAdapter(Context c) {
 		myContext = c;
@@ -67,7 +63,6 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 		myContext = c;
 		menuItems = new ArrayList<MenuItem>();
 		fetchData();
-		pd = ProgressDialog.show(myContext, "Build Menus", "Loading Menus");
 	}
 
 	protected void fetchData() {
@@ -196,7 +191,6 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 						Toast.LENGTH_LONG).show();
 			}
 			notifyAdapter.notifyDataSetChanged();
-			pd.dismiss();
 		}
 
 	}

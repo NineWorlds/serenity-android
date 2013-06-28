@@ -58,6 +58,7 @@ public class AbstractVideoOnItemClickListener {
 		prefs = PreferenceManager
 				.getDefaultSharedPreferences(v.getContext());
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
+		boolean mxplayer = prefs.getBoolean("mxplayer_plex_offset", false);
 	
 		if (externalPlayer) {
 			String url = mpiv.getPosterInfo().getDirectPlayUrl();
@@ -68,7 +69,7 @@ public class AbstractVideoOnItemClickListener {
 			vimuVideoPlayerOptions(mpiv, vpIntent);
 	
 			Activity activity = (Activity) mpiv.getContext();
-			if (SerenityApplication.isGoogleTV(activity)) {
+			if (SerenityApplication.isGoogleTV(activity) || mxplayer == false) {
 				activity.startActivity(vpIntent);
 			} else {
 				try {
