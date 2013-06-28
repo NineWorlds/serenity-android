@@ -6,7 +6,7 @@
     
     <!--  try to exclude phone devices from the list. Currently only support Tablets and TVs -->
     <supports-screens android:smallScreens="false"
-        android:normalScreens="false"
+        android:normalScreens="true"
         android:largeScreens="true"
         android:xlargeScreens="true"
         android:requiresSmallestWidthDp="600"
