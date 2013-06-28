@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="us.nineworlds.serenity"
-    android:versionCode="13"
-    android:versionName="1.3.0-dev" xmlns:tools="http://schemas.android.com/tools">
+    android:versionCode="17"
+    android:versionName="1.3.0.d-dev" xmlns:tools="http://schemas.android.com/tools">
     
     <!--  try to exclude phone devices from the list. Currently only support Tablets and TVs -->
     <supports-screens android:smallScreens="false"
-        android:normalScreens="true"
         android:largeScreens="true"
         android:xlargeScreens="true"
         android:requiresSmallestWidthDp="600"
         />
+    
+    <compatible-screens>
+        <screen android:screenSize="normal" android:screenDensity="xhdpi"/>
+        <screen android:screenSize="large"  android:screenDensity="hdpi"/>
+        <screen android:screenSize="large"  android:screenDensity="xhdpi"/>
+        <screen android:screenSize="xlarge" android:screenDensity="hdpi"/>
+        <screen android:screenSize="xlarge" android:screenDensity="xhdpi"/>
+    </compatible-screens>
     
 
     <uses-sdk
