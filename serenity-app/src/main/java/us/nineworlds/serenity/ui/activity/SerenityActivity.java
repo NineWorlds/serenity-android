@@ -84,6 +84,8 @@ public abstract class SerenityActivity extends Activity {
 	 */
 	protected boolean isKeyCodeSkipForward(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_F ||
+			   keyCode == KeyEvent.KEYCODE_PAGE_UP ||
+			   keyCode == KeyEvent.KEYCODE_CHANNEL_UP ||
 			   keyCode == KeyEvent.KEYCODE_MEDIA_NEXT ||
 			   keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD;
 	}
@@ -94,6 +96,8 @@ public abstract class SerenityActivity extends Activity {
 	 */
 	protected boolean isKeyCodeSkipBack(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_R ||
+			   keyCode == KeyEvent.KEYCODE_PAGE_DOWN ||
+			   keyCode == KeyEvent.KEYCODE_CHANNEL_DOWN ||
 			   keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS ||
 			   keyCode == KeyEvent.KEYCODE_MEDIA_REWIND;
 	}
