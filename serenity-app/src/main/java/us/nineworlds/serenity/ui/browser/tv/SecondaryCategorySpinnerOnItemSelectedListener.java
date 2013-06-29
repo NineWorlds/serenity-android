@@ -83,7 +83,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 				.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
 						c));
 		posterGallery.setOnItemLongClickListener(new ShowOnItemLongClickListener());
-
+		posterGallery.setCallbackDuringFling(false);
 	}
 
 	public void onNothingSelected(AdapterView<?> va) {

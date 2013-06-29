@@ -164,6 +164,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 						context));
 		posterGallery
 				.setOnItemLongClickListener(new ShowOnItemLongClickListener());
+		posterGallery.setCallbackDuringFling(false);
 
 	}
 

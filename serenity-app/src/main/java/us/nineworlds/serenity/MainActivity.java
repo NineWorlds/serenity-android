@@ -286,6 +286,7 @@ public class MainActivity extends SerenityActivity {
 						mainGalleryBackgroundView));
 		mainGallery
 				.setOnItemClickListener(new GalleryOnItemClickListener(this));
+		mainGallery.setCallbackDuringFling(false);
 	}
 
 	private static class DownloadHandler extends Handler {

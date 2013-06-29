@@ -88,6 +88,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 			posterGallery.setAnimationDuration(1);
 			posterGallery.setSpacing(25);
 			posterGallery.setAnimationCacheEnabled(false);
+			posterGallery.setCallbackDuringFling(false);
 		} else {
 			TwoWayGridView gridView = (TwoWayGridView) c
 					.findViewById(R.id.movieGridView);

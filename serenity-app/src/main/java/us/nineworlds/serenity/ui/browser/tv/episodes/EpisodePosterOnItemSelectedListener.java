@@ -212,10 +212,10 @@ public class EpisodePosterOnItemSelectedListener implements
 		if (ei.getBackgroundURL() == null) {
 			return;
 		}
-
-		imageLoader.loadImage(ei.getBackgroundURL(), bgImageSize,
-				new SerenityBackgroundLoaderListener(bgLayout,
-						R.drawable.tvshows));
+		
+		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
+		imageLoader.displayImage(ei.getBackgroundURL(), fanArt, SerenityApplication.getMovieOptions());
+		
 	}
 
 	/**

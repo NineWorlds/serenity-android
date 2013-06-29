@@ -96,6 +96,7 @@ public class MusicActivity extends Activity {
 			artistGallery.setAdapter(new MusicPosterGalleryAdapter(this, key, "all"));
 			artistGallery.setOnItemSelectedListener(new MusicPosterGalleryOnItemSelectedListener(this));
 			artistGallery.setOnItemClickListener(new MusicPosterGalleryOnItemClickListener());
+			artistGallery.setCallbackDuringFling(false);
 		} else {
 			TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.musicGridView);
 			gridView.setAdapter(new MusicPosterGridViewAdapter(this, key, "all"));

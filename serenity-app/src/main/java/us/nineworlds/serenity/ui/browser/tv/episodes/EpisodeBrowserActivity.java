@@ -91,6 +91,7 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 				.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
 		posterGallery.setAnimationDuration(1);
 		posterGallery.setSpacing(25);
+		posterGallery.setCallbackDuringFling(false);
 	}
 
 	@Override

@@ -34,7 +34,6 @@ import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
-import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.SubtitleSpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
@@ -47,7 +46,6 @@ import us.nineworlds.serenity.R;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -55,7 +53,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Spinner;
@@ -96,7 +93,7 @@ public class MoviePosterOnItemSelectedListener implements
 	 */
 	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
 			long id) {
-
+		
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
 		}
@@ -183,10 +180,10 @@ public class MoviePosterOnItemSelectedListener implements
 		if (mi.getBackgroundURL() == null) {
 			return;
 		}
+		
+		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
+		imageLoader.displayImage(mi.getBackgroundURL(), fanArt, SerenityApplication.getMovieOptions());
 
-		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
-				new SerenityBackgroundLoaderListener(bgLayout,
-						R.drawable.movies));
 	}
 
 	/**

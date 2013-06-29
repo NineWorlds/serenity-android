@@ -4,10 +4,14 @@
     android:id="@+id/movieBrowserBackgroundLayout"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/movies"
     android:orientation="vertical"
     android:padding="5dp"
     tools:context=".ui.browser.movie.MovieBrowserActivity" >
+    
+    <ImageView android:id="@+id/fanArt"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+     />        
     
     <LinearLayout
         android:id="@+id/metaDataRow"

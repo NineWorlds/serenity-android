@@ -154,6 +154,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 					.setOnItemLongClickListener(onLongClick);
 			posterGallery.setSpacing(25);
 			posterGallery.setAnimationDuration(1);
+			posterGallery.setCallbackDuringFling(false);
 		} else {
 			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.movieGridView);
 			gridView.setAdapter(adapter);

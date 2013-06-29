@@ -28,10 +28,7 @@ import java.util.List;
 
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
 
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
@@ -59,21 +56,15 @@ import android.widget.TextView;
 public class MovieGridPosterOnItemSelectedListener implements
 		OnItemSelectedListener {
 
-	private static final String CRLF = "\r\n";
-	private View bgLayout;
 	private static Activity context;
-	private ImageLoader imageLoader;
 	private View previous;
-	private ImageSize bgImageSize = new ImageSize(1280, 720);
 	private Handler subtitleHandler;
 
 	/**
 	 * 
 	 */
 	public MovieGridPosterOnItemSelectedListener(View bgv, Activity activity) {
-		bgLayout = bgv;
 		context = activity;
-		imageLoader = SerenityApplication.getImageLoader();
 	}
 
 	/*
