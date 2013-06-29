@@ -29,9 +29,12 @@ import com.jess.ui.TwoWayGridView;
 import us.nineworlds.serenity.R;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SeekBar;
 
 /**
  * @author dcarver
@@ -41,6 +44,11 @@ public class MusicTracksActivity extends Activity {
 
 	private String key;
 	private boolean restarted_state = false;
+	private MediaPlayer mediaPlayer;
+	private ImageButton playBtn;
+	private ImageButton nextBtn;
+	private ImageButton prevBtn;
+	private SeekBar seekBar;
 
 	/*
 	 * (non-Javadoc)
@@ -55,7 +63,16 @@ public class MusicTracksActivity extends Activity {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		setContentView(R.layout.activity_music_track);
-
+		init();
+	}
+	
+	protected void init() {
+		mediaPlayer = new MediaPlayer();
+		playBtn = (ImageButton) findViewById(R.id.audioPause);
+		playBtn.setOnClickListener(new PlayButtonListener(mediaPlayer));
+		seekBar = (SeekBar) findViewById(R.id.mediacontroller_seekbar);
+		nextBtn = (ImageButton) findViewById(R.id.audioSkipForward);
+		prevBtn = (ImageButton) findViewById(R.id.audioSkipBack);
 	}
 
 	/*
@@ -77,5 +94,18 @@ public class MusicTracksActivity extends Activity {
 		ListView lview = (ListView) findViewById(R.id.audioTracksListview);
 		lview.setAdapter(new TracksAdapter(this, key));
 		lview.setOnItemSelectedListener(new TracksOnItemSelectedListener());
+		lview.setOnItemClickListener(new AudioTrackItemClickListener(mediaPlayer));
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#finish()
+	 */
+	@Override
+	public void finish() {
+		super.finish();
+		
+		if (mediaPlayer != null) {
+			mediaPlayer.release();
+		}
 	}
 }

@@ -108,6 +108,7 @@ public class TracksAdapter extends ArrayAdapter<AudioTrackContentInfo> {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.track_listview_layout, parent, false);
+		rowView.setBackgroundResource(R.drawable.album_list_view_selector);
 		TextView textView = (TextView) rowView.findViewById(R.id.trackTitle);
 		TextView durationView = (TextView) rowView.findViewById(R.id.trackDuration);
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.trackPlayed);

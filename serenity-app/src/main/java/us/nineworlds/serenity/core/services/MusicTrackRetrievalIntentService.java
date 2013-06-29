@@ -119,7 +119,7 @@ public class MusicTrackRetrievalIntentService extends AbstractPlexRESTIntentServ
 			mpi.setAudioChannels(mediaTrack.getAudioChannels());
 			List<Part> parts = mediaTrack.getVideoPart();
 			Part part = parts.get(0);
-			mpi.setDirectPlayUrl(baseUrl + part.getKey());
+			mpi.setDirectPlayUrl(baseUrl + part.getKey().substring(1));
 			mpi.setTitle(track
 					.getTitle());
 			if (mc.getParentPosterURL() != null) {
