@@ -18,6 +18,7 @@
 
     <item android:drawable="@drawable/osd_forward_nf" android:state_activated="true"/>
     <item android:drawable="@drawable/osd_forward_fo" android:state_focused="true"/>
+    <item android:drawable="@drawable/osd_forward_fo" android:state_pressed="true"/>
     <item android:drawable="@drawable/osd_forward_nf"/>
 
 </selector>
