@@ -131,7 +131,7 @@ public class SerenityApplication extends Application {
 		.showImageOnFail(R.drawable.default_error)
 		.showStubImage(R.drawable.default_music).build();
 		
-		musicOptions = new DisplayImageOptions.Builder()
+		movieOptions = new DisplayImageOptions.Builder()
 		.cacheInMemory().cacheOnDisc()
 		.bitmapConfig(Bitmap.Config.RGB_565)
 		.showImageForEmptyUri(R.drawable.movies)

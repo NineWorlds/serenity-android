@@ -108,13 +108,7 @@ import android.widget.TextView;
  *    
  */
 public class MediaController extends FrameLayout {
-	/**
-	 * 
-	 */
 	private static final int MILLISECONDS_PER_MINUTE = 60000;
-	/**
-	 * 
-	 */
 	private static final int MILLISECONDS_PER_HOUR = 3600000;
 	private MediaPlayerControl mPlayer;
 	private Context mContext;

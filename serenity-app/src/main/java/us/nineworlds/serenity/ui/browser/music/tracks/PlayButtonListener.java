@@ -57,15 +57,12 @@ public class PlayButtonListener implements OnClickListener {
 		
 		if (mediaPlayer.isPlaying()) {
 			mediaPlayer.pause();
+			return;
 		}
 		
 		ListView lv = null;
-		if (v instanceof ListView) {
-			lv = (ListView)v;
-		} else {
-			Activity activity = (Activity) v.getContext();
-			lv = (ListView) activity.findViewById(R.id.audioTracksListview);
-		}
+		Activity activity = (Activity) v.getContext();
+		lv = (ListView) activity.findViewById(R.id.audioTracksListview);
 		AudioTrackContentInfo mt =  (AudioTrackContentInfo) lv.getSelectedItem();
 		
 		if (mediaPlayer.getCurrentPosition() > 0 && mediaPlayer.getCurrentPosition() < mediaPlayer.getDuration()) {

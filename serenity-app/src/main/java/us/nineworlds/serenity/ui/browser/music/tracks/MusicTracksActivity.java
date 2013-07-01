@@ -34,6 +34,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.MediaController;
 import android.widget.SeekBar;
 
 /**
@@ -49,6 +50,7 @@ public class MusicTracksActivity extends Activity {
 	private ImageButton nextBtn;
 	private ImageButton prevBtn;
 	private SeekBar seekBar;
+	private MediaController mediaController;
 
 	/*
 	 * (non-Javadoc)
