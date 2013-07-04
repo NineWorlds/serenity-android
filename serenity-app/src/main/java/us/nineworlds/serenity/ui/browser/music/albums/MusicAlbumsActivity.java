@@ -31,6 +31,10 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
  * @author dcarver
@@ -54,6 +58,10 @@ public class MusicAlbumsActivity extends Activity {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		setContentView(R.layout.activity_music_artist_gridview);
+		TextView category = (TextView)findViewById(R.id.musicCategoryName);
+		category.setVisibility(View.GONE);
+		Spinner categoryFilter = (Spinner)findViewById(R.id.musicCategoryFilter);
+		categoryFilter.setVisibility(View.GONE);
 
 	}
 
@@ -78,4 +86,5 @@ public class MusicAlbumsActivity extends Activity {
 			gridView.setOnItemSelectedListener(new MusicAlbumsGridOnItemSelectedListener(this));
 			gridView.setOnItemClickListener(new MusicAlbumGridOnItemClickListener());
 	}
+	
 }

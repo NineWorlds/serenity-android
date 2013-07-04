@@ -23,71 +23,51 @@
 
 package us.nineworlds.serenity.ui.browser.music.tracks;
 
-import java.io.IOException;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
-import android.app.Activity;
-import android.media.AudioTrack;
 import android.media.MediaPlayer;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ListView;
 
 /**
  * @author dcarver
- *
+ * 
  */
-public class PlayButtonListener implements OnClickListener {
+public class SkipForwardOnClickListener implements OnClickListener {
 
-	MediaPlayer mediaPlayer;
-	AudioTrackContentInfo currentPlaying = null;
-	
-	PlayButtonListener(MediaPlayer mp) {
+	private MediaPlayer mediaPlayer;
+
+	/**
+	 * 
+	 */
+	public SkipForwardOnClickListener(MediaPlayer mp) {
 		mediaPlayer = mp;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	@Override
 	public void onClick(View v) {
-		if (mediaPlayer == null) {
-			return;
-		}
-		
-		if (mediaPlayer.isPlaying()) {
-			mediaPlayer.pause();
-			return;
-		}
-		
-		
-		if (mediaPlayer.getCurrentPosition() > 0 && mediaPlayer.getCurrentPosition() < mediaPlayer.getDuration()) {
-			mediaPlayer.start();
-			return;
-		}
-		
 		try {
-			mediaPlayer.release();
-			
-			ListView lv = null;
-			Activity activity = (Activity) v.getContext();
-			lv = (ListView) activity.findViewById(R.id.audioTracksListview);
-			AudioTrackContentInfo mt =  (AudioTrackContentInfo) lv.getSelectedItem();
-			if (mt == null) {
+
+			if (mediaPlayer == null || mediaPlayer.getDuration() == 0) {
 				return;
 			}
-			mediaPlayer.setDataSource(mt.getDirectPlayUrl());
-			mediaPlayer.prepare();
-			mediaPlayer.start();
-		} catch (IllegalArgumentException e) {
-			Log.e("TrackPlayButton", "Unable to set Track to be played", e);
-		} catch (IllegalStateException e) {
-			Log.e("TrackPlayButton", "Unable to set Track to be played", e);
-		} catch (IOException e) {
-			Log.e("TrackPlayButton", "Unable to set Track to be played", e);
+
+			int currentTime = mediaPlayer.getCurrentPosition();
+			int duration = mediaPlayer.getDuration();
+			if (currentTime < duration) {
+				int newPosition = currentTime + 10000;
+				if (newPosition > duration) {
+					newPosition = duration;
+				}
+				mediaPlayer.seekTo(newPosition);
+			}
+		} catch (IllegalStateException ex) {
+
 		}
+
 	}
 
 }

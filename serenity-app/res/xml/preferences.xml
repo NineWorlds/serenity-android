@@ -14,10 +14,13 @@
             android:entries="@array/categoryListNames"
             android:entryValues="@array/categoryListValues" />        
     </PreferenceCategory>
-    <PreferenceCategory android:title="Layouts" >
+    <PreferenceCategory android:title="Music Library">
+        <CheckBoxPreference android:summary="Experimental Plex Music Library Support.  This provides very basic playback support for music libraries and is still under development." android:title="Enable Plex Music Library Support"  android:key="plex_music_library"/>
+        <CheckBoxPreference android:summary="Poster grid layout for music. Only takes affect if music library support is enabled." android:title="Music Grid Poster Layout" android:key="music_layout_grid"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Video Library Layouts" >
         <CheckBoxPreference android:summary="Prefer Poster Layout for Series (TV Shows)." android:title="Series Poster Layout" android:key="series_layout_posters"/>
         <CheckBoxPreference android:summary="Poster grid layout for movies." android:title="Movie Grid Poster Layout" android:key="movie_layout_grid"/>
-        <CheckBoxPreference android:summary="Poster grid layout for music." android:title="Music Grid Poster Layout" android:key="music_layout_grid"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="Media Player">
         <CheckBoxPreference android:summary="Use external media player." android:title="External Player" android:key="external_player"/>

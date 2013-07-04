@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 /**
@@ -65,12 +66,13 @@ public class AudioTrackItemClickListener implements OnItemClickListener {
 		Activity context = (Activity) parent.getContext();
 		ListView lv = (ListView) context.findViewById(R.id.audioTracksListview);
 		lv.setSelection(position);
+		MusicTracksActivity.currentPlayingItem = position;
 		
 		if (mediaPlayer == null) {
 			mediaPlayer = MediaPlayer.create(view.getContext(), Uri.parse(mt.getDirectPlayUrl()));
 		} else {
-			mediaPlayer.reset();
 			try {
+				mediaPlayer.reset();
 				mediaPlayer.setDataSource(view.getContext(), Uri.parse(mt.getDirectPlayUrl()));
 				mediaPlayer.prepare();
 			} catch (IllegalArgumentException e) {

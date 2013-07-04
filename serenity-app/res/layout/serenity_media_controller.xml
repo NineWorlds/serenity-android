@@ -123,6 +123,7 @@
             android:nextFocusRight="@+id/mediacontroller_play_pause"
             android:nextFocusUp="@+id/mediacontroller_seekbar"
             android:scaleType="fitXY"
+            style="@android:style/MediaButton.Rew"
             android:src="@drawable/skipback_selector"
             tools:ignore="ContentDescription" />
 
@@ -131,6 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            style="@android:style/MediaButton.Pause"            
             android:src="@drawable/pause_selector"
             android:focusable="true"
             android:nextFocusLeft="@id/osd_rewind_control"

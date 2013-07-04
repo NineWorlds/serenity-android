@@ -28,10 +28,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import us.nineworlds.serenity.ui.video.player.MediaPlayerControl;
 
-import android.app.Activity;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -43,17 +42,17 @@ import android.widget.TextView;
  */
 public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 	private boolean dragging = false;
-	private boolean instantSeeking = false;
+	private boolean instantSeeking = true;
 	private AudioManager audioManager;
 	private long duration;
 	private SeekBar progressBar;
-	private MediaPlayerControl mediaPlayer;
+	private MediaPlayer mediaPlayer;
 	private TextView currentTimeView, endTimeView;
 	private static final int MILLISECONDS_PER_MINUTE = 60000;
 	private static final int MILLISECONDS_PER_HOUR = 3600000;
 
 	
-	public AudioTrackPlaybackListener(MediaPlayerControl mp, AudioManager am, TextView ctv, TextView etv, SeekBar progress) {
+	public AudioTrackPlaybackListener(MediaPlayer mp, AudioManager am, TextView ctv, TextView etv, SeekBar progress) {
 		mediaPlayer = mp;
 		audioManager = am;
 		currentTimeView = ctv;
@@ -62,6 +61,10 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 	}
 	
 	public void onStartTrackingTouch(SeekBar bar) {
+		dragging = true;
+		if (mediaPlayer != null) {
+			duration = mediaPlayer.getDuration();
+		}
 		if (instantSeeking) {
 			audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
 		}
@@ -74,7 +77,7 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 
 		setProgress();
 
-		long newposition = (duration * progress) / 1000;
+		int newposition = (int) ((duration * progress) / 1000);
 		String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
 				.format(new Date(newposition));
 		if (instantSeeking) {
@@ -99,7 +102,7 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 					long pos = 1000L * position / duration;
 					progressBar.setProgress((int) pos);
 				}
-				int percent = mediaPlayer.getBufferPercentage();
+				int percent = 0;
 				progressBar.setSecondaryProgress(percent * 10);
 			}
 
@@ -143,9 +146,6 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 	
 
 	public void onStopTrackingTouch(SeekBar bar) {
-		if (!instantSeeking) {
-			mediaPlayer.seekTo((duration * bar.getProgress()) / 1000);
-		}
 		audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
 	}
 

@@ -30,13 +30,17 @@ import java.util.List;
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.MenuItem;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -59,6 +63,7 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 	private static final String SETTINGS_TYPE = "settings";
 	private static final String SEARCH_TYPE = "search";
 	private static final String OPTIONS_TYPE = "options";
+	private SharedPreferences preferences;
 
 	private ArrayList<MenuItem> menuItems;
 
@@ -92,6 +97,9 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 
 	protected void loadMenuItems() {
 		// Fetch TV Shows and Movies
+		Context ctx = getApplicationContext();
+		preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+		
 		try {
 			MediaContainer mc = factory.retrieveSections();
 			List<Directory> dirs = mc.getDirectories();
@@ -99,9 +107,15 @@ public class MainMenuIntentService extends AbstractPlexRESTIntentService {
 			if (dirs != null) {
 				for (Directory item : dirs) {
 					if (isImplemented(item)) {
+						boolean musicEnabled = preferences.getBoolean("plex_music_library", false);
+						if (musicEnabled == false && "artist".equals(item.getType())) {
+							continue;
+						}
+						
 						MenuItem m = new MenuItem();
 						m.setTitle(item.getTitle());
 						m.setType(item.getType());
+						
 						m.setSection(item.getKey());
 						menuItems.add(m);
 					}
