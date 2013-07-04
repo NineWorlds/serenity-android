@@ -42,17 +42,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * @author dcarver
  * 
  */
-public class MusicTracksActivity extends Activity implements OnCompletionListener {
+public class MusicTracksActivity extends Activity implements
+		OnCompletionListener {
 
 	private String key;
 	private boolean restarted_state = false;
@@ -61,34 +64,38 @@ public class MusicTracksActivity extends Activity implements OnCompletionListene
 	private ImageButton nextBtn;
 	private ImageButton prevBtn;
 	private SeekBar seekBar;
-	private  TextView currentTime, durationTime;
+	private TextView currentTime, durationTime;
 	public static int currentPlayingItem = 0;
 
 	private MediaController mediaController;
-	
+
 	private static final int MILLISECONDS_PER_MINUTE = 60000;
 	private static final int MILLISECONDS_PER_HOUR = 3600000;
-	
+
 	private Handler progressHandler = new Handler();
 	private Runnable playbackRunnable = new Runnable() {
-		/* (non-Javadoc)
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see java.lang.Runnable#run()
 		 */
 		@Override
 		public void run() {
 			try {
 				if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-					
-					currentTime.setText(formatDuration(mediaPlayer.getCurrentPosition()));
-					durationTime.setText(formatDuration(mediaPlayer.getDuration()));
+
+					currentTime.setText(formatDuration(mediaPlayer
+							.getCurrentPosition()));
+					durationTime.setText(formatDuration(mediaPlayer
+							.getDuration()));
 					setProgress();
 				}
 			} catch (IllegalStateException ex) {
-				
+
 			}
 			progressHandler.postDelayed(this, 1000);
 		}
-		
+
 		protected String formatDuration(long duration) {
 			long tempdur = duration;
 			long hours = TimeUnit.MILLISECONDS.toHours(duration);
@@ -102,7 +109,7 @@ public class MusicTracksActivity extends Activity implements OnCompletionListene
 
 			return String.format("%02d:%02d:%02d", hours, minutes, seconds);
 		}
-		
+
 		private void setProgress() {
 			if (mediaPlayer == null) {
 				return;
@@ -143,7 +150,7 @@ public class MusicTracksActivity extends Activity implements OnCompletionListene
 		setContentView(R.layout.activity_music_track);
 		init();
 	}
-	
+
 	protected void init() {
 		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setOnCompletionListener(this);
@@ -154,12 +161,13 @@ public class MusicTracksActivity extends Activity implements OnCompletionListene
 		nextBtn.setOnClickListener(new SkipForwardOnClickListener(mediaPlayer));
 		prevBtn = (ImageButton) findViewById(R.id.audioSkipBack);
 		prevBtn.setOnClickListener(new SkipBackOnClickListener(mediaPlayer));
-		currentTime = (TextView)findViewById(R.id.mediacontroller_time_current);
-		durationTime = (TextView)findViewById(R.id.mediacontroller_time_total);
-		
+		currentTime = (TextView) findViewById(R.id.mediacontroller_time_current);
+		durationTime = (TextView) findViewById(R.id.mediacontroller_time_total);
+
 		progressHandler.postDelayed(playbackRunnable, 1000);
 		AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		seekBar.setOnSeekBarChangeListener(new AudioTrackPlaybackListener(mediaPlayer, am, currentTime, durationTime, seekBar));
+		seekBar.setOnSeekBarChangeListener(new AudioTrackPlaybackListener(
+				mediaPlayer, am, currentTime, durationTime, seekBar));
 	}
 
 	/*
@@ -176,46 +184,86 @@ public class MusicTracksActivity extends Activity implements OnCompletionListene
 		}
 		restarted_state = false;
 	}
-	
+
 	protected void setupMusicAdapters() {
 		ListView lview = (ListView) findViewById(R.id.audioTracksListview);
 		lview.setAdapter(new TracksAdapter(this, key));
 		lview.setOnItemSelectedListener(new TracksOnItemSelectedListener());
-		lview.setOnItemClickListener(new AudioTrackItemClickListener(mediaPlayer));
+		lview.setOnItemClickListener(new AudioTrackItemClickListener(
+				mediaPlayer));
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#finish()
 	 */
 	@Override
 	public void finish() {
 		super.finish();
-		
+
 		if (mediaPlayer != null) {
 			mediaPlayer.release();
 		}
 		progressHandler.removeCallbacks(playbackRunnable);
 	}
 
-	/* (non-Javadoc)
-	 * @see android.media.MediaPlayer.OnCompletionListener#onCompletion(android.media.MediaPlayer)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
 	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		if (mediaPlayer != null) {
+			try {
+				if (keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
+						|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
+						|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
+						|| keyCode == KeyEvent.KEYCODE_P) {
+					if (mediaPlayer.isPlaying()) {
+						mediaPlayer.pause();
+					} else {
+						mediaPlayer.start();
+					}
+					return true;
+				}
+				if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD ||
+					keyCode == KeyEvent.KEYCODE_F) {
+					nextBtn.performClick();
+					return true;
+				}
+				if (keyCode == KeyEvent.KEYCODE_MEDIA_REWIND ||
+					keyCode == KeyEvent.KEYCODE_R) {
+					prevBtn.performClick();
+					return true;
+				}
+			} catch (IllegalStateException ex) {
+				Toast.makeText(this, "Media Player in illegal state.",
+						Toast.LENGTH_LONG).show();
+			}
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
 	@Override
 	public void onCompletion(MediaPlayer mp) {
 		ListView lview = (ListView) findViewById(R.id.audioTracksListview);
-		int  count = lview.getCount();
+		int count = lview.getCount();
 		int nextItem = 0;
 		if (currentPlayingItem < count) {
 			nextItem = currentPlayingItem + 1;
 		} else {
 			return;
 		}
-		
+
 		if (nextItem >= count) {
 			return;
 		}
 		lview.setSelection(nextItem);
-		AudioTrackContentInfo track = (AudioTrackContentInfo) lview.getItemAtPosition(nextItem);
+		AudioTrackContentInfo track = (AudioTrackContentInfo) lview
+				.getItemAtPosition(nextItem);
 		mediaPlayer.reset();
 		try {
 			mediaPlayer.setDataSource(track.getDirectPlayUrl());
@@ -223,10 +271,10 @@ public class MusicTracksActivity extends Activity implements OnCompletionListene
 			mediaPlayer.start();
 			currentPlayingItem = nextItem;
 		} catch (IllegalStateException ex) {
-			
+
 		} catch (IOException ex) {
-			
+
 		}
-		
+
 	}
 }
