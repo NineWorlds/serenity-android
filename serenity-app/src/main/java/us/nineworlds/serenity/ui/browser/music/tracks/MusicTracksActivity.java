@@ -24,6 +24,8 @@
 package us.nineworlds.serenity.ui.browser.music.tracks;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -45,6 +47,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.MediaController;
@@ -67,6 +70,7 @@ public class MusicTracksActivity extends Activity implements
 	private ImageButton prevBtn;
 	private SeekBar seekBar;
 	private TextView currentTime, durationTime, playingTrack;
+	private CheckBox randomPlay;
 	public static int currentPlayingItem = 0;
 
 	private MediaController mediaController;
@@ -181,6 +185,7 @@ public class MusicTracksActivity extends Activity implements
 		currentTime = (TextView) findViewById(R.id.mediacontroller_time_current);
 		durationTime = (TextView) findViewById(R.id.mediacontroller_time_total);
 		playingTrack = (TextView) findViewById(R.id.track_playing);
+		randomPlay = (CheckBox) findViewById(R.id.audioRandomPlay);
 
 		progressHandler.postDelayed(playbackRunnable, 1000);
 		AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -278,7 +283,14 @@ public class MusicTracksActivity extends Activity implements
 		ListView lview = (ListView) findViewById(R.id.audioTracksListview);
 		int count = lview.getCount();
 		int nextItem = 0;
-		if (currentPlayingItem < count) {
+		
+		if (randomPlay.isChecked()) {
+			Random random = new Random(Calendar.getInstance().getTimeInMillis());
+			nextItem = Math.abs(random.nextInt(count)) -1;
+			if (nextItem < 0) {
+				nextItem = 0;
+			}
+		} else if (currentPlayingItem < count) {
 			nextItem = currentPlayingItem + 1;
 		} else {
 			return;

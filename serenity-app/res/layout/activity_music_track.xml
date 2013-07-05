@@ -95,18 +95,33 @@
             tools:ignore="SelectableText" />
 
     </LinearLayout>
+
+    <ImageButton android:id="@+id/audioPrevTrack"
+        android:src="@drawable/prev_track_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#50000000" 
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp" 
+        android:nextFocusUp="@+id/mediacontroller_seekbar"
+        android:nextFocusRight="@+id/audioSkipBack"        
+        android:layout_below="@+id/mediacontroller_progress_layout"
+        />
     
     <ImageButton android:id="@+id/audioSkipBack"
         android:src="@drawable/skipback_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#50000000" 
-        android:layout_marginLeft="140dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp" 
         android:nextFocusUp="@+id/mediacontroller_seekbar"
+        android:nextFocusLeft="@+id/audioPrevTrack"
         android:nextFocusRight="@+id/audioPause"        
         android:layout_below="@+id/mediacontroller_progress_layout"
+        android:layout_toRightOf="@+id/audioPrevTrack"
         />
     
     <ImageButton android:id="@+id/audioPause"
@@ -130,13 +145,42 @@
         android:src="@drawable/skipforward_selector"
         android:background="#50000000"
         android:layout_marginLeft="10dp" 
-        android:layout_marginRight="10dp"
         android:layout_below="@+id/mediacontroller_progress_layout"
         android:layout_toRightOf="@+id/audioPause"
-        android:nextFocusRight="@+id/audioTracksListview"
+        android:nextFocusRight="@+id/audioNextTrack"
         android:nextFocusUp="@+id/mediacontroller_seekbar"
         android:nextFocusLeft="@+id/audioPause"
         />
+    
+    <ImageButton android:id="@+id/audioNextTrack"
+        android:layout_marginTop="10dp" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:src="@drawable/next_track_selector"
+        android:background="#50000000"
+        android:layout_marginLeft="10dp" 
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/mediacontroller_progress_layout"
+        android:layout_toRightOf="@+id/audioSkipForward"
+        android:nextFocusRight="@+id/audioRandomPlay"
+        android:nextFocusUp="@+id/mediacontroller_seekbar"
+        android:nextFocusLeft="@+id/audioSkipForward"
+        />
+    
+    <CheckBox android:id="@+id/audioRandomPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" 
+        android:layout_marginLeft="10dp"
+        android:button="@drawable/random_track_selector"
+        android:checked="false"
+        android:layout_toRightOf="@+id/audioNextTrack"
+        android:layout_below="@+id/mediacontroller_progress_layout"
+        android:nextFocusLeft="@+id/audioNextTrack"
+        android:nextFocusRight="@+id/audioTracksListview"
+        android:background="#50000000" 
+        />
+    
     
 
 </RelativeLayout>
