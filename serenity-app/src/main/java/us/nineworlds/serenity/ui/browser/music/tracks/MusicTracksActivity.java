@@ -41,6 +41,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.ImageButton;
@@ -64,7 +66,7 @@ public class MusicTracksActivity extends Activity implements
 	private ImageButton nextBtn;
 	private ImageButton prevBtn;
 	private SeekBar seekBar;
-	private TextView currentTime, durationTime;
+	private TextView currentTime, durationTime, playingTrack;
 	public static int currentPlayingItem = 0;
 
 	private MediaController mediaController;
@@ -134,6 +136,21 @@ public class MusicTracksActivity extends Activity implements
 			}
 		}
 	};
+	
+	private PhoneStateListener phoneStateListener = new PhoneStateListener() {
+	    @Override
+	    public void onCallStateChanged(int state, String incomingNumber) {
+	        if (state == TelephonyManager.CALL_STATE_RINGING ||
+	        	state == TelephonyManager.CALL_STATE_OFFHOOK) {
+	            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+	            	mediaPlayer.pause();
+	            }
+	        } 
+	        super.onCallStateChanged(state, incomingNumber);
+	    }
+	};
+	
+	private TelephonyManager mgr;
 
 	/*
 	 * (non-Javadoc)
@@ -163,11 +180,17 @@ public class MusicTracksActivity extends Activity implements
 		prevBtn.setOnClickListener(new SkipBackOnClickListener(mediaPlayer));
 		currentTime = (TextView) findViewById(R.id.mediacontroller_time_current);
 		durationTime = (TextView) findViewById(R.id.mediacontroller_time_total);
+		playingTrack = (TextView) findViewById(R.id.track_playing);
 
 		progressHandler.postDelayed(playbackRunnable, 1000);
 		AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		seekBar.setOnSeekBarChangeListener(new AudioTrackPlaybackListener(
 				mediaPlayer, am, currentTime, durationTime, seekBar));
+		
+		mgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+		if(mgr != null) {
+		    mgr.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+		}
 	}
 
 	/*
@@ -206,6 +229,9 @@ public class MusicTracksActivity extends Activity implements
 			mediaPlayer.release();
 		}
 		progressHandler.removeCallbacks(playbackRunnable);
+		if (mgr != null) {
+			mgr.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
+		}
 	}
 
 	/*
@@ -264,6 +290,7 @@ public class MusicTracksActivity extends Activity implements
 		lview.setSelection(nextItem);
 		AudioTrackContentInfo track = (AudioTrackContentInfo) lview
 				.getItemAtPosition(nextItem);
+		playingTrack.setText(track.getTitle());
 		mediaPlayer.reset();
 		try {
 			mediaPlayer.setDataSource(track.getDirectPlayUrl());

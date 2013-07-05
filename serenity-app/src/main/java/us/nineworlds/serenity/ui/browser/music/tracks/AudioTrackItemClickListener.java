@@ -37,6 +37,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * @author dcarver
@@ -65,6 +66,8 @@ public class AudioTrackItemClickListener implements OnItemClickListener {
 				.getItemAtPosition(position);
 		Activity context = (Activity) parent.getContext();
 		ListView lv = (ListView) context.findViewById(R.id.audioTracksListview);
+		TextView ptv = (TextView) context.findViewById(R.id.track_playing);
+		ptv.setText(mt.getTitle());
 		lv.setSelection(position);
 		MusicTracksActivity.currentPlayingItem = position;
 		

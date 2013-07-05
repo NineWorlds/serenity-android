@@ -37,12 +37,25 @@
         android:scrollingCache="true">
         <requestFocus />
      </ListView>
+     
+    <TextView
+        android:id="@+id/track_playing"
+        android:layout_width="410dp"
+        android:layout_height="wrap_content"
+        style="@android:style/TextAppearance.Holo.Medium"
+        android:layout_below="@+id/musicAlbumImage"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:background="#50000000"
+        android:textStyle="bold"
+        tools:targetApi="13" />
     
     <LinearLayout
         android:id="@+id/mediacontroller_progress_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/musicAlbumImage"
+        android:layout_below="@+id/track_playing"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:background="#50000000"
