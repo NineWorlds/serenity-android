@@ -329,7 +329,7 @@ public class EpisodePosterOnItemSelectedListener implements
 			subtitleAdapter
 			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 			subtitleSpinner.setAdapter(subtitleAdapter);
-			subtitleSpinner.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(video));
+			subtitleSpinner.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(video, context));
 			subtitleSpinner.setVisibility(View.VISIBLE);
 			
 		}

@@ -46,9 +46,11 @@ import us.nineworlds.serenity.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -74,6 +76,7 @@ public class MoviePosterOnItemSelectedListener implements
 	private View previous;
 	private ImageSize bgImageSize = new ImageSize(1280, 720);
 	private Handler subtitleHandler;
+	
 
 	/**
 	 * 
@@ -315,9 +318,8 @@ public class MoviePosterOnItemSelectedListener implements
 			subtitleAdapter
 			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 			subtitleSpinner.setAdapter(subtitleAdapter);
-			subtitleSpinner.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(video));
+			subtitleSpinner.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(video, context));
 			subtitleSpinner.setVisibility(View.VISIBLE);
-			
 		}
 
 	}

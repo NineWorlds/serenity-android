@@ -18,7 +18,9 @@
         <CheckBoxPreference android:summary="Experimental Plex Music Library Support.  This provides very basic playback support for music libraries and is still under development." android:title="Enable Plex Music Library Support"  android:key="plex_music_library"/>
         <CheckBoxPreference android:summary="Poster grid layout for music. Only takes affect if music library support is enabled." android:title="Music Grid Poster Layout" android:key="music_layout_grid"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="Video Library Layouts" >
+    <PreferenceCategory android:title="Video Library" >
+        <CheckBoxPreference android:summary="Try and select the subtitles automatically based on preferred language." android:title="Automatically select subtitles." android:key="automatic_subtitle_selection"/>
+        <ListPreference android:title="Subtitle Language Preference" android:summary="Select the subtitle language to be choosen when choosing subtitles automatically." android:key="preferred_subtitle_language"/>
         <CheckBoxPreference android:summary="Prefer Poster Layout for Series (TV Shows)." android:title="Series Poster Layout" android:key="series_layout_posters"/>
         <CheckBoxPreference android:summary="Poster grid layout for movies." android:title="Movie Grid Poster Layout" android:key="movie_layout_grid"/>
     </PreferenceCategory>

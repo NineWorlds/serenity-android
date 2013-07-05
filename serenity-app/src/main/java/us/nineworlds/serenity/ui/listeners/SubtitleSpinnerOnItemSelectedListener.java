@@ -25,34 +25,66 @@ package us.nineworlds.serenity.ui.listeners;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 /**
  * @author dcarver
- *
+ * 
  */
-public class SubtitleSpinnerOnItemSelectedListener implements OnItemSelectedListener {
-	
+public class SubtitleSpinnerOnItemSelectedListener implements
+		OnItemSelectedListener {
+
 	private VideoContentInfo video;
-	
-	public SubtitleSpinnerOnItemSelectedListener(VideoContentInfo video) {
+	private boolean firstSelection = true;
+	private static SharedPreferences preferences;
+
+	public SubtitleSpinnerOnItemSelectedListener(VideoContentInfo video,
+			Context context) {
 		this.video = video;
+		preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
 	}
-	
 
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		Subtitle subtitle = (Subtitle) parent.getItemAtPosition(position);
+		Subtitle subtitle = null;
+		if (firstSelection) {
+			boolean automaticallySelectSubtitle = preferences.getBoolean(
+					"automatic_subtitle_selection", false);
+			if (automaticallySelectSubtitle) {
+				String languageCode = preferences.getString(
+						"preferred_subtitle_language", "");
+				if (languageCode != "") {
+					for (int i = 0; i < parent.getAdapter().getCount(); i++) {
+						subtitle = (Subtitle) parent.getItemAtPosition(i);
+						if (languageCode.equals(subtitle.getLanguageCode())) {
+							parent.setSelection(i);
+							continue;
+						}
+					}
+					firstSelection = false;
+				}
+			}
+		} else {
+			subtitle = (Subtitle) parent.getItemAtPosition(position);
+		}
 		video.setSubtitle(subtitle);
 	}
 
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android.widget.AdapterView)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android
+	 * .widget.AdapterView)
 	 */
 	public void onNothingSelected(AdapterView<?> parent) {
-		
+
 	}
 
 }

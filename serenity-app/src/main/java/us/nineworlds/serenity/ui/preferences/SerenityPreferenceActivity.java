@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.preferences;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -78,6 +79,7 @@ public class SerenityPreferenceActivity extends PreferenceActivity {
 		super.onStart();
 		EasyTracker.getInstance().activityStart(this);
 		populateAvailablePlexMediaServers();
+		populateAvailableLocales();
 	}
 
 	/**
@@ -122,6 +124,25 @@ public class SerenityPreferenceActivity extends PreferenceActivity {
 			discoveredServers.setEntryValues(values);
 		}
 
+	}
+	
+	protected void populateAvailableLocales() {
+		Locale[] locales = Locale.getAvailableLocales();
+		ListPreference preferenceLocales = (ListPreference) findPreference("preferred_subtitle_language");
+		ArrayList<String> localNames = new ArrayList<String>();
+		ArrayList<String> localCodes = new ArrayList<String>();
+		for (Locale local : locales) {
+			if (!localNames.contains(local.getDisplayLanguage())) {
+				localNames.add(local.getDisplayLanguage());
+				localCodes.add(local.getISO3Language());
+			}
+		}
+		String entries[] = new String[localNames.size()];
+		String values[] = new String[localCodes.size()];
+		localNames.toArray(entries);
+		localCodes.toArray(values);
+		preferenceLocales.setEntries(entries);
+		preferenceLocales.setEntryValues(values);
 	}
 
 	/*

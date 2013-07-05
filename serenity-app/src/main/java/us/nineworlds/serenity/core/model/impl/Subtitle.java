@@ -36,6 +36,7 @@ public class Subtitle implements Serializable{
 	private String key;
 	private String format;
 	private String description;
+	private String languageCode;
 	
 	public String getKey() {
 		return key;
@@ -67,6 +68,14 @@ public class Subtitle implements Serializable{
 
 	public void setFormat(String format) {
 		this.format = format;
+	}
+
+	public String getLanguageCode() {
+		return languageCode;
+	}
+
+	public void setLanguageCode(String languageCode) {
+		this.languageCode = languageCode;
 	}
 	
 	

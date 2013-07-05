@@ -95,6 +95,7 @@ public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentS
 				Subtitle subtitle = new Subtitle();
 				subtitle = new Subtitle();
 				subtitle.setFormat(stream.getFormat());
+				subtitle.setLanguageCode(stream.getLanguageCode());
 				subtitle.setKey(factory.baseURL() + stream.getKey().replaceFirst("/", ""));
 				if (stream.getLanguage() == null) {
 					subtitle.setDescription("Unknown (" + stream.getFormat() + ")");
