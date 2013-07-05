@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2013 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -29,7 +29,6 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
@@ -39,7 +38,6 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -47,6 +45,8 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -65,9 +65,7 @@ public class MusicTracksActivity extends Activity implements
 	private String key;
 	private boolean restarted_state = false;
 	private MediaPlayer mediaPlayer;
-	private ImageButton playBtn;
-	private ImageButton nextBtn;
-	private ImageButton prevBtn;
+	private ImageButton playBtn, nextBtn, prevBtn, nextTrack, prevTrack;
 	private SeekBar seekBar;
 	private TextView currentTime, durationTime, playingTrack;
 	private CheckBox randomPlay;
@@ -182,6 +180,10 @@ public class MusicTracksActivity extends Activity implements
 		nextBtn.setOnClickListener(new SkipForwardOnClickListener(mediaPlayer));
 		prevBtn = (ImageButton) findViewById(R.id.audioSkipBack);
 		prevBtn.setOnClickListener(new SkipBackOnClickListener(mediaPlayer));
+		nextTrack = (ImageButton) findViewById(R.id.audioNextTrack);
+		nextTrack.setOnClickListener(new NextTrackOnClickListener());
+		prevTrack = (ImageButton) findViewById(R.id.audioPrevTrack);
+		prevTrack.setOnClickListener(new PrevTrackOnClickListener());
 		currentTime = (TextView) findViewById(R.id.mediacontroller_time_current);
 		durationTime = (TextView) findViewById(R.id.mediacontroller_time_total);
 		playingTrack = (TextView) findViewById(R.id.track_playing);
@@ -252,7 +254,8 @@ public class MusicTracksActivity extends Activity implements
 				if (keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
 						|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
 						|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
-						|| keyCode == KeyEvent.KEYCODE_P) {
+						|| keyCode == KeyEvent.KEYCODE_P
+						|| keyCode == KeyEvent.KEYCODE_SPACE) {
 					if (mediaPlayer.isPlaying()) {
 						mediaPlayer.pause();
 					} else {
@@ -270,6 +273,14 @@ public class MusicTracksActivity extends Activity implements
 					prevBtn.performClick();
 					return true;
 				}
+				if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+					nextTrack.performClick();
+					return true;
+				}
+				if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+					prevTrack.performClick();
+					return true;
+				}
 			} catch (IllegalStateException ex) {
 				Toast.makeText(this, "Media Player in illegal state.",
 						Toast.LENGTH_LONG).show();
@@ -285,11 +296,7 @@ public class MusicTracksActivity extends Activity implements
 		int nextItem = 0;
 		
 		if (randomPlay.isChecked()) {
-			Random random = new Random(Calendar.getInstance().getTimeInMillis());
-			nextItem = Math.abs(random.nextInt(count)) -1;
-			if (nextItem < 0) {
-				nextItem = 0;
-			}
+			nextItem = randomTrack(count);
 		} else if (currentPlayingItem < count) {
 			nextItem = currentPlayingItem + 1;
 		} else {
@@ -299,6 +306,14 @@ public class MusicTracksActivity extends Activity implements
 		if (nextItem >= count) {
 			return;
 		}
+		playNextItem(lview, nextItem);
+	}
+
+	/**
+	 * @param lview
+	 * @param nextItem
+	 */
+	protected void playNextItem(ListView lview, int nextItem) {
 		lview.setSelection(nextItem);
 		AudioTrackContentInfo track = (AudioTrackContentInfo) lview
 				.getItemAtPosition(nextItem);
@@ -314,6 +329,56 @@ public class MusicTracksActivity extends Activity implements
 		} catch (IOException ex) {
 
 		}
-
 	}
+
+	/**
+	 * @param count
+	 * @return
+	 */
+	protected int randomTrack(int count) {
+		int nextItem;
+		Random random = new Random(Calendar.getInstance().getTimeInMillis());
+		nextItem = Math.abs(random.nextInt(count)) -1;
+		if (nextItem < 0) {
+			nextItem = 0;
+		}
+		return nextItem;
+	}
+	
+	private class NextTrackOnClickListener implements OnClickListener {
+		
+		@Override
+		public void onClick(View v) {
+			ListView lview = (ListView) findViewById(R.id.audioTracksListview);
+			int nextItem = 0;
+			int count = lview.getAdapter().getCount();
+			if (currentPlayingItem < count) {
+				nextItem = currentPlayingItem + 1;				
+			}
+			
+			if (nextItem >= count) {
+				nextItem = 0;
+			}
+			
+			playNextItem(lview, nextItem);
+		}
+	}
+	
+	private class PrevTrackOnClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			ListView lview = (ListView) findViewById(R.id.audioTracksListview);
+			int nextItem = 0;
+			int count = lview.getAdapter().getCount();
+			if (currentPlayingItem > 0) {
+				nextItem = currentPlayingItem - 1;				
+			} else {
+				nextItem = count - 1;
+			}
+						
+			playNextItem(lview, nextItem);
+		}
+	}
+	
 }
