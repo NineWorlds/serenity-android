@@ -28,7 +28,7 @@ import java.util.List;
 
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.core.model.CategoryInfo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,20 +38,21 @@ import android.os.RemoteException;
 import android.util.Log;
 
 /**
- * Retrieves the available secondary categories for filtering and returns them
- * to the calling service.
+ * Retrieves the available categories for filtering and returns them to the
+ * calling service.
  * 
  * @author dcarver
  * 
  */
-public class MovieSecondaryCategoryRetrievalIntentService extends
+public class CategoryRetrievalIntentService extends
 		AbstractPlexRESTIntentService {
 
-	private ArrayList<SecondaryCategoryInfo> secondaryCategories;
+	private ArrayList<CategoryInfo> categories;
 	private String key;
+	private boolean filterAlbums;
 
-	public MovieSecondaryCategoryRetrievalIntentService() {
-		super("MovieSecondaryCategoryRetrievalIntentService");
+	public CategoryRetrievalIntentService() {
+		super("CategoryRetrievalIntentService");
 	}
 
 	/*
@@ -66,7 +67,7 @@ public class MovieSecondaryCategoryRetrievalIntentService extends
 		if (extras != null) {
 			Messenger messenger = (Messenger) extras.get("MESSENGER");
 			Message msg = Message.obtain();
-			msg.obj = secondaryCategories;
+			msg.obj = categories;
 			try {
 				messenger.send(msg);
 			} catch (RemoteException ex) {
@@ -75,29 +76,56 @@ public class MovieSecondaryCategoryRetrievalIntentService extends
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.IntentService#onHandleIntent(android.content.Intent)
+	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		key = intent.getExtras().getString("key");
-		String category = intent.getExtras().getString("category");
-		populateSecondaryCategories(category);
+		filterAlbums = intent.getExtras().getBoolean("filterAlbums", false);
+		populateCategories();
 		sendMessageResults(intent);
 	}
 
-	protected void populateSecondaryCategories(String categoryKey) {
+	protected void populateCategories() {
 		try {
-			MediaContainer mediaContainer = factory.retrieveSections(key,
-					categoryKey);
+			MediaContainer mediaContainer = factory.retrieveSections(key);
 			List<Directory> dirs = mediaContainer.getDirectories();
-			secondaryCategories = new ArrayList<SecondaryCategoryInfo>();
+			categories = new ArrayList<CategoryInfo>();
 			for (Directory dir : dirs) {
-				SecondaryCategoryInfo category = new SecondaryCategoryInfo();
-				category.setCategory(dir.getKey());
-				category.setCategoryDetail(dir.getTitle());
-				category.setParentCategory(categoryKey);
-				secondaryCategories.add(category);
+				if (resultsNotFiltered(dir)) {
+					CategoryInfo category = new CategoryInfo();
+					category.setCategory(dir.getKey());
+					category.setCategoryDetail(dir.getTitle());
+					if (dir.getSecondary() > 0) {
+						category.setLevel(dir.getSecondary());
+					}
+					categories.add(category);
+				}
 			}
 		} catch (Exception e) {
 			Log.e(getClass().getName(), e.getMessage(), e);
 		}
 	}
+
+	/**
+	 * @param dir
+	 * @return
+	 */
+	protected boolean resultsNotFiltered(Directory dir) {
+		if (filterAlbums) {
+			if (dir.getKey().equals("year") ||
+				dir.getKey().equals("decade"))  {
+				return false;
+			}
+		}
+		return !"folder".equals(dir.getKey())
+				&& !"Search...".equals(dir.getTitle()) &&
+				!"Search Artists...".equals(dir.getTitle()) &&
+				!"Search Albums...".equals(dir.getTitle()) &&
+				!"Search Tracks...".equals(dir.getTitle());
+	}
+
 }

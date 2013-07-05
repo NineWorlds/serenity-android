@@ -23,15 +23,24 @@
 
 package us.nineworlds.serenity.ui.browser.music;
 
+import java.util.ArrayList;
+
 import com.google.analytics.tracking.android.EasyTracker;
-import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.preference.PreferenceManager;
-import android.widget.Gallery;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 /**
  * @author dcarver
@@ -39,9 +48,12 @@ import android.widget.Gallery;
  */
 public class MusicActivity extends Activity {
 
-	private String key;
+	private static String key;
 	private boolean restarted_state = false;
-	private boolean gridView = true;
+	public static boolean MUSIC_GRIDVIEW = true;
+	private static Activity context;
+	private static Spinner categorySpinner;
+	private Handler categoryHandler = new CategoryHandler();
 
 	/*
 	 * (non-Javadoc)
@@ -56,9 +68,9 @@ public class MusicActivity extends Activity {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		
-		gridView = prefs.getBoolean("music_layout_grid", false);
+		MUSIC_GRIDVIEW = prefs.getBoolean("music_layout_grid", false);
 		
-		if (!gridView) {
+		if (!MUSIC_GRIDVIEW) {
 			setContentView(R.layout.activity_music_artist_posters);
 		} else {
 			setContentView(R.layout.activity_music_artist_gridview);
@@ -91,17 +103,54 @@ public class MusicActivity extends Activity {
 	}
 
 	protected void setupMusicAdapters() {
-		if (!gridView) {
-			Gallery artistGallery = (Gallery) findViewById(R.id.musicArtistGallery);
-			artistGallery.setAdapter(new MusicPosterGalleryAdapter(this, key, "all"));
-			artistGallery.setOnItemSelectedListener(new MusicPosterGalleryOnItemSelectedListener(this));
-			artistGallery.setOnItemClickListener(new MusicPosterGalleryOnItemClickListener());
-			artistGallery.setCallbackDuringFling(false);
-		} else {
-			TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.musicGridView);
-			gridView.setAdapter(new MusicPosterGridViewAdapter(this, key, "all"));
-			gridView.setOnItemSelectedListener(new MusicGridOnItemSelectedListener(this));
-			gridView.setOnItemClickListener(new MusicGridOnItemClickListener());
-		}
+		
+		categoryHandler = new CategoryHandler();
+		Messenger messenger = new Messenger(categoryHandler);
+		Intent categoriesIntent = new Intent(this,
+				CategoryRetrievalIntentService.class);
+		categoriesIntent.putExtra("key", key);
+		categoriesIntent.putExtra("filterAlbums", true);
+		categoriesIntent.putExtra("MESSENGER", messenger);
+		startService(categoriesIntent);
+		context = this;		
 	}
+	
+	private static class CategoryHandler extends Handler {
+
+		private ArrayList<CategoryInfo> categories;
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.Handler#handleMessage(android.os.Message)
+		 */
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.obj != null) {
+				categories = (ArrayList<CategoryInfo>) msg.obj;
+				setupMovieBrowser();
+			}
+		}
+
+		/**
+		 * Setup the Gallery and Category spinners
+		 */
+		protected void setupMovieBrowser() {
+			ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
+					context, R.layout.serenity_spinner_textview, categories);
+			spinnerArrayAdapter
+					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+
+			categorySpinner = (Spinner) context
+					.findViewById(R.id.musicCategoryFilter);
+			categorySpinner.setVisibility(View.VISIBLE);
+			categorySpinner.setAdapter(spinnerArrayAdapter);
+			categorySpinner
+					.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+							"all", key));
+			categorySpinner.requestFocus();
+		}
+
+	}
+	
 }

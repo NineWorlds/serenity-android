@@ -139,7 +139,13 @@ public class MusicAlbumRetrievalIntentService extends AbstractPlexRESTIntentServ
 			category = DEFAULT_CATEGORY;
 		}
 
-		return factory.retrieveMusicMetaData("/library/metadata/" + key + "/children");
+	    String realKey = "";
+	    if (key.contains("/library")) {
+	    	realKey = key;
+	    } else {
+	    	realKey = "/library/metadata/" + key + "/children";
+	    }
+		return factory.retrieveMusicMetaData(realKey);
 	}
 
 }

@@ -29,7 +29,7 @@ import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
-import us.nineworlds.serenity.core.services.MovieSecondaryCategoryRetrievalIntentService;
+import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
@@ -123,7 +123,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 		} else {
 			Messenger messenger = new Messenger(secondaryCategoryHandler);
 			Intent categoriesIntent = new Intent(context,
-					MovieSecondaryCategoryRetrievalIntentService.class);
+					SecondaryCategoryRetrievalIntentService.class);
 			categoriesIntent.putExtra("key", key);
 			categoriesIntent.putExtra("category", category);
 			categoriesIntent.putExtra("MESSENGER", messenger);
@@ -179,7 +179,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 						Toast.LENGTH_LONG).show();
 				return;
 			}
-
+						
 			Spinner secondarySpinner = (Spinner) context
 					.findViewById(R.id.movieCategoryFilter2);
 			secondarySpinner.setVisibility(View.VISIBLE);

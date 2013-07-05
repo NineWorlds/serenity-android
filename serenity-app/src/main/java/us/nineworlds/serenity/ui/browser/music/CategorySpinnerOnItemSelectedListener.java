@@ -21,14 +21,22 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.browser.tv;
+package us.nineworlds.serenity.ui.browser.music;
 
 import java.util.List;
+
+import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
+import us.nineworlds.serenity.ui.browser.music.albums.MusicAlbumsActivity;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
 
@@ -41,10 +49,10 @@ import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Gallery;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 /**
@@ -71,18 +79,16 @@ public class CategorySpinnerOnItemSelectedListener implements
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 		context = (Activity) view.getContext();
+
 		CategoryInfo item = (CategoryInfo) viewAdapter
 				.getItemAtPosition(position);
 
 		if (firstSelection) {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-			String filter = prefs.getString("serenity_category_filter", "all");
-			
 			int count = viewAdapter.getCount();
 			for (int i = 0; i < count; i++) {
 				CategoryInfo citem = (CategoryInfo) viewAdapter
 						.getItemAtPosition(i);
-				if (citem.getCategory().equals(filter)) {
+				if (citem.getCategory().equals("all")) {
 					item = citem;
 					selected = citem.getCategory();
 					viewAdapter.setSelection(i);
@@ -90,17 +96,8 @@ public class CategorySpinnerOnItemSelectedListener implements
 				}
 			}
 			
-			if (item.getCategory().equals("newest")
-					|| item.getCategory().equals("recentlyAdded")
-					|| item.getCategory().equals("recentlyViewed")
-					|| item.getCategory().equals("onDeck")) {
-				Intent i = new Intent(context, EpisodeBrowserActivity.class);
-				i.putExtra("key",
-						"/library/sections/" + key + "/" + item.getCategory());
-				context.startActivityForResult(i, 0);
-			} else {
-				setupImageGallery(item);
-			}			
+			createGallery(item);
+
 			firstSelection = false;
 			return;
 		}
@@ -113,21 +110,18 @@ public class CategorySpinnerOnItemSelectedListener implements
 		category = item.getCategory();
 
 		Spinner secondarySpinner = (Spinner) context
-				.findViewById(R.id.tvshow_movieCategoryFilter2);
+				.findViewById(R.id.musicCategoryFilter2);
 
 		if (item.getLevel() == 0) {
-
-			if (item.getCategory().equals("newest")
-					|| item.getCategory().equals("recentlyAdded")
-					|| item.getCategory().equals("recentlyViewed")
-					|| item.getCategory().equals("onDeck")) {
-				Intent i = new Intent(context, EpisodeBrowserActivity.class);
-				i.putExtra("key",
-						"/library/sections/" + key + "/" + item.getCategory());
+			secondarySpinner.setVisibility(View.INVISIBLE);
+			if (item.getCategory().equals("albums") ||
+				item.getCategory().equals("recentlyAdded")) {
+				Intent i = new Intent(context, MusicAlbumsActivity.class);
+				String albumKey = "/library/sections/" + key + "/" + item.getCategory(); 
+				i.putExtra("key", albumKey);
 				context.startActivityForResult(i, 0);
 			} else {
-				secondarySpinner.setVisibility(View.INVISIBLE);
-				setupImageGallery(item);
+				createGallery(item);
 			}
 		} else {
 			Messenger messenger = new Messenger(secondaryCategoryHandler);
@@ -143,29 +137,31 @@ public class CategorySpinnerOnItemSelectedListener implements
 
 	/**
 	 * @param item
+	 * @param bgLayout
 	 */
-	protected void setupImageGallery(CategoryInfo item) {
-		View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
-		Gallery posterGallery = (Gallery) context
-				.findViewById(R.id.tvShowBannerGallery);
-
-		if (!TVShowBrowserActivity.USE_POSTER_LAYOUT) {
-			posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
-					context, key, item.getCategory()));
+	protected void createGallery(CategoryInfo item) {
+		if (!MusicActivity.MUSIC_GRIDVIEW) {
+			MusicPosterGalleryAdapter adapter = new MusicPosterGalleryAdapter(
+					context, key, item.getCategory());
+			Gallery posterGallery = (Gallery) context
+					.findViewById(R.id.musicArtistGallery);
+			posterGallery.setAdapter(adapter);
+			posterGallery
+					.setOnItemSelectedListener(new MusicPosterGalleryOnItemSelectedListener(
+							context));
+			posterGallery.setOnItemClickListener(new MusicPosterGalleryOnItemClickListener());
+			posterGallery.setSpacing(25);
+			posterGallery.setAnimationDuration(1);
+			posterGallery.setCallbackDuringFling(false);
 		} else {
-			posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(
-					context, key, item.getCategory()));
+			MusicPosterGridViewAdapter adapter = new MusicPosterGridViewAdapter(context, key, item.getCategory());
+			TwoWayGridView gridView = (TwoWayGridView) context
+					.findViewById(R.id.musicGridView);
+			gridView.setAdapter(adapter);
+			gridView.setOnItemClickListener(new MusicGridOnItemClickListener());
+			gridView.setOnItemSelectedListener(new MusicGridOnItemSelectedListener(
+					context));
 		}
-		posterGallery
-				.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
-						bgLayout, context));
-		posterGallery
-				.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
-						context));
-		posterGallery
-				.setOnItemLongClickListener(new ShowOnItemLongClickListener());
-		posterGallery.setCallbackDuringFling(false);
-
 	}
 
 	public void onNothingSelected(AdapterView<?> va) {
@@ -186,7 +182,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 			}
 
 			Spinner secondarySpinner = (Spinner) context
-					.findViewById(R.id.tvshow_movieCategoryFilter2);
+					.findViewById(R.id.musicCategoryFilter2);
 			secondarySpinner.setVisibility(View.VISIBLE);
 
 			ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(
@@ -198,7 +194,6 @@ public class CategorySpinnerOnItemSelectedListener implements
 			secondarySpinner
 					.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
 							category, key));
-
 		}
 
 	}

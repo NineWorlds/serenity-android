@@ -141,8 +141,8 @@
         <service android:name=".core.services.MusicTrackRetrievalIntentService"/>
         <service android:name=".core.services.MovieMetaDataRetrievalIntentService"/>
         <service android:name=".core.services.EpisodeRetrievalIntentService"/>
-        <service android:name=".core.services.MovieCategoryRetrievalIntentService"/>
-        <service android:name=".core.services.MovieSecondaryCategoryRetrievalIntentService"/>
+        <service android:name=".core.services.CategoryRetrievalIntentService"/>
+        <service android:name=".core.services.SecondaryCategoryRetrievalIntentService"/>
         <service android:name=".core.services.ShowRetrievalIntentService"/>
         <service android:name=".core.services.ShowSeasonRetrievalIntentService"/>
         <service android:name=".core.services.TVShowCategoryRetrievalIntentService"/>

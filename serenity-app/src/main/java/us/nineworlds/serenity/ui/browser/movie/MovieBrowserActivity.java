@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.MovieCategoryRetrievalIntentService;
+import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
@@ -83,7 +83,7 @@ public class MovieBrowserActivity extends SerenityActivity {
 			categoryHandler = new CategoryHandler();
 			Messenger messenger = new Messenger(categoryHandler);
 			Intent categoriesIntent = new Intent(this,
-					MovieCategoryRetrievalIntentService.class);
+					CategoryRetrievalIntentService.class);
 			categoriesIntent.putExtra("key", key);
 			categoriesIntent.putExtra("MESSENGER", messenger);
 			startService(categoriesIntent);

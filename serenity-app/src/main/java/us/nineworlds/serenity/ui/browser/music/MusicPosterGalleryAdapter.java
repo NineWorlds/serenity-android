@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.browser.music;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jess.ui.TwoWayGridView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import us.nineworlds.serenity.SerenityApplication;
@@ -57,23 +58,22 @@ import android.widget.ImageView;
  */
 public class MusicPosterGalleryAdapter extends BaseAdapter {
 
-
-
-	private static List<MusicArtistContentInfo>  posterList = null;
+	private static List<MusicArtistContentInfo> posterList = null;
 
 	private String key;
+	private String category;
 	private static ProgressDialog pd;
 	private ImageLoader imageLoader;
 	private Handler handler;
-	private static Context context;
+	private static Activity context;
 
-	public MusicPosterGalleryAdapter(Context c, String key,
-			String category) {
+	public MusicPosterGalleryAdapter(Context c, String key, String category) {
 		posterList = new ArrayList<MusicArtistContentInfo>();
 
 		imageLoader = SerenityApplication.getImageLoader();
-		context = c;
+		context = (Activity) c;
 		this.key = key;
+		this.category = category;
 
 		try {
 			fetchData();
@@ -88,7 +88,7 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 		Intent intent = new Intent(context, MusicRetrievalIntentService.class);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("key", key);
-//		intent.putExtra("category", category);
+		intent.putExtra("category", category);
 		context.startService(intent);
 	}
 
@@ -135,10 +135,10 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 		int height = ImageUtils.getDPI(180, (Activity) context);
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
 
-		imageLoader.displayImage(pi.getImageURL(), mpiv, SerenityApplication.getMusicOptions());
+		imageLoader.displayImage(pi.getImageURL(), mpiv,
+				SerenityApplication.getMusicOptions());
 		return mpiv;
 	}
-	
 
 	private class ArtistRetrievalHandler extends Handler {
 
@@ -146,14 +146,11 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 		public void handleMessage(Message msg) {
 
 			posterList = (List<MusicArtistContentInfo>) msg.obj;
-			Gallery posterGallery = (Gallery) ((Activity)context)
+			Gallery posterGallery = (Gallery) ((Activity) context)
 					.findViewById(R.id.musicArtistGallery);
-			if (posterList != null) {
-				if (posterList.isEmpty()) {
-				}
-			}
 			notifyDataSetChanged();
 			posterGallery.requestFocus();
+
 		}
 	}
 }
