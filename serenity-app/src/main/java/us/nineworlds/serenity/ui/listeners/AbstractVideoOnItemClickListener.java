@@ -67,6 +67,8 @@ public class AbstractVideoOnItemClickListener {
 	
 			mxVideoPlayerOptions(mpiv, vpIntent);
 			vimuVideoPlayerOptions(mpiv, vpIntent);
+			// MX Player and VLC seem to use the same optional extra
+			vpIntent.putExtra("position", (long) mpiv.getPosterInfo().getResumeOffset());
 	
 			Activity activity = (Activity) mpiv.getContext();
 			if (SerenityApplication.isGoogleTV(activity) || mxplayer == false) {
@@ -128,6 +130,7 @@ public class AbstractVideoOnItemClickListener {
 		vpIntent.putExtra("resumeOffset", video.getResumeOffset());
 		vpIntent.putExtra("duration", video.getDuration());
 		vpIntent.putExtra("mediaTagId", video.getMediaTagIdentifier());
+		
 		if (video.getSubtitle() != null) {
 			Subtitle subtitle = video.getSubtitle();
 			if (!"none".equals(subtitle.getFormat())) {
