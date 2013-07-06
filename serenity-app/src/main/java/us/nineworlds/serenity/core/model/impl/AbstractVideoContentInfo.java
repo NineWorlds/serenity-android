@@ -74,6 +74,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 	private String mediaTagIdentifier;
 	private String studio;
 	private double rating;
+	private String parentURL;
 
 	public String getSeriesTitle() {
 		return seriesTitle;
@@ -530,5 +531,11 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 		this.rating = rating;
 	}
 	
-
+	public String getParentKey() {
+		return parentURL;
+	}
+	
+	public void setParentKey(String parentKey) {
+		this.parentURL = parentKey;
+	}
 }

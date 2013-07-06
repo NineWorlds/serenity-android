@@ -145,5 +145,9 @@ public interface VideoContentInfo extends ContentInfo {
 	
 	public void setRating(double rating);
 	
+	public void setParentKey(String parentKey);
+	
+	public String getParentKey();
+	
 
 }

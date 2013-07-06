@@ -136,6 +136,7 @@ public class EpisodeRetrievalIntentService extends
 				epi.setParentPosterURL(parentPosterURL);
 			}
 			epi.setId(episode.getRatingKey());
+			epi.setParentKey(episode.getParentKey());
 			epi.setSummary(episode.getSummary());
 			epi.setViewCount(episode.getViewCount());
 			epi.setResumeOffset(Long.valueOf(episode.getViewOffset())

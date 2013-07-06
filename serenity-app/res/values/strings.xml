@@ -52,7 +52,8 @@
     <string name="chosen_directory_">"Chosen directory: "</string>
     <string name="no_videos_found_that_match_the_search_criteria">No videos found that match the search criteria</string>
     <string name="video_options">Video Options</string>
-
+    <string name="view_all_episodes">View All Episodes</string>
+    
    <string-array name="categoryListNames">
         <item>All</item>
         <item>Newest</item>

@@ -87,8 +87,13 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 						bgLayout, this));
 		posterGallery
 				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
-		posterGallery
-				.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
+		if (key.contains("onDeck") || key.contains("recentlyAdded") || (key.contains("recentlyViewed") && !key.contains("recentlyViewedShows"))) {
+			posterGallery
+			.setOnItemLongClickListener(new EpisodeBrowserOnLongClickListener());
+		} else {
+			posterGallery
+			.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
+		}
 		posterGallery.setAnimationDuration(1);
 		posterGallery.setSpacing(25);
 		posterGallery.setCallbackDuringFling(false);

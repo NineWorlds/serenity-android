@@ -142,6 +142,30 @@ public class AbstractVideoOnItemLongClickListener {
 
 		return false;
 	}
+	
+	protected void performWatchedToggle() {
+		if (info.getViewCount() > 0) {
+			new UnWatchVideoAsyncTask().execute(info.id());
+			ImageInfographicUtils.setUnwatched(vciv, context);
+		} else {
+			new WatchedVideoAsyncTask().execute(info.id());
+			ImageInfographicUtils.setWatchedCount(vciv, context);
+		}
+	}
+	
+	protected void performGoogleTVSecondScreen() {
+		if (hasAbleRemote(context)) {
+			Intent sharingIntent = new Intent();
+			sharingIntent.setClassName(
+					"com.entertailion.android.remote",
+					"com.entertailion.android.remote.MainActivity");
+			sharingIntent.setAction("android.intent.action.SEND");
+			sharingIntent.putExtra(Intent.EXTRA_TEXT, vciv
+					.getPosterInfo().getDirectPlayUrl());
+
+			context.startActivity(sharingIntent);
+		}
+	}
 
 	protected class DialogOnItemSelected implements OnItemClickListener {
 
@@ -157,29 +181,13 @@ public class AbstractVideoOnItemLongClickListener {
 
 			switch (position) {
 			case 0:
-				if (info.getViewCount() > 0) {
-					new UnWatchVideoAsyncTask().execute(info.id());
-					ImageInfographicUtils.setUnwatched(vciv, context);
-				} else {
-					new WatchedVideoAsyncTask().execute(info.id());
-					ImageInfographicUtils.setWatchedCount(vciv, context);
-				}
+				performWatchedToggle();
 				break;
 			case 1:
 				startDownload();
 				break;
 			default:
-				if (hasAbleRemote(context)) {
-					Intent sharingIntent = new Intent();
-					sharingIntent.setClassName(
-							"com.entertailion.android.remote",
-							"com.entertailion.android.remote.MainActivity");
-					sharingIntent.setAction("android.intent.action.SEND");
-					sharingIntent.putExtra(Intent.EXTRA_TEXT, vciv
-							.getPosterInfo().getDirectPlayUrl());
-
-					context.startActivity(sharingIntent);
-				}
+				performGoogleTVSecondScreen();
 			}
 			dialog.dismiss();
 		}

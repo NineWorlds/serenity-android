@@ -120,6 +120,9 @@ public class Video extends AbstractPlexObject {
 	@Attribute(name="ratingKey", required=false)
 	private String ratingKey;
 	
+	@Attribute(name="parentKey", required=false)
+	private String parentKey;
+	
 	/**
 	 * 
 	 */
@@ -412,5 +415,12 @@ public class Video extends AbstractPlexObject {
 		this.rating = rating;
 	}
 	
+	public void setParentKey(String parentKey) {
+		this.parentKey = parentKey;
+	}
+	
+	public String getParentKey() {
+		return parentKey;
+	}
 	
 }
