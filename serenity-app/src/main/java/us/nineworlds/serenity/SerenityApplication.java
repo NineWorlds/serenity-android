@@ -34,15 +34,9 @@ import org.teleal.cling.model.meta.Device;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.core.ServerConfig;
-import us.nineworlds.serenity.widgets.ReflectedBitmapDisplayer;
 
-import com.castillo.dd.DSInterface;
-import com.castillo.dd.Download;
-import com.castillo.dd.DownloadService;
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
-import com.nostra13.universalimageloader.cache.memory.impl.LRULimitedMemoryCache;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -50,17 +44,11 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import android.app.Application;
-import android.app.NotificationManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
 import android.util.Log;
 
 /**
