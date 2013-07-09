@@ -102,7 +102,11 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 					}
 					
 					mpi.setStudio(show.getStudio());
-					mpi.setRating(Double.parseDouble(show.getRating()));
+					if (show.getRating() != null) {
+						mpi.setRating(Double.parseDouble(show.getRating()));
+					} else {
+						mpi.setRating(0d);
+					}
 
 					String burl = factory.baseURL()
 							+ ":/resources/show-fanart.jpg";
