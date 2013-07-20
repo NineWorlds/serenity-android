@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/mediacontroller_title"
-        style="@android:style/TextAppearance.Large"
+        style="@android:style/TextAppearance.Holo.Large"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/mediacontroller_summary"
-        style="@android:style/TextAppearance.Medium"
+        style="@android:style/TextAppearance.Holo.Medium"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/mediacontroller_title"
@@ -69,7 +69,7 @@
 
         <TextView
             android:id="@+id/mediacontroller_time_current"
-            style="@android:style/TextAppearance.Medium"
+            style="@android:style/TextAppearance.Holo.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
@@ -89,7 +89,7 @@
 
         <TextView
             android:id="@+id/mediacontroller_time_total"
-            style="@android:style/TextAppearance.Medium"
+            style="@android:style/TextAppearance.Holo.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

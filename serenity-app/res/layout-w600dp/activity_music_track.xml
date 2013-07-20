@@ -63,7 +63,7 @@
 
         <TextView
             android:id="@+id/mediacontroller_time_current"
-            style="@android:style/TextAppearance.Medium"
+            style="@android:style/TextAppearance.Holo.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
@@ -86,7 +86,7 @@
 
         <TextView
             android:id="@+id/mediacontroller_time_total"
-            style="@android:style/TextAppearance.Medium"
+            style="@android:style/TextAppearance.Holo.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

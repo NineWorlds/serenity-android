@@ -21,7 +21,7 @@
     <color name="list_normal">#80000000</color>
     <color name="list_activated">#F0F0F0</color>
     <color name="orange">#FF6600</color>
-    <color name="holo_color">#33b5e5</color>
+    <color name="holo_color">#ff0099cc</color>
     <color name="fity_percent_transparent">#80000000</color>   
     
 </resources>

@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/tvshow_CategoryName"
-            style="@android:style/TextAppearance.Medium"
+            style="@android:style/TextAppearance.Holo.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -130,7 +130,7 @@
 
                 <TextView
                     android:id="@+id/tvBrowserTitle"
-                    style="@android:style/TextAppearance.Large"
+                    style="@android:style/TextAppearance.Holo.Large"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
@@ -142,7 +142,7 @@
 
             <TextView
                 android:id="@+id/tvShowSeriesSummary"
-                style="@android:style/TextAppearance.Medium"
+                style="@android:style/TextAppearance.Holo.Medium"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="20dp"
@@ -155,7 +155,7 @@
 
             <TextView
                 android:id="@+id/tvShowBrowserGenre"
-                style="@android:style/TextAppearance.Medium"
+                style="@android:style/TextAppearance.Holo.Medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -167,7 +167,7 @@
 
             <TextView
                 android:id="@+id/tvShowWatchedUnwatched"
-                style="@android:style/TextAppearance.Medium"
+                style="@android:style/TextAppearance.Holo.Medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"

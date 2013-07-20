@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/musicCategoryName"
-            style="@android:style/TextAppearance.Medium"
+            style="@android:style/TextAppearance.Holo.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -63,7 +63,7 @@
 
         <TextView
             android:id="@+id/musicTitle"
-            style="@android:style/TextAppearance.Large"
+            style="@android:style/TextAppearance.Holo.Large"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
@@ -76,7 +76,7 @@
 
         <TextView
             android:id="@+id/musicArtistSummary"
-            style="@android:style/TextAppearance.Medium"
+            style="@android:style/TextAppearance.Holo.Medium"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dip"
