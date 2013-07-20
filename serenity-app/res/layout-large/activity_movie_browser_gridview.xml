@@ -21,7 +21,7 @@
 
         <TextView
             android:id="@+id/movieCategoryName"
-            style="@android:style/TextAppearance.Medium"
+            style="@android:style/TextAppearance.Holo.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -39,7 +39,7 @@
             android:prompt="@string/movie_category_prompt"
             android:spinnerMode="dropdown" />
 
-        <Spinner
+        <Spinner 
             android:id="@+id/movieCategoryFilter2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
 
         <TextView
             android:id="@+id/subtitleFilter"
-            style="@android:style/TextAppearance.Medium"
+            style="@android:style/TextAppearance.Holo.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -74,7 +74,7 @@
             android:visibility="gone" />
         
         <TextView android:id="@+id/movieBrowserPosterTitle"
-            style="@android:style/TextAppearance.Medium"
+            style="@android:style/TextAppearance.Holo.Medium"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

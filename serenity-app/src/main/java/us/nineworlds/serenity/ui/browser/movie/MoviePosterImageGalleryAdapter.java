@@ -32,6 +32,7 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -46,6 +47,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -76,8 +78,17 @@ public class MoviePosterImageGalleryAdapter extends
 		// mpiv.setBackgroundColor(Color.BLACK);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(160, context);
-		int height = ImageUtils.getDPI(220, context);
+		int width = 0;
+		int height = 0;
+		int wdpi = DisplayUtils.screenWidthDP(context);
+
+		if (wdpi < 600) {
+			width = ImageUtils.getDPI(60, context); 
+			height = ImageUtils.getDPI(90, context);
+		} else {
+			width = ImageUtils.getDPI(160, context);
+			height = ImageUtils.getDPI(220, context);
+		}
 		if (!MovieBrowserActivity.IS_GRID_VIEW) {
 			mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width,
 					height));

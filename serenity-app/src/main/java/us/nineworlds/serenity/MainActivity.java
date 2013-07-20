@@ -33,6 +33,7 @@ import us.nineworlds.serenity.core.services.DLNAServiceConnection;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.listeners.BrowseRegistryListener;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 import android.net.Uri;
 import android.os.Bundle;

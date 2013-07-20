@@ -35,6 +35,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader.TileMode;
 import android.util.DisplayMetrics;
+import android.view.Display;
 
 /**
  * @author dcarver
@@ -138,4 +139,5 @@ public class ImageUtils {
 		return dpi;
 	}
 	
+
 }

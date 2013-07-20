@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:stretchColumns="*" >
+
+    <TableRow>
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="left|center"
+            android:src="@drawable/serenity_bonsai_logo" />
+
+        <TextView
+            android:id="@+id/info_text"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:scrollbars="vertical"
+            android:maxLines="8"
+            android:gravity="center" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/legal_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dip"
+            android:layout_span="2"
+            android:textColor="#cccccc"
+            android:textSize="10dip"
+            android:textStyle="italic"
+            android:maxLines="8"
+            android:scrollbars="vertical"
+            android:focusable="true" />
+    </TableRow>
+
+</TableLayout>

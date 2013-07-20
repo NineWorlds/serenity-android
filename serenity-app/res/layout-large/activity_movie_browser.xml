@@ -280,7 +280,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dip"
+        android:layout_marginLeft="10dip"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dip"
         android:background="#AA000000"
