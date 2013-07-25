@@ -26,6 +26,7 @@
 package us.nineworlds.serenity.ui.video.player;
 
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
+import us.nineworlds.serenity.core.util.TimeUtil;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,6 +35,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.format.DateUtils;
 import android.view.SurfaceView;
 import android.widget.RelativeLayout;
 
@@ -86,7 +88,7 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 
 			alertDialogBuilder.setTitle("Resume Video");
 			alertDialogBuilder
-					.setMessage("Resume the video or start from beginning?")
+					.setMessage("Resume the video from " + TimeUtil.formatDuration(resumeOffset)  + " or restart?")
 					.setCancelable(false)
 					.setPositiveButton("Resume",
 							new DialogInterface.OnClickListener() {

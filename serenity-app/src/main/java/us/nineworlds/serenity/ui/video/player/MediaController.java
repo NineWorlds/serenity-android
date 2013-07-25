@@ -43,6 +43,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
+import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 
 import us.nineworlds.serenity.R;
@@ -108,8 +109,6 @@ import android.widget.TextView;
  *    
  */
 public class MediaController extends FrameLayout {
-	private static final int MILLISECONDS_PER_MINUTE = 60000;
-	private static final int MILLISECONDS_PER_HOUR = 3600000;
 	private MediaPlayerControl mPlayer;
 	private Context mContext;
 	private PopupWindow mWindow;
@@ -523,11 +522,11 @@ public class MediaController extends FrameLayout {
 			mDuration = duration;
 
 			if (mEndTime != null) {
-				mEndTime.setText(formatDuration(mDuration));
+				mEndTime.setText(TimeUtil.formatDuration(mDuration));
 			}
 
 			if (mCurrentTime != null) {
-				mCurrentTime.setText(formatDuration(position));
+				mCurrentTime.setText(TimeUtil.formatDuration(position));
 			}
 		} catch (IllegalStateException ex) {
 			Log.i(getClass().getName(),
@@ -537,26 +536,6 @@ public class MediaController extends FrameLayout {
 		return position;
 	}
 
-	/**
-	 * Return a formated duration in hh:mm:ss format.
-	 * 
-	 * @param duration
-	 *            number of milliseconds that have passed.
-	 * @return formatted string
-	 */
-	protected String formatDuration(long duration) {
-		long tempdur = duration;
-		long hours = TimeUnit.MILLISECONDS.toHours(duration);
-
-		tempdur = tempdur - (hours * MILLISECONDS_PER_HOUR);
-
-		long minutes = tempdur / MILLISECONDS_PER_MINUTE;
-		tempdur = tempdur - (minutes * MILLISECONDS_PER_MINUTE);
-
-		long seconds = tempdur / 1000;
-
-		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {

@@ -28,6 +28,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import us.nineworlds.serenity.core.util.TimeUtil;
+
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -48,8 +50,6 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 	private SeekBar progressBar;
 	private MediaPlayer mediaPlayer;
 	private TextView currentTimeView, endTimeView;
-	private static final int MILLISECONDS_PER_MINUTE = 60000;
-	private static final int MILLISECONDS_PER_HOUR = 3600000;
 
 	
 	public AudioTrackPlaybackListener(MediaPlayer mp, AudioManager am, TextView ctv, TextView etv, SeekBar progress) {
@@ -109,11 +109,11 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 			this.duration = duration;
 
 			if (endTimeView != null) {
-				endTimeView.setText(formatDuration(duration));
+				endTimeView.setText(TimeUtil.formatDuration(duration));
 			}
 
 			if (currentTimeView != null) {
-				currentTimeView.setText(formatDuration(position));
+				currentTimeView.setText(TimeUtil.formatDuration(position));
 			}
 		} catch (IllegalStateException ex) {
 			Log.i(getClass().getName(),
@@ -121,29 +121,7 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 		}
 
 		return position;
-	}
-	
-	/**
-	 * Return a formated duration in hh:mm:ss format.
-	 * 
-	 * @param duration
-	 *            number of milliseconds that have passed.
-	 * @return formatted string
-	 */
-	protected String formatDuration(long duration) {
-		long tempdur = duration;
-		long hours = TimeUnit.MILLISECONDS.toHours(duration);
-
-		tempdur = tempdur - (hours * MILLISECONDS_PER_HOUR);
-
-		long minutes = tempdur / MILLISECONDS_PER_MINUTE;
-		tempdur = tempdur - (minutes * MILLISECONDS_PER_MINUTE);
-
-		long seconds = tempdur / 1000;
-
-		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
 	}	
-	
 
 	public void onStopTrackingTouch(SeekBar bar) {
 		audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
