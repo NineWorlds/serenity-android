@@ -66,7 +66,8 @@ public class SerenitySurfaceViewVideoPlayerTest {
 	}
 	
 	@Test
-	@Ignore
+	@Ign
+	ore
 	public void testOnCreate() throws Exception {
 		Intent intent = new Intent();
 		intent.putExtra("videoUrl", "http://localhost:32400/blah");
