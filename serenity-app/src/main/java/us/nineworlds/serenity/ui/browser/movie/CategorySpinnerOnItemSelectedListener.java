@@ -46,6 +46,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -153,8 +154,12 @@ public class CategorySpinnerOnItemSelectedListener implements
 			posterGallery
 					.setOnItemLongClickListener(onLongClick);
 			posterGallery.setSpacing(25);
-			posterGallery.setAnimationDuration(1);
+			posterGallery.setAnimationDuration(220);
+			posterGallery.setAnimationCacheEnabled(true);
 			posterGallery.setCallbackDuringFling(false);
+			posterGallery.setHorizontalFadingEdgeEnabled(true);
+			posterGallery.setFocusableInTouchMode(false);
+			posterGallery.setDrawingCacheEnabled(true);
 		} else {
 			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.movieGridView);
 			gridView.setAdapter(adapter);

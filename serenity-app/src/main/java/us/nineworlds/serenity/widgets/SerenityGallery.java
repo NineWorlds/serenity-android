@@ -36,6 +36,7 @@ import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 import android.widget.Scroller;
 
@@ -392,22 +393,33 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		long now = SystemClock.uptimeMillis();
-		if (!SerenityApplication.isGoogleTV(getContext())) {
-			if (Math.abs(now - mLastScrollEvent) > 50) {
-				super.onLayout(changed, l, t, r, b);
-
-				/*
-				 * Remember that we are in layout to prevent more layout request
-				 * from being generated.
-				 */
-				mInLayout = true;
-				layout(0, false);
-				mInLayout = false;
-			}
-		} else {
+//		if (!SerenityApplication.isGoogleTV(getContext())) {
+//			if (Math.abs(now - mLastScrollEvent) > 50) {
+//				super.onLayout(changed, l, t, r, b);
+//
+//				/*
+//				 * Remember that we are in layout to prevent more layout request
+//				 * from being generated.
+//				 */
+//				mInLayout = true;
+//				layout(0, false);
+//				mInLayout = false;
+//			}
+//		} else {
+//			super.onLayout(changed, l, t, r, b);
+//			layout(0, true);
+//		}
+		if (Math.abs(now - mLastScrollEvent) > 100) {
 			super.onLayout(changed, l, t, r, b);
-			layout(0, true);
-		}
+
+			/*
+			 * Remember that we are in layout to prevent more layout request
+			 * from being generated.
+			 */
+			mInLayout = true;
+			layout(0, false);
+			mInLayout = false;
+		}		
 	}
 
 	@Override
@@ -588,7 +600,10 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		int targetCenter = getCenterOfGallery();
 
 		int scrollAmount = targetCenter - selectedCenter;
-		if (scrollAmount != 0) {
+		// This makes the scrolling a bit smoother, but the image may not be centered.
+		// Ideally need to calculate the center of the selected Image and scroll to there
+		// instead of scrolling back if using something like a Google TV.
+		if (scrollAmount != 0 && !SerenityApplication.isGoogleTV(mSelectedChild.getContext())) {
 			mFlingRunnable.startUsingDistance(scrollAmount);
 		} else {
 			onFinishedMovement();
@@ -1461,7 +1476,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		private int mLastFlingX;
 
 		public FlingRunnable() {
-			mScroller = new Scroller(getContext());
+			mScroller = new Scroller(getContext(), new LinearInterpolator());
 		}
 
 		private void startCommon() {

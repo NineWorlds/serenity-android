@@ -36,6 +36,7 @@ import us.nineworlds.serenity.R;
 
 import android.app.Activity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -85,10 +86,14 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 					.setOnItemClickListener(new GalleryVideoOnItemClickListener());
 			posterGallery
 					.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
-			posterGallery.setAnimationDuration(1);
+			posterGallery.setAnimationDuration(220);
 			posterGallery.setSpacing(25);
-			posterGallery.setAnimationCacheEnabled(false);
+			posterGallery.setAnimationCacheEnabled(true);
 			posterGallery.setCallbackDuringFling(false);
+			posterGallery.setHorizontalFadingEdgeEnabled(true);
+			posterGallery.setFocusableInTouchMode(false);
+			posterGallery.setDrawingCacheEnabled(true);
+
 		} else {
 			TwoWayGridView gridView = (TwoWayGridView) c
 					.findViewById(R.id.movieGridView);
