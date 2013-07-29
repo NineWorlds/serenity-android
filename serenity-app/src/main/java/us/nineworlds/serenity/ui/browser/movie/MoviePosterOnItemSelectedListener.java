@@ -52,6 +52,8 @@ import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -76,7 +78,8 @@ public class MoviePosterOnItemSelectedListener implements
 	private View previous;
 	private ImageSize bgImageSize = new ImageSize(1280, 720);
 	private Handler subtitleHandler;
-	
+	private Animation shrink;
+	private Animation fadeIn;
 
 	/**
 	 * 
@@ -85,6 +88,8 @@ public class MoviePosterOnItemSelectedListener implements
 		bgLayout = bgv;
 		context = activity;
 		imageLoader = SerenityApplication.getImageLoader();
+		shrink = AnimationUtils.loadAnimation(activity, R.anim.shrink);
+		fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
 	}
 
 	/*
@@ -96,14 +101,22 @@ public class MoviePosterOnItemSelectedListener implements
 	 */
 	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
 			long id) {
-		
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		boolean shouldShrink = preferences.getBoolean(
+				"animation_shrink_posters", false);
+
 		if (previous != null) {
-			previous.setPadding(0, 0, 0, 0);
+			previous.setPadding(0, 0, 0, 0);		
+			if (shouldShrink) {
+				previous.setAnimation(shrink);
+			}
 		}
 
 		previous = v;
 
 		v.setPadding(5, 5, 5, 5);
+		v.clearAnimation();
 
 		createMovieDetail((SerenityPosterImageView) v);
 		createMovieMetaData((SerenityPosterImageView) v);
@@ -130,7 +143,8 @@ public class MoviePosterOnItemSelectedListener implements
 		TextView td = (TextView) context.findViewById(R.id.video_directors);
 		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
 		subt.setVisibility(View.GONE);
-		Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);
+		Spinner subtitleSpinner = (Spinner) context
+				.findViewById(R.id.videoSubtitle);
 		subtitleSpinner.setVisibility(View.GONE);
 
 		ty.setText(context.getString(R.string.unknown));
@@ -183,9 +197,18 @@ public class MoviePosterOnItemSelectedListener implements
 		if (mi.getBackgroundURL() == null) {
 			return;
 		}
-		
+
 		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
-		imageLoader.displayImage(mi.getBackgroundURL(), fanArt, SerenityApplication.getMovieOptions());
+
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		boolean shouldFadeIn = preferences.getBoolean(
+				"animation_background_fadein", false);
+		if (shouldFadeIn) {
+			fanArt.setAnimation(fadeIn);
+		}
+		imageLoader.displayImage(mi.getBackgroundURL(), fanArt,
+				SerenityApplication.getMovieOptions());
 
 	}
 
@@ -200,7 +223,7 @@ public class MoviePosterOnItemSelectedListener implements
 				.findViewById(R.id.movieInfoGraphicLayout);
 		infographicsView.removeAllViews();
 		VideoContentInfo mpi = v.getPosterInfo();
-		
+
 		fetchSubtitle(mpi);
 
 		ImageView viewed = new ImageView(context);
@@ -223,11 +246,12 @@ public class MoviePosterOnItemSelectedListener implements
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100,
 				58);
 
-		ImageView studiov = imageUtilsNormal.createStudioImage(mpi.getStudio(), context, mpi.getMediaTagIdentifier());
+		ImageView studiov = imageUtilsNormal.createStudioImage(mpi.getStudio(),
+				context, mpi.getMediaTagIdentifier());
 		if (studiov != null) {
 			infographicsView.addView(studiov);
 		}
-		
+
 		ImageView acv = imageUtilsWide.createAudioCodecImage(
 				mpi.getAudioCodec(), context);
 		if (acv != null) {
@@ -251,12 +275,13 @@ public class MoviePosterOnItemSelectedListener implements
 		if (aspectv != null) {
 			infographicsView.addView(aspectv);
 		}
-		
+
 		ImageView crv = imageUtilsWide.createContentRatingImage(
 				mpi.getContentRating(), context);
 		infographicsView.addView(crv);
-		
-		RatingBar ratingBar = new RatingBar(context, null, android.R.attr.ratingBarStyleIndicator);
+
+		RatingBar ratingBar = new RatingBar(context, null,
+				android.R.attr.ratingBarStyleIndicator);
 		ratingBar.setMax(4);
 		ratingBar.setIsIndicator(true);
 		ratingBar.setStepSize(0.1f);
@@ -264,17 +289,18 @@ public class MoviePosterOnItemSelectedListener implements
 		ratingBar.setPadding(0, 0, 5, 0);
 		double rating = mpi.getRating();
 		ratingBar.setRating((float) (rating / 2.5));
-		
+
 		infographicsView.addView(ratingBar);
 	}
-	
+
 	protected void fetchSubtitle(VideoContentInfo mpi) {
-			subtitleHandler = new SubtitleHandler(mpi);
-			Messenger messenger = new Messenger(subtitleHandler);
-			Intent intent = new Intent(context, MovieMetaDataRetrievalIntentService.class);
-			intent.putExtra("MESSENGER", messenger);
-			intent.putExtra("key", mpi.id());
-			context.startService(intent);
+		subtitleHandler = new SubtitleHandler(mpi);
+		Messenger messenger = new Messenger(subtitleHandler);
+		Intent intent = new Intent(context,
+				MovieMetaDataRetrievalIntentService.class);
+		intent.putExtra("MESSENGER", messenger);
+		intent.putExtra("key", mpi.id());
+		context.startService(intent);
 	}
 
 	public void onNothingSelected(SerenityAdapterView<?> av) {
@@ -284,11 +310,11 @@ public class MoviePosterOnItemSelectedListener implements
 		}
 
 	}
-	
+
 	private static class SubtitleHandler extends Handler {
-		
+
 		private VideoContentInfo video;
-		
+
 		public SubtitleHandler(VideoContentInfo video) {
 			this.video = video;
 		}
@@ -299,26 +325,31 @@ public class MoviePosterOnItemSelectedListener implements
 			if (subtitles == null || subtitles.isEmpty()) {
 				return;
 			}
-			
-			TextView subtitleText = (TextView) context.findViewById(R.id.subtitleFilter);
-			subtitleText.setVisibility(View.VISIBLE);			
-			Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);
-			
+
+			TextView subtitleText = (TextView) context
+					.findViewById(R.id.subtitleFilter);
+			subtitleText.setVisibility(View.VISIBLE);
+			Spinner subtitleSpinner = (Spinner) context
+					.findViewById(R.id.videoSubtitle);
+
 			ArrayList<Subtitle> spinnerSubtitles = new ArrayList<Subtitle>();
 			Subtitle noSubtitle = new Subtitle();
 			noSubtitle.setDescription("None");
 			noSubtitle.setFormat("none");
 			noSubtitle.setKey(null);
-			
+
 			spinnerSubtitles.add(noSubtitle);
 			spinnerSubtitles.addAll(subtitles);
-			
-			ArrayAdapter<Subtitle> subtitleAdapter = new ArrayAdapter<Subtitle>(context, R.layout.serenity_spinner_textview,
+
+			ArrayAdapter<Subtitle> subtitleAdapter = new ArrayAdapter<Subtitle>(
+					context, R.layout.serenity_spinner_textview,
 					spinnerSubtitles);
 			subtitleAdapter
-			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 			subtitleSpinner.setAdapter(subtitleAdapter);
-			subtitleSpinner.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(video, context));
+			subtitleSpinner
+					.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(
+							video, context));
 			subtitleSpinner.setVisibility(View.VISIBLE);
 		}
 

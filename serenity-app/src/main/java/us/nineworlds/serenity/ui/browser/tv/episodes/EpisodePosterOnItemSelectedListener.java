@@ -33,7 +33,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
@@ -47,13 +46,17 @@ import us.nineworlds.serenity.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.ArrayAdapter;
@@ -78,6 +81,9 @@ public class EpisodePosterOnItemSelectedListener implements
 	private View previous;
 	private ImageSize bgImageSize = new ImageSize(1280, 720);
 	private Handler subtitleHandler;
+	private Animation shrink;
+	private Animation fadeIn;
+
 
 
 	/**
@@ -87,20 +93,30 @@ public class EpisodePosterOnItemSelectedListener implements
 		bgLayout = bgv;
 		context = activity;
 		imageLoader = SerenityApplication.getImageLoader();
+		shrink = AnimationUtils.loadAnimation(activity, R.anim.shrink);
+		fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
 	}
 
 	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
 			long id) {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		boolean shouldShrink = preferences.getBoolean(
+				"animation_shrink_posters", false);
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
 			previous.setBackgroundColor(Color.BLACK);
+			if (shouldShrink) {
+				previous.setAnimation(shrink);
+			}
 		}
 
 		previous = v;
 
 		v.setBackgroundColor(Color.CYAN);
 		v.setPadding(5, 5, 5, 5);
+		v.clearAnimation();
 
 		createMovieDetail((SerenityPosterImageView) v);
 		createMovieMetaData((SerenityPosterImageView) v);
@@ -214,6 +230,13 @@ public class EpisodePosterOnItemSelectedListener implements
 		}
 		
 		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		boolean shouldFadeIn = preferences.getBoolean(
+				"animation_background_fadein", false);
+		if (shouldFadeIn) {
+			fanArt.setAnimation(fadeIn);
+		}
 		imageLoader.displayImage(ei.getBackgroundURL(), fanArt, SerenityApplication.getMovieOptions());
 		
 	}

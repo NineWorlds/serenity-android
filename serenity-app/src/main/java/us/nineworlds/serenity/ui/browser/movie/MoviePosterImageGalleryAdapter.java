@@ -43,13 +43,17 @@ import us.nineworlds.serenity.SerenityApplication;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 
@@ -64,11 +68,14 @@ public class MoviePosterImageGalleryAdapter extends
 	protected static MoviePosterImageGalleryAdapter notifyAdapter;
 	protected static ProgressDialog pd;
 	private Handler posterGalleryHandler;
+	private Animation shrink;
 
 	public MoviePosterImageGalleryAdapter(Context c, String key, String category) {
 		super(c, key, category);
-		pd = ProgressDialog.show(c, "", c.getString(R.string.retrieving_movies));
+		pd = ProgressDialog
+				.show(c, "", c.getString(R.string.retrieving_movies));
 		notifyAdapter = this;
+		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -83,19 +90,27 @@ public class MoviePosterImageGalleryAdapter extends
 		int wdpi = DisplayUtils.screenWidthDP(context);
 
 		if (wdpi < 600) {
-			width = ImageUtils.getDPI(60, context); 
+			width = ImageUtils.getDPI(60, context);
 			height = ImageUtils.getDPI(90, context);
 		} else {
 			width = ImageUtils.getDPI(160, context);
 			height = ImageUtils.getDPI(220, context);
 		}
 		if (!MovieBrowserActivity.IS_GRID_VIEW) {
-			mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width,
-					height));
+			mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
 		} else {
 			width = ImageUtils.getDPI(120, context);
 			height = ImageUtils.getDPI(180, context);
-			mpiv.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
+			mpiv.setLayoutParams(new TwoWayAbsListView.LayoutParams(width,
+					height));
+		}
+
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		boolean shouldShrink = preferences.getBoolean(
+				"animation_shrink_posters", false);
+		if (shouldShrink) {
+			mpiv.setAnimation(shrink);
 		}
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
@@ -122,7 +137,8 @@ public class MoviePosterImageGalleryAdapter extends
 						.findViewById(R.id.moviePosterGallery);
 				posterGallery.requestFocus();
 			} else {
-				TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.movieGridView);
+				TwoWayGridView gridView = (TwoWayGridView) context
+						.findViewById(R.id.movieGridView);
 				gridView.requestFocus();
 			}
 			notifyAdapter.notifyDataSetChanged();

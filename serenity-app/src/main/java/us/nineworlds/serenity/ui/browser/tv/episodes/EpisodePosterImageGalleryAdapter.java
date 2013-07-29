@@ -37,12 +37,16 @@ import us.nineworlds.serenity.R;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 /**
@@ -56,10 +60,13 @@ public class EpisodePosterImageGalleryAdapter extends
 
 	private static EpisodePosterImageGalleryAdapter notifyAdapter;
 	private static ProgressDialog pd;
+	private Animation shrink;
+
 
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
+		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -71,6 +78,14 @@ public class EpisodePosterImageGalleryAdapter extends
 		int width = ImageUtils.getDPI(375, context);
 		int height = ImageUtils.getDPI(195, context);
 		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
+		
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		boolean shouldShrink = preferences.getBoolean(
+				"animation_shrink_posters", false);
+		if (shouldShrink) {
+			mpiv.setAnimation(shrink);
+		}
 
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 

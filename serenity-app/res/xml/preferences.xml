@@ -5,7 +5,7 @@
         <EditTextPreference android:summary="The domain name or IP Address for your main plex media server. This takes preference over any Discovered Servers selected." android:title="Preferred Server Address" android:key="server" android:defaultValue=""/>
         <EditTextPreference android:summary="The port number for the server (usually 32400)." android:title="Server Port" android:key="serverport" android:defaultValue="32400"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="Prefered Filter">
+    <PreferenceCategory android:title="Preferred Filter">
         <ListPreference
             android:title="Select the starting category filter."
             android:summary="Categories are used to select the starting filter when browsing movies and tv shows. The default is All."
@@ -23,6 +23,10 @@
         <ListPreference android:title="Subtitle Language Preference" android:summary="Select the subtitle language to be choosen when choosing subtitles automatically." android:key="preferred_subtitle_language"/>
         <CheckBoxPreference android:summary="Prefer Poster Layout for Series (TV Shows)." android:title="Series Poster Layout" android:key="series_layout_posters"/>
         <CheckBoxPreference android:summary="Poster grid layout for movies." android:title="Movie Grid Poster Layout" android:key="movie_layout_grid"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Animations">
+        <CheckBoxPreference android:summary="Fade-In background fan art." android:title="Fade-In Background Fan Art" android:key="animation_background_fadein"/>
+        <CheckBoxPreference android:summary="Emphasises the selected item when browsing through the detail view." android:title="Poster Selected Emphasis" android:key="animation_shrink_posters"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="Media Player">
         <CheckBoxPreference android:summary="Use external media player." android:title="External Player" android:key="external_player"/>
