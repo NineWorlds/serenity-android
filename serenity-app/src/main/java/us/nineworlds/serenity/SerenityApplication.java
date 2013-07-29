@@ -49,6 +49,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -100,6 +101,7 @@ public class SerenityApplication extends Application {
 		initializePlexappFactory();
 		sendStartedApplicationEvent();
 		pendingDownloads = new ArrayList<PendingDownload>();
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 	}
 	
 	

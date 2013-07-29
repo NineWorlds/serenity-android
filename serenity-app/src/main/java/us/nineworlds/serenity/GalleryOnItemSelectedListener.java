@@ -23,19 +23,21 @@
 
 package us.nineworlds.serenity;
 
-import us.nineworlds.serenity.core.imageloader.BitmapDisplayer;
 import us.nineworlds.serenity.core.imageloader.MainMenuBackgroundBitmapDisplayer;
 import us.nineworlds.serenity.ui.views.MainMenuTextView;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -43,21 +45,28 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 
 	private View mainGalleryBackgroundView;
 	private MainMenuTextView preSelected;
+	private Animation fadeIn;
 
 	public GalleryOnItemSelectedListener(View v) {
 		mainGalleryBackgroundView = v;
+		fadeIn = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
+		fadeIn.setDuration(500);
 	}
 
 	public void onItemSelected(AdapterView<?> arg0, View v, int position,
 			long arg3) {
 		if (v instanceof MainMenuTextView) {
 			MainMenuTextView tv = (MainMenuTextView) v;
-			//mainView.setBackgroundResource(tv.getBackgroundImageId());
 						
 			Bitmap background = BitmapFactory.decodeResource(v.getContext().getResources(), tv.getBackgroundImageId());
+			SharedPreferences preferences = PreferenceManager
+					.getDefaultSharedPreferences(v.getContext());
+			boolean shouldFadein = preferences.getBoolean(
+					"animation_background_mainmenu_fadein", true);
+			if (shouldFadein) {
+				mainGalleryBackgroundView.setAnimation(fadeIn);
+			}
 			new ImageLoader((Activity)v.getContext(), mainGalleryBackgroundView, background).doInBackground();
-			//mainView.setBackgroundDrawable(new BitmapDrawable(background));
-			// mainView.refreshDrawableState();
 
 			tv.setTextSize(tv.getTextSize() + 10);
 			tv.setTypeface(null, Typeface.BOLD);
