@@ -50,7 +50,7 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 	public GalleryOnItemSelectedListener(View v) {
 		mainGalleryBackgroundView = v;
 		fadeIn = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
-		fadeIn.setDuration(500);
+		fadeIn.setDuration(700);
 	}
 
 	public void onItemSelected(AdapterView<?> arg0, View v, int position,
