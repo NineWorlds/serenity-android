@@ -54,6 +54,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -89,6 +90,7 @@ public class MoviePosterOnItemSelectedListener implements
 		context = activity;
 		imageLoader = SerenityApplication.getImageLoader();
 		shrink = AnimationUtils.loadAnimation(activity, R.anim.shrink);
+		shrink.setInterpolator(new LinearInterpolator());
 		fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in);
 	}
 

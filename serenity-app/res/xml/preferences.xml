@@ -27,7 +27,7 @@
     <PreferenceCategory android:title="Animations">
         <CheckBoxPreference android:summary="Fade-in the main menu background art." android:title="Fade-In Main Menu Backround" android:key="animation_background_mainmenu_fadein" android:defaultValue="true" />
         <CheckBoxPreference android:summary="Fade-in background fan art for movies and tv episodes." android:title="Fade-In Background Fan Art" android:key="animation_background_fadein"/>
-        <CheckBoxPreference android:summary="Emphasises the selected item when browsing through the detail view." android:title="Poster Selected Emphasis" android:key="animation_shrink_posters"
+        <CheckBoxPreference android:summary="Emphasize the selected item when browsing through the detail view. Google TV devices only." android:title="Poster Selected Emphasis" android:key="animation_shrink_posters"
             />
     </PreferenceCategory>
     <PreferenceCategory android:title="Media Player">

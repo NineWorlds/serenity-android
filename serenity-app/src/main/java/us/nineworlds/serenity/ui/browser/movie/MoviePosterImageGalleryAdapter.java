@@ -54,6 +54,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 
@@ -76,6 +77,7 @@ public class MoviePosterImageGalleryAdapter extends
 				.show(c, "", c.getString(R.string.retrieving_movies));
 		notifyAdapter = this;
 		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
+		shrink.setInterpolator(new LinearInterpolator());
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
