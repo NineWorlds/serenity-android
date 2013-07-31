@@ -74,7 +74,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		View bgLayout = c.findViewById(R.id.movieBrowserBackgroundLayout);
 		SerenityGallery posterGallery = (SerenityGallery) c
 				.findViewById(R.id.moviePosterGallery);
-		MoviePosterImageGalleryAdapter adapter = new MoviePosterImageGalleryAdapter(c, key,
+		MoviePosterImageAdapter adapter = new MoviePosterImageAdapter(c, key,
 				item.getParentCategory() + "/" + item.getCategory());
 
 		if (!MovieBrowserActivity.IS_GRID_VIEW) {

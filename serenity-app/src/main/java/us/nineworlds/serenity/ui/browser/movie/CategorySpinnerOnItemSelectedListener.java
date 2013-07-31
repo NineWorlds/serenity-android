@@ -138,7 +138,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	 * @param bgLayout
 	 */
 	protected void createGallery(CategoryInfo item, View bgLayout) {
-		MoviePosterImageGalleryAdapter adapter = new MoviePosterImageGalleryAdapter(context,
+		MoviePosterImageAdapter adapter = new MoviePosterImageAdapter(context,
 				key, item.getCategory());
 		GalleryVideoOnItemClickListener onClick = new GalleryVideoOnItemClickListener(); 
 		GalleryVideoOnItemLongClickListener onLongClick = new GalleryVideoOnItemLongClickListener();

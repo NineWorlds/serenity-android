@@ -56,21 +56,23 @@ import android.widget.ImageView;
  * @author dcarver
  * 
  */
-public class MoviePosterImageGalleryAdapter extends
+public class MoviePosterImageAdapter extends
 		AbstractPosterImageGalleryAdapter {
 
-	protected static MoviePosterImageGalleryAdapter notifyAdapter;
+	protected static MoviePosterImageAdapter notifyAdapter;
 	protected static ProgressDialog pd;
 	private Handler posterGalleryHandler;
 	private Animation shrink;
+	private Animation fadeIn;
 
-	public MoviePosterImageGalleryAdapter(Context c, String key, String category) {
+	public MoviePosterImageAdapter(Context c, String key, String category) {
 		super(c, key, category);
 		pd = ProgressDialog
 				.show(c, "", c.getString(R.string.retrieving_movies));
 		notifyAdapter = this;
 		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
 		shrink.setInterpolator(new LinearInterpolator());
+		fadeIn = AnimationUtils.loadAnimation(c, R.anim.fade_in);
 	}
 
 	@Override
@@ -105,7 +107,7 @@ public class MoviePosterImageGalleryAdapter extends
 				.getDefaultSharedPreferences(context);
 		boolean shouldShrink = preferences.getBoolean(
 				"animation_shrink_posters", false);
-		if (shouldShrink) {
+		if (shouldShrink && !MovieBrowserActivity.IS_GRID_VIEW) {
 			mpiv.setAnimation(shrink);
 		}
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
