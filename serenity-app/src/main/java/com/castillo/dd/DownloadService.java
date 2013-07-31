@@ -46,6 +46,7 @@ public class DownloadService extends Service {
 
 	private final DSInterface.Stub mBinder = new DSInterface.Stub() {
 
+		@Override
 		public void downloadFile(int position) throws DeadObjectException {
 			try {
 				currentPosition = position;
@@ -57,6 +58,7 @@ public class DownloadService extends Service {
 			}
 		}
 
+		@Override
 		public void addFileDownloadlist(String url, String destination, String filename, int position)
 				throws DeadObjectException {
 			try {
@@ -69,61 +71,72 @@ public class DownloadService extends Service {
 			}
 		}
 
+		@Override
 		public void clearDownloadlist() throws DeadObjectException {
 			Download download = downloads.get(currentPosition);
 			download.cancel();
 			downloads.clear();
 		}
 
+		@Override
 		public void pause() throws DeadObjectException {
 			Download download = downloads.get(currentPosition);
 			download.pause();
 		}
 
+		@Override
 		public void resume() throws DeadObjectException {
 			Download download = downloads.get(currentPosition);
 			download.resume();
 		}
 
+		@Override
 		public int getDownloadStatus(int position) throws RemoteException {
 			Download download = downloads.get(position);
 			return download.getStatus();
 		}
 
+		@Override
 		public int getDownloadProgress(int position) throws RemoteException {
 			Download download = downloads.get(position);
 			return (int) download.getProgress();
 		}
 
+		@Override
 		public int getDownloadlistSize() throws RemoteException {
 			return downloads.size();
 		}
 
+		@Override
 		public String getDownloadFilename(int position) throws RemoteException {
 			Download download = downloads.get(position);
 			return download.getFileName();
 		}
 
+		@Override
 		public String getDownloadEllapsedTime(int position)
 				throws RemoteException {
 			Download download = downloads.get(position);
-			return (String) download.getEllapsedTime();
+			return download.getEllapsedTime();
 		}
 
+		@Override
 		public String getDownloadRemainingTime(int position)
 				throws RemoteException {
 			Download download = downloads.get(position);
-			return (String) download.getRemainingTime();
+			return download.getRemainingTime();
 		}
 
+		@Override
 		public float getDownloadSpeed(int position) throws RemoteException {
 			Download download = downloads.get(position);
-			return (float) download.getSpeed();
+			return download.getSpeed();
 		}
 
+		@Override
 		public long getDownloadLaunchTime(int position) throws RemoteException {
 			Download download = downloads.get(position);
-			return (long) download.getLaunchTime();
+			return download.getLaunchTime();
 		}
 
 	};

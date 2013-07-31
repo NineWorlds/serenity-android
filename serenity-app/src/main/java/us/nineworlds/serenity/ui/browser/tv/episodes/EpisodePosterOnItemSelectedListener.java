@@ -64,6 +64,7 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
 		imageLoader = SerenityApplication.getImageLoader();
 	}
 
+	@Override
 	public void createVideoDetail(SerenityPosterImageView v) {
 		View metaData = context.findViewById(R.id.metaDataRow);
 		metaData.setVisibility(View.GONE);
@@ -109,6 +110,7 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
 
 	}
 
+	@Override
 	public void onNothingSelected(SerenityAdapterView<?> av) {
 
 	}

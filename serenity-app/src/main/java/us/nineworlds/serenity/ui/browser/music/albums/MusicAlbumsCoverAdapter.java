@@ -29,29 +29,16 @@ import java.util.List;
 import com.jess.ui.TwoWayAbsListView;
 import com.jess.ui.TwoWayGridView;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-
-import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MusicAlbumContentInfo;
-import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
-import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
 import us.nineworlds.serenity.core.services.MusicAlbumRetrievalIntentService;
-import us.nineworlds.serenity.core.services.MusicRetrievalIntentService;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.MusicAlbumImageView;
-import us.nineworlds.serenity.ui.views.SerenityMusicImageView;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -59,7 +46,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
 
 /**
  * 
@@ -79,13 +65,14 @@ public class MusicAlbumsCoverAdapter extends
 
 	public MusicAlbumsCoverAdapter(Activity context, String key) {
 		notifyAdapter = this;
-		this.context = context;
+		MusicAlbumsCoverAdapter.context = context;
 		this.key = key;
 		imageLoader = SerenityApplication.getImageLoader();
 		posterList = new ArrayList<MusicAlbumContentInfo>();
 		fetchDataFromService();
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		MusicAlbumContentInfo pi = posterList.get(position);

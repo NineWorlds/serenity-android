@@ -53,6 +53,7 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 		fadeIn.setDuration(700);
 	}
 
+	@Override
 	public void onItemSelected(AdapterView<?> arg0, View v, int position,
 			long arg3) {
 		if (v instanceof MainMenuTextView) {
@@ -82,6 +83,7 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 
 	}
 
+	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 
 	}

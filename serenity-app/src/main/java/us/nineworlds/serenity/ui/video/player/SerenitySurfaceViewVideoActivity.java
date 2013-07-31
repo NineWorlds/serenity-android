@@ -90,6 +90,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	private Handler subtitleDisplayHandler = new Handler();
 	private Runnable subtitle = new Runnable() {
+		@Override
 		public void run() {
 			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 				if (hasSubtitles()) {
@@ -128,6 +129,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private Handler progressReportinghandler = new Handler();
 	private Runnable progressRunnable = new Runnable() {
 
+		@Override
 		public void run() {
 			try {
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
@@ -144,11 +146,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		};
 	};
 
+	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 
 	}
 
+	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		try {
 			mediaPlayer.setDisplay(holder);
@@ -167,6 +171,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	}
 
+	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		if (!mediaplayer_released) {
 			mediaPlayer.release();
@@ -350,6 +355,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 * @param keyCode
 	 * @return
 	 */
+	@Override
 	protected boolean isKeyCodeSkipBack(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
@@ -360,6 +366,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 * @param keyCode
 	 * @return
 	 */
+	@Override
 	protected boolean isKeyCodeSkipForward(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_NEXT
@@ -445,6 +452,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	protected class VideoPlayerOnCompletionListener implements
 			OnCompletionListener {
 
+		@Override
 		public void onCompletion(MediaPlayer mp) {
 			new CompletedVideoRequest(videoId).execute();
 			if (!mediaplayer_released) {

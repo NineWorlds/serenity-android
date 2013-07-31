@@ -23,33 +23,14 @@
 
 package us.nineworlds.serenity.ui.browser.music;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
-
-import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
-import us.nineworlds.serenity.core.model.impl.Subtitle;
-import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
-import us.nineworlds.serenity.ui.listeners.SubtitleSpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.views.SerenityMusicImageView;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
-
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -78,6 +59,7 @@ public class MusicGridOnItemSelectedListener implements
 	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
 	 * .widget.AdapterView, android.view.View, int, long)
 	 */
+	@Override
 	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position,
 			long id) {
 
@@ -94,13 +76,14 @@ public class MusicGridOnItemSelectedListener implements
 
 
 	private void createMusicMetaData(SerenityMusicImageView v) {
-		SerenityMusicImageView mpiv = (SerenityMusicImageView) v;
+		SerenityMusicImageView mpiv = v;
 		MusicArtistContentInfo mi = mpiv.getPosterInfo();
 		TextView posterTitle = (TextView) context.findViewById(R.id.musicTitle);
 		posterTitle.setText(mi.getTitle());
 
 	}
 	
+	@Override
 	public void onNothingSelected(TwoWayAdapterView<?> av) {
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);

@@ -52,6 +52,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		this.key = key;
 	}
 
+	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 
@@ -86,6 +87,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		posterGallery.setCallbackDuringFling(false);
 	}
 
+	@Override
 	public void onNothingSelected(AdapterView<?> va) {
 
 	}

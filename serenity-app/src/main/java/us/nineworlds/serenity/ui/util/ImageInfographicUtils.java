@@ -36,7 +36,6 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
-import us.nineworlds.serenity.ui.views.TVShowSeasonImageView;
 
 /**
  * @author dcarver

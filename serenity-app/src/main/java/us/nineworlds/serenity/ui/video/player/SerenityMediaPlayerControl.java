@@ -16,42 +16,52 @@ public class SerenityMediaPlayerControl implements MediaPlayerControl {
 		mediaPlayer = p;
 	}
 	
+	@Override
 	public void start() {
 		mediaPlayer.start();
 	}
 
+	@Override
 	public void seekTo(long pos) {
 		mediaPlayer.seekTo((int) pos);
 	}
 
+	@Override
 	public void pause() {
 		mediaPlayer.pause();
 	}
 
+	@Override
 	public boolean isPlaying() {
 		return mediaPlayer.isPlaying();
 	}
 
+	@Override
 	public long getDuration() {
 		return mediaPlayer.getDuration();
 	}
 
+	@Override
 	public long getCurrentPosition() {
 		return mediaPlayer.getCurrentPosition();
 	}
 
+	@Override
 	public int getBufferPercentage() {
 		return 0;
 	}
 
+	@Override
 	public boolean canSeekForward() {
 		return true;
 	}
 
+	@Override
 	public boolean canSeekBackward() {
 		return true;
 	}
 
+	@Override
 	public boolean canPause() {
 		return true;
 	}

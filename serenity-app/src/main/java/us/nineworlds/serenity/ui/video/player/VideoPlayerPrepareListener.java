@@ -35,7 +35,6 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.format.DateUtils;
 import android.view.SurfaceView;
 import android.widget.RelativeLayout;
 
@@ -77,6 +76,7 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 		this.resumeOffset = resumeOffset;
 	}
 
+	@Override
 	public void onPrepared(MediaPlayer mp) {
 		android.view.ViewGroup.LayoutParams lp = setupAspectRatio(surfaceView, plexAspectRatio);
 		surfaceView.setLayoutParams(lp);
@@ -93,6 +93,7 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 					.setPositiveButton("Resume",
 							new DialogInterface.OnClickListener() {
 
+								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
 									if (!mediaPlayer.isPlaying()) {
@@ -105,6 +106,7 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 					.setNegativeButton("Restart",
 							new DialogInterface.OnClickListener() {
 
+								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
 									mediaPlayer.start();

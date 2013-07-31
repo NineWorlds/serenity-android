@@ -854,6 +854,7 @@ public abstract class TwoWayAdapterView<T extends Adapter> extends ViewGroup {
 	}
 
 	private class SelectionNotifier extends Handler implements Runnable {
+		@Override
 		public void run() {
 			if (mDataChanged) {
 				// Data has changed between when this SelectionNotifier

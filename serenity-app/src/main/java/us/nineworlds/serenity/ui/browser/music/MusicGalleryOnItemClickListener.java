@@ -40,6 +40,7 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class MusicGalleryOnItemClickListener implements OnItemClickListener {
 
+	@Override
 	public void onItemClick(AdapterView<?> av, View v, int arg2,
 			long arg3) {
 		SerenityMusicImageView music = (SerenityMusicImageView) v;

@@ -54,10 +54,12 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo, Se
 	private String studio;
 	private double rating;
 
+	@Override
 	public String id() {
 		return id;
 	}
 
+	@Override
 	public String getParentTitle() {
 		return parentShowTitle;
 	}
@@ -68,82 +70,102 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo, Se
 	 * @see com.github.kingargyle.plexappclient.core.model.SeriesContentInfo#
 	 * setParentShowTitle(java.lang.String)
 	 */
+	@Override
 	public void setParentTitle(String title) {
 		parentShowTitle = title;
 	}
 
+	@Override
 	public String getKey() {
 		return key;
 	}
 
+	@Override
 	public void setKey(String key) {
 		this.key = key;
 	}
 
+	@Override
 	public List<String> getGeneres() {
 		return generes;
 	}
 
+	@Override
 	public void setGeneres(List<String> generes) {
 		this.generes = generes;
 	}
 
+	@Override
 	public String getShowsWatched() {
 		return showsWatched;
 	}
 
+	@Override
 	public void setShowsWatched(String showsWatched) {
 		this.showsWatched = showsWatched;
 	}
 
+	@Override
 	public String getShowsUnwatched() {
 		return ShowsUnwatched;
 	}
 
+	@Override
 	public void setShowsUnwatched(String showsUnwatched) {
 		ShowsUnwatched = showsUnwatched;
 	}
 
+	@Override
 	public String getBackgroundURL() {
 		return backgroundURL;
 	}
 
+	@Override
 	public String getShowMetaDataURL() {
 		return showMetaDataURL;
 	}
 
+	@Override
 	public void setShowMetaDataURL(String showMetaDataURL) {
 		this.showMetaDataURL = showMetaDataURL;
 	}
 
+	@Override
 	public String getThumbNailURL() {
 		return thumbNailURL;
 	}
 
+	@Override
 	public void setThumbNailURL(String thumbNailURL) {
 		this.thumbNailURL = thumbNailURL;
 	}
 
+	@Override
 	public String getContentRating() {
 		return contentRating;
 	}
 
+	@Override
 	public String getSummary() {
 		return plotSummary;
 	}
 
+	@Override
 	public String getImageURL() {
 		return posterURL;
 	}
 
+	@Override
 	public String getTitle() {
 		return title;
 	}
 
+	@Override
 	public String getYear() {
 		return year;
 	}
 
+	@Override
 	public void setYear(String year) {
 		this.year = year;
 	}
@@ -154,51 +176,63 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo, Se
 	 * @see com.github.kingargyle.plexappclient.core.model.SeriesContentInfo#
 	 * setContentRating(java.lang.String)
 	 */
+	@Override
 	public void setContentRating(String contentRating) {
 		this.contentRating = contentRating;
 
 	}
 
+	@Override
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	@Override
 	public void setImageURL(String posterURL) {
 		this.posterURL = posterURL;
 	}
 
+	@Override
 	public void setSummary(String plotSummary) {
 		this.plotSummary = plotSummary;
 	}
 
+	@Override
 	public void setBackgroundURL(String backgroundURL) {
 		this.backgroundURL = backgroundURL;
 	}
 
+	@Override
 	public void setId(String id) {
 		this.id = id;
 	}
 	
+	@Override
 	public String getMediaTagIdentifier() {
 		return mediaTagIdentifier;
 	}
 
+	@Override
 	public void setMediaTagIdentifier(String mediaTagIdentifier) {
 		this.mediaTagIdentifier = mediaTagIdentifier;
 	}
 
+	@Override
 	public String getStudio() {
 		return studio;
 	}
 
+	@Override
 	public void setStudio(String studio) {
 		this.studio = studio;
 	}
 
+	@Override
 	public double getRating() {
 		return rating;
 	}
 
+	@Override
 	public void setRating(double rating) {
 		this.rating = rating;
 	}	

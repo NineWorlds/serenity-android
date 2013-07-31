@@ -68,6 +68,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 		secondaryCategoryHandler = new SecondaryCategoryHandler();
 	}
 
+	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 		context = (Activity) view.getContext();
@@ -168,6 +169,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 
 	}
 
+	@Override
 	public void onNothingSelected(AdapterView<?> va) {
 
 	}

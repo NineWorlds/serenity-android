@@ -23,7 +23,6 @@
 
 package us.nineworlds.serenity.ui.views;
 
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.MusicAlbumContentInfo;
 
 import android.content.Context;

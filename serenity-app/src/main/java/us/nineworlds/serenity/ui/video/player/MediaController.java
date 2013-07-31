@@ -35,8 +35,6 @@ package us.nineworlds.serenity.ui.video.player;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -64,7 +62,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -224,8 +221,8 @@ public class MediaController extends FrameLayout {
 			removeAllViews();
 			mRoot = makeControllerView();
 			mWindow.setContentView(mRoot);
-			mWindow.setWidth(LayoutParams.FILL_PARENT);
-			mWindow.setHeight(LayoutParams.WRAP_CONTENT);
+			mWindow.setWidth(android.view.ViewGroup.LayoutParams.FILL_PARENT);
+			mWindow.setHeight(android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 		}
 		initControllerView(mRoot);
 	}
@@ -264,7 +261,7 @@ public class MediaController extends FrameLayout {
 		mProgress = (SeekBar) v.findViewById(R.id.mediacontroller_seekbar);
 		if (mProgress != null) {
 			if (mProgress instanceof SeekBar) {
-				SeekBar seeker = (SeekBar) mProgress;
+				SeekBar seeker = mProgress;
 				seeker.setOnSeekBarChangeListener(mSeekListener);
 				seeker.setThumbOffset(1);
 			}
@@ -572,6 +569,7 @@ public class MediaController extends FrameLayout {
 	}
 
 	private View.OnClickListener mPauseListener = new View.OnClickListener() {
+		@Override
 		public void onClick(View v) {
 			doPauseResume();
 			show(sDefaultTimeout);
@@ -587,6 +585,7 @@ public class MediaController extends FrameLayout {
 	}
 
 	private OnSeekBarChangeListener mSeekListener = new OnSeekBarChangeListener() {
+		@Override
 		public void onStartTrackingTouch(SeekBar bar) {
 			mDragging = true;
 			show(3600000);
@@ -595,6 +594,7 @@ public class MediaController extends FrameLayout {
 				mAM.setStreamMute(AudioManager.STREAM_MUSIC, true);
 		}
 
+		@Override
 		public void onProgressChanged(SeekBar bar, int progress,
 				boolean fromuser) {
 			if (!fromuser)
@@ -611,6 +611,7 @@ public class MediaController extends FrameLayout {
 				mCurrentTime.setText(time);
 		}
 
+		@Override
 		public void onStopTrackingTouch(SeekBar bar) {
 			if (!mInstantSeeking)
 				mPlayer.seekTo((mDuration * bar.getProgress()) / 1000);
@@ -628,8 +629,9 @@ public class MediaController extends FrameLayout {
 
 	private View.OnClickListener mSkipForwardListener = new View.OnClickListener() {
 
+		@Override
 		public void onClick(View v) {
-			long skipOffset = (long) 10000 + mPlayer.getCurrentPosition();
+			long skipOffset = 10000 + mPlayer.getCurrentPosition();
 			long duration = mPlayer.getDuration();
 			if (skipOffset > duration) {
 				skipOffset = duration - 1;
@@ -641,6 +643,7 @@ public class MediaController extends FrameLayout {
 
 	private View.OnClickListener mSkipBackwardListener = new View.OnClickListener() {
 
+		@Override
 		public void onClick(View v) {
 			long skipOffset = mPlayer.getCurrentPosition() - 10000;
 			if (skipOffset < 0) {

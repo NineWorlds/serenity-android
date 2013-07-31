@@ -38,11 +38,9 @@ import us.nineworlds.serenity.R;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,6 +103,7 @@ public class TVShowBannerImageGalleryAdapter extends
 	 * 
 	 * @see android.widget.Adapter#getCount()
 	 */
+	@Override
 	public int getCount() {
 		return tvShowList.size();
 	}
@@ -114,6 +113,7 @@ public class TVShowBannerImageGalleryAdapter extends
 	 * 
 	 * @see android.widget.Adapter#getItem(int)
 	 */
+	@Override
 	public Object getItem(int position) {
 		return tvShowList.get(position);
 	}
@@ -123,6 +123,7 @@ public class TVShowBannerImageGalleryAdapter extends
 	 * 
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
+	@Override
 	public long getItemId(int position) {
 		return position;
 	}
@@ -133,6 +134,7 @@ public class TVShowBannerImageGalleryAdapter extends
 	 * @see android.widget.Adapter#getView(int, android.view.View,
 	 * android.view.ViewGroup)
 	 */
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		AbstractSeriesContentInfo pi = tvShowList.get(position);

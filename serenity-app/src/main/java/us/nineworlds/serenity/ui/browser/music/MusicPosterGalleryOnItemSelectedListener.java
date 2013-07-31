@@ -23,35 +23,20 @@
 
 package us.nineworlds.serenity.ui.browser.music;
 
-import java.util.List;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
-import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
-import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.SerenityMusicImageView;
 
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -88,6 +73,7 @@ public class MusicPosterGalleryOnItemSelectedListener implements
 	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
 	 * .widget.AdapterView, android.view.View, int, long)
 	 */
+	@Override
 	public void onItemSelected(AdapterView<?> av, View v, int position, long id) {
 
 		if (previous != null) {
@@ -136,6 +122,7 @@ public class MusicPosterGalleryOnItemSelectedListener implements
 						R.drawable.music));
 	}
 
+	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 
 	}

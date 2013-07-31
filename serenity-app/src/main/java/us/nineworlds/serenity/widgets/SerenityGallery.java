@@ -126,6 +126,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	 * in the future. It will also trigger a selection changed.
 	 */
 	private Runnable mDisableSuppressSelectionChangedRunnable = new Runnable() {
+		@Override
 		public void run() {
 			mSuppressSelectionChanged = false;
 			selectionChanged();
@@ -1044,6 +1045,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		return retValue;
 	}
 
+	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
 
 		if (mDownTouchPosition >= 0) {
@@ -1064,6 +1066,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		return false;
 	}
 
+	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
 
@@ -1084,6 +1087,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		return true;
 	}
 
+	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
 
@@ -1129,6 +1133,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		return true;
 	}
 
+	@Override
 	public boolean onDown(MotionEvent e) {
 
 		// Kill any existing fling/scroll
@@ -1168,6 +1173,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		onUp();
 	}
 
+	@Override
 	public void onLongPress(MotionEvent e) {
 
 		if (mDownTouchPosition < 0) {
@@ -1180,6 +1186,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	}
 
 	// Unused methods from GestureDetector.OnGestureListener below
+	@Override
 	public void onShowPress(MotionEvent e) {
 	}
 
@@ -1317,6 +1324,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 
 					dispatchPress(mSelectedChild);
 					postDelayed(new Runnable() {
+						@Override
 						public void run() {
 							dispatchUnpress();
 						}
@@ -1524,6 +1532,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 				scrollIntoSlots();
 		}
 
+		@Override
 		public void run() {
 
 			if (mItemCount == 0) {

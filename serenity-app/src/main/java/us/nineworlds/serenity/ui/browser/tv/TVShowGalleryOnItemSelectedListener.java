@@ -38,18 +38,13 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -86,6 +81,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
 	 * .widget.AdapterView, android.view.View, int, long)
 	 */
+	@Override
 	public void onItemSelected(AdapterView<?> av, View v, int position, long id) {
 
 		if (previous != null) {
@@ -231,6 +227,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 
 	}
 
+	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 
 	}

@@ -27,10 +27,7 @@ import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
 
 import us.nineworlds.serenity.core.model.impl.MusicAlbumContentInfo;
-import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
 import us.nineworlds.serenity.ui.views.MusicAlbumImageView;
-import us.nineworlds.serenity.ui.views.SerenityMusicImageView;
-
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
@@ -63,6 +60,7 @@ public class MusicAlbumsGridOnItemSelectedListener implements
 	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
 	 * .widget.AdapterView, android.view.View, int, long)
 	 */
+	@Override
 	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position,
 			long id) {
 
@@ -86,6 +84,7 @@ public class MusicAlbumsGridOnItemSelectedListener implements
 
 	}
 	
+	@Override
 	public void onNothingSelected(TwoWayAdapterView<?> av) {
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);

@@ -96,6 +96,7 @@ public class DirectoryChooserDialog {
 
 		class DirectoryOnClickListener implements
 				DialogInterface.OnClickListener {
+			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				// Navigate into the sub-directory
 				m_dir += "/"
@@ -110,6 +111,7 @@ public class DirectoryChooserDialog {
 
 		dialogBuilder.setPositiveButton(R.string.button_ok, new OnClickListener() {
 
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// Current directory chosen
 				if (m_chosenDirectoryListener != null) {
@@ -123,6 +125,7 @@ public class DirectoryChooserDialog {
 		final AlertDialog dirsDialog = dialogBuilder.create();
 
 		dirsDialog.setOnKeyListener(new OnKeyListener() {
+			@Override
 			public boolean onKey(DialogInterface dialog, int keyCode,
 					KeyEvent event) {
 				if (keyCode == KeyEvent.KEYCODE_BACK
@@ -175,6 +178,7 @@ public class DirectoryChooserDialog {
 		}
 
 		Collections.sort(dirs, new Comparator<String>() {
+			@Override
 			public int compare(String o1, String o2) {
 				return o1.compareTo(o2);
 			}
@@ -213,6 +217,7 @@ public class DirectoryChooserDialog {
 		newDirButton.setText(R.string.new_folder);
 		newDirButton.setOnClickListener(new View.OnClickListener() {
 
+			@Override
 			public void onClick(View v) {
 				final EditText input = new EditText(m_context);
 
@@ -222,6 +227,7 @@ public class DirectoryChooserDialog {
 						.setView(input)
 						.setPositiveButton(R.string.button_ok,
 								new DialogInterface.OnClickListener() {
+									@Override
 									public void onClick(DialogInterface dialog,
 											int whichButton) {
 										Editable newDir = input.getText();

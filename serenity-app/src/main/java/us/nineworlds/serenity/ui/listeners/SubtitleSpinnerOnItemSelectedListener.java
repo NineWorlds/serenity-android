@@ -50,6 +50,7 @@ public class SubtitleSpinnerOnItemSelectedListener implements
 
 	}
 
+	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
 		Subtitle subtitle = null;
@@ -83,6 +84,7 @@ public class SubtitleSpinnerOnItemSelectedListener implements
 	 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android
 	 * .widget.AdapterView)
 	 */
+	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
 
 	}

@@ -40,7 +40,6 @@ import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -176,6 +175,7 @@ public class AbstractVideoOnItemLongClickListener {
 		 * android.widget.AdapterView.OnItemClickListener#onItemClick(android
 		 * .widget.AdapterView, android.view.View, int, long)
 		 */
+		@Override
 		public void onItemClick(android.widget.AdapterView<?> arg0, View v,
 				int position, long arg3) {
 
@@ -228,6 +228,7 @@ public class AbstractVideoOnItemLongClickListener {
 		// Create DirectoryChooserDialog and register a callback
 		DirectoryChooserDialog directoryChooserDialog = new DirectoryChooserDialog(
 				context, new DirectoryChooserDialog.ChosenDirectoryListener() {
+					@Override
 					public void onChosenDir(String chosenDir) {
 						Toast.makeText(
 								context,

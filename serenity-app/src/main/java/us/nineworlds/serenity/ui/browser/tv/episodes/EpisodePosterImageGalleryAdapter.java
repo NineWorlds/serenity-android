@@ -38,7 +38,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -69,6 +68,7 @@ public class EpisodePosterImageGalleryAdapter extends
 		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		VideoContentInfo pi = posterList.get(position);

@@ -34,6 +34,7 @@ import android.view.View;
  */
 public class GalleryVideoOnItemClickListener extends AbstractVideoOnItemClickListener implements OnItemClickListener {
 
+	@Override
 	public void onItemClick(SerenityAdapterView<?> av, View v, int arg2,
 			long arg3) {
 		onItemClick(v);

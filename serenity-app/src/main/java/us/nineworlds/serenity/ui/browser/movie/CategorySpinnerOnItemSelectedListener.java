@@ -46,7 +46,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -74,6 +73,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 		secondaryCategoryHandler = new SecondaryCategoryHandler();
 	}
 
+	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 		context = (Activity) view.getContext();		
@@ -168,6 +168,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 		}
 	}
 
+	@Override
 	public void onNothingSelected(AdapterView<?> va) {
 
 	}

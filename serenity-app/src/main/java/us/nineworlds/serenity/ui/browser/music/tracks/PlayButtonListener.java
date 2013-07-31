@@ -28,7 +28,6 @@ import java.io.IOException;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
 import android.app.Activity;
-import android.media.AudioTrack;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.View;

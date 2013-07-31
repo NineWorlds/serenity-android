@@ -84,6 +84,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.Adapter#getCount()
 	 */
+	@Override
 	public int getCount() {
 
 		return posterList.size();
@@ -94,6 +95,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.Adapter#getItem(int)
 	 */
+	@Override
 	public Object getItem(int position) {
 
 		return posterList.get(position);
@@ -104,6 +106,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
+	@Override
 	public long getItemId(int position) {
 		return position;
 	}

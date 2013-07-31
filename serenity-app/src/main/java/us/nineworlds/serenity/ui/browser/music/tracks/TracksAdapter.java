@@ -26,26 +26,9 @@ package us.nineworlds.serenity.ui.browser.music.tracks;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jess.ui.TwoWayAbsListView;
-import com.jess.ui.TwoWayGridView;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-
-import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
-import us.nineworlds.serenity.core.model.impl.MusicAlbumContentInfo;
-import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
-import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
-import us.nineworlds.serenity.core.services.MusicAlbumRetrievalIntentService;
-import us.nineworlds.serenity.core.services.MusicRetrievalIntentService;
 import us.nineworlds.serenity.core.services.MusicTrackRetrievalIntentService;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.ui.views.MusicAlbumImageView;
-import us.nineworlds.serenity.ui.views.SerenityMusicImageView;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 
@@ -53,7 +36,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -62,9 +44,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 /**
@@ -84,7 +64,7 @@ public class TracksAdapter extends ArrayAdapter<AudioTrackContentInfo> {
 
 	public TracksAdapter(Activity context, String key) {
 		super(context, R.layout.track_listview_layout, R.id.trackTitle);
-		this.context = context;
+		TracksAdapter.context = context;
 		this.key = key;
 		notifyAdapter = this;
 		imageLoader = SerenityApplication.getImageLoader();

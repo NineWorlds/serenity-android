@@ -55,6 +55,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 	}
 
 
+	@Override
 	protected void createVideoDetail(SerenityPosterImageView v) {
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
 		summary.setText(v.getPosterInfo().getSummary());
@@ -64,6 +65,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 		title.setText(v.getPosterInfo().getTitle());
 	}
 
+	@Override
 	protected void createVideoMetaData(SerenityPosterImageView v) {
 		super.createVideoMetaData(v);
 		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
@@ -74,6 +76,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 	}
 
 
+	@Override
 	public void onNothingSelected(SerenityAdapterView<?> av) {
 
 	}

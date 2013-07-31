@@ -23,7 +23,6 @@
 
 package us.nineworlds.serenity.core.util;
 
-import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 /**

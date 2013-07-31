@@ -87,7 +87,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	protected abstract void createVideoDetail(SerenityPosterImageView v);
 
 	protected void createVideoMetaData(SerenityPosterImageView v) {
-		SerenityPosterImageView videoView = (SerenityPosterImageView) v;
+		SerenityPosterImageView videoView = v;
 		VideoContentInfo videoInfo = videoView.getPosterInfo();
 
 		fetchSubtitle(videoInfo);
@@ -226,6 +226,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		context.startService(intent);
 	}
 
+	@Override
 	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
 			long id) {
 		SharedPreferences preferences = PreferenceManager

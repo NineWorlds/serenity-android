@@ -36,10 +36,7 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 
 /**
  * @author dcarver
@@ -100,6 +97,7 @@ public class EpisodeBrowserOnLongClickListener extends
 		 * android.widget.AdapterView.OnItemClickListener#onItemClick(android
 		 * .widget.AdapterView, android.view.View, int, long)
 		 */
+		@Override
 		public void onItemClick(android.widget.AdapterView<?> arg0, View v,
 				int position, long arg3) {
 

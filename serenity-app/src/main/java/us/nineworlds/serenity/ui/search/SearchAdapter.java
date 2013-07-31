@@ -47,6 +47,7 @@ public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
 		posterList = videos;
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		VideoContentInfo pi = posterList.get(position);
 		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);

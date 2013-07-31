@@ -71,6 +71,7 @@ public interface VideoContentInfo extends ContentInfo {
 
 	public void setAudioCodec(String audioCodec);
 
+	@Override
 	public void setBackgroundURL(String backgroundURL);
 
 	public void setCastInfo(String castInfo);
@@ -81,10 +82,13 @@ public interface VideoContentInfo extends ContentInfo {
 
 	public void setGenres(List<String> genres);
 
+	@Override
 	public void setSummary(String plotSummary);
 
+	@Override
 	public void setImageURL(String posterURL);
 
+	@Override
 	public void setTitle(String title);
 
 	public void setVideoCodec(String videoCodec);

@@ -26,12 +26,6 @@ package us.nineworlds.serenity.ui.browser.music;
 import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
@@ -59,6 +53,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		this.key = key;
 	}
 
+	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 
@@ -96,6 +91,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		}
 	}
 
+	@Override
 	public void onNothingSelected(AdapterView<?> va) {
 
 	}

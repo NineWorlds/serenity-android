@@ -27,8 +27,6 @@ import java.util.List;
 
 import com.jess.ui.TwoWayAbsListView;
 import com.jess.ui.TwoWayGridView;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -38,25 +36,20 @@ import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
 
 /**
  * 
@@ -80,6 +73,7 @@ public class MoviePosterImageGalleryAdapter extends
 		shrink.setInterpolator(new LinearInterpolator());
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		VideoContentInfo pi = posterList.get(position);
@@ -119,6 +113,7 @@ public class MoviePosterImageGalleryAdapter extends
 		return mpiv;
 	}
 
+	@Override
 	protected void fetchDataFromService() {
 		posterGalleryHandler = new MoviePosterHandler();
 		Messenger messenger = new Messenger(posterGalleryHandler);

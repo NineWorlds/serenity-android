@@ -27,15 +27,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.Media;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Part;
 import us.nineworlds.plex.rest.model.impl.Track;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
-import us.nineworlds.serenity.core.model.impl.MusicAlbumContentInfo;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;

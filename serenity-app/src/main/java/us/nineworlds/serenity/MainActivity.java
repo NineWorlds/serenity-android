@@ -33,8 +33,6 @@ import us.nineworlds.serenity.core.services.DLNAServiceConnection;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.listeners.BrowseRegistryListener;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
-import us.nineworlds.serenity.ui.util.DisplayUtils;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,26 +40,19 @@ import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.app.AlertDialog;
-import android.app.DownloadManager;
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.DownloadManager.Query;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Gallery;
 import android.widget.Toast;
 
@@ -104,10 +95,12 @@ public class MainActivity extends SerenityActivity {
 	}
 
 	private ServiceConnection downloadService = new ServiceConnection() {
+		@Override
 		public void onServiceConnected(ComponentName className, IBinder service) {
-			dsInterface = DSInterface.Stub.asInterface((IBinder) service);
+			dsInterface = DSInterface.Stub.asInterface(service);
 		}
 
+		@Override
 		public void onServiceDisconnected(ComponentName className) {
 			dsInterface = null;
 		}
@@ -204,6 +197,7 @@ public class MainActivity extends SerenityActivity {
 				.setPositiveButton(R.string.clear,
 						new DialogInterface.OnClickListener() {
 
+							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
 
@@ -216,6 +210,7 @@ public class MainActivity extends SerenityActivity {
 				.setNegativeButton(R.string.cancel,
 						new DialogInterface.OnClickListener() {
 
+							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
 

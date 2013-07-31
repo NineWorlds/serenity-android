@@ -41,7 +41,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -97,6 +96,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.Adapter#getCount()
 	 */
+	@Override
 	public int getCount() {
 
 		return seasonList.size();
@@ -107,6 +107,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.Adapter#getItem(int)
 	 */
+	@Override
 	public Object getItem(int position) {
 
 		return seasonList.get(position);
@@ -117,6 +118,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
+	@Override
 	public long getItemId(int position) {
 		return position;
 	}
@@ -127,6 +129,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	 * @see android.widget.Adapter#getView(int, android.view.View,
 	 * android.view.ViewGroup)
 	 */
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		SeriesContentInfo pi = seasonList.get(position);

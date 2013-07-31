@@ -26,7 +26,6 @@ package us.nineworlds.serenity.ui.browser.music;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jess.ui.TwoWayGridView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import us.nineworlds.serenity.SerenityApplication;
@@ -97,6 +96,7 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.Adapter#getCount()
 	 */
+	@Override
 	public int getCount() {
 		return posterList.size();
 	}
@@ -106,6 +106,7 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.Adapter#getItem(int)
 	 */
+	@Override
 	public Object getItem(int position) {
 		return posterList.get(position);
 	}
@@ -115,6 +116,7 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
+	@Override
 	public long getItemId(int position) {
 		return position;
 	}
@@ -125,14 +127,15 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 	 * @see android.widget.Adapter#getView(int, android.view.View,
 	 * android.view.ViewGroup)
 	 */
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		MusicArtistContentInfo pi = posterList.get(position);
 		SerenityMusicImageView mpiv = new SerenityMusicImageView(context, pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(180, (Activity) context);
-		int height = ImageUtils.getDPI(180, (Activity) context);
+		int width = ImageUtils.getDPI(180, context);
+		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
 
 		imageLoader.displayImage(pi.getImageURL(), mpiv,
@@ -146,7 +149,7 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 		public void handleMessage(Message msg) {
 
 			posterList = (List<MusicArtistContentInfo>) msg.obj;
-			Gallery posterGallery = (Gallery) ((Activity) context)
+			Gallery posterGallery = (Gallery) context
 					.findViewById(R.id.musicArtistGallery);
 			notifyDataSetChanged();
 			posterGallery.requestFocus();

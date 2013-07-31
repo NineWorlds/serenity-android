@@ -47,6 +47,7 @@ public class DLNAServiceConnection implements ServiceConnection {
 		registryListener = listener;
 	}
 
+	@Override
 	public void onServiceConnected(ComponentName className, IBinder service) {
 		upnpService = (AndroidUpnpService) service;
 		if (upnpService == null) {
@@ -65,6 +66,7 @@ public class DLNAServiceConnection implements ServiceConnection {
 		upnpService.getControlPoint().search();
 	}
 
+	@Override
 	public void onServiceDisconnected(ComponentName className) {
 		upnpService = null;
 	}

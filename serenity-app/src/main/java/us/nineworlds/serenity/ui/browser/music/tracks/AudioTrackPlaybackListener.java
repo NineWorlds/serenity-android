@@ -26,8 +26,6 @@ package us.nineworlds.serenity.ui.browser.music.tracks;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
 import us.nineworlds.serenity.core.util.TimeUtil;
 
 
@@ -60,6 +58,7 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 		progressBar = progress;
 	}
 	
+	@Override
 	public void onStartTrackingTouch(SeekBar bar) {
 		dragging = true;
 		if (mediaPlayer != null) {
@@ -70,6 +69,7 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 		}
 	}
 
+	@Override
 	public void onProgressChanged(SeekBar bar, int progress, boolean fromuser) {
 		if (!fromuser) {
 			return;
@@ -77,7 +77,7 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 
 		setProgress();
 
-		long newposition = (long) ((duration * progress) / 1000);
+		long newposition = ((duration * progress) / 1000);
 		String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
 				.format(new Date(Long.valueOf(newposition)));
 		if (instantSeeking) {
@@ -125,6 +125,7 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 		return position;
 	}	
 
+	@Override
 	public void onStopTrackingTouch(SeekBar bar) {
 		audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
 	}

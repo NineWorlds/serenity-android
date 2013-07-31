@@ -31,22 +31,13 @@ import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.browser.music.albums.MusicAlbumsActivity;
-import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -76,6 +67,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 		secondaryCategoryHandler = new SecondaryCategoryHandler();
 	}
 
+	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 		context = (Activity) view.getContext();
@@ -164,6 +156,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 		}
 	}
 
+	@Override
 	public void onNothingSelected(AdapterView<?> va) {
 
 	}

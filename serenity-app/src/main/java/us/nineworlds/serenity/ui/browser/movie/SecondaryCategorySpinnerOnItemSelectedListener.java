@@ -36,7 +36,6 @@ import us.nineworlds.serenity.R;
 
 import android.app.Activity;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -59,6 +58,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		this.key = key;
 	}
 
+	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 
@@ -104,6 +104,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		}
 	}
 
+	@Override
 	public void onNothingSelected(AdapterView<?> va) {
 
 	}

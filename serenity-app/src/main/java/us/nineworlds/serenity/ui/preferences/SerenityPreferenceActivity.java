@@ -109,7 +109,7 @@ public class SerenityPreferenceActivity extends PreferenceActivity {
 		Iterator<Map.Entry<String, Device>> entIt = plexMediaServers.entrySet()
 				.iterator();
 		while (entIt.hasNext()) {
-			Map.Entry<String, Device> servers = (Map.Entry<String, Device>) entIt
+			Map.Entry<String, Device> servers = entIt
 					.next();
 			Device device = servers.getValue();
 			if (device instanceof RemoteDevice) {

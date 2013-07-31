@@ -39,6 +39,7 @@ public class SerenityOnErrorListener implements OnErrorListener {
 	 * @see android.media.MediaPlayer.OnErrorListener#onError(android.media.
 	 * MediaPlayer, int, int)
 	 */
+	@Override
 	public boolean onError(MediaPlayer mp, int what, int extra) {
 		String error_msg = "What: " + what + "Extra: " + extra;
 		if (what == MediaPlayer.MEDIA_ERROR_UNKNOWN) {

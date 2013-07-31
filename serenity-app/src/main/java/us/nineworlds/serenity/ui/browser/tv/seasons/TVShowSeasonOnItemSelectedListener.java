@@ -70,6 +70,7 @@ public class TVShowSeasonOnItemSelectedListener implements
 	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
 	 * .widget.AdapterView, android.view.View, int, long)
 	 */
+	@Override
 	public void onItemSelected(AdapterView<?> av, View v, int position, long id) {
 		TVShowSeasonImageView mpiv = (TVShowSeasonImageView) v;
 
@@ -118,6 +119,7 @@ public class TVShowSeasonOnItemSelectedListener implements
 	 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android
 	 * .widget.AdapterView)
 	 */
+	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 
 	}

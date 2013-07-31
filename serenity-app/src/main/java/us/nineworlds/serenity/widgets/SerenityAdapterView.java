@@ -30,6 +30,7 @@ import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 /**
@@ -912,6 +913,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	}
 
 	private class SelectionNotifier implements Runnable {
+		@Override
 		public void run() {
 			if (mDataChanged) {
 				// Data has changed between when this SelectionNotifier
@@ -943,7 +945,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 		}
 
 		// we fire selection events here not in View
-		if (mSelectedPosition != ListView.INVALID_POSITION && isShown()
+		if (mSelectedPosition != AdapterView.INVALID_POSITION && isShown()
 				&& !isInTouchMode()) {
 			sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED);
 		}

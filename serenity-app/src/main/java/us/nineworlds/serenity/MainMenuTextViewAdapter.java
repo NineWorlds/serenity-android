@@ -74,18 +74,22 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 		notifyAdapter = this;
 	}
 
+	@Override
 	public int getCount() {
 		return menuItems.size();
 	}
 
+	@Override
 	public Object getItem(int position) {
 		return position;
 	}
 
+	@Override
 	public long getItemId(int position) {
 		return position;
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		MenuItem menuItem = menuItems.get(position);
 

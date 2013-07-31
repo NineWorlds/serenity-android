@@ -43,7 +43,6 @@ import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;

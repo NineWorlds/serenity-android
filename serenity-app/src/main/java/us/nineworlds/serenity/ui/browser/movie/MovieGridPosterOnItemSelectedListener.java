@@ -74,6 +74,7 @@ public class MovieGridPosterOnItemSelectedListener implements
 	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
 	 * .widget.AdapterView, android.view.View, int, long)
 	 */
+	@Override
 	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position,
 			long id) {
 
@@ -90,7 +91,7 @@ public class MovieGridPosterOnItemSelectedListener implements
 
 
 	private void createMovieMetaData(SerenityPosterImageView v) {
-		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
+		SerenityPosterImageView mpiv = v;
 		VideoContentInfo mi = mpiv.getPosterInfo();
 		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
 		subt.setVisibility(View.GONE);
@@ -113,6 +114,7 @@ public class MovieGridPosterOnItemSelectedListener implements
 			context.startService(intent);
 	}
 
+	@Override
 	public void onNothingSelected(TwoWayAdapterView<?> av) {
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);

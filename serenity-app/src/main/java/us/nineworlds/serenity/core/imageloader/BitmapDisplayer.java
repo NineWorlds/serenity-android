@@ -3,8 +3,6 @@ package us.nineworlds.serenity.core.imageloader;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 public class BitmapDisplayer implements Runnable {
 
@@ -21,6 +19,7 @@ public class BitmapDisplayer implements Runnable {
 		this.bgLayout = bgLayout;
 	}
 
+	@Override
 	public void run() {
 		if (bm == null) {
 			bgLayout.setBackgroundResource(defaultImage);

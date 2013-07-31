@@ -23,9 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.music;
 
-import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.music.albums.MusicAlbumsActivity;
-import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.views.SerenityMusicImageView;
 
 import com.jess.ui.TwoWayAdapterView;
@@ -42,6 +40,7 @@ import android.view.View;
  */
 public class MusicGridOnItemClickListener implements OnItemClickListener {
 
+	@Override
 	public void onItemClick(TwoWayAdapterView<?> av, View v, int arg2,
 			long arg3) {
 		SerenityMusicImageView music = (SerenityMusicImageView) v;

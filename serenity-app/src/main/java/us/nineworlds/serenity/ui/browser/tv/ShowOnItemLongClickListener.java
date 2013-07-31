@@ -30,7 +30,6 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
-import us.nineworlds.serenity.ui.views.TVShowSeasonImageView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -59,6 +58,7 @@ public class ShowOnItemLongClickListener implements OnItemLongClickListener {
 	private SeriesContentInfo info;
 	private TVShowImageView tvsv;
 
+	@Override
 	public boolean onItemLongClick(AdapterView<?> av, View v,
 			int position, long arg3) {
 
@@ -113,6 +113,7 @@ public class ShowOnItemLongClickListener implements OnItemLongClickListener {
 		 * android.widget.AdapterView.OnItemClickListener#onItemClick(android
 		 * .widget.AdapterView, android.view.View, int, long)
 		 */
+		@Override
 		public void onItemClick(android.widget.AdapterView<?> arg0, View v,
 				int position, long arg3) {
 			

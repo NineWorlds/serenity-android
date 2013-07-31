@@ -41,6 +41,7 @@ public class GalleryVideoOnItemLongClickListener extends AbstractVideoOnItemLong
 		OnItemLongClickListener {
 
 
+	@Override
 	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
 			int position, long arg3) {
 

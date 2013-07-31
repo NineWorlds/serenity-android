@@ -59,6 +59,7 @@ public class ServerConfig implements IConfiguration {
 		serverport = preferences.getString("serverport", "32400");
 	}
 
+	@Override
 	public String getHost() {
 		if (serveraddress.length() == 0) {
 			return discoveredServers;
@@ -66,15 +67,18 @@ public class ServerConfig implements IConfiguration {
 		return serveraddress;
 	}
 
+	@Override
 	public String getPort() {
 		return serverport;
 	}
 
+	@Override
 	public void setHost(String hostip) {
 		serveraddress = hostip;
 
 	}
 
+	@Override
 	public void setPort(String port) {
 		serverport = port;
 	}
@@ -114,6 +118,7 @@ public class ServerConfig implements IConfiguration {
 	public class ServerConfigChangeListener implements
 			OnSharedPreferenceChangeListener {
 
+		@Override
 		public void onSharedPreferenceChanged(
 				SharedPreferences sharedPreferences, String key) {
 			if ("serverport".equals(key)) {

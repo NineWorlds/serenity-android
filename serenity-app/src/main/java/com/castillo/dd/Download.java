@@ -184,6 +184,7 @@ public class Download extends Observable implements Runnable {
 	}
 
 	// Download file.
+	@Override
 	public void run() {
 		RandomAccessFile file = null;
 		InputStream stream = null;
