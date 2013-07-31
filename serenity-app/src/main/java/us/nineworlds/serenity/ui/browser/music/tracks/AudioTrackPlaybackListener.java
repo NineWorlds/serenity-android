@@ -77,11 +77,13 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 
 		setProgress();
 
-		int newposition = (int) ((duration * progress) / 1000);
+		long newposition = (long) ((duration * progress) / 1000);
 		String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-				.format(new Date(newposition));
+				.format(new Date(Long.valueOf(newposition)));
 		if (instantSeeking) {
-			mediaPlayer.seekTo(newposition);
+			if (newposition >= Integer.MIN_VALUE && newposition <= Integer.MAX_VALUE) {
+				mediaPlayer.seekTo((int) newposition);
+			}
 		}
 		if (currentTimeView != null)
 			currentTimeView.setText(time);

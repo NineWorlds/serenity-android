@@ -34,7 +34,7 @@ import android.widget.ImageView.ScaleType;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.ui.views.TVShowSeasonImageView;
 
@@ -365,7 +365,7 @@ public class ImageInfographicUtils {
 
 	public static void setWatchedCount(SerenityPosterImageView epiv, Activity a) {
 		ImageView watchedView = (ImageView) a
-				.findViewById(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
+				.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
 		watchedView.setImageResource(R.drawable.watched_small);
 		int watchedCount = epiv.getPosterInfo().getViewCount();
 		epiv.getPosterInfo().setViewCount(watchedCount + 1);
@@ -373,7 +373,7 @@ public class ImageInfographicUtils {
 
 	public static void setUnwatched(SerenityPosterImageView epiv, Activity a) {
 		ImageView watchedView = (ImageView) a
-				.findViewById(EpisodePosterOnItemSelectedListener.WATCHED_VIEW_ID);
+				.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
 		watchedView.setImageResource(R.drawable.unwatched_small);
 		epiv.getPosterInfo().setViewCount(0);
 	}

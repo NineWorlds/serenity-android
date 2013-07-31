@@ -83,8 +83,7 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 		posterGallery
 				.setAdapter(new EpisodePosterImageGalleryAdapter(this, key));
 		posterGallery
-				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(
-						bgLayout, this));
+				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(this));
 		posterGallery
 				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
 		if (key.contains("onDeck") || key.contains("recentlyAdded") || (key.contains("recentlyViewed") && !key.contains("recentlyViewedShows"))) {

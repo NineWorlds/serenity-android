@@ -147,8 +147,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 					.findViewById(R.id.moviePosterGallery);
 			posterGallery.setAdapter(adapter);
 			posterGallery
-					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
-							bgLayout, context));
+					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(context));
 			posterGallery
 					.setOnItemClickListener(onClick);
 			posterGallery

@@ -107,19 +107,17 @@ public abstract class SerenityActivity extends Activity {
 		if (resultCode == Activity.RESULT_OK) {
 			if (data != null && data.getAction().equals("com.mxtech.intent.result.VIEW")) {
 				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
+				VideoContentInfo video = null;
 				if (gallery != null) {
-					VideoContentInfo video = (VideoContentInfo) gallery.getSelectedItem();
-					if (video != null) {
-						updateProgress(data, video);
-					}
+					video = (VideoContentInfo) gallery.getSelectedItem();
 				} else {
 					TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
 					if (gridView != null) {
-						VideoContentInfo video = (VideoContentInfo) gridView.getSelectedItem();
-						if (video != null) {
-							updateProgress(data, video);
-						}
+						video = (VideoContentInfo) gridView.getSelectedItem();
 					}
+				}
+				if (video != null) {
+					updateProgress(data, video);
 				}
 			}
 		}

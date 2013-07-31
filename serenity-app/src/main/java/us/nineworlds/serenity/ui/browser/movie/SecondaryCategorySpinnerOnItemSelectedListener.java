@@ -80,8 +80,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		if (!MovieBrowserActivity.IS_GRID_VIEW) {
 			posterGallery.setAdapter(adapter);
 			posterGallery
-					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
-							bgLayout, c));
+					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(c));
 			posterGallery
 					.setOnItemClickListener(new GalleryVideoOnItemClickListener());
 			posterGallery

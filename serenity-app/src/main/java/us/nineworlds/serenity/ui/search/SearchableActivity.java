@@ -123,8 +123,7 @@ public class SearchableActivity extends SerenityActivity {
 				.findViewById(R.id.moviePosterGallery);
 		posterGallery.setAdapter(new SearchAdapter(context, videos));
 		posterGallery
-				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
-						bgLayout, context));
+				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(context));
 		posterGallery
 				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
 		posterGallery
