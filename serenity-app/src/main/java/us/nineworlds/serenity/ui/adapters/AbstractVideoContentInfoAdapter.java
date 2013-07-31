@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2013 David Carver
+ * Copyright (c) 2012 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -21,50 +21,54 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.browser.tv;
+package us.nineworlds.serenity.ui.adapters;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
-import us.nineworlds.serenity.ui.adapters.AbstractSeriesContentInfoAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-
-import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 import android.app.Activity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Gallery;
-import android.widget.ImageView;
+import android.content.Context;
+import android.widget.BaseAdapter;
 
 /**
- * Image Adapter for TV Show Posters.
+ * An abstract class for handling the creation of video content for use during
+ * browsing. Implementations need to implement the abstract methods to provide
+ * functionality for retrieval and display of video content when browsing the
+ * episodes.
  * 
  * @author dcarver
  * 
  */
-public class TVShowPosterImageGalleryAdapter extends
-		AbstractSeriesContentInfoAdapter {
+public abstract class AbstractVideoContentInfoAdapter extends AbstractContentInfoAdapter {
+
+	protected static List<VideoContentInfo> posterList = new ArrayList<VideoContentInfo>();
 	
-	public TVShowPosterImageGalleryAdapter(Activity c, String key,
+	protected static final int SIZE_HEIGHT = 400;
+	protected static final int SIZE_WIDTH = 200;
+
+	public AbstractVideoContentInfoAdapter(Activity c, String key) {
+		super(c, key, null);
+		fetchDataFromService();
+	}
+
+	public AbstractVideoContentInfoAdapter(Activity c, String key,
 			String category) {
 		super(c, key, category);
+		fetchDataFromService();
 	}
-
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-
-		AbstractSeriesContentInfo pi = tvShowList.get(position);
-		TVShowImageView mpiv = new TVShowImageView(context, pi);
-		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
-		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(160, context);
-		int height = ImageUtils.getDPI(200, context);
-		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
-
-		imageLoader.displayImage(pi.getThumbNailURL(), mpiv);
-		return mpiv;
+	public int getCount() {
+		return posterList.size();
 	}
-	
+
+	@Override
+	public Object getItem(int position) {
+		return posterList.get(position);
+	}
 
 }
