@@ -49,6 +49,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.SeekBar;
@@ -173,21 +174,8 @@ public class MusicTracksActivity extends Activity implements
 	protected void init() {
 		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setOnCompletionListener(this);
-		playBtn = (ImageButton) findViewById(R.id.audioPause);
-		playBtn.setOnClickListener(new PlayButtonListener(mediaPlayer));
-		seekBar = (SeekBar) findViewById(R.id.mediacontroller_seekbar);
-		nextBtn = (ImageButton) findViewById(R.id.audioSkipForward);
-		nextBtn.setOnClickListener(new SkipForwardOnClickListener(mediaPlayer));
-		prevBtn = (ImageButton) findViewById(R.id.audioSkipBack);
-		prevBtn.setOnClickListener(new SkipBackOnClickListener(mediaPlayer));
-		nextTrack = (ImageButton) findViewById(R.id.audioNextTrack);
-		nextTrack.setOnClickListener(new NextTrackOnClickListener());
-		prevTrack = (ImageButton) findViewById(R.id.audioPrevTrack);
-		prevTrack.setOnClickListener(new PrevTrackOnClickListener());
-		currentTime = (TextView) findViewById(R.id.mediacontroller_time_current);
-		durationTime = (TextView) findViewById(R.id.mediacontroller_time_total);
-		playingTrack = (TextView) findViewById(R.id.track_playing);
-		randomPlay = (CheckBox) findViewById(R.id.audioRandomPlay);
+		
+		initializeControls();
 
 		progressHandler.postDelayed(playbackRunnable, 1000);
 		AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -198,6 +186,41 @@ public class MusicTracksActivity extends Activity implements
 		if(mgr != null) {
 		    mgr.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
 		}
+	}
+
+	/**
+	 * 
+	 */
+	protected void initializeControls() {
+		playBtn = (ImageButton) findViewById(R.id.audioPause);
+		playBtn.setOnClickListener(new PlayButtonListener(mediaPlayer));
+		playBtn.setVisibility(View.INVISIBLE);
+		seekBar = (SeekBar) findViewById(R.id.mediacontroller_seekbar);
+		seekBar.setVisibility(View.INVISIBLE);
+		nextBtn = (ImageButton) findViewById(R.id.audioSkipForward);
+		nextBtn.setVisibility(View.INVISIBLE);
+		nextBtn.setOnClickListener(new SkipForwardOnClickListener(mediaPlayer));
+		prevBtn = (ImageButton) findViewById(R.id.audioSkipBack);
+		prevBtn.setOnClickListener(new SkipBackOnClickListener(mediaPlayer));
+		prevBtn.setVisibility(View.INVISIBLE);
+		nextTrack = (ImageButton) findViewById(R.id.audioNextTrack);
+		nextTrack.setOnClickListener(new NextTrackOnClickListener());
+		nextTrack.setVisibility(View.INVISIBLE);
+		prevTrack = (ImageButton) findViewById(R.id.audioPrevTrack);
+		prevTrack.setOnClickListener(new PrevTrackOnClickListener());
+		prevTrack.setVisibility(View.INVISIBLE);
+		currentTime = (TextView) findViewById(R.id.mediacontroller_time_current);
+		currentTime.setVisibility(View.INVISIBLE);
+		durationTime = (TextView) findViewById(R.id.mediacontroller_time_total);
+		durationTime.setVisibility(View.INVISIBLE);
+		playingTrack = (TextView) findViewById(R.id.track_playing);
+		playingTrack.setVisibility(View.INVISIBLE);
+		randomPlay = (CheckBox) findViewById(R.id.audioRandomPlay);
+		randomPlay.setVisibility(View.INVISIBLE);
+		
+		LinearLayout mediaProgressControl = (LinearLayout) findViewById(R.id.mediacontroller_progress_layout);
+		mediaProgressControl.setVisibility(View.INVISIBLE);
+		
 	}
 
 	/*

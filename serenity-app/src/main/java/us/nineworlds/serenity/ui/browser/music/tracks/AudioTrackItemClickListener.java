@@ -34,7 +34,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 /**
@@ -88,12 +92,52 @@ public class AudioTrackItemClickListener implements OnItemClickListener {
 		}
 
 		try {
+			showControlls(context);
 			mediaPlayer.start();
 		} catch (IllegalArgumentException e) {
 			Log.e("TrackPlayButton", "Unable to play Track", e);
 		} catch (IllegalStateException e) {
 			Log.e("TrackPlayButton", "Unable to play Track", e);
 		}
+
+	}
+
+	/**
+	 * @param context
+	 */
+	protected void showControlls(Activity context) {
+		ImageButton playBtn = (ImageButton) context.findViewById(R.id.audioPause);
+		playBtn.setVisibility(View.VISIBLE);
+		
+		SeekBar seekBar = (SeekBar) context.findViewById(R.id.mediacontroller_seekbar);
+		seekBar.setVisibility(View.VISIBLE);
+		
+		ImageButton nextBtn = (ImageButton) context.findViewById(R.id.audioSkipForward);
+		nextBtn.setVisibility(View.VISIBLE);
+		
+		ImageButton prevBtn = (ImageButton) context.findViewById(R.id.audioSkipBack);
+		prevBtn.setVisibility(View.VISIBLE);
+		
+		ImageButton nextTrack = (ImageButton) context.findViewById(R.id.audioNextTrack);
+		nextTrack.setVisibility(View.VISIBLE);
+		
+		ImageButton prevTrack = (ImageButton) context.findViewById(R.id.audioPrevTrack);
+		prevTrack.setVisibility(View.VISIBLE);
+		
+		TextView currentTime = (TextView) context.findViewById(R.id.mediacontroller_time_current);
+		currentTime.setVisibility(View.VISIBLE);
+		
+		TextView durationTime = (TextView) context.findViewById(R.id.mediacontroller_time_total);
+		durationTime.setVisibility(View.VISIBLE);
+		
+		TextView playingTrack = (TextView) context.findViewById(R.id.track_playing);
+		playingTrack.setVisibility(View.VISIBLE);
+		
+		CheckBox randomPlay = (CheckBox) context.findViewById(R.id.audioRandomPlay);
+		randomPlay.setVisibility(View.VISIBLE);
+		
+		LinearLayout mediaProgressControl = (LinearLayout) context.findViewById(R.id.mediacontroller_progress_layout);
+		mediaProgressControl.setVisibility(View.VISIBLE);
 
 	}
 }
