@@ -62,6 +62,7 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 	private Handler progressReportingHandler;
 	private Runnable progressRunnable;
 	private String subtitleURL;
+	private SharedPreferences preferences;
 
 	public VideoPlayerPrepareListener(Context c, MediaPlayer mp, MediaController con, SurfaceView v, int resumeOffset, String videoId, String aspectRatio, Handler progress, Runnable progresrun, String subtitleURL) {
 		context = c;
@@ -78,6 +79,8 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 
 	@Override
 	public void onPrepared(MediaPlayer mp) {
+		preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		
 		android.view.ViewGroup.LayoutParams lp = setupAspectRatio(surfaceView, plexAspectRatio);
 		surfaceView.setLayoutParams(lp);
 		mediaController.setEnabled(true);
@@ -129,7 +132,10 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 	 */
 	protected void setMetaData() {
 		new WatchedVideoAsyncTask().execute(videoId);
-		mediaController.show(SerenitySurfaceViewVideoActivity.CONTROLLER_DELAY);
+		boolean showOSD = preferences.getBoolean("internal_player_osd", true);
+		if (showOSD) {
+			mediaController.show(SerenitySurfaceViewVideoActivity.CONTROLLER_DELAY);
+		}
 		if (progressReportingHandler != null) {
 			progressReportingHandler.postDelayed(progressRunnable, 5000);
 		}
