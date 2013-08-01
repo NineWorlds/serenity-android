@@ -29,14 +29,13 @@ import com.jess.ui.TwoWayAbsListView;
 import com.jess.ui.TwoWayGridView;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
-import us.nineworlds.serenity.ui.adapters.AbstractVideoContentInfoAdapter;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -58,19 +57,22 @@ import android.widget.ImageView;
  * 
  */
 public class MoviePosterImageAdapter extends
-		AbstractVideoContentInfoAdapter {
+		AbstractPosterImageGalleryAdapter {
 
 	protected static MoviePosterImageAdapter notifyAdapter;
 	protected static ProgressDialog pd;
+	private Handler posterGalleryHandler;
 	private Animation shrink;
+	private Animation fadeIn;
 
-	public MoviePosterImageAdapter(Activity c, String key, String category) {
+	public MoviePosterImageAdapter(Context c, String key, String category) {
 		super(c, key, category);
 		pd = ProgressDialog
 				.show(c, "", c.getString(R.string.retrieving_movies));
 		notifyAdapter = this;
 		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
 		shrink.setInterpolator(new LinearInterpolator());
+		fadeIn = AnimationUtils.loadAnimation(c, R.anim.fade_in);
 	}
 
 	@Override
@@ -115,8 +117,8 @@ public class MoviePosterImageAdapter extends
 
 	@Override
 	protected void fetchDataFromService() {
-		handler = new MoviePosterHandler();
-		Messenger messenger = new Messenger(handler);
+		posterGalleryHandler = new MoviePosterHandler();
+		Messenger messenger = new Messenger(posterGalleryHandler);
 		Intent intent = new Intent(context, MoviesRetrievalIntentService.class);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("key", key);

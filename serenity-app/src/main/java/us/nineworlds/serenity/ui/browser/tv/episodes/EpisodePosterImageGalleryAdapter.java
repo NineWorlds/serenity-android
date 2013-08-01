@@ -27,14 +27,13 @@ import java.util.List;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.EpisodeRetrievalIntentService;
-import us.nineworlds.serenity.ui.adapters.AbstractVideoContentInfoAdapter;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -56,14 +55,14 @@ import android.widget.ImageView;
  * 
  */
 public class EpisodePosterImageGalleryAdapter extends
-		AbstractVideoContentInfoAdapter {
+		AbstractPosterImageGalleryAdapter {
 
 	private static EpisodePosterImageGalleryAdapter notifyAdapter;
 	private static ProgressDialog pd;
 	private Animation shrink;
 
 
-	public EpisodePosterImageGalleryAdapter(Activity c, String key) {
+	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
 		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);

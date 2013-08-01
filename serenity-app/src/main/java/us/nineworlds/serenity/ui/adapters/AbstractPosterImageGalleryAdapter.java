@@ -23,41 +23,89 @@
 
 package us.nineworlds.serenity.ui.adapters;
 
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.SerenityApplication;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+
 import android.app.Activity;
+import android.content.Context;
 import android.os.Handler;
 import android.widget.BaseAdapter;
 
 /**
+ * An abstract class for handling the creation of video content for use during
+ * browsing. Implementations need to implement the abstract methods to provide
+ * functionality for retrieval and display of video content when browsing the
+ * episodes.
+ * 
  * @author dcarver
- *
+ * 
  */
-public abstract class AbstractContentInfoAdapter extends BaseAdapter {
+public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
+	protected static List<VideoContentInfo> posterList = null;
 	protected static Activity context;
 	protected ImageLoader imageLoader;
+	protected static final int SIZE_HEIGHT = 400;
+	protected static final int SIZE_WIDTH = 200;
 	protected PlexappFactory factory;
 	protected Handler handler;
 	protected String key;
 	protected String category;
-	
-	
-	/**
-	 * Base constructor for a Content Info Adapter
-	 */
-	public AbstractContentInfoAdapter(Activity c, String key, String category) {
+
+	public AbstractPosterImageGalleryAdapter(Context c, String key) {
+		context = (Activity) c;
+		posterList = new ArrayList<VideoContentInfo>();
+		imageLoader = SerenityApplication.getImageLoader();
+		this.key = key;
+		fetchDataFromService();
+	}
+
+	public AbstractPosterImageGalleryAdapter(Context c, String key,
+			String category) {
 		context = (Activity) c;
 		this.key = key;
 		this.category = category;
+		posterList = new ArrayList<VideoContentInfo>();
+
 		imageLoader = SerenityApplication.getImageLoader();
+		fetchDataFromService();
 	}
-	
+
 	protected abstract void fetchDataFromService();
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getCount()
+	 */
+	@Override
+	public int getCount() {
+
+		return posterList.size();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getItem(int)
+	 */
+	@Override
+	public Object getItem(int position) {
+
+		return posterList.get(position);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getItemId(int)
+	 */
 	@Override
 	public long getItemId(int position) {
 		return position;

@@ -25,14 +25,13 @@ package us.nineworlds.serenity.ui.search;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.ui.adapters.AbstractVideoContentInfoAdapter;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -41,9 +40,9 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
  * @author dcarver
  * 
  */
-public class SearchAdapter extends AbstractVideoContentInfoAdapter {
+public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
 
-	public SearchAdapter(Activity c, List<VideoContentInfo> videos) {
+	public SearchAdapter(Context c, List<VideoContentInfo> videos) {
 		super(c, null);
 		posterList = videos;
 	}

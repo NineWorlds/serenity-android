@@ -23,34 +23,117 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import java.util.ArrayList;
+import java.util.List;
 
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
-import us.nineworlds.serenity.ui.adapters.AbstractSeriesContentInfoAdapter;
+import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
+import us.nineworlds.serenity.core.services.ShowRetrievalIntentService;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
 import us.nineworlds.serenity.R;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.Toast;
+import android.widget.TextView;
 
 /**
- * Image Adapter for TV Show Posters.
  * 
  * @author dcarver
  * 
  */
 public class TVShowPosterImageGalleryAdapter extends
-		AbstractSeriesContentInfoAdapter {
-	
-	public TVShowPosterImageGalleryAdapter(Activity c, String key,
+		AbstractPosterImageGalleryAdapter {
+
+	/**
+	 * 
+	 */
+	private static final int BANNER_PIXEL_HEIGHT = 140;
+
+	/**
+	 * 
+	 */
+	private static final int BANNER_PIXEL_WIDTH = 758;
+
+	private static List<TVShowSeriesInfo> tvShowList = null;
+
+	private String key;
+	private static ProgressDialog pd;
+
+	public TVShowPosterImageGalleryAdapter(Context c, String key,
 			String category) {
 		super(c, key, category);
+		tvShowList = new ArrayList<TVShowSeriesInfo>();
+
+		imageLoader = SerenityApplication.getImageLoader();
+		this.key = key;
+
+		try {
+			fetchData();
+		} catch (Exception ex) {
+			Log.e(getClass().getName(), "Error connecting to plex.", ex);
+		}
 	}
 
+	protected void fetchData() {
+		pd = ProgressDialog.show(context, "", "Retrieving Shows.");
+		handler = new ShowRetrievalHandler();
+		Messenger messenger = new Messenger(handler);
+		Intent intent = new Intent(context, ShowRetrievalIntentService.class);
+		intent.putExtra("MESSENGER", messenger);
+		intent.putExtra("key", key);
+		intent.putExtra("category", category);
+		context.startService(intent);
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getCount()
+	 */
+	@Override
+	public int getCount() {
+		return tvShowList.size();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getItem(int)
+	 */
+	@Override
+	public Object getItem(int position) {
+		return tvShowList.get(position);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getItemId(int)
+	 */
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getView(int, android.view.View,
+	 * android.view.ViewGroup)
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -66,5 +149,41 @@ public class TVShowPosterImageGalleryAdapter extends
 		return mpiv;
 	}
 	
+
+	private class ShowRetrievalHandler extends Handler {
+
+		@Override
+		public void handleMessage(Message msg) {
+
+			tvShowList = (List<TVShowSeriesInfo>) msg.obj;
+			Gallery posterGallery = (Gallery) context
+					.findViewById(R.id.tvShowBannerGallery);
+			if (tvShowList != null) {
+				if (tvShowList.isEmpty()) {
+					Toast.makeText(context,
+							R.string.no_shows_found_for_the_category_ + category,
+							Toast.LENGTH_LONG).show();
+				}
+				TextView tv = (TextView) context
+						.findViewById(R.id.tvShowItemCount);
+				tv.setText(Integer.toString(tvShowList.size()) + context.getString(R.string._item_s_));
+			}
+			notifyDataSetChanged();
+			posterGallery.requestFocus();
+			pd.dismiss();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.github.kingargyle.plexappclient.ui.adapters.
+	 * AbstractPosterImageGalleryAdapter#fetchDataFromService()
+	 */
+	@Override
+	protected void fetchDataFromService() {
+		// TODO Auto-generated method stub
+
+	}
 
 }

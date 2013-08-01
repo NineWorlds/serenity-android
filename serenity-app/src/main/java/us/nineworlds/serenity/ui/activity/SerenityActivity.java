@@ -28,7 +28,7 @@ import com.jess.ui.TwoWayGridView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
-import us.nineworlds.serenity.ui.adapters.AbstractContentInfoAdapter;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.content.Intent;
@@ -48,7 +48,7 @@ public abstract class SerenityActivity extends Activity {
 				return super.onKeyDown(keyCode, event);				
 			}
 			
-			AbstractContentInfoAdapter adapter = (AbstractContentInfoAdapter) gallery.getAdapter();
+			AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
 			int itemsCount =  adapter.getCount();
 			
 			if (keyCode == KeyEvent.KEYCODE_C) {
