@@ -1352,6 +1352,10 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 			scrollToChild(mSelectedPosition - mFirstPosition - 1);
 			return true;
 		} else {
+			if (mItemCount > 0 && mSelectedPosition == 0) {
+				setSelection(getCount() - 1);
+				return true;
+			}
 			return false;
 		}
 	}
@@ -1361,6 +1365,11 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 			scrollToChild(mSelectedPosition - mFirstPosition + 1);
 			return true;
 		} else {
+			if (mItemCount > 0 && mSelectedPosition == mItemCount - 1) {
+				setSelection(0);
+				return true;
+			}
+			
 			return false;
 		}
 	}
