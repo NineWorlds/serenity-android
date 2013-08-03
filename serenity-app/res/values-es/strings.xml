@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Serenidad para Android</string>
+    <string name="app_label">Serenidad para Android</string>
+    <string name="search_hint">Introduzca una palabra o frase en una película, programa de televisión, o episodio.</string>
+    <string name="menu_settings">Configuración</string>
+    <string name="menu_search">Buscar</string>
+    <string name="title_activity_movie_browser">Cine</string>
+    <string name="title_activity_main">Serenidad para Android</string>
+    <string name="title_activity_tvbrowser_show">Series</string>
+    <string name="title_activity_tvbrowser_show_season">Series Seasons</string>
+    <string name="title_activity_tvbrowser_show_episodes">Series Episodios</string>
+    <string name="video_title">Reproductor de Vídeo</string>
+    <string name="movie_category_prompt">Escoja una categoría</string>
+    <string name="movie_category_prompt2">Género / Colección</string>
+    
+    <string name="category">Categoría:</string>
+    <string name="year">Año</string>
+    <string name="genre">Género</string>
+    <string name="writers">Escritores</string>
+    <string name="directors">Directores</string>
+    <string name="tvshows">Series:</string>
+    <string name="about_title_serenity_for_google_tv">Serenidad para Android</string>
+    <string name="options_main_about">Acerca de</string>
+    <string name="options_main_clear_image_cache">Borrar la caché de imagen</string>
+    <string name="option_clear_the_image_cache_">Borrar la caché de imágenes?</string>
+    <string name="clear">Borrar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="download_manager_download_complete_for_">Descarga completar para </string>
+    <string name="no_libraries_found">No hay películas o series Mostrar Bibliotecas encontrados. Utilice la aplicación web de Plex para añadir algo.</string>
+    <string name="unknown">Desconocido</string>
+    <string name="season_">"Temporada "</string>
+    <string name="episode_">"Episodio "</string>
+    <string name="settings">Configuración</string>
+    <string name="search">Buscar</string>
+    <string name="options">Opciones</string>
+    <string name="no_entries_available_for_category_">No hay entradas disponibles para la categoría.</string>
+    <string name="retrieving_movies">Películas Recuperación</string>
+    <string name="no_shows_found_for_the_category_">"No hay resultados para la categoría Espectáculos: "</string>
+    <string name="_item_s_">" Artículo (s)"</string>
+    <string name="watched_">Miró:</string>
+    <string name="unwatched_">No se ha visto:</string>
+    <string name="retrieving_episodes">Episodios Recuperación</string>
+    <string name="new_folder">Nueva carpeta</string>
+    <string name="new_folder_name">Nuevo nombre de carpeta</string>
+    <string name="toggle_watched_status">Toggle Estado Miró</string>
+    <string name="download_video_to_device">Descargar Video to Device</string>
+    <string name="play_on_tv">Reproducir en la TV</string>
+    <string name="starting_download_of_">"Iniciar descarga de "</string>
+    <string name="chosen_directory_">"Directorio elegido: "</string>
+    <string name="no_videos_found_that_match_the_search_criteria">No se encontraron videos que coinciden con los criterios de búsqueda</string>
+    <string name="video_options">Opciones de vídeo</string>
+    <string name="view_all_episodes">Ver todos los Episodios</string>
+    
+   <string-array name="categoryListNames">
+        <item>Todo</item>
+        <item>El más nuevo</item>
+        <item>On Deck</item>
+        <item>Recientemente se agregó</item>
+        <item>Visto recientemente</item>
+        <item>Desatendido</item>
+    </string-array>
+</resources>
