@@ -189,7 +189,15 @@ public class EpisodeRetrievalIntentService extends
 				List<Part> parts = media.getVideoPart();
 				Part part = parts.get(0);
 
-				setSeasonEpisode(epi, part);
+				if (episode.getSeason() != null) {
+					String season = getString(R.string.season_) + episode.getSeason();
+					epi.setSeason(season);
+				}
+				if (episode.getEpisode() != null) {
+					String episodeNum = getString(R.string.episode_) + episode.getEpisode();
+					epi.setEpisodeNumber(episodeNum);
+				}
+//				setSeasonEpisode(epi, part);
 
 				epi.setAudioCodec(media.getAudioCodec());
 				epi.setVideoCodec(media.getVideoCodec());

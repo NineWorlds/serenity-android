@@ -123,6 +123,12 @@ public class Video extends AbstractPlexObject {
 	@Attribute(name="parentKey", required=false)
 	private String parentKey;
 	
+	@Attribute(name="index", required=false)
+	private String episode;
+	
+	@Attribute(name="parentIndex", required=false)
+	private String season;
+	
 	/**
 	 * 
 	 */
@@ -421,6 +427,22 @@ public class Video extends AbstractPlexObject {
 	
 	public String getParentKey() {
 		return parentKey;
+	}
+
+	public String getEpisode() {
+		return episode;
+	}
+
+	public void setEpisode(String episode) {
+		this.episode = episode;
+	}
+
+	public String getSeason() {
+		return season;
+	}
+
+	public void setSeason(String season) {
+		this.season = season;
 	}
 	
 }

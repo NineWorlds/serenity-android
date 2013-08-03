@@ -86,8 +86,16 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
 		String season = v.getPosterInfo().getSeason();
 		String episode = v.getPosterInfo().getEpisodeNumber();
 
-		if (season != null && episode != null) {
-			epTitle = epTitle + " - " + season + " " + episode;
+		if (season != null || episode != null) {
+			epTitle = epTitle + " - ";
+		}
+		
+		if (season != null) {
+			epTitle = epTitle + season + " ";
+		}
+		
+		if (episode != null) {
+			epTitle = epTitle + episode;
 		}
 
 		title.setText(epTitle);
