@@ -59,5 +59,47 @@
         <item>Vus Récemment</item>
         <item>Non-Vu</item>
     </string-array>
+    
+    <string name="select_the_starting_category_filter_">Sélectionnez le filtre de la catégorie de départ.</string>
+    <string name="categories_summary_preference_description">Les catégories sont utilisées pour sélectionner le filtre de départ lors de la navigation des films et émissions de télévision. La valeur par défaut est Tout.</string>
+    <string name="preferred_filter">Filtre privilégiées</string>
+    <string name="server_settings">Réglages du serveur</string>
+    <string name="server_settings_summary">Une liste des complexes serveurs multimédias sur le réseau. Un serveur préféré est prioritaire.</string>
+    <string name="preferred_ipaddress_summary">Le nom de domaine ou l\'adresse IP de votre serveur multimédia de plex principal. Cela prend priorité sur les serveurs découverts sélectionnés.</string>
+    <string name="preferred_server_address">Preferred Server Address</string>
+    <string name="default_port_summary">Le numéro de port du serveur (généralement 32400).</string>
+    <string name="server_port">Port du serveur</string>
+    <string name="discovered_servers_">Découvert serveurs.</string>
+    <string name="music_library">Bibliothèque de musique</string>
+    <string name="music_library_preference_summary">Experimental Plex soutien de musique de la bibliothèque. Cela fournit un support de lecture très basique pour les bibliothèques de musique et est encore en développement.</string>
+    <string name="enable_plex_music_library_support">Activer Plex soutien de musique de la bibliothèque</string>
+    <string name="music_layout_grid_summary">Présentation de la grille d\'affiche pour la musique. Prend seulement une incidence si le support de la bibliothèque de musique est activé.</string>
+    <string name="music_grid_poster_layout">Musique disposition de l\'utilisateur de la grille</string>
+    <string name="video_library">Vidéothèque</string>
+    <string name="subtitle_automatic_selection_summary">Essayez de sélectionner les sous-titres automatiquement en fonction de la langue préférée.</string>
+    <string name="automatically_select_subtitles_">Sélectionner automatiquement les sous-titres.</string>
+    <string name="subtitle_language_selection_summary">Sélectionnez la langue de sous-titrage doit être choisi au moment de choisir automatiquement les sous-titres.</string>
+    <string name="subtitle_language_preference">Sous-titre Langue Préférence</string>
+    <string name="prefer_poster_layout_for_series_">Préférez disposition de l\'utilisateur pour la série.</string>
+    <string name="series_poster_layout">Mise en affiche de la série</string>
+    <string name="poster_grid_layout_for_movies_">Présentation de la grille d\'affiches pour les films.</string>
+    <string name="movie_grid_poster_layout">Mise poster Grille de film</string>
+    <string name="animations">Animations</string>
+    <string name="fade_in_the_main_menu_background_art_">Fondu dans le menu art de fond principale.</string>
+    <string name="fade_in_main_menu_backround">Fade-In Menu Contexte</string>
+    <string name="movie_fadein_animation_summary">Fade-in fan art de fond pour les films et séries TV.</string>
+    <string name="fade_in_background_fan_art">Fade-In Background Fan Art</string>
+    <string name="emphasize_poster_summary">Mettre l\'accent sur l\'élément sélectionné lors de la navigation dans la vue de détail. Appareils Google TV seulement.</string>
+    <string name="poster_selected_emphasis">Affiche importants sélectionnés</string>
+    <string name="media_player">Lecteur Multimédia</string>
+    <string name="use_external_media_player_">Utilisez un lecteur multimédia externe.</string>
+    <string name="external_player">Lecteur externe</string>
+    <string name="internal_player_osd_summary">Affichage lecteur multimédia interne sur les informations d\'affichage de l\'écran lors du démarrage de la lecture vidéo.</string>
+    <string name="on_screen_display">Affichage à l\'écran</string>
+    <string name="mx_player_resume_summary">Forces MX Lecteur pour pouvoir utiliser Plex dernière position jouée au lieu de c\'est propre. Ce sera toujours forces lire à partir de la position enregistrée de Plex.</string>
+    <string name="force_mx_player_resume_position_">Vigueur MX Lecteur CV Poste.</string>
+    <string name="prefer_plex_media_server_s_aspect_ratio_">Préfère un ratio Plex Media serveur de l\'aspect.</string>
+    <string name="plex_aspect_ratio">Plex Aspect Ratio</string>
+    
 
 </resources>
