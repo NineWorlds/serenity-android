@@ -69,6 +69,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 	public static final String CRLF = "\r\n";
 	public static final int WATCHED_VIEW_ID = 1000;
+	public static final double WATCHED_PERCENT = 0.90;
 	public static Activity context;
 	public Handler subtitleHandler;
 	private Animation shrink;
@@ -147,20 +148,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		infographicsView.removeAllViews();
 		VideoContentInfo mpi = v.getPosterInfo();
 
-		ImageView viewed = new ImageView(context);
-		viewed.setScaleType(ScaleType.FIT_XY);
-		LinearLayout.LayoutParams viewedlp = new LinearLayout.LayoutParams(80,
-				58);
-		viewedlp.setMargins(10, 0, 5, 5);
-		viewed.setLayoutParams(viewedlp);
-		viewed.setId(WATCHED_VIEW_ID);
-
-		if (mpi.getViewCount() > 0) {
-			viewed.setImageResource(R.drawable.watched_small);
-		} else {
-			viewed.setImageResource(R.drawable.unwatched_small);
-		}
-		infographicsView.addView(viewed);
+		watchedStatus(infographicsView, mpi);
 
 		ImageInfographicUtils imageUtilsWide = new ImageInfographicUtils(154,
 				58);
@@ -214,6 +202,35 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			infographicsView.addView(ratingBar);
 		}
 
+	}
+
+	/**
+	 * Sets the watched icon to either watched, part watched, or unwatched.
+	 * @param infographicsView
+	 * @param mpi
+	 */
+	protected void watchedStatus(LinearLayout infographicsView,
+			VideoContentInfo mpi) {
+		ImageView viewed = new ImageView(context);
+		viewed.setScaleType(ScaleType.FIT_XY);
+		LinearLayout.LayoutParams viewedlp = new LinearLayout.LayoutParams(80,
+				58);
+		viewedlp.setMargins(10, 0, 5, 5);
+		viewed.setLayoutParams(viewedlp);
+		viewed.setId(WATCHED_VIEW_ID);
+		
+		if (mpi.getViewCount() > 0) {
+			double percentWatched = mpi.getResumeOffset() / mpi.getDuration();
+			if (mpi.getResumeOffset() != 0 && percentWatched < WATCHED_PERCENT) {
+			    viewed.setImageResource(R.drawable.partwatched);
+			} else {
+				viewed.setImageResource(R.drawable.watched_small);
+			}
+		} else {
+			viewed.setImageResource(R.drawable.unwatched_small);
+		}
+
+		infographicsView.addView(viewed);
 	}
 
 	public void fetchSubtitle(VideoContentInfo mpi) {
