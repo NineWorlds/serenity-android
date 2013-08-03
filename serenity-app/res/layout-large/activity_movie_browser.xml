@@ -283,7 +283,7 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dip"
-        android:background="#AA000000"
+        android:background="#CC000000"
         android:gravity="bottom"
         android:padding="5dp" >
 
