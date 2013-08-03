@@ -21,7 +21,7 @@
     <string name="episode_">Épisode </string>
     <string name="settings">Paramètres</string>
     <string name="search">Chercher</string>
-    <string name="options">Options d\'</string>
+    <string name="options">Options</string>
     <string name="no_entries_available_for_category_">Aucune entrée disponible pour la catégorie.</string>
     <string name="retrieving_movies">Récupération des Films</string>
     <string name="no_shows_found_for_the_category_">Aucune Série dans cette catégorie: </string>
