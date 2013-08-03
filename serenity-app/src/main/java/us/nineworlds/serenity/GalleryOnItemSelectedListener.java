@@ -34,6 +34,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -68,16 +69,16 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 				mainGalleryBackgroundView.setAnimation(fadeIn);
 			}
 			new ImageLoader((Activity)v.getContext(), mainGalleryBackgroundView, background).doInBackground();
+			
+			tv.setTextColor(v.getContext().getResources().getColor(android.R.color.white));
+			tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD_ITALIC);
+			
 
-			tv.setTextSize(tv.getTextSize() + 10);
-			tv.setTypeface(null, Typeface.BOLD);
-			tv.setTextColor(Color.parseColor("#F0F0F0"));
-			tv.setGravity(Gravity.CENTER_VERTICAL);
 			if (preSelected != null) {
-				preSelected.setTextSize(30);
-				preSelected.setTypeface(null, Typeface.NORMAL);
-				preSelected.setGravity(Gravity.CENTER_VERTICAL);
+				preSelected.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+				preSelected.setTextColor(Color.parseColor("#414141"));
 			}
+			
 			preSelected = tv;
 		}
 

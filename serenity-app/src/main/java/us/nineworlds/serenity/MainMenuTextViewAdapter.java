@@ -32,10 +32,13 @@ import us.nineworlds.serenity.R;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.text.TextUtils.TruncateAt;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,14 +126,13 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 			v.setActivityType(menuItem.getType());
 			return v;
 		}
-		
+
 		if ("artist".equals(menuItem.getType())) {
 			v = new MainMenuTextView(myContext, R.drawable.music);
 			v.setLibraryKey(menuItem.getSection());
 			v.setActivityType(menuItem.getType());
 			return v;
 		}
-		
 
 		if ("settings".equals(menuItem.getType())) {
 			v = new MainMenuTextView(myContext, R.drawable.settings);
@@ -138,14 +140,13 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 			v.setActivityType(menuItem.getType());
 			return v;
 		}
-		
+
 		if ("options".equals(menuItem.getType())) {
 			v = new MainMenuTextView(myContext, R.drawable.settings);
 			v.setLibraryKey("0");
 			v.setActivityType(menuItem.getType());
 			return v;
 		}
-		
 
 		if ("search".equals(menuItem.getType())) {
 			v = new MainMenuTextView(myContext, R.drawable.search);
@@ -153,7 +154,6 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 			v.setActivityType(menuItem.getType());
 			return v;
 		}
-		
 
 		return new MainMenuTextView(myContext, R.drawable.serenity_bonsai_logo);
 	}
@@ -166,19 +166,16 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	 */
 	void setDefaults(String title, MainMenuTextView v) {
 		v.setText(title);
-		v.setTextSize(30);
+		v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
+		v.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+		v.setTextColor(Color.parseColor("#414141"));
 		v.setGravity(Gravity.CENTER_VERTICAL);
 		v.setLines(1);
 		v.setHorizontallyScrolling(true);
 		v.setEllipsize(TruncateAt.MARQUEE);
-		if (title.length() < 10) {
-			v.setLayoutParams(new Gallery.LayoutParams(
-					android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-					android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-		} else {
-			v.setLayoutParams(new Gallery.LayoutParams(250,
-					android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-		}
+		v.setLayoutParams(new Gallery.LayoutParams(
+				android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+				android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 	}
 
 	private static class MenuItemHandler extends Handler {
@@ -189,9 +186,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 				menuItems = (ArrayList<MenuItem>) msg.obj;
 			}
 			if (menuItems.size() == 1) {
-				Toast.makeText(
-						myContext,
-						R.string.no_libraries_found,
+				Toast.makeText(myContext, R.string.no_libraries_found,
 						Toast.LENGTH_LONG).show();
 			}
 			notifyAdapter.notifyDataSetChanged();
