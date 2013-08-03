@@ -61,4 +61,46 @@
         <item>Visto recientemente</item>
         <item>Desatendido</item>
     </string-array>
+    
+    <string name="select_the_starting_category_filter_">Seleccione el filtro de categoría básica.</string>
+    <string name="categories_summary_preference_description">Las categorías se utilizan para seleccionar el filtro de partida al navegar por las películas y programas de televisión. El valor predeterminado es Todo.</string>
+    <string name="preferred_filter">Filtrar preferente</string>
+    <string name="server_settings">Configuración del servidor</string>
+    <string name="server_settings_summary">Una lista de los servidores de medios disponibles complejas en la red. Un servidor preferido tiene prioridad.</string>
+    <string name="preferred_ipaddress_summary">El nombre de dominio o dirección IP del servidor principal de los medios de comunicación compleja. Esto toma preferencia sobre cualquier servidores detectados seleccionados.</string>
+    <string name="preferred_server_address">Dirección del servidor preferente</string>
+    <string name="default_port_summary">El número de puerto del servidor (normalmente 32400).</string>
+    <string name="server_port">Puerto del servidor</string>
+    <string name="discovered_servers_">Servidores detectados.</string>
+    <string name="music_library">Biblioteca de música</string>
+    <string name="music_library_preference_summary">Plex Experimental Music Library Support. Esto proporciona soporte para reproducción muy básico para las bibliotecas de música y está todavía en desarrollo.</string>
+    <string name="enable_plex_music_library_support">Habilitar Plex Music Library Support</string>
+    <string name="music_layout_grid_summary">Poster disposición de la rejilla para la música. Sólo tiene efecto si el apoyo biblioteca de música se activa.</string>
+    <string name="music_grid_poster_layout">Rejilla Music Poster Layout</string>
+    <string name="video_library">Videoteca</string>
+    <string name="subtitle_automatic_selection_summary">Trate de seleccionar los subtítulos automáticamente basándose en el idioma preferido.</string>
+    <string name="automatically_select_subtitles_">Seleccionar automáticamente subtítulos.</string>
+    <string name="subtitle_language_selection_summary">Seleccione el idioma de los subtítulos que se elegido al elegir subtítulos automáticamente.</string>
+    <string name="subtitle_language_preference">Subtítulo Preferencias de idioma</string>
+    <string name="prefer_poster_layout_for_series_">Prefiero Poster Diseño de la serie.</string>
+    <string name="series_poster_layout">Poster Layout Series</string>
+    <string name="poster_grid_layout_for_movies_">Poster diseño de cuadrícula para películas.</string>
+    <string name="movie_grid_poster_layout">Rejilla Movie Poster Layout</string>
+    <string name="animations">Animaciones</string>
+    <string name="fade_in_the_main_menu_background_art_">Fundido en el menú principal fondo de arte.</string>
+    <string name="fade_in_main_menu_backround">Fundido de entrada principal fondo de menú</string>
+    <string name="movie_fadein_animation_summary">Fundido en fan art de fondo para películas y episodios de televisión.</string>
+    <string name="fade_in_background_fan_art">Fundido de entrada Fan Art</string>
+    <string name="emphasize_poster_summary">Hacer hincapié en el elemento seleccionado cuando se navega a través de la vista de detalle. Dispositivos de Google TV solamente.</string>
+    <string name="poster_selected_emphasis">Poster énfasis Selected</string>
+    <string name="media_player">Media Player</string>
+    <string name="use_external_media_player_">Utilice el reproductor de medios externos.</string>
+    <string name="external_player">Reproductor externo</string>
+    <string name="internal_player_osd_summary">Mostrar reproductor multimedia interno sobre la información pantalla durante el inicio de la reproducción de vídeo.</string>
+    <string name="on_screen_display">On Screen Display</string>
+    <string name="mx_player_resume_summary">Fuerzas MX Reproductor de usar Plex último cargo desempeñado en lugar de que\'s propio. Esto siempre fuerzas reproducir a partir de la posición registrada Plex\'s.</string>
+    <string name="force_mx_player_resume_position_">Fuerza MX Reproductor Reanudar Position.</string>
+    <string name="prefer_plex_media_server_s_aspect_ratio_">Prefiero relación de aspecto de Plex Media Server\'s.</string>
+    <string name="plex_aspect_ratio">Plex Relación de aspecto</string>
+   
 </resources>

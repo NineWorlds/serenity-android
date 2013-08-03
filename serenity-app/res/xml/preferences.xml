@@ -1,39 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <PreferenceCategory android:title="Server Settings">
-        <ListPreference android:summary="A list of available plex media servers on the network. A prefered server takes priority." android:title="Discovered Servers."  android:key="discoveredServer" android:defaultValue=""/>
-        <EditTextPreference android:summary="The domain name or IP Address for your main plex media server. This takes preference over any Discovered Servers selected." android:title="Preferred Server Address" android:key="server" android:defaultValue=""/>
-        <EditTextPreference android:summary="The port number for the server (usually 32400)." android:title="Server Port" android:key="serverport" android:defaultValue="32400"/>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="Preferred Filter">
+
+    <PreferenceCategory android:title="@string/server_settings" >
         <ListPreference
-            android:title="Select the starting category filter."
-            android:summary="Categories are used to select the starting filter when browsing movies and tv shows. The default is All."
-            android:key="serenity_category_filter"
+            android:defaultValue=""
+            android:key="discoveredServer"
+            android:summary="@string/server_settings_summary"
+            android:title="@string/discovered_servers_" />
+
+        <EditTextPreference
+            android:defaultValue=""
+            android:key="server"
+            android:summary="@string/preferred_ipaddress_summary"
+            android:title="@string/preferred_server_address" />
+        <EditTextPreference
+            android:defaultValue="32400"
+            android:key="serverport"
+            android:summary="@string/default_port_summary"
+            android:title="@string/server_port" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preferred_filter" >
+        <ListPreference
             android:defaultValue="all"
             android:entries="@array/categoryListNames"
-            android:entryValues="@array/categoryListValues" />        
+            android:entryValues="@array/categoryListValues"
+            android:key="serenity_category_filter"
+            android:summary="@string/categories_summary_preference_description"
+            android:title="@string/select_the_starting_category_filter_" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Music Library">
-        <CheckBoxPreference android:summary="Experimental Plex Music Library Support.  This provides very basic playback support for music libraries and is still under development." android:title="Enable Plex Music Library Support"  android:key="plex_music_library"/>
-        <CheckBoxPreference android:summary="Poster grid layout for music. Only takes affect if music library support is enabled." android:title="Music Grid Poster Layout" android:key="music_layout_grid"/>
+    <PreferenceCategory android:title="@string/music_library" >
+        <CheckBoxPreference
+            android:key="plex_music_library"
+            android:summary="@string/music_library_preference_summary"
+            android:title="@string/enable_plex_music_library_support" />
+        <CheckBoxPreference
+            android:key="music_layout_grid"
+            android:summary="@string/music_layout_grid_summary"
+            android:title="@string/music_grid_poster_layout" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Video Library" >
-        <CheckBoxPreference android:summary="Try and select the subtitles automatically based on preferred language." android:title="Automatically select subtitles." android:key="automatic_subtitle_selection"/>
-        <ListPreference android:title="Subtitle Language Preference" android:summary="Select the subtitle language to be choosen when choosing subtitles automatically." android:key="preferred_subtitle_language"/>
-        <CheckBoxPreference android:summary="Prefer Poster Layout for Series (TV Shows)." android:title="Series Poster Layout" android:key="series_layout_posters"/>
-        <CheckBoxPreference android:summary="Poster grid layout for movies." android:title="Movie Grid Poster Layout" android:key="movie_layout_grid"/>
+    <PreferenceCategory android:title="@string/video_library" >
+        <CheckBoxPreference
+            android:key="automatic_subtitle_selection"
+            android:summary="@string/subtitle_automatic_selection_summary"
+            android:title="@string/automatically_select_subtitles_" />
+
+        <ListPreference
+            android:key="preferred_subtitle_language"
+            android:summary="@string/subtitle_language_selection_summary"
+            android:title="@string/subtitle_language_preference" />
+
+        <CheckBoxPreference
+            android:key="series_layout_posters"
+            android:summary="@string/prefer_poster_layout_for_series_"
+            android:title="@string/series_poster_layout" />
+        <CheckBoxPreference
+            android:key="movie_layout_grid"
+            android:summary="@string/poster_grid_layout_for_movies_"
+            android:title="@string/movie_grid_poster_layout" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Animations">
-        <CheckBoxPreference android:summary="Fade-in the main menu background art." android:title="Fade-In Main Menu Backround" android:key="animation_background_mainmenu_fadein" android:defaultValue="true" />
-        <CheckBoxPreference android:summary="Fade-in background fan art for movies and tv episodes." android:title="Fade-In Background Fan Art" android:key="animation_background_fadein"/>
-        <CheckBoxPreference android:summary="Emphasize the selected item when browsing through the detail view. Google TV devices only." android:title="Poster Selected Emphasis" android:key="animation_shrink_posters"
-            />
+    <PreferenceCategory android:title="@string/animations" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="animation_background_mainmenu_fadein"
+            android:summary="@string/fade_in_the_main_menu_background_art_"
+            android:title="@string/fade_in_main_menu_backround" />
+        <CheckBoxPreference
+            android:key="animation_background_fadein"
+            android:summary="@string/movie_fadein_animation_summary"
+            android:title="@string/fade_in_background_fan_art" />
+        <CheckBoxPreference
+            android:key="animation_shrink_posters"
+            android:summary="@string/emphasize_poster_summary"
+            android:title="@string/poster_selected_emphasis" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Media Player">
-        <CheckBoxPreference android:summary="Use external media player." android:title="External Player" android:key="external_player"/>
-        <CheckBoxPreference android:summary="Display internal media player on screen display information on startup of video playback." android:title="On Screen Display" android:key="internal_player_osd" android:defaultValue="true"/>
-        <CheckBoxPreference android:title="Force MX Player Resume Position." android:summary="Forces MX Player to  use Plex last played position instead of it's own.  This will always forces play back to start from Plex's recorded position." android:key="mxplayer_plex_offset"/>
-        <CheckBoxPreference android:summary="Prefer plex media server's aspect ratio." android:title="Plex Aspect Ratio" android:key="plex_aspect_ratio"/>
+    <PreferenceCategory android:title="@string/media_player" >
+        <CheckBoxPreference
+            android:key="external_player"
+            android:summary="@string/use_external_media_player_"
+            android:title="@string/external_player" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="internal_player_osd"
+            android:summary="@string/internal_player_osd_summary"
+            android:title="@string/on_screen_display" />
+        <CheckBoxPreference
+            android:key="mxplayer_plex_offset"
+            android:summary="@string/mx_player_resume_summary"
+            android:title="@string/force_mx_player_resume_position_" />
+        <CheckBoxPreference
+            android:key="plex_aspect_ratio"
+            android:summary="@string/prefer_plex_media_server_s_aspect_ratio_"
+            android:title="@string/plex_aspect_ratio" />
     </PreferenceCategory>
+
 </PreferenceScreen>

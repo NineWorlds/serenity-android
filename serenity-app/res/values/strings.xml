@@ -70,6 +70,46 @@
         <item>recentlyAdded</item>
         <item>recentlyViewed</item>
         <item>unwatched</item>
-    </string-array>    
+    </string-array>
+        <string name="select_the_starting_category_filter_">Select the starting category filter.</string>
+        <string name="categories_summary_preference_description">Categories are used to select the starting filter when browsing movies and tv shows. The default is All.</string>
+        <string name="preferred_filter">Preferred Filter</string>
+        <string name="server_settings">Server Settings</string>
+        <string name="server_settings_summary">A list of available plex media servers on the network. A preferred server takes priority.</string>
+        <string name="preferred_ipaddress_summary">The domain name or IP Address for your main plex media server. This takes preference over any Discovered Servers selected.</string>
+        <string name="preferred_server_address">Preferred Server Address</string>
+        <string name="default_port_summary">The port number for the server (usually 32400).</string>
+        <string name="server_port">Server Port</string>
+        <string name="discovered_servers_">Discovered Servers.</string>
+        <string name="music_library">Music Library</string>
+        <string name="music_library_preference_summary">Experimental Plex Music Library Support.  This provides very basic playback support for music libraries and is still under development.</string>
+        <string name="enable_plex_music_library_support">Enable Plex Music Library Support</string>
+        <string name="music_layout_grid_summary">Poster grid layout for music. Only takes affect if music library support is enabled.</string>
+        <string name="music_grid_poster_layout">Music Grid Poster Layout</string>
+        <string name="video_library">Video Library</string>
+        <string name="subtitle_automatic_selection_summary">Try and select the subtitles automatically based on preferred language.</string>
+        <string name="automatically_select_subtitles_">Automatically select subtitles.</string>
+        <string name="subtitle_language_selection_summary">Select the subtitle language to be choosen when choosing subtitles automatically.</string>
+        <string name="subtitle_language_preference">Subtitle Language Preference</string>
+        <string name="prefer_poster_layout_for_series_">Prefer Poster Layout for Series.</string>
+        <string name="series_poster_layout">Series Poster Layout</string>
+        <string name="poster_grid_layout_for_movies_">Poster grid layout for movies.</string>
+        <string name="movie_grid_poster_layout">Movie Grid Poster Layout</string>
+        <string name="animations">Animations</string>
+        <string name="fade_in_the_main_menu_background_art_">Fade-in the main menu background art.</string>
+        <string name="fade_in_main_menu_backround">Fade-In Main Menu Backround</string>
+        <string name="movie_fadein_animation_summary">Fade-in background fan art for movies and tv episodes.</string>
+        <string name="fade_in_background_fan_art">Fade-In Background Fan Art</string>
+        <string name="emphasize_poster_summary">Emphasize the selected item when browsing through the detail view. Google TV devices only.</string>
+        <string name="poster_selected_emphasis">Poster Selected Emphasis</string>
+        <string name="media_player">Media Player</string>
+        <string name="use_external_media_player_">Use external media player.</string>
+        <string name="external_player">External Player</string>
+        <string name="internal_player_osd_summary">Display internal media player on screen display information on startup of video playback.</string>
+        <string name="on_screen_display">On Screen Display</string>
+        <string name="mx_player_resume_summary">Forces MX Player to  use Plex last played position instead of it\'s own.  This will always forces play back to start from Plex\'s recorded position.</string>
+        <string name="force_mx_player_resume_position_">Force MX Player Resume Position.</string>
+        <string name="prefer_plex_media_server_s_aspect_ratio_">Prefer plex media server\'s aspect ratio.</string>
+        <string name="plex_aspect_ratio">Plex Aspect Ratio</string>    
 
 </resources>
