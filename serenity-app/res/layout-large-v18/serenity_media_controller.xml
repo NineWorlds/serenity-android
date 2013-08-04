@@ -80,10 +80,12 @@
         <SeekBar
             android:id="@+id/mediacontroller_seekbar"
             android:layout_width="500dp"
-            android:layout_height="15dp"
+            android:layout_height="30dp"
             android:focusable="true"
             android:max="1000"
             android:minWidth="500dp"
+            android:progressDrawable="@drawable/scrubber_progress_holo"
+            android:thumb="@drawable/seekerbar_selector"
             android:nextFocusDown="@+id/mediacontroller_play_pause" />
 
         <TextView

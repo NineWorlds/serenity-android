@@ -76,13 +76,16 @@
         <SeekBar
             android:id="@+id/mediacontroller_seekbar"
             android:layout_width="250dp"
-            android:layout_height="15dp"
+            android:layout_height="30dp"
             android:focusable="true"
             android:max="1000"
             android:minWidth="250dp"
             android:nextFocusUp="@+id/audioTracksListview"
             android:nextFocusDown="@+id/audioPause"
-            android:nextFocusRight="@+id/audioTracksListview" />
+            android:nextFocusRight="@+id/audioTracksListview"
+            android:progressDrawable="@drawable/scrubber_progress_holo"
+            android:thumb="@drawable/seekerbar_selector"
+             />
 
         <TextView
             android:id="@+id/mediacontroller_time_total"
