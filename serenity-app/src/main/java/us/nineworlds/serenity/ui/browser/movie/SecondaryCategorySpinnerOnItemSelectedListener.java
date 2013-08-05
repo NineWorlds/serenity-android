@@ -103,6 +103,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 			posterGallery.setHorizontalFadingEdgeEnabled(true);
 			posterGallery.setFocusableInTouchMode(false);
 			posterGallery.setDrawingCacheEnabled(true);
+			posterGallery.setUnselectedAlpha(0.75f);
 
 		} else {
 			TwoWayGridView gridView = (TwoWayGridView) c

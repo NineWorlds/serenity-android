@@ -167,6 +167,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 			posterGallery.setHorizontalFadingEdgeEnabled(true);
 			posterGallery.setFocusableInTouchMode(false);
 			posterGallery.setDrawingCacheEnabled(true);
+			posterGallery.setUnselectedAlpha(0.75f);
 		} else {
 			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.movieGridView);
 			gridView.setAdapter(adapter);

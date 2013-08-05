@@ -108,6 +108,7 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 		posterGallery.setFocusableInTouchMode(false);
 		posterGallery.setDrawingCacheEnabled(true);
 		posterGallery.setHorizontalFadingEdgeEnabled(true);
+		posterGallery.setUnselectedAlpha(0.75f);
 	}
 
 	@Override
