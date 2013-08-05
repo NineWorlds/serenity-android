@@ -72,6 +72,12 @@
             android:key="animation_shrink_posters"
             android:summary="@string/emphasize_poster_summary"
             android:title="@string/poster_selected_emphasis" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="animation_gallery_scrolling"
+            android:summary="@string/enable_gallery_scrolling"
+            android:title="@string/enable_gallery_scrolling_animation" />
+        
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/media_player" >
         <CheckBoxPreference

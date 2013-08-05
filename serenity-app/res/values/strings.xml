@@ -110,5 +110,7 @@
     <string name="force_mx_player_resume_position_">Force MX Player Resume Position.</string>
     <string name="prefer_plex_media_server_s_aspect_ratio_">Prefer plex media server\'s aspect ratio.</string>
     <string name="plex_aspect_ratio">Plex Aspect Ratio</string>
+    <string name="enable_gallery_scrolling">Enables whether scrolling animation occurs in gallery views for movies and episodes.</string>
+    <string name="enable_gallery_scrolling_animation">Enable Gallery Scrolling Animation</string>
 
 </resources>

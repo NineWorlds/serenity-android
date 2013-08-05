@@ -35,6 +35,8 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -51,6 +53,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 
 	private String selected;
 	private String key;
+	private SharedPreferences prefs;
 
 	public SecondaryCategorySpinnerOnItemSelectedListener(
 			String defaultSelection, String key) {
@@ -70,6 +73,9 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 
 		selected = item.getCategory();
 		Activity c = (Activity) view.getContext();
+		if (prefs == null) {
+			prefs = PreferenceManager.getDefaultSharedPreferences(c);
+		}
 
 		View bgLayout = c.findViewById(R.id.movieBrowserBackgroundLayout);
 		SerenityGallery posterGallery = (SerenityGallery) c
@@ -78,6 +84,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 				item.getParentCategory() + "/" + item.getCategory());
 
 		if (!MovieBrowserActivity.IS_GRID_VIEW) {
+			boolean scrollingAnimation = prefs.getBoolean("animation_gallery_scrolling", true);
 			posterGallery.setAdapter(adapter);
 			posterGallery
 					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(c));
@@ -85,7 +92,11 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 					.setOnItemClickListener(new GalleryVideoOnItemClickListener());
 			posterGallery
 					.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
-			posterGallery.setAnimationDuration(220);
+			if (scrollingAnimation){
+				posterGallery.setAnimationDuration(220);
+			} else {
+				posterGallery.setAnimationDuration(1);
+			}
 			posterGallery.setSpacing(25);
 			posterGallery.setAnimationCacheEnabled(true);
 			posterGallery.setCallbackDuringFling(false);

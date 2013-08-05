@@ -31,7 +31,9 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 import us.nineworlds.serenity.R;
 import com.google.analytics.tracking.android.EasyTracker;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 
@@ -42,6 +44,7 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 	private View bgLayout;
 	private View metaData;
 	private boolean restarted_state = false;
+	private SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 		posterGallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
 		metaData = findViewById(R.id.metaDataRow);
 		metaData.setVisibility(View.GONE);
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 	}
 
@@ -80,6 +84,7 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 	 * Populate the episode browser with data
 	 */
 	protected void setupEpisodeBrowser() {
+		boolean scrollingAnimation = prefs.getBoolean("animation_gallery_scrolling", true);
 		posterGallery
 				.setAdapter(new EpisodePosterImageGalleryAdapter(this, key));
 		posterGallery
@@ -93,7 +98,11 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 			posterGallery
 			.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
 		}
-		posterGallery.setAnimationDuration(220);
+		if (scrollingAnimation) {
+			posterGallery.setAnimationDuration(220);
+		} else {
+			posterGallery.setAnimationDuration(1);
+		}
 		posterGallery.setSpacing(25);
 		posterGallery.setCallbackDuringFling(false);
 		posterGallery.setFocusableInTouchMode(false);

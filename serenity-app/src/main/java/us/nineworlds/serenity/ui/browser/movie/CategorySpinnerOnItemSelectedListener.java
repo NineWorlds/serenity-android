@@ -65,6 +65,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	private static Activity context;
 	private static String category;
 	private Handler secondaryCategoryHandler;
+	private SharedPreferences prefs;
 
 	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
 			String ckey) {
@@ -76,7 +77,10 @@ public class CategorySpinnerOnItemSelectedListener implements
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
-		context = (Activity) view.getContext();		
+		context = (Activity) view.getContext();
+		if (prefs == null) {
+			prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		}
 		
 		CategoryInfo item = (CategoryInfo) viewAdapter
 				.getItemAtPosition(position);
@@ -85,7 +89,6 @@ public class CategorySpinnerOnItemSelectedListener implements
 			View bgLayout = context
 					.findViewById(R.id.movieBrowserBackgroundLayout);
 			
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 			String filter = prefs.getString("serenity_category_filter", "all");
 			
 			int count = viewAdapter.getCount();
@@ -145,6 +148,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 		if (!MovieBrowserActivity.IS_GRID_VIEW) {
 			SerenityGallery posterGallery = (SerenityGallery) context
 					.findViewById(R.id.moviePosterGallery);
+			boolean scrollingAnimation = prefs.getBoolean("animation_gallery_scrolling", true);
 			posterGallery.setAdapter(adapter);
 			posterGallery
 					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(context));
@@ -153,7 +157,11 @@ public class CategorySpinnerOnItemSelectedListener implements
 			posterGallery
 					.setOnItemLongClickListener(onLongClick);
 			posterGallery.setSpacing(25);
-			posterGallery.setAnimationDuration(220);
+			if (scrollingAnimation) {
+				posterGallery.setAnimationDuration(220);
+			} else {
+				posterGallery.setAnimationDuration(1);
+			}
 			posterGallery.setAnimationCacheEnabled(true);
 			posterGallery.setCallbackDuringFling(false);
 			posterGallery.setHorizontalFadingEdgeEnabled(true);
