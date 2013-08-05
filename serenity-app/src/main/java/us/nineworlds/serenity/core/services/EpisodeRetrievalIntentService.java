@@ -192,7 +192,11 @@ public class EpisodeRetrievalIntentService extends
 				if (episode.getSeason() != null) {
 					String season = getString(R.string.season_) + episode.getSeason();
 					epi.setSeason(season);
+				} else if (mc.getParentIndex() != null) {
+					String season = getString(R.string.season_) + mc.getParentIndex();
+					epi.setSeason(season);
 				}
+				
 				if (episode.getEpisode() != null) {
 					String episodeNum = getString(R.string.episode_) + episode.getEpisode();
 					epi.setEpisodeNumber(episodeNum);

@@ -79,6 +79,9 @@ public class MediaContainer {
 	@Attribute(name="thumb",required=false)
 	private String parentPosterURL;
 	
+	@Attribute(name="parentIndex",required=false)
+	private String parentIndex;
+	
 
 	@ElementList(inline=true,required=false)
 	private List<Directory> directories;
@@ -219,6 +222,25 @@ public class MediaContainer {
 
 	public void setTracks(List<Track> tracks) {
 		this.tracks = tracks;
+	}
+
+	/**
+	 * Contains information like Season information for episodes
+	 * This needs to be checked if the video elements parentIndex
+	 * doesn't exist.
+	 * 
+	 * @return
+	 */
+	public String getParentIndex() {
+		return parentIndex;
+	}
+
+	/**
+	 * Set the parentIndex (i.e. Season number).
+	 * @param parentIndex
+	 */
+	public void setParentIndex(String parentIndex) {
+		this.parentIndex = parentIndex;
 	}
 	
 	

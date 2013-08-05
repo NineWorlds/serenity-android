@@ -18,14 +18,14 @@
     <string name="option_clear_the_image_cache_">Voulez-vous vider le Cache des images?</string>
     <string name="download_manager_download_complete_for_">"Téléchargement complet pour "</string>
     <string name="no_libraries_found">Pas de Films ni de Séries trouvées. Utiliser l\'application Web Plex pour en ajouter.</string>
-    <string name="episode_">Épisode </string>
+    <string name="episode_">"Épisode "</string>
     <string name="settings">Paramètres</string>
     <string name="search">Chercher</string>
     <string name="options">Options</string>
     <string name="no_entries_available_for_category_">Aucune entrée disponible pour la catégorie.</string>
     <string name="retrieving_movies">Récupération des Films</string>
-    <string name="no_shows_found_for_the_category_">Aucune Série dans cette catégorie: </string>
-    <string name="_item_s_"> Titre(s)</string>
+    <string name="no_shows_found_for_the_category_">"Aucune Série dans cette catégorie: "</string>
+    <string name="_item_s_">" Titre(s)"</string>
     <string name="watched_">Vu:</string>
     <string name="unwatched_">Non-vu:</string>
     <string name="retrieving_episodes">Récupération des Épisodes</string>
@@ -34,7 +34,7 @@
     <string name="toggle_watched_status">Basculer l\'état VU</string>
     <string name="download_video_to_device">Télécharge la vidéo sur l\'appareil</string>
     <string name="play_on_tv">Passer à la TV</string>
-    <string name="starting_download_of_">Lancer le téléchargement de </string>
+    <string name="starting_download_of_">"Lancer le téléchargement de "</string>
     <string name="chosen_directory_">Répertoire sélectionné: </string>
     <string name="no_videos_found_that_match_the_search_criteria">Aucune vidéo ne correspond aux critères de recherche</string>
     <string name="video_options">Options de la Vidéo</string>
@@ -48,7 +48,7 @@
     <string name="tvshows">Séries TV:</string>
     <string name="cancel">Annuler</string>
     <string name="unknown">Inconnu</string>
-    <string name="season_">Saison </string>
+    <string name="season_">"Saison "</string>
     <string name="button_ok">OK</string>
     <string name="clear">Nettoie</string>
 
