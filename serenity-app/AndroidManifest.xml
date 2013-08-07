@@ -140,8 +140,8 @@
         <service android:name=".core.services.ShowSeasonRetrievalIntentService"/>
         <service android:name=".core.services.TVShowCategoryRetrievalIntentService"/>
         <service android:name=".core.services.MovieSearchIntentService"/>    
-        <service android:name="org.teleal.cling.android.AndroidUpnpServiceImpl" tools:ignore="MissingRegistered"/>
         <service android:name="com.castillo.dd.DownloadService" tools:ignore="MissingRegistered"/>
+        <service android:name=".core.services.GDMService" tools:ignore="MissingRegistered"/>
         
         
         

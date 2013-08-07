@@ -25,13 +25,11 @@ package us.nineworlds.serenity;
 
 import java.util.List;
 
-import org.teleal.cling.android.AndroidUpnpService;
-import org.teleal.cling.android.AndroidUpnpServiceImpl;
-
 import us.nineworlds.serenity.core.ServerConfig;
-import us.nineworlds.serenity.core.services.DLNAServiceConnection;
+import us.nineworlds.serenity.core.model.Server;
+import us.nineworlds.serenity.core.model.impl.GDMServer;
+import us.nineworlds.serenity.core.services.GDMService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
-import us.nineworlds.serenity.ui.listeners.BrowseRegistryListener;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,12 +41,15 @@ import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -77,11 +78,6 @@ public class MainActivity extends SerenityActivity {
 	public final int ABOUT = 1;
 	public final int CLEAR_CACHE = 2;
 	public final int TUTORIAL = 3;
-
-	private AndroidUpnpService upnpService;
-	private BrowseRegistryListener registryListener = new BrowseRegistryListener();
-	private ServiceConnection serviceConnection = new DLNAServiceConnection(
-			upnpService, registryListener);
 
 	private static int downloadIndex;
 	private static Context context;
@@ -116,7 +112,7 @@ public class MainActivity extends SerenityActivity {
 
 		setContentView(R.layout.activity_plex_app_main);
 		mainGalleryBackgroundView = findViewById(R.id.mainGalleryBackground);
-		
+
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		if (preferences != null) {
@@ -134,10 +130,6 @@ public class MainActivity extends SerenityActivity {
 			editor.putBoolean("external_player", true);
 			editor.commit();
 		}
-
-		getApplicationContext().bindService(
-				new Intent(this, AndroidUpnpServiceImpl.class),
-				serviceConnection, Context.BIND_AUTO_CREATE);
 
 		getApplicationContext().bindService(
 				new Intent(this, DownloadService.class), downloadService,
@@ -173,7 +165,8 @@ public class MainActivity extends SerenityActivity {
 			about.show();
 			break;
 		case TUTORIAL:
-			Intent youTubei = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=_yKc8ymXerg"));
+			Intent youTubei = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("http://www.youtube.com/watch?v=_yKc8ymXerg"));
 			startActivity(youTubei);
 			break;
 		default:
@@ -225,6 +218,15 @@ public class MainActivity extends SerenityActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		IntentFilter filters = new IntentFilter();
+		filters.addAction(GDMService.MSG_RECEIVED);
+		filters.addAction(GDMService.SOCKET_CLOSED);
+		LocalBroadcastManager.getInstance(this).registerReceiver(GDMReceiver,
+				filters);
+
+		// Start the auto-configuration service
+		Intent GDMService = new Intent(this, GDMService.class);
+		startService(GDMService);
 	}
 
 	@Override
@@ -253,14 +255,8 @@ public class MainActivity extends SerenityActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		// Make sure we release the service otherwise it will keep
-		// checking for items.
-		if (upnpService != null) {
-			upnpService.getRegistry().removeListener(registryListener);
-		}
 		mHandler.removeMessages(SerenityApplication.PROGRESS);
 
-		getApplicationContext().unbindService(serviceConnection);
 		getApplicationContext().unbindService(downloadService);
 	}
 
@@ -276,7 +272,8 @@ public class MainActivity extends SerenityActivity {
 	}
 
 	private void setupGallery() {
-		mainGallery.setAdapter(new MainMenuTextViewAdapter(this, mainGalleryBackgroundView));
+		mainGallery.setAdapter(new MainMenuTextViewAdapter(this,
+				mainGalleryBackgroundView));
 		mainGallery
 				.setOnItemSelectedListener(new GalleryOnItemSelectedListener(
 						mainGalleryBackgroundView));
@@ -363,5 +360,34 @@ public class MainActivity extends SerenityActivity {
 	}
 
 	protected Handler mHandler = new DownloadHandler();
+
+	private BroadcastReceiver GDMReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+
+			if (intent.getAction().equals(GDMService.MSG_RECEIVED)) {
+				String message = intent.getStringExtra("data").trim();
+				String ipAddress = intent.getStringExtra("ipaddress").substring(1);
+				Server server = new GDMServer();
+				
+				int namePos = message.indexOf("Name: ");
+				namePos += 6;
+				int crPos = message.indexOf("\r", namePos);
+				String serverName = message.substring(namePos, crPos);
+				
+				server.setServerName(serverName);
+				server.setIPAddress(ipAddress);
+				if (!SerenityApplication.getPlexMediaServers().containsKey(serverName)) {
+					SerenityApplication.getPlexMediaServers().put(serverName,
+							server);
+					Log.i(getClass().getName(), "Adding " + serverName);
+				} else {
+					Log.i(getClass().getName(), serverName + " already added.");
+				}
+			} else if (intent.getAction().equals(GDMService.SOCKET_CLOSED)) {
+				Log.i("GDMService", "Finished Searching");
+			}
+		}
+	};
 
 }

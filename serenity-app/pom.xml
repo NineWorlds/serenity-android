@@ -28,11 +28,6 @@
          <version>2.0</version>
       </dependency>
       <dependency>
-         <groupId>org.teleal.cling</groupId>
-         <artifactId>cling-core</artifactId>
-         <version>1.0.5</version>
-      </dependency>
-      <dependency>
          <groupId>com.integralblue</groupId>
          <artifactId>httpresponsecache</artifactId>
          <version>1.3</version>

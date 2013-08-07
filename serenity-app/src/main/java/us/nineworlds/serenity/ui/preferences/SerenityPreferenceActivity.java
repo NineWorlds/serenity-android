@@ -23,20 +23,17 @@
 
 package us.nineworlds.serenity.ui.preferences;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.teleal.cling.model.meta.Device;
-import org.teleal.cling.model.meta.RemoteDevice;
-
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.SerenityApplication;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.Server;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
@@ -91,7 +88,7 @@ public class SerenityPreferenceActivity extends PreferenceActivity {
 	 */
 	protected void populateAvailablePlexMediaServers() {
 		ListPreference discoveredServers = (ListPreference) findPreference("discoveredServer");
-		ConcurrentHashMap<String, Device> plexMediaServers = SerenityApplication
+		ConcurrentHashMap<String, Server> plexMediaServers = SerenityApplication
 				.getPlexMediaServers();
 		if (plexMediaServers.isEmpty()) {
 			discoveredServers.setEnabled(false);
@@ -106,18 +103,13 @@ public class SerenityPreferenceActivity extends PreferenceActivity {
 		discoveredServers.setEntries(entries);
 
 		ArrayList<String> ipAddresses = new ArrayList<String>();
-		Iterator<Map.Entry<String, Device>> entIt = plexMediaServers.entrySet()
+		Iterator<Map.Entry<String, Server>> entIt = plexMediaServers.entrySet()
 				.iterator();
 		while (entIt.hasNext()) {
-			Map.Entry<String, Device> servers = entIt
+			Map.Entry<String, Server> servers = entIt
 					.next();
-			Device device = servers.getValue();
-			if (device instanceof RemoteDevice) {
-				RemoteDevice plexServer = (RemoteDevice) device;
-				URL serverURL = plexServer.getIdentity().getDescriptorURL();
-				String serverIPAddress = serverURL.getHost();
-				ipAddresses.add(serverIPAddress);
-			}
+			Server device = servers.getValue();
+			ipAddresses.add(device.getIPAddress());
 		}
 		if (!ipAddresses.isEmpty()) {
 			ipAddresses.toArray(values);

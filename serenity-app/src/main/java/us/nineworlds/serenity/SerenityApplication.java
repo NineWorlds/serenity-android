@@ -29,11 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.teleal.cling.model.meta.Device;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.core.ServerConfig;
+import us.nineworlds.serenity.core.model.Server;
 
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -62,7 +61,7 @@ public class SerenityApplication extends Application {
 	private static final String COM_GOOGLE_ANDROID_TV = "com.google.android.tv";
 	private static final String HTTPCACHE = "httpcache";
 	protected static PlexappFactory plexFactory;
-	private static ConcurrentHashMap<String, Device> plexmediaServers = new ConcurrentHashMap<String, Device>();
+	private static ConcurrentHashMap<String, Server> plexmediaServers = new ConcurrentHashMap<String, Server>();
 	private static ImageLoader imageLoader;
 	public static final int PROGRESS = 0xDEADBEEF;
 
@@ -198,7 +197,7 @@ public class SerenityApplication extends Application {
 		return pm.hasSystemFeature(COM_GOOGLE_ANDROID_TV);
 	}
 
-	public static ConcurrentHashMap<String, Device> getPlexMediaServers() {
+	public static ConcurrentHashMap<String, Server> getPlexMediaServers() {
 		return plexmediaServers;
 	}
 
