@@ -4,12 +4,12 @@
    <parent>
       <groupId>us.nineworlds.serenity</groupId>
       <artifactId>serenity-parent</artifactId>
-      <version>1.3.5</version>
+      <version>1.3.6-SNAPSHOT</version>
 
    </parent>
 
    <artifactId>plexapp-tests-parent</artifactId>
-   <version>1.3.5</version>
+   <version>1.3.6-SNAPSHOT</version>
    <packaging>pom</packaging>
 
    <modules>
