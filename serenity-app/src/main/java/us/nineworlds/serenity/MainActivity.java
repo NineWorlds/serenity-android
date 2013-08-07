@@ -49,6 +49,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
@@ -80,7 +81,7 @@ public class MainActivity extends SerenityActivity {
 	public final int TUTORIAL = 3;
 
 	private static int downloadIndex;
-	private static Context context;
+	private static Context mainContext;
 
 	private static NotificationManager notificationManager;
 
@@ -108,7 +109,7 @@ public class MainActivity extends SerenityActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		context = this;
+		mainContext = this;
 
 		setContentView(R.layout.activity_plex_app_main);
 		mainGalleryBackgroundView = findViewById(R.id.mainGalleryBackground);
@@ -306,7 +307,7 @@ public class MainActivity extends SerenityActivity {
 
 							} else if (status == Download.COMPLETE) {
 								Toast.makeText(
-										context,
+										mainContext,
 										pendingDownloads.get(i).getFilename()
 												+ " has completed.",
 										Toast.LENGTH_LONG).show();
@@ -348,10 +349,10 @@ public class MainActivity extends SerenityActivity {
 			long when = System.currentTimeMillis();
 			Notification notification = new Notification(icon, tickerText, when);
 			String expandedTitle = "Serenity Download";
-			Intent intent = new Intent(context, MainActivity.class);
-			PendingIntent launchIntent = PendingIntent.getActivity(context, 0,
+			Intent intent = new Intent(mainContext, MainActivity.class);
+			PendingIntent launchIntent = PendingIntent.getActivity(mainContext, 0,
 					intent, 0);
-			notification.setLatestEventInfo(context, expandedTitle,
+			notification.setLatestEventInfo(mainContext, expandedTitle,
 					expandedText, launchIntent);
 			int notificationRef = 1;
 			notificationManager.notify(notificationRef, notification);
@@ -386,8 +387,31 @@ public class MainActivity extends SerenityActivity {
 				}
 			} else if (intent.getAction().equals(GDMService.SOCKET_CLOSED)) {
 				Log.i("GDMService", "Finished Searching");
+				// Try to set auto discover servers
+				String serverIp = preferences.getString("server", null);
+				if (serverIp == null || serverIp == "") {
+					if (SerenityApplication.getPlexMediaServers().isEmpty()) {
+						Toast.makeText(mainContext, "No Plex Media Servers Discoverd. Use Settings to enter preferred server ip address.", Toast.LENGTH_LONG).show();
+						return;
+					}
+					Server server = SerenityApplication.getPlexMediaServers().values().iterator().next();
+					Toast.makeText(mainContext, "Auto Discovered Plex Media Server. Connecting to server " + server.getServerName(), Toast.LENGTH_LONG).show();
+					storeServerAddress(server.getIPAddress());
+					onStart();
+				}
+				
 			}
 		}
+		
+		/**
+		 * Store the server address if the server has been auto discovered. Users
+		 * can override this in the preference setting.
+		 */
+		protected void storeServerAddress(String ipAddress) {
+			Editor edit = preferences.edit();
+			edit.putString("server", ipAddress);
+			edit.commit();
+		}		
 	};
 
 }
