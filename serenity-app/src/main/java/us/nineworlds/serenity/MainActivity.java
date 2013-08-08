@@ -37,6 +37,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -81,7 +82,7 @@ public class MainActivity extends SerenityActivity {
 	public final int TUTORIAL = 3;
 
 	private static int downloadIndex;
-	private static Context mainContext;
+	private static Activity mainContext;
 
 	private static NotificationManager notificationManager;
 
@@ -222,7 +223,7 @@ public class MainActivity extends SerenityActivity {
 		IntentFilter filters = new IntentFilter();
 		filters.addAction(GDMService.MSG_RECEIVED);
 		filters.addAction(GDMService.SOCKET_CLOSED);
-		LocalBroadcastManager.getInstance(this).registerReceiver(GDMReceiver,
+		LocalBroadcastManager.getInstance(this).registerReceiver(gdmReciver,
 				filters);
 
 		// Start the auto-configuration service
@@ -234,6 +235,8 @@ public class MainActivity extends SerenityActivity {
 	protected void onStart() {
 		super.onStart();
 		EasyTracker.getInstance().activityStart(this);
+		
+		autoConfigureHandler.postDelayed(new AutoConfigureHandlerRunnable(), 2500);
 		if (restarted_state == false) {
 			setupGallery();
 		}
@@ -357,12 +360,25 @@ public class MainActivity extends SerenityActivity {
 			int notificationRef = 1;
 			notificationManager.notify(notificationRef, notification);
 		}
-
+		
 	}
-
+	
 	protected Handler mHandler = new DownloadHandler();
+	protected Handler autoConfigureHandler = new Handler();
+	
+	private BroadcastReceiver gdmReciver = new GDMReceiver(autoConfigureHandler);
 
-	private BroadcastReceiver GDMReceiver = new BroadcastReceiver() {
+	private class GDMReceiver extends BroadcastReceiver {
+		
+		Handler handler = null;
+		
+		/**
+		 * 
+		 */
+		public GDMReceiver(Handler h) {
+			handler = h;
+		}
+		
 		@Override
 		public void onReceive(Context context, Intent intent) {
 
@@ -381,37 +397,37 @@ public class MainActivity extends SerenityActivity {
 				if (!SerenityApplication.getPlexMediaServers().containsKey(serverName)) {
 					SerenityApplication.getPlexMediaServers().put(serverName,
 							server);
-					Log.i(getClass().getName(), "Adding " + serverName);
+					Log.d(getClass().getName(), "Adding " + serverName);
 				} else {
-					Log.i(getClass().getName(), serverName + " already added.");
+					Log.d(getClass().getName(), serverName + " already added.");
 				}
 			} else if (intent.getAction().equals(GDMService.SOCKET_CLOSED)) {
 				Log.i("GDMService", "Finished Searching");
-				// Try to set auto discover servers
-				String serverIp = preferences.getString("server", null);
-				if (serverIp == null || serverIp == "") {
-					if (SerenityApplication.getPlexMediaServers().isEmpty()) {
-						Toast.makeText(mainContext, "No Plex Media Servers Discoverd. Use Settings to enter preferred server ip address.", Toast.LENGTH_LONG).show();
-						return;
-					}
-					Server server = SerenityApplication.getPlexMediaServers().values().iterator().next();
-					Toast.makeText(mainContext, "Auto Discovered Plex Media Server. Connecting to server " + server.getServerName(), Toast.LENGTH_LONG).show();
-					storeServerAddress(server.getIPAddress());
-					onStart();
-				}
-				
 			}
 		}
+	}
+	
+	private class AutoConfigureHandlerRunnable implements Runnable {
 		
-		/**
-		 * Store the server address if the server has been auto discovered. Users
-		 * can override this in the preference setting.
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
 		 */
-		protected void storeServerAddress(String ipAddress) {
-			Editor edit = preferences.edit();
-			edit.putString("server", ipAddress);
-			edit.commit();
-		}		
-	};
+		@Override
+		public void run() {
+			if (SerenityApplication.getPlexMediaServers().isEmpty()) {
+				Toast.makeText(MainActivity.this, "No servers discovered. Use settings to configure manually.", Toast.LENGTH_LONG).show();
+				return;
+			}
+			Server server = SerenityApplication.getPlexMediaServers().values().iterator().next();
+			String ipAddress = preferences.getString("server", "");
+			if ("".equals(ipAddress)) {
+				Editor edit = preferences.edit();
+				edit.putString("server", server.getIPAddress());
+				edit.apply();
+				Toast.makeText(mainContext, "Auto configuring server using " + server.getServerName(), Toast.LENGTH_LONG).show();
+				mainContext.recreate();
+			}
+		}
+	}
 
 }

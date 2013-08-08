@@ -64,7 +64,7 @@ public class GDMService extends IntentService {
 			DatagramPacket packet = new DatagramPacket(data.getBytes(),
 					data.length(), getBroadcastAddress(), 32414);
 			socket.send(packet);
-			Log.i("GDMService", "Search Packet Broadcasted");
+			Log.d("GDMService", "Search Packet Broadcasted");
 
 			byte[] buf = new byte[256];
 			packet = new DatagramPacket(buf, buf.length);
@@ -75,7 +75,7 @@ public class GDMService extends IntentService {
 					socket.receive(packet);
 					String packetData = new String(packet.getData());
 					if (packetData.contains("HTTP/1.0 200 OK")) {
-						Log.i("GDMService", "PMS Packet Received");
+						Log.d("GDMService", "PMS Packet Received");
 						// Broadcast Received Packet
 						Intent packetBroadcast = new Intent(
 								GDMService.MSG_RECEIVED);
@@ -86,7 +86,7 @@ public class GDMService extends IntentService {
 								packetBroadcast);
 					}
 				} catch (SocketTimeoutException e) {
-					Log.w("GDMService", "Socket Timeout");
+					Log.d("GDMService", "Socket Timeout");
 					socket.close();
 					listening = false;
 					Intent socketBroadcast = new Intent(
