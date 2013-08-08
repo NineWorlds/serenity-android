@@ -102,5 +102,8 @@
     <string name="force_mx_player_resume_position_">Fuerza MX Reproductor Reanudar Position.</string>
     <string name="prefer_plex_media_server_s_aspect_ratio_">Prefiero relación de aspecto de Plex Media Server\'s.</string>
     <string name="plex_aspect_ratio">Plex Relación de aspecto</string>
+    
+    <string name="auto_configuring_server_using_">"Servidor de configuración automática utilizando "</string>
+    
    
 </resources>

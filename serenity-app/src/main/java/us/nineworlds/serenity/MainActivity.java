@@ -150,7 +150,7 @@ public class MainActivity extends SerenityActivity {
 		getMenuInflater().inflate(R.menu.activity_plex_app_main, menu);
 		menu.add(0, ABOUT, 0, R.string.options_main_about);
 		menu.add(0, CLEAR_CACHE, 0, R.string.options_main_clear_image_cache);
-		menu.add(0, TUTORIAL, 0, "Tutorial");
+		menu.add(0, TUTORIAL, 0, R.string.tutorial);
 		return true;
 	}
 
@@ -260,6 +260,7 @@ public class MainActivity extends SerenityActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		mHandler.removeMessages(SerenityApplication.PROGRESS);
+		getApplicationContext().unregisterReceiver(gdmReciver);
 
 		getApplicationContext().unbindService(downloadService);
 	}
@@ -424,7 +425,7 @@ public class MainActivity extends SerenityActivity {
 				Editor edit = preferences.edit();
 				edit.putString("server", server.getIPAddress());
 				edit.apply();
-				Toast.makeText(mainContext, "Auto configuring server using " + server.getServerName(), Toast.LENGTH_LONG).show();
+				Toast.makeText(mainContext, getResources().getText(R.string.auto_configuring_server_using_) + server.getServerName(), Toast.LENGTH_LONG).show();
 				mainContext.recreate();
 			}
 		}

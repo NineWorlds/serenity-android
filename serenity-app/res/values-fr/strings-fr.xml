@@ -43,7 +43,7 @@
     <string name="category">Catégorie</string>
     <string name="year">Année</string>
     <string name="genre">Genre</string>
-    <string name="writers">Ecrivains</string>
+    <string name="writers">Scénario</string>
     <string name="directors">Mise en scène</string>
     <string name="tvshows">Séries TV:</string>
     <string name="cancel">Annuler</string>
@@ -101,6 +101,9 @@
     <string name="prefer_plex_media_server_s_aspect_ratio_">Préferer le ratio hauteur/largeur de Plex média server.</string>
     <string name="plex_aspect_ratio">Ratio hauteur/largeur Plex</string>
     <string name="enable_gallery_scrolling">Active l\'annimation de défilement pour les Films et les Épisodes.</string>
-    <string name="enable_gallery_scrolling_animation">Active Animation de Défilement</string>    
+    <string name="enable_gallery_scrolling_animation">Active Animation de Défilement</string>
+    
+    <string name="tutorial">Tutoriel</string>
+    <string name="auto_configuring_server_using_">"Serveur de configuration automatique à l\'aide "</string>    
 
 </resources>

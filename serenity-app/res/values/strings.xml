@@ -112,5 +112,8 @@
     <string name="plex_aspect_ratio">Plex Aspect Ratio</string>
     <string name="enable_gallery_scrolling">Enables whether scrolling animation occurs in gallery views for movies and episodes.</string>
     <string name="enable_gallery_scrolling_animation">Enable Gallery Scrolling Animation</string>
+    
+    <string name="tutorial">Tutorial</string>
+    <string name="auto_configuring_server_using_">"Auto configuring server using "</string>
 
 </resources>
