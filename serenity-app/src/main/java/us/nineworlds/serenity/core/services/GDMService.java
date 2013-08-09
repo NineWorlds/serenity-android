@@ -50,6 +50,7 @@ import android.util.Log;
 public class GDMService extends IntentService {
 	public static final String MSG_RECEIVED = ".GDMService.MESSAGE_RECEIVED";
 	public static final String SOCKET_CLOSED = ".GDMService.SOCKET_CLOSED";
+	private static final String multicast = "239.0.0.250";
 
 	public GDMService() {
 		super("GDMService");
@@ -60,9 +61,12 @@ public class GDMService extends IntentService {
 		try {
 			DatagramSocket socket = new DatagramSocket(32414);
 			socket.setBroadcast(true);
-			String data = "M-SEARCH * HTTP/1.0\r\n\r\n";
+			String data = "M-SEARCH * HTTP/1.1\r\n\r\n";
 			DatagramPacket packet = new DatagramPacket(data.getBytes(),
-					data.length(), getBroadcastAddress(), 32414);
+					data.length(), useMultiCastAddress(), 32414);
+//			DatagramPacket packet = new DatagramPacket(data.getBytes(),
+//					data.length(), getBroadcastAddress(), 32414);
+			
 			socket.send(packet);
 			Log.d("GDMService", "Search Packet Broadcasted");
 
@@ -113,5 +117,9 @@ public class GDMService extends IntentService {
 		for (int k = 0; k < 4; k++)
 			quads[k] = (byte) (broadcast >> k * 8);
 		return InetAddress.getByAddress(quads);
+	}
+	
+	protected InetAddress useMultiCastAddress() throws IOException {
+		return InetAddress.getByName(multicast);
 	}
 }

@@ -260,7 +260,7 @@ public class MainActivity extends SerenityActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		mHandler.removeMessages(SerenityApplication.PROGRESS);
-		getApplicationContext().unregisterReceiver(gdmReciver);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(gdmReciver);
 
 		getApplicationContext().unbindService(downloadService);
 	}
@@ -415,12 +415,12 @@ public class MainActivity extends SerenityActivity {
 		 */
 		@Override
 		public void run() {
-			if (SerenityApplication.getPlexMediaServers().isEmpty()) {
-				Toast.makeText(MainActivity.this, "No servers discovered. Use settings to configure manually.", Toast.LENGTH_LONG).show();
-				return;
-			}
 			Server server = SerenityApplication.getPlexMediaServers().values().iterator().next();
 			String ipAddress = preferences.getString("server", "");
+			if (SerenityApplication.getPlexMediaServers().isEmpty() && "".equals(ipAddress)) {
+				Toast.makeText(MainActivity.this, "No servers discovered or configured. Use settings to configure the ip address manually.", Toast.LENGTH_LONG).show();
+				return;
+			}
 			if ("".equals(ipAddress)) {
 				Editor edit = preferences.edit();
 				edit.putString("server", server.getIPAddress());
