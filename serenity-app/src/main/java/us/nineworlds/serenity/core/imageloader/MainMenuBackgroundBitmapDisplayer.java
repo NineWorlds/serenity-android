@@ -23,8 +23,10 @@
 
 package us.nineworlds.serenity.core.imageloader;
 
+import us.nineworlds.serenity.R;
 import android.graphics.Bitmap;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 /**
@@ -54,6 +56,7 @@ public class MainMenuBackgroundBitmapDisplayer extends BitmapDisplayer {
 		}
 		ImageView imageView = (ImageView) bgLayout;
 		imageView.setImageBitmap(bm);
+		imageView.startAnimation(AnimationUtils.loadAnimation(bgLayout.getContext(), R.anim.fade_in));
 	}
 
 }

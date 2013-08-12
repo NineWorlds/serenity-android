@@ -4,8 +4,9 @@
     <alpha
         android:duration="1000"
         android:fromAlpha="0.0"
-        android:interpolator="@android:anim/linear_interpolator"
-        android:repeatCount="1"
-        android:toAlpha="1.0" />
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:repeatCount="0"
+        android:toAlpha="1.0"
+         />
 
 </set>

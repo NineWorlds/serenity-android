@@ -415,6 +415,9 @@ public class MainActivity extends SerenityActivity {
 		 */
 		@Override
 		public void run() {
+			if (SerenityApplication.getPlexMediaServers().isEmpty()) {
+				return;
+			}
 			Server server = SerenityApplication.getPlexMediaServers().values().iterator().next();
 			String ipAddress = preferences.getString("server", "");
 			if (SerenityApplication.getPlexMediaServers().isEmpty() && "".equals(ipAddress)) {
