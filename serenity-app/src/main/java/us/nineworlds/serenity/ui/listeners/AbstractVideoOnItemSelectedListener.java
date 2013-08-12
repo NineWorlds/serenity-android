@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
@@ -40,6 +41,7 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -286,15 +288,8 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		}
 
 		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		boolean shouldFadeIn = preferences.getBoolean(
-				"animation_background_fadein", false);
-		if (shouldFadeIn) {
-			fanArt.setAnimation(fadeIn);
-		}
 		imageLoader.displayImage(ei.getBackgroundURL(), fanArt,
-				SerenityApplication.getMovieOptions());
+				SerenityApplication.getMovieOptions(), new AnimationImageLoaderListener());
 
 	}
 
@@ -340,6 +335,24 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			subtitleSpinner.setVisibility(View.VISIBLE);
 		}
 
+	}
+	
+	private class AnimationImageLoaderListener extends SimpleImageLoadingListener {
+		
+		/* (non-Javadoc)
+		 * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#onLoadingComplete(java.lang.String, android.view.View, android.graphics.Bitmap)
+		 */
+		@Override
+		public void onLoadingComplete(String imageUri, View view,
+				Bitmap loadedImage) {
+			SharedPreferences preferences = PreferenceManager
+					.getDefaultSharedPreferences(context);
+			boolean shouldFadeIn = preferences.getBoolean(
+					"animation_background_fadein", false);
+			if (shouldFadeIn) {
+				view.startAnimation(fadeIn);
+			}
+		}
 	}
 
 }

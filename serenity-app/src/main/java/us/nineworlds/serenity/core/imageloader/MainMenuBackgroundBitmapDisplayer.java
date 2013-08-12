@@ -24,8 +24,11 @@
 package us.nineworlds.serenity.core.imageloader;
 
 import us.nineworlds.serenity.R;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
@@ -56,7 +59,22 @@ public class MainMenuBackgroundBitmapDisplayer extends BitmapDisplayer {
 		}
 		ImageView imageView = (ImageView) bgLayout;
 		imageView.setImageBitmap(bm);
-		imageView.startAnimation(AnimationUtils.loadAnimation(bgLayout.getContext(), R.anim.fade_in));
+		if (shouldFadeIn()) {
+			Animation fadeIn = AnimationUtils.loadAnimation(bgLayout.getContext(), R.anim.fade_in);
+			fadeIn.setDuration(700);
+			imageView.startAnimation(fadeIn);
+		}
+	}
+
+	/**
+	 * @return
+	 */
+	protected boolean shouldFadeIn() {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(bgLayout.getContext());
+		boolean shouldFadein = preferences.getBoolean(
+				"animation_background_mainmenu_fadein", true);
+		return shouldFadein;
 	}
 
 }

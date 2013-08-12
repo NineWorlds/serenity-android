@@ -50,7 +50,7 @@
             android:name="us.nineworlds.serenity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:hardwareAccelerated="false"
+            android:hardwareAccelerated="true"
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

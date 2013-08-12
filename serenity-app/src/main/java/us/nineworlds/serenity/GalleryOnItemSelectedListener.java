@@ -50,8 +50,6 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 
 	public GalleryOnItemSelectedListener(View v) {
 		mainGalleryBackgroundView = v;
-		fadeIn = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
-		fadeIn.setDuration(700);
 	}
 
 	@Override
@@ -61,13 +59,6 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 			MainMenuTextView tv = (MainMenuTextView) v;
 						
 			Bitmap background = BitmapFactory.decodeResource(v.getContext().getResources(), tv.getBackgroundImageId());
-			SharedPreferences preferences = PreferenceManager
-					.getDefaultSharedPreferences(v.getContext());
-			boolean shouldFadein = preferences.getBoolean(
-					"animation_background_mainmenu_fadein", true);
-			if (shouldFadein) {
-				mainGalleryBackgroundView.setAnimation(fadeIn);
-			}
 			new ImageLoader((Activity)v.getContext(), mainGalleryBackgroundView, background).doInBackground();
 			
 			tv.setTextColor(v.getContext().getResources().getColor(android.R.color.white));
