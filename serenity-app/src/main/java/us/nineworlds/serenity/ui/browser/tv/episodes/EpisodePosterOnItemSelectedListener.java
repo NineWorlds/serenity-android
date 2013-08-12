@@ -56,7 +56,6 @@ public class EpisodePosterOnItemSelectedListener extends
 	public ImageLoader imageLoader;
 
 	private String prevTitle;
-	private String currentTitle;
 	private boolean fadeIn = true;
 	private int fadeInCount = 0;
 
