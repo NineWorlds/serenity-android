@@ -10,6 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_centerInParent="true"
+        android:scaleType="fitXY"
         android:src="@drawable/serenity_bonsai_logo"/>
     
     <DigitalClock
@@ -26,6 +27,7 @@
          android:id="@+id/mainGalleryMenu"
          android:layout_width="fill_parent"
          android:layout_height="80dp"
+         android:layout_marginLeft="30dp"
          android:animationDuration="1"
          android:background="@drawable/content_panel_dark"
          android:spacing="50dp"
@@ -34,5 +36,5 @@
 
          <requestFocus />
      </Gallery>
-
+         
 </RelativeLayout>

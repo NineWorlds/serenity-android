@@ -34,36 +34,28 @@ import us.nineworlds.serenity.core.model.impl.GDMServer;
 import us.nineworlds.serenity.core.services.GDMService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
-import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Gallery;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -75,295 +67,34 @@ import com.castillo.dd.Download;
 import com.castillo.dd.DownloadService;
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MainActivity extends SerenityActivity {
 
-	private Gallery mainGallery;
-	private View mainGalleryBackgroundView;
-	private SharedPreferences preferences;
-	public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
-	public static int BROWSER_RESULT_CODE = 200;
-	private boolean restarted_state = false;
-	private MenuDrawer menuDrawer;
-
-	public final int ABOUT = 1;
-	public final int CLEAR_CACHE = 2;
-	public final int TUTORIAL = 3;
-
-	private static int downloadIndex;
-	private static Activity mainContext;
-
-	private static NotificationManager notificationManager;
-
-	private static DSInterface dsInterface;
-
-	public static DSInterface getDsInterface() {
-		return dsInterface;
-	}
-
-	private ServiceConnection downloadService = new ServiceConnection() {
-		@Override
-		public void onServiceConnected(ComponentName className, IBinder service) {
-			dsInterface = DSInterface.Stub.asInterface(service);
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName className) {
-			dsInterface = null;
-		}
-	};
-
-	private static boolean downloadsCancelled = false;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		createSideMenu();
+	private class AutoConfigureHandlerRunnable implements Runnable {
 		
-		mainGalleryBackgroundView = findViewById(R.id.mainGalleryBackground);
-
-		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
-		preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		if (preferences != null) {
-			ServerConfig config = (ServerConfig) ServerConfig.getInstance();
-			if (config != null) {
-				preferences
-						.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
-								.getInstance()).getServerConfigChangeListener());
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
+		@Override
+		public void run() {
+			if (SerenityApplication.getPlexMediaServers().isEmpty()) {
+				return;
+			}
+			Server server = SerenityApplication.getPlexMediaServers().values().iterator().next();
+			String ipAddress = preferences.getString("server", "");
+			if (SerenityApplication.getPlexMediaServers().isEmpty() && "".equals(ipAddress)) {
+				Toast.makeText(MainActivity.this, "No servers discovered or configured. Use settings to configure the ip address manually.", Toast.LENGTH_LONG).show();
+				return;
+			}
+			if ("".equals(ipAddress)) {
+				Editor edit = preferences.edit();
+				edit.putString("server", server.getIPAddress());
+				edit.apply();
+				Toast.makeText(mainContext, getResources().getText(R.string.auto_configuring_server_using_) + server.getServerName(), Toast.LENGTH_LONG).show();
+				mainContext.recreate();
 			}
 		}
-
-		boolean googletv = SerenityApplication.isGoogleTV(this);
-		if (!googletv) {
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putBoolean("external_player", true);
-			editor.commit();
-		}
-
-		getApplicationContext().bindService(
-				new Intent(this, DownloadService.class), downloadService,
-				Context.BIND_AUTO_CREATE);
-
-		mHandler.sendMessage(mHandler
-				.obtainMessage(SerenityApplication.PROGRESS));
-
-		String svcName = Context.NOTIFICATION_SERVICE;
-		notificationManager = (NotificationManager) getSystemService(svcName);
-		
 	}
-
-	/**
-	 * 
-	 */
-	protected void createSideMenu() {
-		mainContext = this;
-		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
-		menuDrawer.setMenuView(R.layout.menu_drawer);
-		menuDrawer.setContentView(R.layout.activity_plex_app_main);
-		menuDrawer.setDrawerIndicatorEnabled(true);
-		
-		List<String> drawerMenuItem = new ArrayList<String>();
-		drawerMenuItem.add(getResources().getString(R.string.options_main_about));
-		drawerMenuItem.add(getResources().getString(R.string.options_main_clear_image_cache));
-		drawerMenuItem.add(getResources().getString(R.string.tutorial));
-		
-		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
-		listView.setVisibility(View.INVISIBLE);
-		listView.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-	}
-	
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int, android.view.KeyEvent)
-	 */
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_MENU && !menuDrawer.isMenuVisible()) {
-			mainGallery.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
-			listView.setVisibility(View.VISIBLE);
-			listView.setFocusable(true);
-			listView.requestFocus();
-			menuDrawer.toggleMenu();
-			return true;
-		}
-		
-		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
-			mainGallery.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
-			mainGallery.setFocusableInTouchMode(true);
-			mainGallery.requestFocus();
-			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
-			listView.setVisibility(View.INVISIBLE);
-			
-			menuDrawer.toggleMenu();
-			return true;
-		}
-		
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			return true;
-		}
-		
-		return super.onKeyDown(keyCode, event);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_plex_app_main, menu);
-		menu.add(0, ABOUT, 0, R.string.options_main_about);
-		menu.add(0, CLEAR_CACHE, 0, R.string.options_main_clear_image_cache);
-		menu.add(0, TUTORIAL, 0, R.string.tutorial);
-		return true;
-	}
-	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#openOptionsMenu()
-	 */
-	@Override
-	public void openOptionsMenu() {
-		mainGallery.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
-		listView.setVisibility(View.VISIBLE);
-		listView.setFocusable(true);
-		listView.requestFocus();
-		
-		menuDrawer.toggleMenu();
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-		case CLEAR_CACHE:
-			createClearCacheDialog();
-			break;
-		case ABOUT:
-			AboutDialog about = new AboutDialog(this);
-			about.setTitle(R.string.about_title_serenity_for_google_tv);
-			about.show();
-			break;
-		case TUTORIAL:
-			Intent youTubei = new Intent(Intent.ACTION_VIEW,
-					Uri.parse("http://www.youtube.com/watch?v=_yKc8ymXerg"));
-			startActivity(youTubei);
-			break;
-		default:
-			Intent i = new Intent(MainActivity.this,
-					SerenityPreferenceActivity.class);
-			startActivityForResult(i, 0);
-			break;
-		}
-
-		return true;
-	}
-
-	protected void createClearCacheDialog() {
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,
-				android.R.style.Theme_Holo_Dialog);
-
-		alertDialogBuilder.setTitle(R.string.options_main_clear_image_cache);
-		alertDialogBuilder
-				.setMessage(R.string.option_clear_the_image_cache_)
-				.setCancelable(true)
-				.setPositiveButton(R.string.clear,
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-
-								ImageLoader imageLoader = SerenityApplication
-										.getImageLoader();
-								imageLoader.clearDiscCache();
-								imageLoader.clearMemoryCache();
-							}
-						})
-				.setNegativeButton(R.string.cancel,
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-
-							}
-						});
-
-		alertDialogBuilder.create();
-		alertDialogBuilder.show();
-
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		IntentFilter filters = new IntentFilter();
-		filters.addAction(GDMService.MSG_RECEIVED);
-		filters.addAction(GDMService.SOCKET_CLOSED);
-		LocalBroadcastManager.getInstance(this).registerReceiver(gdmReciver,
-				filters);
-
-		// Start the auto-configuration service
-		Intent GDMService = new Intent(this, GDMService.class);
-		startService(GDMService);
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		EasyTracker.getInstance().activityStart(this);
-		
-		autoConfigureHandler.postDelayed(new AutoConfigureHandlerRunnable(), 2500);
-		if (restarted_state == false) {
-			setupGallery();
-		}
-		restarted_state = false;
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		EasyTracker.getInstance().activityStop(this);
-	}
-
-	@Override
-	protected void onRestart() {
-		restarted_state = true;
-		super.onRestart();
-
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		mHandler.removeMessages(SerenityApplication.PROGRESS);
-		LocalBroadcastManager.getInstance(this).unregisterReceiver(gdmReciver);
-
-		getApplicationContext().unbindService(downloadService);
-	}
-
-	/**
-	 * Refresh the screen after coming back from the preferences screen.
-	 */
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == MAIN_MENU_PREFERENCE_RESULT_CODE) {
-			setupGallery();
-		}
-
-	}
-
-	private void setupGallery() {
-		mainGallery.setAdapter(new MainMenuTextViewAdapter(this,
-				mainGalleryBackgroundView));
-		mainGallery
-				.setOnItemSelectedListener(new GalleryOnItemSelectedListener(
-						mainGalleryBackgroundView));
-		mainGallery
-				.setOnItemClickListener(new GalleryOnItemClickListener(this));
-		mainGallery.setCallbackDuringFling(false);
-	}
-
 	private static class DownloadHandler extends Handler {
 		@Override
 		public void handleMessage(Message msg) {
@@ -440,12 +171,6 @@ public class MainActivity extends SerenityActivity {
 		}
 		
 	}
-	
-	protected Handler mHandler = new DownloadHandler();
-	protected Handler autoConfigureHandler = new Handler();
-	
-	private BroadcastReceiver gdmReciver = new GDMReceiver(autoConfigureHandler);
-
 	private class GDMReceiver extends BroadcastReceiver {
 		
 		Handler handler = null;
@@ -484,31 +209,251 @@ public class MainActivity extends SerenityActivity {
 			}
 		}
 	}
-	
-	private class AutoConfigureHandlerRunnable implements Runnable {
-		
-		/* (non-Javadoc)
-		 * @see java.lang.Runnable#run()
-		 */
+	public static int BROWSER_RESULT_CODE = 200;
+	private static int downloadIndex;
+	private static boolean downloadsCancelled = false;
+	private static DSInterface dsInterface;
+
+	public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
+	private static Activity mainContext;
+	private static NotificationManager notificationManager;
+
+	public static DSInterface getDsInterface() {
+		return dsInterface;
+	}
+
+	protected Handler autoConfigureHandler = new Handler();
+
+
+	private ServiceConnection downloadService = new ServiceConnection() {
 		@Override
-		public void run() {
-			if (SerenityApplication.getPlexMediaServers().isEmpty()) {
-				return;
-			}
-			Server server = SerenityApplication.getPlexMediaServers().values().iterator().next();
-			String ipAddress = preferences.getString("server", "");
-			if (SerenityApplication.getPlexMediaServers().isEmpty() && "".equals(ipAddress)) {
-				Toast.makeText(MainActivity.this, "No servers discovered or configured. Use settings to configure the ip address manually.", Toast.LENGTH_LONG).show();
-				return;
-			}
-			if ("".equals(ipAddress)) {
-				Editor edit = preferences.edit();
-				edit.putString("server", server.getIPAddress());
-				edit.apply();
-				Toast.makeText(mainContext, getResources().getText(R.string.auto_configuring_server_using_) + server.getServerName(), Toast.LENGTH_LONG).show();
-				mainContext.recreate();
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			dsInterface = DSInterface.Stub.asInterface(service);
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName className) {
+			dsInterface = null;
+		}
+	};
+
+	private BroadcastReceiver gdmReciver = new GDMReceiver(autoConfigureHandler);
+
+	private Gallery mainGallery;
+
+	private View mainGalleryBackgroundView;
+
+	private MenuDrawer menuDrawer;
+
+	protected Handler mHandler = new DownloadHandler();
+
+	private SharedPreferences preferences;
+	
+	private boolean restarted_state = false;
+
+	/**
+	 * 
+	 */
+	protected void createSideMenu() {
+		mainContext = this;
+		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
+		menuDrawer.setMenuView(R.layout.menu_drawer);
+		menuDrawer.setContentView(R.layout.activity_plex_app_main);
+		menuDrawer.setDrawerIndicatorEnabled(true);
+		
+		mainGalleryBackgroundView = findViewById(R.id.mainGalleryBackground);
+		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
+
+		
+		List<String> drawerMenuItem = new ArrayList<String>();
+		drawerMenuItem.add(getResources().getString(R.string.options_main_about));
+		drawerMenuItem.add(getResources().getString(R.string.options_main_clear_image_cache));
+		drawerMenuItem.add(getResources().getString(R.string.tutorial));
+		
+		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+		hideMenuItems(listView);
+		listView.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+		listView.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(menuDrawer, mainGallery));
+	}
+
+	/**
+	 * @param listView
+	 */
+	protected void hideMenuItems(ListView listView) {
+		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
+			listView.setVisibility(View.INVISIBLE);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	protected void discoverPlexServers() {
+		Intent GDMService = new Intent(this, GDMService.class);
+		startService(GDMService);
+	}
+
+	/**
+	 * 
+	 */
+	protected void initDownloadService() {
+		getApplicationContext().bindService(
+				new Intent(this, DownloadService.class), downloadService,
+				Context.BIND_AUTO_CREATE);
+
+		mHandler.sendMessage(mHandler
+				.obtainMessage(SerenityApplication.PROGRESS));
+
+		String svcName = Context.NOTIFICATION_SERVICE;
+		notificationManager = (NotificationManager) getSystemService(svcName);
+	}
+
+	/**
+	 * 
+	 */
+	protected void initPreferences() {
+		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		if (preferences != null) {
+			ServerConfig config = (ServerConfig) ServerConfig.getInstance();
+			if (config != null) {
+				preferences
+						.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
+								.getInstance()).getServerConfigChangeListener());
 			}
 		}
+	}
+
+	/**
+	 * Refresh the screen after coming back from the preferences screen.
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == MAIN_MENU_PREFERENCE_RESULT_CODE) {
+			setupGallery();
+		}
+
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		createSideMenu();
+		initPreferences();
+		
+
+		boolean googletv = SerenityApplication.isGoogleTV(this);
+		if (!googletv) {
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putBoolean("external_player", true);
+			editor.commit();
+		}
+
+		initDownloadService();
+		
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mHandler.removeMessages(SerenityApplication.PROGRESS);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(gdmReciver);
+
+		getApplicationContext().unbindService(downloadService);
+	}
+
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int, android.view.KeyEvent)
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU && !menuDrawer.isMenuVisible()) {
+			mainGallery.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+			listView.setVisibility(View.VISIBLE);
+			listView.setFocusable(true);
+			listView.requestFocus();
+			menuDrawer.toggleMenu();
+			return true;
+		}
+		
+		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
+			mainGallery.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+			mainGallery.setFocusableInTouchMode(true);
+			mainGallery.requestFocus();
+			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+			hideMenuItems(listView);
+			menuDrawer.toggleMenu();
+			return true;
+		}
+		
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			return true;
+		}
+		
+		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	protected void onRestart() {
+		restarted_state = true;
+		super.onRestart();
+
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		IntentFilter filters = new IntentFilter();
+		filters.addAction(GDMService.MSG_RECEIVED);
+		filters.addAction(GDMService.SOCKET_CLOSED);
+		LocalBroadcastManager.getInstance(this).registerReceiver(gdmReciver,
+				filters);
+
+		// Start the auto-configuration service
+		discoverPlexServers();
+	}
+	@Override
+	protected void onStart() {
+		super.onStart();
+		EasyTracker.getInstance().activityStart(this);
+		
+		autoConfigureHandler.postDelayed(new AutoConfigureHandlerRunnable(), 2500);
+		if (restarted_state == false) {
+			setupGallery();
+		}
+		restarted_state = false;
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this);
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#openOptionsMenu()
+	 */
+	@Override
+	public void openOptionsMenu() {
+		mainGallery.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+		listView.setVisibility(View.VISIBLE);
+		listView.setFocusable(true);
+		listView.requestFocus();
+		
+		menuDrawer.toggleMenu();
+	}
+	
+	private void setupGallery() {
+		mainGallery.setAdapter(new MainMenuTextViewAdapter(this,
+				mainGalleryBackgroundView));
+		mainGallery
+				.setOnItemSelectedListener(new GalleryOnItemSelectedListener(
+						mainGalleryBackgroundView));
+		mainGallery
+				.setOnItemClickListener(new GalleryOnItemClickListener(this));
+		mainGallery.setCallbackDuringFling(false);
 	}
 
 }
