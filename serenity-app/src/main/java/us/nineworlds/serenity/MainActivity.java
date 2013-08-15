@@ -25,6 +25,8 @@ package us.nineworlds.serenity;
 
 import java.util.List;
 
+import net.simonvt.menudrawer.MenuDrawer;
+
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.impl.GDMServer;
@@ -51,8 +53,10 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,6 +80,7 @@ public class MainActivity extends SerenityActivity {
 	public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
 	public static int BROWSER_RESULT_CODE = 200;
 	private boolean restarted_state = false;
+	private MenuDrawer menuDrawer;
 
 	public final int ABOUT = 1;
 	public final int CLEAR_CACHE = 2;
@@ -111,8 +116,12 @@ public class MainActivity extends SerenityActivity {
 		super.onCreate(savedInstanceState);
 
 		mainContext = this;
+		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
+		menuDrawer.setMenuView(R.layout.menu_drawer);
+		menuDrawer.setContentView(R.layout.activity_plex_app_main);
 
-		setContentView(R.layout.activity_plex_app_main);
+
+		//setContentView(R.layout.activity_plex_app_main);
 		mainGalleryBackgroundView = findViewById(R.id.mainGalleryBackground);
 
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
@@ -142,6 +151,23 @@ public class MainActivity extends SerenityActivity {
 
 		String svcName = Context.NOTIFICATION_SERVICE;
 		notificationManager = (NotificationManager) getSystemService(svcName);
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int, android.view.KeyEvent)
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			menuDrawer.toggleMenu();
+			return true;
+		}
+		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
+			menuDrawer.toggleMenu();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override

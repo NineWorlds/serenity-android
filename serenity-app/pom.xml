@@ -47,6 +47,12 @@
          <artifactId>plexapp-rest-library</artifactId>
          <version>1.4.0-SNAPSHOT</version>
       </dependency>
+      <dependency>
+         <groupId>net.simonvt.menudrawer</groupId>
+         <artifactId>menudrawer</artifactId>
+         <version>3.0.5-SNAPSHOT</version>
+      </dependency>
+      
    </dependencies>
 
    <build>
