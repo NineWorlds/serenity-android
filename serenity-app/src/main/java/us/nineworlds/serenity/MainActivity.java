@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.simonvt.menudrawer.MenuDrawer;
@@ -32,6 +33,7 @@ import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.impl.GDMServer;
 import us.nineworlds.serenity.core.services.GDMService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
+import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 import android.net.Uri;
 import android.os.Bundle;
@@ -60,7 +62,10 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Gallery;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import us.nineworlds.serenity.R;
@@ -115,13 +120,8 @@ public class MainActivity extends SerenityActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mainContext = this;
-		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
-		menuDrawer.setMenuView(R.layout.menu_drawer);
-		menuDrawer.setContentView(R.layout.activity_plex_app_main);
-
-
-		//setContentView(R.layout.activity_plex_app_main);
+		createSideMenu();
+		
 		mainGalleryBackgroundView = findViewById(R.id.mainGalleryBackground);
 
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
@@ -153,20 +153,57 @@ public class MainActivity extends SerenityActivity {
 		notificationManager = (NotificationManager) getSystemService(svcName);
 		
 	}
+
+	/**
+	 * 
+	 */
+	protected void createSideMenu() {
+		mainContext = this;
+		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
+		menuDrawer.setMenuView(R.layout.menu_drawer);
+		menuDrawer.setContentView(R.layout.activity_plex_app_main);
+		menuDrawer.setDrawerIndicatorEnabled(true);
+		
+		List<String> drawerMenuItem = new ArrayList<String>();
+		drawerMenuItem.add(getResources().getString(R.string.options_main_about));
+		drawerMenuItem.add(getResources().getString(R.string.options_main_clear_image_cache));
+		drawerMenuItem.add(getResources().getString(R.string.tutorial));
+		
+		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+		listView.setVisibility(View.INVISIBLE);
+		listView.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+	}
 	
 	/* (non-Javadoc)
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int, android.view.KeyEvent)
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
+		if (keyCode == KeyEvent.KEYCODE_MENU && !menuDrawer.isMenuVisible()) {
+			mainGallery.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+			listView.setVisibility(View.VISIBLE);
+			listView.setFocusable(true);
+			listView.requestFocus();
 			menuDrawer.toggleMenu();
 			return true;
 		}
+		
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
+			mainGallery.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+			mainGallery.setFocusableInTouchMode(true);
+			mainGallery.requestFocus();
+			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+			listView.setVisibility(View.INVISIBLE);
+			
 			menuDrawer.toggleMenu();
 			return true;
 		}
+		
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			return true;
+		}
+		
 		return super.onKeyDown(keyCode, event);
 	}
 
@@ -185,6 +222,12 @@ public class MainActivity extends SerenityActivity {
 	 */
 	@Override
 	public void openOptionsMenu() {
+		mainGallery.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+		listView.setVisibility(View.VISIBLE);
+		listView.setFocusable(true);
+		listView.requestFocus();
+		
 		menuDrawer.toggleMenu();
 	}
 

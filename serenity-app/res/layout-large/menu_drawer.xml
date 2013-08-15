@@ -2,18 +2,77 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#50000000"
- >
-    
-    <TextView android:id="@+id/menu_title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_label"
-        android:textColor="@android:color/white"
-        android:gravity="center_vertical"
-        android:drawablePadding="5dp"
+    android:background="#50000000" >
+
+    <LinearLayout android:id="@+id/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
         android:background="@android:color/background_dark"
-        android:drawableLeft="@drawable/serenity_bonsai_logo_small"
-        />
- 
+        android:gravity="center_vertical"
+        android:paddingLeft="8dip"
+        android:paddingRight="8dip" >
+
+        <ImageView
+            android:id="@+id/left_icon"
+            android:layout_width="36dip"
+            android:layout_height="36dip"
+            android:layout_marginRight="8dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/serenity_bonsai_logo_small"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="59dp"
+            android:layout_marginRight="8dip"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:text="@string/app_label"
+                android:gravity="center_vertical"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_circular"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dip"
+            android:max="10000"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/right_icon"
+            android:layout_width="36dip"
+            android:layout_height="36dip"
+            android:layout_marginRight="8dip"
+            android:scaleType="fitCenter"
+            android:visibility="gone" />
+    </LinearLayout>
+    
+    <ListView android:id="@+id/menu_options"
+        android:layout_below="@+id/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="afterDescendants"
+        android:scrollingCache="true"
+        android:focusable="false">
+    </ListView>
+
 </RelativeLayout>
