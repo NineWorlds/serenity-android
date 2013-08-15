@@ -179,6 +179,14 @@ public class MainActivity extends SerenityActivity {
 		menu.add(0, TUTORIAL, 0, R.string.tutorial);
 		return true;
 	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#openOptionsMenu()
+	 */
+	@Override
+	public void openOptionsMenu() {
+		menuDrawer.toggleMenu();
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
