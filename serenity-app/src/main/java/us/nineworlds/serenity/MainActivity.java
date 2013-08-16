@@ -269,6 +269,13 @@ public class MainActivity extends SerenityActivity {
 		menuButton.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
 
 		
+		populateMenuOptions();
+	}
+
+	/**
+	 * 
+	 */
+	protected void populateMenuOptions() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_about)));
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_clear_image_cache)));
@@ -409,6 +416,7 @@ public class MainActivity extends SerenityActivity {
 	@Override
 	protected void onRestart() {
 		restarted_state = true;
+		populateMenuOptions();
 		super.onRestart();
 
 	}
