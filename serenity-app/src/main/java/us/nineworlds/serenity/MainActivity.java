@@ -29,8 +29,10 @@ import java.util.List;
 import net.simonvt.menudrawer.MenuDrawer;
 
 import us.nineworlds.serenity.core.ServerConfig;
+import us.nineworlds.serenity.core.model.MenuDrawerItem;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.impl.GDMServer;
+import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.GDMService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
@@ -267,10 +269,10 @@ public class MainActivity extends SerenityActivity {
 		menuButton.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
 
 		
-		List<String> drawerMenuItem = new ArrayList<String>();
-		drawerMenuItem.add(getResources().getString(R.string.options_main_about));
-		drawerMenuItem.add(getResources().getString(R.string.options_main_clear_image_cache));
-		drawerMenuItem.add(getResources().getString(R.string.tutorial));
+		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
+		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_about)));
+		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_clear_image_cache)));
+		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.tutorial)));
 		
 		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
 		hideMenuItems(listView);
@@ -285,6 +287,13 @@ public class MainActivity extends SerenityActivity {
 		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
 			listView.setVisibility(View.INVISIBLE);
 		}
+	}
+	
+	protected void showMenuItems(ListView listView) {
+		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
+			listView.setVisibility(View.VISIBLE);
+		}
+		
 	}
 
 	/**
@@ -370,9 +379,10 @@ public class MainActivity extends SerenityActivity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU && !menuDrawer.isMenuVisible()) {
+		
 			mainGallery.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
 			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
-			listView.setVisibility(View.VISIBLE);
+			showMenuItems(listView);
 			listView.setFocusable(true);
 			listView.requestFocus();
 			menuDrawer.toggleMenu();

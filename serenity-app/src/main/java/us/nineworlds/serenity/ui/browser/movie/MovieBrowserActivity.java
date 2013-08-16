@@ -24,11 +24,17 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import net.simonvt.menudrawer.MenuDrawer;
 
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.MenuDrawerItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
+import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
@@ -43,9 +49,11 @@ import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 public class MovieBrowserActivity extends SerenityActivity {
@@ -58,20 +66,76 @@ public class MovieBrowserActivity extends SerenityActivity {
 	public static int CLICKED_GRID_VIEW_ITEM = 0;
 
 	private static Activity context;
+	private MenuDrawer menuDrawer;
+	private ListView menuOptions;
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
+	 */
+	@Override
+	protected void createSideMenu() {
+		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		IS_GRID_VIEW = prefs.getBoolean("movie_layout_grid", false);
+		if (IS_GRID_VIEW) {
+			menuDrawer.setContentView(R.layout.activity_movie_browser_gridview);
+		} else {
+			menuDrawer.setContentView(R.layout.activity_movie_browser);
+		}
+		menuDrawer.setMenuView(R.layout.menu_drawer);
+		
+		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
+		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View"));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View"));
+		
+		 menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+		menuOptions.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(menuDrawer));
+		hideMenuItems();
+		
+		View menu = findViewById(R.id.menu_button);
+		menu.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
+	}
+	
+	/**
+	 * @param listView
+	 */
+	protected void hideMenuItems() {
+		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
+			menuOptions.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	protected void showMenuItems() {
+		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
+			menuOptions.setVisibility(View.VISIBLE);
+		}
+		
+	}
+
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			showMenuItems();
+			menuDrawer.toggleMenu();
+			return true;
+		}
+		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
+			hideMenuItems();
+			menuDrawer.toggleMenu();
+			return true;
+		}
+		
+		return super.onKeyDown(keyCode, event);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
-		
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		IS_GRID_VIEW = prefs.getBoolean("movie_layout_grid", false);
-		if (IS_GRID_VIEW) {
-			setContentView(R.layout.activity_movie_browser_gridview);
-		} else {
-			setContentView(R.layout.activity_movie_browser);
-		}
+		createSideMenu();
 	}
 
 	@Override

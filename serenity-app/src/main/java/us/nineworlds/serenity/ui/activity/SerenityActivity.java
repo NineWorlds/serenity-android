@@ -41,6 +41,8 @@ import android.widget.ImageView;
  */
 public abstract class SerenityActivity extends Activity {
 	
+	protected abstract void createSideMenu();
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 			SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);

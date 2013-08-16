@@ -47,11 +47,17 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 	private SharedPreferences prefs;
 
 	@Override
+	protected void createSideMenu() {
+		setContentView(R.layout.activity_movie_browser);
+	}
+	
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
+		
+		createSideMenu();
 
-		setContentView(R.layout.activity_movie_browser);
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
 		posterGallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
 		metaData = findViewById(R.id.metaDataRow);

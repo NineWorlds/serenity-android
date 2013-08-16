@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import us.nineworlds.serenity.core.model.MenuDrawerItem;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
 import us.nineworlds.serenity.core.services.MusicTrackRetrievalIntentService;
 import us.nineworlds.serenity.R;
@@ -44,6 +46,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,16 +55,25 @@ import android.widget.TextView;
  * @author dcarver
  * 
  */
-public class MenuDrawerAdapter extends ArrayAdapter<String> {
+public class MenuDrawerAdapter extends BaseAdapter {
 
-	private static List<String> menuOptions;
+	private static List<MenuDrawerItem> menuOptions;
 	private Activity context;
 	private String key;
 
-	public MenuDrawerAdapter(Activity context, List<String> menuOptions) {
-		super(context, R.layout.serenity_menudrawer_listview_textview, menuOptions);
+	public MenuDrawerAdapter(Activity context, List<MenuDrawerItem> menuOptions) {
 		this.menuOptions = menuOptions;
 		this.context = context;
+	}
+	
+	@Override
+	public int getCount() {
+		return menuOptions.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return menuOptions.get(position);
 	}
 
 	@Override
@@ -70,8 +82,13 @@ public class MenuDrawerAdapter extends ArrayAdapter<String> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		TextView rowView = (TextView) inflater.inflate(R.layout.serenity_menudrawer_listview_textview, parent, false);
 		rowView.setBackgroundResource(R.drawable.album_list_view_selector);
-		rowView.setText(menuOptions.get(position));
+		rowView.setText(menuOptions.get(position).getText());
 		return rowView;
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
 	}
 
 }

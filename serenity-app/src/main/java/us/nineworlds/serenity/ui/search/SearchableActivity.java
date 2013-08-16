@@ -60,6 +60,14 @@ public class SearchableActivity extends SerenityActivity {
 	protected static View bgLayout;
 	protected static Activity context;
 
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
+	 */
+	@Override
+	protected void createSideMenu() {
+		
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

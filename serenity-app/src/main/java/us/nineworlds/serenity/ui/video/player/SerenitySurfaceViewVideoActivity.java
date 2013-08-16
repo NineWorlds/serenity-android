@@ -435,6 +435,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			return null;
 		}
 	}
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
+	 */
+	@Override
+	protected void createSideMenu() {
+		
+	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {

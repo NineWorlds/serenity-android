@@ -23,14 +23,27 @@
         android:background="#80000000"
         android:orientation="horizontal" >
 
+        <ImageButton android:id="@+id/menu_button"
+        android:layout_width="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="5dp"
+        android:layout_height="28dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/menudrawer_selector"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitXY"
+        android:nextFocusLeft="@+id/menu_button"
+        android:nextFocusDown="@+id/moviePosterGallery"
+        />
+        
         <TextView
             android:id="@+id/movieCategoryName"
             style="@android:style/TextAppearance.Holo.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:focusable="false"
             android:text="@string/category"
+            
          />
 
         <Spinner
@@ -42,7 +55,11 @@
             android:focusable="true"
             android:gravity="left"
             android:prompt="@string/movie_category_prompt"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:nextFocusDown="@+id/moviePosterGallery"
+            android:nextFocusLeft="@+id/menu_button"
+            android:nextFocusRight="@+id/movieCategoryFilter2"
+             />
 
         <Spinner
             android:id="@+id/movieCategoryFilter2"
@@ -292,7 +309,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:spacing="25dp"
-            
+            android:nextFocusUp="@+id/menu_button" 
              >
 
             <requestFocus />
