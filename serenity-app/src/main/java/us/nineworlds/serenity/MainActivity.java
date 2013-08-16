@@ -263,6 +263,8 @@ public class MainActivity extends SerenityActivity {
 		
 		mainGalleryBackgroundView = findViewById(R.id.mainGalleryBackground);
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
+		View menuButton = findViewById(R.id.menu_button);
+		menuButton.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
 
 		
 		List<String> drawerMenuItem = new ArrayList<String>();
@@ -412,6 +414,7 @@ public class MainActivity extends SerenityActivity {
 
 		// Start the auto-configuration service
 		discoverPlexServers();
+
 	}
 	@Override
 	protected void onStart() {

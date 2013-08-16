@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="#50000000" >
 
-    <LinearLayout android:id="@+id/title_bar_layout"
+    <LinearLayout
+        android:id="@+id/title_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="59dp"
         android:background="@android:color/background_dark"
@@ -35,9 +36,9 @@
                 android:layout_height="0dip"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:text="@string/app_label"
                 android:gravity="center_vertical"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:text="@string/app_label" />
 
             <TextView
                 android:id="@+id/subtitle"
@@ -65,14 +66,45 @@
             android:scaleType="fitCenter"
             android:visibility="gone" />
     </LinearLayout>
-    
-    <ListView android:id="@+id/menu_options"
-        android:layout_below="@+id/title_bar_layout"
+
+    <ListView
+        android:id="@+id/menu_options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar_layout"
         android:descendantFocusability="afterDescendants"
-        android:scrollingCache="true"
-        android:focusable="false">
+        android:focusable="false"
+        android:scrollingCache="true" >
     </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_dark"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/leftnav_bar_option_icon_dark" />
+
+        <TextView
+            android:layout_width="0dp"
+            style="@android:style/TextAppearance.Holo.Medium"
+            android:text="Settings"
+            android:textColor="@android:color/white"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dip"
+            android:layout_marginRight="7dip"
+            android:layout_weight="1"
+             />
+    </LinearLayout>
 
 </RelativeLayout>

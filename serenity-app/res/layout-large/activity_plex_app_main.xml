@@ -13,13 +13,14 @@
         android:scaleType="fitXY"
         android:src="@drawable/serenity_bonsai_logo"/>
     
+    
+    
     <DigitalClock
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="#50000000"
+            android:background="@color/fity_percent_transparent"
             android:textColor="#F0F0F0"
-            android:layout_alignParentLeft="true"
+            android:layout_toRightOf="@+id/menu_button"
             android:layout_alignParentTop="true"
             android:textSize="20sp" />
 
@@ -32,9 +33,25 @@
          android:background="@drawable/content_panel_dark"
          android:spacing="50dp"
          android:layout_centerInParent="true"
-         android:layout_gravity="center_vertical">
+         android:layout_gravity="center_vertical"
+         android:focusable="true"
+         android:focusableInTouchMode="true"
+         android:descendantFocusability="afterDescendants">
 
          <requestFocus />
      </Gallery>
-         
+
+    <ImageButton android:id="@+id/menu_button"
+        android:layout_width="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="5dp"
+        android:layout_height="28dp"
+        android:background="@color/fity_percent_transparent"
+        android:src="@drawable/menudrawer_selector"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        android:nextFocusDown="@+id/mainGalleryMenu"
+        />
+     
 </RelativeLayout>

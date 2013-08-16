@@ -30,6 +30,7 @@ import us.nineworlds.serenity.ui.views.MainMenuTextView;
 
 import us.nineworlds.serenity.R;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -190,6 +191,9 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 						Toast.LENGTH_LONG).show();
 			}
 			notifyAdapter.notifyDataSetChanged();
+			Activity c = (Activity)myContext;
+			c.findViewById(R.id.mainGalleryMenu).requestFocus();
+			
 		}
 
 	}
