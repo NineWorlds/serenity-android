@@ -23,92 +23,79 @@
 
 package us.nineworlds.serenity.core.services.test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+import static org.junit.Assume.*;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-
+import org.apache.tools.ant.taskdefs.Sleep;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
-import us.nineworlds.serenity.NanoHTTPD;
-import us.nineworlds.serenity.core.model.impl.MenuItem;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 
+import us.nineworlds.serenity.GDMReceiver;
+import us.nineworlds.serenity.MainActivity;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.services.GDMService;
 
 /**
  * @author dcarver
  *
  */
 @RunWith(RobolectricTestRunner.class)
-public class MainMenuIntentServiceTest {
+public class GDMServiceTest {
+
 	
-	NanoHTTPD server = null;
-	MockMainMenuIntentService menuService;
+	private BroadcastReceiver gdmReciver = new GDMReceiver();
 	
+	
+	/**
+	 * @throws java.lang.Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
-		
-		URL url = this.getClass().getResource("/");
-		File rootfile = new File(url.getPath());
-		server = new NanoHTTPD(32400, rootfile);
-		menuService = new MockMainMenuIntentService();
+		IntentFilter filters = new IntentFilter();
+		filters.addAction(GDMService.MSG_RECEIVED);
+		filters.addAction(GDMService.SOCKET_CLOSED);
+		LocalBroadcastManager.getInstance(Robolectric.buildActivity(MainActivity.class).create().get()).registerReceiver(gdmReciver,
+				filters);
 	}
-	
+
+	/**
+	 * @throws java.lang.Exception
+	 */
 	@After
 	public void tearDown() throws Exception {
-		server.stop();
 	}
-	
+
+	/**
+	 * Test method for {@link us.nineworlds.serenity.core.services.GDMService#onHandleIntent(android.content.Intent)}.
+	 */
 	@Test
-	public void onHandleIntent() throws Exception {
-		menuService.onHandleIntent(null);
-		ArrayList<MenuItem> menuItems = menuService.getMenuItems();
-		assertNotNull(menuItems);
-		assertTrue(menuItems.size() > 0); 
-	}
-	
-	@Test
-	public void testHasSettingsType() throws Exception {
-		menuService.onHandleIntent(null);
+	public void testOnHandleIntentIntent() throws Exception {
 		
-		for (MenuItem item : menuService.getMenuItems()) {
-			if ("settings".equals(item.getType())) {
-				return;
-			}
-		}
+		
+		MockGDMService service = new MockGDMService();
+		Intent intent = new Intent();
+		service.onHandleIntent(intent);
+		
+		Thread.sleep(2500);
+		assumeTrue(SerenityApplication.getPlexMediaServers().size() > 0);
 	}
 	
-	@Test
-	public void testHasOptionsMenuItem() throws Exception {
-		menuService.onHandleIntent(null);
+	public class MockGDMService extends GDMService {
 		
-		for (MenuItem item : menuService.getMenuItems()) {
-			if ("Options".equals(item.getTitle())) {
-				return;
-			}
+		@Override
+		public void onHandleIntent(Intent intent) {
+			super.onHandleIntent(intent);
 		}
-	}
-	
-	
-	@Test
-	public void testHasMovieType() throws Exception {
-		menuService.onHandleIntent(null);
 		
-		for (MenuItem item : menuService.getMenuItems()) {
-			if ("movie".equals(item.getType())) {
-				return;
-			}
-		}
-		fail("No movies were found.");
 	}
 
 }

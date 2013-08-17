@@ -170,47 +170,9 @@ public class MainActivity extends SerenityActivity {
 					expandedText, launchIntent);
 			int notificationRef = 1;
 			notificationManager.notify(notificationRef, notification);
-		}
-		
+		}		
 	}
-	private class GDMReceiver extends BroadcastReceiver {
-		
-		Handler handler = null;
-		
-		/**
-		 * 
-		 */
-		public GDMReceiver(Handler h) {
-			handler = h;
-		}
-		
-		@Override
-		public void onReceive(Context context, Intent intent) {
-
-			if (intent.getAction().equals(GDMService.MSG_RECEIVED)) {
-				String message = intent.getStringExtra("data").trim();
-				String ipAddress = intent.getStringExtra("ipaddress").substring(1);
-				Server server = new GDMServer();
-				
-				int namePos = message.indexOf("Name: ");
-				namePos += 6;
-				int crPos = message.indexOf("\r", namePos);
-				String serverName = message.substring(namePos, crPos);
-				
-				server.setServerName(serverName);
-				server.setIPAddress(ipAddress);
-				if (!SerenityApplication.getPlexMediaServers().containsKey(serverName)) {
-					SerenityApplication.getPlexMediaServers().put(serverName,
-							server);
-					Log.d(getClass().getName(), "Adding " + serverName);
-				} else {
-					Log.d(getClass().getName(), serverName + " already added.");
-				}
-			} else if (intent.getAction().equals(GDMService.SOCKET_CLOSED)) {
-				Log.i("GDMService", "Finished Searching");
-			}
-		}
-	}
+	
 	public static int BROWSER_RESULT_CODE = 200;
 	private static int downloadIndex;
 	private static boolean downloadsCancelled = false;
@@ -239,7 +201,7 @@ public class MainActivity extends SerenityActivity {
 		}
 	};
 
-	private BroadcastReceiver gdmReciver = new GDMReceiver(autoConfigureHandler);
+	private BroadcastReceiver gdmReciver = new GDMReceiver();
 
 	private Gallery mainGallery;
 
