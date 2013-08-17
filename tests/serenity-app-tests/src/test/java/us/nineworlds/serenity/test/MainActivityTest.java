@@ -42,8 +42,8 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.view.View;
 
-import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 /**

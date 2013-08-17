@@ -36,7 +36,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.xtremelabs.robolectric.RobolectricTestRunner;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import us.nineworlds.serenity.NanoHTTPD;
 import us.nineworlds.serenity.core.model.impl.MenuItem;
@@ -54,6 +56,7 @@ public class MainMenuIntentServiceTest {
 	
 	@Before
 	public void setUp() throws Exception {
+		
 		URL url = this.getClass().getResource("/");
 		File rootfile = new File(url.getPath());
 		server = new NanoHTTPD(32400, rootfile);

@@ -35,9 +35,9 @@ import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 
 import android.content.Intent;
 
-import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
-import com.xtremelabs.robolectric.shadows.ShadowBundle;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.shadows.ShadowBundle;
 
 /**
  * @author dcarver
@@ -63,15 +63,6 @@ public class SerenitySurfaceViewVideoPlayerTest {
 	public void testCreateVideoPlayerActivity() throws Exception {
 		SerenitySurfaceViewVideoActivity activity = new SerenitySurfaceViewVideoActivity();
 		assertNotNull(activity);
-	}
-	
-	@Test
-	@Ignore
-	public void testOnCreate() throws Exception {
-		Intent intent = new Intent();
-		intent.putExtra("videoUrl", "http://localhost:32400/blah");
-		Robolectric.shadowOf(activity).setIntent(intent);
-		activity.onCreate(null);
-	}
+	}	
 
 }

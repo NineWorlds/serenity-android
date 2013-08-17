@@ -36,6 +36,7 @@ import us.nineworlds.serenity.core.model.Server;
 
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Tracker;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -153,8 +154,12 @@ public class SerenityApplication extends Application {
 	 */
 	protected void sendStartedApplicationEvent() {
 		String deviceModel = android.os.Build.MODEL;
-		EasyTracker.getTracker().sendEvent("Devices", "Started Application",
-				deviceModel, (long) 0);
+		Tracker tracker = EasyTracker.getTracker();
+		if (tracker != null) {
+			tracker.sendEvent("Devices", "Started Application",
+					deviceModel, (long) 0);
+			
+		}
 	}
 
 	/**
@@ -170,22 +175,6 @@ public class SerenityApplication extends Application {
 	protected void initializePlexappFactory() {
 		IConfiguration config = ServerConfig.getInstance(this);
 		plexFactory = PlexappFactory.getInstance(config);
-	}
-
-	/**
-	 * Install an HTTPResponseCache. This is using an open source library so
-	 * that caching occurs across all platforms not just 4.x.
-	 * 
-	 */
-	protected void installHttpCache() {
-		final long cacheMaxSize = 10 * 1024 * 1024;
-		final File httpCacheDir = new File(getCacheDir(), HTTPCACHE);
-		try {
-			com.integralblue.httpresponsecache.HttpResponseCache.install(
-					httpCacheDir, cacheMaxSize);
-		} catch (IOException ex) {
-			Log.e(getClass().getName(), "Unable to install cache", ex);
-		}
 	}
 
 	public static PlexappFactory getPlexFactory() {
