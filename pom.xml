@@ -11,6 +11,7 @@
    <modules>
       <module>plexapp-rest-library</module>
       <module>leftnavbarlibrary</module>
+      <module>android-menudrawer</module>
       <module>serenity-app</module>
       <module>tests</module>
       <module>subtitle-converter</module>

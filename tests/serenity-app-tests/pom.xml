@@ -75,7 +75,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.6.2.201302030002</version>
+            <version>0.6.3.201306030806</version>
             <executions>
                <execution>
                   <goals>
@@ -90,11 +90,6 @@
                   </goals>
                </execution>
             </executions>
-            <configuration>
-                <includes>
-                    <include>us/nineworlds/serenity/*</include>
-                </includes>
-            </configuration>
          </plugin>         
          <plugin>
             <groupId>com.jayway.maven.plugins.android.generation2</groupId>
