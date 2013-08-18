@@ -100,13 +100,13 @@ public class MovieBrowserActivity extends SerenityActivity {
 	/**
 	 * @param listView
 	 */
-	protected void hideMenuItems() {
+	public void hideMenuItems() {
 		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
 			menuOptions.setVisibility(View.INVISIBLE);
 		}
 	}
 	
-	protected void showMenuItems() {
+	public void showMenuItems() {
 		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
 			menuOptions.setVisibility(View.VISIBLE);
 		}

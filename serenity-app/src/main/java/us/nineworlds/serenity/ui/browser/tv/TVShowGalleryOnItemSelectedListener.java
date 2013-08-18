@@ -143,10 +143,10 @@ public class TVShowGalleryOnItemSelectedListener implements
 		watchedUnwatched.setText(wu);
 		
 		ImageView imageView = (ImageView) context.findViewById(R.id.tvShowRating);
-		ImageInfographicUtils info = new ImageInfographicUtils(74, 34);
+		ImageInfographicUtils info = new ImageInfographicUtils(74, 40);
 		
 		int w = ImageUtils.getDPI(74, (Activity)v.getContext());
-		int h = ImageUtils.getDPI(34, (Activity)v.getContext());
+		int h = ImageUtils.getDPI(40, (Activity)v.getContext());
 		
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w, h);
 		params.topMargin = 10;
@@ -163,7 +163,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 			LinearLayout.LayoutParams sparams = new LinearLayout.LayoutParams(w, h);
 			sparams.rightMargin = 5;
 			sparams.topMargin = 10;
-			sparams.leftMargin = 30;
+			sparams.leftMargin = 0;
 			imageView.setLayoutParams(params);
 			
 			studiov.setLayoutParams(sparams);

@@ -26,14 +26,12 @@ package us.nineworlds.serenity.core.services.test;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 
-import org.apache.tools.ant.taskdefs.Sleep;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -50,7 +48,6 @@ import us.nineworlds.serenity.core.services.GDMService;
  *
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest="../../serenity-app/AndroidManifest.xml")
 public class GDMServiceTest {
 
 	

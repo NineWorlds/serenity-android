@@ -322,6 +322,16 @@ public class ImageInfographicUtils {
 			return v;
 		}
 		
+		if ("TV-Y".equals(contentRating)) {
+			v.setImageResource(R.drawable.tvy);
+			return v;
+		}
+
+		if ("TV-Y7".equals(contentRating)) {
+			v.setImageResource(R.drawable.tvy7);
+			return v;
+		}
+		
 
 		v.setImageResource(R.drawable.tvnr);
 		return v;

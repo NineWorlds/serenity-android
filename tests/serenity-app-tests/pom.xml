@@ -72,7 +72,7 @@
          </plugins>
       </pluginManagement>
       <plugins>
-          <plugin>
+<!--          <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.6.3.201306030806</version>
@@ -90,7 +90,8 @@
                   </goals>
                </execution>
             </executions>
-         </plugin>         
+         </plugin>
+-->
          <plugin>
             <groupId>com.jayway.maven.plugins.android.generation2</groupId>
             <artifactId>android-maven-plugin</artifactId>
