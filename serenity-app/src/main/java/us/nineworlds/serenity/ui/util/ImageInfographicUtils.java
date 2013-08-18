@@ -64,7 +64,7 @@ public class ImageInfographicUtils {
 		}
 
 		if ("ac3".equals(codec)) {
-			v.setImageResource(R.drawable.dolbydigital);
+			v.setImageResource(R.drawable.ac3);
 			return v;
 		}
 
@@ -154,9 +154,13 @@ public class ImageInfographicUtils {
 		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
 		v.setLayoutParams(new LayoutParams(w, h));
 		
-		if ("sd".equalsIgnoreCase(res) || "480".equalsIgnoreCase(res)
-				|| "540".equalsIgnoreCase(res) || "576".equalsIgnoreCase(res)) {
-			v.setImageResource(R.drawable.sd);
+		if ("sd".equalsIgnoreCase(res) || "480".equalsIgnoreCase(res)) {
+			v.setImageResource(R.drawable.res480);
+			return v;
+		}
+		
+		if ("576".equalsIgnoreCase(res)) {
+			v.setImageResource(R.drawable.res576);
 			return v;
 		}
 
@@ -167,6 +171,11 @@ public class ImageInfographicUtils {
 
 		if ("1080".equalsIgnoreCase(res)) {
 			v.setImageResource(R.drawable.res1080);
+			return v;
+		}
+		
+		if ("hd".equalsIgnoreCase(res)) {
+			v.setImageResource(R.drawable.hd);
 			return v;
 		}
 
@@ -224,7 +233,7 @@ public class ImageInfographicUtils {
 		v.setLayoutParams(new LayoutParams(w, h));
 
 		if ("G".equals(contentRating)) {
-			v.setImageResource(R.drawable.mpaa_general);
+			v.setImageResource(R.drawable.mpaa_g);
 			return v;
 		}
 
@@ -239,7 +248,7 @@ public class ImageInfographicUtils {
 		}
 
 		if ("R".equals(contentRating)) {
-			v.setImageResource(R.drawable.mpaa_restricted);
+			v.setImageResource(R.drawable.mpaa_r);
 			return v;
 		}
 
@@ -248,7 +257,7 @@ public class ImageInfographicUtils {
 			return v;
 		}
 
-		v.setImageResource(R.drawable.mpaa_notrated);
+		v.setImageResource(R.drawable.mpaa_nr);
 		return v;
 
 	}

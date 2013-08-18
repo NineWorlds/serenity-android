@@ -175,11 +175,11 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			infographicsView.addView(achannelsv);
 		}
 
-		ImageView resv = imageUtilsWide.createVideoResolutionImage(
-				mpi.getVideoResolution(), context);
-		if (resv != null) {
-			infographicsView.addView(resv);
-		}
+//		ImageView resv = imageUtilsWide.createVideoResolutionImage(
+//				mpi.getVideoResolution(), context);
+//		if (resv != null) {
+//			infographicsView.addView(resv);
+//		}
 
 		ImageView aspectv = imageUtilsNormal.createAspectRatioImage(
 				mpi.getAspectRatio(), context);
