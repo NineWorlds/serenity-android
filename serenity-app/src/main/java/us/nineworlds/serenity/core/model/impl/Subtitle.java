@@ -59,7 +59,7 @@ public class Subtitle implements Serializable{
 	 */
 	@Override
 	public String toString() {
-		return description;
+		return description + " format: " + format + " languageCode: " + languageCode;
 	}
 
 	public String getFormat() {
@@ -77,8 +77,4 @@ public class Subtitle implements Serializable{
 	public void setLanguageCode(String languageCode) {
 		this.languageCode = languageCode;
 	}
-	
-	
-
-	
 }

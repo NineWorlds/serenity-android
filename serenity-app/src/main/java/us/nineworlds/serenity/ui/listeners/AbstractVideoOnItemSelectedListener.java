@@ -47,6 +47,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -303,10 +304,14 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 		@Override
 		public void handleMessage(Message msg) {
+			Log.i("AbstractVideoOnItemSelectedListener", "Processing subtitles.");
+			
 			List<Subtitle> subtitles = (List<Subtitle>) msg.obj;
 			if (subtitles == null || subtitles.isEmpty()) {
+				Log.i("AbstractVideoOnItemSelectedListener", "No subtitles found");
 				return;
 			}
+			Log.i("AbstractVideoOnItemSelectedListener", "Found: " + subtitles.size() + " subtitles.");
 
 			TextView subtitleText = (TextView) context
 					.findViewById(R.id.subtitleFilter);
@@ -333,6 +338,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 					.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(
 							video, context));
 			subtitleSpinner.setVisibility(View.VISIBLE);
+			Log.i("AbstractVideoOnItemSelectedListener", "Subtitles should be displayed and available to be selected.");
 		}
 
 	}

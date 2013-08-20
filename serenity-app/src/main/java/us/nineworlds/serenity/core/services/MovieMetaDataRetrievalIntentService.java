@@ -59,6 +59,7 @@ public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentS
 	 */
 	@Override
 	public void sendMessageResults(Intent intent) {
+		Log.i(MOVIES_RETRIEVAL_INTENT_SERVICE, "Sending results back to handler.");
 		Bundle extras = intent.getExtras();
 		if (extras != null) {
 			Messenger messenger = (Messenger) extras.get("MESSENGER");
@@ -75,23 +76,27 @@ public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentS
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
+		Log.i(MOVIES_RETRIEVAL_INTENT_SERVICE, "Received request for Subtitles.");
 		key = intent.getExtras().getString("key", "");
 		try {
 			MediaContainer mc = factory.retrieveMovieMetaData("/library/metadata/" + key);
+			Log.i(MOVIES_RETRIEVAL_INTENT_SERVICE, "Retrieving metadata for /library/metadata/" + key);
 			findSubtitle(mc);
 			sendMessageResults(intent);			
 		} catch (Exception ex) {
-			Log.e(getClass().getName(), ex.getMessage(), ex);
+			Log.e(MOVIES_RETRIEVAL_INTENT_SERVICE, "Error retreiving metadata." + ex.getMessage(), ex);
 		}
-		
 	}
 	
 	protected void findSubtitle(MediaContainer mc) {
+		Log.i(MOVIES_RETRIEVAL_INTENT_SERVICE, "Retrieved metadata. Looking for subtitles.");
 		List<Stream> streams = mc.getVideos().get(0).getMedias().get(0).getVideoPart().get(0).getStreams();
 		subtitles = new ArrayList<Subtitle>();
 		for (Stream stream : streams) {
 			if ("srt".equals(stream.getFormat()) ||
 				"ass".equals(stream.getFormat())) {
+				Log.i(MOVIES_RETRIEVAL_INTENT_SERVICE, "Found subtitle.");
+				
 				Subtitle subtitle = new Subtitle();
 				subtitle = new Subtitle();
 				subtitle.setFormat(stream.getFormat());
@@ -102,6 +107,7 @@ public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentS
 				} else {
 					subtitle.setDescription(stream.getLanguage() + " (" + stream.getFormat() + ")");
 				}
+				Log.i(MOVIES_RETRIEVAL_INTENT_SERVICE, subtitle.toString());
 				subtitles.add(subtitle);
 			}
 		}
