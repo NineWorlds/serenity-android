@@ -273,6 +273,12 @@ public class ImageInfographicUtils {
 			v.setImageResource(R.drawable.divx);
 			return v;
 		}
+		
+		if ("div3".equalsIgnoreCase(codec)) {
+			v.setImageResource(R.drawable.div3);
+			return v;
+		}
+		
 
 		if ("vc-1".equalsIgnoreCase(codec)) {
 			v.setImageResource(R.drawable.vc_1);
