@@ -68,9 +68,9 @@ public class SubtitleSpinnerOnItemSelectedListener implements
 							continue;
 						}
 					}
-					firstSelection = false;
 				}
 			}
+			firstSelection = false;
 		} else {
 			subtitle = (Subtitle) parent.getItemAtPosition(position);
 		}
