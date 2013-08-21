@@ -47,6 +47,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -303,6 +304,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 		@Override
 		public void handleMessage(Message msg) {
+			
 			List<Subtitle> subtitles = (List<Subtitle>) msg.obj;
 			if (subtitles == null || subtitles.isEmpty()) {
 				return;
@@ -313,6 +315,10 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			subtitleText.setVisibility(View.VISIBLE);
 			Spinner subtitleSpinner = (Spinner) context
 					.findViewById(R.id.videoSubtitle);
+			View metaData = context.findViewById(R.id.metaDataRow);
+			if (metaData.getVisibility() == View.GONE || metaData.getVisibility() == View.INVISIBLE) {
+				metaData.setVisibility(View.VISIBLE);
+			}
 
 			ArrayList<Subtitle> spinnerSubtitles = new ArrayList<Subtitle>();
 			Subtitle noSubtitle = new Subtitle();
