@@ -338,6 +338,61 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			return true;
 		}
+		
+		if (isMediaPlayerStateValid()) {
+			if (keyCode == KeyEvent.KEYCODE_1) {
+				int duration = mediaPlayer.getDuration();
+				int newPos = Math.round(duration * 0.10f);
+				mediaPlayer.seekTo(newPos);
+				return true;
+			}
+			if (keyCode == KeyEvent.KEYCODE_2) {
+				int duration = mediaPlayer.getDuration();
+				int newPos = Math.round(duration * 0.20f);
+				mediaPlayer.seekTo(newPos);
+				return true;
+			}
+			if (keyCode == KeyEvent.KEYCODE_3) {
+				int duration = mediaPlayer.getDuration();
+				int newPos = Math.round(duration * 0.30f);
+				mediaPlayer.seekTo(newPos);
+				return true;
+			}
+			if (keyCode == KeyEvent.KEYCODE_4) {
+				int duration = mediaPlayer.getDuration();
+				int newPos = Math.round(duration * 0.40f);
+				mediaPlayer.seekTo(newPos);
+				return true;
+			}
+			if (keyCode == KeyEvent.KEYCODE_5) {
+				int duration = mediaPlayer.getDuration();
+				int newPos = Math.round(duration * 0.50f);
+				mediaPlayer.seekTo(newPos);
+				return true;
+			}
+			if (keyCode == KeyEvent.KEYCODE_6) {
+				int duration = mediaPlayer.getDuration();
+				int newPos = Math.round(duration * 0.60f);
+				mediaPlayer.seekTo(newPos);
+				return true;
+			}
+			if (keyCode == KeyEvent.KEYCODE_8) {
+				int duration = mediaPlayer.getDuration();
+				int newPos = Math.round(duration * 0.80f);
+				mediaPlayer.seekTo(newPos);
+				return true;
+			}
+			if (keyCode == KeyEvent.KEYCODE_9) {
+				int duration = mediaPlayer.getDuration();
+				int newPos = Math.round(duration * 0.90f);
+				mediaPlayer.seekTo(newPos);
+				return true;
+			}
+			if (keyCode == KeyEvent.KEYCODE_0) {
+				mediaPlayer.seekTo(0);
+				return true;
+			}
+		}
 
 		return super.onKeyDown(keyCode, event);
 	}
