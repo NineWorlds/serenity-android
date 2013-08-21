@@ -42,6 +42,7 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -163,4 +164,27 @@ public class EpisodePosterOnItemSelectedListener extends
 	public void onNothingSelected(SerenityAdapterView<?> av) {
 
 	}
+	
+	@Override
+	protected void createVideoMetaData(SerenityPosterImageView v) {
+		super.createVideoMetaData(v);
+		View metaData = context.findViewById(R.id.metaDataRow);
+		metaData.setVisibility(View.GONE);
+		
+		View categoryFilter = context.findViewById(R.id.movieCategoryFilter);
+		categoryFilter.setVisibility(View.GONE);
+		View categoryFilter2 = context.findViewById(R.id.movieCategoryFilter2);
+		categoryFilter2.setVisibility(View.GONE);
+		View categoryName = context.findViewById(R.id.movieCategoryName);
+		categoryName.setVisibility(View.GONE);
+		View sideMenuButton = context.findViewById(R.id.menu_button);
+		sideMenuButton.setVisibility(View.GONE);
+		
+		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
+		subt.setVisibility(View.GONE);
+		Spinner subtitleSpinner = (Spinner) context
+				.findViewById(R.id.videoSubtitle);
+		subtitleSpinner.setVisibility(View.GONE);
+	}
+
 }

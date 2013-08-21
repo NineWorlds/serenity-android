@@ -318,6 +318,10 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			subtitleText.setVisibility(View.VISIBLE);
 			Spinner subtitleSpinner = (Spinner) context
 					.findViewById(R.id.videoSubtitle);
+			View metaData = context.findViewById(R.id.metaDataRow);
+			if (metaData.getVisibility() == View.GONE || metaData.getVisibility() == View.INVISIBLE) {
+				metaData.setVisibility(View.VISIBLE);
+			}
 
 			ArrayList<Subtitle> spinnerSubtitles = new ArrayList<Subtitle>();
 			Subtitle noSubtitle = new Subtitle();
@@ -338,6 +342,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 					.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(
 							video, context));
 			subtitleSpinner.setVisibility(View.VISIBLE);
+					
 			Log.i("AbstractVideoOnItemSelectedListener", "Subtitles should be displayed and available to be selected.");
 		}
 
