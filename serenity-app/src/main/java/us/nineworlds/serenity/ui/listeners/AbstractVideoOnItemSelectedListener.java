@@ -53,6 +53,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -158,12 +159,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100,
 				58);
 
-		ImageView studiov = imageUtilsNormal.createStudioImage(mpi.getStudio(),
-				context, mpi.getMediaTagIdentifier());
-		if (studiov != null) {
-			infographicsView.addView(studiov);
-		}
-
 		ImageView acv = imageUtilsWide.createAudioCodecImage(
 				mpi.getAudioCodec(), context);
 		if (acv != null) {
@@ -175,12 +170,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		if (achannelsv != null) {
 			infographicsView.addView(achannelsv);
 		}
-
-//		ImageView resv = imageUtilsWide.createVideoResolutionImage(
-//				mpi.getVideoResolution(), context);
-//		if (resv != null) {
-//			infographicsView.addView(resv);
-//		}
 
 		ImageView aspectv = imageUtilsNormal.createAspectRatioImage(
 				mpi.getAspectRatio(), context);
@@ -199,11 +188,22 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			ratingBar.setIsIndicator(true);
 			ratingBar.setStepSize(0.1f);
 			ratingBar.setNumStars(4);
-			ratingBar.setPadding(0, 0, 5, 0);
+			ratingBar.setPadding(0, 0, 0, 0);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			params.rightMargin = 15;
+			ratingBar.setLayoutParams(params);
+			
 			double rating = mpi.getRating();
 			ratingBar.setRating((float) (rating / 2.5));
 			infographicsView.addView(ratingBar);
 		}
+		
+		ImageView studiov = imageUtilsNormal.createStudioImage(mpi.getStudio(),
+				context, mpi.getMediaTagIdentifier());
+		if (studiov != null) {
+			infographicsView.addView(studiov);
+		}
+		
 
 	}
 

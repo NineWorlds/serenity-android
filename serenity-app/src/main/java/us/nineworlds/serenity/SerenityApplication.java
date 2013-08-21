@@ -23,8 +23,6 @@
 
 package us.nineworlds.serenity;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -49,7 +47,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
  * Global manager for the Serenity application
@@ -110,27 +107,23 @@ public class SerenityApplication extends Application {
 				.cacheInMemory().cacheOnDisc()
 				.bitmapConfig(Bitmap.Config.RGB_565)
 				.showImageForEmptyUri(R.drawable.default_video_cover)
-				.showImageOnFail(R.drawable.default_error)
 				.showStubImage(R.drawable.default_video_cover).build();
 		
 		musicOptions = new DisplayImageOptions.Builder()
 		.cacheInMemory().cacheOnDisc()
 		.bitmapConfig(Bitmap.Config.RGB_565)
 		.showImageForEmptyUri(R.drawable.default_music)
-		.showImageOnFail(R.drawable.default_error)
 		.showStubImage(R.drawable.default_music).build();
 		
 		movieOptions = new DisplayImageOptions.Builder()
 		.cacheInMemory().cacheOnDisc()
 		.bitmapConfig(Bitmap.Config.RGB_565)
 		.showImageForEmptyUri(R.drawable.movies)
-		.showImageOnFail(R.drawable.default_error)
 		.showStubImage(R.drawable.movies).build();
 
 		
 		reflectiveOptions = new DisplayImageOptions.Builder().cacheInMemory()
 				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
-				.showImageOnFail(R.drawable.default_error)
 				.showStubImage(R.drawable.default_video_cover)
 				.displayer(new RoundedBitmapDisplayer(10)).build();
 
@@ -142,7 +135,6 @@ public class SerenityApplication extends Application {
 				.tasksProcessingOrder(QueueProcessingType.FIFO)
 				.denyCacheImageMultipleSizesInMemory()
 				.defaultDisplayImageOptions(defaultOptions).build();
-//				.memoryCache(new WeakMemoryCache()).build();
 
 
 		imageLoader = ImageLoader.getInstance();
