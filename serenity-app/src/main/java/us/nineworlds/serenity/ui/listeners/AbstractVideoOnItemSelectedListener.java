@@ -159,6 +159,12 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100,
 				58);
 
+		ImageView studiov = imageUtilsNormal.createStudioImage(mpi.getStudio(),
+				context, mpi.getMediaTagIdentifier());
+		if (studiov != null) {
+			infographicsView.addView(studiov);
+		}
+
 		ImageView acv = imageUtilsWide.createAudioCodecImage(
 				mpi.getAudioCodec(), context);
 		if (acv != null) {
@@ -169,6 +175,12 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 				mpi.getAudioChannels(), v.getContext());
 		if (achannelsv != null) {
 			infographicsView.addView(achannelsv);
+		}
+
+		ImageView resv = imageUtilsWide.createVideoResolutionImage(
+				mpi.getVideoResolution(), context);
+		if (resv != null) {
+			infographicsView.addView(resv);
 		}
 
 		ImageView aspectv = imageUtilsNormal.createAspectRatioImage(
@@ -197,13 +209,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			ratingBar.setRating((float) (rating / 2.5));
 			infographicsView.addView(ratingBar);
 		}
-		
-		ImageView studiov = imageUtilsNormal.createStudioImage(mpi.getStudio(),
-				context, mpi.getMediaTagIdentifier());
-		if (studiov != null) {
-			infographicsView.addView(studiov);
-		}
-		
 
 	}
 
@@ -304,14 +309,10 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 		@Override
 		public void handleMessage(Message msg) {
-			Log.i("AbstractVideoOnItemSelectedListener", "Processing subtitles.");
-			
 			List<Subtitle> subtitles = (List<Subtitle>) msg.obj;
 			if (subtitles == null || subtitles.isEmpty()) {
-				Log.i("AbstractVideoOnItemSelectedListener", "No subtitles found");
 				return;
 			}
-			Log.i("AbstractVideoOnItemSelectedListener", "Found: " + subtitles.size() + " subtitles.");
 
 			TextView subtitleText = (TextView) context
 					.findViewById(R.id.subtitleFilter);
@@ -342,8 +343,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 					.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(
 							video, context));
 			subtitleSpinner.setVisibility(View.VISIBLE);
-					
-			Log.i("AbstractVideoOnItemSelectedListener", "Subtitles should be displayed and available to be selected.");
 		}
 
 	}
