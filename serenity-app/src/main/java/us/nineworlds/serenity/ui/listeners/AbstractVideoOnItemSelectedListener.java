@@ -159,10 +159,9 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100,
 				58);
 
-		ImageView studiov = imageUtilsNormal.createStudioImage(mpi.getStudio(),
-				context, mpi.getMediaTagIdentifier());
-		if (studiov != null) {
-			infographicsView.addView(studiov);
+		ImageView resv = imageUtilsWide.createVideoCodec(mpi.getVideoCodec(), v.getContext());
+		if (resv != null) {
+			infographicsView.addView(resv);
 		}
 
 		ImageView acv = imageUtilsWide.createAudioCodecImage(
@@ -177,11 +176,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			infographicsView.addView(achannelsv);
 		}
 
-		ImageView resv = imageUtilsWide.createVideoResolutionImage(
-				mpi.getVideoResolution(), context);
-		if (resv != null) {
-			infographicsView.addView(resv);
-		}
 
 		ImageView aspectv = imageUtilsNormal.createAspectRatioImage(
 				mpi.getAspectRatio(), context);
@@ -209,6 +203,13 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			ratingBar.setRating((float) (rating / 2.5));
 			infographicsView.addView(ratingBar);
 		}
+		
+		ImageView studiov = imageUtilsNormal.createStudioImage(mpi.getStudio(),
+				context, mpi.getMediaTagIdentifier());
+		if (studiov != null) {
+			infographicsView.addView(studiov);
+		}
+		
 
 	}
 
