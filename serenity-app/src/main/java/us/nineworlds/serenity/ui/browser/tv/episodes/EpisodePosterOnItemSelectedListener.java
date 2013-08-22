@@ -177,8 +177,6 @@ public class EpisodePosterOnItemSelectedListener extends
 		categoryFilter2.setVisibility(View.GONE);
 		View categoryName = context.findViewById(R.id.movieCategoryName);
 		categoryName.setVisibility(View.GONE);
-		View sideMenuButton = context.findViewById(R.id.menu_button);
-		sideMenuButton.setVisibility(View.GONE);
 		
 		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
 		subt.setVisibility(View.GONE);
