@@ -27,9 +27,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.CompletedVideoRequest;
 import us.nineworlds.serenity.core.subtitles.formats.Caption;
 import us.nineworlds.serenity.core.subtitles.formats.FormatASS;
@@ -73,6 +75,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	static final String TAG = "SerenitySurfaceViewVideoActivity";
 	static final int CONTROLLER_DELAY = 16000; // Sixteen seconds
+		
 	private MediaPlayer mediaPlayer;
 	private String videoURL;
 	private SurfaceView surfaceView;
@@ -203,7 +206,16 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	protected void retrieveIntentExtras() {
 		Bundle extras = getIntent().getExtras();
+		if (extras == null || extras.isEmpty()) {
+			playBackFromVideoQueue();
+		} else {
+			playbackFromIntent(extras);
+		}
 
+		new SubtitleAsyncTask().execute();
+	}
+	
+	private void playbackFromIntent(Bundle extras) {
 		videoURL = extras.getString("videoUrl");
 		if (videoURL == null) {
 			videoURL = extras.getString("encodedvideoUrl");
@@ -224,12 +236,34 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		subtitleURL = extras.getString("subtitleURL");
 		subtitleType = extras.getString("subtitleFormat");
 		mediaTagIdentifier = extras.getString("mediaTagId");
-
-		new SubtitleAsyncTask().execute();
-
 		initMediaController(summary, title, posterURL, videoFormat,
-				videoResolution, audioFormat, audioChannels);
-
+				videoResolution, audioFormat, audioChannels);		
+	}
+	
+	private void playBackFromVideoQueue() {
+		ConcurrentLinkedQueue<VideoContentInfo> queue =  SerenityApplication.getVideoPlaybackQueue();
+		if (queue.isEmpty()) {
+			return;
+		}
+		VideoContentInfo video = queue.poll();
+		videoURL = video.getDirectPlayUrl();
+		videoId = video.id();
+		String summary = video.getSummary();
+		String title = video.getTitle();
+		String posterURL = video.getImageURL();
+		aspectRatio = video.getAspectRatio();
+		String videoFormat = video.getVideoCodec();
+		String videoResolution = video.getVideoResolution();
+		String audioFormat = video.getAudioCodec();
+		String audioChannels = video.getAudioChannels();
+		resumeOffset = video.getResumeOffset();
+		if (video.getSubtitle() != null && !"none".equals(video.getSubtitle().getFormat())) {
+			subtitleURL = video.getSubtitle().getKey(); 
+			subtitleType = video.getSubtitle().getFormat();
+		}
+		mediaTagIdentifier = video.getMediaTagIdentifier();
+		initMediaController(summary, title, posterURL, videoFormat,
+				videoResolution, audioFormat, audioChannels);		
 	}
 
 	/**

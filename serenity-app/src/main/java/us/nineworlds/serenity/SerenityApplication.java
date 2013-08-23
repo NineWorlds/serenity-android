@@ -26,11 +26,13 @@ package us.nineworlds.serenity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.model.Server;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -60,6 +62,7 @@ public class SerenityApplication extends Application {
 	private static final String HTTPCACHE = "httpcache";
 	protected static PlexappFactory plexFactory;
 	private static ConcurrentHashMap<String, Server> plexmediaServers = new ConcurrentHashMap<String, Server>();
+	private static ConcurrentLinkedQueue<VideoContentInfo> videoQueue = new ConcurrentLinkedQueue<VideoContentInfo>();
 	private static ImageLoader imageLoader;
 	public static final int PROGRESS = 0xDEADBEEF;
 
@@ -184,6 +187,21 @@ public class SerenityApplication extends Application {
 
 	public static ImageLoader getImageLoader() {
 		return imageLoader;
+	}
+	
+	/**
+	 * Retrieves the video playback queue.  Items will be added and removed
+	 * from the queue and used by the video player for playback of Episodes
+	 * and Movies.
+	 * 
+	 * When an episode is finished playing it should be removed from the queue.
+	 * 
+	 * This queue is thread safe.
+	 * 
+	 * @return
+	 */
+	public static ConcurrentLinkedQueue<VideoContentInfo> getVideoPlaybackQueue() {
+		return videoQueue;
 	}
 
 }

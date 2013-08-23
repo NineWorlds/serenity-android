@@ -105,39 +105,41 @@ public class AbstractVideoOnItemClickListener {
 	 * @return
 	 */
 	protected Activity launchInternalPlayer(SerenityPosterImageView mpiv) {
+		
 		VideoContentInfo video = mpiv.getPosterInfo();
+		SerenityApplication.getVideoPlaybackQueue().add(video);
 	
-		String url = video.getDirectPlayUrl();
 		Intent vpIntent = new Intent(mpiv.getContext(),
 				SerenitySurfaceViewVideoActivity.class);
-		vpIntent.putExtra("videoUrl", url);
-		vpIntent.putExtra("title", video.getTitle());
-		vpIntent.putExtra("summary", video.getSummary());
-	
-		if (video.getGrandParentPosterURL() != null) {
-			vpIntent.putExtra("posterUrl", video.getGrandParentPosterURL());
-		} else if (video.getParentPosterURL() != null) {
-			vpIntent.putExtra("posterUrl", video.getParentPosterURL());
-		} else {
-			vpIntent.putExtra("posterUrl", video.getImageURL());
-		}
-		vpIntent.putExtra("id", video.id());
-		vpIntent.putExtra("aspectRatio", video.getAspectRatio());
-		vpIntent.putExtra("videoResolution", video.getVideoResolution());
-		vpIntent.putExtra("audioFormat", video.getAudioCodec());
-		vpIntent.putExtra("videoFormat", video.getVideoCodec());
-		vpIntent.putExtra("audioChannels", video.getAudioChannels());
-		vpIntent.putExtra("resumeOffset", video.getResumeOffset());
-		vpIntent.putExtra("duration", video.getDuration());
-		vpIntent.putExtra("mediaTagId", video.getMediaTagIdentifier());
-		
-		if (video.getSubtitle() != null) {
-			Subtitle subtitle = video.getSubtitle();
-			if (!"none".equals(subtitle.getFormat())) {
-				vpIntent.putExtra("subtitleURL", subtitle.getKey());
-				vpIntent.putExtra("subtitleFormat", subtitle.getFormat());
-			}
-		}
+//		String url = video.getDirectPlayUrl();
+//		vpIntent.putExtra("videoUrl", url);
+//		vpIntent.putExtra("title", video.getTitle());
+//		vpIntent.putExtra("summary", video.getSummary());
+//	
+//		if (video.getGrandParentPosterURL() != null) {
+//			vpIntent.putExtra("posterUrl", video.getGrandParentPosterURL());
+//		} else if (video.getParentPosterURL() != null) {
+//			vpIntent.putExtra("posterUrl", video.getParentPosterURL());
+//		} else {
+//			vpIntent.putExtra("posterUrl", video.getImageURL());
+//		}
+//		vpIntent.putExtra("id", video.id());
+//		vpIntent.putExtra("aspectRatio", video.getAspectRatio());
+//		vpIntent.putExtra("videoResolution", video.getVideoResolution());
+//		vpIntent.putExtra("audioFormat", video.getAudioCodec());
+//		vpIntent.putExtra("videoFormat", video.getVideoCodec());
+//		vpIntent.putExtra("audioChannels", video.getAudioChannels());
+//		vpIntent.putExtra("resumeOffset", video.getResumeOffset());
+//		vpIntent.putExtra("duration", video.getDuration());
+//		vpIntent.putExtra("mediaTagId", video.getMediaTagIdentifier());
+//		
+//		if (video.getSubtitle() != null) {
+//			Subtitle subtitle = video.getSubtitle();
+//			if (!"none".equals(subtitle.getFormat())) {
+//				vpIntent.putExtra("subtitleURL", subtitle.getKey());
+//				vpIntent.putExtra("subtitleFormat", subtitle.getFormat());
+//			}
+//		}
 		
 		Activity a = (Activity) mpiv.getContext();
 		a.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
