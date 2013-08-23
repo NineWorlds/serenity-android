@@ -39,6 +39,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * @author dcarver
@@ -48,6 +49,7 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 	private static final int ABOUT = 0;
 	private static final int CLEAR_CACHE = 1;
 	private static final int TUTORIAL = 2;
+	private static final int CLEAR_QUEUE = 3;
 	private MenuDrawer menuDrawer;
 	private ViewGroup focusable;
 	
@@ -82,6 +84,10 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 			Intent youTubei = new Intent(Intent.ACTION_VIEW,
 					Uri.parse("http://www.youtube.com/watch?v=_yKc8ymXerg"));
 			activity.startActivity(youTubei);
+			break;
+		case CLEAR_QUEUE:
+			SerenityApplication.getVideoPlaybackQueue().clear();
+			Toast.makeText(activity, "Video Playback Queue has been emptied.", Toast.LENGTH_LONG).show();
 			break;
 		default:
 			Intent i = new Intent(view.getContext(),

@@ -242,6 +242,7 @@ public class MainActivity extends SerenityActivity {
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_about)));
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_clear_image_cache)));
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.tutorial)));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Empty Video Playback Queue"));
 		
 		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
 		hideMenuItems(listView);

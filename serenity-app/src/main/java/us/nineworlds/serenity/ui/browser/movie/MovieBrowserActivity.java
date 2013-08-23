@@ -213,10 +213,14 @@ public class MovieBrowserActivity extends SerenityActivity {
 				}
 			}
 		}
-		if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-			Intent vpIntent = new Intent(this,
-					SerenitySurfaceViewVideoActivity.class);
-			startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
+		
+		boolean externalPlayer = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("external_player", false);
+		if (!externalPlayer) {
+			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+				Intent vpIntent = new Intent(this,
+						SerenitySurfaceViewVideoActivity.class);
+				startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
+			}
 		}
 	}	
 	

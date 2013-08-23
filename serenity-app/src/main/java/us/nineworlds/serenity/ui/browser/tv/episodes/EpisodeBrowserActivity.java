@@ -26,11 +26,16 @@ package us.nineworlds.serenity.ui.browser.tv.episodes;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
+import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+
 import com.google.analytics.tracking.android.EasyTracker;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -73,6 +78,22 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 			setupEpisodeBrowser();
 		}
 		restarted_state = false;
+	}
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onActivityResult(int, int, android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		boolean externalPlayer = prefs.getBoolean("external_player", false);
+		if (!externalPlayer) {
+			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+				Intent vpIntent = new Intent(this,
+						SerenitySurfaceViewVideoActivity.class);
+				startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
+			}
+		}
+		
 	}
 
 	/*
