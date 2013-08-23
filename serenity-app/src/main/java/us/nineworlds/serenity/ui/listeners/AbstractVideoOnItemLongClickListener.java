@@ -38,6 +38,7 @@ import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
+import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -107,6 +108,8 @@ public class AbstractVideoOnItemLongClickListener {
 		ArrayList<String> options = new ArrayList<String>();
 		options.add(context.getString(R.string.toggle_watched_status));
 		options.add(context.getString(R.string.download_video_to_device));
+		options.add("Add to Video Playback Queue");
+		options.add("Play all Videos in Queue");
 		if (!SerenityApplication.isGoogleTV(context)) {
 			options.add(context.getString(R.string.play_on_tv));
 		}
@@ -165,6 +168,10 @@ public class AbstractVideoOnItemLongClickListener {
 			context.startActivity(sharingIntent);
 		}
 	}
+	
+	protected void performAddToQueue() {
+		SerenityApplication.getVideoPlaybackQueue().add(info);
+	}
 
 	protected class DialogOnItemSelected implements OnItemClickListener {
 
@@ -185,6 +192,14 @@ public class AbstractVideoOnItemLongClickListener {
 				break;
 			case 1:
 				startDownload();
+				break;
+			case 2:
+				performAddToQueue();
+				break;
+			case 3:
+				Intent vpIntent = new Intent(context,
+						SerenitySurfaceViewVideoActivity.class);
+				context.startActivityForResult(vpIntent, 0);
 				break;
 			default:
 				performGoogleTVSecondScreen();

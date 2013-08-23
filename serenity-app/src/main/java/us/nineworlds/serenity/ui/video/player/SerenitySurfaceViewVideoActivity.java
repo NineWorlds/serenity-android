@@ -580,6 +580,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			finish();
 		}
+		
+		
 	}
 
 	/*

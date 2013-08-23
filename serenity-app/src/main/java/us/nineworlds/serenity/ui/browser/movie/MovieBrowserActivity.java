@@ -35,9 +35,13 @@ import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
+import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jess.ui.TwoWayGridView;
 
@@ -208,6 +212,11 @@ public class MovieBrowserActivity extends SerenityActivity {
 					}
 				}
 			}
+		}
+		if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+			Intent vpIntent = new Intent(this,
+					SerenitySurfaceViewVideoActivity.class);
+			startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
 		}
 	}	
 	
