@@ -91,7 +91,7 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 			break;
 		}
 		
-		ListView lv = (ListView) menuDrawer.getMenuView().findViewById(R.id.menu_options);
+		ListView lv = (ListView) menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
 		lv.setFocusable(false);
 		focusable.setFocusableInTouchMode(true);
 		focusable.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);

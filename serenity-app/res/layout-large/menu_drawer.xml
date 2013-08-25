@@ -68,7 +68,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/menu_options"
+        android:id="@+id/menu_list_options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_bar_layout"
@@ -103,7 +103,7 @@
             android:drawableLeft="@drawable/ic_action_action_help"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:nextFocusUp="@+id/menu_options"
+            android:nextFocusUp="@+id/menu_list_options"
             android:clickable="true"
              />
     </LinearLayout>
@@ -118,24 +118,23 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:visibility="gone" >
-
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/leftnav_bar_option_icon_dark" />
-
-        <TextView
+        
+        <TextView android:id="@+id/menu_settings_text"
             android:layout_width="0dp"
             style="@android:style/TextAppearance.Holo.Medium"
-            android:text="Settings"
+            android:text="Help"
             android:textColor="@android:color/white"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dip"
-            android:layout_marginRight="7dip"
             android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:background="@drawable/menu_item_selector"
+            android:drawableLeft="@drawable/leftnav_bar_option_icon_normal_dark"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:nextFocusUp="@+id/menu_options"
+            android:clickable="true"
              />
+        
     </LinearLayout>
 
 </RelativeLayout>

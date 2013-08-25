@@ -244,7 +244,7 @@ public class MainActivity extends SerenityActivity {
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.tutorial), R.drawable.ic_action_tutorial));
 		drawerMenuItem.add(new MenuDrawerItemImpl("Empty Video Queue", R.drawable.ic_action_content_remove));
 		
-		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
 		hideMenuItems(listView);
 		listView.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		listView.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(menuDrawer, mainGallery));
@@ -351,7 +351,7 @@ public class MainActivity extends SerenityActivity {
 		if (keyCode == KeyEvent.KEYCODE_MENU && !menuDrawer.isMenuVisible()) {
 		
 			mainGallery.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
 			showMenuItems(listView);
 			listView.setFocusable(true);
 			listView.requestFocus();
@@ -363,7 +363,7 @@ public class MainActivity extends SerenityActivity {
 			mainGallery.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 			mainGallery.setFocusableInTouchMode(true);
 			mainGallery.requestFocus();
-			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
 			hideMenuItems(listView);
 			menuDrawer.toggleMenu();
 			return true;
@@ -421,7 +421,7 @@ public class MainActivity extends SerenityActivity {
 	@Override
 	public void openOptionsMenu() {
 		mainGallery.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
 		listView.setVisibility(View.VISIBLE);
 		listView.setFocusable(true);
 		listView.requestFocus();

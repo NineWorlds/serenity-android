@@ -45,7 +45,7 @@ public class MenuDrawerOnClickListener implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
-		ListView lv = (ListView) menuDrawer.getMenuView().findViewById(R.id.menu_options);
+		ListView lv = (ListView) menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
 		lv.setVisibility(View.VISIBLE);
 		menuDrawer.toggleMenu(true);
 		lv.requestFocus();
