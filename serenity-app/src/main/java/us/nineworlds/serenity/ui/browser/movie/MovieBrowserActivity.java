@@ -89,10 +89,10 @@ public class MovieBrowserActivity extends SerenityActivity {
 		menuDrawer.setMenuView(R.layout.menu_drawer);
 		
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View"));
-		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View"));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
 		
-		 menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
+		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_options);
 		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		menuOptions.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(menuDrawer));
 		hideMenuItems();

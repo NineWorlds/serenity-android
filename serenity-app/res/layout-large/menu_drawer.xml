@@ -74,10 +74,41 @@
         android:layout_below="@+id/title_bar_layout"
         android:descendantFocusability="afterDescendants"
         android:focusable="false"
+        android:nextFocusDown="@+id/menu_help_text"
+        android:nextFocusUp="@+id/menu_settings"
         android:scrollingCache="true" >
     </ListView>
 
-    <LinearLayout
+    
+    <LinearLayout android:id="@+id/menu_help"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_above="@+id/menu_settings"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:addStatesFromChildren="true" >
+
+
+        <TextView android:id="@+id/menu_help_text"
+            android:layout_width="0dp"
+            style="@android:style/TextAppearance.Holo.Medium"
+            android:text="Help"
+            android:textColor="@android:color/white"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:background="@drawable/menu_item_selector"
+            android:drawableLeft="@drawable/ic_action_action_help"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:nextFocusUp="@+id/menu_options"
+            android:clickable="true"
+             />
+    </LinearLayout>
+    
+    <LinearLayout android:id="@+id/menu_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/background_dark"

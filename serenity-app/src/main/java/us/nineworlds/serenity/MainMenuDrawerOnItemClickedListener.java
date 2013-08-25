@@ -87,12 +87,7 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 			break;
 		case CLEAR_QUEUE:
 			SerenityApplication.getVideoPlaybackQueue().clear();
-			Toast.makeText(activity, "Video Playback Queue has been emptied.", Toast.LENGTH_LONG).show();
-			break;
-		default:
-			Intent i = new Intent(view.getContext(),
-					SerenityPreferenceActivity.class);
-			activity.startActivityForResult(i, 0);
+			Toast.makeText(activity, "Video Queue has been emptied.", Toast.LENGTH_LONG).show();
 			break;
 		}
 		

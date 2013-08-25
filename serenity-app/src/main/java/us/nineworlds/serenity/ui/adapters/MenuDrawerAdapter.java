@@ -38,10 +38,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.text.format.DateUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,11 +80,17 @@ public class MenuDrawerAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		TextView rowView = null;
+		Activity contextView = (Activity) parent.getContext();
+		
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		TextView rowView = (TextView) inflater.inflate(R.layout.serenity_menudrawer_listview_textview, parent, false);
+		rowView = (TextView) inflater.inflate(R.layout.serenity_menudrawer_listview_textview, parent, false);
+		
 		rowView.setBackgroundResource(R.drawable.album_list_view_selector);
 		rowView.setText(menuOptions.get(position).getText());
+		rowView.setGravity(Gravity.CENTER_VERTICAL);
+		rowView.setCompoundDrawablesWithIntrinsicBounds(menuOptions.get(position).getImageResourceID(), 0, 0, 0);
 		return rowView;
 	}
 
