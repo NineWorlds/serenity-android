@@ -28,6 +28,7 @@ import java.util.List;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
+import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.MenuDrawerItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -38,7 +39,6 @@ import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
-import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 
@@ -59,6 +59,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class MovieBrowserActivity extends SerenityActivity {
 
@@ -191,6 +192,13 @@ public class MovieBrowserActivity extends SerenityActivity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY && requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
+			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+				Toast.makeText(this, "There are still " + SerenityApplication.getVideoPlaybackQueue().size() + "videos in the queue.", Toast.LENGTH_LONG).show();
+			}
+			return;
+		}
+		
 		if (resultCode == Activity.RESULT_OK) {
 			if (data != null && data.getAction().equals("com.mxtech.intent.result.VIEW")) {
 				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
@@ -219,7 +227,7 @@ public class MovieBrowserActivity extends SerenityActivity {
 			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
 				Intent vpIntent = new Intent(this,
 						SerenitySurfaceViewVideoActivity.class);
-				startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
+				startActivityForResult(vpIntent, SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
 			}
 		}
 	}	

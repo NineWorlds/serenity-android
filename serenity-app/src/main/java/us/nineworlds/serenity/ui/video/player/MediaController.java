@@ -546,17 +546,6 @@ public class MediaController extends FrameLayout {
 		return false;
 	}
 
-	@Override
-	public boolean dispatchKeyEvent(KeyEvent event) {
-		int keyCode = event.getKeyCode();
-		Activity c = (Activity) getContext();
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			c.finish();
-			return true;
-		}
-		return c.dispatchKeyEvent(event);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 

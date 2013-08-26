@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.CompletedVideoRequest;
 import us.nineworlds.serenity.core.subtitles.formats.Caption;
@@ -42,6 +43,7 @@ import us.nineworlds.serenity.R;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.AsyncTask;
@@ -289,9 +291,18 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	@Override
 	public void finish() {
-		super.finish();
 		subtitleDisplayHandler.removeCallbacks(subtitle);
 		progressReportinghandler.removeCallbacks(progressRunnable);
+		super.finish();
+	}
+	
+	protected void setExitResultCode() {
+		Intent returnIntent = new Intent();
+		if (getParent() == null) {
+			setResult(SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY, returnIntent);
+		} else {
+		    getParent().setResult(SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY, returnIntent);
+		}
 	}
 
 	@Override
@@ -303,14 +314,18 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 					mediaPlayer.stop();
 				}
-				return super.onKeyDown(keyCode, event);
+				setExitResultCode();
+				finish();
+				return true;
 			}
 		} else {
 			if (isKeyCodeBack(keyCode)) {
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 					mediaPlayer.stop();
 				}
-				return super.onKeyDown(keyCode, event);
+				setExitResultCode();
+				finish();
+				return true;
 			}
 		}
 

@@ -33,6 +33,7 @@ import com.google.analytics.tracking.android.Log;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
@@ -199,7 +200,7 @@ public class AbstractVideoOnItemLongClickListener {
 			case 3:
 				Intent vpIntent = new Intent(context,
 						SerenitySurfaceViewVideoActivity.class);
-				context.startActivityForResult(vpIntent, 0);
+				context.startActivityForResult(vpIntent, SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
 				break;
 			default:
 				performGoogleTVSecondScreen();

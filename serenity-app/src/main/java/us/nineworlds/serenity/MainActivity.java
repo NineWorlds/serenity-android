@@ -173,7 +173,6 @@ public class MainActivity extends SerenityActivity {
 		}		
 	}
 	
-	public static int BROWSER_RESULT_CODE = 200;
 	private static int downloadIndex;
 	private static boolean downloadsCancelled = false;
 	private static DSInterface dsInterface;

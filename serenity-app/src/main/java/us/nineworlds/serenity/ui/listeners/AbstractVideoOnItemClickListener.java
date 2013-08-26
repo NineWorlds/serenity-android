@@ -23,8 +23,8 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
@@ -37,6 +37,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.Toast;
 
 /**
  * Common class used by both the Poster Gallery view for itemClicks and the
@@ -53,6 +54,11 @@ public class AbstractVideoOnItemClickListener {
 	 * @param v
 	 */
 	protected void onItemClick(View v) {
+		
+		if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+			Toast.makeText(v.getContext(), "Cleared video queue before playback.", Toast.LENGTH_LONG).show();
+			SerenityApplication.getVideoPlaybackQueue().clear();
+		}
 		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
 	
 		prefs = PreferenceManager
@@ -77,12 +83,12 @@ public class AbstractVideoOnItemClickListener {
 				try {
 					vpIntent.setPackage("com.mxtech.videoplayer.ad");
 					vpIntent.setClassName("com.mxtech.videoplayer.ad","com.mxtech.videoplayer.ad.ActivityScreen");
-					activity.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);				
+					activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);				
 				} catch (ActivityNotFoundException ex) {
 					try {
 						vpIntent.setPackage("com.mxtech.videoplayer.pro");
 						vpIntent.setClassName("com.mxtech.videoplayer.pro","com.mxtech.videoplayer.ActivityScreen");
-						activity.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);				
+						activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);				
 					} catch (ActivityNotFoundException ex2) {
 						vpIntent.setPackage(null);
 						vpIntent.setComponent(null);
@@ -142,7 +148,7 @@ public class AbstractVideoOnItemClickListener {
 //		}
 		
 		Activity a = (Activity) mpiv.getContext();
-		a.startActivityForResult(vpIntent, MainActivity.BROWSER_RESULT_CODE);
+		a.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
 		return a;
 	}
 
