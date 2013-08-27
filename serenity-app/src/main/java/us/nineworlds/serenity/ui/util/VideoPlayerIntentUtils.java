@@ -110,6 +110,7 @@ public class VideoPlayerIntentUtils {
 	protected static void vimuVideoPlayerOptions(VideoContentInfo videoContent, Intent vpIntent) {
 		vpIntent.putExtra("forcename", videoContent.getTitle());
 		vpIntent.putExtra("forcedirect", true);
+		vpIntent.putExtra("startfrom", videoContent.getResumeOffset());
 		if (videoContent.getSubtitle() != null ) {
 			Subtitle subtitle = videoContent.getSubtitle();
 			if (!"none".equals(subtitle.getFormat())) {
