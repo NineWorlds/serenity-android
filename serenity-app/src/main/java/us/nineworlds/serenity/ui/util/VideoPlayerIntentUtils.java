@@ -61,7 +61,7 @@ public class VideoPlayerIntentUtils {
 		vpIntent.putExtra("position", (long) videoContent.getResumeOffset());
 
 		if (SerenityApplication.isGoogleTV(activity) || mxplayer == false) {
-			activity.startActivity(vpIntent);
+			activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
 		} else {
 			try {
 				vpIntent.setPackage("com.mxtech.videoplayer.ad");
