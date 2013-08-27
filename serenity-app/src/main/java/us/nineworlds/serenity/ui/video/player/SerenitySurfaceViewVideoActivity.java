@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import us.nineworlds.plex.rest.PlexappFactory;
@@ -243,7 +244,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	}
 	
 	private void playBackFromVideoQueue() {
-		ConcurrentLinkedQueue<VideoContentInfo> queue =  SerenityApplication.getVideoPlaybackQueue();
+		LinkedList<VideoContentInfo> queue =  SerenityApplication.getVideoPlaybackQueue();
 		if (queue.isEmpty()) {
 			return;
 		}

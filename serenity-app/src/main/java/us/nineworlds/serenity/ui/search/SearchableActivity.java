@@ -42,7 +42,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MenuItem;
 import us.nineworlds.serenity.core.services.MovieSearchIntentService;
-import us.nineworlds.serenity.ui.activity.SerenityActivity;
+import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
@@ -54,7 +54,7 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
  * @author dcarver
  * 
  */
-public class SearchableActivity extends SerenityActivity {
+public class SearchableActivity extends SerenityVideoActivity {
 
 	protected Handler searchHandler;
 	protected static View bgLayout;

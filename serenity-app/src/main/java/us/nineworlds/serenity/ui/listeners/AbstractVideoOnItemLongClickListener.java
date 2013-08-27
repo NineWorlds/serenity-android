@@ -39,6 +39,7 @@ import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
+import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
@@ -48,7 +49,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
+import android.preference.PreferenceManager;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
@@ -171,6 +174,14 @@ public class AbstractVideoOnItemLongClickListener {
 	}
 	
 	protected void performAddToQueue() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		boolean extplayer = prefs.getBoolean("external_player", false);
+		boolean extplayerVideoQueue = prefs.getBoolean("external_player_continuous_playback", false);
+		if (extplayer && !extplayerVideoQueue) {
+			Toast.makeText(context, "External player video queue support has not been enabled.", Toast.LENGTH_LONG).show();
+			return;
+		}
+
 		SerenityApplication.getVideoPlaybackQueue().add(info);
 	}
 
@@ -198,9 +209,26 @@ public class AbstractVideoOnItemLongClickListener {
 				performAddToQueue();
 				break;
 			case 3:
-				Intent vpIntent = new Intent(context,
-						SerenitySurfaceViewVideoActivity.class);
-				context.startActivityForResult(vpIntent, SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
+				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+					boolean extplayer = prefs.getBoolean("external_player", false);
+					boolean mxplayer = prefs.getBoolean("mxplayer_plex_offset", false);
+					boolean extplayerVideoQueue = prefs.getBoolean("external_player_continuous_playback", false);
+	
+					
+					if (extplayer) {
+						if (extplayerVideoQueue) {
+							VideoContentInfo videoContent = SerenityApplication.getVideoPlaybackQueue().poll();
+							VideoPlayerIntentUtils.launchExternalPlayer(videoContent, mxplayer, context);
+						} else {
+							Toast.makeText(context, "External player video queue support has not been enabled.", Toast.LENGTH_LONG).show();
+						}
+					} else {
+						Intent vpIntent = new Intent(context,
+								SerenitySurfaceViewVideoActivity.class);
+						context.startActivityForResult(vpIntent, SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
+					}
+				}
 				break;
 			default:
 				performGoogleTVSecondScreen();

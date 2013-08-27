@@ -28,6 +28,7 @@ import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
+import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import android.app.Activity;
@@ -67,36 +68,8 @@ public class AbstractVideoOnItemClickListener {
 		boolean mxplayer = prefs.getBoolean("mxplayer_plex_offset", false);
 	
 		if (externalPlayer) {
-			String url = mpiv.getPosterInfo().getDirectPlayUrl();
-			Intent vpIntent = new Intent(Intent.ACTION_VIEW);
-			vpIntent.setDataAndType(Uri.parse(url), "video/*");
-	
-			mxVideoPlayerOptions(mpiv, vpIntent);
-			vimuVideoPlayerOptions(mpiv, vpIntent);
-			// MX Player and VLC seem to use the same optional extra
-			vpIntent.putExtra("position", (long) mpiv.getPosterInfo().getResumeOffset());
-	
-			Activity activity = (Activity) mpiv.getContext();
-			if (SerenityApplication.isGoogleTV(activity) || mxplayer == false) {
-				activity.startActivity(vpIntent);
-			} else {
-				try {
-					vpIntent.setPackage("com.mxtech.videoplayer.ad");
-					vpIntent.setClassName("com.mxtech.videoplayer.ad","com.mxtech.videoplayer.ad.ActivityScreen");
-					activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);				
-				} catch (ActivityNotFoundException ex) {
-					try {
-						vpIntent.setPackage("com.mxtech.videoplayer.pro");
-						vpIntent.setClassName("com.mxtech.videoplayer.pro","com.mxtech.videoplayer.ActivityScreen");
-						activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);				
-					} catch (ActivityNotFoundException ex2) {
-						vpIntent.setPackage(null);
-						vpIntent.setComponent(null);
-						activity.startActivity(vpIntent);
-					}
-				}
-			}
-			
+			Activity activity = (Activity) v.getContext();
+			VideoPlayerIntentUtils.launchExternalPlayer(mpiv.getPosterInfo(), mxplayer, (Activity) v.getContext());
 			new WatchedVideoAsyncTask().execute(mpiv.getPosterInfo().id());
 			updatedWatchedCount(mpiv, activity);
 			return;
@@ -117,35 +90,6 @@ public class AbstractVideoOnItemClickListener {
 	
 		Intent vpIntent = new Intent(mpiv.getContext(),
 				SerenitySurfaceViewVideoActivity.class);
-//		String url = video.getDirectPlayUrl();
-//		vpIntent.putExtra("videoUrl", url);
-//		vpIntent.putExtra("title", video.getTitle());
-//		vpIntent.putExtra("summary", video.getSummary());
-//	
-//		if (video.getGrandParentPosterURL() != null) {
-//			vpIntent.putExtra("posterUrl", video.getGrandParentPosterURL());
-//		} else if (video.getParentPosterURL() != null) {
-//			vpIntent.putExtra("posterUrl", video.getParentPosterURL());
-//		} else {
-//			vpIntent.putExtra("posterUrl", video.getImageURL());
-//		}
-//		vpIntent.putExtra("id", video.id());
-//		vpIntent.putExtra("aspectRatio", video.getAspectRatio());
-//		vpIntent.putExtra("videoResolution", video.getVideoResolution());
-//		vpIntent.putExtra("audioFormat", video.getAudioCodec());
-//		vpIntent.putExtra("videoFormat", video.getVideoCodec());
-//		vpIntent.putExtra("audioChannels", video.getAudioChannels());
-//		vpIntent.putExtra("resumeOffset", video.getResumeOffset());
-//		vpIntent.putExtra("duration", video.getDuration());
-//		vpIntent.putExtra("mediaTagId", video.getMediaTagIdentifier());
-//		
-//		if (video.getSubtitle() != null) {
-//			Subtitle subtitle = video.getSubtitle();
-//			if (!"none".equals(subtitle.getFormat())) {
-//				vpIntent.putExtra("subtitleURL", subtitle.getKey());
-//				vpIntent.putExtra("subtitleFormat", subtitle.getFormat());
-//			}
-//		}
 		
 		Activity a = (Activity) mpiv.getContext();
 		a.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
@@ -160,45 +104,4 @@ public class AbstractVideoOnItemClickListener {
 		int watchedCount = epiv.getPosterInfo().getViewCount();
 		epiv.getPosterInfo().setViewCount(watchedCount + 1);
 	}
-
-	/**
-	 * @param epiv
-	 * @param vpIntent
-	 */
-	protected void vimuVideoPlayerOptions(SerenityPosterImageView epiv, Intent vpIntent) {
-		vpIntent.putExtra("forcename", epiv.getPosterInfo().getTitle());
-		vpIntent.putExtra("forcedirect", true);
-		if (epiv.getPosterInfo().getSubtitle() != null ) {
-			Subtitle subtitle = epiv.getPosterInfo().getSubtitle();
-			if (!"none".equals(subtitle.getFormat())) {
-				vpIntent.putExtra("forcedsrt", subtitle.getKey());
-			}			
-		}
-	}
-
-	/**
-	 * @param epiv
-	 * @param vpIntent
-	 */
-	protected void mxVideoPlayerOptions(SerenityPosterImageView epiv, Intent vpIntent) {
-		// MX Video Player options
-		vpIntent.putExtra("decode_mode", 1);
-		vpIntent.putExtra("title", epiv.getPosterInfo().getTitle());
-		vpIntent.putExtra("return_result", true);
-		if (epiv.getPosterInfo().getSubtitle() != null ) {
-			Subtitle subtitle = epiv.getPosterInfo().getSubtitle();
-			if (!"none".equals(subtitle.getFormat())) {
-				Uri[] subt = { Uri.parse(subtitle.getKey()) };
-				vpIntent.putExtra("subs", subt);
-				vpIntent.putExtra("subs.enable", subt);
-			}
-		}
-		
-		boolean usePlexResumeOffset = prefs.getBoolean("mxplayer_plex_offset", false);
-		if (usePlexResumeOffset) {
-			vpIntent.putExtra("position", epiv.getPosterInfo().getResumeOffset());
-		}
-		
-	}
-
 }

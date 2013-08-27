@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
+import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
@@ -43,7 +44,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
-public class EpisodeBrowserActivity extends SerenityActivity {
+public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
 	private SerenityGallery posterGallery;
 	private String key;
@@ -81,28 +82,6 @@ public class EpisodeBrowserActivity extends SerenityActivity {
 		restarted_state = false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onActivityResult(int, int, android.content.Intent)
-	 */
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
-			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-				Toast.makeText(this, "There are still " + SerenityApplication.getVideoPlaybackQueue().size() + "videos in the queue.", Toast.LENGTH_LONG).show();
-			}
-			return;
-		}
-		
-		boolean externalPlayer = prefs.getBoolean("external_player", false);
-		if (!externalPlayer) {
-			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-				Intent vpIntent = new Intent(this,
-						SerenitySurfaceViewVideoActivity.class);
-				startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
-			}
-		}
-		
-	}
 
 	/*
 	 * (non-Javadoc)

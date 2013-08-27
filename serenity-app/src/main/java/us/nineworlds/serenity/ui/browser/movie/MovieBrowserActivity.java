@@ -35,6 +35,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
+import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -61,15 +62,13 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class MovieBrowserActivity extends SerenityActivity {
+public class MovieBrowserActivity extends SerenityVideoActivity {
 
 	private static String key;
 	private static Spinner categorySpinner;
 	private boolean restarted_state = false;
 	private Handler categoryHandler;
 	public static boolean IS_GRID_VIEW = false;
-	public static int CLICKED_GRID_VIEW_ITEM = 0;
-
 	private static Activity context;
 	private MenuDrawer menuDrawer;
 	private ListView menuOptions;
@@ -190,47 +189,6 @@ public class MovieBrowserActivity extends SerenityActivity {
 		restarted_state = true;
 	}
 	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY && requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
-			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-				Toast.makeText(this, "There are still " + SerenityApplication.getVideoPlaybackQueue().size() + "videos in the queue.", Toast.LENGTH_LONG).show();
-			}
-			return;
-		}
-		
-		if (resultCode == Activity.RESULT_OK) {
-			if (data != null && data.getAction().equals("com.mxtech.intent.result.VIEW")) {
-				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
-				if (gallery != null) {
-					VideoContentInfo video = (VideoContentInfo) gallery.getSelectedItem();
-					if (video != null) {
-						updateProgress(data, video);
-					}
-				} else {
-					TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
-					if (gridView != null) {
-						VideoContentInfo video = (VideoContentInfo) gridView.getSelectedItem();
-						if (video == null) {
-							video = (VideoContentInfo) gridView.getItemAtPosition(CLICKED_GRID_VIEW_ITEM);
-						}
-						if (video != null) {
-							updateProgress(data, video);
-						}
-					}
-				}
-			}
-		}
-		
-		boolean externalPlayer = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("external_player", false);
-		if (!externalPlayer) {
-			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-				Intent vpIntent = new Intent(this,
-						SerenitySurfaceViewVideoActivity.class);
-				startActivityForResult(vpIntent, SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
-			}
-		}
-	}	
 	
 	private static class CategoryHandler extends Handler {
 

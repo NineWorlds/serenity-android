@@ -24,9 +24,9 @@
 package us.nineworlds.serenity;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
@@ -62,7 +62,7 @@ public class SerenityApplication extends Application {
 	private static final String HTTPCACHE = "httpcache";
 	protected static PlexappFactory plexFactory;
 	private static ConcurrentHashMap<String, Server> plexmediaServers = new ConcurrentHashMap<String, Server>();
-	private static ConcurrentLinkedQueue<VideoContentInfo> videoQueue = new ConcurrentLinkedQueue<VideoContentInfo>();
+	private static LinkedList<VideoContentInfo> videoQueue = new LinkedList<VideoContentInfo>();
 	private static ImageLoader imageLoader;
 	public static final int PROGRESS = 0xDEADBEEF;
 
@@ -200,7 +200,7 @@ public class SerenityApplication extends Application {
 	 * 
 	 * @return
 	 */
-	public static ConcurrentLinkedQueue<VideoContentInfo> getVideoPlaybackQueue() {
+	public static LinkedList<VideoContentInfo> getVideoPlaybackQueue() {
 		return videoQueue;
 	}
 

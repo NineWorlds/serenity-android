@@ -101,7 +101,7 @@
     <string name="fade_in_background_fan_art">Fade-In Background Fan Art</string>
     <string name="emphasize_poster_summary">Emphasize the selected item when browsing through the detail view. Google TV devices only.</string>
     <string name="poster_selected_emphasis">Poster Selected Emphasis</string>
-    <string name="media_player">Media Player</string>
+    <string name="media_player">Media Player - External</string>
     <string name="use_external_media_player_">Use external media player.</string>
     <string name="external_player">External Player</string>
     <string name="internal_player_osd_summary">Display internal media player on screen display information on startup of video playback.</string>

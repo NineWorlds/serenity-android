@@ -77,26 +77,39 @@
             android:key="animation_gallery_scrolling"
             android:summary="@string/enable_gallery_scrolling"
             android:title="@string/enable_gallery_scrolling_animation" />
-        
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/media_player" >
+    
+    
+    <PreferenceCategory android:title="Media Player - Internal" >
         <CheckBoxPreference
-            android:key="external_player"
-            android:summary="@string/use_external_media_player_"
-            android:title="@string/external_player" />
+            android:key="plex_aspect_ratio"
+            android:summary="@string/prefer_plex_media_server_s_aspect_ratio_"
+            android:title="@string/plex_aspect_ratio" />
+        
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="internal_player_osd"
             android:summary="@string/internal_player_osd_summary"
             android:title="@string/on_screen_display" />
+    </PreferenceCategory>
+    
+    
+    <PreferenceCategory android:title="@string/media_player" >
+        <CheckBoxPreference
+            android:key="external_player"
+            android:summary="@string/use_external_media_player_"
+            android:title="@string/external_player" />
+        
+        <CheckBoxPreference
+            android:key="external_player_continuous_playback"
+            android:summary="Enables video queue support for external players. Experimental support for external players and the video queue and continuous playback support."
+            android:title="Enable Video Queue for External Players" />
+        
         <CheckBoxPreference
             android:key="mxplayer_plex_offset"
             android:summary="@string/mx_player_resume_summary"
             android:title="@string/force_mx_player_resume_position_" />
-        <CheckBoxPreference
-            android:key="plex_aspect_ratio"
-            android:summary="@string/prefer_plex_media_server_s_aspect_ratio_"
-            android:title="@string/plex_aspect_ratio" />
+        
     </PreferenceCategory>
 
 </PreferenceScreen>

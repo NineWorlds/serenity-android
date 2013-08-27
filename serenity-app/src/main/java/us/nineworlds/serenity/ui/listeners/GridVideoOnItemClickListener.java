@@ -23,7 +23,7 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
+import us.nineworlds.serenity.core.SerenityConstants;
 
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemClickListener;
@@ -39,7 +39,7 @@ public class GridVideoOnItemClickListener extends AbstractVideoOnItemClickListen
 	@Override
 	public void onItemClick(TwoWayAdapterView<?> av, View v, int arg2,
 			long arg3) {
-		MovieBrowserActivity.CLICKED_GRID_VIEW_ITEM = arg2;
+		SerenityConstants.CLICKED_GRID_VIEW_ITEM = arg2;
 		onItemClick(v);
 	}
 
