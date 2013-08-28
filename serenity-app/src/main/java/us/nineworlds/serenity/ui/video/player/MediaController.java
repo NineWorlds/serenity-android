@@ -564,8 +564,17 @@ public class MediaController extends FrameLayout {
 			show(sDefaultTimeout);
 		}
 	};
-
-
+	
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		int keyCode = event.getKeyCode();
+		Activity c = (Activity) getContext();
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			c.onKeyDown(keyCode, event);
+			return true;
+		}
+		return c.dispatchKeyEvent(event);
+	}
+	
 	public void doPauseResume() {
 		if (mPlayer.isPlaying())
 			mPlayer.pause();
