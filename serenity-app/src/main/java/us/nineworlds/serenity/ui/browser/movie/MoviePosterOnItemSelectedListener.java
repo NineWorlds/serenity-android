@@ -26,6 +26,8 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
+import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
@@ -33,7 +35,12 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -63,6 +70,22 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 		TextView title = (TextView) context
 				.findViewById(R.id.movieBrowserPosterTitle);
 		title.setText(v.getPosterInfo().getTitle());
+		
+		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100,
+				58);
+
+		ImageView crv = imageUtilsNormal.createContentRatingImage(
+				v.getPosterInfo().getContentRating(), context);
+		Drawable drawable = crv.getDrawable();
+		BitmapDrawable bmd = (BitmapDrawable)drawable;
+		
+		int w = ImageUtils.getDPI(100, (Activity)v.getContext());
+		int h = ImageUtils.getDPI(58, (Activity)v.getContext());
+		Bitmap bitmap = bmd.getBitmap();
+		
+	    Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, w, h, false);
+		
+		title.setCompoundDrawablesWithIntrinsicBounds(null, null, new BitmapDrawable(bitmapResized), null);
 	}
 
 	@Override

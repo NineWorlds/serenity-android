@@ -48,6 +48,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -154,38 +155,39 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 		watchedStatus(infographicsView, mpi);
 
-		ImageInfographicUtils imageUtilsWide = new ImageInfographicUtils(154,
-				58);
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100,
 				58);
+		ImageInfographicUtils imageUtilsAudioChannel = new ImageInfographicUtils(90,
+				58);
 
-		ImageView resv = imageUtilsWide.createVideoCodec(mpi.getVideoCodec(), v.getContext());
+		ImageView resv = imageUtilsNormal.createVideoCodec(mpi.getVideoCodec(), v.getContext());
 		if (resv != null) {
 			infographicsView.addView(resv);
 		}
-
-		ImageView acv = imageUtilsWide.createAudioCodecImage(
-				mpi.getAudioCodec(), context);
-		if (acv != null) {
-			infographicsView.addView(acv);
+		
+		ImageView resolution = imageUtilsNormal.createVideoResolutionImage(mpi.getVideoResolution(), v.getContext());
+		if (resolution != null) {
+			infographicsView.addView(resolution);
 		}
-
-		ImageView achannelsv = imageUtilsWide.createAudioChannlesImage(
-				mpi.getAudioChannels(), v.getContext());
-		if (achannelsv != null) {
-			infographicsView.addView(achannelsv);
-		}
-
-
+		
 		ImageView aspectv = imageUtilsNormal.createAspectRatioImage(
 				mpi.getAspectRatio(), context);
 		if (aspectv != null) {
 			infographicsView.addView(aspectv);
 		}
+		
 
-		ImageView crv = imageUtilsWide.createContentRatingImage(
-				mpi.getContentRating(), context);
-		infographicsView.addView(crv);
+		ImageView acv = imageUtilsNormal.createAudioCodecImage(
+				mpi.getAudioCodec(), context);
+		if (acv != null) {
+			infographicsView.addView(acv);
+		}
+
+		ImageView achannelsv = imageUtilsAudioChannel.createAudioChannlesImage(
+				mpi.getAudioChannels(), v.getContext());
+		if (achannelsv != null) {
+			infographicsView.addView(achannelsv);
+		}
 
 		if (mpi.getRating() != 0) {
 			RatingBar ratingBar = new RatingBar(context, null,
@@ -222,9 +224,10 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			VideoContentInfo mpi) {
 		ImageView viewed = new ImageView(context);
 		viewed.setScaleType(ScaleType.FIT_XY);
-		LinearLayout.LayoutParams viewedlp = new LinearLayout.LayoutParams(80,
-				58);
+		LinearLayout.LayoutParams viewedlp = new LinearLayout.LayoutParams(60,
+				38);
 		viewedlp.setMargins(10, 0, 5, 5);
+		viewedlp.gravity = Gravity.CENTER_VERTICAL;
 		viewed.setLayoutParams(viewedlp);
 		viewed.setId(WATCHED_VIEW_ID);
 		

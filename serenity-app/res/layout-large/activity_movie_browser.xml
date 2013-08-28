@@ -113,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:gravity="left"
+            android:gravity="left|center_vertical"
             android:paddingLeft="10dp"
             android:textColor="#F0F0F0"
             android:textStyle="bold"
