@@ -69,12 +69,15 @@ import com.castillo.dd.Download;
 import com.castillo.dd.DownloadService;
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.tjeannin.apprate.AppRate;
 
 public class MainActivity extends SerenityActivity {
 
 	private class AutoConfigureHandlerRunnable implements Runnable {
-		
-		/* (non-Javadoc)
+
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see java.lang.Runnable#run()
 		 */
 		@Override
@@ -82,21 +85,32 @@ public class MainActivity extends SerenityActivity {
 			if (SerenityApplication.getPlexMediaServers().isEmpty()) {
 				return;
 			}
-			Server server = SerenityApplication.getPlexMediaServers().values().iterator().next();
+			Server server = SerenityApplication.getPlexMediaServers().values()
+					.iterator().next();
 			String ipAddress = preferences.getString("server", "");
-			if (SerenityApplication.getPlexMediaServers().isEmpty() && "".equals(ipAddress)) {
-				Toast.makeText(MainActivity.this, "No servers discovered or configured. Use settings to configure the ip address manually.", Toast.LENGTH_LONG).show();
+			if (SerenityApplication.getPlexMediaServers().isEmpty()
+					&& "".equals(ipAddress)) {
+				Toast.makeText(
+						MainActivity.this,
+						"No servers discovered or configured. Use settings to configure the ip address manually.",
+						Toast.LENGTH_LONG).show();
 				return;
 			}
 			if ("".equals(ipAddress)) {
 				Editor edit = preferences.edit();
 				edit.putString("server", server.getIPAddress());
 				edit.apply();
-				Toast.makeText(mainContext, getResources().getText(R.string.auto_configuring_server_using_) + server.getServerName(), Toast.LENGTH_LONG).show();
+				Toast.makeText(
+						mainContext,
+						getResources().getText(
+								R.string.auto_configuring_server_using_)
+								+ server.getServerName(), Toast.LENGTH_LONG)
+						.show();
 				mainContext.recreate();
 			}
 		}
 	}
+
 	private static class DownloadHandler extends Handler {
 		@Override
 		public void handleMessage(Message msg) {
@@ -164,15 +178,15 @@ public class MainActivity extends SerenityActivity {
 			Notification notification = new Notification(icon, tickerText, when);
 			String expandedTitle = "Serenity Download";
 			Intent intent = new Intent(mainContext, MainActivity.class);
-			PendingIntent launchIntent = PendingIntent.getActivity(mainContext, 0,
-					intent, 0);
+			PendingIntent launchIntent = PendingIntent.getActivity(mainContext,
+					0, intent, 0);
 			notification.setLatestEventInfo(mainContext, expandedTitle,
 					expandedText, launchIntent);
 			int notificationRef = 1;
 			notificationManager.notify(notificationRef, notification);
-		}		
+		}
 	}
-	
+
 	private static int downloadIndex;
 	private static boolean downloadsCancelled = false;
 	private static DSInterface dsInterface;
@@ -186,7 +200,6 @@ public class MainActivity extends SerenityActivity {
 	}
 
 	protected Handler autoConfigureHandler = new Handler();
-
 
 	private ServiceConnection downloadService = new ServiceConnection() {
 		@Override
@@ -211,7 +224,7 @@ public class MainActivity extends SerenityActivity {
 	protected Handler mHandler = new DownloadHandler();
 
 	private SharedPreferences preferences;
-	
+
 	private boolean restarted_state = false;
 
 	/**
@@ -223,13 +236,13 @@ public class MainActivity extends SerenityActivity {
 		menuDrawer.setMenuView(R.layout.menu_drawer);
 		menuDrawer.setContentView(R.layout.activity_plex_app_main);
 		menuDrawer.setDrawerIndicatorEnabled(true);
-		
+
 		mainGalleryBackgroundView = findViewById(R.id.mainGalleryBackground);
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
 		View menuButton = findViewById(R.id.menu_button);
-		menuButton.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
+		menuButton
+				.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
 
-		
 		populateMenuOptions();
 	}
 
@@ -238,31 +251,42 @@ public class MainActivity extends SerenityActivity {
 	 */
 	protected void populateMenuOptions() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_about), R.drawable.ic_action_action_about));
-		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_clear_image_cache), R.drawable.ic_action_content_remove));
-		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.tutorial), R.drawable.ic_action_tutorial));
-		drawerMenuItem.add(new MenuDrawerItemImpl("Empty Video Queue", R.drawable.ic_action_content_remove));
-		
-		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
+		drawerMenuItem
+				.add(new MenuDrawerItemImpl(getResources().getString(
+						R.string.options_main_about),
+						R.drawable.ic_action_action_about));
+		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
+				R.string.options_main_clear_image_cache),
+				R.drawable.ic_action_content_remove));
+		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
+				R.string.tutorial), R.drawable.ic_action_tutorial));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Empty Video Queue",
+				R.drawable.ic_action_content_remove));
+
+		ListView listView = (ListView) menuDrawer.getMenuView().findViewById(
+				R.id.menu_list_options);
 		hideMenuItems(listView);
 		listView.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-		listView.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(menuDrawer, mainGallery));
+		listView.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
+				menuDrawer, mainGallery));
 	}
 
 	/**
 	 * @param listView
 	 */
 	protected void hideMenuItems(ListView listView) {
-		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
+		if (!getPackageManager().hasSystemFeature(
+				"android.hardware.touchscreen")) {
 			listView.setVisibility(View.INVISIBLE);
 		}
 	}
-	
+
 	protected void showMenuItems(ListView listView) {
-		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
+		if (!getPackageManager().hasSystemFeature(
+				"android.hardware.touchscreen")) {
 			listView.setVisibility(View.VISIBLE);
 		}
-		
+
 	}
 
 	/**
@@ -320,7 +344,6 @@ public class MainActivity extends SerenityActivity {
 
 		createSideMenu();
 		initPreferences();
-		
 
 		boolean googletv = SerenityApplication.isGoogleTV(this);
 		if (!googletv) {
@@ -330,7 +353,19 @@ public class MainActivity extends SerenityActivity {
 		}
 
 		initDownloadService();
-		
+
+		ratingNudger();
+
+	}
+
+	/**
+	 * 
+	 */
+	protected void ratingNudger() {
+		new AppRate(this)
+		      .setMinDaysUntilPrompt(14)
+		      .setShowIfAppHasCrashed(false)
+		      .init();
 	}
 
 	@Override
@@ -342,36 +377,43 @@ public class MainActivity extends SerenityActivity {
 		getApplicationContext().unbindService(downloadService);
 	}
 
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int, android.view.KeyEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
+	 * android.view.KeyEvent)
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU && !menuDrawer.isMenuVisible()) {
-		
-			mainGallery.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
+
+			mainGallery
+					.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+			ListView listView = (ListView) menuDrawer.getMenuView()
+					.findViewById(R.id.menu_list_options);
 			showMenuItems(listView);
 			listView.setFocusable(true);
 			listView.requestFocus();
 			menuDrawer.toggleMenu();
 			return true;
 		}
-		
+
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
-			mainGallery.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+			mainGallery
+					.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 			mainGallery.setFocusableInTouchMode(true);
 			mainGallery.requestFocus();
-			ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
+			ListView listView = (ListView) menuDrawer.getMenuView()
+					.findViewById(R.id.menu_list_options);
 			hideMenuItems(listView);
 			menuDrawer.toggleMenu();
 			return true;
 		}
-		
+
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			return true;
 		}
-		
+
 		return super.onKeyDown(keyCode, event);
 	}
 
@@ -382,7 +424,7 @@ public class MainActivity extends SerenityActivity {
 		super.onRestart();
 
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -396,38 +438,45 @@ public class MainActivity extends SerenityActivity {
 		discoverPlexServers();
 
 	}
+
 	@Override
 	protected void onStart() {
 		super.onStart();
 		EasyTracker.getInstance().activityStart(this);
-		
-		autoConfigureHandler.postDelayed(new AutoConfigureHandlerRunnable(), 2500);
+
+		autoConfigureHandler.postDelayed(new AutoConfigureHandlerRunnable(),
+				2500);
 		if (restarted_state == false) {
 			setupGallery();
+
 		}
 		restarted_state = false;
 	}
-	
+
 	@Override
 	protected void onStop() {
 		super.onStop();
 		EasyTracker.getInstance().activityStop(this);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#openOptionsMenu()
 	 */
 	@Override
 	public void openOptionsMenu() {
-		mainGallery.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-		ListView listView = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
+		mainGallery
+				.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+		ListView listView = (ListView) menuDrawer.getMenuView().findViewById(
+				R.id.menu_list_options);
 		listView.setVisibility(View.VISIBLE);
 		listView.setFocusable(true);
 		listView.requestFocus();
-		
+
 		menuDrawer.toggleMenu();
 	}
-	
+
 	private void setupGallery() {
 		mainGallery.setAdapter(new MainMenuTextViewAdapter(this,
 				mainGalleryBackgroundView));
