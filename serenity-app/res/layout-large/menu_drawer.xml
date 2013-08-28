@@ -76,6 +76,8 @@
         android:focusable="false"
         android:nextFocusDown="@+id/menu_help_text"
         android:nextFocusUp="@+id/menu_settings"
+        android:nextFocusRight="@+id/menu_list_options"
+        android:nextFocusLeft="@+id/menu_list_options"
         android:scrollingCache="true" >
     </ListView>
 

@@ -124,6 +124,7 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			showMenuItems();
 			menuDrawer.toggleMenu();
+			menuOptions.requestFocusFromTouch();
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
