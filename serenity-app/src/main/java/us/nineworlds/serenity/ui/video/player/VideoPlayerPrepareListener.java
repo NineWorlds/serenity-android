@@ -25,6 +25,7 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import android.app.AlertDialog;
@@ -85,7 +86,7 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 		surfaceView.setLayoutParams(lp);
 		mediaController.setEnabled(true);
 
-		if (resumeOffset > 0) {
+		if (resumeOffset > 0 && SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
 			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 					context, android.R.style.Theme_Holo_Dialog);
 
