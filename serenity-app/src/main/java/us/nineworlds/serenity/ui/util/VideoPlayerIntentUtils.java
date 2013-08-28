@@ -28,10 +28,13 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
+import android.widget.Toast;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
+import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 
 /**
@@ -120,5 +123,32 @@ public class VideoPlayerIntentUtils {
 	}
 
 
+	/**
+	 * Play all videos in the queue launching the appropriate player.
+	 * 
+	 * @param context
+	 */
+	public static void playAllFromQueue(Activity context) {
+		if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+			boolean extplayer = prefs.getBoolean("external_player", false);
+			boolean mxplayer = prefs.getBoolean("mxplayer_plex_offset", false);
+			boolean extplayerVideoQueue = prefs.getBoolean("external_player_continuous_playback", false);
+
+			
+			if (extplayer) {
+				if (extplayerVideoQueue) {
+					VideoContentInfo videoContent = SerenityApplication.getVideoPlaybackQueue().poll();
+					launchExternalPlayer(videoContent, mxplayer, context);
+				} else {
+					Toast.makeText(context, "External player video queue support has not been enabled.", Toast.LENGTH_LONG).show();
+				}
+			} else {
+				Intent vpIntent = new Intent(context,
+						SerenitySurfaceViewVideoActivity.class);
+				context.startActivityForResult(vpIntent, SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
+			}
+		}
+	}
 	
 }

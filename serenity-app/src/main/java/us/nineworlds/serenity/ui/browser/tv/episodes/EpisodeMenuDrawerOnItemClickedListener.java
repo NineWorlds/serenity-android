@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.browser.movie;
+package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.R;
@@ -49,16 +49,14 @@ import android.widget.ListView;
  * @author dcarver
  *
  */
-public class MovieMenuDrawerOnItemClickedListener implements OnItemClickListener {
-	private static final int GRID_VIEW = 0;
-	private static final int DETAIL_VIEW = 1;
-	private static final int PLAY_ALL_QUEUE = 2;
+public class EpisodeMenuDrawerOnItemClickedListener implements OnItemClickListener {
+	private static final int PLAY_ALL_QUEUE = 0;
 	private MenuDrawer menuDrawer;
 	
 	/**
 	 * 
 	 */
-	public MovieMenuDrawerOnItemClickedListener(MenuDrawer drawer) {
+	public EpisodeMenuDrawerOnItemClickedListener(MenuDrawer drawer) {
 		menuDrawer = drawer;
 	}
 
@@ -73,41 +71,13 @@ public class MovieMenuDrawerOnItemClickedListener implements OnItemClickListener
 		Activity activity = (Activity) view.getContext();
 		
 		switch (position) {
-		case GRID_VIEW:
-			menuDrawer.setContentView(R.layout.activity_movie_browser_gridview);
-			toggleView(activity, true);
-			break;
-		case DETAIL_VIEW:
-			menuDrawer.setContentView(R.layout.activity_movie_browser);
-			toggleView(activity, false);
-			break;
 		case PLAY_ALL_QUEUE:
 			menuDrawer.toggleMenu();
 			if (!activity.getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
 				parent.setVisibility(View.INVISIBLE);
 			}
 			VideoPlayerIntentUtils.playAllFromQueue(activity);
-			return;
+			break;
 		}
-		menuDrawer.toggleMenu();
-		activity.recreate();
-	}
-
-	/**
-	 * @param listView
-	 */
-	public void hideMenuItems() {
-	}
-
-
-	/**
-	 * @param activity
-	 */
-	protected void toggleView(Activity activity, boolean enableGridView) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
-		Editor e = prefs.edit();
-		MovieBrowserActivity.IS_GRID_VIEW = enableGridView;
-		e.putBoolean("movie_layout_grid", enableGridView);
-		e.apply();
 	}
 }

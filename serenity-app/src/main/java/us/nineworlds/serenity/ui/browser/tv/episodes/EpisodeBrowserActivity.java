@@ -23,9 +23,18 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.core.SerenityConstants;
+import us.nineworlds.serenity.core.model.MenuDrawerItem;
+import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
+import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.browser.movie.MenuDrawerOnClickListener;
+import us.nineworlds.serenity.ui.browser.movie.MovieMenuDrawerOnItemClickedListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
@@ -40,8 +49,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class EpisodeBrowserActivity extends SerenityVideoActivity {
@@ -52,11 +63,45 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	private View metaData;
 	private boolean restarted_state = false;
 	private SharedPreferences prefs;
+	private MenuDrawer menuDrawer;
+	private ListView menuOptions;
 
 	@Override
 	protected void createSideMenu() {
-		setContentView(R.layout.activity_movie_browser);
+		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		menuDrawer.setContentView(R.layout.activity_movie_browser);
+		menuDrawer.setMenuView(R.layout.menu_drawer);
+		
+		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
+		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
+		
+		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
+		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+		menuOptions.setOnItemClickListener(new EpisodeMenuDrawerOnItemClickedListener(menuDrawer));
+		hideMenuItems();
+		
+		View menu = findViewById(R.id.menu_button);
+		menu.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
 	}
+	
+	/**
+	 * @param listView
+	 */
+	public void hideMenuItems() {
+		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
+			menuOptions.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	public void showMenuItems() {
+		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
+			menuOptions.setVisibility(View.VISIBLE);
+		}
+		
+	}
+	
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +117,23 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			showMenuItems();
+			menuDrawer.toggleMenu();
+			return true;
+		}
+		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
+			hideMenuItems();
+			menuDrawer.toggleMenu();
+			return true;
+		}
+		
+		return super.onKeyDown(keyCode, event);
+	}
+	
 
 	@Override
 	protected void onStart() {
@@ -123,13 +185,6 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		posterGallery.setDrawingCacheEnabled(true);
 		posterGallery.setHorizontalFadingEdgeEnabled(true);
 		posterGallery.setUnselectedAlpha(0.75f);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_movie_browser, menu);
-		return true;
 	}
 
 	@Override

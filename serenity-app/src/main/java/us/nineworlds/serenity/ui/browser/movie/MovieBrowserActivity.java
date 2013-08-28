@@ -91,6 +91,7 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
 		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
 		
 		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
 		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
@@ -169,13 +170,6 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 	protected void onStop() {
 		super.onStop();
 		EasyTracker.getInstance().activityStop(this);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_movie_browser, menu);
-		return true;
 	}
 
 	/*

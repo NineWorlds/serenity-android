@@ -71,9 +71,6 @@ public class EpisodePosterOnItemSelectedListener extends
 
 	@Override
 	public void createVideoDetail(SerenityPosterImageView v) {
-		View metaData = context.findViewById(R.id.metaDataRow);
-		metaData.setVisibility(View.GONE);
-
 		TextView seriesTitle = (TextView) context
 				.findViewById(R.id.episodeTVSeriesTitle);
 		if (v.getPosterInfo().getSeriesTitle() != null) {
@@ -168,8 +165,6 @@ public class EpisodePosterOnItemSelectedListener extends
 	@Override
 	protected void createVideoMetaData(SerenityPosterImageView v) {
 		super.createVideoMetaData(v);
-		View metaData = context.findViewById(R.id.metaDataRow);
-		metaData.setVisibility(View.GONE);
 		
 		View categoryFilter = context.findViewById(R.id.movieCategoryFilter);
 		categoryFilter.setVisibility(View.GONE);
@@ -177,8 +172,6 @@ public class EpisodePosterOnItemSelectedListener extends
 		categoryFilter2.setVisibility(View.GONE);
 		View categoryName = context.findViewById(R.id.movieCategoryName);
 		categoryName.setVisibility(View.GONE);
-		View sideMenuButton = context.findViewById(R.id.menu_button);
-		sideMenuButton.setVisibility(View.GONE);
 		
 		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
 		subt.setVisibility(View.GONE);

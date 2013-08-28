@@ -112,8 +112,7 @@ public class AbstractVideoOnItemLongClickListener {
 		ArrayList<String> options = new ArrayList<String>();
 		options.add(context.getString(R.string.toggle_watched_status));
 		options.add(context.getString(R.string.download_video_to_device));
-		options.add("Add to Video Playback Queue");
-		options.add("Play all Videos in Queue");
+		options.add("Add video to queue");
 		if (!SerenityApplication.isGoogleTV(context)) {
 			options.add(context.getString(R.string.play_on_tv));
 		}
@@ -207,28 +206,6 @@ public class AbstractVideoOnItemLongClickListener {
 				break;
 			case 2:
 				performAddToQueue();
-				break;
-			case 3:
-				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-					boolean extplayer = prefs.getBoolean("external_player", false);
-					boolean mxplayer = prefs.getBoolean("mxplayer_plex_offset", false);
-					boolean extplayerVideoQueue = prefs.getBoolean("external_player_continuous_playback", false);
-	
-					
-					if (extplayer) {
-						if (extplayerVideoQueue) {
-							VideoContentInfo videoContent = SerenityApplication.getVideoPlaybackQueue().poll();
-							VideoPlayerIntentUtils.launchExternalPlayer(videoContent, mxplayer, context);
-						} else {
-							Toast.makeText(context, "External player video queue support has not been enabled.", Toast.LENGTH_LONG).show();
-						}
-					} else {
-						Intent vpIntent = new Intent(context,
-								SerenitySurfaceViewVideoActivity.class);
-						context.startActivityForResult(vpIntent, SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
-					}
-				}
 				break;
 			default:
 				performGoogleTVSecondScreen();
