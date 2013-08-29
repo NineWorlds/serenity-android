@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">Serenidad para Android</string>
     <string name="app_label">Serenidad para Android</string>
@@ -104,6 +104,21 @@
     <string name="plex_aspect_ratio">Plex Relación de aspecto</string>
     
     <string name="auto_configuring_server_using_">"Servidor de configuración automática utilizando "</string>
+    
+    <string name="changelog_full_title">Serenidad para Android Listado de cambios</string>
+    <string name="changelog_title">¿Qué hay de nuevo</string>
+    <string name="changelog_ok_button">Bueno</string>
+    <string name="changelog_show_full">Más…</string>
+
+    <string name="changelog_version_format">Versión <xliff:g id="version_name">%s</xliff:g></string>
+    <string name="clear_queue">Borrar cola</string>
+    <string name="queue_has_been_cleared_">Cola ha sido borrada.</string>
+    <string name="play_all_from_queue">Reproducir todo de la cola</string>
+    <string name="external_player_video_queue_support_has_not_been_enabled_">La ayuda del jugador de colas de vídeo externa no se ha habilitado.</string>
+    <string name="queue_is_empty_">Cola está vacía.</string>
+    <string name="media_player_internal">Media Player - Interno</string>    
+    <string name="media_player_external">Media Player - Externo</string>    
+    
     
    
 </resources>

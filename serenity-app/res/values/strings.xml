@@ -121,5 +121,12 @@
     <string name="changelog_ok_button">OK</string>
     <string name="changelog_show_full">More…</string>
 
-    <string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>    
+    <string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>
+    <string name="clear_queue">Clear Queue</string>
+    <string name="queue_has_been_cleared_">Queue has been cleared.</string>
+    <string name="play_all_from_queue">Play All from Queue</string>
+    <string name="external_player_video_queue_support_has_not_been_enabled_">External player video queue support has not been enabled.</string>
+    <string name="queue_is_empty_">Queue is empty.</string>
+    <string name="media_player_internal">Media Player - Internal</string>    
+    <string name="media_player_external">Media Player - External</string>    
 </resources>

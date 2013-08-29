@@ -28,8 +28,6 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;

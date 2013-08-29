@@ -26,7 +26,6 @@
 package us.nineworlds.serenity.ui.video.player;
 
 import com.google.analytics.tracking.android.EasyTracker;
-
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
 import android.util.Log;

@@ -28,7 +28,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
-
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;

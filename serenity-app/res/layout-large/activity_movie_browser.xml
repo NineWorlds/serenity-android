@@ -33,6 +33,7 @@
         android:layout_gravity="center_vertical"
         android:scaleType="fitXY"
         android:nextFocusLeft="@+id/menu_button"
+        android:nextFocusUp="@+id/menu_button"
         android:nextFocusDown="@+id/moviePosterGallery"
         />
         

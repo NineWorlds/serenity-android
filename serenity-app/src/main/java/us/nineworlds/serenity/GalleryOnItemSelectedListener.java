@@ -27,18 +27,13 @@ import us.nineworlds.serenity.core.imageloader.MainMenuBackgroundBitmapDisplayer
 import us.nineworlds.serenity.ui.views.MainMenuTextView;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 

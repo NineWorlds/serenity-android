@@ -24,26 +24,12 @@
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import net.simonvt.menudrawer.MenuDrawer;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 /**
  * @author dcarver

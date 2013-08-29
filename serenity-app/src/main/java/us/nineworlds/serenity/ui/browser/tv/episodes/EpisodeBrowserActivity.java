@@ -27,33 +27,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.simonvt.menudrawer.MenuDrawer;
-import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.MenuDrawerItem;
 import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
-import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MenuDrawerOnClickListener;
-import us.nineworlds.serenity.ui.browser.movie.MovieMenuDrawerOnItemClickedListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-
 import com.google.analytics.tracking.android.EasyTracker;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
@@ -74,7 +65,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		menuDrawer.setMenuView(R.layout.menu_drawer);
 		
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
+		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.play_all_from_queue), R.drawable.menu_play_all_queue));
 		
 		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
 		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));

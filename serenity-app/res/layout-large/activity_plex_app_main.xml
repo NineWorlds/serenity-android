@@ -36,7 +36,11 @@
          android:layout_gravity="center_vertical"
          android:focusable="true"
          android:focusableInTouchMode="true"
-         android:descendantFocusability="afterDescendants">
+         android:descendantFocusability="afterDescendants"
+         android:nextFocusDown="@+id/mainGalleryMenu"
+         android:nextFocusUp="@+id/menu_button"
+         android:nextFocusRight="@+id/mainGalleryMenu"
+         android:nextFocusLeft="@+id/mainGalleryMenu">
 
          <requestFocus />
      </Gallery>
@@ -52,6 +56,9 @@
         android:layout_alignParentTop="true"
         android:scaleType="fitXY"
         android:nextFocusDown="@+id/mainGalleryMenu"
+        android:nextFocusLeft="@+id/menu_button"
+        android:nextFocusUp="@+id/menu_button"
+        android:nextFocusRight="@+id/mainGalleryMenu"
         />
      
 </RelativeLayout>

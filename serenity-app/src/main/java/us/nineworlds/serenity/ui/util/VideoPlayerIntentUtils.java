@@ -30,12 +30,12 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 
 /**
  * @author dcarver
@@ -141,13 +141,15 @@ public class VideoPlayerIntentUtils {
 					VideoContentInfo videoContent = SerenityApplication.getVideoPlaybackQueue().poll();
 					launchExternalPlayer(videoContent, mxplayer, context);
 				} else {
-					Toast.makeText(context, "External player video queue support has not been enabled.", Toast.LENGTH_LONG).show();
+					Toast.makeText(context, context.getResources().getString(R.string.external_player_video_queue_support_has_not_been_enabled_), Toast.LENGTH_LONG).show();
 				}
 			} else {
 				Intent vpIntent = new Intent(context,
 						SerenitySurfaceViewVideoActivity.class);
 				context.startActivityForResult(vpIntent, SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
 			}
+		} else {
+			Toast.makeText(context, context.getResources().getString(R.string.queue_is_empty_), Toast.LENGTH_LONG).show();
 		}
 	}
 	

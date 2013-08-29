@@ -104,6 +104,19 @@
     <string name="enable_gallery_scrolling_animation">Active Animation de Défilement</string>
     
     <string name="tutorial">Tutoriel</string>
-    <string name="auto_configuring_server_using_">"Serveur de configuration automatique à l\'aide "</string>    
+    <string name="auto_configuring_server_using_">"Serveur de configuration automatique à l\'aide "</string>
+    
+    <string name="changelog_full_title">Sérénité pour Android Journal des changements</string>
+    <string name="changelog_title">Quoi de neuf</string>
+    <string name="changelog_show_full">Plus…</string>
+
+    <string name="clear_queue">Effacer la file d\'attente</string>
+    <string name="queue_has_been_cleared_">Queue a été effacée.</string>
+    <string name="play_all_from_queue">Jouez tous de Queue</string>
+    <string name="external_player_video_queue_support_has_not_been_enabled_">Soutien de joueur de la file d\'attente vidéo externe n\'a pas été activé.</string>
+    <string name="queue_is_empty_">Queue d\'attente est vide.</string>
+    <string name="media_player_internal">Lecteur Média - Internal</string>    
+    <string name="media_player_external">Lecteur Média - External</string>    
+    
 
 </resources>

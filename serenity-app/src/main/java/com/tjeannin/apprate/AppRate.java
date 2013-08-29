@@ -26,7 +26,6 @@
 package com.tjeannin.apprate;
 
 import java.lang.Thread.UncaughtExceptionHandler;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -218,13 +217,13 @@ public class AppRate implements android.content.DialogInterface.OnClickListener,
 		AlertDialog dialog = builder.create();
 		dialog.show();
 
-		String rate = (String) dialog.getButton(AlertDialog.BUTTON_POSITIVE).getText();
-		String remindLater = (String) dialog.getButton(AlertDialog.BUTTON_NEUTRAL).getText();
-		String dismiss = (String) dialog.getButton(AlertDialog.BUTTON_NEGATIVE).getText();
+		String rate = (String) dialog.getButton(DialogInterface.BUTTON_POSITIVE).getText();
+		String remindLater = (String) dialog.getButton(DialogInterface.BUTTON_NEUTRAL).getText();
+		String dismiss = (String) dialog.getButton(DialogInterface.BUTTON_NEGATIVE).getText();
 
-		dialog.setButton(AlertDialog.BUTTON_POSITIVE, rate, this);
-		dialog.setButton(AlertDialog.BUTTON_NEUTRAL, remindLater, this);
-		dialog.setButton(AlertDialog.BUTTON_NEGATIVE, dismiss, this);
+		dialog.setButton(DialogInterface.BUTTON_POSITIVE, rate, this);
+		dialog.setButton(DialogInterface.BUTTON_NEUTRAL, remindLater, this);
+		dialog.setButton(DialogInterface.BUTTON_NEGATIVE, dismiss, this);
 
 		dialog.setOnCancelListener(this);
 	}

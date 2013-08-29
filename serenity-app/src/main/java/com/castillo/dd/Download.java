@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Observable;
 import java.util.TimeZone;
-
 import android.util.Log;
 
 // This class downloads a file from a URL.

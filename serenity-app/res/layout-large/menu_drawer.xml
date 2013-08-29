@@ -74,8 +74,8 @@
         android:layout_below="@+id/title_bar_layout"
         android:descendantFocusability="afterDescendants"
         android:focusable="false"
-        android:nextFocusDown="@+id/menu_help_text"
-        android:nextFocusUp="@+id/menu_settings"
+        android:nextFocusDown="@+id/menu_list_options"
+        android:nextFocusUp="@+id/menu_list_options"
         android:nextFocusRight="@+id/menu_list_options"
         android:nextFocusLeft="@+id/menu_list_options"
         android:scrollingCache="true" >
@@ -89,7 +89,7 @@
         android:orientation="horizontal"
         android:layout_above="@+id/menu_settings"
         android:layout_alignParentBottom="true"
-        android:visibility="visible"
+        android:visibility="gone"
         android:addStatesFromChildren="true" >
 
 
@@ -119,9 +119,8 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:visibility="gone" >
+        android:visibility="gone"
+        android:addStatesFromChildren="true" >
         
         <TextView android:id="@+id/menu_settings_text"
             android:layout_width="0dp"

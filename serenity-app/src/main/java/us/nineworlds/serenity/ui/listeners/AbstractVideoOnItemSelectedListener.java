@@ -47,7 +47,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -197,7 +196,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			ratingBar.setStepSize(0.1f);
 			ratingBar.setNumStars(4);
 			ratingBar.setPadding(0, 0, 0, 0);
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 			params.rightMargin = 15;
 			ratingBar.setLayoutParams(params);
 			

@@ -31,7 +31,6 @@ import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.model.MenuDrawerItem;
 import us.nineworlds.serenity.core.model.Server;
-import us.nineworlds.serenity.core.model.impl.GDMServer;
 import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.GDMService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
@@ -232,6 +231,7 @@ public class MainActivity extends SerenityActivity {
 	/**
 	 * 
 	 */
+	@Override
 	protected void createSideMenu() {
 		mainContext = this;
 		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
@@ -262,8 +262,8 @@ public class MainActivity extends SerenityActivity {
 				R.drawable.ic_action_content_remove));
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
 				R.string.tutorial), R.drawable.ic_action_tutorial));
-		drawerMenuItem.add(new MenuDrawerItemImpl("Empty Video Queue",
-				R.drawable.ic_action_content_remove));
+		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
+				R.string.clear_queue), R.drawable.ic_action_content_remove));
 
 		ListView listView = (ListView) menuDrawer.getMenuView().findViewById(
 				R.id.menu_list_options);
@@ -279,6 +279,7 @@ public class MainActivity extends SerenityActivity {
 	protected void hideMenuItems(ListView listView) {
 		if (!getPackageManager().hasSystemFeature(
 				"android.hardware.touchscreen")) {
+			findViewById(R.id.menu_help).setVisibility(View.INVISIBLE);
 			listView.setVisibility(View.INVISIBLE);
 		}
 	}
@@ -286,6 +287,7 @@ public class MainActivity extends SerenityActivity {
 	protected void showMenuItems(ListView listView) {
 		if (!getPackageManager().hasSystemFeature(
 				"android.hardware.touchscreen")) {
+			findViewById(R.id.menu_help).setVisibility(View.VISIBLE);
 			listView.setVisibility(View.VISIBLE);
 		}
 
@@ -364,10 +366,8 @@ public class MainActivity extends SerenityActivity {
 	 * 
 	 */
 	protected void ratingNudger() {
-		new AppRate(this)
-		      .setMinDaysUntilPrompt(14)
-		      .setShowIfAppHasCrashed(false)
-		      .init();
+		new AppRate(this).setMinDaysUntilPrompt(14)
+				.setShowIfAppHasCrashed(false).init();
 	}
 
 	@Override

@@ -23,33 +23,17 @@
 
 package us.nineworlds.serenity.ui.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import us.nineworlds.serenity.core.model.MenuDrawerItem;
-import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
-import us.nineworlds.serenity.core.services.MusicTrackRetrievalIntentService;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
-import android.text.format.DateUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -64,7 +48,7 @@ public class MenuDrawerAdapter extends BaseAdapter {
 	private String key;
 
 	public MenuDrawerAdapter(Activity context, List<MenuDrawerItem> menuOptions) {
-		this.menuOptions = menuOptions;
+		MenuDrawerAdapter.menuOptions = menuOptions;
 		this.context = context;
 	}
 	

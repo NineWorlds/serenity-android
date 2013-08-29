@@ -26,7 +26,6 @@
 package com.tjeannin.apprate;
 
 import java.lang.Thread.UncaughtExceptionHandler;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -42,6 +41,7 @@ public class ExceptionHandler implements UncaughtExceptionHandler {
 		defaultExceptionHandler = uncaughtExceptionHandler;
 	}
 
+	@Override
 	public void uncaughtException(Thread thread, Throwable throwable) {
 
 		preferences.edit().putBoolean(PrefsContract.PREF_APP_HAS_CRASHED, true).commit();

@@ -24,8 +24,6 @@
 package us.nineworlds.serenity;
 
 import net.simonvt.menudrawer.MenuDrawer;
-import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.Activity;
@@ -87,7 +85,7 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 			break;
 		case CLEAR_QUEUE:
 			SerenityApplication.getVideoPlaybackQueue().clear();
-			Toast.makeText(activity, "Video Queue has been emptied.", Toast.LENGTH_LONG).show();
+			Toast.makeText(activity, activity.getResources().getString(R.string.queue_has_been_cleared_), Toast.LENGTH_LONG).show();
 			break;
 		}
 		

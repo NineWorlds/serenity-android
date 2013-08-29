@@ -24,6 +24,7 @@
  */
 
 package us.nineworlds.serenity.ui.video.player;
+
 public interface MediaPlayerControl {
 	void start();
 

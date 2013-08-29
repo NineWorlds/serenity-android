@@ -80,7 +80,7 @@
     </PreferenceCategory>
     
     
-    <PreferenceCategory android:title="Media Player - Internal" >
+    <PreferenceCategory android:title="@string/media_player_internal" >
         <CheckBoxPreference
             android:key="plex_aspect_ratio"
             android:summary="@string/prefer_plex_media_server_s_aspect_ratio_"
@@ -94,7 +94,7 @@
     </PreferenceCategory>
     
     
-    <PreferenceCategory android:title="@string/media_player" >
+    <PreferenceCategory android:title="@string/media_player_external" >
         <CheckBoxPreference
             android:key="external_player"
             android:summary="@string/use_external_media_player_"

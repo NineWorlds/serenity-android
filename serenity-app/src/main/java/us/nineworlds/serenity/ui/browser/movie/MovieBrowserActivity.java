@@ -28,24 +28,14 @@ import java.util.List;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
-import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.MenuDrawerItem;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
-import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
-import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-
 import com.google.analytics.tracking.android.EasyTracker;
-import com.jess.ui.TwoWayGridView;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -55,12 +45,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 public class MovieBrowserActivity extends SerenityVideoActivity {
 
