@@ -317,6 +317,16 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				finish();
 				return true;
 			}
+			
+			if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+				mediaController.hide();
+				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+					mediaPlayer.stop();
+				}
+				
+				finish();
+				return true;
+			}
 		} else {
 			if (isKeyCodeBack(keyCode)) {
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
@@ -327,6 +337,15 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				return true;
 			}
 		}
+		
+		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+				mediaPlayer.stop();
+			}
+			finish();
+			return true;
+		}
+		
 
 		if (isKeyCodeInfo(keyCode)) {
 			if (isMediaPlayerStateValid()) {
@@ -489,7 +508,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	@Override
 	protected boolean isKeyCodeSkipForward(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_NEXT
 				|| keyCode == KeyEvent.KEYCODE_F;
 	}
 
