@@ -84,7 +84,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 		
 	    Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, w, h, false);
 		
-		title.setCompoundDrawablesWithIntrinsicBounds(null, null, new BitmapDrawable(bitmapResized), null);
+		title.setCompoundDrawablesWithIntrinsicBounds(null, null, new BitmapDrawable(v.getContext().getResources(), bitmapResized), null);
 	}
 
 	@Override
