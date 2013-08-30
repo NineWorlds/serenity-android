@@ -54,6 +54,7 @@
 
     <string-array name="categoryListNames">
         <item>Tous / Tout</item>
+        <item>Les plus récents</item>
         <item>Sur le bureau</item>
         <item>Ajoutés récemment</item>
         <item>Vus Récemment</item>
