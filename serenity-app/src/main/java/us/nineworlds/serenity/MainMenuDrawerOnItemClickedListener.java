@@ -80,7 +80,7 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 			break;
 		case TUTORIAL:
 			Intent youTubei = new Intent(Intent.ACTION_VIEW,
-					Uri.parse("http://www.youtube.com/watch?v=_yKc8ymXerg"));
+					Uri.parse("http://www.youtube.com/watch?v=DTkBM_EuitY"));
 			activity.startActivity(youTubei);
 			break;
 		case CLEAR_QUEUE:
