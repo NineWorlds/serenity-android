@@ -33,6 +33,7 @@
         android:maxLines="5"
         tools:ignore="SelectableText" />
 
+    
     <ImageView
         android:id="@+id/mediacontroller_poster_art"
         android:layout_width="150dp"
@@ -44,6 +45,24 @@
         android:scaleType="centerInside"
         android:src="@drawable/default_video_cover"
         tools:ignore="ContentDescription" />
+    
+    <TextView
+        android:id="@+id/mediacontroller_next_video"
+        style="@android:style/TextAppearance.Holo.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mediacontroller_infographic_layout"
+        android:layout_toRightOf="@+id/mediacontroller_poster_art"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp"
+        android:padding="5dp"
+        android:background="#80000000"
+        android:gravity="top"
+        android:maxLines="1"
+        android:visibility="gone"
+        android:textStyle="bold"
+        tools:ignore="SelectableText" />
+    
 
     <LinearLayout
         android:orientation="horizontal"

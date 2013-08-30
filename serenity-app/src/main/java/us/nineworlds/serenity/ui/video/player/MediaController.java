@@ -41,6 +41,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 
@@ -321,6 +322,18 @@ public class MediaController extends FrameLayout {
 		if (posterURL != null) {
 			imageLoader.displayImage(posterURL, posterView);
 		}
+		
+		TextView txtNextVideo = (TextView) v.findViewById(R.id.mediacontroller_next_video);
+		if (txtNextVideo != null) {
+			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+				VideoContentInfo nextVideo = SerenityApplication.getVideoPlaybackQueue().peek();
+				txtNextVideo.setText("On Deck: " + nextVideo.getTitle());
+				txtNextVideo.setVisibility(View.VISIBLE);
+			} else {
+				txtNextVideo.setVisibility(View.GONE);
+			}
+		}
+		
 	}
 
 	public void setMediaPlayer(MediaPlayerControl player) {
