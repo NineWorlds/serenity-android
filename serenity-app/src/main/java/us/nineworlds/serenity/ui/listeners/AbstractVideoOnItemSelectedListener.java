@@ -264,7 +264,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
-			previous.setBackgroundColor(Color.BLACK);
 			if (shouldShrink) {
 				previous.setAnimation(shrink);
 			}
@@ -272,7 +271,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 		previous = v;
 
-		v.setBackgroundColor(Color.CYAN);
 		v.setPadding(5, 5, 5, 5);
 		v.clearAnimation();
 
