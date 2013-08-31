@@ -450,11 +450,6 @@ public class MainActivity extends SerenityActivity {
 				2500);
 		if (restarted_state == false) {
 			setupGallery();
-			ChangeLog changeLog = new ChangeLog(this);
-			if (changeLog.isFirstRun()) {
-				changeLog.getLogDialog().show();
-			}
-
 		}
 		restarted_state = false;
 	}
