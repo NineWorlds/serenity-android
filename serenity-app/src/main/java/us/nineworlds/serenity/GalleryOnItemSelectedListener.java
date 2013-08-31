@@ -23,38 +23,34 @@
 
 package us.nineworlds.serenity;
 
-import us.nineworlds.serenity.core.imageloader.MainMenuBackgroundBitmapDisplayer;
 import us.nineworlds.serenity.ui.views.MainMenuTextView;
 
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ImageView;
 
 public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 
-	private View mainGalleryBackgroundView;
+	private ImageView mainGalleryBackgroundView;
 	private MainMenuTextView preSelected;
-	private Animation fadeIn;
 
 	public GalleryOnItemSelectedListener(View v) {
-		mainGalleryBackgroundView = v;
+		mainGalleryBackgroundView = (ImageView)v;
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View v, int position,
 			long arg3) {
 		if (v instanceof MainMenuTextView) {
+			mainGalleryBackgroundView.clearAnimation();
 			MainMenuTextView tv = (MainMenuTextView) v;
-						
-			Bitmap background = BitmapFactory.decodeResource(v.getContext().getResources(), tv.getBackgroundImageId());
-			new ImageLoader((Activity)v.getContext(), mainGalleryBackgroundView, background).doInBackground();
 			
 			tv.setTextColor(v.getContext().getResources().getColor(android.R.color.white));
 			tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD_ITALIC);
@@ -66,34 +62,32 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 			}
 			
 			preSelected = tv;
+			
+			mainGalleryBackgroundView.setImageResource(tv.getBackgroundImageId());
+			if (shouldFadeIn()) {
+				Animation fadeIn = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
+				fadeIn.setDuration(500);
+				mainGalleryBackgroundView.startAnimation(fadeIn);
+			}
+			
 		}
 
 	}
+	
+	/**
+	 * @return
+	 */
+	protected boolean shouldFadeIn() {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(mainGalleryBackgroundView.getContext());
+		boolean shouldFadein = preferences.getBoolean(
+				"animation_background_mainmenu_fadein", true);
+		return shouldFadein;
+	}
+
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 
 	}
-	
-	private class ImageLoader extends AsyncTask<Void, Void, Void> {
-		
-		Activity context;
-		View view;
-		Bitmap bm;
-		
-		public ImageLoader(Activity context, View view, Bitmap bm) {
-			this.view = view;
-			this.context = context;
-			this.bm = bm;
-		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			context.runOnUiThread(new MainMenuBackgroundBitmapDisplayer(bm, R.drawable.serenity_bonsai_logo, view));
-			return null;
-		}
-		
-	}
-	
-	
 }
