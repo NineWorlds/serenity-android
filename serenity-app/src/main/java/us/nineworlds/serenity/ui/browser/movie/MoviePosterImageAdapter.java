@@ -131,6 +131,7 @@ public class MoviePosterImageAdapter extends
 		@Override
 		public void handleMessage(Message msg) {
 			posterList = (List<VideoContentInfo>) msg.obj;
+			notifyAdapter.notifyDataSetChanged();
 			if (!MovieBrowserActivity.IS_GRID_VIEW) {
 				SerenityGallery posterGallery = (SerenityGallery) context
 						.findViewById(R.id.moviePosterGallery);
@@ -140,7 +141,6 @@ public class MoviePosterImageAdapter extends
 						.findViewById(R.id.movieGridView);
 				gridView.requestFocus();
 			}
-			notifyAdapter.notifyDataSetChanged();
 			pd.dismiss();
 		}
 

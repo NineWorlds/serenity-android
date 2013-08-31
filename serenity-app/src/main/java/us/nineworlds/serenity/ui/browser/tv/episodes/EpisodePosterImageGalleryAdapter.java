@@ -119,9 +119,8 @@ public class EpisodePosterImageGalleryAdapter extends
 			pd.dismiss();
 			SerenityGallery gallery = (SerenityGallery) context
 					.findViewById(R.id.moviePosterGallery);
-			gallery.requestFocus();
 			notifyAdapter.notifyDataSetChanged();
-
+			gallery.requestFocus();
 		}
 	}
 }
