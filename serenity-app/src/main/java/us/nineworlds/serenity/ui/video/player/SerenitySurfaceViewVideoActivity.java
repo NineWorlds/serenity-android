@@ -32,6 +32,7 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.core.services.CompletedVideoRequest;
 import us.nineworlds.serenity.core.subtitles.formats.Caption;
 import us.nineworlds.serenity.core.subtitles.formats.FormatASS;
@@ -251,7 +252,12 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		videoId = video.id();
 		String summary = video.getSummary();
 		String title = video.getTitle();
-		String posterURL = video.getImageURL();
+		String posterURL = video.getImageURL();;
+		if (video instanceof EpisodePosterInfo) {
+			if (video.getParentPosterURL() != null) {
+				posterURL = video.getParentPosterURL();
+			}  
+		}
 		aspectRatio = video.getAspectRatio();
 		String videoFormat = video.getVideoCodec();
 		String videoResolution = video.getVideoResolution();
