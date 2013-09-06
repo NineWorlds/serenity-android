@@ -75,7 +75,7 @@ public class SearchableActivity extends SerenityVideoActivity {
 
 		setContentView(R.layout.activity_movie_browser);
 		View v = findViewById(R.id.metaDataRow);
-		v.setVisibility(View.INVISIBLE);
+		v.setVisibility(View.GONE);
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
 		handleIntent(getIntent());
 	}
