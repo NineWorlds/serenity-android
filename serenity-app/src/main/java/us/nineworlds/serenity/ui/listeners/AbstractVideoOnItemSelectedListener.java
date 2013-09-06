@@ -35,6 +35,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
@@ -96,48 +97,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		VideoContentInfo videoInfo = videoView.getPosterInfo();
 
 		fetchSubtitle(videoInfo);
-
-		TextView ty = (TextView) context.findViewById(R.id.video_year);
-		TextView tg = (TextView) context.findViewById(R.id.video_genre);
-		TextView tw = (TextView) context.findViewById(R.id.video_writers);
-		TextView td = (TextView) context.findViewById(R.id.video_directors);
-
-		ty.setText(context.getString(R.string.unknown));
-		tg.setText(context.getString(R.string.unknown));
-		tw.setText(context.getString(R.string.unknown));
-		td.setText(context.getString(R.string.unknown));
-
-		if (videoInfo.getYear() != null) {
-			ty.setText(videoInfo.getYear());
-		}
-
-		if (videoInfo.getGenres() != null) {
-			StringBuilder details = new StringBuilder();
-			for (String genre : videoInfo.getGenres()) {
-				details.append(genre);
-				details.append(CRLF);
-			}
-			tg.setText(details.toString());
-		}
-
-		if (videoInfo.getWriters() != null) {
-			StringBuilder details = new StringBuilder();
-			for (String writers : videoInfo.getWriters()) {
-				details.append(writers);
-				details.append(CRLF);
-			}
-			tw.setText(details.toString());
-		}
-
-		if (videoInfo.getDirectors() != null) {
-			StringBuilder details = new StringBuilder();
-			for (String directors : videoInfo.getDirectors()) {
-				details.append(directors);
-				details.append(CRLF);
-			}
-			td.setText(details.toString());
-		}
-
 	}
 
 	/**
@@ -154,10 +113,10 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 		watchedStatus(infographicsView, mpi);
 
-		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100,
-				58);
+		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(80,
+				48);
 		ImageInfographicUtils imageUtilsAudioChannel = new ImageInfographicUtils(90,
-				58);
+				48);
 
 		ImageView resv = imageUtilsNormal.createVideoCodec(mpi.getVideoCodec(), v.getContext());
 		if (resv != null) {
@@ -222,11 +181,12 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	protected void watchedStatus(LinearLayout infographicsView,
 			VideoContentInfo mpi) {
 		ImageView viewed = new ImageView(context);
+		int w = ImageUtils.getDPI(60, context);
+		int h = ImageUtils.getDPI(38, context);
+		LinearLayout.LayoutParams viewedlp = new LinearLayout.LayoutParams(w,
+				h);
+		viewedlp.rightMargin = 10;
 		viewed.setScaleType(ScaleType.FIT_XY);
-		LinearLayout.LayoutParams viewedlp = new LinearLayout.LayoutParams(60,
-				38);
-		viewedlp.setMargins(10, 0, 5, 5);
-		viewedlp.gravity = Gravity.CENTER_VERTICAL;
 		viewed.setLayoutParams(viewedlp);
 		viewed.setId(WATCHED_VIEW_ID);
 		

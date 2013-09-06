@@ -32,6 +32,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
@@ -42,8 +43,10 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ImageView.ScaleType;
 
 /**
  * @author dcarver
@@ -71,6 +74,27 @@ public class EpisodePosterOnItemSelectedListener extends
 
 	@Override
 	public void createVideoDetail(SerenityPosterImageView v) {
+		ImageView posterImage = (ImageView) context.findViewById(R.id.video_poster);
+		posterImage.setVisibility(View.VISIBLE);
+		posterImage.setScaleType(ScaleType.FIT_XY);
+		ImageLoader imageLoader = SerenityApplication.getImageLoader();
+		if (v.getPosterInfo().getParentPosterURL() != null) {
+			int width = ImageUtils.getDPI(240, context);
+			int height = ImageUtils.getDPI(330, context);
+			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+			imageLoader.displayImage(v.getPosterInfo().getParentPosterURL(), posterImage);
+		} else if (v.getPosterInfo().getGrandParentPosterURL() != null) {
+			int width = ImageUtils.getDPI(240, context);
+			int height = ImageUtils.getDPI(330, context);
+			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+			imageLoader.displayImage(v.getPosterInfo().getGrandParentPosterURL(), posterImage);
+		} else {
+			int width = ImageUtils.getDPI(375, context);
+			int height = ImageUtils.getDPI(195, context);
+			imageLoader.displayImage(v.getPosterInfo().getImageURL(), posterImage);
+		}
+
+		
 		TextView seriesTitle = (TextView) context
 				.findViewById(R.id.episodeTVSeriesTitle);
 		if (v.getPosterInfo().getSeriesTitle() != null) {
