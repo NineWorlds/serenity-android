@@ -75,8 +75,8 @@ public class EpisodePosterImageGalleryAdapter extends
 		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(375, context);
-		int height = ImageUtils.getDPI(195, context);
+		int width = ImageUtils.getDPI(300, context);
+		int height = ImageUtils.getDPI(187, context);
 		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
 		
 		SharedPreferences preferences = PreferenceManager

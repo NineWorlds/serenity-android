@@ -25,6 +25,8 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -33,6 +35,7 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -40,8 +43,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ImageView.ScaleType;
 
 /**
  * When a poster is selected, update the information displayed in the browser.
@@ -63,6 +69,15 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 
 	@Override
 	protected void createVideoDetail(SerenityPosterImageView v) {
+		ImageView posterImage = (ImageView) context.findViewById(R.id.video_poster);
+		posterImage.setVisibility(View.VISIBLE);
+		posterImage.setScaleType(ScaleType.FIT_XY);
+		int width = ImageUtils.getDPI(240, context);
+		int height = ImageUtils.getDPI(330, context);
+		posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+		ImageLoader imageLoader = SerenityApplication.getImageLoader();
+		imageLoader.displayImage(v.getPosterInfo().getImageURL(), posterImage);
+		
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
 		summary.setText(v.getPosterInfo().getSummary());
 

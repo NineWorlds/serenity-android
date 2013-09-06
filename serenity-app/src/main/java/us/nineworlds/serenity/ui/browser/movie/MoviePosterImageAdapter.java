@@ -85,15 +85,9 @@ public class MoviePosterImageAdapter extends
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 0;
 		int height = 0;
-		int wdpi = DisplayUtils.screenWidthDP(context);
 
-		if (wdpi < 600) {
-			width = ImageUtils.getDPI(60, context);
-			height = ImageUtils.getDPI(90, context);
-		} else {
-			width = ImageUtils.getDPI(160, context);
-			height = ImageUtils.getDPI(220, context);
-		}
+		width = ImageUtils.getDPI(130, context);
+		height = ImageUtils.getDPI(200, context);
 		if (!MovieBrowserActivity.IS_GRID_VIEW) {
 			mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
 		} else {
