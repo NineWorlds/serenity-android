@@ -349,17 +349,28 @@ public class MainActivity extends SerenityActivity {
 		createSideMenu();
 		initPreferences();
 
-		boolean googletv = SerenityApplication.isGoogleTV(this);
-		if (!googletv) {
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putBoolean("external_player", true);
-			editor.commit();
-		}
+		initializeDefaultPlayer();
 
 		initDownloadService();
 
 		ratingNudger();
 
+	}
+
+	/**
+	 * 
+	 */
+	protected void initializeDefaultPlayer() {
+		boolean googletv = SerenityApplication.isGoogleTV(this);
+		boolean initialRun = preferences.getBoolean("serenity_first_run", true);
+		if (initialRun) {
+			SharedPreferences.Editor editor = preferences.edit();
+			if (!googletv) {
+				editor.putBoolean("external_player", true);
+			}
+			editor.putBoolean("serenity_first_run", false);
+			editor.commit();
+		}
 	}
 
 	/**
