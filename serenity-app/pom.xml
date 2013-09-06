@@ -4,7 +4,7 @@
    <parent>
       <groupId>us.nineworlds.serenity</groupId>
       <artifactId>serenity-parent</artifactId>
-      <version>1.4.0</version>
+      <version>1.4.1-SNAPSHOT</version>
    </parent>
 
    <artifactId>serenity-app</artifactId>
@@ -40,17 +40,17 @@
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
          <artifactId>subtitle-converter</artifactId>
-         <version>1.4.0</version>
+         <version>1.4.1-SNAPSHOT</version>
       </dependency>
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
          <artifactId>plexapp-rest-library</artifactId>
-         <version>1.4.0</version>
+         <version>1.4.1-SNAPSHOT</version>
       </dependency>
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
          <artifactId>menudrawer</artifactId>
-         <version>1.4.0</version>
+         <version>1.4.1-SNAPSHOT</version>
          <type>apklib</type>
       </dependency>
       
