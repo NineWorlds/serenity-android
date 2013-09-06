@@ -51,24 +51,17 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
 		boolean extPlayerVideoQueueEnabled = prefs.getBoolean(
 				"external_player_continuous_playback", false);
-		boolean mxPlayerResume = prefs.getBoolean("mxplayer_plex_offset",
-				false);
-		
+		boolean mxPlayerResume = prefs
+				.getBoolean("mxplayer_plex_offset", false);
+
 		if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
 
 			if (resultCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
 				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-					Toast.makeText(
-							this,
-							"There are still "
-									+ SerenityApplication
-											.getVideoPlaybackQueue().size()
-									+ "videos in the queue.", Toast.LENGTH_LONG)
-							.show();
+					showQueueNotEmptyMessage();
 				}
 				return;
 			}
-
 
 			if (!externalPlayer) {
 
@@ -107,16 +100,43 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 						}
 					}
 				}
-			}			
-		}
-		
-		if (externalPlayer && extPlayerVideoQueueEnabled) {
-			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-				VideoContentInfo videoContentInfo = SerenityApplication.getVideoPlaybackQueue().poll();
-				VideoPlayerIntentUtils.launchExternalPlayer(videoContentInfo, mxPlayerResume, this);
-				return;
+			}
+			
+			if (externalPlayer && extPlayerVideoQueueEnabled) {
+				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+					if (data == null) {
+						externalPlayerPlayNext(mxPlayerResume);
+						return;
+					} else {
+						String mxplayerEndedBy = data.getStringExtra("end_by");
+						if ("user".equals(mxplayerEndedBy)) {
+							showQueueNotEmptyMessage();
+							return;
+						}
+						externalPlayerPlayNext(mxPlayerResume);
+						return;
+					}
+				}
 			}
 		}
-		
+	}
+
+	/**
+	 * 
+	 */
+	protected void showQueueNotEmptyMessage() {
+		Toast.makeText(
+				this,
+				"There are still videos int the queue.", Toast.LENGTH_LONG).show();
+	}
+
+	/**
+	 * @param mxPlayerResume
+	 */
+	protected void externalPlayerPlayNext(boolean mxPlayerResume) {
+		VideoContentInfo videoContentInfo = SerenityApplication
+				.getVideoPlaybackQueue().poll();
+		VideoPlayerIntentUtils.launchExternalPlayer(videoContentInfo,
+				mxPlayerResume, this);
 	}
 }
