@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="us.nineworlds.serenity"
     android:versionCode="31"
-    android:versionName="1.4.1-dev" xmlns:tools="http://schemas.android.com/tools">
+    android:versionName="1.4.1" xmlns:tools="http://schemas.android.com/tools">
     
     <!--  try to exclude phone devices from the list. Currently only support Tablets and TVs -->
     <supports-screens android:smallScreens="false"
