@@ -51,30 +51,32 @@ public abstract class SerenityActivity extends Activity {
 			}
 			
 			AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
-			int itemsCount =  adapter.getCount();
-			
-			if (keyCode == KeyEvent.KEYCODE_C) {
-				ImageView view = (ImageView) gallery.getSelectedView();
-				view.performLongClick();
-				return true;
-			}
-			if (isKeyCodeSkipBack(keyCode)) {
-				int selectedItem = gallery.getSelectedItemPosition();
-				int newPosition = selectedItem - 10;
-				if (newPosition < 0) {
-					newPosition = 0;
+			if (adapter != null) {
+				int itemsCount =  adapter.getCount();
+				
+				if (keyCode == KeyEvent.KEYCODE_C) {
+					ImageView view = (ImageView) gallery.getSelectedView();
+					view.performLongClick();
+					return true;
 				}
-				gallery.setSelection(newPosition);
-				return true;
-			}
-			if (isKeyCodeSkipForward(keyCode)) {
-				int selectedItem = gallery.getSelectedItemPosition();
-				int newPosition = selectedItem  + 10;
-				if (newPosition > itemsCount) {
-					newPosition = itemsCount - 1;
+				if (isKeyCodeSkipBack(keyCode)) {
+					int selectedItem = gallery.getSelectedItemPosition();
+					int newPosition = selectedItem - 10;
+					if (newPosition < 0) {
+						newPosition = 0;
+					}
+					gallery.setSelection(newPosition);
+					return true;
 				}
-				gallery.setSelection(newPosition);
-				return true;
+				if (isKeyCodeSkipForward(keyCode)) {
+					int selectedItem = gallery.getSelectedItemPosition();
+					int newPosition = selectedItem  + 10;
+					if (newPosition > itemsCount) {
+						newPosition = itemsCount - 1;
+					}
+					gallery.setSelection(newPosition);
+					return true;
+				}
 			}
 			
 			return super.onKeyDown(keyCode, event);
