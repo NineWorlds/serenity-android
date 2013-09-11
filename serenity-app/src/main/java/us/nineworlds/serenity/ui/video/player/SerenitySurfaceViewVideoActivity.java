@@ -504,7 +504,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	protected boolean isKeyCodeSkipBack(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
-				|| keyCode == KeyEvent.KEYCODE_R;
+				|| keyCode == KeyEvent.KEYCODE_R
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_L1;
 	}
 
 	/**
@@ -514,7 +515,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	@Override
 	protected boolean isKeyCodeSkipForward(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
-				|| keyCode == KeyEvent.KEYCODE_F;
+				|| keyCode == KeyEvent.KEYCODE_F
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_R1;
 	}
 
 	/**
@@ -526,17 +528,20 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
 				|| keyCode == KeyEvent.KEYCODE_P
-				|| keyCode == KeyEvent.KEYCODE_SPACE;
+				|| keyCode == KeyEvent.KEYCODE_SPACE
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_A;
 	}
 
 	protected boolean isKeyCodeInfo(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_INFO
-				|| keyCode == KeyEvent.KEYCODE_I;
+				|| keyCode == KeyEvent.KEYCODE_I
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_Y;
 	}
 
 	protected boolean isKeyCodeBack(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_BACK
-				|| keyCode == KeyEvent.KEYCODE_ESCAPE;
+				|| keyCode == KeyEvent.KEYCODE_ESCAPE
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_B;
 	}
 
 	protected boolean isMediaPlayerStateValid() {

@@ -54,7 +54,7 @@ public abstract class SerenityActivity extends Activity {
 			if (adapter != null) {
 				int itemsCount =  adapter.getCount();
 				
-				if (keyCode == KeyEvent.KEYCODE_C) {
+				if (keyCode == KeyEvent.KEYCODE_C || keyCode == KeyEvent.KEYCODE_BUTTON_Y || keyCode == KeyEvent.KEYCODE_BUTTON_R2) {
 					ImageView view = (ImageView) gallery.getSelectedView();
 					view.performLongClick();
 					return true;
@@ -91,7 +91,8 @@ public abstract class SerenityActivity extends Activity {
 			   keyCode == KeyEvent.KEYCODE_PAGE_UP ||
 			   keyCode == KeyEvent.KEYCODE_CHANNEL_UP ||
 			   keyCode == KeyEvent.KEYCODE_MEDIA_NEXT ||
-			   keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD;
+			   keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD ||
+			   keyCode == KeyEvent.KEYCODE_BUTTON_R1;
 	}
 
 	/**
@@ -103,7 +104,8 @@ public abstract class SerenityActivity extends Activity {
 			   keyCode == KeyEvent.KEYCODE_PAGE_DOWN ||
 			   keyCode == KeyEvent.KEYCODE_CHANNEL_DOWN ||
 			   keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS ||
-			   keyCode == KeyEvent.KEYCODE_MEDIA_REWIND;
+			   keyCode == KeyEvent.KEYCODE_MEDIA_REWIND ||
+			   keyCode == KeyEvent.KEYCODE_BUTTON_L1;
 	}
 
 	@Override
