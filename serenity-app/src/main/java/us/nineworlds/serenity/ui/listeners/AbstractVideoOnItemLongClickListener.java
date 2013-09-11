@@ -45,6 +45,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
@@ -110,8 +111,8 @@ public class AbstractVideoOnItemLongClickListener {
 		options.add(context.getString(R.string.toggle_watched_status));
 		options.add(context.getString(R.string.download_video_to_device));
 		options.add("Add video to queue");
-		if (!SerenityApplication.isGoogleTV(context)) {
-			options.add(context.getString(R.string.play_on_tv));
+		if (!SerenityApplication.isGoogleTV(context) && (hasAbleRemote(context) || hasGoogleTVRemote(context))) {
+			options.add("Cast/Fling with..");
 		}
 
 		ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context,
@@ -129,6 +130,14 @@ public class AbstractVideoOnItemLongClickListener {
 	}
 
 	protected boolean hasAbleRemote(Context context) {
+		return hasRemoteByName(context, "com.entertailion.android.remote");
+	}
+	
+	protected boolean hasGoogleTVRemote(Context context) {
+		return hasRemoteByName(context, "com.google.android.apps.tvremote");
+	}
+	
+	protected boolean hasRemoteByName(Context context, String remotePackageName) {
 
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -137,12 +146,12 @@ public class AbstractVideoOnItemLongClickListener {
 
 		for (ResolveInfo resolveInfo : pkgAppsList) {
 			String packageName = resolveInfo.activityInfo.packageName;
-			if (packageName.contains("entertailion.android.remote")) {
+			if (packageName.contains(remotePackageName)) {
 				return true;
 			}
 		}
 
-		return false;
+		return false;		
 	}
 	
 	protected void performWatchedToggle() {
@@ -156,16 +165,26 @@ public class AbstractVideoOnItemLongClickListener {
 	}
 	
 	protected void performGoogleTVSecondScreen() {
-		if (hasAbleRemote(context)) {
-			Intent sharingIntent = new Intent();
-			sharingIntent.setClassName(
-					"com.entertailion.android.remote",
-					"com.entertailion.android.remote.MainActivity");
-			sharingIntent.setAction("android.intent.action.SEND");
-			sharingIntent.putExtra(Intent.EXTRA_TEXT, vciv
-					.getPosterInfo().getDirectPlayUrl());
-
-			context.startActivity(sharingIntent);
+		if (hasAbleRemote(context) || hasGoogleTVRemote(context)) {
+			dialog.dismiss();
+						
+			final String body = vciv.getPosterInfo().getDirectPlayUrl();
+			
+			final SenderAppAdapter adapter = new SenderAppAdapter(context);
+			
+			new AlertDialog.Builder(context)
+					.setTitle("Cast/Fling with...")
+					.setCancelable(true)
+					.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
+						
+						public void onClick(DialogInterface dialog, int which) {
+							adapter.respondToClick(which, "", body);
+							
+							dialog.dismiss();
+							
+						}
+					})
+					.show();
 		}
 	}
 	
