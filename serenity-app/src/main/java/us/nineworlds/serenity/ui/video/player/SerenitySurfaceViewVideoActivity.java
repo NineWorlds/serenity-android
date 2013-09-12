@@ -81,6 +81,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private MediaPlayer mediaPlayer;
 	private String videoURL;
 	private SurfaceView surfaceView;
+	private View videoActivityView;
 	private MediaController mediaController;
 	private String aspectRatio;
 	private String videoId;
@@ -198,6 +199,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setOnErrorListener(new SerenityOnErrorListener());
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
+		videoActivityView = findViewById(R.id.video_playeback);
 		surfaceView.setKeepScreenOn(true);
 		SurfaceHolder holder = surfaceView.getHolder();
 		holder.addCallback(this);
@@ -289,7 +291,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		mediaController = new MediaController(this, summary, title, posterURL,
 				videoResolution, videoFormat, audioFormat, audioChannels,
 				mediaTagIdentifier);
-		mediaController.setAnchorView(surfaceView);
+		//mediaController.setAnchorView(surfaceView);
+		mediaController.setAnchorView(videoActivityView);
 		mediaController.setMediaPlayer(new SerenityMediaPlayerControl(
 				mediaPlayer));
 	}

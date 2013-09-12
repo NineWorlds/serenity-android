@@ -37,11 +37,11 @@
         android:id="@+id/mediacontroller_poster_art"
         android:layout_width="150dp"
         android:layout_height="200dp"
+        android:layout_marginBottom="40dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
-        android:paddingBottom="10dp"
-        android:scaleType="centerInside"
+        android:scaleType="fitXY"
         android:src="@drawable/default_video_cover"
         tools:ignore="ContentDescription" />
     
@@ -68,7 +68,7 @@
         android:id="@+id/mediacontroller_infographic_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/mediacontroller_poster_art"
+        android:layout_above="@+id/mediacontroller_progress_layout"
         android:layout_toRightOf="@+id/mediacontroller_poster_art"
         android:background="#50000000" >
     </LinearLayout>
@@ -77,7 +77,7 @@
         android:id="@+id/mediacontroller_progress_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/mediacontroller_infographic_layout"
+        android:layout_above="@+id/mediacontroller_controls_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginRight="10dp"
         android:layout_toRightOf="@+id/mediacontroller_poster_art"
@@ -121,7 +121,8 @@
         android:id="@+id/mediacontroller_controls_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/mediacontroller_progress_layout"
+        android:layout_alignBottom="@+id/mediacontroller_poster_art"
+        android:layout_marginBottom="10dp"
         android:layout_centerHorizontal="true"
         android:background="#50000000"
         android:orientation="horizontal" >

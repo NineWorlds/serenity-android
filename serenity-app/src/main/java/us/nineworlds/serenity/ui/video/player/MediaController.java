@@ -63,6 +63,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -222,8 +223,8 @@ public class MediaController extends FrameLayout {
 			removeAllViews();
 			mRoot = makeControllerView();
 			mWindow.setContentView(mRoot);
-			mWindow.setWidth(android.view.ViewGroup.LayoutParams.FILL_PARENT);
-			mWindow.setHeight(android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+			mWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+			mWindow.setHeight(android.view.ViewGroup.LayoutParams.MATCH_PARENT);
 		}
 		initControllerView(mRoot);
 	}
