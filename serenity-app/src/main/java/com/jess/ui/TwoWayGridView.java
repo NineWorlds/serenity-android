@@ -459,28 +459,27 @@ public class TwoWayGridView extends TwoWayAbsListView {
 			}
 
 			case KeyEvent.KEYCODE_SPACE:
-				// if (mPopup == null || !mPopup.isShowing()) {
 				if (!event.isShiftPressed()) {
 					handled = pageScroll(FOCUS_DOWN);
 				} else {
 					handled = pageScroll(FOCUS_UP);
 				}
-				// }
 				break;
 			case KeyEvent.KEYCODE_CHANNEL_UP:
+			case KeyEvent.KEYCODE_PAGE_UP:
+			case KeyEvent.KEYCODE_BUTTON_R1:
 				handled = pageScroll(FOCUS_UP);
 				break;
 
 			case KeyEvent.KEYCODE_CHANNEL_DOWN:
+			case KeyEvent.KEYCODE_PAGE_DOWN:
+			case KeyEvent.KEYCODE_BUTTON_L1:
 				handled = pageScroll(FOCUS_DOWN);
 				break;
 			}
 				
 		}
 
-		// if (!handled) {
-		// handled = sendToTextFilter(keyCode, count, event);
-		// }
 
 		if (handled) {
 			return true;
