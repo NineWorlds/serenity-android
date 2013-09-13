@@ -45,6 +45,7 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -179,6 +180,11 @@ public class SerenityApplication extends Application {
 	public static boolean isGoogleTV(Context context) {
 		final PackageManager pm = context.getPackageManager();
 		return pm.hasSystemFeature(COM_GOOGLE_ANDROID_TV);
+	}
+	
+	public static boolean isAndroidTV(Context context) {
+		final PackageManager pm = context.getPackageManager();
+		return pm.hasSystemFeature("android.hardware.type.television");
 	}
 
 	public static ConcurrentHashMap<String, Server> getPlexMediaServers() {

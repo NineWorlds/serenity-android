@@ -37,6 +37,8 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.content.SharedPreferences;
@@ -80,13 +82,15 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	 * @param listView
 	 */
 	public void hideMenuItems() {
-		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
-			menuOptions.setVisibility(View.INVISIBLE);
+		if (SerenityApplication.isGoogleTV(this) ||
+			SerenityApplication.isAndroidTV(this)) {
+			menuOptions.setVisibility(View.GONE);
 		}
 	}
 	
 	public void showMenuItems() {
-		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
+		if (SerenityApplication.isGoogleTV(this) ||
+			SerenityApplication.isAndroidTV(this)) {
 			menuOptions.setVisibility(View.VISIBLE);
 		}
 		

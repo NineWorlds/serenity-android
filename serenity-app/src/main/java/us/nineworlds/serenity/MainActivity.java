@@ -277,16 +277,16 @@ public class MainActivity extends SerenityActivity {
 	 * @param listView
 	 */
 	protected void hideMenuItems(ListView listView) {
-		if (!getPackageManager().hasSystemFeature(
-				"android.hardware.touchscreen")) {
+		if (SerenityApplication.isAndroidTV(this) ||
+			SerenityApplication.isAndroidTV(this)) {
 			findViewById(R.id.menu_help).setVisibility(View.INVISIBLE);
-			listView.setVisibility(View.INVISIBLE);
+			listView.setVisibility(View.GONE);
 		}
 	}
 
 	protected void showMenuItems(ListView listView) {
-		if (!getPackageManager().hasSystemFeature(
-				"android.hardware.touchscreen")) {
+		if (SerenityApplication.isAndroidTV(this) ||
+				SerenityApplication.isAndroidTV(this)) {
 			findViewById(R.id.menu_help).setVisibility(View.VISIBLE);
 			listView.setVisibility(View.VISIBLE);
 		}
@@ -449,6 +449,7 @@ public class MainActivity extends SerenityActivity {
 
 		// Start the auto-configuration service
 		discoverPlexServers();
+		mainGallery.requestFocusFromTouch();
 
 	}
 

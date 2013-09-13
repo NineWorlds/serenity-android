@@ -35,6 +35,8 @@ import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+
 import com.google.analytics.tracking.android.EasyTracker;
 import android.os.Bundle;
 import android.os.Handler;
@@ -94,13 +96,15 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 	 * @param listView
 	 */
 	public void hideMenuItems() {
-		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
-			menuOptions.setVisibility(View.INVISIBLE);
+		if (SerenityApplication.isGoogleTV(this) ||
+			SerenityApplication.isAndroidTV(this)) {
+			menuOptions.setVisibility(View.GONE);
 		}
 	}
 	
 	public void showMenuItems() {
-		if (!getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
+		if (SerenityApplication.isGoogleTV(this) ||
+			SerenityApplication.isAndroidTV(this)) {
 			menuOptions.setVisibility(View.VISIBLE);
 		}
 		
