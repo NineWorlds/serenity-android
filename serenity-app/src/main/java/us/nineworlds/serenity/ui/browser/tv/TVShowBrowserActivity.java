@@ -27,6 +27,10 @@ import java.util.ArrayList;
 
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.services.TVShowCategoryRetrievalIntentService;
+import us.nineworlds.serenity.ui.activity.SerenityActivity;
+import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -39,15 +43,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Gallery;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 /**
  * @author dcarver
  * 
  */
-public class TVShowBrowserActivity extends Activity {
+public class TVShowBrowserActivity extends SerenityActivity {
 
 	private static Spinner categorySpinner;
 	private boolean restarted_state = false;
@@ -99,6 +106,48 @@ public class TVShowBrowserActivity extends Activity {
 		super.onResume();
 		restarted_state = true;
 	}
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int, android.view.KeyEvent)
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		Gallery gallery = (Gallery) findViewById(R.id.tvShowBannerGallery);
+		if (gallery == null) {
+			return super.onKeyDown(keyCode, event);				
+		}
+		
+		AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+		if (adapter != null) {
+			int itemsCount =  adapter.getCount();
+			
+			if (keyCode == KeyEvent.KEYCODE_C || keyCode == KeyEvent.KEYCODE_BUTTON_Y || keyCode == KeyEvent.KEYCODE_BUTTON_R2) {
+				ImageView view = (ImageView) gallery.getSelectedView();
+				view.performLongClick();
+				return true;
+			}
+			if (isKeyCodeSkipBack(keyCode)) {
+				int selectedItem = gallery.getSelectedItemPosition();
+				int newPosition = selectedItem - 10;
+				if (newPosition < 0) {
+					newPosition = 0;
+				}
+				gallery.setSelection(newPosition);
+				return true;
+			}
+			if (isKeyCodeSkipForward(keyCode)) {
+				int selectedItem = gallery.getSelectedItemPosition();
+				int newPosition = selectedItem  + 10;
+				if (newPosition > itemsCount) {
+					newPosition = itemsCount - 1;
+				}
+				gallery.setSelection(newPosition);
+				return true;
+			}
+		}
+				
+		return super.onKeyDown(keyCode, event);
+	}
 
 	private static class CategoryHandler extends Handler {
 
@@ -138,6 +187,14 @@ public class TVShowBrowserActivity extends Activity {
 			categorySpinner.requestFocus();
 		}
 
+	}
+
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
+	 */
+	@Override
+	protected void createSideMenu() {
+		
 	}
 
 }
