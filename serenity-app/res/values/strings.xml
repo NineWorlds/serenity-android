@@ -128,5 +128,16 @@
     <string name="external_player_video_queue_support_has_not_been_enabled_">External player video queue support has not been enabled.</string>
     <string name="queue_is_empty_">Queue is empty.</string>
     <string name="media_player_internal">Media Player - Internal</string>    
-    <string name="media_player_external">Media Player - External</string>    
+    <string name="media_player_external">Media Player - External</string>
+        
+    <string name="no_play_store_installed_on_device">No Play Store installed on device</string>    
+    <string name="rate_it_">Rate it!</string>    
+    <string name="remind_me_later">Remind me later</string>    
+    <string name="no_thanks">No thanks</string>    
+    <string name="if_you_enjoy_using_">"If you enjoy using "</string>    
+    <string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, please take a moment to rate it. Thanks for your support!</string>    
+    <string name="rate_">"Rate "</string>    
+    <string name="cast_fling_with_">Cast/Fling with...</string>    
+    <string name="add_video_to_queue">Add video to queue</string>    
+    <string name="there_are_still_videos_int_the_queue_">There are still videos int the queue.</string>    
 </resources>

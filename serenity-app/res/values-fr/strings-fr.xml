@@ -119,5 +119,14 @@
     <string name="media_player_internal">Lecteur Média - Internal</string>    
     <string name="media_player_external">Lecteur Média - External</string>    
     
-
+    <string name="no_play_store_installed_on_device">Pas de Play Store installé sur l\'appareil</string>    
+    <string name="rate_it_">Notez-le!</string>    
+    <string name="remind_me_later">Rappelez-moi plus tard</string>    
+    <string name="no_thanks">Non merci</string>    
+    <string name="if_you_enjoy_using_">"Si vous aimez l'aide "</string>    
+    <string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, s\'il vous plaît prendre un moment pour évaluer ce. Merci pour votre soutien!</string>    
+    <string name="rate_">"Taux "</string>    
+    <string name="cast_fling_with_">Moulage / aventure avec...</string>    
+    <string name="add_video_to_queue">Ajouter la vidéo à la file d\'attente</string>    
+    <string name="there_are_still_videos_int_the_queue_">Il ya encore des vidéos int file d\'attente.</string>
 </resources>

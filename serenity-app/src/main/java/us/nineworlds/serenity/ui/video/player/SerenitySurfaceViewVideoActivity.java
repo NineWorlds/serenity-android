@@ -291,7 +291,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		mediaController = new MediaController(this, summary, title, posterURL,
 				videoResolution, videoFormat, audioFormat, audioChannels,
 				mediaTagIdentifier);
-		//mediaController.setAnchorView(surfaceView);
 		mediaController.setAnchorView(videoActivityView);
 		mediaController.setMediaPlayer(new SerenityMediaPlayerControl(
 				mediaPlayer));

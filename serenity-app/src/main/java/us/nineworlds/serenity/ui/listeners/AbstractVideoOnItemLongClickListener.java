@@ -110,9 +110,9 @@ public class AbstractVideoOnItemLongClickListener {
 		ArrayList<String> options = new ArrayList<String>();
 		options.add(context.getString(R.string.toggle_watched_status));
 		options.add(context.getString(R.string.download_video_to_device));
-		options.add("Add video to queue");
+		options.add(context.getString(R.string.add_video_to_queue));
 		if (!SerenityApplication.isGoogleTV(context) && (hasAbleRemote(context) || hasGoogleTVRemote(context))) {
-			options.add("Cast/Fling with..");
+			options.add(context.getString(R.string.cast_fling_with_));
 		}
 
 		ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context,
@@ -173,7 +173,7 @@ public class AbstractVideoOnItemLongClickListener {
 			final SenderAppAdapter adapter = new SenderAppAdapter(context);
 			
 			new AlertDialog.Builder(context)
-					.setTitle("Cast/Fling with...")
+					.setTitle(R.string.cast_fling_with_)
 					.setCancelable(true)
 					.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
 						
@@ -193,7 +193,7 @@ public class AbstractVideoOnItemLongClickListener {
 		boolean extplayer = prefs.getBoolean("external_player", false);
 		boolean extplayerVideoQueue = prefs.getBoolean("external_player_continuous_playback", false);
 		if (extplayer && !extplayerVideoQueue) {
-			Toast.makeText(context, "External player video queue support has not been enabled.", Toast.LENGTH_LONG).show();
+			Toast.makeText(context, R.string.external_player_video_queue_support_has_not_been_enabled_, Toast.LENGTH_LONG).show();
 			return;
 		}
 

@@ -117,8 +117,17 @@
     <string name="external_player_video_queue_support_has_not_been_enabled_">La ayuda del jugador de colas de vídeo externa no se ha habilitado.</string>
     <string name="queue_is_empty_">Cola está vacía.</string>
     <string name="media_player_internal">Media Player - Interno</string>    
-    <string name="media_player_external">Media Player - Externo</string>    
+    <string name="media_player_external">Media Player - Externo</string>
     
-    
+    <string name="no_play_store_installed_on_device">No Play Store instalado en el dispositivo</string>    
+    <string name="rate_it_">De su nota!</string>    
+    <string name="remind_me_later">Recuérdame más tarde</string>    
+    <string name="no_thanks">No, gracias</string>    
+    <string name="if_you_enjoy_using_">"Si te gusta usar "</string>    
+    <string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, Por favor, tome un momento para evaluarlo. Gracias por su apoyo!</string>    
+    <string name="rate_">"Rate "</string>    
+    <string name="cast_fling_with_">Cast / aventura con ...</string>    
+    <string name="add_video_to_queue">Añadir vídeo a cola</string>    
+    <string name="there_are_still_videos_int_the_queue_">Todavía hay vídeos int la cola.</string>    
    
 </resources>

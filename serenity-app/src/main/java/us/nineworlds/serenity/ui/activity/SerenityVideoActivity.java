@@ -127,7 +127,7 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 	protected void showQueueNotEmptyMessage() {
 		Toast.makeText(
 				this,
-				"There are still videos int the queue.", Toast.LENGTH_LONG).show();
+				R.string.there_are_still_videos_int_the_queue_, Toast.LENGTH_LONG).show();
 	}
 
 	/**

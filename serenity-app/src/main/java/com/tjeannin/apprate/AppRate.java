@@ -26,6 +26,7 @@
 package com.tjeannin.apprate;
 
 import java.lang.Thread.UncaughtExceptionHandler;
+import us.nineworlds.serenity.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -189,11 +190,12 @@ public class AppRate implements android.content.DialogInterface.OnClickListener,
 
 		Log.d(TAG, "Create default dialog.");
 
-		String title = "Rate " + getApplicationName(hostActivity.getApplicationContext());
-		String message = "If you enjoy using " + getApplicationName(hostActivity.getApplicationContext()) + ", please take a moment to rate it. Thanks for your support!";
-		String rate = "Rate it !";
-		String remindLater = "Remind me later";
-		String dismiss = "No thanks";
+		String title = hostActivity.getString(R.string.rate_) + getApplicationName(hostActivity.getApplicationContext());
+		String message = hostActivity.getString(R.string.if_you_enjoy_using_) + getApplicationName(hostActivity.getApplicationContext()) + hostActivity
+				.getString(R.string._please_take_a_moment_to_rate_it_thanks_for_your_support_);
+		String rate = hostActivity.getString(R.string.rate_it_);
+		String remindLater = hostActivity.getString(R.string.remind_me_later);
+		String dismiss = hostActivity.getString(R.string.no_thanks);
 
 		new AlertDialog.Builder(new ContextThemeWrapper(hostActivity,
 				android.R.style.Theme_Holo))
@@ -257,7 +259,7 @@ public class AppRate implements android.content.DialogInterface.OnClickListener,
 			{
 				hostActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + hostActivity.getPackageName())));
 			}catch (ActivityNotFoundException e) {
-				Toast.makeText(hostActivity, "No Play Store installed on device", Toast.LENGTH_SHORT).show();
+				Toast.makeText(hostActivity, R.string.no_play_store_installed_on_device, Toast.LENGTH_SHORT).show();
 			}
 			editor.putBoolean(PrefsContract.PREF_DONT_SHOW_AGAIN, true);
 			break;
