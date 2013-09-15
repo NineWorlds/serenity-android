@@ -24,13 +24,16 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Gallery;
+import android.widget.RelativeLayout;
 
 /**
  * @author dcarver
@@ -52,6 +55,12 @@ public class TVShowSeasonBrowserActivity extends Activity {
 
 		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
 		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
+		if (SerenityApplication.isRunningOnOUYA()) {
+			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.tvshowSeasonBrowserLayout);
+			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
+			params.setMargins(35, 20, 45, 20);
+		}
+
 	}
 
 	@Override

@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,6 +50,7 @@ import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 /**
@@ -78,14 +80,15 @@ public class SerenityApplication extends Application {
 	public static DisplayImageOptions getReflectiveOptions() {
 		return reflectiveOptions;
 	}
-	
+
 	private static DisplayImageOptions musicOptions;
-	
+
 	public static DisplayImageOptions getMusicOptions() {
 		return musicOptions;
 	}
-	
+
 	private static DisplayImageOptions movieOptions;
+
 	public static DisplayImageOptions getMovieOptions() {
 		return movieOptions;
 	}
@@ -103,8 +106,6 @@ public class SerenityApplication extends Application {
 		pendingDownloads = new ArrayList<PendingDownload>();
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 	}
-	
-	
 
 	protected void configureImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
@@ -112,20 +113,17 @@ public class SerenityApplication extends Application {
 				.bitmapConfig(Bitmap.Config.RGB_565)
 				.showImageForEmptyUri(R.drawable.default_video_cover)
 				.showStubImage(R.drawable.default_video_cover).build();
-		
-		musicOptions = new DisplayImageOptions.Builder()
-		.cacheInMemory().cacheOnDisc()
-		.bitmapConfig(Bitmap.Config.RGB_565)
-		.showImageForEmptyUri(R.drawable.default_music)
-		.showStubImage(R.drawable.default_music).build();
-		
-		movieOptions = new DisplayImageOptions.Builder()
-		.cacheInMemory().cacheOnDisc()
-		.bitmapConfig(Bitmap.Config.RGB_565)
-		.showImageForEmptyUri(R.drawable.movies)
-		.showStubImage(R.drawable.movies).build();
 
-		
+		musicOptions = new DisplayImageOptions.Builder().cacheInMemory()
+				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
+				.showImageForEmptyUri(R.drawable.default_music)
+				.showStubImage(R.drawable.default_music).build();
+
+		movieOptions = new DisplayImageOptions.Builder().cacheInMemory()
+				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
+				.showImageForEmptyUri(R.drawable.movies)
+				.showStubImage(R.drawable.movies).build();
+
 		reflectiveOptions = new DisplayImageOptions.Builder().cacheInMemory()
 				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
 				.showStubImage(R.drawable.default_video_cover)
@@ -140,7 +138,6 @@ public class SerenityApplication extends Application {
 				.denyCacheImageMultipleSizesInMemory()
 				.defaultDisplayImageOptions(defaultOptions).build();
 
-
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(imageLoaderconfig);
 	}
@@ -152,9 +149,9 @@ public class SerenityApplication extends Application {
 		String deviceModel = android.os.Build.MODEL;
 		Tracker tracker = EasyTracker.getTracker();
 		if (tracker != null) {
-			tracker.sendEvent("Devices", "Started Application",
-					deviceModel, (long) 0);
-			
+			tracker.sendEvent("Devices", "Started Application", deviceModel,
+					(long) 0);
+
 		}
 	}
 
@@ -181,9 +178,12 @@ public class SerenityApplication extends Application {
 		final PackageManager pm = context.getPackageManager();
 		return pm.hasSystemFeature(COM_GOOGLE_ANDROID_TV);
 	}
-	
+
 	public static boolean isAndroidTV(Context context) {
 		final PackageManager pm = context.getPackageManager();
+		FeatureInfo features[] = pm.getSystemAvailableFeatures();
+		String model = Build.MODEL;
+		String manufacturer = Build.MANUFACTURER;
 		return pm.hasSystemFeature("android.hardware.type.television");
 	}
 
@@ -194,11 +194,11 @@ public class SerenityApplication extends Application {
 	public static ImageLoader getImageLoader() {
 		return imageLoader;
 	}
-	
+
 	/**
-	 * Retrieves the video playback queue.  Items will be added and removed
-	 * from the queue and used by the video player for playback of Episodes
-	 * and Movies.
+	 * Retrieves the video playback queue. Items will be added and removed from
+	 * the queue and used by the video player for playback of Episodes and
+	 * Movies.
 	 * 
 	 * When an episode is finished playing it should be removed from the queue.
 	 * 
@@ -208,6 +208,18 @@ public class SerenityApplication extends Application {
 	 */
 	public static LinkedList<VideoContentInfo> getVideoPlaybackQueue() {
 		return videoQueue;
+	}
+
+	/**
+	 * Checks if the app is running on OUYA.
+	 * 
+	 * @return true if the app is running on OUYA
+	 */
+	public static boolean isRunningOnOUYA() {
+		if ("OUYA".equals(Build.MANUFACTURER)) {
+			return true;
+		}
+		return false;
 	}
 
 }

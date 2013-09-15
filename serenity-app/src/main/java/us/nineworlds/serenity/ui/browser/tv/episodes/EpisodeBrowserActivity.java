@@ -46,7 +46,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
@@ -92,6 +94,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		if (SerenityApplication.isGoogleTV(this) ||
 			SerenityApplication.isAndroidTV(this)) {
 			menuOptions.setVisibility(View.VISIBLE);
+			menuOptions.requestFocusFromTouch();
 		}
 		
 	}
@@ -109,6 +112,17 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		posterGallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
 		metaData = findViewById(R.id.metaDataRow);
 		metaData.setVisibility(View.VISIBLE);
+		if (SerenityApplication.isRunningOnOUYA()) {
+			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.movieBrowserBackgroundLayout);
+			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
+			params.setMargins(35, 20, 20, 20);
+			
+			RelativeLayout menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
+			FrameLayout.LayoutParams menuParams = (FrameLayout.LayoutParams)  menuDrawerLayout.getLayoutParams();
+			menuParams.setMargins(35, 0, 0, 0);
+		}
+
+		
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 	}
@@ -123,6 +137,11 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
 			hideMenuItems();
 			menuDrawer.toggleMenu();
+			
+			View gallery = findViewById(R.id.moviePosterGallery);
+			if (gallery != null) {
+				gallery.requestFocusFromTouch();
+			}			
 			return true;
 		}
 		

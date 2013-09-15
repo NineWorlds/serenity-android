@@ -33,6 +33,8 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.Activity;
@@ -46,8 +48,10 @@ import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 /**
@@ -75,6 +79,13 @@ public class TVShowBrowserActivity extends SerenityActivity {
 		} else {
 			setContentView(R.layout.activity_tvbrowser_show_banners);
 		}
+		
+		if (SerenityApplication.isRunningOnOUYA()) {
+			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.tvshowBrowserLayout);
+			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
+			params.setMargins(35, 20, 40, 20);
+		}
+
 	}
 
 	@Override

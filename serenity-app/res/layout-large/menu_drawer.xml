@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/menu_drawer_layout"
     android:layout_height="match_parent"
     android:background="#50000000" >
 
@@ -138,6 +139,7 @@
             android:nextFocusRight="@+id/menu_settings_text"
             android:nextFocusLeft="@+id/menu_settings_text"
             android:clickable="true"
+            android:visibility="gone"
              />
         
     </LinearLayout>

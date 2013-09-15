@@ -31,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
 import android.app.Activity;
 import android.content.Context;
@@ -48,10 +49,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -168,6 +171,12 @@ public class MusicTracksActivity extends Activity implements
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		setContentView(R.layout.activity_music_track);
+		if (SerenityApplication.isRunningOnOUYA()) {
+			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.musicBrowserBackgroundLayout);
+			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
+			params.setMargins(35, 20, 20, 20);
+		}
+
 		init();
 	}
 

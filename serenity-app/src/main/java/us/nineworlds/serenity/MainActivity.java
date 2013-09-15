@@ -57,8 +57,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import us.nineworlds.serenity.R;
@@ -354,6 +356,17 @@ public class MainActivity extends SerenityActivity {
 		initDownloadService();
 
 		ratingNudger();
+		
+		if (SerenityApplication.isRunningOnOUYA()) {
+			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
+			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
+			params.setMargins(35, 20, 20, 20);
+			
+			RelativeLayout menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
+			FrameLayout.LayoutParams menuParams = (FrameLayout.LayoutParams)  menuDrawerLayout.getLayoutParams();
+			menuParams.setMargins(35, 0, 0, 0);
+		}
+
 
 	}
 

@@ -49,7 +49,9 @@ import android.content.SharedPreferences;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 public class MovieBrowserActivity extends SerenityVideoActivity {
@@ -122,6 +124,13 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
 			hideMenuItems();
 			menuDrawer.toggleMenu();
+			View gallery = findViewById(R.id.moviePosterGallery);
+			if (gallery != null) {
+				gallery.requestFocusFromTouch();
+			} else {
+				View grid = findViewById(R.id.movieGridView);
+				grid.requestFocusFromTouch();
+			}
 			return true;
 		}
 		
@@ -134,6 +143,17 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
 		createSideMenu();
+		if (SerenityApplication.isRunningOnOUYA()) {
+			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.movieBrowserBackgroundLayout);
+			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
+			params.setMargins(35, 20, 20, 20);
+			
+			RelativeLayout menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
+			FrameLayout.LayoutParams menuParams = (FrameLayout.LayoutParams)  menuDrawerLayout.getLayoutParams();
+			menuParams.setMargins(35, 0, 0, 0);
+			
+		}
+
 	}
 
 	@Override

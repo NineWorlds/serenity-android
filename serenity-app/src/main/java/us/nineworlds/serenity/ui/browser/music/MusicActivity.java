@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import android.app.Activity;
@@ -40,6 +41,8 @@ import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 /**
@@ -63,6 +66,12 @@ public class MusicActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (SerenityApplication.isRunningOnOUYA()) {
+			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.musicArtistBrowserLayout);
+			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
+			params.setMargins(35, 20, 20, 20);
+		}
+
 		key = getIntent().getExtras().getString("key");
 
 		SharedPreferences prefs = PreferenceManager
