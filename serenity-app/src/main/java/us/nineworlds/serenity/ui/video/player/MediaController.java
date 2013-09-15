@@ -225,6 +225,7 @@ public class MediaController extends FrameLayout {
 			mWindow.setContentView(mRoot);
 			mWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
 			mWindow.setHeight(android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+				
 		}
 		initControllerView(mRoot);
 	}
@@ -236,6 +237,12 @@ public class MediaController extends FrameLayout {
 	 * @return The controller view.
 	 */
 	protected View makeControllerView() {
+		if (SerenityApplication.isRunningOnOUYA()) {
+			return ((LayoutInflater) mContext
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
+					R.layout.serenity_media_controller_ouya, this);
+		}
+		
 		return ((LayoutInflater) mContext
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
 				R.layout.serenity_media_controller, this);

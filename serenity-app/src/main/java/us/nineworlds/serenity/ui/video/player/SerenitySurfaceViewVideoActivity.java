@@ -56,6 +56,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -200,6 +202,11 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		mediaPlayer.setOnErrorListener(new SerenityOnErrorListener());
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 		videoActivityView = findViewById(R.id.video_playeback);
+		if (SerenityApplication.isRunningOnOUYA()) {
+			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  videoActivityView.getLayoutParams();
+			params.setMargins(35, 20, 20, 20);
+		}
+			
 		surfaceView.setKeepScreenOn(true);
 		SurfaceHolder holder = surfaceView.getHolder();
 		holder.addCallback(this);
