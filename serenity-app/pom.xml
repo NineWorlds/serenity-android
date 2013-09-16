@@ -52,7 +52,13 @@
          <artifactId>menudrawer</artifactId>
          <version>1.4.2</version>
          <type>apklib</type>
-      </dependency>                  
+      </dependency>
+      <dependency>
+         <groupId>com.googlecode.juniversalchardet</groupId>
+         <artifactId>juniversalchardet</artifactId>
+         <version>1.0.3</version>
+      </dependency>
+                  
    </dependencies>
 
    <build>

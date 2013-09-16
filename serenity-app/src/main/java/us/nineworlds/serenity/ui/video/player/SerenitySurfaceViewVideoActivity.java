@@ -23,12 +23,20 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.mozilla.universalchardet.UniversalDetector;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
@@ -81,7 +89,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	static final String TAG = "SerenitySurfaceViewVideoActivity";
 	static final int CONTROLLER_DELAY = 16000; // Sixteen seconds
-		
+
 	private MediaPlayer mediaPlayer;
 	private String videoURL;
 	private SurfaceView surfaceView;
@@ -97,6 +105,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private String mediaTagIdentifier;
 	private TimedTextObject subtitleTimedText;
 	private boolean subtitlesPlaybackEnabled = true;
+	private String subtitleInputEncoding = null;
 
 	private Handler subtitleDisplayHandler = new Handler();
 	private Runnable subtitle = new Runnable() {
@@ -118,11 +127,15 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					}
 				} else {
 					subtitlesPlaybackEnabled = false;
-					Toast.makeText(getApplicationContext(), "Invalid or Missing Subtitle. Subtitle playback disabled.", Toast.LENGTH_LONG).show();
+					Toast.makeText(
+							getApplicationContext(),
+							"Invalid or Missing Subtitle. Subtitle playback disabled.",
+							Toast.LENGTH_LONG).show();
 				}
 			}
 			if (subtitlesPlaybackEnabled) {
-				subtitleDisplayHandler.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+				subtitleDisplayHandler
+						.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
 			}
 
 		}
@@ -205,10 +218,11 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 		videoActivityView = findViewById(R.id.video_playeback);
 		if (SerenityApplication.isRunningOnOUYA()) {
-			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  videoActivityView.getLayoutParams();
+			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) videoActivityView
+					.getLayoutParams();
 			params.setMargins(35, 20, 20, 20);
 		}
-			
+
 		surfaceView.setKeepScreenOn(true);
 		SurfaceHolder holder = surfaceView.getHolder();
 		holder.addCallback(this);
@@ -227,7 +241,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 		new SubtitleAsyncTask().execute();
 	}
-	
+
 	private void playbackFromIntent(Bundle extras) {
 		videoURL = extras.getString("videoUrl");
 		if (videoURL == null) {
@@ -250,11 +264,12 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		subtitleType = extras.getString("subtitleFormat");
 		mediaTagIdentifier = extras.getString("mediaTagId");
 		initMediaController(summary, title, posterURL, videoFormat,
-				videoResolution, audioFormat, audioChannels);		
+				videoResolution, audioFormat, audioChannels);
 	}
-	
+
 	private void playBackFromVideoQueue() {
-		LinkedList<VideoContentInfo> queue =  SerenityApplication.getVideoPlaybackQueue();
+		LinkedList<VideoContentInfo> queue = SerenityApplication
+				.getVideoPlaybackQueue();
 		if (queue.isEmpty()) {
 			return;
 		}
@@ -263,11 +278,12 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		videoId = video.id();
 		String summary = video.getSummary();
 		String title = video.getTitle();
-		String posterURL = video.getImageURL();;
+		String posterURL = video.getImageURL();
+		;
 		if (video instanceof EpisodePosterInfo) {
 			if (video.getParentPosterURL() != null) {
 				posterURL = video.getParentPosterURL();
-			}  
+			}
 		}
 		aspectRatio = video.getAspectRatio();
 		String videoFormat = video.getVideoCodec();
@@ -275,13 +291,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		String audioFormat = video.getAudioCodec();
 		String audioChannels = video.getAudioChannels();
 		resumeOffset = video.getResumeOffset();
-		if (video.getSubtitle() != null && !"none".equals(video.getSubtitle().getFormat())) {
-			subtitleURL = video.getSubtitle().getKey(); 
+		if (video.getSubtitle() != null
+				&& !"none".equals(video.getSubtitle().getFormat())) {
+			subtitleURL = video.getSubtitle().getKey();
 			subtitleType = video.getSubtitle().getFormat();
 		}
 		mediaTagIdentifier = video.getMediaTagIdentifier();
 		initMediaController(summary, title, posterURL, videoFormat,
-				videoResolution, audioFormat, audioChannels);		
+				videoResolution, audioFormat, audioChannels);
 	}
 
 	/**
@@ -311,13 +328,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		progressReportinghandler.removeCallbacks(progressRunnable);
 		super.finish();
 	}
-	
+
 	protected void setExitResultCode() {
 		Intent returnIntent = new Intent();
 		if (getParent() == null) {
 			setResult(SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY, returnIntent);
 		} else {
-		    getParent().setResult(SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY, returnIntent);
+			getParent().setResult(SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY,
+					returnIntent);
 		}
 	}
 
@@ -334,13 +352,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				finish();
 				return true;
 			}
-			
+
 			if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
 				mediaController.hide();
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 					mediaPlayer.stop();
 				}
-				
+
 				finish();
 				return true;
 			}
@@ -354,7 +372,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				return true;
 			}
 		}
-		
+
 		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
 			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 				mediaPlayer.stop();
@@ -362,7 +380,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			finish();
 			return true;
 		}
-		
 
 		if (isKeyCodeInfo(keyCode)) {
 			if (isMediaPlayerStateValid()) {
@@ -422,21 +439,21 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			return true;
 		}
-		
+
 		if (isMediaPlayerStateValid()) {
 			if (isSkipByPercentage(keyCode)) {
 				return true;
-			}				
+			}
 		}
 
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	protected boolean isSkipByPercentage(int keyCode) {
 		if (keyCode == KeyEvent.KEYCODE_1) {
 			int duration = mediaPlayer.getDuration();
 			int newPos = Math.round(duration * 0.10f);
-			skipToPercentage(newPos);				
+			skipToPercentage(newPos);
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_2) {
@@ -595,13 +612,15 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			return null;
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
 	protected void createSideMenu() {
-		
+
 	}
 
 	@Override
@@ -634,8 +653,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			finish();
 		}
-		
-		
+
 	}
 
 	/*
@@ -651,12 +669,21 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			subtitles.setVisibility(View.INVISIBLE);
 			return;
 		}
-		try {
-			subtitles.setText(Html.fromHtml(text.content.getBytes("UTF-8").toString()));
-			subtitles.setVisibility(View.VISIBLE);
-		} catch (UnsupportedEncodingException e) {
-			Log.d(getClass().getName(), "Unable to convert encoding to UTF-8");
+		String subtitleText = convertCharSet(text.content);
+		subtitles.setText(Html.fromHtml(subtitleText));
+		subtitles.setVisibility(View.VISIBLE);
+	}
+
+	private String convertCharSet(String textToConvert) {
+		String outputEncoding = "UTF-8";
+		if (outputEncoding.equalsIgnoreCase(subtitleInputEncoding)) {
+			return textToConvert;
 		}
+		Charset charsetOutput = Charset.forName(outputEncoding);
+		Charset charsetInput = Charset.forName(subtitleInputEncoding);
+		CharBuffer inputEncoded = charsetInput.decode(ByteBuffer.wrap(textToConvert.getBytes(Charset.forName(subtitleInputEncoding))));
+		byte[] utfEncoded = charsetOutput.encode(inputEncoded).array();
+		return new String(utfEncoded, Charset.forName("UTF-8"));
 	}
 
 	public class SubtitleAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -666,13 +693,15 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			if (subtitleURL != null) {
 				try {
 					URL url = new URL(subtitleURL);
-					
+					getInputEncoding(url);
 					if ("srt".equals(subtitleType)) {
 						FormatSRT formatSRT = new FormatSRT();
-						subtitleTimedText = formatSRT.parseFile(url.openStream());
+						subtitleTimedText = formatSRT.parseFile(url
+								.openStream());
 					} else if ("ass".equals(subtitleType)) {
 						FormatASS formatASS = new FormatASS();
-						subtitleTimedText = formatASS.parseFile(url.openStream());
+						subtitleTimedText = formatASS.parseFile(url
+								.openStream());
 					}
 					subtitleDisplayHandler.post(subtitle);
 				} catch (Exception e) {
@@ -680,6 +709,29 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				}
 			}
 			return null;
+		}
+
+		private void getInputEncoding(URL url) {
+			try {
+				byte[] buf = new byte[4096];				
+				InputStream is = url.openStream();
+				UniversalDetector detector = new UniversalDetector(null);
+
+				int nread;
+				while ((nread = is.read(buf)) > 0 && !detector.isDone()) {
+					detector.handleData(buf, 0, nread);
+				}
+				detector.dataEnd();
+
+				subtitleInputEncoding = detector.getDetectedCharset();
+				if (subtitleInputEncoding != null) {
+					Log.d(getClass().getName(), "Detected encoding = " + subtitleInputEncoding);
+				}
+				detector.reset();
+			} catch (IOException ex) {
+
+			}
+
 		}
 
 	}
