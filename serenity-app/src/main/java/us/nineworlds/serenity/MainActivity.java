@@ -279,17 +279,15 @@ public class MainActivity extends SerenityActivity {
 	 * @param listView
 	 */
 	protected void hideMenuItems(ListView listView) {
-		if (SerenityApplication.isAndroidTV(this) ||
+		if (SerenityApplication.isGoogleTV(this) ||
 			SerenityApplication.isAndroidTV(this)) {
-			findViewById(R.id.menu_help).setVisibility(View.INVISIBLE);
 			listView.setVisibility(View.GONE);
 		}
 	}
 
 	protected void showMenuItems(ListView listView) {
-		if (SerenityApplication.isAndroidTV(this) ||
+		if (SerenityApplication.isGoogleTV(this) ||
 				SerenityApplication.isAndroidTV(this)) {
-			findViewById(R.id.menu_help).setVisibility(View.VISIBLE);
 			listView.setVisibility(View.VISIBLE);
 		}
 
