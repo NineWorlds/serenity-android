@@ -18,7 +18,8 @@ simple xml - http://simple.sourceforge.net/<br/>
 influence - http://code.google.com/p/influence/<br/>
 httpresponsecache - https://github.com/candrews/HttpResponseCache<br/>
 Plex-GDM-IntentService by Evan McEwen - https://github.com/EvanMcEwen/Plex-GDM-IntentService
-Android-MenuDrawer - https://github.com/SimonVT/android-menudrawer
+Android-MenuDrawer - https://github.com/SimonVT/android-menudrawer<br/>
+juniversalchardet - https://code.google.com/p/juniversalchardet/<br/>
  
 Using Universal Image Loader (c) 2011-2013, Sergey Tarasevich<br/>
 
