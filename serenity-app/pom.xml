@@ -52,8 +52,7 @@
          <artifactId>menudrawer</artifactId>
          <version>1.4.2</version>
          <type>apklib</type>
-      </dependency>
-      
+      </dependency>                  
    </dependencies>
 
    <build>

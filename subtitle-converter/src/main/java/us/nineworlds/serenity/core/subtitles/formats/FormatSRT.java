@@ -49,9 +49,7 @@ public class FormatSRT implements TimedTextFileFormat {
 		boolean allGood;
 
 		//first lets load the file
-		InputStreamReader in= new InputStreamReader(is);
-		String encoding = in.getEncoding();
-		BufferedReader br = new BufferedReader(new InputStreamReader(is, encoding));
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		
 		//the file name is saved
 		tto.fileName = fileName;

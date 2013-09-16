@@ -23,11 +23,13 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
-import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.LinkedList;
+
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
@@ -649,8 +651,12 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			subtitles.setVisibility(View.INVISIBLE);
 			return;
 		}
-		subtitles.setText(Html.fromHtml(text.content));
-		subtitles.setVisibility(View.VISIBLE);
+		try {
+			subtitles.setText(Html.fromHtml(text.content.getBytes("UTF-8").toString()));
+			subtitles.setVisibility(View.VISIBLE);
+		} catch (UnsupportedEncodingException e) {
+			Log.d(getClass().getName(), "Unable to convert encoding to UTF-8");
+		}
 	}
 
 	public class SubtitleAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -660,14 +666,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			if (subtitleURL != null) {
 				try {
 					URL url = new URL(subtitleURL);
-					InputStream stream = url.openStream();
-
+					
 					if ("srt".equals(subtitleType)) {
 						FormatSRT formatSRT = new FormatSRT();
-						subtitleTimedText = formatSRT.parseFile(stream);
+						subtitleTimedText = formatSRT.parseFile(url.openStream());
 					} else if ("ass".equals(subtitleType)) {
 						FormatASS formatASS = new FormatASS();
-						subtitleTimedText = formatASS.parseFile(stream);
+						subtitleTimedText = formatASS.parseFile(url.openStream());
 					}
 					subtitleDisplayHandler.post(subtitle);
 				} catch (Exception e) {
