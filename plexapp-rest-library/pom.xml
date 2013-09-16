@@ -4,7 +4,7 @@
    <parent>
       <groupId>us.nineworlds.serenity</groupId>
       <artifactId>serenity-parent</artifactId>
-      <version>1.4.2-SNAPSHOT</version>
+      <version>1.4.2</version>
    </parent>
 
    <artifactId>plexapp-rest-library</artifactId>
