@@ -712,9 +712,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 
 		private void getInputEncoding(URL url) {
+			InputStream is = null;
 			try {
 				byte[] buf = new byte[4096];				
-				InputStream is = url.openStream();
+				is = url.openStream();
 				UniversalDetector detector = new UniversalDetector(null);
 
 				int nread;
@@ -730,6 +731,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				detector.reset();
 			} catch (IOException ex) {
 
+			} finally {
+				if (is != null) {
+					try {
+						is.close();
+					} catch (IOException e) {
+					}
+				}
 			}
 
 		}
