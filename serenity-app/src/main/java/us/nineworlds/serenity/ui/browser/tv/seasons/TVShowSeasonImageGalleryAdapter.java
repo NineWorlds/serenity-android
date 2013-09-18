@@ -27,11 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 import us.nineworlds.serenity.core.services.ShowSeasonRetrievalIntentService;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.ui.views.TVShowSeasonImageView;
+import us.nineworlds.serenity.ui.views.TVShowImageView;
 
 import us.nineworlds.serenity.R;
 
@@ -49,6 +49,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -131,17 +132,28 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		View galleryCellView = context.getLayoutInflater().inflate(R.layout.poster_tvshow_indicator_view, null);
+		
 
-		SeriesContentInfo pi = seasonList.get(position);
-		TVShowSeasonImageView mpiv = new TVShowSeasonImageView(context, pi);
+		AbstractSeriesContentInfo pi = seasonList.get(position);
+		TVShowImageView mpiv = (TVShowImageView) galleryCellView.findViewById(R.id.posterImageView);
+		mpiv.setPosterInfo(pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(160, context);
 		int height = ImageUtils.getDPI(220, context);
-		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
+		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
-		return mpiv;
+		galleryCellView.setLayoutParams(new Gallery.LayoutParams(width, height));
+		
+		if (pi.getShowsWatched() != null && Integer.parseInt(pi.getShowsWatched()) > 0) {
+			ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
+			watchedView.setImageResource(R.drawable.overlaywatched);
+			watchedView.setVisibility(View.VISIBLE);
+		}
+		
+		return galleryCellView;
 	}
 
 	private static class ShowSeasonRetrievalHandler extends Handler {

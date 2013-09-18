@@ -26,7 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.ui.views.TVShowSeasonImageView;
+import us.nineworlds.serenity.ui.views.TVShowImageView;
 
 import us.nineworlds.serenity.R;
 
@@ -72,7 +72,7 @@ public class TVShowSeasonOnItemSelectedListener implements
 	 */
 	@Override
 	public void onItemSelected(AdapterView<?> av, View v, int position, long id) {
-		TVShowSeasonImageView mpiv = (TVShowSeasonImageView) v;
+		TVShowImageView mpiv = (TVShowImageView) v.findViewById(R.id.posterImageView);
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
@@ -88,7 +88,7 @@ public class TVShowSeasonOnItemSelectedListener implements
 				.findViewById(R.id.tvShowSeasonsTitle);
 		seasonsTitle.setText(mpiv.getPosterInfo().getTitle());
 
-		changeBackgroundImage(v);
+		changeBackgroundImage(mpiv);
 
 	}
 
@@ -101,7 +101,7 @@ public class TVShowSeasonOnItemSelectedListener implements
 	 */
 	private void changeBackgroundImage(View v) {
 
-		TVShowSeasonImageView mpiv = (TVShowSeasonImageView) v;
+		TVShowImageView mpiv = (TVShowImageView) v;
 		SeriesContentInfo mi = mpiv.getPosterInfo();
 
 		if (mi.getBackgroundURL() != null) {

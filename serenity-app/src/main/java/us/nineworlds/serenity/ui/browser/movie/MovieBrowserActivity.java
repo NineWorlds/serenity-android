@@ -101,6 +101,13 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 		if (SerenityApplication.isGoogleTV(this) ||
 			SerenityApplication.isAndroidTV(this)) {
 			menuOptions.setVisibility(View.GONE);
+			View gallery = findViewById(R.id.moviePosterGallery);
+			if (gallery != null) {
+				gallery.requestFocusFromTouch();
+			} else {
+				View grid = findViewById(R.id.movieGridView);
+				grid.requestFocusFromTouch();
+			}
 		}
 	}
 	
@@ -108,6 +115,7 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 		if (SerenityApplication.isGoogleTV(this) ||
 			SerenityApplication.isAndroidTV(this)) {
 			menuOptions.setVisibility(View.VISIBLE);
+			menuOptions.requestFocusFromTouch();
 		}
 		
 	}
@@ -124,13 +132,6 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
 			hideMenuItems();
 			menuDrawer.toggleMenu();
-			View gallery = findViewById(R.id.moviePosterGallery);
-			if (gallery != null) {
-				gallery.requestFocusFromTouch();
-			} else {
-				View grid = findViewById(R.id.movieGridView);
-				grid.requestFocusFromTouch();
-			}
 			return true;
 		}
 		

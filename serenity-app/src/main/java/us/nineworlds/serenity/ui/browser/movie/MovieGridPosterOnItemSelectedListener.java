@@ -85,8 +85,9 @@ public class MovieGridPosterOnItemSelectedListener implements
 		previous = v;
 
 		v.setPadding(5, 5, 5, 5);
+		SerenityPosterImageView posterImageView = (SerenityPosterImageView) v.findViewById(R.id.posterImageView);
 
-		createMovieMetaData((SerenityPosterImageView) v);
+		createMovieMetaData(posterImageView);
 	}
 
 

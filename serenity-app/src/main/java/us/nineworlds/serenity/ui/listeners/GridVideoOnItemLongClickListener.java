@@ -29,6 +29,7 @@ import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemLongClickListener;
 import com.jess.ui.TwoWayGridView;
 
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import android.view.View;
 
@@ -56,8 +57,7 @@ public class GridVideoOnItemLongClickListener extends AbstractVideoOnItemLongCli
 			if (v instanceof SerenityPosterImageView) {
 				vciv = (SerenityPosterImageView) v;
 			} else {
-				TwoWayGridView g = (TwoWayGridView) v;
-				vciv = (SerenityPosterImageView) g.getSelectedView();
+				vciv = (SerenityPosterImageView) v.findViewById(R.id.posterImageView);
 			}
 		}
 

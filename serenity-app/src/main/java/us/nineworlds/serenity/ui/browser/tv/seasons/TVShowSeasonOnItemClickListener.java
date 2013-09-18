@@ -23,8 +23,9 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
-import us.nineworlds.serenity.ui.views.TVShowSeasonImageView;
+import us.nineworlds.serenity.ui.views.TVShowImageView;
 
 import android.app.Activity;
 import android.content.Context;
@@ -59,7 +60,7 @@ public class TVShowSeasonOnItemClickListener implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> av, View view, int position,
 			long arg3) {
 
-		TVShowSeasonImageView tsi = (TVShowSeasonImageView) view;
+		TVShowImageView tsi = (TVShowImageView) view.findViewById(R.id.posterImageView);
 
 		Intent i = new Intent(context, EpisodeBrowserActivity.class);
 		i.putExtra("key", tsi.getPosterInfo().getKey());

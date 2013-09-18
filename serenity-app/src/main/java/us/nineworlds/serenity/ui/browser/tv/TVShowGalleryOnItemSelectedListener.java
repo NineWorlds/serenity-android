@@ -31,9 +31,11 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.ui.views.TVShowImageView;
 
 import us.nineworlds.serenity.R;
 
@@ -91,9 +93,11 @@ public class TVShowGalleryOnItemSelectedListener implements
 		previous = v;
 
 		v.setPadding(5, 5, 5, 5);
+		
+		TVShowImageView imageView = (TVShowImageView) v.findViewById(R.id.posterImageView);
 
-		createTVShowDetail((TVShowImageView) v);
-		changeBackgroundImage(v);
+		createTVShowDetail(imageView);
+		changeBackgroundImage(imageView);
 
 	}
 
@@ -208,7 +212,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 	private void changeBackgroundImage(View v) {
 
 		TVShowImageView mpiv = (TVShowImageView) v;
-		AbstractSeriesContentInfo mi = mpiv.getPosterInfo();
+		SeriesContentInfo mi = mpiv.getPosterInfo();
 
 		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
 				new SerenityBackgroundLoaderListener(bgLayout,

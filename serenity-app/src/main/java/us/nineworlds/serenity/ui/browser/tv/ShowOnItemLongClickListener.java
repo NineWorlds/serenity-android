@@ -30,6 +30,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
+import us.nineworlds.serenity.ui.views.TVShowImageView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -40,6 +41,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Gallery;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -67,13 +69,13 @@ public class ShowOnItemLongClickListener implements OnItemLongClickListener {
 
 		if (v == null) {
 			Gallery g = (Gallery) av;
-			tvsv = (TVShowImageView) g.getSelectedView();
+			tvsv = (TVShowImageView) g.getSelectedView().findViewById(R.id.posterImageView);
 		} else {
 			if (v instanceof TVShowImageView) {
 				tvsv = (TVShowImageView) v;
 			} else {
 				Gallery g = (Gallery) v;
-				tvsv = (TVShowImageView) g.getSelectedView();
+				tvsv = (TVShowImageView) g.getSelectedView().findViewById(R.id.posterImageView);
 			}
 		}
 
@@ -132,18 +134,23 @@ public class ShowOnItemLongClickListener implements OnItemLongClickListener {
 
 			switch (position) {
 			case 0:
+				View posterLayout = (View) tvsv.getParent();
+				ImageView watchedView = (ImageView) posterLayout.findViewById(R.id.posterWatchedIndicator);
 				if (watched > 0) {
 					new UnWatchVideoAsyncTask().execute(info.id());
 					info.setShowsWatched("0");
 					info.setShowsUnwatched(Integer.valueOf(total).toString());
+					watchedView.setVisibility(View.INVISIBLE);
 				} else {
 					new WatchedVideoAsyncTask().execute(info.id());
 					info.setShowsWatched(Integer.valueOf(total).toString());
 					info.setShowsUnwatched("0");
+					watchedView.setImageResource(R.drawable.overlaywatched);
+					watchedView.setVisibility(View.VISIBLE);
 				}
 				Activity a = (Activity) v.getContext();
 				TextView tv = (TextView) a.findViewById(R.id.tvShowWatchedUnwatched);
-				
+
 				String wu = "";
 				wu = context.getString(R.string.watched_) + " " + info.getShowsWatched();
 				wu = wu + " " + context.getString(R.string.unwatched_) + " " + info.getShowsUnwatched();

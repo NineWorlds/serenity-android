@@ -33,6 +33,7 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ImageView;
 
 /**
@@ -46,36 +47,51 @@ public abstract class SerenityActivity extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 			SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
-			if (gallery == null) {
+			TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
+			if (gallery == null && gridView == null) {
 				return super.onKeyDown(keyCode, event);				
 			}
 			
-			AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+			AbstractPosterImageGalleryAdapter adapter = null;
+			if (gallery != null)  {
+				adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+			} else {
+			   adapter = (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
+			}
+			
 			if (adapter != null) {
 				int itemsCount =  adapter.getCount();
 				
 				if (keyCode == KeyEvent.KEYCODE_C || keyCode == KeyEvent.KEYCODE_BUTTON_Y || keyCode == KeyEvent.KEYCODE_BUTTON_R2) {
-					ImageView view = (ImageView) gallery.getSelectedView();
+					View view = null;
+					if (gallery != null) {
+						view = gallery.getSelectedView();
+					} else {
+						view = gridView.getSelectedView();
+					}
 					view.performLongClick();
 					return true;
 				}
-				if (isKeyCodeSkipBack(keyCode)) {
-					int selectedItem = gallery.getSelectedItemPosition();
-					int newPosition = selectedItem - 10;
-					if (newPosition < 0) {
-						newPosition = 0;
+				
+				if (gallery != null) {
+					if (isKeyCodeSkipBack(keyCode)) {
+						int selectedItem = gallery.getSelectedItemPosition();
+						int newPosition = selectedItem - 10;
+						if (newPosition < 0) {
+							newPosition = 0;
+						}
+						gallery.setSelection(newPosition);
+						return true;
 					}
-					gallery.setSelection(newPosition);
-					return true;
-				}
-				if (isKeyCodeSkipForward(keyCode)) {
-					int selectedItem = gallery.getSelectedItemPosition();
-					int newPosition = selectedItem  + 10;
-					if (newPosition > itemsCount) {
-						newPosition = itemsCount - 1;
+					if (isKeyCodeSkipForward(keyCode)) {
+						int selectedItem = gallery.getSelectedItemPosition();
+						int newPosition = selectedItem  + 10;
+						if (newPosition > itemsCount) {
+							newPosition = itemsCount - 1;
+						}
+						gallery.setSelection(newPosition);
+						return true;
 					}
-					gallery.setSelection(newPosition);
-					return true;
 				}
 			}
 			

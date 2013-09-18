@@ -32,6 +32,7 @@ import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 import us.nineworlds.serenity.core.services.ShowRetrievalIntentService;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.ui.views.TVShowImageView;
 
 import us.nineworlds.serenity.R;
 
@@ -46,6 +47,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.TextView;
 
@@ -137,16 +139,26 @@ public class TVShowBannerImageGalleryAdapter extends
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
+		View galleryCellView = context.getLayoutInflater().inflate(R.layout.poster_tvshow_indicator_view, null);
+		
 		AbstractSeriesContentInfo pi = tvShowList.get(position);
-		TVShowImageView mpiv = new TVShowImageView(context, pi);
+		TVShowImageView mpiv = (TVShowImageView) galleryCellView.findViewById(R.id.posterImageView);
+		mpiv.setPosterInfo(pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(BANNER_PIXEL_WIDTH, context);
 		int height = ImageUtils.getDPI(BANNER_PIXEL_HEIGHT, context);
-		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
+		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
-		return mpiv;
+		galleryCellView.setLayoutParams(new Gallery.LayoutParams(width, height));
+		
+		if (pi.getShowsWatched() != null && Integer.parseInt(pi.getShowsWatched()) > 0) {
+			ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
+			watchedView.setImageResource(R.drawable.overlaywatched);
+		}
+		
+		return galleryCellView;
 	}
 	
 

@@ -21,11 +21,13 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.browser.tv;
+package us.nineworlds.serenity.ui.views;
 
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
@@ -34,13 +36,20 @@ import android.widget.ImageView;
  */
 public class TVShowImageView extends ImageView {
 
-	private AbstractSeriesContentInfo posterInfo;
+	private SeriesContentInfo posterInfo;
 
 	/**
 	 * 
 	 */
 	public TVShowImageView(Context c) {
 		super(c);
+	}
+	
+	/**
+	 * 
+	 */
+	public TVShowImageView(Context c, AttributeSet attrSet) {
+		super(c, attrSet);
 	}
 
 	/**
@@ -52,8 +61,12 @@ public class TVShowImageView extends ImageView {
 		this.posterInfo = posterInfo;
 	}
 
-	public AbstractSeriesContentInfo getPosterInfo() {
+	public SeriesContentInfo getPosterInfo() {
 		return posterInfo;
+	}
+	
+	public void setPosterInfo(AbstractSeriesContentInfo info) {
+		posterInfo = info;
 	}
 
 }

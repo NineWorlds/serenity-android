@@ -234,11 +234,12 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		v.setPadding(5, 5, 5, 5);
 		v.clearAnimation();
 
-		createVideoDetail((SerenityPosterImageView) v);
-		createVideoMetaData((SerenityPosterImageView) v);
-		createInfographicDetails((SerenityPosterImageView) v);
-		changeBackgroundImage(v);
-
+		SerenityPosterImageView posterImageView = (SerenityPosterImageView) v.findViewById(R.id.posterImageView);
+		
+		createVideoDetail(posterImageView);
+		createVideoMetaData(posterImageView);
+		createInfographicDetails(posterImageView);
+		changeBackgroundImage(posterImageView);
 	}
 
 	/**

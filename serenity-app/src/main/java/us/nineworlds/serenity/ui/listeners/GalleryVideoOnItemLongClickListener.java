@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.listeners;
 
 
 
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemLongClickListener;
@@ -50,13 +51,13 @@ public class GalleryVideoOnItemLongClickListener extends AbstractVideoOnItemLong
 
 		if (v == null) {
 			SerenityGallery g = (SerenityGallery) av;
-			vciv = (SerenityPosterImageView) g.getSelectedView();
+			vciv = (SerenityPosterImageView) g.getSelectedView().findViewById(R.id.posterImageView);
 		} else {
 			if (v instanceof SerenityPosterImageView) {
 				vciv = (SerenityPosterImageView) v;
 			} else {
-				SerenityGallery g = (SerenityGallery) v;
-				vciv = (SerenityPosterImageView) g.getSelectedView();
+				
+				vciv = (SerenityPosterImageView) av.getSelectedView().findViewById(R.id.posterImageView);
 			}
 		}
 

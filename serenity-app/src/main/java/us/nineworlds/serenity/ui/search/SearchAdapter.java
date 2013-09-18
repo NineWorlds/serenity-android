@@ -30,6 +30,8 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -49,18 +51,32 @@ public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		View galleryCellView = context.getLayoutInflater().inflate(
+				R.layout.poster_indicator_view, null);
+		
 		VideoContentInfo pi = posterList.get(position);
-		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
+		SerenityPosterImageView mpiv = (SerenityPosterImageView) galleryCellView
+				.findViewById(R.id.posterImageView);
+		mpiv.setPosterInfo(pi);
+
 		mpiv.setBackgroundColor(Color.BLACK);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(160, context);
 		int height = ImageUtils.getDPI(220, context);
-		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width,
+		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width,
 				height));
+		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
 		
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
-		return mpiv;
+		if (pi.getViewCount() > 0) {
+			ImageView viewed = (ImageView) galleryCellView
+					.findViewById(R.id.posterWatchedIndicator);
+			viewed.setImageResource(R.drawable.overlaywatched);
+		}
+
+		return galleryCellView;
+
 	}
 
 	/*

@@ -36,6 +36,7 @@ import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -50,6 +51,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * 
@@ -77,10 +80,12 @@ public class MoviePosterImageAdapter extends
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		View galleryCellView = context.getLayoutInflater().inflate(R.layout.poster_indicator_view, null);
 
 		VideoContentInfo pi = posterList.get(position);
-		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
-		// mpiv.setBackgroundColor(Color.BLACK);
+		SerenityPosterImageView mpiv = (SerenityPosterImageView) galleryCellView.findViewById(R.id.posterImageView);
+		mpiv.setPosterInfo(pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 0;
@@ -89,12 +94,14 @@ public class MoviePosterImageAdapter extends
 		width = ImageUtils.getDPI(130, context);
 		height = ImageUtils.getDPI(200, context);
 		if (!MovieBrowserActivity.IS_GRID_VIEW) {
-			mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
+			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+			galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
 		} else {
 			width = ImageUtils.getDPI(120, context);
 			height = ImageUtils.getDPI(180, context);
-			mpiv.setLayoutParams(new TwoWayAbsListView.LayoutParams(width,
+			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width,
 					height));
+			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
 		}
 
 		SharedPreferences preferences = PreferenceManager
@@ -105,8 +112,13 @@ public class MoviePosterImageAdapter extends
 			mpiv.setAnimation(shrink);
 		}
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
+		
+		if (pi.getViewCount() > 0) {
+			ImageView viewed = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
+			viewed.setImageResource(R.drawable.overlaywatched);
+		}
 
-		return mpiv;
+		return galleryCellView;
 	}
 
 	@Override
@@ -129,11 +141,11 @@ public class MoviePosterImageAdapter extends
 			if (!MovieBrowserActivity.IS_GRID_VIEW) {
 				SerenityGallery posterGallery = (SerenityGallery) context
 						.findViewById(R.id.moviePosterGallery);
-				posterGallery.requestFocus();
+				posterGallery.requestFocusFromTouch();
 			} else {
 				TwoWayGridView gridView = (TwoWayGridView) context
 						.findViewById(R.id.movieGridView);
-				gridView.requestFocus();
+				gridView.requestFocusFromTouch();
 			}
 			pd.dismiss();
 		}

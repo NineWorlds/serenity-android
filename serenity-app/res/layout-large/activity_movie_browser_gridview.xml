@@ -114,6 +114,7 @@
         app:scrollDirectionPortrait="vertical"
         app:stretchMode="spacingWidthUniform"
         app:verticalSpacing="10dp"
+        android:focusable="true"
         android:nextFocusDown="@+id/movieGridView"
         android:nextFocusLeft="@+id/movieGridView"
         android:nextFocusRight="@+id/movieGridView" />

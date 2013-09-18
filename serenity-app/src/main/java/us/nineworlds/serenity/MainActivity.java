@@ -350,6 +350,16 @@ public class MainActivity extends SerenityActivity {
 		initPreferences();
 
 		initializeDefaultPlayer();
+		if (preferences != null) {
+			boolean watchedStatusFirstTime = preferences.getBoolean("watched_status_firsttime", true);
+			if (watchedStatusFirstTime) {
+				SerenityApplication.getImageLoader().clearDiscCache();
+				SerenityApplication.getImageLoader().clearMemoryCache();
+				Editor editor = preferences.edit();
+				editor.putBoolean("watched_status_firsttime", false);
+				editor.apply();
+			}
+		}
 
 		initDownloadService();
 

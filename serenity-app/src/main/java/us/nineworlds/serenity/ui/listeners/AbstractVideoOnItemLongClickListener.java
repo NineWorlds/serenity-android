@@ -54,6 +54,7 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -80,13 +81,13 @@ public class AbstractVideoOnItemLongClickListener {
 
 		if (v == null) {
 			SerenityGallery g = (SerenityGallery) av;
-			vciv = (SerenityPosterImageView) g.getSelectedView();
+			vciv = (SerenityPosterImageView) g.getSelectedView().findViewById(R.id.posterImageView);
 		} else {
 			if (v instanceof SerenityPosterImageView) {
 				vciv = (SerenityPosterImageView) v;
 			} else {
 				SerenityGallery g = (SerenityGallery) v;
-				vciv = (SerenityPosterImageView) g.getSelectedView();
+				vciv = (SerenityPosterImageView) g.getSelectedView().findViewById(R.id.posterImageView);
 			}
 		}
 
@@ -155,12 +156,19 @@ public class AbstractVideoOnItemLongClickListener {
 	}
 	
 	protected void performWatchedToggle() {
+		View posterLayout = (View) vciv.getParent();
+
 		if (info.getViewCount() > 0) {
 			new UnWatchVideoAsyncTask().execute(info.id());
 			ImageInfographicUtils.setUnwatched(vciv, context);
+			info.setViewCount(0);
+			posterLayout.findViewById(R.id.posterWatchedIndicator).setVisibility(View.INVISIBLE);
 		} else {
 			new WatchedVideoAsyncTask().execute(info.id());
 			ImageInfographicUtils.setWatchedCount(vciv, context);
+			ImageView view = (ImageView) posterLayout.findViewById(R.id.posterWatchedIndicator);
+			view.setImageResource(R.drawable.overlaywatched);
+			view.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -227,6 +235,7 @@ public class AbstractVideoOnItemLongClickListener {
 				performGoogleTVSecondScreen();
 			}
 			dialog.dismiss();
+			v.requestFocusFromTouch();
 		}
 
 	}

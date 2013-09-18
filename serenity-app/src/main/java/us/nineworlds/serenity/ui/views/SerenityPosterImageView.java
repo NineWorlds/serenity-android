@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.views;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
@@ -50,9 +51,17 @@ public class SerenityPosterImageView extends ImageView {
 		super(context);
 		this.posterInfo = posterInfo;
 	}
+	
+	public SerenityPosterImageView(Context c, AttributeSet attrSet) {
+		super(c, attrSet);
+	}
 
 	public VideoContentInfo getPosterInfo() {
 		return posterInfo;
+	}
+	
+	public void setPosterInfo(VideoContentInfo info) {
+		posterInfo = info;
 	}
 
 }

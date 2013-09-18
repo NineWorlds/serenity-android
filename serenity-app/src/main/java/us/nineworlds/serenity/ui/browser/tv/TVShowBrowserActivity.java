@@ -133,7 +133,7 @@ public class TVShowBrowserActivity extends SerenityActivity {
 			int itemsCount =  adapter.getCount();
 			
 			if (keyCode == KeyEvent.KEYCODE_C || keyCode == KeyEvent.KEYCODE_BUTTON_Y || keyCode == KeyEvent.KEYCODE_BUTTON_R2) {
-				ImageView view = (ImageView) gallery.getSelectedView();
+				View view = gallery.getSelectedView();
 				view.performLongClick();
 				return true;
 			}

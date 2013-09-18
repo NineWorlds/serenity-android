@@ -47,6 +47,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 /**
  * Implementation of the Poster Image Gallery class for TV Shows.
@@ -61,7 +62,6 @@ public class EpisodePosterImageGalleryAdapter extends
 	private static ProgressDialog pd;
 	private Animation shrink;
 
-
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
@@ -70,15 +70,20 @@ public class EpisodePosterImageGalleryAdapter extends
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		View galleryCellView = context.getLayoutInflater().inflate(
+				R.layout.poster_indicator_view, null);
 
 		VideoContentInfo pi = posterList.get(position);
-		SerenityPosterImageView mpiv = new SerenityPosterImageView(context, pi);
+		SerenityPosterImageView mpiv = (SerenityPosterImageView) galleryCellView
+				.findViewById(R.id.posterImageView);
+		mpiv.setPosterInfo(pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(300, context);
 		int height = ImageUtils.getDPI(187, context);
-		mpiv.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
-		
+		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
+
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		boolean shouldShrink = preferences.getBoolean(
@@ -89,12 +94,19 @@ public class EpisodePosterImageGalleryAdapter extends
 
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
-		return mpiv;
+		if (pi.getViewCount() > 0) {
+			ImageView viewed = (ImageView) galleryCellView
+					.findViewById(R.id.posterWatchedIndicator);
+			viewed.setImageResource(R.drawable.overlaywatched);
+		}
+
+		return galleryCellView;
 	}
 
 	@Override
 	protected void fetchDataFromService() {
-		pd = ProgressDialog.show(context, "", context.getString(R.string.retrieving_episodes));
+		pd = ProgressDialog.show(context, "",
+				context.getString(R.string.retrieving_episodes));
 		handler = new EpisodeHandler();
 		Messenger messenger = new Messenger(handler);
 		Intent intent = new Intent(context, EpisodeRetrievalIntentService.class);

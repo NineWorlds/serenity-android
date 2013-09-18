@@ -390,7 +390,9 @@ public class ImageInfographicUtils {
 	public static void setWatchedCount(SerenityPosterImageView epiv, Activity a) {
 		ImageView watchedView = (ImageView) a
 				.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
-		watchedView.setImageResource(R.drawable.watched_small);
+		if (watchedView != null) {
+		   watchedView.setImageResource(R.drawable.watched_small);
+		}
 		int watchedCount = epiv.getPosterInfo().getViewCount();
 		epiv.getPosterInfo().setViewCount(watchedCount + 1);
 	}
@@ -398,7 +400,9 @@ public class ImageInfographicUtils {
 	public static void setUnwatched(SerenityPosterImageView epiv, Activity a) {
 		ImageView watchedView = (ImageView) a
 				.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
-		watchedView.setImageResource(R.drawable.unwatched_small);
+		if (watchedView != null) {
+			watchedView.setImageResource(R.drawable.unwatched_small);
+		}
 		epiv.getPosterInfo().setViewCount(0);
 	}
 	
