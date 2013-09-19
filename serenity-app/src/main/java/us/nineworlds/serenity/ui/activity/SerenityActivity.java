@@ -62,7 +62,7 @@ public abstract class SerenityActivity extends Activity {
 			if (adapter != null) {
 				int itemsCount =  adapter.getCount();
 				
-				if (keyCode == KeyEvent.KEYCODE_C || keyCode == KeyEvent.KEYCODE_BUTTON_Y || keyCode == KeyEvent.KEYCODE_BUTTON_R2) {
+				if (keyCode == KeyEvent.KEYCODE_C || keyCode == KeyEvent.KEYCODE_BUTTON_Y || keyCode == KeyEvent.KEYCODE_BUTTON_R2 || keyCode == KeyEvent.KEYCODE_PROG_RED) {
 					View view = null;
 					if (gallery != null) {
 						view = gallery.getSelectedView();
