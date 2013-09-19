@@ -132,7 +132,7 @@ public class TVShowBrowserActivity extends SerenityActivity {
 		if (adapter != null) {
 			int itemsCount =  adapter.getCount();
 			
-			if (keyCode == KeyEvent.KEYCODE_C || keyCode == KeyEvent.KEYCODE_BUTTON_Y || keyCode == KeyEvent.KEYCODE_BUTTON_R2) {
+			if (contextMenuRequested(keyCode)) {
 				View view = gallery.getSelectedView();
 				view.performLongClick();
 				return true;

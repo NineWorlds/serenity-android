@@ -111,5 +111,14 @@
             android:title="@string/force_mx_player_resume_position_" />
         
     </PreferenceCategory>
+    
+    <PreferenceCategory android:title="Remote Control" >
+        <CheckBoxPreference
+            android:key="remote_control_menu"
+            android:summary="When enabled the menu key will bring up the slide out menu, otherwise it will activate the context menu for an item if available."
+            android:title="Enable Sliding Menu"
+            android:defaultValue="true" />
+        
+    </PreferenceCategory>
 
 </PreferenceScreen>

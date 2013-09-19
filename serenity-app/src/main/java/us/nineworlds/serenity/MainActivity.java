@@ -419,19 +419,24 @@ public class MainActivity extends SerenityActivity {
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_MENU && !menuDrawer.isMenuVisible()) {
-
-			mainGallery
-					.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-			ListView listView = (ListView) menuDrawer.getMenuView()
-					.findViewById(R.id.menu_list_options);
-			showMenuItems(listView);
-			listView.setFocusable(true);
-			listView.requestFocus();
-			menuDrawer.toggleMenu();
-			return true;
+		boolean menuKeySlidingMenu = preferences.getBoolean("remote_control_menu",
+				true);
+		
+		if (menuKeySlidingMenu) {
+			if (keyCode == KeyEvent.KEYCODE_MENU && !menuDrawer.isMenuVisible()) {
+	
+				mainGallery
+						.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+				ListView listView = (ListView) menuDrawer.getMenuView()
+						.findViewById(R.id.menu_list_options);
+				showMenuItems(listView);
+				listView.setFocusable(true);
+				listView.requestFocus();
+				menuDrawer.toggleMenu();
+				return true;
+			}
 		}
-
+		
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
 			mainGallery
 					.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
@@ -443,10 +448,7 @@ public class MainActivity extends SerenityActivity {
 			menuDrawer.toggleMenu();
 			return true;
 		}
-
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			return true;
-		}
+		
 
 		return super.onKeyDown(keyCode, event);
 	}

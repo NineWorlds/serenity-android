@@ -32,6 +32,8 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -41,74 +43,90 @@ import android.widget.ImageView;
  * 
  */
 public abstract class SerenityActivity extends Activity {
-	
+
 	protected abstract void createSideMenu();
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-			SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
-			TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
-			if (gallery == null && gridView == null) {
-				return super.onKeyDown(keyCode, event);				
-			}
-			
-			AbstractPosterImageGalleryAdapter adapter = null;
-			if (gallery != null)  {
-				adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
-			} else {
-			   adapter = (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
-			}
-			
-			if (adapter != null) {
-				int itemsCount =  adapter.getCount();
-				
-				if (keyCode == KeyEvent.KEYCODE_C || keyCode == KeyEvent.KEYCODE_BUTTON_Y || keyCode == KeyEvent.KEYCODE_BUTTON_R2 || keyCode == KeyEvent.KEYCODE_PROG_RED) {
-					View view = null;
-					if (gallery != null) {
-						view = gallery.getSelectedView();
-					} else {
-						view = gridView.getSelectedView();
-					}
-					view.performLongClick();
-					return true;
-				}
-				
-				if (gallery != null) {
-					if (isKeyCodeSkipBack(keyCode)) {
-						int selectedItem = gallery.getSelectedItemPosition();
-						int newPosition = selectedItem - 10;
-						if (newPosition < 0) {
-							newPosition = 0;
-						}
-						gallery.setSelection(newPosition);
-						return true;
-					}
-					if (isKeyCodeSkipForward(keyCode)) {
-						int selectedItem = gallery.getSelectedItemPosition();
-						int newPosition = selectedItem  + 10;
-						if (newPosition > itemsCount) {
-							newPosition = itemsCount - 1;
-						}
-						gallery.setSelection(newPosition);
-						return true;
-					}
-				}
-			}
-			
+		SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
+		TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
+		if (gallery == null && gridView == null) {
 			return super.onKeyDown(keyCode, event);
 		}
+
+		AbstractPosterImageGalleryAdapter adapter = null;
+		if (gallery != null) {
+			adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+		} else {
+			adapter = (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
+		}
+
+		if (adapter != null) {
+			int itemsCount = adapter.getCount();
+
+			if (contextMenuRequested(keyCode)) {
+				View view = null;
+				if (gallery != null) {
+					view = gallery.getSelectedView();
+				} else {
+					view = gridView.getSelectedView();
+				}
+				view.performLongClick();
+				return true;
+			}
+
+			if (gallery != null) {
+				if (isKeyCodeSkipBack(keyCode)) {
+					int selectedItem = gallery.getSelectedItemPosition();
+					int newPosition = selectedItem - 10;
+					if (newPosition < 0) {
+						newPosition = 0;
+					}
+					gallery.setSelection(newPosition);
+					return true;
+				}
+				if (isKeyCodeSkipForward(keyCode)) {
+					int selectedItem = gallery.getSelectedItemPosition();
+					int newPosition = selectedItem + 10;
+					if (newPosition > itemsCount) {
+						newPosition = itemsCount - 1;
+					}
+					gallery.setSelection(newPosition);
+					return true;
+				}
+			}
+		}
+
+		return super.onKeyDown(keyCode, event);
+	}
+
+	/**
+	 * @param keyCode
+	 * @return
+	 */
+	protected boolean contextMenuRequested(int keyCode) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu",
+				true);
+		return keyCode == KeyEvent.KEYCODE_C
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_Y
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_R2
+				|| keyCode == KeyEvent.KEYCODE_PROG_RED
+				|| (keyCode == KeyEvent.KEYCODE_MENU && menuKeySlidingMenu == false);
+	}
 
 	/**
 	 * @param keyCode
 	 * @return
 	 */
 	protected boolean isKeyCodeSkipForward(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_F ||
-			   keyCode == KeyEvent.KEYCODE_PAGE_UP ||
-			   keyCode == KeyEvent.KEYCODE_CHANNEL_UP ||
-			   keyCode == KeyEvent.KEYCODE_MEDIA_NEXT ||
-			   keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD ||
-			   keyCode == KeyEvent.KEYCODE_BUTTON_R1;
+		return keyCode == KeyEvent.KEYCODE_F
+				|| keyCode == KeyEvent.KEYCODE_PAGE_UP
+				|| keyCode == KeyEvent.KEYCODE_CHANNEL_UP
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_NEXT
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_R1;
 	}
 
 	/**
@@ -116,18 +134,19 @@ public abstract class SerenityActivity extends Activity {
 	 * @return
 	 */
 	protected boolean isKeyCodeSkipBack(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_R ||
-			   keyCode == KeyEvent.KEYCODE_PAGE_DOWN ||
-			   keyCode == KeyEvent.KEYCODE_CHANNEL_DOWN ||
-			   keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS ||
-			   keyCode == KeyEvent.KEYCODE_MEDIA_REWIND ||
-			   keyCode == KeyEvent.KEYCODE_BUTTON_L1;
+		return keyCode == KeyEvent.KEYCODE_R
+				|| keyCode == KeyEvent.KEYCODE_PAGE_DOWN
+				|| keyCode == KeyEvent.KEYCODE_CHANNEL_DOWN
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_L1;
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
-			if (data != null && data.getAction().equals("com.mxtech.intent.result.VIEW")) {
+			if (data != null
+					&& data.getAction().equals("com.mxtech.intent.result.VIEW")) {
 				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
 				VideoContentInfo video = null;
 				if (gallery != null) {
@@ -151,7 +170,8 @@ public abstract class SerenityActivity extends Activity {
 	 */
 	protected void updateProgress(Intent data, VideoContentInfo video) {
 		long position = data.getIntExtra("position", 0);
-		UpdateProgressRequest request = new UpdateProgressRequest(position, video.id());
+		UpdateProgressRequest request = new UpdateProgressRequest(position,
+				video.id());
 		request.execute();
 	}
 

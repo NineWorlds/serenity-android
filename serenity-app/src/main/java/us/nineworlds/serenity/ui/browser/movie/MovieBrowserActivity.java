@@ -64,6 +64,7 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 	private static Activity context;
 	private MenuDrawer menuDrawer;
 	private ListView menuOptions;
+	private SharedPreferences prefs = null;
 	
 	/* (non-Javadoc)
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
@@ -71,7 +72,7 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 	@Override
 	protected void createSideMenu() {
 		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		IS_GRID_VIEW = prefs.getBoolean("movie_layout_grid", false);
 		if (IS_GRID_VIEW) {
 			menuDrawer.setContentView(R.layout.activity_movie_browser_gridview);
@@ -123,17 +124,23 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			showMenuItems();
-			menuDrawer.toggleMenu();
-			menuOptions.requestFocusFromTouch();
-			return true;
+		boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu",
+				true);
+		if (menuKeySlidingMenu) {
+			if (keyCode == KeyEvent.KEYCODE_MENU) {
+				showMenuItems();
+				menuDrawer.toggleMenu();
+				menuOptions.requestFocusFromTouch();
+				return true;
+			}
 		}
+		
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
 			hideMenuItems();
 			menuDrawer.toggleMenu();
 			return true;
 		}
+		
 		
 		return super.onKeyDown(keyCode, event);
 	}

@@ -129,11 +129,16 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			showMenuItems();
-			menuDrawer.toggleMenu();
-			return true;
+		boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu",
+				true);
+		if (menuKeySlidingMenu) {
+			if (keyCode == KeyEvent.KEYCODE_MENU) {
+				showMenuItems();
+				menuDrawer.toggleMenu();
+				return true;
+			}
 		}
+		
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
 			hideMenuItems();
 			menuDrawer.toggleMenu();
@@ -144,6 +149,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 			}			
 			return true;
 		}
+		
 		
 		return super.onKeyDown(keyCode, event);
 	}
