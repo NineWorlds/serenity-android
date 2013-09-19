@@ -157,6 +157,7 @@ public class AbstractVideoOnItemLongClickListener {
 	
 	protected void performWatchedToggle() {
 		View posterLayout = (View) vciv.getParent();
+		posterLayout.findViewById(R.id.posterInprogressIndicator).setVisibility(View.INVISIBLE);
 
 		if (info.getViewCount() > 0) {
 			new UnWatchVideoAsyncTask().execute(info.id());

@@ -153,7 +153,13 @@ public class TVShowBannerImageGalleryAdapter extends
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 		galleryCellView.setLayoutParams(new Gallery.LayoutParams(width, height));
 		
-		if (pi.getShowsWatched() != null && Integer.parseInt(pi.getShowsWatched()) > 0) {
+		int unwatched = 0;
+				
+		if (pi.getShowsUnwatched() != null) {
+			unwatched = Integer.parseInt(pi.getShowsUnwatched());
+		}
+		
+		if (unwatched == 0) {
 			ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
 			watchedView.setImageResource(R.drawable.overlaywatched);
 		}

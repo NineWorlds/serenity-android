@@ -74,7 +74,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 	public static final String CRLF = "\r\n";
 	public static final int WATCHED_VIEW_ID = 1000;
-	public static final double WATCHED_PERCENT = 0.98;
+	public static final float WATCHED_PERCENT = 0.98f;
 	public static Activity context;
 	public Handler subtitleHandler;
 	private Animation shrink;
@@ -191,7 +191,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		viewed.setId(WATCHED_VIEW_ID);
 		
 		if (mpi.getViewCount() > 0 && mpi.getDuration() > 0) {
-			double percentWatched = mpi.getResumeOffset() / mpi.getDuration();
+			final float percentWatched = Float.valueOf(mpi.getResumeOffset()) / Float.valueOf(mpi.getDuration());
 			if (mpi.getResumeOffset() != 0 && percentWatched < WATCHED_PERCENT) {
 			    viewed.setImageResource(R.drawable.partwatched);
 			} else {

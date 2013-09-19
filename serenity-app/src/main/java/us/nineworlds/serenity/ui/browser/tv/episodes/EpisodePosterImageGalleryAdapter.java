@@ -48,6 +48,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
 /**
  * Implementation of the Poster Image Gallery class for TV Shows.
@@ -61,6 +62,7 @@ public class EpisodePosterImageGalleryAdapter extends
 	private static EpisodePosterImageGalleryAdapter notifyAdapter;
 	private static ProgressDialog pd;
 	private Animation shrink;
+	private static final float WATCHED_PERCENT = 0.98f;
 
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
@@ -94,11 +96,29 @@ public class EpisodePosterImageGalleryAdapter extends
 
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
+		ImageView watchedView = (ImageView) galleryCellView
+				.findViewById(R.id.posterWatchedIndicator);
+ 
 		if (pi.getViewCount() > 0) {
-			ImageView viewed = (ImageView) galleryCellView
-					.findViewById(R.id.posterWatchedIndicator);
-			viewed.setImageResource(R.drawable.overlaywatched);
+			watchedView.setImageResource(R.drawable.overlaywatched);
 		}
+
+		if (pi.getViewCount() > 0 && pi.getDuration() > 0
+				&& pi.getResumeOffset() != 0) {
+			final float percentWatched = Float.valueOf(pi.getResumeOffset()) / Float.valueOf(pi.getDuration());
+			if (percentWatched < WATCHED_PERCENT) {
+				final SeekBar view = (SeekBar) galleryCellView
+						.findViewById(R.id.posterInprogressIndicator);
+				int progress = Float.valueOf(percentWatched * 100).intValue();
+				if (progress < 10) {
+					progress = 10;
+				}
+				view.setProgress(progress);
+                view.setVisibility(View.VISIBLE);
+                watchedView.setVisibility(View.INVISIBLE);
+			}
+		}
+		
 
 		return galleryCellView;
 	}

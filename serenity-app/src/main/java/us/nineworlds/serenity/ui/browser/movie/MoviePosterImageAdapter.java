@@ -51,22 +51,25 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.SeekBar;
 
 /**
  * 
  * @author dcarver
  * 
  */
-public class MoviePosterImageAdapter extends
-		AbstractPosterImageGalleryAdapter {
+public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 	protected static MoviePosterImageAdapter notifyAdapter;
 	protected static ProgressDialog pd;
 	private Handler posterGalleryHandler;
 	private Animation shrink;
 	private Animation fadeIn;
+
+	public static final float WATCHED_PERCENT = 0.98f;
 
 	public MoviePosterImageAdapter(Context c, String key, String category) {
 		super(c, key, category);
@@ -80,11 +83,13 @@ public class MoviePosterImageAdapter extends
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		View galleryCellView = context.getLayoutInflater().inflate(R.layout.poster_indicator_view, null);
+
+		View galleryCellView = context.getLayoutInflater().inflate(
+				R.layout.poster_indicator_view, null);
 
 		VideoContentInfo pi = posterList.get(position);
-		SerenityPosterImageView mpiv = (SerenityPosterImageView) galleryCellView.findViewById(R.id.posterImageView);
+		SerenityPosterImageView mpiv = (SerenityPosterImageView) galleryCellView
+				.findViewById(R.id.posterImageView);
 		mpiv.setPosterInfo(pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -95,13 +100,14 @@ public class MoviePosterImageAdapter extends
 		height = ImageUtils.getDPI(200, context);
 		if (!MovieBrowserActivity.IS_GRID_VIEW) {
 			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-			galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
+			galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(
+					width, height));
 		} else {
 			width = ImageUtils.getDPI(120, context);
 			height = ImageUtils.getDPI(180, context);
-			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width,
-					height));
-			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
+			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
+					width, height));
 		}
 
 		SharedPreferences preferences = PreferenceManager
@@ -112,10 +118,28 @@ public class MoviePosterImageAdapter extends
 			mpiv.setAnimation(shrink);
 		}
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
-		
+
+		ImageView watchedView = (ImageView) galleryCellView
+				.findViewById(R.id.posterWatchedIndicator);
+ 
 		if (pi.getViewCount() > 0) {
-			ImageView viewed = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
-			viewed.setImageResource(R.drawable.overlaywatched);
+			watchedView.setImageResource(R.drawable.overlaywatched);
+		}
+
+		if (pi.getViewCount() > 0 && pi.getDuration() > 0
+				&& pi.getResumeOffset() != 0) {
+			final float percentWatched = Float.valueOf(pi.getResumeOffset()) / Float.valueOf(pi.getDuration());
+			if (percentWatched < WATCHED_PERCENT) {
+				final SeekBar view = (SeekBar) galleryCellView
+						.findViewById(R.id.posterInprogressIndicator);
+				int progress = Float.valueOf(percentWatched * 100).intValue();
+				if (progress < 10) {
+					progress = 10;
+				}
+				view.setProgress(progress);
+                view.setVisibility(View.VISIBLE);
+                watchedView.setVisibility(View.INVISIBLE);
+			}
 		}
 
 		return galleryCellView;

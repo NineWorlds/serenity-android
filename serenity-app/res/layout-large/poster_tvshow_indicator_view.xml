@@ -18,4 +18,24 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         />
+      <SeekBar
+            android:id="@+id/posterInprogressIndicator"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="-5dp"
+            android:layout_marginBottom="-5dp"           
+            android:max="100"
+            android:indeterminate="false"
+            android:indeterminateOnly="false" 
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:thumb="@android:color/transparent"
+            android:layout_alignParentLeft="true"
+            android:background="#30000000"
+            android:progressDrawable="@drawable/scrubber_progress_holo"
+            android:visibility="invisible"
+            />    
+    
 </RelativeLayout>
