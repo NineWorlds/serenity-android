@@ -158,9 +158,19 @@ public class TVShowPosterImageGalleryAdapter extends
 			unwatched = Integer.parseInt(pi.getShowsUnwatched());
 		}
 		
+		ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
 		if (unwatched == 0) {
-			ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
 			watchedView.setImageResource(R.drawable.overlaywatched);
+		}
+		
+		int watched = 0;
+		if (pi.getShowsWatched() != null ) {
+			watched = Integer.parseInt(pi.getShowsWatched());
+		}
+		
+		int totalShows = unwatched + watched;
+		if (unwatched != totalShows) {
+			toggleProgressIndicator(galleryCellView, watched, totalShows, watchedView);
 		}
 		
 		return galleryCellView;

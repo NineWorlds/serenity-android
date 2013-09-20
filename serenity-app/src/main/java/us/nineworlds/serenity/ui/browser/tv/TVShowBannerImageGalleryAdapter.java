@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 import us.nineworlds.serenity.core.services.ShowRetrievalIntentService;
@@ -141,7 +142,7 @@ public class TVShowBannerImageGalleryAdapter extends
 
 		View galleryCellView = context.getLayoutInflater().inflate(R.layout.poster_tvshow_indicator_view, null);
 		
-		AbstractSeriesContentInfo pi = tvShowList.get(position);
+		SeriesContentInfo pi = tvShowList.get(position);
 		TVShowImageView mpiv = (TVShowImageView) galleryCellView.findViewById(R.id.posterImageView);
 		mpiv.setPosterInfo(pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
@@ -153,18 +154,39 @@ public class TVShowBannerImageGalleryAdapter extends
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 		galleryCellView.setLayoutParams(new Gallery.LayoutParams(width, height));
 		
+		toggleWatchedIndicator(galleryCellView, pi);
+		
+		return galleryCellView;
+	}
+
+	/**
+	 * @param galleryCellView
+	 * @param pi
+	 */
+	protected void toggleWatchedIndicator(View galleryCellView,
+			SeriesContentInfo pi) {
 		int unwatched = 0;
 				
 		if (pi.getShowsUnwatched() != null) {
 			unwatched = Integer.parseInt(pi.getShowsUnwatched());
 		}
 		
+		ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
 		if (unwatched == 0) {
-			ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
 			watchedView.setImageResource(R.drawable.overlaywatched);
 		}
 		
-		return galleryCellView;
+		int watched = 0;
+		if (pi.getShowsWatched() != null ) {
+			watched = Integer.parseInt(pi.getShowsWatched());
+		}
+		
+		int totalShows = unwatched + watched;
+		if (unwatched != totalShows) {
+			toggleProgressIndicator(galleryCellView, watched, totalShows, watchedView);
+		}
+		
+		
 	}
 	
 

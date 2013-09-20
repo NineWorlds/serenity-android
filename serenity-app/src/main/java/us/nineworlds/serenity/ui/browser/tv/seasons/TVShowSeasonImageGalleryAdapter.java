@@ -50,6 +50,7 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 /**
@@ -153,13 +154,46 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 			unwatched = Integer.parseInt(pi.getShowsUnwatched());
 		}
 		
+		ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
 		if (unwatched == 0) {
-			ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
 			watchedView.setImageResource(R.drawable.overlaywatched);
+		}
+		
+		int watched = 0;
+		if (pi.getShowsWatched() != null ) {
+			watched = Integer.parseInt(pi.getShowsWatched());
+		}
+		
+		int totalShows = unwatched + watched;
+		if (unwatched != totalShows) {
+			toggleProgressIndicator(galleryCellView, watched, totalShows, watchedView);
 		}
 		
 		return galleryCellView;
 	}
+	
+	/**
+	 * @param galleryCellView
+	 * @param pi
+	 * @param watchedView
+	 */
+	protected void toggleProgressIndicator(View galleryCellView, int dividend,
+			int divisor, ImageView watchedView) {
+		final float percentWatched = Float.valueOf(dividend)
+				/ Float.valueOf(divisor);
+		if (percentWatched < 0.99f) {
+			final SeekBar view = (SeekBar) galleryCellView
+					.findViewById(R.id.posterInprogressIndicator);
+			int progress = Float.valueOf(percentWatched * 100).intValue();
+			if (progress < 10) {
+				progress = 10;
+			}
+			view.setProgress(progress);
+			view.setVisibility(View.VISIBLE);
+			watchedView.setVisibility(View.INVISIBLE);
+		}
+	}
+	
 
 	private static class ShowSeasonRetrievalHandler extends Handler {
 

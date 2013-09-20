@@ -29,13 +29,17 @@ import java.util.List;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.view.View;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 
 /**
  * An abstract class for handling the creation of video content for use during
@@ -57,6 +61,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	protected Handler handler;
 	protected String key;
 	protected String category;
+	private static final float WATCHED_PERCENT = 0.99f;
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
 		context = (Activity) c;
@@ -109,6 +114,28 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		return position;
+	}
+
+	/**
+	 * @param galleryCellView
+	 * @param pi
+	 * @param watchedView
+	 */
+	protected void toggleProgressIndicator(View galleryCellView, int dividend,
+			int divisor, ImageView watchedView) {
+		final float percentWatched = Float.valueOf(dividend)
+				/ Float.valueOf(divisor);
+		if (percentWatched <= WATCHED_PERCENT) {
+			final SeekBar view = (SeekBar) galleryCellView
+					.findViewById(R.id.posterInprogressIndicator);
+			int progress = Float.valueOf(percentWatched * 100).intValue();
+			if (progress < 10) {
+				progress = 10;
+			}
+			view.setProgress(progress);
+			view.setVisibility(View.VISIBLE);
+			watchedView.setVisibility(View.INVISIBLE);
+		}
 	}
 
 }

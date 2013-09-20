@@ -54,7 +54,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.SeekBar;
 
 /**
  * 
@@ -63,13 +62,11 @@ import android.widget.SeekBar;
  */
 public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
-	protected static MoviePosterImageAdapter notifyAdapter;
+	protected static AbstractPosterImageGalleryAdapter notifyAdapter;
 	protected static ProgressDialog pd;
 	private Handler posterGalleryHandler;
 	private Animation shrink;
 	private Animation fadeIn;
-
-	public static final float WATCHED_PERCENT = 0.98f;
 
 	public MoviePosterImageAdapter(Context c, String key, String category) {
 		super(c, key, category);
@@ -128,18 +125,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 		if (pi.getViewCount() > 0 && pi.getDuration() > 0
 				&& pi.getResumeOffset() != 0) {
-			final float percentWatched = Float.valueOf(pi.getResumeOffset()) / Float.valueOf(pi.getDuration());
-			if (percentWatched < WATCHED_PERCENT) {
-				final SeekBar view = (SeekBar) galleryCellView
-						.findViewById(R.id.posterInprogressIndicator);
-				int progress = Float.valueOf(percentWatched * 100).intValue();
-				if (progress < 10) {
-					progress = 10;
-				}
-				view.setProgress(progress);
-                view.setVisibility(View.VISIBLE);
-                watchedView.setVisibility(View.INVISIBLE);
-			}
+			toggleProgressIndicator(galleryCellView, pi.getResumeOffset(), pi.getDuration(),  watchedView);
 		}
 
 		return galleryCellView;

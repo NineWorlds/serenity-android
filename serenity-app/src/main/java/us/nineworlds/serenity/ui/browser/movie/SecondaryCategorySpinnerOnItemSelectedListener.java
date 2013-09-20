@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.browser.movie;
 import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
@@ -80,7 +81,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		View bgLayout = c.findViewById(R.id.movieBrowserBackgroundLayout);
 		SerenityGallery posterGallery = (SerenityGallery) c
 				.findViewById(R.id.moviePosterGallery);
-		MoviePosterImageAdapter adapter = new MoviePosterImageAdapter(c, key,
+		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(c, key,
 				item.getParentCategory() + "/" + item.getCategory());
 
 		if (!MovieBrowserActivity.IS_GRID_VIEW) {

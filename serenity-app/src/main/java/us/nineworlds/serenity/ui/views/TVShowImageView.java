@@ -65,7 +65,7 @@ public class TVShowImageView extends ImageView {
 		return posterInfo;
 	}
 	
-	public void setPosterInfo(AbstractSeriesContentInfo info) {
+	public void setPosterInfo(SeriesContentInfo info) {
 		posterInfo = info;
 	}
 

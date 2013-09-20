@@ -58,15 +58,6 @@
 
    <build>
       <finalName>Serenity-${version}</finalName>
-      <pluginManagement>
-         <plugins>
-            <plugin>
-               <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-               <artifactId>android-maven-plugin</artifactId>
-               <version>3.6.0</version>
-            </plugin>
-         </plugins>
-      </pluginManagement>
       <plugins>
          <plugin>
             <groupId>com.jayway.maven.plugins.android.generation2</groupId>

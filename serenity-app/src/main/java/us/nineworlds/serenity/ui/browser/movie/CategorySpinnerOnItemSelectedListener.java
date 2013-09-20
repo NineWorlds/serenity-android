@@ -30,6 +30,7 @@ import com.jess.ui.TwoWayGridView;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
@@ -141,7 +142,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	 * @param bgLayout
 	 */
 	protected void createGallery(CategoryInfo item, View bgLayout) {
-		MoviePosterImageAdapter adapter = new MoviePosterImageAdapter(context,
+		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(context,
 				key, item.getCategory());
 		GalleryVideoOnItemClickListener onClick = new GalleryVideoOnItemClickListener(); 
 		GalleryVideoOnItemLongClickListener onLongClick = new GalleryVideoOnItemLongClickListener();
