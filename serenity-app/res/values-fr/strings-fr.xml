@@ -129,4 +129,9 @@
     <string name="cast_fling_with_">Moulage / aventure avec...</string>    
     <string name="add_video_to_queue">Ajouter la vidéo à la file d\'attente</string>    
     <string name="there_are_still_videos_int_the_queue_">Il ya encore des vidéos int file d\'attente.</string>
+    
+    <string name="remote_control_menu_summary">Lorsqu\'elle est activée, la touche de menu pour faire apparaître le menu sur la diapositive, sinon il va activer le menu contextuel d\'un élément s\'il est disponible.</string>    
+    <string name="enable_sliding_menu">Activer coulissante Menu</string>    
+    <string name="preference_remote_control">Télécommande</string>    
+    
 </resources>

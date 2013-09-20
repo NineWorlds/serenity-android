@@ -112,11 +112,11 @@
         
     </PreferenceCategory>
     
-    <PreferenceCategory android:title="Remote Control" >
+    <PreferenceCategory android:title="@string/preference_remote_control" >
         <CheckBoxPreference
             android:key="remote_control_menu"
-            android:summary="When enabled the menu key will bring up the slide out menu, otherwise it will activate the context menu for an item if available."
-            android:title="Enable Sliding Menu"
+            android:summary="@string/remote_control_menu_summary"
+            android:title="@string/enable_sliding_menu"
             android:defaultValue="true" />
         
     </PreferenceCategory>

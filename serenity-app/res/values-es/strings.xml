@@ -130,4 +130,8 @@
     <string name="add_video_to_queue">Añadir vídeo a cola</string>    
     <string name="there_are_still_videos_int_the_queue_">Todavía hay vídeos int la cola.</string>    
    
+    <string name="remote_control_menu_summary">Cuando se activa la tecla de menú se abre el menú de la diapositiva, de lo contrario, se activará el menú contextual de un elemento, si está disponible.</string>    
+    <string name="enable_sliding_menu">Habilitar Sliding Menu</string>    
+    <string name="preference_remote_control">Control Remoto</string>    
+    
 </resources>
