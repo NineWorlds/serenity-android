@@ -125,7 +125,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 			int divisor, ImageView watchedView) {
 		final float percentWatched = Float.valueOf(dividend)
 				/ Float.valueOf(divisor);
-		if (percentWatched <= WATCHED_PERCENT) {
+		if (percentWatched < WATCHED_PERCENT) {
 			final SeekBar view = (SeekBar) galleryCellView
 					.findViewById(R.id.posterInprogressIndicator);
 			int progress = Float.valueOf(percentWatched * 100).intValue();
