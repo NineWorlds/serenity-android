@@ -62,8 +62,6 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 	private Handler categoryHandler;
 	public static boolean IS_GRID_VIEW = false;
 	private static Activity context;
-	private MenuDrawer menuDrawer;
-	private ListView menuOptions;
 	private SharedPreferences prefs = null;
 	
 	/* (non-Javadoc)
@@ -98,6 +96,7 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 	/**
 	 * @param listView
 	 */
+	@Override
 	public void hideMenuItems() {
 		if (SerenityApplication.isGoogleTV(this) ||
 			SerenityApplication.isAndroidTV(this)) {
@@ -111,16 +110,6 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 			}
 		}
 	}
-	
-	public void showMenuItems() {
-		if (SerenityApplication.isGoogleTV(this) ||
-			SerenityApplication.isAndroidTV(this)) {
-			menuOptions.setVisibility(View.VISIBLE);
-			menuOptions.requestFocusFromTouch();
-		}
-		
-	}
-
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -58,9 +58,6 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	private View metaData;
 	private boolean restarted_state = false;
 	private SharedPreferences prefs;
-	private MenuDrawer menuDrawer;
-	private ListView menuOptions;
-
 	@Override
 	protected void createSideMenu() {
 		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);

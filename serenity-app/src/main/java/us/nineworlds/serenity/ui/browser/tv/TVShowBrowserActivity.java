@@ -24,14 +24,21 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import net.simonvt.menudrawer.MenuDrawer;
 
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.MenuDrawerItem;
+import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.TVShowCategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
+import us.nineworlds.serenity.MenuDrawerOnClickListener;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 
@@ -51,6 +58,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
@@ -200,12 +208,32 @@ public class TVShowBrowserActivity extends SerenityActivity {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
-	 */
 	@Override
 	protected void createSideMenu() {
+		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
+		menuDrawer.setMenuView(R.layout.menu_drawer);
+		
+		USE_POSTER_LAYOUT = preferences.getBoolean("series_layout_posters", false);
+		if (USE_POSTER_LAYOUT) {
+			menuDrawer.setContentView(R.layout.activity_tvbrowser_show_posters);
+		} else {
+			menuDrawer.setContentView(R.layout.activity_tvbrowser_show_banners);
+		}
+		menuDrawer.setDrawerIndicatorEnabled(true);
+		
+		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
+		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
+		
+		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
+		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+		hideMenuItems();
+
+		
+		View menuButton = findViewById(R.id.menu_button);
+		menuButton
+				.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
 		
 	}
-
 }

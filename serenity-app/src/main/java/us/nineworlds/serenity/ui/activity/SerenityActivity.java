@@ -23,9 +23,12 @@
 
 package us.nineworlds.serenity.ui.activity;
 
+import net.simonvt.menudrawer.MenuDrawer;
+
 import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -37,6 +40,7 @@ import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 /**
  * @author dcarver
@@ -44,8 +48,11 @@ import android.widget.ImageView;
  */
 public abstract class SerenityActivity extends Activity {
 
-	protected abstract void createSideMenu();
+	protected ListView menuOptions;
+	protected MenuDrawer menuDrawer;
 
+	protected abstract void createSideMenu();
+		
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
@@ -173,6 +180,21 @@ public abstract class SerenityActivity extends Activity {
 		UpdateProgressRequest request = new UpdateProgressRequest(position,
 				video.id());
 		request.execute();
+	}
+
+	public void showMenuItems() {
+		if (SerenityApplication.isGoogleTV(this) ||
+			SerenityApplication.isAndroidTV(this)) {
+			menuOptions.setVisibility(View.VISIBLE);
+			menuOptions.requestFocusFromTouch();
+		}
+	}
+
+	public void hideMenuItems() {
+		if (SerenityApplication.isGoogleTV(this) ||
+			SerenityApplication.isAndroidTV(this)) {
+			menuOptions.setVisibility(View.GONE);
+		}
 	}
 
 }

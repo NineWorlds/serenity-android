@@ -68,6 +68,9 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Activity activity = (Activity) view.getContext();
+		ListView lv = (ListView) menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
+		lv.setVisibility(View.GONE);
+		menuDrawer.toggleMenu(true);
 		
 		switch (position) {
 		case CLEAR_CACHE:
@@ -88,14 +91,6 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 			Toast.makeText(activity, activity.getResources().getString(R.string.queue_has_been_cleared_), Toast.LENGTH_LONG).show();
 			break;
 		}
-		
-		ListView lv = (ListView) menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
-		lv.setFocusable(false);
-		focusable.setFocusableInTouchMode(true);
-		focusable.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
-		focusable.requestFocusFromTouch();
-		menuDrawer.toggleMenu(true);
-		
 	}
 
 	protected void createClearCacheDialog(Context context) {

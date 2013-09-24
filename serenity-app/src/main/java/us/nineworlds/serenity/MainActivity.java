@@ -72,8 +72,6 @@ import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.tjeannin.apprate.AppRate;
 
-import de.cketti.library.changelog.ChangeLog;
-
 public class MainActivity extends SerenityActivity {
 
 	private class AutoConfigureHandlerRunnable implements Runnable {
@@ -222,8 +220,6 @@ public class MainActivity extends SerenityActivity {
 
 	private View mainGalleryBackgroundView;
 
-	private MenuDrawer menuDrawer;
-
 	protected Handler mHandler = new DownloadHandler();
 
 	private SharedPreferences preferences;
@@ -267,30 +263,13 @@ public class MainActivity extends SerenityActivity {
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
 				R.string.clear_queue), R.drawable.ic_action_content_remove));
 
-		ListView listView = (ListView) menuDrawer.getMenuView().findViewById(
+		menuOptions = (ListView) menuDrawer.getMenuView().findViewById(
 				R.id.menu_list_options);
-		hideMenuItems(listView);
-		listView.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-		listView.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
+		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+		menuOptions.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
 				menuDrawer, mainGallery));
-	}
-
-	/**
-	 * @param listView
-	 */
-	protected void hideMenuItems(ListView listView) {
-		if (SerenityApplication.isGoogleTV(this) ||
-			SerenityApplication.isAndroidTV(this)) {
-			listView.setVisibility(View.GONE);
-		}
-	}
-
-	protected void showMenuItems(ListView listView) {
-		if (SerenityApplication.isGoogleTV(this) ||
-				SerenityApplication.isAndroidTV(this)) {
-			listView.setVisibility(View.VISIBLE);
-		}
-
+		
+		hideMenuItems();
 	}
 
 	/**
@@ -427,25 +406,19 @@ public class MainActivity extends SerenityActivity {
 	
 				mainGallery
 						.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-				ListView listView = (ListView) menuDrawer.getMenuView()
-						.findViewById(R.id.menu_list_options);
-				showMenuItems(listView);
-				listView.setFocusable(true);
-				listView.requestFocus();
+				showMenuItems();
 				menuDrawer.toggleMenu();
 				return true;
 			}
 		}
 		
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
+			hideMenuItems();
+			menuDrawer.toggleMenu();
 			mainGallery
 					.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 			mainGallery.setFocusableInTouchMode(true);
-			mainGallery.requestFocus();
-			ListView listView = (ListView) menuDrawer.getMenuView()
-					.findViewById(R.id.menu_list_options);
-			hideMenuItems(listView);
-			menuDrawer.toggleMenu();
+			mainGallery.requestFocusFromTouch();
 			return true;
 		}
 		
@@ -502,14 +475,8 @@ public class MainActivity extends SerenityActivity {
 	 */
 	@Override
 	public void openOptionsMenu() {
-		mainGallery
-				.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-		ListView listView = (ListView) menuDrawer.getMenuView().findViewById(
-				R.id.menu_list_options);
-		listView.setVisibility(View.VISIBLE);
-		listView.setFocusable(true);
-		listView.requestFocus();
-
+		menuOptions.setVisibility(View.VISIBLE);
+		menuOptions.requestFocusFromTouch();
 		menuDrawer.toggleMenu();
 	}
 

@@ -36,6 +36,7 @@ import org.junit.runner.RunWith;
 
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.ui.activity.SerenityActivity;
 
 import android.content.SharedPreferences;
 import android.preference.Preference;
@@ -53,7 +54,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 @RunWith(RobolectricTestRunner.class)
 public class MainActivityTest {
 	
-	MainActivity activity;
+	SerenityActivity activity;
 	
 	@Before
 	public void setUp() throws Exception {
