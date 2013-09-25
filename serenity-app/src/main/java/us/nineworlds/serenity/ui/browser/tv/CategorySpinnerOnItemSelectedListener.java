@@ -25,6 +25,8 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import java.util.List;
 
+import com.jess.ui.TwoWayGridView;
+
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
@@ -76,9 +78,10 @@ public class CategorySpinnerOnItemSelectedListener implements
 				.getItemAtPosition(position);
 
 		if (firstSelection) {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(context);
 			String filter = prefs.getString("serenity_category_filter", "all");
-			
+
 			int count = viewAdapter.getCount();
 			for (int i = 0; i < count; i++) {
 				CategoryInfo citem = (CategoryInfo) viewAdapter
@@ -90,7 +93,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 					continue;
 				}
 			}
-			
+
 			if (item.getCategory().equals("newest")
 					|| item.getCategory().equals("recentlyAdded")
 					|| item.getCategory().equals("recentlyViewed")
@@ -101,7 +104,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 				context.startActivityForResult(i, 0);
 			} else {
 				setupImageGallery(item);
-			}			
+			}
 			firstSelection = false;
 			return;
 		}
@@ -147,25 +150,31 @@ public class CategorySpinnerOnItemSelectedListener implements
 	 */
 	protected void setupImageGallery(CategoryInfo item) {
 		View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
-		Gallery posterGallery = (Gallery) context
-				.findViewById(R.id.tvShowBannerGallery);
 
-		if (!TVShowBrowserActivity.USE_POSTER_LAYOUT) {
-			posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
-					context, key, item.getCategory()));
+		if (TVShowBrowserActivity.USE_GRID_LAYOUT) {
+			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.tvShowGridView);
+			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(context, key, item.getCategory()));
 		} else {
-			posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(
-					context, key, item.getCategory()));
+			Gallery posterGallery = (Gallery) context
+					.findViewById(R.id.tvShowBannerGallery);
+			if (!TVShowBrowserActivity.USE_POSTER_LAYOUT) {
+				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
+						context, key, item.getCategory()));
+			} else {
+				posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(
+						context, key, item.getCategory()));
+			}
+			posterGallery
+					.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
+							bgLayout, context));
+			posterGallery
+					.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
+							context));
+			posterGallery
+					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
+			posterGallery.setCallbackDuringFling(false);
+
 		}
-		posterGallery
-				.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
-						bgLayout, context));
-		posterGallery
-				.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
-						context));
-		posterGallery
-				.setOnItemLongClickListener(new ShowOnItemLongClickListener());
-		posterGallery.setCallbackDuringFling(false);
 
 	}
 

@@ -23,6 +23,8 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import com.jess.ui.TwoWayGridView;
+
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 
 import us.nineworlds.serenity.R;
@@ -66,25 +68,34 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		Activity c = (Activity) view.getContext();
 
 		View bgLayout = c.findViewById(R.id.tvshowBrowserLayout);
-		Gallery posterGallery = (Gallery) c
-				.findViewById(R.id.tvShowBannerGallery);
-		
-		if (!TVShowBrowserActivity.USE_POSTER_LAYOUT) {
-			posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(c, key,
-				item.getParentCategory() + "/" + item.getCategory()));
+		if (TVShowBrowserActivity.USE_GRID_LAYOUT) {
+			TwoWayGridView gridView = (TwoWayGridView) c.findViewById(R.id.tvShowGridView);
+			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(c, key, item.getParentCategory() + "/"
+					+ item.getCategory()));
 		} else {
-			posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(c, key,
-					item.getParentCategory() + "/" + item.getCategory()));
+			Gallery posterGallery = (Gallery) c
+					.findViewById(R.id.tvShowBannerGallery);
+
+			if (!TVShowBrowserActivity.USE_POSTER_LAYOUT) {
+				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(c,
+						key, item.getParentCategory() + "/"
+								+ item.getCategory()));
+			} else {
+				posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(c,
+						key, item.getParentCategory() + "/"
+								+ item.getCategory()));
+			}
+
+			posterGallery
+					.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
+							bgLayout, c));
+			posterGallery
+					.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
+							c));
+			posterGallery
+					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
+			posterGallery.setCallbackDuringFling(false);
 		}
-		
-		posterGallery
-				.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
-						bgLayout, c));
-		posterGallery
-				.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
-						c));
-		posterGallery.setOnItemLongClickListener(new ShowOnItemLongClickListener());
-		posterGallery.setCallbackDuringFling(false);
 	}
 
 	@Override

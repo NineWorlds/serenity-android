@@ -83,16 +83,5 @@ public class MainActivityTest {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 		assertNotNull(preferences);
 	}
-	
-	@Test
-	@Ignore
-	public void testFindMainMenu() throws Exception {
-		activity.onCreate(null);
-		View menuView = activity.findViewById(R.id.mainGalleryMenu);
-		assertTrue(menuView.isShown());
-	}
-	
-	
-	
 
 }

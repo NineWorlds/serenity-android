@@ -8,6 +8,7 @@
     tools:context=".ui.browser.tv.TVShowBrowserActivity" >
 
     <LinearLayout
+        android:id="@+id/metaDataRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#A0000000"
@@ -33,9 +34,35 @@
             android:gravity="right"
             android:textColor="#F0F0F0"
             tools:ignore="SelectableText" >
-
         </TextView>
     </LinearLayout>
+    
+    <com.jess.ui.TwoWayGridView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/episodeGridView"
+        android:layout_below="@+id/metaDataRow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="10dp"
+        android:padding="5dp"
+        android:background="#80000000"
+        app:cacheColorHint="#E8E8E8"
+        app:columnWidth="160dp"
+        app:gravity="center"
+        app:horizontalSpacing="16dp"
+        app:numColumns="auto_fit"
+        app:numRows="2"
+        app:rowHeight="160dp"
+        app:scrollDirectionLandscape="horizontal"
+        app:scrollDirectionPortrait="vertical"
+        app:stretchMode="spacingWidthUniform"
+        app:verticalSpacing="10dp"
+        android:focusable="true"
+        android:nextFocusDown="@+id/tvShowSeasonImageGalleryLayout"
+        android:nextFocusLeft="@+id/tvShowSeasonImageGalleryLayout"
+        android:nextFocusRight="@+id/tvShowSeasonImageGalleryLayout" />
+    
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,8 +81,6 @@
             tools:ignore="SelectableText" >
 
         </TextView>
-        
-        
     </LinearLayout>        
     
      <LinearLayout

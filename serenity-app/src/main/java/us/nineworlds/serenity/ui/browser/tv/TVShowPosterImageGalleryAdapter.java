@@ -26,6 +26,9 @@ package us.nineworlds.serenity.ui.browser.tv;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jess.ui.TwoWayAbsListView;
+import com.jess.ui.TwoWayGridView;
+
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
@@ -46,6 +49,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
+import android.widget.Gallery.LayoutParams;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -138,10 +142,12 @@ public class TVShowPosterImageGalleryAdapter extends
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = context.getLayoutInflater().inflate(R.layout.poster_tvshow_indicator_view, null);
-		
+		View galleryCellView = context.getLayoutInflater().inflate(
+				R.layout.poster_tvshow_indicator_view, null);
+
 		AbstractSeriesContentInfo pi = tvShowList.get(position);
-		TVShowImageView mpiv = (TVShowImageView) galleryCellView.findViewById(R.id.posterImageView);
+		TVShowImageView mpiv = (TVShowImageView) galleryCellView
+				.findViewById(R.id.posterImageView);
 		mpiv.setPosterInfo(pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -150,32 +156,39 @@ public class TVShowPosterImageGalleryAdapter extends
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
 		imageLoader.displayImage(pi.getThumbNailURL(), mpiv);
-		galleryCellView.setLayoutParams(new Gallery.LayoutParams(width, height));
-		
+		if (TVShowBrowserActivity.USE_GRID_LAYOUT) {
+			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
+
+		} else {
+			galleryCellView.setLayoutParams(new Gallery.LayoutParams(width,
+					height));
+		}
+
 		int unwatched = 0;
-		
+
 		if (pi.getShowsUnwatched() != null) {
 			unwatched = Integer.parseInt(pi.getShowsUnwatched());
 		}
-		
-		ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
+
+		ImageView watchedView = (ImageView) galleryCellView
+				.findViewById(R.id.posterWatchedIndicator);
 		if (unwatched == 0) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
 		}
-		
+
 		int watched = 0;
-		if (pi.getShowsWatched() != null ) {
+		if (pi.getShowsWatched() != null) {
 			watched = Integer.parseInt(pi.getShowsWatched());
 		}
-		
+
 		int totalShows = unwatched + watched;
 		if (unwatched != totalShows) {
-			toggleProgressIndicator(galleryCellView, watched, totalShows, watchedView);
+			toggleProgressIndicator(galleryCellView, watched, totalShows,
+					watchedView);
 		}
-		
+
 		return galleryCellView;
 	}
-	
 
 	private class ShowRetrievalHandler extends Handler {
 
@@ -183,21 +196,31 @@ public class TVShowPosterImageGalleryAdapter extends
 		public void handleMessage(Message msg) {
 
 			tvShowList = (List<TVShowSeriesInfo>) msg.obj;
-			Gallery posterGallery = (Gallery) context
-					.findViewById(R.id.tvShowBannerGallery);
+			notifyDataSetChanged();
+			pd.dismiss();
+
 			if (tvShowList != null) {
 				if (tvShowList.isEmpty()) {
-					Toast.makeText(context,
-							R.string.no_shows_found_for_the_category_ + category,
-							Toast.LENGTH_LONG).show();
+					Toast.makeText(
+							context,
+							R.string.no_shows_found_for_the_category_
+									+ category, Toast.LENGTH_LONG).show();
 				}
 				TextView tv = (TextView) context
 						.findViewById(R.id.tvShowItemCount);
-				tv.setText(Integer.toString(tvShowList.size()) + context.getString(R.string._item_s_));
+				tv.setText(Integer.toString(tvShowList.size())
+						+ context.getString(R.string._item_s_));
 			}
-			notifyDataSetChanged();
-			posterGallery.requestFocus();
-			pd.dismiss();
+
+			if (TVShowBrowserActivity.USE_GRID_LAYOUT) {
+				TwoWayGridView gridView = (TwoWayGridView) context
+						.findViewById(R.id.tvShowGridView);
+				gridView.requestFocusFromTouch();
+			} else {
+				Gallery posterGallery = (Gallery) context
+						.findViewById(R.id.tvShowBannerGallery);
+				posterGallery.requestFocus();
+			}
 		}
 	}
 

@@ -53,10 +53,17 @@
             android:key="series_layout_posters"
             android:summary="@string/prefer_poster_layout_for_series_"
             android:title="@string/series_poster_layout" />
+        
+        <CheckBoxPreference
+            android:key="series_layout_grid"
+            android:summary="TV Shows will be displayed in a grid view."
+            android:title="Prefer Grid View for Series" />
+        
         <CheckBoxPreference
             android:key="movie_layout_grid"
             android:summary="@string/poster_grid_layout_for_movies_"
             android:title="@string/movie_grid_poster_layout" />
+        
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/animations" >
         <CheckBoxPreference

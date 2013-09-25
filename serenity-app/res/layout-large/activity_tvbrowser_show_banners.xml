@@ -13,7 +13,18 @@
         android:layout_height="wrap_content"
         android:background="#A0000000"
         android:orientation="horizontal" >
-
+        
+        <ImageButton android:id="@+id/menu_button"
+        android:layout_width="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="5dp"
+        android:layout_height="28dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/menudrawer_selector"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitXY"
+        />
+        
         <TextView
             android:id="@+id/tvshow_CategoryName"
             style="@android:style/TextAppearance.Holo.Medium"
