@@ -39,6 +39,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
 /**
@@ -126,13 +127,14 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 		final float percentWatched = Float.valueOf(dividend)
 				/ Float.valueOf(divisor);
 		if (percentWatched < WATCHED_PERCENT) {
-			final SeekBar view = (SeekBar) galleryCellView
+			final ProgressBar view = (ProgressBar) galleryCellView
 					.findViewById(R.id.posterInprogressIndicator);
 			int progress = Float.valueOf(percentWatched * 100).intValue();
 			if (progress < 10) {
 				progress = 10;
 			}
 			view.setProgress(progress);
+			view.setClickable(false);
 			view.setVisibility(View.VISIBLE);
 			watchedView.setVisibility(View.INVISIBLE);
 		}

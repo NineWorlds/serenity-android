@@ -72,6 +72,8 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 			TwoWayGridView gridView = (TwoWayGridView) c.findViewById(R.id.tvShowGridView);
 			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(c, key, item.getParentCategory() + "/"
 					+ item.getCategory()));
+			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(bgLayout, c));
+			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(c));
 		} else {
 			Gallery posterGallery = (Gallery) c
 					.findViewById(R.id.tvShowBannerGallery);

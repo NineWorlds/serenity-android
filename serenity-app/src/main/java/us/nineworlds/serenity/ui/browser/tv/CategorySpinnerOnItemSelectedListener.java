@@ -154,6 +154,8 @@ public class CategorySpinnerOnItemSelectedListener implements
 		if (TVShowBrowserActivity.USE_GRID_LAYOUT) {
 			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.tvShowGridView);
 			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(context, key, item.getCategory()));
+			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(bgLayout, context));
+			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(context));
 		} else {
 			Gallery posterGallery = (Gallery) context
 					.findViewById(R.id.tvShowBannerGallery);

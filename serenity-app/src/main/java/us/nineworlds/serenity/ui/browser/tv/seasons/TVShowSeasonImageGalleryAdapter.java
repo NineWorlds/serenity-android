@@ -49,6 +49,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -182,7 +183,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		final float percentWatched = Float.valueOf(dividend)
 				/ Float.valueOf(divisor);
 		if (percentWatched < 0.99f) {
-			final SeekBar view = (SeekBar) galleryCellView
+			final ProgressBar view = (ProgressBar) galleryCellView
 					.findViewById(R.id.posterInprogressIndicator);
 			int progress = Float.valueOf(percentWatched * 100).intValue();
 			if (progress < 10) {

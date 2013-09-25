@@ -59,6 +59,7 @@
         app:stretchMode="spacingWidthUniform"
         app:verticalSpacing="10dp"
         android:focusable="true"
+        android:visibility="gone"
         android:nextFocusDown="@+id/tvShowSeasonImageGalleryLayout"
         android:nextFocusLeft="@+id/tvShowSeasonImageGalleryLayout"
         android:nextFocusRight="@+id/tvShowSeasonImageGalleryLayout" />

@@ -48,7 +48,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 
 /**
  * Implementation of the Poster Image Gallery class for TV Shows.

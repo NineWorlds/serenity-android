@@ -85,7 +85,7 @@
         app:gravity="center"
         app:horizontalSpacing="16dp"
         app:numColumns="auto_fit"
-        app:numRows="2"
+        app:numRows="3"
         app:rowHeight="160dp"
         app:scrollDirectionLandscape="horizontal"
         app:scrollDirectionPortrait="vertical"

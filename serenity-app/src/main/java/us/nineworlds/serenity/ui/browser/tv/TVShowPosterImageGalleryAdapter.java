@@ -151,8 +151,8 @@ public class TVShowPosterImageGalleryAdapter extends
 		mpiv.setPosterInfo(pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(160, context);
-		int height = ImageUtils.getDPI(200, context);
+		int width = ImageUtils.getDPI(120, context);
+		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
 		imageLoader.displayImage(pi.getThumbNailURL(), mpiv);
