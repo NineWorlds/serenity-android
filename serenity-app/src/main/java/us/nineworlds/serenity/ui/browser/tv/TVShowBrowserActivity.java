@@ -85,6 +85,10 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.tvshowBrowserLayout);
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
 			params.setMargins(35, 20, 40, 20);
+			
+			RelativeLayout menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
+			FrameLayout.LayoutParams menuParams = (FrameLayout.LayoutParams)  menuDrawerLayout.getLayoutParams();
+			menuParams.setMargins(35, 0, 0, 0);			
 		}
 
 	}

@@ -69,11 +69,13 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
 		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
 		if (SerenityApplication.isRunningOnOUYA()) {
-			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.tvshowSeasonBrowserLayout);
-			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
+			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  tvShowSeasonsMainView.getLayoutParams();
 			params.setMargins(35, 20, 45, 20);
+			
+			RelativeLayout menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
+			FrameLayout.LayoutParams menuParams = (FrameLayout.LayoutParams)  menuDrawerLayout.getLayoutParams();
+			menuParams.setMargins(35, 0, 0, 0);			
 		}
-
 	}
 
 	@Override
