@@ -57,6 +57,10 @@ public abstract class SerenityActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
 		TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
+		if (gridView == null) {
+			gridView = (TwoWayGridView) findViewById(R.id.tvShowGridView);
+		}
+		
 		if (gallery == null && gridView == null) {
 			return super.onKeyDown(keyCode, event);
 		}

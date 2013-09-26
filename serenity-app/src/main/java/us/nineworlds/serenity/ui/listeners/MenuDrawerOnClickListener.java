@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.browser.movie;
+package us.nineworlds.serenity.ui.listeners;
 
 import us.nineworlds.serenity.R;
 import net.simonvt.menudrawer.MenuDrawer;

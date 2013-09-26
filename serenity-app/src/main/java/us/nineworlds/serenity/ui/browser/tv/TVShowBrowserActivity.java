@@ -32,13 +32,11 @@ import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.MenuDrawerItem;
 import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.TVShowCategoryRetrievalIntentService;
-import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
-import us.nineworlds.serenity.widgets.SerenityGallery;
+import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
 
-import us.nineworlds.serenity.MenuDrawerOnClickListener;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 
@@ -54,11 +52,9 @@ import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Gallery;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -67,7 +63,7 @@ import android.widget.Spinner;
  * @author dcarver
  * 
  */
-public class TVShowBrowserActivity extends SerenityActivity {
+public class TVShowBrowserActivity extends SerenityVideoActivity {
 
 	private static Spinner categorySpinner;
 	private boolean restarted_state = false;
@@ -209,12 +205,13 @@ public class TVShowBrowserActivity extends SerenityActivity {
 		
 		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
 		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+		menuOptions.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(menuDrawer));
 		hideMenuItems();
 
 		
-//		View menuButton = findViewById(R.id.menu_button);
-//		menuButton
-//				.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
+		View menuButton = findViewById(R.id.menu_button);
+		menuButton
+				.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
 		
 	}
 	
@@ -256,7 +253,5 @@ public class TVShowBrowserActivity extends SerenityActivity {
 							"all", key));
 			categorySpinner.requestFocus();
 		}
-
 	}
-
 }
