@@ -18,7 +18,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         />
-      <SeekBar
+    
+      <ProgressBar
             android:id="@+id/posterInprogressIndicator"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
@@ -33,6 +34,7 @@
             android:layout_centerHorizontal="true"
             android:thumb="@android:color/transparent"
             android:layout_alignParentLeft="true"
+            android:clickable="false"
             android:background="#30000000"
             android:progressDrawable="@drawable/scrubber_progress_holo"
             android:visibility="invisible"
