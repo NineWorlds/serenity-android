@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/posterIndicatorView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/posterIndicatorView"
     android:background="@drawable/gallery_item_background" >
-    
-    <us.nineworlds.serenity.ui.views.SerenityPosterImageView android:id="@+id/posterImageView"
-        android:scaleType="fitXY"
+
+    <us.nineworlds.serenity.ui.views.SerenityPosterImageView
+        android:id="@+id/posterImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        />
-    
-    <TextView android:id="@+id/posterOverlayTitle"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:maxLines="1"
-              android:ellipsize="end"
-              android:textColor="@android:color/white"
-              android:background="#30000000"            
-              style="@android:style/TextAppearance.Holo.Small"
-              android:textStyle="bold"
-              android:visibility="invisible"
-              android:layout_alignParentTop="true"
-         />
-    <TextView android:id="@+id/metaOverlay"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:maxLines="1"
-              android:ellipsize="end"
-              android:textColor="@android:color/white"
-              android:background="#30000000"            
-              style="@android:style/TextAppearance.Holo.Small"
-              android:textStyle="bold"
-              android:visibility="invisible"
-              android:layout_below="@+id/posterOverlayTitle"
-         />
-    
-    
-    <ImageView android:id="@+id/posterWatchedIndicator"
-        android:scaleType="fitXY"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/posterOverlayTitle"
+        style="@android:style/TextAppearance.Holo.Small"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#80000000"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#F0F0F0"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/metaOverlay"
+        style="@android:style/TextAppearance.Holo.Small"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/posterOverlayTitle"
+        android:background="#80000000"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#F0F0F0"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/posterWatchedIndicator"
         android:layout_width="33dp"
         android:layout_height="33dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        />
-    
-      <ProgressBar
-            android:id="@+id/posterInprogressIndicator"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="-15dp"
-            android:layout_marginBottom="-15dp"
-            android:max="100"
-            android:indeterminate="false"
-            android:indeterminateOnly="false" 
-            android:layout_alignParentBottom="true"
-            android:thumb="@android:color/transparent"
-            android:layout_alignParentLeft="true"
-            android:clickable="false"
-            android:background="#30000000"
-            android:progressDrawable="@drawable/scrubber_progress_holo"
-            android:visibility="invisible"
-            />    
+        android:scaleType="fitXY" />
+
+    <ProgressBar
+        android:id="@+id/posterInprogressIndicator"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="-15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="-15dp"
+        android:background="#30000000"
+        android:clickable="false"
+        android:indeterminate="false"
+        android:indeterminateOnly="false"
+        android:max="100"
+        android:progressDrawable="@drawable/scrubber_progress_holo"
+        android:thumb="@android:color/transparent"
+        android:visibility="invisible" />
+
 </RelativeLayout>

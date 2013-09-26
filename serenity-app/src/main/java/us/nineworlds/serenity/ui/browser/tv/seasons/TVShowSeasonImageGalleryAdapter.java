@@ -201,6 +201,8 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		@Override
 		public void handleMessage(Message msg) {
 			seasonList = (List<TVShowSeriesInfo>) msg.obj;
+			notifyAdapter.notifyDataSetChanged();
+			pd.dismiss();
 
 			if (seasonList != null) {
 				if (!seasonList.isEmpty()) {
@@ -213,10 +215,12 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 							+ context.getString(R.string._item_s_));
 
 				}
-				notifyAdapter.notifyDataSetChanged();
-				pd.dismiss();
 			}
-
+			
+			Gallery gallery = (Gallery) context.findViewById(R.id.tvShowSeasonImageGallery);
+			if (gallery != null) {
+				gallery.requestFocusFromTouch();
+			}
 		}
 	}
 
