@@ -35,6 +35,7 @@ import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.GDMService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;

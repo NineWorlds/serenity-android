@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/tvshows"
     android:orientation="vertical"
-    tools:context=".ui.browser.tv.TVShowBrowserActivity" >
+    tools:context=".ui.browser.tv.TVShowBrowserActivity" xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity">
 
     <LinearLayout
         android:id="@+id/metaDataRow"
@@ -14,6 +14,18 @@
         android:background="#A0000000"
         android:orientation="horizontal" >
 
+        <ImageButton android:id="@+id/menu_button"
+        android:layout_width="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="5dp"
+        android:layout_height="28dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/menudrawer_selector"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitXY"
+        />
+        
+        
         <TextView
             android:id="@+id/tvShowSeasonsDetailText"
             style="@android:style/TextAppearance.Holo.Medium"
@@ -41,23 +53,21 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/episodeGridView"
         android:layout_below="@+id/metaDataRow"
+        android:layout_above="@+id/tvShowSeasonTitleRow"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginRight="10dp"
-        android:padding="5dp"
         android:background="#80000000"
         app:cacheColorHint="#E8E8E8"
-        app:columnWidth="160dp"
         app:gravity="center"
         app:horizontalSpacing="16dp"
         app:numColumns="auto_fit"
         app:numRows="2"
-        app:rowHeight="160dp"
         app:scrollDirectionLandscape="horizontal"
         app:scrollDirectionPortrait="vertical"
         app:stretchMode="spacingWidthUniform"
-        app:verticalSpacing="10dp"
+        app:rowHeight="120dp"
         android:focusable="true"
         android:visibility="gone"
         android:nextFocusDown="@+id/tvShowSeasonImageGalleryLayout"
@@ -70,6 +80,7 @@
         android:layout_height="wrap_content"
         android:background="#A0000000"
         android:orientation="horizontal"
+        android:id="@+id/tvShowSeasonTitleRow"
         android:layout_above="@+id/tvShowSeasonImageGalleryLayout">
         
         <TextView

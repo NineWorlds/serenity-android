@@ -26,10 +26,13 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.views.TVShowImageView;
 
 import us.nineworlds.serenity.R;
 
+import com.jess.ui.TwoWayGridView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
@@ -63,16 +66,16 @@ public class TVShowSeasonOnItemSelectedListener implements
 		imageLoader = SerenityApplication.getImageLoader();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
-	 * .widget.AdapterView, android.view.View, int, long)
-	 */
 	@Override
 	public void onItemSelected(AdapterView<?> av, View v, int position, long id) {
 		TVShowImageView mpiv = (TVShowImageView) v.findViewById(R.id.posterImageView);
+		TwoWayGridView episodeGrid = (TwoWayGridView) context.findViewById(R.id.episodeGridView);
+		
+		episodeGrid.setVisibility(View.VISIBLE);
+		episodeGrid.setAdapter(new EpisodePosterImageGalleryAdapter(context, mpiv.getPosterInfo().getKey()));
+		episodeGrid.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
+		episodeGrid.setOnItemClickListener(new GridVideoOnItemClickListener());
+		episodeGrid.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);

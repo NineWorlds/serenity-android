@@ -21,34 +21,56 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity;
+package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-import net.simonvt.menudrawer.MenuDrawer;
+
+
+
+import com.jess.ui.TwoWayAdapterView;
+import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
+
+import android.app.Activity;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ListView;
 
 /**
  * @author dcarver
- *
+ * 
  */
-public class MenuDrawerOnClickListener implements OnClickListener {
+public class EpisodePosterOnItemSelectedListener implements OnItemSelectedListener {
 
-	private MenuDrawer menuDrawer;
+
+	private View previous;
+	
 	
 	/**
 	 * 
 	 */
-	public MenuDrawerOnClickListener(MenuDrawer drawer) {
-		menuDrawer = drawer;
+	public EpisodePosterOnItemSelectedListener() {
 	}
-	
+
+
+
 	@Override
-	public void onClick(View v) {
-		ListView lv = (ListView) menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
-		lv.setVisibility(View.VISIBLE);
-		lv.requestFocusFromTouch();
-		menuDrawer.toggleMenu(true);
+	public void onNothingSelected(TwoWayAdapterView<?> av) {
+
+	}
+
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener#onItemSelected(us.nineworlds.serenity.widgets.SerenityAdapterView, android.view.View, int, long)
+	 */
+	@Override
+	public void onItemSelected(TwoWayAdapterView<?> parent, View view,
+			int position, long id) {
+		
+		if (previous != null) {
+			previous.setPadding(0, 0, 0, 0);
+		}
+
+		previous = view;
+
+		view.setPadding(5, 5, 5, 5);
+		
+		
 	}
 
 }

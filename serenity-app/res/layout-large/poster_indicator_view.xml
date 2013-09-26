@@ -11,6 +11,33 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         />
+    
+    <TextView android:id="@+id/posterOverlayTitle"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:maxLines="1"
+              android:ellipsize="end"
+              android:textColor="@android:color/white"
+              android:background="#30000000"            
+              style="@android:style/TextAppearance.Holo.Small"
+              android:textStyle="bold"
+              android:visibility="invisible"
+              android:layout_alignParentTop="true"
+         />
+    <TextView android:id="@+id/metaOverlay"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:maxLines="1"
+              android:ellipsize="end"
+              android:textColor="@android:color/white"
+              android:background="#30000000"            
+              style="@android:style/TextAppearance.Holo.Small"
+              android:textStyle="bold"
+              android:visibility="invisible"
+              android:layout_below="@+id/posterOverlayTitle"
+         />
+    
+    
     <ImageView android:id="@+id/posterWatchedIndicator"
         android:scaleType="fitXY"
         android:layout_width="33dp"

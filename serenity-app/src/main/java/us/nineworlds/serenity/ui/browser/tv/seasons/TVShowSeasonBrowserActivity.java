@@ -23,23 +23,36 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.model.MenuDrawerItem;
+import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
+import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
+import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.browser.tv.TVShowMenuDrawerOnItemClickedListener;
+import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Gallery;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 /**
  * @author dcarver
  * 
  */
-public class TVShowSeasonBrowserActivity extends Activity {
+public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 	private Gallery tvShowSeasonsGallery;
 	private View tvShowSeasonsMainView;
@@ -49,9 +62,9 @@ public class TVShowSeasonBrowserActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tvbrowser_show_seasons);
-
 		key = getIntent().getExtras().getString("key");
+		
+		createSideMenu();
 
 		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
 		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
@@ -105,6 +118,60 @@ public class TVShowSeasonBrowserActivity extends Activity {
 	protected void onRestart() {
 		super.onRestart();
 		restarted_state = true;
+	}
+
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
+	 */
+	@Override
+	protected void createSideMenu() {
+		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
+		menuDrawer.setMenuView(R.layout.menu_drawer);
+		menuDrawer.setContentView(R.layout.activity_tvbrowser_show_seasons);
+		menuDrawer.setDrawerIndicatorEnabled(true);
+		
+		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
+		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
+
+		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
+		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+		menuOptions.setOnItemClickListener(new TVShowSeasonMenuDrawerOnItemClickedListener(menuDrawer));
+		
+		hideMenuItems();
+
+		View menuButton = findViewById(R.id.menu_button);
+		menuButton
+				.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
+		
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int, android.view.KeyEvent)
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		boolean menuKeySlidingMenu = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("remote_control_menu",
+				true);
+		if (menuKeySlidingMenu) {
+			if (keyCode == KeyEvent.KEYCODE_MENU) {
+				showMenuItems();
+				menuDrawer.toggleMenu();
+				menuOptions.requestFocusFromTouch();
+				return true;
+			}
+		}
+		
+		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
+			hideMenuItems();
+			menuDrawer.toggleMenu();
+			if (tvShowSeasonsGallery != null) {
+				tvShowSeasonsGallery.requestFocusFromTouch();
+			}
+			return true;
+		}
+		
+		return super.onKeyDown(keyCode, event);
 	}
 
 }
