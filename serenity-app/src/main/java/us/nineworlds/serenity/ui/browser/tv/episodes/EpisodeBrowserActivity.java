@@ -109,8 +109,10 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		posterGallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
 		metaData = findViewById(R.id.metaDataRow);
 		metaData.setVisibility(View.VISIBLE);
-		if (SerenityApplication.isRunningOnOUYA()) {
-			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.movieBrowserBackgroundLayout);
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		if (prefs.getBoolean("overscan_compensation", false)) {
+			RelativeLayout mainLayout = (RelativeLayout) bgLayout;
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
 			params.setMargins(35, 20, 20, 20);
 			
@@ -118,9 +120,6 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 			FrameLayout.LayoutParams menuParams = (FrameLayout.LayoutParams)  menuDrawerLayout.getLayoutParams();
 			menuParams.setMargins(35, 0, 0, 0);
 		}
-
-		
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 	}
 	

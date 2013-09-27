@@ -141,7 +141,7 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
 		createSideMenu();
-		if (SerenityApplication.isRunningOnOUYA()) {
+		if (prefs.getBoolean("overscan_compensation", false)) {
 			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.movieBrowserBackgroundLayout);
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
 			params.setMargins(35, 20, 20, 20);

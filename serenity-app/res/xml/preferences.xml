@@ -28,6 +28,12 @@
             android:summary="@string/categories_summary_preference_description"
             android:title="@string/select_the_starting_category_filter_" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="Display Adjustements" >
+        <CheckBoxPreference
+            android:key="overscan_compensation"
+            android:summary="Adjusts the screen so that items are not cut off.  May be necessary when running on OUYA or other Android TV devices."
+            android:title="Overscan Compensation" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/music_library" >
         <CheckBoxPreference
             android:key="plex_music_library"
@@ -53,17 +59,14 @@
             android:key="series_layout_posters"
             android:summary="@string/prefer_poster_layout_for_series_"
             android:title="@string/series_poster_layout" />
-        
         <CheckBoxPreference
             android:key="series_layout_grid"
             android:summary="TV Shows will be displayed in a grid view."
             android:title="Prefer Grid View for Series" />
-        
         <CheckBoxPreference
             android:key="movie_layout_grid"
             android:summary="@string/poster_grid_layout_for_movies_"
             android:title="@string/movie_grid_poster_layout" />
-        
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/animations" >
         <CheckBoxPreference
@@ -85,47 +88,37 @@
             android:summary="@string/enable_gallery_scrolling"
             android:title="@string/enable_gallery_scrolling_animation" />
     </PreferenceCategory>
-    
-    
     <PreferenceCategory android:title="@string/media_player_internal" >
         <CheckBoxPreference
             android:key="plex_aspect_ratio"
             android:summary="@string/prefer_plex_media_server_s_aspect_ratio_"
             android:title="@string/plex_aspect_ratio" />
-        
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="internal_player_osd"
             android:summary="@string/internal_player_osd_summary"
             android:title="@string/on_screen_display" />
     </PreferenceCategory>
-    
-    
     <PreferenceCategory android:title="@string/media_player_external" >
         <CheckBoxPreference
             android:key="external_player"
             android:summary="@string/use_external_media_player_"
             android:title="@string/external_player" />
-        
         <CheckBoxPreference
             android:key="external_player_continuous_playback"
             android:summary="Enables video queue support for external players. Experimental support for external players and the video queue and continuous playback support."
             android:title="Enable Video Queue for External Players" />
-        
         <CheckBoxPreference
             android:key="mxplayer_plex_offset"
             android:summary="@string/mx_player_resume_summary"
             android:title="@string/force_mx_player_resume_position_" />
-        
     </PreferenceCategory>
-    
     <PreferenceCategory android:title="@string/preference_remote_control" >
         <CheckBoxPreference
+            android:defaultValue="true"
             android:key="remote_control_menu"
             android:summary="@string/remote_control_menu_summary"
-            android:title="@string/enable_sliding_menu"
-            android:defaultValue="true" />
-        
+            android:title="@string/enable_sliding_menu" />
     </PreferenceCategory>
 
 </PreferenceScreen>

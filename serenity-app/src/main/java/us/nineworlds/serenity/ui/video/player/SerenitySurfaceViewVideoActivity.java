@@ -59,6 +59,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -217,7 +218,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		mediaPlayer.setOnErrorListener(new SerenityOnErrorListener());
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 		videoActivityView = findViewById(R.id.video_playeback);
-		if (SerenityApplication.isRunningOnOUYA()) {
+		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("overscan_compensation", false)) {
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) videoActivityView
 					.getLayoutParams();
 			params.setMargins(35, 20, 20, 20);

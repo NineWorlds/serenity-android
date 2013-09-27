@@ -68,7 +68,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
 		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
-		if (SerenityApplication.isRunningOnOUYA()) {
+		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("overscan_compensation", false)) {
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  tvShowSeasonsMainView.getLayoutParams();
 			params.setMargins(35, 20, 45, 20);
 			

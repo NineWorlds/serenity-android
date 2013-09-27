@@ -81,7 +81,7 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 		
 		createSideMenu();
 		
-		if (SerenityApplication.isRunningOnOUYA()) {
+		if (preferences.getBoolean("overscan_compensation", false)) {
 			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.tvshowBrowserLayout);
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
 			params.setMargins(35, 20, 40, 20);

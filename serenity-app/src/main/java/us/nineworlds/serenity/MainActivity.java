@@ -317,7 +317,7 @@ public class MainActivity extends SerenityActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == MAIN_MENU_PREFERENCE_RESULT_CODE) {
-			setupGallery();
+			recreate();
 		}
 
 	}
@@ -345,7 +345,7 @@ public class MainActivity extends SerenityActivity {
 
 		ratingNudger();
 		
-		if (SerenityApplication.isRunningOnOUYA()) {
+		if (preferences.getBoolean("overscan_compensation", false)) {
 			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
 			params.setMargins(35, 20, 20, 20);
