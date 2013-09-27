@@ -109,7 +109,7 @@
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
              android:animationDuration="1"
-             android:spacing="50dp"
+             android:spacing="25dp"
              android:padding="5dp" >
 
              <requestFocus />
