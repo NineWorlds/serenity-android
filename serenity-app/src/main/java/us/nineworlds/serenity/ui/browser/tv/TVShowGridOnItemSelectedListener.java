@@ -43,6 +43,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * Display selected TV Show Information.
@@ -84,6 +85,11 @@ public class TVShowGridOnItemSelectedListener implements
 		TVShowImageView imageView = (TVShowImageView) v.findViewById(R.id.posterImageView);
 
 		changeBackgroundImage(imageView);
+		
+		TextView titleView = (TextView) context.findViewById(R.id.tvShowGridTitle);
+		if (titleView != null) {
+			titleView.setText(imageView.getPosterInfo().getTitle());
+		}
 	}
 
 	/**
