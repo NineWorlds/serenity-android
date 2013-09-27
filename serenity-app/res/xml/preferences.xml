@@ -28,11 +28,11 @@
             android:summary="@string/categories_summary_preference_description"
             android:title="@string/select_the_starting_category_filter_" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Display Adjustements" >
+    <PreferenceCategory android:title="@string/display_adjustements" >
         <CheckBoxPreference
             android:key="overscan_compensation"
-            android:summary="Adjusts the screen so that items are not cut off.  May be necessary when running on OUYA or other Android TV devices."
-            android:title="Overscan Compensation" />
+            android:summary="@string/overscan_adjustement_summary"
+            android:title="@string/overscan_compensation" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/music_library" >
         <CheckBoxPreference

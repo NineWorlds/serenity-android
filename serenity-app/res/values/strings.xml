@@ -143,5 +143,9 @@
         
     <string name="remote_control_menu_summary">When enabled the menu key will bring up the slide out menu, otherwise it will activate the context menu for an item if available.</string>    
     <string name="enable_sliding_menu">Enable Sliding Menu</string>    
-    <string name="preference_remote_control">Remote Control</string>    
+    <string name="preference_remote_control">Remote Control</string>
+        
+    <string name="overscan_adjustement_summary">Adjusts the screen so that items are not cut off.  May be necessary when running on OUYA or other Android TV devices.</string>    
+    <string name="overscan_compensation">Overscan Compensation</string>    
+    <string name="display_adjustements">Display Adjustements</string>    
 </resources>

@@ -134,4 +134,8 @@
     <string name="enable_sliding_menu">Habilitar Sliding Menu</string>    
     <string name="preference_remote_control">Control Remoto</string>    
     
+    <string name="overscan_adjustement_summary">Ajusta la pantalla para que los artículos no se cortan. Puede ser necesaria cuando se ejecuta en Ouya u otros dispositivos de TV Android.</string>    
+    <string name="overscan_compensation">Overscan Compensación</string>    
+    <string name="display_adjustements">Mostrar Ajustes</string>    
+    
 </resources>

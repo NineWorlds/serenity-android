@@ -132,6 +132,11 @@
     
     <string name="remote_control_menu_summary">Lorsqu\'elle est activée, la touche de menu pour faire apparaître le menu sur la diapositive, sinon il va activer le menu contextuel d\'un élément s\'il est disponible.</string>    
     <string name="enable_sliding_menu">Activer coulissante Menu</string>    
-    <string name="preference_remote_control">Télécommande</string>    
+    <string name="preference_remote_control">Télécommande</string>
+    
+    <string name="overscan_adjustement_summary">Règle l\'écran de sorte que les articles ne sont pas coupés. Il peut être nécessaire lors de l\'exécution sur Ouya ou d\'autres dispositifs de TV Android.</string>    
+    <string name="overscan_compensation">Overscan Compensation</string>    
+    <string name="display_adjustements">Afficher Ajustements</string>    
+    
     
 </resources>
