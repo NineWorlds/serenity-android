@@ -39,6 +39,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;

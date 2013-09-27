@@ -139,5 +139,9 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 			watchedView.setVisibility(View.INVISIBLE);
 		}
 	}
+	
+	public List<VideoContentInfo> getItems() {
+		return posterList;
+	}
 
 }

@@ -148,4 +148,6 @@
     <string name="overscan_adjustement_summary">Adjusts the screen so that items are not cut off.  May be necessary when running on OUYA or other Android TV devices.</string>    
     <string name="overscan_compensation">Overscan Compensation</string>    
     <string name="display_adjustements">Display Adjustements</string>    
+    <string name="add_season_to_queue">Add Season to Queue</string>    
+    <string name="season_options">Season Options</string>    
 </resources>

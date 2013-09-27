@@ -32,15 +32,19 @@ import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.MenuDrawerItem;
 import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.browser.tv.TVShowMenuDrawerOnItemClickedListener;
 import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.jess.ui.TwoWayGridView;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.FocusFinder;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -63,18 +67,21 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
-		
+
 		createSideMenu();
 
 		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
 		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
-		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("overscan_compensation", false)) {
-			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  tvShowSeasonsMainView.getLayoutParams();
+		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
+				"overscan_compensation", false)) {
+			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) tvShowSeasonsMainView
+					.getLayoutParams();
 			params.setMargins(35, 20, 45, 20);
-			
+
 			RelativeLayout menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
-			FrameLayout.LayoutParams menuParams = (FrameLayout.LayoutParams)  menuDrawerLayout.getLayoutParams();
-			menuParams.setMargins(35, 0, 0, 0);			
+			FrameLayout.LayoutParams menuParams = (FrameLayout.LayoutParams) menuDrawerLayout
+					.getLayoutParams();
+			menuParams.setMargins(35, 0, 0, 0);
 		}
 	}
 
@@ -97,6 +104,9 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 						tvShowSeasonsMainView, this));
 		tvShowSeasonsGallery
 				.setOnItemClickListener(new TVShowSeasonOnItemClickListener(
+						this));
+		tvShowSeasonsGallery
+				.setOnItemLongClickListener(new SeasonOnItemLongClickListener(
 						this));
 	}
 
@@ -122,7 +132,9 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 		restarted_state = true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -131,30 +143,37 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 		menuDrawer.setMenuView(R.layout.menu_drawer);
 		menuDrawer.setContentView(R.layout.activity_tvbrowser_show_seasons);
 		menuDrawer.setDrawerIndicatorEnabled(true);
-		
-		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
 
-		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
+		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
+		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue",
+				R.drawable.menu_play_all_queue));
+
+		menuOptions = (ListView) menuDrawer.getMenuView().findViewById(
+				R.id.menu_list_options);
 		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-		menuOptions.setOnItemClickListener(new TVShowSeasonMenuDrawerOnItemClickedListener(menuDrawer));
-		
+		menuOptions
+				.setOnItemClickListener(new TVShowSeasonMenuDrawerOnItemClickedListener(
+						menuDrawer));
+
 		hideMenuItems();
 
 		View menuButton = findViewById(R.id.menu_button);
 		menuButton
 				.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
-		
-		
+
 	}
-	
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int, android.view.KeyEvent)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
+	 * android.view.KeyEvent)
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		boolean menuKeySlidingMenu = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("remote_control_menu",
-				true);
+		boolean menuKeySlidingMenu = PreferenceManager
+				.getDefaultSharedPreferences(this).getBoolean(
+						"remote_control_menu", true);
 		if (menuKeySlidingMenu) {
 			if (keyCode == KeyEvent.KEYCODE_MENU) {
 				showMenuItems();
@@ -163,7 +182,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 				return true;
 			}
 		}
-		
+
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
 			hideMenuItems();
 			menuDrawer.toggleMenu();
@@ -172,8 +191,64 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 			}
 			return true;
 		}
-		
-		return super.onKeyDown(keyCode, event);
-	}
 
+		View focusView = getCurrentFocus();
+
+		Gallery gallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
+		TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.episodeGridView);
+		if (gridView == null) {
+			gridView = (TwoWayGridView) findViewById(R.id.tvShowGridView);
+		}
+
+		if (gallery == null && gridView == null) {
+			return super.onKeyDown(keyCode, event);
+		}
+
+		AbstractPosterImageGalleryAdapter adapter = null;
+		if (focusView instanceof Gallery) {
+			adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+		} else {
+			adapter = (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
+		}
+
+		if (adapter != null) {
+			int itemsCount = adapter.getCount();
+
+			if (contextMenuRequested(keyCode)) {
+				View view = null;
+				if (focusView instanceof TwoWayGridView) {
+					view = gridView.getSelectedView();
+				} else if (gallery != null) {
+					view = gallery.getSelectedView();
+				}
+				
+				view.performLongClick();
+				return true;
+			}
+
+			if (gallery != null) {
+				if (isKeyCodeSkipBack(keyCode)) {
+					int selectedItem = gallery.getSelectedItemPosition();
+					int newPosition = selectedItem - 10;
+					if (newPosition < 0) {
+						newPosition = 0;
+					}
+					gallery.setSelection(newPosition);
+					return true;
+				}
+				if (isKeyCodeSkipForward(keyCode)) {
+					int selectedItem = gallery.getSelectedItemPosition();
+					int newPosition = selectedItem + 10;
+					if (newPosition > itemsCount) {
+						newPosition = itemsCount - 1;
+					}
+					gallery.setSelection(newPosition);
+					return true;
+				}
+			}
+		}
+
+		return super.onKeyDown(keyCode, event);
+
+	}
 }
