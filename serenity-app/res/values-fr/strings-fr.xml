@@ -137,6 +137,8 @@
     <string name="overscan_adjustement_summary">Règle l\'écran de sorte que les articles ne sont pas coupés. Il peut être nécessaire lors de l\'exécution sur Ouya ou d\'autres dispositifs de TV Android.</string>    
     <string name="overscan_compensation">Overscan Compensation</string>    
     <string name="display_adjustements">Afficher Ajustements</string>    
+    <string name="add_season_to_queue">Ajouter saison de file d\'attente</string>    
+    <string name="season_options">Options de saison</string>    
     
     
 </resources>
