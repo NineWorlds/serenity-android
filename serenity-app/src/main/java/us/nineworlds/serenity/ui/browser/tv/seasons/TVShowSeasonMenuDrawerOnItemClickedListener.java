@@ -66,6 +66,7 @@ public class TVShowSeasonMenuDrawerOnItemClickedListener implements OnItemClickL
 			if (!activity.getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
 				parent.setVisibility(View.INVISIBLE);
 			}
+			activity.findViewById(R.id.tvShowSeasonImageGallery).requestFocus();
 			VideoPlayerIntentUtils.playAllFromQueue(activity);
 			return;
 		}

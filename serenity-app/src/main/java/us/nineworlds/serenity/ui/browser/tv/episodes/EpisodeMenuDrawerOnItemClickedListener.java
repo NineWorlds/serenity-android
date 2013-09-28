@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import net.simonvt.menudrawer.MenuDrawer;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 import android.app.Activity;
@@ -62,7 +63,8 @@ public class EpisodeMenuDrawerOnItemClickedListener implements OnItemClickListen
 			if (!activity.getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
 				parent.setVisibility(View.INVISIBLE);
 			}
-			VideoPlayerIntentUtils.playAllFromQueue(activity);
+			activity.findViewById(R.id.moviePosterGallery).requestFocus();
+			VideoPlayerIntentUtils.playAllFromQueue(activity);			
 			break;
 		}
 	}
