@@ -19,25 +19,22 @@
         android:layout_alignParentRight="true"
         />
     
-      <ProgressBar
-            android:id="@+id/posterInprogressIndicator"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="-5dp"
-            android:layout_marginBottom="-5dp"           
-            android:max="100"
-            android:indeterminate="false"
-            android:indeterminateOnly="false" 
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:thumb="@android:color/transparent"
-            android:layout_alignParentLeft="true"
-            android:clickable="false"
-            android:background="#30000000"
-            android:progressDrawable="@drawable/scrubber_progress_holo"
-            android:visibility="invisible"
-            />    
+<ProgressBar
+        android:id="@+id/posterInprogressIndicator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:paddingTop="0dp"
+        android:background="#A0000000"
+        android:clickable="false"
+        android:indeterminate="false"
+        android:indeterminateOnly="false"
+        android:max="100"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/scrubber_progress_holo"
+        android:visibility="invisible" />
     
 </RelativeLayout>
