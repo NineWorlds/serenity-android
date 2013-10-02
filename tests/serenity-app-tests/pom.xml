@@ -4,7 +4,7 @@
    <parent>
       <groupId>us.nineworlds.serenity</groupId>
       <artifactId>plexapp-tests-parent</artifactId>
-      <version>1.4.5-SNAPSHOT</version>
+      <version>1.4.5</version>
    </parent>
 
    <artifactId>serenity-app-tests</artifactId>
@@ -23,20 +23,20 @@
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
          <artifactId>serenity-app</artifactId>
-         <version>1.4.5-SNAPSHOT</version>
+         <version>1.4.5</version>
          <type>apk</type>
       </dependency>
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
          <artifactId>plexapp-rest-library</artifactId>
-         <version>1.4.5-SNAPSHOT</version>
+         <version>1.4.5</version>
          <type>jar</type>
       </dependency>
       
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
          <artifactId>serenity-app</artifactId>
-         <version>1.4.5-SNAPSHOT</version>
+         <version>1.4.5</version>
          <type>jar</type>
          <scope>compile</scope>
       </dependency>
@@ -125,7 +125,7 @@
             <dependency>
                <groupId>us.nineworlds.serenity</groupId>
                <artifactId>serenity-app</artifactId>
-               <version>1.4.5-SNAPSHOT</version>
+               <version>1.4.5</version>
                <type>jar</type>
                <scope>provided</scope>
             </dependency>

@@ -4,11 +4,11 @@
   <parent>
     <groupId>us.nineworlds.serenity</groupId>
     <artifactId>serenity-parent</artifactId>
-    <version>1.4.5-SNAPSHOT</version>
+    <version>1.4.5</version>
   </parent>
   <groupId>us.nineworlds.serenity</groupId>
   <artifactId>subtitle-converter</artifactId>
-  <version>1.4.5-SNAPSHOT</version>
+  <version>1.4.5</version>
   <name>subtitle-converter</name>
   <dependencies>
     <dependency>
