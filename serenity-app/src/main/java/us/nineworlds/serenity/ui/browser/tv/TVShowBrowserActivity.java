@@ -170,6 +170,7 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 					newPosition = 0;
 				}
 				gallery.setSelection(newPosition);
+				gallery.requestFocusFromTouch();
 				return true;
 			}
 			if (isKeyCodeSkipForward(keyCode)) {
@@ -179,6 +180,7 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 					newPosition = itemsCount - 1;
 				}
 				gallery.setSelection(newPosition);
+				gallery.requestFocusFromTouch();
 				return true;
 			}
 		}

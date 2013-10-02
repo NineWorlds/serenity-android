@@ -47,6 +47,7 @@ import android.preference.PreferenceManager;
 import android.view.FocusFinder;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.ListView;
@@ -204,11 +205,11 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 			return super.onKeyDown(keyCode, event);
 		}
 
-		AbstractPosterImageGalleryAdapter adapter = null;
-		if (focusView instanceof Gallery) {
-			adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+		BaseAdapter adapter = null;
+		if (focusView instanceof TwoWayGridView) {
+			adapter = (BaseAdapter) gridView.getAdapter();
 		} else {
-			adapter = (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
+			adapter = (BaseAdapter) gallery.getAdapter();
 		}
 
 		if (adapter != null) {
@@ -234,6 +235,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 						newPosition = 0;
 					}
 					gallery.setSelection(newPosition);
+					gallery.requestFocusFromTouch();
 					return true;
 				}
 				if (isKeyCodeSkipForward(keyCode)) {
@@ -243,6 +245,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 						newPosition = itemsCount - 1;
 					}
 					gallery.setSelection(newPosition);
+					gallery.requestFocusFromTouch();
 					return true;
 				}
 			}
