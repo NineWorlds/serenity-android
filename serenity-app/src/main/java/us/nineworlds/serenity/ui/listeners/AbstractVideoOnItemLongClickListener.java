@@ -158,6 +158,21 @@ public class AbstractVideoOnItemLongClickListener {
 	protected void performWatchedToggle() {
 		View posterLayout = (View) vciv.getParent();
 		posterLayout.findViewById(R.id.posterInprogressIndicator).setVisibility(View.INVISIBLE);
+		
+		if (info.getResumeOffset() > 0) {
+			final float percentWatched = Float.valueOf(info.getResumeOffset())
+					/ Float.valueOf(info.getDuration());
+			if (percentWatched <= 0.90f) {
+				new WatchedVideoAsyncTask().execute(info.id());
+				ImageInfographicUtils.setWatchedCount(vciv, context);
+				ImageView view = (ImageView) posterLayout.findViewById(R.id.posterWatchedIndicator);
+				info.setResumeOffset(0);
+				view.setImageResource(R.drawable.overlaywatched);
+				view.setVisibility(View.VISIBLE);
+				return;
+			}
+		}
+		
 
 		if (info.getViewCount() > 0) {
 			new UnWatchVideoAsyncTask().execute(info.id());
@@ -235,8 +250,8 @@ public class AbstractVideoOnItemLongClickListener {
 			default:
 				performGoogleTVSecondScreen();
 			}
-			dialog.dismiss();
 			v.requestFocusFromTouch();
+			dialog.dismiss();
 		}
 
 	}

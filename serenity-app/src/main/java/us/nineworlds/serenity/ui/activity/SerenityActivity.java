@@ -32,6 +32,7 @@ import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.content.Intent;
@@ -183,7 +184,7 @@ public abstract class SerenityActivity extends Activity {
 		long position = data.getIntExtra("position", 0);
 		UpdateProgressRequest request = new UpdateProgressRequest(position,
 				video.id());
-		request.execute();
+		request.execute();		
 	}
 
 	public void showMenuItems() {

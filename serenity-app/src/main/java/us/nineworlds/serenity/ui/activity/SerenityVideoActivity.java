@@ -27,6 +27,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -34,6 +35,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.widget.Toast;
 
 import com.jess.ui.TwoWayGridView;
@@ -83,6 +85,7 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 				if (gallery != null) {
 					VideoContentInfo video = (VideoContentInfo) gallery
 							.getSelectedItem();
+					
 					if (video != null) {
 						updateProgress(data, video);
 					}
