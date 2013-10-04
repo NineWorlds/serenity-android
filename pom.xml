@@ -17,6 +17,10 @@
       <module>subtitle-converter</module>
    </modules>
 
+   <properties>
+      <pom.root>${basedir}</pom.root>
+   </properties>
+
    <repositories>
       <repository>
          <id>serenity-thirdparty-repo</id>

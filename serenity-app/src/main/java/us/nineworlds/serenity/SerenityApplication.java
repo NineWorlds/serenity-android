@@ -92,20 +92,32 @@ public class SerenityApplication extends Application {
 	public static DisplayImageOptions getMovieOptions() {
 		return movieOptions;
 	}
+	
+	/**
+	 * 
+	 */
+	public SerenityApplication() {
+		pendingDownloads = new ArrayList<PendingDownload>();
+		
+	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-
-		// installHttpCache();
-
-		installAnalytics();
-		configureImageLoader();
-		initializePlexappFactory();
-		sendStartedApplicationEvent();
-		pendingDownloads = new ArrayList<PendingDownload>();
+		init();
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 	}
+
+	/**
+	 * 
+	 */
+	public void init() {
+		configureImageLoader();
+		initializePlexappFactory();
+		installAnalytics();
+		sendStartedApplicationEvent();
+	}
+	
 
 	protected void configureImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()

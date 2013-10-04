@@ -23,9 +23,11 @@
 
 package us.nineworlds.serenity.core.services.test;
 
+import org.robolectric.Robolectric;
+import org.robolectric.shadows.ShadowApplication;
+
 import android.content.Intent;
 import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.MockSerenityApplication;
 import us.nineworlds.serenity.core.services.MainMenuIntentService;
 
 /**
@@ -33,12 +35,16 @@ import us.nineworlds.serenity.core.services.MainMenuIntentService;
  *
  */
 public class MockMainMenuIntentService extends MainMenuIntentService {
+	
+	MockSerenityApplication instance = null;
 
 	@Override
 	protected PlexappFactory getPlexFactoryInstance() {
-		MockSerenityApplication app = new MockSerenityApplication();
-		app.onCreate();
-		return MockSerenityApplication.getPlexFactory();
+		if (instance == null) {
+			instance = new MockSerenityApplication();
+		}
+		instance.init();
+		return instance.getPlexFactory();
 	}
 	
 	@Override

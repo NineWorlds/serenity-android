@@ -64,25 +64,6 @@
    <build>
       <plugins>
          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.6.2.201302030002</version>
-            <executions>
-               <execution>
-                  <goals>
-                     <goal>prepare-agent</goal>
-                  </goals>
-               </execution>
-               <execution>
-                  <id>report</id>
-                  <phase>prepare-package</phase>
-                  <goals>
-                     <goal>report</goal>
-                  </goals>
-               </execution>
-            </executions>
-         </plugin>
-         <plugin>
             <groupId>com.jayway.maven.plugins.android.generation2</groupId>
             <artifactId>android-maven-plugin</artifactId>
             <configuration>
@@ -105,8 +86,13 @@
              <artifactId>maven-surefire-plugin</artifactId>
              <version>2.13</version>
              <configuration>
-                <skip>true</skip>
+                <skip>false</skip>
                 <workingDirectory>../../serenity-app</workingDirectory>
+                <systemPropertyVariables>
+                   <android.manifest>${env.PWD}/serenity-app/AndroidManifest.xml</android.manifest>
+                   <android.resources>${env.PWD}/serenity-app/res</android.resources>
+                   <android.assets>${env.PWD}/serenity-app/res</android.assets>
+                   </systemPropertyVariables>
              </configuration>
           </plugin>
       </plugins>

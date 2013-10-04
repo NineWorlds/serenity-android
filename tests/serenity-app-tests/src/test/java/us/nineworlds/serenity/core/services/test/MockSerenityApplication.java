@@ -21,10 +21,11 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity;
+package us.nineworlds.serenity.core.services.test;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
+import us.nineworlds.serenity.SerenityApplication;
 
 /**
  * @author dcarver
