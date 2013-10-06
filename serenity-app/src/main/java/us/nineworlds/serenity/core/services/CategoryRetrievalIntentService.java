@@ -31,10 +31,6 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.util.Log;
 
 /**
@@ -45,35 +41,13 @@ import android.util.Log;
  * 
  */
 public class CategoryRetrievalIntentService extends
-		AbstractPlexRESTIntentService {
+		AbstractCategoryService {
 
-	private ArrayList<CategoryInfo> categories;
 	private String key;
 	private boolean filterAlbums;
 
 	public CategoryRetrievalIntentService() {
 		super("CategoryRetrievalIntentService");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.github.kingargyle.plexappclient.core.services.
-	 * AbstractPlexRESTIntentService#sendMessageResults(android.content.Intent)
-	 */
-	@Override
-	public void sendMessageResults(Intent intent) {
-		Bundle extras = intent.getExtras();
-		if (extras != null) {
-			Messenger messenger = (Messenger) extras.get("MESSENGER");
-			Message msg = Message.obtain();
-			msg.obj = categories;
-			try {
-				messenger.send(msg);
-			} catch (RemoteException ex) {
-				Log.e(getClass().getName(), "Unable to send message", ex);
-			}
-		}
 	}
 
 	/*

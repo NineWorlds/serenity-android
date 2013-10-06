@@ -45,9 +45,8 @@ import android.util.Log;
  * 
  */
 public class TVShowCategoryRetrievalIntentService extends
-		AbstractPlexRESTIntentService {
+		AbstractCategoryService {
 
-	private ArrayList<CategoryInfo> categories;
 	private String key;
 	private ArrayList<String> excludeCategories;
 
@@ -57,27 +56,6 @@ public class TVShowCategoryRetrievalIntentService extends
 		excludeCategories.add("search?type=2");
 		excludeCategories.add("search?type=4");
 		excludeCategories.add("folder");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.github.kingargyle.plexappclient.core.services.
-	 * AbstractPlexRESTIntentService#sendMessageResults(android.content.Intent)
-	 */
-	@Override
-	public void sendMessageResults(Intent intent) {
-		Bundle extras = intent.getExtras();
-		if (extras != null) {
-			Messenger messenger = (Messenger) extras.get("MESSENGER");
-			Message msg = Message.obtain();
-			msg.obj = categories;
-			try {
-				messenger.send(msg);
-			} catch (RemoteException ex) {
-				Log.e(getClass().getName(), "Unable to send message", ex);
-			}
-		}
 	}
 
 	/*
