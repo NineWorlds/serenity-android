@@ -156,6 +156,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(context, key, item.getCategory()));
 			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(bgLayout, context));
 			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(context));
+			gridView.setOnItemLongClickListener(new TVShowGridOnItemLongClickListener());
 		} else {
 			Gallery posterGallery = (Gallery) context
 					.findViewById(R.id.tvShowBannerGallery);

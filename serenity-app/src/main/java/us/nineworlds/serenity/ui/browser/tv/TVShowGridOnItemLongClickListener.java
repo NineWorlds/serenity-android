@@ -23,20 +23,14 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import com.jess.ui.TwoWayAdapterView;
+import com.jess.ui.TwoWayGridView;
+import com.jess.ui.TwoWayAdapterView.OnItemLongClickListener;
 
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.ui.views.TVShowImageView;
-import android.app.Activity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Gallery;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 /**
  * A listener that handles long press for video content. Includes displaying a
@@ -46,17 +40,17 @@ import android.widget.TextView;
  * @author dcarver
  * 
  */
-public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick implements OnItemLongClickListener {
+public class TVShowGridOnItemLongClickListener extends AbstractTVShowOnItemLongClick implements OnItemLongClickListener {
 
 	@Override
-	public boolean onItemLongClick(AdapterView<?> av, View v,
+	public boolean onItemLongClick(TwoWayAdapterView<?> av, View v,
 			int position, long arg3) {
 
 		// Google TV is sending back different results than Nexus 7
 		// So we try to handle the different results.
 
 		if (v == null) {
-			Gallery g = (Gallery) av;
+			TwoWayGridView g = (TwoWayGridView) av;
 			tvsv = (TVShowImageView) g.getSelectedView().findViewById(R.id.posterImageView);
 		} else {
 			if (v instanceof TVShowImageView) {
@@ -67,7 +61,7 @@ public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick i
 		}
 
 		init();
-
+		
 		createAndShowDialog();
 
 		return true;
