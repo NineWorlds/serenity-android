@@ -81,7 +81,6 @@ public class GDMServiceTest {
 	@Ignore
 	public void testOnHandleIntentIntent() throws Exception {
 		
-		
 		MockGDMService service = new MockGDMService();
 		Intent intent = new Intent();
 		service.onHandleIntent(intent);

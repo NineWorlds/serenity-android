@@ -26,6 +26,8 @@ package us.nineworlds.serenity.ui.browser.tv;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jess.ui.TwoWayGridView;
+
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
@@ -70,10 +72,10 @@ public class TVShowBannerImageGalleryAdapter extends
 	 */
 	private static final int BANNER_PIXEL_WIDTH = 758;
 
-	private static List<TVShowSeriesInfo> tvShowList = null;
+	protected static List<TVShowSeriesInfo> tvShowList = null;
 
 	private String key;
-	private static ProgressDialog pd;
+	protected static ProgressDialog pd;
 
 	public TVShowBannerImageGalleryAdapter(Context c, String key,
 			String category) {
@@ -143,20 +145,44 @@ public class TVShowBannerImageGalleryAdapter extends
 		View galleryCellView = context.getLayoutInflater().inflate(R.layout.poster_tvshow_indicator_view, null);
 		
 		SeriesContentInfo pi = tvShowList.get(position);
-		TVShowImageView mpiv = (TVShowImageView) galleryCellView.findViewById(R.id.posterImageView);
-		mpiv.setPosterInfo(pi);
-		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
-		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(BANNER_PIXEL_WIDTH, context);
-		int height = ImageUtils.getDPI(BANNER_PIXEL_HEIGHT, context);
-		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-
-		imageLoader.displayImage(pi.getImageURL(), mpiv);
-		galleryCellView.setLayoutParams(new Gallery.LayoutParams(width, height));
+		createImage(galleryCellView, pi, BANNER_PIXEL_WIDTH, BANNER_PIXEL_HEIGHT);
 		
 		toggleWatchedIndicator(galleryCellView, pi);
 		
 		return galleryCellView;
+	}
+
+	/**
+	 * @param galleryCellView
+	 * @param pi
+	 */
+	protected void createImage(View galleryCellView, SeriesContentInfo pi, int imageWidth, int imageHeight) {
+		int width = ImageUtils.getDPI(imageWidth, context);
+		int height = ImageUtils.getDPI(imageHeight, context);
+		
+		initPosterMetaData(galleryCellView, pi, width, height, false);
+		
+		galleryCellView.setLayoutParams(new Gallery.LayoutParams(width, height));
+	}
+
+	/**
+	 * @param galleryCellView
+	 * @param pi
+	 * @param width
+	 * @param height
+	 */
+	protected void initPosterMetaData(View galleryCellView,
+			SeriesContentInfo pi, int width, int height, boolean isPoster) {
+		TVShowImageView mpiv = (TVShowImageView) galleryCellView.findViewById(R.id.posterImageView);
+		mpiv.setPosterInfo(pi);
+		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
+		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
+		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+		if (isPoster) {
+			imageLoader.displayImage(pi.getThumbNailURL(), mpiv);
+		} else { 
+			imageLoader.displayImage(pi.getImageURL(), mpiv);
+		}
 	}
 
 	/**
@@ -211,7 +237,14 @@ public class TVShowBannerImageGalleryAdapter extends
 				tv.setText(Integer.toString(tvShowList.size()) + context.getString(R.string._item_s_));
 			}
 			notifyDataSetChanged();
-			posterGallery.requestFocus();
+			if (TVShowBrowserActivity.USE_GRID_LAYOUT) {
+				TwoWayGridView gridView = (TwoWayGridView) context
+						.findViewById(R.id.tvShowGridView);
+				gridView.requestFocusFromTouch();
+			} else {
+				posterGallery.requestFocus();
+			}
+			
 			pd.dismiss();
 		}
 	}
