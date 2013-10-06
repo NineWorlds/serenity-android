@@ -29,12 +29,12 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 /**
@@ -47,6 +47,7 @@ import android.widget.Toast;
 public class AbstractVideoOnItemClickListener {
 	
 	private SharedPreferences prefs;
+	protected VideoContentInfo videoInfo;
 
 	/**
 	 * @param v
@@ -57,7 +58,7 @@ public class AbstractVideoOnItemClickListener {
 			Toast.makeText(v.getContext(), "Cleared video queue before playback.", Toast.LENGTH_LONG).show();
 			SerenityApplication.getVideoPlaybackQueue().clear();
 		}
-		SerenityPosterImageView mpiv = (SerenityPosterImageView) v;
+		ImageView mpiv = (ImageView) v;
 	
 		prefs = PreferenceManager
 				.getDefaultSharedPreferences(v.getContext());
@@ -65,29 +66,28 @@ public class AbstractVideoOnItemClickListener {
 	
 		if (externalPlayer) {
 			Activity activity = (Activity) v.getContext();
-			VideoPlayerIntentUtils.launchExternalPlayer(mpiv.getPosterInfo(), (Activity) v.getContext());
-			new WatchedVideoAsyncTask().execute(mpiv.getPosterInfo().id());
-			updatedWatchedCount(mpiv, activity);
+			VideoPlayerIntentUtils.launchExternalPlayer(videoInfo, mxplayer, (Activity) v.getContext());
+			new WatchedVideoAsyncTask().execute(videoInfo.id());
+			updatedWatchedCount();
 			return;
 		}
 	
 		Activity a = launchInternalPlayer(mpiv);
-		updatedWatchedCount(mpiv, a);
+		updatedWatchedCount();
 	}
 
 	/**
 	 * @param mpiv
 	 * @return
 	 */
-	protected Activity launchInternalPlayer(SerenityPosterImageView mpiv) {
+	protected Activity launchInternalPlayer(ImageView view) {
 		
-		VideoContentInfo video = mpiv.getPosterInfo();
-		SerenityApplication.getVideoPlaybackQueue().add(video);
+		SerenityApplication.getVideoPlaybackQueue().add(videoInfo);
+		Activity a = (Activity) view.getContext();
 	
-		Intent vpIntent = new Intent(mpiv.getContext(),
+		Intent vpIntent = new Intent(a,
 				SerenitySurfaceViewVideoActivity.class);
 		
-		Activity a = (Activity) mpiv.getContext();
 		a.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
 		return a;
 	}
@@ -96,8 +96,8 @@ public class AbstractVideoOnItemClickListener {
 	 * @param epiv
 	 * @param a
 	 */
-	protected void updatedWatchedCount(SerenityPosterImageView epiv, Activity a) {
-		int watchedCount = epiv.getPosterInfo().getViewCount();
-		epiv.getPosterInfo().setViewCount(watchedCount + 1);
+	protected void updatedWatchedCount() {
+		int watchedCount = videoInfo.getViewCount();
+		videoInfo.setViewCount(watchedCount + 1);
 	}
 }

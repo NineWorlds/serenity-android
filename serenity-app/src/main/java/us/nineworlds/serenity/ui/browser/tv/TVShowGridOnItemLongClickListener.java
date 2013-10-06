@@ -29,8 +29,10 @@ import com.jess.ui.TwoWayAdapterView.OnItemLongClickListener;
 
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.ui.views.TVShowImageView;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+
 import android.view.View;
+import android.widget.ImageView;
 
 /**
  * A listener that handles long press for video content. Includes displaying a
@@ -48,15 +50,17 @@ public class TVShowGridOnItemLongClickListener extends AbstractTVShowOnItemLongC
 
 		// Google TV is sending back different results than Nexus 7
 		// So we try to handle the different results.
+		
+		videoInfo = (SeriesContentInfo) av.getItemAtPosition(position);
 
 		if (v == null) {
 			TwoWayGridView g = (TwoWayGridView) av;
-			tvsv = (TVShowImageView) g.getSelectedView().findViewById(R.id.posterImageView);
+			view = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
 		} else {
-			if (v instanceof TVShowImageView) {
-				tvsv = (TVShowImageView) v;
+			if (v instanceof ImageView) {
+				view = (ImageView) v;
 			} else {
-				tvsv = (TVShowImageView) v.findViewById(R.id.posterImageView);
+				view = (ImageView) v.findViewById(R.id.posterImageView);
 			}
 		}
 

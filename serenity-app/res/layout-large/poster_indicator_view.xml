@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/gallery_item_background" >
 
-    <us.nineworlds.serenity.ui.views.SerenityPosterImageView
+    <ImageView
         android:id="@+id/posterImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

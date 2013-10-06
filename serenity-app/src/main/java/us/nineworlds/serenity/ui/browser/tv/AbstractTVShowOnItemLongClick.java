@@ -29,7 +29,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
-import us.nineworlds.serenity.ui.views.TVShowImageView;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -49,14 +49,13 @@ public abstract class AbstractTVShowOnItemLongClick {
 
 	protected Dialog dialog;
 	protected Activity context;
-	protected SeriesContentInfo info;
-	protected TVShowImageView tvsv;
+	protected SeriesContentInfo videoInfo;
+	protected static View view;
 	/**
 	 * 
 	 */
 	public void init() {
-		info = tvsv.getPosterInfo();
-		context = (Activity) tvsv.getContext();
+		context = (Activity) view.getContext();
 	}
 	/**
 	 * 
@@ -94,37 +93,37 @@ public abstract class AbstractTVShowOnItemLongClick {
 		 * .widget.AdapterView, android.view.View, int, long)
 		 */
 		@Override
-		public void onItemClick(android.widget.AdapterView<?> arg0, View v,
+		public void onItemClick(android.widget.AdapterView<?> av, View v,
 				int position, long arg3) {
-			
+						
 			int watched = 0;
 			int unwatched = 0;
 
-			if (info.getShowsWatched() != null) {
-				watched = Integer.valueOf(info.getShowsWatched());
+			if (videoInfo.getShowsWatched() != null) {
+				watched = Integer.valueOf(videoInfo.getShowsWatched());
 			}
 			
-			if (info.getShowsUnwatched() != null) {
-				unwatched = Integer.valueOf(info.getShowsUnwatched());
+			if (videoInfo.getShowsUnwatched() != null) {
+				unwatched = Integer.valueOf(videoInfo.getShowsUnwatched());
 			}
 			
 			int total = watched + unwatched;
 
 			switch (position) {
 			case 0:
-				View posterLayout = (View) tvsv.getParent();
+				View posterLayout = (View) view.getParent();
 				ImageView watchedView = (ImageView) posterLayout.findViewById(R.id.posterWatchedIndicator);
 				View progressView = posterLayout.findViewById(R.id.posterInprogressIndicator);
 				progressView.setVisibility(View.INVISIBLE);
 				if (watched > 0) {
-					new UnWatchVideoAsyncTask().execute(info.id());
-					info.setShowsWatched("0");
-					info.setShowsUnwatched(Integer.valueOf(total).toString());
+					new UnWatchVideoAsyncTask().execute(videoInfo.id());
+					videoInfo.setShowsWatched("0");
+					videoInfo.setShowsUnwatched(Integer.valueOf(total).toString());
 					watchedView.setVisibility(View.INVISIBLE);
 				} else {
-					new WatchedVideoAsyncTask().execute(info.id());
-					info.setShowsWatched(Integer.valueOf(total).toString());
-					info.setShowsUnwatched("0");
+					new WatchedVideoAsyncTask().execute(videoInfo.id());
+					videoInfo.setShowsWatched(Integer.valueOf(total).toString());
+					videoInfo.setShowsUnwatched("0");
 					watchedView.setImageResource(R.drawable.overlaywatched);
 					watchedView.setVisibility(View.VISIBLE);
 				}
@@ -132,8 +131,8 @@ public abstract class AbstractTVShowOnItemLongClick {
 				TextView tv = (TextView) a.findViewById(R.id.tvShowWatchedUnwatched);
 				if (tv != null) {
 					String wu = "";
-					wu = context.getString(R.string.watched_) + " " + info.getShowsWatched();
-					wu = wu + " " + context.getString(R.string.unwatched_) + " " + info.getShowsUnwatched();
+					wu = context.getString(R.string.watched_) + " " + videoInfo.getShowsWatched();
+					wu = wu + " " + context.getString(R.string.unwatched_) + " " + videoInfo.getShowsUnwatched();
 					tv.setText(wu);
 					tv.refreshDrawableState();
 				}

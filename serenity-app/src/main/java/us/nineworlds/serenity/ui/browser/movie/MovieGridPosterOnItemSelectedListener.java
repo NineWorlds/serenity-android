@@ -33,7 +33,6 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
 import us.nineworlds.serenity.ui.listeners.SubtitleSpinnerOnItemSelectedListener;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 
 import us.nineworlds.serenity.R;
 
@@ -44,6 +43,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -59,6 +59,7 @@ public class MovieGridPosterOnItemSelectedListener implements
 	private static Activity context;
 	private View previous;
 	private Handler subtitleHandler;
+	private TwoWayAdapterView<?> adapter;
 
 	/**
 	 * 
@@ -77,6 +78,8 @@ public class MovieGridPosterOnItemSelectedListener implements
 	@Override
 	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position,
 			long id) {
+		
+		adapter = av;
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
@@ -85,15 +88,14 @@ public class MovieGridPosterOnItemSelectedListener implements
 		previous = v;
 
 		v.setPadding(5, 5, 5, 5);
-		SerenityPosterImageView posterImageView = (SerenityPosterImageView) v.findViewById(R.id.posterImageView);
 
-		createMovieMetaData(posterImageView);
+		createMovieMetaData();
 	}
 
 
-	private void createMovieMetaData(SerenityPosterImageView v) {
-		SerenityPosterImageView mpiv = v;
-		VideoContentInfo mi = mpiv.getPosterInfo();
+	private void createMovieMetaData() {
+		
+		VideoContentInfo mi = (VideoContentInfo) adapter.getSelectedItem();
 		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
 		subt.setVisibility(View.GONE);
 		Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);

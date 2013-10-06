@@ -35,7 +35,6 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.ui.views.TVShowImageView;
 
 import us.nineworlds.serenity.R;
 
@@ -64,6 +63,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 	private ImageLoader imageLoader;
 	private View previous;
 	private ImageSize bgImageSize = new ImageSize(1280, 720);
+	private SeriesContentInfo info;
 
 	/**
 	 * 
@@ -86,6 +86,8 @@ public class TVShowGalleryOnItemSelectedListener implements
 	@Override
 	public void onItemSelected(AdapterView<?> av, View v, int position, long id) {
 
+		info = (SeriesContentInfo) av.getItemAtPosition(position);
+		
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
 		}
@@ -94,18 +96,18 @@ public class TVShowGalleryOnItemSelectedListener implements
 
 		v.setPadding(5, 5, 5, 5);
 		
-		TVShowImageView imageView = (TVShowImageView) v.findViewById(R.id.posterImageView);
+		ImageView imageView = (ImageView) v.findViewById(R.id.posterImageView);
 
 		createTVShowDetail(imageView);
 		changeBackgroundImage(imageView);
 
 	}
 
-	private void createTVShowDetail(TVShowImageView v) {
+	private void createTVShowDetail(ImageView v) {
 
 		TextView summary = (TextView) context
 				.findViewById(R.id.tvShowSeriesSummary);
-		String plotSummary = v.getPosterInfo().getSummary();
+		String plotSummary = info.getSummary();
 		if (plotSummary == null) {
 			summary.setText("");
 		} else {
@@ -113,11 +115,11 @@ public class TVShowGalleryOnItemSelectedListener implements
 		}
 
 		TextView title = (TextView) context.findViewById(R.id.tvBrowserTitle);
-		title.setText(v.getPosterInfo().getTitle());
+		title.setText(info.getTitle());
 
 		TextView genreView = (TextView) context
 				.findViewById(R.id.tvShowBrowserGenre);
-		List<String> genres = v.getPosterInfo().getGeneres();
+		List<String> genres = info.getGeneres();
 		StringBuilder genreText = new StringBuilder();
 		if (genres != null && !genres.isEmpty()) {
 			for (String genre : genres) {
@@ -131,8 +133,8 @@ public class TVShowGalleryOnItemSelectedListener implements
 		TextView watchedUnwatched = (TextView) context
 				.findViewById(R.id.tvShowWatchedUnwatched);
 
-		String watched = v.getPosterInfo().getShowsWatched();
-		String unwatched = v.getPosterInfo().getShowsUnwatched();
+		String watched = info.getShowsWatched();
+		String unwatched = info.getShowsUnwatched();
 
 		String wu = "";
 		if (watched != null) {
@@ -147,7 +149,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 		watchedUnwatched.setText(wu);
 		
 		ImageView imageView = (ImageView) context.findViewById(R.id.tvShowRating);
-		ImageInfographicUtils info = new ImageInfographicUtils(74, 40);
+		ImageInfographicUtils infog = new ImageInfographicUtils(74, 40);
 		
 		int w = ImageUtils.getDPI(74, (Activity)v.getContext());
 		int h = ImageUtils.getDPI(40, (Activity)v.getContext());
@@ -157,12 +159,12 @@ public class TVShowGalleryOnItemSelectedListener implements
 		params.rightMargin = 5;			
 		imageView.setLayoutParams(params);
 		
-		ImageView content = info.createTVContentRating(v.getPosterInfo().getContentRating(), context);
+		ImageView content = infog.createTVContentRating(info.getContentRating(), context);
 		imageView.setImageDrawable(content.getDrawable());
 		imageView.setScaleType(ScaleType.FIT_XY);
 		
 		ImageView studiov = (ImageView) context.findViewById(R.id.tvShowStudio);
-		if (v.getPosterInfo().getStudio() != null ) {
+		if (info.getStudio() != null ) {
 			studiov.setVisibility(View.VISIBLE);
 			LinearLayout.LayoutParams sparams = new LinearLayout.LayoutParams(w, h);
 			sparams.rightMargin = 5;
@@ -171,10 +173,10 @@ public class TVShowGalleryOnItemSelectedListener implements
 			imageView.setLayoutParams(params);
 			
 			studiov.setLayoutParams(sparams);
-			String studio = v.getPosterInfo().getStudio();
+			String studio = info.getStudio();
 			studio = fixStudio(studio);
 			PlexappFactory factory = SerenityApplication.getPlexFactory();
-			String studioUrl = factory.getMediaTagURL("studio", studio, v.getPosterInfo().getMediaTagIdentifier());
+			String studioUrl = factory.getMediaTagURL("studio", studio, info.getMediaTagIdentifier());
 			SerenityApplication.getImageLoader().displayImage(studioUrl, studiov);
 		} else {
 			studiov.setVisibility(View.GONE);
@@ -186,7 +188,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 		ratingBar.setStepSize(0.1f);
 		ratingBar.setNumStars(4);
 		ratingBar.setPadding(0, 0, 5, 0);
-		double rating = v.getPosterInfo().getRating();
+		double rating = info.getRating();
 		ratingBar.setRating((float) (rating / 2.5));
 		
 		
@@ -211,8 +213,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 	 */
 	private void changeBackgroundImage(View v) {
 
-		TVShowImageView mpiv = (TVShowImageView) v;
-		SeriesContentInfo mi = mpiv.getPosterInfo();
+		SeriesContentInfo mi = info;
 
 		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
 				new SerenityBackgroundLoaderListener(bgLayout,

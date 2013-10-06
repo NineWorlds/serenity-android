@@ -38,7 +38,6 @@ import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
@@ -71,23 +70,25 @@ public class AbstractVideoOnItemLongClickListener {
 	protected Dialog dialog;
 	protected Activity context;
 	protected VideoContentInfo info;
-	protected SerenityPosterImageView vciv;
+	protected ImageView vciv;
 
 	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
 			int position, long arg3) {
 
 		// Google TV is sending back different results than Nexus 7
 		// So we try to handle the different results.
+		
+		info = (VideoContentInfo) av.getItemAtPosition(position);
 
 		if (v == null) {
 			SerenityGallery g = (SerenityGallery) av;
-			vciv = (SerenityPosterImageView) g.getSelectedView().findViewById(R.id.posterImageView);
+			vciv = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
 		} else {
-			if (v instanceof SerenityPosterImageView) {
-				vciv = (SerenityPosterImageView) v;
+			if (v instanceof ImageView) {
+				vciv = (ImageView) v;
 			} else {
 				SerenityGallery g = (SerenityGallery) v;
-				vciv = (SerenityPosterImageView) g.getSelectedView().findViewById(R.id.posterImageView);
+				vciv = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
 			}
 		}
 
@@ -98,7 +99,6 @@ public class AbstractVideoOnItemLongClickListener {
 	 * @return
 	 */
 	protected boolean onItemLongClick() {
-		info = vciv.getPosterInfo();
 		context = (Activity) vciv.getContext();
 
 		dialog = new Dialog(context);
@@ -164,7 +164,7 @@ public class AbstractVideoOnItemLongClickListener {
 					/ Float.valueOf(info.getDuration());
 			if (percentWatched <= 0.90f) {
 				new WatchedVideoAsyncTask().execute(info.id());
-				ImageInfographicUtils.setWatchedCount(vciv, context);
+				ImageInfographicUtils.setWatchedCount(vciv, context, info);
 				ImageView view = (ImageView) posterLayout.findViewById(R.id.posterWatchedIndicator);
 				info.setResumeOffset(0);
 				view.setImageResource(R.drawable.overlaywatched);
@@ -176,12 +176,12 @@ public class AbstractVideoOnItemLongClickListener {
 
 		if (info.getViewCount() > 0) {
 			new UnWatchVideoAsyncTask().execute(info.id());
-			ImageInfographicUtils.setUnwatched(vciv, context);
+			ImageInfographicUtils.setUnwatched(vciv, context, info);
 			info.setViewCount(0);
 			posterLayout.findViewById(R.id.posterWatchedIndicator).setVisibility(View.INVISIBLE);
 		} else {
 			new WatchedVideoAsyncTask().execute(info.id());
-			ImageInfographicUtils.setWatchedCount(vciv, context);
+			ImageInfographicUtils.setWatchedCount(vciv, context, info);
 			ImageView view = (ImageView) posterLayout.findViewById(R.id.posterWatchedIndicator);
 			view.setImageResource(R.drawable.overlaywatched);
 			view.setVisibility(View.VISIBLE);
@@ -192,7 +192,7 @@ public class AbstractVideoOnItemLongClickListener {
 		if (hasAbleRemote(context) || hasGoogleTVRemote(context)) {
 			dialog.dismiss();
 						
-			final String body = vciv.getPosterInfo().getDirectPlayUrl();
+			final String body = info.getDirectPlayUrl();
 			
 			final SenderAppAdapter adapter = new SenderAppAdapter(context);
 			

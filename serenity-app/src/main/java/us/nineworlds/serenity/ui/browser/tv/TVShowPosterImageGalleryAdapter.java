@@ -31,7 +31,6 @@ import com.jess.ui.TwoWayGridView;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.ui.views.TVShowImageView;
 
 import us.nineworlds.serenity.R;
 
@@ -75,9 +74,8 @@ public class TVShowPosterImageGalleryAdapter extends
 				R.layout.poster_tvshow_indicator_view, null);
 
 		SeriesContentInfo pi = tvShowList.get(position);
-		TVShowImageView mpiv = (TVShowImageView) galleryCellView
+		ImageView mpiv = (ImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
-		mpiv.setPosterInfo(pi);
 		
 		createImage(galleryCellView, pi, 120, 180);
 

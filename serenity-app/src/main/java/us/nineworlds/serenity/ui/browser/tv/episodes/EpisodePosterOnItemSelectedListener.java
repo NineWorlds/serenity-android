@@ -33,7 +33,6 @@ import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 
@@ -73,52 +72,52 @@ public class EpisodePosterOnItemSelectedListener extends
 	}
 
 	@Override
-	public void createVideoDetail(SerenityPosterImageView v) {
+	public void createVideoDetail(ImageView v) {
 		ImageView posterImage = (ImageView) context.findViewById(R.id.video_poster);
 		posterImage.setVisibility(View.VISIBLE);
 		posterImage.setScaleType(ScaleType.FIT_XY);
 		ImageLoader imageLoader = SerenityApplication.getImageLoader();
-		if (v.getPosterInfo().getParentPosterURL() != null) {
+		if (videoInfo.getParentPosterURL() != null) {
 			int width = ImageUtils.getDPI(240, context);
 			int height = ImageUtils.getDPI(330, context);
 			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-			imageLoader.displayImage(v.getPosterInfo().getParentPosterURL(), posterImage);
-		} else if (v.getPosterInfo().getGrandParentPosterURL() != null) {
+			imageLoader.displayImage(videoInfo.getParentPosterURL(), posterImage);
+		} else if (videoInfo.getGrandParentPosterURL() != null) {
 			int width = ImageUtils.getDPI(240, context);
 			int height = ImageUtils.getDPI(330, context);
 			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-			imageLoader.displayImage(v.getPosterInfo().getGrandParentPosterURL(), posterImage);
+			imageLoader.displayImage(videoInfo.getGrandParentPosterURL(), posterImage);
 		} else {
 			int width = ImageUtils.getDPI(375, context);
 			int height = ImageUtils.getDPI(195, context);
-			imageLoader.displayImage(v.getPosterInfo().getImageURL(), posterImage);
+			imageLoader.displayImage(videoInfo.getImageURL(), posterImage);
 		}
 
 		
 		TextView seriesTitle = (TextView) context
 				.findViewById(R.id.episodeTVSeriesTitle);
-		if (v.getPosterInfo().getSeriesTitle() != null) {
-			if (!v.getPosterInfo().getSeriesTitle().equals(prevTitle)) {
+		if (videoInfo.getSeriesTitle() != null) {
+			if (!videoInfo.getSeriesTitle().equals(prevTitle)) {
 				fadeIn = true;
 			} else {
 				fadeInCount += 1;
 				fadeIn = false;
 			}
 			seriesTitle.setVisibility(View.VISIBLE);
-			seriesTitle.setText(v.getPosterInfo().getSeriesTitle());
-			prevTitle = v.getPosterInfo().getSeriesTitle();
+			seriesTitle.setText(videoInfo.getSeriesTitle());
+			prevTitle = videoInfo.getSeriesTitle();
 		} else {
 			seriesTitle.setVisibility(View.GONE);
 		}
 
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
-		summary.setText(v.getPosterInfo().getSummary());
+		summary.setText(videoInfo.getSummary());
 
 		TextView title = (TextView) context
 				.findViewById(R.id.movieBrowserPosterTitle);
-		String epTitle = v.getPosterInfo().getTitle();
-		String season = v.getPosterInfo().getSeason();
-		String episode = v.getPosterInfo().getEpisodeNumber();
+		String epTitle = videoInfo.getTitle();
+		String season = videoInfo.getSeason();
+		String episode = videoInfo.getEpisodeNumber();
 
 		if (season != null || episode != null) {
 			epTitle = epTitle + " - ";
@@ -135,10 +134,9 @@ public class EpisodePosterOnItemSelectedListener extends
 		title.setText(epTitle);
 		TextView vte = (TextView) context.findViewById(R.id.videoTextExtra);
 		vte.setVisibility(View.INVISIBLE);
-		if (v.getPosterInfo().getOriginalAirDate() != null) {
+		if (videoInfo.getOriginalAirDate() != null) {
 			try {
-				Date airDate = new SimpleDateFormat(DATE_FORMAT).parse(v
-						.getPosterInfo().getOriginalAirDate());
+				Date airDate = new SimpleDateFormat(DATE_FORMAT).parse(videoInfo.getOriginalAirDate());
 				SimpleDateFormat format = new SimpleDateFormat(
 						DISPLAY_DATE_FORMAT);
 				String formatedDate = format.format(airDate);
@@ -168,8 +166,7 @@ public class EpisodePosterOnItemSelectedListener extends
 			return;
 		}
 		
-		SerenityPosterImageView epiv = (SerenityPosterImageView) v;
-		VideoContentInfo ei = epiv.getPosterInfo();
+		VideoContentInfo ei = videoInfo;
 
 		if (ei.getBackgroundURL() == null) {
 			return;
@@ -187,7 +184,7 @@ public class EpisodePosterOnItemSelectedListener extends
 	}
 	
 	@Override
-	protected void createVideoMetaData(SerenityPosterImageView v) {
+	protected void createVideoMetaData(ImageView v) {
 		super.createVideoMetaData(v);
 		
 		View categoryFilter = context.findViewById(R.id.movieCategoryFilter);

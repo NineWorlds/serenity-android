@@ -35,7 +35,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
+
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 /**
@@ -55,9 +55,8 @@ public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
 				R.layout.poster_indicator_view, null);
 		
 		VideoContentInfo pi = posterList.get(position);
-		SerenityPosterImageView mpiv = (SerenityPosterImageView) galleryCellView
+		ImageView mpiv = (ImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
-		mpiv.setPosterInfo(pi);
 
 		mpiv.setBackgroundColor(Color.BLACK);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);

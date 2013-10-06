@@ -34,8 +34,6 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
-import us.nineworlds.serenity.ui.views.TVShowImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
@@ -48,6 +46,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Gallery;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -62,7 +61,7 @@ public class SeasonOnItemLongClickListener implements
 
 	protected Dialog dialog;
 	protected Activity context;
-	protected TVShowImageView vciv;
+	protected ImageView vciv;
 	protected SeriesContentInfo info;
 	
 	/**
@@ -79,16 +78,17 @@ public class SeasonOnItemLongClickListener implements
 
 		// Google TV is sending back different results than Nexus 7
 		// So we try to handle the different results.
+		
+		info = (SeriesContentInfo) av.getItemAtPosition(position);
 
 		if (v == null) {
 			Gallery g = (Gallery) av;
-			vciv = (TVShowImageView) g.getSelectedView().findViewById(R.id.posterImageView);
+			vciv = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
 		} else {
-			if (v instanceof TVShowImageView) {
-				vciv = (TVShowImageView) v;
+			if (v instanceof ImageView) {
+				vciv = (ImageView) v;
 			} else {
-				
-				vciv = (TVShowImageView) av.getSelectedView().findViewById(R.id.posterImageView);;
+				vciv = (ImageView) av.getSelectedView().findViewById(R.id.posterImageView);;
 			}
 		}
 
@@ -100,7 +100,6 @@ public class SeasonOnItemLongClickListener implements
 	 * @return
 	 */
 	protected boolean onItemLongClick() {
-		info = vciv.getPosterInfo();
 		dialog = new Dialog(context);
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 				new ContextThemeWrapper(context,

@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.listeners;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemClickListener;
 
@@ -38,6 +39,7 @@ public class GalleryVideoOnItemClickListener extends AbstractVideoOnItemClickLis
 	@Override
 	public void onItemClick(SerenityAdapterView<?> av, View v, int arg2,
 			long arg3) {
+		videoInfo = (VideoContentInfo) av.getItemAtPosition(arg2);
 		onItemClick(v.findViewById(R.id.posterImageView));
 	}
 

@@ -34,7 +34,7 @@ import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.ui.views.TVShowImageView;
+
 
 import us.nineworlds.serenity.R;
 
@@ -59,6 +59,7 @@ public class TVShowGridOnItemSelectedListener implements
 	private ImageLoader imageLoader;
 	private View previous;
 	private ImageSize bgImageSize = new ImageSize(1280, 720);
+	private SeriesContentInfo videoInfo;
 
 	/**
 	 * 
@@ -74,6 +75,7 @@ public class TVShowGridOnItemSelectedListener implements
 	@Override
 	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position, long id) {
 
+		videoInfo = (SeriesContentInfo) av.getItemAtPosition(position);
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
 		}
@@ -82,13 +84,13 @@ public class TVShowGridOnItemSelectedListener implements
 
 		v.setPadding(5, 5, 5, 5);
 		
-		TVShowImageView imageView = (TVShowImageView) v.findViewById(R.id.posterImageView);
+		ImageView imageView = (ImageView) v.findViewById(R.id.posterImageView);
 
 		changeBackgroundImage(imageView);
 		
 		TextView titleView = (TextView) context.findViewById(R.id.tvShowGridTitle);
 		if (titleView != null) {
-			titleView.setText(imageView.getPosterInfo().getTitle());
+			titleView.setText(videoInfo.getTitle());
 		}
 	}
 
@@ -101,10 +103,9 @@ public class TVShowGridOnItemSelectedListener implements
 	 */
 	private void changeBackgroundImage(View v) {
 
-		TVShowImageView mpiv = (TVShowImageView) v;
-		SeriesContentInfo mi = mpiv.getPosterInfo();
+		ImageView mpiv = (ImageView) v;
 
-		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
+		imageLoader.loadImage(videoInfo.getBackgroundURL(), bgImageSize,
 				new SerenityBackgroundLoaderListener(bgLayout,
 						R.drawable.tvshows));
 	}

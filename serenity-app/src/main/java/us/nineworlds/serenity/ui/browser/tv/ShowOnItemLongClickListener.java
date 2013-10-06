@@ -26,9 +26,9 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
-import us.nineworlds.serenity.ui.views.TVShowImageView;
 import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,18 +51,22 @@ public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick i
 	@Override
 	public boolean onItemLongClick(AdapterView<?> av, View v,
 			int position, long arg3) {
+		
+		if (av != null) {
+			videoInfo = (SeriesContentInfo) av.getItemAtPosition(position);
+		}
 
 		// Google TV is sending back different results than Nexus 7
 		// So we try to handle the different results.
 
 		if (v == null) {
 			Gallery g = (Gallery) av;
-			tvsv = (TVShowImageView) g.getSelectedView().findViewById(R.id.posterImageView);
+			view = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
 		} else {
-			if (v instanceof TVShowImageView) {
-				tvsv = (TVShowImageView) v;
+			if (v instanceof ImageView) {
+				view = (ImageView) v;
 			} else {
-				tvsv = (TVShowImageView) v.findViewById(R.id.posterImageView);
+				view = (ImageView) v.findViewById(R.id.posterImageView);
 			}
 		}
 

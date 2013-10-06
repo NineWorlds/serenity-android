@@ -30,8 +30,9 @@ import com.jess.ui.TwoWayAdapterView.OnItemLongClickListener;
 import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import android.view.View;
+import android.widget.ImageView;
 
 /**
  * A listener that handles long press for video content in Grid View classes.
@@ -47,17 +48,18 @@ public class GridVideoOnItemLongClickListener extends AbstractVideoOnItemLongCli
 	public boolean onItemLongClick(TwoWayAdapterView<?> av, View v,
 			int position, long arg3) {
 
+		info = (VideoContentInfo) av.getItemAtPosition(position);
 		// Google TV is sending back different results than Nexus 7
 		// So we try to handle the different results.
 
 		if (v == null) {
 			TwoWayGridView g = (TwoWayGridView) av;
-			vciv = (SerenityPosterImageView) g.getSelectedView();
+			vciv = (ImageView) g.getSelectedView();
 		} else {
-			if (v instanceof SerenityPosterImageView) {
-				vciv = (SerenityPosterImageView) v;
+			if (v instanceof ImageView) {
+				vciv = (ImageView) v;
 			} else {
-				vciv = (SerenityPosterImageView) v.findViewById(R.id.posterImageView);
+				vciv = (ImageView) v.findViewById(R.id.posterImageView);
 			}
 		}
 

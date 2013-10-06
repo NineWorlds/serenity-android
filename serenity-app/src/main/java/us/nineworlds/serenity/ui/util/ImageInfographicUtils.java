@@ -34,8 +34,9 @@ import android.widget.ImageView.ScaleType;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
+
 
 /**
  * @author dcarver
@@ -387,23 +388,23 @@ public class ImageInfographicUtils {
 		return null;
 	}
 
-	public static void setWatchedCount(SerenityPosterImageView epiv, Activity a) {
+	public static void setWatchedCount(ImageView epiv, Activity a, VideoContentInfo info) {
 		ImageView watchedView = (ImageView) a
 				.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
 		if (watchedView != null) {
 		   watchedView.setImageResource(R.drawable.watched_small);
 		}
-		int watchedCount = epiv.getPosterInfo().getViewCount();
-		epiv.getPosterInfo().setViewCount(watchedCount + 1);
+		int watchedCount = info.getViewCount();
+		info.setViewCount(watchedCount + 1);
 	}
 
-	public static void setUnwatched(SerenityPosterImageView epiv, Activity a) {
+	public static void setUnwatched(ImageView epiv, Activity a, VideoContentInfo info) {
 		ImageView watchedView = (ImageView) a
 				.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
 		if (watchedView != null) {
 			watchedView.setImageResource(R.drawable.unwatched_small);
 		}
-		epiv.getPosterInfo().setViewCount(0);
+		info.setViewCount(0);
 	}
 	
 	

@@ -32,7 +32,6 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 
 import android.app.Activity;
 import android.content.Context;
@@ -158,15 +157,15 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * @param mpiv
+	 * @param image
 	 */
-	public void shrinkPosterAnimation(SerenityPosterImageView mpiv, boolean isGridView) {
+	public void shrinkPosterAnimation(ImageView image, boolean isGridView) {
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		boolean shouldShrink = preferences.getBoolean(
 				"animation_shrink_posters", false);
 		if (shouldShrink && !isGridView) {
-			mpiv.setAnimation(shrink);
+			image.setAnimation(shrink);
 		}
 	}
 

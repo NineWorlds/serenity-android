@@ -28,7 +28,6 @@ import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
-import us.nineworlds.serenity.ui.views.TVShowImageView;
 
 import us.nineworlds.serenity.R;
 
@@ -42,6 +41,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -56,7 +56,7 @@ public class TVShowSeasonOnItemSelectedListener implements
 	private ImageLoader imageLoader;
 	private View previous;
 	private ImageSize bgImageSize = new ImageSize(1280, 720);
-
+	private SeriesContentInfo info;
 	/**
 	 * 
 	 */
@@ -69,11 +69,12 @@ public class TVShowSeasonOnItemSelectedListener implements
 
 	@Override
 	public void onItemSelected(AdapterView<?> av, View v, int position, long id) {
-		TVShowImageView mpiv = (TVShowImageView) v.findViewById(R.id.posterImageView);
+		info = (SeriesContentInfo) av.getItemAtPosition(position);
+		ImageView mpiv = (ImageView) v.findViewById(R.id.posterImageView);
 		TwoWayGridView episodeGrid = (TwoWayGridView) context.findViewById(R.id.episodeGridView);
 		
 		episodeGrid.setVisibility(View.VISIBLE);
-		episodeGrid.setAdapter(new EpisodePosterImageGalleryAdapter(context, mpiv.getPosterInfo().getKey()));
+		episodeGrid.setAdapter(new EpisodePosterImageGalleryAdapter(context, info.getKey()));
 		episodeGrid.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
 		episodeGrid.setOnItemClickListener(new GridVideoOnItemClickListener());
 		episodeGrid.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
@@ -90,7 +91,7 @@ public class TVShowSeasonOnItemSelectedListener implements
 
 		TextView seasonsTitle = (TextView) context
 				.findViewById(R.id.tvShowSeasonsTitle);
-		seasonsTitle.setText(mpiv.getPosterInfo().getTitle());
+		seasonsTitle.setText(info.getTitle());
 
 		changeBackgroundImage(mpiv);
 
@@ -105,8 +106,8 @@ public class TVShowSeasonOnItemSelectedListener implements
 	 */
 	private void changeBackgroundImage(View v) {
 
-		TVShowImageView mpiv = (TVShowImageView) v;
-		SeriesContentInfo mi = mpiv.getPosterInfo();
+		ImageView mpiv = (ImageView) v;
+		SeriesContentInfo mi = info;
 
 		if (mi.getBackgroundURL() != null) {
 			imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,

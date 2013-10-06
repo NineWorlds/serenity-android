@@ -31,7 +31,6 @@ import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 import us.nineworlds.serenity.core.services.ShowSeasonRetrievalIntentService;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.ui.views.TVShowImageView;
 
 import us.nineworlds.serenity.R;
 
@@ -138,8 +137,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		
 
 		AbstractSeriesContentInfo pi = seasonList.get(position);
-		TVShowImageView mpiv = (TVShowImageView) galleryCellView.findViewById(R.id.posterImageView);
-		mpiv.setPosterInfo(pi);
+		ImageView mpiv = (ImageView) galleryCellView.findViewById(R.id.posterImageView);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(120, context);

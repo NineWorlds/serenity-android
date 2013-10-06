@@ -32,7 +32,6 @@ import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
@@ -77,9 +76,8 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 				R.layout.poster_indicator_view, null);
 
 		VideoContentInfo pi = posterList.get(position);
-		SerenityPosterImageView mpiv = (SerenityPosterImageView) galleryCellView
+		ImageView mpiv = (ImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
-		mpiv.setPosterInfo(pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 0;

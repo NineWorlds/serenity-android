@@ -26,28 +26,17 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import java.util.List;
 
 import com.jess.ui.TwoWayAbsListView;
-import com.jess.ui.TwoWayAbsListView.LayoutParams;
-
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.EpisodeRetrievalIntentService;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
-import us.nineworlds.serenity.widgets.SerenityGallery;
+
 
 import us.nineworlds.serenity.R;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Messenger;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -74,9 +63,8 @@ public class EpisodePosterImageGalleryAdapter extends
 				R.layout.poster_indicator_view, null);
 
 		VideoContentInfo pi = posterList.get(position);
-		SerenityPosterImageView mpiv = (SerenityPosterImageView) galleryCellView
+		ImageView mpiv = (ImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
-		mpiv.setPosterInfo(pi);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(270, context);

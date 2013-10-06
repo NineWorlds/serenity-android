@@ -36,7 +36,6 @@ import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 import android.app.Activity;
@@ -55,7 +54,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Spinner;
@@ -81,6 +82,9 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	private Animation fadeIn;
 	private View previous;
 	private ImageLoader imageLoader;
+	protected int position;
+	protected BaseAdapter adapter;
+	protected VideoContentInfo videoInfo;
 
 	public AbstractVideoOnItemSelectedListener(Activity c) {
 		context = c;
@@ -90,12 +94,9 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 	}
 
-	protected abstract void createVideoDetail(SerenityPosterImageView v);
+	protected abstract void createVideoDetail(ImageView v);
 
-	protected void createVideoMetaData(SerenityPosterImageView v) {
-		SerenityPosterImageView videoView = v;
-		VideoContentInfo videoInfo = videoView.getPosterInfo();
-
+	protected void createVideoMetaData(ImageView v) {
 		fetchSubtitle(videoInfo);
 	}
 
@@ -105,49 +106,48 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	 * 
 	 * @param position
 	 */
-	protected void createInfographicDetails(SerenityPosterImageView v) {
+	protected void createInfographicDetails(ImageView v) {
 		LinearLayout infographicsView = (LinearLayout) context
 				.findViewById(R.id.movieInfoGraphicLayout);
 		infographicsView.removeAllViews();
-		VideoContentInfo mpi = v.getPosterInfo();
 
-		watchedStatus(infographicsView, mpi);
+		watchedStatus(infographicsView, videoInfo);
 
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(80,
 				48);
 		ImageInfographicUtils imageUtilsAudioChannel = new ImageInfographicUtils(90,
 				48);
 
-		ImageView resv = imageUtilsNormal.createVideoCodec(mpi.getVideoCodec(), v.getContext());
+		ImageView resv = imageUtilsNormal.createVideoCodec(videoInfo.getVideoCodec(), v.getContext());
 		if (resv != null) {
 			infographicsView.addView(resv);
 		}
 		
-		ImageView resolution = imageUtilsNormal.createVideoResolutionImage(mpi.getVideoResolution(), v.getContext());
+		ImageView resolution = imageUtilsNormal.createVideoResolutionImage(videoInfo.getVideoResolution(), v.getContext());
 		if (resolution != null) {
 			infographicsView.addView(resolution);
 		}
 		
 		ImageView aspectv = imageUtilsNormal.createAspectRatioImage(
-				mpi.getAspectRatio(), context);
+				videoInfo.getAspectRatio(), context);
 		if (aspectv != null) {
 			infographicsView.addView(aspectv);
 		}
 		
 
 		ImageView acv = imageUtilsNormal.createAudioCodecImage(
-				mpi.getAudioCodec(), context);
+				videoInfo.getAudioCodec(), context);
 		if (acv != null) {
 			infographicsView.addView(acv);
 		}
 
 		ImageView achannelsv = imageUtilsAudioChannel.createAudioChannlesImage(
-				mpi.getAudioChannels(), v.getContext());
+				videoInfo.getAudioChannels(), v.getContext());
 		if (achannelsv != null) {
 			infographicsView.addView(achannelsv);
 		}
 
-		if (mpi.getRating() != 0) {
+		if (videoInfo.getRating() != 0) {
 			RatingBar ratingBar = new RatingBar(context, null,
 					android.R.attr.ratingBarStyleIndicator);
 			ratingBar.setMax(4);
@@ -159,13 +159,13 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			params.rightMargin = 15;
 			ratingBar.setLayoutParams(params);
 			
-			double rating = mpi.getRating();
+			double rating = videoInfo.getRating();
 			ratingBar.setRating((float) (rating / 2.5));
 			infographicsView.addView(ratingBar);
 		}
 		
-		ImageView studiov = imageUtilsNormal.createStudioImage(mpi.getStudio(),
-				context, mpi.getMediaTagIdentifier());
+		ImageView studiov = imageUtilsNormal.createStudioImage(videoInfo.getStudio(),
+				context, videoInfo.getMediaTagIdentifier());
 		if (studiov != null) {
 			infographicsView.addView(studiov);
 		}
@@ -217,6 +217,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	@Override
 	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
 			long id) {
+		videoInfo = (VideoContentInfo) av.getItemAtPosition(position);
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		boolean shouldShrink = preferences.getBoolean(
@@ -234,7 +235,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		v.setPadding(5, 5, 5, 5);
 		v.clearAnimation();
 
-		SerenityPosterImageView posterImageView = (SerenityPosterImageView) v.findViewById(R.id.posterImageView);
+		ImageView posterImageView = (ImageView) v.findViewById(R.id.posterImageView);
 		
 		createVideoDetail(posterImageView);
 		createVideoMetaData(posterImageView);
@@ -248,15 +249,13 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	 * @param v
 	 */
 	public void changeBackgroundImage(View v) {
-		SerenityPosterImageView epiv = (SerenityPosterImageView) v;
-		VideoContentInfo ei = epiv.getPosterInfo();
 
-		if (ei.getBackgroundURL() == null) {
+		if (videoInfo.getBackgroundURL() == null) {
 			return;
 		}
 
 		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
-		imageLoader.displayImage(ei.getBackgroundURL(), fanArt,
+		imageLoader.displayImage(videoInfo.getBackgroundURL(), fanArt,
 				SerenityApplication.getMovieOptions(), new AnimationImageLoaderListener());
 
 	}

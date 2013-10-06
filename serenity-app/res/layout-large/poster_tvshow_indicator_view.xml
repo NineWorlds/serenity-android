@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/posterIndicatorView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/posterIndicatorView"
     android:background="@drawable/gallery_item_background" >
-    
-    <us.nineworlds.serenity.ui.views.TVShowImageView android:id="@+id/posterImageView"
-        android:scaleType="fitXY"
+
+    <ImageView
+        android:id="@+id/posterImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        />
-    <ImageView android:id="@+id/posterWatchedIndicator"
-        android:scaleType="fitXY"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:id="@+id/posterWatchedIndicator"
         android:layout_width="33dp"
         android:layout_height="33dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        />
-    
-<ProgressBar
+        android:scaleType="fitXY" />
+
+    <ProgressBar
         android:id="@+id/posterInprogressIndicator"
+        style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
-        android:paddingTop="0dp"
         android:background="#A0000000"
         android:clickable="false"
         android:indeterminate="false"
         android:indeterminateOnly="false"
         android:max="100"
-        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:paddingTop="0dp"
         android:progressDrawable="@drawable/scrubber_progress_holo"
         android:visibility="invisible" />
-    
+
 </RelativeLayout>

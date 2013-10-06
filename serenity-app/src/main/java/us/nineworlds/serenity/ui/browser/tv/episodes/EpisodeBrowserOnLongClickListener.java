@@ -50,7 +50,6 @@ public class EpisodeBrowserOnLongClickListener extends
 	 */
 	@Override
 	protected boolean onItemLongClick() {
-		info = vciv.getPosterInfo();
 		context = (Activity) vciv.getContext();
 
 		dialog = new Dialog(context);

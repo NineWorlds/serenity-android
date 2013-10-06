@@ -30,7 +30,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
+
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 
@@ -68,7 +68,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 
 
 	@Override
-	protected void createVideoDetail(SerenityPosterImageView v) {
+	protected void createVideoDetail(ImageView v) {
 		ImageView posterImage = (ImageView) context.findViewById(R.id.video_poster);
 		posterImage.setVisibility(View.VISIBLE);
 		posterImage.setScaleType(ScaleType.FIT_XY);
@@ -76,20 +76,20 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 		int height = ImageUtils.getDPI(330, context);
 		posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 		ImageLoader imageLoader = SerenityApplication.getImageLoader();
-		imageLoader.displayImage(v.getPosterInfo().getImageURL(), posterImage);
+		imageLoader.displayImage(videoInfo.getImageURL(), posterImage);
 		
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
-		summary.setText(v.getPosterInfo().getSummary());
+		summary.setText(videoInfo.getSummary());
 
 		TextView title = (TextView) context
 				.findViewById(R.id.movieBrowserPosterTitle);
-		title.setText(v.getPosterInfo().getTitle());
+		title.setText(videoInfo.getTitle());
 		
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100,
 				58);
 
 		ImageView crv = imageUtilsNormal.createContentRatingImage(
-				v.getPosterInfo().getContentRating(), context);
+				videoInfo.getContentRating(), context);
 		Drawable drawable = crv.getDrawable();
 		BitmapDrawable bmd = (BitmapDrawable)drawable;
 		
@@ -103,7 +103,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 	}
 
 	@Override
-	protected void createVideoMetaData(SerenityPosterImageView v) {
+	protected void createVideoMetaData(ImageView v) {
 		super.createVideoMetaData(v);
 		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
 		subt.setVisibility(View.GONE);
