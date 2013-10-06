@@ -61,7 +61,6 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	@Override
 	protected void createSideMenu() {
 		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		menuDrawer.setContentView(R.layout.activity_movie_browser);
 		menuDrawer.setMenuView(R.layout.menu_drawer);
 		

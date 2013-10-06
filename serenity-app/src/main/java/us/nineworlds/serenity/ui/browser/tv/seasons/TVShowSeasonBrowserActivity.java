@@ -231,7 +231,9 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 				} else if (gallery != null) {
 					view = gallery.getSelectedView();
 				}
-				
+				if (view == null) {
+					return super.onKeyDown(keyCode, event);
+				}
 				view.performLongClick();
 				return true;
 			}

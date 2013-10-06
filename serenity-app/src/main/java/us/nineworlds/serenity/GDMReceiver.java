@@ -26,7 +26,7 @@ public class GDMReceiver extends BroadcastReceiver {
 			server.setServerName(serverName);
 			server.setIPAddress(ipAddress);
 			if (!SerenityApplication.getPlexMediaServers().containsKey(serverName)) {
-				SerenityApplication.getPlexMediaServers().put(serverName,
+				SerenityApplication.getPlexMediaServers().putIfAbsent(serverName,
 						server);
 				Log.d(getClass().getName(), "Adding " + serverName);
 			} else {

@@ -419,7 +419,6 @@ public class ImageInfographicUtils {
 		v.setScaleType(ScaleType.FIT_XY);
 		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
 		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
-		LayoutParams params = new LayoutParams(w, h);
 		v.setLayoutParams(new LayoutParams(w, h));
 		String mediaTagUrl = factory.getMediaTagURL("studio", studio, identifier);
 		imageLoader.displayImage(mediaTagUrl, v);
