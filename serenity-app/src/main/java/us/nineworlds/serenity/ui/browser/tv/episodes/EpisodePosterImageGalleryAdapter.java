@@ -100,14 +100,21 @@ public class EpisodePosterImageGalleryAdapter extends
 		pd = ProgressDialog.show(context, "",
 				context.getString(R.string.retrieving_episodes));
 		handler = new EpisodeHandler();
+		retrieveEpisodes();
+		notifyAdapter = this;
+
+	}
+
+	/**
+	 * 
+	 */
+	public void retrieveEpisodes() {
 		Messenger messenger = new Messenger(handler);
 		Intent intent = new Intent(context, EpisodeRetrievalIntentService.class);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("key", key);
 
 		context.startService(intent);
-		notifyAdapter = this;
-
 	}
 
 	private static class EpisodeHandler extends Handler {

@@ -59,15 +59,13 @@ import android.widget.TextView;
  * 
  */
 public class EpisodePosterImageGalleryAdapter extends
-		AbstractPosterImageGalleryAdapter {
+		us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
 
 	private static EpisodePosterImageGalleryAdapter notifyAdapter;
-	private static final float WATCHED_PERCENT = 0.98f;
 
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
-		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
 	}
 
 	@Override
@@ -131,12 +129,7 @@ public class EpisodePosterImageGalleryAdapter extends
 	@Override
 	protected void fetchDataFromService() {
 		handler = new EpisodeHandler();
-		Messenger messenger = new Messenger(handler);
-		Intent intent = new Intent(context, EpisodeRetrievalIntentService.class);
-		intent.putExtra("MESSENGER", messenger);
-		intent.putExtra("key", key);
-
-		context.startService(intent);
+		retrieveEpisodes();
 		notifyAdapter = this;
 
 	}
