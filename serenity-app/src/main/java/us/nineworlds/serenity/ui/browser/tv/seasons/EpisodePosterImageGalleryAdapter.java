@@ -47,7 +47,6 @@ import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -63,7 +62,6 @@ public class EpisodePosterImageGalleryAdapter extends
 		AbstractPosterImageGalleryAdapter {
 
 	private static EpisodePosterImageGalleryAdapter notifyAdapter;
-	private Animation shrink;
 	private static final float WATCHED_PERCENT = 0.98f;
 
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {

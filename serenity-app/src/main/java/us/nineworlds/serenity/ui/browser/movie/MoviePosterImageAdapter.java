@@ -40,14 +40,12 @@ import us.nineworlds.serenity.SerenityApplication;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.preference.PreferenceManager;
+import android.text.method.MovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
@@ -65,17 +63,11 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	protected static AbstractPosterImageGalleryAdapter notifyAdapter;
 	protected static ProgressDialog pd;
 	private Handler posterGalleryHandler;
-	private Animation shrink;
-	private Animation fadeIn;
-
 	public MoviePosterImageAdapter(Context c, String key, String category) {
 		super(c, key, category);
 		pd = ProgressDialog
 				.show(c, "", c.getString(R.string.retrieving_movies));
 		notifyAdapter = this;
-		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
-		shrink.setInterpolator(new LinearInterpolator());
-		fadeIn = AnimationUtils.loadAnimation(c, R.anim.fade_in);
 	}
 
 	@Override
@@ -107,26 +99,10 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 					width, height));
 		}
 
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		boolean shouldShrink = preferences.getBoolean(
-				"animation_shrink_posters", false);
-		if (shouldShrink && !MovieBrowserActivity.IS_GRID_VIEW) {
-			mpiv.setAnimation(shrink);
-		}
+		shrinkPosterAnimation(mpiv, MovieBrowserActivity.IS_GRID_VIEW);
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
-		ImageView watchedView = (ImageView) galleryCellView
-				.findViewById(R.id.posterWatchedIndicator);
- 
-		if (pi.getViewCount() > 0) {
-			watchedView.setImageResource(R.drawable.overlaywatched);
-		}
-
-		if (pi.getViewCount() > 0 && pi.getDuration() > 0
-				&& pi.getResumeOffset() != 0) {
-			toggleProgressIndicator(galleryCellView, pi.getResumeOffset(), pi.getDuration(),  watchedView);
-		}
+		setWatchedStatus(galleryCellView, pi);
 
 		return galleryCellView;
 	}

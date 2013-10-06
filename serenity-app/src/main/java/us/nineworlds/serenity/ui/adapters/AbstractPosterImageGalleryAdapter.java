@@ -32,11 +32,17 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.views.SerenityPosterImageView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -63,6 +69,8 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	protected Handler handler;
 	protected String key;
 	protected String category;
+	public Animation shrink;
+	protected Animation fadeIn;
 	private static final float WATCHED_PERCENT = 0.99f;
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
@@ -79,6 +87,10 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 		this.key = key;
 		this.category = category;
 		posterList = new ArrayList<VideoContentInfo>();
+		
+		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
+		shrink.setInterpolator(new LinearInterpolator());
+		fadeIn = AnimationUtils.loadAnimation(c, R.anim.fade_in);
 
 		imageLoader = SerenityApplication.getImageLoader();
 		fetchDataFromService();
@@ -143,6 +155,37 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	
 	public List<VideoContentInfo> getItems() {
 		return posterList;
+	}
+
+	/**
+	 * @param mpiv
+	 */
+	public void shrinkPosterAnimation(SerenityPosterImageView mpiv, boolean isGridView) {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		boolean shouldShrink = preferences.getBoolean(
+				"animation_shrink_posters", false);
+		if (shouldShrink && !isGridView) {
+			mpiv.setAnimation(shrink);
+		}
+	}
+
+	/**
+	 * @param galleryCellView
+	 * @param pi
+	 */
+	public void setWatchedStatus(View galleryCellView, VideoContentInfo pi) {
+		ImageView watchedView = (ImageView) galleryCellView
+				.findViewById(R.id.posterWatchedIndicator);
+	
+		if (pi.getViewCount() > 0) {
+			watchedView.setImageResource(R.drawable.overlaywatched);
+		}
+	
+		if (pi.getViewCount() > 0 && pi.getDuration() > 0
+				&& pi.getResumeOffset() != 0) {
+			toggleProgressIndicator(galleryCellView, pi.getResumeOffset(), pi.getDuration(),  watchedView);
+		}
 	}
 
 }

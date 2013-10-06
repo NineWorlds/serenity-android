@@ -44,7 +44,6 @@ import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -60,7 +59,6 @@ public class EpisodePosterImageGalleryAdapter extends
 
 	private static EpisodePosterImageGalleryAdapter notifyAdapter;
 	private static ProgressDialog pd;
-	private Animation shrink;
 	private static final float WATCHED_PERCENT = 0.98f;
 
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
@@ -85,32 +83,15 @@ public class EpisodePosterImageGalleryAdapter extends
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
 
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		boolean shouldShrink = preferences.getBoolean(
-				"animation_shrink_posters", false);
-		if (shouldShrink) {
-			mpiv.setAnimation(shrink);
-		}
+		shrinkPosterAnimation(mpiv, false);
 
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
 		ImageView watchedView = (ImageView) galleryCellView
 				.findViewById(R.id.posterWatchedIndicator);
+		
+		setWatchedStatus(galleryCellView, pi);
  
-		if (pi.getViewCount() > 0) {
-			watchedView.setImageResource(R.drawable.overlaywatched);
-		}
-
-		if (pi.getViewCount() > 0) {
-			watchedView.setImageResource(R.drawable.overlaywatched);
-		}
-
-		if (pi.getViewCount() > 0 && pi.getDuration() > 0
-				&& pi.getResumeOffset() != 0) {
-			toggleProgressIndicator(galleryCellView, pi.getResumeOffset(), pi.getDuration(),  watchedView);
-		}
-
 		return galleryCellView;
 	}
 
