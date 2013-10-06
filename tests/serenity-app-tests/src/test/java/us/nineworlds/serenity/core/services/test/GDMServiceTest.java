@@ -28,6 +28,7 @@ import static org.junit.Assume.*;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -77,6 +78,7 @@ public class GDMServiceTest {
 	 * Test method for {@link us.nineworlds.serenity.core.services.GDMService#onHandleIntent(android.content.Intent)}.
 	 */
 	@Test
+	@Ignore
 	public void testOnHandleIntentIntent() throws Exception {
 		
 		
