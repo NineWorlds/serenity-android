@@ -133,11 +133,20 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = context.getLayoutInflater().inflate(R.layout.poster_tvshow_indicator_view, null);
-		
+		View galleryCellView = context.getLayoutInflater().inflate(
+				R.layout.poster_tvshow_indicator_view, null);
 
+		if (position > getCount() - 1) {
+			position = getCount() - 1;
+		}
+		
+		if (position < 0) {
+			position = 0;
+		}
+		
 		AbstractSeriesContentInfo pi = seasonList.get(position);
-		ImageView mpiv = (ImageView) galleryCellView.findViewById(R.id.posterImageView);
+		ImageView mpiv = (ImageView) galleryCellView
+				.findViewById(R.id.posterImageView);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(120, context);
@@ -145,32 +154,34 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
-		galleryCellView.setLayoutParams(new Gallery.LayoutParams(width, height));
-		
+		galleryCellView
+				.setLayoutParams(new Gallery.LayoutParams(width, height));
+
 		int unwatched = 0;
-		
+
 		if (pi.getShowsUnwatched() != null) {
 			unwatched = Integer.parseInt(pi.getShowsUnwatched());
 		}
-		
-		ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
+
+		ImageView watchedView = (ImageView) galleryCellView
+				.findViewById(R.id.posterWatchedIndicator);
 		if (unwatched == 0) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
 		}
-		
+
 		int watched = 0;
-		if (pi.getShowsWatched() != null ) {
+		if (pi.getShowsWatched() != null) {
 			watched = Integer.parseInt(pi.getShowsWatched());
 		}
-		
-		int totalShows = unwatched + watched;
-		if (unwatched != totalShows) {
-			toggleProgressIndicator(galleryCellView, watched, totalShows, watchedView);
+
+		if (pi.isPartiallyWatched()) {
+			toggleProgressIndicator(galleryCellView, watched, pi.totalShows(),
+					watchedView);
 		}
-		
+
 		return galleryCellView;
 	}
-	
+
 	/**
 	 * @param galleryCellView
 	 * @param pi
@@ -180,19 +191,17 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 			int divisor, ImageView watchedView) {
 		final float percentWatched = Float.valueOf(dividend)
 				/ Float.valueOf(divisor);
-		if (percentWatched < 0.99f) {
-			final ProgressBar view = (ProgressBar) galleryCellView
-					.findViewById(R.id.posterInprogressIndicator);
-			int progress = Float.valueOf(percentWatched * 100).intValue();
-			if (progress < 10) {
-				progress = 10;
-			}
-			view.setProgress(progress);
-			view.setVisibility(View.VISIBLE);
-			watchedView.setVisibility(View.INVISIBLE);
+		
+		final ProgressBar view = (ProgressBar) galleryCellView
+				.findViewById(R.id.posterInprogressIndicator);
+		int progress = Float.valueOf(percentWatched * 100).intValue();
+		if (progress < 10) {
+			progress = 10;
 		}
+		view.setProgress(progress);
+		view.setVisibility(View.VISIBLE);
+		watchedView.setVisibility(View.INVISIBLE);
 	}
-	
 
 	private static class ShowSeasonRetrievalHandler extends Handler {
 
@@ -214,8 +223,9 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 
 				}
 			}
-			
-			Gallery gallery = (Gallery) context.findViewById(R.id.tvShowSeasonImageGallery);
+
+			Gallery gallery = (Gallery) context
+					.findViewById(R.id.tvShowSeasonImageGallery);
 			if (gallery != null) {
 				gallery.requestFocusFromTouch();
 			}

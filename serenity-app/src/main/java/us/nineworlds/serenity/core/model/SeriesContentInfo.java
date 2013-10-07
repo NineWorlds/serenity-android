@@ -74,5 +74,36 @@ public interface SeriesContentInfo extends ContentInfo {
 	public void setRating(double ratings);
 	
 	public double getRating();
+	
+	/**
+	 * Indicates if a show has been partially watched
+	 * @return true if it has been watched
+	 */
+	public boolean isPartiallyWatched();
+	
+	/**
+	 * Indicates that the show has been watched
+	 * 
+	 * Use getShowsWatched to get the actual count
+	 * 
+	 */
+	public boolean isWatched();
+	
+	
+	/**
+	 * Indicates that the show has not been watched.
+	 * 
+	 * Use getShowsUnwatched to get the actual count.
+	 * 
+	 */
+	public boolean isUnwatched();
+	
+	
+	public float viewedPercentage();
+	
+	
+	public void toggleWatchedStatus();
+	
+	public int totalShows();
 
 }

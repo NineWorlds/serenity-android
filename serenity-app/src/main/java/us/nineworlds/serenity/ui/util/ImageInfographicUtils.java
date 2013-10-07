@@ -394,8 +394,6 @@ public class ImageInfographicUtils {
 		if (watchedView != null) {
 		   watchedView.setImageResource(R.drawable.watched_small);
 		}
-		int watchedCount = info.getViewCount();
-		info.setViewCount(watchedCount + 1);
 	}
 
 	public static void setUnwatched(ImageView epiv, Activity a, VideoContentInfo info) {
@@ -404,7 +402,6 @@ public class ImageInfographicUtils {
 		if (watchedView != null) {
 			watchedView.setImageResource(R.drawable.unwatched_small);
 		}
-		info.setViewCount(0);
 	}
 	
 	

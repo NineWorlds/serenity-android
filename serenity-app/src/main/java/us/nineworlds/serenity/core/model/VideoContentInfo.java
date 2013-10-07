@@ -153,5 +153,35 @@ public interface VideoContentInfo extends ContentInfo {
 	
 	public String getParentKey();
 	
+	/**
+	 * Indicates if a show has been partially watched
+	 * @return true if it has been watched
+	 */
+	public boolean isPartiallyWatched();
+	
+	/**
+	 * Indicates that the show has been watched
+	 * 
+	 * Use getWatched to get the actual count
+	 * 
+	 */
+	public boolean isWatched();
+	
+	/**
+	 * Indicates that the show has not been watched.
+	 * 
+	 * Use getUnwatched to get the actual count.
+	 * 
+	 */
+	public boolean isUnwatched();
+	
+	/**
+	 *  The percentage viewed
+	 * 
+	 * @return
+	 */
+	public float viewedPercentage();
+	
+	public void toggleWatchStatus();
 
 }

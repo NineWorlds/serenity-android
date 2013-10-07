@@ -68,12 +68,10 @@ public class AbstractVideoOnItemClickListener {
 			Activity activity = (Activity) v.getContext();
 			VideoPlayerIntentUtils.launchExternalPlayer(videoInfo, mxplayer, (Activity) v.getContext());
 			new WatchedVideoAsyncTask().execute(videoInfo.id());
-			updatedWatchedCount();
 			return;
 		}
 	
 		Activity a = launchInternalPlayer(mpiv);
-		updatedWatchedCount();
 	}
 
 	/**
@@ -92,12 +90,4 @@ public class AbstractVideoOnItemClickListener {
 		return a;
 	}
 
-	/**
-	 * @param epiv
-	 * @param a
-	 */
-	protected void updatedWatchedCount() {
-		int watchedCount = videoInfo.getViewCount();
-		videoInfo.setViewCount(watchedCount + 1);
-	}
 }

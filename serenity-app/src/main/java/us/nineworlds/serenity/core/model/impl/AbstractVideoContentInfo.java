@@ -26,7 +26,14 @@ package us.nineworlds.serenity.core.model.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import android.view.View;
+import android.widget.ImageView;
+
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
+import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
+import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 
 /**
  * General information common t TV Shows and Videos/Movies
@@ -37,6 +44,8 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 public abstract class AbstractVideoContentInfo implements VideoContentInfo, Serializable {
 
 	private static final long serialVersionUID = 4744447508883279194L;
+	
+	private static final float WATCHED_PERCENTAGE = 0.90f;
 
 	private String id;
 
@@ -603,5 +612,59 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 	@Override
 	public void setParentKey(String parentKey) {
 		this.parentURL = parentKey;
+	}
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.core.model.VideoContentInfo#isPartiallyWatched()
+	 */
+	@Override
+	public boolean isPartiallyWatched() {
+		if (getResumeOffset() > 0) {
+			final float percentWatched = viewedPercentage();
+			if (percentWatched <= WATCHED_PERCENTAGE) {
+				return true;
+			}
+		}		
+		return false;
+	}
+	
+	@Override
+	public boolean isWatched() {
+		if (getViewCount() > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean isUnwatched() {
+		if (getViewCount() == 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public float viewedPercentage() {
+		float duration = Float.valueOf(getDuration());
+		float offset = Float.valueOf(getResumeOffset());
+		if (duration == 0) {
+			return 0;
+		}
+		
+		float percentWatched = offset / duration;
+		return percentWatched;
+	}
+	
+	@Override
+	public void toggleWatchStatus() {
+		if (isPartiallyWatched() || isUnwatched()) {
+			new WatchedVideoAsyncTask().execute(id());
+			setViewCount(getViewCount() + 1);
+			return;
+		}
+		
+		new UnWatchVideoAsyncTask().execute(id());
+		setViewCount(0);
 	}
 }

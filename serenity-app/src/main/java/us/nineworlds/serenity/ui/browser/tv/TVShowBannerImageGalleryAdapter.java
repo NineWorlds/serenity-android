@@ -190,27 +190,23 @@ public class TVShowBannerImageGalleryAdapter extends
 	 */
 	protected void toggleWatchedIndicator(View galleryCellView,
 			SeriesContentInfo pi) {
-		int unwatched = 0;
-				
-		if (pi.getShowsUnwatched() != null) {
-			unwatched = Integer.parseInt(pi.getShowsUnwatched());
-		}
-		
-		ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
-		if (unwatched == 0) {
-			watchedView.setImageResource(R.drawable.overlaywatched);
-		}
 		
 		int watched = 0;
 		if (pi.getShowsWatched() != null ) {
 			watched = Integer.parseInt(pi.getShowsWatched());
 		}
+		ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
+		watchedView.setVisibility(View.INVISIBLE);
 		
-		int totalShows = unwatched + watched;
-		if (unwatched != totalShows) {
-			toggleProgressIndicator(galleryCellView, watched, totalShows, watchedView);
+		if (pi.isPartiallyWatched()) {
+			toggleProgressIndicator(galleryCellView, watched, pi.totalShows(), watchedView);
+			return;
 		}
 		
+		if (pi.isWatched()) {
+			watchedView.setImageResource(R.drawable.overlaywatched);
+			watchedView.setVisibility(View.VISIBLE);
+		}
 		
 	}
 	

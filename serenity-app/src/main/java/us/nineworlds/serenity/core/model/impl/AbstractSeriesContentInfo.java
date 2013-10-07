@@ -27,6 +27,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
+import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 
 /**
  * @author dcarver
@@ -35,7 +37,7 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 public abstract class AbstractSeriesContentInfo implements SeriesContentInfo, Serializable {
 
 	private static final long serialVersionUID = 9068543270225774788L;
-	
+		
 	private String id;
 	private String plotSummary;
 	private String posterURL;
@@ -235,6 +237,82 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo, Se
 	@Override
 	public void setRating(double rating) {
 		this.rating = rating;
-	}	
+	}
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.core.model.SeriesContentInfo#isPartiallyWatched()
+	 */
+	@Override
+	public boolean isPartiallyWatched() {
+		
+		if (!getShowsUnwatched().equals("0") && !getShowsWatched().equals("0")) {
+			return true;
+		}
+		
+		return false;
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.core.model.SeriesContentInfo#isUnwatched()
+	 */
+	@Override
+	public boolean isUnwatched() {
+		int unwatched = Integer.parseInt(getShowsUnwatched());
+		
+		if (unwatched > 0) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.core.model.SeriesContentInfo#isWatched()
+	 */
+	@Override
+	public boolean isWatched() {
+		int watchedCount = Integer.parseInt(getShowsWatched());
+		if (totalShows() == watchedCount) {
+			return true;
+		}
+		return false;
+	}
+	
+	public int totalShows() {
+		int unwatched = Integer.parseInt(getShowsUnwatched());
+		int watched = Integer.parseInt(getShowsWatched());
+		int totalShows = unwatched + watched;
+		return totalShows;
+	}
+	
+	@Override
+	public float viewedPercentage() {
+		if (totalShows() == 0) {
+			return 0;
+		}
+		
+		float watched = Float.parseFloat(getShowsWatched());
+		float percent = watched / totalShows();
+		
+		return percent;
+	}
+	
+	@Override
+	public void toggleWatchedStatus() {
+		if (isPartiallyWatched() || isUnwatched()) {
+			new WatchedVideoAsyncTask().execute(id());
+			setShowsWatched(Integer.toString(totalShows()));
+			setShowsUnwatched("0");
+			return;
+		}
+		
+		new UnWatchVideoAsyncTask().execute(id());
+		setShowsUnwatched(Integer.toString(totalShows()));
+		setShowsWatched("0");
+	}
+
+	
+	
 
 }

@@ -25,14 +25,11 @@ package us.nineworlds.serenity.ui.video.player;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -44,6 +41,7 @@ import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.core.services.CompletedVideoRequest;
+import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.core.subtitles.formats.Caption;
 import us.nineworlds.serenity.core.subtitles.formats.FormatASS;
 import us.nineworlds.serenity.core.subtitles.formats.FormatSRT;
@@ -68,7 +66,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -157,10 +154,15 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		public void run() {
 			try {
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-					new UpdateProgressRequest().execute();
-					progressReportinghandler.postDelayed(this,
-							PROGRESS_UPDATE_DELAY); // Update progress every 5
-													// seconds
+					float percentage = Float.valueOf(mediaPlayer.getCurrentPosition()) / Float.valueOf(mediaPlayer.getDuration());
+					if (percentage <= 90.f) {
+						new UpdateProgressRequest().execute();
+						progressReportinghandler.postDelayed(this,
+								PROGRESS_UPDATE_DELAY); // Update progress every 5
+														// seconds
+					} else {
+						new WatchedVideoAsyncTask().execute(videoId);
+					}
 				}
 			} catch (IllegalStateException ex) {
 				Log.w(getClass().getName(),

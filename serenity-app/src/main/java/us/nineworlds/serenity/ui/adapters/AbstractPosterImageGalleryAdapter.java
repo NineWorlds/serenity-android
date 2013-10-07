@@ -70,7 +70,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	protected String category;
 	public Animation shrink;
 	protected Animation fadeIn;
-	private static final float WATCHED_PERCENT = 0.99f;
+	private static final float WATCHED_PERCENT = 0.90f;
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
 		context = (Activity) c;

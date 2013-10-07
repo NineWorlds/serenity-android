@@ -83,12 +83,14 @@ public class AbstractVideoOnItemLongClickListener {
 		if (v == null) {
 			SerenityGallery g = (SerenityGallery) av;
 			vciv = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
+			info = (VideoContentInfo) g.getSelectedItem();
 		} else {
 			if (v instanceof ImageView) {
 				vciv = (ImageView) v;
 			} else {
 				SerenityGallery g = (SerenityGallery) v;
 				vciv = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
+				info = (VideoContentInfo) g.getSelectedItem();
 			}
 		}
 
@@ -159,33 +161,27 @@ public class AbstractVideoOnItemLongClickListener {
 		View posterLayout = (View) vciv.getParent();
 		posterLayout.findViewById(R.id.posterInprogressIndicator).setVisibility(View.INVISIBLE);
 		
-		if (info.getResumeOffset() > 0) {
-			final float percentWatched = Float.valueOf(info.getResumeOffset())
-					/ Float.valueOf(info.getDuration());
+		toggleGraphicIndicators(posterLayout);
+		info.toggleWatchStatus();
+	}
+
+	/**
+	 * @param posterLayout
+	 */
+	protected void toggleGraphicIndicators(View posterLayout) {
+		if (info.isPartiallyWatched() || info.isUnwatched()) {
+			final float percentWatched = info.viewedPercentage();
 			if (percentWatched <= 0.90f) {
-				new WatchedVideoAsyncTask().execute(info.id());
 				ImageInfographicUtils.setWatchedCount(vciv, context, info);
 				ImageView view = (ImageView) posterLayout.findViewById(R.id.posterWatchedIndicator);
-				info.setResumeOffset(0);
 				view.setImageResource(R.drawable.overlaywatched);
 				view.setVisibility(View.VISIBLE);
 				return;
 			}
 		}
-		
 
-		if (info.getViewCount() > 0) {
-			new UnWatchVideoAsyncTask().execute(info.id());
-			ImageInfographicUtils.setUnwatched(vciv, context, info);
-			info.setViewCount(0);
-			posterLayout.findViewById(R.id.posterWatchedIndicator).setVisibility(View.INVISIBLE);
-		} else {
-			new WatchedVideoAsyncTask().execute(info.id());
-			ImageInfographicUtils.setWatchedCount(vciv, context, info);
-			ImageView view = (ImageView) posterLayout.findViewById(R.id.posterWatchedIndicator);
-			view.setImageResource(R.drawable.overlaywatched);
-			view.setVisibility(View.VISIBLE);
-		}
+		ImageInfographicUtils.setUnwatched(vciv, context, info);
+		posterLayout.findViewById(R.id.posterWatchedIndicator).setVisibility(View.INVISIBLE);
 	}
 	
 	protected void performGoogleTVSecondScreen() {

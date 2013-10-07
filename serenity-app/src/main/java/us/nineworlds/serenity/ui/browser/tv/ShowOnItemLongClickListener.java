@@ -52,9 +52,7 @@ public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick i
 	public boolean onItemLongClick(AdapterView<?> av, View v,
 			int position, long arg3) {
 		
-		if (av != null) {
-			videoInfo = (SeriesContentInfo) av.getItemAtPosition(position);
-		}
+		videoInfo = (SeriesContentInfo) av.getItemAtPosition(position);
 
 		// Google TV is sending back different results than Nexus 7
 		// So we try to handle the different results.
@@ -62,6 +60,7 @@ public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick i
 		if (v == null) {
 			Gallery g = (Gallery) av;
 			view = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
+			videoInfo = (SeriesContentInfo) g.getSelectedItem();
 		} else {
 			if (v instanceof ImageView) {
 				view = (ImageView) v;

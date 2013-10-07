@@ -95,38 +95,21 @@ public abstract class AbstractTVShowOnItemLongClick {
 		@Override
 		public void onItemClick(android.widget.AdapterView<?> av, View v,
 				int position, long arg3) {
-						
-			int watched = 0;
-			int unwatched = 0;
-
-			if (videoInfo.getShowsWatched() != null) {
-				watched = Integer.valueOf(videoInfo.getShowsWatched());
-			}
-			
-			if (videoInfo.getShowsUnwatched() != null) {
-				unwatched = Integer.valueOf(videoInfo.getShowsUnwatched());
-			}
-			
-			int total = watched + unwatched;
-
+									
 			switch (position) {
 			case 0:
 				View posterLayout = (View) view.getParent();
 				ImageView watchedView = (ImageView) posterLayout.findViewById(R.id.posterWatchedIndicator);
 				View progressView = posterLayout.findViewById(R.id.posterInprogressIndicator);
 				progressView.setVisibility(View.INVISIBLE);
-				if (watched > 0) {
-					new UnWatchVideoAsyncTask().execute(videoInfo.id());
-					videoInfo.setShowsWatched("0");
-					videoInfo.setShowsUnwatched(Integer.valueOf(total).toString());
+				if (videoInfo.isWatched()) {
 					watchedView.setVisibility(View.INVISIBLE);
 				} else {
-					new WatchedVideoAsyncTask().execute(videoInfo.id());
-					videoInfo.setShowsWatched(Integer.valueOf(total).toString());
-					videoInfo.setShowsUnwatched("0");
 					watchedView.setImageResource(R.drawable.overlaywatched);
 					watchedView.setVisibility(View.VISIBLE);
 				}
+				videoInfo.toggleWatchedStatus();
+				
 				Activity a = (Activity) v.getContext();
 				TextView tv = (TextView) a.findViewById(R.id.tvShowWatchedUnwatched);
 				if (tv != null) {

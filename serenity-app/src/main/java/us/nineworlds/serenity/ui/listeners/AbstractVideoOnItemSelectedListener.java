@@ -111,8 +111,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 				.findViewById(R.id.movieInfoGraphicLayout);
 		infographicsView.removeAllViews();
 
-		watchedStatus(infographicsView, videoInfo);
-
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(80,
 				48);
 		ImageInfographicUtils imageUtilsAudioChannel = new ImageInfographicUtils(90,
@@ -171,37 +169,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		}
 		
 
-	}
-
-	/**
-	 * Sets the watched icon to either watched, part watched, or unwatched.
-	 * @param infographicsView
-	 * @param mpi
-	 */
-	protected void watchedStatus(LinearLayout infographicsView,
-			VideoContentInfo mpi) {
-		ImageView viewed = new ImageView(context);
-		int w = ImageUtils.getDPI(60, context);
-		int h = ImageUtils.getDPI(38, context);
-		LinearLayout.LayoutParams viewedlp = new LinearLayout.LayoutParams(w,
-				h);
-		viewedlp.rightMargin = 10;
-		viewed.setScaleType(ScaleType.FIT_XY);
-		viewed.setLayoutParams(viewedlp);
-		viewed.setId(WATCHED_VIEW_ID);
-		
-		if (mpi.getViewCount() > 0 && mpi.getDuration() > 0) {
-			final float percentWatched = Float.valueOf(mpi.getResumeOffset()) / Float.valueOf(mpi.getDuration());
-			if (mpi.getResumeOffset() != 0 && percentWatched < WATCHED_PERCENT) {
-			    viewed.setImageResource(R.drawable.partwatched);
-			} else {
-				viewed.setImageResource(R.drawable.watched_small);
-			}
-		} else {
-			viewed.setImageResource(R.drawable.unwatched_small);
-		}
-
-		infographicsView.addView(viewed);
 	}
 
 	public void fetchSubtitle(VideoContentInfo mpi) {
