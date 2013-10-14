@@ -80,6 +80,17 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 		}
 		menuDrawer.setMenuView(R.layout.menu_drawer);
 		
+		populateMenuDrawer();
+		hideMenuItems();
+		
+		View menu = findViewById(R.id.menu_button);
+		menu.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
+	}
+
+	/**
+	 * 
+	 */
+	protected void populateMenuDrawer() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
 		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
@@ -88,10 +99,6 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
 		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		menuOptions.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(menuDrawer));
-		hideMenuItems();
-		
-		View menu = findViewById(R.id.menu_button);
-		menu.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
 	}
 	
 	/**
@@ -192,6 +199,7 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 	protected void onRestart() {
 		super.onRestart();
 		restarted_state = true;
+		populateMenuDrawer();
 	}
 	
 	

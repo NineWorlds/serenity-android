@@ -245,6 +245,7 @@ public class MainActivity extends SerenityActivity {
 				.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
 
 		populateMenuOptions();
+		hideMenuItems();
 	}
 
 	/**
@@ -269,8 +270,6 @@ public class MainActivity extends SerenityActivity {
 		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		menuOptions.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
 				menuDrawer, mainGallery));
-		
-		hideMenuItems();
 	}
 
 	/**
