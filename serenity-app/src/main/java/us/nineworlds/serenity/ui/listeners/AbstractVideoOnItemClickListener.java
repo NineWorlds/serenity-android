@@ -66,7 +66,7 @@ public class AbstractVideoOnItemClickListener {
 	
 		if (externalPlayer) {
 			Activity activity = (Activity) v.getContext();
-			VideoPlayerIntentUtils.launchExternalPlayer(videoInfo, mxplayer, (Activity) v.getContext());
+			VideoPlayerIntentUtils.launchExternalPlayer(videoInfo, (Activity) v.getContext());
 			new WatchedVideoAsyncTask().execute(videoInfo.id());
 			return;
 		}
