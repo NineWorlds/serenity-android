@@ -66,19 +66,19 @@ public class AbstractVideoOnItemClickListener {
 	
 		if (externalPlayer) {
 			Activity activity = (Activity) v.getContext();
-			VideoPlayerIntentUtils.launchExternalPlayer(videoInfo, (Activity) v.getContext());
-			new WatchedVideoAsyncTask().execute(videoInfo.id());
+			VideoPlayerIntentUtils.launchExternalPlayer(videoInfo, activity);
+			//new WatchedVideoAsyncTask().execute(videoInfo.id());
 			return;
 		}
 	
-		Activity a = launchInternalPlayer(mpiv);
+		launchInternalPlayer(mpiv);
 	}
 
 	/**
 	 * @param mpiv
 	 * @return
 	 */
-	protected Activity launchInternalPlayer(ImageView view) {
+	protected void launchInternalPlayer(ImageView view) {
 		
 		SerenityApplication.getVideoPlaybackQueue().add(videoInfo);
 		Activity a = (Activity) view.getContext();
@@ -87,7 +87,6 @@ public class AbstractVideoOnItemClickListener {
 				SerenitySurfaceViewVideoActivity.class);
 		
 		a.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
-		return a;
 	}
 
 }
