@@ -53,8 +53,6 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
 		boolean extPlayerVideoQueueEnabled = prefs.getBoolean(
 				"external_player_continuous_playback", false);
-		boolean mxPlayerResume = prefs
-				.getBoolean("mxplayer_plex_offset", false);
 
 		if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
 
@@ -108,7 +106,7 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 			if (externalPlayer && extPlayerVideoQueueEnabled) {
 				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
 					if (data == null) {
-						externalPlayerPlayNext(mxPlayerResume);
+						externalPlayerPlayNext();
 						return;
 					} else {
 						String mxplayerEndedBy = data.getStringExtra("end_by");
@@ -116,7 +114,7 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 							showQueueNotEmptyMessage();
 							return;
 						}
-						externalPlayerPlayNext(mxPlayerResume);
+						externalPlayerPlayNext();
 						return;
 					}
 				}
@@ -136,10 +134,9 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 	/**
 	 * @param mxPlayerResume
 	 */
-	protected void externalPlayerPlayNext(boolean mxPlayerResume) {
+	protected void externalPlayerPlayNext() {
 		VideoContentInfo videoContentInfo = SerenityApplication
 				.getVideoPlaybackQueue().poll();
-		VideoPlayerIntentUtils.launchExternalPlayer(videoContentInfo,
-				mxPlayerResume, this);
+		VideoPlayerIntentUtils.launchExternalPlayer(videoContentInfo, this);
 	}
 }

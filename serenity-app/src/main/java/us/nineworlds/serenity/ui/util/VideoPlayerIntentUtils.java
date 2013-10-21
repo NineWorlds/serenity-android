@@ -33,6 +33,8 @@ import android.widget.Toast;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
+import us.nineworlds.serenity.core.externalplayer.ExternalPlayer;
+import us.nineworlds.serenity.core.externalplayer.ExternalPlayerFactory;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
@@ -53,72 +55,18 @@ public class VideoPlayerIntentUtils {
 	 * @param mxplayer
 	 * @param activity
 	 */
-	public static void launchExternalPlayer(VideoContentInfo videoContent, boolean mxplayer, Activity activity) {
-		String url = videoContent.getDirectPlayUrl();
-		Intent vpIntent = new Intent(Intent.ACTION_VIEW);
-		vpIntent.setDataAndType(Uri.parse(url), "video/*");
-
-		mxVideoPlayerOptions(videoContent, vpIntent);
-		vimuVideoPlayerOptions(videoContent, vpIntent);
-		// MX Player and VLC seem to use the same optional extra
-		vpIntent.putExtra("position", (long) videoContent.getResumeOffset());
-
-		if (SerenityApplication.isGoogleTV(activity) || mxplayer == false) {
-			activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
-		} else {
-			try {
-				vpIntent.setPackage("com.mxtech.videoplayer.ad");
-				vpIntent.setClassName("com.mxtech.videoplayer.ad","com.mxtech.videoplayer.ad.ActivityScreen");
-				activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);				
-			} catch (ActivityNotFoundException ex) {
-				try {
-					vpIntent.setPackage("com.mxtech.videoplayer.pro");
-					vpIntent.setClassName("com.mxtech.videoplayer.pro","com.mxtech.videoplayer.ActivityScreen");
-					activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);				
-				} catch (ActivityNotFoundException ex2) {
-					vpIntent.setPackage(null);
-					vpIntent.setComponent(null);
-					activity.startActivity(vpIntent);
-				}
-			}
-		}
+	public static void launchExternalPlayer(VideoContentInfo videoContent, Activity activity) {
+		ExternalPlayerFactory factory = new ExternalPlayerFactory(videoContent, activity);
 		
-	}
-	
-
-	/**
-	 * @param epiv
-	 * @param vpIntent
-	 */
-	protected static void mxVideoPlayerOptions(VideoContentInfo videoContent, Intent vpIntent) {
-		// MX Video Player options
-		vpIntent.putExtra("decode_mode", 1);
-		vpIntent.putExtra("title", videoContent.getTitle());
-		vpIntent.putExtra("return_result", true);
-		if (videoContent.getSubtitle() != null ) {
-			Subtitle subtitle = videoContent.getSubtitle();
-			if (!"none".equals(subtitle.getFormat())) {
-				Uri[] subt = { Uri.parse(subtitle.getKey()) };
-				vpIntent.putExtra("subs", subt);
-				vpIntent.putExtra("subs.enable", subt);
-			}
-		}
-		vpIntent.putExtra("position", videoContent.getResumeOffset());
-	}
-	
-	/**
-	 * @param epiv
-	 * @param vpIntent
-	 */
-	protected static void vimuVideoPlayerOptions(VideoContentInfo videoContent, Intent vpIntent) {
-		vpIntent.putExtra("forcename", videoContent.getTitle());
-		vpIntent.putExtra("forcedirect", true);
-		vpIntent.putExtra("startfrom", videoContent.getResumeOffset());
-		if (videoContent.getSubtitle() != null ) {
-			Subtitle subtitle = videoContent.getSubtitle();
-			if (!"none".equals(subtitle.getFormat())) {
-				vpIntent.putExtra("forcedsrt", subtitle.getKey());
-			}			
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+		String externalPlayerValue = preferences.getString("serenity_external_player_filter", "default");
+		
+		ExternalPlayer extplay = factory.createExternalPlayer(externalPlayerValue);
+		try {
+			extplay.launch();
+		} catch (ActivityNotFoundException ex) {
+			extplay = factory.createExternalPlayer("default");
+			extplay.launch();
 		}
 	}
 
@@ -132,14 +80,13 @@ public class VideoPlayerIntentUtils {
 		if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 			boolean extplayer = prefs.getBoolean("external_player", false);
-			boolean mxplayer = prefs.getBoolean("mxplayer_plex_offset", false);
 			boolean extplayerVideoQueue = prefs.getBoolean("external_player_continuous_playback", false);
 
 			
 			if (extplayer) {
 				if (extplayerVideoQueue) {
 					VideoContentInfo videoContent = SerenityApplication.getVideoPlaybackQueue().poll();
-					launchExternalPlayer(videoContent, mxplayer, context);
+					launchExternalPlayer(videoContent, context);
 				} else {
 					Toast.makeText(context, context.getResources().getString(R.string.external_player_video_queue_support_has_not_been_enabled_), Toast.LENGTH_LONG).show();
 				}

@@ -62,11 +62,10 @@ public class AbstractVideoOnItemClickListener {
 		prefs = PreferenceManager
 				.getDefaultSharedPreferences(v.getContext());
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
-		boolean mxplayer = prefs.getBoolean("mxplayer_plex_offset", false);
 	
 		if (externalPlayer) {
 			Activity activity = (Activity) v.getContext();
-			VideoPlayerIntentUtils.launchExternalPlayer(mpiv.getPosterInfo(), mxplayer, (Activity) v.getContext());
+			VideoPlayerIntentUtils.launchExternalPlayer(mpiv.getPosterInfo(), (Activity) v.getContext());
 			new WatchedVideoAsyncTask().execute(mpiv.getPosterInfo().id());
 			updatedWatchedCount(mpiv, activity);
 			return;
