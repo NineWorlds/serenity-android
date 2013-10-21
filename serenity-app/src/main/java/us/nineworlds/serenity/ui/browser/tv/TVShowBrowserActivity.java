@@ -106,9 +106,7 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 			categoriesIntent.putExtra("key", key);
 			categoriesIntent.putExtra("MESSENGER", messenger);
 			startService(categoriesIntent);
-
 		}
-		restarted_state = false;
 	}
 
 	@Override
@@ -116,11 +114,21 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 		super.onStop();
 		EasyTracker.getInstance().activityStop(this);
 	}
-
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		restarted_state = true;
+		populateMenuDrawer();
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
-		restarted_state = true;
+		populateMenuDrawer();
 	}
 	
 	/* (non-Javadoc)
@@ -204,6 +212,20 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 		}
 		menuDrawer.setDrawerIndicatorEnabled(true);
 		
+		populateMenuDrawer();
+		hideMenuItems();
+
+		
+		View menuButton = findViewById(R.id.menu_button);
+		menuButton
+				.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
+		
+	}
+
+	/**
+	 * 
+	 */
+	protected void populateMenuDrawer() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
 		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
@@ -212,13 +234,6 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
 		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		menuOptions.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(menuDrawer));
-		hideMenuItems();
-
-		
-		View menuButton = findViewById(R.id.menu_button);
-		menuButton
-				.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
-		
 	}
 	
 

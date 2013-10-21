@@ -130,9 +130,11 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
+		populateMenuDrawer();
 		restarted_state = true;
 	}
-
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -145,6 +147,20 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 		menuDrawer.setContentView(R.layout.activity_tvbrowser_show_seasons);
 		menuDrawer.setDrawerIndicatorEnabled(true);
 
+		populateMenuDrawer();
+
+		hideMenuItems();
+
+		View menuButton = findViewById(R.id.menu_button);
+		menuButton
+				.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
+
+	}
+
+	/**
+	 * 
+	 */
+	protected void populateMenuDrawer() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue",
 				R.drawable.menu_play_all_queue));
@@ -155,13 +171,6 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 		menuOptions
 				.setOnItemClickListener(new TVShowSeasonMenuDrawerOnItemClickedListener(
 						menuDrawer));
-
-		hideMenuItems();
-
-		View menuButton = findViewById(R.id.menu_button);
-		menuButton
-				.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
-
 	}
 
 	/*

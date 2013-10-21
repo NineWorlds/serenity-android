@@ -65,16 +65,23 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		menuDrawer.setContentView(R.layout.activity_movie_browser);
 		menuDrawer.setMenuView(R.layout.menu_drawer);
 		
+		populateMenuDrawer();
+		hideMenuItems();
+		
+		View menu = findViewById(R.id.menu_button);
+		menu.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
+	}
+
+	/**
+	 * 
+	 */
+	protected void populateMenuDrawer() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.play_all_from_queue), R.drawable.menu_play_all_queue));
 		
 		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
 		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		menuOptions.setOnItemClickListener(new EpisodeMenuDrawerOnItemClickedListener(menuDrawer));
-		hideMenuItems();
-		
-		View menu = findViewById(R.id.menu_button);
-		menu.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
 	}
 	
 	/**
@@ -206,6 +213,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
+		populateMenuDrawer();
 		if (key != null && key.contains("onDeck")) {
 			restarted_state = false;
 			try {
@@ -214,6 +222,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 			}
 			return;
 		}
+		
 		restarted_state = true;
 	}
 
