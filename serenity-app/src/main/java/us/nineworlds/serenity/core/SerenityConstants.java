@@ -32,6 +32,7 @@ public class SerenityConstants {
 	public static int BROWSER_RESULT_CODE = 200;
 	public static int EXIT_PLAYBACK_IMMEDIATELY = 1000;
 	public static int CLICKED_GRID_VIEW_ITEM = 0;
-	
+	public static final float WATCHED_PERCENT = 0.90f;
+
 
 }

@@ -199,7 +199,7 @@ public class TVShowBannerImageGalleryAdapter extends
 		watchedView.setVisibility(View.INVISIBLE);
 		
 		if (pi.isPartiallyWatched()) {
-			toggleProgressIndicator(galleryCellView, watched, pi.totalShows(), watchedView);
+			ImageUtils.toggleProgressIndicator(galleryCellView, watched, pi.totalShows());
 			return;
 		}
 		

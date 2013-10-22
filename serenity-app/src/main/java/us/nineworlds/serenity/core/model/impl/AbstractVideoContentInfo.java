@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
@@ -621,7 +622,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 	public boolean isPartiallyWatched() {
 		if (getResumeOffset() > 0) {
 			final float percentWatched = viewedPercentage();
-			if (percentWatched <= WATCHED_PERCENTAGE) {
+			if (percentWatched <= SerenityConstants.WATCHED_PERCENT) {
 				return true;
 			}
 		}		

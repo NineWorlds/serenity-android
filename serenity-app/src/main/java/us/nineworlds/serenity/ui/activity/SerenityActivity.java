@@ -29,10 +29,13 @@ import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
+import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.content.Intent;
@@ -161,16 +164,20 @@ public abstract class SerenityActivity extends Activity {
 					&& data.getAction().equals("com.mxtech.intent.result.VIEW")) {
 				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
 				VideoContentInfo video = null;
+				View selectedView = null;
 				if (gallery != null) {
 					video = (VideoContentInfo) gallery.getSelectedItem();
+					selectedView = gallery.getSelectedView();
 				} else {
 					TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
 					if (gridView != null) {
 						video = (VideoContentInfo) gridView.getSelectedItem();
+						selectedView = gridView.getSelectedView();
 					}
 				}
 				if (video != null) {
 					updateProgress(data, video);
+					ImageUtils.toggleProgressIndicator(selectedView, video.getResumeOffset(), video.getDuration());
 				}
 			}
 		}
@@ -188,10 +195,17 @@ public abstract class SerenityActivity extends Activity {
 		} else {
 			position = data.getIntExtra("position", 0);
 		}
-		UpdateProgressRequest request = new UpdateProgressRequest(position,
-				video.id());
+		
 		video.setResumeOffset(Long.valueOf(position).intValue());
-		request.execute();
+
+		if (video.isPartiallyWatched()) {
+			UpdateProgressRequest request = new UpdateProgressRequest(position,
+					video.id());
+			video.setResumeOffset(Long.valueOf(position).intValue());
+			request.execute();
+			return;
+		}
+		
 	}
 
 	public void showMenuItems() {

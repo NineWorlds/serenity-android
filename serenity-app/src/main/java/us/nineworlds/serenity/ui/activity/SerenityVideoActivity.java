@@ -27,12 +27,17 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.jess.ui.TwoWayGridView;
@@ -76,12 +81,17 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 		if (data != null) {
 			if (data.hasExtra("position")) {
 				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
+				View selectedView = null;
 				if (gallery != null) {
 					VideoContentInfo video = (VideoContentInfo) gallery
 							.getSelectedItem();
+					selectedView = gallery.getSelectedView();
 
 					if (video != null) {
 						updateProgress(data, video);
+						ImageUtils.toggleProgressIndicator(selectedView, video.getResumeOffset(), video.getDuration());
+						toggleWatched(selectedView, video);
+						
 					}
 				} else {
 					TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
@@ -94,6 +104,8 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 						}
 						if (video != null) {
 							updateProgress(data, video);
+							ImageUtils.toggleProgressIndicator(selectedView, video.getResumeOffset(), video.getDuration());
+							toggleWatched(selectedView, video);
 						}
 					}
 				}
@@ -122,6 +134,23 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 					return;
 				}
 			}
+		}
+	}
+
+	/**
+	 * @param selectedView
+	 * @param video
+	 */
+	protected void toggleWatched(View selectedView, VideoContentInfo video) {
+		if (video.isWatched() && !video.isPartiallyWatched()) {
+			ImageView watchedView = (ImageView) selectedView
+					.findViewById(R.id.posterWatchedIndicator);
+			ProgressBar view = (ProgressBar) selectedView
+					.findViewById(R.id.posterInprogressIndicator);
+			view.setVisibility(View.INVISIBLE);
+			watchedView.setVisibility(View.VISIBLE);
+			new WatchedVideoAsyncTask().execute(video.id());
+			video.setViewCount(video.getViewCount() + 1);
 		}
 	}
 

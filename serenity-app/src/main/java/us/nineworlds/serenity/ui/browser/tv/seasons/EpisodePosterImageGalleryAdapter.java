@@ -87,7 +87,7 @@ public class EpisodePosterImageGalleryAdapter extends
 
 		if (pi.getViewCount() > 0 && pi.getDuration() > 0
 				&& pi.getResumeOffset() != 0) {
-			toggleProgressIndicator(galleryCellView, pi.getResumeOffset(), pi.getDuration(),  watchedView);
+			ImageUtils.toggleProgressIndicator(galleryCellView, pi.getResumeOffset(), pi.getDuration());
 		}
 		
 		

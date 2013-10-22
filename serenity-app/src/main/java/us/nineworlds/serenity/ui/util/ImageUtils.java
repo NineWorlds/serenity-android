@@ -23,6 +23,8 @@
 
 package us.nineworlds.serenity.ui.util;
 
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.SerenityConstants;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -35,6 +37,9 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader.TileMode;
 import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 /**
  * @author dcarver
@@ -136,6 +141,38 @@ public class ImageUtils {
 		
 		int dpi = Math.round((pixelsize * sizeMultiplier) / metrics.density);
 		return dpi;
+	}
+	
+	
+	/**
+	 * @param galleryCellView
+	 * @param pi
+	 * @param watchedView
+	 */
+	public static void toggleProgressIndicator(View galleryCellView, int dividend,
+			int divisor) {
+		ImageView watchedView = (ImageView) galleryCellView
+				.findViewById(R.id.posterWatchedIndicator);
+
+		ProgressBar view = (ProgressBar) galleryCellView
+				.findViewById(R.id.posterInprogressIndicator);
+
+		final float percentWatched = Float.valueOf(dividend)
+				/ Float.valueOf(divisor);
+		
+		if (percentWatched < SerenityConstants.WATCHED_PERCENT) {
+			int progress = Float.valueOf(percentWatched * 100).intValue();
+			if (progress < 10) {
+				progress = 10;
+			}
+			view.setProgress(progress);
+			view.setClickable(false);
+			view.setVisibility(View.VISIBLE);
+			watchedView.setVisibility(View.INVISIBLE);
+		} else {
+			view.setVisibility(View.INVISIBLE);
+			watchedView.setVisibility(View.VISIBLE);
+		}
 	}
 	
 

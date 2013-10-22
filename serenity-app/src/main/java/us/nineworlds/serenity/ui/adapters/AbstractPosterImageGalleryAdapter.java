@@ -32,6 +32,7 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -70,7 +71,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	protected String category;
 	public Animation shrink;
 	protected Animation fadeIn;
-	private static final float WATCHED_PERCENT = 0.90f;
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
 		context = (Activity) c;
@@ -134,23 +134,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	 * @param pi
 	 * @param watchedView
 	 */
-	protected void toggleProgressIndicator(View galleryCellView, int dividend,
-			int divisor, ImageView watchedView) {
-		final float percentWatched = Float.valueOf(dividend)
-				/ Float.valueOf(divisor);
-		if (percentWatched < WATCHED_PERCENT) {
-			final ProgressBar view = (ProgressBar) galleryCellView
-					.findViewById(R.id.posterInprogressIndicator);
-			int progress = Float.valueOf(percentWatched * 100).intValue();
-			if (progress < 10) {
-				progress = 10;
-			}
-			view.setProgress(progress);
-			view.setClickable(false);
-			view.setVisibility(View.VISIBLE);
-			watchedView.setVisibility(View.INVISIBLE);
-		}
-	}
 	
 	public List<VideoContentInfo> getItems() {
 		return posterList;
@@ -183,7 +166,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	
 		if (pi.getViewCount() > 0 && pi.getDuration() > 0
 				&& pi.getResumeOffset() != 0) {
-			toggleProgressIndicator(galleryCellView, pi.getResumeOffset(), pi.getDuration(),  watchedView);
+			ImageUtils.toggleProgressIndicator(galleryCellView, pi.getResumeOffset(), pi.getDuration());
 		}
 	}
 
