@@ -98,6 +98,7 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 					if (gridView != null) {
 						VideoContentInfo video = (VideoContentInfo) gridView
 								.getSelectedItem();
+						selectedView = gridView.getSelectedView();
 						if (video == null) {
 							video = (VideoContentInfo) gridView
 									.getItemAtPosition(SerenityConstants.CLICKED_GRID_VIEW_ITEM);

@@ -74,7 +74,7 @@ public class TVShowSeasonOnItemSelectedListener implements
 		TwoWayGridView episodeGrid = (TwoWayGridView) context.findViewById(R.id.episodeGridView);
 		
 		episodeGrid.setVisibility(View.VISIBLE);
-		episodeGrid.setAdapter(new EpisodePosterImageGalleryAdapter(context, info.getKey()));
+		episodeGrid.setAdapter(new SeasonsEpisodePosterImageGalleryAdapter(context, info.getKey()));
 		episodeGrid.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
 		episodeGrid.setOnItemClickListener(new GridVideoOnItemClickListener());
 		episodeGrid.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());

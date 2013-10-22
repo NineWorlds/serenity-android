@@ -127,7 +127,7 @@ public class SeasonOnItemLongClickListener implements
 	protected void performAddToQueue() {
 		TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.episodeGridView);
 		if (gridView != null) {
-			EpisodePosterImageGalleryAdapter adapter = (EpisodePosterImageGalleryAdapter) gridView.getAdapter();
+			SeasonsEpisodePosterImageGalleryAdapter adapter = (SeasonsEpisodePosterImageGalleryAdapter) gridView.getAdapter();
 			List<VideoContentInfo> episodes = adapter.getItems();
 			SerenityApplication.getVideoPlaybackQueue().addAll(episodes);
 			Toast.makeText(context, adapter.getCount() + " videos have been added to the queue.", Toast.LENGTH_LONG).show();

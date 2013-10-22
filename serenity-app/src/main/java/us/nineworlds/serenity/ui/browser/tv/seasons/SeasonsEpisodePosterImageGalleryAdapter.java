@@ -47,12 +47,12 @@ import android.widget.TextView;
  * @author dcarver
  * 
  */
-public class EpisodePosterImageGalleryAdapter extends
+public class SeasonsEpisodePosterImageGalleryAdapter extends
 		us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
 
-	private static EpisodePosterImageGalleryAdapter notifyAdapter;
+	private static SeasonsEpisodePosterImageGalleryAdapter notifyAdapter;
 
-	public EpisodePosterImageGalleryAdapter(Context c, String key) {
+	public SeasonsEpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
 	}
