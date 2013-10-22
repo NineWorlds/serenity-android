@@ -53,7 +53,7 @@ public abstract class SerenityActivity extends Activity {
 	protected MenuDrawer menuDrawer;
 
 	protected abstract void createSideMenu();
-		
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
@@ -61,7 +61,7 @@ public abstract class SerenityActivity extends Activity {
 		if (gridView == null) {
 			gridView = (TwoWayGridView) findViewById(R.id.tvShowGridView);
 		}
-		
+
 		if (gallery == null && gridView == null) {
 			return super.onKeyDown(keyCode, event);
 		}
@@ -181,23 +181,30 @@ public abstract class SerenityActivity extends Activity {
 	 * @param video
 	 */
 	protected void updateProgress(Intent data, VideoContentInfo video) {
-		long position = data.getIntExtra("position", 0);
+		String stringPosition = data.getStringExtra("position");
+		long position = 0;
+		if (stringPosition != null) {
+			position = Long.parseLong(stringPosition);
+		} else {
+			position = data.getIntExtra("position", 0);
+		}
 		UpdateProgressRequest request = new UpdateProgressRequest(position,
 				video.id());
-		request.execute();		
+		video.setResumeOffset(Long.valueOf(position).intValue());
+		request.execute();
 	}
 
 	public void showMenuItems() {
-		if (SerenityApplication.isGoogleTV(this) ||
-			SerenityApplication.isAndroidTV(this)) {
+		if (SerenityApplication.isGoogleTV(this)
+				|| SerenityApplication.isAndroidTV(this)) {
 			menuOptions.setVisibility(View.VISIBLE);
 			menuOptions.requestFocusFromTouch();
 		}
 	}
 
 	public void hideMenuItems() {
-		if (SerenityApplication.isGoogleTV(this) ||
-			SerenityApplication.isAndroidTV(this)) {
+		if (SerenityApplication.isGoogleTV(this)
+				|| SerenityApplication.isAndroidTV(this)) {
 			menuOptions.setVisibility(View.GONE);
 		}
 	}

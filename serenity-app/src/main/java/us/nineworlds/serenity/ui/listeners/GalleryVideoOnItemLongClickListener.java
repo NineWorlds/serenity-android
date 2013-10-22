@@ -51,7 +51,7 @@ public class GalleryVideoOnItemLongClickListener extends AbstractVideoOnItemLong
 		// Google TV is sending back different results than Nexus 7
 		// So we try to handle the different results.
 		
-		info = (VideoContentInfo) av.getItemAtPosition(position);
+		info = (VideoContentInfo) av.getSelectedItem();
 
 		if (v == null) {
 			SerenityGallery g = (SerenityGallery) av;

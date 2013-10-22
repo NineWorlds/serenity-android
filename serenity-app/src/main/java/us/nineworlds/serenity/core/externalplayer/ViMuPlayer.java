@@ -56,6 +56,7 @@ public class ViMuPlayer extends AbstractExternalPlayer implements ExternalPlayer
 			}			
 		}
 		
+		setClassAndPackagename(vpIntent);		
 		launchActivity(vpIntent);
 	}
 
@@ -84,35 +85,23 @@ public class ViMuPlayer extends AbstractExternalPlayer implements ExternalPlayer
 	 */
 	@Override
 	public boolean hasHardwareDecodingSupport() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.core.externalplayer.ExternalPlayer#enableHardwareDecodinging()
-	 */
 	@Override
 	public void enableHardwareDecodinging() {
-		// TODO Auto-generated method stub
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.core.externalplayer.ExternalPlayer#disableHadwareDecoding()
-	 */
 	@Override
 	public void disableHadwareDecoding() {
-		// TODO Auto-generated method stub
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.core.externalplayer.AbstractExternalPlayer#setClassAndPackagename(android.content.Intent)
-	 */
 	@Override
 	protected void setClassAndPackagename(Intent vpIntent) {
-		// TODO Auto-generated method stub
-		
+		vpIntent.setPackage("net.gtvbox.videoplayer");
+		vpIntent.setClassName("net.gtvbox.videoplayer", "net.gtvbox.videoplayer.PlayerActivity");
 	}
 
 }
