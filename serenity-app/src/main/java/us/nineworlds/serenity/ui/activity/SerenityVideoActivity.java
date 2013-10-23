@@ -55,32 +55,11 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
 		boolean extPlayerVideoQueueEnabled = prefs.getBoolean(
 				"external_player_continuous_playback", false);
-		
-		if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
 
-			if (resultCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
-				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-					showQueueNotEmptyMessage();
-				}
-				return;
-			}
-
-			if (!externalPlayer) {
-
-				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-					Intent vpIntent = new Intent(this,
-							SerenitySurfaceViewVideoActivity.class);
-					startActivityForResult(vpIntent,
-							SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
-					return;
-				}
-
-			}
-		}
 
 		if (data != null) {
 			if (data.hasExtra("position")) {
-				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
+				SerenityGallery gallery = findGalleryView();
 				View selectedView = null;
 				if (gallery != null) {
 					VideoContentInfo video = (VideoContentInfo) gallery
@@ -89,12 +68,13 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 
 					if (video != null) {
 						updateProgress(data, video);
-						ImageUtils.toggleProgressIndicator(selectedView, video.getResumeOffset(), video.getDuration());
+						ImageUtils.toggleProgressIndicator(selectedView,
+								video.getResumeOffset(), video.getDuration());
 						toggleWatched(selectedView, video);
-						
+
 					}
 				} else {
-					TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
+					TwoWayGridView gridView = findGridView();
 					if (gridView != null) {
 						VideoContentInfo video = (VideoContentInfo) gridView
 								.getSelectedItem();
@@ -105,7 +85,9 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 						}
 						if (video != null) {
 							updateProgress(data, video);
-							ImageUtils.toggleProgressIndicator(selectedView, video.getResumeOffset(), video.getDuration());
+							ImageUtils.toggleProgressIndicator(selectedView,
+									video.getResumeOffset(),
+									video.getDuration());
 							toggleWatched(selectedView, video);
 						}
 					}
@@ -136,6 +118,38 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 				}
 			}
 		}
+		
+		if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
+
+			if (resultCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
+				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+					showQueueNotEmptyMessage();
+				}
+			} else if (!externalPlayer) {
+				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+					Intent vpIntent = new Intent(this,
+							SerenitySurfaceViewVideoActivity.class);
+					startActivityForResult(vpIntent,
+							SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
+					return;
+				}
+			}
+		}
+		
+	}
+
+	/**
+	 * @return
+	 */
+	protected SerenityGallery findGalleryView() {
+		return (SerenityGallery) findViewById(R.id.moviePosterGallery);
+	}
+
+	/**
+	 * @return
+	 */
+	protected TwoWayGridView findGridView() {
+		return (TwoWayGridView) findViewById(R.id.movieGridView);
 	}
 
 	/**

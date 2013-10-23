@@ -28,23 +28,18 @@ import java.util.List;
 
 import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.MenuDrawerItem;
 import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
-import us.nineworlds.serenity.ui.browser.tv.TVShowMenuDrawerOnItemClickedListener;
 import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jess.ui.TwoWayGridView;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.FocusFinder;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -264,5 +259,24 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 		return super.onKeyDown(keyCode, event);
 
+	}
+
+	/** 
+	 * Nothing really to update here now, so will return null.
+	 * 
+	 */
+	@Override
+	protected SerenityGallery findGalleryView() {
+		return null;
+	}
+
+	/**
+	 * We want to update playback position and onscreen info when completing.
+	 * 
+	 * So pass back the appropriate grid view in this case.
+	 */
+	@Override
+	protected TwoWayGridView findGridView() {
+		return (TwoWayGridView) findViewById(R.id.episodeGridView);
 	}
 }

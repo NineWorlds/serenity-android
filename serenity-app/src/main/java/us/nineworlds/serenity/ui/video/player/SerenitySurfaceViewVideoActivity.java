@@ -84,6 +84,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 */
 	static final int PROGRESS_UPDATE_DELAY = 5000;
 	static final int SUBTITLE_DISPLAY_CHECK = 100;
+	int playbackPos = 0;
 
 	static final String TAG = "SerenitySurfaceViewVideoActivity";
 	static final int CONTROLLER_DELAY = 16000; // Sixteen seconds
@@ -155,6 +156,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			try {
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 					float percentage = Float.valueOf(mediaPlayer.getCurrentPosition()) / Float.valueOf(mediaPlayer.getDuration());
+					playbackPos = mediaPlayer.getCurrentPosition();
 					if (percentage <= 90.f) {
 						new UpdateProgressRequest().execute();
 						progressReportinghandler.postDelayed(this,
@@ -334,6 +336,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	protected void setExitResultCode() {
 		Intent returnIntent = new Intent();
+		returnIntent.putExtra("position", playbackPos);
 		if (getParent() == null) {
 			setResult(SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY, returnIntent);
 		} else {
@@ -347,7 +350,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		if (mediaController.isShowing()) {
 			if (isKeyCodeBack(keyCode)) {
 				mediaController.hide();
-
+				
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 					mediaPlayer.stop();
 				}
