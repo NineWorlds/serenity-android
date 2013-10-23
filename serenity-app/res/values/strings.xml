@@ -150,18 +150,5 @@
     <string name="display_adjustements">Display Adjustements</string>    
     <string name="add_season_to_queue">Add season to queue</string>    
     <string name="season_options">Season Options</string>
-    
-    <string-array name="externalPlayerListNames">
-        <item>MX Player</item>
-        <item>MX Player Pro</item>
-        <item>ViMu</item>
-        <item>System Default</item>
-    </string-array>
-    <string-array name="externalPlayerListValues">
-        <item>mxplayer</item>
-        <item>mxplayerpro</item>
-        <item>vimu</item>
-        <item>default</item>
-    </string-array>
-    
+        
 </resources>

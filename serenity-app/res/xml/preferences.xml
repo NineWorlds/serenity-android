@@ -110,9 +110,7 @@
             android:title="Enable Video Queue for External Players" />
         
         <ListPreference
-            android:defaultValue="all"
-            android:entries="@array/externalPlayerListNames"
-            android:entryValues="@array/externalPlayerListValues"
+            android:defaultValue="default"
             android:key="serenity_external_player_filter"
             android:summary="This selection allows the choosing of what external player will be used to play back video content. Not all players support all functionality.  MX Player and MX Player pro support the ability to update the Plex playback position.  The System Default will just launch what ever the system default player is, and has limited functionality.  If you need specific functionality make sure to select a particular player."
             android:title="Prefered external player." />

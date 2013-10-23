@@ -24,9 +24,12 @@
 package us.nineworlds.serenity.ui.preferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import us.nineworlds.serenity.MainActivity;
@@ -37,6 +40,9 @@ import us.nineworlds.serenity.core.model.Server;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
@@ -77,6 +83,7 @@ public class SerenityPreferenceActivity extends PreferenceActivity {
 		EasyTracker.getInstance().activityStart(this);
 		populateAvailablePlexMediaServers();
 		populateAvailableLocales();
+		populateSupportedPlayers();
 	}
 
 	/**
@@ -147,5 +154,57 @@ public class SerenityPreferenceActivity extends PreferenceActivity {
 		super.onStop();
 		EasyTracker.getInstance().activityStop(this);
 	}
+	
+	protected void populateSupportedPlayers() {
+		ListPreference supportedPlayers = (ListPreference) findPreference("serenity_external_player_filter");
+		Map<String, String> availablePlayers = new HashMap<String, String>();
+		if (hasPlayerByName(this, "com.mxtech.videoplayer.ad")) {
+			availablePlayers.put("mxplayer", "MX Player");
+		}
+		
+		if (hasPlayerByName(this, "com.mxtech.videoplayer.pro")) {
+			availablePlayers.put("mxplayerpro", "MX Player Pro");
+		}
+		
+		if (hasPlayerByName(this, "net.gtvbox.videoplayer")) {
+			availablePlayers.put("vimu", "ViMu Player" );
+		}
+		
+		availablePlayers.put("default", "System Default");
+		
+		String[] entries = new String[availablePlayers.size()];
+		String[] values = new String[availablePlayers.size()];
+		ArrayList playerNames = new ArrayList();
+		ArrayList playerValues = new ArrayList();
+		
+		
+		for (Entry entry : availablePlayers.entrySet()) {
+			playerNames.add(entry.getValue());
+			playerValues.add(entry.getKey());
+		}
+		
+		playerNames.toArray(entries);
+		playerValues.toArray(values);
+		
+		supportedPlayers.setEntries(entries);
+		supportedPlayers.setEntryValues(values);
+	}
+	
+	protected boolean hasPlayerByName(Context context, String playerPackageName) {
+
+		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+		final List<ResolveInfo> pkgAppsList = context.getPackageManager()
+				.queryIntentActivities(mainIntent, 0);
+
+		for (ResolveInfo resolveInfo : pkgAppsList) {
+			String packageName = resolveInfo.activityInfo.packageName;
+			if (packageName.contains(playerPackageName)) {
+				return true;
+			}
+		}
+
+		return false;		
+	}	
 
 }
