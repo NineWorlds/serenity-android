@@ -45,6 +45,8 @@ import android.view.View;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 
 /**
@@ -52,6 +54,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
  *
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(reportSdk=14, emulateSdk=17)
 public class MainActivityTest {
 	
 	SerenityActivity activity;
@@ -79,6 +82,7 @@ public class MainActivityTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testPreferencesManager() throws Exception {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 		assertNotNull(preferences);

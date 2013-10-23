@@ -37,6 +37,7 @@ import android.content.Intent;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowBundle;
 
 /**
@@ -44,6 +45,7 @@ import org.robolectric.shadows.ShadowBundle;
  *
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(reportSdk=14, emulateSdk=17)
 public class SerenitySurfaceViewVideoPlayerTest {
 
 	SerenitySurfaceViewVideoActivity activity;

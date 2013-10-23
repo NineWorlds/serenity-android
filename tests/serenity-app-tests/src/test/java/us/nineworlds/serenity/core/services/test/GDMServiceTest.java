@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -49,6 +50,7 @@ import us.nineworlds.serenity.core.services.GDMService;
  *
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(reportSdk=14, emulateSdk=17)
 public class GDMServiceTest {
 
 	

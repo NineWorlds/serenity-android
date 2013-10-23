@@ -50,6 +50,7 @@ import us.nineworlds.serenity.core.model.impl.MenuItem;
  *
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(reportSdk=14, emulateSdk=17)
 public class MainMenuIntentServiceTest {
 	
 	NanoHTTPD server = null;
