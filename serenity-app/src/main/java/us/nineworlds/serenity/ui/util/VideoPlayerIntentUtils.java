@@ -60,7 +60,11 @@ public class VideoPlayerIntentUtils {
 	 */
 	public static void launchExternalPlayer(VideoContentInfo videoContent, Activity activity) {
 				
-		if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+		String externalPlayerValue = preferences.getString("serenity_external_player_filter", "default");
+		
+		
+		if (!SerenityApplication.getVideoPlaybackQueue().isEmpty() || "default".equals(externalPlayerValue)) {
 			videoContent.setResumeOffset(0);
 			launchPlayer(videoContent, activity);
 			return;
