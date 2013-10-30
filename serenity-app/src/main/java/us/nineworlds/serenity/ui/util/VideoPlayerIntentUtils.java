@@ -24,7 +24,9 @@
 package us.nineworlds.serenity.ui.util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -37,6 +39,7 @@ import us.nineworlds.serenity.core.externalplayer.ExternalPlayer;
 import us.nineworlds.serenity.core.externalplayer.ExternalPlayerFactory;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
+import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 
 /**
@@ -56,11 +59,30 @@ public class VideoPlayerIntentUtils {
 	 * @param activity
 	 */
 	public static void launchExternalPlayer(VideoContentInfo videoContent, Activity activity) {
-		ExternalPlayerFactory factory = new ExternalPlayerFactory(videoContent, activity);
+				
+		if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+			videoContent.setResumeOffset(0);
+			launchPlayer(videoContent, activity);
+			return;
+		}
 		
+		if (videoContent.isPartiallyWatched()) {
+			showResumeDialogQueue(activity, videoContent);
+		}
+	}
+
+
+	/**
+	 * @param videoContent
+	 * @param activity
+	 * @param externalPlayerValue
+	 */
+	protected static void launchPlayer(VideoContentInfo videoContent,
+			Activity activity) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 		String externalPlayerValue = preferences.getString("serenity_external_player_filter", "default");
 		
+		ExternalPlayerFactory factory = new ExternalPlayerFactory(videoContent, activity);
 		ExternalPlayer extplay = factory.createExternalPlayer(externalPlayerValue);
 		try {
 			extplay.launch();
@@ -98,6 +120,41 @@ public class VideoPlayerIntentUtils {
 		} else {
 			Toast.makeText(context, context.getResources().getString(R.string.queue_is_empty_), Toast.LENGTH_LONG).show();
 		}
+	}
+	
+	
+	protected static void showResumeDialogQueue(Activity context, VideoContentInfo videoContent) {
+		final VideoContentInfo video = videoContent;
+		final Activity c = context;
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				context, android.R.style.Theme_Holo_Dialog);
+
+		alertDialogBuilder.setTitle("Resume Video");
+		alertDialogBuilder
+				.setMessage("Resume the video from " + TimeUtil.formatDuration(video.getResumeOffset())  + " or restart?")
+				.setCancelable(false)
+				.setPositiveButton("Resume",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								launchPlayer(video, c);
+							}
+						})
+				.setNegativeButton("Restart",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								video.setResumeOffset(0);
+								launchPlayer(video, c);
+							}
+						});
+
+		alertDialogBuilder.create();
+		alertDialogBuilder.show();		
 	}
 	
 }

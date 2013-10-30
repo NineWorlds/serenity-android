@@ -77,7 +77,9 @@ public class MXPlayer extends AbstractExternalPlayer implements ExternalPlayer {
 				vpIntent.putExtra("subs.enable", subt);
 			}
 		}
-		vpIntent.putExtra("position", videoContent.getResumeOffset());
+		if (videoContent.getResumeOffset() != 0 && videoContent.isPartiallyWatched()) {
+			vpIntent.putExtra("position", videoContent.getResumeOffset());
+		}
 		return vpIntent;
 	}
 
