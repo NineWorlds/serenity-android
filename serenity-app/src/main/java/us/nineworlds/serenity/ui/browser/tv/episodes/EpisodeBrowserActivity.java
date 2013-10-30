@@ -41,6 +41,7 @@ import us.nineworlds.serenity.SerenityApplication;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -213,16 +214,21 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	protected void onRestart() {
 		super.onRestart();
 		populateMenuDrawer();
-		if (key != null && key.contains("onDeck")) {
-			restarted_state = false;
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
-			return;
-		}
 		
 		restarted_state = true;
+	}
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.activity.SerenityVideoActivity#onActivityResult(int, int, android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (key != null && key.contains("onDeck")) {
+			recreate();
+			return;
+		}
 	}
 
 }
