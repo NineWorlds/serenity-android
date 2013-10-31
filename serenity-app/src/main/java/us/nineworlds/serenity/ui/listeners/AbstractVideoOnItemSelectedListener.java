@@ -110,12 +110,19 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		LinearLayout infographicsView = (LinearLayout) context
 				.findViewById(R.id.movieInfoGraphicLayout);
 		infographicsView.removeAllViews();
+		
+		
 
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(80,
 				48);
 		ImageInfographicUtils imageUtilsAudioChannel = new ImageInfographicUtils(90,
 				48);
 
+		TextView durationView = imageUtilsNormal.createDurationView(videoInfo.getDuration(), context);
+		if (durationView != null) {
+			infographicsView.addView(durationView);
+		}
+		
 		ImageView resv = imageUtilsNormal.createVideoCodec(videoInfo.getVideoCodec(), v.getContext());
 		if (resv != null) {
 			infographicsView.addView(resv);
@@ -167,8 +174,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		if (studiov != null) {
 			infographicsView.addView(studiov);
 		}
-		
-
 	}
 
 	public void fetchSubtitle(VideoContentInfo mpi) {

@@ -57,4 +57,18 @@ public class TimeUtil {
 		return String.format("%02d:%02d", minutes, seconds);
 	}
 	
+	public static String formatDurationHoursMinutes(long duration) {
+		long tempdur = duration;
+		long hours = TimeUnit.MILLISECONDS.toHours(duration);
+
+		tempdur = tempdur - (hours * MILLISECONDS_PER_HOUR);
+
+		long minutes = tempdur / MILLISECONDS_PER_MINUTE;
+		tempdur = tempdur - (minutes * MILLISECONDS_PER_MINUTE);
+
+		if (hours > 0) {
+			return String.format("%2dH%02dM", hours, minutes);
+		}	
+		return String.format("%02dM", minutes);
+	}
 }

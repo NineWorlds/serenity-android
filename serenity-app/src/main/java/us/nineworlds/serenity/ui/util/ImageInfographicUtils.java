@@ -27,14 +27,20 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
 
@@ -421,6 +427,19 @@ public class ImageInfographicUtils {
 		String mediaTagUrl = factory.getMediaTagURL("studio", studio, identifier);
 		imageLoader.displayImage(mediaTagUrl, v);
 		return v;
+	}
+	
+	public TextView createDurationView(long duration, Context context) {
+		TextView tv = new TextView(context);
+		tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
+		tv.setText(TimeUtil.formatDurationHoursMinutes(duration));
+		tv.setTypeface(Typeface.DEFAULT_BOLD);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params.rightMargin = 10;
+		params.gravity = Gravity.CENTER_VERTICAL;
+		tv.setLayoutParams(params);
+		tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+		return tv;
 	}
 	
 
