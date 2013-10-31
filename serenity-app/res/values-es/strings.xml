@@ -141,4 +141,8 @@
     <string name="add_season_to_queue">Añadir a la cola de la temporada</string>    
     <string name="season_options">Opciones Temporada</string>    
     
+    <string name="series_select_the_starting_category_filter_">Seleccione el filtro de categorías de partida para programas de televisión.</string>
+    <string name="categories_series_summary_preference_description">Las categorías se utilizan para seleccionar el filtro de partida cuando se navega por programas de televisión. El valor predeterminado es Todo.</string>
+    
+    
 </resources>

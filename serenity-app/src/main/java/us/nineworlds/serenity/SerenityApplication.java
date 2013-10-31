@@ -193,9 +193,6 @@ public class SerenityApplication extends Application {
 
 	public static boolean isAndroidTV(Context context) {
 		final PackageManager pm = context.getPackageManager();
-		FeatureInfo features[] = pm.getSystemAvailableFeatures();
-		String model = Build.MODEL;
-		String manufacturer = Build.MANUFACTURER;
 		return pm.hasSystemFeature("android.hardware.type.television");
 	}
 

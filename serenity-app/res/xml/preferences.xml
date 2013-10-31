@@ -27,6 +27,14 @@
             android:key="serenity_category_filter"
             android:summary="@string/categories_summary_preference_description"
             android:title="@string/select_the_starting_category_filter_" />
+        <ListPreference
+            android:defaultValue="all"
+            android:entries="@array/categoryListNames"
+            android:entryValues="@array/categoryListValues"
+            android:key="serenity_series_category_filter"
+            android:summary="@string/categories_series_summary_preference_description"
+            android:title="@string/series_select_the_starting_category_filter_" />
+        
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/display_adjustements" >
         <CheckBoxPreference

@@ -70,8 +70,8 @@
         <item>unwatched</item>
     </string-array>
 
-    <string name="select_the_starting_category_filter_">Select the starting category filter.</string>
-    <string name="categories_summary_preference_description">Categories are used to select the starting filter when browsing movies and tv shows. The default is All.</string>
+    <string name="select_the_starting_category_filter_">Select the starting category filter for movies.</string>
+    <string name="categories_summary_preference_description">Categories are used to select the starting filter when browsing movies. The default is All.</string>
     <string name="preferred_filter">Preferred Filter</string>
     <string name="server_settings">Server Settings</string>
     <string name="server_settings_summary">A list of available plex media servers on the network. A preferred server takes priority.</string>
@@ -152,5 +152,8 @@
     <string name="season_options">Season Options</string>    
     <string name="preferred_external_player_summary">This selection allows the choosing of what external player will be used to play back video content. Not all players support all functionality.  MX Player and MX Player pro support the ability to update the Plex playback position.  The System Default will just launch what ever the system default player is, and has limited functionality.  If you need specific functionality make sure to select a particular player.</string>    
     <string name="preferred_external_player">Preferred External Player</string>
-        
+    
+    <string name="series_select_the_starting_category_filter_">Select the starting category filter for tv shows.</string>
+    <string name="categories_series_summary_preference_description">Categories are used to select the starting filter when browsing tv shows. The default is All.</string>
+    
 </resources>

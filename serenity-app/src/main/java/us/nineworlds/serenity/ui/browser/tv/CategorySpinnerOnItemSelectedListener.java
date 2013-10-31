@@ -80,7 +80,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 		if (firstSelection) {
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(context);
-			String filter = prefs.getString("serenity_category_filter", "all");
+			String filter = prefs.getString("serenity_series_category_filter", "all");
 
 			int count = viewAdapter.getCount();
 			for (int i = 0; i < count; i++) {

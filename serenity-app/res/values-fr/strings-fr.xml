@@ -62,7 +62,7 @@
     </string-array>
     
     <string name="select_the_starting_category_filter_">Sélectionnez le filtre de la catégorie de départ.</string>
-    <string name="categories_summary_preference_description">Les catégories sont utilisées pour sélectionner le filtre de départ lors de la navigation des films et émissions de télévision. La valeur par défaut est Tout.</string>
+    <string name="categories_summary_preference_description">Les catégories sont utilisées pour sélectionner le filtre de départ lors de la navigation des films. La valeur par défaut est Tout.</string>
     <string name="preferred_filter">Filtre préféré</string>
     <string name="server_settings">Paramètres du serveur</string>
     <string name="server_settings_summary">Une liste des serveurs PLex multimédias sur le réseau. Un serveur préféré est prioritaire.</string>
@@ -139,6 +139,9 @@
     <string name="display_adjustements">Afficher Ajustements</string>    
     <string name="add_season_to_queue">Ajouter saison de file d\'attente</string>    
     <string name="season_options">Options de saison</string>    
+    
+    <string name="series_select_the_starting_category_filter_">Sélectionnez le filtre de catégorie à partir des émissions de télévision.</string>
+    <string name="categories_series_summary_preference_description">Les catégories sont utilisées pour sélectionner le filtre de départ lorsque vous naviguez sur des émissions de télévision. La valeur par défaut est Tout.</string>
     
     
 </resources>
