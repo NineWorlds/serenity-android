@@ -67,7 +67,7 @@ public class TimeUtil {
 		tempdur = tempdur - (minutes * MILLISECONDS_PER_MINUTE);
 
 		if (hours > 0) {
-			return String.format("%2dH%02dM", hours, minutes);
+			return String.format("%2dH %02dM", hours, minutes);
 		}	
 		return String.format("%02dM", minutes);
 	}
