@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="us.nineworlds.serenity"
-    android:versionCode="38"
+    android:versionCode="39"
     android:versionName="1.5.0-dev" xmlns:tools="http://schemas.android.com/tools">
     
     <!--  try to exclude phone devices from the list. Currently only support Tablets and TVs -->
