@@ -245,7 +245,23 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo, Se
 	@Override
 	public boolean isPartiallyWatched() {
 		
-		if (!getShowsUnwatched().equals("0") && !getShowsWatched().equals("0")) {
+		int unwatched = 0;
+		int watched = 0;
+		
+		if (getShowsUnwatched() != null) {
+			unwatched = Integer.parseInt(getShowsUnwatched());
+		}
+		
+		if (getShowsWatched() != null) {
+			watched = Integer.parseInt(getShowsWatched());
+		}
+		int total = watched + unwatched;
+		
+		if (unwatched == total) {
+			return false;
+		}
+		
+		if (watched < total) {
 			return true;
 		}
 		
