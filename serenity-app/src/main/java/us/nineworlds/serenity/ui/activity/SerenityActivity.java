@@ -41,6 +41,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -188,13 +189,8 @@ public abstract class SerenityActivity extends Activity {
 	 * @param video
 	 */
 	protected void updateProgress(Intent data, VideoContentInfo video) {
-		String stringPosition = data.getStringExtra("position");
 		long position = 0;
-		if (stringPosition != null) {
-			position = Long.parseLong(stringPosition);
-		} else {
-			position = data.getIntExtra("position", 0);
-		}
+		position = data.getIntExtra("position", 0);
 		
 		video.setResumeOffset(Long.valueOf(position).intValue());
 

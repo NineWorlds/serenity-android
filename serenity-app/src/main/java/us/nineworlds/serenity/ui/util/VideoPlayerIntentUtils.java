@@ -72,7 +72,10 @@ public class VideoPlayerIntentUtils {
 		
 		if (videoContent.isPartiallyWatched()) {
 			showResumeDialogQueue(activity, videoContent);
+			return;
 		}
+		
+		launchPlayer(videoContent, activity);
 	}
 
 

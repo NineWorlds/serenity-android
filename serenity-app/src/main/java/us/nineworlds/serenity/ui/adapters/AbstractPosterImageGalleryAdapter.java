@@ -86,7 +86,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 		this.key = key;
 		this.category = category;
 		posterList = new ArrayList<VideoContentInfo>();
-		
+
 		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
 		shrink.setInterpolator(new LinearInterpolator());
 		fadeIn = AnimationUtils.loadAnimation(c, R.anim.fade_in);
@@ -134,7 +134,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	 * @param pi
 	 * @param watchedView
 	 */
-	
+
 	public List<VideoContentInfo> getItems() {
 		return posterList;
 	}
@@ -159,14 +159,15 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	public void setWatchedStatus(View galleryCellView, VideoContentInfo pi) {
 		ImageView watchedView = (ImageView) galleryCellView
 				.findViewById(R.id.posterWatchedIndicator);
-	
-		if (pi.getViewCount() > 0) {
+
+		if (pi.isPartiallyWatched()) {
+			ImageUtils.toggleProgressIndicator(galleryCellView,
+					pi.getResumeOffset(), pi.getDuration());
+		} else if (pi.isWatched()) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
-		}
-	
-		if (pi.getViewCount() > 0 && pi.getDuration() > 0
-				&& pi.getResumeOffset() != 0) {
-			ImageUtils.toggleProgressIndicator(galleryCellView, pi.getResumeOffset(), pi.getDuration());
+			watchedView.setVisibility(View.VISIBLE);
+		} else {
+			watchedView.setVisibility(View.INVISIBLE);
 		}
 	}
 

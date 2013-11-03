@@ -76,20 +76,15 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends
 
 		ImageView watchedView = (ImageView) galleryCellView
 				.findViewById(R.id.posterWatchedIndicator);
- 
-		if (pi.getViewCount() > 0) {
-			watchedView.setImageResource(R.drawable.overlaywatched);
-		}
-
-		if (pi.getViewCount() > 0) {
-			watchedView.setImageResource(R.drawable.overlaywatched);
-		}
-
-		if (pi.getViewCount() > 0 && pi.getDuration() > 0
-				&& pi.getResumeOffset() != 0) {
-			ImageUtils.toggleProgressIndicator(galleryCellView, pi.getResumeOffset(), pi.getDuration());
-		}
 		
+		if (pi.isPartiallyWatched()) {
+			ImageUtils.toggleProgressIndicator(galleryCellView, pi.getResumeOffset(), pi.getDuration());
+		} else if (pi.isWatched()) {
+			watchedView.setImageResource(R.drawable.overlaywatched);
+			watchedView.setVisibility(View.VISIBLE);
+		} else {
+			watchedView.setVisibility(View.INVISIBLE);
+		}
 		
 		TextView metaData = (TextView) galleryCellView.findViewById(R.id.metaOverlay);
 		String metaText = "";

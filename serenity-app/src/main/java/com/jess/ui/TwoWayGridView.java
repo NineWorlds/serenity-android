@@ -361,6 +361,13 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		mLayoutMode = LAYOUT_SET_SELECTION;
 		requestLayout();
 	}
+	
+	public void setSelectionInTouch(int position) {
+		setNextSelectedPositionInt(position);
+		setSelectedPositionInt(position);
+		mLayoutMode = LAYOUT_SET_SELECTION;
+		requestLayout();
+	}
 
 	/**
 	 * Makes the item at the supplied position selected.
