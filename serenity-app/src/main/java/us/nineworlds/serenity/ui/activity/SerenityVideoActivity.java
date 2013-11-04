@@ -56,28 +56,18 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 		boolean extPlayerVideoQueueEnabled = prefs.getBoolean(
 				"external_player_continuous_playback", false);
 
-
 		if (data != null) {
 			if (data.hasExtra("position")) {
 				SerenityGallery gallery = findGalleryView();
 				View selectedView = null;
+				VideoContentInfo video = null;
 				if (gallery != null) {
-					VideoContentInfo video = (VideoContentInfo) gallery
-							.getSelectedItem();
+					video = (VideoContentInfo) gallery.getSelectedItem();
 					selectedView = gallery.getSelectedView();
-
-					if (video != null) {
-						updateProgress(data, video);
-						ImageUtils.toggleProgressIndicator(selectedView,
-								video.getResumeOffset(), video.getDuration());
-						toggleWatched(selectedView, video);
-
-					}
 				} else {
 					TwoWayGridView gridView = findGridView();
 					if (gridView != null) {
-						VideoContentInfo video = (VideoContentInfo) gridView
-								.getSelectedItem();
+						video = (VideoContentInfo) gridView.getSelectedItem();
 						selectedView = gridView.getSelectedView();
 						if (video == null) {
 							video = (VideoContentInfo) gridView
@@ -85,15 +75,19 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 							gridView.setSelectionInTouch(SerenityConstants.CLICKED_GRID_VIEW_ITEM);
 							selectedView = gridView.getSelectedView();
 						}
-						if (video != null) {
-							updateProgress(data, video);
-							ImageUtils.toggleProgressIndicator(selectedView,
-									video.getResumeOffset(),
-									video.getDuration());
-							toggleWatched(selectedView, video);
-						}
 					}
 				}
+				
+				if (selectedView != null) {
+					if (video != null) {
+						updateProgress(data, video);
+						ImageUtils.toggleProgressIndicator(selectedView,
+								video.getResumeOffset(),
+								video.getDuration());
+						toggleWatched(video);
+					}
+				}
+				
 			}
 
 			if (externalPlayer && extPlayerVideoQueueEnabled) {
@@ -120,7 +114,7 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 				}
 			}
 		}
-		
+
 		if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
 
 			if (resultCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
@@ -137,7 +131,7 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 				}
 			}
 		}
-		
+
 	}
 
 	/**
@@ -158,14 +152,8 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 	 * @param selectedView
 	 * @param video
 	 */
-	protected void toggleWatched(View selectedView, VideoContentInfo video) {
-		if (video.isWatched() && !video.isPartiallyWatched()) {
-			ImageView watchedView = (ImageView) selectedView
-					.findViewById(R.id.posterWatchedIndicator);
-			ProgressBar view = (ProgressBar) selectedView
-					.findViewById(R.id.posterInprogressIndicator);
-			view.setVisibility(View.INVISIBLE);
-			watchedView.setVisibility(View.VISIBLE);
+	protected void toggleWatched(VideoContentInfo video) {
+		if (video.isWatched()) {
 			new WatchedVideoAsyncTask().execute(video.id());
 			video.setViewCount(video.getViewCount() + 1);
 		}

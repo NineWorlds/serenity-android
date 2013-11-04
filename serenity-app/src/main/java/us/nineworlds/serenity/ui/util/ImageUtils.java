@@ -125,11 +125,13 @@ public class ImageUtils {
 		case DisplayMetrics.DENSITY_MEDIUM: {
 			break;
 		}
-		case DisplayMetrics.DENSITY_TV: {
+		case DisplayMetrics.DENSITY_TV:
+		case DisplayMetrics.DENSITY_HIGH: {
 			sizeMultiplier = 1.5f;
 			break;
 		}
-		case DisplayMetrics.DENSITY_XHIGH: {
+		case DisplayMetrics.DENSITY_XHIGH:
+		case DisplayMetrics.DENSITY_XXHIGH: {
 			sizeMultiplier = 3;
 			break;
 		}
@@ -168,9 +170,9 @@ public class ImageUtils {
 			view.setProgress(progress);
 			view.setClickable(false);
 			view.setVisibility(View.VISIBLE);
-			watchedView.setVisibility(View.INVISIBLE);
+			watchedView.setVisibility(View.GONE);
 		} else {
-			view.setVisibility(View.INVISIBLE);
+			view.setVisibility(View.GONE);
 			watchedView.setVisibility(View.VISIBLE);
 		}
 	}

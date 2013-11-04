@@ -61,7 +61,7 @@ public class MusicAlbumsActivity extends Activity {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		setContentView(R.layout.activity_music_artist_gridview);
-		if (SerenityApplication.isRunningOnOUYA()) {
+		if (prefs.getBoolean("overscan_compensation", false)) {
 			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.musicBrowserBackgroundLayout);
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
 			params.setMargins(35, 20, 20, 20);

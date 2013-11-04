@@ -134,7 +134,9 @@ public class AudioTrackItemClickListener implements OnItemClickListener {
 		playingTrack.setVisibility(View.VISIBLE);
 		
 		CheckBox randomPlay = (CheckBox) context.findViewById(R.id.audioRandomPlay);
-		randomPlay.setVisibility(View.VISIBLE);
+		if (randomPlay != null) {
+			randomPlay.setVisibility(View.VISIBLE);
+		}
 		
 		LinearLayout mediaProgressControl = (LinearLayout) context.findViewById(R.id.mediacontroller_progress_layout);
 		mediaProgressControl.setVisibility(View.VISIBLE);

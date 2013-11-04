@@ -170,8 +170,14 @@ public class MusicTracksActivity extends Activity implements
 
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		setContentView(R.layout.activity_music_track);
+		
 		if (SerenityApplication.isRunningOnOUYA()) {
+			setContentView(R.layout.activity_music_ouya_track);
+		} else {
+			setContentView(R.layout.activity_music_track);
+		}
+		
+		if (prefs.getBoolean("overscan_compensation", false)) {
 			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.musicBrowserBackgroundLayout);
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
 			params.setMargins(35, 20, 20, 20);
@@ -225,7 +231,9 @@ public class MusicTracksActivity extends Activity implements
 		playingTrack = (TextView) findViewById(R.id.track_playing);
 		playingTrack.setVisibility(View.INVISIBLE);
 		randomPlay = (CheckBox) findViewById(R.id.audioRandomPlay);
-		randomPlay.setVisibility(View.INVISIBLE);
+		if (randomPlay != null) {
+			randomPlay.setVisibility(View.INVISIBLE);
+		}
 		
 		LinearLayout mediaProgressControl = (LinearLayout) findViewById(R.id.mediacontroller_progress_layout);
 		mediaProgressControl.setVisibility(View.INVISIBLE);
@@ -327,7 +335,7 @@ public class MusicTracksActivity extends Activity implements
 		int count = lview.getCount();
 		int nextItem = 0;
 		
-		if (randomPlay.isChecked()) {
+		if (randomPlay != null && randomPlay.isChecked()) {
 			nextItem = randomTrack(count);
 		} else if (currentPlayingItem < count) {
 			nextItem = currentPlayingItem + 1;
