@@ -66,11 +66,6 @@ public class MusicActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (SerenityApplication.isRunningOnOUYA()) {
-			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.musicArtistBrowserLayout);
-			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
-			params.setMargins(35, 20, 20, 20);
-		}
 
 		key = getIntent().getExtras().getString("key");
 
@@ -83,6 +78,12 @@ public class MusicActivity extends Activity {
 			setContentView(R.layout.activity_music_artist_posters);
 		} else {
 			setContentView(R.layout.activity_music_artist_gridview);
+		}
+		
+		if (prefs.getBoolean("overscan_compensation", false)) {
+			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.musicArtistBrowserLayout);
+			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
+			params.setMargins(35, 20, 20, 20);
 		}
 
 	}
