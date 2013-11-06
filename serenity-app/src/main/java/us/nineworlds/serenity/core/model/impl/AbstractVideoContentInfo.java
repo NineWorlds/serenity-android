@@ -632,9 +632,14 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 	@Override
 	public boolean isWatched() {
 		final float percentWatched = viewedPercentage();
-		if (getViewCount() > 0  || percentWatched >= SerenityConstants.WATCHED_PERCENT ) {
+		if (percentWatched > SerenityConstants.WATCHED_PERCENT) {
 			return true;
 		}
+		
+		if (getResumeOffset() == 0 && getViewCount() > 0) {
+			return true;
+		}
+		
 		return false;
 	}
 	

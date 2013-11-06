@@ -36,7 +36,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Adapter;
+import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -61,13 +62,17 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 				SerenityGallery gallery = findGalleryView();
 				View selectedView = null;
 				VideoContentInfo video = null;
+				BaseAdapter adapter = null;
+				
 				if (gallery != null) {
 					video = (VideoContentInfo) gallery.getSelectedItem();
+					adapter = (BaseAdapter) gallery.getAdapter();
 					selectedView = gallery.getSelectedView();
 				} else {
 					TwoWayGridView gridView = findGridView();
 					if (gridView != null) {
 						video = (VideoContentInfo) gridView.getSelectedItem();
+						adapter = (BaseAdapter) gridView.getAdapter();
 						selectedView = gridView.getSelectedView();
 						if (video == null) {
 							video = (VideoContentInfo) gridView
@@ -80,11 +85,22 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 				
 				if (selectedView != null) {
 					if (video != null) {
+						View watchedView = selectedView.findViewById(R.id.posterWatchedIndicator);
+//						ProgressBar progressView = (ProgressBar) selectedView.findViewById(R.id.posterInprogressIndicator);
+//						progressView.setVisibility(View.INVISIBLE);
 						updateProgress(data, video);
-						ImageUtils.toggleProgressIndicator(selectedView,
-								video.getResumeOffset(),
-								video.getDuration());
-						toggleWatched(video);
+						if (video.isWatched()) {
+							watchedView.setVisibility(View.VISIBLE);
+							toggleWatched(video);
+						} else if (video.isPartiallyWatched()) {
+							if (watchedView.isShown()) {
+								watchedView.setVisibility(View.INVISIBLE);
+							}
+							ImageUtils.toggleProgressIndicator(selectedView,
+									video.getResumeOffset(),
+									video.getDuration());
+						}
+						adapter.notifyDataSetChanged();
 					}
 				}
 				

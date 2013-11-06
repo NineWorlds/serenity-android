@@ -257,11 +257,7 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo, Se
 		}
 		int total = watched + unwatched;
 		
-		if (unwatched == total) {
-			return false;
-		}
-		
-		if (watched < total) {
+		if (unwatched != total && watched < total) {
 			return true;
 		}
 		

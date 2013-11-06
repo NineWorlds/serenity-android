@@ -153,9 +153,6 @@ public class ImageUtils {
 	 */
 	public static void toggleProgressIndicator(View galleryCellView, int dividend,
 			int divisor) {
-		ImageView watchedView = (ImageView) galleryCellView
-				.findViewById(R.id.posterWatchedIndicator);
-
 		ProgressBar view = (ProgressBar) galleryCellView
 				.findViewById(R.id.posterInprogressIndicator);
 
@@ -170,12 +167,9 @@ public class ImageUtils {
 			view.setProgress(progress);
 			view.setClickable(false);
 			view.setVisibility(View.VISIBLE);
-			watchedView.setVisibility(View.GONE);
 		} else {
 			view.setVisibility(View.GONE);
-			watchedView.setVisibility(View.VISIBLE);
 		}
 	}
-	
-
+		
 }

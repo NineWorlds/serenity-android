@@ -50,6 +50,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.TextView;
@@ -199,7 +200,7 @@ public class TVShowBannerImageGalleryAdapter extends
 		watchedView.setVisibility(View.INVISIBLE);
 		
 		if (pi.isPartiallyWatched()) {
-			ImageUtils.toggleProgressIndicator(galleryCellView, watched, pi.totalShows());
+			 toggleProgressIndicator(galleryCellView, watched, pi.totalShows(), watchedView);
 			return;
 		}
 		
@@ -209,6 +210,27 @@ public class TVShowBannerImageGalleryAdapter extends
 		}
 		
 	}
+	
+	/**
+	 * @param galleryCellView
+	 * @param pi
+	 * @param watchedView
+	 */
+	protected void toggleProgressIndicator(View galleryCellView, int dividend,
+			int divisor, ImageView watchedView) {
+		final float percentWatched = Float.valueOf(dividend)
+				/ Float.valueOf(divisor);
+		
+		final ProgressBar view = (ProgressBar) galleryCellView
+				.findViewById(R.id.posterInprogressIndicator);
+		int progress = Float.valueOf(percentWatched * 100).intValue();
+		if (progress < 10) {
+			progress = 10;
+		}
+		view.setProgress(progress);
+		view.setVisibility(View.VISIBLE);
+		watchedView.setVisibility(View.INVISIBLE);
+	}	
 	
 
 	private class ShowRetrievalHandler extends Handler {
