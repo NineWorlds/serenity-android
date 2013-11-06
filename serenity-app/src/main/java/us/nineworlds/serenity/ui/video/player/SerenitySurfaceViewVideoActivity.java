@@ -51,6 +51,7 @@ import us.nineworlds.serenity.R;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -345,6 +346,17 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 	}
 
+	protected void setExitResultCodeFinished() {
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra("position", playbackPos);
+		if (getParent() == null) {
+			setResult(Activity.RESULT_OK, returnIntent);
+		} else {
+			getParent().setResult(Activity.RESULT_OK,
+					returnIntent);
+		}
+	}
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (mediaController.isShowing()) {
@@ -657,6 +669,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				mp.release();
 				mediaplayer_released = true;
 			}
+			setExitResultCodeFinished();
 			finish();
 		}
 
