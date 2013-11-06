@@ -171,6 +171,7 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 	protected void toggleWatched(VideoContentInfo video) {
 		if (video.isWatched()) {
 			new WatchedVideoAsyncTask().execute(video.id());
+			video.setResumeOffset(0);
 			video.setViewCount(video.getViewCount() + 1);
 		}
 	}
