@@ -57,37 +57,42 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 		boolean extPlayerVideoQueueEnabled = prefs.getBoolean(
 				"external_player_continuous_playback", false);
 
-		if (data != null) {
-			if (data.hasExtra("position")) {
-				SerenityGallery gallery = findGalleryView();
-				View selectedView = null;
-				VideoContentInfo video = null;
-				BaseAdapter adapter = null;
-				
-				if (gallery != null) {
-					video = (VideoContentInfo) gallery.getSelectedItem();
-					adapter = (BaseAdapter) gallery.getAdapter();
-					selectedView = gallery.getSelectedView();
-				} else {
-					TwoWayGridView gridView = findGridView();
-					if (gridView != null) {
-						video = (VideoContentInfo) gridView.getSelectedItem();
-						adapter = (BaseAdapter) gridView.getAdapter();
+		if (data != null && (data.hasExtra("position") || data.hasExtra("end_by"))) {
+			SerenityGallery gallery = findGalleryView();
+			View selectedView = null;
+			VideoContentInfo video = null;
+			BaseAdapter adapter = null;
+			
+			if (gallery != null) {
+				video = (VideoContentInfo) gallery.getSelectedItem();
+				adapter = (BaseAdapter) gallery.getAdapter();
+				selectedView = gallery.getSelectedView();
+			} else {
+				TwoWayGridView gridView = findGridView();
+				if (gridView != null) {
+					video = (VideoContentInfo) gridView.getSelectedItem();
+					adapter = (BaseAdapter) gridView.getAdapter();
+					selectedView = gridView.getSelectedView();
+					if (video == null) {
+						video = (VideoContentInfo) gridView
+								.getItemAtPosition(SerenityConstants.CLICKED_GRID_VIEW_ITEM);
+						gridView.setSelectionInTouch(SerenityConstants.CLICKED_GRID_VIEW_ITEM);
 						selectedView = gridView.getSelectedView();
-						if (video == null) {
-							video = (VideoContentInfo) gridView
-									.getItemAtPosition(SerenityConstants.CLICKED_GRID_VIEW_ITEM);
-							gridView.setSelectionInTouch(SerenityConstants.CLICKED_GRID_VIEW_ITEM);
-							selectedView = gridView.getSelectedView();
-						}
 					}
 				}
+			}
+			String mxplayerString = data.getStringExtra("end_by");
+			if (hasMXPlayerCompletedNormally(data, mxplayerString)) {
+				if (video != null) {
+					video.setResumeOffset(video.getDuration());
+					toggleWatched(video);
+					adapter.notifyDataSetChanged();
+				}
+			} else if (data.hasExtra("position")) {
 				
 				if (selectedView != null) {
 					if (video != null) {
 						View watchedView = selectedView.findViewById(R.id.posterWatchedIndicator);
-//						ProgressBar progressView = (ProgressBar) selectedView.findViewById(R.id.posterInprogressIndicator);
-//						progressView.setVisibility(View.INVISIBLE);
 						updateProgress(data, video);
 						if (video.isWatched()) {
 							watchedView.setVisibility(View.VISIBLE);
@@ -102,9 +107,9 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 						}
 						adapter.notifyDataSetChanged();
 					}
-				}
-				
+				}				
 			}
+			
 
 			if (externalPlayer && extPlayerVideoQueueEnabled) {
 				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
@@ -148,6 +153,16 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 			}
 		}
 
+	}
+
+	/**
+	 * @param data
+	 * @param mxplayerString
+	 * @return
+	 */
+	protected boolean hasMXPlayerCompletedNormally(Intent data,
+			String mxplayerString) {
+		return data.hasExtra("end_by") && "playback_completion".equals(mxplayerString);
 	}
 
 	/**
