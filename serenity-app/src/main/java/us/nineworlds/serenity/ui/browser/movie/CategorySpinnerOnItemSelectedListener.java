@@ -65,6 +65,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	private boolean firstSelection = true;
 	private static Activity context;
 	private static String category;
+	private String savedInstanceCategory; // From a restarted activity
 	private Handler secondaryCategoryHandler;
 	private SharedPreferences prefs;
 
@@ -74,21 +75,39 @@ public class CategorySpinnerOnItemSelectedListener implements
 		key = ckey;
 		secondaryCategoryHandler = new SecondaryCategoryHandler();
 	}
+	
+	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
+			String ckey, boolean firstSelection) {
+		selected = defaultSelection;
+		key = ckey;
+		secondaryCategoryHandler = new SecondaryCategoryHandler();
+		savedInstanceCategory = defaultSelection;
+		this.firstSelection = firstSelection; 
+	}
+	
 
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 		context = (Activity) view.getContext();
+		View bgLayout = context
+				.findViewById(R.id.movieBrowserBackgroundLayout);
 		if (prefs == null) {
 			prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		}
 		
 		CategoryInfo item = (CategoryInfo) viewAdapter
 				.getItemAtPosition(position);
+		
+		if (savedInstanceCategory != null) {
+			int savedInstancePosition = getSavedInstancePosition(viewAdapter);
+			item = (CategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
+			viewAdapter.setSelection(savedInstancePosition);
+			savedInstanceCategory = null;
+			createGallery(item, bgLayout);
+		}
 
 		if (firstSelection) {
-			View bgLayout = context
-					.findViewById(R.id.movieBrowserBackgroundLayout);
 			
 			String filter = prefs.getString("serenity_category_filter", "all");
 			
@@ -116,14 +135,13 @@ public class CategorySpinnerOnItemSelectedListener implements
 
 		selected = item.getCategory();
 		category = item.getCategory();
+		MovieBrowserActivity.savedCategory = selected;
 
 		Spinner secondarySpinner = (Spinner) context
 				.findViewById(R.id.movieCategoryFilter2);
 
 		if (item.getLevel() == 0) {
 			secondarySpinner.setVisibility(View.INVISIBLE);
-			View bgLayout = context
-					.findViewById(R.id.movieBrowserBackgroundLayout);
 			createGallery(item, bgLayout);
 		} else {
 			Messenger messenger = new Messenger(secondaryCategoryHandler);
@@ -135,6 +153,18 @@ public class CategorySpinnerOnItemSelectedListener implements
 			context.startService(categoriesIntent);
 		}
 
+	}
+	
+	private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
+		int count = viewAdapter.getCount();
+		for (int i = 0; i < count; i++) {
+			CategoryInfo citem = (CategoryInfo) viewAdapter
+					.getItemAtPosition(i);
+			if (citem.getCategory().equals(savedInstanceCategory)) {
+				return i;
+			}
+		}
+		return 0;
 	}
 
 	/**
