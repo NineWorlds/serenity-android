@@ -143,5 +143,15 @@
     <string name="series_select_the_starting_category_filter_">Sélectionnez le filtre de catégorie à partir des émissions de télévision.</string>
     <string name="categories_series_summary_preference_description">Les catégories sont utilisées pour sélectionner le filtre de départ lorsque vous naviguez sur des émissions de télévision. La valeur par défaut est Tout.</string>
     
+    <string-array name="categoryListNamesSeries">
+        <item>Tous / Tout</item>
+        <item>Les plus récents</item>
+        <item>Sur le bureau</item>
+        <item>Ajoutés récemment</item>
+        <item>Episodes vus récemment</item>
+        <item>Série Vu récemment</item>
+        <item>Non-Vu</item>
+    </string-array>
+    
     
 </resources>

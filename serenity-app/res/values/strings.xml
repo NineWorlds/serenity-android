@@ -156,4 +156,25 @@
     <string name="series_select_the_starting_category_filter_">Select the starting category filter for tv shows.</string>
     <string name="categories_series_summary_preference_description">Categories are used to select the starting filter when browsing tv shows. The default is All.</string>
     
+    <string-array name="categoryListNamesSeries">
+        <item>All</item>
+        <item>Newest</item>
+        <item>On Deck</item>
+        <item>Recently Added</item>
+        <item>Recently Viewed Episodes</item>
+        <item>Recently Viewed Shows</item>
+        <item>Unwatched</item>
+    </string-array>
+
+    <string-array name="categoryListValuesSeries">
+        <item>all</item>
+        <item>newest</item>
+        <item>onDeck</item>
+        <item>recentlyAdded</item>
+        <item>recentlyViewed</item>
+        <item>recentlyViewedShows</item>
+        <item>unwatched</item>
+    </string-array>
+    
+    
 </resources>

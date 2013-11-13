@@ -144,5 +144,15 @@
     <string name="series_select_the_starting_category_filter_">Seleccione el filtro de categorías de partida para programas de televisión.</string>
     <string name="categories_series_summary_preference_description">Las categorías se utilizan para seleccionar el filtro de partida cuando se navega por programas de televisión. El valor predeterminado es Todo.</string>
     
+    <string-array name="categoryListNamesSeries">
+        <item>Todo</item>
+        <item>El más nuevo</item>
+        <item>On Deck</item>
+        <item>Recientemente se agregó</item>
+        <item>Visto recientemente Episodios</item>
+        <item>Espectáculos vistos recientemente</item>
+        <item>Desatendido</item>
+    </string-array>
+    
     
 </resources>
