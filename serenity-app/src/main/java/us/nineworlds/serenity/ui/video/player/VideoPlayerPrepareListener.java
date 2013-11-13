@@ -25,10 +25,12 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -90,11 +92,11 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 					context, android.R.style.Theme_Holo_Dialog);
 
-			alertDialogBuilder.setTitle("Resume Video");
+			alertDialogBuilder.setTitle(R.string.resume_video);
 			alertDialogBuilder
-					.setMessage("Resume the video from " + TimeUtil.formatDuration(resumeOffset)  + " or restart?")
+					.setMessage(context.getResources().getText(R.string.resume_the_video_from_) + TimeUtil.formatDuration(resumeOffset)  + context.getResources().getText(R.string._or_restart_))
 					.setCancelable(false)
-					.setPositiveButton("Resume",
+					.setPositiveButton(R.string.resume,
 							new DialogInterface.OnClickListener() {
 
 								@Override
@@ -107,7 +109,7 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 									setMetaData();
 								}
 							})
-					.setNegativeButton("Restart",
+					.setNegativeButton(R.string.restart,
 							new DialogInterface.OnClickListener() {
 
 								@Override
@@ -119,7 +121,8 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 							});
 
 			alertDialogBuilder.create();
-			alertDialogBuilder.show();
+			AlertDialog dialog = alertDialogBuilder.show();
+			dialog.getButton(Dialog.BUTTON_POSITIVE).requestFocus();
 			return;
 		} else {
 			mediaPlayer.start();			

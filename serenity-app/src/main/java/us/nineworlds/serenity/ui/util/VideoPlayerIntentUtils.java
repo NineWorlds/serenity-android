@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.util;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -136,11 +137,11 @@ public class VideoPlayerIntentUtils {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				context, android.R.style.Theme_Holo_Dialog);
 
-		alertDialogBuilder.setTitle("Resume Video");
+		alertDialogBuilder.setTitle(R.string.resume_video);
 		alertDialogBuilder
-				.setMessage("Resume the video from " + TimeUtil.formatDuration(video.getResumeOffset())  + " or restart?")
+				.setMessage(context.getResources().getText(R.string.resume_the_video_from_) + TimeUtil.formatDuration(video.getResumeOffset())  + context.getResources().getText(R.string._or_restart_))
 				.setCancelable(false)
-				.setPositiveButton("Resume",
+				.setPositiveButton(R.string.resume,
 						new DialogInterface.OnClickListener() {
 
 							@Override
@@ -149,7 +150,7 @@ public class VideoPlayerIntentUtils {
 								launchPlayer(video, c);
 							}
 						})
-				.setNegativeButton("Restart",
+				.setNegativeButton(R.string.restart,
 						new DialogInterface.OnClickListener() {
 
 							@Override
@@ -161,7 +162,8 @@ public class VideoPlayerIntentUtils {
 						});
 
 		alertDialogBuilder.create();
-		alertDialogBuilder.show();		
+		AlertDialog dialog = alertDialogBuilder.show();
+		dialog.getButton(Dialog.BUTTON_POSITIVE).requestFocus();
 	}
 	
 }

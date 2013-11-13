@@ -175,6 +175,11 @@
         <item>recentlyViewedShows</item>
         <item>unwatched</item>
     </string-array>
+        <string name="resume_video">Resume Video</string>
+        <string name="resume_the_video_from_">"Resume the video from "</string>
+        <string name="_or_restart_">" or restart?"</string>
+        <string name="resume">Resume</string>
+        <string name="restart">Restart</string>
     
     
 </resources>
