@@ -153,5 +153,15 @@
         <item>Non-Vu</item>
     </string-array>
     
+    <string name="resume_video">reprendre la vidéo</string>
+    <string name="resume_the_video_from_">"Reprendre la vidéo "</string>
+    <string name="_or_restart_">" ou de redémarrer?"</string>
+    <string name="resume">Reprendre</string>
+    <string name="restart">Recommencer</string>
+    <string name="tv_shows_will_be_displayed_in_a_grid_view_">Séries TV seront affichées dans une vue en grille.</string>
+    <string name="prefer_grid_view_for_series">Préférez Grid View pour la série</string>
+    <string name="enables_video_queue_support_for_external_players_">Active le support de la file d\'attente de vidéo pour les joueurs extérieurs.</string>
+    <string name="enable_video_queue_for_external_players">Activer la queue de la vidéo pour les joueurs externes</string>
+    
     
 </resources>

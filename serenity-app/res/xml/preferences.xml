@@ -69,8 +69,8 @@
             android:title="@string/series_poster_layout" />
         <CheckBoxPreference
             android:key="series_layout_grid"
-            android:summary="TV Shows will be displayed in a grid view."
-            android:title="Prefer Grid View for Series" />
+            android:summary="@string/tv_shows_will_be_displayed_in_a_grid_view_"
+            android:title="@string/prefer_grid_view_for_series" />
         <CheckBoxPreference
             android:key="movie_layout_grid"
             android:summary="@string/poster_grid_layout_for_movies_"
@@ -114,8 +114,8 @@
             android:title="@string/external_player" />
         <CheckBoxPreference
             android:key="external_player_continuous_playback"
-            android:summary="Enables video queue support for external players. Experimental support for external players and the video queue and continuous playback support."
-            android:title="Enable Video Queue for External Players" />
+            android:summary="@string/enables_video_queue_support_for_external_players_"
+            android:title="@string/enable_video_queue_for_external_players" />
         
         <ListPreference
             android:defaultValue="default"

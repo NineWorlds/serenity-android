@@ -112,50 +112,43 @@
     <string name="plex_aspect_ratio">Plex Aspect Ratio</string>
     <string name="enable_gallery_scrolling">Enables whether scrolling animation occurs in gallery views for movies and episodes.</string>
     <string name="enable_gallery_scrolling_animation">Enable Gallery Scrolling Animation</string>
-    
     <string name="tutorial">Tutorial</string>
     <string name="auto_configuring_server_using_">"Auto configuring server using "</string>
-
     <string name="changelog_full_title">Serenity for Android Change Log</string>
     <string name="changelog_title">What\'s New</string>
     <string name="changelog_ok_button">OK</string>
     <string name="changelog_show_full">More…</string>
-
     <string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>
     <string name="clear_queue">Clear Queue</string>
     <string name="queue_has_been_cleared_">Queue has been cleared.</string>
     <string name="play_all_from_queue">Play All from Queue</string>
     <string name="external_player_video_queue_support_has_not_been_enabled_">External player video queue support has not been enabled.</string>
     <string name="queue_is_empty_">Queue is empty.</string>
-    <string name="media_player_internal">Media Player - Internal</string>    
+    <string name="media_player_internal">Media Player - Internal</string>
     <string name="media_player_external">Media Player - External</string>
-        
-    <string name="no_play_store_installed_on_device">No Play Store installed on device</string>    
-    <string name="rate_it_">Rate it!</string>    
-    <string name="remind_me_later">Remind me later</string>    
-    <string name="no_thanks">No thanks</string>    
-    <string name="if_you_enjoy_using_">"If you enjoy using "</string>    
-    <string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, please take a moment to rate it. Thanks for your support!</string>    
-    <string name="rate_">"Rate "</string>    
-    <string name="cast_fling_with_">Cast/Fling with...</string>    
-    <string name="add_video_to_queue">Add video to queue</string>    
+    <string name="no_play_store_installed_on_device">No Play Store installed on device</string>
+    <string name="rate_it_">Rate it!</string>
+    <string name="remind_me_later">Remind me later</string>
+    <string name="no_thanks">No thanks</string>
+    <string name="if_you_enjoy_using_">"If you enjoy using "</string>
+    <string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, please take a moment to rate it. Thanks for your support!</string>
+    <string name="rate_">"Rate "</string>
+    <string name="cast_fling_with_">Cast/Fling with...</string>
+    <string name="add_video_to_queue">Add video to queue</string>
     <string name="there_are_still_videos_int_the_queue_">There are still videos int the queue.</string>
-        
-    <string name="remote_control_menu_summary">When enabled the menu key will bring up the slide out menu, otherwise it will activate the context menu for an item if available.</string>    
-    <string name="enable_sliding_menu">Enable Sliding Menu</string>    
+    <string name="remote_control_menu_summary">When enabled the menu key will bring up the slide out menu, otherwise it will activate the context menu for an item if available.</string>
+    <string name="enable_sliding_menu">Enable Sliding Menu</string>
     <string name="preference_remote_control">Remote Control</string>
-        
-    <string name="overscan_adjustement_summary">Adjusts the screen so that items are not cut off.  May be necessary when running on OUYA or other Android TV devices.</string>    
-    <string name="overscan_compensation">Overscan Compensation</string>    
-    <string name="display_adjustements">Display Adjustements</string>    
-    <string name="add_season_to_queue">Add season to queue</string>    
-    <string name="season_options">Season Options</string>    
-    <string name="preferred_external_player_summary">This selection allows the choosing of what external player will be used to play back video content. Not all players support all functionality.  MX Player and MX Player pro support the ability to update the Plex playback position.  The System Default will just launch what ever the system default player is, and has limited functionality.  If you need specific functionality make sure to select a particular player.</string>    
+    <string name="overscan_adjustement_summary">Adjusts the screen so that items are not cut off.  May be necessary when running on OUYA or other Android TV devices.</string>
+    <string name="overscan_compensation">Overscan Compensation</string>
+    <string name="display_adjustements">Display Adjustements</string>
+    <string name="add_season_to_queue">Add season to queue</string>
+    <string name="season_options">Season Options</string>
+    <string name="preferred_external_player_summary">This selection allows the choosing of what external player will be used to play back video content. Not all players support all functionality.  MX Player and MX Player pro support the ability to update the Plex playback position.  The System Default will just launch what ever the system default player is, and has limited functionality.  If you need specific functionality make sure to select a particular player.</string>
     <string name="preferred_external_player">Preferred External Player</string>
-    
     <string name="series_select_the_starting_category_filter_">Select the starting category filter for tv shows.</string>
     <string name="categories_series_summary_preference_description">Categories are used to select the starting filter when browsing tv shows. The default is All.</string>
-    
+
     <string-array name="categoryListNamesSeries">
         <item>All</item>
         <item>Newest</item>
@@ -165,7 +158,6 @@
         <item>Recently Viewed Shows</item>
         <item>Unwatched</item>
     </string-array>
-
     <string-array name="categoryListValuesSeries">
         <item>all</item>
         <item>newest</item>
@@ -175,11 +167,15 @@
         <item>recentlyViewedShows</item>
         <item>unwatched</item>
     </string-array>
-        <string name="resume_video">Resume Video</string>
-        <string name="resume_the_video_from_">"Resume the video from "</string>
-        <string name="_or_restart_">" or restart?"</string>
-        <string name="resume">Resume</string>
-        <string name="restart">Restart</string>
-    
-    
+
+    <string name="resume_video">Resume Video</string>
+    <string name="resume_the_video_from_">"Resume the video from "</string>
+    <string name="_or_restart_">" or restart?"</string>
+    <string name="resume">Resume</string>
+    <string name="restart">Restart</string>
+    <string name="tv_shows_will_be_displayed_in_a_grid_view_">TV Shows will be displayed in a grid view.</string>
+    <string name="prefer_grid_view_for_series">Prefer Grid View for Series</string>
+    <string name="enables_video_queue_support_for_external_players_">Enables video queue support for external players.</string>
+    <string name="enable_video_queue_for_external_players">Enable Video Queue for External Players</string>
+
 </resources>

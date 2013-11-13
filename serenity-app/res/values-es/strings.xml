@@ -154,5 +154,15 @@
         <item>Desatendido</item>
     </string-array>
     
+    <string name="resume_video">Reanudar vídeo</string>
+    <string name="resume_the_video_from_">"Reanudar el vídeo de "</string>
+    <string name="_or_restart_">" o reiniciar?"</string>
+    <string name="resume">Reanudar</string>
+    <string name="restart">Comenzar de Nuevo</string>
+    <string name="tv_shows_will_be_displayed_in_a_grid_view_">Programas de TV se muestran en una vista de cuadrícula.</string>
+    <string name="prefer_grid_view_for_series">Prefiero cuadricula para la Serie</string>
+    <string name="enables_video_queue_support_for_external_players_">Activa el soporte de cola de vídeo para los jugadores exteriores.</string>
+    <string name="enable_video_queue_for_external_players">Habilitar cola vídeo para los jugadores externos</string>
+    
     
 </resources>
