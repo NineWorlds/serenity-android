@@ -62,6 +62,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	private static Activity context;
 	private static String category;
 	private Handler secondaryCategoryHandler;
+	private String savedInstanceCategory;
 
 	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
 			String ckey) {
@@ -70,12 +71,30 @@ public class CategorySpinnerOnItemSelectedListener implements
 		secondaryCategoryHandler = new SecondaryCategoryHandler();
 	}
 
+	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
+			String ckey, boolean sw) {
+		selected = defaultSelection;
+		key = ckey;
+		secondaryCategoryHandler = new SecondaryCategoryHandler();
+		savedInstanceCategory = defaultSelection;
+		firstSelection = sw;
+	}
+	
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 		context = (Activity) view.getContext();
 		CategoryInfo item = (CategoryInfo) viewAdapter
 				.getItemAtPosition(position);
+		
+		if (savedInstanceCategory != null) {
+			int savedInstancePosition = getSavedInstancePosition(viewAdapter);
+			item = (CategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
+			viewAdapter.setSelection(savedInstancePosition);
+			savedInstanceCategory = null;
+			setupImageGallery(item);
+		}
+		
 
 		if (firstSelection) {
 			SharedPreferences prefs = PreferenceManager
@@ -115,6 +134,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 
 		selected = item.getCategory();
 		category = item.getCategory();
+		TVShowBrowserActivity.savedCategory = selected;
 
 		Spinner secondarySpinner = (Spinner) context
 				.findViewById(R.id.tvshow_movieCategoryFilter2);
@@ -144,6 +164,18 @@ public class CategorySpinnerOnItemSelectedListener implements
 		}
 
 	}
+	
+	private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
+		int count = viewAdapter.getCount();
+		for (int i = 0; i < count; i++) {
+			CategoryInfo citem = (CategoryInfo) viewAdapter
+					.getItemAtPosition(i);
+			if (citem.getCategory().equals(savedInstanceCategory)) {
+				return i;
+			}
+		}
+		return 0;
+	}	
 
 	/**
 	 * @param item

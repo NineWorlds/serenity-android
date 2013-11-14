@@ -68,8 +68,9 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 	private static String key;
 	private Handler categoryHandler;
 	private SharedPreferences preferences;
-	public static boolean USE_POSTER_LAYOUT = false;
-	public static boolean USE_GRID_LAYOUT = false;
+	public static boolean USE_POSTER_LAYOUT = false;  // TODO: refactor to setter/getter
+	public static boolean USE_GRID_LAYOUT = false;  // TODO: refactor to setter/getter
+	public static String savedCategory;  // TODO: refactor to setter/getter
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -234,6 +235,35 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 		menuOptions.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(menuDrawer));
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
+	 */
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		if (savedCategory != null) {
+			outState.putString("savedCategory", savedCategory );
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#finish()
+	 */
+	@Override
+	public void finish() {
+		super.finish();
+		savedCategory = null;
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		savedCategory = savedInstanceState.getString("savedCategory");
+	}
+	
+	
 
 	private static class CategoryHandler extends Handler {
 
@@ -267,9 +297,17 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 					.findViewById(R.id.tvshow_CategoryFilter);
 			categorySpinner.setVisibility(View.VISIBLE);
 			categorySpinner.setAdapter(spinnerArrayAdapter);
-			categorySpinner
-					.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-							"all", key));
+			
+			if (savedCategory == null) {
+				categorySpinner
+						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+								"all", key));
+			} else {
+				categorySpinner
+				.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+						savedCategory, key, false));
+				
+			}
 			categorySpinner.requestFocus();
 		}
 	}
