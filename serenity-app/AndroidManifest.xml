@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="us.nineworlds.serenity"
-    android:versionCode="43"
-    android:versionName="1.5.0" xmlns:tools="http://schemas.android.com/tools">
+    android:versionCode="44"
+    android:versionName="1.5.1-dev" xmlns:tools="http://schemas.android.com/tools">
     
     <!--  try to exclude phone devices from the list. Currently only support Tablets and TVs -->
     <supports-screens android:smallScreens="false"
