@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 import android.app.Activity;
@@ -60,7 +61,7 @@ public class TVShowMenuDrawerOnItemClickedListener implements OnItemClickListene
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Activity activity = (Activity) view.getContext();
+		SerenityMultiViewVideoActivity activity = (SerenityMultiViewVideoActivity) view.getContext();
 		
 		switch (position) {
 		case GRID_VIEW:
@@ -68,7 +69,7 @@ public class TVShowMenuDrawerOnItemClickedListener implements OnItemClickListene
 			toggleView(activity, true);
 			break;
 		case DETAIL_VIEW:
-			if (TVShowBrowserActivity.USE_POSTER_LAYOUT) {
+			if (activity.isPosterLayoutActive()) {
 				menuDrawer.setContentView(R.layout.activity_tvbrowser_show_posters);
 			} else {
 				menuDrawer.setContentView(R.layout.activity_tvbrowser_show_banners);
@@ -91,10 +92,10 @@ public class TVShowMenuDrawerOnItemClickedListener implements OnItemClickListene
 	/**
 	 * @param activity
 	 */
-	protected void toggleView(Activity activity, boolean enableGridView) {
+	protected void toggleView(SerenityMultiViewVideoActivity activity, boolean enableGridView) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 		Editor e = prefs.edit();
-		TVShowBrowserActivity.USE_GRID_LAYOUT = enableGridView;
+		activity.setGridViewEnabled(enableGridView);
 		e.putBoolean("series_layout_grid", enableGridView);
 		e.apply();
 	}

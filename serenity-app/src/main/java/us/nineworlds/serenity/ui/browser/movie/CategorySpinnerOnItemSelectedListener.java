@@ -177,7 +177,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 				key, item.getCategory());
 		GalleryVideoOnItemClickListener onClick = new GalleryVideoOnItemClickListener(); 
 		GalleryVideoOnItemLongClickListener onLongClick = new GalleryVideoOnItemLongClickListener();
-		if (!context.isGridViewEnabled()) {
+		if (!context.isGridViewActive()) {
 			SerenityGallery posterGallery = (SerenityGallery) context
 					.findViewById(R.id.moviePosterGallery);
 			boolean scrollingAnimation = prefs.getBoolean("animation_gallery_scrolling", true);

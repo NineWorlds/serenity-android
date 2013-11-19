@@ -30,6 +30,7 @@ import com.jess.ui.TwoWayGridView;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
 
 import us.nineworlds.serenity.R;
@@ -59,7 +60,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	private String selected;
 	private static String key;
 	private boolean firstSelection = true;
-	private static Activity context;
+	private static SerenityMultiViewVideoActivity context;
 	private static String category;
 	private Handler secondaryCategoryHandler;
 	private String savedInstanceCategory;
@@ -83,7 +84,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
-		context = (Activity) view.getContext();
+		context = (SerenityMultiViewVideoActivity) view.getContext();
 		CategoryInfo item = (CategoryInfo) viewAdapter
 				.getItemAtPosition(position);
 		
@@ -183,7 +184,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	protected void setupImageGallery(CategoryInfo item) {
 		View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
 
-		if (TVShowBrowserActivity.USE_GRID_LAYOUT) {
+		if (context.isGridViewActive()) {
 			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.tvShowGridView);
 			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(context, key, item.getCategory()));
 			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(bgLayout, context));
@@ -192,7 +193,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 		} else {
 			Gallery posterGallery = (Gallery) context
 					.findViewById(R.id.tvShowBannerGallery);
-			if (!TVShowBrowserActivity.USE_POSTER_LAYOUT) {
+			if (!context.isPosterLayoutActive()) {
 				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
 						context, key, item.getCategory()));
 			} else {

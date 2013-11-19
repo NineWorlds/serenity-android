@@ -64,7 +64,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	@Override
 	protected void createSideMenu() {
 		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
-		if (IS_GRID_VIEW) {
+		if (gridViewActive) {
 			menuDrawer.setContentView(R.layout.activity_movie_browser_gridview);
 		} else {
 			menuDrawer.setContentView(R.layout.activity_movie_browser);
@@ -138,7 +138,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		super.onCreate(savedInstanceState);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		IS_GRID_VIEW = prefs.getBoolean("movie_layout_grid", false);
+		gridViewActive = prefs.getBoolean("movie_layout_grid", false);
 				
 		key = getIntent().getExtras().getString("key");
 		createSideMenu();

@@ -33,6 +33,7 @@ import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
@@ -59,7 +60,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 
 	private static final String SEPERATOR = "/";
 	private View bgLayout;
-	private Activity context;
+	private SerenityMultiViewVideoActivity context;
 	private ImageLoader imageLoader;
 	private View previous;
 	private ImageSize bgImageSize = new ImageSize(1280, 720);
@@ -68,7 +69,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 	/**
 	 * 
 	 */
-	public TVShowGalleryOnItemSelectedListener(View bgv, Activity activity) {
+	public TVShowGalleryOnItemSelectedListener(View bgv, SerenityMultiViewVideoActivity activity) {
 		bgLayout = bgv;
 		context = activity;
 
@@ -219,7 +220,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 				new SerenityBackgroundLoaderListener(bgLayout,
 						R.drawable.tvshows));
 
-		if (!TVShowBrowserActivity.USE_POSTER_LAYOUT) {
+		if (!context.isPosterLayoutActive()) {
 			ImageView showImage = (ImageView) context
 					.findViewById(R.id.tvShowImage);
 			showImage.setVisibility(View.VISIBLE);

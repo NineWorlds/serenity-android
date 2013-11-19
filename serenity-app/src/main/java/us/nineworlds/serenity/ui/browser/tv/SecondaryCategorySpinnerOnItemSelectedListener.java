@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 
 import us.nineworlds.serenity.R;
 
@@ -65,10 +66,10 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		}
 
 		selected = item.getCategory();
-		Activity c = (Activity) view.getContext();
+		SerenityMultiViewVideoActivity c = (SerenityMultiViewVideoActivity) view.getContext();
 
 		View bgLayout = c.findViewById(R.id.tvshowBrowserLayout);
-		if (TVShowBrowserActivity.USE_GRID_LAYOUT) {
+		if (c.isGridViewActive()) {
 			TwoWayGridView gridView = (TwoWayGridView) c.findViewById(R.id.tvShowGridView);
 			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(c, key, item.getParentCategory() + "/"
 					+ item.getCategory()));
@@ -78,7 +79,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 			Gallery posterGallery = (Gallery) c
 					.findViewById(R.id.tvShowBannerGallery);
 
-			if (!TVShowBrowserActivity.USE_POSTER_LAYOUT) {
+			if (c.isPosterLayoutActive()) {
 				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(c,
 						key, item.getParentCategory() + "/"
 								+ item.getCategory()));

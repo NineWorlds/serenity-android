@@ -33,6 +33,7 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 import us.nineworlds.serenity.core.services.ShowRetrievalIntentService;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
@@ -77,10 +78,12 @@ public class TVShowBannerImageGalleryAdapter extends
 
 	private String key;
 	protected static ProgressDialog pd;
+	private SerenityMultiViewVideoActivity showActivity;
 
 	public TVShowBannerImageGalleryAdapter(Context c, String key,
 			String category) {
 		super(c, key, category);
+		showActivity = (SerenityMultiViewVideoActivity) c;
 		tvShowList = new ArrayList<TVShowSeriesInfo>();
 
 		imageLoader = SerenityApplication.getImageLoader();
@@ -254,7 +257,7 @@ public class TVShowBannerImageGalleryAdapter extends
 				tv.setText(Integer.toString(tvShowList.size()) + context.getString(R.string._item_s_));
 			}
 			notifyDataSetChanged();
-			if (TVShowBrowserActivity.USE_GRID_LAYOUT) {
+			if (showActivity.isGridViewActive()) {
 				TwoWayGridView gridView = (TwoWayGridView) context
 						.findViewById(R.id.tvShowGridView);
 				gridView.requestFocusFromTouch();

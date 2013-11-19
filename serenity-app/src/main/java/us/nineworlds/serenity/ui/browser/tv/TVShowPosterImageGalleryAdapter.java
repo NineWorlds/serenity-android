@@ -30,6 +30,7 @@ import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
 import us.nineworlds.serenity.R;
@@ -91,8 +92,9 @@ public class TVShowPosterImageGalleryAdapter extends
 		
 		initPosterMetaData(galleryCellView, pi, width, height, true);
 		
+		SerenityMultiViewVideoActivity c = (SerenityMultiViewVideoActivity) context;
 		
-		if (TVShowBrowserActivity.USE_GRID_LAYOUT) {
+		if (c.isGridViewActive()) {
 			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
 
 		} else {

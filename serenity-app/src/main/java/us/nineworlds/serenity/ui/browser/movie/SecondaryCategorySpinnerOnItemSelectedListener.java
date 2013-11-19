@@ -85,7 +85,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(c, key,
 				item.getParentCategory() + "/" + item.getCategory());
 
-		if (!c.isGridViewEnabled()) {
+		if (!c.isGridViewActive()) {
 			boolean scrollingAnimation = prefs.getBoolean("animation_gallery_scrolling", true);
 			posterGallery.setAdapter(adapter);
 			posterGallery

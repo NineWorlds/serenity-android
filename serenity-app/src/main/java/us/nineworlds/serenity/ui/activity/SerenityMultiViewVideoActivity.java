@@ -35,14 +35,28 @@ package us.nineworlds.serenity.ui.activity;
 public abstract class SerenityMultiViewVideoActivity extends
 		SerenityVideoActivity {
 
-	protected boolean IS_GRID_VIEW = false;
+	protected boolean posterLayoutActive = false;
+	protected boolean gridViewActive = false;
 
-    public boolean isGridViewEnabled() {
-    	return IS_GRID_VIEW;
+    public boolean isGridViewActive() {
+    	return gridViewActive;
     }
     
     public void setGridViewEnabled(boolean sw) {
-    	IS_GRID_VIEW = sw;
+    	gridViewActive = sw;
+    }
+    
+    /**
+     * Used to indicate whether posters or banners are shown.
+     * 
+     * @return
+     */
+    public boolean isPosterLayoutActive() {
+    	return posterLayoutActive;
+    }
+    
+    public void setPosterLayoutActive(boolean sw) {
+    	posterLayoutActive = sw;
     }
     
 }

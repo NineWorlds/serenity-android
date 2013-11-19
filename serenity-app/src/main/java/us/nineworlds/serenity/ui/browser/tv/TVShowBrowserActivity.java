@@ -32,6 +32,7 @@ import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.MenuDrawerItem;
 import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.TVShowCategoryRetrievalIntentService;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
@@ -61,14 +62,13 @@ import android.widget.Spinner;
  * @author dcarver
  * 
  */
-public class TVShowBrowserActivity extends SerenityVideoActivity {
+public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	private static Spinner categorySpinner;
 	private boolean restarted_state = false;
 	private static String key;
 	private Handler categoryHandler;
 	private SharedPreferences preferences;
-	public static boolean USE_POSTER_LAYOUT = false;  // TODO: refactor to setter/getter
 	public static String savedCategory;  // TODO: refactor to setter/getter
 
 	@Override
@@ -199,11 +199,11 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
 		menuDrawer.setMenuView(R.layout.menu_drawer);
 		
-		USE_POSTER_LAYOUT = preferences.getBoolean("series_layout_posters", false);
-		USE_GRID_LAYOUT = preferences.getBoolean("series_layout_grid", false);
-		if (USE_GRID_LAYOUT) {
+		posterLayoutActive = preferences.getBoolean("series_layout_posters", false);
+		gridViewActive = preferences.getBoolean("series_layout_grid", false);
+		if (isGridViewActive()) {
 			menuDrawer.setContentView(R.layout.activity_tvbrowser_show_gridview_posters);
-		} else if (USE_POSTER_LAYOUT) {
+		} else if (posterLayoutActive) {
 			menuDrawer.setContentView(R.layout.activity_tvbrowser_show_posters);
 		} else {
 			menuDrawer.setContentView(R.layout.activity_tvbrowser_show_banners);

@@ -88,7 +88,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 		width = ImageUtils.getDPI(130, context);
 		height = ImageUtils.getDPI(200, context);
-		if (!movieContext.isGridViewEnabled()) {
+		if (!movieContext.isGridViewActive()) {
 			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 			galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(
 					width, height));
@@ -100,7 +100,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 					width, height));
 		}
 
-		shrinkPosterAnimation(mpiv, movieContext.isGridViewEnabled());
+		shrinkPosterAnimation(mpiv, movieContext.isGridViewActive());
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
 		setWatchedStatus(galleryCellView, pi);
@@ -125,7 +125,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		public void handleMessage(Message msg) {
 			posterList = (List<VideoContentInfo>) msg.obj;
 			notifyAdapter.notifyDataSetChanged();
-			if (!movieContext.isGridViewEnabled()) {
+			if (!movieContext.isGridViewActive()) {
 				SerenityGallery posterGallery = (SerenityGallery) context
 						.findViewById(R.id.moviePosterGallery);
 				posterGallery.requestFocusFromTouch();
