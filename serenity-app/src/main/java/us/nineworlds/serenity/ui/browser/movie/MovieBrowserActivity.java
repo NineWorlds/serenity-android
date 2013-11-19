@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2012-2013 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -72,8 +72,6 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 	@Override
 	protected void createSideMenu() {
 		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		IS_GRID_VIEW = prefs.getBoolean("movie_layout_grid", false);
 		if (IS_GRID_VIEW) {
 			menuDrawer.setContentView(R.layout.activity_movie_browser_gridview);
 		} else {
@@ -147,6 +145,8 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		IS_GRID_VIEW = prefs.getBoolean("movie_layout_grid", false);
 				
 		key = getIntent().getExtras().getString("key");
 		createSideMenu();
@@ -168,7 +168,7 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 		super.onStart();
 		EasyTracker.getInstance().activityStart(this);
 		if (restarted_state == false) {
-			categoryHandler = new CategoryHandler();
+			categoryHandler = new CategoryHandler(this, savedCategory, key);
 			Messenger messenger = new Messenger(categoryHandler);
 			Intent categoriesIntent = new Intent(this,
 					CategoryRetrievalIntentService.class);
@@ -231,50 +231,5 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 		
 		savedCategory = savedInstanceState.getString("savedCategory");
 	}
-	
-	
-	private static class CategoryHandler extends Handler {
-
-		private ArrayList<CategoryInfo> categories;
 		
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see android.os.Handler#handleMessage(android.os.Message)
-		 */
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.obj != null) {
-				categories = (ArrayList<CategoryInfo>) msg.obj;
-				setupMovieBrowser();
-			}
-		}
-
-		/**
-		 * Setup the Gallery and Category spinners
-		 */
-		protected void setupMovieBrowser() {
-			ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
-					context, R.layout.serenity_spinner_textview, categories);
-			spinnerArrayAdapter
-					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
-
-			categorySpinner = (Spinner) context
-					.findViewById(R.id.movieCategoryFilter);
-			categorySpinner.setVisibility(View.VISIBLE);
-			categorySpinner.setAdapter(spinnerArrayAdapter);
-			if (savedCategory == null) {
-				categorySpinner
-						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-								"all", key));
-			} else {
-				categorySpinner
-				.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-						savedCategory, key, false));
-			}
-			categorySpinner.requestFocus();
-		}
-	}
-	
-	
 }
