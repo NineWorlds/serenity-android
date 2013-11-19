@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.browser.movie;
 import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
@@ -73,7 +74,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		}
 
 		selected = item.getCategory();
-		Activity c = (Activity) view.getContext();
+		MovieBrowserActivity c = (MovieBrowserActivity) view.getContext();
 		if (prefs == null) {
 			prefs = PreferenceManager.getDefaultSharedPreferences(c);
 		}
@@ -84,7 +85,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(c, key,
 				item.getParentCategory() + "/" + item.getCategory());
 
-		if (!MovieBrowserActivity.IS_GRID_VIEW) {
+		if (!c.isGridViewEnabled()) {
 			boolean scrollingAnimation = prefs.getBoolean("animation_gallery_scrolling", true);
 			posterGallery.setAdapter(adapter);
 			posterGallery

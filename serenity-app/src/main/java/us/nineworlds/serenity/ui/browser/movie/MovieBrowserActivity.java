@@ -28,11 +28,10 @@ import java.util.List;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
-import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.MenuDrawerItem;
 import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
-import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
 import us.nineworlds.serenity.R;
@@ -41,28 +40,21 @@ import us.nineworlds.serenity.SerenityApplication;
 import com.google.analytics.tracking.android.EasyTracker;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 
-public class MovieBrowserActivity extends SerenityVideoActivity {
+public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	private static String key;
-	private static Spinner categorySpinner;
 	private boolean restarted_state = false;
 	private Handler categoryHandler;
-	public static boolean IS_GRID_VIEW = false;
-	private static Activity context;
 	private SharedPreferences prefs = null;
 	public static String savedCategory;
 	
@@ -175,7 +167,6 @@ public class MovieBrowserActivity extends SerenityVideoActivity {
 			categoriesIntent.putExtra("key", key);
 			categoriesIntent.putExtra("MESSENGER", messenger);
 			startService(categoriesIntent);
-			context = this;
 		}
 		restarted_state = false;
 	}

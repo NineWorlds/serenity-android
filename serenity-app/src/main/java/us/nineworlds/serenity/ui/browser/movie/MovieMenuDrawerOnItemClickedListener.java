@@ -25,12 +25,14 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.text.method.MovementMethod;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -60,7 +62,7 @@ public class MovieMenuDrawerOnItemClickedListener implements OnItemClickListener
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Activity activity = (Activity) view.getContext();
+		MovieBrowserActivity activity = (MovieBrowserActivity) view.getContext();
 		
 		switch (position) {
 		case GRID_VIEW:
@@ -94,10 +96,10 @@ public class MovieMenuDrawerOnItemClickedListener implements OnItemClickListener
 	/**
 	 * @param activity
 	 */
-	protected void toggleView(Activity activity, boolean enableGridView) {
+	protected void toggleView(MovieBrowserActivity activity, boolean enableGridView) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 		Editor e = prefs.edit();
-		MovieBrowserActivity.IS_GRID_VIEW = enableGridView;
+		activity.setGridViewEnabled(enableGridView);
 		e.putBoolean("movie_layout_grid", enableGridView);
 		e.apply();
 	}

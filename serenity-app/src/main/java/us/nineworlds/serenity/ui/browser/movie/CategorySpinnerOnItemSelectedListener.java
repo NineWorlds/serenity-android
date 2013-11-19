@@ -30,6 +30,7 @@ import com.jess.ui.TwoWayGridView;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
@@ -63,7 +64,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	private String selected;
 	private static String key;
 	private boolean firstSelection = true;
-	private static Activity context;
+	private static SerenityMultiViewVideoActivity context;
 	private static String category;
 	private String savedInstanceCategory; // From a restarted activity
 	private Handler secondaryCategoryHandler;
@@ -89,7 +90,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
-		context = (Activity) view.getContext();
+		context = (SerenityMultiViewVideoActivity) view.getContext();
 		View bgLayout = context
 				.findViewById(R.id.movieBrowserBackgroundLayout);
 		if (prefs == null) {
@@ -176,7 +177,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 				key, item.getCategory());
 		GalleryVideoOnItemClickListener onClick = new GalleryVideoOnItemClickListener(); 
 		GalleryVideoOnItemLongClickListener onLongClick = new GalleryVideoOnItemLongClickListener();
-		if (!MovieBrowserActivity.IS_GRID_VIEW) {
+		if (!context.isGridViewEnabled()) {
 			SerenityGallery posterGallery = (SerenityGallery) context
 					.findViewById(R.id.moviePosterGallery);
 			boolean scrollingAnimation = prefs.getBoolean("animation_gallery_scrolling", true);

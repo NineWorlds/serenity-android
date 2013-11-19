@@ -29,6 +29,7 @@ import com.jess.ui.TwoWayAbsListView;
 import com.jess.ui.TwoWayGridView;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -62,8 +63,10 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	protected static AbstractPosterImageGalleryAdapter notifyAdapter;
 	protected static ProgressDialog pd;
 	private Handler posterGalleryHandler;
+	private static MovieBrowserActivity movieContext;
 	public MoviePosterImageAdapter(Context c, String key, String category) {
 		super(c, key, category);
+		movieContext = (MovieBrowserActivity) c;
 		pd = ProgressDialog
 				.show(c, "", c.getString(R.string.retrieving_movies));
 		notifyAdapter = this;
@@ -85,7 +88,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 		width = ImageUtils.getDPI(130, context);
 		height = ImageUtils.getDPI(200, context);
-		if (!MovieBrowserActivity.IS_GRID_VIEW) {
+		if (!movieContext.isGridViewEnabled()) {
 			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 			galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(
 					width, height));
@@ -97,7 +100,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 					width, height));
 		}
 
-		shrinkPosterAnimation(mpiv, MovieBrowserActivity.IS_GRID_VIEW);
+		shrinkPosterAnimation(mpiv, movieContext.isGridViewEnabled());
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
 		setWatchedStatus(galleryCellView, pi);
@@ -122,7 +125,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		public void handleMessage(Message msg) {
 			posterList = (List<VideoContentInfo>) msg.obj;
 			notifyAdapter.notifyDataSetChanged();
-			if (!MovieBrowserActivity.IS_GRID_VIEW) {
+			if (!movieContext.isGridViewEnabled()) {
 				SerenityGallery posterGallery = (SerenityGallery) context
 						.findViewById(R.id.moviePosterGallery);
 				posterGallery.requestFocusFromTouch();

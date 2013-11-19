@@ -69,7 +69,6 @@ public class TVShowBrowserActivity extends SerenityVideoActivity {
 	private Handler categoryHandler;
 	private SharedPreferences preferences;
 	public static boolean USE_POSTER_LAYOUT = false;  // TODO: refactor to setter/getter
-	public static boolean USE_GRID_LAYOUT = false;  // TODO: refactor to setter/getter
 	public static String savedCategory;  // TODO: refactor to setter/getter
 
 	@Override
