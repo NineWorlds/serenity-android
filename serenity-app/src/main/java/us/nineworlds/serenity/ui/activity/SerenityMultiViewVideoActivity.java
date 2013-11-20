@@ -37,21 +37,22 @@ import android.os.Bundle;
 public abstract class SerenityMultiViewVideoActivity extends
 		SerenityVideoActivity {
 
-	protected String savedCategory;
-	
-	public void setSavedCategory(String category) {
-		savedCategory = category;
-	}
+	protected boolean gridViewActive = false;
 	
 	protected boolean posterLayoutActive = false;
-	protected boolean gridViewActive = false;
+	
+	protected String savedCategory;
+
+	protected String savedSelectedGenreCategory;
+	
+	@Override
+	public void finish() {
+		super.finish();
+		savedCategory = null;
+	}
 
     public boolean isGridViewActive() {
     	return gridViewActive;
-    }
-    
-    public void setGridViewEnabled(boolean sw) {
-    	gridViewActive = sw;
     }
     
     /**
@@ -63,30 +64,45 @@ public abstract class SerenityMultiViewVideoActivity extends
     	return posterLayoutActive;
     }
     
-    public void setPosterLayoutActive(boolean sw) {
-    	posterLayoutActive = sw;
-    }
-
-	@Override
+    @Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		savedCategory = savedInstanceState.getString("savedCategory");
+		savedSelectedGenreCategory = savedInstanceState.getString("savedSelectedGenreCategory");
+	}
+    
+    @Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
 		if (savedCategory != null) {
 			outState.putString("savedCategory", savedCategory );
 		}
+		if (savedSelectedGenreCategory != null) {
+			outState.putString("savedSelectedGenreCategory", savedSelectedGenreCategory);
+			
+		}
 	}
 
-	@Override
-	public void finish() {
-		super.finish();
-		savedCategory = null;
-	}
+	public void setGridViewEnabled(boolean sw) {
+    	gridViewActive = sw;
+    }
 
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		
-		savedCategory = savedInstanceState.getString("savedCategory");
+	public void setPosterLayoutActive(boolean sw) {
+    	posterLayoutActive = sw;
+    }
+
+	public void setSavedCategory(String category) {
+		savedCategory = category;
+	}
+	
+	public void setSavedSelectedGenreCategory(String category) {
+		savedSelectedGenreCategory = category;
+	}
+	
+	public String retrieveSavedSelectedGenreCategory() {
+		return savedSelectedGenreCategory;
 	}
     
 }

@@ -105,7 +105,12 @@ public class CategorySpinnerOnItemSelectedListener implements
 			item = (CategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
 			viewAdapter.setSelection(savedInstancePosition);
 			savedInstanceCategory = null;
-			createGallery(item, bgLayout);
+			if (item.getLevel() == 0) {			
+				createGallery(item, bgLayout);
+			} else {
+				populateSecondaryCategory();
+				return;
+			}
 		}
 
 		if (firstSelection) {
@@ -139,21 +144,28 @@ public class CategorySpinnerOnItemSelectedListener implements
 		context.setSavedCategory(selected);
 
 		Spinner secondarySpinner = (Spinner) context
-				.findViewById(R.id.movieCategoryFilter2);
+				.findViewById(R.id.categoryFilter2);
 
 		if (item.getLevel() == 0) {
 			secondarySpinner.setVisibility(View.INVISIBLE);
 			createGallery(item, bgLayout);
 		} else {
-			Messenger messenger = new Messenger(secondaryCategoryHandler);
-			Intent categoriesIntent = new Intent(context,
-					SecondaryCategoryRetrievalIntentService.class);
-			categoriesIntent.putExtra("key", key);
-			categoriesIntent.putExtra("category", category);
-			categoriesIntent.putExtra("MESSENGER", messenger);
-			context.startService(categoriesIntent);
+			populateSecondaryCategory();
 		}
 
+	}
+
+	/**
+	 * 
+	 */
+	protected void populateSecondaryCategory() {
+		Messenger messenger = new Messenger(secondaryCategoryHandler);
+		Intent categoriesIntent = new Intent(context,
+				SecondaryCategoryRetrievalIntentService.class);
+		categoriesIntent.putExtra("key", key);
+		categoriesIntent.putExtra("category", category);
+		categoriesIntent.putExtra("MESSENGER", messenger);
+		context.startService(categoriesIntent);
 	}
 	
 	private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
@@ -227,7 +239,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 			}
 						
 			Spinner secondarySpinner = (Spinner) context
-					.findViewById(R.id.movieCategoryFilter2);
+					.findViewById(R.id.categoryFilter2);
 			secondarySpinner.setVisibility(View.VISIBLE);
 
 			ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(

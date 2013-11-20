@@ -75,7 +75,7 @@ public class CategoryHandler extends Handler {
 				.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
 		Spinner categorySpinner = (Spinner) _context
-				.findViewById(R.id.movieCategoryFilter);
+				.findViewById(R.id.categoryFilter);
 		categorySpinner.setVisibility(View.VISIBLE);
 		categorySpinner.setAdapter(spinnerArrayAdapter);
 		if (_savedCategory == null) {

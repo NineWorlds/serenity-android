@@ -292,7 +292,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
 			categorySpinner = (Spinner) context
-					.findViewById(R.id.tvshow_CategoryFilter);
+					.findViewById(R.id.categoryFilter);
 			categorySpinner.setVisibility(View.VISIBLE);
 			categorySpinner.setAdapter(spinnerArrayAdapter);
 			

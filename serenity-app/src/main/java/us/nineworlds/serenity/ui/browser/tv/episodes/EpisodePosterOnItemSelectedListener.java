@@ -187,9 +187,9 @@ public class EpisodePosterOnItemSelectedListener extends
 	protected void createVideoMetaData(ImageView v) {
 		super.createVideoMetaData(v);
 		
-		View categoryFilter = context.findViewById(R.id.movieCategoryFilter);
+		View categoryFilter = context.findViewById(R.id.categoryFilter);
 		categoryFilter.setVisibility(View.GONE);
-		View categoryFilter2 = context.findViewById(R.id.movieCategoryFilter2);
+		View categoryFilter2 = context.findViewById(R.id.categoryFilter2);
 		categoryFilter2.setVisibility(View.GONE);
 		View categoryName = context.findViewById(R.id.movieCategoryName);
 		categoryName.setVisibility(View.GONE);

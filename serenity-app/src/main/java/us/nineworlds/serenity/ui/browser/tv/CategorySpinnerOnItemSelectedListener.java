@@ -88,12 +88,20 @@ public class CategorySpinnerOnItemSelectedListener implements
 		CategoryInfo item = (CategoryInfo) viewAdapter
 				.getItemAtPosition(position);
 		
+		Spinner secondarySpinner = (Spinner) context
+				.findViewById(R.id.categoryFilter2);
+		
 		if (savedInstanceCategory != null) {
 			int savedInstancePosition = getSavedInstancePosition(viewAdapter);
 			item = (CategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
 			viewAdapter.setSelection(savedInstancePosition);
 			savedInstanceCategory = null;
-			setupImageGallery(item);
+			if (item.getLevel() == 0) {
+				populatePrimaryCategory(item, secondarySpinner);
+			} else {
+				populateSecondaryCategory();
+			}
+			return;
 		}
 		
 
@@ -137,33 +145,46 @@ public class CategorySpinnerOnItemSelectedListener implements
 		category = item.getCategory();
 		context.setSavedCategory(selected);
 
-		Spinner secondarySpinner = (Spinner) context
-				.findViewById(R.id.tvshow_movieCategoryFilter2);
 
 		if (item.getLevel() == 0) {
-
-			if (item.getCategory().equals("newest")
-					|| item.getCategory().equals("recentlyAdded")
-					|| item.getCategory().equals("recentlyViewed")
-					|| item.getCategory().equals("onDeck")) {
-				Intent i = new Intent(context, EpisodeBrowserActivity.class);
-				i.putExtra("key",
-						"/library/sections/" + key + "/" + item.getCategory());
-				context.startActivityForResult(i, 0);
-			} else {
-				secondarySpinner.setVisibility(View.INVISIBLE);
-				setupImageGallery(item);
-			}
+			populatePrimaryCategory(item, secondarySpinner);
 		} else {
-			Messenger messenger = new Messenger(secondaryCategoryHandler);
-			Intent categoriesIntent = new Intent(context,
-					SecondaryCategoryRetrievalIntentService.class);
-			categoriesIntent.putExtra("key", key);
-			categoriesIntent.putExtra("category", category);
-			categoriesIntent.putExtra("MESSENGER", messenger);
-			context.startService(categoriesIntent);
+			populateSecondaryCategory();
 		}
 
+	}
+
+	/**
+	 * @param item
+	 * @param secondarySpinner
+	 */
+	protected void populatePrimaryCategory(CategoryInfo item,
+			Spinner secondarySpinner) {
+		if (item.getCategory().equals("newest")
+				|| item.getCategory().equals("recentlyAdded")
+				|| item.getCategory().equals("recentlyViewed")
+				|| item.getCategory().equals("onDeck")) {
+			Intent i = new Intent(context, EpisodeBrowserActivity.class);
+			i.putExtra("key",
+					"/library/sections/" + key + "/" + item.getCategory());
+			context.startActivityForResult(i, 0);
+		} else {
+			secondarySpinner.setVisibility(View.INVISIBLE);
+			setupImageGallery(item);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	protected void populateSecondaryCategory() {
+		Messenger messenger = new Messenger(secondaryCategoryHandler);
+		Intent categoriesIntent = new Intent(context,
+				SecondaryCategoryRetrievalIntentService.class);
+		categoriesIntent.putExtra("key", key);
+		categoriesIntent.putExtra("category", category);
+		categoriesIntent.putExtra("MESSENGER", messenger);
+		context.startService(categoriesIntent);
 	}
 	
 	private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
@@ -233,7 +254,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 			}
 
 			Spinner secondarySpinner = (Spinner) context
-					.findViewById(R.id.tvshow_movieCategoryFilter2);
+					.findViewById(R.id.categoryFilter2);
 			secondarySpinner.setVisibility(View.VISIBLE);
 
 			ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(

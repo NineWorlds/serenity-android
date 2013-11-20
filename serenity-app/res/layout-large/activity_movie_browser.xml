@@ -45,7 +45,7 @@
             android:text="@string/category" />
 
         <Spinner
-            android:id="@+id/movieCategoryFilter"
+            android:id="@+id/categoryFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -54,12 +54,12 @@
             android:gravity="left"
             android:nextFocusDown="@+id/moviePosterGallery"
             android:nextFocusLeft="@+id/menu_button"
-            android:nextFocusRight="@+id/movieCategoryFilter2"
+            android:nextFocusRight="@+id/categoryFilter2"
             android:prompt="@string/movie_category_prompt"
             android:spinnerMode="dropdown" />
 
         <Spinner
-            android:id="@+id/movieCategoryFilter2"
+            android:id="@+id/categoryFilter2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"

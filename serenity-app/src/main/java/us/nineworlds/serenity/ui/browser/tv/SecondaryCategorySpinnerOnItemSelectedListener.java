@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import com.jess.ui.TwoWayGridView;
 
+import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 
@@ -48,6 +49,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 
 	private String selected;
 	private String key;
+	private boolean firstTimesw = true;
 
 	public SecondaryCategorySpinnerOnItemSelectedListener(
 			String defaultSelection, String key) {
@@ -58,14 +60,29 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
+		
+		SerenityMultiViewVideoActivity context = (SerenityMultiViewVideoActivity) view.getContext();
 
 		SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter
 				.getItemAtPosition(position);
+		
+		if (firstTimesw) {
+			if (context.retrieveSavedSelectedGenreCategory() != null) {
+				int savedInstancePosition = getSavedInstancePosition(viewAdapter, context.retrieveSavedSelectedGenreCategory());
+				item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
+				viewAdapter.setSelection(savedInstancePosition);
+			}
+			firstTimesw = false;
+		}
+		
+		
 		if (selected.equalsIgnoreCase(item.getCategory())) {
 			return;
 		}
 
 		selected = item.getCategory();
+		context.setSavedSelectedGenreCategory(item.getCategory());
+		
 		SerenityMultiViewVideoActivity c = (SerenityMultiViewVideoActivity) view.getContext();
 
 		View bgLayout = c.findViewById(R.id.tvshowBrowserLayout);
@@ -100,6 +117,19 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 			posterGallery.setCallbackDuringFling(false);
 		}
 	}
+	
+	private int getSavedInstancePosition(AdapterView<?> viewAdapter, String category) {
+		int count = viewAdapter.getCount();
+		for (int i = 0; i < count; i++) {
+			CategoryInfo citem = (CategoryInfo) viewAdapter
+					.getItemAtPosition(i);
+			if (citem.getCategory().equals(category)) {
+				return i;
+			}
+		}
+		return 0;
+	}
+	
 
 	@Override
 	public void onNothingSelected(AdapterView<?> va) {
