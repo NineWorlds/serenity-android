@@ -28,6 +28,7 @@ import us.nineworlds.serenity.core.model.impl.Subtitle;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * @author dcarver
@@ -71,11 +72,14 @@ public class MXPlayer extends AbstractExternalPlayer implements ExternalPlayer {
 		vpIntent.putExtra("return_result", true);
 		if (videoContent.getSubtitle() != null ) {
 			Subtitle subtitle = videoContent.getSubtitle();
+			Log.i(getClass().getName(), "Subtitle Selection: " + subtitle.getFormat());
 			if (!"none".equals(subtitle.getFormat())) {
 				Uri[] subt = { Uri.parse(subtitle.getKey()) };
 				vpIntent.putExtra("subs", subt);
 				vpIntent.putExtra("subs.enable", subt);
 			}
+		} else {
+			Log.i(getClass().getName(), "Subtitle content was not avialable for " + videoContent.getTitle());
 		}
 		if (videoContent.getResumeOffset() != 0 && videoContent.isPartiallyWatched()) {
 			vpIntent.putExtra("position", videoContent.getResumeOffset());
