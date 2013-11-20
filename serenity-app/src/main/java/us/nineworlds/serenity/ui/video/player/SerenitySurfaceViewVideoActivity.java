@@ -411,16 +411,18 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 
 		if (isKeyCodePauseResume(keyCode)) {
-			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-				mediaPlayer.pause();
-				mediaController.show(CONTROLLER_DELAY);
-				progressReportinghandler.removeCallbacks(progressRunnable);
-			} else {
-				mediaPlayer.start();
-				mediaController.hide();
-				progressReportinghandler.postDelayed(progressRunnable, 5000);
+			if (isMediaPlayerStateValid()) {
+				if (mediaPlayer.isPlaying()) {
+					mediaPlayer.pause();
+					mediaController.show(CONTROLLER_DELAY);
+					progressReportinghandler.removeCallbacks(progressRunnable);
+				} else {
+					mediaPlayer.start();
+					mediaController.hide();
+					progressReportinghandler.postDelayed(progressRunnable, 5000);
+				}
+				return true;
 			}
-			return true;
 		}
 
 		if (isKeyCodeSkipForward(keyCode) && isMediaPlayerStateValid()) {
