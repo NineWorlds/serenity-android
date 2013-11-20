@@ -74,7 +74,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		}
 
 		selected = item.getCategory();
-		MovieBrowserActivity c = (MovieBrowserActivity) view.getContext();
+		SerenityMultiViewVideoActivity c = (SerenityMultiViewVideoActivity) view.getContext();
 		if (prefs == null) {
 			prefs = PreferenceManager.getDefaultSharedPreferences(c);
 		}

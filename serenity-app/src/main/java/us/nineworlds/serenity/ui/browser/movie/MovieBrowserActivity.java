@@ -31,6 +31,7 @@ import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.core.model.MenuDrawerItem;
 import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
+import us.nineworlds.serenity.ui.activity.CategoryHandler;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
@@ -56,8 +57,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	private boolean restarted_state = false;
 	private Handler categoryHandler;
 	private SharedPreferences prefs = null;
-	public static String savedCategory;
-	
 	/* (non-Javadoc)
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
@@ -159,6 +158,14 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	protected void onStart() {
 		super.onStart();
 		EasyTracker.getInstance().activityStart(this);
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
 		if (restarted_state == false) {
 			categoryHandler = new CategoryHandler(this, savedCategory, key);
 			Messenger messenger = new Messenger(categoryHandler);
@@ -193,34 +200,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		super.onRestart();
 		restarted_state = true;
 		populateMenuDrawer();
-	}
-	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
-	 */
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		
-		if (savedCategory != null) {
-			outState.putString("savedCategory", savedCategory );
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#finish()
-	 */
-	@Override
-	public void finish() {
-		super.finish();
-		savedCategory = null;
-	}
-	
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		
-		savedCategory = savedInstanceState.getString("savedCategory");
 	}
 		
 }

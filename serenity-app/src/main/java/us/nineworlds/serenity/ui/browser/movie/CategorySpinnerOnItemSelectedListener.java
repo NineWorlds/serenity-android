@@ -136,7 +136,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 
 		selected = item.getCategory();
 		category = item.getCategory();
-		MovieBrowserActivity.savedCategory = selected;
+		context.setSavedCategory(selected);
 
 		Spinner secondarySpinner = (Spinner) context
 				.findViewById(R.id.movieCategoryFilter2);

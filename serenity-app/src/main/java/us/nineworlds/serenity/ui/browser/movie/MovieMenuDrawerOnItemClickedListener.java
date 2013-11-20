@@ -62,7 +62,7 @@ public class MovieMenuDrawerOnItemClickedListener implements OnItemClickListener
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		MovieBrowserActivity activity = (MovieBrowserActivity) view.getContext();
+		SerenityMultiViewVideoActivity activity = (SerenityMultiViewVideoActivity) view.getContext();
 		
 		switch (position) {
 		case GRID_VIEW:
@@ -96,7 +96,7 @@ public class MovieMenuDrawerOnItemClickedListener implements OnItemClickListener
 	/**
 	 * @param activity
 	 */
-	protected void toggleView(MovieBrowserActivity activity, boolean enableGridView) {
+	protected void toggleView(SerenityMultiViewVideoActivity activity, boolean enableGridView) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 		Editor e = prefs.edit();
 		activity.setGridViewEnabled(enableGridView);

@@ -23,6 +23,8 @@
 
 package us.nineworlds.serenity.ui.activity;
 
+import android.os.Bundle;
+
 /**
  * A activity that handles the indicator of whether toggling
  * between Grid and Detail view should occur.  Views
@@ -35,6 +37,12 @@ package us.nineworlds.serenity.ui.activity;
 public abstract class SerenityMultiViewVideoActivity extends
 		SerenityVideoActivity {
 
+	protected String savedCategory;
+	
+	public void setSavedCategory(String category) {
+		savedCategory = category;
+	}
+	
 	protected boolean posterLayoutActive = false;
 	protected boolean gridViewActive = false;
 
@@ -58,5 +66,27 @@ public abstract class SerenityMultiViewVideoActivity extends
     public void setPosterLayoutActive(boolean sw) {
     	posterLayoutActive = sw;
     }
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		if (savedCategory != null) {
+			outState.putString("savedCategory", savedCategory );
+		}
+	}
+
+	@Override
+	public void finish() {
+		super.finish();
+		savedCategory = null;
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		savedCategory = savedInstanceState.getString("savedCategory");
+	}
     
 }

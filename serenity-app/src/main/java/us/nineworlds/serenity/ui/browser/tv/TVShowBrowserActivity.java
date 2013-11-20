@@ -69,8 +69,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	private static String key;
 	private Handler categoryHandler;
 	private SharedPreferences preferences;
-	public static String savedCategory;  // TODO: refactor to setter/getter
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,17 +93,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	protected void onStart() {
 		super.onStart();
 		EasyTracker.getInstance().activityStart(this);
-
-		if (restarted_state == false) {
-			categoryHandler = new CategoryHandler(this);
-			Messenger messenger = new Messenger(categoryHandler);
-			Intent categoriesIntent = new Intent(this,
-					TVShowCategoryRetrievalIntentService.class);
-			categoriesIntent.putExtra("key", key);
-			categoriesIntent.putExtra("MESSENGER", messenger);
-			startService(categoriesIntent);
-		}
 	}
+	
 
 	@Override
 	protected void onStop() {
@@ -127,6 +116,16 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	protected void onResume() {
 		super.onResume();
 		populateMenuDrawer();
+		if (restarted_state == false) {
+			categoryHandler = new CategoryHandler(this);
+			Messenger messenger = new Messenger(categoryHandler);
+			Intent categoriesIntent = new Intent(this,
+					TVShowCategoryRetrievalIntentService.class);
+			categoriesIntent.putExtra("key", key);
+			categoriesIntent.putExtra("MESSENGER", messenger);
+			startService(categoriesIntent);
+		}
+		
 	}
 	
 	/* (non-Javadoc)
@@ -264,7 +263,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	
 	
 
-	private static class CategoryHandler extends Handler {
+	private class CategoryHandler extends Handler {
 
 		private ArrayList<CategoryInfo> categories;
 		private Activity context;

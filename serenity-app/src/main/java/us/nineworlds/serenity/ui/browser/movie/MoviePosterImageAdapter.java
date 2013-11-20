@@ -63,10 +63,10 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	protected static AbstractPosterImageGalleryAdapter notifyAdapter;
 	protected static ProgressDialog pd;
 	private Handler posterGalleryHandler;
-	private static MovieBrowserActivity movieContext;
+	private static SerenityMultiViewVideoActivity movieContext;
 	public MoviePosterImageAdapter(Context c, String key, String category) {
 		super(c, key, category);
-		movieContext = (MovieBrowserActivity) c;
+		movieContext = (SerenityMultiViewVideoActivity) c;
 		pd = ProgressDialog
 				.show(c, "", c.getString(R.string.retrieving_movies));
 		notifyAdapter = this;

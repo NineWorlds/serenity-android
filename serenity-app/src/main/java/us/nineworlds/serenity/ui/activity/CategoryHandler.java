@@ -21,12 +21,13 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.browser.movie;
+package us.nineworlds.serenity.ui.activity;
 
 import java.util.List;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.ui.browser.movie.CategorySpinnerOnItemSelectedListener;
 
 import android.app.Activity;
 import android.os.Handler;
