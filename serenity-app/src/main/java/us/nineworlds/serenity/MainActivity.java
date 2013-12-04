@@ -71,7 +71,6 @@ import com.castillo.dd.Download;
 import com.castillo.dd.DownloadService;
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
-import com.tjeannin.apprate.AppRate;
 
 public class MainActivity extends SerenityActivity {
 
@@ -341,8 +340,6 @@ public class MainActivity extends SerenityActivity {
 		}
 
 		initDownloadService();
-
-		ratingNudger();
 		
 		if (preferences.getBoolean("overscan_compensation", false)) {
 			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
@@ -373,13 +370,6 @@ public class MainActivity extends SerenityActivity {
 		}
 	}
 
-	/**
-	 * 
-	 */
-	protected void ratingNudger() {
-		new AppRate(this).setMinDaysUntilPrompt(14)
-				.setShowIfAppHasCrashed(false).init();
-	}
 
 	@Override
 	protected void onDestroy() {
