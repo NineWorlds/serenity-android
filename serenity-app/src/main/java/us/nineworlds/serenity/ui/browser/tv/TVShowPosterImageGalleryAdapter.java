@@ -57,10 +57,13 @@ public class TVShowPosterImageGalleryAdapter extends
 
 
 	private String key;
+	private SerenityMultiViewVideoActivity showActivity;
 
 	public TVShowPosterImageGalleryAdapter(Context c, String key,
 			String category) {
 		super(c, key, category);
+		showActivity = (SerenityMultiViewVideoActivity) c;
+		
 	}
 
 	/*
@@ -71,7 +74,7 @@ public class TVShowPosterImageGalleryAdapter extends
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = context.getLayoutInflater().inflate(
+		View galleryCellView = showActivity.getLayoutInflater().inflate(
 				R.layout.poster_tvshow_indicator_view, null);
 
 		SeriesContentInfo pi = tvShowList.get(position);
@@ -92,7 +95,7 @@ public class TVShowPosterImageGalleryAdapter extends
 		
 		initPosterMetaData(galleryCellView, pi, width, height, true);
 		
-		SerenityMultiViewVideoActivity c = (SerenityMultiViewVideoActivity) context;
+		SerenityMultiViewVideoActivity c = showActivity;
 		
 		if (c.isGridViewActive()) {
 			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
