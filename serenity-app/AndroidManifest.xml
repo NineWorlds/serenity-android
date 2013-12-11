@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="us.nineworlds.serenity"
     android:versionCode="48"
-    android:versionName="1.5.3-dev" xmlns:tools="http://schemas.android.com/tools">
-    
-    <!--  try to exclude phone devices from the list. Currently only support Tablets and TVs -->
-    <supports-screens android:smallScreens="false"
-        android:normalScreens="false"
+    android:versionName="1.5.3-dev" >
+
+    <!-- try to exclude phone devices from the list. Currently only support Tablets and TVs -->
+    <supports-screens
         android:largeScreens="true"
-        android:xlargeScreens="true"
-        />
-    
+        android:normalScreens="false"
+        android:smallScreens="false"
+        android:xlargeScreens="true" />
+
     <uses-sdk
         android:minSdkVersion="13"
         android:targetSdkVersion="13" />
@@ -18,137 +19,142 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
 
-
     <application
         android:name="us.nineworlds.serenity.SerenityApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/serenity_bonsai_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true"
-        android:largeHeap="true">
-                        
-        <meta-data android:name="android.app.default_searchable"
-                android:value="us.nineworlds.serenity.ui.search.SearchableActivity"/>
-            
-        
+        android:largeHeap="true"
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value="us.nineworlds.serenity.ui.search.SearchableActivity" />
+
         <activity
-            android:name="us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity" android:label="@string/title_activity_movie_browser"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="landscape" >
+            android:name="us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity"
+            android:label="@string/title_activity_movie_browser"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
-        
         <activity
             android:name="us.nineworlds.serenity.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:hardwareAccelerated="true"
-            android:screenOrientation="landscape" >
+            android:label="@string/title_activity_main"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            
         </activity>
-        
         <activity
-            android:name="us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity" android:label="@string/title_activity_tvbrowser_show" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="landscape" >
+            android:name="us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity"
+            android:label="@string/title_activity_tvbrowser_show"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
-        
         <activity
-            android:name="us.nineworlds.serenity.ui.browser.music.MusicActivity" 
-            android:label="@string/title_activity_tvbrowser_show" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="landscape" >
+            android:name="us.nineworlds.serenity.ui.browser.music.MusicActivity"
+            android:label="@string/title_activity_tvbrowser_show"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
-        
         <activity
-            android:name="us.nineworlds.serenity.ui.browser.music.albums.MusicAlbumsActivity" 
-            android:label="@string/title_activity_tvbrowser_show" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="landscape" >
+            android:name="us.nineworlds.serenity.ui.browser.music.albums.MusicAlbumsActivity"
+            android:label="@string/title_activity_tvbrowser_show"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
-        
         <activity
-            android:name="us.nineworlds.serenity.ui.browser.music.tracks.MusicTracksActivity" 
-            android:label="@string/title_activity_tvbrowser_show" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="landscape" >
+            android:name="us.nineworlds.serenity.ui.browser.music.tracks.MusicTracksActivity"
+            android:label="@string/title_activity_tvbrowser_show"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
-        
         <activity
-            android:name="us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity" android:label="@string/title_activity_tvbrowser_show_season" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="landscape" >
+            android:name="us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity"
+            android:label="@string/title_activity_tvbrowser_show_season"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
-        
         <activity
-            android:name="us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity" android:label="@string/title_activity_tvbrowser_show_episodes" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="landscape" >
+            android:name="us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity"
+            android:label="@string/title_activity_tvbrowser_show_episodes"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
-        
         <activity
             android:name="us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />                
+                <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>    
-        </activity>  
-        
-        <activity android:name=".ui.preferences.SerenityPreferenceActivity"
-            android:screenOrientation="landscape">
+            </intent-filter>
         </activity>
-        
-        <activity android:name="us.nineworlds.serenity.ui.search.SearchableActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="landscape">
-            
-            <intent-filter >
-                <action android:name="android.intent.action.SEARCH"/>
+        <activity
+            android:name=".ui.preferences.SerenityPreferenceActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="us.nineworlds.serenity.ui.search.SearchableActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
-            
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
-            
-        <service android:name=".core.services.MainMenuIntentService"/>
-        <service android:name=".core.services.MoviesRetrievalIntentService"/>
-        <service android:name=".core.services.MusicRetrievalIntentService"/>
-        <service android:name=".core.services.MusicAlbumRetrievalIntentService"/>
-        <service android:name=".core.services.MusicTrackRetrievalIntentService"/>
-        <service android:name=".core.services.MovieMetaDataRetrievalIntentService"/>
-        <service android:name=".core.services.EpisodeRetrievalIntentService"/>
-        <service android:name=".core.services.CategoryRetrievalIntentService"/>
-        <service android:name=".core.services.SecondaryCategoryRetrievalIntentService"/>
-        <service android:name=".core.services.ShowRetrievalIntentService"/>
-        <service android:name=".core.services.ShowSeasonRetrievalIntentService"/>
-        <service android:name=".core.services.TVShowCategoryRetrievalIntentService"/>
-        <service android:name=".core.services.MovieSearchIntentService"/>    
-        <service android:name="com.castillo.dd.DownloadService" tools:ignore="MissingRegistered"/>
-        <service android:name=".core.services.GDMService" tools:ignore="MissingRegistered"/>
-        
-        
-        
-        <provider android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
-            android:authorities="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
-            ></provider>
-        
+
+        <service android:name=".core.services.MainMenuIntentService" />
+        <service android:name=".core.services.MoviesRetrievalIntentService" />
+        <service android:name=".core.services.MusicRetrievalIntentService" />
+        <service android:name=".core.services.MusicAlbumRetrievalIntentService" />
+        <service android:name=".core.services.MusicTrackRetrievalIntentService" />
+        <service android:name=".core.services.MovieMetaDataRetrievalIntentService" />
+        <service android:name=".core.services.EpisodeRetrievalIntentService" />
+        <service android:name=".core.services.CategoryRetrievalIntentService" />
+        <service android:name=".core.services.SecondaryCategoryRetrievalIntentService" />
+        <service android:name=".core.services.ShowRetrievalIntentService" />
+        <service android:name=".core.services.ShowSeasonRetrievalIntentService" />
+        <service android:name=".core.services.TVShowCategoryRetrievalIntentService" />
+        <service android:name=".core.services.MovieSearchIntentService" />
+        <service
+            android:name="com.castillo.dd.DownloadService"
+            tools:ignore="MissingRegistered" />
+        <service
+            android:name=".core.services.GDMService"
+            tools:ignore="MissingRegistered" />
+
+        <provider
+            android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
+            android:authorities="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider" >
+        </provider>
+
+        <receiver android:name="us.nineworlds.serenity.StartupBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

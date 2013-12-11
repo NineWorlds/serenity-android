@@ -177,5 +177,8 @@
     <string name="prefer_grid_view_for_series">Prefer Grid View for Series</string>
     <string name="enables_video_queue_support_for_external_players_">Enables video queue support for external players.</string>
     <string name="enable_video_queue_for_external_players">Enable Video Queue for External Players</string>
+    <string name="prefs_advanced_options">Advanced Options</string>
+    <string name="prefs_startup_boot_sum">Controls whether Serenity for Android launches immediately after the device has completed the boot up sequence.  Useful for those that want to provide a more home theater like experience.</string>
+    <string name="prefs_auto_start_after_boot">Auto Start after Boot</string>
 
 </resources>

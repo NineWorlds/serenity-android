@@ -163,5 +163,9 @@
     <string name="enables_video_queue_support_for_external_players_">Active le support de la file d\'attente de vidéo pour les joueurs extérieurs.</string>
     <string name="enable_video_queue_for_external_players">Activer la queue de la vidéo pour les joueurs externes</string>
     
+    <string name="prefs_advanced_options">Options avancées</string>
+    <string name="prefs_startup_boot_sum">Contrôle si la sérénité pour Android lance immédiatement après l\'appareil a terminé la séquence de démarrage. Utile pour ceux qui veulent offrir un théâtre plus à la maison comme expérience.</string>
+    <string name="prefs_auto_start_after_boot">Démarrage automatique après démarrage</string>
+    
     
 </resources>

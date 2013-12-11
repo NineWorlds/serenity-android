@@ -158,4 +158,8 @@
     <string name="enables_video_queue_support_for_external_players_">Ermöglicht Video-Queue-Unterstützung für externe Akteure.</string>
     <string name="enable_video_queue_for_external_players">Aktivieren Video Queue für externe Spieler</string>
 
+    <string name="prefs_advanced_options">Erweiterte Optionen</string>
+    <string name="prefs_startup_boot_sum">Steuert, ob Serenity für Android startet sofort, nachdem das Gerät die Boot-Sequenz abgeschlossen oben. Nützlich für diejenigen, die eine Heimkino-Erlebnis zu bieten, wie wollen.</string>
+    <string name="prefs_auto_start_after_boot">Auto-Start nach dem Start</string>
+    
 </resources>

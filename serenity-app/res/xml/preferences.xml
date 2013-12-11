@@ -131,5 +131,12 @@
             android:summary="@string/remote_control_menu_summary"
             android:title="@string/enable_sliding_menu" />
     </PreferenceCategory>
-
+    <PreferenceCategory android:title="@string/prefs_advanced_options" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="serenity_boot_startup"
+            android:summary="@string/prefs_startup_boot_sum"
+            android:title="@string/prefs_auto_start_after_boot" />
+    </PreferenceCategory>
+    
 </PreferenceScreen>
