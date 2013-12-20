@@ -114,7 +114,7 @@ public class AbstractVideoOnItemLongClickListener {
 		options.add(context.getString(R.string.toggle_watched_status));
 		options.add(context.getString(R.string.download_video_to_device));
 		options.add(context.getString(R.string.add_video_to_queue));
-		if (!SerenityApplication.isGoogleTV(context) && (hasAbleRemote(context) || hasGoogleTVRemote(context))) {
+		if (!SerenityApplication.isGoogleTV(context) && hasSupportedCaster()) {
 			options.add(context.getString(R.string.cast_fling_with_));
 		}
 
@@ -132,12 +132,23 @@ public class AbstractVideoOnItemLongClickListener {
 		return true;
 	}
 
+	/**
+	 * @return
+	 */
+	protected boolean hasSupportedCaster() {
+		return hasAbleRemote(context) || hasGoogleTVRemote(context) || hasAllCast(context);
+	}
+
 	protected boolean hasAbleRemote(Context context) {
 		return hasRemoteByName(context, "com.entertailion.android.remote");
 	}
 	
 	protected boolean hasGoogleTVRemote(Context context) {
 		return hasRemoteByName(context, "com.google.android.apps.tvremote");
+	}
+	
+	protected boolean hasAllCast(Context context) {
+		return hasRemoteByName(context, "com.koushikdutta.cast");
 	}
 	
 	protected boolean hasRemoteByName(Context context, String remotePackageName) {
@@ -185,7 +196,7 @@ public class AbstractVideoOnItemLongClickListener {
 	}
 	
 	protected void performGoogleTVSecondScreen() {
-		if (hasAbleRemote(context) || hasGoogleTVRemote(context)) {
+		if (hasAbleRemote(context) || hasGoogleTVRemote(context) || hasAllCast(context)) {
 			dialog.dismiss();
 						
 			final String body = info.getDirectPlayUrl();

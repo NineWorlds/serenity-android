@@ -42,7 +42,7 @@ import android.widget.Toast;
  */
 public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
 	
-	public static final Set<String> FILTER_SET = new HashSet<String>(Arrays.asList("com.entertailion.android.remote.StartupActivity", "com.google.android.apps.tvremote.StartupActivity"));
+	public static final Set<String> FILTER_SET = new HashSet<String>(Arrays.asList("com.entertailion.android.remote.StartupActivity", "com.google.android.apps.tvremote.StartupActivity", "com.koushikdutta.cast.CastActivity"));
 	
 	private Context mContext;
 	
