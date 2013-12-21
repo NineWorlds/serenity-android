@@ -81,7 +81,12 @@ public class MusicActivity extends Activity {
 		}
 		
 		if (prefs.getBoolean("overscan_compensation", false)) {
-			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.musicArtistBrowserLayout);
+			RelativeLayout mainLayout =  null;
+			if (MUSIC_GRIDVIEW) {
+				mainLayout = (RelativeLayout) findViewById(R.id.musicBrowserBackgroundLayout);
+			} else {
+				mainLayout = (RelativeLayout) findViewById(R.id.musicArtistBrowserLayout);
+			}
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
 			params.setMargins(35, 20, 20, 20);
 		}
