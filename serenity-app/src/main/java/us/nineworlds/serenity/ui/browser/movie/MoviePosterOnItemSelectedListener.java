@@ -72,9 +72,9 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 		ImageView posterImage = (ImageView) context.findViewById(R.id.video_poster);
 		posterImage.setVisibility(View.VISIBLE);
 		posterImage.setScaleType(ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(240, context);
-		int height = ImageUtils.getDPI(330, context);
-		posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+		//int width = ImageUtils.getDPI(240, context);
+		//int height = ImageUtils.getDPI(330, context);
+		//posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 		ImageLoader imageLoader = SerenityApplication.getImageLoader();
 		imageLoader.displayImage(videoInfo.getImageURL(), posterImage);
 		

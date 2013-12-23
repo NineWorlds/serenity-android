@@ -132,7 +132,7 @@ public class ImageUtils {
 		}
 		case DisplayMetrics.DENSITY_XHIGH:
 		case DisplayMetrics.DENSITY_XXHIGH: {
-			sizeMultiplier = 3;
+			sizeMultiplier = 4;
 			break;
 		}
 		default: {
