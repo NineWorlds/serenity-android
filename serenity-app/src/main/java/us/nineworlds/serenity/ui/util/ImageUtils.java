@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.util;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
 import android.app.Activity;
 import android.content.Context;
@@ -117,6 +118,7 @@ public class ImageUtils {
 	public static int getDPI(int pixelsize, Activity context) {
 		DisplayMetrics metrics = new DisplayMetrics();
 		context.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		int heightPixels = metrics.heightPixels;
 		float sizeMultiplier = 1;
 		switch (metrics.densityDpi) {
 		case DisplayMetrics.DENSITY_LOW: {
@@ -131,8 +133,14 @@ public class ImageUtils {
 			break;
 		}
 		case DisplayMetrics.DENSITY_XHIGH:
+			if (heightPixels < 1060) {
+				sizeMultiplier = 3f;
+			} else {
+				sizeMultiplier = 4f;
+			}
+			break;
 		case DisplayMetrics.DENSITY_XXHIGH: {
-			sizeMultiplier = 4;
+			sizeMultiplier = 4f;
 			break;
 		}
 		default: {
