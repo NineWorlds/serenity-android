@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="us.nineworlds.serenity"
-    android:versionCode="49"
-    android:versionName="1.5.4" >
+    android:versionCode="50"
+    android:versionName="1.5.5-dev" >
 
     <!-- try to exclude phone devices from the list. Currently only support Tablets and TVs -->
     <supports-screens
