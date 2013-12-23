@@ -46,6 +46,7 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -106,6 +107,12 @@ public class SerenityApplication extends Application {
 		super.onCreate();
 		init();
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences.Editor editor = prefs.edit();
+		if (isGoogleTV(this) || isAndroidTV(this)) {
+			editor.putBoolean("serenity_tv_mode", true);
+			editor.apply();
+		}
 	}
 
 	/**

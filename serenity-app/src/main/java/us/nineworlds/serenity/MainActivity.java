@@ -358,11 +358,10 @@ public class MainActivity extends SerenityActivity {
 	 * 
 	 */
 	protected void initializeDefaultPlayer() {
-		boolean googletv = SerenityApplication.isGoogleTV(this);
 		boolean initialRun = preferences.getBoolean("serenity_first_run", true);
 		if (initialRun) {
 			SharedPreferences.Editor editor = preferences.edit();
-			if (!googletv) {
+			if (!SerenityApplication.isGoogleTV(this)) {
 				editor.putBoolean("external_player", true);
 			}
 			editor.putBoolean("serenity_first_run", false);

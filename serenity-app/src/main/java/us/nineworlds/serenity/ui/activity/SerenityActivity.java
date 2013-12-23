@@ -205,16 +205,20 @@ public abstract class SerenityActivity extends Activity {
 	}
 
 	public void showMenuItems() {
-		if (SerenityApplication.isGoogleTV(this)
-				|| SerenityApplication.isAndroidTV(this)) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		boolean tvMode = prefs.getBoolean("serenity_tv_mode", false);
+		if (tvMode) {
 			menuOptions.setVisibility(View.VISIBLE);
 			menuOptions.requestFocusFromTouch();
 		}
 	}
 
 	public void hideMenuItems() {
-		if (SerenityApplication.isGoogleTV(this)
-				|| SerenityApplication.isAndroidTV(this)) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		boolean tvMode = prefs.getBoolean("serenity_tv_mode", false);
+		if (tvMode) {
 			menuOptions.setVisibility(View.GONE);
 		}
 	}

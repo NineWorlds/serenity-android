@@ -137,6 +137,10 @@
             android:key="serenity_boot_startup"
             android:summary="@string/prefs_startup_boot_sum"
             android:title="@string/prefs_auto_start_after_boot" />
+        <CheckBoxPreference
+            android:key="serenity_tv_mode"
+            android:summary="The app is running on a device connected to a TV with a Remote or Game Controller."
+            android:title="Android TV mode"/>
     </PreferenceCategory>
     
 </PreferenceScreen>

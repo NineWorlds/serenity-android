@@ -84,26 +84,6 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		menuOptions.setOnItemClickListener(new EpisodeMenuDrawerOnItemClickedListener(menuDrawer));
 	}
 	
-	/**
-	 * @param listView
-	 */
-	public void hideMenuItems() {
-		if (SerenityApplication.isGoogleTV(this) ||
-			SerenityApplication.isAndroidTV(this)) {
-			menuOptions.setVisibility(View.GONE);
-		}
-	}
-	
-	public void showMenuItems() {
-		if (SerenityApplication.isGoogleTV(this) ||
-			SerenityApplication.isAndroidTV(this)) {
-			menuOptions.setVisibility(View.VISIBLE);
-			menuOptions.requestFocusFromTouch();
-		}
-		
-	}
-	
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

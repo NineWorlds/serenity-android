@@ -57,6 +57,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	private boolean restarted_state = false;
 	private Handler categoryHandler;
 	private SharedPreferences prefs = null;
+	private boolean tvMode = false;
 	/* (non-Javadoc)
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
@@ -96,8 +97,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	 */
 	@Override
 	public void hideMenuItems() {
-		if (SerenityApplication.isGoogleTV(this) ||
-			SerenityApplication.isAndroidTV(this)) {
+		if (tvMode) {
 			menuOptions.setVisibility(View.GONE);
 			View gallery = findViewById(R.id.moviePosterGallery);
 			if (gallery != null) {
@@ -137,6 +137,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		super.onCreate(savedInstanceState);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		tvMode = prefs.getBoolean("serenity_tv_mode", true);
 		gridViewActive = prefs.getBoolean("movie_layout_grid", false);
 				
 		key = getIntent().getExtras().getString("key");
