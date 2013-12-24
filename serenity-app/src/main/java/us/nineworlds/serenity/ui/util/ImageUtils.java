@@ -133,7 +133,7 @@ public class ImageUtils {
 			break;
 		}
 		case DisplayMetrics.DENSITY_XHIGH:
-			if (heightPixels < 1060) {
+			if (heightPixels < 1100) {
 				sizeMultiplier = 3f;
 			} else {
 				sizeMultiplier = 4f;
