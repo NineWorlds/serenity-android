@@ -4,7 +4,7 @@
    <parent>
       <groupId>us.nineworlds.serenity</groupId>
       <artifactId>serenity-parent</artifactId>
-      <version>1.5.5</version>
+      <version>1.6.0-SNAPSHOT</version>
    </parent>
 
    <groupId>com.google.tv.sample</groupId>
