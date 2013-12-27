@@ -21,19 +21,16 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core;
+package us.nineworlds.serenity.core.model.impl;
 
 /**
+ * Represents video content returned from YouTube.
+ * 
  * @author dcarver
  *
  */
-public class SerenityConstants {
+public class YouTubeVideoContentInfo extends AbstractVideoContentInfo {
 
-	public static int BROWSER_RESULT_CODE = 200;
-	public static int EXIT_PLAYBACK_IMMEDIATELY = 1000;
-	public static int CLICKED_GRID_VIEW_ITEM = 0;
-	public static final float WATCHED_PERCENT = 0.90f;
-	public static final String YOUTUBE_BROWSER_API_KEY = "AIzaSyDA2rzmN9M_h38QLBnp1bjnZXcqAoT-1K0";
-
+	private static final long serialVersionUID = 9189040577105931318L;
 
 }

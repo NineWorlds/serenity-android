@@ -29,10 +29,14 @@ import java.util.List;
 import com.castillo.dd.DSInterface;
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.Log;
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
 
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
@@ -48,6 +52,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -114,6 +119,7 @@ public class AbstractVideoOnItemLongClickListener {
 		options.add(context.getString(R.string.toggle_watched_status));
 		options.add(context.getString(R.string.download_video_to_device));
 		options.add(context.getString(R.string.add_video_to_queue));
+		options.add("Play Trailer");
 		if (!SerenityApplication.isGoogleTV(context) && hasSupportedCaster()) {
 			options.add(context.getString(R.string.cast_fling_with_));
 		}
@@ -195,6 +201,22 @@ public class AbstractVideoOnItemLongClickListener {
 		posterLayout.findViewById(R.id.posterWatchedIndicator).setVisibility(View.INVISIBLE);
 	}
 	
+	protected void performPlayTrailer() {
+		if (info.hasTrailer()) {
+			if (YouTubeInitializationResult.SUCCESS.equals(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(context))) {
+//				Intent intent = YouTubeStandalonePlayer.createVideoIntent(context, SerenityConstants.YOUTUBE_BROWSER_API_KEY, info.trailerId(), 0, true, true);
+//				context.startActivity(intent);
+				Intent youTubei = new Intent(Intent.ACTION_VIEW,
+						Uri.parse("http://www.youtube.com/watch?v=" + info.trailerId()));
+				context.startActivity(youTubei);
+				return;
+			} 
+			Toast.makeText(context, "YouTube Player not installed", Toast.LENGTH_LONG).show();
+		} else {
+			Toast.makeText(context, "No Trailers found for this video.", Toast.LENGTH_LONG).show();
+		}
+	}
+	
 	protected void performGoogleTVSecondScreen() {
 		if (hasAbleRemote(context) || hasGoogleTVRemote(context) || hasAllCast(context)) {
 			dialog.dismiss();
@@ -253,6 +275,9 @@ public class AbstractVideoOnItemLongClickListener {
 				break;
 			case 2:
 				performAddToQueue();
+				break;
+			case 3:
+				performPlayTrailer();
 				break;
 			default:
 				performGoogleTVSecondScreen();

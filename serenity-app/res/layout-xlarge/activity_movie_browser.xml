@@ -165,7 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/video_poster"
             android:layout_toRightOf="@+id/video_poster"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="5dp"
             android:layout_marginLeft="15dp"
             android:gravity="bottom"
             android:layout_centerHorizontal="true"

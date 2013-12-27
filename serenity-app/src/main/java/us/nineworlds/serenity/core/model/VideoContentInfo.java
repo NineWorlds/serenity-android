@@ -183,5 +183,13 @@ public interface VideoContentInfo extends ContentInfo {
 	public float viewedPercentage();
 	
 	public void toggleWatchStatus();
+	
+	public boolean hasTrailer();
+	
+	public void setTrailer(boolean trailer);
+	
+	public String trailerId();
+	
+	public void setTrailerId(String id);
 
 }

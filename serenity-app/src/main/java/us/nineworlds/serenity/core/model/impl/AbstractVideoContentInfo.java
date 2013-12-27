@@ -85,6 +85,8 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 	private String studio;
 	private double rating;
 	private String parentURL;
+	private boolean trailer;
+	private String trailerId;
 
 	@Override
 	public String getSeriesTitle() {
@@ -673,5 +675,25 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 		
 		new UnWatchVideoAsyncTask().execute(id());
 		setViewCount(0);
+	}
+	
+	@Override
+	public void setTrailer(boolean trailer) {
+		this.trailer = trailer; 
+	}
+	
+	@Override
+	public boolean hasTrailer() {
+		return trailer;
+	}
+	
+	@Override
+	public String trailerId() {
+		return trailerId;
+	}
+	
+	@Override
+	public void setTrailerId(String id) {
+		trailerId = id;
 	}
 }
