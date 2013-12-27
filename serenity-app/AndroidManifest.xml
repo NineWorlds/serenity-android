@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="us.nineworlds.serenity"
-    android:versionCode="53"
+    android:versionCode="54"
     android:versionName="1.5.5" >
 
     <!-- try to exclude phone devices from the list. Currently only support Tablets and TVs -->
