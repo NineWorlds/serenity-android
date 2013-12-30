@@ -19,6 +19,7 @@
 
    <properties>
       <pom.root>${basedir}</pom.root>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
    </properties>
 
    <repositories>
