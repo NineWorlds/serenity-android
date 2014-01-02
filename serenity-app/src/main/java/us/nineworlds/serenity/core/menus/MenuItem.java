@@ -1,4 +1,4 @@
-package us.nineworlds.serenity.core.model.impl;
+package us.nineworlds.serenity.core.menus;
 
 import java.io.Serializable;
 
@@ -32,5 +32,10 @@ public class MenuItem implements Serializable {
 	public void setSection(String section) {
 		this.section = section;
 	}
-
+	
+	@Override
+	public String toString() {
+		return getTitle();
+	}
+	
 }

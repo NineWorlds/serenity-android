@@ -21,19 +21,47 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.model;
+package us.nineworlds.serenity.core.menus;
+
 
 /**
  * @author dcarver
  *
  */
-public interface MenuDrawerItem {
+public class MenuDrawerItemImpl implements MenuDrawerItem {
 
-	public String getText();
+	private String text;
+	private int resourceID;
 	
-	public int getImageResourceID();
+	public MenuDrawerItemImpl(String text) {
+		this.text = text;
+	}
 	
-	public void setText(String text);
+	public MenuDrawerItemImpl(String text, int resourceID) {
+		this.text = text;
+		this.resourceID = resourceID;
+	}
 	
-	public void setImageResourceID(int resourceId);
+	
+	@Override
+	public String getText() {
+		return text;
+	}
+
+	@Override
+	public int getImageResourceID() {
+		return resourceID;
+	}
+
+	@Override
+	public void setText(String text) {
+		this.text = text;
+
+	}
+
+	@Override
+	public void setImageResourceID(int resourceId) {
+		resourceID = resourceId;
+	}
+
 }

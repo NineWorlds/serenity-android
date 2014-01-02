@@ -32,11 +32,13 @@ import com.google.analytics.tracking.android.Log;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
+import com.google.gdata.client.youtube.YouTubeService;
 
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
+import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
@@ -82,19 +84,21 @@ public class AbstractVideoOnItemLongClickListener {
 
 		// Google TV is sending back different results than Nexus 7
 		// So we try to handle the different results.
-		
+
 		info = (VideoContentInfo) av.getSelectedItem();
 
 		if (v == null) {
 			SerenityGallery g = (SerenityGallery) av;
-			vciv = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
+			vciv = (ImageView) g.getSelectedView().findViewById(
+					R.id.posterImageView);
 			info = (VideoContentInfo) g.getSelectedItem();
 		} else {
 			if (v instanceof ImageView) {
 				vciv = (ImageView) v;
 			} else {
 				SerenityGallery g = (SerenityGallery) v;
-				vciv = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
+				vciv = (ImageView) g.getSelectedView().findViewById(
+						R.id.posterImageView);
 				info = (VideoContentInfo) g.getSelectedItem();
 			}
 		}
@@ -111,22 +115,16 @@ public class AbstractVideoOnItemLongClickListener {
 		dialog = new Dialog(context);
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 				new ContextThemeWrapper(context,
-						android.R.style.Theme_Holo));
+						android.R.style.Theme_Holo_Dialog));
 		builder.setTitle(context.getString(R.string.video_options));
 
 		ListView modeList = new ListView(context);
-		ArrayList<String> options = new ArrayList<String>();
-		options.add(context.getString(R.string.toggle_watched_status));
-		options.add(context.getString(R.string.download_video_to_device));
-		options.add(context.getString(R.string.add_video_to_queue));
-		options.add("Play Trailer");
-		if (!SerenityApplication.isGoogleTV(context) && hasSupportedCaster()) {
-			options.add(context.getString(R.string.cast_fling_with_));
-		}
+		modeList.setSelector(R.drawable.menu_item_selector);
+		ArrayList<DialogMenuItem> options = addMenuOptions();
 
-		ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context,
-				android.R.layout.simple_list_item_1, android.R.id.text1,
-				options);
+		ArrayAdapter<DialogMenuItem> modeAdapter = new ArrayAdapter<DialogMenuItem>(
+				context, R.layout.simple_list_item,
+				R.id.list_item_text, options);
 
 		modeList.setAdapter(modeAdapter);
 		modeList.setOnItemClickListener(new DialogOnItemSelected());
@@ -141,22 +139,77 @@ public class AbstractVideoOnItemLongClickListener {
 	/**
 	 * @return
 	 */
+	protected ArrayList<DialogMenuItem> addMenuOptions() {
+		ArrayList<DialogMenuItem> options = new ArrayList<DialogMenuItem>();
+		options.add(createMenuItemToggleWatchStatus());
+		options.add(createMenuItemDownload());
+		options.add(createMenuItemAddToQueue());
+		
+		if (info.hasTrailer()
+				&& YouTubeInitializationResult.SUCCESS
+						.equals(YouTubeApiServiceUtil
+								.isYouTubeApiServiceAvailable(context))) {
+			options.add(createMenuItemPlayTrailer());
+		}
+		
+		if (!SerenityApplication.isGoogleTV(context) && hasSupportedCaster()) {
+			options.add(createMenuItemFling());
+		}
+		return options;
+	}
+
+	/**
+	 * @return
+	 */
+	protected DialogMenuItem createMenuItemToggleWatchStatus() {
+		return createMenuItem(
+				context.getString(R.string.toggle_watched_status), 0);
+	}
+
+	protected DialogMenuItem createMenuItemDownload() {
+		return createMenuItem(
+				context.getString(R.string.download_video_to_device), 1);
+	}
+
+	protected DialogMenuItem createMenuItemAddToQueue() {
+		return createMenuItem(context.getString(R.string.add_video_to_queue), 2);
+	}
+
+	protected DialogMenuItem createMenuItemPlayTrailer() {
+		return createMenuItem("Play Trailer", 3);
+	}
+
+	protected DialogMenuItem createMenuItemFling() {
+		return createMenuItem(context.getString(R.string.cast_fling_with_), 4);
+	}
+
+	protected DialogMenuItem createMenuItem(String title, int action) {
+		DialogMenuItem menuItem = new DialogMenuItem();
+		menuItem.setTitle(title);
+		menuItem.setMenuDialogAction(action);
+		return menuItem;
+	}
+
+	/**
+	 * @return
+	 */
 	protected boolean hasSupportedCaster() {
-		return hasAbleRemote(context) || hasGoogleTVRemote(context) || hasAllCast(context);
+		return hasAbleRemote(context) || hasGoogleTVRemote(context)
+				|| hasAllCast(context);
 	}
 
 	protected boolean hasAbleRemote(Context context) {
 		return hasRemoteByName(context, "com.entertailion.android.remote");
 	}
-	
+
 	protected boolean hasGoogleTVRemote(Context context) {
 		return hasRemoteByName(context, "com.google.android.apps.tvremote");
 	}
-	
+
 	protected boolean hasAllCast(Context context) {
 		return hasRemoteByName(context, "com.koushikdutta.cast");
 	}
-	
+
 	protected boolean hasRemoteByName(Context context, String remotePackageName) {
 
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
@@ -171,13 +224,14 @@ public class AbstractVideoOnItemLongClickListener {
 			}
 		}
 
-		return false;		
+		return false;
 	}
-	
+
 	protected void performWatchedToggle() {
 		View posterLayout = (View) vciv.getParent();
-		posterLayout.findViewById(R.id.posterInprogressIndicator).setVisibility(View.INVISIBLE);
-		
+		posterLayout.findViewById(R.id.posterInprogressIndicator)
+				.setVisibility(View.INVISIBLE);
+
 		toggleGraphicIndicators(posterLayout);
 		info.toggleWatchStatus();
 	}
@@ -190,7 +244,8 @@ public class AbstractVideoOnItemLongClickListener {
 			final float percentWatched = info.viewedPercentage();
 			if (percentWatched <= 0.90f) {
 				ImageInfographicUtils.setWatchedCount(vciv, context, info);
-				ImageView view = (ImageView) posterLayout.findViewById(R.id.posterWatchedIndicator);
+				ImageView view = (ImageView) posterLayout
+						.findViewById(R.id.posterWatchedIndicator);
 				view.setImageResource(R.drawable.overlaywatched);
 				view.setVisibility(View.VISIBLE);
 				return;
@@ -198,55 +253,71 @@ public class AbstractVideoOnItemLongClickListener {
 		}
 
 		ImageInfographicUtils.setUnwatched(vciv, context, info);
-		posterLayout.findViewById(R.id.posterWatchedIndicator).setVisibility(View.INVISIBLE);
+		posterLayout.findViewById(R.id.posterWatchedIndicator).setVisibility(
+				View.INVISIBLE);
 	}
-	
+
 	protected void performPlayTrailer() {
 		if (info.hasTrailer()) {
-			if (YouTubeInitializationResult.SUCCESS.equals(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(context))) {
-//				Intent intent = YouTubeStandalonePlayer.createVideoIntent(context, SerenityConstants.YOUTUBE_BROWSER_API_KEY, info.trailerId(), 0, true, true);
-//				context.startActivity(intent);
+			if (YouTubeInitializationResult.SUCCESS
+					.equals(YouTubeApiServiceUtil
+							.isYouTubeApiServiceAvailable(context))) {
+				// Intent intent =
+				// YouTubeStandalonePlayer.createVideoIntent(context,
+				// SerenityConstants.YOUTUBE_BROWSER_API_KEY, info.trailerId(),
+				// 0, true, true);
+				// context.startActivity(intent);
 				Intent youTubei = new Intent(Intent.ACTION_VIEW,
-						Uri.parse("http://www.youtube.com/watch?v=" + info.trailerId()));
+						Uri.parse("http://www.youtube.com/watch?v="
+								+ info.trailerId()));
 				context.startActivity(youTubei);
 				return;
-			} 
-			Toast.makeText(context, "YouTube Player not installed", Toast.LENGTH_LONG).show();
+			}
+			Toast.makeText(context, "YouTube Player not installed",
+					Toast.LENGTH_LONG).show();
 		} else {
-			Toast.makeText(context, "No Trailers found for this video.", Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "No Trailers found for this video.",
+					Toast.LENGTH_LONG).show();
 		}
 	}
-	
+
 	protected void performGoogleTVSecondScreen() {
-		if (hasAbleRemote(context) || hasGoogleTVRemote(context) || hasAllCast(context)) {
+		if (hasAbleRemote(context) || hasGoogleTVRemote(context)
+				|| hasAllCast(context)) {
 			dialog.dismiss();
-						
+
 			final String body = info.getDirectPlayUrl();
-			
+
 			final SenderAppAdapter adapter = new SenderAppAdapter(context);
-			
+
 			new AlertDialog.Builder(context)
 					.setTitle(R.string.cast_fling_with_)
 					.setCancelable(true)
-					.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
-						
-						public void onClick(DialogInterface dialog, int which) {
-							adapter.respondToClick(which, "", body);
-							
-							dialog.dismiss();
-							
-						}
-					})
-					.show();
+					.setSingleChoiceItems(adapter, -1,
+							new DialogInterface.OnClickListener() {
+
+								public void onClick(DialogInterface dialog,
+										int which) {
+									adapter.respondToClick(which, "", body);
+
+									dialog.dismiss();
+
+								}
+							}).show();
 		}
 	}
-	
+
 	protected void performAddToQueue() {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
 		boolean extplayer = prefs.getBoolean("external_player", false);
-		boolean extplayerVideoQueue = prefs.getBoolean("external_player_continuous_playback", false);
+		boolean extplayerVideoQueue = prefs.getBoolean(
+				"external_player_continuous_playback", false);
 		if (extplayer && !extplayerVideoQueue) {
-			Toast.makeText(context, R.string.external_player_video_queue_support_has_not_been_enabled_, Toast.LENGTH_LONG).show();
+			Toast.makeText(
+					context,
+					R.string.external_player_video_queue_support_has_not_been_enabled_,
+					Toast.LENGTH_LONG).show();
 			return;
 		}
 
@@ -266,7 +337,10 @@ public class AbstractVideoOnItemLongClickListener {
 		public void onItemClick(android.widget.AdapterView<?> arg0, View v,
 				int position, long arg3) {
 
-			switch (position) {
+			DialogMenuItem menuItem = (DialogMenuItem) arg0
+					.getItemAtPosition(position);
+
+			switch (menuItem.getMenuDialogAction()) {
 			case 0:
 				performWatchedToggle();
 				break;
@@ -279,7 +353,7 @@ public class AbstractVideoOnItemLongClickListener {
 			case 3:
 				performPlayTrailer();
 				break;
-			default:
+			case 4:
 				performGoogleTVSecondScreen();
 			}
 			v.requestFocusFromTouch();
@@ -298,8 +372,7 @@ public class AbstractVideoOnItemLongClickListener {
 				.getPendingDownloads();
 		PendingDownload pendingDownload = new PendingDownload();
 		String filename = info.getTitle() + "." + info.getContainer();
-		pendingDownload
-				.setFilename(filename);
+		pendingDownload.setFilename(filename);
 		pendingDownload.setUrl(info.getDirectPlayUrl());
 
 		pendingDownloads.add(pendingDownload);
@@ -307,7 +380,8 @@ public class AbstractVideoOnItemLongClickListener {
 
 		try {
 			DSInterface downloadService = MainActivity.getDsInterface();
-			downloadService.addFileDownloadlist(info.getDirectPlayUrl(), destination, filename, pos);
+			downloadService.addFileDownloadlist(info.getDirectPlayUrl(),
+					destination, filename, pos);
 			Toast.makeText(
 					context,
 					context.getString(R.string.starting_download_of_)

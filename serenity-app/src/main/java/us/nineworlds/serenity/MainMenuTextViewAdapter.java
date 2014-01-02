@@ -24,7 +24,7 @@ package us.nineworlds.serenity;
 
 import java.util.ArrayList;
 
-import us.nineworlds.serenity.core.model.impl.MenuItem;
+import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.services.MainMenuIntentService;
 import us.nineworlds.serenity.ui.views.MainMenuTextView;
 

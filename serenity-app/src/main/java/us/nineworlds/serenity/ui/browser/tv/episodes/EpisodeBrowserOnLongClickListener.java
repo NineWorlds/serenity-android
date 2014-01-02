@@ -36,6 +36,7 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 
 /**
@@ -59,16 +60,11 @@ public class EpisodeBrowserOnLongClickListener extends
 		builder.setTitle(context.getString(R.string.video_options));
 
 		ListView modeList = new ListView(context);
-		ArrayList<String> options = new ArrayList<String>();
-		options.add(context.getString(R.string.toggle_watched_status));
-		options.add(context.getString(R.string.download_video_to_device));
-		options.add(context.getString(R.string.view_all_episodes));
-		if (!SerenityApplication.isGoogleTV(context)) {
-			options.add(context.getString(R.string.play_on_tv));
-		}
+		modeList.setSelector(R.drawable.menu_item_selector);
+		ArrayList<DialogMenuItem> options = addMenuOptions();
 
-		ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context,
-				android.R.layout.simple_list_item_1, android.R.id.text1,
+		ArrayAdapter<DialogMenuItem> modeAdapter = new ArrayAdapter<DialogMenuItem>(context,
+				R.layout.simple_list_item, R.id.list_item_text,
 				options);
 
 		modeList.setAdapter(modeAdapter);
@@ -80,6 +76,22 @@ public class EpisodeBrowserOnLongClickListener extends
 
 		return true;
 	}
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemLongClickListener#addMenuOptions()
+	 */
+	@Override
+	protected ArrayList<DialogMenuItem> addMenuOptions() {
+		ArrayList<DialogMenuItem> options = super.addMenuOptions();
+		options.add(createMenuItemViewAllEpisodes());
+		return options;
+	}
+	
+	protected DialogMenuItem createMenuItemViewAllEpisodes() {
+		return createMenuItem(context.getString(R.string.view_all_episodes), 2);
+	}
+	
+	
 	
 	protected void performListAllEpisodesForSeason() {
 		Intent i = new Intent(context, EpisodeBrowserActivity.class);
@@ -99,8 +111,10 @@ public class EpisodeBrowserOnLongClickListener extends
 		@Override
 		public void onItemClick(android.widget.AdapterView<?> arg0, View v,
 				int position, long arg3) {
+			
+			DialogMenuItem menuItem = (DialogMenuItem) arg0.getItemAtPosition(position);
 
-			switch (position) {
+			switch (menuItem.getMenuDialogAction()) {
 			case 0:
 				performWatchedToggle();
 				break;
@@ -109,6 +123,11 @@ public class EpisodeBrowserOnLongClickListener extends
 				break;
 			case 2:
 				performListAllEpisodesForSeason();
+				
+			case 3:
+				performPlayTrailer();
+				break;
+				
 			default:
 				performGoogleTVSecondScreen();
 			}

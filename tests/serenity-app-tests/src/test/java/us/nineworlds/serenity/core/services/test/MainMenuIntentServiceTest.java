@@ -42,7 +42,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import us.nineworlds.serenity.NanoHTTPD;
-import us.nineworlds.serenity.core.model.impl.MenuItem;
+import us.nineworlds.serenity.core.menus.MenuItem;
 
 
 /**

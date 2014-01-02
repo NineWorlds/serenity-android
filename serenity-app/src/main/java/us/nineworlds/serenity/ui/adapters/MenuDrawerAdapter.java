@@ -25,7 +25,7 @@ package us.nineworlds.serenity.ui.adapters;
 
 import java.util.List;
 
-import us.nineworlds.serenity.core.model.MenuDrawerItem;
+import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.R;
 import android.app.Activity;
 import android.content.Context;

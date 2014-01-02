@@ -30,7 +30,7 @@ import java.util.List;
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.impl.MenuItem;
+import us.nineworlds.serenity.core.menus.MenuItem;
 
 import android.content.Context;
 import android.content.Intent;

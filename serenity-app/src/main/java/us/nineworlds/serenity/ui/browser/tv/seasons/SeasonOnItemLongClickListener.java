@@ -107,11 +107,12 @@ public class SeasonOnItemLongClickListener implements
 		builder.setTitle(context.getString(R.string.season_options));
 
 		ListView modeList = new ListView(context);
+		modeList.setSelector(R.drawable.menu_item_selector);
 		ArrayList<String> options = new ArrayList<String>();
 		options.add(context.getString(R.string.add_season_to_queue));
 
 		ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context,
-				android.R.layout.simple_list_item_1, android.R.id.text1,
+				R.layout.simple_list_item, R.id.list_item_text,
 				options);
 
 		modeList.setAdapter(modeAdapter);

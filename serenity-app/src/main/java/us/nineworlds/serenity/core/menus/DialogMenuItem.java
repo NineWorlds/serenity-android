@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2013 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -21,48 +21,30 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.model.impl;
+package us.nineworlds.serenity.core.menus;
 
-import us.nineworlds.serenity.core.model.MenuDrawerItem;
 
 /**
+ * This class holds the menu options and the action type number to be
+ * performed for DialogMenus selection. Used primarily in the
+ * context menu interface.
+ * 
  * @author dcarver
  *
  */
-public class MenuDrawerItemImpl implements MenuDrawerItem {
+public class DialogMenuItem extends MenuItem {
 
-	private String text;
-	private int resourceID;
+	private static final long serialVersionUID = -3235438497012856737L;
 	
-	public MenuDrawerItemImpl(String text) {
-		this.text = text;
-	}
+	private int menuTypeAction;
 	
-	public MenuDrawerItemImpl(String text, int resourceID) {
-		this.text = text;
-		this.resourceID = resourceID;
+	public void setMenuDialogAction(int action) {
+		menuTypeAction = action;
 	}
 	
+	public int getMenuDialogAction() {
+		return menuTypeAction;
+	}
 	
-	@Override
-	public String getText() {
-		return text;
-	}
-
-	@Override
-	public int getImageResourceID() {
-		return resourceID;
-	}
-
-	@Override
-	public void setText(String text) {
-		this.text = text;
-
-	}
-
-	@Override
-	public void setImageResourceID(int resourceId) {
-		resourceID = resourceId;
-	}
-
+	
 }

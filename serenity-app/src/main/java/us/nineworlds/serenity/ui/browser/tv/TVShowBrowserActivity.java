@@ -28,9 +28,9 @@ import java.util.List;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
+import us.nineworlds.serenity.core.menus.MenuDrawerItem;
+import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.CategoryInfo;
-import us.nineworlds.serenity.core.model.MenuDrawerItem;
-import us.nineworlds.serenity.core.model.impl.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.TVShowCategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;

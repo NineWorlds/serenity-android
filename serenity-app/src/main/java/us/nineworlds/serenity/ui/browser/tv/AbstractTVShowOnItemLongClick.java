@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 import java.util.ArrayList;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
@@ -68,13 +69,14 @@ public abstract class AbstractTVShowOnItemLongClick {
 		builder.setTitle(context.getString(R.string.video_options));
 	
 		ListView modeList = new ListView(context);
+		modeList.setSelector(R.drawable.menu_item_selector);
 		ArrayList<String> options = new ArrayList<String>();
 		options.add(context.getString(R.string.toggle_watched_status));
 	
-		ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context,
-				android.R.layout.simple_list_item_1, android.R.id.text1,
-				options);
-	
+		ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(
+				context, R.layout.simple_list_item,
+				R.id.list_item_text, options);
+		
 		modeList.setAdapter(modeAdapter);
 		modeList.setOnItemClickListener(new DialogOnItemSelected());
 	
