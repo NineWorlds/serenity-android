@@ -185,7 +185,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	}
 
 	public void fetchSubtitle(VideoContentInfo mpi) {
-		subtitleHandler = new SubtitleHandler(mpi);
+		subtitleHandler = new SubtitleHandler(mpi, context);
 		Messenger messenger = new Messenger(subtitleHandler);
 		Intent intent = new Intent(context,
 				MovieMetaDataRetrievalIntentService.class);
@@ -195,7 +195,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	}
 	
 	public void fetchTrailer(VideoContentInfo mpi) {
-		trailerHandler = new TrailerHandler(mpi);
+		trailerHandler = new TrailerHandler(mpi, context);
 		Messenger messenger = new Messenger(trailerHandler);
 		Intent intent = new Intent(context, YouTubeTrailerSearchIntentService.class);
 		intent.putExtra("videoTitle", mpi.getTitle());
@@ -250,85 +250,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 	}
 
-	public static class TrailerHandler extends Handler {
-		
-		private VideoContentInfo video;
-		
-		public TrailerHandler(VideoContentInfo mpi) {
-			video = mpi;
-		}
-		
-		@Override
-		public void handleMessage(Message msg) {
-			YouTubeVideoContentInfo yt = (YouTubeVideoContentInfo) msg.obj;
-			if (yt.id() == null) {
-				return;
-			}
-			
-			LinearLayout infographicsView = (LinearLayout) context
-					.findViewById(R.id.movieInfoGraphicLayout);
-			ImageView ytImage = new ImageView(context);
-			ytImage.setImageResource(R.drawable.yt_social_icon_red_128px);
-			ytImage.setScaleType(ScaleType.FIT_XY);
-			int w = ImageUtils.getDPI(45, context);
-			int h = ImageUtils.getDPI(24, context);
-			ytImage.setLayoutParams(new LayoutParams(w, h));
-			LayoutParams p = (LayoutParams) ytImage.getLayoutParams();
-			p.leftMargin = 5;
-			p.gravity = Gravity.CENTER_VERTICAL;
-			infographicsView.addView(ytImage);
-			video.setTrailer(true);
-			video.setTrailerId(yt.id());
-		}
-	}
 	
-	public static class SubtitleHandler extends Handler {
-
-		private VideoContentInfo video;
-
-		public SubtitleHandler(VideoContentInfo video) {
-			this.video = video;
-		}
-
-		@Override
-		public void handleMessage(Message msg) {
-			List<Subtitle> subtitles = (List<Subtitle>) msg.obj;
-			if (subtitles == null || subtitles.isEmpty()) {
-				return;
-			}
-
-			TextView subtitleText = (TextView) context
-					.findViewById(R.id.subtitleFilter);
-			subtitleText.setVisibility(View.VISIBLE);
-			Spinner subtitleSpinner = (Spinner) context
-					.findViewById(R.id.videoSubtitle);
-			View metaData = context.findViewById(R.id.metaDataRow);
-			if (metaData.getVisibility() == View.GONE || metaData.getVisibility() == View.INVISIBLE) {
-				metaData.setVisibility(View.VISIBLE);
-			}
-
-			ArrayList<Subtitle> spinnerSubtitles = new ArrayList<Subtitle>();
-			Subtitle noSubtitle = new Subtitle();
-			noSubtitle.setDescription("None");
-			noSubtitle.setFormat("none");
-			noSubtitle.setKey(null);
-
-			spinnerSubtitles.add(noSubtitle);
-			spinnerSubtitles.addAll(subtitles);
-
-			ArrayAdapter<Subtitle> subtitleAdapter = new ArrayAdapter<Subtitle>(
-					context, R.layout.serenity_spinner_textview,
-					spinnerSubtitles);
-			subtitleAdapter
-					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
-			subtitleSpinner.setAdapter(subtitleAdapter);
-			subtitleSpinner
-					.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(
-							video, context));
-			subtitleSpinner.setVisibility(View.VISIBLE);
-		}
-
-	}
 	
 	private class AnimationImageLoaderListener extends SimpleImageLoadingListener {
 		

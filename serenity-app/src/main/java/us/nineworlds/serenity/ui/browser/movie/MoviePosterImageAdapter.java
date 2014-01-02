@@ -29,8 +29,11 @@ import com.jess.ui.TwoWayAbsListView;
 import com.jess.ui.TwoWayGridView;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
+import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.listeners.TrailerGridHandler;
+import us.nineworlds.serenity.ui.listeners.TrailerHandler;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -40,6 +43,7 @@ import us.nineworlds.serenity.SerenityApplication;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -98,6 +102,13 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
 					width, height));
+			if (pi.hasTrailer() == false) {
+				fetchTrailer(pi, galleryCellView);
+			} else {
+				View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
+				v.setVisibility(View.VISIBLE);
+				v.findViewById(R.id.trailerIndicator).setVisibility(View.VISIBLE);
+			}
 		}
 
 		shrinkPosterAnimation(mpiv, movieContext.isGridViewActive());
@@ -106,6 +117,16 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		setWatchedStatus(galleryCellView, pi);
 
 		return galleryCellView;
+	}
+	
+	public void fetchTrailer(VideoContentInfo mpi, View view) {
+		TrailerGridHandler trailerHandler = new TrailerGridHandler(mpi, context, view);
+		Messenger messenger = new Messenger(trailerHandler);
+		Intent intent = new Intent(context, YouTubeTrailerSearchIntentService.class);
+		intent.putExtra("videoTitle", mpi.getTitle());
+		intent.putExtra("year", mpi.getYear());
+		intent.putExtra("MESSENGER", messenger);
+		context.startService(intent);
 	}
 
 	@Override
@@ -138,5 +159,5 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		}
 
 	}
-
+	
 }
