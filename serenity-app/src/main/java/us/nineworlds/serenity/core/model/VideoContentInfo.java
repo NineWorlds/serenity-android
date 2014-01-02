@@ -191,5 +191,9 @@ public interface VideoContentInfo extends ContentInfo {
 	public String trailerId();
 	
 	public void setTrailerId(String id);
+	
+	public void setAvailableSubTitles(List<Subtitle> subtitles);
+	
+	public List<Subtitle> getAvailableSubtitles();
 
 }

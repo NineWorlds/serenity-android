@@ -87,6 +87,8 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 	private String parentURL;
 	private boolean trailer;
 	private String trailerId;
+	
+	private List<Subtitle> subtitles;
 
 	@Override
 	public String getSeriesTitle() {
@@ -695,5 +697,15 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 	@Override
 	public void setTrailerId(String id) {
 		trailerId = id;
+	}
+	
+	@Override
+	public List<Subtitle> getAvailableSubtitles() {
+		return subtitles;
+	}
+	
+	@Override
+	public void setAvailableSubTitles(List<Subtitle> subtitles) {
+		this.subtitles = subtitles;
 	}
 }

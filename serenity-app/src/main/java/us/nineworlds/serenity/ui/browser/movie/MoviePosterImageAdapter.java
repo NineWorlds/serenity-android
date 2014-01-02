@@ -25,13 +25,18 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import java.util.List;
 
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.jess.ui.TwoWayAbsListView;
 import com.jess.ui.TwoWayGridView;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
 import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
 import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.listeners.GridSubtitleHandler;
+import us.nineworlds.serenity.ui.listeners.SubtitleHandler;
 import us.nineworlds.serenity.ui.listeners.TrailerGridHandler;
 import us.nineworlds.serenity.ui.listeners.TrailerHandler;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
@@ -103,11 +108,21 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
 					width, height));
 			if (pi.hasTrailer() == false) {
-				fetchTrailer(pi, galleryCellView);
+				if (YouTubeInitializationResult.SUCCESS.equals(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(context))) {
+					fetchTrailer(pi, galleryCellView);
+				}
 			} else {
 				View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
 				v.setVisibility(View.VISIBLE);
 				v.findViewById(R.id.trailerIndicator).setVisibility(View.VISIBLE);
+			}
+			
+			if (pi.getAvailableSubtitles() != null) {
+				View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
+				v.setVisibility(View.VISIBLE);
+				v.findViewById(R.id.subtitleIndicator).setVisibility(View.VISIBLE);
+			} else {
+				fetchSubtitle(pi, galleryCellView);
 			}
 		}
 
@@ -128,6 +143,17 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		intent.putExtra("MESSENGER", messenger);
 		context.startService(intent);
 	}
+	
+	public void fetchSubtitle(VideoContentInfo mpi, View view) {
+		GridSubtitleHandler subtitleHandler = new GridSubtitleHandler(mpi, context, view);
+		Messenger messenger = new Messenger(subtitleHandler);
+		Intent intent = new Intent(context,
+				MovieMetaDataRetrievalIntentService.class);
+		intent.putExtra("MESSENGER", messenger);
+		intent.putExtra("key", mpi.id());
+		context.startService(intent);
+	}
+	
 
 	@Override
 	protected void fetchDataFromService() {
