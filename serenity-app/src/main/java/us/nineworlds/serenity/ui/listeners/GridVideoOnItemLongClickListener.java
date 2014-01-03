@@ -25,14 +25,26 @@ package us.nineworlds.serenity.ui.listeners;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemLongClickListener;
 import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.Subtitle;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * A listener that handles long press for video content in Grid View classes.
@@ -65,4 +77,90 @@ public class GridVideoOnItemLongClickListener extends AbstractVideoOnItemLongCli
 
 		return onItemLongClick();
 	}
+	
+	@Override
+	protected ArrayList<DialogMenuItem> addMenuOptions() {
+		ArrayList<DialogMenuItem> options = super.addMenuOptions();
+		if (info.getAvailableSubtitles() != null && !info.getAvailableSubtitles().isEmpty()) {
+			DialogMenuItem menuItem = createMenuItem("Select Subtitle", 200);
+			options.add(menuItem);
+		}
+		return options;
+	}
+	
+	@Override
+	protected OnItemClickListener getDialogSelectedListener() {
+		return new GridDialogOnItemSelected();
+	}
+	
+	protected class GridDialogOnItemSelected implements OnItemClickListener {
+
+		@Override
+		public void onItemClick(android.widget.AdapterView<?> arg0, View v,
+				int position, long arg3) {
+
+			DialogMenuItem menuItem = (DialogMenuItem) arg0
+					.getItemAtPosition(position);
+
+			switch (menuItem.getMenuDialogAction()) {
+			case 0:
+				performWatchedToggle();
+				break;
+			case 1:
+				startDownload();
+				break;
+			case 2:
+				performAddToQueue();
+				break;
+			case 3:
+				performPlayTrailer();
+				break;
+			case 4:
+				performGoogleTVSecondScreen();
+				break;
+			case 200:
+				performSubtitleSelection();
+			}
+			v.requestFocusFromTouch();
+			dialog.dismiss();
+		}
+
+	}
+	
+	Dialog subtitleDialog;
+	protected void performSubtitleSelection() {
+		dialog.dismiss();
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				new ContextThemeWrapper(context,
+						android.R.style.Theme_Holo_Dialog));
+		builder.setTitle("Subtitle Selection");
+				
+		ListView modeList = new ListView(context);
+		modeList.setSelector(R.drawable.menu_item_selector);
+		List<Subtitle> options = info.getAvailableSubtitles();
+		
+		ArrayAdapter<Subtitle> modeAdapter = new ArrayAdapter<Subtitle>(
+				context, R.layout.simple_list_item,
+				R.id.list_item_text, options);
+		modeList.setAdapter(modeAdapter);
+		modeList.setOnItemClickListener(new SubTitleSelection());
+		
+		builder.setView(modeList);
+	    subtitleDialog = builder.create();
+		subtitleDialog.show();
+		
+		
+	}
+	
+	private class SubTitleSelection implements OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+				long arg3) {
+			info.setSubtitle(info.getAvailableSubtitles().get(position));
+			subtitleDialog.dismiss();
+		}
+		
+	}
+	
 }

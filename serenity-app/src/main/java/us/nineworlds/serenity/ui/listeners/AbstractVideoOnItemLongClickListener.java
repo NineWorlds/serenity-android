@@ -127,13 +127,20 @@ public class AbstractVideoOnItemLongClickListener {
 				R.id.list_item_text, options);
 
 		modeList.setAdapter(modeAdapter);
-		modeList.setOnItemClickListener(new DialogOnItemSelected());
+		modeList.setOnItemClickListener(getDialogSelectedListener());
 
 		builder.setView(modeList);
 		dialog = builder.create();
 		dialog.show();
 
 		return true;
+	}
+
+	/**
+	 * @return
+	 */
+	protected OnItemClickListener getDialogSelectedListener() {
+		return new DialogOnItemSelected();
 	}
 
 	/**
@@ -408,5 +415,7 @@ public class AbstractVideoOnItemLongClickListener {
 		directoryChooserDialog.setNewFolderEnabled(true);
 		directoryChooserDialog.chooseDirectory("");
 	}
+	
+	
 
 }
