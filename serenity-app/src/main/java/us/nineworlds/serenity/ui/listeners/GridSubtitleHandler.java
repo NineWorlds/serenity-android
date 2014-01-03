@@ -17,12 +17,10 @@ import android.widget.TextView;
 public class GridSubtitleHandler extends Handler {
 
 	private VideoContentInfo video;
-	private Activity context;
 	private View view;
 
-	public GridSubtitleHandler(VideoContentInfo video, Activity c, View v) {
+	public GridSubtitleHandler(VideoContentInfo video, View v) {
 		this.video = video;
-		context = c;
 		view = v;
 	}
 
@@ -46,6 +44,7 @@ public class GridSubtitleHandler extends Handler {
 		noSubtitle.setKey(null);
 		availableSubtitles.add(noSubtitle);
 		availableSubtitles.addAll(subtitles);
+		video.setAvailableSubTitles(availableSubtitles);
 	}
 
 }

@@ -145,7 +145,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	}
 	
 	public void fetchSubtitle(VideoContentInfo mpi, View view) {
-		GridSubtitleHandler subtitleHandler = new GridSubtitleHandler(mpi, context, view);
+		GridSubtitleHandler subtitleHandler = new GridSubtitleHandler(mpi, view);
 		Messenger messenger = new Messenger(subtitleHandler);
 		Intent intent = new Intent(context,
 				MovieMetaDataRetrievalIntentService.class);
