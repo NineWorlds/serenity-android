@@ -57,7 +57,6 @@
          <groupId>org.robolectric</groupId>
          <artifactId>robolectric</artifactId>
          <version>2.3-SNAPSHOT</version>
-         <scope>test</scope>
       </dependency>
 
    </dependencies>
