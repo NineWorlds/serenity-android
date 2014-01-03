@@ -87,14 +87,20 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		View galleryCellView = null;
 		if (convertView != null) {
 			galleryCellView = convertView;
+			galleryCellView.findViewById(R.id.posterInprogressIndicator).setVisibility(View.INVISIBLE);
+			galleryCellView.findViewById(R.id.posterWatchedIndicator).setVisibility(View.INVISIBLE);
+			galleryCellView.findViewById(R.id.infoGraphicMeta).setVisibility(View.GONE);
 		} else {
 	       galleryCellView = context.getLayoutInflater().inflate(
 				R.layout.poster_indicator_view, null);
 		}
 
 		VideoContentInfo pi = posterList.get(position);
+		gridViewMetaData(galleryCellView, pi);
+		
 		ImageView mpiv = (ImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
+		
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 0;
@@ -112,6 +118,22 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
 					width, height));
+		}
+
+		shrinkPosterAnimation(mpiv, movieContext.isGridViewActive());
+		imageLoader.displayImage(pi.getImageURL(), mpiv);
+
+		setWatchedStatus(galleryCellView, pi);
+
+		return galleryCellView;
+	}
+
+	/**
+	 * @param galleryCellView
+	 * @param pi
+	 */
+	protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
+		if (movieContext.isGridViewActive()) {
 			if (pi.hasTrailer() == false) {
 				if (YouTubeInitializationResult.SUCCESS.equals(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(context))) {
 					fetchTrailer(pi, galleryCellView);
@@ -130,13 +152,6 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 				fetchSubtitle(pi, galleryCellView);
 			}
 		}
-
-		shrinkPosterAnimation(mpiv, movieContext.isGridViewActive());
-		imageLoader.displayImage(pi.getImageURL(), mpiv);
-
-		setWatchedStatus(galleryCellView, pi);
-
-		return galleryCellView;
 	}
 	
 	public void fetchTrailer(VideoContentInfo mpi, View view) {
