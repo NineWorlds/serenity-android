@@ -33,11 +33,13 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.model.impl.YouTubeVideoContentInfo;
 import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
 import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
+import us.nineworlds.serenity.core.util.DBMetaDataSource;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
@@ -90,6 +92,8 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	protected int position;
 	protected BaseAdapter adapter;
 	protected VideoContentInfo videoInfo;
+	private DBMetaDataSource datasource;
+	
 
 	public AbstractVideoOnItemSelectedListener(Activity c) {
 		context = c;
@@ -182,7 +186,34 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		if (studiov != null) {
 			infographicsView.addView(studiov);
 		}
+		
+		if (videoInfo.hasTrailer() && YouTubeInitializationResult.SUCCESS.equals(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(context))) {
+			ImageView ytImage = new ImageView(context);
+			ytImage.setImageResource(R.drawable.yt_social_icon_red_128px);
+			ytImage.setScaleType(ScaleType.FIT_XY);
+			int w = ImageUtils.getDPI(45, context);
+			int h = ImageUtils.getDPI(24, context);
+			ytImage.setLayoutParams(new LinearLayout.LayoutParams(w, h));
+			LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) ytImage.getLayoutParams();
+			p.leftMargin = 5;
+			p.gravity = Gravity.CENTER_VERTICAL;
+			infographicsView.addView(ytImage);
+		}
 	}
+	
+	/**
+	 * @param pi
+	 */
+	protected void checkDataBaseForTrailer(VideoContentInfo pi) {
+		datasource = new DBMetaDataSource(context);
+		datasource.open();
+		DBMetaData metaData = datasource.findMetaDataByPlexId(pi.id());
+		if (metaData != null) {
+			pi.setTrailer(true);
+			pi.setTrailerId(metaData.getYouTubeID());
+		}
+		datasource.close();
+	}	
 
 	public void fetchSubtitle(VideoContentInfo mpi) {
 		subtitleHandler = new SubtitleHandler(mpi, context);
@@ -195,6 +226,10 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	}
 	
 	public void fetchTrailer(VideoContentInfo mpi) {
+		checkDataBaseForTrailer(mpi);
+		if (mpi.hasTrailer()) {
+			return;
+		}
 		trailerHandler = new TrailerHandler(mpi, context);
 		Messenger messenger = new Messenger(trailerHandler);
 		Intent intent = new Intent(context, YouTubeTrailerSearchIntentService.class);

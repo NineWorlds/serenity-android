@@ -1,8 +1,10 @@
 package us.nineworlds.serenity.ui.listeners;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.YouTubeVideoContentInfo;
+import us.nineworlds.serenity.core.util.DBMetaDataSource;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import android.app.Activity;
 import android.os.Handler;
@@ -31,6 +33,8 @@ public class TrailerHandler extends Handler {
 			return;
 		}
 		
+		createMetaData(yt);
+		
 		LinearLayout infographicsView = (LinearLayout) context
 				.findViewById(R.id.movieInfoGraphicLayout);
 		ImageView ytImage = new ImageView(context);
@@ -45,5 +49,18 @@ public class TrailerHandler extends Handler {
 		infographicsView.addView(ytImage);
 		video.setTrailer(true);
 		video.setTrailerId(yt.id());
+	}
+
+	/**
+	 * @param yt
+	 */
+	protected void createMetaData(YouTubeVideoContentInfo yt) {
+		DBMetaDataSource datasource = new DBMetaDataSource(context);
+		datasource.open();
+		DBMetaData metaData = datasource.findMetaDataByPlexId(video.id());
+		if (metaData == null ) {
+			datasource.createMetaData(yt.id(), video.id());
+		}
+		datasource.close();
 	}
 }

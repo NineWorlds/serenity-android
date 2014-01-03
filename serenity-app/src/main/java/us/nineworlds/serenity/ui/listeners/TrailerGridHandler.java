@@ -31,6 +31,8 @@ public class TrailerGridHandler extends TrailerHandler {
 			infoGraphicMeta.setVisibility(View.GONE);
 			return;
 		}
+		
+		createMetaData(yt);
 				
 		trailerIndicator.setVisibility(View.VISIBLE);
 		infoGraphicMeta.setVisibility(View.VISIBLE);

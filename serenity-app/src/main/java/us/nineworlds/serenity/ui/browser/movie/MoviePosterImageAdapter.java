@@ -29,10 +29,13 @@ import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.jess.ui.TwoWayAbsListView;
 import com.jess.ui.TwoWayGridView;
+
+import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
 import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
 import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
+import us.nineworlds.serenity.core.util.DBMetaDataSource;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.GridSubtitleHandler;
@@ -73,6 +76,8 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	protected static ProgressDialog pd;
 	private Handler posterGalleryHandler;
 	private static SerenityMultiViewVideoActivity movieContext;
+	private DBMetaDataSource datasource;
+	
 	public MoviePosterImageAdapter(Context c, String key, String category) {
 		super(c, key, category);
 		movieContext = (SerenityMultiViewVideoActivity) c;
@@ -134,6 +139,8 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	 */
 	protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
 		if (movieContext.isGridViewActive()) {
+			checkDataBaseForTrailer(pi);
+			
 			if (pi.hasTrailer() == false) {
 				if (YouTubeInitializationResult.SUCCESS.equals(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(context))) {
 					fetchTrailer(pi, galleryCellView);
@@ -153,9 +160,24 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 			}
 		}
 	}
+
+	/**
+	 * @param pi
+	 */
+	protected void checkDataBaseForTrailer(VideoContentInfo pi) {
+		datasource = new DBMetaDataSource(context);
+		datasource.open();
+		DBMetaData metaData = datasource.findMetaDataByPlexId(pi.id());
+		if (metaData != null) {
+			pi.setTrailer(true);
+			pi.setTrailerId(metaData.getYouTubeID());
+		}
+		datasource.close();
+	}
 	
 	public void fetchTrailer(VideoContentInfo mpi, View view) {
-		TrailerGridHandler trailerHandler = new TrailerGridHandler(mpi, context, view);
+		
+		TrailerHandler trailerHandler = new TrailerGridHandler(mpi, context, view);
 		Messenger messenger = new Messenger(trailerHandler);
 		Intent intent = new Intent(context, YouTubeTrailerSearchIntentService.class);
 		intent.putExtra("videoTitle", mpi.getTitle());
