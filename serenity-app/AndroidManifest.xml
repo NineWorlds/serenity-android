@@ -42,14 +42,14 @@
         <activity
             android:name="us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity"
             android:label="@string/title_activity_movie_browser"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name="us.nineworlds.serenity.MainActivity"
             android:hardwareAccelerated="true"
             android:label="@string/title_activity_main"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,42 +60,42 @@
         <activity
             android:name="us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity"
             android:label="@string/title_activity_tvbrowser_show"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name="us.nineworlds.serenity.ui.browser.music.MusicActivity"
             android:label="@string/title_activity_tvbrowser_show"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name="us.nineworlds.serenity.ui.browser.music.albums.MusicAlbumsActivity"
             android:label="@string/title_activity_tvbrowser_show"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name="us.nineworlds.serenity.ui.browser.music.tracks.MusicTracksActivity"
             android:label="@string/title_activity_tvbrowser_show"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name="us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity"
             android:label="@string/title_activity_tvbrowser_show_season"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name="us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity"
             android:label="@string/title_activity_tvbrowser_show_episodes"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name="us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -107,11 +107,11 @@
         </activity>
         <activity
             android:name=".ui.preferences.SerenityPreferenceActivity"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="sensorLandscape" >
         </activity>
         <activity
             android:name="us.nineworlds.serenity.ui.search.SearchableActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
