@@ -84,8 +84,13 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		View galleryCellView = context.getLayoutInflater().inflate(
+		View galleryCellView = null;
+		if (convertView != null) {
+			galleryCellView = convertView;
+		} else {
+	       galleryCellView = context.getLayoutInflater().inflate(
 				R.layout.poster_indicator_view, null);
+		}
 
 		VideoContentInfo pi = posterList.get(position);
 		ImageView mpiv = (ImageView) galleryCellView

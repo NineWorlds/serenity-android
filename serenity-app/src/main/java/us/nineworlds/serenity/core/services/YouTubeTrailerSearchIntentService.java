@@ -105,11 +105,7 @@ public class YouTubeTrailerSearchIntentService extends IntentService {
 			Query.CategoryFilter category = new Query.CategoryFilter();
 			category.addCategory(new Category(YouTubeNamespace.KEYWORD_SCHEME, "trailer"));
 			query.addCategoryFilter(category);
-			
-			//query.setAuthor("movieclips");
-			
-			System.out.println(query.getQueryUri().toString());
-			
+						
 			VideoFeed videoFeed = service.query(query, VideoFeed.class);
 			if (videoFeed.getTotalResults() > 0) {
 				VideoEntry entry = videoFeed.getEntries().get(0);
