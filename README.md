@@ -1,10 +1,9 @@
-Serenity for Google TV
+Serenity for Android
 =======================
 
-Serenity for Google TV is a Plex Media Server client.  It is an alternative
-client to the offical client from Plex, Inc.   Serenity is not associated with
-Plex, Inc.   If you value the Plex Media Server, I highly recommend making a 
-donation to that project to help fund continued development.
+Serenity for Android is a client for the Plex Media Server developed by Plex.  
+Serenity is not associated with Plex, Inc.   If you value the Plex Media Server,
+consider donating to that project to help fund continued development.
 
 Features
 ----
@@ -16,7 +15,14 @@ What does this support
 * Browsing by Genre for TV Shows and Movies
 * Browsing by Season for TV Shows
 * Download Videos for offline playback
-* Tablets and Google TVs
+* Tablets and Android TV devices (running 3.2 or higher)
+* Playback videos from Queue
+* Optional to playback movie trailers and episode previews from YouTube.
+* Multiple views, from Grid View to Detail View.
+* Auto discovery and works with all Plex 9 Media Servers, no server restriction.
+* Second screen support including AllCast for Chromecasting your videos.
+* Beta Music Library support.
+
 
 What is currently not targeted:
 
@@ -36,27 +42,10 @@ Plexapp REST Library
 This project includes a module that provides READ access to the plex media server REST API.
 It can be use outside of the serenity application by others developers to access the metadata provided by a Plex Media Server.  The code is licensed under an MIT License.
 
-
-FAQ
-===
-
-Why build Serenity?
-----
-
-Mainly because I have gotten tired of apps for Google TV that are still assuming a 
-tablet interface.  I also wanted most of the features listed above, but I also
-wanted something that looked really good.  I'm inspired by many of the very excellently
-designed skins for XBMC and the ports that have been done for Plex Media Center.  I feel
-that the 10 ft experience isn't currently being addressed well with the current Plex app, and
-since it isn't open source there is no way to contribute code to help improve it.
-
-I also wanted to learn android development, and had an itch to scratch.  Instead of complaining
-that their aren't any apps for Google TV, I decided to write one myself.
-
 What open source license is this using?
 -----
 
-I'm using one of the more liberal open source licenses available. MIT.
+The project is  using one of the more liberal open source licenses available. MIT.
 
 http://opensource.org/licenses/MIT
 
@@ -87,7 +76,7 @@ https://github.com/mosabua/maven-android-sdk-deployer
 Make sure to set the ANDROID_HOME environement variable to the location where your SDK is deployed.
 
 
-Maven 3.x is required as well.
+Maven 3.1.1 or higher is required.
 
 http://maven.apache.org/download.cgi
 
@@ -97,6 +86,30 @@ mvn clean install
 
 The application APK will be in serenity-app/target.  You can sideload this APK on your Google TV device.
 
+Using Eclipse to Build:
+===============
+
+These instructions are from an adopter of the project.
+
+1. Install Android SDK (was already done)
+2. install maven 3.1.1 from https://maven.apache.org/download.cgi
+3. set envorinmentvariables ANDROID_HOME and MAVEN_HOME and add $MAVEN_HOME/bin, $ANDROID_HOME/tools and $ANDROID_HOME/platform-tools to PATH
+4. install eclipse plugin m2e from update site: http://www.eclipse.org/m2e/download/
+5. install m2e-android from update site: http://rgladwell.github.com/m2e-android/updates/
+6. install m2eclipse from marketplace (had to install the marketplace client before)
+7. clone serenity repository
+8. import existing maven project
+9. update each project separatly over context menu Maven/Update project
+10. copy project.properties from leftnavbarlibrary to menudrawer, edit the file in menudrawer-project and set target to android-17 to avoid NullPointerException during build
+11. edit build-path for menudrawer and remove invalid system library and add your default jre-library
+12. edit /serenity-app-tests/pom.xml and set robolectric to 2.2 according to my local repository
+13. edit /serenity-app/pom.xml and change version for compatibility-v4 from 18 to 19.0.1 according to my local android sdk
+14. select the error "Plugin execution not covered by lifecycle configuration...." in problem view and run the quick fix (ignore)
+15. update all projects (maven / update projects) just to be sure.
+16. Start serenity-app as android app and have fun. :-)
+
+If you get errors because of @override-annotation, open project-settings, navigate to compiler-settings and set them from java 1.5 to 1.6
+
 
 Open Source Projects:
 =====
@@ -105,7 +118,6 @@ This project uses several open source projects and source code:
 
 * LeftNavBarLibrary (http://code.google.com/p/googletv-android-samples/) from the google tv project.  This is packaged as a apklib for reuse.
 * Android-Universal-ImageLoader (https://github.com/nostra13/Android-Universal-Image-Loader) - a nice library for managing image caches and downloading of images in the background.  Extremely fast response times both in the library and from the developer.
-* cling - http://4thline.org/projects/cling/ - Used for DLNA server discovery.
 * Simple (http://simple.sourceforge.net/) - provides a nice interface to Serialize and Deserialize XML information.
 
 Unit Testing Frameworks
