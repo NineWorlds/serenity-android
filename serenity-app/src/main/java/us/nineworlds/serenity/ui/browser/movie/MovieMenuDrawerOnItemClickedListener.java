@@ -78,7 +78,10 @@ public class MovieMenuDrawerOnItemClickedListener implements OnItemClickListener
 			if (!activity.getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
 				parent.setVisibility(View.INVISIBLE);
 			}
-			activity.findViewById(R.id.moviePosterGallery).requestFocus();
+			View gallery = activity.findViewById(R.id.moviePosterGallery);
+			if (gallery != null) {
+				gallery.requestFocusFromTouch();
+			}
 			VideoPlayerIntentUtils.playAllFromQueue(activity);
 			return;
 		}
