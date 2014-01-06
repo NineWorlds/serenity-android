@@ -25,16 +25,27 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import java.util.List;
 
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.jess.ui.TwoWayAbsListView;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.ui.util.ImageUtils;
 
+import us.nineworlds.serenity.core.model.DBMetaData;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
+import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
+import us.nineworlds.serenity.core.util.DBMetaDataSource;
+import us.nineworlds.serenity.ui.listeners.GridSubtitleHandler;
+import us.nineworlds.serenity.ui.listeners.TrailerGridHandler;
+import us.nineworlds.serenity.ui.listeners.TrailerHandler;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 
 import us.nineworlds.serenity.R;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Messenger;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -47,10 +58,13 @@ import android.widget.TextView;
  * @author dcarver
  * 
  */
-public class SeasonsEpisodePosterImageGalleryAdapter extends
+public class SeasonsEpisodePosterImageGalleryAdapter
+		extends
 		us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
 
 	private static SeasonsEpisodePosterImageGalleryAdapter notifyAdapter;
+	private DBMetaDataSource datasource;
+
 
 	public SeasonsEpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
@@ -63,6 +77,7 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends
 				R.layout.poster_indicator_view, null);
 
 		VideoContentInfo pi = posterList.get(position);
+		gridViewMetaData(galleryCellView, pi);
 		ImageView mpiv = (ImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
@@ -70,39 +85,42 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends
 		int width = ImageUtils.getDPI(270, context);
 		int height = ImageUtils.getDPI(147, context);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-		galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
+		galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
+				width, height));
 
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
 		ImageView watchedView = (ImageView) galleryCellView
 				.findViewById(R.id.posterWatchedIndicator);
-		
+
 		if (pi.isPartiallyWatched()) {
-			ImageUtils.toggleProgressIndicator(galleryCellView, pi.getResumeOffset(), pi.getDuration());
+			ImageUtils.toggleProgressIndicator(galleryCellView,
+					pi.getResumeOffset(), pi.getDuration());
 		} else if (pi.isWatched()) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
 			watchedView.setVisibility(View.VISIBLE);
 		} else {
 			watchedView.setVisibility(View.INVISIBLE);
 		}
-		
-		TextView metaData = (TextView) galleryCellView.findViewById(R.id.metaOverlay);
+
+		TextView metaData = (TextView) galleryCellView
+				.findViewById(R.id.metaOverlay);
 		String metaText = "";
 		if (pi.getSeason() != null) {
 			metaText = pi.getSeason() + " ";
 		}
-		
+
 		if (pi.getEpisodeNumber() != null) {
 			metaText = metaText + pi.getEpisodeNumber();
 		}
-		
+
 		if (metaText.length() > 0) {
 			metaData.setText(metaText);
 			metaData.setVisibility(View.VISIBLE);
 		}
-		
-		
-		TextView title = (TextView) galleryCellView.findViewById(R.id.posterOverlayTitle);
+
+		TextView title = (TextView) galleryCellView
+				.findViewById(R.id.posterOverlayTitle);
 		title.setText(pi.getTitle());
 		title.setVisibility(View.VISIBLE);
 
@@ -116,6 +134,70 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends
 		notifyAdapter = this;
 
 	}
+
+	/**
+	 * @param galleryCellView
+	 * @param pi
+	 */
+	protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
+		checkDataBaseForTrailer(pi);
+
+		if (pi.hasTrailer() == false) {
+			if (YouTubeInitializationResult.SUCCESS
+					.equals(YouTubeApiServiceUtil
+							.isYouTubeApiServiceAvailable(context))) {
+				fetchTrailer(pi, galleryCellView);
+			}
+		} else {
+			View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
+			v.setVisibility(View.VISIBLE);
+			v.findViewById(R.id.trailerIndicator).setVisibility(View.VISIBLE);
+		}
+
+		if (pi.getAvailableSubtitles() != null) {
+			View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
+			v.setVisibility(View.VISIBLE);
+			v.findViewById(R.id.subtitleIndicator).setVisibility(View.VISIBLE);
+		} else {
+			fetchSubtitle(pi, galleryCellView);
+		}
+	}
+
+	public void fetchSubtitle(VideoContentInfo mpi, View view) {
+		GridSubtitleHandler subtitleHandler = new GridSubtitleHandler(mpi, view);
+		Messenger messenger = new Messenger(subtitleHandler);
+		Intent intent = new Intent(context,
+				MovieMetaDataRetrievalIntentService.class);
+		intent.putExtra("MESSENGER", messenger);
+		intent.putExtra("key", mpi.id());
+		context.startService(intent);
+	}
+	
+	/**
+	 * @param pi
+	 */
+	protected void checkDataBaseForTrailer(VideoContentInfo pi) {
+		datasource = new DBMetaDataSource(context);
+		datasource.open();
+		DBMetaData metaData = datasource.findMetaDataByPlexId(pi.id());
+		if (metaData != null) {
+			pi.setTrailer(true);
+			pi.setTrailerId(metaData.getYouTubeID());
+		}
+		datasource.close();
+	}
+	
+	public void fetchTrailer(VideoContentInfo mpi, View view) {
+		
+		TrailerHandler trailerHandler = new TrailerGridHandler(mpi, context, view);
+		Messenger messenger = new Messenger(trailerHandler);
+		Intent intent = new Intent(context, YouTubeTrailerSearchIntentService.class);
+		intent.putExtra("videoTitle", mpi.getTitle());
+		intent.putExtra("year", mpi.getYear());
+		intent.putExtra("MESSENGER", messenger);
+		context.startService(intent);
+	}
+	
 
 	private static class EpisodeHandler extends Handler {
 
