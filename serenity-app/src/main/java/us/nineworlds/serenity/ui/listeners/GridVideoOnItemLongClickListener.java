@@ -31,8 +31,10 @@ import java.util.List;
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemLongClickListener;
 import com.jess.ui.TwoWayGridView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
@@ -44,7 +46,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView.ScaleType;
 
 /**
  * A listener that handles long press for video content in Grid View classes.
@@ -81,6 +85,8 @@ public class GridVideoOnItemLongClickListener extends AbstractVideoOnItemLongCli
 	@Override
 	protected ArrayList<DialogMenuItem> addMenuOptions() {
 		ArrayList<DialogMenuItem> options = super.addMenuOptions();
+		DialogMenuItem infoItem = createMenuItem("Details", 300);
+		options.add(infoItem);
 		if (info.getAvailableSubtitles() != null && !info.getAvailableSubtitles().isEmpty()) {
 			DialogMenuItem menuItem = createMenuItem("Select Subtitle", 200);
 			options.add(menuItem);
@@ -118,8 +124,12 @@ public class GridVideoOnItemLongClickListener extends AbstractVideoOnItemLongCli
 			case 4:
 				performGoogleTVSecondScreen();
 				break;
+			case 300:
+				performInfoDialog();
+				break;
 			case 200:
 				performSubtitleSelection();
+				break;
 			}
 			v.requestFocusFromTouch();
 			dialog.dismiss();
@@ -150,6 +160,29 @@ public class GridVideoOnItemLongClickListener extends AbstractVideoOnItemLongCli
 		subtitleDialog.show();
 		
 		
+	}
+	
+	Dialog detailsDialog;
+	protected void performInfoDialog() {
+		dialog.dismiss();
+		detailsDialog =  new Dialog(
+				new ContextThemeWrapper(context,
+						android.R.style.Theme_Holo_Dialog));
+		detailsDialog.setContentView(R.layout.details_layout);
+		detailsDialog.setTitle("Details");
+		ImageLoader imageLoader = SerenityApplication.getImageLoader();
+		ImageView posterImage = (ImageView) detailsDialog.findViewById(R.id.video_poster);
+		posterImage.setVisibility(View.VISIBLE);
+		posterImage.setScaleType(ScaleType.FIT_XY);
+		imageLoader.displayImage(info.getImageURL(), posterImage);
+		
+		TextView summary = (TextView) detailsDialog.findViewById(R.id.movieSummary);
+		summary.setText(info.getSummary());
+
+		TextView title = (TextView) detailsDialog
+				.findViewById(R.id.movieBrowserPosterTitle);
+		title.setText(info.getTitle());
+		detailsDialog.show();
 	}
 	
 	private class SubTitleSelection implements OnItemClickListener {
