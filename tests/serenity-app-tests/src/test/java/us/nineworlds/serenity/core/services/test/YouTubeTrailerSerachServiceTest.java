@@ -23,6 +23,8 @@
 
 package us.nineworlds.serenity.core.services.test;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +34,7 @@ import org.robolectric.annotation.Config;
 
 import android.content.Intent;
 
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 
 /**
@@ -67,6 +70,8 @@ public class YouTubeTrailerSerachServiceTest {
 		intent.putExtra("videoTitle", "Die Hard");
 		intent.putExtra("year", "1988");
 		service.onHandleIntent(intent);
+		assertNotNull(service.getYouTubeVideoInfo());
+		assertNotNull(service.getYouTubeVideoInfo().id());
 	}
 	
 	public class MockYouTubeSearchService extends YouTubeTrailerSearchIntentService {
@@ -82,6 +87,10 @@ public class YouTubeTrailerSerachServiceTest {
 		@Override
 		public void sendMessageResults(Intent intent) {
 			
+		}
+		
+		public VideoContentInfo getYouTubeVideoInfo() {
+			return videoInfo;
 		}
 		
 	}

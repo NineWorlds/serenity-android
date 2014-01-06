@@ -58,7 +58,7 @@ public class YouTubeTrailerSearchIntentService extends IntentService {
 	private String videoTitle;
 	private static final String TRAILER = " Offical Trailer";
 	private static final String YTFEED = "http://gdata.youtube.com/feeds/api/videos";
-	private YouTubeVideoContentInfo videoInfo = new YouTubeVideoContentInfo();
+	protected YouTubeVideoContentInfo videoInfo = new YouTubeVideoContentInfo();
 	
 	/**
 	 * @param name
