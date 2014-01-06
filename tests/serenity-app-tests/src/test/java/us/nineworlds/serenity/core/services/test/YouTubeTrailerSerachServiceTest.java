@@ -76,6 +76,14 @@ public class YouTubeTrailerSerachServiceTest {
 			super.onHandleIntent(intent);
 		}
 		
+		/* (non-Javadoc)
+		 * @see us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService#sendMessageResults(android.content.Intent)
+		 */
+		@Override
+		public void sendMessageResults(Intent intent) {
+			
+		}
+		
 	}
 
 }
