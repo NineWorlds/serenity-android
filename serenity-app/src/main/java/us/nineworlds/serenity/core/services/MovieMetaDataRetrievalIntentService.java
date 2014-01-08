@@ -44,7 +44,7 @@ public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentS
 
 	private String key;
 	private ArrayList<Subtitle> subtitles;
-	private static final String MOVIES_RETRIEVAL_INTENT_SERVICE = "MovieMetaDataRetrievalIntentService";
+	private static final String MOVIES_RETRIEVAL_INTENT_SERVICE = "VideoMetaDataRetrievalIntentService";
 
 
 	/**
