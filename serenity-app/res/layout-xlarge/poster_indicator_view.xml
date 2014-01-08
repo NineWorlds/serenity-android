@@ -46,6 +46,32 @@
         android:layout_alignParentRight="true"
         android:scaleType="fitXY" />
 
+    <LinearLayout android:id="@+id/infoGraphicMeta"
+                android:layout_above="@+id/posterInprogressIndicator"
+                android:background="@color/fity_percent_transparent"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+        >
+       <ImageView
+           android:id="@+id/subtitleIndicator"
+           android:layout_width="20dp"
+           android:layout_height="20dp"
+           android:src="@drawable/subtitles"
+           android:visibility="gone"
+           android:scaleType="fitXY" />
+       
+       <ImageView
+           android:id="@+id/trailerIndicator"
+           android:layout_width="20dp"
+           android:layout_height="20dp"
+           android:src="@drawable/yt_social_icon_red_128px"
+           android:visibility="gone"
+           android:scaleType="fitXY" />
+       
+    </LinearLayout>
+    
     <ProgressBar
         android:id="@+id/posterInprogressIndicator"
         android:layout_width="fill_parent"
