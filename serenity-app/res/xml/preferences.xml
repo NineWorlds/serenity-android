@@ -75,6 +75,10 @@
             android:key="movie_layout_grid"
             android:summary="@string/poster_grid_layout_for_movies_"
             android:title="@string/movie_grid_poster_layout" />
+        <CheckBoxPreference android:key="episode_trailers"
+            android:title="Enable Episode Previews"
+            android:summary="When enabled the app will try and search YouTube for episode promos and previews. Disable if you are not finding relevant trailers from YouTube."
+            android:defaultValue="false"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/animations" >
         <CheckBoxPreference

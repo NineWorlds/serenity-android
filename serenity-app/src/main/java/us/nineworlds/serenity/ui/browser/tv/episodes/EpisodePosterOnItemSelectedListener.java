@@ -42,7 +42,9 @@ import us.nineworlds.serenity.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -67,6 +69,10 @@ public class EpisodePosterOnItemSelectedListener extends
 	private int fadeInCount = 0;
 
 	public void fetchTrailer(VideoContentInfo mpi) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		if (prefs.getBoolean("episode_trailers", false) == false) {
+			return;
+		}
 		checkDataBaseForTrailer(mpi);
 		if (mpi.hasTrailer()) {
 			return;

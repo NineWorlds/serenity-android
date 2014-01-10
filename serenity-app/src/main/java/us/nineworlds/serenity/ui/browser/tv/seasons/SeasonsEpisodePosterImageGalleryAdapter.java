@@ -43,9 +43,11 @@ import us.nineworlds.serenity.R;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -64,11 +66,13 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 
 	private static SeasonsEpisodePosterImageGalleryAdapter notifyAdapter;
 	private DBMetaDataSource datasource;
+	private SharedPreferences prefs;
 
 
 	public SeasonsEpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
+		prefs = PreferenceManager.getDefaultSharedPreferences(c);
 	}
 
 	@Override
@@ -142,16 +146,19 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 	protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
 		checkDataBaseForTrailer(pi);
 
-		if (pi.hasTrailer() == false) {
-			if (YouTubeInitializationResult.SUCCESS
-					.equals(YouTubeApiServiceUtil
-							.isYouTubeApiServiceAvailable(context))) {
-				fetchTrailer(pi, galleryCellView);
+		boolean trailersEnabled = prefs.getBoolean("episode_trailers", false);
+		if (trailersEnabled) {
+			if (pi.hasTrailer() == false) {
+				if (YouTubeInitializationResult.SUCCESS
+						.equals(YouTubeApiServiceUtil
+								.isYouTubeApiServiceAvailable(context))) {
+					fetchTrailer(pi, galleryCellView);
+				}
+			} else {
+				View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
+				v.setVisibility(View.VISIBLE);
+				v.findViewById(R.id.trailerIndicator).setVisibility(View.VISIBLE);
 			}
-		} else {
-			View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
-			v.setVisibility(View.VISIBLE);
-			v.findViewById(R.id.trailerIndicator).setVisibility(View.VISIBLE);
 		}
 
 		if (pi.getAvailableSubtitles() != null) {
