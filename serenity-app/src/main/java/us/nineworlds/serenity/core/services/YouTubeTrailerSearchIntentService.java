@@ -57,6 +57,7 @@ public class YouTubeTrailerSearchIntentService extends IntentService {
 
 	private String videoTitle;
 	private static final String TRAILER = " Offical Trailer";
+	private boolean trailerCategory = true;
 	private static final String YTFEED = "http://gdata.youtube.com/feeds/api/videos";
 	protected YouTubeVideoContentInfo videoInfo = new YouTubeVideoContentInfo();
 	
@@ -72,9 +73,18 @@ public class YouTubeTrailerSearchIntentService extends IntentService {
 	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		videoTitle = intent.getStringExtra("videoTitle");
+		String title = intent.getStringExtra("videoTitle");
 		String year = intent.getStringExtra("year");
-		videoTitle = "\"" + videoTitle + "\"" + TRAILER + " HD" + " " + year;
+		String show = intent.getStringExtra("show");
+		String season = intent.getStringExtra("season");
+		String episodeNum = intent.getStringExtra("episodeNum");
+		if (show == null) {
+			videoTitle = "\"" + title + "\"" + TRAILER + " HD" + " " + year;
+			trailerCategory = true;
+		} else {
+			trailerCategory = false;
+			videoTitle = "\"" + show + "\" " + season + " " + episodeNum + " Promo";
+		}
 		searchForVideo();
 		sendMessageResults(intent);
 	}
@@ -103,8 +113,10 @@ public class YouTubeTrailerSearchIntentService extends IntentService {
 			query.setSafeSearch(YouTubeQuery.SafeSearch.NONE);
 			query.setMaxResults(1);
 			Query.CategoryFilter category = new Query.CategoryFilter();
-			category.addCategory(new Category(YouTubeNamespace.KEYWORD_SCHEME, "trailer"));
-			query.addCategoryFilter(category);
+			if (trailerCategory) {
+				category.addCategory(new Category(YouTubeNamespace.KEYWORD_SCHEME, "trailer"));
+				query.addCategoryFilter(category);
+			}
 						
 			VideoFeed videoFeed = service.query(query, VideoFeed.class);
 			if (videoFeed.getTotalResults() > 0) {

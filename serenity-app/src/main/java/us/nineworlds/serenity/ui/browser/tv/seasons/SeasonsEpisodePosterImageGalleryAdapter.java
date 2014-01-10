@@ -194,6 +194,9 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 		Intent intent = new Intent(context, YouTubeTrailerSearchIntentService.class);
 		intent.putExtra("videoTitle", mpi.getTitle());
 		intent.putExtra("year", mpi.getYear());
+		intent.putExtra("show", mpi.getSeriesTitle());
+		intent.putExtra("season", mpi.getSeason());
+		intent.putExtra("episodeNum", mpi.getEpisodeNumber());
 		intent.putExtra("MESSENGER", messenger);
 		context.startService(intent);
 	}

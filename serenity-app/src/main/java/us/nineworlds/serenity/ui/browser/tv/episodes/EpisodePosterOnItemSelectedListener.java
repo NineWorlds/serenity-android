@@ -31,7 +31,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
+import us.nineworlds.serenity.ui.listeners.TrailerHandler;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
@@ -39,6 +41,8 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Messenger;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -62,6 +66,23 @@ public class EpisodePosterOnItemSelectedListener extends
 	private boolean fadeIn = true;
 	private int fadeInCount = 0;
 
+	public void fetchTrailer(VideoContentInfo mpi) {
+		checkDataBaseForTrailer(mpi);
+		if (mpi.hasTrailer()) {
+			return;
+		}
+		trailerHandler = new TrailerHandler(mpi, context);
+		Messenger messenger = new Messenger(trailerHandler);
+		Intent intent = new Intent(context, YouTubeTrailerSearchIntentService.class);
+		intent.putExtra("videoTitle", mpi.getTitle());
+		intent.putExtra("year", mpi.getYear());
+		intent.putExtra("show", mpi.getSeriesTitle());
+		intent.putExtra("season", mpi.getSeason());
+		intent.putExtra("episodeNum", mpi.getEpisodeNumber());		
+		intent.putExtra("MESSENGER", messenger);
+		context.startService(intent);
+	}
+	
 	/**
 	 * 
 	 */

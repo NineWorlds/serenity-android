@@ -173,9 +173,13 @@ public class EpisodeRetrievalIntentService extends
 
 			epi.setImageURL(turl);
 			epi.setTitle(episode.getTitle());
-			
+
 			if (episode.getGrandParentTitle() != null) {
 				epi.setSeriesTitle(episode.getGrandParentTitle());
+			}
+			
+			if (epi.getSeriesTitle() == null) {
+				epi.setSeriesTitle(mc.getTitle1());
 			}
 			
 			epi.setContentRating(episode.getContentRating());
