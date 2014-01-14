@@ -119,7 +119,7 @@ public class YouTubeTrailerSearchIntentService extends IntentService {
 			}
 						
 			VideoFeed videoFeed = service.query(query, VideoFeed.class);
-			if (videoFeed.getTotalResults() > 0) {
+			if (!videoFeed.getEntries().isEmpty()) {
 				VideoEntry entry = videoFeed.getEntries().get(0);
 				videoInfo = new YouTubeVideoContentInfo();
 				videoInfo.setId(entry.getMediaGroup().getVideoId());
