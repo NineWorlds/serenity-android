@@ -35,6 +35,8 @@ import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
@@ -69,7 +71,7 @@ public class SerenityApplication extends Application {
 	private static LinkedList<VideoContentInfo> videoQueue = new LinkedList<VideoContentInfo>();
 	private static ImageLoader imageLoader;
 	public static final int PROGRESS = 0xDEADBEEF;
-
+	
 	private static List<PendingDownload> pendingDownloads;
 
 	public static List<PendingDownload> getPendingDownloads() {
@@ -237,5 +239,5 @@ public class SerenityApplication extends Application {
 		}
 		return false;
 	}
-
+	
 }
