@@ -26,12 +26,14 @@ package us.nineworlds.serenity.ui.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.android.volley.RequestQueue;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.util.VolleyUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
 import android.app.Activity;
@@ -71,8 +73,10 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	protected String category;
 	public Animation shrink;
 	protected Animation fadeIn;
+	protected RequestQueue queue;
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
+		queue = VolleyUtils.getRequestQueueInstance(c);
 		context = (Activity) c;
 		posterList = new ArrayList<VideoContentInfo>();
 		imageLoader = SerenityApplication.getImageLoader();
@@ -82,6 +86,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key,
 			String category) {
+		queue = VolleyUtils.getRequestQueueInstance(c);
 		context = (Activity) c;
 		this.key = key;
 		this.category = category;

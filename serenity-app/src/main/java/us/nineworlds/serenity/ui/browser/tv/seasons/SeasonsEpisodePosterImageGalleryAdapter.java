@@ -25,21 +25,29 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import java.util.List;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.jess.ui.TwoWayAbsListView;
 
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
 import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import us.nineworlds.serenity.core.util.DBMetaDataSource;
+import us.nineworlds.serenity.core.util.SimpleXmlRequest;
+import us.nineworlds.serenity.core.util.VolleyUtils;
 import us.nineworlds.serenity.ui.listeners.GridSubtitleHandler;
 import us.nineworlds.serenity.ui.listeners.TrailerGridHandler;
 import us.nineworlds.serenity.ui.listeners.TrailerHandler;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 
 import android.content.Context;
 import android.content.Intent;
@@ -48,7 +56,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -68,24 +75,17 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 	private static SeasonsEpisodePosterImageGalleryAdapter notifyAdapter;
 	private DBMetaDataSource datasource;
 	private SharedPreferences prefs;
-	private LayoutInflater inflater;
-
-
+	
 	public SeasonsEpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
 		prefs = PreferenceManager.getDefaultSharedPreferences(c);
-		inflater = context.getLayoutInflater();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		final View galleryCellView;
-		if (convertView != null) {
-			galleryCellView = convertView;
-		} else {
-			galleryCellView = inflater.inflate(R.layout.poster_indicator_view, null);
-		}
+		View galleryCellView = context.getLayoutInflater().inflate(
+				R.layout.poster_indicator_view, null);
 
 		VideoContentInfo pi = posterList.get(position);
 		gridViewMetaData(galleryCellView, pi);
@@ -177,14 +177,22 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 		}
 	}
 
-	public void fetchSubtitle(VideoContentInfo mpi, View view) {
-		GridSubtitleHandler subtitleHandler = new GridSubtitleHandler(mpi, view);
-		Messenger messenger = new Messenger(subtitleHandler);
-		Intent intent = new Intent(context,
-				MovieMetaDataRetrievalIntentService.class);
-		intent.putExtra("MESSENGER", messenger);
-		intent.putExtra("key", mpi.id());
-		context.startService(intent);
+	public void fetchSubtitle(VideoContentInfo mpi, View view) {		
+		PlexappFactory factory = SerenityApplication.getPlexFactory();
+		String url = factory.getMovieMetadataURL("/library/metadata/"
+				+ mpi.id());
+		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(
+				Request.Method.GET, url, MediaContainer.class,
+				new GridSubtitleHandler(mpi, context, view),
+				new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+
+					}
+				});
+		queue.add(xmlRequest);
+		
 	}
 	
 	/**

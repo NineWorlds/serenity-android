@@ -23,23 +23,25 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.Subtitle;
-import us.nineworlds.serenity.core.model.impl.YouTubeVideoContentInfo;
-import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
 import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import us.nineworlds.serenity.core.util.DBMetaDataSource;
+import us.nineworlds.serenity.core.util.SimpleXmlRequest;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
@@ -48,9 +50,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Handler;
-import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
@@ -59,13 +59,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -93,6 +89,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	protected BaseAdapter adapter;
 	protected VideoContentInfo videoInfo;
 	private DBMetaDataSource datasource;
+	private RequestQueue queue;
 	
 
 	public AbstractVideoOnItemSelectedListener(Activity c) {
@@ -216,13 +213,26 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	}	
 
 	public void fetchSubtitle(VideoContentInfo mpi) {
-		subtitleHandler = new SubtitleHandler(mpi, context);
-		Messenger messenger = new Messenger(subtitleHandler);
-		Intent intent = new Intent(context,
-				MovieMetaDataRetrievalIntentService.class);
-		intent.putExtra("MESSENGER", messenger);
-		intent.putExtra("key", mpi.id());
-		context.startService(intent);
+//		subtitleHandler = new SubtitleHandler(mpi, context);
+//		Messenger messenger = new Messenger(subtitleHandler);
+//		Intent intent = new Intent(context,
+//				MovieMetaDataRetrievalIntentService.class);
+//		intent.putExtra("MESSENGER", messenger);
+//		intent.putExtra("key", mpi.id());
+//		context.startService(intent);
+		
+		queue = Volley.newRequestQueue(context);
+		PlexappFactory factory = SerenityApplication.getPlexFactory();
+		String url = factory.getMovieMetadataURL("/library/metadata/" + mpi.id());
+		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(Request.Method.GET, url, MediaContainer.class, new SubtitleHandler(mpi, context),
+				new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						
+					}
+				});
+		queue.add(xmlRequest);
 	}
 	
 	public void fetchTrailer(VideoContentInfo mpi) {

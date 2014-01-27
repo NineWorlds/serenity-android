@@ -36,6 +36,7 @@ import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.plex.rest.model.impl.Writer;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 
 import android.content.Intent;
@@ -104,74 +105,10 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 		}
 
 		if (mc != null && mc.getSize() > 0) {
-			createVideoContent(mc);
+			videoContentList = new MovieMediaContainer(mc).createVideos();
 		}
 
 	}
-
-	protected void createVideoContent(MediaContainer mc) {
-		String baseUrl = factory.baseURL();
-		List<Video> videos = mc.getVideos();
-		String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
-		for (Video movie : videos) {
-			VideoContentInfo mpi = new MoviePosterInfo();
-			mpi.setMediaTagIdentifier(mediaTagId);
-			mpi.setId(movie.getRatingKey());
-			mpi.setStudio(movie.getStudio());
-			mpi.setSummary(movie.getSummary());
-
-			mpi.setResumeOffset(Long.valueOf(movie.getViewOffset()).intValue());
-			mpi.setDuration(Long.valueOf(movie.getDuration()).intValue());
-
-			mpi.setViewCount(movie.getViewCount());
-			mpi.setRating(movie.getRating());
-			
-
-			String burl = baseUrl + ":/resources/movie-fanart.jpg";
-			if (movie.getBackgroundImageKey() != null) {
-				burl = baseUrl
-						+ movie.getBackgroundImageKey().replaceFirst("/", "");
-			}
-			mpi.setBackgroundURL(burl);
-
-			String turl = "";
-			if (movie.getThumbNailImageKey() != null) {
-				turl = baseUrl
-						+ movie.getThumbNailImageKey().replaceFirst("/", "");
-			}
-
-			mpi.setImageURL(turl);
-			mpi.setTitle(movie.getTitle());
-
-			mpi.setContentRating(movie.getContentRating());
-
-			List<Media> mediacont = movie.getMedias();
-			if (mediacont != null && !mediacont.isEmpty()) {
-				// We grab the first media container until we know more about
-				// why there can be multiples.
-				Media media = mediacont.get(0);
-				mpi.setContainer(media.getContainer());
-				List<Part> parts = media.getVideoPart();
-				Part part = parts.get(0);
-				mpi.setAudioCodec(media.getAudioCodec());
-				mpi.setVideoCodec(media.getVideoCodec());
-				mpi.setVideoResolution(media.getVideoResolution());
-				mpi.setAspectRatio(media.getAspectRatio());
-				mpi.setAudioChannels(media.getAudioChannels());
-
-				String directPlayUrl = factory.baseURL()
-						+ part.getKey().replaceFirst("/", "");
-				mpi.setDirectPlayUrl(directPlayUrl);
-
-			}
-
-			createVideoDetails(movie, mpi);
-			
-			videoContentList.add(mpi);
-		}
-
-	}
-
 
 	protected MediaContainer retrieveVideos() throws Exception {
 		if (category == null) {
@@ -181,44 +118,5 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 		return factory.retrieveSections(key, category);
 	}
 
-	/**
-	 * Create the video meta data around cast, direct, year produced, etc.
-	 * 
-	 * @param video
-	 * @param videoContentInfo
-	 * @return
-	 */
-	protected void createVideoDetails(Video video,
-			VideoContentInfo videoContentInfo) {
-
-		if (video.getYear() != null) {
-			videoContentInfo.setYear(video.getYear());
-		}
-
-		if (video.getGenres() != null && video.getGenres().size() > 0) {
-			ArrayList<String> g = new ArrayList<String>();
-
-			for (Genre genre : video.getGenres()) {
-				g.add(genre.getTag());
-			}
-			videoContentInfo.setGenres(g);
-		}
-
-		if (video.getWriters() != null && video.getWriters().size() > 0) {
-			ArrayList<String> w = new ArrayList<String>();
-			for (Writer writer : video.getWriters()) {
-				w.add(writer.getTag());
-			}
-			videoContentInfo.setWriters(w);
-		}
-
-		if (video.getDirectors() != null && video.getDirectors().size() > 0) {
-			ArrayList<String> d = new ArrayList<String>();
-			for (Director director : video.getDirectors()) {
-				d.add(director.getTag());
-			}
-			videoContentInfo.setDirectors(d);
-		}
-	}
 
 }
