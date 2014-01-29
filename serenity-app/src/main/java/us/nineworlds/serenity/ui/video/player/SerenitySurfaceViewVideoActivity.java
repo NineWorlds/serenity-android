@@ -23,34 +23,6 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.util.Collection;
-import java.util.LinkedList;
-
-import org.mozilla.universalchardet.UniversalDetector;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.SerenityConstants;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
-import us.nineworlds.serenity.core.services.CompletedVideoRequest;
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
-import us.nineworlds.serenity.core.subtitles.formats.Caption;
-import us.nineworlds.serenity.core.subtitles.formats.FormatASS;
-import us.nineworlds.serenity.core.subtitles.formats.FormatSRT;
-import us.nineworlds.serenity.core.subtitles.formats.TimedTextObject;
-import us.nineworlds.serenity.ui.activity.SerenityActivity;
-import us.nineworlds.serenity.R;
-
-import com.google.analytics.tracking.android.EasyTracker;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -69,6 +41,31 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.analytics.tracking.android.EasyTracker;
+import org.mozilla.universalchardet.UniversalDetector;
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.SerenityConstants;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
+import us.nineworlds.serenity.core.services.CompletedVideoRequest;
+import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
+import us.nineworlds.serenity.core.subtitles.formats.Caption;
+import us.nineworlds.serenity.core.subtitles.formats.FormatASS;
+import us.nineworlds.serenity.core.subtitles.formats.FormatSRT;
+import us.nineworlds.serenity.core.subtitles.formats.TimedTextObject;
+import us.nineworlds.serenity.ui.activity.SerenityActivity;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * A view that handles the internal video playback and representation of a movie
@@ -188,8 +185,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			mediaPlayer.setDataSource(videoURL);
 			mediaPlayer.setOnPreparedListener(new VideoPlayerPrepareListener(
 					this, mediaPlayer, mediaController, surfaceView,
-					resumeOffset, videoId, aspectRatio,
-					progressReportinghandler, progressRunnable, subtitleURL));
+					resumeOffset, aspectRatio,
+					progressReportinghandler, progressRunnable));
 			mediaPlayer
 					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
 			mediaPlayer.prepareAsync();

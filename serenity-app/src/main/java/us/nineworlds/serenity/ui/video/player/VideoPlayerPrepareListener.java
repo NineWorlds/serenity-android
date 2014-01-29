@@ -25,10 +25,6 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
-import us.nineworlds.serenity.core.util.TimeUtil;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -40,6 +36,9 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.SurfaceView;
 import android.widget.RelativeLayout;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.util.TimeUtil;
 
 /**
  * A prepare listener that handles how a video should start playing.
@@ -60,23 +59,19 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 	private MediaController mediaController;
 	private int resumeOffset;
 	private MediaPlayer mediaPlayer;
-	private String videoId;
 	private String plexAspectRatio;
 	private Handler progressReportingHandler;
 	private Runnable progressRunnable;
-	private String subtitleURL;
 	private SharedPreferences preferences;
 
-	public VideoPlayerPrepareListener(Context c, MediaPlayer mp, MediaController con, SurfaceView v, int resumeOffset, String videoId, String aspectRatio, Handler progress, Runnable progresrun, String subtitleURL) {
+	public VideoPlayerPrepareListener(Context c, MediaPlayer mp, MediaController con, SurfaceView v, int resumeOffset, String aspectRatio, Handler progress, Runnable progresrun) {
 		context = c;
 		mediaController = con;
 		surfaceView = v;
 		mediaPlayer = mp;
 		progressReportingHandler = progress;
 		progressRunnable = progresrun;
-		this.videoId = videoId; 
 		plexAspectRatio = aspectRatio;
-		this.subtitleURL = subtitleURL;
 		this.resumeOffset = resumeOffset;
 	}
 
@@ -135,7 +130,6 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 	 * 
 	 */
 	protected void setMetaData() {
-		new WatchedVideoAsyncTask().execute(videoId);
 		boolean showOSD = preferences.getBoolean("internal_player_osd", true);
 		if (showOSD) {
 			mediaController.show(SerenitySurfaceViewVideoActivity.CONTROLLER_DELAY);
