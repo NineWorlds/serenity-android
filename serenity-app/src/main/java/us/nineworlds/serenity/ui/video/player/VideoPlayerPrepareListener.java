@@ -135,7 +135,6 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 	 * 
 	 */
 	protected void setMetaData() {
-		new WatchedVideoAsyncTask().execute(videoId);
 		boolean showOSD = preferences.getBoolean("internal_player_osd", true);
 		if (showOSD) {
 			mediaController.show(SerenitySurfaceViewVideoActivity.CONTROLLER_DELAY);
