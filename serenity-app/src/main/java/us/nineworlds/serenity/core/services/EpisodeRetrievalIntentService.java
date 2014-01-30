@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.content.Context;
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.Director;
 import us.nineworlds.plex.rest.model.impl.Genre;
 import us.nineworlds.plex.rest.model.impl.Media;
@@ -131,102 +133,107 @@ public class EpisodeRetrievalIntentService extends
 		}
 		List<Video> videos = mc.getVideos();
 		for (Video episode : videos) {
-			VideoContentInfo epi = new EpisodePosterInfo();
-			if (parentPosterURL != null) {
-				epi.setParentPosterURL(parentPosterURL);
-			}
-			epi.setId(episode.getRatingKey());
-			epi.setParentKey(episode.getParentKey());
-			epi.setSummary(episode.getSummary());
-			epi.setViewCount(episode.getViewCount());
-			epi.setResumeOffset(Long.valueOf(episode.getViewOffset())
-					.intValue());
-			epi.setDuration(Long.valueOf(episode.getDuration()).intValue());
+            posterList.add(createEpisodeContentInfo(this, factory, mc, baseUrl, parentPosterURL, episode));
 
-			epi.setOriginalAirDate(episode.getOriginallyAvailableDate());
-
-			if (episode.getParentThumbNailImageKey() != null) {
-				epi.setParentPosterURL(baseUrl
-						+ episode.getParentThumbNailImageKey().substring(1));
-			}
-			
-			if (episode.getGrandParentThumbNailImageKey() != null) {
-				epi.setGrandParentPosterURL(baseUrl
-						+ episode.getGrandParentThumbNailImageKey().substring(1));
-			}
-
-			String burl = factory.baseURL() + ":/resources/show-fanart.jpg";
-			if (episode.getBackgroundImageKey() != null) {
-				burl = baseUrl
-						+ episode.getBackgroundImageKey().replaceFirst("/", "");
-			} else if (mc.getArt() != null) {
-				burl = baseUrl + mc.getArt().replaceFirst("/", "");
-			}
-
-			epi.setBackgroundURL(burl);
-
-			String turl = "";
-			if (episode.getThumbNailImageKey() != null) {
-				turl = baseUrl
-						+ episode.getThumbNailImageKey().replaceFirst("/", "");
-			}
-
-			epi.setImageURL(turl);
-			epi.setTitle(episode.getTitle());
-
-			if (episode.getGrandParentTitle() != null) {
-				epi.setSeriesTitle(episode.getGrandParentTitle());
-			}
-			
-			if (epi.getSeriesTitle() == null) {
-				epi.setSeriesTitle(mc.getTitle1());
-			}
-			
-			epi.setContentRating(episode.getContentRating());
-
-			List<Media> mediacont = episode.getMedias();
-			if (mediacont != null && !mediacont.isEmpty()) {
-				// We grab the first media container until we know more about
-				// why there can be multiples.
-				Media media = mediacont.get(0);
-				epi.setContainer(media.getContainer());
-				List<Part> parts = media.getVideoPart();
-				Part part = parts.get(0);
-
-				if (episode.getSeason() != null) {
-					String season = getString(R.string.season_) + episode.getSeason();
-					epi.setSeason(season);
-				} else if (mc.getParentIndex() != null) {
-					String season = getString(R.string.season_) + mc.getParentIndex();
-					epi.setSeason(season);
-				}
-				
-				if (episode.getEpisode() != null) {
-					String episodeNum = getString(R.string.episode_) + episode.getEpisode();
-					epi.setEpisodeNumber(episodeNum);
-				}
-//				setSeasonEpisode(epi, part);
-
-				epi.setAudioCodec(media.getAudioCodec());
-				epi.setVideoCodec(media.getVideoCodec());
-				epi.setVideoResolution(media.getVideoResolution());
-				epi.setAspectRatio(media.getAspectRatio());
-				epi.setAudioChannels(media.getAudioChannels());
-
-				String directPlayUrl = factory.baseURL()
-						+ part.getKey().replaceFirst("/", "");
-				epi.setDirectPlayUrl(directPlayUrl);
-
-			}
-
-			createVideoDetails(episode, epi);
-			epi.setCastInfo("");
-
-			posterList.add(epi);
-		}
+        }
 	}
 
-	protected void setSeasonEpisode(VideoContentInfo epi, Part part) {
+    public static VideoContentInfo createEpisodeContentInfo(Context context, PlexappFactory factory, MediaContainer mc, String baseUrl, String parentPosterURL, Video episode) {
+        VideoContentInfo epi = new EpisodePosterInfo();
+        if (parentPosterURL != null) {
+            epi.setParentPosterURL(parentPosterURL);
+        }
+        epi.setId(episode.getRatingKey());
+        epi.setParentKey(episode.getParentKey());
+        epi.setSummary(episode.getSummary());
+        epi.setViewCount(episode.getViewCount());
+        epi.setResumeOffset(Long.valueOf(episode.getViewOffset())
+                .intValue());
+        epi.setDuration(Long.valueOf(episode.getDuration()).intValue());
+
+        epi.setOriginalAirDate(episode.getOriginallyAvailableDate());
+
+        if (episode.getParentThumbNailImageKey() != null) {
+            epi.setParentPosterURL(baseUrl
+                    + episode.getParentThumbNailImageKey().substring(1));
+        }
+
+        if (episode.getGrandParentThumbNailImageKey() != null) {
+            epi.setGrandParentPosterURL(baseUrl
+                    + episode.getGrandParentThumbNailImageKey().substring(1));
+        }
+
+        String burl = factory.baseURL() + ":/resources/show-fanart.jpg";
+        if (episode.getBackgroundImageKey() != null) {
+            burl = baseUrl
+                    + episode.getBackgroundImageKey().replaceFirst("/", "");
+        } else if (mc.getArt() != null) {
+            burl = baseUrl + mc.getArt().replaceFirst("/", "");
+        }
+
+        epi.setBackgroundURL(burl);
+
+        String turl = "";
+        if (episode.getThumbNailImageKey() != null) {
+            turl = baseUrl
+                    + episode.getThumbNailImageKey().replaceFirst("/", "");
+        }
+
+        epi.setImageURL(turl);
+        epi.setTitle(episode.getTitle());
+
+        if (episode.getGrandParentTitle() != null) {
+            epi.setSeriesTitle(episode.getGrandParentTitle());
+        }
+
+        if (epi.getSeriesTitle() == null) {
+            epi.setSeriesTitle(mc.getTitle1());
+        }
+
+        epi.setContentRating(episode.getContentRating());
+
+        List<Media> mediacont = episode.getMedias();
+        if (mediacont != null && !mediacont.isEmpty()) {
+            // We grab the first media container until we know more about
+            // why there can be multiples.
+            Media media = mediacont.get(0);
+            epi.setContainer(media.getContainer());
+            List<Part> parts = media.getVideoPart();
+            Part part = parts.get(0);
+
+            if (episode.getSeason() != null) {
+                String season = context.getString(R.string.season_) + episode.getSeason();
+                epi.setSeason(season);
+            } else if (mc.getParentIndex() != null) {
+                String season = context.getString(R.string.season_) + mc.getParentIndex();
+                epi.setSeason(season);
+            }
+
+            if (episode.getEpisode() != null) {
+                String episodeNum = context.getString(R.string.episode_) + episode.getEpisode();
+                epi.setEpisodeNumber(episodeNum);
+            }
+//				setSeasonEpisode(epi, part);
+
+            epi.setAudioCodec(media.getAudioCodec());
+            epi.setVideoCodec(media.getVideoCodec());
+            epi.setVideoResolution(media.getVideoResolution());
+            epi.setAspectRatio(media.getAspectRatio());
+            epi.setAudioChannels(media.getAudioChannels());
+
+            String directPlayUrl = factory.baseURL()
+                    + part.getKey().replaceFirst("/", "");
+            epi.setDirectPlayUrl(directPlayUrl);
+
+        }
+
+        createVideoDetails(episode, epi);
+        epi.setCastInfo("");
+
+        return epi;
+    }
+
+    protected void setSeasonEpisode(VideoContentInfo epi, Part part) {
 		if (part == null) {
 			return;
 		}
@@ -262,7 +269,7 @@ public class EpisodeRetrievalIntentService extends
 	 * @param videoContentInfo
 	 * @return
 	 */
-	protected void createVideoDetails(Video video,
+	protected static void createVideoDetails(Video video,
 			VideoContentInfo videoContentInfo) {
 
 		if (video.getYear() != null) {
