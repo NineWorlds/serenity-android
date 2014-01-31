@@ -30,7 +30,6 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 import us.nineworlds.serenity.R;
@@ -39,7 +38,6 @@ import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.externalplayer.ExternalPlayer;
 import us.nineworlds.serenity.core.externalplayer.ExternalPlayerFactory;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 
@@ -176,19 +174,19 @@ public class VideoPlayerIntentUtils {
         boolean externalPlayer = prefs.getBoolean("external_player", false);
 
         if (externalPlayer) {
-            VideoPlayerIntentUtils.launchExternalPlayer(videoInfo, activity);
+            launchExternalPlayer(videoInfo, activity);
             //new WatchedVideoAsyncTask().execute(videoInfo.id());
             return;
         }
 
-        launchInternalPlayer(activity, videoInfo);
+        launchInternalPlayer(videoInfo, activity);
     }
 
     /**
      *
-     * @param videoInfo@return
+     * @param videoInfo @return
      */
-    private static void launchInternalPlayer(Activity activity, VideoContentInfo videoInfo) {
+    private static void launchInternalPlayer(VideoContentInfo videoInfo, Activity activity) {
 
         SerenityApplication.getVideoPlaybackQueue().add(videoInfo);
 

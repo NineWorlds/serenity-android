@@ -32,7 +32,7 @@ public class TVShowGridOnKeyListener implements View.OnKeyListener {
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode != KeyEvent.KEYCODE_MEDIA_PLAY) {
+        if (keyCode != KeyEvent.KEYCODE_MEDIA_PLAY || event.getAction() == KeyEvent.ACTION_DOWN) {
             return false;
         }
 
@@ -42,7 +42,7 @@ public class TVShowGridOnKeyListener implements View.OnKeyListener {
 
             @Override
             protected EpisodePosterInfo doInBackground(SeriesContentInfo... infos) {
-                return findFirstUnwatchedEpisode(info);
+                return findFirstUnwatchedEpisode(infos[0]);
             }
 
             @Override
@@ -59,7 +59,7 @@ public class TVShowGridOnKeyListener implements View.OnKeyListener {
                 }
                 Toast.makeText(activity, toast, Toast.LENGTH_LONG).show();
             }
-        }.execute();
+        }.execute(info);
         return true;
     }
 
