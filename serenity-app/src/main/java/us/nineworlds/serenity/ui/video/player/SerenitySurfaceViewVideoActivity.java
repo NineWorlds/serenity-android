@@ -171,8 +171,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 		};
 	};
+    private boolean autoResume;
 
-	@Override
+    @Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 
@@ -185,7 +186,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			mediaPlayer.setDataSource(videoURL);
 			mediaPlayer.setOnPreparedListener(new VideoPlayerPrepareListener(
 					this, mediaPlayer, mediaController, surfaceView,
-					resumeOffset, aspectRatio,
+					resumeOffset, autoResume, aspectRatio,
 					progressReportinghandler, progressRunnable));
 			mediaPlayer
 					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
@@ -236,7 +237,12 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	protected void retrieveIntentExtras() {
 		Bundle extras = getIntent().getExtras();
-		if (extras == null || extras.isEmpty()) {
+        if (extras != null) {
+            autoResume = extras.getBoolean("autoResume", false);
+            extras.remove("autoResume");
+        }
+
+        if (extras == null || extras.isEmpty()) {
 			playBackFromVideoQueue();
 		} else {
 			playbackFromIntent(extras);

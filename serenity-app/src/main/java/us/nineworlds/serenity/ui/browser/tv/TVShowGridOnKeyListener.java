@@ -15,7 +15,6 @@ import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.core.services.EpisodeRetrievalIntentService;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
@@ -55,7 +54,7 @@ public class TVShowGridOnKeyListener implements View.OnKeyListener {
                             info.getSeason(),
                             info.getEpisodeNumber(),
                             info.getTitle());
-                    VideoPlayerIntentUtils.playVideo(activity, info);
+                    VideoPlayerIntentUtils.playVideo(activity, info, true);
                 }
                 Toast.makeText(activity, toast, Toast.LENGTH_LONG).show();
             }
