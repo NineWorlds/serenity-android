@@ -46,47 +46,13 @@ import android.widget.Toast;
  */
 public class AbstractVideoOnItemClickListener {
 	
-	private SharedPreferences prefs;
 	protected VideoContentInfo videoInfo;
 
 	/**
 	 * @param v
 	 */
 	protected void onItemClick(View v) {
-		
-		if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-			Toast.makeText(v.getContext(), "Cleared video queue before playback.", Toast.LENGTH_LONG).show();
-			SerenityApplication.getVideoPlaybackQueue().clear();
-		}
-		ImageView mpiv = (ImageView) v;
-	
-		prefs = PreferenceManager
-				.getDefaultSharedPreferences(v.getContext());
-		boolean externalPlayer = prefs.getBoolean("external_player", false);
-	
-		if (externalPlayer) {
-			Activity activity = (Activity) v.getContext();
-			VideoPlayerIntentUtils.launchExternalPlayer(videoInfo, activity);
-			//new WatchedVideoAsyncTask().execute(videoInfo.id());
-			return;
-		}
-	
-		launchInternalPlayer(mpiv);
+        Activity activity = (Activity) v.getContext();
+        VideoPlayerIntentUtils.playVideo(activity, videoInfo);
 	}
-
-	/**
-	 * @param mpiv
-	 * @return
-	 */
-	protected void launchInternalPlayer(ImageView view) {
-		
-		SerenityApplication.getVideoPlaybackQueue().add(videoInfo);
-		Activity a = (Activity) view.getContext();
-	
-		Intent vpIntent = new Intent(a,
-				SerenitySurfaceViewVideoActivity.class);
-		
-		a.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
-	}
-
 }
