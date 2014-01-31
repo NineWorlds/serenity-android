@@ -23,19 +23,10 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
-import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 /**
  * Common class used by both the Poster Gallery view for itemClicks and the
@@ -53,6 +44,6 @@ public class AbstractVideoOnItemClickListener {
 	 */
 	protected void onItemClick(View v) {
         Activity activity = (Activity) v.getContext();
-        VideoPlayerIntentUtils.playVideo(activity, videoInfo);
+        VideoPlayerIntentUtils.playVideo(activity, videoInfo, false);
 	}
 }

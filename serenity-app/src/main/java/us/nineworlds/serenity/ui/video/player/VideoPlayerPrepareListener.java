@@ -60,16 +60,18 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 	private int resumeOffset;
 	private MediaPlayer mediaPlayer;
 	private String plexAspectRatio;
-	private Handler progressReportingHandler;
+    private final boolean autoResume;
+    private Handler progressReportingHandler;
 	private Runnable progressRunnable;
 	private SharedPreferences preferences;
 
-	public VideoPlayerPrepareListener(Context c, MediaPlayer mp, MediaController con, SurfaceView v, int resumeOffset, String aspectRatio, Handler progress, Runnable progresrun) {
+	public VideoPlayerPrepareListener(Context c, MediaPlayer mp, MediaController con, SurfaceView v, int resumeOffset, boolean autoResume, String aspectRatio, Handler progress, Runnable progresrun) {
 		context = c;
 		mediaController = con;
 		surfaceView = v;
 		mediaPlayer = mp;
-		progressReportingHandler = progress;
+        this.autoResume = autoResume;
+        progressReportingHandler = progress;
 		progressRunnable = progresrun;
 		plexAspectRatio = aspectRatio;
 		this.resumeOffset = resumeOffset;
@@ -84,41 +86,49 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 		mediaController.setEnabled(true);
 
 		if (resumeOffset > 0 && SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-					context, android.R.style.Theme_Holo_Dialog);
+            if (autoResume) {
+                if (!mediaPlayer.isPlaying()) {
+                    mediaPlayer.start();
+                }
+                mediaPlayer.seekTo(resumeOffset);
+                setMetaData();
+            } else {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        context, android.R.style.Theme_Holo_Dialog);
 
-			alertDialogBuilder.setTitle(R.string.resume_video);
-			alertDialogBuilder
-					.setMessage(context.getResources().getText(R.string.resume_the_video_from_) + TimeUtil.formatDuration(resumeOffset)  + context.getResources().getText(R.string._or_restart_))
-					.setCancelable(false)
-					.setPositiveButton(R.string.resume,
-							new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setTitle(R.string.resume_video);
+                alertDialogBuilder
+                        .setMessage(context.getResources().getText(R.string.resume_the_video_from_) + TimeUtil.formatDuration(resumeOffset)  + context.getResources().getText(R.string._or_restart_))
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.resume,
+                                new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									if (!mediaPlayer.isPlaying()) {
-										mediaPlayer.start();
-									}
-									mediaPlayer.seekTo(resumeOffset);
-									setMetaData();
-								}
-							})
-					.setNegativeButton(R.string.restart,
-							new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                            int which) {
+                                        if (!mediaPlayer.isPlaying()) {
+                                            mediaPlayer.start();
+                                        }
+                                        mediaPlayer.seekTo(resumeOffset);
+                                        setMetaData();
+                                    }
+                                })
+                        .setNegativeButton(R.string.restart,
+                                new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									mediaPlayer.start();
-									setMetaData();
-								}
-							});
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                            int which) {
+                                        mediaPlayer.start();
+                                        setMetaData();
+                                    }
+                                });
 
-			alertDialogBuilder.create();
-			AlertDialog dialog = alertDialogBuilder.show();
-			dialog.getButton(Dialog.BUTTON_POSITIVE).requestFocusFromTouch();
-			return;
+                alertDialogBuilder.create();
+                AlertDialog dialog = alertDialogBuilder.show();
+                dialog.getButton(Dialog.BUTTON_POSITIVE).requestFocusFromTouch();
+                return;
+            }
 		} else {
 			mediaPlayer.start();			
 			setMetaData();
