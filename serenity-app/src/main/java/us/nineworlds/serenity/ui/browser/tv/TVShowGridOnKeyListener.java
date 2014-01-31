@@ -3,23 +3,23 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.os.AsyncTask;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Toast;
 import com.jess.ui.TwoWayAdapterView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Video;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.core.services.EpisodeRetrievalIntentService;
-import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
+import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class TVShowGridOnKeyListener implements View.OnKeyListener {
@@ -38,19 +38,36 @@ public class TVShowGridOnKeyListener implements View.OnKeyListener {
 
         final TwoWayAdapterView gridView = (TwoWayAdapterView) v;
         final SeriesContentInfo info = (SeriesContentInfo) gridView.getSelectedItem();
-        if (Integer.valueOf(info.getShowsUnwatched()) == 0) {
-            return true;
-        }
-        new Thread() {
+        new AsyncTask<SeriesContentInfo, Void, EpisodePosterInfo>() {
+
             @Override
-            public void run() {
-                playFirstUnwatchedEpisode(info);
+            protected EpisodePosterInfo doInBackground(SeriesContentInfo... infos) {
+                return findFirstUnwatchedEpisode(info);
             }
-        }.start();
+
+            @Override
+            protected void onPostExecute(EpisodePosterInfo info) {
+                final String toast;
+                if (info == null) {
+                    toast = activity.getString(R.string.no_unwatched_episode_toast);
+                } else {
+                    toast = activity.getString(R.string.playing_episode_toast,
+                            info.getSeason(),
+                            info.getEpisodeNumber(),
+                            info.getTitle());
+                    VideoPlayerIntentUtils.playVideo(activity, info);
+                }
+                Toast.makeText(activity, toast, Toast.LENGTH_LONG).show();
+            }
+        }.execute();
         return true;
     }
 
-    private void playFirstUnwatchedEpisode(SeriesContentInfo info) {
+    private EpisodePosterInfo findFirstUnwatchedEpisode(SeriesContentInfo info) {
+        if (Integer.valueOf(info.getShowsUnwatched()) == 0) {
+;
+            return null;
+        }
         try {
             final MediaContainer seasonContainer = factory.retrieveSeasons(info.getKey());
             final List<Directory> seasons = seasonContainer.getDirectories();
@@ -64,24 +81,17 @@ public class TVShowGridOnKeyListener implements View.OnKeyListener {
                     parentPosterURL = baseUrl + episodeContainer.getParentPosterURL().substring(1);
                 }
                 for (Video episode : episodes) {
-                    final VideoContentInfo videoInfo = EpisodeRetrievalIntentService.createEpisodeContentInfo(
+                    final EpisodePosterInfo videoInfo = EpisodeRetrievalIntentService.createEpisodeContentInfo(
                             activity, factory, episodeContainer, baseUrl, parentPosterURL, episode);
                     if (videoInfo.isWatched()) {
                         continue;
                     }
-                    final LinkedList<VideoContentInfo> videoPlaybackQueue = SerenityApplication.getVideoPlaybackQueue();
-                    videoPlaybackQueue.clear();
-                    videoPlaybackQueue.add(videoInfo);
-
-                    Intent vpIntent = new Intent(activity,
-                            SerenitySurfaceViewVideoActivity.class);
-
-                    activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
-
+                    return videoInfo;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 }

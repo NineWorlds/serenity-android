@@ -165,5 +165,36 @@ public class VideoPlayerIntentUtils {
 		AlertDialog dialog = alertDialogBuilder.show();
 		dialog.getButton(Dialog.BUTTON_POSITIVE).requestFocusFromTouch();
 	}
-	
+
+    public static void playVideo(Activity activity, VideoContentInfo videoInfo) {
+        if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+            Toast.makeText(activity, "Cleared video queue before playback.", Toast.LENGTH_LONG).show();
+            SerenityApplication.getVideoPlaybackQueue().clear();
+        }
+        final SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(activity);
+        boolean externalPlayer = prefs.getBoolean("external_player", false);
+
+        if (externalPlayer) {
+            VideoPlayerIntentUtils.launchExternalPlayer(videoInfo, activity);
+            //new WatchedVideoAsyncTask().execute(videoInfo.id());
+            return;
+        }
+
+        launchInternalPlayer(activity, videoInfo);
+    }
+
+    /**
+     *
+     * @param videoInfo@return
+     */
+    private static void launchInternalPlayer(Activity activity, VideoContentInfo videoInfo) {
+
+        SerenityApplication.getVideoPlaybackQueue().add(videoInfo);
+
+        Intent vpIntent = new Intent(activity,
+                SerenitySurfaceViewVideoActivity.class);
+
+        activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
+    }
 }

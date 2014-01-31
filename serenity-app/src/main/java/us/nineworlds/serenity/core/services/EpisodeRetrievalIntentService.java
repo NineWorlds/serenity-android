@@ -138,8 +138,8 @@ public class EpisodeRetrievalIntentService extends
         }
 	}
 
-    public static VideoContentInfo createEpisodeContentInfo(Context context, PlexappFactory factory, MediaContainer mc, String baseUrl, String parentPosterURL, Video episode) {
-        VideoContentInfo epi = new EpisodePosterInfo();
+    public static EpisodePosterInfo createEpisodeContentInfo(Context context, PlexappFactory factory, MediaContainer mc, String baseUrl, String parentPosterURL, Video episode) {
+        EpisodePosterInfo epi = new EpisodePosterInfo();
         if (parentPosterURL != null) {
             epi.setParentPosterURL(parentPosterURL);
         }

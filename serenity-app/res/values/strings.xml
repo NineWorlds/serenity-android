@@ -181,4 +181,7 @@
     <string name="prefs_startup_boot_sum">Controls whether Serenity for Android launches immediately after the device has completed the boot up sequence.  Useful for those that want to provide a more home theater like experience.</string>
     <string name="prefs_auto_start_after_boot">Auto Start after Boot</string>
 
+    <string name="playing_episode_toast">Playing S%1$s E%2$s: $3$s</string>
+    <string name="no_unwatched_episode_toast">No unwatched episodes found</string>
+
 </resources>
