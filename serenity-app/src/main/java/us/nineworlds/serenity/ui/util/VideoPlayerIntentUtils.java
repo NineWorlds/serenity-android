@@ -30,7 +30,6 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 import us.nineworlds.serenity.R;
@@ -39,7 +38,6 @@ import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.externalplayer.ExternalPlayer;
 import us.nineworlds.serenity.core.externalplayer.ExternalPlayerFactory;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 
@@ -53,13 +51,12 @@ public class VideoPlayerIntentUtils {
 	 * This must run on a UI thread.
 	 * 
 	 * Launches an external player based on the information provided.
-	 * 
-	 * @param videoContent
-	 * @param vpIntent
-	 * @param mxplayer
-	 * @param activity
-	 */
-	public static void launchExternalPlayer(VideoContentInfo videoContent, Activity activity) {
+	 *
+     * @param videoContent
+     * @param activity
+     * @param autoResume
+     */
+	public static void launchExternalPlayer(VideoContentInfo videoContent, Activity activity, boolean autoResume) {
 				
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 		String externalPlayerValue = preferences.getString("serenity_external_player_filter", "default");
@@ -71,7 +68,7 @@ public class VideoPlayerIntentUtils {
 			return;
 		}
 		
-		if (videoContent.isPartiallyWatched()) {
+		if (videoContent.isPartiallyWatched() && ! autoResume) {
 			showResumeDialogQueue(activity, videoContent);
 			return;
 		}
@@ -116,7 +113,7 @@ public class VideoPlayerIntentUtils {
 			if (extplayer) {
 				if (extplayerVideoQueue) {
 					VideoContentInfo videoContent = SerenityApplication.getVideoPlaybackQueue().poll();
-					launchExternalPlayer(videoContent, context);
+					launchExternalPlayer(videoContent, context, false);
 				} else {
 					Toast.makeText(context, context.getResources().getString(R.string.external_player_video_queue_support_has_not_been_enabled_), Toast.LENGTH_LONG).show();
 				}
@@ -165,5 +162,38 @@ public class VideoPlayerIntentUtils {
 		AlertDialog dialog = alertDialogBuilder.show();
 		dialog.getButton(Dialog.BUTTON_POSITIVE).requestFocusFromTouch();
 	}
-	
+
+    public static void playVideo(Activity activity, VideoContentInfo videoInfo, boolean autoResume) {
+        if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+            Toast.makeText(activity, "Cleared video queue before playback.", Toast.LENGTH_LONG).show();
+            SerenityApplication.getVideoPlaybackQueue().clear();
+        }
+        final SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(activity);
+        boolean externalPlayer = prefs.getBoolean("external_player", false);
+
+        if (externalPlayer) {
+            launchExternalPlayer(videoInfo, activity, autoResume);
+            //new WatchedVideoAsyncTask().execute(videoInfo.id());
+            return;
+        }
+
+        launchInternalPlayer(videoInfo, activity, autoResume);
+    }
+
+    /**
+     *
+     * @param videoInfo @return
+     * @param autoResume
+     */
+    private static void launchInternalPlayer(VideoContentInfo videoInfo, Activity activity, boolean autoResume) {
+
+        SerenityApplication.getVideoPlaybackQueue().add(videoInfo);
+
+        Intent vpIntent = new Intent(activity,
+                SerenitySurfaceViewVideoActivity.class);
+        vpIntent.putExtra("autoResume", autoResume);
+
+        activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
+    }
 }
