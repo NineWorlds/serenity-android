@@ -428,7 +428,24 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 		}
 
-		if (isKeyCodeSkipForward(keyCode) && isMediaPlayerStateValid()) {
+        if (isKeyCodePlay(keyCode)) {
+            if (isMediaPlayerStateValid()) {
+                if (mediaPlayer.isPlaying()) {
+                    if (mediaController.isShowing()) {
+                        mediaController.hide();
+                    } else {
+                        mediaController.show(CONTROLLER_DELAY);
+                    }
+                } else {
+                    mediaPlayer.start();
+                    mediaController.hide();
+                    progressReportinghandler.postDelayed(progressRunnable, 5000);
+                }
+                return true;
+            }
+        }
+
+        if (isKeyCodeSkipForward(keyCode) && isMediaPlayerStateValid()) {
 			int skipOffset = 10000 + mediaPlayer.getCurrentPosition();
 			int duration = mediaPlayer.getDuration();
 			if (skipOffset > duration) {
@@ -577,10 +594,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	protected boolean isKeyCodePauseResume(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
 				|| keyCode == KeyEvent.KEYCODE_P
 				|| keyCode == KeyEvent.KEYCODE_SPACE
 				|| keyCode == KeyEvent.KEYCODE_BUTTON_A;
+	}
+
+	protected boolean isKeyCodePlay(int keyCode) {
+		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY;
 	}
 
 	protected boolean isKeyCodeInfo(int keyCode) {
