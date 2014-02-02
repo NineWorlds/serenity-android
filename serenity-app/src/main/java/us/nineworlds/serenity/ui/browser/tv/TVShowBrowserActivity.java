@@ -65,7 +65,6 @@ import android.widget.Spinner;
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	private static Spinner categorySpinner;
-	private boolean restarted_state = false;
 	private static String key;
 	private Handler categoryHandler;
 	private SharedPreferences preferences;
@@ -105,7 +104,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		restarted_state = true;
 		populateMenuDrawer();
 	}
 	
@@ -116,16 +114,14 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	protected void onResume() {
 		super.onResume();
 		populateMenuDrawer();
-		if (restarted_state == false) {
-			categoryHandler = new CategoryHandler(this);
-			Messenger messenger = new Messenger(categoryHandler);
-			Intent categoriesIntent = new Intent(this,
-					TVShowCategoryRetrievalIntentService.class);
-			categoriesIntent.putExtra("key", key);
-			categoriesIntent.putExtra("MESSENGER", messenger);
-			startService(categoriesIntent);
-		}
-		
+        categoryHandler = new CategoryHandler(this);
+        Messenger messenger = new Messenger(categoryHandler);
+        Intent categoriesIntent = new Intent(this,
+                TVShowCategoryRetrievalIntentService.class);
+        categoriesIntent.putExtra("key", key);
+        categoriesIntent.putExtra("MESSENGER", messenger);
+        startService(categoriesIntent);
+
 	}
 	
 	/* (non-Javadoc)
