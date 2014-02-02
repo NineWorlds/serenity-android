@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.video.player;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.AsyncTask;
@@ -38,9 +39,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.google.analytics.tracking.android.EasyTracker;
 import org.mozilla.universalchardet.UniversalDetector;
 import us.nineworlds.plex.rest.PlexappFactory;
@@ -172,6 +171,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		};
 	};
     private boolean autoResume;
+    private View timeOfDayView;
 
     @Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -221,7 +221,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		mediaPlayer.setOnErrorListener(new SerenityOnErrorListener());
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 		videoActivityView = findViewById(R.id.video_playeback);
-		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("overscan_compensation", false)) {
+        timeOfDayView = findViewById(R.id.time_of_day);
+
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getBoolean("overscan_compensation", false)) {
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) videoActivityView
 					.getLayoutParams();
 			params.setMargins(35, 20, 20, 20);
@@ -231,6 +234,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		SurfaceHolder holder = surfaceView.getHolder();
 		holder.addCallback(this);
 		holder.setSizeFromLayout();
+
+        final boolean showTimeOfDay = prefs.getBoolean("showTimeOfDay", false);
+        timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
 
 		retrieveIntentExtras();
 	}
@@ -448,6 +454,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			return true;
 		}
+
+        if (keyCode == KeyEvent.KEYCODE_T) {
+            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            final boolean showTimeOfDay = !prefs.getBoolean("showTimeOfDay", false);
+            timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
+            prefs.edit().putBoolean("showTimeOfDay", showTimeOfDay).apply();
+            return true;
+        }
 
 		if (isMediaPlayerStateValid()) {
 			if (isSkipByPercentage(keyCode)) {
