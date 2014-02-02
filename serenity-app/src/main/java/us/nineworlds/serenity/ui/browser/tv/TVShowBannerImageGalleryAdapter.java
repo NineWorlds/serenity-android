@@ -204,14 +204,17 @@ public class TVShowBannerImageGalleryAdapter extends
 		
 		if (pi.isPartiallyWatched()) {
 			 toggleProgressIndicator(galleryCellView, watched, pi.totalShows(), watchedView);
-			return;
 		}
-		
-		if (pi.isWatched()) {
+
+        final TextView unwatchedCountView = (TextView) galleryCellView.findViewById(R.id.unwatched_count);
+        if (pi.isWatched()) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
 			watchedView.setVisibility(View.VISIBLE);
-		}
-		
+            unwatchedCountView.setVisibility(View.GONE);
+		} else {
+            unwatchedCountView.setVisibility(View.VISIBLE);
+            unwatchedCountView.setText(pi.getShowsUnwatched());
+        }
 	}
 	
 	/**

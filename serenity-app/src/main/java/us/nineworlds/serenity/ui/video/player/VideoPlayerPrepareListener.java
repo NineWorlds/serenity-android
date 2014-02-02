@@ -25,10 +25,6 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
-import us.nineworlds.serenity.core.util.TimeUtil;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -40,6 +36,9 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.SurfaceView;
 import android.widget.RelativeLayout;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.util.TimeUtil;
 
 /**
  * A prepare listener that handles how a video should start playing.
@@ -60,23 +59,21 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 	private MediaController mediaController;
 	private int resumeOffset;
 	private MediaPlayer mediaPlayer;
-	private String videoId;
 	private String plexAspectRatio;
-	private Handler progressReportingHandler;
+    private final boolean autoResume;
+    private Handler progressReportingHandler;
 	private Runnable progressRunnable;
-	private String subtitleURL;
 	private SharedPreferences preferences;
 
-	public VideoPlayerPrepareListener(Context c, MediaPlayer mp, MediaController con, SurfaceView v, int resumeOffset, String videoId, String aspectRatio, Handler progress, Runnable progresrun, String subtitleURL) {
+	public VideoPlayerPrepareListener(Context c, MediaPlayer mp, MediaController con, SurfaceView v, int resumeOffset, boolean autoResume, String aspectRatio, Handler progress, Runnable progresrun) {
 		context = c;
 		mediaController = con;
 		surfaceView = v;
 		mediaPlayer = mp;
-		progressReportingHandler = progress;
+        this.autoResume = autoResume;
+        progressReportingHandler = progress;
 		progressRunnable = progresrun;
-		this.videoId = videoId; 
 		plexAspectRatio = aspectRatio;
-		this.subtitleURL = subtitleURL;
 		this.resumeOffset = resumeOffset;
 	}
 
@@ -89,41 +86,49 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 		mediaController.setEnabled(true);
 
 		if (resumeOffset > 0 && SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-					context, android.R.style.Theme_Holo_Dialog);
+            if (autoResume) {
+                if (!mediaPlayer.isPlaying()) {
+                    mediaPlayer.start();
+                }
+                mediaPlayer.seekTo(resumeOffset);
+                setMetaData();
+            } else {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        context, android.R.style.Theme_Holo_Dialog);
 
-			alertDialogBuilder.setTitle(R.string.resume_video);
-			alertDialogBuilder
-					.setMessage(context.getResources().getText(R.string.resume_the_video_from_) + TimeUtil.formatDuration(resumeOffset)  + context.getResources().getText(R.string._or_restart_))
-					.setCancelable(false)
-					.setPositiveButton(R.string.resume,
-							new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setTitle(R.string.resume_video);
+                alertDialogBuilder
+                        .setMessage(context.getResources().getText(R.string.resume_the_video_from_) + TimeUtil.formatDuration(resumeOffset)  + context.getResources().getText(R.string._or_restart_))
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.resume,
+                                new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									if (!mediaPlayer.isPlaying()) {
-										mediaPlayer.start();
-									}
-									mediaPlayer.seekTo(resumeOffset);
-									setMetaData();
-								}
-							})
-					.setNegativeButton(R.string.restart,
-							new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                            int which) {
+                                        if (!mediaPlayer.isPlaying()) {
+                                            mediaPlayer.start();
+                                        }
+                                        mediaPlayer.seekTo(resumeOffset);
+                                        setMetaData();
+                                    }
+                                })
+                        .setNegativeButton(R.string.restart,
+                                new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									mediaPlayer.start();
-									setMetaData();
-								}
-							});
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                            int which) {
+                                        mediaPlayer.start();
+                                        setMetaData();
+                                    }
+                                });
 
-			alertDialogBuilder.create();
-			AlertDialog dialog = alertDialogBuilder.show();
-			dialog.getButton(Dialog.BUTTON_POSITIVE).requestFocusFromTouch();
-			return;
+                alertDialogBuilder.create();
+                AlertDialog dialog = alertDialogBuilder.show();
+                dialog.getButton(Dialog.BUTTON_POSITIVE).requestFocusFromTouch();
+                return;
+            }
 		} else {
 			mediaPlayer.start();			
 			setMetaData();

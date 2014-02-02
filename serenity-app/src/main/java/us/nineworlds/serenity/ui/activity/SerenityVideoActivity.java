@@ -36,9 +36,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.BaseAdapter;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.jess.ui.TwoWayGridView;
@@ -221,6 +219,6 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 	protected void externalPlayerPlayNext() {
 		VideoContentInfo videoContentInfo = SerenityApplication
 				.getVideoPlaybackQueue().poll();
-		VideoPlayerIntentUtils.launchExternalPlayer(videoContentInfo, this);
+		VideoPlayerIntentUtils.launchExternalPlayer(videoContentInfo, this, false);
 	}
 }
