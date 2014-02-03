@@ -81,7 +81,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		implements SurfaceHolder.Callback {
 
 	/**
-	 * 
+	 *
 	 */
 	static final int PROGRESS_UPDATE_DELAY = 5000;
 	static final int SUBTITLE_DISPLAY_CHECK = 100;
@@ -106,6 +106,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private TimedTextObject subtitleTimedText;
 	private boolean subtitlesPlaybackEnabled = true;
 	private String subtitleInputEncoding = null;
+	private boolean autoResume;
 
 	private Handler subtitleDisplayHandler = new Handler();
 	private Runnable subtitle = new Runnable() {
@@ -188,8 +189,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			mediaPlayer.setDataSource(videoURL);
 			mediaPlayer.setOnPreparedListener(new VideoPlayerPrepareListener(
 					this, mediaPlayer, mediaController, surfaceView,
-					resumeOffset, videoId, aspectRatio,
-					progressReportinghandler, progressRunnable, subtitleURL));
+					resumeOffset, autoResume, aspectRatio,
+					progressReportinghandler, progressRunnable));
 			mediaPlayer
 					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
 			mediaPlayer.prepareAsync();
@@ -239,6 +240,11 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	protected void retrieveIntentExtras() {
 		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			autoResume = extras.getBoolean("autoResume", false);
+			extras.remove("autoResume");
+		}
+
 		if (extras == null || extras.isEmpty()) {
 			playBackFromVideoQueue();
 		} else {
@@ -317,8 +323,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 * @param audioChannels
 	 */
 	protected void initMediaController(String summary, String title,
-			String posterURL, String videoFormat, String videoResolution,
-			String audioFormat, String audioChannels) {
+									   String posterURL, String videoFormat, String videoResolution,
+									   String audioFormat, String audioChannels) {
 
 		mediaController = new MediaController(this, summary, title, posterURL,
 				videoResolution, videoFormat, audioFormat, audioChannels,
@@ -356,13 +362,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					returnIntent);
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (mediaController.isShowing()) {
 			if (isKeyCodeBack(keyCode)) {
 				mediaController.hide();
-				
+
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 					mediaPlayer.stop();
 				}
@@ -615,9 +621,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	/**
 	 * A task that updates the progress position of a video while it is being
 	 * played.
-	 * 
+	 *
 	 * @author dcarver
-	 * 
+	 *
 	 */
 	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
 
@@ -635,7 +641,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -679,7 +685,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media
 	 * .MediaPlayer, android.media.TimedText)
@@ -735,7 +741,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		private void getInputEncoding(URL url) {
 			InputStream is = null;
 			try {
-				byte[] buf = new byte[4096];				
+				byte[] buf = new byte[4096];
 				is = url.openStream();
 				UniversalDetector detector = new UniversalDetector(null);
 
