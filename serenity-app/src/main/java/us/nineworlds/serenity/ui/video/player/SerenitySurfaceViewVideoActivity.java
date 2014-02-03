@@ -92,8 +92,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private SurfaceView surfaceView;
 	private View videoActivityView;
 	private MediaController mediaController;
-    private View timeOfDayView;
-    private String aspectRatio;
+	private View timeOfDayView;
+	private String aspectRatio;
 	private String videoId;
 	private int resumeOffset;
 	private boolean mediaplayer_error_state = false;
