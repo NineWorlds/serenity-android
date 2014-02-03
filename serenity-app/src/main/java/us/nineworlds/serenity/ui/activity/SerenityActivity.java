@@ -196,7 +196,7 @@ public abstract class SerenityActivity extends Activity {
 
 		if (video.isPartiallyWatched()) {
 			UpdateProgressRequest request = new UpdateProgressRequest(position,
-					video.id());
+					video);
 			video.setResumeOffset(Long.valueOf(position).intValue());
 			request.execute();
 			return;
