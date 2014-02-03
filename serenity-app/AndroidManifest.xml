@@ -128,7 +128,6 @@
         <service android:name=".core.services.MusicRetrievalIntentService" />
         <service android:name=".core.services.MusicAlbumRetrievalIntentService" />
         <service android:name=".core.services.MusicTrackRetrievalIntentService" />
-        <service android:name=".core.services.EpisodeRetrievalIntentService" />
         <service android:name=".core.services.CategoryRetrievalIntentService" />
         <service android:name=".core.services.SecondaryCategoryRetrievalIntentService" />
         <service android:name=".core.services.ShowRetrievalIntentService" />
