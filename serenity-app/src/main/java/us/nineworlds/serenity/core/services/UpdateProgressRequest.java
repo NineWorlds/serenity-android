@@ -2,8 +2,8 @@ package us.nineworlds.serenity.core.services;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
-import android.os.AsyncTask;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import android.os.AsyncTask;
 
 /**
  * A task that updates the progress position of a video while it is being
@@ -31,7 +31,6 @@ public class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
             factory.setProgress("0", id);
         } else {
             factory.setProgress(id, Long.valueOf(position).toString());
-        }
-		return null;
+        }		return null;
 	}
 }
