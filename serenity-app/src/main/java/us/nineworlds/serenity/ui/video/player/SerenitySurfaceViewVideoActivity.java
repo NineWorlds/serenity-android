@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.video.player;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.AsyncTask;
@@ -91,7 +92,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private SurfaceView surfaceView;
 	private View videoActivityView;
 	private MediaController mediaController;
-	private String aspectRatio;
+    private View timeOfDayView;
+    private String aspectRatio;
 	private String videoId;
 	private int resumeOffset;
 	private boolean mediaplayer_error_state = false;
@@ -368,17 +370,17 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (isKeyCodeBack(keyCode)) {
-            if (mediaController.isShowing()) {
-                mediaController.hide();
-            }
-            if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-            }
-            setExitResultCode();
-            finish();
-            return true;
-        }
+		if (mediaController.isShowing()) {
+			if (isKeyCodeBack(keyCode)) {
+				mediaController.hide();
+
+				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+					mediaPlayer.stop();
+				}
+				setExitResultCode();
+				finish();
+				return true;
+			}
 
 		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
             skipToOffset(mediaPlayer.getCurrentPosition() + Math.round(mediaPlayer.getDuration() * 0.10f));
@@ -460,6 +462,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			return true;
 		}
+
+        if (keyCode == KeyEvent.KEYCODE_T) {
+            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            final boolean showTimeOfDay = !prefs.getBoolean("showTimeOfDay", false);
+            timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
+            prefs.edit().putBoolean("showTimeOfDay", showTimeOfDay).apply();
+            return true;
+        }
 
         if (keyCode == KeyEvent.KEYCODE_T) {
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
