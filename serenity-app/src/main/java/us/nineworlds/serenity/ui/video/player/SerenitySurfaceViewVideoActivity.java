@@ -382,6 +382,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				return true;
 			}
 
+				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+					mediaPlayer.stop();
+				}
+				setExitResultCode();
+				finish();
+				return true;
+			}
+
 		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
             skipToOffset(mediaPlayer.getCurrentPosition() + Math.round(mediaPlayer.getDuration() * 0.10f));
 			return true;
@@ -418,27 +426,21 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 		}
 
-        if (isKeyCodePlay(keyCode)) {
-            if (isMediaPlayerStateValid()) {
-                if (mediaPlayer.isPlaying()) {
-                    if (mediaController.isShowing()) {
-                        mediaController.hide();
-                    } else {
-                        mediaController.show(CONTROLLER_DELAY);
-                    }
-                } else {
-                    mediaPlayer.start();
-                    mediaController.hide();
-                    progressReportinghandler.postDelayed(progressRunnable, 5000);
-                }
-                return true;
-            }
-        }
-
-        if (isKeyCodeSkipForward(keyCode) && isMediaPlayerStateValid()) {
-            // TODO: Make this a preference
-            skipToOffset(30000 + mediaPlayer.getCurrentPosition());
-			return true;
+		if (isKeyCodePlay(keyCode)) {
+			if (isMediaPlayerStateValid()) {
+				if (mediaPlayer.isPlaying()) {
+					if (mediaController.isShowing()) {
+						mediaController.hide();
+					} else {
+						mediaController.show(CONTROLLER_DELAY);
+					}
+				} else {
+					mediaPlayer.start();
+					mediaController.hide();
+					progressReportinghandler.postDelayed(progressRunnable, 5000);
+				}
+				return true;
+			}
 		}
 
 		if (isKeyCodeSkipForward(keyCode) && isMediaPlayerStateValid()) {
@@ -605,13 +607,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	protected boolean isKeyCodePauseResume(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
 				|| keyCode == KeyEvent.KEYCODE_P
 				|| keyCode == KeyEvent.KEYCODE_SPACE
 				|| keyCode == KeyEvent.KEYCODE_BUTTON_A;
-	}
-
-	protected boolean isKeyCodePlay(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY;
 	}
 
 	protected boolean isKeyCodeInfo(int keyCode) {
@@ -649,9 +648,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	/**
 	 * A task that updates the progress position of a video while it is being
 	 * played.
-	 *
+	 * 
 	 * @author dcarver
-	 *
+	 * 
 	 */
 	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
 
@@ -669,7 +668,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -713,7 +712,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media
 	 * .MediaPlayer, android.media.TimedText)
@@ -769,7 +768,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		private void getInputEncoding(URL url) {
 			InputStream is = null;
 			try {
-				byte[] buf = new byte[4096];
+				byte[] buf = new byte[4096];				
 				is = url.openStream();
 				UniversalDetector detector = new UniversalDetector(null);
 
