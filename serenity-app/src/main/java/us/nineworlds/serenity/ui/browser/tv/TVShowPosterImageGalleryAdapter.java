@@ -38,6 +38,7 @@ import us.nineworlds.serenity.R;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
@@ -58,12 +59,13 @@ public class TVShowPosterImageGalleryAdapter extends
 
 	private String key;
 	private SerenityMultiViewVideoActivity showActivity;
+	private LayoutInflater inflater;
 
 	public TVShowPosterImageGalleryAdapter(Context c, String key,
 			String category) {
 		super(c, key, category);
 		showActivity = (SerenityMultiViewVideoActivity) c;
-		
+		inflater = showActivity.getLayoutInflater();
 	}
 
 	/*
@@ -74,13 +76,15 @@ public class TVShowPosterImageGalleryAdapter extends
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = showActivity.getLayoutInflater().inflate(
-				R.layout.poster_tvshow_indicator_view, null);
+		final View galleryCellView;
+		if (convertView != null) {
+			galleryCellView = convertView;
+		} else {
+			galleryCellView = inflater.inflate(
+					R.layout.poster_tvshow_indicator_view, null);
+		}
 
 		SeriesContentInfo pi = tvShowList.get(position);
-		ImageView mpiv = (ImageView) galleryCellView
-				.findViewById(R.id.posterImageView);
-		
 		createImage(galleryCellView, pi, 120, 180);
 
 		toggleWatchedIndicator(galleryCellView, pi);

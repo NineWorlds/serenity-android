@@ -48,6 +48,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -67,18 +68,24 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 	private static SeasonsEpisodePosterImageGalleryAdapter notifyAdapter;
 	private DBMetaDataSource datasource;
 	private SharedPreferences prefs;
+	private LayoutInflater inflater;
 
 
 	public SeasonsEpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
 		prefs = PreferenceManager.getDefaultSharedPreferences(c);
+		inflater = context.getLayoutInflater();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = context.getLayoutInflater().inflate(
-				R.layout.poster_indicator_view, null);
+		final View galleryCellView;
+		if (convertView != null) {
+			galleryCellView = convertView;
+		} else {
+			galleryCellView = inflater.inflate(R.layout.poster_indicator_view, null);
+		}
 
 		VideoContentInfo pi = posterList.get(position);
 		gridViewMetaData(galleryCellView, pi);

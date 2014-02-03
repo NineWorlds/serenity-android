@@ -129,9 +129,15 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
 		MusicArtistContentInfo pi = posterList.get(position);
-		SerenityMusicImageView mpiv = new SerenityMusicImageView(context, pi);
+		SerenityMusicImageView mpiv;
+		if (convertView instanceof SerenityMusicImageView) {
+			mpiv = (SerenityMusicImageView) convertView;
+			((SerenityMusicImageView) convertView).setPosterInfo(pi);
+		} else {
+			mpiv = new SerenityMusicImageView(context, pi);
+		}
+
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(180, context);

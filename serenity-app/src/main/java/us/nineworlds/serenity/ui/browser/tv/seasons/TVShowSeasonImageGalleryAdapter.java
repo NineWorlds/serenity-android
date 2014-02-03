@@ -43,6 +43,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -68,10 +69,12 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	private Handler handler;
 	private String key;
 	private static TVShowSeasonImageGalleryAdapter notifyAdapter;
+	private LayoutInflater inflater;
 
 	public TVShowSeasonImageGalleryAdapter(Context c, String key) {
 		context = (Activity) c;
 		this.key = key;
+		inflater = context.getLayoutInflater();
 
 		seasonList = new ArrayList<TVShowSeriesInfo>();
 
@@ -133,8 +136,12 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = context.getLayoutInflater().inflate(
-				R.layout.poster_tvshow_indicator_view, null);
+		final View galleryCellView;
+		if (convertView != null) {
+			galleryCellView = convertView;
+		} else {
+			galleryCellView = inflater.inflate(R.layout.poster_tvshow_indicator_view, null);
+		}
 
 		if (position > getCount() - 1) {
 			position = getCount() - 1;

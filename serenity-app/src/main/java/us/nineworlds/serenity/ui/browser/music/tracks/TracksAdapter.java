@@ -61,11 +61,13 @@ public class TracksAdapter extends ArrayAdapter<AudioTrackContentInfo> {
 	private static List<AudioTrackContentInfo> posterList;
 	private static Activity context;
 	private String key;
+	private LayoutInflater inflater;
 
 	public TracksAdapter(Activity context, String key) {
 		super(context, R.layout.track_listview_layout, R.id.trackTitle);
 		TracksAdapter.context = context;
 		this.key = key;
+		inflater = context.getLayoutInflater();
 		notifyAdapter = this;
 		imageLoader = SerenityApplication.getImageLoader();
 		posterList = new ArrayList<AudioTrackContentInfo>();
@@ -85,9 +87,12 @@ public class TracksAdapter extends ArrayAdapter<AudioTrackContentInfo> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = inflater.inflate(R.layout.track_listview_layout, parent, false);
+		final View rowView;
+		if (convertView != null) {
+			rowView = convertView;
+		} else {
+			rowView = inflater.inflate(R.layout.track_listview_layout, parent, false);
+		}
 		rowView.setBackgroundResource(R.drawable.album_list_view_selector);
 		TextView textView = (TextView) rowView.findViewById(R.id.trackTitle);
 		TextView durationView = (TextView) rowView.findViewById(R.id.trackDuration);

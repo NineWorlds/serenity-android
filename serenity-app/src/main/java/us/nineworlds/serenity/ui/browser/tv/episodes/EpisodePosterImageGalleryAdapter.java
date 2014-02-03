@@ -41,6 +41,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -59,17 +60,23 @@ public class EpisodePosterImageGalleryAdapter extends
 	private static EpisodePosterImageGalleryAdapter notifyAdapter;
 	private static ProgressDialog pd;
 	private static final float WATCHED_PERCENT = 0.98f;
+	private LayoutInflater inflater;
 
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
 		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
+		inflater = context.getLayoutInflater();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = context.getLayoutInflater().inflate(
-				R.layout.poster_indicator_view, null);
+		final View galleryCellView;
+		if (convertView != null) {
+			galleryCellView = convertView;
+		} else {
+			galleryCellView = inflater.inflate(R.layout.poster_indicator_view, null);
+		}
 
 		VideoContentInfo pi = posterList.get(position);
 		ImageView mpiv = (ImageView) galleryCellView
@@ -85,9 +92,6 @@ public class EpisodePosterImageGalleryAdapter extends
 
 		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
-		ImageView watchedView = (ImageView) galleryCellView
-				.findViewById(R.id.posterWatchedIndicator);
-		
 		setWatchedStatus(galleryCellView, pi);
  
 		return galleryCellView;
