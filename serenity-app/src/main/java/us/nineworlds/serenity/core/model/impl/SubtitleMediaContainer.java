@@ -56,6 +56,9 @@ public class SubtitleMediaContainer extends AbstractMediaContainer {
 				subtitle = new Subtitle();
 				subtitle.setFormat(stream.getFormat());
 				subtitle.setLanguageCode(stream.getLanguageCode());
+				if (stream.getKey() == null) {
+					continue;
+				}
 				subtitle.setKey(factory.baseURL() + stream.getKey().replaceFirst("/", ""));
 				if (stream.getLanguage() == null) {
 					subtitle.setDescription("Unknown (" + stream.getFormat() + ")");

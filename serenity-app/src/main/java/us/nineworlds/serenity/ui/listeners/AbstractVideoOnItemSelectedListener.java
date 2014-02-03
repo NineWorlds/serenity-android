@@ -54,6 +54,7 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -213,15 +214,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		datasource.close();
 	}	
 
-	public void fetchSubtitle(VideoContentInfo mpi) {
-//		subtitleHandler = new SubtitleHandler(mpi, context);
-//		Messenger messenger = new Messenger(subtitleHandler);
-//		Intent intent = new Intent(context,
-//				MovieMetaDataRetrievalIntentService.class);
-//		intent.putExtra("MESSENGER", messenger);
-//		intent.putExtra("key", mpi.id());
-//		context.startService(intent);
-		
+	public void fetchSubtitle(VideoContentInfo mpi) {		
 		queue = VolleyUtils.getRequestQueueInstance(context);
 		PlexappFactory factory = SerenityApplication.getPlexFactory();
 		String url = factory.getMovieMetadataURL("/library/metadata/" + mpi.id());
@@ -230,7 +223,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						
+						Log.e(getClass().getCanonicalName(), "Subtitle Retrieval failure: ", error);
 					}
 				});
 		queue.add(xmlRequest);
