@@ -133,7 +133,7 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 		SerenityMusicImageView mpiv;
 		if (convertView instanceof SerenityMusicImageView) {
 			mpiv = (SerenityMusicImageView) convertView;
-			((SerenityMusicImageView) convertView).setPosterInfo(pi);
+			mpiv.setPosterInfo(pi);
 		} else {
 			mpiv = new SerenityMusicImageView(context, pi);
 		}
