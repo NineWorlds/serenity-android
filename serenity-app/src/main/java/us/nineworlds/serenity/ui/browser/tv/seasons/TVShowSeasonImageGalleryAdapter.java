@@ -143,7 +143,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		if (position < 0) {
 			position = 0;
 		}
-		
+
 		AbstractSeriesContentInfo pi = seasonList.get(position);
 		ImageView mpiv = (ImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
@@ -165,9 +165,14 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 
 		ImageView watchedView = (ImageView) galleryCellView
 				.findViewById(R.id.posterWatchedIndicator);
-		if (unwatched == 0) {
+        final TextView unwatchedCountView = (TextView) galleryCellView.findViewById(R.id.unwatched_count);
+        if (unwatched == 0) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
-		}
+            unwatchedCountView.setVisibility(View.GONE);
+		} else {
+            unwatchedCountView.setVisibility(View.VISIBLE);
+            unwatchedCountView.setText(pi.getShowsUnwatched());
+        }
 
 		int watched = 0;
 		if (pi.getShowsWatched() != null) {
