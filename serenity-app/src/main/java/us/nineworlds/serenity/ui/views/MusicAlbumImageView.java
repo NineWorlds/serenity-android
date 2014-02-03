@@ -55,4 +55,7 @@ public class MusicAlbumImageView extends ImageView {
 		return posterInfo;
 	}
 
+	public void setPosterInfo(MusicAlbumContentInfo posterInfo) {
+		this.posterInfo = posterInfo;
+	}
 }

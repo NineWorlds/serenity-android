@@ -56,6 +56,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.text.method.MovementMethod;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -77,27 +78,28 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	private Handler posterGalleryHandler;
 	private static SerenityMultiViewVideoActivity movieContext;
 	private DBMetaDataSource datasource;
-	
+	private LayoutInflater inftaler;
+
 	public MoviePosterImageAdapter(Context c, String key, String category) {
 		super(c, key, category);
 		movieContext = (SerenityMultiViewVideoActivity) c;
 		pd = ProgressDialog
 				.show(c, "", c.getString(R.string.retrieving_movies));
 		notifyAdapter = this;
+		inftaler = context.getLayoutInflater();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		View galleryCellView = null;
+		View galleryCellView;
 		if (convertView != null) {
 			galleryCellView = convertView;
 			galleryCellView.findViewById(R.id.posterInprogressIndicator).setVisibility(View.INVISIBLE);
 			galleryCellView.findViewById(R.id.posterWatchedIndicator).setVisibility(View.INVISIBLE);
 			galleryCellView.findViewById(R.id.infoGraphicMeta).setVisibility(View.GONE);
 		} else {
-	       galleryCellView = context.getLayoutInflater().inflate(
-				R.layout.poster_indicator_view, null);
+			galleryCellView = inftaler.inflate(R.layout.poster_indicator_view, null);
 		}
 
 		VideoContentInfo pi = posterList.get(position);
