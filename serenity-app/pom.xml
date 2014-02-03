@@ -5,7 +5,7 @@
    <parent>
       <groupId>us.nineworlds.serenity</groupId>
       <artifactId>serenity-parent</artifactId>
-      <version>1.6.1</version>
+      <version>1.6.2-SNAPSHOT</version>
    </parent>
 
    <artifactId>serenity-app</artifactId>
@@ -21,7 +21,7 @@
       <dependency>
          <groupId>com.nostra13.universalimageloader</groupId>
          <artifactId>universal-image-loader</artifactId>
-         <version>1.9.0</version>
+         <version>1.9.1</version>
       </dependency>
       <dependency>
          <groupId>com.google.analytics</groupId>
@@ -31,22 +31,22 @@
       <dependency>
            <groupId>android.support</groupId>
            <artifactId>compatibility-v4</artifactId>
-           <version>18</version>          
+           <version>19.0.1</version>
       </dependency>            
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
          <artifactId>subtitle-converter</artifactId>
-         <version>1.6.1</version>
+         <version>1.6.2-SNAPSHOT</version>
       </dependency>
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
          <artifactId>plexapp-rest-library</artifactId>
-         <version>1.6.1</version>
+         <version>1.6.2-SNAPSHOT</version>
       </dependency>
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
          <artifactId>menudrawer</artifactId>
-         <version>1.6.1</version>
+         <version>1.6.2-SNAPSHOT</version>
          <type>apklib</type>
       </dependency>
       <dependency>
@@ -104,6 +104,11 @@
         <artifactId>youtube-android-player-api</artifactId>
         <version>1.0.0</version>
       </dependency>
+      <dependency>
+          <groupId>com.mcxiaoke.volley</groupId>
+          <artifactId>library</artifactId>
+          <version>1.0.0</version>
+      </dependency>      
             
    </dependencies>
 

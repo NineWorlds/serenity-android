@@ -35,7 +35,6 @@ import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
 
 import us.nineworlds.serenity.R;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -211,6 +210,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(bgLayout, context));
 			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(context));
 			gridView.setOnItemLongClickListener(new TVShowGridOnItemLongClickListener());
+            gridView.setOnKeyListener(new TVShowGridOnKeyListener(context));
 		} else {
 			Gallery posterGallery = (Gallery) context
 					.findViewById(R.id.tvShowBannerGallery);
