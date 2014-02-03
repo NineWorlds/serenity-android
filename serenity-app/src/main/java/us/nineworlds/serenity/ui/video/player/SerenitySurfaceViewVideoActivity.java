@@ -81,7 +81,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		implements SurfaceHolder.Callback {
 
 	/**
-	 * 
+	 *
 	 */
 	static final int PROGRESS_UPDATE_DELAY = 5000;
 	static final int SUBTITLE_DISPLAY_CHECK = 100;
@@ -356,46 +356,28 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					returnIntent);
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (mediaController.isShowing()) {
-			if (isKeyCodeBack(keyCode)) {
+		if (isKeyCodeBack(keyCode)) {
+			if (mediaController.isShowing()) {
 				mediaController.hide();
-				
-				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-					mediaPlayer.stop();
-				}
-				setExitResultCode();
-				finish();
-				return true;
 			}
-
-			if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
-				mediaController.hide();
-				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-					mediaPlayer.stop();
-				}
-
-				finish();
-				return true;
-			}
-		} else {
-			if (isKeyCodeBack(keyCode)) {
-				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-					mediaPlayer.stop();
-				}
-				setExitResultCode();
-				finish();
-				return true;
-			}
-		}
-
-		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
 			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 				mediaPlayer.stop();
 			}
+			setExitResultCode();
 			finish();
+			return true;
+		}
+
+		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+			skipToOffset(mediaPlayer.getCurrentPosition() + Math.round(mediaPlayer.getDuration() * 0.10f));
+			return true;
+		}
+
+		if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+			skipToOffset(mediaPlayer.getCurrentPosition() - Math.round(mediaPlayer.getDuration() * 0.10f));
 			return true;
 		}
 
@@ -438,15 +420,15 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			return true;
 		}
 
+		if (isKeyCodeSkipForward(keyCode) && isMediaPlayerStateValid()) {
+			// TODO: Make this a preference
+			skipToOffset(30000 + mediaPlayer.getCurrentPosition());
+			return true;
+		}
+
 		if (isKeyCodeSkipBack(keyCode) && isMediaPlayerStateValid()) {
-			int skipOffset = mediaPlayer.getCurrentPosition() - 10000;
-			if (skipOffset < 0) {
-				skipOffset = 0;
-			}
-			if (!mediaController.isShowing()) {
-				mediaController.show(CONTROLLER_DELAY);
-			}
-			mediaPlayer.seekTo(skipOffset);
+			// TODO: Make this a preference
+			skipToOffset(mediaPlayer.getCurrentPosition() - 10000);
 			return true;
 		}
 
@@ -467,6 +449,19 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 
 		return super.onKeyDown(keyCode, event);
+	}
+
+	private void skipToOffset(int skipOffset) {
+		int duration = mediaPlayer.getDuration();
+		if (skipOffset > duration) {
+			skipOffset = duration - 1;
+		} else if (skipOffset < 0) {
+			skipOffset = 0;
+		}
+		if (!mediaController.isShowing()) {
+			mediaController.show(CONTROLLER_DELAY);
+		}
+		mediaPlayer.seekTo(skipOffset);
 	}
 
 	protected boolean isSkipByPercentage(int keyCode) {
@@ -551,7 +546,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	@Override
 	protected boolean isKeyCodeSkipBack(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
 				|| keyCode == KeyEvent.KEYCODE_R
 				|| keyCode == KeyEvent.KEYCODE_BUTTON_L1;
 	}
@@ -615,9 +609,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	/**
 	 * A task that updates the progress position of a video while it is being
 	 * played.
-	 * 
+	 *
 	 * @author dcarver
-	 * 
+	 *
 	 */
 	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
 
@@ -635,7 +629,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -679,7 +673,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media
 	 * .MediaPlayer, android.media.TimedText)
@@ -735,7 +729,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		private void getInputEncoding(URL url) {
 			InputStream is = null;
 			try {
-				byte[] buf = new byte[4096];				
+				byte[] buf = new byte[4096];
 				is = url.openStream();
 				UniversalDetector detector = new UniversalDetector(null);
 
