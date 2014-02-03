@@ -55,4 +55,7 @@ public class SerenityMusicImageView extends ImageView {
 		return posterInfo;
 	}
 
+	public void setPosterInfo(MusicArtistContentInfo posterInfo) {
+		this.posterInfo = posterInfo;
+	}
 }

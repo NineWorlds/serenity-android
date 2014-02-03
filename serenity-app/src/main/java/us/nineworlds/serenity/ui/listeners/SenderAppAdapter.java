@@ -45,11 +45,13 @@ public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
 	public static final Set<String> FILTER_SET = new HashSet<String>(Arrays.asList("com.entertailion.android.remote.StartupActivity", "com.google.android.apps.tvremote.StartupActivity", "com.koushikdutta.cast.CastActivity"));
 	
 	private Context mContext;
-	
+	private LayoutInflater inflater;
+
 	public SenderAppAdapter(Context context) {
 		super(context, R.layout.chooser_row, new ArrayList<ResolveInfo>());
 		
-		mContext = getContext();		
+		mContext = getContext();
+		inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		List<ResolveInfo> items = createItems();
 		for (ResolveInfo item : items) {
 			add(item);
@@ -91,7 +93,6 @@ public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
 	}
 	
 	private View newView(ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		return inflater.inflate(R.layout.chooser_row, parent, false);
 	}
 
