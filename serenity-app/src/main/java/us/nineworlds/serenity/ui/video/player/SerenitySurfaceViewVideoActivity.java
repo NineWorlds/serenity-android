@@ -81,7 +81,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		implements SurfaceHolder.Callback {
 
 	/**
-	 * 
+	 *
 	 */
 	static final int PROGRESS_UPDATE_DELAY = 5000;
 	static final int SUBTITLE_DISPLAY_CHECK = 100;
@@ -356,13 +356,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					returnIntent);
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (mediaController.isShowing()) {
 			if (isKeyCodeBack(keyCode)) {
 				mediaController.hide();
-				
+
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 					mediaPlayer.stop();
 				}
@@ -416,6 +416,23 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					mediaPlayer.pause();
 					mediaController.show(CONTROLLER_DELAY);
 					progressReportinghandler.removeCallbacks(progressRunnable);
+				} else {
+					mediaPlayer.start();
+					mediaController.hide();
+					progressReportinghandler.postDelayed(progressRunnable, 5000);
+				}
+				return true;
+			}
+		}
+
+		if (isKeyCodePlay(keyCode)) {
+			if (isMediaPlayerStateValid()) {
+				if (mediaPlayer.isPlaying()) {
+					if (mediaController.isShowing()) {
+						mediaController.hide();
+					} else {
+						mediaController.show(CONTROLLER_DELAY);
+					}
 				} else {
 					mediaPlayer.start();
 					mediaController.hide();
@@ -574,10 +591,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	protected boolean isKeyCodePauseResume(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
 				|| keyCode == KeyEvent.KEYCODE_P
 				|| keyCode == KeyEvent.KEYCODE_SPACE
 				|| keyCode == KeyEvent.KEYCODE_BUTTON_A;
+	}
+
+	protected boolean isKeyCodePlay(int keyCode) {
+		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY;
 	}
 
 	protected boolean isKeyCodeInfo(int keyCode) {
@@ -615,9 +635,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	/**
 	 * A task that updates the progress position of a video while it is being
 	 * played.
-	 * 
+	 *
 	 * @author dcarver
-	 * 
+	 *
 	 */
 	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
 
@@ -635,7 +655,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -679,7 +699,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media
 	 * .MediaPlayer, android.media.TimedText)
@@ -735,7 +755,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		private void getInputEncoding(URL url) {
 			InputStream is = null;
 			try {
-				byte[] buf = new byte[4096];				
+				byte[] buf = new byte[4096];
 				is = url.openStream();
 				UniversalDetector detector = new UniversalDetector(null);
 
