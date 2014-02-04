@@ -181,6 +181,9 @@ public class TVShowBannerImageGalleryAdapter extends
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+		mpiv.setMaxHeight(height);
+		mpiv.setMaxWidth(width);
+		
 		if (isPoster) {
 			imageLoader.displayImage(pi.getThumbNailURL(), mpiv);
 		} else { 
@@ -204,14 +207,17 @@ public class TVShowBannerImageGalleryAdapter extends
 		
 		if (pi.isPartiallyWatched()) {
 			 toggleProgressIndicator(galleryCellView, watched, pi.totalShows(), watchedView);
-			return;
 		}
-		
-		if (pi.isWatched()) {
+
+        final TextView unwatchedCountView = (TextView) galleryCellView.findViewById(R.id.unwatched_count);
+        if (pi.isWatched()) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
 			watchedView.setVisibility(View.VISIBLE);
-		}
-		
+            unwatchedCountView.setVisibility(View.GONE);
+		} else {
+            unwatchedCountView.setVisibility(View.VISIBLE);
+            unwatchedCountView.setText(pi.getShowsUnwatched());
+        }
 	}
 	
 	/**

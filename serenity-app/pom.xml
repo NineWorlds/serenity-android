@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <modelVersion>4.0.0</modelVersion>
    <name>Plexapp Android Client</name>
    <parent>
       <groupId>us.nineworlds.serenity</groupId>
       <artifactId>serenity-parent</artifactId>
-      <version>1.6.1</version>
+      <version>1.6.2-SNAPSHOT</version>
    </parent>
 
    <artifactId>serenity-app</artifactId>
@@ -21,7 +21,7 @@
       <dependency>
          <groupId>com.nostra13.universalimageloader</groupId>
          <artifactId>universal-image-loader</artifactId>
-         <version>1.9.0</version>
+         <version>1.9.1</version>
       </dependency>
       <dependency>
          <groupId>com.google.analytics</groupId>
@@ -29,24 +29,24 @@
          <version>2.0</version>
       </dependency>
       <dependency>
-           <groupId>android.support</groupId>
-           <artifactId>compatibility-v4</artifactId>
-           <version>18</version>          
-      </dependency>            
+         <groupId>android.support</groupId>
+         <artifactId>compatibility-v4</artifactId>
+         <version>18</version>
+      </dependency>
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
          <artifactId>subtitle-converter</artifactId>
-         <version>1.6.1</version>
+         <version>1.6.2-SNAPSHOT</version>
       </dependency>
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
          <artifactId>plexapp-rest-library</artifactId>
-         <version>1.6.1</version>
+         <version>1.6.2-SNAPSHOT</version>
       </dependency>
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
          <artifactId>menudrawer</artifactId>
-         <version>1.6.1</version>
+         <version>1.6.2-SNAPSHOT</version>
          <type>apklib</type>
       </dependency>
       <dependency>
@@ -90,21 +90,31 @@
          <version>11.0.2</version>
       </dependency>
       <dependency>
-        <groupId>com.google.gdata</groupId>
-        <artifactId>mail</artifactId>
-        <version>1.0</version>
-      </dependency>      
-      <dependency>
-        <groupId>com.google.gdata</groupId>
-        <artifactId>activation</artifactId>
-        <version>1.0</version>
+         <groupId>com.google.gdata</groupId>
+         <artifactId>mail</artifactId>
+         <version>1.0</version>
       </dependency>
       <dependency>
-        <groupId>com.google.android</groupId>
-        <artifactId>youtube-android-player-api</artifactId>
-        <version>1.0.0</version>
+         <groupId>com.google.gdata</groupId>
+         <artifactId>activation</artifactId>
+         <version>1.0</version>
       </dependency>
-            
+      <dependency>
+         <groupId>com.google.android</groupId>
+         <artifactId>youtube-android-player-api</artifactId>
+         <version>1.0.0</version>
+      </dependency>
+      <dependency>
+         <groupId>com.mcxiaoke.volley</groupId>
+         <artifactId>library</artifactId>
+         <version>1.0.0</version>
+      </dependency>
+      <dependency>
+         <groupId>com.squareup.okhttp</groupId>
+         <artifactId>okhttp</artifactId>
+         <version>1.3.0</version>
+      </dependency>
+
    </dependencies>
 
    <build>

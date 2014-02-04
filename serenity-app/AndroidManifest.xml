@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="us.nineworlds.serenity"
-    android:versionCode="61"
-    android:versionName="1.6.1" >
+    android:versionCode="62"
+    android:versionName="1.6.2-dev" >
 
     <!-- try to exclude phone devices from the list. Currently only support Tablets and TVs -->
     <supports-screens
@@ -125,12 +125,9 @@
         </activity>
 
         <service android:name=".core.services.MainMenuIntentService" />
-        <service android:name=".core.services.MoviesRetrievalIntentService" />
         <service android:name=".core.services.MusicRetrievalIntentService" />
         <service android:name=".core.services.MusicAlbumRetrievalIntentService" />
         <service android:name=".core.services.MusicTrackRetrievalIntentService" />
-        <service android:name=".core.services.MovieMetaDataRetrievalIntentService" />
-        <service android:name=".core.services.EpisodeRetrievalIntentService" />
         <service android:name=".core.services.CategoryRetrievalIntentService" />
         <service android:name=".core.services.SecondaryCategoryRetrievalIntentService" />
         <service android:name=".core.services.ShowRetrievalIntentService" />

@@ -31,7 +31,6 @@ import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
-import us.nineworlds.serenity.core.services.MovieMetaDataRetrievalIntentService;
 import us.nineworlds.serenity.ui.listeners.SubtitleSpinnerOnItemSelectedListener;
 
 import us.nineworlds.serenity.R;
@@ -103,20 +102,8 @@ public class MovieGridPosterOnItemSelectedListener implements
 		
 		TextView posterTitle = (TextView) context.findViewById(R.id.movieBrowserPosterTitle);
 		posterTitle.setText(mi.getTitle());
-		
-		//fetchSubtitle(mi);
-
 	}
 	
-	protected void fetchSubtitle(VideoContentInfo mpi) {
-			subtitleHandler = new SubtitleHandler(mpi);
-			Messenger messenger = new Messenger(subtitleHandler);
-			Intent intent = new Intent(context, MovieMetaDataRetrievalIntentService.class);
-			intent.putExtra("MESSENGER", messenger);
-			intent.putExtra("key", mpi.id());
-			context.startService(intent);
-	}
-
 	@Override
 	public void onNothingSelected(TwoWayAdapterView<?> av) {
 		if (previous != null) {
@@ -124,45 +111,5 @@ public class MovieGridPosterOnItemSelectedListener implements
 			previous.refreshDrawableState();
 		}
 
-	}
-	
-	private static class SubtitleHandler extends Handler {
-		
-		private VideoContentInfo video;
-		
-		public SubtitleHandler(VideoContentInfo video) {
-			this.video = video;
-		}
-
-		@Override
-		public void handleMessage(Message msg) {
-			List<Subtitle> subtitles = (List<Subtitle>) msg.obj;
-			if (subtitles == null || subtitles.isEmpty()) {
-				return;
-			}
-			
-			TextView subtitleText = (TextView) context.findViewById(R.id.subtitleFilter);
-			subtitleText.setVisibility(View.VISIBLE);			
-			Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);
-			
-			ArrayList<Subtitle> spinnerSubtitles = new ArrayList<Subtitle>();
-			Subtitle noSubtitle = new Subtitle();
-			noSubtitle.setDescription("None");
-			noSubtitle.setFormat("none");
-			noSubtitle.setKey(null);
-			
-			spinnerSubtitles.add(noSubtitle);
-			spinnerSubtitles.addAll(subtitles);
-			
-			ArrayAdapter<Subtitle> subtitleAdapter = new ArrayAdapter<Subtitle>(context, R.layout.serenity_spinner_textview,
-					spinnerSubtitles);
-			subtitleAdapter
-			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
-			subtitleSpinner.setAdapter(subtitleAdapter);
-			subtitleSpinner.setOnItemSelectedListener(new SubtitleSpinnerOnItemSelectedListener(video, context));
-			subtitleSpinner.setVisibility(View.VISIBLE);
-			
-		}
-
-	}
+	}	
 }

@@ -155,6 +155,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 		int w = ImageUtils.getDPI(74, (Activity)v.getContext());
 		int h = ImageUtils.getDPI(40, (Activity)v.getContext());
 		
+		
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w, h);
 		params.topMargin = 10;
 		params.rightMargin = 5;			
@@ -227,6 +228,8 @@ public class TVShowGalleryOnItemSelectedListener implements
 			showImage.setScaleType(ScaleType.FIT_XY);
 			int width = ImageUtils.getDPI(250, context);
 			int height = ImageUtils.getDPI(350, context);
+			showImage.setMaxHeight(height);
+			showImage.setMaxWidth(width);
 			showImage.setLayoutParams(new LinearLayout.LayoutParams(width, height));
 			imageLoader.displayImage(mi.getThumbNailURL(), showImage);
 		}

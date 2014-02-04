@@ -53,6 +53,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.AsyncTask;
@@ -95,6 +96,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private SurfaceView surfaceView;
 	private View videoActivityView;
 	private MediaController mediaController;
+	private View timeOfDayView;
 	private String aspectRatio;
 	private String videoId;
 	private int resumeOffset;
@@ -224,7 +226,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		mediaPlayer.setOnErrorListener(new SerenityOnErrorListener());
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 		videoActivityView = findViewById(R.id.video_playeback);
-		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("overscan_compensation", false)) {
+        timeOfDayView = findViewById(R.id.time_of_day);
+
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getBoolean("overscan_compensation", false)) {
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) videoActivityView
 					.getLayoutParams();
 			params.setMargins(35, 20, 20, 20);
@@ -234,6 +239,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		SurfaceHolder holder = surfaceView.getHolder();
 		holder.addCallback(this);
 		holder.setSizeFromLayout();
+
+        final boolean showTimeOfDay = prefs.getBoolean("showTimeOfDay", false);
+        timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
 
 		retrieveIntentExtras();
 	}
@@ -431,6 +439,23 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 		}
 
+		if (isKeyCodePlay(keyCode)) {
+			if (isMediaPlayerStateValid()) {
+				if (mediaPlayer.isPlaying()) {
+					if (mediaController.isShowing()) {
+						mediaController.hide();
+					} else {
+						mediaController.show(CONTROLLER_DELAY);
+					}
+				} else {
+					mediaPlayer.start();
+					mediaController.hide();
+					progressReportinghandler.postDelayed(progressRunnable, 5000);
+				}
+				return true;
+			}
+		}
+
 		if (isKeyCodeSkipForward(keyCode) && isMediaPlayerStateValid()) {
 			int skipOffset = 10000 + mediaPlayer.getCurrentPosition();
 			int duration = mediaPlayer.getDuration();
@@ -465,6 +490,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			return true;
 		}
+
+        if (keyCode == KeyEvent.KEYCODE_T) {
+            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            final boolean showTimeOfDay = !prefs.getBoolean("showTimeOfDay", false);
+            timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
+            prefs.edit().putBoolean("showTimeOfDay", showTimeOfDay).apply();
+            return true;
+        }
 
 		if (isMediaPlayerStateValid()) {
 			if (isSkipByPercentage(keyCode)) {
@@ -580,10 +613,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	protected boolean isKeyCodePauseResume(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
 				|| keyCode == KeyEvent.KEYCODE_P
 				|| keyCode == KeyEvent.KEYCODE_SPACE
 				|| keyCode == KeyEvent.KEYCODE_BUTTON_A;
+	}
+
+	protected boolean isKeyCodePlay(int keyCode) {
+		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY;
 	}
 
 	protected boolean isKeyCodeInfo(int keyCode) {

@@ -2,6 +2,7 @@ package us.nineworlds.serenity.core.services;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import android.os.AsyncTask;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 

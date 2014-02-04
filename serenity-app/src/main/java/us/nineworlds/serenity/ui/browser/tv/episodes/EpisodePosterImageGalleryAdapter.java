@@ -23,24 +23,24 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
-import java.util.List;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.EpisodeRetrievalIntentService;
+import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
+import us.nineworlds.serenity.core.util.SimpleXmlRequest;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -58,7 +58,6 @@ public class EpisodePosterImageGalleryAdapter extends
 
 	private static EpisodePosterImageGalleryAdapter notifyAdapter;
 	private static ProgressDialog pd;
-	private static final float WATCHED_PERCENT = 0.98f;
 
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
@@ -78,6 +77,8 @@ public class EpisodePosterImageGalleryAdapter extends
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(300, context);
 		int height = ImageUtils.getDPI(187, context);
+		mpiv.setMaxHeight(height);
+		mpiv.setMaxWidth(width);		
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
 
@@ -95,9 +96,6 @@ public class EpisodePosterImageGalleryAdapter extends
 
 	@Override
 	protected void fetchDataFromService() {
-		pd = ProgressDialog.show(context, "",
-				context.getString(R.string.retrieving_episodes));
-		handler = new EpisodeHandler();
 		retrieveEpisodes();
 		notifyAdapter = this;
 
@@ -106,30 +104,44 @@ public class EpisodePosterImageGalleryAdapter extends
 	/**
 	 * 
 	 */
-	public void retrieveEpisodes() {
-		Messenger messenger = new Messenger(handler);
-		Intent intent = new Intent(context, EpisodeRetrievalIntentService.class);
-		intent.putExtra("MESSENGER", messenger);
-		intent.putExtra("key", key);
+	public void retrieveEpisodes() {		
+		final PlexappFactory factory = SerenityApplication.getPlexFactory();
+		String url = factory.getEpisodesURL(key);
 
-		context.startService(intent);
+		SimpleXmlRequest<MediaContainer> request = new SimpleXmlRequest<MediaContainer>(
+				Request.Method.GET, url, MediaContainer.class,
+				new EpisodePosterResponseListener(),
+				new EpisodeResponseErrorListener());
+
+		queue.add(request);		
 	}
+	
+	
+	private class EpisodePosterResponseListener implements Response.Listener<MediaContainer> {
 
-	private static class EpisodeHandler extends Handler {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see android.os.Handler#handleMessage(android.os.Message)
-		 */
 		@Override
-		public void handleMessage(Message msg) {
-			posterList = (List<VideoContentInfo>) msg.obj;
-			pd.dismiss();
+		public void onResponse(MediaContainer response) {
+			EpisodeMediaContainer episodes = new EpisodeMediaContainer(response, context);
+			posterList = episodes.createVideos();
+			notifyAdapter.notifyDataSetChanged();
+			if (pd != null && pd.isShowing()) {
+				pd.dismiss();
+			}
 			SerenityGallery gallery = (SerenityGallery) context
 					.findViewById(R.id.moviePosterGallery);
-			notifyAdapter.notifyDataSetChanged();
-			gallery.requestFocus();
+			if (gallery != null) {
+				gallery.requestFocus();
+			}
 		}
+		
+	}
+	
+	private class EpisodeResponseErrorListener implements Response.ErrorListener {
+
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			
+		}
+		
 	}
 }

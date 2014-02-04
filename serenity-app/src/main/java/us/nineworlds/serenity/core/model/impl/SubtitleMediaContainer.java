@@ -21,73 +21,33 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.services;
+package us.nineworlds.serenity.core.model.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
-import android.util.Log;
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Stream;
-import us.nineworlds.serenity.core.model.impl.Subtitle;
+import us.nineworlds.serenity.SerenityApplication;
 
 /**
  * @author dcarver
  *
  */
-public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentService {
-
-	private String key;
-	private ArrayList<Subtitle> subtitles;
-	private static final String MOVIES_RETRIEVAL_INTENT_SERVICE = "VideoMetaDataRetrievalIntentService";
-
-
+public class SubtitleMediaContainer extends AbstractMediaContainer {
+	
 	/**
-	 * @param name
+	 * @param mc
 	 */
-	public MovieMetaDataRetrievalIntentService() {
-		super(MOVIES_RETRIEVAL_INTENT_SERVICE);
-	}
-
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.core.services.AbstractPlexRESTIntentService#sendMessageResults(android.content.Intent)
-	 */
-	@Override
-	public void sendMessageResults(Intent intent) {
-		Bundle extras = intent.getExtras();
-		if (extras != null) {
-			Messenger messenger = (Messenger) extras.get("MESSENGER");
-			Message msg = Message.obtain();
-			msg.obj = subtitles;
-			try {
-				messenger.send(msg);
-			} catch (RemoteException ex) {
-				Log.e(getClass().getName(), "Unable to send message", ex);
-			}
-		}
-		
-	}
-
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		key = intent.getExtras().getString("key", "");
-		try {
-			MediaContainer mc = factory.retrieveMovieMetaData("/library/metadata/" + key);
-			findSubtitle(mc);
-			sendMessageResults(intent);			
-		} catch (Exception ex) {
-			Log.e(MOVIES_RETRIEVAL_INTENT_SERVICE, "Error retreiving metadata." + ex.getMessage(), ex);
-		}
+	public SubtitleMediaContainer(MediaContainer mc) {
+		super(mc);
 	}
 	
-	protected void findSubtitle(MediaContainer mc) {
+	public List<Subtitle> createSubtitle() {
+		PlexappFactory factory = SerenityApplication.getPlexFactory();
 		List<Stream> streams = mc.getVideos().get(0).getMedias().get(0).getVideoPart().get(0).getStreams();
-		subtitles = new ArrayList<Subtitle>();
+		List<Subtitle> subtitles = new ArrayList<Subtitle>();
 		for (Stream stream : streams) {
 			if ("srt".equals(stream.getFormat()) ||
 				"ass".equals(stream.getFormat())) {
@@ -96,6 +56,9 @@ public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentS
 				subtitle = new Subtitle();
 				subtitle.setFormat(stream.getFormat());
 				subtitle.setLanguageCode(stream.getLanguageCode());
+				if (stream.getKey() == null) {
+					continue;
+				}
 				subtitle.setKey(factory.baseURL() + stream.getKey().replaceFirst("/", ""));
 				if (stream.getLanguage() == null) {
 					subtitle.setDescription("Unknown (" + stream.getFormat() + ")");
@@ -105,5 +68,9 @@ public class MovieMetaDataRetrievalIntentService extends AbstractPlexRESTIntentS
 				subtitles.add(subtitle);
 			}
 		}
+		return subtitles;
+		
+		
 	}
+
 }
