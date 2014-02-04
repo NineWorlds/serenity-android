@@ -31,6 +31,7 @@ import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.services.TVShowCategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
@@ -186,6 +187,11 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 				}
 				gallery.setSelection(newPosition);
 				gallery.requestFocusFromTouch();
+				return true;
+			}
+			if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY) {
+				SeriesContentInfo info = (SeriesContentInfo) gallery.getSelectedItem();
+				new FindUnwatchedAsyncTask(this).execute(info);
 				return true;
 			}
 		}
