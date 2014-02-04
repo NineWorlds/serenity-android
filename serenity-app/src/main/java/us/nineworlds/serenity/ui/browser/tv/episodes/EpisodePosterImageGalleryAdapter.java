@@ -77,6 +77,8 @@ public class EpisodePosterImageGalleryAdapter extends
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(300, context);
 		int height = ImageUtils.getDPI(187, context);
+		mpiv.setMaxHeight(height);
+		mpiv.setMaxWidth(width);		
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
 

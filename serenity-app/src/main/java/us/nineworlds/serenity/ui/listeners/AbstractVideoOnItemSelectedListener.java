@@ -91,7 +91,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	protected BaseAdapter adapter;
 	protected VideoContentInfo videoInfo;
 	private DBMetaDataSource datasource;
-	private RequestQueue queue;
+	protected RequestQueue queue;
 	
 
 	public AbstractVideoOnItemSelectedListener(Activity c) {

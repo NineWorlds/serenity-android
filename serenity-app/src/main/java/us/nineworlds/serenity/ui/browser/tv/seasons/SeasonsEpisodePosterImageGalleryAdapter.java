@@ -95,6 +95,8 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(270, context);
 		int height = ImageUtils.getDPI(147, context);
+		mpiv.setMaxWidth(width);
+		mpiv.setMaxHeight(height);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 		galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
 				width, height));

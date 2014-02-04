@@ -31,6 +31,7 @@ import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
+import us.nineworlds.serenity.core.util.VolleyUtils;
 import us.nineworlds.serenity.ui.activity.CategoryHandler;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
@@ -38,6 +39,7 @@ import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 
+import com.android.volley.RequestQueue;
 import com.google.analytics.tracking.android.EasyTracker;
 import android.os.Bundle;
 import android.os.Handler;
