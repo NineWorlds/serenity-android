@@ -133,21 +133,19 @@ public class SerenityApplication extends Application {
 				.cacheInMemory().cacheOnDisc()
 				.bitmapConfig(Bitmap.Config.RGB_565)
 				.showImageForEmptyUri(R.drawable.default_video_cover)
-				.showStubImage(R.drawable.default_video_cover).build();
+				.build();
 
 		musicOptions = new DisplayImageOptions.Builder().cacheInMemory()
 				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
 				.showImageForEmptyUri(R.drawable.default_music)
-				.showStubImage(R.drawable.default_music).build();
+				.build();
 
 		movieOptions = new DisplayImageOptions.Builder().cacheInMemory()
 				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
-				.showImageForEmptyUri(R.drawable.movies)
-				.showStubImage(R.drawable.movies).build();
+				.build();
 
 		reflectiveOptions = new DisplayImageOptions.Builder().cacheInMemory()
 				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
-				.showStubImage(R.drawable.default_video_cover)
 				.displayer(new RoundedBitmapDisplayer(10)).build();
 
 		ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(
