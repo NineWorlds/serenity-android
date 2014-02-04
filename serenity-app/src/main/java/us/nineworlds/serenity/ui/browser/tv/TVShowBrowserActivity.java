@@ -189,7 +189,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 				gallery.requestFocusFromTouch();
 				return true;
 			}
-			if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY) {
+			if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY || keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
 				SeriesContentInfo info = (SeriesContentInfo) gallery.getSelectedItem();
 				new FindUnwatchedAsyncTask(this).execute(info);
 				return true;
