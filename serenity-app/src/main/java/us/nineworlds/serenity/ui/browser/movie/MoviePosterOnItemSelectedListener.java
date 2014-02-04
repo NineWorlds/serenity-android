@@ -25,8 +25,11 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue.RequestFilter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -72,9 +75,8 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 		ImageView posterImage = (ImageView) context.findViewById(R.id.video_poster);
 		posterImage.setVisibility(View.VISIBLE);
 		posterImage.setScaleType(ScaleType.FIT_XY);
-		//int width = ImageUtils.getDPI(240, context);
-		//int height = ImageUtils.getDPI(330, context);
-		//posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+		posterImage.setMaxWidth(posterImage.getWidth());
+		posterImage.setMaxHeight(posterImage.getHeight());
 		ImageLoader imageLoader = SerenityApplication.getImageLoader();
 		imageLoader.displayImage(videoInfo.getImageURL(), posterImage);
 		
@@ -116,6 +118,24 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 	@Override
 	public void onNothingSelected(SerenityAdapterView<?> av) {
 
+	}
+	
+	/* (non-Javadoc)
+	 * @see us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener#fetchSubtitle(us.nineworlds.serenity.core.model.VideoContentInfo)
+	 */
+	@Override
+	public void fetchSubtitle(VideoContentInfo mpi) {
+		if (queue != null) {
+			queue.cancelAll(new RequestFilter() {
+				@Override
+				public boolean apply(Request<?> request) {
+					request.cancel();
+					return true;
+				}
+				
+			});
+		}
+		super.fetchSubtitle(mpi);
 	}
 
 

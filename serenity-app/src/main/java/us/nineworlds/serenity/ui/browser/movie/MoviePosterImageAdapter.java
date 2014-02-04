@@ -107,6 +107,8 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 		width = ImageUtils.getDPI(130, context);
 		height = ImageUtils.getDPI(200, context);
+		mpiv.setMaxHeight(height);
+		mpiv.setMaxWidth(width);
 		if (!movieContext.isGridViewActive()) {
 			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 			galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(
