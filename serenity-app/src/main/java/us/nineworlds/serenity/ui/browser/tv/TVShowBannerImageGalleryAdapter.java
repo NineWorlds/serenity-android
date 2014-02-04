@@ -187,6 +187,9 @@ public class TVShowBannerImageGalleryAdapter extends
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+		mpiv.setMaxHeight(height);
+		mpiv.setMaxWidth(width);
+		
 		if (isPoster) {
 			imageLoader.displayImage(pi.getThumbNailURL(), mpiv);
 		} else { 

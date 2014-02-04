@@ -15,8 +15,8 @@ import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
-import us.nineworlds.serenity.core.services.EpisodeRetrievalIntentService;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 import java.util.List;
@@ -80,8 +80,8 @@ public class TVShowGridOnKeyListener implements View.OnKeyListener {
                     parentPosterURL = baseUrl + episodeContainer.getParentPosterURL().substring(1);
                 }
                 for (Video episode : episodes) {
-                    final EpisodePosterInfo videoInfo = EpisodeRetrievalIntentService.createEpisodeContentInfo(
-                            activity, factory, episodeContainer, baseUrl, parentPosterURL, episode);
+                    final EpisodePosterInfo videoInfo = EpisodeMediaContainer.createEpisodeContentInfo(
+							activity, factory, episodeContainer, baseUrl, parentPosterURL, episode);
                     if (videoInfo.isWatched()) {
                         continue;
                     }

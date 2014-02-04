@@ -252,6 +252,19 @@ public class PlexappFactory {
 	public String getMediaTagURL(String resourceType, String resourceName, String identifier) {
 		return resourcePath.getMediaTagURL(resourceType, resourceName, identifier);
 	}
+	
+	public String getSectionsURL(String key, String category) {
+		return resourcePath.getSectionsURL(key, category);
+	}
+	
+	public String getMovieMetadataURL(String key) {
+		return resourcePath.getMovieMetaDataURL(key);
+	}
+	
+	public String getEpisodesURL(String key) {
+		return resourcePath.getEpisodesURL(key);
+	}
+	
 
 	
 	/**
@@ -272,6 +285,11 @@ public class PlexappFactory {
 		mediaContainer = serializer.read(MediaContainer.class,
 				con.getInputStream(), false);
 		return mediaContainer;
+	}
+	
+	public MediaContainer serializeResourceFromString(String xmlString) throws Exception {
+		MediaContainer container = serializer.read(MediaContainer.class, xmlString, false);
+		return container;
 	}
 	
 

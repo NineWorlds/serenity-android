@@ -32,9 +32,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.core.ServerConfig;
+import us.nineworlds.serenity.core.imageloader.OKHttpImageLoader;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
@@ -43,6 +46,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.squareup.okhttp.OkHttpClient;
 
 import android.app.Application;
 import android.content.Context;
@@ -69,7 +73,7 @@ public class SerenityApplication extends Application {
 	private static LinkedList<VideoContentInfo> videoQueue = new LinkedList<VideoContentInfo>();
 	private static ImageLoader imageLoader;
 	public static final int PROGRESS = 0xDEADBEEF;
-
+	
 	private static List<PendingDownload> pendingDownloads;
 
 	public static List<PendingDownload> getPendingDownloads() {
@@ -128,24 +132,23 @@ public class SerenityApplication extends Application {
 
 	protected void configureImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-				.cacheInMemory().cacheOnDisc()
+				.cacheInMemory(true).cacheOnDisc(true)
 				.bitmapConfig(Bitmap.Config.RGB_565)
 				.showImageForEmptyUri(R.drawable.default_video_cover)
-				.showStubImage(R.drawable.default_video_cover).build();
+				.build();
 
-		musicOptions = new DisplayImageOptions.Builder().cacheInMemory()
-				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
+		musicOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
+				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565)
 				.showImageForEmptyUri(R.drawable.default_music)
-				.showStubImage(R.drawable.default_music).build();
+				.build();
 
-		movieOptions = new DisplayImageOptions.Builder().cacheInMemory()
-				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
-				.showImageForEmptyUri(R.drawable.movies)
-				.showStubImage(R.drawable.movies).build();
+		movieOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
+				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565)
+				.resetViewBeforeLoading(true)
+				.build();
 
-		reflectiveOptions = new DisplayImageOptions.Builder().cacheInMemory()
-				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
-				.showStubImage(R.drawable.default_video_cover)
+		reflectiveOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
+				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565)
 				.displayer(new RoundedBitmapDisplayer(10)).build();
 
 		ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(
@@ -154,7 +157,7 @@ public class SerenityApplication extends Application {
 				.taskExecutorForCachedImages(AsyncTask.THREAD_POOL_EXECUTOR)
 				.threadPoolSize(5)
 				.tasksProcessingOrder(QueueProcessingType.FIFO)
-				.denyCacheImageMultipleSizesInMemory()
+				.imageDownloader(new OKHttpImageLoader(this, new OkHttpClient()))
 				.defaultDisplayImageOptions(defaultOptions).build();
 
 		imageLoader = ImageLoader.getInstance();
@@ -237,5 +240,5 @@ public class SerenityApplication extends Application {
 		}
 		return false;
 	}
-
+	
 }

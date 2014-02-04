@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -22,6 +22,34 @@
  */
 
 package us.nineworlds.serenity.ui.video.player;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.LinkedList;
+
+import org.mozilla.universalchardet.UniversalDetector;
+
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.SerenityConstants;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
+import us.nineworlds.serenity.core.services.CompletedVideoRequest;
+import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
+import us.nineworlds.serenity.core.subtitles.formats.Caption;
+import us.nineworlds.serenity.core.subtitles.formats.FormatASS;
+import us.nineworlds.serenity.core.subtitles.formats.FormatSRT;
+import us.nineworlds.serenity.core.subtitles.formats.TimedTextObject;
+import us.nineworlds.serenity.ui.activity.SerenityActivity;
+import us.nineworlds.serenity.R;
+
+import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,45 +67,22 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.*;
-import com.google.analytics.tracking.android.EasyTracker;
-import org.mozilla.universalchardet.UniversalDetector;
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.SerenityConstants;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
-import us.nineworlds.serenity.core.services.CompletedVideoRequest;
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
-import us.nineworlds.serenity.core.subtitles.formats.Caption;
-import us.nineworlds.serenity.core.subtitles.formats.FormatASS;
-import us.nineworlds.serenity.core.subtitles.formats.FormatSRT;
-import us.nineworlds.serenity.core.subtitles.formats.TimedTextObject;
-import us.nineworlds.serenity.ui.activity.SerenityActivity;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.util.Collection;
-import java.util.LinkedList;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A view that handles the internal video playback and representation of a movie
  * or tv show.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		implements SurfaceHolder.Callback {
 
 	/**
-	 * 
+	 *
 	 */
 	static final int PROGRESS_UPDATE_DELAY = 5000;
 	static final int SUBTITLE_DISPLAY_CHECK = 100;
@@ -91,9 +96,11 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private SurfaceView surfaceView;
 	private View videoActivityView;
 	private MediaController mediaController;
+	private View timeOfDayView;
 	private String aspectRatio;
 	private String videoId;
 	private int resumeOffset;
+	private boolean autoResume;
 	private boolean mediaplayer_error_state = false;
 	private boolean mediaplayer_released = false;
 	private String subtitleURL;
@@ -158,7 +165,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 						new UpdateProgressRequest().execute();
 						progressReportinghandler.postDelayed(this,
 								PROGRESS_UPDATE_DELAY); // Update progress every 5
-														// seconds
+						// seconds
 					} else {
 						new WatchedVideoAsyncTask().execute(videoId);
 					}
@@ -170,12 +177,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 		};
 	};
-    private boolean autoResume;
-    private View timeOfDayView;
 
-    @Override
+	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
+							   int height) {
 
 	}
 
@@ -221,10 +226,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		mediaPlayer.setOnErrorListener(new SerenityOnErrorListener());
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 		videoActivityView = findViewById(R.id.video_playeback);
-        timeOfDayView = findViewById(R.id.time_of_day);
+		timeOfDayView = findViewById(R.id.time_of_day);
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean("overscan_compensation", false)) {
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		if (prefs.getBoolean("overscan_compensation", false)) {
 			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) videoActivityView
 					.getLayoutParams();
 			params.setMargins(35, 20, 20, 20);
@@ -235,20 +240,19 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		holder.addCallback(this);
 		holder.setSizeFromLayout();
 
-        final boolean showTimeOfDay = prefs.getBoolean("showTimeOfDay", false);
-        timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
+		final boolean showTimeOfDay = prefs.getBoolean("showTimeOfDay", false);
+		timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
 
 		retrieveIntentExtras();
 	}
 
 	protected void retrieveIntentExtras() {
 		Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            autoResume = extras.getBoolean("autoResume", false);
-            extras.remove("autoResume");
-        }
-
-        if (extras == null || extras.isEmpty()) {
+		if (extras != null) {
+			autoResume = extras.getBoolean("autoResume", false);
+			extras.remove("autoResume");
+		}
+		if (extras == null || extras.isEmpty()) {
 			playBackFromVideoQueue();
 		} else {
 			playbackFromIntent(extras);
@@ -326,8 +330,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 * @param audioChannels
 	 */
 	protected void initMediaController(String summary, String title,
-			String posterURL, String videoFormat, String videoResolution,
-			String audioFormat, String audioChannels) {
+									   String posterURL, String videoFormat, String videoResolution,
+									   String audioFormat, String audioChannels) {
 
 		mediaController = new MediaController(this, summary, title, posterURL,
 				videoResolution, videoFormat, audioFormat, audioChannels,
@@ -365,30 +369,48 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					returnIntent);
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (isKeyCodeBack(keyCode)) {
-            if (mediaController.isShowing()) {
-                mediaController.hide();
-            }
-            if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-            }
-            setExitResultCode();
-            finish();
-            return true;
-        }
+		if (mediaController.isShowing()) {
+			if (isKeyCodeBack(keyCode)) {
+				mediaController.hide();
 
-		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
-            skipToOffset(mediaPlayer.getCurrentPosition() + Math.round(mediaPlayer.getDuration() * 0.10f));
-			return true;
+				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+					mediaPlayer.stop();
+				}
+				setExitResultCode();
+				finish();
+				return true;
+			}
+
+			if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+				mediaController.hide();
+				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+					mediaPlayer.stop();
+				}
+
+				finish();
+				return true;
+			}
+		} else {
+			if (isKeyCodeBack(keyCode)) {
+				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+					mediaPlayer.stop();
+				}
+				setExitResultCode();
+				finish();
+				return true;
+			}
 		}
 
-        if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
-            skipToOffset(mediaPlayer.getCurrentPosition() - Math.round(mediaPlayer.getDuration() * 0.10f));
-            return true;
-        }
+		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+				mediaPlayer.stop();
+			}
+			finish();
+			return true;
+		}
 
 		if (isKeyCodeInfo(keyCode)) {
 			if (isMediaPlayerStateValid()) {
@@ -416,32 +438,45 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 		}
 
-        if (isKeyCodePlay(keyCode)) {
-            if (isMediaPlayerStateValid()) {
-                if (mediaPlayer.isPlaying()) {
-                    if (mediaController.isShowing()) {
-                        mediaController.hide();
-                    } else {
-                        mediaController.show(CONTROLLER_DELAY);
-                    }
-                } else {
-                    mediaPlayer.start();
-                    mediaController.hide();
-                    progressReportinghandler.postDelayed(progressRunnable, 5000);
-                }
-                return true;
-            }
-        }
+		if (isKeyCodePlay(keyCode)) {
+			if (isMediaPlayerStateValid()) {
+				if (mediaPlayer.isPlaying()) {
+					if (mediaController.isShowing()) {
+						mediaController.hide();
+					} else {
+						mediaController.show(CONTROLLER_DELAY);
+					}
+				} else {
+					mediaPlayer.start();
+					mediaController.hide();
+					progressReportinghandler.postDelayed(progressRunnable, 5000);
+				}
+				return true;
+			}
+		}
 
-        if (isKeyCodeSkipForward(keyCode) && isMediaPlayerStateValid()) {
-            // TODO: Make this a preference
-            skipToOffset(30000 + mediaPlayer.getCurrentPosition());
+		if (isKeyCodeSkipForward(keyCode) && isMediaPlayerStateValid()) {
+			int skipOffset = 10000 + mediaPlayer.getCurrentPosition();
+			int duration = mediaPlayer.getDuration();
+			if (skipOffset > duration) {
+				skipOffset = duration - 1;
+			}
+			if (!mediaController.isShowing()) {
+				mediaController.show(CONTROLLER_DELAY);
+			}
+			mediaPlayer.seekTo(skipOffset);
 			return true;
 		}
 
 		if (isKeyCodeSkipBack(keyCode) && isMediaPlayerStateValid()) {
-            // TODO: Make this a preference
-            skipToOffset(mediaPlayer.getCurrentPosition() - 10000);
+			int skipOffset = mediaPlayer.getCurrentPosition() - 10000;
+			if (skipOffset < 0) {
+				skipOffset = 0;
+			}
+			if (!mediaController.isShowing()) {
+				mediaController.show(CONTROLLER_DELAY);
+			}
+			mediaPlayer.seekTo(skipOffset);
 			return true;
 		}
 
@@ -455,13 +490,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			return true;
 		}
 
-        if (keyCode == KeyEvent.KEYCODE_T) {
-            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            final boolean showTimeOfDay = !prefs.getBoolean("showTimeOfDay", false);
-            timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
-            prefs.edit().putBoolean("showTimeOfDay", showTimeOfDay).apply();
-            return true;
-        }
+		if (keyCode == KeyEvent.KEYCODE_T) {
+			final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			final boolean showTimeOfDay = !prefs.getBoolean("showTimeOfDay", false);
+			timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
+			prefs.edit().putBoolean("showTimeOfDay", showTimeOfDay).apply();
+			return true;
+		}
 
 		if (isMediaPlayerStateValid()) {
 			if (isSkipByPercentage(keyCode)) {
@@ -472,20 +507,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		return super.onKeyDown(keyCode, event);
 	}
 
-    private void skipToOffset(int skipOffset) {
-        int duration = mediaPlayer.getDuration();
-        if (skipOffset > duration) {
-            skipOffset = duration - 1;
-        } else if (skipOffset < 0) {
-            skipOffset = 0;
-        }
-        if (!mediaController.isShowing()) {
-            mediaController.show(CONTROLLER_DELAY);
-        }
-        mediaPlayer.seekTo(skipOffset);
-    }
-
-    protected boolean isSkipByPercentage(int keyCode) {
+	protected boolean isSkipByPercentage(int keyCode) {
 		if (keyCode == KeyEvent.KEYCODE_1) {
 			int duration = mediaPlayer.getDuration();
 			int newPos = Math.round(duration * 0.10f);
@@ -567,6 +589,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	@Override
 	protected boolean isKeyCodeSkipBack(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
 				|| keyCode == KeyEvent.KEYCODE_R
 				|| keyCode == KeyEvent.KEYCODE_BUTTON_L1;
 	}
@@ -633,9 +656,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	/**
 	 * A task that updates the progress position of a video while it is being
 	 * played.
-	 * 
+	 *
 	 * @author dcarver
-	 * 
+	 *
 	 */
 	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
 
@@ -653,7 +676,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -697,7 +720,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media
 	 * .MediaPlayer, android.media.TimedText)
@@ -753,7 +776,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		private void getInputEncoding(URL url) {
 			InputStream is = null;
 			try {
-				byte[] buf = new byte[4096];				
+				byte[] buf = new byte[4096];
 				is = url.openStream();
 				UniversalDetector detector = new UniversalDetector(null);
 
