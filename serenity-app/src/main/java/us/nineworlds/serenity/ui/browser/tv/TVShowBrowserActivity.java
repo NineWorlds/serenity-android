@@ -116,7 +116,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	protected void onResume() {
 		super.onResume();
 		populateMenuDrawer();
-		if (restarted_state == false) {
+		if (!restarted_state || "unwatched".equals(savedCategory)) {
 			categoryHandler = new CategoryHandler(this);
 			Messenger messenger = new Messenger(categoryHandler);
 			Intent categoriesIntent = new Intent(this,
@@ -125,7 +125,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 			categoriesIntent.putExtra("MESSENGER", messenger);
 			startService(categoriesIntent);
 		}
-		
+
 	}
 	
 	/* (non-Javadoc)

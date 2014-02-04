@@ -108,6 +108,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private TimedTextObject subtitleTimedText;
 	private boolean subtitlesPlaybackEnabled = true;
 	private String subtitleInputEncoding = null;
+	private boolean autoResume;
 
 	private Handler subtitleDisplayHandler = new Handler();
 	private Runnable subtitle = new Runnable() {
@@ -190,8 +191,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			mediaPlayer.setDataSource(videoURL);
 			mediaPlayer.setOnPreparedListener(new VideoPlayerPrepareListener(
 					this, mediaPlayer, mediaController, surfaceView,
-					resumeOffset, videoId, aspectRatio,
-					progressReportinghandler, progressRunnable, subtitleURL));
+					resumeOffset, autoResume, aspectRatio,
+					progressReportinghandler, progressRunnable));
 			mediaPlayer
 					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
 			mediaPlayer.prepareAsync();
@@ -247,6 +248,11 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	protected void retrieveIntentExtras() {
 		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			autoResume = extras.getBoolean("autoResume", false);
+			extras.remove("autoResume");
+		}
+
 		if (extras == null || extras.isEmpty()) {
 			playBackFromVideoQueue();
 		} else {
@@ -325,8 +331,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 * @param audioChannels
 	 */
 	protected void initMediaController(String summary, String title,
-			String posterURL, String videoFormat, String videoResolution,
-			String audioFormat, String audioChannels) {
+									   String posterURL, String videoFormat, String videoResolution,
+									   String audioFormat, String audioChannels) {
 
 		mediaController = new MediaController(this, summary, title, posterURL,
 				videoResolution, videoFormat, audioFormat, audioChannels,

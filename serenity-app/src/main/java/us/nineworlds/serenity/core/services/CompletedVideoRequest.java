@@ -21,7 +21,7 @@ public class CompletedVideoRequest extends AsyncTask<Void, Void, Void> {
 	protected Void doInBackground(Void... params) {
 		PlexappFactory factory = SerenityApplication.getPlexFactory();
 		factory.setProgress(uvideoId, "0");
-		factory.setWatched(uvideoId);
+        factory.setWatched(uvideoId);
 		return null;
 	}
 
