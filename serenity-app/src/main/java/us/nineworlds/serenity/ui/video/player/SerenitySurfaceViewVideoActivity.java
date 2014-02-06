@@ -372,42 +372,18 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (mediaController.isShowing()) {
-			if (isKeyCodeBack(keyCode)) {
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		final int currentPosition = mediaPlayer.getCurrentPosition();
+		final int duration = mediaPlayer.getDuration();
+
+		if (isKeyCodeBack(keyCode)) {
+			if (mediaController.isShowing()) {
 				mediaController.hide();
-
-				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-					mediaPlayer.stop();
-				}
-				setExitResultCode();
-				finish();
-				return true;
 			}
-
-			if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
-				mediaController.hide();
-				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-					mediaPlayer.stop();
-				}
-
-				finish();
-				return true;
-			}
-		} else {
-			if (isKeyCodeBack(keyCode)) {
-				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-					mediaPlayer.stop();
-				}
-				setExitResultCode();
-				finish();
-				return true;
-			}
-		}
-
-		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
 			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 				mediaPlayer.stop();
 			}
+			setExitResultCode();
 			finish();
 			return true;
 		}
@@ -455,32 +431,58 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 		}
 
-		if (isKeyCodeSkipForward(keyCode) && isMediaPlayerStateValid()) {
-			int skipOffset = 10000 + mediaPlayer.getCurrentPosition();
-			int duration = mediaPlayer.getDuration();
-			if (skipOffset > duration) {
-				skipOffset = duration - 1;
+		final String nextPrevBehavior = prefs.getString("next_prev_behavior", "queue");
+
+		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+			if (nextPrevBehavior.equals("queue")) {
+				mediaController.hide();
+				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+					mediaPlayer.stop();
+				}
+				finish();
+				return true;
 			}
-			if (!mediaController.isShowing()) {
-				mediaController.show(CONTROLLER_DELAY);
+			final int skipTo;
+			if (isMediaPlayerStateValid()) {
+				if (nextPrevBehavior.endsWith("%")) {
+					final Integer percent = Integer.valueOf(nextPrevBehavior.substring(0, nextPrevBehavior.length() - 1));
+					skipTo = currentPosition + duration * percent / 100;
+				} else {
+					skipTo = currentPosition + Integer.valueOf(nextPrevBehavior);
+				}
+				skipToOffset(skipTo);
+				return true;
 			}
-			mediaPlayer.seekTo(skipOffset);
+		}
+
+		// All actions from here on require media to be in a valid state
+		if (!isMediaPlayerStateValid()) {
+			return super.onKeyDown(keyCode, event);
+		}
+
+		if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS && !nextPrevBehavior.equals("queue")) {
+			final int skipTo;
+			if (nextPrevBehavior.endsWith("%")) {
+				final Integer percent = Integer.valueOf(nextPrevBehavior.substring(0, nextPrevBehavior.length() - 1));
+				skipTo = currentPosition - duration * percent / 100;
+			} else {
+				skipTo = currentPosition - Integer.valueOf(nextPrevBehavior);
+			}
+			skipToOffset(skipTo);
 			return true;
 		}
 
-		if (isKeyCodeSkipBack(keyCode) && isMediaPlayerStateValid()) {
-			int skipOffset = mediaPlayer.getCurrentPosition() - 10000;
-			if (skipOffset < 0) {
-				skipOffset = 0;
-			}
-			if (!mediaController.isShowing()) {
-				mediaController.show(CONTROLLER_DELAY);
-			}
-			mediaPlayer.seekTo(skipOffset);
+		if (isKeyCodeSkipForward(keyCode)) {
+			skipToOffset(currentPosition + Integer.valueOf(prefs.getString("skip_forward_time", "30000")));
 			return true;
 		}
 
-		if (isKeyCodeStop(keyCode) && isMediaPlayerStateValid()) {
+		if (isKeyCodeSkipBack(keyCode)) {
+			skipToOffset(currentPosition - Integer.valueOf(prefs.getString("skip_backward_time", "10000")));
+			return true;
+		}
+
+		if (isKeyCodeStop(keyCode)) {
 			if (mediaPlayer.isPlaying()) {
 				mediaPlayer.pause();
 				if (!mediaController.isShowing()) {
@@ -491,20 +493,30 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 
 		if (keyCode == KeyEvent.KEYCODE_T) {
-			final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 			final boolean showTimeOfDay = !prefs.getBoolean("showTimeOfDay", false);
 			timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
 			prefs.edit().putBoolean("showTimeOfDay", showTimeOfDay).apply();
 			return true;
 		}
 
-		if (isMediaPlayerStateValid()) {
-			if (isSkipByPercentage(keyCode)) {
-				return true;
-			}
+		if (isSkipByPercentage(keyCode)) {
+			return true;
 		}
 
 		return super.onKeyDown(keyCode, event);
+	}
+
+	private void skipToOffset(int skipOffset) {
+		int duration = mediaPlayer.getDuration();
+		if (skipOffset > duration) {
+			skipOffset = duration - 1;
+		} else if (skipOffset < 0) {
+			skipOffset = 0;
+		}
+		if (!mediaController.isShowing()) {
+			mediaController.show(CONTROLLER_DELAY);
+		}
+		mediaPlayer.seekTo(skipOffset);
 	}
 
 	protected boolean isSkipByPercentage(int keyCode) {
@@ -589,8 +601,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	@Override
 	protected boolean isKeyCodeSkipBack(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
 				|| keyCode == KeyEvent.KEYCODE_R
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
 				|| keyCode == KeyEvent.KEYCODE_BUTTON_L1;
 	}
 
