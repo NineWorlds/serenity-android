@@ -47,6 +47,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
@@ -79,6 +80,7 @@ public class TVShowBannerImageGalleryAdapter extends
 	private String key;
 	protected static ProgressDialog pd;
 	private SerenityMultiViewVideoActivity showActivity;
+	private LayoutInflater inflater;
 
 	public TVShowBannerImageGalleryAdapter(Context c, String key,
 			String category) {
@@ -88,6 +90,7 @@ public class TVShowBannerImageGalleryAdapter extends
 
 		imageLoader = SerenityApplication.getImageLoader();
 		this.key = key;
+		inflater = context.getLayoutInflater();
 
 		try {
 			fetchData();
@@ -145,9 +148,12 @@ public class TVShowBannerImageGalleryAdapter extends
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
-		View galleryCellView = context.getLayoutInflater().inflate(R.layout.poster_tvshow_indicator_view, null);
-		
+		final View galleryCellView;
+		if (convertView != null) {
+			galleryCellView = convertView;
+		} else {
+			galleryCellView = inflater.inflate(R.layout.poster_tvshow_indicator_view, null);
+		}
 		SeriesContentInfo pi = tvShowList.get(position);
 		createImage(galleryCellView, pi, BANNER_PIXEL_WIDTH, BANNER_PIXEL_HEIGHT);
 		

@@ -76,7 +76,13 @@ public class MusicAlbumsCoverAdapter extends
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		MusicAlbumContentInfo pi = posterList.get(position);
-		MusicAlbumImageView mpiv = new MusicAlbumImageView(context, pi);
+		final MusicAlbumImageView mpiv;
+		if (convertView instanceof MusicAlbumImageView) {
+			mpiv = (MusicAlbumImageView) convertView;
+			mpiv.setPosterInfo(pi);
+		} else {
+			mpiv = new MusicAlbumImageView(context, pi);
+		}
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = ImageUtils.getDPI(180, context);

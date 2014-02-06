@@ -39,6 +39,9 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.SurfaceView;
 import android.widget.RelativeLayout;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.util.TimeUtil;
 
 /**
  * A prepare listener that handles how a video should start playing.

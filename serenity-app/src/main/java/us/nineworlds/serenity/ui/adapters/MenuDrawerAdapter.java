@@ -44,12 +44,12 @@ import android.widget.TextView;
 public class MenuDrawerAdapter extends BaseAdapter {
 
 	private static List<MenuDrawerItem> menuOptions;
-	private Activity context;
-	private String key;
+	private LayoutInflater inflater;
 
 	public MenuDrawerAdapter(Activity context, List<MenuDrawerItem> menuOptions) {
 		MenuDrawerAdapter.menuOptions = menuOptions;
-		this.context = context;
+		inflater = context.getLayoutInflater();
+
 	}
 	
 	@Override
@@ -64,13 +64,12 @@ public class MenuDrawerAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		TextView rowView = null;
-		Activity contextView = (Activity) parent.getContext();
-		
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		rowView = (TextView) inflater.inflate(R.layout.serenity_menudrawer_listview_textview, parent, false);
-		
+		final TextView rowView;
+		if (convertView instanceof TextView) {
+			rowView = (TextView) convertView;
+		} else {
+			rowView = (TextView) inflater.inflate(R.layout.serenity_menudrawer_listview_textview, parent, false);
+		}
 		rowView.setBackgroundResource(R.drawable.album_list_view_selector);
 		rowView.setText(menuOptions.get(position).getText());
 		rowView.setGravity(Gravity.CENTER_VERTICAL);

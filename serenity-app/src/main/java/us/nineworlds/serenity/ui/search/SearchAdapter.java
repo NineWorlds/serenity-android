@@ -27,6 +27,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -44,16 +45,23 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
  */
 public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
 
+	private LayoutInflater inflater;
+
 	public SearchAdapter(Context c, List<VideoContentInfo> videos) {
 		super(c, null);
 		posterList = videos;
+		inflater = context.getLayoutInflater();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = context.getLayoutInflater().inflate(
-				R.layout.poster_indicator_view, null);
-		
+		final View galleryCellView;
+		if (convertView != null) {
+			galleryCellView = convertView;
+		} else {
+			galleryCellView = inflater.inflate(R.layout.poster_indicator_view, null);
+		}
+
 		VideoContentInfo pi = posterList.get(position);
 		ImageView mpiv = (ImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
