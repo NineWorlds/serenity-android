@@ -128,6 +128,30 @@
             android:title="@string/preferred_external_player" />
         
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/Controls">
+        <ListPreference
+            android:key="skip_forward_time"
+            android:title="@string/skip_forward_time_title"
+            android:summary="@string/skip_forward_time_summary"
+            android:entries="@array/skipListNames"
+            android:entryValues="@array/skipListValues"
+            android:defaultValue="30"/>
+        <ListPreference
+            android:key="skip_backward_time"
+            android:title="@string/skip_backward_time_title"
+            android:summary="@string/skip_backward_time_summary"
+            android:entries="@array/skipListNames"
+            android:entryValues="@array/skipListValues"
+            android:defaultValue="10"/>
+        <ListPreference
+                android:key="next_prev_behavior"
+            android:title="@string/next_prev_behavior_title"
+            android:summary="@string/next_prev_behavior_summary"
+            android:entries="@array/nextPrevNames"
+            android:entryValues="@array/nextPrevValues"
+            android:defaultValue="10"/>
+
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/preference_remote_control" >
         <CheckBoxPreference
             android:defaultValue="true"
