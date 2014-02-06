@@ -190,7 +190,7 @@
     <string name="skip_backward_time_title">REW Skip Time</string>
     <string name="skip_backward_time_summary">Time to skip backward when REW button is pressed</string>
     <string name="next_prev_behavior_title">Next/Prev button behavior</string>
-    <string name="next_prev_behavior_summary"><![CDATA[What should the Next & Prev button do]]></string>
+    <string name="next_prev_behavior_summary"><![CDATA[What should the Next & Prev buttons do]]></string>
 
     <string-array name="skipListNames">
         <item>10 Seconds</item>

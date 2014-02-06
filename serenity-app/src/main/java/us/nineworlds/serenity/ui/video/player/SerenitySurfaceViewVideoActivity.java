@@ -445,7 +445,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			final int skipTo;
 			if (isMediaPlayerStateValid()) {
 				if (nextPrevBehavior.endsWith("%")) {
-					final Integer percent = Integer.valueOf(nextPrevBehavior.substring(nextPrevBehavior.length() - 1));
+					final Integer percent = Integer.valueOf(nextPrevBehavior.substring(0, nextPrevBehavior.length() - 1));
 					skipTo = currentPosition + duration * percent / 100;
 				} else {
 					skipTo = currentPosition + Integer.valueOf(nextPrevBehavior);
@@ -463,7 +463,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS && !nextPrevBehavior.equals("queue")) {
 			final int skipTo;
 			if (nextPrevBehavior.endsWith("%")) {
-				final Integer percent = Integer.valueOf(nextPrevBehavior.substring(nextPrevBehavior.length() - 1));
+				final Integer percent = Integer.valueOf(nextPrevBehavior.substring(0, nextPrevBehavior.length() - 1));
 				skipTo = currentPosition - duration * percent / 100;
 			} else {
 				skipTo = currentPosition - Integer.valueOf(nextPrevBehavior);

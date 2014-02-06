@@ -135,21 +135,21 @@
             android:summary="@string/skip_forward_time_summary"
             android:entries="@array/skipListNames"
             android:entryValues="@array/skipListValues"
-            android:defaultValue="30"/>
+            android:defaultValue="30000"/>
         <ListPreference
             android:key="skip_backward_time"
             android:title="@string/skip_backward_time_title"
             android:summary="@string/skip_backward_time_summary"
             android:entries="@array/skipListNames"
             android:entryValues="@array/skipListValues"
-            android:defaultValue="10"/>
+            android:defaultValue="10000"/>
         <ListPreference
-                android:key="next_prev_behavior"
+            android:key="next_prev_behavior"
             android:title="@string/next_prev_behavior_title"
             android:summary="@string/next_prev_behavior_summary"
             android:entries="@array/nextPrevNames"
             android:entryValues="@array/nextPrevValues"
-            android:defaultValue="10"/>
+            android:defaultValue="queue"/>
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/preference_remote_control" >
