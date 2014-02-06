@@ -134,6 +134,7 @@ public class SerenityApplication extends Application {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
 				.cacheInMemory(true).cacheOnDisc(true)
 				.bitmapConfig(Bitmap.Config.RGB_565)
+				.resetViewBeforeLoading(true)
 				.showImageForEmptyUri(R.drawable.default_video_cover)
 				.build();
 
@@ -152,8 +153,7 @@ public class SerenityApplication extends Application {
 				.displayer(new RoundedBitmapDisplayer(10)).build();
 
 		ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(
-				this).memoryCacheExtraOptions(1280, 720)
-				.taskExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+				this).taskExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
 				.taskExecutorForCachedImages(AsyncTask.THREAD_POOL_EXECUTOR)
 				.threadPoolSize(5)
 				.tasksProcessingOrder(QueueProcessingType.FIFO)

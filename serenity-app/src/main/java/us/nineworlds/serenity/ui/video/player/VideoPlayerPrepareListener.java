@@ -25,6 +25,9 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.util.TimeUtil;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;

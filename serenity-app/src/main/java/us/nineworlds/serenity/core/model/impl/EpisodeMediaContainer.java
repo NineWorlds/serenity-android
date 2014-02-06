@@ -214,8 +214,4 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 	private String getString(int resId) {
 		return context.getString(resId);
 	}
-
-
-
-
 }

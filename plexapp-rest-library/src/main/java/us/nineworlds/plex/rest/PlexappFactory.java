@@ -265,6 +265,10 @@ public class PlexappFactory {
 		return resourcePath.getEpisodesURL(key);
 	}
 	
+	public String getSeasonsURL(String key) {
+		return resourcePath.getSeasonsURL(key);
+	}
+	
 
 	
 	/**
