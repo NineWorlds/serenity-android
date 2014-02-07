@@ -184,4 +184,40 @@
     <string name="playing_episode_toast">Playing %1$s %2$s: %3$s</string>
     <string name="no_unwatched_episode_toast">No unwatched episodes found</string>
 
+    <string name="Controls">Controls</string>
+    <string name="skip_forward_time_title">FF Skip Time</string>
+    <string name="skip_forward_time_summary">Time to skip forward when FF button is pressed</string>
+    <string name="skip_backward_time_title">REW Skip Time</string>
+    <string name="skip_backward_time_summary">Time to skip backward when REW button is pressed</string>
+    <string name="next_prev_behavior_title">Next/Prev button behavior</string>
+    <string name="next_prev_behavior_summary"><![CDATA[What should the Next & Prev buttons do]]></string>
+
+    <string-array name="skipListNames">
+        <item>10 Seconds</item>
+        <item>30 Seconds</item>
+        <item>1 Minute</item>
+        <item>3 Minutes</item>
+    </string-array>
+    <string-array name="skipListValues">
+        <item>10000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>180000</item>
+    </string-array>
+
+    <string-array name="nextPrevNames">
+        <item>Next item in queue</item>
+        <item>Skip 5%</item>
+        <item>Skip 10%</item>
+        <item>Skip 5 minutes</item>
+        <item>Skip 10 minutes</item>
+    </string-array>
+    <string-array name="nextPrevValues">
+        <item>queue</item>
+        <item>5%</item>
+        <item>10%</item>
+        <item>3000000</item>
+        <item>6000000</item>
+    </string-array>
+
 </resources>
