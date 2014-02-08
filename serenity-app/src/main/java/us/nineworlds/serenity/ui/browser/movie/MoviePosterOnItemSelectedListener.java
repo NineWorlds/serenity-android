@@ -46,8 +46,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ImageView.ScaleType;
@@ -78,7 +76,8 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 		posterImage.setMaxWidth(posterImage.getWidth());
 		posterImage.setMaxHeight(posterImage.getHeight());
 		ImageLoader imageLoader = SerenityApplication.getImageLoader();
-		imageLoader.displayImage(videoInfo.getImageURL(), posterImage);
+		SerenityApplication.displayImage(videoInfo.getImageURL(), posterImage);
+		SerenityApplication.displayImage(videoInfo.getImageURL(), posterImage);
 		
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
 		summary.setText(videoInfo.getSummary());

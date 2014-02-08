@@ -30,7 +30,6 @@ import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 import us.nineworlds.serenity.core.services.ShowRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
@@ -185,13 +184,13 @@ public class TVShowBannerImageGalleryAdapter extends
 		mpiv.setMaxWidth(width);
 		
 		if (isPoster) {
-			imageLoader.displayImage(pi.getThumbNailURL(), mpiv);
-		} else { 
-			imageLoader.displayImage(pi.getImageURL(), mpiv);
+			SerenityApplication.displayImage(pi.getThumbNailURL(), mpiv);
+		} else {
+			SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 		}
 	}
 
-	/**
+    /**
 	 * @param galleryCellView
 	 * @param pi
 	 */

@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import java.util.List;
 
+import android.os.Handler;
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -60,6 +61,8 @@ public class TVShowGridOnItemSelectedListener implements
 	private View previous;
 	private ImageSize bgImageSize = new ImageSize(1280, 720);
 	private SeriesContentInfo videoInfo;
+	private Handler handler = new Handler();
+	private Runnable runnable;
 
 	/**
 	 * 
@@ -84,10 +87,20 @@ public class TVShowGridOnItemSelectedListener implements
 
 		v.setPadding(5, 5, 5, 5);
 		
-		ImageView imageView = (ImageView) v.findViewById(R.id.posterImageView);
+		final ImageView imageView = (ImageView) v.findViewById(R.id.posterImageView);
 
-		changeBackgroundImage(imageView);
-		
+		if (runnable != null) {
+			handler.removeCallbacks(runnable);
+		}
+		runnable = new Runnable() {
+			@Override
+			public void run() {
+				changeBackgroundImage(imageView);
+				runnable = null;
+			}
+		};
+		handler.postDelayed(runnable, 500);
+
 		TextView titleView = (TextView) context.findViewById(R.id.tvShowGridTitle);
 		if (titleView != null) {
 			titleView.setText(videoInfo.getTitle());

@@ -23,12 +23,14 @@
 
 package us.nineworlds.serenity;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import android.widget.ImageView;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.core.ServerConfig;
@@ -36,8 +38,6 @@ import us.nineworlds.serenity.core.imageloader.OKHttpImageLoader;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
@@ -51,7 +51,6 @@ import com.squareup.okhttp.OkHttpClient;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -240,5 +239,17 @@ public class SerenityApplication extends Application {
 		}
 		return false;
 	}
-	
+
+	public static void displayImage(String imageUrl, ImageView view) {
+		displayImage(imageUrl, view, null);
+	}
+
+	public static void displayImage(String imageUrl, ImageView view, DisplayImageOptions displayImageOptions) {
+		displayImage(imageUrl, view, displayImageOptions, null);
+	}
+
+	public static void displayImage(String imageUrl, ImageView view, DisplayImageOptions displayImageOptions, ImageLoadingListener imageLoaderListener) {
+		final ImageViewAware imageViewAware = new ImageViewAware(view);
+		imageLoader.displayImage(plexFactory.getImageURL(imageUrl, imageViewAware.getWidth(), imageViewAware.getHeight()), view, displayImageOptions, imageLoaderListener);
+	}
 }

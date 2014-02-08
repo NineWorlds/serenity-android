@@ -26,7 +26,6 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import java.util.List;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
@@ -40,7 +39,6 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import us.nineworlds.serenity.core.util.DBMetaDataSource;
 import us.nineworlds.serenity.core.util.SimpleXmlRequest;
-import us.nineworlds.serenity.core.util.VolleyUtils;
 import us.nineworlds.serenity.ui.listeners.GridSubtitleHandler;
 import us.nineworlds.serenity.ui.listeners.TrailerGridHandler;
 import us.nineworlds.serenity.ui.listeners.TrailerHandler;
@@ -101,7 +99,7 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 		galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
 				width, height));
 
-		imageLoader.displayImage(pi.getImageURL(), mpiv);
+		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 
 		ImageView watchedView = (ImageView) galleryCellView
 				.findViewById(R.id.posterWatchedIndicator);

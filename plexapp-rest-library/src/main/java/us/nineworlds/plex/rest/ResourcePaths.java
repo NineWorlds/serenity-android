@@ -120,5 +120,9 @@ public class ResourcePaths {
 		String mediaTagURL = getHostPort() + "/system/bundle/media/flags/" + resourceType + "/" + URLEncoder.encode(resourceName) + "?t=" + identifier;
 		return mediaTagURL;
 	}
+
+    public String getImageURL(String url, int width, int height) {
+        return getHostPort() + "/photo/:/transcode?url=" + URLEncoder.encode(url) + "&width=" + width + "&height=" + height;
+    }
 	
 }

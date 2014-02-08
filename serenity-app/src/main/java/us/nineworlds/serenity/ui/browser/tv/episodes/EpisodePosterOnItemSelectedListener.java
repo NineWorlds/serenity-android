@@ -108,16 +108,16 @@ public class EpisodePosterOnItemSelectedListener extends
 			int width = ImageUtils.getDPI(240, context);
 			int height = ImageUtils.getDPI(330, context);
 			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-			imageLoader.displayImage(videoInfo.getParentPosterURL(), posterImage);
+			SerenityApplication.displayImage(videoInfo.getParentPosterURL(), posterImage);
 		} else if (videoInfo.getGrandParentPosterURL() != null) {
 			int width = ImageUtils.getDPI(240, context);
 			int height = ImageUtils.getDPI(330, context);
 			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-			imageLoader.displayImage(videoInfo.getGrandParentPosterURL(), posterImage);
+			SerenityApplication.displayImage(videoInfo.getGrandParentPosterURL(), posterImage);
 		} else {
 			int width = ImageUtils.getDPI(375, context);
 			int height = ImageUtils.getDPI(195, context);
-			imageLoader.displayImage(videoInfo.getImageURL(), posterImage);
+			SerenityApplication.displayImage(videoInfo.getImageURL(), posterImage);
 		}
 
 		
@@ -201,7 +201,7 @@ public class EpisodePosterOnItemSelectedListener extends
 
 		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
 		fanArt.clearAnimation();
-		imageLoader.displayImage(ei.getBackgroundURL(), fanArt,
+		SerenityApplication.displayImage(ei.getBackgroundURL(), fanArt,
 				SerenityApplication.getMovieOptions());
 	}
 

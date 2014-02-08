@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -65,8 +66,7 @@ public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width,
 				height));
 		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
-		
-		imageLoader.displayImage(pi.getImageURL(), mpiv);
+		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 
 		if (pi.getViewCount() > 0) {
 			ImageView viewed = (ImageView) galleryCellView
