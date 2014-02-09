@@ -21,73 +21,39 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.services;
+package us.nineworlds.serenity.core.model.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.Genre;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
-import android.util.Log;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
 
 /**
  * @author dcarver
- * 
+ *
  */
-public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
+public class SeriesMediaContainer extends AbstractMediaContainer {
 
-	private List<TVShowSeriesInfo> tvShowList = null;
-	protected String key;
-	protected String category;
-
-	public ShowRetrievalIntentService() {
-		super("ShowRetrievalIntentService");
-		tvShowList = new ArrayList<TVShowSeriesInfo>();
+	private List<SeriesContentInfo> videoList;
+	/**
+	 * @param mc
+	 */
+	public SeriesMediaContainer(MediaContainer mc) {
+		super(mc);
 	}
-
-	@Override
-	public void sendMessageResults(Intent intent) {
-		Bundle extras = intent.getExtras();
-		if (extras != null) {
-			Messenger messenger = (Messenger) extras.get("MESSENGER");
-			Message msg = Message.obtain();
-			msg.obj = tvShowList;
-			try {
-				messenger.send(msg);
-			} catch (RemoteException ex) {
-				Log.e(getClass().getName(), "Unable to send message", ex);
-			}
-		}
-	}
-
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		key = intent.getExtras().getString("key");
-		category = intent.getExtras().getString("category");
+	
+	public List<SeriesContentInfo> createSeries() {
+		videoList = new LinkedList<SeriesContentInfo>();
 		createBanners();
-		sendMessageResults(intent);
+		return videoList;
 	}
-
+	
 	protected void createBanners() {
-		MediaContainer mc = null;
-		String baseUrl = null;
-		try {
-			mc = retrieveVideos();
-			baseUrl = factory.baseURL();
-		} catch (IOException ex) {
-			Log.e(getClass().getName(), "Unable to talk to server: ", ex);
-		} catch (Exception e) {
-			Log.e(getClass().getName(), "Oops.", e);
-		}
+		String baseUrl = factory.baseURL();
 
 		if (mc != null && mc.getSize() > 0) {
 			String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
@@ -149,18 +115,10 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 
 					mpi.setKey(show.getKey());
 
-					tvShowList.add(mpi);
+					videoList.add(mpi);
 				}
 			}
 		}
-	}
-
-	protected MediaContainer retrieveVideos() throws Exception {
-		if (category == null) {
-			category = "all";
-		}
-
-		return factory.retrieveSections(key, category);
 	}
 
 	protected List<String> processGeneres(Directory show) {
@@ -172,5 +130,6 @@ public class ShowRetrievalIntentService extends AbstractPlexRESTIntentService {
 		}
 		return genres;
 	}
+
 
 }

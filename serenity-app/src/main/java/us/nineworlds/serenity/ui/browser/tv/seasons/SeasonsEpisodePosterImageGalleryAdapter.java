@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import java.util.List;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
@@ -38,11 +39,12 @@ import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import us.nineworlds.serenity.core.util.DBMetaDataSource;
-import us.nineworlds.serenity.core.util.SimpleXmlRequest;
-import us.nineworlds.serenity.ui.listeners.GridSubtitleHandler;
 import us.nineworlds.serenity.ui.listeners.TrailerGridHandler;
 import us.nineworlds.serenity.ui.listeners.TrailerHandler;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
+import us.nineworlds.serenity.volley.SimpleXmlRequest;
+import us.nineworlds.serenity.volley.VolleyUtils;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
@@ -99,7 +101,7 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 		galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
 				width, height));
 
-		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
+		imageLoader.displayImage(pi.getImageURL(), mpiv);
 
 		ImageView watchedView = (ImageView) galleryCellView
 				.findViewById(R.id.posterWatchedIndicator);
@@ -183,7 +185,7 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 				+ mpi.id());
 		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(
 				Request.Method.GET, url, MediaContainer.class,
-				new GridSubtitleHandler(mpi, context, view),
+				new GridSubtitleVolleyResponseListener(mpi, context, view),
 				new Response.ErrorListener() {
 
 					@Override

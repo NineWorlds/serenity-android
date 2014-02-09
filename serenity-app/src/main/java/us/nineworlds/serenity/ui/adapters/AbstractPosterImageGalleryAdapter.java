@@ -33,8 +33,8 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.util.VolleyUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.volley.VolleyUtils;
 
 import android.app.Activity;
 import android.content.Context;

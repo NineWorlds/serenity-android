@@ -26,25 +26,23 @@ package us.nineworlds.serenity.ui.browser.tv;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.android.volley.Response;
 import com.jess.ui.TwoWayGridView;
 
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
-import us.nineworlds.serenity.core.services.ShowRetrievalIntentService;
+import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
+import us.nineworlds.serenity.volley.VolleyUtils;
 
 import us.nineworlds.serenity.R;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,85 +71,58 @@ public class TVShowBannerImageGalleryAdapter extends
 	 */
 	private static final int BANNER_PIXEL_WIDTH = 758;
 
-	protected static List<TVShowSeriesInfo> tvShowList = null;
+	protected static List<SeriesContentInfo> tvShowList = null;
 
 	private String key;
 	protected static ProgressDialog pd;
-	private SerenityMultiViewVideoActivity showActivity;
+	protected SerenityMultiViewVideoActivity showActivity;
 
 	public TVShowBannerImageGalleryAdapter(Context c, String key,
 			String category) {
 		super(c, key, category);
 		showActivity = (SerenityMultiViewVideoActivity) c;
-		tvShowList = new ArrayList<TVShowSeriesInfo>();
+		tvShowList = new ArrayList<SeriesContentInfo>();
 
 		imageLoader = SerenityApplication.getImageLoader();
 		this.key = key;
-
-		try {
-			fetchData();
-		} catch (Exception ex) {
-			Log.e(getClass().getName(), "Error connecting to plex.", ex);
-		}
+		factory = SerenityApplication.getPlexFactory();
+		fetchData();
 	}
 
 	protected void fetchData() {
 		pd = ProgressDialog.show(context, "", "Retrieving Shows.");
-		handler = new ShowRetrievalHandler();
-		Messenger messenger = new Messenger(handler);
-		Intent intent = new Intent(context, ShowRetrievalIntentService.class);
-		intent.putExtra("MESSENGER", messenger);
-		intent.putExtra("key", key);
-		intent.putExtra("category", category);
-		context.startService(intent);
+		String url = factory.getSectionsURL(key, category);
+		VolleyUtils.volleyXmlGetRequest(url, new SeriesResponseListener(),
+				new DefaultLoggingVolleyErrorListener());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.Adapter#getCount()
-	 */
 	@Override
 	public int getCount() {
 		return tvShowList.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.Adapter#getItem(int)
-	 */
 	@Override
 	public Object getItem(int position) {
 		return tvShowList.get(position);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.Adapter#getItemId(int)
-	 */
 	@Override
 	public long getItemId(int position) {
 		return position;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.Adapter#getView(int, android.view.View,
-	 * android.view.ViewGroup)
-	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		View galleryCellView = context.getLayoutInflater().inflate(R.layout.poster_tvshow_indicator_view, null);
-		
+		View galleryCellView = context.getLayoutInflater().inflate(
+				R.layout.poster_tvshow_indicator_view, null);
+
 		SeriesContentInfo pi = tvShowList.get(position);
-		createImage(galleryCellView, pi, BANNER_PIXEL_WIDTH, BANNER_PIXEL_HEIGHT);
-		
+		createImage(galleryCellView, pi, BANNER_PIXEL_WIDTH,
+				BANNER_PIXEL_HEIGHT);
+
 		toggleWatchedIndicator(galleryCellView, pi);
-		
+
 		return galleryCellView;
 	}
 
@@ -159,13 +130,15 @@ public class TVShowBannerImageGalleryAdapter extends
 	 * @param galleryCellView
 	 * @param pi
 	 */
-	protected void createImage(View galleryCellView, SeriesContentInfo pi, int imageWidth, int imageHeight) {
+	protected void createImage(View galleryCellView, SeriesContentInfo pi,
+			int imageWidth, int imageHeight) {
 		int width = ImageUtils.getDPI(imageWidth, context);
 		int height = ImageUtils.getDPI(imageHeight, context);
-		
+
 		initPosterMetaData(galleryCellView, pi, width, height, false);
-		
-		galleryCellView.setLayoutParams(new Gallery.LayoutParams(width, height));
+
+		galleryCellView
+				.setLayoutParams(new Gallery.LayoutParams(width, height));
 	}
 
 	/**
@@ -176,13 +149,14 @@ public class TVShowBannerImageGalleryAdapter extends
 	 */
 	protected void initPosterMetaData(View galleryCellView,
 			SeriesContentInfo pi, int width, int height, boolean isPoster) {
-		ImageView mpiv = (ImageView) galleryCellView.findViewById(R.id.posterImageView);
+		ImageView mpiv = (ImageView) galleryCellView
+				.findViewById(R.id.posterImageView);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 		mpiv.setMaxHeight(height);
 		mpiv.setMaxWidth(width);
-		
+
 		if (isPoster) {
 			SerenityApplication.displayImage(pi.getThumbNailURL(), mpiv);
 		} else {
@@ -190,35 +164,38 @@ public class TVShowBannerImageGalleryAdapter extends
 		}
 	}
 
-    /**
+	/**
 	 * @param galleryCellView
 	 * @param pi
 	 */
 	protected void toggleWatchedIndicator(View galleryCellView,
 			SeriesContentInfo pi) {
-		
+
 		int watched = 0;
-		if (pi.getShowsWatched() != null ) {
+		if (pi.getShowsWatched() != null) {
 			watched = Integer.parseInt(pi.getShowsWatched());
 		}
-		ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
+		ImageView watchedView = (ImageView) galleryCellView
+				.findViewById(R.id.posterWatchedIndicator);
 		watchedView.setVisibility(View.INVISIBLE);
-		
+
 		if (pi.isPartiallyWatched()) {
-			 toggleProgressIndicator(galleryCellView, watched, pi.totalShows(), watchedView);
+			toggleProgressIndicator(galleryCellView, watched, pi.totalShows(),
+					watchedView);
 		}
 
-        final TextView unwatchedCountView = (TextView) galleryCellView.findViewById(R.id.unwatched_count);
-        if (pi.isWatched()) {
+		final TextView unwatchedCountView = (TextView) galleryCellView
+				.findViewById(R.id.unwatched_count);
+		if (pi.isWatched()) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
 			watchedView.setVisibility(View.VISIBLE);
-            unwatchedCountView.setVisibility(View.GONE);
+			unwatchedCountView.setVisibility(View.GONE);
 		} else {
-            unwatchedCountView.setVisibility(View.VISIBLE);
-            unwatchedCountView.setText(pi.getShowsUnwatched());
-        }
+			unwatchedCountView.setVisibility(View.VISIBLE);
+			unwatchedCountView.setText(pi.getShowsUnwatched());
+		}
 	}
-	
+
 	/**
 	 * @param galleryCellView
 	 * @param pi
@@ -228,7 +205,7 @@ public class TVShowBannerImageGalleryAdapter extends
 			int divisor, ImageView watchedView) {
 		final float percentWatched = Float.valueOf(dividend)
 				/ Float.valueOf(divisor);
-		
+
 		final ProgressBar view = (ProgressBar) galleryCellView
 				.findViewById(R.id.posterInprogressIndicator);
 		int progress = Float.valueOf(percentWatched * 100).intValue();
@@ -238,22 +215,34 @@ public class TVShowBannerImageGalleryAdapter extends
 		view.setProgress(progress);
 		view.setVisibility(View.VISIBLE);
 		watchedView.setVisibility(View.INVISIBLE);
-	}	
+	}
+
+	@Override
+	protected void fetchDataFromService() {
+
+	}
 	
+	/**
+	 * @author dcarver
+	 *
+	 */
+	protected class SeriesResponseListener implements Response.Listener<MediaContainer> {
 
-	private class ShowRetrievalHandler extends Handler {
-
+		/* (non-Javadoc)
+		 * @see com.android.volley.Response.Listener#onResponse(java.lang.Object)
+		 */
 		@Override
-		public void handleMessage(Message msg) {
-
-			tvShowList = (List<TVShowSeriesInfo>) msg.obj;
+		public void onResponse(MediaContainer response) {
+			tvShowList = new SeriesMediaContainer(response).createSeries();
 			Gallery posterGallery = (Gallery) context
 					.findViewById(R.id.tvShowBannerGallery);
 			if (tvShowList != null) {
 				TextView tv = (TextView) context
 						.findViewById(R.id.tvShowItemCount);
 				if (tv == null) {
-					pd.dismiss();
+					if (pd != null ) {
+						pd.dismiss();
+					}
 					return;
 				}
 				if (tvShowList.isEmpty()) {
@@ -270,20 +259,9 @@ public class TVShowBannerImageGalleryAdapter extends
 				posterGallery.requestFocus();
 			}
 			
-			pd.dismiss();
+			if (pd != null) {
+				pd.dismiss();
+			}	
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.github.kingargyle.plexappclient.ui.adapters.
-	 * AbstractPosterImageGalleryAdapter#fetchDataFromService()
-	 */
-	@Override
-	protected void fetchDataFromService() {
-		// TODO Auto-generated method stub
-
-	}
-
 }

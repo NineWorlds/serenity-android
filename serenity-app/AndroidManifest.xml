@@ -130,7 +130,6 @@
         <service android:name=".core.services.MusicTrackRetrievalIntentService" />
         <service android:name=".core.services.CategoryRetrievalIntentService" />
         <service android:name=".core.services.SecondaryCategoryRetrievalIntentService" />
-        <service android:name=".core.services.ShowRetrievalIntentService" />
         <service android:name=".core.services.ShowSeasonRetrievalIntentService" />
         <service android:name=".core.services.TVShowCategoryRetrievalIntentService" />
         <service android:name=".core.services.MovieSearchIntentService" />

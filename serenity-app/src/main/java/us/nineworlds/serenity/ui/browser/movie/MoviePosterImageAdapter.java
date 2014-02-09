@@ -38,13 +38,15 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
 import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import us.nineworlds.serenity.core.util.DBMetaDataSource;
-import us.nineworlds.serenity.core.util.SimpleXmlRequest;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.listeners.GridSubtitleHandler;
 import us.nineworlds.serenity.ui.listeners.TrailerGridHandler;
 import us.nineworlds.serenity.ui.listeners.TrailerHandler;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
+import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
+import us.nineworlds.serenity.volley.SimpleXmlRequest;
+import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
@@ -198,18 +200,9 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		PlexappFactory factory = SerenityApplication.getPlexFactory();
 		String url = factory.getMovieMetadataURL("/library/metadata/"
 				+ mpi.id());
-		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(
-				Request.Method.GET, url, MediaContainer.class,
-				new GridSubtitleHandler(mpi, context, view),
-				new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-
-					}
-				});
-		queue.add(xmlRequest);
-
+		VolleyUtils.volleyXmlGetRequest(url,
+				new GridSubtitleVolleyResponseListener(mpi, context, view),
+				new DefaultLoggingVolleyErrorListener());
 	}
 
 	@Override
@@ -220,12 +213,8 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		final PlexappFactory factory = SerenityApplication.getPlexFactory();
 		String url = factory.getSectionsURL(key, category);
 
-		SimpleXmlRequest<MediaContainer> request = new SimpleXmlRequest<MediaContainer>(
-				Request.Method.GET, url, MediaContainer.class,
-				new MoviePosterResponseListener(),
+		VolleyUtils.volleyXmlGetRequest(url, new MoviePosterResponseListener(),
 				new MoviePosterResponseErrorListener());
-
-		queue.add(request);
 	}
 
 	private class MoviePosterResponseErrorListener implements

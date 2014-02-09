@@ -21,13 +21,16 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.util;
+package us.nineworlds.serenity.volley;
 
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.SerenityApplication;
-
 import android.content.Context;
+import android.util.Log;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
 /**
@@ -43,6 +46,15 @@ public class VolleyUtils {
 			queue = Volley.newRequestQueue(context);
 		}
 		return queue;
+	}
+	
+	public static void volleyXmlGetRequest(String url, Response.Listener response, Response.ErrorListener error) {
+		SimpleXmlRequest<MediaContainer> request = new SimpleXmlRequest<MediaContainer>(Request.Method.GET, url, MediaContainer.class, response, error);
+		if (queue == null) {
+			Log.d("VolleyUtils", "Initialize Request Queue!");
+			return;
+		}
+		queue.add(request);
 	}
 
 }

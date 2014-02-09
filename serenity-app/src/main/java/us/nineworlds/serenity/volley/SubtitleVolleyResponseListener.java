@@ -1,4 +1,4 @@
-package us.nineworlds.serenity.ui.listeners;
+package us.nineworlds.serenity.volley;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.model.impl.SubtitleMediaContainer;
+import us.nineworlds.serenity.ui.listeners.SubtitleSpinnerOnItemSelectedListener;
 
 import com.android.volley.Response;
 import android.app.Activity;
@@ -16,12 +17,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class SubtitleHandler implements Response.Listener<MediaContainer> {
+public class SubtitleVolleyResponseListener implements Response.Listener<MediaContainer> {
 
 	protected VideoContentInfo video;
 	protected Activity context;
 
-	public SubtitleHandler(VideoContentInfo video, Activity c) {
+	public SubtitleVolleyResponseListener(VideoContentInfo video, Activity c) {
 		this.video = video;
 		context = c;
 	}

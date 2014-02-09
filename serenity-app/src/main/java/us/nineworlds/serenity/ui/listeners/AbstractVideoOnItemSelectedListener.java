@@ -40,10 +40,11 @@ import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import us.nineworlds.serenity.core.util.DBMetaDataSource;
-import us.nineworlds.serenity.core.util.SimpleXmlRequest;
-import us.nineworlds.serenity.core.util.VolleyUtils;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.volley.SimpleXmlRequest;
+import us.nineworlds.serenity.volley.SubtitleVolleyResponseListener;
+import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 import android.app.Activity;
@@ -217,7 +218,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		queue = VolleyUtils.getRequestQueueInstance(context);
 		PlexappFactory factory = SerenityApplication.getPlexFactory();
 		String url = factory.getMovieMetadataURL("/library/metadata/" + mpi.id());
-		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(Request.Method.GET, url, MediaContainer.class, new SubtitleHandler(mpi, context),
+		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(Request.Method.GET, url, MediaContainer.class, new SubtitleVolleyResponseListener(mpi, context),
 				new Response.ErrorListener() {
 
 					@Override

@@ -57,7 +57,6 @@ public class TVShowPosterImageGalleryAdapter extends
 
 
 	private String key;
-	private SerenityMultiViewVideoActivity showActivity;
 
 	public TVShowPosterImageGalleryAdapter(Context c, String key,
 			String category) {

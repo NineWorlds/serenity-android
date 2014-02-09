@@ -1,4 +1,4 @@
-package us.nineworlds.serenity.ui.listeners;
+package us.nineworlds.serenity.volley;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class GridSubtitleHandler extends SubtitleHandler {
+public class GridSubtitleVolleyResponseListener extends SubtitleVolleyResponseListener {
 
 	private View view;
 	
@@ -24,7 +24,7 @@ public class GridSubtitleHandler extends SubtitleHandler {
 	 * @param video
 	 * @param c
 	 */
-	public GridSubtitleHandler(VideoContentInfo video, Activity c, View v) {
+	public GridSubtitleVolleyResponseListener(VideoContentInfo video, Activity c, View v) {
 		super(video, c);
 		view = v;
 	}

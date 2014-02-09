@@ -31,14 +31,17 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
-import us.nineworlds.serenity.core.util.SimpleXmlRequest;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
+import us.nineworlds.serenity.volley.SimpleXmlRequest;
+import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +59,9 @@ public class EpisodePosterImageGalleryAdapter extends
 		AbstractPosterImageGalleryAdapter {
 
 	private static EpisodePosterImageGalleryAdapter notifyAdapter;
+	private static ProgressDialog pd;
 
-	public EpisodePosterImageGalleryAdapter(Context c, String key) {
+public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
 		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
@@ -83,6 +87,9 @@ public class EpisodePosterImageGalleryAdapter extends
 		shrinkPosterAnimation(mpiv, false);
 
 		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
+
+		ImageView watchedView = (ImageView) galleryCellView
+				.findViewById(R.id.posterWatchedIndicator);
 		
 		setWatchedStatus(galleryCellView, pi);
  
@@ -103,12 +110,9 @@ public class EpisodePosterImageGalleryAdapter extends
 		final PlexappFactory factory = SerenityApplication.getPlexFactory();
 		String url = factory.getEpisodesURL(key);
 
-		SimpleXmlRequest<MediaContainer> request = new SimpleXmlRequest<MediaContainer>(
-				Request.Method.GET, url, MediaContainer.class,
+		VolleyUtils.volleyXmlGetRequest(url,
 				new EpisodePosterResponseListener(),
 				new EpisodeResponseErrorListener());
-
-		queue.add(request);		
 	}
 	
 	
@@ -116,9 +120,13 @@ public class EpisodePosterImageGalleryAdapter extends
 
 		@Override
 		public void onResponse(MediaContainer response) {
-			EpisodeMediaContainer episodes = new EpisodeMediaContainer(response, context);
+			EpisodeMediaContainer episodes = new EpisodeMediaContainer(
+					response, context);
 			posterList = episodes.createVideos();
 			notifyAdapter.notifyDataSetChanged();
+			if (pd != null && pd.isShowing()) {
+				pd.dismiss();
+			}
 			SerenityGallery gallery = (SerenityGallery) context
 					.findViewById(R.id.moviePosterGallery);
 			if (gallery != null) {
@@ -127,12 +135,16 @@ public class EpisodePosterImageGalleryAdapter extends
 		}
 		
 	}
-	
-	private class EpisodeResponseErrorListener implements Response.ErrorListener {
+
+	private class EpisodeResponseErrorListener extends DefaultLoggingVolleyErrorListener implements
+			Response.ErrorListener {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {
-			
+			super.onErrorResponse(error);
+			if (pd != null && pd.isShowing()) {
+				pd.dismiss();
+			}
 		}
 		
 	}

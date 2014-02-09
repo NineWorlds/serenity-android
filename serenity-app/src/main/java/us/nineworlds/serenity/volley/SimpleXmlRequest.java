@@ -1,4 +1,4 @@
-package us.nineworlds.serenity.core.util;
+package us.nineworlds.serenity.volley;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
  
