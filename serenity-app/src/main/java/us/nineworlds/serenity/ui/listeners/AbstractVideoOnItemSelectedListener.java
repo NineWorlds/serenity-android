@@ -83,6 +83,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	public static Activity context;
 	public Handler subtitleHandler;
 	public Handler trailerHandler;
+	protected Handler checkDatabaseHandler = new Handler();
 	private Animation shrink;
 	private Animation fadeIn;
 	private View previous;
@@ -92,6 +93,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	protected VideoContentInfo videoInfo;
 	private DBMetaDataSource datasource;
 	protected RequestQueue queue;
+	protected Runnable checkDBRunnable;
 	
 
 	public AbstractVideoOnItemSelectedListener(Activity c) {
@@ -115,15 +117,11 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	 * @param position
 	 */
 	protected void createInfographicDetails(ImageView v) {
-		if (YouTubeInitializationResult.SUCCESS.equals(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(context))) {
-			fetchTrailer(videoInfo);
-		}
+		
 		LinearLayout infographicsView = (LinearLayout) context
 				.findViewById(R.id.movieInfoGraphicLayout);
 		infographicsView.removeAllViews();
 		
-		
-
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(80,
 				48);
 		ImageInfographicUtils imageUtilsAudioChannel = new ImageInfographicUtils(90,
@@ -186,18 +184,12 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			infographicsView.addView(studiov);
 		}
 		
-		if (videoInfo.hasTrailer() && YouTubeInitializationResult.SUCCESS.equals(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(context))) {
-			ImageView ytImage = new ImageView(context);
-			ytImage.setImageResource(R.drawable.yt_social_icon_red_128px);
-			ytImage.setScaleType(ScaleType.FIT_XY);
-			int w = ImageUtils.getDPI(45, context);
-			int h = ImageUtils.getDPI(24, context);
-			ytImage.setLayoutParams(new LinearLayout.LayoutParams(w, h));
-			LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) ytImage.getLayoutParams();
-			p.leftMargin = 5;
-			p.gravity = Gravity.CENTER_VERTICAL;
-			infographicsView.addView(ytImage);
+		if (checkDBRunnable != null) {
+			checkDatabaseHandler.removeCallbacks(checkDBRunnable);
 		}
+		checkDBRunnable = new CheckDatabaseRunnable();
+		checkDatabaseHandler.post(checkDBRunnable);
+		
 	}
 	
 	/**
@@ -232,6 +224,21 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	public void fetchTrailer(VideoContentInfo mpi) {
 		checkDataBaseForTrailer(mpi);
 		if (mpi.hasTrailer()) {
+			if (videoInfo.hasTrailer() && YouTubeInitializationResult.SUCCESS.equals(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(context))) {
+				ImageView ytImage = new ImageView(context);
+				ytImage.setImageResource(R.drawable.yt_social_icon_red_128px);
+				ytImage.setScaleType(ScaleType.FIT_XY);
+				int w = ImageUtils.getDPI(45, context);
+				int h = ImageUtils.getDPI(24, context);
+				ytImage.setLayoutParams(new LinearLayout.LayoutParams(w, h));
+				LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) ytImage.getLayoutParams();
+				p.leftMargin = 5;
+				p.gravity = Gravity.CENTER_VERTICAL;
+				LinearLayout infographicsView = (LinearLayout) context
+						.findViewById(R.id.movieInfoGraphicLayout);
+				infographicsView.addView(ytImage);
+			}
+			
 			return;
 		}
 		trailerHandler = new TrailerHandler(mpi, context);
@@ -289,7 +296,17 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 	}
 
-	
+
+	protected class CheckDatabaseRunnable implements Runnable {
+		
+		@Override
+		public void run() {
+			if (YouTubeInitializationResult.SUCCESS.equals(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(context))) {
+				fetchTrailer(videoInfo);
+			}
+		}
+		
+	}
 	
 	private class AnimationImageLoaderListener extends SimpleImageLoadingListener {
 		
