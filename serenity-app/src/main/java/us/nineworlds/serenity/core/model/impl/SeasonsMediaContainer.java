@@ -21,79 +21,33 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.services;
+package us.nineworlds.serenity.core.model.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
-import android.util.Log;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
 
 /**
  * @author dcarver
- * 
+ *
  */
-public class ShowSeasonRetrievalIntentService extends
-		AbstractPlexRESTIntentService {
+public class SeasonsMediaContainer extends SeriesMediaContainer {
 
-	private List<TVShowSeriesInfo> seriesList = null;
-	protected String key;
-
-	public ShowSeasonRetrievalIntentService() {
-		super("ShowRetrievalIntentService");
-		seriesList = new ArrayList<TVShowSeriesInfo>();
+	/**
+	 * @param mc
+	 */
+	public SeasonsMediaContainer(MediaContainer mc) {
+		super(mc);
 	}
-
+	
 	@Override
-	public void sendMessageResults(Intent intent) {
-		Bundle extras = intent.getExtras();
-		if (extras != null) {
-			Messenger messenger = (Messenger) extras.get("MESSENGER");
-			Message msg = Message.obtain();
-			msg.obj = seriesList;
-			try {
-				messenger.send(msg);
-			} catch (RemoteException ex) {
-				Log.e(getClass().getName(), "Unable to send message", ex);
-			}
-		}
-	}
-
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		key = intent.getExtras().getString("key");
-		createSeries();
-		sendMessageResults(intent);
-	}
-
-	protected void createSeries() {
-		MediaContainer mc = null;
-		String baseUrl = null;
-		try {
-			mc = factory.retrieveSeasons(key);
-			baseUrl = factory.baseURL();
-		} catch (IOException ex) {
-			Log.e(getClass().getName(), "Unable to talk to server: ", ex);
-		} catch (Exception e) {
-			Log.e(getClass().getName(), "Oops.", e);
-		}
-
-		if (mc == null) {
-			return;
-		}
-
+	protected void createSeriesInfo() {
+		String baseUrl = factory.baseURL();
 		List<Directory> shows = mc.getDirectories();
 		for (Directory show : shows) {
-			TVShowSeriesInfo mpi = new TVShowSeriesInfo();
+			SeriesContentInfo mpi = new TVShowSeriesInfo();
 			mpi.setId(show.getRatingKey());
 			if (mc.getTitle2() != null) {
 				mpi.setParentTitle(mc.getTitle2());
@@ -120,7 +74,9 @@ public class ShowSeasonRetrievalIntentService extends
 					- Integer.parseInt(show.getViewedLeafCount());
 			mpi.setShowsUnwatched(Integer.toString(unwatched));
 
-			seriesList.add(mpi);
+			videoList.add(mpi);
 		}
+
 	}
+
 }

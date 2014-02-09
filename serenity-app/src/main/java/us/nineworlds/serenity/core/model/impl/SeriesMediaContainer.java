@@ -38,7 +38,7 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
  */
 public class SeriesMediaContainer extends AbstractMediaContainer {
 
-	private List<SeriesContentInfo> videoList;
+	protected List<SeriesContentInfo> videoList;
 	/**
 	 * @param mc
 	 */
@@ -48,11 +48,11 @@ public class SeriesMediaContainer extends AbstractMediaContainer {
 	
 	public List<SeriesContentInfo> createSeries() {
 		videoList = new LinkedList<SeriesContentInfo>();
-		createBanners();
+		createSeriesInfo();
 		return videoList;
 	}
 	
-	protected void createBanners() {
+	protected void createSeriesInfo() {
 		String baseUrl = factory.baseURL();
 
 		if (mc != null && mc.getSize() > 0) {

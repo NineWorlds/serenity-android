@@ -26,23 +26,23 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import java.util.ArrayList;
 import java.util.List;
 
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
-import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
-import us.nineworlds.serenity.core.services.ShowSeasonRetrievalIntentService;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
+import us.nineworlds.serenity.volley.VolleyUtils;
 
 import us.nineworlds.serenity.R;
 
+import com.android.volley.Response;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -53,83 +53,57 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
+ * An adapter that handles the population of views for TV Show Seasons.
+ * 
+ * The fetching of the data is handled by a RESTFul Volley call to plex and then
+ * the data is parsed and returned.
  * 
  * @author dcarver
  * 
  */
 public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 
-	private static List<TVShowSeriesInfo> seasonList = null;
-	private static Activity context;
+	private List<SeriesContentInfo> seasonList = null;
+	private Activity context;
 
-	private ImageLoader imageLoader;
-	private static ProgressDialog pd;
-	private Handler handler;
+	private ProgressDialog pd;
 	private String key;
-	private static TVShowSeasonImageGalleryAdapter notifyAdapter;
 
 	public TVShowSeasonImageGalleryAdapter(Context c, String key) {
 		context = (Activity) c;
 		this.key = key;
 
-		seasonList = new ArrayList<TVShowSeriesInfo>();
-
-		imageLoader = SerenityApplication.getImageLoader();
-		notifyAdapter = this;
+		seasonList = new ArrayList<SeriesContentInfo>();
 
 		fetchData();
 	}
 
 	protected void fetchData() {
 		pd = ProgressDialog.show(context, "", "Retrieving Seasons");
-		handler = new ShowSeasonRetrievalHandler();
-		Messenger messenger = new Messenger(handler);
-		Intent intent = new Intent(context,
-				ShowSeasonRetrievalIntentService.class);
-		intent.putExtra("MESSENGER", messenger);
-		intent.putExtra("key", key);
-		context.startService(intent);
 
+		PlexappFactory factory = SerenityApplication.getPlexFactory();
+		String url = factory.getSeasonsURL(key);
+		VolleyUtils.volleyXmlGetRequest(url, new SeaonsResponseListener(),
+				new DefaultLoggingVolleyErrorListener());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.Adapter#getCount()
-	 */
 	@Override
 	public int getCount() {
 
 		return seasonList.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.Adapter#getItem(int)
-	 */
 	@Override
 	public Object getItem(int position) {
 
 		return seasonList.get(position);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.Adapter#getItemId(int)
-	 */
 	@Override
 	public long getItemId(int position) {
 		return position;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.Adapter#getView(int, android.view.View,
-	 * android.view.ViewGroup)
-	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View galleryCellView = context.getLayoutInflater().inflate(
@@ -138,12 +112,12 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		if (position > getCount() - 1) {
 			position = getCount() - 1;
 		}
-		
+
 		if (position < 0) {
 			position = 0;
 		}
 
-		AbstractSeriesContentInfo pi = seasonList.get(position);
+		SeriesContentInfo pi = seasonList.get(position);
 		ImageView mpiv = (ImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
@@ -164,14 +138,15 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 
 		ImageView watchedView = (ImageView) galleryCellView
 				.findViewById(R.id.posterWatchedIndicator);
-        final TextView unwatchedCountView = (TextView) galleryCellView.findViewById(R.id.unwatched_count);
-        if (unwatched == 0) {
+		final TextView unwatchedCountView = (TextView) galleryCellView
+				.findViewById(R.id.unwatched_count);
+		if (unwatched == 0) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
-            unwatchedCountView.setVisibility(View.GONE);
+			unwatchedCountView.setVisibility(View.GONE);
 		} else {
-            unwatchedCountView.setVisibility(View.VISIBLE);
-            unwatchedCountView.setText(pi.getShowsUnwatched());
-        }
+			unwatchedCountView.setVisibility(View.VISIBLE);
+			unwatchedCountView.setText(pi.getShowsUnwatched());
+		}
 
 		int watched = 0;
 		if (pi.getShowsWatched() != null) {
@@ -186,16 +161,11 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		return galleryCellView;
 	}
 
-	/**
-	 * @param galleryCellView
-	 * @param pi
-	 * @param watchedView
-	 */
 	protected void toggleProgressIndicator(View galleryCellView, int dividend,
 			int divisor, ImageView watchedView) {
 		final float percentWatched = Float.valueOf(dividend)
 				/ Float.valueOf(divisor);
-		
+
 		final ProgressBar view = (ProgressBar) galleryCellView
 				.findViewById(R.id.posterInprogressIndicator);
 		int progress = Float.valueOf(percentWatched * 100).intValue();
@@ -207,13 +177,16 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		watchedView.setVisibility(View.INVISIBLE);
 	}
 
-	private static class ShowSeasonRetrievalHandler extends Handler {
+	private class SeaonsResponseListener implements
+			Response.Listener<MediaContainer> {
 
 		@Override
-		public void handleMessage(Message msg) {
-			seasonList = (List<TVShowSeriesInfo>) msg.obj;
-			notifyAdapter.notifyDataSetChanged();
-			pd.dismiss();
+		public void onResponse(MediaContainer response) {
+			seasonList = new SeasonsMediaContainer(response).createSeries();
+			notifyDataSetChanged();
+			if (pd != null && pd.isShowing()) {
+				pd.dismiss();
+			}
 
 			if (seasonList != null) {
 				if (!seasonList.isEmpty()) {
@@ -235,5 +208,4 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 			}
 		}
 	}
-
 }
