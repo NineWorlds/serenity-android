@@ -80,6 +80,12 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
+		if (position > posterList.size()) {
+			position = posterList.size() - 1;
+		}
+		if (position < 0) {
+			position = 0;
+		}
 		View galleryCellView = null;
 		if (convertView != null) {
 			galleryCellView = convertView;
