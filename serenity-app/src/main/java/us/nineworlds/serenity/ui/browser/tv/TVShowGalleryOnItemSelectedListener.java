@@ -32,7 +32,6 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.impl.AbstractSeriesContentInfo;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -231,7 +230,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 			showImage.setMaxHeight(height);
 			showImage.setMaxWidth(width);
 			showImage.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-			imageLoader.displayImage(mi.getThumbNailURL(), showImage);
+			SerenityApplication.displayImage(mi.getThumbNailURL(), showImage);
 		}
 
 	}

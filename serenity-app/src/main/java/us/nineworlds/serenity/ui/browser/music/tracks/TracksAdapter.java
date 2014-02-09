@@ -109,7 +109,7 @@ public class TracksAdapter extends ArrayAdapter<AudioTrackContentInfo> {
 			ImageView imageView = (ImageView) context.findViewById(R.id.musicAlbumImage);
 			if (posterList != null && !posterList.isEmpty()) {
 				ImageLoader imageLoader = SerenityApplication.getImageLoader();
-				imageLoader.displayImage(posterList.get(0).getImageURL(), imageView);
+				SerenityApplication.displayImage(posterList.get(0).getImageURL(), imageView);
 			}
 			notifyAdapter.notifyDataSetChanged();
 		}

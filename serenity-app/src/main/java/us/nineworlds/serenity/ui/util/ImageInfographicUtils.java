@@ -425,7 +425,7 @@ public class ImageInfographicUtils {
 		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
 		v.setLayoutParams(new LayoutParams(w, h));
 		String mediaTagUrl = factory.getMediaTagURL("studio", studio, identifier);
-		imageLoader.displayImage(mediaTagUrl, v);
+		SerenityApplication.displayImage(mediaTagUrl, v);
 		return v;
 	}
 	

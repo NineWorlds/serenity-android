@@ -328,7 +328,7 @@ public class MediaController extends FrameLayout {
 		posterView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 		
 		if (posterURL != null) {
-			imageLoader.displayImage(posterURL, posterView);
+			SerenityApplication.displayImage(posterURL, posterView);
 		}
 		
 		TextView txtNextVideo = (TextView) v.findViewById(R.id.mediacontroller_next_video);

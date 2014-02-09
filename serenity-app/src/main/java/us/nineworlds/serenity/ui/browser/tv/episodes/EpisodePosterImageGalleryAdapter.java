@@ -84,7 +84,7 @@ public class EpisodePosterImageGalleryAdapter extends
 
 		shrinkPosterAnimation(mpiv, false);
 
-		imageLoader.displayImage(pi.getImageURL(), mpiv);
+		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 
 		ImageView watchedView = (ImageView) galleryCellView
 				.findViewById(R.id.posterWatchedIndicator);

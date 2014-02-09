@@ -27,7 +27,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -284,7 +283,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		}
 
 		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
-		imageLoader.displayImage(videoInfo.getBackgroundURL(), fanArt,
+		SerenityApplication.displayImage(videoInfo.getBackgroundURL(), fanArt,
 				SerenityApplication.getMovieOptions(), new AnimationImageLoaderListener());
 
 	}

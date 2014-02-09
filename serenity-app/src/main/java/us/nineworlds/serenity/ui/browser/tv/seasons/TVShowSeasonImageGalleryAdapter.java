@@ -50,7 +50,6 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 /**
@@ -153,7 +152,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
-		imageLoader.displayImage(pi.getImageURL(), mpiv);
+		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 		galleryCellView
 				.setLayoutParams(new Gallery.LayoutParams(width, height));
 

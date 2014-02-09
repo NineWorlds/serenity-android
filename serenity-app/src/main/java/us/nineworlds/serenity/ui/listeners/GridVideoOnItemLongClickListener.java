@@ -174,7 +174,7 @@ public class GridVideoOnItemLongClickListener extends AbstractVideoOnItemLongCli
 		ImageView posterImage = (ImageView) detailsDialog.findViewById(R.id.video_poster);
 		posterImage.setVisibility(View.VISIBLE);
 		posterImage.setScaleType(ScaleType.FIT_XY);
-		imageLoader.displayImage(info.getImageURL(), posterImage);
+		SerenityApplication.displayImage(info.getImageURL(), posterImage);
 		
 		TextView summary = (TextView) detailsDialog.findViewById(R.id.movieSummary);
 		summary.setText(info.getSummary());

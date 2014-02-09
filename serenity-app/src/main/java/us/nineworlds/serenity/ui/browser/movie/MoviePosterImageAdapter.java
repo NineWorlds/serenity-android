@@ -122,7 +122,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		}
 
 		shrinkPosterAnimation(mpiv, movieContext.isGridViewActive());
-		imageLoader.displayImage(pi.getImageURL(), mpiv);
+		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 
 		setWatchedStatus(galleryCellView, pi);
 

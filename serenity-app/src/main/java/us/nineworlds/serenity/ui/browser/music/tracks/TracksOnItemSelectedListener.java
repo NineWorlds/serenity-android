@@ -51,7 +51,7 @@ public class TracksOnItemSelectedListener implements OnItemSelectedListener {
 		AudioTrackContentInfo track =  (AudioTrackContentInfo) parent.getAdapter().getItem(position);
 		ImageView album = (ImageView) context.findViewById(R.id.musicAlbumImage);
 		ImageLoader imageLoader = SerenityApplication.getImageLoader();
-		imageLoader.displayImage(track.getParentPosterURL(), album);
+		SerenityApplication.displayImage(track.getParentPosterURL(), album);
 	}
 
 	/* (non-Javadoc)

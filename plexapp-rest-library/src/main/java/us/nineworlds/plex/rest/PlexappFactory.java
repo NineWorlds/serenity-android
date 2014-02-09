@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -268,10 +269,12 @@ public class PlexappFactory {
 	public String getSeasonsURL(String key) {
 		return resourcePath.getSeasonsURL(key);
 	}
-	
 
-	
-	/**
+    public String getImageURL(String url, int width, int height) {
+        return resourcePath.getImageURL(url, width, height);
+    }
+
+    /**
 	 * Given a resource's URL, read and return the serialized MediaContainer
 	 * @param resourceURL
 	 * @return
@@ -295,6 +298,6 @@ public class PlexappFactory {
 		MediaContainer container = serializer.read(MediaContainer.class, xmlString, false);
 		return container;
 	}
-	
+
 
 }
