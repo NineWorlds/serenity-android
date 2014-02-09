@@ -23,11 +23,10 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -35,17 +34,14 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 /**
  * Implementation of the Poster Image Gallery class for TV Shows.
@@ -56,13 +52,8 @@ import android.widget.RelativeLayout;
 public class EpisodePosterImageGalleryAdapter extends
 		AbstractPosterImageGalleryAdapter {
 
-	private static EpisodePosterImageGalleryAdapter notifyAdapter;
-	private static ProgressDialog pd;
-
-public EpisodePosterImageGalleryAdapter(Context c, String key) {
+	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
-		notifyAdapter = this;
-		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
 	}
 
 	@Override
@@ -78,33 +69,29 @@ public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		int width = ImageUtils.getDPI(300, context);
 		int height = ImageUtils.getDPI(187, context);
 		mpiv.setMaxHeight(height);
-		mpiv.setMaxWidth(width);		
+		mpiv.setMaxWidth(width);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width, height));
+		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width,
+				height));
 
 		shrinkPosterAnimation(mpiv, false);
 
 		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 
-		ImageView watchedView = (ImageView) galleryCellView
-				.findViewById(R.id.posterWatchedIndicator);
-		
 		setWatchedStatus(galleryCellView, pi);
- 
+
 		return galleryCellView;
 	}
 
 	@Override
 	protected void fetchDataFromService() {
 		retrieveEpisodes();
-		notifyAdapter = this;
-
 	}
 
 	/**
 	 * 
 	 */
-	public void retrieveEpisodes() {		
+	public void retrieveEpisodes() {
 		final PlexappFactory factory = SerenityApplication.getPlexFactory();
 		String url = factory.getEpisodesURL(key);
 
@@ -112,38 +99,31 @@ public EpisodePosterImageGalleryAdapter(Context c, String key) {
 				new EpisodePosterResponseListener(),
 				new EpisodeResponseErrorListener());
 	}
-	
-	
-	private class EpisodePosterResponseListener implements Response.Listener<MediaContainer> {
+
+	private class EpisodePosterResponseListener implements
+			Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer response) {
 			EpisodeMediaContainer episodes = new EpisodeMediaContainer(
 					response, context);
 			posterList = episodes.createVideos();
-			notifyAdapter.notifyDataSetChanged();
-			if (pd != null && pd.isShowing()) {
-				pd.dismiss();
-			}
+			notifyDataSetChanged();
 			SerenityGallery gallery = (SerenityGallery) context
 					.findViewById(R.id.moviePosterGallery);
 			if (gallery != null) {
 				gallery.requestFocus();
 			}
 		}
-		
 	}
 
-	private class EpisodeResponseErrorListener extends DefaultLoggingVolleyErrorListener implements
-			Response.ErrorListener {
+	private class EpisodeResponseErrorListener extends
+			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {
 			super.onErrorResponse(error);
-			if (pd != null && pd.isShowing()) {
-				pd.dismiss();
-			}
 		}
-		
+
 	}
 }

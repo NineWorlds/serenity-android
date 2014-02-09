@@ -26,16 +26,12 @@ package us.nineworlds.serenity.ui.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.volley.RequestQueue;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.VolleyUtils;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -47,6 +43,9 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+
+import com.android.volley.RequestQueue;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * An abstract class for handling the creation of video content for use during
@@ -68,7 +67,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	protected Handler handler;
 	protected String key;
 	protected String category;
-	public Animation shrink;
+	protected Animation shrink;
 	protected Animation fadeIn;
 	protected RequestQueue queue;
 

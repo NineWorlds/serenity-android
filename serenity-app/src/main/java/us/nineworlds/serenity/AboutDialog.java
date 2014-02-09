@@ -4,22 +4,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.text.util.Linkify;
-import android.graphics.Color;
 import android.widget.TextView;
 
 public class AboutDialog extends Dialog {
-	private static Context mContext = null;
+	private Context mContext = null;
 
 	public AboutDialog(Context context) {
 		super(context);
 		mContext = context;
-
 	}
 
 	/**
@@ -41,15 +41,16 @@ public class AboutDialog extends Dialog {
 		setTitle(R.string.about_title_serenity_for_google_tv);
 	}
 
-	public static String readRawTextFile(int id) {
+	public String readRawTextFile(int id) {
 		InputStream inputStream = mContext.getResources().openRawResource(id);
 		InputStreamReader in = new InputStreamReader(inputStream);
 		BufferedReader buf = new BufferedReader(in);
 		String line;
 		StringBuilder text = new StringBuilder();
 		try {
-			while ((line = buf.readLine()) != null)
+			while ((line = buf.readLine()) != null) {
 				text.append(line);
+			}
 		} catch (IOException e) {
 			return null;
 		}

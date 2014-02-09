@@ -23,15 +23,6 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
@@ -59,12 +50,21 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 /**
  * Abstract class for handling video selection information. This can either be a
@@ -80,21 +80,19 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	public static final String CRLF = "\r\n";
 	public static final int WATCHED_VIEW_ID = 1000;
 	public static final float WATCHED_PERCENT = 0.98f;
-	public static Activity context;
-	public Handler subtitleHandler;
+	protected Activity context;
 	public Handler trailerHandler;
 	protected Handler checkDatabaseHandler = new Handler();
-	private Animation shrink;
-	private Animation fadeIn;
+	private final Animation shrink;
+	private final Animation fadeIn;
 	private View previous;
-	private ImageLoader imageLoader;
+	private final ImageLoader imageLoader;
 	protected int position;
 	protected BaseAdapter adapter;
 	protected VideoContentInfo videoInfo;
 	private DBMetaDataSource datasource;
 	protected RequestQueue queue;
 	protected Runnable checkDBRunnable;
-	
 
 	public AbstractVideoOnItemSelectedListener(Activity c) {
 		context = c;
@@ -117,37 +115,39 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	 * @param position
 	 */
 	protected void createInfographicDetails(ImageView v) {
-		
+
 		LinearLayout infographicsView = (LinearLayout) context
 				.findViewById(R.id.movieInfoGraphicLayout);
 		infographicsView.removeAllViews();
-		
+
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(80,
 				48);
-		ImageInfographicUtils imageUtilsAudioChannel = new ImageInfographicUtils(90,
-				48);
+		ImageInfographicUtils imageUtilsAudioChannel = new ImageInfographicUtils(
+				90, 48);
 
-		TextView durationView = imageUtilsNormal.createDurationView(videoInfo.getDuration(), context);
+		TextView durationView = imageUtilsNormal.createDurationView(
+				videoInfo.getDuration(), context);
 		if (durationView != null) {
 			infographicsView.addView(durationView);
 		}
-		
-		ImageView resv = imageUtilsNormal.createVideoCodec(videoInfo.getVideoCodec(), v.getContext());
+
+		ImageView resv = imageUtilsNormal.createVideoCodec(
+				videoInfo.getVideoCodec(), v.getContext());
 		if (resv != null) {
 			infographicsView.addView(resv);
 		}
-		
-		ImageView resolution = imageUtilsNormal.createVideoResolutionImage(videoInfo.getVideoResolution(), v.getContext());
+
+		ImageView resolution = imageUtilsNormal.createVideoResolutionImage(
+				videoInfo.getVideoResolution(), v.getContext());
 		if (resolution != null) {
 			infographicsView.addView(resolution);
 		}
-		
+
 		ImageView aspectv = imageUtilsNormal.createAspectRatioImage(
 				videoInfo.getAspectRatio(), context);
 		if (aspectv != null) {
 			infographicsView.addView(aspectv);
 		}
-		
 
 		ImageView acv = imageUtilsNormal.createAudioCodecImage(
 				videoInfo.getAudioCodec(), context);
@@ -169,29 +169,32 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			ratingBar.setStepSize(0.1f);
 			ratingBar.setNumStars(4);
 			ratingBar.setPadding(0, 0, 0, 0);
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+					android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 			params.rightMargin = 15;
 			ratingBar.setLayoutParams(params);
-			
+
 			double rating = videoInfo.getRating();
 			ratingBar.setRating((float) (rating / 2.5));
 			infographicsView.addView(ratingBar);
 		}
-		
-		ImageView studiov = imageUtilsNormal.createStudioImage(videoInfo.getStudio(),
-				context, videoInfo.getMediaTagIdentifier());
+
+		ImageView studiov = imageUtilsNormal.createStudioImage(
+				videoInfo.getStudio(), context,
+				videoInfo.getMediaTagIdentifier());
 		if (studiov != null) {
 			infographicsView.addView(studiov);
 		}
-		
+
 		if (checkDBRunnable != null) {
 			checkDatabaseHandler.removeCallbacks(checkDBRunnable);
 		}
 		checkDBRunnable = new CheckDatabaseRunnable();
 		checkDatabaseHandler.post(checkDBRunnable);
-		
+
 	}
-	
+
 	/**
 	 * @param pi
 	 */
@@ -204,46 +207,55 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			pi.setTrailerId(metaData.getYouTubeID());
 		}
 		datasource.close();
-	}	
+	}
 
-	public void fetchSubtitle(VideoContentInfo mpi) {		
+	public void fetchSubtitle(VideoContentInfo mpi) {
 		queue = VolleyUtils.getRequestQueueInstance(context);
 		PlexappFactory factory = SerenityApplication.getPlexFactory();
-		String url = factory.getMovieMetadataURL("/library/metadata/" + mpi.id());
-		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(Request.Method.GET, url, MediaContainer.class, new SubtitleVolleyResponseListener(mpi, context),
+		String url = factory.getMovieMetadataURL("/library/metadata/"
+				+ mpi.id());
+		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(
+				Request.Method.GET, url, MediaContainer.class,
+				new SubtitleVolleyResponseListener(mpi, context),
 				new Response.ErrorListener() {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						Log.e(getClass().getCanonicalName(), "Subtitle Retrieval failure: ", error);
+						Log.e(getClass().getCanonicalName(),
+								"Subtitle Retrieval failure: ", error);
 					}
 				});
 		queue.add(xmlRequest);
 	}
-	
+
 	public void fetchTrailer(VideoContentInfo mpi) {
 		checkDataBaseForTrailer(mpi);
 		if (mpi.hasTrailer()) {
-			if (videoInfo.hasTrailer() && YouTubeInitializationResult.SUCCESS.equals(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(context))) {
+			if (videoInfo.hasTrailer()
+					&& YouTubeInitializationResult.SUCCESS
+							.equals(YouTubeApiServiceUtil
+									.isYouTubeApiServiceAvailable(context))) {
 				ImageView ytImage = new ImageView(context);
 				ytImage.setImageResource(R.drawable.yt_social_icon_red_128px);
 				ytImage.setScaleType(ScaleType.FIT_XY);
 				int w = ImageUtils.getDPI(45, context);
 				int h = ImageUtils.getDPI(24, context);
 				ytImage.setLayoutParams(new LinearLayout.LayoutParams(w, h));
-				LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) ytImage.getLayoutParams();
+				LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) ytImage
+						.getLayoutParams();
 				p.leftMargin = 5;
 				p.gravity = Gravity.CENTER_VERTICAL;
 				LinearLayout infographicsView = (LinearLayout) context
 						.findViewById(R.id.movieInfoGraphicLayout);
 				infographicsView.addView(ytImage);
 			}
-			
+
 			return;
 		}
 		trailerHandler = new TrailerHandler(mpi, context);
 		Messenger messenger = new Messenger(trailerHandler);
-		Intent intent = new Intent(context, YouTubeTrailerSearchIntentService.class);
+		Intent intent = new Intent(context,
+				YouTubeTrailerSearchIntentService.class);
 		intent.putExtra("videoTitle", mpi.getTitle());
 		intent.putExtra("year", mpi.getYear());
 		intent.putExtra("MESSENGER", messenger);
@@ -271,8 +283,9 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		v.setPadding(5, 5, 5, 5);
 		v.clearAnimation();
 
-		ImageView posterImageView = (ImageView) v.findViewById(R.id.posterImageView);
-		
+		ImageView posterImageView = (ImageView) v
+				.findViewById(R.id.posterImageView);
+
 		createVideoDetail(posterImageView);
 		createVideoMetaData(posterImageView);
 		createInfographicDetails(posterImageView);
@@ -292,26 +305,34 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
 		SerenityApplication.displayImage(videoInfo.getBackgroundURL(), fanArt,
-				SerenityApplication.getMovieOptions(), new AnimationImageLoaderListener());
+				SerenityApplication.getMovieOptions(),
+				new AnimationImageLoaderListener());
 
 	}
 
-
 	protected class CheckDatabaseRunnable implements Runnable {
-		
+
 		@Override
 		public void run() {
-			if (YouTubeInitializationResult.SUCCESS.equals(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(context))) {
+			if (YouTubeInitializationResult.SUCCESS
+					.equals(YouTubeApiServiceUtil
+							.isYouTubeApiServiceAvailable(context))) {
 				fetchTrailer(videoInfo);
 			}
 		}
-		
+
 	}
-	
-	private class AnimationImageLoaderListener extends SimpleImageLoadingListener {
-		
-		/* (non-Javadoc)
-		 * @see com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener#onLoadingComplete(java.lang.String, android.view.View, android.graphics.Bitmap)
+
+	private class AnimationImageLoaderListener extends
+			SimpleImageLoadingListener {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
+		 * #onLoadingComplete(java.lang.String, android.view.View,
+		 * android.graphics.Bitmap)
 		 */
 		@Override
 		public void onLoadingComplete(String imageUri, View view,
