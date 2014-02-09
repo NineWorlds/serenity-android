@@ -39,7 +39,6 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +56,6 @@ public class EpisodePosterImageGalleryAdapter extends
 		AbstractPosterImageGalleryAdapter {
 
 	private static EpisodePosterImageGalleryAdapter notifyAdapter;
-	private static ProgressDialog pd;
 
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
@@ -85,9 +83,6 @@ public class EpisodePosterImageGalleryAdapter extends
 		shrinkPosterAnimation(mpiv, false);
 
 		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
-
-		ImageView watchedView = (ImageView) galleryCellView
-				.findViewById(R.id.posterWatchedIndicator);
 		
 		setWatchedStatus(galleryCellView, pi);
  
@@ -124,9 +119,6 @@ public class EpisodePosterImageGalleryAdapter extends
 			EpisodeMediaContainer episodes = new EpisodeMediaContainer(response, context);
 			posterList = episodes.createVideos();
 			notifyAdapter.notifyDataSetChanged();
-			if (pd != null && pd.isShowing()) {
-				pd.dismiss();
-			}
 			SerenityGallery gallery = (SerenityGallery) context
 					.findViewById(R.id.moviePosterGallery);
 			if (gallery != null) {

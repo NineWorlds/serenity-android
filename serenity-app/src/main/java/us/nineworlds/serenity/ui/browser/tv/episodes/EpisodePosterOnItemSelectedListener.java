@@ -103,7 +103,6 @@ public class EpisodePosterOnItemSelectedListener extends
 		ImageView posterImage = (ImageView) context.findViewById(R.id.video_poster);
 		posterImage.setVisibility(View.VISIBLE);
 		posterImage.setScaleType(ScaleType.FIT_XY);
-		ImageLoader imageLoader = SerenityApplication.getImageLoader();
 		if (videoInfo.getParentPosterURL() != null) {
 			int width = ImageUtils.getDPI(240, context);
 			int height = ImageUtils.getDPI(330, context);
@@ -115,8 +114,6 @@ public class EpisodePosterOnItemSelectedListener extends
 			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 			SerenityApplication.displayImage(videoInfo.getGrandParentPosterURL(), posterImage);
 		} else {
-			int width = ImageUtils.getDPI(375, context);
-			int height = ImageUtils.getDPI(195, context);
 			SerenityApplication.displayImage(videoInfo.getImageURL(), posterImage);
 		}
 
