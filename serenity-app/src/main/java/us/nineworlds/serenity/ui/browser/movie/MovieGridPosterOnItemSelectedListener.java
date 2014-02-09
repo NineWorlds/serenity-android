@@ -23,17 +23,15 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import com.jess.ui.TwoWayAdapterView;
-import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
-
-import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.R;
-
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import android.app.Activity;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.jess.ui.TwoWayAdapterView;
+import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
 
 /**
  * When a poster is selected, update the information displayed in the browser.
@@ -46,7 +44,6 @@ public class MovieGridPosterOnItemSelectedListener implements
 
 	private static Activity context;
 	private View previous;
-	private Handler subtitleHandler;
 	private TwoWayAdapterView<?> adapter;
 
 	/**
@@ -56,17 +53,10 @@ public class MovieGridPosterOnItemSelectedListener implements
 		context = activity;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
-	 * .widget.AdapterView, android.view.View, int, long)
-	 */
 	@Override
 	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position,
 			long id) {
-		
+
 		adapter = av;
 
 		if (previous != null) {
@@ -80,19 +70,20 @@ public class MovieGridPosterOnItemSelectedListener implements
 		createMovieMetaData();
 	}
 
-
 	private void createMovieMetaData() {
-		
+
 		VideoContentInfo mi = (VideoContentInfo) adapter.getSelectedItem();
 		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
 		subt.setVisibility(View.GONE);
-		Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);
+		Spinner subtitleSpinner = (Spinner) context
+				.findViewById(R.id.videoSubtitle);
 		subtitleSpinner.setVisibility(View.GONE);
-		
-		TextView posterTitle = (TextView) context.findViewById(R.id.movieBrowserPosterTitle);
+
+		TextView posterTitle = (TextView) context
+				.findViewById(R.id.movieBrowserPosterTitle);
 		posterTitle.setText(mi.getTitle());
 	}
-	
+
 	@Override
 	public void onNothingSelected(TwoWayAdapterView<?> av) {
 		if (previous != null) {
@@ -100,5 +91,5 @@ public class MovieGridPosterOnItemSelectedListener implements
 			previous.refreshDrawableState();
 		}
 
-	}	
+	}
 }
