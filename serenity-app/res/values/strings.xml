@@ -141,6 +141,7 @@
     <string name="preference_remote_control">Remote Control</string>
     <string name="overscan_adjustement_summary">Adjusts the screen so that items are not cut off.  May be necessary when running on OUYA or other Android TV devices.</string>
     <string name="overscan_compensation">Overscan Compensation</string>
+    <string name="overscan_setup_title">Overscan Compensation Setup</string>
     <string name="display_adjustements">Display Adjustements</string>
     <string name="add_season_to_queue">Add season to queue</string>
     <string name="season_options">Season Options</string>
@@ -191,6 +192,10 @@
     <string name="skip_backward_time_summary">Time to skip backward when REW button is pressed</string>
     <string name="next_prev_behavior_title">Next/Prev button behavior</string>
     <string name="next_prev_behavior_summary"><![CDATA[What should the Next & Prev buttons do]]></string>
+    <string name="overscan_swap">Swap sides</string>
+    <string name="overscan_instructions">Use D-Pad to adjust top-left, and bottom-right until no blue is visible. Use
+        button to swap sides.
+    </string>
 
     <string-array name="skipListNames">
         <item>10 Seconds</item>

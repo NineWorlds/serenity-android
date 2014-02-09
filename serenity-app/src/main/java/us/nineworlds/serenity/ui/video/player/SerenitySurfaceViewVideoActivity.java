@@ -70,6 +70,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 /**
  * A view that handles the internal video playback and representation of a movie
@@ -228,18 +229,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		videoActivityView = findViewById(R.id.video_playeback);
 		timeOfDayView = findViewById(R.id.time_of_day);
 
-		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		if (prefs.getBoolean("overscan_compensation", false)) {
-			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) videoActivityView
-					.getLayoutParams();
-			params.setMargins(35, 20, 20, 20);
-		}
+		DisplayUtils.overscanCompensation(this, videoActivityView);
 
 		surfaceView.setKeepScreenOn(true);
 		SurfaceHolder holder = surfaceView.getHolder();
 		holder.addCallback(this);
 		holder.setSizeFromLayout();
 
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		final boolean showTimeOfDay = prefs.getBoolean("showTimeOfDay", false);
 		timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
 

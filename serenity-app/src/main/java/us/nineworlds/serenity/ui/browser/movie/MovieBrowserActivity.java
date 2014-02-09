@@ -26,32 +26,28 @@ package us.nineworlds.serenity.ui.browser.movie;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.simonvt.menudrawer.MenuDrawer;
-
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
-import us.nineworlds.serenity.core.util.VolleyUtils;
 import us.nineworlds.serenity.ui.activity.CategoryHandler;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 
-import com.android.volley.RequestQueue;
-import com.google.analytics.tracking.android.EasyTracker;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import net.simonvt.menudrawer.MenuDrawer;
 
 public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
@@ -144,17 +140,11 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 				
 		key = getIntent().getExtras().getString("key");
 		createSideMenu();
-		if (prefs.getBoolean("overscan_compensation", false)) {
-			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.movieBrowserBackgroundLayout);
-			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
-			params.setMargins(35, 20, 20, 20);
-			
-			RelativeLayout menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
-			FrameLayout.LayoutParams menuParams = (FrameLayout.LayoutParams)  menuDrawerLayout.getLayoutParams();
-			menuParams.setMargins(35, 0, 0, 0);
-			
-		}
 
+		DisplayUtils.overscanCompensation(
+				this,
+				findViewById(R.id.movieBrowserBackgroundLayout),
+				findViewById(R.id.menu_drawer_layout));
 	}
 
 	@Override

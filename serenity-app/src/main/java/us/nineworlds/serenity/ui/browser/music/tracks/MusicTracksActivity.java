@@ -58,6 +58,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 /**
  * @author dcarver
@@ -176,12 +177,8 @@ public class MusicTracksActivity extends Activity implements
 		} else {
 			setContentView(R.layout.activity_music_track);
 		}
-		
-		if (prefs.getBoolean("overscan_compensation", false)) {
-			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.musicBrowserBackgroundLayout);
-			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
-			params.setMargins(35, 20, 20, 20);
-		}
+
+		DisplayUtils.overscanCompensation(this, findViewById(R.id.musicBrowserBackgroundLayout));
 
 		init();
 	}
