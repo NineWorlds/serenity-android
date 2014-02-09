@@ -24,19 +24,8 @@
 package us.nineworlds.serenity.ui.search;
 
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
-import android.provider.SearchRecentSuggestions;
-import android.view.View;
-import android.widget.Toast;
 import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuItem;
@@ -47,6 +36,16 @@ import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
+import android.provider.SearchRecentSuggestions;
+import android.view.View;
+import android.widget.Toast;
 
 /**
  * Implements basic search functionality for movies.
@@ -60,14 +59,11 @@ public class SearchableActivity extends SerenityVideoActivity {
 	protected static View bgLayout;
 	protected static Activity context;
 
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
-	 */
 	@Override
 	protected void createSideMenu() {
-		
+
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -131,7 +127,8 @@ public class SearchableActivity extends SerenityVideoActivity {
 				.findViewById(R.id.moviePosterGallery);
 		posterGallery.setAdapter(new SearchAdapter(context, videos));
 		posterGallery
-				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(context));
+				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
+						context));
 		posterGallery
 				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
 		posterGallery
@@ -145,9 +142,10 @@ public class SearchableActivity extends SerenityVideoActivity {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.obj != null) {
-				ArrayList<VideoContentInfo> videos = (ArrayList<VideoContentInfo>) msg.obj;
+				List<VideoContentInfo> videos = (List<VideoContentInfo>) msg.obj;
 				if (videos != null && videos.isEmpty()) {
-					Toast.makeText(context,
+					Toast.makeText(
+							context,
 							R.string.no_videos_found_that_match_the_search_criteria,
 							Toast.LENGTH_LONG).show();
 					context.finish();
