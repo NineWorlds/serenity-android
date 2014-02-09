@@ -23,29 +23,18 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import java.util.List;
-
 import com.jess.ui.TwoWayAbsListView;
-import com.jess.ui.TwoWayGridView;
-
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
 import us.nineworlds.serenity.R;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
-import android.widget.Gallery.LayoutParams;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-import android.widget.TextView;
 
 /**
  * 

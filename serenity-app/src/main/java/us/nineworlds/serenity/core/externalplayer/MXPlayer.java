@@ -28,7 +28,6 @@ import us.nineworlds.serenity.core.model.impl.Subtitle;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 
 /**
  * @author dcarver
@@ -55,6 +54,7 @@ public class MXPlayer extends AbstractExternalPlayer implements ExternalPlayer {
 	}
 
 
+	@Override
 	protected void setClassAndPackagename(Intent vpIntent) {
 		vpIntent.setPackage(PLAYER_PACKAGE_NAME);
 		vpIntent.setClassName(PLAYER_PACKAGE_NAME, PLAYER_CLASS_NAME);

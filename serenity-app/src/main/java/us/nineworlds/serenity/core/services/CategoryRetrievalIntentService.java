@@ -63,6 +63,7 @@ public class CategoryRetrievalIntentService extends
 		sendMessageResults(intent);
 	}
 
+	@Override
 	protected void populateCategories() {
 		try {
 			MediaContainer mediaContainer = factory.retrieveSections(key);

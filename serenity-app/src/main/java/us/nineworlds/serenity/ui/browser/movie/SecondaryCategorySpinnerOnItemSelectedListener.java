@@ -37,7 +37,6 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.View;

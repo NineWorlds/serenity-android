@@ -26,9 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemClickListener;
 
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity;
 
 

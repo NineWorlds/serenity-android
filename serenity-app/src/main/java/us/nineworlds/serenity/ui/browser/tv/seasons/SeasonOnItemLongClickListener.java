@@ -34,8 +34,6 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

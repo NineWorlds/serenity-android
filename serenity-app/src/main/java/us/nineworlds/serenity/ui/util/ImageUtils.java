@@ -24,7 +24,6 @@
 package us.nineworlds.serenity.ui.util;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
 import android.app.Activity;
 import android.content.Context;
@@ -39,7 +38,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader.TileMode;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 /**

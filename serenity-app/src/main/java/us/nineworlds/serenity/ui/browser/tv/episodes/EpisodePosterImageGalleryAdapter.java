@@ -23,7 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
@@ -34,7 +33,6 @@ import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.SimpleXmlRequest;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 

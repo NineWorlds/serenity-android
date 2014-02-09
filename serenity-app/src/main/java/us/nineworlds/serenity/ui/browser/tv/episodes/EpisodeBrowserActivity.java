@@ -37,8 +37,6 @@ import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.content.Intent;

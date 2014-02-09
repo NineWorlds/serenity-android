@@ -24,7 +24,6 @@
 package us.nineworlds.serenity.volley;
 
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.SerenityApplication;
 import android.content.Context;
 import android.util.Log;
 

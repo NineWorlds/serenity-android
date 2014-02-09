@@ -28,9 +28,6 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;

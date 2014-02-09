@@ -27,16 +27,11 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
-import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Gallery;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 /**
  * A listener that handles long press for video content. Includes displaying a
@@ -59,13 +54,13 @@ public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick i
 
 		if (v == null) {
 			Gallery g = (Gallery) av;
-			view = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
+			view = g.getSelectedView().findViewById(R.id.posterImageView);
 			videoInfo = (SeriesContentInfo) g.getSelectedItem();
 		} else {
 			if (v instanceof ImageView) {
-				view = (ImageView) v;
+				view = v;
 			} else {
-				view = (ImageView) v.findViewById(R.id.posterImageView);
+				view = v.findViewById(R.id.posterImageView);
 			}
 		}
 

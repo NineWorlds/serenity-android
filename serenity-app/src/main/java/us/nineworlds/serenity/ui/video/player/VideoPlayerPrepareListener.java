@@ -126,7 +126,7 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 
                 alertDialogBuilder.create();
                 AlertDialog dialog = alertDialogBuilder.show();
-                dialog.getButton(Dialog.BUTTON_POSITIVE).requestFocusFromTouch();
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).requestFocusFromTouch();
                 return;
             }
 		} else {

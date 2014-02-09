@@ -23,8 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import java.util.List;
-
 import android.os.Handler;
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
@@ -34,16 +32,11 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-
-
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**

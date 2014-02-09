@@ -9,12 +9,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.core.model.impl.SubtitleMediaContainer;
 import android.app.Activity;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 public class GridSubtitleVolleyResponseListener extends SubtitleVolleyResponseListener {
 

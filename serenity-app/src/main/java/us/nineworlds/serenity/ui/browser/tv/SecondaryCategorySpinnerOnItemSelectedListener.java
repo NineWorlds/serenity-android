@@ -31,7 +31,6 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 
 import us.nineworlds.serenity.R;
 
-import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;

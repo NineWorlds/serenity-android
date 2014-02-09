@@ -26,9 +26,7 @@ package us.nineworlds.serenity.core.util;
 import com.google.analytics.tracking.android.Log;
 
 import android.content.Context;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**

@@ -47,9 +47,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 
 /**
  * An abstract class for handling the creation of video content for use during

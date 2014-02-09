@@ -26,8 +26,6 @@ package us.nineworlds.serenity.core.services;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-
 import us.nineworlds.serenity.core.model.impl.YouTubeVideoContentInfo;
 
 import com.google.gdata.client.Query;
@@ -35,7 +33,6 @@ import com.google.gdata.client.youtube.YouTubeQuery;
 import com.google.gdata.client.youtube.YouTubeService;
 import com.google.gdata.client.youtube.YouTubeQuery.OrderBy;
 import com.google.gdata.data.Category;
-import com.google.gdata.data.media.mediarss.MediaContent;
 import com.google.gdata.data.youtube.VideoEntry;
 import com.google.gdata.data.youtube.VideoFeed;
 import com.google.gdata.data.youtube.YouTubeNamespace;

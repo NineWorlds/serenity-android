@@ -29,7 +29,6 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
 
-import android.app.Activity;
 import android.view.View;
 
 /**

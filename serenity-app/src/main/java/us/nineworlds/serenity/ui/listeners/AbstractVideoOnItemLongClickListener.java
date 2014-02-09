@@ -31,17 +31,11 @@ import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.Log;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubeStandalonePlayer;
-import com.google.gdata.client.youtube.YouTubeService;
-
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
@@ -303,6 +297,7 @@ public class AbstractVideoOnItemLongClickListener {
 					.setSingleChoiceItems(adapter, -1,
 							new DialogInterface.OnClickListener() {
 
+								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
 									adapter.respondToClick(which, "", body);

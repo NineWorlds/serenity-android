@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import android.app.Activity;

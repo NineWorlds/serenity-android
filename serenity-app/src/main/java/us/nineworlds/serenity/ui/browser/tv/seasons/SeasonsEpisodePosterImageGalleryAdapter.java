@@ -26,7 +26,6 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import java.util.List;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
@@ -44,8 +43,6 @@ import us.nineworlds.serenity.ui.listeners.TrailerHandler;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
 import us.nineworlds.serenity.volley.SimpleXmlRequest;
-import us.nineworlds.serenity.volley.VolleyUtils;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 

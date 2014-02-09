@@ -68,6 +68,7 @@ public class EpisodePosterOnItemSelectedListener extends
 	private boolean fadeIn = true;
 	private int fadeInCount = 0;
 
+	@Override
 	public void fetchTrailer(VideoContentInfo mpi) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		if (prefs.getBoolean("episode_trailers", false) == false) {

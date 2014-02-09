@@ -38,8 +38,6 @@ import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.R;
 
 import com.android.volley.Response;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;

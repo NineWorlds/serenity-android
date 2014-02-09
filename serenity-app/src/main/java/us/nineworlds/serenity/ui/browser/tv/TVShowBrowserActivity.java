@@ -34,7 +34,6 @@ import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.services.TVShowCategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;

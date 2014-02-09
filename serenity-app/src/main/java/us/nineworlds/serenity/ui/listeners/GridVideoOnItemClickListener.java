@@ -26,8 +26,6 @@ package us.nineworlds.serenity.ui.listeners;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
-
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemClickListener;
 import android.view.View;

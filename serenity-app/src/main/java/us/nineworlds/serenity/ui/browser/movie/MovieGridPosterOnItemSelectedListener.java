@@ -23,26 +23,15 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.Subtitle;
-import us.nineworlds.serenity.ui.listeners.SubtitleSpinnerOnItemSelectedListener;
-
 import us.nineworlds.serenity.R;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 

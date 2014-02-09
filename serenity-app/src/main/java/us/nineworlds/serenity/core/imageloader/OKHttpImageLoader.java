@@ -28,12 +28,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.apache.http.client.HttpClient;
-
 import android.content.Context;
 
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-import com.nostra13.universalimageloader.core.download.HttpClientImageDownloader;
 import com.squareup.okhttp.OkHttpClient;
 
 /**

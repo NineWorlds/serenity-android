@@ -160,7 +160,7 @@ public class VideoPlayerIntentUtils {
 
 		alertDialogBuilder.create();
 		AlertDialog dialog = alertDialogBuilder.show();
-		dialog.getButton(Dialog.BUTTON_POSITIVE).requestFocusFromTouch();
+		dialog.getButton(DialogInterface.BUTTON_POSITIVE).requestFocusFromTouch();
 	}
 
     public static void playVideo(Activity activity, VideoContentInfo videoInfo, boolean autoResume) {

@@ -31,10 +31,6 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.util.Log;
 
 /**
@@ -70,6 +66,7 @@ public class TVShowCategoryRetrievalIntentService extends
 		sendMessageResults(intent);
 	}
 
+	@Override
 	protected void populateCategories() {
 		try {
 			MediaContainer mediaContainer = factory.retrieveSections(key);

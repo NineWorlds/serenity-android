@@ -26,15 +26,10 @@ package us.nineworlds.serenity.core.model.impl;
 import java.io.Serializable;
 import java.util.List;
 
-import android.view.View;
-import android.widget.ImageView;
-
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
-import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 
 /**
  * General information common t TV Shows and Videos/Movies

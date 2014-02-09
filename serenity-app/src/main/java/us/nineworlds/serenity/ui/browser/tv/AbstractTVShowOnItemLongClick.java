@@ -26,11 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 import java.util.ArrayList;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

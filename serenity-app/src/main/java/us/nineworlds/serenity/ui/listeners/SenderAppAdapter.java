@@ -21,15 +21,12 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.text.ClipboardManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Adapter that shows any apps in the system that respond to Intent.ACTION_SEND intents.  Filters out any apps not in
@@ -80,6 +77,7 @@ public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
 	}
 	
 	 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView==null) {
 			convertView=newView(parent);

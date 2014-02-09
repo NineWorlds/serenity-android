@@ -6,7 +6,6 @@ import us.nineworlds.serenity.core.model.impl.YouTubeVideoContentInfo;
 import android.app.Activity;
 import android.os.Message;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 public class TrailerGridHandler extends TrailerHandler {
 	

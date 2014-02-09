@@ -27,7 +27,6 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.jess.ui.TwoWayGridView;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;

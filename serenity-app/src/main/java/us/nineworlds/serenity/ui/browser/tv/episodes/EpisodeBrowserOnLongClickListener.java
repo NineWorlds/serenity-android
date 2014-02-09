@@ -35,7 +35,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 

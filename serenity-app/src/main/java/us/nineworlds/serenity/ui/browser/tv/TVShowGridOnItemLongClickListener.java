@@ -55,12 +55,12 @@ public class TVShowGridOnItemLongClickListener extends AbstractTVShowOnItemLongC
 
 		if (v == null) {
 			TwoWayGridView g = (TwoWayGridView) av;
-			view = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
+			view = g.getSelectedView().findViewById(R.id.posterImageView);
 		} else {
 			if (v instanceof ImageView) {
-				view = (ImageView) v;
+				view = v;
 			} else {
-				view = (ImageView) v.findViewById(R.id.posterImageView);
+				view = v.findViewById(R.id.posterImageView);
 			}
 		}
 

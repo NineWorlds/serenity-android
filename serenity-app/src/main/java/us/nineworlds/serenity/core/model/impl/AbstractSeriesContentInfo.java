@@ -291,6 +291,7 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo, Se
 		return false;
 	}
 	
+	@Override
 	public int totalShows() {
 		int unwatched = Integer.parseInt(getShowsUnwatched());
 		int watched = Integer.parseInt(getShowsWatched());

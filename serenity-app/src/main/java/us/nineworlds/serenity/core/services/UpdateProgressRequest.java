@@ -4,7 +4,6 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import android.os.AsyncTask;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 /**
  * A task that updates the progress position of a video while it is being
