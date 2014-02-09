@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import android.preference.Preference;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.SerenityApplication;
 
@@ -46,6 +47,8 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
+import us.nineworlds.serenity.ui.activity.OverscanSetupActivity;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 /**
  * This is the main activity for managing user preferences in the app.
@@ -53,12 +56,13 @@ import android.preference.PreferenceActivity;
  * @author dcarver
  * 
  */
-public class SerenityPreferenceActivity extends PreferenceActivity {
+public class SerenityPreferenceActivity extends PreferenceActivity implements Preference.OnPreferenceClickListener {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
+		findPreference("overscan_setup").setOnPreferenceClickListener(this);
 	}
 
 	/*
@@ -205,6 +209,15 @@ public class SerenityPreferenceActivity extends PreferenceActivity {
 		}
 
 		return false;		
-	}	
+	}
 
+	@Override
+	public boolean onPreferenceClick(Preference preference) {
+		final String key = preference.getKey();
+		if ("overscan_setup".equals(key)) {
+			startActivity(new Intent(this, OverscanSetupActivity.class));
+			return true;
+		}
+		return false;
+	}
 }

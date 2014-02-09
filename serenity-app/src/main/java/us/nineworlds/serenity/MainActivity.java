@@ -26,8 +26,6 @@ package us.nineworlds.serenity;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.simonvt.menudrawer.MenuDrawer;
-
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -36,41 +34,34 @@ import us.nineworlds.serenity.core.services.GDMService;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
+
+import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.*;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import us.nineworlds.serenity.R;
 
 import com.castillo.dd.DSInterface;
 import com.castillo.dd.Download;
 import com.castillo.dd.DownloadService;
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
+import net.simonvt.menudrawer.MenuDrawer;
 
 public class MainActivity extends SerenityActivity {
 
@@ -340,16 +331,11 @@ public class MainActivity extends SerenityActivity {
 		}
 
 		initDownloadService();
-		
-		if (preferences.getBoolean("overscan_compensation", false)) {
-			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
-			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
-			params.setMargins(35, 20, 20, 20);
-			
-			RelativeLayout menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
-			FrameLayout.LayoutParams menuParams = (FrameLayout.LayoutParams)  menuDrawerLayout.getLayoutParams();
-			menuParams.setMargins(35, 0, 0, 0);
-		}
+
+		DisplayUtils.overscanCompensation(
+				this,
+				findViewById(R.id.mainLayout),
+				findViewById(R.id.menu_drawer_layout));
 
 
 	}

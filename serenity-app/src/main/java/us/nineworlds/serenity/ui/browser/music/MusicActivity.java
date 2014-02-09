@@ -43,6 +43,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 /**
  * @author dcarver
@@ -78,18 +79,15 @@ public class MusicActivity extends Activity {
 		} else {
 			setContentView(R.layout.activity_music_artist_gridview);
 		}
-		
-		if (prefs.getBoolean("overscan_compensation", false)) {
-			RelativeLayout mainLayout =  null;
-			if (MUSIC_GRIDVIEW) {
-				mainLayout = (RelativeLayout) findViewById(R.id.musicBrowserBackgroundLayout);
-			} else {
-				mainLayout = (RelativeLayout) findViewById(R.id.musicArtistBrowserLayout);
-			}
-			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
-			params.setMargins(35, 20, 20, 20);
-		}
 
+
+		final RelativeLayout mainLayout;
+		if (MUSIC_GRIDVIEW) {
+			mainLayout = (RelativeLayout) findViewById(R.id.musicBrowserBackgroundLayout);
+		} else {
+			mainLayout = (RelativeLayout) findViewById(R.id.musicArtistBrowserLayout);
+		}
+		DisplayUtils.overscanCompensation(this, mainLayout);
 	}
 
 	/*

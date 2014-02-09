@@ -41,6 +41,9 @@
             android:key="overscan_compensation"
             android:summary="@string/overscan_adjustement_summary"
             android:title="@string/overscan_compensation" />
+        <Preference
+            android:key="overscan_setup"
+            android:title="@string/overscan_setup_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/music_library" >
         <CheckBoxPreference

@@ -124,6 +124,8 @@
                 android:resource="@xml/searchable" />
         </activity>
 
+        <activity android:name=".ui.activity.OverscanSetupActivity"/>
+
         <service android:name=".core.services.MainMenuIntentService" />
         <service android:name=".core.services.MusicRetrievalIntentService" />
         <service android:name=".core.services.MusicAlbumRetrievalIntentService" />

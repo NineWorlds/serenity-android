@@ -33,6 +33,7 @@ import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -68,17 +69,10 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
 		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
-		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
-				"overscan_compensation", false)) {
-			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) tvShowSeasonsMainView
-					.getLayoutParams();
-			params.setMargins(35, 20, 45, 20);
 
-			RelativeLayout menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
-			FrameLayout.LayoutParams menuParams = (FrameLayout.LayoutParams) menuDrawerLayout
-					.getLayoutParams();
-			menuParams.setMargins(35, 0, 0, 0);
-		}
+		DisplayUtils.overscanCompensation(this,
+				tvShowSeasonsMainView,
+				findViewById(R.id.menu_drawer_layout));
 	}
 
 	@Override

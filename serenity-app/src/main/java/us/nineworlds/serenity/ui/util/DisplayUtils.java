@@ -24,8 +24,14 @@
 package us.nineworlds.serenity.ui.util;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.View;
+import android.view.ViewGroup;
+
 
 /**
  * @author dcarver
@@ -52,6 +58,20 @@ public class DisplayUtils {
 	    int dpWidth  = Float.valueOf(outMetrics.heightPixels / density).intValue();
 	    return dpWidth;
 	}
-	
+
+	public static void overscanCompensation(Context context, View... views) {
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+		if (prefs.getBoolean("overscan_compensation", false)) {
+			for (View view : views) {
+				ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams)  view.getLayoutParams();
+				params.setMargins(
+						prefs.getInt("overscan_left", 50),
+						prefs.getInt("overscan_top", 50),
+						prefs.getInt("overscan_right", 50),
+						prefs.getInt("overscan_bottom", 50));
+			}
+		}
+	}
 	
 }

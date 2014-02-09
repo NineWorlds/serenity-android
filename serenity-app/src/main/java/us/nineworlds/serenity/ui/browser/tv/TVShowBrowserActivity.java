@@ -57,6 +57,7 @@ import android.widget.Gallery;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 /**
  * @author dcarver
@@ -76,17 +77,10 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		createSideMenu();
-		
-		if (preferences.getBoolean("overscan_compensation", false)) {
-			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.tvshowBrowserLayout);
-			FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)  mainLayout.getLayoutParams();
-			params.setMargins(35, 20, 40, 20);
-			
-			RelativeLayout menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
-			FrameLayout.LayoutParams menuParams = (FrameLayout.LayoutParams)  menuDrawerLayout.getLayoutParams();
-			menuParams.setMargins(35, 0, 0, 0);			
-		}
 
+		DisplayUtils.overscanCompensation(this,
+				findViewById(R.id.tvshowBrowserLayout),
+				findViewById(R.id.menu_drawer_layout));
 	}
 
 	@Override
