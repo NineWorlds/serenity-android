@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.core.model.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import us.nineworlds.plex.rest.PlexappFactory;
@@ -33,25 +34,29 @@ import us.nineworlds.serenity.SerenityApplication;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class SubtitleMediaContainer extends AbstractMediaContainer {
-	
+
 	/**
 	 * @param mc
 	 */
 	public SubtitleMediaContainer(MediaContainer mc) {
 		super(mc);
 	}
-	
+
 	public List<Subtitle> createSubtitle() {
 		PlexappFactory factory = SerenityApplication.getPlexFactory();
-		List<Stream> streams = mc.getVideos().get(0).getMedias().get(0).getVideoPart().get(0).getStreams();
+		List<Stream> streams = mc.getVideos().get(0).getMedias().get(0)
+				.getVideoPart().get(0).getStreams();
 		List<Subtitle> subtitles = new ArrayList<Subtitle>();
+		if (streams == null) {
+			return Collections.emptyList();
+		}
 		for (Stream stream : streams) {
-			if ("srt".equals(stream.getFormat()) ||
-				"ass".equals(stream.getFormat())) {
-				
+			if ("srt".equals(stream.getFormat())
+					|| "ass".equals(stream.getFormat())) {
+
 				Subtitle subtitle = new Subtitle();
 				subtitle = new Subtitle();
 				subtitle.setFormat(stream.getFormat());
@@ -59,18 +64,20 @@ public class SubtitleMediaContainer extends AbstractMediaContainer {
 				if (stream.getKey() == null) {
 					continue;
 				}
-				subtitle.setKey(factory.baseURL() + stream.getKey().replaceFirst("/", ""));
+				subtitle.setKey(factory.baseURL()
+						+ stream.getKey().replaceFirst("/", ""));
 				if (stream.getLanguage() == null) {
-					subtitle.setDescription("Unknown (" + stream.getFormat() + ")");
+					subtitle.setDescription("Unknown (" + stream.getFormat()
+							+ ")");
 				} else {
-					subtitle.setDescription(stream.getLanguage() + " (" + stream.getFormat() + ")");
+					subtitle.setDescription(stream.getLanguage() + " ("
+							+ stream.getFormat() + ")");
 				}
 				subtitles.add(subtitle);
 			}
 		}
 		return subtitles;
-		
-		
+
 	}
 
 }
