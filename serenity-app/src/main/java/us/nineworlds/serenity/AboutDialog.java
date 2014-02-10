@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -38,7 +39,17 @@ public class AboutDialog extends Dialog {
 		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info)));
 		tv.setLinkTextColor(Color.WHITE);
 		Linkify.addLinks(tv, Linkify.ALL);
-		setTitle(R.string.about_title_serenity_for_google_tv);
+		String versionName;
+		try {
+			versionName = mContext.getPackageManager().getPackageInfo(
+					mContext.getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			versionName = "";
+		}
+		setTitle(mContext
+				.getString(R.string.about_title_serenity_for_google_tv)
+				+ " v"
+				+ versionName);
 	}
 
 	public String readRawTextFile(int id) {
