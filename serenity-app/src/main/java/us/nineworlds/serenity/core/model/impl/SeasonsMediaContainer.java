@@ -31,7 +31,7 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class SeasonsMediaContainer extends SeriesMediaContainer {
 
@@ -41,11 +41,14 @@ public class SeasonsMediaContainer extends SeriesMediaContainer {
 	public SeasonsMediaContainer(MediaContainer mc) {
 		super(mc);
 	}
-	
+
 	@Override
 	protected void createSeriesInfo() {
 		String baseUrl = factory.baseURL();
 		List<Directory> shows = mc.getDirectories();
+		if (shows == null) {
+			return;
+		}
 		for (Directory show : shows) {
 			SeriesContentInfo mpi = new TVShowSeriesInfo();
 			mpi.setId(show.getRatingKey());
