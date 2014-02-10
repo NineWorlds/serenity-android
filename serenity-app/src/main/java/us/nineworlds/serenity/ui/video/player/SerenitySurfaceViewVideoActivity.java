@@ -33,9 +33,8 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.mozilla.universalchardet.UniversalDetector;
-
 import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -47,9 +46,6 @@ import us.nineworlds.serenity.core.subtitles.formats.FormatASS;
 import us.nineworlds.serenity.core.subtitles.formats.FormatSRT;
 import us.nineworlds.serenity.core.subtitles.formats.TimedTextObject;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
-import us.nineworlds.serenity.R;
-
-import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -62,14 +58,13 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
+import android.view.*;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import org.mozilla.universalchardet.UniversalDetector;
 
 /**
  * A view that handles the internal video playback and representation of a movie
@@ -98,6 +93,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private MediaController mediaController;
 	private View timeOfDayView;
 	private String aspectRatio;
+	private VideoContentInfo video;
 	private String videoId;
 	private int resumeOffset;
 	private boolean mediaplayer_error_state = false;
@@ -270,6 +266,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				videoURL = URLDecoder.decode(videoURL);
 			}
 		}
+		video = null;
 		videoId = extras.getString("id");
 		String summary = extras.getString("summary");
 		String title = extras.getString("title");
@@ -295,6 +292,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 		VideoContentInfo video = queue.poll();
 		videoURL = video.getDirectPlayUrl();
+		this.video = video;
 		videoId = video.id();
 		String summary = video.getSummary();
 		String title = video.getTitle();
@@ -681,7 +679,17 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 				String offset = Integer.valueOf(
 						mediaPlayer.getCurrentPosition()).toString();
-				factory.setProgress(videoId, offset);
+				if (video != null) {
+					if (video.isWatched()) {
+						factory.setWatched(videoId);
+						factory.setProgress(videoId, "0");
+					} else {
+						factory.setProgress(videoId, offset);
+					}
+					video.setResumeOffset(Integer.valueOf(offset));
+				} else {
+					factory.setProgress(videoId, offset);
+				}
 			}
 			return null;
 		}
