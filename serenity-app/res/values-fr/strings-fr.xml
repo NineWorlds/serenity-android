@@ -178,7 +178,7 @@
     <string name="next_prev_behavior_title">Précédent Suivant comportement / bouton</string>
     <string name="next_prev_behavior_summary"><![CDATA[Qu\'est-ce que les boutons Suivant et Précédent devraient faire]]></string>
     <string name="overscan_swap">Côtés d\'échange</string>
-    <string name="overscan_instructions">Utilisez D-Pad pour ajuster en haut à gauche, et en bas à droite jusqu'à ce qu\'il n\'y bleue est visible. Utilisez 
+    <string name="overscan_instructions">Utilisez D-Pad pour ajuster en haut à gauche, et en bas à droite jusqu\'à ce qu\'il n\'y bleue est visible. Utilisez 
          bouton pour échanger côtés. Lorsque terminé, appuyez sur Retour pour enregistrer les modifications. Vous pouvez utiliser à la place de votre 
          appareils construits en compensation overscan. Les appareils construits en compensation a priorité.
     </string>
