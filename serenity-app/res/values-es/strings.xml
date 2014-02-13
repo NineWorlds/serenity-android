@@ -168,5 +168,48 @@
     <string name="prefs_startup_boot_sum">Controla si la serenidad para Android lanza inmediatamente después de que el dispositivo haya terminado la secuencia de arranque. Útil para aquellos que quieren ofrecer una más de cine en casa como experiencia.</string>
     <string name="prefs_auto_start_after_boot">Inicio automático después de Boot</string>
     
+    <string name="playing_episode_toast">Jugar %1$s %2$s: %3$s</string>
+    <string name="no_unwatched_episode_toast">No hay episodios no vistos encontrado</string>
+
+    <string name="Controls">Controles</string>
+    <string name="skip_forward_time_title">FF Skip Tiempo</string>
+    <string name="skip_forward_time_summary">Es hora de saltar hacia adelante cuando se presiona el botón FF</string>
+    <string name="skip_backward_time_title">REW Skip Tiempo</string>
+    <string name="skip_backward_time_summary">Tiempo para saltar hacia atrás cuando se pulsa el botón REW</string>
+    <string name="next_prev_behavior_title">Comportamiento de los botones Siguiente / Anterior</string>
+    <string name="next_prev_behavior_summary"><![CDATA[¿Qué deben hacer los botones Siguiente y Anterior]]></string>
+    <string name="overscan_swap">lados de swap</string>
+    <string name="overscan_instructions">Utilice D-Pad para ajustar la parte superior izquierda e inferior derecha hasta que no azul es visible. uso 
+         botón para cambiar de lado. Cuando termine, pulse Atrás para guardar los cambios. Usted puede usar esto en vez de su 
+         dispositivos construidos en compensación de overscan. Los dispositivos construidos en compensación tiene prioridad.
+    </string>
+
+    <string-array name="skipListNames">
+        <item>10 Segundos</item>
+        <item>30 Segundos</item>
+        <item>1 Minuto</item>
+        <item>3 Acta</item>
+    </string-array>
+    <string-array name="skipListValues">
+        <item>10000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>180000</item>
+    </string-array>
+
+    <string-array name="nextPrevNames">
+        <item>Siguiente artículo en cola</item>
+        <item>Saltarse 5%</item>
+        <item>Saltarse 10%</item>
+        <item>Saltarse 5 minutes</item>
+        <item>Saltarse 10 minutes</item>
+    </string-array>
+    <string-array name="nextPrevValues">
+        <item>Cola</item>
+        <item>5%</item>
+        <item>10%</item>
+        <item>3000000</item>
+        <item>6000000</item>
+    </string-array>
     
 </resources>
