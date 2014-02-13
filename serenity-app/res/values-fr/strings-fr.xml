@@ -167,5 +167,48 @@
     <string name="prefs_startup_boot_sum">Contrôle si la sérénité pour Android lance immédiatement après l\'appareil a terminé la séquence de démarrage. Utile pour ceux qui veulent offrir un théâtre plus à la maison comme expérience.</string>
     <string name="prefs_auto_start_after_boot">Démarrage automatique après démarrage</string>
     
+    <string name="playing_episode_toast">Jouer %1$s %2$s: %3$s</string>
+    <string name="no_unwatched_episode_toast">Pas d\'épisodes non visionnés trouvé</string>
+
+    <string name="Controls">Contrôles</string>
+    <string name="skip_forward_time_title">FF Passer Temps</string>
+    <string name="skip_forward_time_summary">Temps pour avancer lorsque le bouton est pressé FF</string>
+    <string name="skip_backward_time_title">REW Passer Temps</string>
+    <string name="skip_backward_time_summary">Le temps de sauter en arrière lorsque le bouton REW est enfoncé</string>
+    <string name="next_prev_behavior_title">Précédent Suivant comportement / bouton</string>
+    <string name="next_prev_behavior_summary"><![CDATA[Qu\'est-ce que les boutons Suivant et Précédent devraient faire]]></string>
+    <string name="overscan_swap">Côtés d\'échange</string>
+    <string name="overscan_instructions">Utilisez D-Pad pour ajuster en haut à gauche, et en bas à droite jusqu'à ce qu\'il n\'y bleue est visible. Utilisez 
+         bouton pour échanger côtés. Lorsque terminé, appuyez sur Retour pour enregistrer les modifications. Vous pouvez utiliser à la place de votre 
+         appareils construits en compensation overscan. Les appareils construits en compensation a priorité.
+    </string>
+
+    <string-array name="skipListNames">
+        <item>10 Secondes</item>
+        <item>30 Secondes</item>
+        <item>1 Minute</item>
+        <item>3 Minutes</item>
+    </string-array>
+    <string-array name="skipListValues">
+        <item>10000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>180000</item>
+    </string-array>
+
+    <string-array name="nextPrevNames">
+        <item>Article suivant dans la file d\'attente</item>
+        <item>Sauter 5%</item>
+        <item>Sauter 10%</item>
+        <item>Sauter 5 minutes</item>
+        <item>Sauter 10 minutes</item>
+    </string-array>
+    <string-array name="nextPrevValues">
+        <item>Queue</item>
+        <item>5%</item>
+        <item>10%</item>
+        <item>3000000</item>
+        <item>6000000</item>
+    </string-array>
     
 </resources>
