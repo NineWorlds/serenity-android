@@ -26,32 +26,27 @@ package us.nineworlds.serenity.ui.browser.movie;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
-import us.nineworlds.serenity.core.util.VolleyUtils;
 import us.nineworlds.serenity.ui.activity.CategoryHandler;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import net.simonvt.menudrawer.MenuDrawer;
 
 public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
@@ -60,7 +55,10 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	private Handler categoryHandler;
 	private SharedPreferences prefs = null;
 	private boolean tvMode = false;
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -72,10 +70,10 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 			menuDrawer.setContentView(R.layout.activity_movie_browser);
 		}
 		menuDrawer.setMenuView(R.layout.menu_drawer);
-		
+
 		populateMenuDrawer();
 		hideMenuItems();
-		
+
 		View menu = findViewById(R.id.menu_button);
 		menu.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
 	}
@@ -85,15 +83,21 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	 */
 	protected void populateMenuDrawer() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
-		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
-		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
-		
-		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
+		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View",
+				R.drawable.ic_action_collections_view_as_grid));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View",
+				R.drawable.ic_action_collections_view_detail));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue",
+				R.drawable.menu_play_all_queue));
+
+		menuOptions = (ListView) menuDrawer.getMenuView().findViewById(
+				R.id.menu_list_options);
 		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-		menuOptions.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(menuDrawer));
+		menuOptions
+				.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(
+						menuDrawer));
 	}
-	
+
 	/**
 	 * @param listView
 	 */
@@ -110,7 +114,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu",
@@ -123,14 +127,13 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 				return true;
 			}
 		}
-		
+
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
 			hideMenuItems();
 			menuDrawer.toggleMenu();
 			return true;
 		}
-		
-		
+
 		return super.onKeyDown(keyCode, event);
 	}
 
@@ -141,13 +144,11 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		tvMode = prefs.getBoolean("serenity_tv_mode", true);
 		gridViewActive = prefs.getBoolean("movie_layout_grid", false);
-				
+
 		key = getIntent().getExtras().getString("key");
 		createSideMenu();
 
-
-		DisplayUtils.overscanCompensation(
-				this,
+		DisplayUtils.overscanCompensation(this,
 				findViewById(R.id.movieBrowserBackgroundLayout),
 				findViewById(R.id.menu_drawer_layout));
 	}
@@ -157,8 +158,10 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		super.onStart();
 		EasyTracker.getInstance().activityStart(this);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -175,7 +178,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		}
 		restarted_state = false;
 	}
-	
 
 	/*
 	 * (non-Javadoc)
@@ -199,5 +201,5 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		restarted_state = true;
 		populateMenuDrawer();
 	}
-		
+
 }

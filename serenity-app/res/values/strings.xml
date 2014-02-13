@@ -194,7 +194,8 @@
     <string name="next_prev_behavior_summary"><![CDATA[What should the Next & Prev buttons do]]></string>
     <string name="overscan_swap">Swap sides</string>
     <string name="overscan_instructions">Use D-Pad to adjust top-left, and bottom-right until no blue is visible. Use
-        button to swap sides.
+        button to swap sides.  When finished press Back to save the changes.  You may use this instead of your
+        devices built in overscan compensation.  The devices built in compensation takes precedence.
     </string>
 
     <string-array name="skipListNames">
