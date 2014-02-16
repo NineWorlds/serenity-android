@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="us.nineworlds.serenity"
-    android:versionCode="62"
-    android:versionName="1.7.0-dev" >
+    android:versionCode="64"
+    android:versionName="1.7.0" >
 
     <!-- try to exclude phone devices from the list. Currently only support Tablets and TVs -->
     <supports-screens
