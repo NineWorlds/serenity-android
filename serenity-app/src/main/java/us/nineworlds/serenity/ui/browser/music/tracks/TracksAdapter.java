@@ -26,12 +26,10 @@ package us.nineworlds.serenity.ui.browser.music.tracks;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
-import us.nineworlds.serenity.core.services.MusicTrackRetrievalIntentService;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
-
+import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
+import us.nineworlds.serenity.core.services.MusicTrackRetrievalIntentService;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -47,6 +45,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 /**
  * 
  * @author dcarver
@@ -60,7 +60,7 @@ public class TracksAdapter extends ArrayAdapter<AudioTrackContentInfo> {
 	protected ImageLoader imageLoader;
 	private static List<AudioTrackContentInfo> posterList;
 	private static Activity context;
-	private String key;
+	private final String key;
 
 	public TracksAdapter(Activity context, String key) {
 		super(context, R.layout.track_listview_layout, R.id.trackTitle);
@@ -87,14 +87,18 @@ public class TracksAdapter extends ArrayAdapter<AudioTrackContentInfo> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = inflater.inflate(R.layout.track_listview_layout, parent, false);
+		View rowView = inflater.inflate(R.layout.track_listview_layout, parent,
+				false);
 		rowView.setBackgroundResource(R.drawable.album_list_view_selector);
 		TextView textView = (TextView) rowView.findViewById(R.id.trackTitle);
-		TextView durationView = (TextView) rowView.findViewById(R.id.trackDuration);
-		ImageView imageView = (ImageView) rowView.findViewById(R.id.trackPlayed);
+		TextView durationView = (TextView) rowView
+				.findViewById(R.id.trackDuration);
+		ImageView imageView = (ImageView) rowView
+				.findViewById(R.id.trackPlayed);
 		imageView.setImageResource(R.drawable.unwatched_small);
 		textView.setText(getItem(position).getTitle());
-		durationView.setText(DateUtils.formatElapsedTime(getItem(position).getDuration() / 1000));
+		durationView.setText(DateUtils.formatElapsedTime(getItem(position)
+				.getDuration() / 1000));
 
 		return rowView;
 	}
@@ -106,10 +110,17 @@ public class TracksAdapter extends ArrayAdapter<AudioTrackContentInfo> {
 			posterList = (List<AudioTrackContentInfo>) msg.obj;
 			clear();
 			addAll(posterList);
-			ImageView imageView = (ImageView) context.findViewById(R.id.musicAlbumImage);
+			ImageView imageView = (ImageView) context
+					.findViewById(R.id.musicAlbumImage);
 			if (posterList != null && !posterList.isEmpty()) {
 				ImageLoader imageLoader = SerenityApplication.getImageLoader();
-				SerenityApplication.displayImage(posterList.get(0).getImageURL(), imageView);
+				if (posterList.get(0).getImageURL() != null
+						&& posterList.get(0).getImageURL().length() > 0) {
+					SerenityApplication.displayImage(posterList.get(0)
+							.getImageURL(), imageView);
+				} else {
+					imageView.setImageResource(R.drawable.default_music);
+				}
 			}
 			notifyAdapter.notifyDataSetChanged();
 		}

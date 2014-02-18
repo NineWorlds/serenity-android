@@ -31,7 +31,6 @@ import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -112,11 +111,13 @@ public class MusicRetrievalIntentService extends AbstractPlexRESTIntentService {
 			mpi.setMediaTagIdentifier(mediaTagId);
 			mpi.setId(music.getRatingKey());
 			mpi.setSummary(music.getSummary());
-			
+
 			String turl = "";
 			if (music.getThumb() != null) {
-				turl = baseUrl
-						+ music.getThumb().replaceFirst("/", "");
+				turl = baseUrl + music.getThumb().replaceFirst("/", "");
+				mpi.setImageURL(turl);
+			} else if (mc.getParentPosterURL() != null) {
+				turl = baseUrl + mc.getParentPosterURL().replaceFirst("/", "");
 				mpi.setImageURL(turl);
 			}
 			if (music.getArt() != null) {
@@ -124,14 +125,12 @@ public class MusicRetrievalIntentService extends AbstractPlexRESTIntentService {
 				mpi.setBackgroundURL(burl);
 			}
 
-			mpi.setTitle(music
-					.getTitle());
-			
+			mpi.setTitle(music.getTitle());
+
 			musicContentList.add(mpi);
 		}
 
 	}
-
 
 	protected MediaContainer retrieveVideos() throws Exception {
 		if (category == null) {

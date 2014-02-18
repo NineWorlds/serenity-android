@@ -26,16 +26,12 @@ package us.nineworlds.serenity.ui.browser.music.albums;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jess.ui.TwoWayAbsListView;
-import com.jess.ui.TwoWayGridView;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.MusicAlbumContentInfo;
 import us.nineworlds.serenity.core.services.MusicAlbumRetrievalIntentService;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.MusicAlbumImageView;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -47,13 +43,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.jess.ui.TwoWayAbsListView;
+import com.jess.ui.TwoWayGridView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 /**
  * 
  * @author dcarver
  * 
  */
-public class MusicAlbumsCoverAdapter extends
-		BaseAdapter {
+public class MusicAlbumsCoverAdapter extends BaseAdapter {
 
 	protected static MusicAlbumsCoverAdapter notifyAdapter;
 	protected static ProgressDialog pd;
@@ -61,7 +60,7 @@ public class MusicAlbumsCoverAdapter extends
 	protected ImageLoader imageLoader;
 	private static List<MusicAlbumContentInfo> posterList;
 	private static Activity context;
-	private String key;
+	private final String key;
 
 	public MusicAlbumsCoverAdapter(Activity context, String key) {
 		notifyAdapter = this;
@@ -82,7 +81,12 @@ public class MusicAlbumsCoverAdapter extends
 		int width = ImageUtils.getDPI(180, context);
 		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
-		SerenityApplication.displayImage(pi.getImageURL(), mpiv, SerenityApplication.getMusicOptions());
+		if (pi.getImageURL() != null && pi.getImageURL().length() > 0) {
+			SerenityApplication.displayImage(pi.getImageURL(), mpiv,
+					SerenityApplication.getMusicOptions());
+		} else {
+			mpiv.setImageResource(R.drawable.default_music);
+		}
 
 		return mpiv;
 	}
@@ -90,7 +94,8 @@ public class MusicAlbumsCoverAdapter extends
 	protected void fetchDataFromService() {
 		posterGalleryHandler = new MusicHandler();
 		Messenger messenger = new Messenger(posterGalleryHandler);
-		Intent intent = new Intent(context, MusicAlbumRetrievalIntentService.class);
+		Intent intent = new Intent(context,
+				MusicAlbumRetrievalIntentService.class);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("key", key);
 		context.startService(intent);
@@ -101,15 +106,18 @@ public class MusicAlbumsCoverAdapter extends
 		@Override
 		public void handleMessage(Message msg) {
 			posterList = (List<MusicAlbumContentInfo>) msg.obj;
-			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.musicGridView);
+			TwoWayGridView gridView = (TwoWayGridView) context
+					.findViewById(R.id.musicGridView);
 			gridView.requestFocus();
 			notifyAdapter.notifyDataSetChanged();
-			//pd.dismiss();
+			// pd.dismiss();
 		}
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getCount()
 	 */
 	@Override
@@ -117,7 +125,9 @@ public class MusicAlbumsCoverAdapter extends
 		return posterList.size();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getItem(int)
 	 */
 	@Override
@@ -125,14 +135,14 @@ public class MusicAlbumsCoverAdapter extends
 		return posterList.get(position);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
 	@Override
 	public long getItemId(int position) {
 		return position;
 	}
-	
-	
 
 }

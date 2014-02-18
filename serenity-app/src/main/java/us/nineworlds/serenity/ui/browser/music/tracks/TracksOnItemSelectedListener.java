@@ -23,8 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.music.tracks;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
@@ -34,28 +32,44 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 /**
  * @author dcarver
- *
+ * 
  */
 public class TracksOnItemSelectedListener implements OnItemSelectedListener {
 
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android.widget.AdapterView, android.view.View, int, long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
+	 * .widget.AdapterView, android.view.View, int, long)
 	 */
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
 		Activity context = (Activity) view.getContext();
 		view.setSelected(true);
-		AudioTrackContentInfo track =  (AudioTrackContentInfo) parent.getAdapter().getItem(position);
-		ImageView album = (ImageView) context.findViewById(R.id.musicAlbumImage);
+		AudioTrackContentInfo track = (AudioTrackContentInfo) parent
+				.getAdapter().getItem(position);
+		ImageView album = (ImageView) context
+				.findViewById(R.id.musicAlbumImage);
 		ImageLoader imageLoader = SerenityApplication.getImageLoader();
-		SerenityApplication.displayImage(track.getParentPosterURL(), album);
+		if (track.getParentPosterURL() != null) {
+			SerenityApplication.displayImage(track.getParentPosterURL(), album);
+		} else {
+			album.setImageResource(R.drawable.default_music);
+		}
 	}
 
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android.widget.AdapterView)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android
+	 * .widget.AdapterView)
 	 */
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {

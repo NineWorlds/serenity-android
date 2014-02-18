@@ -31,7 +31,6 @@ import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.MusicAlbumContentInfo;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -45,7 +44,8 @@ import android.util.Log;
  * @author dcarver
  * 
  */
-public class MusicAlbumRetrievalIntentService extends AbstractPlexRESTIntentService {
+public class MusicAlbumRetrievalIntentService extends
+		AbstractPlexRESTIntentService {
 
 	private static final String MUSIC_RETRIEVAL_INTENT_SERVICE = "MusicAlbumRetrievalIntentService";
 
@@ -112,39 +112,35 @@ public class MusicAlbumRetrievalIntentService extends AbstractPlexRESTIntentServ
 			mpi.setId(music.getRatingKey());
 			mpi.setSummary(music.getSummary());
 			mpi.setKey(music.getKey());
-			//int watched = Integer.parseInt(music.getViewedLeafCount());
-			//int totalTracks = Integer.parseInt(music.getLeafCount());
-			//mpi.setShowsWatched(music.getViewedLeafCount());
-			//mpi.setShowsUnwatched(Integer.toString(totalTracks - watched));
 			mpi.setYear(music.getYear());
-			
+
 			String turl = "";
 			if (music.getThumb() != null) {
-				turl = baseUrl
-						+ music.getThumb().replaceFirst("/", "");
+				turl = baseUrl + music.getThumb().replaceFirst("/", "");
+				mpi.setImageURL(turl);
+			} else if (mc.getParentPosterURL() != null) {
+				turl = baseUrl + mc.getParentPosterURL().replaceFirst("/", "");
 				mpi.setImageURL(turl);
 			}
 
-			mpi.setTitle(music
-					.getTitle());
-			
+			mpi.setTitle(music.getTitle());
+
 			musicContentList.add(mpi);
 		}
 
 	}
-
 
 	protected MediaContainer retrieveVideos() throws Exception {
 		if (category == null) {
 			category = DEFAULT_CATEGORY;
 		}
 
-	    String realKey = "";
-	    if (key.contains("/library")) {
-	    	realKey = key;
-	    } else {
-	    	realKey = "/library/metadata/" + key + "/children";
-	    }
+		String realKey = "";
+		if (key.contains("/library")) {
+			realKey = key;
+		} else {
+			realKey = "/library/metadata/" + key + "/children";
+		}
 		return factory.retrieveMusicMetaData(realKey);
 	}
 

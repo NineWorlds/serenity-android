@@ -26,18 +26,13 @@ package us.nineworlds.serenity.ui.browser.music;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
 import us.nineworlds.serenity.core.services.MusicRetrievalIntentService;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.SerenityMusicImageView;
-
-import us.nineworlds.serenity.R;
-
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -50,6 +45,8 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 /**
  * 
  * @author dcarver
@@ -59,10 +56,9 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 
 	private static List<MusicArtistContentInfo> posterList = null;
 
-	private String key;
-	private String category;
-	private static ProgressDialog pd;
-	private ImageLoader imageLoader;
+	private final String key;
+	private final String category;
+	private final ImageLoader imageLoader;
 	private Handler handler;
 	private static Activity context;
 
@@ -138,7 +134,12 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
 
-		SerenityApplication.displayImage(pi.getImageURL(), mpiv, SerenityApplication.getMusicOptions());
+		if (pi.getImageURL() != null) {
+			SerenityApplication.displayImage(pi.getImageURL(), mpiv,
+					SerenityApplication.getMusicOptions());
+		} else {
+			mpiv.setImageResource(R.drawable.default_music);
+		}
 		return mpiv;
 	}
 

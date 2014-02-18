@@ -82,7 +82,6 @@ public class MediaContainer {
 	@Attribute(name="parentIndex",required=false)
 	private String parentIndex;
 	
-
 	@ElementList(inline=true,required=false)
 	private List<Directory> directories;
 	
@@ -243,6 +242,5 @@ public class MediaContainer {
 		this.parentIndex = parentIndex;
 	}
 	
-	
-	
+		
 }
