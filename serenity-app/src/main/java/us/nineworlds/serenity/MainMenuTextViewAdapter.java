@@ -23,21 +23,19 @@
 package us.nineworlds.serenity;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.menus.MenuItem;
-import us.nineworlds.serenity.core.services.MainMenuIntentService;
+import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
 import us.nineworlds.serenity.ui.views.MainMenuTextView;
-
-import us.nineworlds.serenity.R;
-
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
+import us.nineworlds.serenity.volley.VolleyUtils;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
 import android.text.TextUtils.TruncateAt;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -47,16 +45,17 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
 public class MainMenuTextViewAdapter extends BaseAdapter {
 
 	/** The parent context */
 	private static Context myContext;
+	private RequestQueue queue;
 
-	private static Handler menuItemhandler;
-
-	private static MainMenuTextViewAdapter notifyAdapter;
-
-	public static ArrayList<MenuItem> menuItems;
+	public static List<MenuItem> menuItems;
 
 	/** Simple Constructor saving the 'parent' context. */
 	public MainMenuTextViewAdapter(Context c) {
@@ -70,12 +69,12 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	}
 
 	protected void fetchData() {
-		menuItemhandler = new MenuItemHandler();
-		Messenger messenger = new Messenger(menuItemhandler);
-		Intent intent = new Intent(myContext, MainMenuIntentService.class);
-		intent.putExtra("MESSENGER", messenger);
-		myContext.startService(intent);
-		notifyAdapter = this;
+		queue = VolleyUtils.getRequestQueueInstance(myContext);
+		PlexappFactory factory = SerenityApplication.getPlexFactory();
+		String url = factory.getSectionsURL();
+		VolleyUtils.volleyXmlGetRequest(url,
+				new MainMenuVolleyResponseListener(),
+				new MainMenuResponseErrorListener());
 	}
 
 	@Override
@@ -179,23 +178,41 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 				android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 	}
 
-	private static class MenuItemHandler extends Handler {
+	private class MainMenuVolleyResponseListener implements
+			Response.Listener<MediaContainer> {
 
 		@Override
-		public void handleMessage(Message msg) {
-			if (msg.obj != null) {
-				menuItems = (ArrayList<MenuItem>) msg.obj;
-			}
-			if (menuItems.size() == 1) {
-				Toast.makeText(myContext, R.string.no_libraries_found,
-						Toast.LENGTH_LONG).show();
-			}
-			notifyAdapter.notifyDataSetChanged();
-			Activity c = (Activity)myContext;
+		public void onResponse(MediaContainer mc) {
+			menuItems = new MenuMediaContainer(mc, myContext).createMenuItems();
+			notifyDataSetChanged();
+			Activity c = (Activity) myContext;
 			c.findViewById(R.id.mainGalleryMenu).requestFocus();
-			
 		}
+	}
 
+	private class MainMenuResponseErrorListener extends
+			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
+
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			super.onErrorResponse(error);
+
+			MenuMediaContainer mc = new MenuMediaContainer(myContext);
+
+			PlexappFactory factory = SerenityApplication.getPlexFactory();
+
+			menuItems.add(mc.createSettingsMenu());
+			menuItems.add(mc.createOptionsMenu());
+			Toast.makeText(
+					myContext,
+					"Unable to connect to Plex Library at "
+							+ factory.getSectionsURL(), Toast.LENGTH_LONG)
+					.show();
+			notifyDataSetChanged();
+
+			Activity c = (Activity) myContext;
+			c.findViewById(R.id.mainGalleryMenu).requestFocus();
+		}
 	}
 
 }

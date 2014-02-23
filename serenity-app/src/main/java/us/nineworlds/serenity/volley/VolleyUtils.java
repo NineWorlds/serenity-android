@@ -34,23 +34,25 @@ import com.android.volley.toolbox.Volley;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class VolleyUtils {
 
 	private static RequestQueue queue;
-	
+
 	public static RequestQueue getRequestQueueInstance(Context context) {
 		if (queue == null) {
 			queue = Volley.newRequestQueue(context);
 		}
 		return queue;
 	}
-	
-	public static void volleyXmlGetRequest(String url, Response.Listener response, Response.ErrorListener error) {
-		SimpleXmlRequest<MediaContainer> request = new SimpleXmlRequest<MediaContainer>(Request.Method.GET, url, MediaContainer.class, response, error);
+
+	public static void volleyXmlGetRequest(String url,
+			Response.Listener response, Response.ErrorListener error) {
+		SimpleXmlRequest<MediaContainer> request = new SimpleXmlRequest<MediaContainer>(
+				Request.Method.GET, url, MediaContainer.class, response, error);
 		if (queue == null) {
-			Log.d("VolleyUtils", "Initialize Request Queue!");
+			Log.e("VolleyUtils", "Initialize Request Queue!");
 			return;
 		}
 		queue.add(request);

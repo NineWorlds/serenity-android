@@ -126,7 +126,6 @@
 
         <activity android:name=".ui.activity.OverscanSetupActivity"/>
 
-        <service android:name=".core.services.MainMenuIntentService" />
         <service android:name=".core.services.MusicRetrievalIntentService" />
         <service android:name=".core.services.MusicAlbumRetrievalIntentService" />
         <service android:name=".core.services.MusicTrackRetrievalIntentService" />
