@@ -11,18 +11,16 @@
 	<artifactId>serenity-app</artifactId>
 	<packaging>apk</packaging>
 
-	<dependencies>
-<!-- 		<dependency> -->
-<!-- 			<groupId>android</groupId> -->
-<!-- 			<artifactId>android</artifactId> -->
-<!-- 			<version>3.2_r1</version> -->
-<!-- 			<scope>provided</scope> -->
-<!-- 		</dependency> -->
+	<properties>
+		<android-version>4.2.2_r2</android-version>
+	</properties>
 
+
+	<dependencies>
 		<dependency>
 			<groupId>android</groupId>
 			<artifactId>android</artifactId>
-			<version>4.2.2_r2</version>
+			<version>${android-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -171,6 +169,12 @@
 		</plugins>
 	</build>
 	<profiles>
+		<profile>
+			<id>eclipse</id>
+			<properties>
+				<android-version>3.2_r1</android-version>
+			</properties>
+		</profile>
 		<profile>
 			<id>sign</id>
 			<build>
