@@ -12,19 +12,19 @@
 	<packaging>apk</packaging>
 
 	<dependencies>
-		<dependency>
-			<groupId>android</groupId>
-			<artifactId>android</artifactId>
-			<version>3.2_r1</version>
-			<scope>provided</scope>
-		</dependency>
-
 <!-- 		<dependency> -->
 <!-- 			<groupId>android</groupId> -->
 <!-- 			<artifactId>android</artifactId> -->
-<!-- 			<version>4.2.2_r2</version> -->
+<!-- 			<version>3.2_r1</version> -->
 <!-- 			<scope>provided</scope> -->
 <!-- 		</dependency> -->
+
+		<dependency>
+			<groupId>android</groupId>
+			<artifactId>android</artifactId>
+			<version>4.2.2_r2</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.nostra13.universalimageloader</groupId>
 			<artifactId>universal-image-loader</artifactId>
