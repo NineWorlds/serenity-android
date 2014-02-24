@@ -24,7 +24,6 @@
 package us.nineworlds.serenity;
 
 import us.nineworlds.serenity.ui.views.MainMenuTextView;
-
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -38,11 +37,11 @@ import android.widget.ImageView;
 
 public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 
-	private ImageView mainGalleryBackgroundView;
+	private final ImageView mainGalleryBackgroundView;
 	private MainMenuTextView preSelected;
 
 	public GalleryOnItemSelectedListener(View v) {
-		mainGalleryBackgroundView = (ImageView)v;
+		mainGalleryBackgroundView = (ImageView) v;
 	}
 
 	@Override
@@ -51,40 +50,45 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 		if (v instanceof MainMenuTextView) {
 			mainGalleryBackgroundView.clearAnimation();
 			MainMenuTextView tv = (MainMenuTextView) v;
-			
-			tv.setTextColor(v.getContext().getResources().getColor(android.R.color.white));
+
+			tv.setTextColor(v.getContext().getResources()
+					.getColor(android.R.color.white));
 			tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD_ITALIC);
-			
 
 			if (preSelected != null) {
 				preSelected.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 				preSelected.setTextColor(Color.parseColor("#414141"));
 			}
-			
+
 			preSelected = tv;
-			
-			mainGalleryBackgroundView.setImageResource(tv.getBackgroundImageId());
+
+			String url = "drawable://" + tv.getBackgroundImageId();
+			SerenityApplication.displayImage(url, mainGalleryBackgroundView,
+					tv.getBackgroundImageId());
+
+			// mainGalleryBackgroundView.setImageResource(tv.getBackgroundImageId());
 			if (shouldFadeIn()) {
-				Animation fadeIn = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
+				Animation fadeIn = AnimationUtils.loadAnimation(v.getContext(),
+						R.anim.fade_in);
 				fadeIn.setDuration(500);
 				mainGalleryBackgroundView.startAnimation(fadeIn);
 			}
-			
+
 		}
 
 	}
-	
+
 	/**
 	 * @return
 	 */
 	protected boolean shouldFadeIn() {
 		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(mainGalleryBackgroundView.getContext());
+				.getDefaultSharedPreferences(mainGalleryBackgroundView
+						.getContext());
 		boolean shouldFadein = preferences.getBoolean(
 				"animation_background_mainmenu_fadein", true);
 		return shouldFadein;
 	}
-
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {

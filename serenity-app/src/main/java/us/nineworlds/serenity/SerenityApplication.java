@@ -28,26 +28,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import android.widget.ImageView;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.imageloader.OKHttpImageLoader;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-
-import com.castillo.dd.PendingDownload;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.Tracker;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.squareup.okhttp.OkHttpClient;
-
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -56,6 +42,19 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.widget.ImageView;
+
+import com.castillo.dd.PendingDownload;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Tracker;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+import com.squareup.okhttp.OkHttpClient;
 
 /**
  * Global manager for the Serenity application
@@ -66,13 +65,12 @@ import android.preference.PreferenceManager;
 public class SerenityApplication extends Application {
 
 	private static final String COM_GOOGLE_ANDROID_TV = "com.google.android.tv";
-	private static final String HTTPCACHE = "httpcache";
 	protected static PlexappFactory plexFactory;
 	private static ConcurrentHashMap<String, Server> plexmediaServers = new ConcurrentHashMap<String, Server>();
 	private static LinkedList<VideoContentInfo> videoQueue = new LinkedList<VideoContentInfo>();
 	private static ImageLoader imageLoader;
 	public static final int PROGRESS = 0xDEADBEEF;
-	
+
 	private static List<PendingDownload> pendingDownloads;
 
 	public static List<PendingDownload> getPendingDownloads() {
@@ -96,13 +94,13 @@ public class SerenityApplication extends Application {
 	public static DisplayImageOptions getMovieOptions() {
 		return movieOptions;
 	}
-	
+
 	/**
 	 * 
 	 */
 	public SerenityApplication() {
 		pendingDownloads = new ArrayList<PendingDownload>();
-		
+
 	}
 
 	@Override
@@ -110,7 +108,8 @@ public class SerenityApplication extends Application {
 		super.onCreate();
 		init();
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = prefs.edit();
 		if (isGoogleTV(this) || isAndroidTV(this)) {
 			editor.putBoolean("serenity_tv_mode", true);
@@ -127,36 +126,35 @@ public class SerenityApplication extends Application {
 		installAnalytics();
 		sendStartedApplicationEvent();
 	}
-	
 
 	protected void configureImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
 				.cacheInMemory(true).cacheOnDisc(true)
 				.bitmapConfig(Bitmap.Config.RGB_565)
 				.resetViewBeforeLoading(true)
-				.showImageForEmptyUri(R.drawable.default_video_cover)
-				.build();
+				.showImageForEmptyUri(R.drawable.default_video_cover).build();
 
 		musicOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
 				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565)
-				.showImageForEmptyUri(R.drawable.default_music)
-				.build();
+				.showImageForEmptyUri(R.drawable.default_music).build();
 
 		movieOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
 				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565)
-				.resetViewBeforeLoading(true)
-				.build();
+				.resetViewBeforeLoading(true).build();
 
-		reflectiveOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
-				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565)
+		reflectiveOptions = new DisplayImageOptions.Builder()
+				.cacheInMemory(true).cacheOnDisc(true)
+				.bitmapConfig(Bitmap.Config.RGB_565)
 				.displayer(new RoundedBitmapDisplayer(10)).build();
 
 		ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(
-				this).taskExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+				this)
+				.taskExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
 				.taskExecutorForCachedImages(AsyncTask.THREAD_POOL_EXECUTOR)
 				.threadPoolSize(5)
 				.tasksProcessingOrder(QueueProcessingType.FIFO)
-				.imageDownloader(new OKHttpImageLoader(this, new OkHttpClient()))
+				.imageDownloader(
+						new OKHttpImageLoader(this, new OkHttpClient()))
 				.defaultDisplayImageOptions(defaultOptions).build();
 
 		imageLoader = ImageLoader.getInstance();
@@ -244,12 +242,26 @@ public class SerenityApplication extends Application {
 		displayImage(imageUrl, view, null);
 	}
 
-	public static void displayImage(String imageUrl, ImageView view, DisplayImageOptions displayImageOptions) {
+	public static void displayImage(String imageUrl, ImageView view,
+			DisplayImageOptions displayImageOptions) {
 		displayImage(imageUrl, view, displayImageOptions, null);
 	}
 
-	public static void displayImage(String imageUrl, ImageView view, DisplayImageOptions displayImageOptions, ImageLoadingListener imageLoaderListener) {
+	public static void displayImage(String imageUrl, ImageView view,
+			DisplayImageOptions displayImageOptions,
+			ImageLoadingListener imageLoaderListener) {
 		final ImageViewAware imageViewAware = new ImageViewAware(view);
-		imageLoader.displayImage(plexFactory.getImageURL(imageUrl, imageViewAware.getWidth(), imageViewAware.getHeight()), view, displayImageOptions, imageLoaderListener);
+		imageLoader.displayImage(plexFactory.getImageURL(imageUrl,
+				imageViewAware.getWidth(), imageViewAware.getHeight()), view,
+				displayImageOptions, imageLoaderListener);
+	}
+
+	public static void displayImage(String imageUrl, ImageView view, int resId) {
+		final ImageViewAware imageViewAware = new ImageViewAware(view);
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.cacheInMemory(true).cacheOnDisc(true)
+				.bitmapConfig(Bitmap.Config.RGB_565)
+				.showImageForEmptyUri(resId).build();
+		imageLoader.displayImage(imageUrl, imageViewAware, options);
 	}
 }
