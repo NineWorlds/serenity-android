@@ -117,12 +117,30 @@ public class ResourcePaths {
 	}
 	
 	public String getMediaTagURL(String resourceType, String resourceName, String identifier) {
-		String mediaTagURL = getHostPort() + "/system/bundle/media/flags/" + resourceType + "/" + URLEncoder.encode(resourceName) + "?t=" + identifier;
+		String encodedResourceName = resourceName;
+		try {
+			encodedResourceName = URLEncoder.encode(resourceName, "UTF-8");
+		} catch (Exception ex) {
+			
+		}
+		String mediaTagURL = getHostPort() + "/system/bundle/media/flags/" + resourceType + "/" + encodedResourceName + "?t=" + identifier;
 		return mediaTagURL;
 	}
 
     public String getImageURL(String url, int width, int height) {
-        return getHostPort() + "/photo/:/transcode?url=" + URLEncoder.encode(url) + "&width=" + width + "&height=" + height;
+    	String u = url;
+    	String host = config.getHost();
+    	if (u.contains(config.getHost())) {
+    		u = u.replaceFirst(host, "127.0.0.1");
+    	}
+    	String encodedUrl = u;
+    	try {
+    		encodedUrl = URLEncoder.encode(u, "UTF-8");
+    	} catch (Exception ex) {
+    		// If there is an exception encoding the url just return the original url
+    		return url;
+    	}
+        return getHostPort() + "/photo/:/transcode?url=" + encodedUrl + "&width=" + width + "&height=" + height;
     }
 	
 }

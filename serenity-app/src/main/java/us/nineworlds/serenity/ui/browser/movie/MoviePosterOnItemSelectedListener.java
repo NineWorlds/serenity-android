@@ -23,32 +23,27 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue.RequestFilter;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ImageView.ScaleType;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue.RequestFilter;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * When a poster is selected, update the information displayed in the browser.
@@ -56,9 +51,8 @@ import android.widget.ImageView.ScaleType;
  * @author dcarver
  * 
  */
-public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelectedListener implements
-		OnItemSelectedListener {
-
+public class MoviePosterOnItemSelectedListener extends
+		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 
 	/**
 	 * 
@@ -67,40 +61,44 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 		super(activity);
 	}
 
-
 	@Override
 	protected void createVideoDetail(ImageView v) {
-		ImageView posterImage = (ImageView) context.findViewById(R.id.video_poster);
+		ImageView posterImage = (ImageView) context
+				.findViewById(R.id.video_poster);
 		posterImage.setVisibility(View.VISIBLE);
 		posterImage.setScaleType(ScaleType.FIT_XY);
 		posterImage.setMaxWidth(posterImage.getWidth());
 		posterImage.setMaxHeight(posterImage.getHeight());
 		ImageLoader imageLoader = SerenityApplication.getImageLoader();
+		imageLoader.cancelDisplayTask(posterImage);
 		SerenityApplication.displayImage(videoInfo.getImageURL(), posterImage);
-		SerenityApplication.displayImage(videoInfo.getImageURL(), posterImage);
-		
+
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
 		summary.setText(videoInfo.getSummary());
 
 		TextView title = (TextView) context
 				.findViewById(R.id.movieBrowserPosterTitle);
 		title.setText(videoInfo.getTitle());
-		
+
 		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100,
 				58);
 
 		ImageView crv = imageUtilsNormal.createContentRatingImage(
 				videoInfo.getContentRating(), context);
 		Drawable drawable = crv.getDrawable();
-		BitmapDrawable bmd = (BitmapDrawable)drawable;
-		
-		int w = ImageUtils.getDPI(100, (Activity)v.getContext());
-		int h = ImageUtils.getDPI(58, (Activity)v.getContext());
+		BitmapDrawable bmd = (BitmapDrawable) drawable;
+
+		int w = ImageUtils.getDPI(100, (Activity) v.getContext());
+		int h = ImageUtils.getDPI(58, (Activity) v.getContext());
 		Bitmap bitmap = bmd.getBitmap();
-		
-	    Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, w, h, false);
-		
-		title.setCompoundDrawablesWithIntrinsicBounds(null, null, new BitmapDrawable(v.getContext().getResources(), bitmapResized), null);
+
+		Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, w, h, false);
+
+		title.setCompoundDrawablesWithIntrinsicBounds(
+				null,
+				null,
+				new BitmapDrawable(v.getContext().getResources(), bitmapResized),
+				null);
 	}
 
 	@Override
@@ -113,14 +111,17 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 		subtitleSpinner.setVisibility(View.GONE);
 	}
 
-
 	@Override
 	public void onNothingSelected(SerenityAdapterView<?> av) {
 
 	}
-	
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener#fetchSubtitle(us.nineworlds.serenity.core.model.VideoContentInfo)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener
+	 * #fetchSubtitle(us.nineworlds.serenity.core.model.VideoContentInfo)
 	 */
 	@Override
 	public void fetchSubtitle(VideoContentInfo mpi) {
@@ -131,11 +132,10 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 					request.cancel();
 					return true;
 				}
-				
+
 			});
 		}
 		super.fetchSubtitle(mpi);
 	}
-
 
 }

@@ -23,8 +23,12 @@
 
 package us.nineworlds.serenity.ui.util;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.util.TimeUtil;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -36,13 +40,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.util.TimeUtil;
-import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
-
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author dcarver
@@ -50,8 +48,8 @@ import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
  */
 public class ImageInfographicUtils {
 
-	private int width;
-	private int height;
+	private final int width;
+	private final int height;
 
 	public ImageInfographicUtils(int width, int height) {
 		this.width = width;
@@ -61,8 +59,8 @@ public class ImageInfographicUtils {
 	public ImageView createAudioCodecImage(String codec, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
-		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		int w = ImageUtils.getDPI(width, (Activity) v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity) v.getContext());
 		v.setLayoutParams(new LayoutParams(w, h));
 
 		if ("aac".equals(codec)) {
@@ -157,15 +155,15 @@ public class ImageInfographicUtils {
 	public ImageView createVideoResolutionImage(String res, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
-		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		int w = ImageUtils.getDPI(width, (Activity) v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity) v.getContext());
 		v.setLayoutParams(new LayoutParams(w, h));
-		
+
 		if ("sd".equalsIgnoreCase(res) || "480".equalsIgnoreCase(res)) {
 			v.setImageResource(R.drawable.res480);
 			return v;
 		}
-		
+
 		if ("576".equalsIgnoreCase(res)) {
 			v.setImageResource(R.drawable.res576);
 			return v;
@@ -180,7 +178,7 @@ public class ImageInfographicUtils {
 			v.setImageResource(R.drawable.res1080);
 			return v;
 		}
-		
+
 		if ("hd".equalsIgnoreCase(res)) {
 			v.setImageResource(R.drawable.hd);
 			return v;
@@ -193,8 +191,8 @@ public class ImageInfographicUtils {
 	public ImageView createAspectRatioImage(String ratio, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
-		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		int w = ImageUtils.getDPI(width, (Activity) v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity) v.getContext());
 		v.setLayoutParams(new LayoutParams(w, h));
 
 		if ("1.33".equals(ratio)) {
@@ -235,8 +233,8 @@ public class ImageInfographicUtils {
 			Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
-		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		int w = ImageUtils.getDPI(width, (Activity) v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity) v.getContext());
 		v.setLayoutParams(new LayoutParams(w, h));
 
 		if ("G".equals(contentRating)) {
@@ -272,20 +270,19 @@ public class ImageInfographicUtils {
 	public ImageView createVideoCodec(String codec, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
-		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		int w = ImageUtils.getDPI(width, (Activity) v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity) v.getContext());
 		v.setLayoutParams(new LayoutParams(w, h));
 
 		if ("divx".equalsIgnoreCase(codec)) {
 			v.setImageResource(R.drawable.divx);
 			return v;
 		}
-		
+
 		if ("div3".equalsIgnoreCase(codec)) {
 			v.setImageResource(R.drawable.div3);
 			return v;
 		}
-		
 
 		if ("vc-1".equalsIgnoreCase(codec)) {
 			v.setImageResource(R.drawable.vc_1);
@@ -319,31 +316,30 @@ public class ImageInfographicUtils {
 	public ImageView createTVContentRating(String contentRating, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
-		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		int w = ImageUtils.getDPI(width, (Activity) v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity) v.getContext());
 		v.setLayoutParams(new LayoutParams(w, h));
-		
+
 		if ("TV-G".equals(contentRating)) {
 			v.setImageResource(R.drawable.tvg);
 			return v;
 		}
-		
+
 		if ("TV-PG".equals(contentRating)) {
 			v.setImageResource(R.drawable.tvpg);
 			return v;
 		}
-		
+
 		if ("TV-14".equals(contentRating)) {
 			v.setImageResource(R.drawable.tv14);
 			return v;
 		}
-		
 
 		if ("TV-MA".equals(contentRating)) {
 			v.setImageResource(R.drawable.tvma);
 			return v;
 		}
-		
+
 		if ("TV-Y".equals(contentRating)) {
 			v.setImageResource(R.drawable.tvy);
 			return v;
@@ -353,7 +349,6 @@ public class ImageInfographicUtils {
 			v.setImageResource(R.drawable.tvy7);
 			return v;
 		}
-		
 
 		v.setImageResource(R.drawable.tvnr);
 		return v;
@@ -362,8 +357,8 @@ public class ImageInfographicUtils {
 	public ImageView createAudioChannlesImage(String channels, Context context) {
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
-		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		int w = ImageUtils.getDPI(width, (Activity) v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity) v.getContext());
 		v.setLayoutParams(new LayoutParams(w, h));
 
 		if ("0".equalsIgnoreCase(channels)) {
@@ -394,53 +389,56 @@ public class ImageInfographicUtils {
 		return null;
 	}
 
-	public static void setWatchedCount(ImageView epiv, Activity a, VideoContentInfo info) {
+	public static void setWatchedCount(ImageView epiv, Activity a,
+			VideoContentInfo info) {
 		ImageView watchedView = (ImageView) a
 				.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
 		if (watchedView != null) {
-		   watchedView.setImageResource(R.drawable.watched_small);
+			watchedView.setImageResource(R.drawable.watched_small);
 		}
 	}
 
-	public static void setUnwatched(ImageView epiv, Activity a, VideoContentInfo info) {
+	public static void setUnwatched(ImageView epiv, Activity a,
+			VideoContentInfo info) {
 		ImageView watchedView = (ImageView) a
 				.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
 		if (watchedView != null) {
 			watchedView.setImageResource(R.drawable.unwatched_small);
 		}
 	}
-	
-	
-	public ImageView createStudioImage(String studio,
-			Context context, String identifier) {
+
+	public ImageView createStudioImage(String studio, Context context,
+			String identifier) {
 		if (studio == null) {
 			return null;
 		}
-		
+
 		ImageLoader imageLoader = SerenityApplication.getImageLoader();
 		PlexappFactory factory = SerenityApplication.getPlexFactory();
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
-		int w = ImageUtils.getDPI(width, (Activity)v.getContext());
-		int h = ImageUtils.getDPI(height, (Activity)v.getContext());
+		int w = ImageUtils.getDPI(width, (Activity) v.getContext());
+		int h = ImageUtils.getDPI(height, (Activity) v.getContext());
 		v.setLayoutParams(new LayoutParams(w, h));
-		String mediaTagUrl = factory.getMediaTagURL("studio", studio, identifier);
+		String mediaTagUrl = factory.getMediaTagURL("studio", studio,
+				identifier);
+		imageLoader.cancelDisplayTask(v);
 		SerenityApplication.displayImage(mediaTagUrl, v);
 		return v;
 	}
-	
+
 	public TextView createDurationView(long duration, Context context) {
 		TextView tv = new TextView(context);
 		tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
 		tv.setText(TimeUtil.formatDurationHoursMinutes(duration));
 		tv.setTypeface(Typeface.DEFAULT_BOLD);
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		params.rightMargin = 10;
 		params.gravity = Gravity.CENTER_VERTICAL;
 		tv.setLayoutParams(params);
 		tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
 		return tv;
 	}
-	
 
 }

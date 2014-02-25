@@ -304,6 +304,9 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		}
 
 		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
+		ImageLoader imageLoader = SerenityApplication.getImageLoader();
+		imageLoader.cancelDisplayTask(fanArt);
+
 		SerenityApplication.displayImage(videoInfo.getBackgroundURL(), fanArt,
 				SerenityApplication.getMovieOptions(),
 				new AnimationImageLoaderListener());
