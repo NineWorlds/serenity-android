@@ -33,6 +33,8 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.mozilla.universalchardet.UniversalDetector;
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
@@ -46,7 +48,7 @@ import us.nineworlds.serenity.core.subtitles.formats.FormatASS;
 import us.nineworlds.serenity.core.subtitles.formats.FormatSRT;
 import us.nineworlds.serenity.core.subtitles.formats.TimedTextObject;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
-
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -58,21 +60,22 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
-import android.view.*;
-import android.widget.FrameLayout;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import org.mozilla.universalchardet.UniversalDetector;
 
 /**
  * A view that handles the internal video playback and representation of a movie
  * or tv show.
- *
+ * 
  * @author dcarver
- *
+ * 
  */
 public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		implements SurfaceHolder.Callback {
@@ -97,7 +100,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private VideoContentInfo video;
 	private String videoId;
 	private int resumeOffset;
-	private boolean mediaplayer_error_state = false;
+	private final boolean mediaplayer_error_state = false;
 	private boolean mediaplayer_released = false;
 	private String subtitleURL;
 	private String subtitleType;
@@ -107,8 +110,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private String subtitleInputEncoding = null;
 	private boolean autoResume;
 
-	private Handler subtitleDisplayHandler = new Handler();
-	private Runnable subtitle = new Runnable() {
+	private final Handler subtitleDisplayHandler = new Handler();
+	private final Runnable subtitle = new Runnable() {
 		@Override
 		public void run() {
 			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
@@ -149,19 +152,22 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		};
 	};
 
-	private Handler progressReportinghandler = new Handler();
-	private Runnable progressRunnable = new Runnable() {
+	private final Handler progressReportinghandler = new Handler();
+	private final Runnable progressRunnable = new Runnable() {
 
 		@Override
 		public void run() {
 			try {
 				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-					float percentage = Float.valueOf(mediaPlayer.getCurrentPosition()) / Float.valueOf(mediaPlayer.getDuration());
+					float percentage = Float.valueOf(mediaPlayer
+							.getCurrentPosition())
+							/ Float.valueOf(mediaPlayer.getDuration());
 					playbackPos = mediaPlayer.getCurrentPosition();
 					if (percentage <= 90.f) {
 						new UpdateProgressRequest().execute();
 						progressReportinghandler.postDelayed(this,
-								PROGRESS_UPDATE_DELAY); // Update progress every 5
+								PROGRESS_UPDATE_DELAY); // Update progress every
+														// 5
 														// seconds
 					} else {
 						new WatchedVideoAsyncTask().execute(videoId);
@@ -232,7 +238,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		holder.addCallback(this);
 		holder.setSizeFromLayout();
 
-		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		final SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
 		final boolean showTimeOfDay = prefs.getBoolean("showTimeOfDay", false);
 		timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
 
@@ -326,8 +333,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 * @param audioChannels
 	 */
 	protected void initMediaController(String summary, String title,
-									   String posterURL, String videoFormat, String videoResolution,
-									   String audioFormat, String audioChannels) {
+			String posterURL, String videoFormat, String videoResolution,
+			String audioFormat, String audioChannels) {
 
 		mediaController = new MediaController(this, summary, title, posterURL,
 				videoResolution, videoFormat, audioFormat, audioChannels,
@@ -361,16 +368,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		if (getParent() == null) {
 			setResult(Activity.RESULT_OK, returnIntent);
 		} else {
-			getParent().setResult(Activity.RESULT_OK,
-					returnIntent);
+			getParent().setResult(Activity.RESULT_OK, returnIntent);
 		}
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		final int currentPosition = mediaPlayer.getCurrentPosition();
-		final int duration = mediaPlayer.getDuration();
+		final SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
 
 		if (isKeyCodeBack(keyCode)) {
 			if (mediaController.isShowing()) {
@@ -404,7 +409,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				} else {
 					mediaPlayer.start();
 					mediaController.hide();
-					progressReportinghandler.postDelayed(progressRunnable, 5000);
+					progressReportinghandler
+							.postDelayed(progressRunnable, 5000);
 				}
 				return true;
 			}
@@ -421,13 +427,15 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				} else {
 					mediaPlayer.start();
 					mediaController.hide();
-					progressReportinghandler.postDelayed(progressRunnable, 5000);
+					progressReportinghandler
+							.postDelayed(progressRunnable, 5000);
 				}
 				return true;
 			}
 		}
 
-		final String nextPrevBehavior = prefs.getString("next_prev_behavior", "queue");
+		final String nextPrevBehavior = prefs.getString("next_prev_behavior",
+				"queue");
 
 		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
 			if (nextPrevBehavior.equals("queue")) {
@@ -440,15 +448,29 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			final int skipTo;
 			if (isMediaPlayerStateValid()) {
+				final int currentPosition = mediaPlayer.getCurrentPosition();
+				final int duration = mediaPlayer.getDuration();
+
 				if (nextPrevBehavior.endsWith("%")) {
-					final Integer percent = Integer.valueOf(nextPrevBehavior.substring(0, nextPrevBehavior.length() - 1));
+					final Integer percent = Integer.valueOf(nextPrevBehavior
+							.substring(0, nextPrevBehavior.length() - 1));
 					skipTo = currentPosition + duration * percent / 100;
 				} else {
-					skipTo = currentPosition + Integer.valueOf(nextPrevBehavior);
+					skipTo = currentPosition
+							+ Integer.valueOf(nextPrevBehavior);
 				}
 				skipToOffset(skipTo);
 				return true;
 			}
+		}
+
+		if (keyCode == KeyEvent.KEYCODE_T) {
+			final boolean showTimeOfDay = !prefs.getBoolean("showTimeOfDay",
+					false);
+			timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE
+					: View.GONE);
+			prefs.edit().putBoolean("showTimeOfDay", showTimeOfDay).apply();
+			return true;
 		}
 
 		// All actions from here on require media to be in a valid state
@@ -456,47 +478,54 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			return super.onKeyDown(keyCode, event);
 		}
 
-		if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS && !nextPrevBehavior.equals("queue")) {
-			final int skipTo;
-			if (nextPrevBehavior.endsWith("%")) {
-				final Integer percent = Integer.valueOf(nextPrevBehavior.substring(0, nextPrevBehavior.length() - 1));
-				skipTo = currentPosition - duration * percent / 100;
-			} else {
-				skipTo = currentPosition - Integer.valueOf(nextPrevBehavior);
-			}
-			skipToOffset(skipTo);
-			return true;
-		}
-
-		if (isKeyCodeSkipForward(keyCode)) {
-			skipToOffset(currentPosition + Integer.valueOf(prefs.getString("skip_forward_time", "30000")));
-			return true;
-		}
-
-		if (isKeyCodeSkipBack(keyCode)) {
-			skipToOffset(currentPosition - Integer.valueOf(prefs.getString("skip_backward_time", "10000")));
-			return true;
-		}
-
-		if (isKeyCodeStop(keyCode)) {
-			if (mediaPlayer.isPlaying()) {
-				mediaPlayer.pause();
-				if (!mediaController.isShowing()) {
-					mediaController.show(CONTROLLER_DELAY);
+		try {
+			final int currentPosition = mediaPlayer.getCurrentPosition();
+			final int duration = mediaPlayer.getDuration();
+			if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
+					&& !nextPrevBehavior.equals("queue")) {
+				final int skipTo;
+				if (nextPrevBehavior.endsWith("%")) {
+					final Integer percent = Integer.valueOf(nextPrevBehavior
+							.substring(0, nextPrevBehavior.length() - 1));
+					skipTo = currentPosition - duration * percent / 100;
+				} else {
+					skipTo = currentPosition
+							- Integer.valueOf(nextPrevBehavior);
 				}
+				skipToOffset(skipTo);
+				return true;
 			}
-			return true;
-		}
 
-		if (keyCode == KeyEvent.KEYCODE_T) {
-			final boolean showTimeOfDay = !prefs.getBoolean("showTimeOfDay", false);
-			timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
-			prefs.edit().putBoolean("showTimeOfDay", showTimeOfDay).apply();
-			return true;
-		}
+			if (isKeyCodeSkipForward(keyCode)) {
+				skipToOffset(currentPosition
+						+ Integer.valueOf(prefs.getString("skip_forward_time",
+								"30000")));
+				return true;
+			}
 
-		if (isSkipByPercentage(keyCode)) {
-			return true;
+			if (isKeyCodeSkipBack(keyCode)) {
+				skipToOffset(currentPosition
+						- Integer.valueOf(prefs.getString("skip_backward_time",
+								"10000")));
+				return true;
+			}
+
+			if (isKeyCodeStop(keyCode)) {
+				if (mediaPlayer.isPlaying()) {
+					mediaPlayer.pause();
+					if (!mediaController.isShowing()) {
+						mediaController.show(CONTROLLER_DELAY);
+					}
+				}
+				return true;
+			}
+
+			if (isSkipByPercentage(keyCode)) {
+				return true;
+			}
+		} catch (IllegalStateException e) {
+			Log.e(this.getClass().getName(),
+					"Media Player is in an illegalstate.", e);
 		}
 
 		return super.onKeyDown(keyCode, event);
@@ -664,9 +693,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	/**
 	 * A task that updates the progress position of a video while it is being
 	 * played.
-	 *
+	 * 
 	 * @author dcarver
-	 *
+	 * 
 	 */
 	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
 
@@ -694,7 +723,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -738,7 +767,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media
 	 * .MediaPlayer, android.media.TimedText)
@@ -761,7 +790,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 		Charset charsetOutput = Charset.forName(outputEncoding);
 		Charset charsetInput = Charset.forName(subtitleInputEncoding);
-		CharBuffer inputEncoded = charsetInput.decode(ByteBuffer.wrap(textToConvert.getBytes(Charset.forName(subtitleInputEncoding))));
+		CharBuffer inputEncoded = charsetInput.decode(ByteBuffer
+				.wrap(textToConvert.getBytes(Charset
+						.forName(subtitleInputEncoding))));
 		byte[] utfEncoded = charsetOutput.encode(inputEncoded).array();
 		return new String(utfEncoded, Charset.forName("UTF-8"));
 	}
@@ -806,7 +837,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 				subtitleInputEncoding = detector.getDetectedCharset();
 				if (subtitleInputEncoding != null) {
-					Log.d(getClass().getName(), "Detected encoding = " + subtitleInputEncoding);
+					Log.d(getClass().getName(), "Detected encoding = "
+							+ subtitleInputEncoding);
 				}
 				detector.reset();
 			} catch (IOException ex) {
