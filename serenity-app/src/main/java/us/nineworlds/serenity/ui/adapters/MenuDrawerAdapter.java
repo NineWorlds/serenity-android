@@ -25,8 +25,8 @@ package us.nineworlds.serenity.ui.adapters;
 
 import java.util.List;
 
-import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
@@ -43,15 +43,14 @@ import android.widget.TextView;
  */
 public class MenuDrawerAdapter extends BaseAdapter {
 
-	private static List<MenuDrawerItem> menuOptions;
-	private Activity context;
-	private String key;
+	private final List<MenuDrawerItem> menuOptions;
+	private final Activity context;
 
 	public MenuDrawerAdapter(Activity context, List<MenuDrawerItem> menuOptions) {
-		MenuDrawerAdapter.menuOptions = menuOptions;
+		this.menuOptions = menuOptions;
 		this.context = context;
 	}
-	
+
 	@Override
 	public int getCount() {
 		return menuOptions.size();
@@ -65,16 +64,17 @@ public class MenuDrawerAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		TextView rowView = null;
-		Activity contextView = (Activity) parent.getContext();
-		
+
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		rowView = (TextView) inflater.inflate(R.layout.serenity_menudrawer_listview_textview, parent, false);
-		
+		rowView = (TextView) inflater.inflate(
+				R.layout.serenity_menudrawer_listview_textview, parent, false);
+
 		rowView.setBackgroundResource(R.drawable.album_list_view_selector);
 		rowView.setText(menuOptions.get(position).getText());
 		rowView.setGravity(Gravity.CENTER_VERTICAL);
-		rowView.setCompoundDrawablesWithIntrinsicBounds(menuOptions.get(position).getImageResourceID(), 0, 0, 0);
+		rowView.setCompoundDrawablesWithIntrinsicBounds(
+				menuOptions.get(position).getImageResourceID(), 0, 0, 0);
 		return rowView;
 	}
 
