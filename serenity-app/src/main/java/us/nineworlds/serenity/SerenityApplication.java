@@ -70,7 +70,6 @@ public class SerenityApplication extends Application {
 	private static LinkedList<VideoContentInfo> videoQueue = new LinkedList<VideoContentInfo>();
 	private static ImageLoader imageLoader;
 	public static final int PROGRESS = 0xDEADBEEF;
-
 	private static List<PendingDownload> pendingDownloads;
 
 	public static List<PendingDownload> getPendingDownloads() {
@@ -88,6 +87,8 @@ public class SerenityApplication extends Application {
 	public static DisplayImageOptions getMusicOptions() {
 		return musicOptions;
 	}
+
+	private static boolean enableTracking = true;
 
 	private static DisplayImageOptions movieOptions;
 
@@ -123,7 +124,9 @@ public class SerenityApplication extends Application {
 	public void init() {
 		configureImageLoader();
 		initializePlexappFactory();
-		installAnalytics();
+		if (enableTracking) {
+			installAnalytics();
+		}
 		sendStartedApplicationEvent();
 	}
 
@@ -166,11 +169,13 @@ public class SerenityApplication extends Application {
 	 */
 	protected void sendStartedApplicationEvent() {
 		String deviceModel = android.os.Build.MODEL;
-		Tracker tracker = EasyTracker.getTracker();
-		if (tracker != null) {
-			tracker.sendEvent("Devices", "Started Application", deviceModel,
-					(long) 0);
+		if (enableTracking) {
+			Tracker tracker = EasyTracker.getTracker();
+			if (tracker != null) {
+				tracker.sendEvent("Devices", "Started Application",
+						deviceModel, (long) 0);
 
+			}
 		}
 	}
 
@@ -263,5 +268,13 @@ public class SerenityApplication extends Application {
 				.bitmapConfig(Bitmap.Config.RGB_565)
 				.showImageForEmptyUri(resId).build();
 		imageLoader.displayImage(imageUrl, imageViewAware, options);
+	}
+
+	public static void disableTracking() {
+		enableTracking = false;
+	}
+
+	public static boolean isTrackingEnabled() {
+		return enableTracking;
 	}
 }

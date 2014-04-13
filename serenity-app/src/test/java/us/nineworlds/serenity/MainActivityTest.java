@@ -30,40 +30,45 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.SerenityShadowResources;
+import org.robolectric.shadows.ShadowApplication;
 
+import com.google.analytics.tracking.android.GoogleAnalytics;
 
 /**
  * @author dcarver
  * 
  */
-@RunWith(RobolectricTestRunner.class)
+@RunWith(TestRunner.class)
 @Config(shadows = SerenityShadowResources.class)
 public class MainActivityTest {
 
 	@Before
 	public void setUp() throws Exception {
-
+		ShadowApplication shadowApp = Robolectric
+				.shadowOf(Robolectric.application);
+		shadowApp
+				.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		Robolectric.getBackgroundScheduler().reset();
+
 	}
 
 	@Test
 	public void assertThatMainActivityIsCreated() throws Exception {
 		MainActivity activity = Robolectric.buildActivity(MainActivity.class)
-				.get();
+				.create().get();
 		assertThat(activity).isNotNull().isNotFinishing();
 	}
 
 	@Test
 	public void onCreateCreatesMenu() throws Exception {
+		GoogleAnalytics.getInstance(Robolectric.application).setAppOptOut(true);
 		MainActivity activity = Robolectric.buildActivity(MainActivity.class)
-				.create().get();
+				.withApplication(Robolectric.application).create().get();
 		assertThat(activity.getMenuDrawer()).isNotNull();
 		assertThat(activity.findViewById(R.id.mainGalleryBackground))
 				.isVisible();

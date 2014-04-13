@@ -431,7 +431,9 @@ public class MainActivity extends SerenityActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance().activityStart(this);
+		if (SerenityApplication.isTrackingEnabled()) {
+			EasyTracker.getInstance().activityStart(this);
+		}
 
 		autoConfigureHandler.postDelayed(new AutoConfigureHandlerRunnable(),
 				2500);
