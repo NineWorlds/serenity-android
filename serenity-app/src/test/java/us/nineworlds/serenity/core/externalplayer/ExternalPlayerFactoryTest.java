@@ -1,4 +1,4 @@
-package us.nineworlds.serenity.core.externalplayer.test;
+package us.nineworlds.serenity.core.externalplayer;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 

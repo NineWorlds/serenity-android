@@ -21,44 +21,51 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.video.player.test;
+package us.nineworlds.serenity;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.ANDROID.assertThat;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.SerenityShadowResources;
 
-import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 
 /**
  * @author dcarver
  * 
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(reportSdk = 14)
-public class SerenitySurfaceViewVideoPlayerTest {
-
-	SerenitySurfaceViewVideoActivity activity;
+@Config(shadows = SerenityShadowResources.class)
+public class MainActivityTest {
 
 	@Before
 	public void setUp() throws Exception {
-		activity = new SerenitySurfaceViewVideoActivity();
 
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		activity.finish();
+		Robolectric.getBackgroundScheduler().reset();
 	}
 
 	@Test
-	public void testCreateVideoPlayerActivity() throws Exception {
-		SerenitySurfaceViewVideoActivity activity = new SerenitySurfaceViewVideoActivity();
-		assertThat(activity).isNotNull();
+	public void assertThatMainActivityIsCreated() throws Exception {
+		MainActivity activity = Robolectric.buildActivity(MainActivity.class)
+				.get();
+		assertThat(activity).isNotNull().isNotFinishing();
 	}
 
+	@Test
+	public void onCreateCreatesMenu() throws Exception {
+		MainActivity activity = Robolectric.buildActivity(MainActivity.class)
+				.create().get();
+		assertThat(activity.getMenuDrawer()).isNotNull();
+		assertThat(activity.findViewById(R.id.mainGalleryBackground))
+				.isVisible();
+	}
 }

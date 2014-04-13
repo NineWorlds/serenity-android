@@ -24,9 +24,6 @@
 package us.nineworlds.serenity.ui.activity;
 
 import net.simonvt.menudrawer.MenuDrawer;
-
-import com.jess.ui.TwoWayGridView;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
@@ -40,6 +37,8 @@ import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
+
+import com.jess.ui.TwoWayGridView;
 
 /**
  * @author dcarver
@@ -172,7 +171,8 @@ public abstract class SerenityActivity extends Activity {
 				}
 				if (video != null) {
 					updateProgress(data, video);
-					ImageUtils.toggleProgressIndicator(selectedView, video.getResumeOffset(), video.getDuration());
+					ImageUtils.toggleProgressIndicator(selectedView,
+							video.getResumeOffset(), video.getDuration());
 				}
 			}
 		}
@@ -185,16 +185,17 @@ public abstract class SerenityActivity extends Activity {
 	protected void updateProgress(Intent data, VideoContentInfo video) {
 		long position = 0;
 		position = data.getIntExtra("position", 0);
-		
+
 		video.setResumeOffset(Long.valueOf(position).intValue());
 
 		if (video.isPartiallyWatched()) {
-			UpdateProgressRequest request = new UpdateProgressRequest(position, video);
+			UpdateProgressRequest request = new UpdateProgressRequest(position,
+					video);
 			video.setResumeOffset(Long.valueOf(position).intValue());
 			request.execute();
 			return;
 		}
-		
+
 	}
 
 	public void showMenuItems() {
@@ -214,6 +215,14 @@ public abstract class SerenityActivity extends Activity {
 		if (tvMode) {
 			menuOptions.setVisibility(View.GONE);
 		}
+	}
+
+	public MenuDrawer getMenuDrawer() {
+		return menuDrawer;
+	}
+
+	public void setMenuDrawer(MenuDrawer menuDrawer) {
+		this.menuDrawer = menuDrawer;
 	}
 
 }

@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.services.test;
+package us.nineworlds.serenity.core.services;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;

@@ -26,6 +26,7 @@ package us.nineworlds.serenity;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -35,12 +36,17 @@ import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,7 +67,6 @@ import com.castillo.dd.Download;
 import com.castillo.dd.DownloadService;
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
-import net.simonvt.menudrawer.MenuDrawer;
 
 public class MainActivity extends SerenityActivity {
 
@@ -193,7 +198,7 @@ public class MainActivity extends SerenityActivity {
 
 	protected Handler autoConfigureHandler = new Handler();
 
-	private ServiceConnection downloadService = new ServiceConnection() {
+	private final ServiceConnection downloadService = new ServiceConnection() {
 		@Override
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			dsInterface = DSInterface.Stub.asInterface(service);
@@ -205,7 +210,7 @@ public class MainActivity extends SerenityActivity {
 		}
 	};
 
-	private BroadcastReceiver gdmReciver = new GDMReceiver();
+	private final BroadcastReceiver gdmReciver = new GDMReceiver();
 
 	private Gallery mainGallery;
 
@@ -258,8 +263,9 @@ public class MainActivity extends SerenityActivity {
 		menuOptions = (ListView) menuDrawer.getMenuView().findViewById(
 				R.id.menu_list_options);
 		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-		menuOptions.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
-				menuDrawer, mainGallery));
+		menuOptions
+				.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
+						menuDrawer, mainGallery));
 	}
 
 	/**
@@ -313,14 +319,17 @@ public class MainActivity extends SerenityActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null) {
+			super.onCreate(savedInstanceState);
+		}
 
 		createSideMenu();
 		initPreferences();
 
 		initializeDefaultPlayer();
 		if (preferences != null) {
-			boolean watchedStatusFirstTime = preferences.getBoolean("watched_status_firsttime", true);
+			boolean watchedStatusFirstTime = preferences.getBoolean(
+					"watched_status_firsttime", true);
 			if (watchedStatusFirstTime) {
 				SerenityApplication.getImageLoader().clearDiscCache();
 				SerenityApplication.getImageLoader().clearMemoryCache();
@@ -332,11 +341,8 @@ public class MainActivity extends SerenityActivity {
 
 		initDownloadService();
 
-		DisplayUtils.overscanCompensation(
-				this,
-				findViewById(R.id.mainLayout),
+		DisplayUtils.overscanCompensation(this, findViewById(R.id.mainLayout),
 				findViewById(R.id.menu_drawer_layout));
-
 
 	}
 
@@ -355,7 +361,6 @@ public class MainActivity extends SerenityActivity {
 		}
 	}
 
-
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -373,12 +378,12 @@ public class MainActivity extends SerenityActivity {
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		boolean menuKeySlidingMenu = preferences.getBoolean("remote_control_menu",
-				true);
-		
+		boolean menuKeySlidingMenu = preferences.getBoolean(
+				"remote_control_menu", true);
+
 		if (menuKeySlidingMenu) {
 			if (keyCode == KeyEvent.KEYCODE_MENU && !menuDrawer.isMenuVisible()) {
-	
+
 				mainGallery
 						.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
 				showMenuItems();
@@ -386,7 +391,7 @@ public class MainActivity extends SerenityActivity {
 				return true;
 			}
 		}
-		
+
 		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
 			hideMenuItems();
 			menuDrawer.toggleMenu();
@@ -396,7 +401,6 @@ public class MainActivity extends SerenityActivity {
 			mainGallery.requestFocusFromTouch();
 			return true;
 		}
-		
 
 		return super.onKeyDown(keyCode, event);
 	}

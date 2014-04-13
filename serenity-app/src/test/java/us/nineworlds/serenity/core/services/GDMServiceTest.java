@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.services.test;
+package us.nineworlds.serenity.core.services;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
