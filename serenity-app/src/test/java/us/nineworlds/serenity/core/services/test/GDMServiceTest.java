@@ -23,40 +23,32 @@
 
 package us.nineworlds.serenity.core.services.test;
 
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.Assume.assumeTrue;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import android.content.BroadcastReceiver;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.support.v4.content.LocalBroadcastManager;
 
 import us.nineworlds.serenity.GDMReceiver;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.services.GDMService;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 
 /**
  * @author dcarver
- *
+ * 
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(reportSdk=14, emulateSdk=17)
 public class GDMServiceTest {
 
-	
-	private BroadcastReceiver gdmReciver = new GDMReceiver();
-	
-	
+	private final BroadcastReceiver gdmReciver = new GDMReceiver();
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -65,8 +57,9 @@ public class GDMServiceTest {
 		IntentFilter filters = new IntentFilter();
 		filters.addAction(GDMService.MSG_RECEIVED);
 		filters.addAction(GDMService.SOCKET_CLOSED);
-		LocalBroadcastManager.getInstance(Robolectric.buildActivity(MainActivity.class).create().get()).registerReceiver(gdmReciver,
-				filters);
+		MainActivity activity = new MainActivity();
+		LocalBroadcastManager.getInstance(activity).registerReceiver(
+				gdmReciver, filters);
 	}
 
 	/**
@@ -77,27 +70,28 @@ public class GDMServiceTest {
 	}
 
 	/**
-	 * Test method for {@link us.nineworlds.serenity.core.services.GDMService#onHandleIntent(android.content.Intent)}.
+	 * Test method for
+	 * {@link us.nineworlds.serenity.core.services.GDMService#onHandleIntent(android.content.Intent)}
+	 * .
 	 */
 	@Test
-	@Ignore
 	public void testOnHandleIntentIntent() throws Exception {
-		
+
 		MockGDMService service = new MockGDMService();
 		Intent intent = new Intent();
 		service.onHandleIntent(intent);
-		
+
 		Thread.sleep(2500);
 		assumeTrue(SerenityApplication.getPlexMediaServers().size() > 0);
 	}
-	
+
 	public class MockGDMService extends GDMService {
-		
+
 		@Override
 		public void onHandleIntent(Intent intent) {
 			super.onHandleIntent(intent);
 		}
-		
+
 	}
 
 }
