@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<MediaContainer size="2" allowSync="0" identifier="com.plexapp.plugins.library" mediaTagPrefix="/system/bundle/media/flags/" mediaTagVersion="1343603771" title1="Plex Library">
-<Directory art="/:/resources/movie-fanart.jpg" refreshing="0" key="4" type="movie" title="Movies" agent="com.plexapp.agents.imdb" scanner="Plex Movie Scanner" language="en" uuid="efbdd7b618d67cdae2fd42cf68a8427f9526d7fa" updatedAt="1356716926" createdAt="1325281734">
-<Location path="/var/lib/plexmediaserver/Movies" />
-</Directory>
-<Directory art="/:/resources/show-fanart.jpg" refreshing="0" key="6" type="show" title="TV Shows" agent="com.plexapp.agents.thetvdb" scanner="Plex Series Scanner" language="en" uuid="0676c3c07ab46fb6fb5755507341bdf0906ba38f" updatedAt="1356720527" createdAt="1325380097">
-<Location path="/var/lib/plexmediaserver/TV" />
-</Directory>
-</MediaContainer>
