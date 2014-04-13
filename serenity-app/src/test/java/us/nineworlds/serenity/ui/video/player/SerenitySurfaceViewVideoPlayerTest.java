@@ -29,16 +29,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
 
-import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
+import us.nineworlds.serenity.SerenityRobolectricTestRunner;
 
 /**
  * @author dcarver
  * 
  */
-@RunWith(RobolectricTestRunner.class)
+@RunWith(SerenityRobolectricTestRunner.class)
 @Config(reportSdk = 14)
 public class SerenitySurfaceViewVideoPlayerTest {
 
@@ -46,8 +46,9 @@ public class SerenitySurfaceViewVideoPlayerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		activity = new SerenitySurfaceViewVideoActivity();
-
+		activity = Robolectric
+				.buildActivity(SerenitySurfaceViewVideoActivity.class).create()
+				.get();
 	}
 
 	@After
@@ -57,7 +58,9 @@ public class SerenitySurfaceViewVideoPlayerTest {
 
 	@Test
 	public void testCreateVideoPlayerActivity() throws Exception {
-		SerenitySurfaceViewVideoActivity activity = new SerenitySurfaceViewVideoActivity();
+		SerenitySurfaceViewVideoActivity activity = Robolectric
+				.buildActivity(SerenitySurfaceViewVideoActivity.class).create()
+				.get();
 		assertThat(activity).isNotNull();
 	}
 

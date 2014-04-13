@@ -40,7 +40,7 @@ import com.google.analytics.tracking.android.GoogleAnalytics;
  * @author dcarver
  * 
  */
-@RunWith(TestRunner.class)
+@RunWith(SerenityRobolectricTestRunner.class)
 @Config(shadows = SerenityShadowResources.class)
 public class MainActivityTest {
 

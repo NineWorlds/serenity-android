@@ -29,17 +29,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
+import us.nineworlds.serenity.SerenityRobolectricTestRunner;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import android.content.Intent;
 
 /**
  * @author dcarver
  * 
  */
-@RunWith(RobolectricTestRunner.class)
+@RunWith(SerenityRobolectricTestRunner.class)
 public class YouTubeTrailerSerachServiceTest {
 
 	/**

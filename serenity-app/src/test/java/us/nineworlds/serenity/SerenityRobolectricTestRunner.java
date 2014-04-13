@@ -10,9 +10,18 @@ import org.robolectric.TestLifecycle;
 
 import android.app.Application;
 
-public class TestRunner extends RobolectricTestRunner {
+/**
+ * Custom extension to make sure the TestApplication is loaded instead of the
+ * default SerenityApplication. This the Google Analytics to be disabled as part
+ * of the tests.
+ * 
+ * @author dcarver
+ * 
+ */
+public class SerenityRobolectricTestRunner extends RobolectricTestRunner {
 
-	public TestRunner(final Class<?> testClass) throws InitializationError {
+	public SerenityRobolectricTestRunner(final Class<?> testClass)
+			throws InitializationError {
 		super(testClass);
 	}
 

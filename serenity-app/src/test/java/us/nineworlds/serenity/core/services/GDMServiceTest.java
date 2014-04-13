@@ -29,12 +29,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import us.nineworlds.serenity.GDMReceiver;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.services.GDMService;
+import us.nineworlds.serenity.SerenityRobolectricTestRunner;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -44,7 +43,7 @@ import android.support.v4.content.LocalBroadcastManager;
  * @author dcarver
  * 
  */
-@RunWith(RobolectricTestRunner.class)
+@RunWith(SerenityRobolectricTestRunner.class)
 public class GDMServiceTest {
 
 	private final BroadcastReceiver gdmReciver = new GDMReceiver();
