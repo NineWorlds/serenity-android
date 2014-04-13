@@ -23,7 +23,7 @@
 
 package us.nineworlds.serenity.ui.video.player.test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 import org.junit.After;
 import org.junit.Before;
@@ -58,7 +58,7 @@ public class SerenitySurfaceViewVideoPlayerTest {
 	@Test
 	public void testCreateVideoPlayerActivity() throws Exception {
 		SerenitySurfaceViewVideoActivity activity = new SerenitySurfaceViewVideoActivity();
-		assertNotNull(activity);
+		assertThat(activity).isNotNull();
 	}
 
 }

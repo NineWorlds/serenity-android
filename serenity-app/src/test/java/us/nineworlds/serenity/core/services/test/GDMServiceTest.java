@@ -23,7 +23,7 @@
 
 package us.nineworlds.serenity.core.services.test;
 
-import static org.junit.Assume.assumeTrue;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 import org.junit.After;
 import org.junit.Before;
@@ -80,9 +80,8 @@ public class GDMServiceTest {
 		MockGDMService service = new MockGDMService();
 		Intent intent = new Intent();
 		service.onHandleIntent(intent);
-
 		Thread.sleep(2500);
-		assumeTrue(SerenityApplication.getPlexMediaServers().size() > 0);
+		assertThat(SerenityApplication.getPlexMediaServers()).isNotEmpty();
 	}
 
 	public class MockGDMService extends GDMService {

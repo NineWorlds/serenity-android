@@ -23,7 +23,7 @@
 
 package us.nineworlds.serenity.core.services.test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 import org.junit.After;
 import org.junit.Before;
@@ -69,8 +69,8 @@ public class YouTubeTrailerSerachServiceTest {
 		intent.putExtra("videoTitle", "Die Hard");
 		intent.putExtra("year", "1988");
 		service.onHandleIntent(intent);
-		assertNotNull(service.getYouTubeVideoInfo());
-		assertNotNull(service.getYouTubeVideoInfo().id());
+		assertThat(service.getYouTubeVideoInfo()).isNotNull();
+		assertThat(service.getYouTubeVideoInfo().id()).isNotNull();
 	}
 
 	public class MockYouTubeSearchService extends

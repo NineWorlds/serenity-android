@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.core.externalplayer.test;
-import static org.junit.Assert.*;
+
+import static org.fest.assertions.api.Assertions.assertThat;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,12 +37,12 @@ import us.nineworlds.serenity.core.externalplayer.ViMuPlayer;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class ExternalPlayerFactoryTest {
 
 	private ExternalPlayerFactory player;
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -59,32 +60,31 @@ public class ExternalPlayerFactoryTest {
 	}
 
 	/**
-	 * Test method for {@link us.nineworlds.serenity.core.externalplayer.ExternalPlayerFactory#createExternalPlayer(java.lang.String)}.
+	 * Test method for
+	 * {@link us.nineworlds.serenity.core.externalplayer.ExternalPlayerFactory#createExternalPlayer(java.lang.String)}
+	 * .
 	 */
 	@Test
 	public void testCreateExternalPlayer() {
-		assertNotNull(player);
+		assertThat(player).isNotNull();
 	}
-	
+
 	@Test
 	public void testCreateMXPlayer() {
 		ExternalPlayer p = player.createExternalPlayer("mxplayer");
-		assertNotNull(p);
-		assertTrue(p instanceof MXPlayer);
+		assertThat(p).isNotNull().isInstanceOf(MXPlayer.class);
 	}
-	
+
 	@Test
 	public void testCreateMXPlayerPro() {
 		ExternalPlayer p = player.createExternalPlayer("mxplayerpro");
-		assertNotNull(p);
-		assertTrue(p instanceof MXPlayerPro);
+		assertThat(p).isNotNull().isInstanceOf(MXPlayerPro.class);
 	}
 
 	@Test
 	public void testCreateVimu() {
 		ExternalPlayer p = player.createExternalPlayer("vimu");
-		assertNotNull(p);
-		assertTrue(p instanceof ViMuPlayer);
+		assertThat(p).isNotNull().isInstanceOf(ViMuPlayer.class);
 	}
-	
+
 }
