@@ -24,7 +24,12 @@
 package us.nineworlds.serenity;
 
 import static org.fest.assertions.api.ANDROID.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import net.simonvt.menudrawer.MenuDrawer;
+import net.simonvt.menudrawer.MenuDrawer.OnDrawerStateChangeListener;
 
+import org.fest.assertions.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,9 +37,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.SerenityShadowResources;
-import org.robolectric.shadows.ShadowApplication;
+import org.robolectric.shadows.ShadowActivity;
 
-import com.google.analytics.tracking.android.GoogleAnalytics;
+import android.view.KeyEvent;
+import android.widget.Gallery;
 
 /**
  * @author dcarver
@@ -44,12 +50,17 @@ import com.google.analytics.tracking.android.GoogleAnalytics;
 @Config(shadows = SerenityShadowResources.class)
 public class MainActivityTest {
 
+	MainActivity activity;
+
 	@Before
 	public void setUp() throws Exception {
-		ShadowApplication shadowApp = Robolectric
-				.shadowOf(Robolectric.application);
-		shadowApp
-				.declareActionUnbindable("com.google.android.gms.analytics.service.START");
+		try {
+			activity = Robolectric.buildActivity(MainActivity.class).attach()
+					.create().start().get();
+		} catch (NullPointerException ex) {
+			activity = Robolectric.buildActivity(MainActivity.class).create()
+					.start().get();
+		}
 	}
 
 	@After
@@ -58,19 +69,124 @@ public class MainActivityTest {
 	}
 
 	@Test
-	public void assertThatMainActivityIsCreated() throws Exception {
-		MainActivity activity = Robolectric.buildActivity(MainActivity.class)
-				.create().get();
+	public void testAssertThatMainActivityIsCreated() throws Exception {
 		assertThat(activity).isNotNull().isNotFinishing();
 	}
 
 	@Test
-	public void onCreateCreatesMenu() throws Exception {
-		GoogleAnalytics.getInstance(Robolectric.application).setAppOptOut(true);
-		MainActivity activity = Robolectric.buildActivity(MainActivity.class)
-				.withApplication(Robolectric.application).create().get();
+	public void testCreatesMenu() throws Exception {
 		assertThat(activity.getMenuDrawer()).isNotNull();
 		assertThat(activity.findViewById(R.id.mainGalleryBackground))
 				.isVisible();
 	}
+
+	@Test
+	public void testGalleryAdapterIsNotNull() throws Exception {
+		Gallery gallery = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
+		assertThat(gallery.getAdapter()).isNotNull().isInstanceOf(
+				MainMenuTextViewAdapter.class);
+	}
+
+	@Test
+	public void testGalleryOnItemClickListenerIsSet() throws Exception {
+		Gallery gallery = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
+		Assertions.assertThat(gallery.getOnItemClickListener()).isNotNull()
+				.isInstanceOf(GalleryOnItemClickListener.class);
+	}
+
+	@Test
+	public void testGalleryOnItemSelectedListenerIsSet() throws Exception {
+		Gallery gallery = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
+		Assertions.assertThat(gallery.getOnItemSelectedListener()).isNotNull()
+				.isInstanceOf(GalleryOnItemSelectedListener.class);
+	}
+
+	@Test
+	public void testThatActivityIsDestroyed() throws Exception {
+		ShadowActivity a = Robolectric.shadowOf(activity);
+		a.callOnDestroy();
+		Assertions.assertThat(a.isDestroyed()).isTrue();
+	}
+
+	@Test
+	public void testThatActivityStops() throws Exception {
+		ShadowActivity a = Robolectric.shadowOf(activity);
+		a.callOnStop();
+		Assertions.assertThat(a.isFinishing()).isFalse();
+	}
+
+	@Test
+	public void testThatActivityCallsOnResume() throws Exception {
+		ShadowActivity a = Robolectric.shadowOf(activity);
+		a.callOnResume();
+		Gallery g = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
+		assertThat(g).isVisible().isEnabled();
+	}
+
+	@Test
+	public void testThatActivityCallsOnRestart() throws Exception {
+		ShadowActivity a = Robolectric.shadowOf(activity);
+		a.callOnRestart();
+		Gallery g = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
+		assertThat(g).isVisible().isEnabled();
+	}
+
+	boolean visible = false;
+
+	@Test
+	public void testMenuDrawerOpens() throws Exception {
+		visible = false;
+		KeyEvent keyEvent = mock(KeyEvent.class);
+		when(keyEvent.getKeyCode()).thenReturn(KeyEvent.KEYCODE_MENU);
+		MenuDrawer drawer = activity.getMenuDrawer();
+		drawer.setOnDrawerStateChangeListener(new OnDrawerStateChangeListener() {
+
+			@Override
+			public void onDrawerStateChange(int oldState, int newState) {
+				if (oldState == MenuDrawer.STATE_CLOSED
+						&& (newState == MenuDrawer.STATE_OPEN || newState == MenuDrawer.STATE_OPENING)) {
+					visible = true;
+				}
+			}
+
+			@Override
+			public void onDrawerSlide(float arg0, int arg1) {
+
+			}
+		});
+
+		activity.onKeyDown(KeyEvent.KEYCODE_MENU, keyEvent);
+		Thread.sleep(1000);
+		Assertions.assertThat(visible).isTrue();
+	}
+
+	@Test
+	public void testMenuDrawerCloses() throws Exception {
+		visible = true;
+		KeyEvent keyEvent = mock(KeyEvent.class);
+		when(keyEvent.getKeyCode()).thenReturn(KeyEvent.KEYCODE_MENU);
+		MenuDrawer drawer = activity.getMenuDrawer();
+		drawer.toggleMenu();
+
+		drawer.setOnDrawerStateChangeListener(new OnDrawerStateChangeListener() {
+
+			@Override
+			public void onDrawerStateChange(int oldState, int newState) {
+				if (oldState == MenuDrawer.STATE_OPENING
+						&& (newState == MenuDrawer.STATE_CLOSED || newState == MenuDrawer.STATE_CLOSING)) {
+					visible = false;
+				}
+			}
+
+			@Override
+			public void onDrawerSlide(float arg0, int arg1) {
+
+			}
+		});
+
+		Thread.sleep(1000);
+		drawer.toggleMenu();
+		Assertions.assertThat(visible).isFalse();
+	}
+
 }

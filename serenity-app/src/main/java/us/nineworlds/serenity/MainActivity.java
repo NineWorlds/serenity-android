@@ -446,7 +446,9 @@ public class MainActivity extends SerenityActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance().activityStop(this);
+		if (SerenityApplication.isTrackingEnabled()) {
+			EasyTracker.getInstance().activityStop(this);
+		}
 	}
 
 	/*
