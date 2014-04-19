@@ -319,9 +319,7 @@ public class MainActivity extends SerenityActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		if (savedInstanceState != null) {
-			super.onCreate(savedInstanceState);
-		}
+		super.onCreate(savedInstanceState);
 
 		createSideMenu();
 		initPreferences();
