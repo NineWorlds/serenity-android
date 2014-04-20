@@ -28,6 +28,7 @@ import java.util.List;
 
 import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
@@ -145,7 +146,14 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		tvMode = prefs.getBoolean("serenity_tv_mode", true);
 		gridViewActive = prefs.getBoolean("movie_layout_grid", false);
 
-		key = getIntent().getExtras().getString("key");
+		Intent intent = getIntent();
+
+		if (intent != null) {
+			if (intent.getExtras() != null) {
+				key = intent.getExtras().getString("key");
+			}
+		}
+
 		createSideMenu();
 
 		DisplayUtils.overscanCompensation(this,
@@ -156,7 +164,9 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance().activityStart(this);
+		if (SerenityApplication.isTrackingEnabled()) {
+			EasyTracker.getInstance().activityStart(this);
+		}
 	}
 
 	/*

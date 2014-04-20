@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MediaContainer
+    allowSync="1"
+    identifier="com.plexapp.plugins.library"
+    librarySectionID="4"
+    librarySectionUUID="efbdd7b618d67cdae2fd42cf68a8427f9526d7fa"
+    mediaTagPrefix="/system/bundle/media/flags/"
+    mediaTagVersion="1393422068"
+    size="1" >
+
+    <Video
+        addedAt="1365260822"
+        art="/library/metadata/572/art/1379374156"
+        contentRating="R"
+        duration="10506750"
+        guid="com.plexapp.agents.imdb://tt0187393?lang=en"
+        key="/library/metadata/572"
+        lastViewedAt="1388768131"
+        originallyAvailableAt="2000-06-28"
+        rating="7.5999999046325701"
+        ratingKey="572"
+        studio="Centropolis Entertainment"
+        summary="After proving himself on the field of battle in the French and Indian War, Benjamin Martin wants nothing more to do with such things, preferring the simple life of a farmer. But when his son Gabriel enlists in the army to defend their new nation, America, against the British, Benjamin reluctantly returns to his old life to protect his son."
+        tagline="Some things are worth fighting for."
+        thumb="/library/metadata/572/thumb/1379374156"
+        title="The Patriot"
+        titleSort="Patriot"
+        type="movie"
+        updatedAt="1379374156"
+        viewCount="92"
+        viewOffset="389055"
+        year="2000" >
+
+        <Media
+            id="557"
+            aspectRatio="2.35"
+            audioChannels="2"
+            audioCodec="aac"
+            bitrate="1704"
+            container="mp4"
+            duration="10506750"
+            has64bitOffsets="0"
+            height="800"
+            optimizedForStreaming="1"
+            videoCodec="h264"
+            videoFrameRate="24p"
+            videoResolution="1080"
+            width="1920" >
+
+            <Part
+                id="589"
+                container="mp4"
+                duration="10506750"
+                file="/var/lib/plexmediaserver/Movies/The Patriot Extended Cut.mp4"
+                has64bitOffsets="0"
+                key="/library/parts/589/file.mp4"
+                optimizedForStreaming="1"
+                size="2238591499" >
+
+                <Stream
+                    id="2591"
+                    codec="srt"
+                    format="srt"
+                    key="/library/streams/2591"
+                    language="English"
+                    languageCode="eng"
+                    streamType="3" />
+
+                <Stream
+                    id="3023"
+                    bitDepth="8"
+                    bitrate="1640"
+                    cabac="1"
+                    chromaSubsampling="4:2:0"
+                    codec="h264"
+                    codecID="avc1"
+                    colorSpace="yuv"
+                    duration="10506412"
+                    frameRate="23.976"
+                    frameRateMode="cfr"
+                    hasScalingMatrix="0"
+                    height="800"
+                    index="0"
+                    level="40"
+                    profile="high"
+                    refFrames="5"
+                    scanType="progressive"
+                    streamType="1"
+                    width="1920" />
+
+                <Stream
+                    id="3024"
+                    bitrate="64"
+                    bitrateMode="vbr"
+                    channels="2"
+                    codec="aac"
+                    codecID="40"
+                    duration="10506750"
+                    index="1"
+                    profile="he-aac / lc"
+                    samplingRate="22050"
+                    selected="1"
+                    streamType="2" />
+            </Part>
+        </Media>
+
+        <Genre
+            id="19"
+            tag="Action" />
+
+        <Genre
+            id="104"
+            tag="Drama" />
+
+        <Genre
+            id="509"
+            tag="History" />
+
+        <Genre
+            id="510"
+            tag="War" />
+
+        <Writer
+            id="1889"
+            tag="Robert Rodat" />
+
+        <Director
+            id="108"
+            tag="Roland Emmerich" />
+
+        <Producer
+            id="3779"
+            tag="Dean Devlin" />
+
+        <Producer
+            id="3780"
+            tag="Mark Gordon" />
+
+        <Producer
+            id="3781"
+            tag="Gary Levinsohn" />
+
+        <Country
+            id="24"
+            tag="USA" />
+
+        <Role
+            id="3573"
+            role="Benjamin Martin"
+            tag="Mel Gibson"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/8s48F6yFPOOcUfGKH1dNvztiHZz.jpg" />
+
+        <Role
+            id="3574"
+            role="Gabriel Martin"
+            tag="Heath Ledger"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/47b8wJySE9r6gWMcTGSa0EuiDV.jpg" />
+
+        <Role
+            id="3575"
+            role="Charlotte Selton"
+            tag="Joely Richardson"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/eIp0OGjOBmdd7FuprJYKDWYvZxH.jpg" />
+
+        <Role
+            id="543"
+            role="Col. William Tavington"
+            tag="Jason Isaacs"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/xUlka8zpREdB0xIAiolOSC1t4CB.jpg" />
+
+        <Role
+            id="1622"
+            role="Jean Villeneuve"
+            tag="Tchéky Karyo"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/kh5Gb5luqfAOxYZvquXueXHXXa.jpg" />
+
+        <Role
+            id="1887"
+            role="Col. Harry Burwell"
+            tag="Chris Cooper"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/idYN2ItTwPbGL55cBZO4y8rdcGu.jpg" />
+
+        <Role
+            id="3576"
+            role="Anne Howard"
+            tag="Lisa Brenner" />
+
+        <Role
+            id="3577"
+            role="Gen. Cornwallis"
+            tag="Tom Wilkinson"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/ammDpnQRD1JVY0aMnt2HBJfucgZ.jpg" />
+
+        <Role
+            id="3578"
+            role="John Billings"
+            tag="Leon Rippy"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/o0mQPjR67UJzzKbm3nVdOj7fdVm.jpg" />
+
+        <Role
+            id="1721"
+            role="Dan Scott"
+            tag="Donal Logue"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/vwSHbtsOPCJDBeSCANFlWgsgN6A.jpg" />
+
+        <Role
+            id="2303"
+            role="Capt. Wilkins"
+            tag="Adam Baldwin"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/w76VLhGjRELFkETeFF0iPMJO9eJ.jpg" />
+
+        <Role
+            id="3579"
+            role="Occam"
+            tag="Jay Arlen Jones" />
+
+        <Role
+            id="3580"
+            role="Peter Howard"
+            tag="Joey D. Vieira" />
+
+        <Role
+            id="3581"
+            role="Thomas Martin"
+            tag="Gregory Smith"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/2piTSujC9LSHop6dWUEUNf6C6Ek.jpg" />
+
+        <Role
+            id="3582"
+            role="Susan Martin"
+            tag="Skye McCole Bartusiak"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/b4ywo8sX0KbVgaj84kmjvM4o23g.jpg" />
+
+        <Role
+            id="3583"
+            role="Nathan Martin"
+            tag="Trevor Morgan"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/87yB4E6ugM97PVWwwEUbFLNc6Y9.jpg" />
+
+        <Role
+            id="3584"
+            role="Samuel Martin"
+            tag="Bryan Chafin" />
+
+        <Role
+            id="3585"
+            role="Charles O&apos;Hara"
+            tag="Peter Woodward"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/fMybhOr9I4K6fC1Bg2i6jXLV0Dg.jpg" />
+    </Video>
+
+</MediaContainer>

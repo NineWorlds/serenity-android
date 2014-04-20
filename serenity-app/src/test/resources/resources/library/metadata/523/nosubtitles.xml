@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MediaContainer
+    allowSync="1"
+    identifier="com.plexapp.plugins.library"
+    librarySectionID="4"
+    librarySectionUUID="efbdd7b618d67cdae2fd42cf68a8427f9526d7fa"
+    mediaTagPrefix="/system/bundle/media/flags/"
+    mediaTagVersion="1393422068"
+    size="1" >
+
+    <Video
+        addedAt="1364617715"
+        art="/library/metadata/523/art/1365086580"
+        contentRating="PG-13"
+        duration="11008315"
+        guid="com.plexapp.agents.imdb://tt0213149?lang=en"
+        key="/library/metadata/523"
+        lastViewedAt="1374792392"
+        originallyAvailableAt="2001-05-21"
+        rating="6.5999999046325701"
+        ratingKey="523"
+        studio="Touchstone Pictures"
+        summary="The lifelong friendship between Rafe McCawley and Danny Walker is put to the ultimate test when the two ace fighter pilots become entangled in a love triangle with beautiful Naval nurse Evelyn Johnson. But the rivalry between the friends-turned-foes is immediately put on hold when they find themselves at the center of Japan&apos;s devastating attack on Pearl Harbor on Dec. 7, 1941."
+        tagline="December 7, 1941 - A day that shall live in infamy."
+        thumb="/library/metadata/523/thumb/1365086580"
+        title="Pearl Harbor"
+        type="movie"
+        updatedAt="1365086580"
+        viewCount="2"
+        year="2001" >
+
+        <Media
+            id="510"
+            aspectRatio="2.35"
+            audioChannels="6"
+            audioCodec="ac3"
+            bitrate="2109"
+            container="mkv"
+            duration="11008315"
+            height="366"
+            videoCodec="h264"
+            videoFrameRate="24p"
+            videoResolution="480"
+            width="720" >
+
+            <Part
+                id="542"
+                container="mkv"
+                duration="11008315"
+                file="/var/lib/plexmediaserver/Movies/Pearl Harbor.mkv"
+                key="/library/parts/542/file.mkv"
+                size="2902575392" >
+
+                <Stream
+                    id="3025"
+                    anamorphic="1"
+                    bitDepth="8"
+                    bitrate="1661"
+                    cabac="1"
+                    chromaSubsampling="4:2:0"
+                    codec="h264"
+                    codecID="V_MPEG4/ISO/AVC"
+                    colorSpace="yuv"
+                    frameRateMode="vfr"
+                    hasScalingMatrix="0"
+                    headerStripping="1"
+                    height="366"
+                    index="0"
+                    language="English"
+                    languageCode="eng"
+                    level="30"
+                    pixelAspectRatio="853:720"
+                    profile="main"
+                    refFrames="4"
+                    scanType="progressive"
+                    streamType="1"
+                    width="720" />
+
+                <Stream
+                    id="3026"
+                    channels="2"
+                    codec="aac"
+                    codecID="A_AAC"
+                    duration="11008315"
+                    index="1"
+                    language="English"
+                    languageCode="eng"
+                    profile="lc"
+                    samplingRate="48000"
+                    selected="1"
+                    streamType="2" />
+
+                <Stream
+                    id="3027"
+                    bitDepth="16"
+                    bitrate="448"
+                    bitrateMode="cbr"
+                    channels="6"
+                    codec="ac3"
+                    codecID="A_AC3"
+                    dialogNorm="-31"
+                    duration="11008315"
+                    index="2"
+                    language="English"
+                    languageCode="eng"
+                    samplingRate="48000"
+                    streamType="2" />
+            </Part>
+        </Media>
+
+        <Genre
+            id="19"
+            tag="Action" />
+
+        <Genre
+            id="104"
+            tag="Drama" />
+
+        <Genre
+            id="509"
+            tag="History" />
+
+        <Genre
+            id="2916"
+            tag="Romance" />
+
+        <Genre
+            id="510"
+            tag="War" />
+
+        <Writer
+            id="3761"
+            tag="Randall Wallace" />
+
+        <Director
+            id="410"
+            tag="Michael Bay" />
+
+        <Producer
+            id="3773"
+            tag="Michael Bay" />
+
+        <Producer
+            id="3774"
+            tag="Jerry Bruckheimer" />
+
+        <Producer
+            id="3775"
+            tag="Kenny Bates" />
+
+        <Producer
+            id="3776"
+            tag="K.C. Hodenfield" />
+
+        <Producer
+            id="3777"
+            tag="Jennifer Klein" />
+
+        <Producer
+            id="3778"
+            tag="Pat Sandston" />
+
+        <Country
+            id="24"
+            tag="USA" />
+
+        <Role
+            id="550"
+            role="Capt. Rafe McCawley"
+            tag="Ben Affleck"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/znEHx7doPzEICqqvgd9C1WGNqR9.jpg" />
+
+        <Role
+            id="2238"
+            role="Capt. Danny Walker"
+            tag="Josh Hartnett"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/eD1yGPpSGt8rHuO2extqQiZ7w4n.jpg" />
+
+        <Role
+            id="1066"
+            role="Nurse Lt. Evelyn Johnson"
+            tag="Kate Beckinsale"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/6sDaaLyWVLVjDeze6fgF9g2FDwM.jpg" />
+
+        <Role
+            id="3191"
+            role="Petty Officer Doris Miller"
+            tag="Cuba Gooding Jr."
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/1VMd7ubhFQmR8sH28MiwcZOQ7My.jpg" />
+
+        <Role
+            id="413"
+            role="President Franklin Delano Roosevelt"
+            tag="Jon Voight"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/5mQh73XzhnxlPnIp34qt41VQp6e.jpg" />
+
+        <Role
+            id="43"
+            role="Lt. Col. James Doolittle"
+            tag="Alec Baldwin"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/fzSutK9AkEnQGZkXlCTue3tvQS5.jpg" />
+
+        <Role
+            id="1592"
+            role="Sgt. Earl Sistern"
+            tag="Tom Sizemore"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/gttIY8exNe1EynSOFS950rFKiz4.jpg" />
+
+        <Role
+            id="9"
+            role="Lt. Billy Thompson"
+            tag="William Lee Scott"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/swJRnsD5ULDJwSs1M6ZBX40mK7Q.jpg" />
+
+        <Role
+            id="3762"
+            role="Lt. Anthony Fusco"
+            tag="Greg Zola" />
+
+        <Role
+            id="2225"
+            role="Lt. Red Winkle"
+            tag="Ewen Bremner"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/haap7O0iks7sBsD9HUMjfsuKdwM.jpg" />
+
+        <Role
+            id="3763"
+            role="Nurse Betty Bayer"
+            tag="Jaime King"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/ApWOBqNFPFy1e74qJcOTOvQdOCk.jpg" />
+
+        <Role
+            id="3764"
+            role="Nurse Barbara"
+            tag="Catherine Kellner" />
+
+        <Role
+            id="1508"
+            role="Nurse Sandra"
+            tag="Jennifer Garner"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/6Ri8yYCZinNmSyk0MfeO3kx6HIT.jpg" />
+
+        <Role
+            id="3765"
+            role="Nurse Martha"
+            tag="Sara Rue"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/1OlEg9M8oSsGivjyFJJFyCkKqkk.jpg" />
+
+        <Role
+            id="3766"
+            role="Lt. Gooz Wood"
+            tag="Michael Shannon"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/rkjdHaF7bQh7sroZhKcW7QTbZyD.jpg" />
+
+        <Role
+            id="197"
+            role="Capt. Thurman"
+            tag="Dan Aykroyd"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/h2PT9yZYv5ml5hL9jvCpWBTWgU.jpg" />
+
+        <Role
+            id="2012"
+            role="Adm. Husband E. Kimmel"
+            tag="Colm Feore"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/wsht2mqNenfzPhmCfw3ol83NuEZ.jpg" />
+
+        <Role
+            id="3767"
+            role="Nishikura"
+            tag="John Fujioka" />
+
+        <Role
+            id="1135"
+            role="Adm. Isoroku Yamamoto"
+            tag="Mako"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/gU3eoZP8OQZLFMPZ9MYWa6pajvT.jpg" />
+
+        <Role
+            id="3768"
+            role="Young Rafe"
+            tag="Jesse James" />
+
+        <Role
+            id="3769"
+            role="Young Danny"
+            tag="Reiley McClendon" />
+
+        <Role
+            id="555"
+            role="Danny&apos;s Father"
+            tag="William Fichtner"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/xISgc2A0UnXwEO9mwL5KxNCPqOi.jpg" />
+
+        <Role
+            id="3770"
+            role="Rafe&apos;s Father"
+            tag="Steve Rankin" />
+
+        <Role
+            id="3771"
+            role="Training Captain"
+            tag="Brian Haley"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/r27e4ylQVrJ3CmSfSv91sZjCUs9.jpg" />
+
+        <Role
+            id="3772"
+            role="Adm. Chester W. Nimitz"
+            tag="Graham Beckel"
+            thumb="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/original/r0ZYc9AUVqAXoLmZMCw2Dbv4nEr.jpg" />
+
+        <Field
+            name="thumb"
+            locked="1" />
+
+        <Field
+            name="art"
+            locked="1" />
+    </Video>
+
+</MediaContainer>

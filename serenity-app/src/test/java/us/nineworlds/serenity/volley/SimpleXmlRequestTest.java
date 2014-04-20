@@ -97,6 +97,15 @@ public class SimpleXmlRequestTest {
 		assertThat(webserver.getRequestCount()).isGreaterThan(0);
 	}
 
+	@Test
+	public void testGetHeadersIsNotEmpty() throws Exception {
+		URL url = webserver.getUrl("/");
+		MockSimpleXmlRequest request = new MockSimpleXmlRequest(
+				Request.Method.GET, url.toString(), MediaContainer.class,
+				new MockSuccessListener(), new MockErrorListener());
+		assertThat(request.getHeaders()).isNotNull();
+	}
+
 	protected class MockSuccessListener implements Listener {
 
 		@Override

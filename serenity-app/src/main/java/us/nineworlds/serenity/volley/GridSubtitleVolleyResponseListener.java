@@ -11,21 +11,27 @@ import us.nineworlds.serenity.core.model.impl.SubtitleMediaContainer;
 import android.app.Activity;
 import android.view.View;
 
-public class GridSubtitleVolleyResponseListener extends SubtitleVolleyResponseListener {
+public class GridSubtitleVolleyResponseListener extends
+		SubtitleVolleyResponseListener {
 
-	private View view;
-	
+	private final View view;
+
 	/**
 	 * @param video
 	 * @param c
 	 */
-	public GridSubtitleVolleyResponseListener(VideoContentInfo video, Activity c, View v) {
+	public GridSubtitleVolleyResponseListener(VideoContentInfo video,
+			Activity c, View v) {
 		super(video, c);
 		view = v;
 	}
-	
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.ui.listeners.SubtitleHandler#onResponse(us.nineworlds.plex.rest.model.impl.MediaContainer)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * us.nineworlds.serenity.ui.listeners.SubtitleHandler#onResponse(us.nineworlds
+	 * .plex.rest.model.impl.MediaContainer)
 	 */
 	@Override
 	public void onResponse(MediaContainer response) {
@@ -44,8 +50,11 @@ public class GridSubtitleVolleyResponseListener extends SubtitleVolleyResponseLi
 			subtitleInd.setVisibility(View.GONE);
 			return;
 		}
-		
-		infoGraphicInd.setVisibility(View.VISIBLE);
+
+		if (infoGraphicInd != null) {
+			infoGraphicInd.setVisibility(View.VISIBLE);
+		}
+
 		subtitleInd.setVisibility(View.VISIBLE);
 
 		ArrayList<Subtitle> availableSubtitles = new ArrayList<Subtitle>();
