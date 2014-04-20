@@ -54,6 +54,31 @@
                <target>1.5</target>
             </configuration>
          </plugin>
+         <plugin>
+           <groupId>org.jacoco</groupId>
+           <artifactId>jacoco-maven-plugin</artifactId>
+           <version>0.7.0.201403182114</version>
+           <configuration>
+              <destfile>${project.basedir}/target/coverage-reports/jacoco.exec</destfile>
+              <datafile>${project.basedir}/target/coverage-reports/jacoco.exec</datafile>
+           </configuration>
+            <executions>
+              <execution>
+                <id>jacoco-initialize</id>
+                <phase>validate</phase>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>jacoco-site</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+              </execution>
+            </executions>
+         </plugin>
       </plugins>
    </build>
 </project>
