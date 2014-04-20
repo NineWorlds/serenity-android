@@ -18,12 +18,6 @@
 
    <dependencies>
       <dependency>
-         <groupId>android</groupId>
-         <artifactId>android</artifactId>
-         <version>${android-version}</version>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
          <groupId>com.nostra13.universalimageloader</groupId>
          <artifactId>universal-image-loader</artifactId>
          <version>1.9.1</version>
@@ -145,16 +139,23 @@
          <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>com.squareup.okhttp</groupId>
-        <artifactId>mockwebserver</artifactId>
-        <version>1.5.3</version>
-        <scope>test</scope>
+         <groupId>com.squareup.okhttp</groupId>
+         <artifactId>mockwebserver</artifactId>
+         <version>1.5.3</version>
+         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>commons-io</groupId>
          <artifactId>commons-io</artifactId>
          <version>2.4</version>
          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>android</groupId>
+         <artifactId>android</artifactId>
+         <version>${android-version}</version>
+         <scope>provided</scope>
       </dependency>
    </dependencies>
 
@@ -192,28 +193,28 @@
             <extensions>true</extensions>
          </plugin>
          <plugin>
-           <groupId>org.jacoco</groupId>
-           <artifactId>jacoco-maven-plugin</artifactId>
-           <version>0.7.0.201403182114</version>
-           <configuration>
-              <destfile>${project.basedir}/target/coverage-reports/jacoco.exec</destfile>
-              <datafile>${project.basedir}/target/coverage-reports/jacoco.exec</datafile>
-           </configuration>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.7.0.201403182114</version>
+            <configuration>
+               <destfile>${project.basedir}/target/coverage-reports/jacoco.exec</destfile>
+               <datafile>${project.basedir}/target/coverage-reports/jacoco.exec</datafile>
+            </configuration>
             <executions>
-              <execution>
-                <id>jacoco-initialize</id>
-                <phase>validate</phase>
-                <goals>
-                  <goal>prepare-agent</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>jacoco-site</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>report</goal>
-                </goals>
-              </execution>
+               <execution>
+                  <id>jacoco-initialize</id>
+                  <phase>validate</phase>
+                  <goals>
+                     <goal>prepare-agent</goal>
+                  </goals>
+               </execution>
+               <execution>
+                  <id>jacoco-site</id>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>report</goal>
+                  </goals>
+               </execution>
             </executions>
          </plugin>
          <plugin>
@@ -228,9 +229,9 @@
             <version>2.13</version>
             <dependencies>
                <dependency>
-	               <groupId>org.jacoco</groupId>
-	               <artifactId>org.jacoco.core</artifactId>
-	               <version>0.7.0.201403182114</version>
+                  <groupId>org.jacoco</groupId>
+                  <artifactId>org.jacoco.core</artifactId>
+                  <version>0.7.0.201403182114</version>
                </dependency>
             </dependencies>
          </plugin>

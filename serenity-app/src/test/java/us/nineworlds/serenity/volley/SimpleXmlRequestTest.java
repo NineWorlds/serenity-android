@@ -27,6 +27,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Calendar;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -37,12 +38,16 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.core.OkHttpStack;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 
@@ -50,11 +55,12 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 public class SimpleXmlRequestTest {
 
 	MockWebServer webserver;
-	RequestQueue queue;
 
 	@Before
 	public void setUp() throws Exception {
-		queue = VolleyUtils.getRequestQueueInstance(Robolectric.application);
+		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
+		Robolectric.getFakeHttpLayer().interceptResponseContent(false);
+
 		webserver = new MockWebServer();
 
 		MockResponse response = new MockResponse();
@@ -74,10 +80,21 @@ public class SimpleXmlRequestTest {
 	@Test
 	public void assertThatResponseDoesNotReturnResponseError() throws Exception {
 		URL url = webserver.getUrl("/");
-		SimpleXmlRequest request = new SimpleXmlRequest(Request.Method.GET,
-				url.toString(), MediaContainer.class,
+
+		MockSimpleXmlRequest request = new MockSimpleXmlRequest(
+				Request.Method.GET, url.toString(), MediaContainer.class,
 				new MockSuccessListener(), new MockErrorListener());
-		queue.add(request);
+		request.setShouldCache(false);
+		RequestQueue requestQueu = Volley.newRequestQueue(
+				Robolectric.application, new OkHttpStack());
+		Request r = requestQueu.add(request);
+		long startTime = Calendar.getInstance().getTimeInMillis();
+		long endTime = startTime + 3000;
+		long currentTime = startTime;
+		while (currentTime < endTime) {
+			currentTime = Calendar.getInstance().getTimeInMillis();
+		}
+		assertThat(webserver.getRequestCount()).isGreaterThan(0);
 	}
 
 	protected class MockSuccessListener implements Listener {
@@ -96,5 +113,30 @@ public class SimpleXmlRequestTest {
 			Assert.fail(error.getMessage());
 
 		}
+	}
+
+	public class MockSimpleXmlRequest extends SimpleXmlRequest {
+
+		/**
+		 * @param method
+		 * @param url
+		 * @param clazz
+		 * @param listener
+		 * @param errorListener
+		 */
+		public MockSimpleXmlRequest(int method, String url, Class clazz,
+				Listener listener, ErrorListener errorListener) {
+			super(method, url, clazz, listener, errorListener);
+		}
+
+		@Override
+		protected Response parseNetworkResponse(NetworkResponse response) {
+			Response resp = super.parseNetworkResponse(response);
+			assertThat(resp.isSuccess()).isTrue();
+
+			deliverResponse(resp);
+			return resp;
+		}
+
 	}
 }

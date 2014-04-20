@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.volley;
 
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.core.OkHttpStack;
 import android.content.Context;
 import android.util.Log;
 
@@ -42,20 +43,20 @@ public class VolleyUtils {
 
 	public static RequestQueue getRequestQueueInstance(Context context) {
 		if (queue == null) {
-			queue = Volley.newRequestQueue(context);
+			queue = Volley.newRequestQueue(context, new OkHttpStack());
 		}
 		return queue;
 	}
 
-	public static void volleyXmlGetRequest(String url,
+	public static Request volleyXmlGetRequest(String url,
 			Response.Listener response, Response.ErrorListener error) {
 		SimpleXmlRequest<MediaContainer> request = new SimpleXmlRequest<MediaContainer>(
 				Request.Method.GET, url, MediaContainer.class, response, error);
 		if (queue == null) {
 			Log.e("VolleyUtils", "Initialize Request Queue!");
-			return;
+			return null;
 		}
-		queue.add(request);
+		return queue.add(request);
 	}
 
 }
