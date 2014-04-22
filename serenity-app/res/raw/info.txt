@@ -1,5 +1,5 @@
 <h1>Serenity for Android</h1>
-<p>Copyright 2013</p>
+<p>Copyright 2014</p>
 <p>
 https://github.com/NineWorlds/serenity-android
 </p>

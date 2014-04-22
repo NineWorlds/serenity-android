@@ -20,7 +20,6 @@ httpresponsecache - https://github.com/candrews/HttpResponseCache<br/>
 Plex-GDM-IntentService by Evan McEwen - https://github.com/EvanMcEwen/Plex-GDM-IntentService
 Android-MenuDrawer - https://github.com/SimonVT/android-menudrawer<br/>
 juniversalchardet - https://code.google.com/p/juniversalchardet/<br/>
- 
-Using Universal Image Loader (c) 2011-2013, Sergey Tarasevich<br/>
+Android Universal Image Loader - https://github.com/nostra13/Android-Universal-Image-Loader<br/>
 
 <p>If you find code that has not been properly attributed please contact the project and you will be added to the list.</p>
