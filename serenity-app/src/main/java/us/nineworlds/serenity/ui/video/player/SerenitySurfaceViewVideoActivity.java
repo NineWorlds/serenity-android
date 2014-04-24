@@ -628,7 +628,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		return keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
 				|| keyCode == KeyEvent.KEYCODE_R
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
-				|| keyCode == KeyEvent.KEYCODE_BUTTON_L1;
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_L1
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_L2;
 	}
 
 	/**
@@ -639,7 +640,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	protected boolean isKeyCodeSkipForward(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
 				|| keyCode == KeyEvent.KEYCODE_F
-				|| keyCode == KeyEvent.KEYCODE_BUTTON_R1;
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_R1
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_R2;
 	}
 
 	/**
@@ -655,7 +657,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	}
 
 	protected boolean isKeyCodePlay(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY;
+		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_A;
 	}
 
 	protected boolean isKeyCodeInfo(int keyCode) {
