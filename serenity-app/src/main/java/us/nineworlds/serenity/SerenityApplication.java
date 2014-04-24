@@ -205,6 +205,11 @@ public class SerenityApplication extends Application {
 
 	public static boolean isAndroidTV(Context context) {
 		final PackageManager pm = context.getPackageManager();
+
+		if (Build.MODEL.startsWith("AFT")
+				&& Build.MANUFACTURER.equals("Amazon")) {
+			return true;
+		}
 		return pm.hasSystemFeature("android.hardware.type.television");
 	}
 
