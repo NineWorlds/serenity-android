@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
-import android.text.util.Linkify;
 import android.widget.TextView;
 
 public class AboutDialog extends Dialog {
@@ -33,12 +32,10 @@ public class AboutDialog extends Dialog {
 		TextView tv = (TextView) findViewById(R.id.legal_text);
 		tv.setText(Html.fromHtml(readRawTextFile(R.raw.legal)));
 		tv.setMovementMethod(new ScrollingMovementMethod());
-		Linkify.addLinks(tv, Linkify.ALL);
 
 		tv = (TextView) findViewById(R.id.info_text);
 		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info)));
 		tv.setLinkTextColor(Color.WHITE);
-		Linkify.addLinks(tv, Linkify.ALL);
 		String versionName;
 		try {
 			versionName = mContext.getPackageManager().getPackageInfo(

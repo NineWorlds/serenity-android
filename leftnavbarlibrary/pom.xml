@@ -12,12 +12,19 @@
    <packaging>apklib</packaging>
 
    <dependencies>
-      <dependency>
-         <groupId>android</groupId>
-         <artifactId>android</artifactId>
-         <version>3.2_r1</version>
-         <scope>provided</scope>
-      </dependency>
+<!--       <dependency> -->
+<!--          <groupId>android</groupId> -->
+<!--          <artifactId>android</artifactId> -->
+<!--          <version>3.2_r1</version> -->
+<!--          <scope>provided</scope> -->
+<!--       </dependency> -->
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <version>4.1.1.4</version>
+            <scope>provided</scope>
+        </dependency>
+
    </dependencies>
 
    <build>
