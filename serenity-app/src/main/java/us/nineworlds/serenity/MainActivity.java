@@ -256,8 +256,6 @@ public class MainActivity extends SerenityActivity {
 				R.string.options_main_clear_image_cache),
 				R.drawable.ic_action_content_remove));
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
-				R.string.tutorial), R.drawable.ic_action_tutorial));
-		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
 				R.string.clear_queue), R.drawable.ic_action_content_remove));
 
 		menuOptions = (ListView) menuDrawer.getMenuView().findViewById(

@@ -24,14 +24,10 @@
 package us.nineworlds.serenity;
 
 import net.simonvt.menudrawer.MenuDrawer;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -39,39 +35,42 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 /**
  * @author dcarver
- *
+ * 
  */
 public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener {
 	private static final int ABOUT = 0;
 	private static final int CLEAR_CACHE = 1;
-	private static final int TUTORIAL = 2;
-	private static final int CLEAR_QUEUE = 3;
-	private MenuDrawer menuDrawer;
-	private ViewGroup focusable;
-	
+	private static final int CLEAR_QUEUE = 2;
+	private final MenuDrawer menuDrawer;
+
 	/**
 	 * 
 	 */
-	public MainMenuDrawerOnItemClickedListener(MenuDrawer drawer, ViewGroup focus) {
+	public MainMenuDrawerOnItemClickedListener(MenuDrawer drawer,
+			ViewGroup focus) {
 		menuDrawer = drawer;
-		focusable = focus;
 	}
 
-
-
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
+	 * .AdapterView, android.view.View, int, long)
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Activity activity = (Activity) view.getContext();
-		ListView lv = (ListView) menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
+		ListView lv = (ListView) menuDrawer.getMenuView().findViewById(
+				R.id.menu_list_options);
 		lv.setVisibility(View.GONE);
 		menuDrawer.toggleMenu(true);
-		
+
 		switch (position) {
 		case CLEAR_CACHE:
 			createClearCacheDialog(view.getContext());
@@ -81,21 +80,20 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 			about.setTitle(R.string.about_title_serenity_for_google_tv);
 			about.show();
 			break;
-		case TUTORIAL:
-			Intent youTubei = new Intent(Intent.ACTION_VIEW,
-					Uri.parse("http://www.youtube.com/watch?v=DTkBM_EuitY"));
-			activity.startActivity(youTubei);
-			break;
 		case CLEAR_QUEUE:
 			SerenityApplication.getVideoPlaybackQueue().clear();
-			Toast.makeText(activity, activity.getResources().getString(R.string.queue_has_been_cleared_), Toast.LENGTH_LONG).show();
+			Toast.makeText(
+					activity,
+					activity.getResources().getString(
+							R.string.queue_has_been_cleared_),
+					Toast.LENGTH_LONG).show();
 			break;
 		}
 	}
 
 	protected void createClearCacheDialog(Context context) {
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context,
-				android.R.style.Theme_Holo_Dialog);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				context, android.R.style.Theme_Holo_Dialog);
 
 		alertDialogBuilder.setTitle(R.string.options_main_clear_image_cache);
 		alertDialogBuilder
