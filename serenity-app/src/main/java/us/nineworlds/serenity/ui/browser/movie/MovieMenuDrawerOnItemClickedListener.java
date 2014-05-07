@@ -27,7 +27,6 @@ import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
-
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
@@ -37,14 +36,15 @@ import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * @author dcarver
- *
+ * 
  */
-public class MovieMenuDrawerOnItemClickedListener implements OnItemClickListener {
+public class MovieMenuDrawerOnItemClickedListener implements
+		OnItemClickListener {
 	private static final int GRID_VIEW = 0;
 	private static final int DETAIL_VIEW = 1;
 	private static final int PLAY_ALL_QUEUE = 2;
-	private MenuDrawer menuDrawer;
-	
+	private final MenuDrawer menuDrawer;
+
 	/**
 	 * 
 	 */
@@ -52,16 +52,12 @@ public class MovieMenuDrawerOnItemClickedListener implements OnItemClickListener
 		menuDrawer = drawer;
 	}
 
-
-
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
-	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		SerenityMultiViewVideoActivity activity = (SerenityMultiViewVideoActivity) view.getContext();
-		
+		SerenityMultiViewVideoActivity activity = (SerenityMultiViewVideoActivity) view
+				.getContext();
+
 		switch (position) {
 		case GRID_VIEW:
 			menuDrawer.setContentView(R.layout.activity_movie_browser_gridview);
@@ -72,19 +68,25 @@ public class MovieMenuDrawerOnItemClickedListener implements OnItemClickListener
 			toggleView(activity, false);
 			break;
 		case PLAY_ALL_QUEUE:
-			menuDrawer.toggleMenu();
-			if (!activity.getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
-				parent.setVisibility(View.INVISIBLE);
-			}
-			View gallery = activity.findViewById(R.id.moviePosterGallery);
-			if (gallery != null) {
-				gallery.requestFocusFromTouch();
-			}
-			VideoPlayerIntentUtils.playAllFromQueue(activity);
+			playAllFromQueue(parent, activity);
 			return;
 		}
 		menuDrawer.toggleMenu();
 		activity.recreate();
+	}
+
+	private void playAllFromQueue(AdapterView<?> parent,
+			SerenityMultiViewVideoActivity activity) {
+		menuDrawer.toggleMenu();
+		if (!activity.getPackageManager().hasSystemFeature(
+				"android.hardware.touchscreen")) {
+			parent.setVisibility(View.INVISIBLE);
+		}
+		View gallery = activity.findViewById(R.id.moviePosterGallery);
+		if (gallery != null) {
+			gallery.requestFocusFromTouch();
+		}
+		VideoPlayerIntentUtils.playAllFromQueue(activity);
 	}
 
 	/**
@@ -93,12 +95,13 @@ public class MovieMenuDrawerOnItemClickedListener implements OnItemClickListener
 	public void hideMenuItems() {
 	}
 
-
 	/**
 	 * @param activity
 	 */
-	protected void toggleView(SerenityMultiViewVideoActivity activity, boolean enableGridView) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+	protected void toggleView(SerenityMultiViewVideoActivity activity,
+			boolean enableGridView) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(activity);
 		Editor e = prefs.edit();
 		activity.setGridViewEnabled(enableGridView);
 		e.putBoolean("movie_layout_grid", enableGridView);

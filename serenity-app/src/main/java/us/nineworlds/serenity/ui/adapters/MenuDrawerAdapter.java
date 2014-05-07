@@ -49,6 +49,7 @@ public class MenuDrawerAdapter extends BaseAdapter {
 	public MenuDrawerAdapter(Activity context, List<MenuDrawerItem> menuOptions) {
 		this.menuOptions = menuOptions;
 		this.context = context;
+		notifyDataSetChanged();
 	}
 
 	@Override
@@ -65,22 +66,40 @@ public class MenuDrawerAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		TextView rowView = null;
 
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		rowView = (TextView) inflater.inflate(
-				R.layout.serenity_menudrawer_listview_textview, parent, false);
+		if (reUseExistingView(convertView)) {
+			rowView = (TextView) convertView;
+		} else {
+			rowView = inflateNewView(parent);
+		}
 
+		populateTextView(position, rowView);
+		return rowView;
+	}
+
+	private void populateTextView(int position, TextView rowView) {
 		rowView.setBackgroundResource(R.drawable.album_list_view_selector);
 		rowView.setText(menuOptions.get(position).getText());
 		rowView.setGravity(Gravity.CENTER_VERTICAL);
 		rowView.setCompoundDrawablesWithIntrinsicBounds(
 				menuOptions.get(position).getImageResourceID(), 0, 0, 0);
+	}
+
+	private TextView inflateNewView(ViewGroup parent) {
+		TextView rowView;
+		LayoutInflater inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		rowView = (TextView) inflater.inflate(
+				R.layout.serenity_menudrawer_listview_textview, parent,
+				false);
 		return rowView;
+	}
+
+	private boolean reUseExistingView(View convertView) {
+		return convertView != null && convertView instanceof TextView;
 	}
 
 	@Override
 	public long getItemId(int position) {
 		return position;
 	}
-
 }
