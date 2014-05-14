@@ -43,7 +43,7 @@ import android.util.Log;
  * https://github.com/NineWorlds/Plex-GDM-IntentService/blob/master/GDMService.
  * java
  * 
- * @author Ewan McEWen
+ * @author Evan McEwen (https://github.com/EvanMcEwen)
  * 
  */
 public class GDMService extends IntentService {
