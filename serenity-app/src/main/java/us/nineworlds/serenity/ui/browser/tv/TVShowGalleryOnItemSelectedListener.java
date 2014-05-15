@@ -124,7 +124,6 @@ public class TVShowGalleryOnItemSelectedListener implements
 			sparams.rightMargin = 5;
 			sparams.topMargin = 10;
 			sparams.leftMargin = 5;
-			imageView.setLayoutParams(params);
 
 			studiov.setLayoutParams(sparams);
 			String studio = info.getStudio();
