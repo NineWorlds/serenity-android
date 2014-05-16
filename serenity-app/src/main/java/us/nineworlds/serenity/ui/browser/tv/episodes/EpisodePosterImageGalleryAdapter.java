@@ -76,7 +76,7 @@ public class EpisodePosterImageGalleryAdapter extends
 
 		shrinkPosterAnimation(mpiv, false);
 
-		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
+		SerenityApplication.displayImageRoundedCorners(pi.getImageURL(), mpiv);
 
 		setWatchedStatus(galleryCellView, pi);
 

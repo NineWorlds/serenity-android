@@ -43,10 +43,8 @@ import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.media.AudioManager;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -65,12 +63,6 @@ import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 /**
  * A view containing controls for a MediaPlayer. Typically contains the buttons
@@ -135,30 +127,10 @@ public class MediaController extends FrameLayout {
 	private String audioChannels;
 	private AudioManager mAM;
 
-	private final ImageLoader imageLoader;
-
 	public MediaController(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mRoot = this;
 		mFromXml = true;
-		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-				.cacheInMemory().cacheOnDisc()
-				.bitmapConfig(Bitmap.Config.RGB_565)
-				.showImageOnFail(R.drawable.default_error)
-				.showStubImage(R.drawable.default_video_cover).build();
-
-		ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(
-				context).memoryCacheExtraOptions(1280, 720)
-				.taskExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-				.taskExecutorForCachedImages(AsyncTask.THREAD_POOL_EXECUTOR)
-				.threadPoolSize(5)
-				.tasksProcessingOrder(QueueProcessingType.FIFO)
-				.denyCacheImageMultipleSizesInMemory()
-				.defaultDisplayImageOptions(defaultOptions)
-				.memoryCache(new WeakMemoryCache()).build();
-
-		imageLoader = ImageLoader.getInstance();
-		imageLoader.init(imageLoaderconfig);
 		initController(context);
 	}
 
@@ -173,7 +145,6 @@ public class MediaController extends FrameLayout {
 		this.audioChannels = audioChannels;
 		this.videoFormat = videoFormat;
 		this.audioFormat = audioFormat;
-		imageLoader = SerenityApplication.getImageLoader();
 
 		if (!mFromXml && initController(context)) {
 			initFloatingWindow();
@@ -199,7 +170,7 @@ public class MediaController extends FrameLayout {
 		mWindow.setBackgroundDrawable(null);
 		mWindow.setOutsideTouchable(true);
 		mWindow.update();
-		mAnimStyle = android.R.style.Animation;
+		mAnimStyle = R.style.PopupAnimation;
 		setFocusable(true);
 		setFocusableInTouchMode(true);
 		requestFocus();
@@ -323,7 +294,8 @@ public class MediaController extends FrameLayout {
 		posterView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
 		if (posterURL != null) {
-			SerenityApplication.displayImage(posterURL, posterView);
+			SerenityApplication.displayImageRoundedCorners(posterURL,
+					posterView);
 		}
 
 		TextView txtNextVideo = (TextView) v

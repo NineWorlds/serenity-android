@@ -45,8 +45,6 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 /**
  * 
  * @author dcarver
@@ -58,14 +56,11 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 
 	private final String key;
 	private final String category;
-	private final ImageLoader imageLoader;
 	private Handler handler;
 	private static Activity context;
 
 	public MusicPosterGalleryAdapter(Context c, String key, String category) {
 		posterList = new ArrayList<MusicArtistContentInfo>();
-
-		imageLoader = SerenityApplication.getImageLoader();
 		context = (Activity) c;
 		this.key = key;
 		this.category = category;

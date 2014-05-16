@@ -45,7 +45,6 @@ import android.widget.ImageView;
 
 import com.jess.ui.TwoWayAbsListView;
 import com.jess.ui.TwoWayGridView;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * 
@@ -57,7 +56,6 @@ public class MusicAlbumsCoverAdapter extends BaseAdapter {
 	protected static MusicAlbumsCoverAdapter notifyAdapter;
 	protected static ProgressDialog pd;
 	private Handler posterGalleryHandler;
-	protected ImageLoader imageLoader;
 	private static List<MusicAlbumContentInfo> posterList;
 	private static Activity context;
 	private final String key;
@@ -66,7 +64,6 @@ public class MusicAlbumsCoverAdapter extends BaseAdapter {
 		notifyAdapter = this;
 		MusicAlbumsCoverAdapter.context = context;
 		this.key = key;
-		imageLoader = SerenityApplication.getImageLoader();
 		posterList = new ArrayList<MusicAlbumContentInfo>();
 		fetchDataFromService();
 	}

@@ -52,6 +52,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedVignetteBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -68,14 +69,14 @@ public class SerenityApplication extends Application {
 	private static ImageLoader imageLoader;
 	private static DisplayImageOptions movieOptions;
 	private static DisplayImageOptions musicOptions;
+	private static DisplayImageOptions roundedOptions;
+	private static DisplayImageOptions roundedVigenetteOptions;
 	private static List<PendingDownload> pendingDownloads;
 	protected static PlexappFactory plexFactory;
 
 	private static ConcurrentHashMap<String, Server> plexmediaServers = new ConcurrentHashMap<String, Server>();
 
 	public static final int PROGRESS = 0xDEADBEEF;
-
-	private static DisplayImageOptions reflectiveOptions;
 
 	private static LinkedList<VideoContentInfo> videoQueue = new LinkedList<VideoContentInfo>();
 
@@ -105,9 +106,15 @@ public class SerenityApplication extends Application {
 		final ImageViewAware imageViewAware = new ImageViewAware(view);
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
 				.cacheInMemory(true).cacheOnDisc(true)
-				.bitmapConfig(Bitmap.Config.RGB_565)
+				.bitmapConfig(Bitmap.Config.ARGB_8888)
 				.showImageForEmptyUri(resId).build();
 		imageLoader.displayImage(imageUrl, imageViewAware, options);
+	}
+
+	public static void displayImageRoundedCorners(String imageUrl,
+			ImageView view) {
+		final ImageViewAware imageViewAware = new ImageViewAware(view);
+		imageLoader.displayImage(imageUrl, imageViewAware, roundedOptions);
 	}
 
 	public static ImageLoader getImageLoader() {
@@ -132,10 +139,6 @@ public class SerenityApplication extends Application {
 
 	public static ConcurrentHashMap<String, Server> getPlexMediaServers() {
 		return plexmediaServers;
-	}
-
-	public static DisplayImageOptions getReflectiveOptions() {
-		return reflectiveOptions;
 	}
 
 	/**
@@ -195,22 +198,11 @@ public class SerenityApplication extends Application {
 	protected void configureImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
 				.cacheInMemory(true).cacheOnDisc(true)
-				.bitmapConfig(Bitmap.Config.RGB_565)
+				.bitmapConfig(Bitmap.Config.ARGB_8888)
 				.resetViewBeforeLoading(true)
 				.showImageForEmptyUri(R.drawable.default_video_cover).build();
 
-		musicOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
-				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565)
-				.showImageForEmptyUri(R.drawable.default_music).build();
-
-		movieOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
-				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565)
-				.resetViewBeforeLoading(true).build();
-
-		reflectiveOptions = new DisplayImageOptions.Builder()
-				.cacheInMemory(true).cacheOnDisc(true)
-				.bitmapConfig(Bitmap.Config.RGB_565)
-				.displayer(new RoundedBitmapDisplayer(10)).build();
+		setStaticImageOptions();
 
 		ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(
 				this)
@@ -222,6 +214,25 @@ public class SerenityApplication extends Application {
 
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(imageLoaderconfig);
+	}
+
+	private void setStaticImageOptions() {
+		musicOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
+				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888)
+				.showImageForEmptyUri(R.drawable.default_music).build();
+
+		movieOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
+				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888)
+				.resetViewBeforeLoading(true).build();
+
+		roundedOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
+				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888)
+				.displayer(new RoundedBitmapDisplayer(10)).build();
+
+		roundedVigenetteOptions = new DisplayImageOptions.Builder()
+				.cacheInMemory(true).cacheOnDisc(true)
+				.bitmapConfig(Bitmap.Config.ARGB_8888)
+				.displayer(new RoundedVignetteBitmapDisplayer(10, 5)).build();
 	}
 
 	/**

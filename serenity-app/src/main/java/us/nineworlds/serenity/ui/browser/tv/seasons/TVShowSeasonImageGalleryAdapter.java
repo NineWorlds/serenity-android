@@ -28,16 +28,13 @@ import java.util.List;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
-
-import us.nineworlds.serenity.R;
-
-import com.android.volley.Response;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -49,6 +46,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.android.volley.Response;
 
 /**
  * An adapter that handles the population of views for TV Show Seasons.
@@ -62,10 +61,10 @@ import android.widget.TextView;
 public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 
 	private List<SeriesContentInfo> seasonList = null;
-	private Activity context;
+	private final Activity context;
 
 	private ProgressDialog pd;
-	private String key;
+	private final String key;
 
 	public TVShowSeasonImageGalleryAdapter(Context c, String key) {
 		context = (Activity) c;
@@ -124,7 +123,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
-		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
+		SerenityApplication.displayImageRoundedCorners(pi.getImageURL(), mpiv);
 		galleryCellView
 				.setLayoutParams(new Gallery.LayoutParams(width, height));
 

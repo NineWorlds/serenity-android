@@ -26,16 +26,12 @@ package us.nineworlds.serenity.ui.browser.music;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jess.ui.TwoWayAbsListView;
-import com.jess.ui.TwoWayGridView;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
 import us.nineworlds.serenity.core.services.MusicRetrievalIntentService;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.SerenityMusicImageView;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -47,29 +43,30 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.jess.ui.TwoWayAbsListView;
+import com.jess.ui.TwoWayGridView;
+
 /**
  * 
  * @author dcarver
  * 
  */
-public class MusicPosterGridViewAdapter extends
-		BaseAdapter {
+public class MusicPosterGridViewAdapter extends BaseAdapter {
 
 	protected static MusicPosterGridViewAdapter notifyAdapter;
 	protected static ProgressDialog pd;
 	private Handler posterGalleryHandler;
-	protected ImageLoader imageLoader;
 	private static List<MusicArtistContentInfo> posterList;
 	private static Activity context;
-	private String key;
-	private String category;
+	private final String key;
+	private final String category;
 
-	public MusicPosterGridViewAdapter(Activity context, String key, String category) {
+	public MusicPosterGridViewAdapter(Activity context, String key,
+			String category) {
 		notifyAdapter = this;
 		MusicPosterGridViewAdapter.context = context;
 		this.key = key;
 		this.category = category;
-		imageLoader = SerenityApplication.getImageLoader();
 		posterList = new ArrayList<MusicArtistContentInfo>();
 		fetchDataFromService();
 	}
@@ -84,7 +81,8 @@ public class MusicPosterGridViewAdapter extends
 		int width = ImageUtils.getDPI(180, context);
 		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
-		SerenityApplication.displayImage(pi.getImageURL(), mpiv, SerenityApplication.getMusicOptions());
+		SerenityApplication.displayImage(pi.getImageURL(), mpiv,
+				SerenityApplication.getMusicOptions());
 
 		return mpiv;
 	}
@@ -104,15 +102,18 @@ public class MusicPosterGridViewAdapter extends
 		@Override
 		public void handleMessage(Message msg) {
 			posterList = (List<MusicArtistContentInfo>) msg.obj;
-			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.musicGridView);
+			TwoWayGridView gridView = (TwoWayGridView) context
+					.findViewById(R.id.musicGridView);
 			gridView.requestFocus();
 			notifyAdapter.notifyDataSetChanged();
-			//pd.dismiss();
+			// pd.dismiss();
 		}
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getCount()
 	 */
 	@Override
@@ -120,7 +121,9 @@ public class MusicPosterGridViewAdapter extends
 		return posterList.size();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getItem(int)
 	 */
 	@Override
@@ -128,14 +131,14 @@ public class MusicPosterGridViewAdapter extends
 		return posterList.get(position);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
 	@Override
 	public long getItemId(int position) {
 		return position;
 	}
-	
-	
 
 }

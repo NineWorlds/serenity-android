@@ -26,10 +26,8 @@ package us.nineworlds.serenity.ui.browser.tv;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.volley.Response;
-import com.jess.ui.TwoWayGridView;
-
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
@@ -38,9 +36,6 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
-
-import us.nineworlds.serenity.R;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.View;
@@ -49,8 +44,11 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Response;
+import com.jess.ui.TwoWayGridView;
 
 /**
  * 
@@ -72,7 +70,7 @@ public class TVShowBannerImageGalleryAdapter extends
 
 	protected static List<SeriesContentInfo> tvShowList = null;
 
-	private String key;
+	private final String key;
 	protected static ProgressDialog pd;
 	protected SerenityMultiViewVideoActivity showActivity;
 
@@ -157,7 +155,8 @@ public class TVShowBannerImageGalleryAdapter extends
 		mpiv.setMaxWidth(width);
 
 		if (isPoster) {
-			SerenityApplication.displayImage(pi.getThumbNailURL(), mpiv);
+			SerenityApplication.displayImageRoundedCorners(
+					pi.getThumbNailURL(), mpiv);
 		} else {
 			SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 		}
@@ -220,15 +219,19 @@ public class TVShowBannerImageGalleryAdapter extends
 	protected void fetchDataFromService() {
 
 	}
-	
+
 	/**
 	 * @author dcarver
-	 *
+	 * 
 	 */
-	protected class SeriesResponseListener implements Response.Listener<MediaContainer> {
+	protected class SeriesResponseListener implements
+			Response.Listener<MediaContainer> {
 
-		/* (non-Javadoc)
-		 * @see com.android.volley.Response.Listener#onResponse(java.lang.Object)
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * com.android.volley.Response.Listener#onResponse(java.lang.Object)
 		 */
 		@Override
 		public void onResponse(MediaContainer response) {
@@ -239,15 +242,19 @@ public class TVShowBannerImageGalleryAdapter extends
 				TextView tv = (TextView) context
 						.findViewById(R.id.tvShowItemCount);
 				if (tv == null) {
-					if (pd != null ) {
+					if (pd != null) {
 						pd.dismiss();
 					}
 					return;
 				}
 				if (tvShowList.isEmpty()) {
-					Toast.makeText(context, context.getString(R.string.no_shows_found_for_the_category_) + category, Toast.LENGTH_LONG).show();
+					Toast.makeText(
+							context,
+							context.getString(R.string.no_shows_found_for_the_category_)
+									+ category, Toast.LENGTH_LONG).show();
 				}
-				tv.setText(Integer.toString(tvShowList.size()) + context.getString(R.string._item_s_));
+				tv.setText(Integer.toString(tvShowList.size())
+						+ context.getString(R.string._item_s_));
 			}
 			notifyDataSetChanged();
 			if (showActivity.isGridViewActive()) {
@@ -257,10 +264,10 @@ public class TVShowBannerImageGalleryAdapter extends
 			} else {
 				posterGallery.requestFocus();
 			}
-			
+
 			if (pd != null) {
 				pd.dismiss();
-			}	
+			}
 		}
 	}
 }

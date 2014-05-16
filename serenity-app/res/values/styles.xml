@@ -36,4 +36,8 @@
     </style>
     
 
+    <style name="PopupAnimation" parent="android:Animation" mce_bogus="1">      
+         <item name="android:windowEnterAnimation">@anim/fade_in_mediacontroller</item>  
+        <item name="android:windowExitAnimation">@anim/fade_out_mediacontroller</item>  
+    </style>  
 </resources>

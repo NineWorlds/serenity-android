@@ -23,15 +23,10 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.jess.ui.TwoWayAbsListView;
-import com.jess.ui.TwoWayGridView;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
@@ -46,9 +41,6 @@ import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -58,6 +50,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.jess.ui.TwoWayAbsListView;
+import com.jess.ui.TwoWayGridView;
 
 /**
  * 
@@ -128,7 +127,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		}
 
 		shrinkPosterAnimation(mpiv, movieContext.isGridViewActive());
-		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
+		SerenityApplication.displayImageRoundedCorners(pi.getImageURL(), mpiv);
 
 		setWatchedStatus(galleryCellView, pi);
 
