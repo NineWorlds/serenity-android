@@ -177,13 +177,13 @@
     <LinearLayout
         android:id="@+id/tableRow2"
         android:layout_width="match_parent"
-        android:layout_height="190dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dip"
-        android:background="@drawable/content_panel_dark"
+        android:background="#A0000000"
         android:gravity="bottom"
         android:padding="5dp" >
 

@@ -89,7 +89,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginRight="10dp"
         android:padding="5dp"
-        android:background="@drawable/content_panel_dark"
+        android:background="#A0000000"
         app:cacheColorHint="#E8E8E8"
         app:columnWidth="160dp"
         app:gravity="center"
