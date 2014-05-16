@@ -32,6 +32,7 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.imageloader.OKHttpImageLoader;
+import us.nineworlds.serenity.core.imageloader.RoundedCornersBitmapDisplayer;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import android.app.Application;
@@ -51,7 +52,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedVignetteBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.squareup.okhttp.OkHttpClient;
@@ -227,7 +227,7 @@ public class SerenityApplication extends Application {
 
 		roundedOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
 				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888)
-				.displayer(new RoundedBitmapDisplayer(10)).build();
+				.displayer(new RoundedCornersBitmapDisplayer(10, 10)).build();
 
 		roundedVigenetteOptions = new DisplayImageOptions.Builder()
 				.cacheInMemory(true).cacheOnDisc(true)
