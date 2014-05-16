@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvLine1"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/content_panel_dark"
+        android:background="#A0000000"
         android:padding="10dp" >
 
         <ImageView
@@ -158,6 +158,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
+        android:background="#A0000000"
         android:orientation="vertical" >
 
         <Gallery
@@ -165,7 +166,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:animationDuration="1"
-            android:background="@drawable/content_panel_dark"
             android:padding="5dp"
             android:spacing="10dp" >
 

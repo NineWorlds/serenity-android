@@ -102,7 +102,7 @@
         android:layout_marginLeft="10dp"
         android:padding="10dp"
         android:layout_below="@+id/episodeTVSeriesTitle"
-        android:background="@drawable/content_panel_dark" >
+        android:background="#AA000000" >
 
         <ImageView
             android:id="@+id/video_poster"
@@ -177,7 +177,7 @@
     <LinearLayout
         android:id="@+id/tableRow2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="190dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dip"
@@ -191,6 +191,7 @@
             android:id="@+id/moviePosterGallery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center|center_vertical"
             android:nextFocusUp="@+id/categoryFilter"
             android:spacing="25dp" >
 

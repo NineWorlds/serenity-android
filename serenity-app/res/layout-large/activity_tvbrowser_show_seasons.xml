@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginRight="10dp"
-        android:background="@drawable/content_panel_dark"
+        android:background="#A0000000"
         app:cacheColorHint="#E8E8E8"
         app:gravity="center"
         app:horizontalSpacing="16dp"
@@ -101,14 +101,15 @@
          android:layout_height="wrap_content"
          android:layout_alignParentBottom="true"
          android:orientation="vertical"
+         android:background="#A0000000"
          android:layout_marginBottom="10dp" >
 
          <Gallery
              android:id="@+id/tvShowSeasonImageGallery"
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
+             android:layout_gravity="center|center_vertical"
              android:animationDuration="1"
-             android:background="@drawable/content_panel_dark"
              android:spacing="25dp"
              android:padding="5dp" >
 
