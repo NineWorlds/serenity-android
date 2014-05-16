@@ -71,7 +71,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginRight="10dp"
         android:padding="5dp"
-        android:background="#80000000"
+        android:background="@drawable/content_panel_dark"
         app:cacheColorHint="#E8E8E8"
         app:columnWidth="160dp"
         app:gravity="center"

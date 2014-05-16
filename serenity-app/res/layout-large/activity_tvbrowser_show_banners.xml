@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvLine1"
         android:layout_centerHorizontal="true"
-        android:background="#AA000000"
+        android:background="@drawable/content_panel_dark"
         android:padding="10dp" >
 
         <ImageView
@@ -164,7 +164,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:animationDuration="1"
-            android:background="#50000000"
+            android:background="@drawable/content_panel_dark"
             android:padding="5dp"
             android:spacing="10dp" >
 
