@@ -155,8 +155,7 @@ public class TVShowBannerImageGalleryAdapter extends
 		mpiv.setMaxWidth(width);
 
 		if (isPoster) {
-			SerenityApplication.displayImageRoundedCorners(
-					pi.getThumbNailURL(), mpiv);
+			SerenityApplication.displayImage(pi.getThumbNailURL(), mpiv);
 		} else {
 			SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 		}

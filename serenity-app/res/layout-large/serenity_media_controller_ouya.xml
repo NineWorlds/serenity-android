@@ -4,7 +4,7 @@
     android:id="@+id/mediacontroller"
     android:layout_margin="10dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity">
 
     <TextView
         android:id="@+id/mediacontroller_title"
@@ -35,7 +35,7 @@
         tools:ignore="SelectableText" />
 
     
-    <ImageView
+    <us.nineworlds.serenity.widgets.RoundedImageView
         android:id="@+id/mediacontroller_poster_art"
         android:layout_width="150dp"
         android:layout_height="200dp"
@@ -43,6 +43,8 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
         android:paddingBottom="10dp"
+        app:corner_radius="5dp"
+        app:mutate_background="true"
         android:scaleType="centerInside"
         android:src="@drawable/default_video_cover"
         tools:ignore="ContentDescription" />

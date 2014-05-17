@@ -226,7 +226,7 @@ public class SerenityApplication extends Application {
 
 		roundedOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
 				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888)
-				.build();
+				.resetViewBeforeLoading(true).build();
 
 		roundedVigenetteOptions = new DisplayImageOptions.Builder()
 				.cacheInMemory(true).cacheOnDisc(true)

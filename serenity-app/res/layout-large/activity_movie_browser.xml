@@ -4,7 +4,7 @@
     android:id="@+id/movieBrowserBackgroundLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity">
 
     <ImageView
         android:id="@+id/fanArt"
@@ -104,11 +104,13 @@
         android:layout_below="@+id/episodeTVSeriesTitle"
         android:background="#AA000000" >
 
-        <ImageView
+        <us.nineworlds.serenity.widgets.RoundedImageView
             android:id="@+id/video_poster"
             android:layout_width="200dp"
             android:layout_height="250dp"
             android:layout_margin="5dp"
+            app:corner_radius="5dp"
+            app:mutate_background="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true" />
 

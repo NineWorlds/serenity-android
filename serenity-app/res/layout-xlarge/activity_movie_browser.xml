@@ -4,7 +4,7 @@
     android:id="@+id/movieBrowserBackgroundLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity">
 
     <ImageView
         android:id="@+id/fanArt"
@@ -104,11 +104,13 @@
         android:layout_below="@+id/episodeTVSeriesTitle"
         android:background="#AA000000" >
 
-        <ImageView
+        <us.nineworlds.serenity.widgets.RoundedImageView
             android:id="@+id/video_poster"
             android:layout_width="300dp"
             android:layout_height="400dp"
             android:layout_margin="5dp"
+            app:corner_radius="5dp"
+            app:mutate_background="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true" />
 
@@ -125,7 +127,7 @@
             android:textColor="#F0F0F0"
             android:textStyle="bold"
             tools:ignore="SelectableText" />
-
+        
         <TextView
             android:id="@+id/movieSummary"
             android:layout_width="fill_parent"
@@ -144,6 +146,7 @@
         
         <TextView
             android:id="@+id/videoTextExtra"
+            android:textSize="22sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
@@ -155,9 +158,8 @@
             android:paddingRight="10dp"
             android:gravity="left"
             android:textStyle="bold"
-            android:textSize="22sp"
             android:visibility="invisible" />
-        
+               
 
         <LinearLayout
             android:id="@+id/movieInfoGraphicLayout"
@@ -183,7 +185,7 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dip"
-        android:background="#CC000000"
+        android:background="#A0000000"
         android:gravity="bottom"
         android:padding="5dp" >
 
@@ -191,6 +193,7 @@
             android:id="@+id/moviePosterGallery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center|center_vertical"
             android:nextFocusUp="@+id/categoryFilter"
             android:spacing="25dp" >
 

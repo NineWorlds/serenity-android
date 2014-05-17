@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/tvshows"
     android:orientation="vertical"
-    tools:context=".ui.browser.tv.TVShowBrowserActivity" >
+    tools:context=".ui.browser.tv.TVShowBrowserActivity" xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity">
 
     <LinearLayout
         android:id="@+id/tvLine1"
@@ -79,12 +79,14 @@
         android:background="#A0000000"
         android:padding="10dp" >
 
-        <ImageView
+        <us.nineworlds.serenity.widgets.RoundedImageView
             android:id="@+id/tvShowImage"
             android:layout_width="200dp"
             android:layout_height="250dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
+            app:corner_radius="5dp"
+            app:mutate_background="true"
             android:layout_margin="5dp" />
 
         <LinearLayout

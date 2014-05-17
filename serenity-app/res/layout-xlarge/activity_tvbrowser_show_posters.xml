@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/tvshows"
     android:orientation="vertical"
-    tools:context=".ui.browser.tv.TVShowBrowserActivity" >
+    tools:context=".ui.browser.tv.TVShowBrowserActivity" xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity">
 
     <LinearLayout
         android:id="@+id/tvLine1"
@@ -70,21 +70,33 @@
         </TextView>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/video_details_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvLine1"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
         android:background="#A0000000"
-        android:orientation="vertical" >
+        android:padding="10dp" >
+
+        <us.nineworlds.serenity.widgets.RoundedImageView
+            android:id="@+id/tvShowImage"
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            app:corner_radius="5dp"
+            app:mutate_background="true"
+            android:layout_margin="5dp" />
 
         <LinearLayout
+            android:id="@+id/tvmetadata"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/tvShowImage"
+            android:layout_alignBottom="@+id/tvShowImage"
             android:orientation="horizontal" >
 
             <ImageView
@@ -94,80 +106,61 @@
                 android:layout_marginBottom="5dip"
                 android:layout_marginRight="5dip" />
 
-            <ImageView
-                android:id="@+id/tvShowStudio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
             <RatingBar
                 android:id="@+id/tvRatingbar"
+                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="4"
-                android:stepSize="0.1"
-                style="?android:attr/ratingBarStyleIndicator" >
+                android:stepSize="0.1" >
             </RatingBar>
+
+            <ImageView
+                android:id="@+id/tvShowStudio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="10dip" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tvBrowserTitle"
-            android:layout_width="fill_parent"
+            android:textSize="35sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:gravity="left"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/tvShowImage"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="10dp"
             android:textColor="#F0F0F0"
             android:textStyle="bold"
-            android:textSize="35sp"
-            tools:ignore="SelectableText" >
-        </TextView>
+            tools:ignore="SelectableText" />
 
         <TextView
             android:id="@+id/tvShowSeriesSummary"
-            style="@android:style/TextAppearance.Holo.Medium"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:layout_marginTop="2dp"
-            android:gravity="top"
-            android:maxLines="7"
-            android:textColor="#F0F0F0"
-            android:textSize="25sp"
-            tools:ignore="SelectableText" >
-        </TextView>
-
-        <TextView
-            android:id="@+id/tvShowBrowserGenre"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
+            android:layout_below="@+id/tvBrowserTitle"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/tvShowImage"
+            android:ellipsize="marquee"
+            android:maxLines="8"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:textColor="#F0F0F0"
-            android:textSize="25sp"
-            tools:ignore="SelectableText" >
-        </TextView>
-
-        <TextView
-            android:id="@+id/tvShowWatchedUnwatched"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:textColor="#F0F0F0"
-            android:textSize="25sp"
-            tools:ignore="SelectableText" >
-        </TextView>
-    </LinearLayout>
+            android:textSize="22sp"
+            tools:ignore="SelectableText" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
+        android:background="#A0000000"
         android:orientation="vertical" >
 
         <Gallery
@@ -175,7 +168,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:animationDuration="1"
-            android:background="#50000000"
             android:padding="5dp"
             android:spacing="10dp" >
 

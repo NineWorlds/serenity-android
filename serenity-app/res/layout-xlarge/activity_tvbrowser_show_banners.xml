@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/tvshows"
     android:orientation="vertical"
-    tools:context=".ui.browser.tv.TVShowBrowserActivity" >
+    tools:context=".ui.browser.tv.TVShowBrowserActivity" xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity">
 
     <LinearLayout
         android:id="@+id/tvLine1"
@@ -13,18 +13,18 @@
         android:layout_height="wrap_content"
         android:background="#A0000000"
         android:orientation="horizontal" >
-        
-        <ImageButton android:id="@+id/menu_button"
-        android:layout_width="wrap_content"
-        android:paddingRight="10dp"
-        android:paddingLeft="5dp"
-        android:layout_height="28dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/menudrawer_selector"
-        android:layout_gravity="center_vertical"
-        android:scaleType="fitXY"
-        />
-        
+
+        <ImageButton
+            android:id="@+id/menu_button"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/menudrawer_selector" />
+
         <TextView
             android:id="@+id/tvshow_CategoryName"
             style="@android:style/TextAppearance.Holo.Medium"
@@ -70,144 +70,108 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/video_details_container"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/tvLine1"
+        android:layout_centerHorizontal="true"
+        android:background="#A0000000"
+        android:padding="10dp" >
+
+        <us.nineworlds.serenity.widgets.RoundedImageView
+            android:id="@+id/tvShowImage"
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            app:corner_radius="5dp"
+            app:mutate_background="true"
+            android:layout_margin="5dp" />
+
+        <LinearLayout
+            android:id="@+id/tvmetadata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/tvShowImage"
+            android:layout_alignBottom="@+id/tvShowImage"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/tvShowRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip"
+                android:layout_marginRight="5dip" />
+
+            <RatingBar
+                android:id="@+id/tvRatingbar"
+                style="?android:attr/ratingBarStyleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="4"
+                android:stepSize="0.1" >
+            </RatingBar>
+
+            <ImageView
+                android:id="@+id/tvShowStudio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="10dip" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvBrowserTitle"
+            android:textSize="35sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/tvShowImage"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="10dp"
+            android:textColor="#F0F0F0"
+            android:textStyle="bold"
+            tools:ignore="SelectableText" />
+
+        <TextView
+            android:id="@+id/tvShowSeriesSummary"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvBrowserTitle"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/tvShowImage"
+            android:ellipsize="marquee"
+            android:maxLines="8"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="#F0F0F0"
+            android:textSize="22sp"
+            tools:ignore="SelectableText" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
         android:background="#A0000000"
         android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/tvShowInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="30dp"
-            android:orientation="vertical" >
-
-            <ImageView
-                android:id="@+id/tvShowImage"
-                android:layout_width="410dp"
-                android:layout_height="210dp"
-                android:layout_gravity="center_horizontal"
-                android:background="#F0F0F0"
-                android:padding="2dp"
-                android:scaleType="fitXY"
-                android:visibility="gone"
-                tools:ignore="ContentDescription" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="800dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_marginTop="30dp"
-            android:layout_toRightOf="@+id/tvShowInfo"
-            android:orientation="vertical" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <ImageView
-                    android:id="@+id/tvShowRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dip"
-                    android:layout_marginRight="5dip" />
-
-                <ImageView
-                    android:id="@+id/tvShowStudio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dip"
-                    android:layout_marginLeft="15dip"
-                    android:layout_marginRight="10dip" />
-
-                <RatingBar
-                    android:id="@+id/tvRatingbar"
-                    style="?android:attr/ratingBarStyleIndicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:numStars="4"
-                    android:stepSize="0.1" >
-                </RatingBar>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:id="@+id/tvBrowserTitle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:textColor="#F0F0F0"
-                    android:textSize="35sp"
-                    android:textStyle="bold"
-                    tools:ignore="SelectableText" >
-                </TextView>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvShowSeriesSummary"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
-                android:gravity="top"
-                android:maxLines="7"
-                android:textColor="#F0F0F0"
-                android:textSize="25sp"
-                tools:ignore="SelectableText" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/tvShowBrowserGenre"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="10dp"
-                android:textSize="25sp"
-                android:gravity="center"
-                android:textColor="#F0F0F0"
-                tools:ignore="SelectableText" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/tvShowWatchedUnwatched"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:textColor="#F0F0F0"
-                android:textSize="25sp"
-                tools:ignore="SelectableText" >
-            </TextView>
-        </LinearLayout>
-
-        <LinearLayout
+        <Gallery
+            android:id="@+id/tvShowBannerGallery"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical" >
+            android:animationDuration="1"
+            android:padding="5dp"
+            android:spacing="10dp" >
 
-            <Gallery
-                android:id="@+id/tvShowBannerGallery"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:animationDuration="1"
-                android:background="#50000000"
-                android:padding="5dp"
-                android:spacing="10dp" >
-
-                <requestFocus />
-            </Gallery>
-        </LinearLayout>
-    </RelativeLayout>
+            <requestFocus />
+        </Gallery>
+    </LinearLayout>
 
 </RelativeLayout>

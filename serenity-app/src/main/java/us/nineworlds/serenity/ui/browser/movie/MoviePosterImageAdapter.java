@@ -40,6 +40,7 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
+import us.nineworlds.serenity.widgets.RoundedImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -102,7 +103,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		VideoContentInfo pi = posterList.get(position);
 		gridViewMetaData(galleryCellView, pi);
 
-		ImageView mpiv = (ImageView) galleryCellView
+		RoundedImageView mpiv = (RoundedImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
 
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
@@ -127,7 +128,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		}
 
 		shrinkPosterAnimation(mpiv, movieContext.isGridViewActive());
-		SerenityApplication.displayImageRoundedCorners(pi.getImageURL(), mpiv);
+		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 
 		setWatchedStatus(galleryCellView, pi);
 

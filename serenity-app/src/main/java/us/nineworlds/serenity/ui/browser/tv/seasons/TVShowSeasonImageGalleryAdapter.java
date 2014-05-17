@@ -123,7 +123,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
-		SerenityApplication.displayImageRoundedCorners(pi.getImageURL(), mpiv);
+		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 		galleryCellView
 				.setLayoutParams(new Gallery.LayoutParams(width, height));
 

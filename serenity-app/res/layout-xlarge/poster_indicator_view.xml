@@ -3,12 +3,14 @@
     android:id="@+id/posterIndicatorView"
     android:layout_width="200dp"
     android:layout_height="250dp"
-    android:background="@drawable/gallery_item_background" >
+    android:background="@drawable/gallery_item_background" xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity">
 
-    <ImageView
+    <us.nineworlds.serenity.widgets.RoundedImageView
         android:id="@+id/posterImageView"
         android:layout_width="200dp"
         android:layout_height="250dp"
+        app:corner_radius="5dp"
+        app:mutate_background="true"
         android:layout_alignParentTop="true"
         android:scaleType="fitXY" />
 
