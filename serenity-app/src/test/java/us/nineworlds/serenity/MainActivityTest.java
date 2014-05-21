@@ -47,7 +47,7 @@ import android.widget.Gallery;
  * 
  */
 @RunWith(SerenityRobolectricTestRunner.class)
-@Config(shadows = SerenityShadowResources.class)
+@Config(shadows = SerenityShadowResources.class, emulateSdk = 18)
 public class MainActivityTest {
 
 	MainActivity activity;
@@ -103,30 +103,30 @@ public class MainActivityTest {
 
 	@Test
 	public void testThatActivityIsDestroyed() throws Exception {
+		activity.onDestroy();
 		ShadowActivity a = Robolectric.shadowOf(activity);
-		a.callOnDestroy();
 		Assertions.assertThat(a.isDestroyed()).isTrue();
 	}
 
 	@Test
 	public void testThatActivityStops() throws Exception {
+		activity.onStop();
 		ShadowActivity a = Robolectric.shadowOf(activity);
-		a.callOnStop();
 		Assertions.assertThat(a.isFinishing()).isFalse();
 	}
 
 	@Test
 	public void testThatActivityCallsOnResume() throws Exception {
+		activity.onResume();
 		ShadowActivity a = Robolectric.shadowOf(activity);
-		a.callOnResume();
 		Gallery g = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
 		assertThat(g).isVisible().isEnabled();
 	}
 
 	@Test
 	public void testThatActivityCallsOnRestart() throws Exception {
+		activity.onRestart();
 		ShadowActivity a = Robolectric.shadowOf(activity);
-		a.callOnRestart();
 		Gallery g = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
 		assertThat(g).isVisible().isEnabled();
 	}

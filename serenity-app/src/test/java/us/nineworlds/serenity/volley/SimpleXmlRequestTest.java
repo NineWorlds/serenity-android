@@ -36,6 +36,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.OkHttpStack;
@@ -52,6 +53,7 @@ import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(reportSdk = 14, emulateSdk = 18)
 public class SimpleXmlRequestTest {
 
 	MockWebServer webserver;

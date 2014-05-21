@@ -29,6 +29,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.annotation.Config;
 
 import us.nineworlds.serenity.SerenityRobolectricTestRunner;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -39,6 +40,7 @@ import android.content.Intent;
  * 
  */
 @RunWith(SerenityRobolectricTestRunner.class)
+@Config(emulateSdk = 18)
 public class YouTubeTrailerSerachServiceTest {
 
 	/**

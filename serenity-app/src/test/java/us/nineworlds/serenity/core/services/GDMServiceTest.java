@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import us.nineworlds.serenity.GDMReceiver;
 import us.nineworlds.serenity.MainActivity;
@@ -43,6 +44,7 @@ import android.support.v4.content.LocalBroadcastManager;
  * 
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(emulateSdk = 18)
 public class GDMServiceTest {
 
 	private final BroadcastReceiver gdmReciver = new GDMReceiver();

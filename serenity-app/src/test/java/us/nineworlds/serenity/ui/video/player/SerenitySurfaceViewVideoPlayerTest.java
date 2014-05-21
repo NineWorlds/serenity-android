@@ -39,7 +39,7 @@ import us.nineworlds.serenity.SerenityRobolectricTestRunner;
  * 
  */
 @RunWith(SerenityRobolectricTestRunner.class)
-@Config(reportSdk = 14)
+@Config(reportSdk = 14, emulateSdk = 18)
 public class SerenitySurfaceViewVideoPlayerTest {
 
 	SerenitySurfaceViewVideoActivity activity;

@@ -49,7 +49,7 @@ import android.view.View;
  * 
  */
 @RunWith(SerenityRobolectricTestRunner.class)
-@Config(shadows = SerenityShadowResources.class)
+@Config(shadows = SerenityShadowResources.class, emulateSdk = 18)
 public class GridSubtitleVolleyResponseListenerTest {
 
 	Serializer serializer;

@@ -29,10 +29,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import com.android.volley.RequestQueue;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(reportSdk = 14, emulateSdk = 18)
 public class VolleyUtilsTest {
 
 	@Test
