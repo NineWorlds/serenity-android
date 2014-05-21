@@ -284,8 +284,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		subtitleURL = extras.getString("subtitleURL");
 		subtitleType = extras.getString("subtitleFormat");
 		mediaTagIdentifier = extras.getString("mediaTagId");
-		initMediaController(summary, title, posterURL, videoFormat,
-				videoResolution, audioFormat, audioChannels);
+		MediaControllerDataObject mediaMetaData = initMetaData(summary, title,
+				posterURL, videoFormat, videoResolution, audioFormat,
+				audioChannels);
+		initMediaController(mediaMetaData);
 	}
 
 	private void playBackFromVideoQueue() {
@@ -319,29 +321,33 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			subtitleType = video.getSubtitle().getFormat();
 		}
 		mediaTagIdentifier = video.getMediaTagIdentifier();
-		initMediaController(summary, title, posterURL, videoFormat,
-				videoResolution, audioFormat, audioChannels);
+		MediaControllerDataObject mediaMetaData = initMetaData(summary, title,
+				posterURL, videoFormat, videoResolution, audioFormat,
+				audioChannels);
+
+		initMediaController(mediaMetaData);
 	}
 
-	/**
-	 * @param summary
-	 * @param title
-	 * @param posterURL
-	 * @param videoFormat
-	 * @param videoResolution
-	 * @param audioFormat
-	 * @param audioChannels
-	 */
-	protected void initMediaController(String summary, String title,
-			String posterURL, String videoFormat, String videoResolution,
-			String audioFormat, String audioChannels) {
-
-		mediaController = new MediaController(this, summary, title, posterURL,
-				videoResolution, videoFormat, audioFormat, audioChannels,
-				mediaTagIdentifier);
+	protected void initMediaController(MediaControllerDataObject mediaMetaData) {
+		mediaController = new MediaController(mediaMetaData);
 		mediaController.setAnchorView(videoActivityView);
 		mediaController.setMediaPlayer(new SerenityMediaPlayerControl(
 				mediaPlayer));
+	}
+
+	private MediaControllerDataObject initMetaData(String summary,
+			String title, String posterURL, String videoFormat,
+			String videoResolution, String audioFormat, String audioChannels) {
+		MediaControllerDataObject mediaMetaData = new MediaControllerDataObject();
+		mediaMetaData.setContext(this);
+		mediaMetaData.setSummary(summary);
+		mediaMetaData.setTitle(title);
+		mediaMetaData.setPosterURL(posterURL);
+		mediaMetaData.setResolution(videoResolution);
+		mediaMetaData.setVideoFormat(videoFormat);
+		mediaMetaData.setAudioFormat(audioFormat);
+		mediaMetaData.setAudioChannels(audioChannels);
+		return mediaMetaData;
 	}
 
 	@Override

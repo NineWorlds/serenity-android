@@ -50,7 +50,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,33 +63,8 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 /**
- * A view containing controls for a MediaPlayer. Typically contains the buttons
- * like "Play/Pause" and a progress slider. It takes care of synchronizing the
- * controls with the state of the MediaPlayer.
- * <p>
- * The way to use this class is to a) instantiate it programatically or b)
- * create it in your xml layout.
- * 
- * a) The MediaController will create a default set of controls and put them in
- * a window floating above your application. Specifically, the controls will
- * float above the view specified with setAnchorView(). By default, the window
- * will disappear if left idle for three seconds and reappear when the user
- * touches the anchor view. To customize the MediaController's style, layout and
- * controls you should extend MediaController and override the {#link
- * {@link #makeControllerView()} method.
- * 
- * b) The MediaController is a FrameLayout, you can put it in your layout xml
- * and get it through {@link #findViewById(int)}.
- * 
- * NOTES: In each way, if you want customize the MediaController, the SeekBar's
- * id must be mediacontroller_progress, the Play/Pause's must be
- * mediacontroller_pause, current time's must be mediacontroller_time_current,
- * total time's must be mediacontroller_time_total, file name's must be
- * mediacontroller_file_name. And your resources must have a pause_button
- * drawable and a play_button drawable.
- * <p>
- * Functions like show() and hide() have no effect when MediaController is
- * created in an xml layout.
+ * Based on the Android Open Source MediaController but drastically refactored
+ * and cleaned up.
  * 
  * DAC - 2013-03-28 - Cleaned up the code and removed the handling of the key
  * events. Also made it so that the mediacontroller popup windows is focusable
@@ -101,211 +75,62 @@ import android.widget.TextView;
  * 
  */
 public class MediaController extends FrameLayout {
-	public interface OnHiddenListener {
-		public void onHidden();
-	}
-
-	public interface OnShownListener {
-		public void onShown();
-	}
 
 	private static final int FADE_OUT = 1;
-	private static final int sDefaultTimeout = 3000;
 	private static final int SHOW_PROGRESS = 2;
-	private String audioChannels;
-	private String audioFormat;
-	private AudioManager mAM;
-	private View mAnchor;
-	private int mAnimStyle;
-	private Context mContext;
-	private boolean mDragging;
-	private long mDuration;
-	private TextView mEndTime, mCurrentTime;
-	private boolean mFromXml = false;
+	private static final int DEFAULT_TIME_OUT = 3000;
 
-	private final Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			long pos;
-			switch (msg.what) {
-			case FADE_OUT:
-				hide();
-				break;
-			case SHOW_PROGRESS:
-				if (!mDragging && mShowing) {
-					pos = setProgress();
-					msg = obtainMessage(SHOW_PROGRESS);
-					sendMessageDelayed(msg, 1000 - (pos % 1000));
-				}
-				break;
-			}
-		}
-	};
+	private AudioManager audioManager;
+	private View anchorView;
+	private int animationStyle;
+	private Context context;
+	private boolean draggingSeeker;
+	private long playbackDuration;
+	private MediaPlayerControl mediaPlayerControl;
+	private TextView endTimeTextView, currentTimeTextView;
 
-	private OnHiddenListener mHiddenListener;
-	private boolean mInstantSeeking = true;
-	private ImageButton mPauseButton;
+	private boolean fromLayoutXML = false;
 
-	private final View.OnClickListener mPauseListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			doPauseResume();
-			show(sDefaultTimeout);
-		}
-	};
+	private final Handler showfadeMessgeHandler = new ShowMessageHandler();
+	private OnHiddenListener onHideListener;
+	private boolean instantSeeking = true;
 
-	private MediaPlayerControl mPlayer;
-	private SeekBar mProgress;
-	private View mRoot;
-	private final OnSeekBarChangeListener mSeekListener = new OnSeekBarChangeListener() {
-		@Override
-		public void onProgressChanged(SeekBar bar, int progress,
-				boolean fromuser) {
-			try {
-				if (!fromuser) {
-					return;
-				}
+	private ImageButton pauseImageButton;
 
-				long newposition = (mDuration * progress) / 1000;
-				String time = new SimpleDateFormat("HH:mm:ss",
-						Locale.getDefault()).format(new Date(newposition));
-				if (mInstantSeeking) {
-					mPlayer.seekTo(newposition);
-				}
+	private SeekBar progressSeekBar;
 
-				if (mCurrentTime != null) {
-					mCurrentTime.setText(time);
-				}
-			} catch (IllegalStateException e) {
-				Log.d(getClass().getName(),
-						"Seeking failed due to media player in an illegalstate.",
-						e);
-			}
-		}
+	private View rootView;
 
-		@Override
-		public void onStartTrackingTouch(SeekBar bar) {
-			mDragging = true;
-			show(3600000);
-			mHandler.removeMessages(SHOW_PROGRESS);
-			if (mInstantSeeking) {
-				mAM.setStreamMute(AudioManager.STREAM_MUSIC, true);
-			}
-		}
+	private final OnSeekBarChangeListener mSeekListener = new SeekOnSeekBarChangeListener();
+	private boolean mediaControllerShowing;
+	private OnShownListener onShownListener;
 
-		@Override
-		public void onStopTrackingTouch(SeekBar bar) {
-			try {
-				if (!mInstantSeeking) {
-					mPlayer.seekTo((mDuration * bar.getProgress()) / 1000);
-				}
-				show(sDefaultTimeout);
-				mHandler.removeMessages(SHOW_PROGRESS);
-				mAM.setStreamMute(AudioManager.STREAM_MUSIC, false);
-				mDragging = false;
-				mHandler.sendEmptyMessageDelayed(SHOW_PROGRESS, 1000);
-			} catch (IllegalStateException e) {
-				Log.d(getClass().getName(),
-						"Seeking failed due to media player in an illegalstate.",
-						e);
-			}
-		}
-	};
-
-	private boolean mShowing;
-	private OnShownListener mShownListener;
-	private ImageButton mSkipBackwardButton;
-
-	private final View.OnClickListener mSkipBackwardListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			try {
-				long skipOffset = mPlayer.getCurrentPosition() - 10000;
-				if (skipOffset < 0) {
-					skipOffset = 1;
-				}
-				mPlayer.seekTo(skipOffset);
-				show();
-			} catch (IllegalStateException e) {
-				Log.d(getClass().getName(),
-						"Seeking failed due to media player in an illegalstate.",
-						e);
-			}
-		}
-	};
-
-	private ImageButton mSkipForwardButton;
-
-	private final View.OnClickListener mSkipForwardListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			try {
-				long skipOffset = 10000 + mPlayer.getCurrentPosition();
-				long duration = mPlayer.getDuration();
-				if (skipOffset > duration) {
-					skipOffset = duration - 1;
-				}
-				mPlayer.seekTo(skipOffset);
-				show();
-			} catch (IllegalStateException e) {
-				Log.d(getClass().getName(),
-						"Seeking failed due to media player in an illegalstate.",
-						e);
-			}
-		}
-	};
-
-	private PopupWindow mWindow;
-
-	private String posterURL;
-
-	private String resolution;
-
-	private String summary;
-
-	private String title;
-
-	private String videoFormat;
+	private PopupWindow mediaControllerHUD;
+	private MediaControllerDataObject mediaMetaData;
 
 	@Deprecated
 	public MediaController(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		mRoot = this;
-		mFromXml = true;
+		rootView = this;
+		fromLayoutXML = true;
 		initController(context);
 	}
 
-	public MediaController(Context context, String summary, String title,
-			String posterURL, String resolution, String videoFormat,
-			String audioFormat, String audioChannels, String mediaTagId) {
-		super(context);
-		this.summary = summary;
-		this.title = title;
-		this.posterURL = posterURL;
-		this.resolution = resolution;
-		this.audioChannels = audioChannels;
-		this.videoFormat = videoFormat;
-		this.audioFormat = audioFormat;
-
-		if (!mFromXml && initController(context)) {
+	public MediaController(MediaControllerDataObject mediaMetaData) {
+		super(mediaMetaData.getContext());
+		this.mediaMetaData = mediaMetaData;
+		if (!fromLayoutXML && initController(mediaMetaData.getContext())) {
 			initFloatingWindow();
 		}
 	}
 
-	/**
-	 * @param v
-	 */
 	protected void createDurationViews(View v) {
-		mEndTime = (TextView) v.findViewById(R.id.mediacontroller_time_total);
-		mCurrentTime = (TextView) v
+		endTimeTextView = (TextView) v
+				.findViewById(R.id.mediacontroller_time_total);
+		currentTimeTextView = (TextView) v
 				.findViewById(R.id.mediacontroller_time_current);
 	}
 
-	/**
-	 * @param v
-	 */
 	protected void createNextVideoButton(View v) {
 		TextView txtNextVideo = (TextView) v
 				.findViewById(R.id.mediacontroller_next_video);
@@ -321,72 +146,61 @@ public class MediaController extends FrameLayout {
 		}
 	}
 
-	/**
-	 * @param v
-	 */
 	protected void createPauseButton(View v) {
-		mPauseButton = (ImageButton) v
+		pauseImageButton = (ImageButton) v
 				.findViewById(R.id.mediacontroller_play_pause);
-		if (mPauseButton != null) {
-			mPauseButton.requestFocus();
-			mPauseButton.setOnClickListener(mPauseListener);
+		if (pauseImageButton != null) {
+			pauseImageButton.requestFocus();
+			pauseImageButton.setOnClickListener(new PauseOnClickListener(this));
 		}
 	}
 
-	/**
-	 * @param v
-	 */
 	protected void createPoster(View v) {
 		ImageView posterView = (ImageView) v
 				.findViewById(R.id.mediacontroller_poster_art);
 		posterView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-		if (posterURL != null) {
-			SerenityApplication.displayImageRoundedCorners(posterURL,
-					posterView);
+		if (mediaMetaData.getPosterURL() != null) {
+			SerenityApplication.displayImageRoundedCorners(
+					mediaMetaData.getPosterURL(), posterView);
 		}
 	}
 
-	/**
-	 * @param v
-	 */
 	protected void createProgressBar(View v) {
-		mProgress = (SeekBar) v.findViewById(R.id.mediacontroller_seekbar);
-		if (mProgress != null) {
-			if (mProgress instanceof SeekBar) {
-				SeekBar seeker = mProgress;
+		progressSeekBar = (SeekBar) v
+				.findViewById(R.id.mediacontroller_seekbar);
+		if (progressSeekBar != null) {
+			if (progressSeekBar instanceof SeekBar) {
+				SeekBar seeker = progressSeekBar;
 				seeker.setOnSeekBarChangeListener(mSeekListener);
 				seeker.setThumbOffset(1);
 			}
-			mProgress.setMax(1000);
+			progressSeekBar.setMax(1000);
 		}
 	}
 
-	/**
-	 * @param v
-	 */
 	protected void createSkipBackwardsButton(View v) {
-		mSkipBackwardButton = (ImageButton) v
+		ImageButton skipBackwardButton = (ImageButton) v
 				.findViewById(R.id.osd_rewind_control);
-		if (mSkipBackwardButton != null) {
-			mSkipBackwardButton.setOnClickListener(mSkipBackwardListener);
+		if (skipBackwardButton != null) {
+			skipBackwardButton
+					.setOnClickListener(new SkipBackwardOnClickListener(this));
 		}
 	}
 
-	/**
-	 * @param v
-	 */
 	protected void createSkipForwardButton(View v) {
-		mSkipForwardButton = (ImageButton) v.findViewById(R.id.osd_ff_control);
-		if (mSkipForwardButton != null) {
-			mSkipForwardButton.setOnClickListener(mSkipForwardListener);
+		ImageButton skipForwardButton = (ImageButton) v
+				.findViewById(R.id.osd_ff_control);
+		if (skipForwardButton != null) {
+			skipForwardButton
+					.setOnClickListener(new SkipForwardOnClickListener(this));
 		}
 	}
 
 	private void disableUnsupportedButtons() {
 		try {
-			if (mPauseButton != null && !mPlayer.canPause()) {
-				mPauseButton.setEnabled(false);
+			if (pauseImageButton != null && !mediaPlayerControl.canPause()) {
+				pauseImageButton.setEnabled(false);
 			}
 		} catch (IncompatibleClassChangeError ex) {
 		}
@@ -403,42 +217,41 @@ public class MediaController extends FrameLayout {
 		return c.dispatchKeyEvent(event);
 	}
 
-	public void doPauseResume() {
-		if (mPlayer.isPlaying()) {
-			mPlayer.pause();
-		} else {
-			mPlayer.start();
-		}
+	public MediaPlayerControl getMediaPlayerControl() {
+		return mediaPlayerControl;
 	}
 
 	public void hide() {
-		if (mAnchor == null) {
+		if (anchorView == null) {
 			return;
 		}
 
-		if (mShowing) {
-			try {
-				mHandler.removeMessages(SHOW_PROGRESS);
-				if (mFromXml) {
-					setVisibility(View.GONE);
-				} else {
-					mWindow.dismiss();
-				}
-				mAnchor.setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
-			} catch (IllegalArgumentException ex) {
-				Log.d("SerentityMediaController",
-						"MediaController already removed", ex);
+		if (!mediaControllerShowing) {
+			return;
+		}
+
+		try {
+			showfadeMessgeHandler.removeMessages(SHOW_PROGRESS);
+			if (fromLayoutXML) {
+				setVisibility(View.GONE);
+			} else {
+				mediaControllerHUD.dismiss();
 			}
-			mShowing = false;
-			if (mHiddenListener != null) {
-				mHiddenListener.onHidden();
-			}
+			anchorView.setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
+		} catch (IllegalArgumentException ex) {
+			Log.d("SerentityMediaController",
+					"MediaController already removed", ex);
+		}
+		mediaControllerShowing = false;
+		if (onHideListener != null) {
+			onHideListener.onHidden();
 		}
 	}
 
 	private boolean initController(Context context) {
-		mContext = context;
-		mAM = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+		this.context = context;
+		audioManager = (AudioManager) context
+				.getSystemService(Context.AUDIO_SERVICE);
 		return true;
 	}
 
@@ -459,33 +272,27 @@ public class MediaController extends FrameLayout {
 	}
 
 	private void initFloatingWindow() {
-		mWindow = new PopupWindow(mContext);
-		mWindow.setFocusable(true);
-		mWindow.setBackgroundDrawable(null);
-		mWindow.setOutsideTouchable(true);
-		mWindow.update();
-		mAnimStyle = R.style.PopupAnimation;
+		mediaControllerHUD = new PopupWindow(context);
+		mediaControllerHUD.setFocusable(true);
+		mediaControllerHUD.setBackgroundDrawable(null);
+		mediaControllerHUD.setOutsideTouchable(true);
+		mediaControllerHUD.update();
+		animationStyle = R.style.PopupAnimation;
 		setFocusable(true);
 		setFocusableInTouchMode(true);
 		requestFocus();
 	}
 
-	/**
-	 * @param v
-	 */
 	protected void initSummary(View v) {
 		TextView summaryView = (TextView) v
 				.findViewById(R.id.mediacontroller_summary);
-		summaryView.setText(summary);
+		summaryView.setText(mediaMetaData.getSummary());
 	}
 
-	/**
-	 * @param v
-	 */
 	protected void initTitle(View v) {
 		TextView textTitle = (TextView) v
 				.findViewById(R.id.mediacontroller_title);
-		textTitle.setText(title);
+		textTitle.setText(mediaMetaData.getTitle());
 	}
 
 	/**
@@ -495,32 +302,33 @@ public class MediaController extends FrameLayout {
 		LinearLayout infoGraphic = (LinearLayout) v
 				.findViewById(R.id.mediacontroller_infographic_layout);
 		ImageInfographicUtils iiu = new ImageInfographicUtils(75, 70);
-		if (resolution != null) {
-			ImageView rv = iiu.createVideoResolutionImage(resolution,
-					v.getContext());
+		if (mediaMetaData.getResolution() != null) {
+			ImageView rv = iiu.createVideoResolutionImage(
+					mediaMetaData.getResolution(), v.getContext());
 			if (rv != null) {
 				infoGraphic.addView(rv);
 			}
 		}
 
-		if (videoFormat != null) {
-			ImageView vr = iiu.createVideoCodec(videoFormat, v.getContext());
+		if (mediaMetaData.getVideoFormat() != null) {
+			ImageView vr = iiu.createVideoCodec(mediaMetaData.getVideoFormat(),
+					v.getContext());
 			if (vr != null) {
 				infoGraphic.addView(vr);
 			}
 		}
 
-		if (audioFormat != null) {
-			ImageView ar = iiu.createAudioCodecImage(audioFormat,
-					v.getContext());
+		if (mediaMetaData.getAudioFormat() != null) {
+			ImageView ar = iiu.createAudioCodecImage(
+					mediaMetaData.getAudioFormat(), v.getContext());
 			if (ar != null) {
 				infoGraphic.addView(ar);
 			}
 		}
 
-		if (audioChannels != null) {
-			ImageView ar = iiu.createAudioChannlesImage(audioChannels,
-					v.getContext());
+		if (mediaMetaData.getAudioChannels() != null) {
+			ImageView ar = iiu.createAudioChannlesImage(
+					mediaMetaData.getAudioChannels(), v.getContext());
 			if (ar != null) {
 				infoGraphic.addView(ar);
 			}
@@ -528,7 +336,7 @@ public class MediaController extends FrameLayout {
 	}
 
 	public boolean isShowing() {
-		return mShowing;
+		return mediaControllerShowing;
 	}
 
 	/**
@@ -539,28 +347,20 @@ public class MediaController extends FrameLayout {
 	 */
 	protected View makeControllerView() {
 		if (SerenityApplication.isRunningOnOUYA()) {
-			return ((LayoutInflater) mContext
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-					.inflate(R.layout.serenity_media_controller_ouya, this);
+			return View.inflate(context,
+					R.layout.serenity_media_controller_ouya, this);
 		}
 
-		return ((LayoutInflater) mContext
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
-				R.layout.serenity_media_controller, this);
+		return View.inflate(context, R.layout.serenity_media_controller, this);
 	}
 
 	@Override
 	public void onFinishInflate() {
-		if (mRoot != null) {
-			initControllerView(mRoot);
+		if (rootView != null) {
+			initControllerView(rootView);
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.view.View#onKeyDown(int, android.view.KeyEvent)
-	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		Activity c = (Activity) getContext();
@@ -569,13 +369,13 @@ public class MediaController extends FrameLayout {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		show(sDefaultTimeout);
+		show(DEFAULT_TIME_OUT);
 		return true;
 	}
 
 	@Override
 	public boolean onTrackballEvent(MotionEvent ev) {
-		show(sDefaultTimeout);
+		show(DEFAULT_TIME_OUT);
 		return false;
 	}
 
@@ -585,17 +385,18 @@ public class MediaController extends FrameLayout {
 	protected void positionPopupWindow() {
 		int[] location = new int[2];
 
-		mAnchor.getLocationOnScreen(location);
+		anchorView.getLocationOnScreen(location);
 
-		mRoot.measure(MeasureSpec.makeMeasureSpec(mAnchor.getWidth(),
+		rootView.measure(MeasureSpec.makeMeasureSpec(anchorView.getWidth(),
 				MeasureSpec.AT_MOST), MeasureSpec.makeMeasureSpec(
-				mAnchor.getHeight(), MeasureSpec.AT_MOST));
+				anchorView.getHeight(), MeasureSpec.AT_MOST));
 
 		int x = location[0] / 2;
-		int y = location[1] + mAnchor.getHeight() - mRoot.getMeasuredHeight();
-		mWindow.showAtLocation(mAnchor, Gravity.NO_GRAVITY, x, y);
+		int y = location[1] + anchorView.getHeight()
+				- rootView.getMeasuredHeight();
+		mediaControllerHUD.showAtLocation(anchorView, Gravity.NO_GRAVITY, x, y);
 
-		mWindow.setAnimationStyle(mAnimStyle);
+		mediaControllerHUD.setAnimationStyle(animationStyle);
 	}
 
 	/**
@@ -606,16 +407,17 @@ public class MediaController extends FrameLayout {
 	 *            The view to which to anchor the controller when it is visible.
 	 */
 	public void setAnchorView(View view) {
-		mAnchor = view;
-		if (!mFromXml) {
+		anchorView = view;
+		if (!fromLayoutXML) {
 			removeAllViews();
-			mRoot = makeControllerView();
-			mWindow.setContentView(mRoot);
-			mWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-			mWindow.setHeight(android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+			rootView = makeControllerView();
+			mediaControllerHUD.setContentView(rootView);
+			mediaControllerHUD.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+			mediaControllerHUD
+					.setHeight(android.view.ViewGroup.LayoutParams.MATCH_PARENT);
 
 		}
-		initControllerView(mRoot);
+		initControllerView(rootView);
 	}
 
 	/**
@@ -635,16 +437,16 @@ public class MediaController extends FrameLayout {
 	 * 
 	 */
 	public void setAnimationStyle(int animationStyle) {
-		mAnimStyle = animationStyle;
+		animationStyle = animationStyle;
 	}
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		if (mPauseButton != null) {
-			mPauseButton.setEnabled(enabled);
+		if (pauseImageButton != null) {
+			pauseImageButton.setEnabled(enabled);
 		}
-		if (mProgress != null) {
-			mProgress.setEnabled(enabled);
+		if (progressSeekBar != null) {
+			progressSeekBar.setEnabled(enabled);
 		}
 		disableUnsupportedButtons();
 		super.setEnabled(enabled);
@@ -657,48 +459,57 @@ public class MediaController extends FrameLayout {
 	 *            True the media will seek periodically
 	 */
 	public void setInstantSeeking(boolean seekWhenDragging) {
-		mInstantSeeking = seekWhenDragging;
+		instantSeeking = seekWhenDragging;
 	}
 
 	public void setMediaPlayer(MediaPlayerControl player) {
-		mPlayer = player;
+		mediaPlayerControl = player;
+	}
+
+	/**
+	 * @param mPlayer
+	 *            the mPlayer to set
+	 */
+	public void setMediaPlayerControl(MediaPlayerControl mPlayer) {
+		this.mediaPlayerControl = mPlayer;
 	}
 
 	public void setOnHiddenListener(OnHiddenListener l) {
-		mHiddenListener = l;
+		onHideListener = l;
 	}
 
 	public void setOnShownListener(OnShownListener l) {
-		mShownListener = l;
+		onShownListener = l;
 	}
 
 	private long setProgress() {
-		if (mPlayer == null || mDragging) {
+		if (mediaPlayerControl == null || draggingSeeker) {
 			return 0;
 		}
 
 		long position = 0;
 
 		try {
-			position = mPlayer.getCurrentPosition();
-			long duration = mPlayer.getDuration();
-			if (mProgress != null) {
+			position = mediaPlayerControl.getCurrentPosition();
+			long duration = mediaPlayerControl.getDuration();
+			if (progressSeekBar != null) {
 				if (duration > 0) {
 					long pos = 1000L * position / duration;
-					mProgress.setProgress((int) pos);
+					progressSeekBar.setProgress((int) pos);
 				}
-				int percent = mPlayer.getBufferPercentage();
-				mProgress.setSecondaryProgress(percent * 10);
+				int percent = mediaPlayerControl.getBufferPercentage();
+				progressSeekBar.setSecondaryProgress(percent * 10);
 			}
 
-			mDuration = duration;
+			playbackDuration = duration;
 
-			if (mEndTime != null) {
-				mEndTime.setText(TimeUtil.formatDuration(mDuration));
+			if (endTimeTextView != null) {
+				endTimeTextView.setText(TimeUtil
+						.formatDuration(playbackDuration));
 			}
 
-			if (mCurrentTime != null) {
-				mCurrentTime.setText(TimeUtil.formatDuration(position));
+			if (currentTimeTextView != null) {
+				currentTimeTextView.setText(TimeUtil.formatDuration(position));
 			}
 		} catch (IllegalStateException ex) {
 			Log.i(getClass().getName(),
@@ -709,7 +520,7 @@ public class MediaController extends FrameLayout {
 	}
 
 	public void show() {
-		show(sDefaultTimeout);
+		show(DEFAULT_TIME_OUT);
 	}
 
 	/**
@@ -721,29 +532,115 @@ public class MediaController extends FrameLayout {
 	 *            until hide() is called.
 	 */
 	public void show(int timeout) {
-		if (!mShowing && mAnchor != null && mAnchor.getWindowToken() != null) {
-			if (mPauseButton != null) {
-				mPauseButton.requestFocus();
+		if (!mediaControllerShowing && anchorView != null
+				&& anchorView.getWindowToken() != null) {
+			if (pauseImageButton != null) {
+				pauseImageButton.requestFocus();
 			}
 			disableUnsupportedButtons();
 
-			if (mFromXml) {
+			if (fromLayoutXML) {
 				setVisibility(View.VISIBLE);
 			} else {
 				positionPopupWindow();
 			}
-			mAnchor.setSystemUiVisibility(View.STATUS_BAR_VISIBLE);
-			mShowing = true;
-			if (mShownListener != null) {
-				mShownListener.onShown();
+			anchorView.setSystemUiVisibility(View.STATUS_BAR_VISIBLE);
+			mediaControllerShowing = true;
+			if (onShownListener != null) {
+				onShownListener.onShown();
 			}
 		}
-		mHandler.sendEmptyMessage(SHOW_PROGRESS);
+		showfadeMessgeHandler.sendEmptyMessage(SHOW_PROGRESS);
 
 		if (timeout != 0) {
-			mHandler.removeMessages(FADE_OUT);
-			mHandler.sendMessageDelayed(mHandler.obtainMessage(FADE_OUT),
-					timeout);
+			showfadeMessgeHandler.removeMessages(FADE_OUT);
+			showfadeMessgeHandler.sendMessageDelayed(
+					showfadeMessgeHandler.obtainMessage(FADE_OUT), timeout);
+		}
+	}
+
+	public interface OnHiddenListener {
+		public void onHidden();
+	}
+
+	public interface OnShownListener {
+		public void onShown();
+	}
+
+	protected class SeekOnSeekBarChangeListener implements
+			OnSeekBarChangeListener {
+		@Override
+		public void onProgressChanged(SeekBar bar, int progress,
+				boolean fromuser) {
+			try {
+				if (!fromuser) {
+					return;
+				}
+
+				long newposition = (playbackDuration * progress) / 1000;
+				String time = new SimpleDateFormat("HH:mm:ss",
+						Locale.getDefault()).format(new Date(newposition));
+				if (instantSeeking) {
+					mediaPlayerControl.seekTo(newposition);
+				}
+
+				if (currentTimeTextView != null) {
+					currentTimeTextView.setText(time);
+				}
+			} catch (IllegalStateException e) {
+				Log.d(getClass().getName(),
+						"Seeking failed due to media player in an illegalstate.",
+						e);
+			}
+		}
+
+		@Override
+		public void onStartTrackingTouch(SeekBar bar) {
+			draggingSeeker = true;
+			show(3600000);
+			showfadeMessgeHandler.removeMessages(SHOW_PROGRESS);
+			if (instantSeeking) {
+				audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+			}
+		}
+
+		@Override
+		public void onStopTrackingTouch(SeekBar bar) {
+			try {
+				if (!instantSeeking) {
+					mediaPlayerControl.seekTo((playbackDuration * bar
+							.getProgress()) / 1000);
+				}
+				show(DEFAULT_TIME_OUT);
+				showfadeMessgeHandler.removeMessages(SHOW_PROGRESS);
+				audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+				draggingSeeker = false;
+				showfadeMessgeHandler.sendEmptyMessageDelayed(SHOW_PROGRESS,
+						1000);
+			} catch (IllegalStateException e) {
+				Log.d(getClass().getName(),
+						"Seeking failed due to media player in an illegalstate.",
+						e);
+			}
+		}
+	}
+
+	protected class ShowMessageHandler extends Handler {
+		@Override
+		public void handleMessage(Message msg) {
+			long pos;
+			switch (msg.what) {
+			case FADE_OUT:
+				hide();
+				break;
+			case SHOW_PROGRESS:
+				if (!draggingSeeker && mediaControllerShowing) {
+					pos = setProgress();
+					msg = obtainMessage(SHOW_PROGRESS);
+					sendMessageDelayed(msg, 1000 - (pos % 1000));
+				}
+				break;
+			}
 		}
 	}
 
