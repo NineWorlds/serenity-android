@@ -43,7 +43,6 @@ import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Rect;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Message;
@@ -97,36 +96,180 @@ import android.widget.TextView;
  * events. Also made it so that the mediacontroller popup windows is focusable
  * otherwise no keyevents were being fired.
  * 
+ * DAC - 2014-05-20 - Fix issue on Android 4.3 or higher were mediacontroller
+ * window position was not being calculated correctly.
+ * 
  */
 public class MediaController extends FrameLayout {
-	private MediaPlayerControl mPlayer;
-	private Context mContext;
-	private PopupWindow mWindow;
-	private int mAnimStyle;
-	private View mAnchor;
-	private View mRoot;
-	private SeekBar mProgress;
-	private TextView mEndTime, mCurrentTime;
-	private long mDuration;
-	private boolean mShowing;
-	private boolean mDragging;
-	private boolean mInstantSeeking = true;
-	private static final int sDefaultTimeout = 3000;
-	private static final int FADE_OUT = 1;
-	private static final int SHOW_PROGRESS = 2;
-	private boolean mFromXml = false;
-	private ImageButton mPauseButton;
-	private ImageButton mSkipForwardButton;
-	private ImageButton mSkipBackwardButton;
-	private String summary;
-	private String title;
-	private String posterURL;
-	private String resolution;
-	private String videoFormat;
-	private String audioFormat;
-	private String audioChannels;
-	private AudioManager mAM;
+	public interface OnHiddenListener {
+		public void onHidden();
+	}
 
+	public interface OnShownListener {
+		public void onShown();
+	}
+
+	private static final int FADE_OUT = 1;
+	private static final int sDefaultTimeout = 3000;
+	private static final int SHOW_PROGRESS = 2;
+	private String audioChannels;
+	private String audioFormat;
+	private AudioManager mAM;
+	private View mAnchor;
+	private int mAnimStyle;
+	private Context mContext;
+	private boolean mDragging;
+	private long mDuration;
+	private TextView mEndTime, mCurrentTime;
+	private boolean mFromXml = false;
+
+	private final Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			long pos;
+			switch (msg.what) {
+			case FADE_OUT:
+				hide();
+				break;
+			case SHOW_PROGRESS:
+				if (!mDragging && mShowing) {
+					pos = setProgress();
+					msg = obtainMessage(SHOW_PROGRESS);
+					sendMessageDelayed(msg, 1000 - (pos % 1000));
+				}
+				break;
+			}
+		}
+	};
+
+	private OnHiddenListener mHiddenListener;
+	private boolean mInstantSeeking = true;
+	private ImageButton mPauseButton;
+
+	private final View.OnClickListener mPauseListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			doPauseResume();
+			show(sDefaultTimeout);
+		}
+	};
+
+	private MediaPlayerControl mPlayer;
+	private SeekBar mProgress;
+	private View mRoot;
+	private final OnSeekBarChangeListener mSeekListener = new OnSeekBarChangeListener() {
+		@Override
+		public void onProgressChanged(SeekBar bar, int progress,
+				boolean fromuser) {
+			try {
+				if (!fromuser) {
+					return;
+				}
+
+				long newposition = (mDuration * progress) / 1000;
+				String time = new SimpleDateFormat("HH:mm:ss",
+						Locale.getDefault()).format(new Date(newposition));
+				if (mInstantSeeking) {
+					mPlayer.seekTo(newposition);
+				}
+
+				if (mCurrentTime != null) {
+					mCurrentTime.setText(time);
+				}
+			} catch (IllegalStateException e) {
+				Log.d(getClass().getName(),
+						"Seeking failed due to media player in an illegalstate.",
+						e);
+			}
+		}
+
+		@Override
+		public void onStartTrackingTouch(SeekBar bar) {
+			mDragging = true;
+			show(3600000);
+			mHandler.removeMessages(SHOW_PROGRESS);
+			if (mInstantSeeking) {
+				mAM.setStreamMute(AudioManager.STREAM_MUSIC, true);
+			}
+		}
+
+		@Override
+		public void onStopTrackingTouch(SeekBar bar) {
+			try {
+				if (!mInstantSeeking) {
+					mPlayer.seekTo((mDuration * bar.getProgress()) / 1000);
+				}
+				show(sDefaultTimeout);
+				mHandler.removeMessages(SHOW_PROGRESS);
+				mAM.setStreamMute(AudioManager.STREAM_MUSIC, false);
+				mDragging = false;
+				mHandler.sendEmptyMessageDelayed(SHOW_PROGRESS, 1000);
+			} catch (IllegalStateException e) {
+				Log.d(getClass().getName(),
+						"Seeking failed due to media player in an illegalstate.",
+						e);
+			}
+		}
+	};
+
+	private boolean mShowing;
+	private OnShownListener mShownListener;
+	private ImageButton mSkipBackwardButton;
+
+	private final View.OnClickListener mSkipBackwardListener = new View.OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			try {
+				long skipOffset = mPlayer.getCurrentPosition() - 10000;
+				if (skipOffset < 0) {
+					skipOffset = 1;
+				}
+				mPlayer.seekTo(skipOffset);
+				show();
+			} catch (IllegalStateException e) {
+				Log.d(getClass().getName(),
+						"Seeking failed due to media player in an illegalstate.",
+						e);
+			}
+		}
+	};
+
+	private ImageButton mSkipForwardButton;
+
+	private final View.OnClickListener mSkipForwardListener = new View.OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			try {
+				long skipOffset = 10000 + mPlayer.getCurrentPosition();
+				long duration = mPlayer.getDuration();
+				if (skipOffset > duration) {
+					skipOffset = duration - 1;
+				}
+				mPlayer.seekTo(skipOffset);
+				show();
+			} catch (IllegalStateException e) {
+				Log.d(getClass().getName(),
+						"Seeking failed due to media player in an illegalstate.",
+						e);
+			}
+		}
+	};
+
+	private PopupWindow mWindow;
+
+	private String posterURL;
+
+	private String resolution;
+
+	private String summary;
+
+	private String title;
+
+	private String videoFormat;
+
+	@Deprecated
 	public MediaController(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mRoot = this;
@@ -151,17 +294,168 @@ public class MediaController extends FrameLayout {
 		}
 	}
 
+	/**
+	 * @param v
+	 */
+	protected void createDurationViews(View v) {
+		mEndTime = (TextView) v.findViewById(R.id.mediacontroller_time_total);
+		mCurrentTime = (TextView) v
+				.findViewById(R.id.mediacontroller_time_current);
+	}
+
+	/**
+	 * @param v
+	 */
+	protected void createNextVideoButton(View v) {
+		TextView txtNextVideo = (TextView) v
+				.findViewById(R.id.mediacontroller_next_video);
+		if (txtNextVideo != null) {
+			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+				VideoContentInfo nextVideo = SerenityApplication
+						.getVideoPlaybackQueue().peek();
+				txtNextVideo.setText("On Deck: " + nextVideo.getTitle());
+				txtNextVideo.setVisibility(View.VISIBLE);
+			} else {
+				txtNextVideo.setVisibility(View.GONE);
+			}
+		}
+	}
+
+	/**
+	 * @param v
+	 */
+	protected void createPauseButton(View v) {
+		mPauseButton = (ImageButton) v
+				.findViewById(R.id.mediacontroller_play_pause);
+		if (mPauseButton != null) {
+			mPauseButton.requestFocus();
+			mPauseButton.setOnClickListener(mPauseListener);
+		}
+	}
+
+	/**
+	 * @param v
+	 */
+	protected void createPoster(View v) {
+		ImageView posterView = (ImageView) v
+				.findViewById(R.id.mediacontroller_poster_art);
+		posterView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+		if (posterURL != null) {
+			SerenityApplication.displayImageRoundedCorners(posterURL,
+					posterView);
+		}
+	}
+
+	/**
+	 * @param v
+	 */
+	protected void createProgressBar(View v) {
+		mProgress = (SeekBar) v.findViewById(R.id.mediacontroller_seekbar);
+		if (mProgress != null) {
+			if (mProgress instanceof SeekBar) {
+				SeekBar seeker = mProgress;
+				seeker.setOnSeekBarChangeListener(mSeekListener);
+				seeker.setThumbOffset(1);
+			}
+			mProgress.setMax(1000);
+		}
+	}
+
+	/**
+	 * @param v
+	 */
+	protected void createSkipBackwardsButton(View v) {
+		mSkipBackwardButton = (ImageButton) v
+				.findViewById(R.id.osd_rewind_control);
+		if (mSkipBackwardButton != null) {
+			mSkipBackwardButton.setOnClickListener(mSkipBackwardListener);
+		}
+	}
+
+	/**
+	 * @param v
+	 */
+	protected void createSkipForwardButton(View v) {
+		mSkipForwardButton = (ImageButton) v.findViewById(R.id.osd_ff_control);
+		if (mSkipForwardButton != null) {
+			mSkipForwardButton.setOnClickListener(mSkipForwardListener);
+		}
+	}
+
+	private void disableUnsupportedButtons() {
+		try {
+			if (mPauseButton != null && !mPlayer.canPause()) {
+				mPauseButton.setEnabled(false);
+			}
+		} catch (IncompatibleClassChangeError ex) {
+		}
+	}
+
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		int keyCode = event.getKeyCode();
+		Activity c = (Activity) getContext();
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			c.onKeyDown(keyCode, event);
+			return true;
+		}
+		return c.dispatchKeyEvent(event);
+	}
+
+	public void doPauseResume() {
+		if (mPlayer.isPlaying()) {
+			mPlayer.pause();
+		} else {
+			mPlayer.start();
+		}
+	}
+
+	public void hide() {
+		if (mAnchor == null) {
+			return;
+		}
+
+		if (mShowing) {
+			try {
+				mHandler.removeMessages(SHOW_PROGRESS);
+				if (mFromXml) {
+					setVisibility(View.GONE);
+				} else {
+					mWindow.dismiss();
+				}
+				mAnchor.setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
+			} catch (IllegalArgumentException ex) {
+				Log.d("SerentityMediaController",
+						"MediaController already removed", ex);
+			}
+			mShowing = false;
+			if (mHiddenListener != null) {
+				mHiddenListener.onHidden();
+			}
+		}
+	}
+
 	private boolean initController(Context context) {
 		mContext = context;
 		mAM = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
 		return true;
 	}
 
-	@Override
-	public void onFinishInflate() {
-		if (mRoot != null) {
-			initControllerView(mRoot);
-		}
+	protected void initControllerView(View v) {
+		createPauseButton(v);
+		createSkipBackwardsButton(v);
+		createSkipForwardButton(v);
+		createProgressBar(v);
+		createDurationViews(v);
+		createPoster(v);
+
+		initTitle(v);
+		initSummary(v);
+		initVideoMetaData(v);
+
+		createNextVideoButton(v);
+
 	}
 
 	private void initFloatingWindow() {
@@ -177,84 +471,27 @@ public class MediaController extends FrameLayout {
 	}
 
 	/**
-	 * Set the view that acts as the anchor for the control view. This can for
-	 * example be a VideoView, or your Activity's main view.
-	 * 
-	 * @param view
-	 *            The view to which to anchor the controller when it is visible.
+	 * @param v
 	 */
-	public void setAnchorView(View view) {
-		mAnchor = view;
-		if (!mFromXml) {
-			removeAllViews();
-			mRoot = makeControllerView();
-			mWindow.setContentView(mRoot);
-			mWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-			mWindow.setHeight(android.view.ViewGroup.LayoutParams.MATCH_PARENT);
-
-		}
-		initControllerView(mRoot);
-	}
-
-	/**
-	 * Create the view that holds the widgets that control playback. Derived
-	 * classes can override this to create their own.
-	 * 
-	 * @return The controller view.
-	 */
-	protected View makeControllerView() {
-		if (SerenityApplication.isRunningOnOUYA()) {
-			return ((LayoutInflater) mContext
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-					.inflate(R.layout.serenity_media_controller_ouya, this);
-		}
-
-		return ((LayoutInflater) mContext
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
-				R.layout.serenity_media_controller, this);
-	}
-
-	private void initControllerView(View v) {
-		mPauseButton = (ImageButton) v
-				.findViewById(R.id.mediacontroller_play_pause);
-		if (mPauseButton != null) {
-			mPauseButton.requestFocus();
-			mPauseButton.setOnClickListener(mPauseListener);
-		}
-
-		mSkipBackwardButton = (ImageButton) v
-				.findViewById(R.id.osd_rewind_control);
-		if (mSkipBackwardButton != null) {
-			mSkipBackwardButton.setOnClickListener(mSkipBackwardListener);
-		}
-
-		mSkipForwardButton = (ImageButton) v.findViewById(R.id.osd_ff_control);
-		if (mSkipForwardButton != null) {
-			mSkipForwardButton.setOnClickListener(mSkipForwardListener);
-		}
-
-		mProgress = (SeekBar) v.findViewById(R.id.mediacontroller_seekbar);
-		if (mProgress != null) {
-			if (mProgress instanceof SeekBar) {
-				SeekBar seeker = mProgress;
-				seeker.setOnSeekBarChangeListener(mSeekListener);
-				seeker.setThumbOffset(1);
-			}
-			mProgress.setMax(1000);
-		}
-
-		mEndTime = (TextView) v.findViewById(R.id.mediacontroller_time_total);
-		mCurrentTime = (TextView) v
-				.findViewById(R.id.mediacontroller_time_current);
-
-		TextView textTitle = (TextView) v
-				.findViewById(R.id.mediacontroller_title);
-		textTitle.setText(title);
-
+	protected void initSummary(View v) {
 		TextView summaryView = (TextView) v
 				.findViewById(R.id.mediacontroller_summary);
 		summaryView.setText(summary);
+	}
 
+	/**
+	 * @param v
+	 */
+	protected void initTitle(View v) {
+		TextView textTitle = (TextView) v
+				.findViewById(R.id.mediacontroller_title);
+		textTitle.setText(title);
+	}
+
+	/**
+	 * @param v
+	 */
+	protected void initVideoMetaData(View v) {
 		LinearLayout infoGraphic = (LinearLayout) v
 				.findViewById(R.id.mediacontroller_infographic_layout);
 		ImageInfographicUtils iiu = new ImageInfographicUtils(75, 70);
@@ -288,74 +525,97 @@ public class MediaController extends FrameLayout {
 				infoGraphic.addView(ar);
 			}
 		}
-
-		ImageView posterView = (ImageView) v
-				.findViewById(R.id.mediacontroller_poster_art);
-		posterView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-
-		if (posterURL != null) {
-			SerenityApplication.displayImageRoundedCorners(posterURL,
-					posterView);
-		}
-
-		TextView txtNextVideo = (TextView) v
-				.findViewById(R.id.mediacontroller_next_video);
-		if (txtNextVideo != null) {
-			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-				VideoContentInfo nextVideo = SerenityApplication
-						.getVideoPlaybackQueue().peek();
-				txtNextVideo.setText("On Deck: " + nextVideo.getTitle());
-				txtNextVideo.setVisibility(View.VISIBLE);
-			} else {
-				txtNextVideo.setVisibility(View.GONE);
-			}
-		}
-
 	}
 
-	public void setMediaPlayer(MediaPlayerControl player) {
-		mPlayer = player;
+	public boolean isShowing() {
+		return mShowing;
 	}
 
 	/**
-	 * Control the action when the seekbar dragged by user
+	 * Create the view that holds the widgets that control playback. Derived
+	 * classes can override this to create their own.
 	 * 
-	 * @param seekWhenDragging
-	 *            True the media will seek periodically
+	 * @return The controller view.
 	 */
-	public void setInstantSeeking(boolean seekWhenDragging) {
-		mInstantSeeking = seekWhenDragging;
+	protected View makeControllerView() {
+		if (SerenityApplication.isRunningOnOUYA()) {
+			return ((LayoutInflater) mContext
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+					.inflate(R.layout.serenity_media_controller_ouya, this);
+		}
+
+		return ((LayoutInflater) mContext
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
+				R.layout.serenity_media_controller, this);
 	}
 
-	public void show() {
+	@Override
+	public void onFinishInflate() {
+		if (mRoot != null) {
+			initControllerView(mRoot);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.view.View#onKeyDown(int, android.view.KeyEvent)
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		Activity c = (Activity) getContext();
+		return c.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
 		show(sDefaultTimeout);
+		return true;
+	}
+
+	@Override
+	public boolean onTrackballEvent(MotionEvent ev) {
+		show(sDefaultTimeout);
+		return false;
 	}
 
 	/**
-	 * Set the content of the file_name TextView
 	 * 
-	 * @param name
 	 */
-	public void setFileName(String name) {
+	protected void positionPopupWindow() {
+		int[] location = new int[2];
+
+		mAnchor.getLocationOnScreen(location);
+
+		mRoot.measure(MeasureSpec.makeMeasureSpec(mAnchor.getWidth(),
+				MeasureSpec.AT_MOST), MeasureSpec.makeMeasureSpec(
+				mAnchor.getHeight(), MeasureSpec.AT_MOST));
+
+		int x = location[0] / 2;
+		int y = location[1] + mAnchor.getHeight() - mRoot.getMeasuredHeight();
+		mWindow.showAtLocation(mAnchor, Gravity.NO_GRAVITY, x, y);
+
+		mWindow.setAnimationStyle(mAnimStyle);
 	}
 
 	/**
-	 * Set the View to hold some information when interact with the
-	 * MediaController
+	 * Set the view that acts as the anchor for the control view. This can for
+	 * example be a VideoView, or your Activity's main view.
 	 * 
-	 * @param v
+	 * @param view
+	 *            The view to which to anchor the controller when it is visible.
 	 */
-	public void setInfoView(TextView v) {
-		// mInfoView = v;
-	}
+	public void setAnchorView(View view) {
+		mAnchor = view;
+		if (!mFromXml) {
+			removeAllViews();
+			mRoot = makeControllerView();
+			mWindow.setContentView(mRoot);
+			mWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+			mWindow.setHeight(android.view.ViewGroup.LayoutParams.MATCH_PARENT);
 
-	private void disableUnsupportedButtons() {
-		try {
-			if (mPauseButton != null && !mPlayer.canPause()) {
-				mPauseButton.setEnabled(false);
-			}
-		} catch (IncompatibleClassChangeError ex) {
 		}
+		initControllerView(mRoot);
 	}
 
 	/**
@@ -378,117 +638,39 @@ public class MediaController extends FrameLayout {
 		mAnimStyle = animationStyle;
 	}
 
+	@Override
+	public void setEnabled(boolean enabled) {
+		if (mPauseButton != null) {
+			mPauseButton.setEnabled(enabled);
+		}
+		if (mProgress != null) {
+			mProgress.setEnabled(enabled);
+		}
+		disableUnsupportedButtons();
+		super.setEnabled(enabled);
+	}
+
 	/**
-	 * Show the controller on screen. It will go away automatically after
-	 * 'timeout' milliseconds of inactivity.
+	 * Control the action when the seekbar dragged by user
 	 * 
-	 * @param timeout
-	 *            The timeout in milliseconds. Use 0 to show the controller
-	 *            until hide() is called.
+	 * @param seekWhenDragging
+	 *            True the media will seek periodically
 	 */
-	public void show(int timeout) {
-		if (!mShowing && mAnchor != null && mAnchor.getWindowToken() != null) {
-			if (mPauseButton != null) {
-				mPauseButton.requestFocus();
-			}
-			disableUnsupportedButtons();
-
-			if (mFromXml) {
-				setVisibility(View.VISIBLE);
-			} else {
-				int[] location = new int[2];
-
-				mAnchor.getLocationOnScreen(location);
-				Rect anchorRect = new Rect(location[0], location[1],
-						location[0] + mAnchor.getWidth(), location[1]
-								+ mAnchor.getHeight());
-
-				mWindow.setAnimationStyle(mAnimStyle);
-				mWindow.showAtLocation(mAnchor, Gravity.NO_GRAVITY,
-						anchorRect.left, anchorRect.bottom);
-			}
-			mAnchor.setSystemUiVisibility(View.STATUS_BAR_VISIBLE);
-			mShowing = true;
-			if (mShownListener != null) {
-				mShownListener.onShown();
-			}
-		}
-		mHandler.sendEmptyMessage(SHOW_PROGRESS);
-
-		if (timeout != 0) {
-			mHandler.removeMessages(FADE_OUT);
-			mHandler.sendMessageDelayed(mHandler.obtainMessage(FADE_OUT),
-					timeout);
-		}
+	public void setInstantSeeking(boolean seekWhenDragging) {
+		mInstantSeeking = seekWhenDragging;
 	}
 
-	public boolean isShowing() {
-		return mShowing;
+	public void setMediaPlayer(MediaPlayerControl player) {
+		mPlayer = player;
 	}
-
-	public void hide() {
-		if (mAnchor == null) {
-			return;
-		}
-
-		if (mShowing) {
-			try {
-				mHandler.removeMessages(SHOW_PROGRESS);
-				if (mFromXml) {
-					setVisibility(View.GONE);
-				} else {
-					mWindow.dismiss();
-				}
-				mAnchor.setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
-			} catch (IllegalArgumentException ex) {
-				Log.d("SerentityMediaController",
-						"MediaController already removed", ex);
-			}
-			mShowing = false;
-			if (mHiddenListener != null) {
-				mHiddenListener.onHidden();
-			}
-		}
-	}
-
-	public interface OnShownListener {
-		public void onShown();
-	}
-
-	private OnShownListener mShownListener;
-
-	public void setOnShownListener(OnShownListener l) {
-		mShownListener = l;
-	}
-
-	public interface OnHiddenListener {
-		public void onHidden();
-	}
-
-	private OnHiddenListener mHiddenListener;
 
 	public void setOnHiddenListener(OnHiddenListener l) {
 		mHiddenListener = l;
 	}
 
-	private final Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			long pos;
-			switch (msg.what) {
-			case FADE_OUT:
-				hide();
-				break;
-			case SHOW_PROGRESS:
-				if (!mDragging && mShowing) {
-					pos = setProgress();
-					msg = obtainMessage(SHOW_PROGRESS);
-					sendMessageDelayed(msg, 1000 - (pos % 1000));
-				}
-				break;
-			}
-		}
-	};
+	public void setOnShownListener(OnShownListener l) {
+		mShownListener = l;
+	}
 
 	private long setProgress() {
 		if (mPlayer == null || mDragging) {
@@ -526,160 +708,43 @@ public class MediaController extends FrameLayout {
 		return position;
 	}
 
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public void show() {
 		show(sDefaultTimeout);
-		return true;
 	}
 
-	@Override
-	public boolean onTrackballEvent(MotionEvent ev) {
-		show(sDefaultTimeout);
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Show the controller on screen. It will go away automatically after
+	 * 'timeout' milliseconds of inactivity.
 	 * 
-	 * @see android.view.View#onKeyDown(int, android.view.KeyEvent)
+	 * @param timeout
+	 *            The timeout in milliseconds. Use 0 to show the controller
+	 *            until hide() is called.
 	 */
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		Activity c = (Activity) getContext();
-		return c.onKeyDown(keyCode, event);
-	}
+	public void show(int timeout) {
+		if (!mShowing && mAnchor != null && mAnchor.getWindowToken() != null) {
+			if (mPauseButton != null) {
+				mPauseButton.requestFocus();
+			}
+			disableUnsupportedButtons();
 
-	private final View.OnClickListener mPauseListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			doPauseResume();
-			show(sDefaultTimeout);
-		}
-	};
-
-	@Override
-	public boolean dispatchKeyEvent(KeyEvent event) {
-		int keyCode = event.getKeyCode();
-		Activity c = (Activity) getContext();
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			c.onKeyDown(keyCode, event);
-			return true;
-		}
-		return c.dispatchKeyEvent(event);
-	}
-
-	public void doPauseResume() {
-		if (mPlayer.isPlaying()) {
-			mPlayer.pause();
-		} else {
-			mPlayer.start();
-		}
-	}
-
-	private final OnSeekBarChangeListener mSeekListener = new OnSeekBarChangeListener() {
-		@Override
-		public void onStartTrackingTouch(SeekBar bar) {
-			mDragging = true;
-			show(3600000);
-			mHandler.removeMessages(SHOW_PROGRESS);
-			if (mInstantSeeking) {
-				mAM.setStreamMute(AudioManager.STREAM_MUSIC, true);
+			if (mFromXml) {
+				setVisibility(View.VISIBLE);
+			} else {
+				positionPopupWindow();
+			}
+			mAnchor.setSystemUiVisibility(View.STATUS_BAR_VISIBLE);
+			mShowing = true;
+			if (mShownListener != null) {
+				mShownListener.onShown();
 			}
 		}
+		mHandler.sendEmptyMessage(SHOW_PROGRESS);
 
-		@Override
-		public void onProgressChanged(SeekBar bar, int progress,
-				boolean fromuser) {
-			try {
-				if (!fromuser) {
-					return;
-				}
-
-				long newposition = (mDuration * progress) / 1000;
-				String time = new SimpleDateFormat("HH:mm:ss",
-						Locale.getDefault()).format(new Date(newposition));
-				if (mInstantSeeking) {
-					mPlayer.seekTo(newposition);
-				}
-
-				if (mCurrentTime != null) {
-					mCurrentTime.setText(time);
-				}
-			} catch (IllegalStateException e) {
-				Log.d(getClass().getName(),
-						"Seeking failed due to media player in an illegalstate.",
-						e);
-			}
+		if (timeout != 0) {
+			mHandler.removeMessages(FADE_OUT);
+			mHandler.sendMessageDelayed(mHandler.obtainMessage(FADE_OUT),
+					timeout);
 		}
-
-		@Override
-		public void onStopTrackingTouch(SeekBar bar) {
-			try {
-				if (!mInstantSeeking) {
-					mPlayer.seekTo((mDuration * bar.getProgress()) / 1000);
-				}
-				show(sDefaultTimeout);
-				mHandler.removeMessages(SHOW_PROGRESS);
-				mAM.setStreamMute(AudioManager.STREAM_MUSIC, false);
-				mDragging = false;
-				mHandler.sendEmptyMessageDelayed(SHOW_PROGRESS, 1000);
-			} catch (IllegalStateException e) {
-				Log.d(getClass().getName(),
-						"Seeking failed due to media player in an illegalstate.",
-						e);
-			}
-		}
-	};
-
-	private final View.OnClickListener mSkipForwardListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			try {
-				long skipOffset = 10000 + mPlayer.getCurrentPosition();
-				long duration = mPlayer.getDuration();
-				if (skipOffset > duration) {
-					skipOffset = duration - 1;
-				}
-				mPlayer.seekTo(skipOffset);
-				show();
-			} catch (IllegalStateException e) {
-				Log.d(getClass().getName(),
-						"Seeking failed due to media player in an illegalstate.",
-						e);
-			}
-		}
-	};
-
-	private final View.OnClickListener mSkipBackwardListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			try {
-				long skipOffset = mPlayer.getCurrentPosition() - 10000;
-				if (skipOffset < 0) {
-					skipOffset = 1;
-				}
-				mPlayer.seekTo(skipOffset);
-				show();
-			} catch (IllegalStateException e) {
-				Log.d(getClass().getName(),
-						"Seeking failed due to media player in an illegalstate.",
-						e);
-			}
-		}
-	};
-
-	@Override
-	public void setEnabled(boolean enabled) {
-		if (mPauseButton != null) {
-			mPauseButton.setEnabled(enabled);
-		}
-		if (mProgress != null) {
-			mProgress.setEnabled(enabled);
-		}
-		disableUnsupportedButtons();
-		super.setEnabled(enabled);
 	}
 
 }
