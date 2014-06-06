@@ -166,8 +166,8 @@ public class MediaController extends FrameLayout {
 		posterView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
 		if (mediaMetaData.getPosterURL() != null) {
-			SerenityApplication.displayImageRoundedCorners(
-					mediaMetaData.getPosterURL(), posterView);
+			SerenityApplication.displayImage(mediaMetaData.getPosterURL(),
+					posterView);
 		}
 	}
 

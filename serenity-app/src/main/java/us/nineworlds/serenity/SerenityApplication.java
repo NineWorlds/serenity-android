@@ -50,7 +50,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.display.RoundedVignetteBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.squareup.okhttp.OkHttpClient;
@@ -68,8 +67,6 @@ public class SerenityApplication extends Application {
 	private static ImageLoader imageLoader;
 	private static DisplayImageOptions movieOptions;
 	private static DisplayImageOptions musicOptions;
-	private static DisplayImageOptions roundedOptions;
-	private static DisplayImageOptions roundedVigenetteOptions;
 	private static List<PendingDownload> pendingDownloads;
 	protected static PlexappFactory plexFactory;
 
@@ -104,16 +101,10 @@ public class SerenityApplication extends Application {
 	public static void displayImage(String imageUrl, ImageView view, int resId) {
 		final ImageViewAware imageViewAware = new ImageViewAware(view);
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.cacheInMemory(true).cacheOnDisc(true)
+				.cacheInMemory(true).cacheOnDisk(true)
 				.bitmapConfig(Bitmap.Config.ARGB_8888)
 				.showImageForEmptyUri(resId).build();
 		imageLoader.displayImage(imageUrl, imageViewAware, options);
-	}
-
-	public static void displayImageRoundedCorners(String imageUrl,
-			ImageView view) {
-		final ImageViewAware imageViewAware = new ImageViewAware(view);
-		imageLoader.displayImage(imageUrl, imageViewAware, roundedOptions);
 	}
 
 	public static ImageLoader getImageLoader() {
@@ -196,7 +187,7 @@ public class SerenityApplication extends Application {
 
 	protected void configureImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-				.cacheInMemory(true).cacheOnDisc(true)
+				.cacheInMemory(true).cacheOnDisk(true)
 				.bitmapConfig(Bitmap.Config.ARGB_8888)
 				.resetViewBeforeLoading(true)
 				.showImageForEmptyUri(R.drawable.default_video_cover).build();
@@ -217,21 +208,12 @@ public class SerenityApplication extends Application {
 
 	private void setStaticImageOptions() {
 		musicOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
-				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888)
+				.cacheOnDisk(true).bitmapConfig(Bitmap.Config.ARGB_8888)
 				.showImageForEmptyUri(R.drawable.default_music).build();
 
 		movieOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
-				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888)
+				.cacheOnDisk(true).bitmapConfig(Bitmap.Config.ARGB_8888)
 				.resetViewBeforeLoading(true).build();
-
-		roundedOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
-				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888)
-				.resetViewBeforeLoading(true).build();
-
-		roundedVigenetteOptions = new DisplayImageOptions.Builder()
-				.cacheInMemory(true).cacheOnDisc(true)
-				.bitmapConfig(Bitmap.Config.ARGB_8888)
-				.displayer(new RoundedVignetteBitmapDisplayer(10, 5)).build();
 	}
 
 	/**
