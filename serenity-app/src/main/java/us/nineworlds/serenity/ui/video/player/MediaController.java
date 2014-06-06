@@ -134,16 +134,21 @@ public class MediaController extends FrameLayout {
 	protected void createNextVideoButton(View v) {
 		TextView txtNextVideo = (TextView) v
 				.findViewById(R.id.mediacontroller_next_video);
-		if (txtNextVideo != null) {
-			if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-				VideoContentInfo nextVideo = SerenityApplication
-						.getVideoPlaybackQueue().peek();
-				txtNextVideo.setText("On Deck: " + nextVideo.getTitle());
-				txtNextVideo.setVisibility(View.VISIBLE);
-			} else {
-				txtNextVideo.setVisibility(View.GONE);
-			}
+		if (txtNextVideo == null) {
+			return;
 		}
+
+		if (SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+			txtNextVideo.setVisibility(View.GONE);
+			return;
+		}
+
+		VideoContentInfo nextVideo = SerenityApplication
+				.getVideoPlaybackQueue().peek();
+		txtNextVideo.setText(getResources().getString(
+				R.string.mediacontroller_on_deck)
+				+ nextVideo.getTitle());
+		txtNextVideo.setVisibility(View.VISIBLE);
 	}
 
 	protected void createPauseButton(View v) {
@@ -437,7 +442,7 @@ public class MediaController extends FrameLayout {
 	 * 
 	 */
 	public void setAnimationStyle(int animationStyle) {
-		animationStyle = animationStyle;
+		this.animationStyle = animationStyle;
 	}
 
 	@Override

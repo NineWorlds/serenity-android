@@ -225,5 +225,6 @@
         <item>3000000</item>
         <item>6000000</item>
     </string-array>
+        <string name="mediacontroller_on_deck">"On Deck: "</string>
 
 </resources>
