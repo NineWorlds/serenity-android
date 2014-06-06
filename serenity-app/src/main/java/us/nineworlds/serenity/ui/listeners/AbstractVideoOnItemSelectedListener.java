@@ -64,7 +64,7 @@ import com.android.volley.VolleyError;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 /**
  * Abstract class for handling video selection information. This can either be a
@@ -86,7 +86,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	private final Animation shrink;
 	private final Animation fadeIn;
 	private View previous;
-	private final ImageLoader imageLoader;
 	protected int position;
 	protected BaseAdapter adapter;
 	protected VideoContentInfo videoInfo;
@@ -98,8 +97,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		context = c;
 		shrink = AnimationUtils.loadAnimation(context, R.anim.shrink);
 		fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
-		imageLoader = SerenityApplication.getImageLoader();
-
 	}
 
 	protected abstract void createVideoDetail(ImageView v);

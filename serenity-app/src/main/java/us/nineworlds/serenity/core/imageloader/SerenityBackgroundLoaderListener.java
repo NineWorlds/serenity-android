@@ -4,13 +4,13 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.view.View;
 
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 public class SerenityBackgroundLoaderListener extends
 		SimpleImageLoadingListener {
 
-	private View bgLayout;
-	private int defaultImage;
+	private final View bgLayout;
+	private final int defaultImage;
 
 	/**
 	 * 
@@ -29,5 +29,5 @@ public class SerenityBackgroundLoaderListener extends
 				bgLayout));
 
 	}
-	
+
 }
