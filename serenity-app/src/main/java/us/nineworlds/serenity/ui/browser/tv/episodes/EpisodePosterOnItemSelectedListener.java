@@ -27,8 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
@@ -37,9 +36,6 @@ import us.nineworlds.serenity.ui.listeners.TrailerHandler;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
-
-import us.nineworlds.serenity.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,10 +44,12 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ImageView.ScaleType;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author dcarver
@@ -70,7 +68,8 @@ public class EpisodePosterOnItemSelectedListener extends
 
 	@Override
 	public void fetchTrailer(VideoContentInfo mpi) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
 		if (prefs.getBoolean("episode_trailers", false) == false) {
 			return;
 		}
@@ -80,16 +79,17 @@ public class EpisodePosterOnItemSelectedListener extends
 		}
 		trailerHandler = new TrailerHandler(mpi, context);
 		Messenger messenger = new Messenger(trailerHandler);
-		Intent intent = new Intent(context, YouTubeTrailerSearchIntentService.class);
+		Intent intent = new Intent(context,
+				YouTubeTrailerSearchIntentService.class);
 		intent.putExtra("videoTitle", mpi.getTitle());
 		intent.putExtra("year", mpi.getYear());
 		intent.putExtra("show", mpi.getSeriesTitle());
 		intent.putExtra("season", mpi.getSeason());
-		intent.putExtra("episodeNum", mpi.getEpisodeNumber());		
+		intent.putExtra("episodeNum", mpi.getEpisodeNumber());
 		intent.putExtra("MESSENGER", messenger);
 		context.startService(intent);
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -101,24 +101,29 @@ public class EpisodePosterOnItemSelectedListener extends
 
 	@Override
 	public void createVideoDetail(ImageView v) {
-		ImageView posterImage = (ImageView) context.findViewById(R.id.video_poster);
+		ImageView posterImage = (ImageView) context
+				.findViewById(R.id.video_poster);
 		posterImage.setVisibility(View.VISIBLE);
 		posterImage.setScaleType(ScaleType.FIT_XY);
 		if (videoInfo.getParentPosterURL() != null) {
 			int width = ImageUtils.getDPI(240, context);
 			int height = ImageUtils.getDPI(330, context);
-			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-			SerenityApplication.displayImage(videoInfo.getParentPosterURL(), posterImage);
+			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width,
+					height));
+			SerenityApplication.displayImage(videoInfo.getParentPosterURL(),
+					posterImage);
 		} else if (videoInfo.getGrandParentPosterURL() != null) {
 			int width = ImageUtils.getDPI(240, context);
 			int height = ImageUtils.getDPI(330, context);
-			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-			SerenityApplication.displayImage(videoInfo.getGrandParentPosterURL(), posterImage);
+			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width,
+					height));
+			SerenityApplication.displayImage(
+					videoInfo.getGrandParentPosterURL(), posterImage);
 		} else {
-			SerenityApplication.displayImage(videoInfo.getImageURL(), posterImage);
+			SerenityApplication.displayImage(videoInfo.getImageURL(),
+					posterImage);
 		}
 
-		
 		TextView seriesTitle = (TextView) context
 				.findViewById(R.id.episodeTVSeriesTitle);
 		if (videoInfo.getSeriesTitle() != null) {
@@ -161,7 +166,8 @@ public class EpisodePosterOnItemSelectedListener extends
 		vte.setVisibility(View.INVISIBLE);
 		if (videoInfo.getOriginalAirDate() != null) {
 			try {
-				Date airDate = new SimpleDateFormat(DATE_FORMAT).parse(videoInfo.getOriginalAirDate());
+				Date airDate = new SimpleDateFormat(DATE_FORMAT)
+						.parse(videoInfo.getOriginalAirDate());
 				SimpleDateFormat format = new SimpleDateFormat(
 						DISPLAY_DATE_FORMAT);
 				String formatedDate = format.format(airDate);
@@ -190,7 +196,7 @@ public class EpisodePosterOnItemSelectedListener extends
 			fadeInCount += 1;
 			return;
 		}
-		
+
 		VideoContentInfo ei = videoInfo;
 
 		if (ei.getBackgroundURL() == null) {
@@ -199,26 +205,25 @@ public class EpisodePosterOnItemSelectedListener extends
 
 		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
 		fanArt.clearAnimation();
-		SerenityApplication.displayImage(ei.getBackgroundURL(), fanArt,
-				SerenityApplication.getMovieOptions());
+		SerenityApplication.displayImage(ei.getBackgroundURL(), fanArt);
 	}
 
 	@Override
 	public void onNothingSelected(SerenityAdapterView<?> av) {
 
 	}
-	
+
 	@Override
 	protected void createVideoMetaData(ImageView v) {
 		super.createVideoMetaData(v);
-		
+
 		View categoryFilter = context.findViewById(R.id.categoryFilter);
 		categoryFilter.setVisibility(View.GONE);
 		View categoryFilter2 = context.findViewById(R.id.categoryFilter2);
 		categoryFilter2.setVisibility(View.GONE);
 		View categoryName = context.findViewById(R.id.movieCategoryName);
 		categoryName.setVisibility(View.GONE);
-		
+
 		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
 		subt.setVisibility(View.GONE);
 		Spinner subtitleSpinner = (Spinner) context

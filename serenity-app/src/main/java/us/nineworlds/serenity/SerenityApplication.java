@@ -50,10 +50,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.display.RoundedVignetteBitmapDisplayer;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.picasso.Picasso;
 
 /**
  * Global manager for the Serenity application
@@ -68,8 +66,6 @@ public class SerenityApplication extends Application {
 	private static ImageLoader imageLoader;
 	private static DisplayImageOptions movieOptions;
 	private static DisplayImageOptions musicOptions;
-	private static DisplayImageOptions roundedOptions;
-	private static DisplayImageOptions roundedVigenetteOptions;
 	private static List<PendingDownload> pendingDownloads;
 	protected static PlexappFactory plexFactory;
 
@@ -84,36 +80,23 @@ public class SerenityApplication extends Application {
 	}
 
 	public static void displayImage(String imageUrl, ImageView view) {
-		displayImage(imageUrl, view, null);
-	}
-
-	public static void displayImage(String imageUrl, ImageView view,
-			DisplayImageOptions displayImageOptions) {
-		displayImage(imageUrl, view, displayImageOptions, null);
-	}
-
-	public static void displayImage(String imageUrl, ImageView view,
-			DisplayImageOptions displayImageOptions,
-			ImageLoadingListener imageLoaderListener) {
-		final ImageViewAware imageViewAware = new ImageViewAware(view);
-		imageLoader.displayImage(plexFactory.getImageURL(imageUrl,
-				imageViewAware.getWidth(), imageViewAware.getHeight()), view,
-				displayImageOptions, imageLoaderListener);
+		String imageURL = plexFactory.getImageURL(imageUrl, view.getWidth(),
+				view.getHeight());
+		Picasso.with(view.getContext()).load(imageURL).fit().into(view);
 	}
 
 	public static void displayImage(String imageUrl, ImageView view, int resId) {
-		final ImageViewAware imageViewAware = new ImageViewAware(view);
-		DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.cacheInMemory(true).cacheOnDisc(true)
-				.bitmapConfig(Bitmap.Config.ARGB_8888)
-				.showImageForEmptyUri(resId).build();
-		imageLoader.displayImage(imageUrl, imageViewAware, options);
+		String imageURL = plexFactory.getImageURL(imageUrl, view.getWidth(),
+				view.getHeight());
+		Picasso.with(view.getContext()).load(imageURL).fit().placeholder(resId)
+				.into(view);
 	}
 
-	public static void displayImageRoundedCorners(String imageUrl,
-			ImageView view) {
-		final ImageViewAware imageViewAware = new ImageViewAware(view);
-		imageLoader.displayImage(imageUrl, imageViewAware, roundedOptions);
+	public static void displayImageNoFade(String imageUrl, ImageView view) {
+		String imageURL = plexFactory.getImageURL(imageUrl, view.getWidth(),
+				view.getHeight());
+		Picasso.with(view.getContext()).load(imageURL).fit().noFade()
+				.into(view);
 	}
 
 	public static ImageLoader getImageLoader() {
@@ -223,15 +206,6 @@ public class SerenityApplication extends Application {
 		movieOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
 				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888)
 				.resetViewBeforeLoading(true).build();
-
-		roundedOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
-				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.ARGB_8888)
-				.resetViewBeforeLoading(true).build();
-
-		roundedVigenetteOptions = new DisplayImageOptions.Builder()
-				.cacheInMemory(true).cacheOnDisc(true)
-				.bitmapConfig(Bitmap.Config.ARGB_8888)
-				.displayer(new RoundedVignetteBitmapDisplayer(10, 5)).build();
 	}
 
 	/**

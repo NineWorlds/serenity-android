@@ -41,7 +41,6 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
@@ -64,7 +63,6 @@ import com.android.volley.VolleyError;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 /**
  * Abstract class for handling video selection information. This can either be a
@@ -304,9 +302,11 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		ImageLoader imageLoader = SerenityApplication.getImageLoader();
 		imageLoader.cancelDisplayTask(fanArt);
 
-		SerenityApplication.displayImage(videoInfo.getBackgroundURL(), fanArt,
-				SerenityApplication.getMovieOptions(),
-				new AnimationImageLoaderListener());
+		if (shouldFadeIn()) {
+			SerenityApplication.displayImage(videoInfo.getBackgroundURL(), fanArt);
+		} else {
+			SerenityApplication.displayImageNoFade(videoInfo.getBackgroundURL(), fanArt);
+		}
 
 	}
 
@@ -320,31 +320,14 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 				fetchTrailer(videoInfo);
 			}
 		}
-
 	}
 
-	private class AnimationImageLoaderListener extends
-			SimpleImageLoadingListener {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
-		 * #onLoadingComplete(java.lang.String, android.view.View,
-		 * android.graphics.Bitmap)
-		 */
-		@Override
-		public void onLoadingComplete(String imageUri, View view,
-				Bitmap loadedImage) {
-			SharedPreferences preferences = PreferenceManager
-					.getDefaultSharedPreferences(context);
-			boolean shouldFadeIn = preferences.getBoolean(
-					"animation_background_fadein", false);
-			if (shouldFadeIn) {
-				view.startAnimation(fadeIn);
-			}
-		}
+	protected boolean shouldFadeIn() {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		boolean shouldFadeIn = preferences.getBoolean(
+				"animation_background_fadein", false);
+		return shouldFadeIn;
 	}
 
 }

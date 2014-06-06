@@ -79,8 +79,7 @@ public class MusicAlbumsCoverAdapter extends BaseAdapter {
 		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
 		if (pi.getImageURL() != null && pi.getImageURL().length() > 0) {
-			SerenityApplication.displayImage(pi.getImageURL(), mpiv,
-					SerenityApplication.getMusicOptions());
+			SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 		} else {
 			mpiv.setImageResource(R.drawable.default_music);
 		}

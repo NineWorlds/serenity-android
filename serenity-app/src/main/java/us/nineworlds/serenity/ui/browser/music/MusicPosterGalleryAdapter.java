@@ -130,8 +130,7 @@ public class MusicPosterGalleryAdapter extends BaseAdapter {
 		mpiv.setLayoutParams(new Gallery.LayoutParams(width, height));
 
 		if (pi.getImageURL() != null) {
-			SerenityApplication.displayImage(pi.getImageURL(), mpiv,
-					SerenityApplication.getMusicOptions());
+			SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 		} else {
 			mpiv.setImageResource(R.drawable.default_music);
 		}

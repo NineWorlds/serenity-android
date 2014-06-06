@@ -81,8 +81,7 @@ public class MusicPosterGridViewAdapter extends BaseAdapter {
 		int width = ImageUtils.getDPI(180, context);
 		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
-		SerenityApplication.displayImage(pi.getImageURL(), mpiv,
-				SerenityApplication.getMusicOptions());
+		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
 
 		return mpiv;
 	}
