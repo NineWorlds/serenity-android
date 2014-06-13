@@ -26,8 +26,6 @@ package us.nineworlds.serenity.core.model.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.Director;
 import us.nineworlds.plex.rest.model.impl.Genre;
@@ -38,10 +36,11 @@ import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.plex.rest.model.impl.Writer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import android.content.Context;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class EpisodeMediaContainer extends MovieMediaContainer {
 
@@ -63,16 +62,22 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 	protected void createVideoContent(MediaContainer mc) {
 		String baseUrl = factory.baseURL();
 		String parentPosterURL = null;
-		if (mc.getParentPosterURL() != null && !mc.getParentPosterURL().contains("show")) {
+		if (mc.getParentPosterURL() != null
+				&& !mc.getParentPosterURL().contains("show")) {
 			parentPosterURL = baseUrl + mc.getParentPosterURL().substring(1);
 		}
 		List<Video> videos = mc.getVideos();
-		for (Video episode : videos) {
-			videoList.add(createEpisodeContentInfo(context, factory, mc, baseUrl, parentPosterURL, episode));
+		if (videos != null) {
+			for (Video episode : videos) {
+				videoList.add(createEpisodeContentInfo(context, factory, mc,
+						baseUrl, parentPosterURL, episode));
+			}
 		}
 	}
 
-	public static EpisodePosterInfo createEpisodeContentInfo(Context context, PlexappFactory factory, MediaContainer mc, String baseUrl, String parentPosterURL, Video episode) {
+	public static EpisodePosterInfo createEpisodeContentInfo(Context context,
+			PlexappFactory factory, MediaContainer mc, String baseUrl,
+			String parentPosterURL, Video episode) {
 		EpisodePosterInfo epi = new EpisodePosterInfo();
 		if (parentPosterURL != null) {
 			epi.setParentPosterURL(parentPosterURL);
@@ -81,8 +86,7 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 		epi.setParentKey(episode.getParentKey());
 		epi.setSummary(episode.getSummary());
 		epi.setViewCount(episode.getViewCount());
-		epi.setResumeOffset(Long.valueOf(episode.getViewOffset())
-				.intValue());
+		epi.setResumeOffset(Long.valueOf(episode.getViewOffset()).intValue());
 		epi.setDuration(Long.valueOf(episode.getDuration()).intValue());
 
 		epi.setOriginalAirDate(episode.getOriginallyAvailableDate());
@@ -136,18 +140,21 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 			Part part = parts.get(0);
 
 			if (episode.getSeason() != null) {
-				String season = context.getString(R.string.season_) + episode.getSeason();
+				String season = context.getString(R.string.season_)
+						+ episode.getSeason();
 				epi.setSeason(season);
 			} else if (mc.getParentIndex() != null) {
-				String season = context.getString(R.string.season_) + mc.getParentIndex();
+				String season = context.getString(R.string.season_)
+						+ mc.getParentIndex();
 				epi.setSeason(season);
 			}
 
 			if (episode.getEpisode() != null) {
-				String episodeNum = context.getString(R.string.episode_) + episode.getEpisode();
+				String episodeNum = context.getString(R.string.episode_)
+						+ episode.getEpisode();
 				epi.setEpisodeNumber(episodeNum);
 			}
-//				setSeasonEpisode(epi, part);
+			// setSeasonEpisode(epi, part);
 
 			epi.setAudioCodec(media.getAudioCodec());
 			epi.setVideoCodec(media.getVideoCodec());
@@ -167,7 +174,6 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 		return epi;
 	}
 
-
 	/**
 	 * @param video
 	 * @param videoContentInfo
@@ -175,13 +181,14 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 	 */
 	@Override
 	protected void createVideoDetails(Video video,
-									  VideoContentInfo videoContentInfo) {
+			VideoContentInfo videoContentInfo) {
 
 		createVideoDetailsStatic(video, videoContentInfo);
 
 	}
 
-	private static void createVideoDetailsStatic(Video video, VideoContentInfo videoContentInfo) {
+	private static void createVideoDetailsStatic(Video video,
+			VideoContentInfo videoContentInfo) {
 		if (video.getYear() != null) {
 			videoContentInfo.setYear(video.getYear());
 		}
@@ -209,9 +216,5 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 			}
 			videoContentInfo.setDirectors(d);
 		}
-	}
-
-	private String getString(int resId) {
-		return context.getString(resId);
 	}
 }
