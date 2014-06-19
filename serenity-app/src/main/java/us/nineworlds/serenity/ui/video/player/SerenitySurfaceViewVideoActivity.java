@@ -670,6 +670,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	protected boolean isKeyCodeInfo(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_INFO
 				|| keyCode == KeyEvent.KEYCODE_I
+				|| keyCode == KeyEvent.KEYCODE_MENU
 				|| keyCode == KeyEvent.KEYCODE_BUTTON_Y;
 	}
 
