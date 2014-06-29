@@ -10,6 +10,8 @@ zip.txt
 tmp
 *org.eclipse.core.resources.prefs
 *.orig
+.idea
+*/.idea
 
 
 

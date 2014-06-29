@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v7/appcompat/res/values-v21/styles_base.xml -->
+    <eat-comment />
+
+    <style name="TextAppearance.AppCompat.Base.SearchResult.Subtitle" parent="@android:TextAppearance.Material.SearchResult.Subtitle"></style>
+
+    <style name="TextAppearance.AppCompat.Base.SearchResult.Title" parent="@android:TextAppearance.Material.SearchResult.Title"></style>
+
+    <style name="TextAppearance.AppCompat.Base.Widget.PopupMenu.Large" parent="android:TextAppearance.Material.Widget.PopupMenu.Large"></style>
+
+    <style name="TextAppearance.AppCompat.Base.Widget.PopupMenu.Small" parent="android:TextAppearance.Material.Widget.PopupMenu.Small"></style>
+
+    <style name="TextAppearance.AppCompat.Light.Base.SearchResult.Subtitle" parent="TextAppearance.AppCompat.Base.SearchResult.Subtitle"></style>
+
+    <style name="TextAppearance.AppCompat.Light.Base.SearchResult.Title" parent="TextAppearance.AppCompat.Base.SearchResult.Title"></style>
+
+    <style name="TextAppearance.AppCompat.Light.Base.Widget.PopupMenu.Large" parent="android:TextAppearance.Material.Widget.PopupMenu.Large"></style>
+
+    <style name="TextAppearance.AppCompat.Light.Base.Widget.PopupMenu.Small" parent="android:TextAppearance.Material.Widget.PopupMenu.Small"></style>
+
+    <style name="TextAppearance.AppCompat.Widget.Base.ActionBar.Menu" parent="android:TextAppearance.Material.Widget.ActionBar.Menu"></style>
+
+    <style name="TextAppearance.AppCompat.Widget.Base.ActionBar.Subtitle" parent="android:TextAppearance.Material.Widget.ActionBar.Subtitle"></style>
+
+    <style name="TextAppearance.AppCompat.Widget.Base.ActionBar.Title" parent="android:TextAppearance.Material.Widget.ActionBar.Title"></style>
+
+    <style name="TextAppearance.AppCompat.Widget.Base.ActionMode.Subtitle" parent="android:TextAppearance.Material.Widget.ActionMode.Subtitle"></style>
+
+    <style name="TextAppearance.AppCompat.Widget.Base.ActionMode.Title" parent="android:TextAppearance.Material.Widget.ActionMode.Title"></style>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v7/appcompat/res/values-v21/themes_base.xml -->
+    <eat-comment />
+
+    <style name="Theme.Platform.AppCompat" parent="android:Theme.Material" />
+
+    <style name="Theme.Platform.AppCompat.Dialog" parent="android:Theme.Material.Dialog" />
+
+    <style name="Theme.Platform.AppCompat.DialogWhenLarge" parent="android:Theme.Material.DialogWhenLarge" />
+
+    <style name="Theme.Platform.AppCompat.Light" parent="android:Theme.Material.Light" />
+
+    <style name="Theme.Platform.AppCompat.Light.DarkActionBar" parent="android:Theme.Material.Light.DarkActionBar" />
+
+    <style name="Theme.Platform.AppCompat.Light.Dialog" parent="android:Theme.Material.Light.Dialog" />
+
+    <style name="Theme.Platform.AppCompat.Light.DialogWhenLarge" parent="android:Theme.Material.Light.DialogWhenLarge" />
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v7/appcompat/res/values-v21/styles_base.xml -->
+    <eat-comment />
+
+    <style name="Widget.AppCompat.Base.ActionBar" parent="android:Widget.Material.ActionBar"></style>
+
+    <style name="Widget.AppCompat.Base.ActionBar.Solid" parent="android:Widget.Material.ActionBar.Solid"></style>
+
+    <style name="Widget.AppCompat.Base.ActionBar.TabBar" parent="android:Widget.Material.ActionBar.TabBar"></style>
+
+    <style name="Widget.AppCompat.Base.ActionBar.TabText" parent="android:Widget.Material.ActionBar.TabText"></style>
+
+    <style name="Widget.AppCompat.Base.ActionBar.TabView" parent="android:Widget.Material.ActionBar.TabView"></style>
+
+    <style name="Widget.AppCompat.Base.ActionButton" parent="android:Widget.Material.ActionButton"></style>
+
+    <style name="Widget.AppCompat.Base.ActionButton.CloseMode" parent="android:Widget.Material.ActionButton.CloseMode"></style>
+
+    <style name="Widget.AppCompat.Base.ActionButton.Overflow" parent="android:Widget.Material.ActionButton.Overflow"></style>
+
+    <style name="Widget.AppCompat.Base.ActivityChooserView" parent="">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/abc_ab_share_pack_holo_dark</item>
+        <item name="android:divider">?attr/dividerVertical</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:dividerPadding">6dip</item>
+    </style>
+
+    <style name="Widget.AppCompat.Base.DropDownItem.Spinner" parent="android:Widget.Material.DropDownItem.Spinner" />
+
+    <style name="Widget.AppCompat.Base.ListPopupWindow" parent="android:Widget.Material.ListPopupWindow"></style>
+
+    <style name="Widget.AppCompat.Base.ListView.DropDown" parent="android:Widget.Material.ListView.DropDown" />
+
+    <style name="Widget.AppCompat.Base.ListView.Menu" parent="android:Widget.ListView.Menu" />
+
+    <style name="Widget.AppCompat.Base.PopupMenu" parent="android:Widget.Material.PopupMenu"></style>
+
+    <style name="Widget.AppCompat.Base.Spinner" parent="android:Widget.Material.Spinner" />
+
+    <style name="Widget.AppCompat.Light.Base.ActionBar" parent="android:Widget.Material.Light.ActionBar"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ActionBar.Solid" parent="android:Widget.Material.Light.ActionBar.Solid"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ActionBar.Solid.Inverse" parent="android:Widget.Material.Light.ActionBar.Solid"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ActionBar.TabBar" parent="android:Widget.Material.Light.ActionBar.TabBar"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ActionBar.TabBar.Inverse" parent="android:Widget.Material.Light.ActionBar.TabBar"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ActionBar.TabText" parent="android:Widget.Material.Light.ActionBar.TabText"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ActionBar.TabText.Inverse" parent="android:Widget.Material.Light.ActionBar.TabText"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ActionBar.TabView" parent="android:Widget.Material.Light.ActionBar.TabView"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ActionBar.TabView.Inverse" parent="android:Widget.Material.Light.ActionBar.TabView"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ActionButton" parent="android:Widget.Material.Light.ActionButton"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ActionButton.CloseMode" parent="android:Widget.Material.Light.ActionButton.CloseMode"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ActionButton.Overflow" parent="android:Widget.Material.Light.ActionButton.Overflow"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ActionMode.Inverse" parent="android:Widget.Material.Light.ActionMode"></style>
+
+    <style name="Widget.AppCompat.Light.Base.DropDownItem.Spinner" parent="android:Widget.Material.Light.DropDownItem.Spinner" />
+
+    <style name="Widget.AppCompat.Light.Base.ListPopupWindow" parent="android:Widget.Material.Light.ListPopupWindow"></style>
+
+    <style name="Widget.AppCompat.Light.Base.ListView.DropDown" parent="android:Widget.Material.ListView.DropDown" />
+
+    <style name="Widget.AppCompat.Light.Base.PopupMenu" parent="android:Widget.Material.Light.PopupMenu"></style>
+
+    <style name="Widget.AppCompat.Light.Base.Spinner" parent="android:Widget.Material.Light.Spinner" />
+
+</resources>

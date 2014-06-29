@@ -13,8 +13,8 @@
         android:xlargeScreens="true" />
 
     <uses-sdk
-        android:minSdkVersion="L"
-        android:targetSdkVersion="L" />
+        android:minSdkVersion="13"
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -55,6 +55,15 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AndroidTVActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -123,8 +132,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
-        <activity android:name=".ui.activity.OverscanSetupActivity"/>
+        <activity android:name=".ui.activity.OverscanSetupActivity" />
 
         <service android:name=".core.services.MusicRetrievalIntentService" />
         <service android:name=".core.services.MusicAlbumRetrievalIntentService" />
@@ -139,7 +147,7 @@
         <service
             android:name=".core.services.GDMService"
             tools:ignore="MissingRegistered" />
-        <service android:name="us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService"/>
+        <service android:name="us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService" />
 
         <provider
             android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
@@ -149,6 +157,7 @@
         <receiver android:name="us.nineworlds.serenity.StartupBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>

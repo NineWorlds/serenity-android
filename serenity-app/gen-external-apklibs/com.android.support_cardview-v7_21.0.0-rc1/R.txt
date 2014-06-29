@@ -1,0 +1,15 @@
+int attr cardBackgroundColor 0x7f010000
+int attr cardCornerRadius 0x7f010001
+int color cardview_dark_background 0x7f020000
+int color cardview_light_background 0x7f020001
+int color cardview_shadow_end_color 0x7f020002
+int color cardview_shadow_start_color 0x7f020003
+int dimen cardview_default_radius 0x7f030000
+int dimen cardview_elevation 0x7f030001
+int dimen cardview_shadow_size 0x7f030002
+int style CardView 0x7f040000
+int style CardView_Dark 0x7f040001
+int style CardView_Light 0x7f040002
+int[] styleable CardView { 0x7f010000, 0x7f010001 }
+int styleable CardView_cardBackgroundColor 0
+int styleable CardView_cardCornerRadius 1

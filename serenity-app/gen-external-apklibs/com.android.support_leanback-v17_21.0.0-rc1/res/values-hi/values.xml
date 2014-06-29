@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values-hi/strings.xml -->
+    <eat-comment />
+
+    <string name="lb_search_bar_hint" msgid="8325490927970116252">"खोजें"</string>
+    <string name="lb_search_bar_hint_speech" msgid="5511270823320183816">"खोजने के लिए बोलें"</string>
+    <string name="lb_search_bar_hint_with_title" msgid="1627103380996590035">"<ns1:g id="SEARCH_CONTEXT">%1$s</ns1:g> खोजें"</string>
+    <string name="lb_search_bar_hint_with_title_speech" msgid="2712734639766312034">"<ns1:g id="SEARCH_CONTEXT">%1$s</ns1:g> खोजने के लिए बोलें"</string>
+    <string name="orb_search_action" msgid="5651268540267663887">"खोज कार्रवाई"</string>
+
+</resources>

@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/colors.xml -->
+    <eat-comment />
+
+    <color name="lb_action_bg_color">#3D3D3D</color>
+    <color name="lb_action_text_color">#EEEEEE</color>
+    <color name="lb_background_protection">#99000000</color>
+    <color name="lb_basic_card_bg_color">#FF3B3B3B</color>
+    <color name="lb_basic_card_content_text_color">#FF888888</color>
+    <color name="lb_basic_card_info_bg_color">#FF3B3B3B</color>
+    <color name="lb_basic_card_title_text_color">#FFEEEEEE</color>
+    <color name="lb_browse_header_color">#FFFFFF</color>
+    <color name="lb_browse_title_color">#EEEEEE</color>
+    <color name="lb_default_brand_color">#FF455A64</color>
+    <color name="lb_default_search_color">#FFFFAA3F</color>
+    <color name="lb_details_description_color">#EEEEEE</color>
+    <color name="lb_details_overview_bg_color">#1B1B1B</color>
+    <color name="lb_grey">#888888</color>
+    <color name="lb_list_item_unselected_text_color">#FFF1F1F1</color>
+    <color name="lb_search_bar_hint_color">#66222222</color>
+    <color name="lb_search_bar_text_color">#FFEEEEEE</color>
+    <color name="lb_search_bar_text_speech_color">#FF444444</color>
+    <color name="lb_speech_orb_not_recording">#33EEEEEE</color>
+    <color name="lb_speech_orb_recording">#33EE0000</color>
+    <color name="lb_view_dim_mask_color">#000000</color>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/attrs.xml -->
+    <eat-comment />
+
+    <declare-styleable name="LeanbackTheme">
+
+        <!-- left padding of BrowseFragment, RowsFragment, DetailsFragment -->
+        <attr name="browsePaddingLeft" format="dimension" />
+        <!-- right padding of BrowseFragment, RowsFragment, DetailsFragment -->
+        <attr name="browsePaddingRight" format="dimension" />
+        <!-- top padding of BrowseFragment -->
+        <attr name="browsePaddingTop" format="dimension" />
+        <!-- bottom padding of BrowseFragment -->
+        <attr name="browsePaddingBottom" format="dimension" />
+        <!-- start margin of RowsFragment inside BrowseFragment when HeadersFragment is visible -->
+        <attr name="browseRowsMarginStart" format="dimension" />
+        <!-- top margin of RowsFragment inside BrowseFragment when BrowseFragment title is visible -->
+        <attr name="browseRowsMarginTop" format="dimension" />
+        <!-- fading edge length of start of browse row when HeadersFragment is visible -->
+        <attr name="browseRowsFadingEdgeLength" format="dimension" />
+
+        <!-- BrowseFragment Title text style -->
+        <attr name="browseTitleTextStyle" format="reference" />
+
+        <!-- BrowseFragment Title icon style -->
+        <attr name="browseTitleIconStyle" format="reference" />
+
+        <!-- BrowseFragment TitleView style -->
+        <attr name="browseTitleViewStyle" format="reference" />
+
+        <!-- vertical grid style inside HeadersFragment -->
+        <attr name="headersVerticalGridStyle" format="reference" />
+        <!-- header style inside HeadersFragment -->
+        <attr name="headerStyle" format="reference" />
+
+        <!-- vertical grid style inside RowsFragment -->
+        <attr name="rowsVerticalGridStyle" format="reference" />
+
+        <!-- horizontal grid style inside a row -->
+        <attr name="rowHorizontalGridStyle" format="reference" />
+        <!-- header style inside a row -->
+        <attr name="rowHeaderStyle" format="reference" />
+
+        <!-- hover card title style -->
+        <attr name="rowHoverCardTitleStyle" format="reference" />
+        <!-- hover card description style -->
+        <attr name="rowHoverCardDescriptionStyle" format="reference" />
+
+        <!-- CardView styles -->
+        <attr name="baseCardViewStyle" format="reference" />
+        <attr name="imageCardViewStyle" format="reference" />
+
+        <!-- for details overviews -->
+        <attr name="detailsDescriptionTitleStyle" format="reference" />
+        <attr name="detailsDescriptionSubtitleStyle" format="reference" />
+        <attr name="detailsDescriptionBodyStyle" format="reference" />
+        <attr name="detailsActionButtonStyle" format="reference" />
+
+        <!-- style for a vertical grid of items -->
+        <attr name="itemsVerticalGridStyle" format="reference" />
+
+        <!-- Default colors -->
+        <attr name="defaultBrandColor" format="reference|color" />
+        <attr name="defaultSearchColor" format="reference|color" />
+        <!-- Default color that search orb pulses to.  If not set, this color is determined programatically based on the defaultSearchColor -->
+        <attr name="defaultSearchBrightColor" format="reference|color" />
+
+        <!-- Style for searchOrb -->
+        <attr name="searchOrbViewStyle" format="reference" />
+        <attr name="defaultSearchIcon" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="lbBaseCardView">
+
+        <!-- Defines the type of the card layout -->
+        <attr name="cardType" format="enum">
+
+            <!-- A simple card layout with a single layout region. -->
+            <enum name="mainOnly" value="0" />
+            <!--
+                 A card layout with two layout regions: a main area which is
+                 always visible, and an info region that appears over the lower
+                 area of the main region.
+            -->
+            <enum name="infoOver" value="1" />
+            <!--
+                 A card layout with two layout regions: a main area which is
+                 always visible, and an info region that appears below the main
+                 region.
+            -->
+            <enum name="infoUnder" value="2" />
+            <!--
+                 A card layout with three layout regions: a main area which is
+                 always visible, an info region that appears below the main
+                 region, and an extra region that appears below the info region
+                 after a small delay.
+            -->
+            <enum name="infoUnderWithExtra" value="3" />
+        </attr>
+        <!-- Defines when the info region of a card layout is displayed. -->
+        <attr name="infoVisibility" format="enum">
+
+            <!-- Always display the info region. -->
+            <enum name="always" value="0" />
+            <!-- Display the info region only when activated. -->
+            <enum name="activated" value="1" />
+            <!-- Display the info region only when selected. -->
+            <enum name="selected" value="2" />
+        </attr>
+        <!--
+             Defines when the extra region of a card layout is displayed.
+             Depends on infoVisibility, meaning the extra region never displays
+             if the info region is not displayed as well.
+        -->
+        <attr name="extraVisibility" format="enum">
+
+            <!-- Always display the extra region. -->
+            <enum name="always" value="0" />
+            <!-- Display the extra region only when activated. -->
+            <enum name="activated" value="1" />
+            <!-- Display the extra region only when selected. -->
+            <enum name="selected" value="2" />
+        </attr>
+        <!--
+             Defines the delay in milliseconds before the selection animation
+             runs for a card layout.
+        -->
+        <attr name="selectedAnimationDelay" format="integer" />
+        <!--
+             Defines the duration in milliseconds of the selection animation for
+             a card layout.
+        -->
+        <attr name="selectedAnimationDuration" format="integer" />
+        <!--
+             Defines the duration in milliseconds of the activated animation for
+             a card layout.
+        -->
+        <attr name="activatedAnimationDuration" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="lbBaseCardView_Layout">
+
+        <!--
+             The card layout region defined by this element. At most one of
+             element of each type should be specified as an immediate child of
+             the card layout.
+        -->
+        <attr name="layout_viewType" format="enum">
+
+            <!-- The main region of the card. -->
+            <enum name="main" value="0" />
+            <!-- The info region of the card. -->
+            <enum name="info" value="1" />
+            <!-- The extra region of the card. -->
+            <enum name="extra" value="2" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="lbBaseGridView">
+
+        <!--
+             Allow DPAD key to navigate out at the front of the View (where position = 0),
+             default is false
+        -->
+        <attr name="focusOutFront" format="boolean" />
+        <!-- Allow DPAD key to navigate out at the end of the view, default is false -->
+        <attr name="focusOutEnd" format="boolean" />
+        <!-- Defining margin between two items horizontally -->
+        <attr name="horizontalMargin" format="dimension" />
+        <!-- Defining margin between two items vertically -->
+        <attr name="verticalMargin" format="dimension" />
+        <!-- Defining gravity of child view -->
+        <attr name="android:gravity" />
+    </declare-styleable>
+    <declare-styleable name="lbHorizontalGridView">
+
+        <!-- Defining height of each row of HorizontalGridView -->
+        <attr name="rowHeight" format="dimension">
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <!-- Defining number of rows -->
+        <attr name="numberOfRows" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="lbSearchOrbView">
+
+        <!-- Defining icon of the search affordance -->
+        <attr name="searchOrbIcon" format="reference" />
+        <!-- Defining color of the search affordance -->
+        <attr name="searchOrbColor" format="reference|color" />
+        <!-- Defining pulse color of the search affordance -->
+        <attr name="searchOrbBrightColor" format="reference|color" />
+    </declare-styleable>
+    <declare-styleable name="lbTitleView">
+
+        <!-- Defining color of the search affordance -->
+        <attr name="searchAffordanceColor" format="reference|color" />
+    </declare-styleable>
+    <declare-styleable name="lbVerticalGridView">
+
+        <!-- Defining width of each column of VerticalGridView -->
+        <attr name="columnWidth" format="dimension">
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <!-- Defining number of columns -->
+        <attr name="numberOfColumns" format="integer" />
+    </declare-styleable>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/dimens.xml -->
+    <eat-comment />
+
+    <dimen name="lb_action_1_line_height">36dp</dimen>
+    <dimen name="lb_action_2_lines_height">56dp</dimen>
+    <dimen name="lb_action_icon_margin">12dp</dimen>
+    <dimen name="lb_action_padding_horizontal">34dp</dimen>
+    <dimen name="lb_action_text_size">16sp</dimen>
+    <dimen name="lb_action_with_icon_padding_left">14dp</dimen>
+    <dimen name="lb_action_with_icon_padding_right">20dp</dimen>
+    <dimen name="lb_basic_card_content_text_size">12sp</dimen>
+    <dimen name="lb_basic_card_info_badge_size">16dp</dimen>
+    <dimen name="lb_basic_card_info_height">52dp</dimen>
+    <dimen name="lb_basic_card_info_padding">6dp</dimen>
+    <dimen name="lb_basic_card_info_text_margin">2dp</dimen>
+    <dimen name="lb_basic_card_main_height">188dp</dimen>
+    <dimen name="lb_basic_card_main_width">140dp</dimen>
+    <dimen name="lb_basic_card_title_text_size">16sp</dimen>
+    <dimen name="lb_browse_expanded_row_no_hovercard_bottom_padding">28dp</dimen>
+    <dimen name="lb_browse_expanded_selected_row_top_padding">16dp</dimen>
+    <dimen name="lb_browse_header_height">24dp</dimen>
+    <dimen name="lb_browse_header_padding_right">24dp</dimen>
+
+    <item name="lb_browse_header_select_duration" format="integer" type="dimen">150</item>
+    <item name="lb_browse_header_select_scale" format="float" type="dimen">1.2</item>
+
+    <dimen name="lb_browse_header_text_size">20sp</dimen>
+    <dimen name="lb_browse_headers_vertical_margin">21dp</dimen>
+    <dimen name="lb_browse_headers_width">270dp</dimen>
+    <dimen name="lb_browse_item_horizontal_margin">8dp</dimen>
+    <dimen name="lb_browse_item_vertical_margin">8dp</dimen>
+    <dimen name="lb_browse_padding_bottom">48dp</dimen>
+    <dimen name="lb_browse_padding_left">56dp</dimen>
+    <dimen name="lb_browse_padding_right">56dp</dimen>
+    <dimen name="lb_browse_padding_top">27dp</dimen>
+    <dimen name="lb_browse_row_hovercard_description_font_size">14sp</dimen>
+    <dimen name="lb_browse_row_hovercard_max_width">400dp</dimen>
+    <dimen name="lb_browse_row_hovercard_title_font_size">18sp</dimen>
+    <dimen name="lb_browse_rows_fading_edge">16dp</dimen>
+    <dimen name="lb_browse_rows_margin_start">238dp</dimen>
+    <dimen name="lb_browse_rows_margin_top">167dp</dimen>
+    <dimen name="lb_browse_selected_row_top_padding">20dp</dimen>
+    <dimen name="lb_browse_title_height">60dp</dimen>
+    <dimen name="lb_browse_title_icon_height">52dp</dimen>
+    <dimen name="lb_browse_title_icon_margin_right">52dp</dimen>
+    <dimen name="lb_browse_title_icon_width">52dp</dimen>
+    <dimen name="lb_browse_title_text_size">44sp</dimen>
+    <dimen name="lb_browse_title_text_width">584dp</dimen>
+    <dimen name="lb_details_description_body_line_spacing">20dp</dimen>
+    <dimen name="lb_details_description_body_text_size">14sp</dimen>
+    <dimen name="lb_details_description_subtitle_text_size">16sp</dimen>
+    <dimen name="lb_details_description_title_baseline">26dp</dimen>
+    <dimen name="lb_details_description_title_line_spacing">40dp</dimen>
+    <dimen name="lb_details_description_title_text_size">34sp</dimen>
+    <dimen name="lb_details_description_under_subtitle_baseline_margin">32dp</dimen>
+    <dimen name="lb_details_description_under_title_baseline_margin">32dp</dimen>
+    <dimen name="lb_details_overview_action_items_margin">0dp</dimen>
+
+    <item name="lb_details_overview_action_select_duration" format="integer" type="dimen">150</item>
+
+    <dimen name="lb_details_overview_actions_fade_size">16dp</dimen>
+    <dimen name="lb_details_overview_actions_height">56dp</dimen>
+    <dimen name="lb_details_overview_actions_padding_left">294dp</dimen>
+    <dimen name="lb_details_overview_actions_padding_right">132dp</dimen>
+    <dimen name="lb_details_overview_description_margin_bottom">12dp</dimen>
+    <dimen name="lb_details_overview_description_margin_left">24dp</dimen>
+    <dimen name="lb_details_overview_description_margin_right">24dp</dimen>
+    <dimen name="lb_details_overview_description_margin_top">24dp</dimen>
+    <dimen name="lb_details_overview_height_large">274dp</dimen>
+    <dimen name="lb_details_overview_height_small">159dp</dimen>
+    <dimen name="lb_details_overview_margin_bottom">40dp</dimen>
+    <dimen name="lb_details_overview_margin_left">132dp</dimen>
+    <dimen name="lb_details_overview_margin_right">132dp</dimen>
+    <dimen name="lb_details_rows_align_top">167dp</dimen>
+    <dimen name="lb_list_row_height">224dp</dimen>
+    <dimen name="lb_material_shadow_focused_z">8dp</dimen>
+    <dimen name="lb_material_shadow_normal_z">2dp</dimen>
+    <dimen name="lb_search_bar_edit_text_margin_left">24dp</dimen>
+    <dimen name="lb_search_bar_height">60dp</dimen>
+    <dimen name="lb_search_bar_hint_margin_left">52dp</dimen>
+    <dimen name="lb_search_bar_icon_height">32dp</dimen>
+    <dimen name="lb_search_bar_icon_margin_left">16dp</dimen>
+    <dimen name="lb_search_bar_icon_width">32dp</dimen>
+    <dimen name="lb_search_bar_items_height">56dp</dimen>
+    <dimen name="lb_search_bar_items_layout_margin_top">27dp</dimen>
+    <dimen name="lb_search_bar_items_margin_left">56dp</dimen>
+    <dimen name="lb_search_bar_items_width">600dp</dimen>
+    <dimen name="lb_search_bar_padding_left">56dp</dimen>
+    <dimen name="lb_search_bar_padding_top">27dp</dimen>
+    <dimen name="lb_search_bar_speech_orb_margin_left">56dp</dimen>
+    <dimen name="lb_search_bar_speech_orb_size">52dp</dimen>
+    <dimen name="lb_search_bar_text_size">22sp</dimen>
+    <dimen name="lb_search_bar_unfocused_text_size">18sp</dimen>
+    <dimen name="lb_search_browse_row_padding_left">56dp</dimen>
+    <dimen name="lb_search_browse_rows_align_top">120dp</dimen>
+    <dimen name="lb_search_orb_margin_bottom">4dp</dimen>
+    <dimen name="lb_search_orb_margin_left">4dp</dimen>
+    <dimen name="lb_search_orb_margin_right">4dp</dimen>
+    <dimen name="lb_search_orb_margin_top">4dp</dimen>
+    <dimen name="lb_search_orb_size">52dp</dimen>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/colors.xml -->
+    <eat-comment />
+
+    <item name="lb_view_dimmed_level" type="dimen">60%</item>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/dimens.xml -->
+    <eat-comment />
+
+    <item name="lb_browse_header_unselect_alpha" type="fraction">50%</item>
+    <item name="lb_focus_zoom_factor_large" type="fraction">114%</item>
+    <item name="lb_focus_zoom_factor_medium" type="fraction">110%</item>
+    <item name="lb_focus_zoom_factor_small" type="fraction">106%</item>
+    <item name="lb_search_bar_speech_orb_focused_zoom" type="fraction">120%</item>
+    <item name="lb_search_bar_speech_orb_max_level_zoom" type="fraction">144%</item>
+    <item name="lb_search_orb_brightness_alpha" type="fraction">15%</item>
+    <item name="lb_search_orb_focused_zoom" type="fraction">120%</item>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/ids.xml -->
+    <eat-comment />
+
+    <item name="lb_focus_animator" type="id"/>
+    <item name="lb_header_transition_position" type="id"/>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/dimens.xml -->
+    <eat-comment />
+
+    <integer name="lb_browse_headers_transition_delay">150</integer>
+    <integer name="lb_browse_headers_transition_duration">250</integer>
+    <integer name="lb_browse_rows_anim_duration">250</integer>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/integers.xml -->
+    <eat-comment />
+
+    <integer name="lb_card_activated_animation_duration">150</integer>
+    <integer name="lb_card_selected_animation_delay">400</integer>
+    <integer name="lb_card_selected_animation_duration">150</integer>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/dimens.xml -->
+    <eat-comment />
+
+    <integer name="lb_details_description_body_max_lines">5</integer>
+    <integer name="lb_details_description_body_min_lines">3</integer>
+    <integer name="lb_details_description_subtitle_max_lines">1</integer>
+    <integer name="lb_details_description_title_max_lines">2</integer>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/integers.xml -->
+    <eat-comment />
+
+    <integer name="lb_search_bar_speech_mode_background_alpha">179</integer>
+    <integer name="lb_search_bar_text_mode_background_alpha">51</integer>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/dimens.xml -->
+    <eat-comment />
+
+    <item name="lb_search_orb_pulse_duration_ms" type="integer">1000</item>
+    <item name="lb_search_orb_scale_down_duration_ms" type="integer">100</item>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/strings.xml -->
+    <eat-comment />
+
+    <string name="lb_search_bar_hint">Search</string>
+    <string name="lb_search_bar_hint_speech">Speak to search</string>
+    <string name="lb_search_bar_hint_with_title">Search <ns1:g id="search context">%1$s</ns1:g></string>
+    <string name="lb_search_bar_hint_with_title_speech">Speak to search <ns1:g id="search context">%1$s</ns1:g></string>
+    <string name="orb_search_action">Search Action</string>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/styles.xml -->
+    <eat-comment />
+
+    <style name="TextAppearance.Leanback" parent="android:TextAppearance.Holo">
+
+        <!-- Any text appearance overrides go here. -->
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.DetailsActionButton">
+        <item name="android:textSize">@dimen/lb_action_text_size</item>
+        <item name="android:textColor">@color/lb_action_text_color</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.DetailsDescriptionBody">
+        <item name="android:textSize">@dimen/lb_details_description_body_text_size</item>
+        <item name="android:textColor">@color/lb_details_description_color</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.DetailsDescriptionSubtitle">
+        <item name="android:textSize">@dimen/lb_details_description_subtitle_text_size</item>
+        <item name="android:textColor">@color/lb_details_description_color</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.DetailsDescriptionTitle">
+        <item name="android:textSize">@dimen/lb_details_description_title_text_size</item>
+        <item name="android:textColor">@color/lb_details_description_color</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.Header" parent="TextAppearance.Leanback">
+        <item name="android:textSize">@dimen/lb_browse_header_text_size</item>
+        <item name="android:textColor">@color/lb_browse_header_color</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.Row.Header" parent="TextAppearance.Leanback.Header">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.Row.HoverCardDescription" parent="TextAppearance.Leanback">
+        <item name="android:textSize">@dimen/lb_browse_row_hovercard_description_font_size</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.Row.HoverCardTitle" parent="TextAppearance.Leanback">
+        <item name="android:textSize">@dimen/lb_browse_row_hovercard_title_font_size</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.SearchTextEdit" parent="TextAppearance.Leanback">
+        <item name="android:textSize">@dimen/lb_search_bar_text_size</item>
+    </style>
+
+    <style name="TextAppearance.Leanback.Title" parent="TextAppearance.Leanback">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">@dimen/lb_browse_title_text_size</item>
+        <item name="android:textColor">@color/lb_browse_title_color</item>
+    </style>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/themes.xml -->
+    <eat-comment />
+
+    <style name="Theme.Leanback" parent="android:Theme.Holo.NoActionBar">
+        <item name="android:windowOverscan">true</item>
+        <item name="baseCardViewStyle">@style/Widget.Leanback.BaseCardViewStyle</item>
+        <item name="imageCardViewStyle">@style/Widget.Leanback.ImageCardViewStyle</item>
+        <item name="browsePaddingLeft">@dimen/lb_browse_padding_left</item>
+        <item name="browsePaddingRight">@dimen/lb_browse_padding_right</item>
+        <item name="browsePaddingTop">@dimen/lb_browse_padding_top</item>
+        <item name="browsePaddingBottom">@dimen/lb_browse_padding_bottom</item>
+        <item name="browseRowsMarginStart">@dimen/lb_browse_rows_margin_start</item>
+        <item name="browseRowsMarginTop">@dimen/lb_browse_rows_margin_top</item>
+        <item name="browseRowsFadingEdgeLength">@dimen/lb_browse_rows_fading_edge</item>
+        <item name="headersVerticalGridStyle">@style/Widget.Leanback.Headers.VerticalGridView</item>
+        <item name="headerStyle">@style/Widget.Leanback.Header</item>
+        <item name="rowsVerticalGridStyle">@style/Widget.Leanback.Rows.VerticalGridView</item>
+        <item name="rowHorizontalGridStyle">@style/Widget.Leanback.Row.HorizontalGridView</item>
+        <item name="itemsVerticalGridStyle">@style/Widget.Leanback.GridItems.VerticalGridView</item>
+        <item name="browseTitleTextStyle">@style/Widget.Leanback.Title.Text</item>
+        <item name="browseTitleIconStyle">@style/Widget.Leanback.Title.Icon</item>
+        <item name="browseTitleViewStyle">@style/Widget.Leanback.TitleView</item>
+        <item name="rowHeaderStyle">@style/Widget.Leanback.Row.Header</item>
+        <item name="rowHoverCardTitleStyle">@style/Widget.Leanback.Row.HoverCardTitle</item>
+        <item name="rowHoverCardDescriptionStyle">@style/Widget.Leanback.Row.HoverCardDescription</item>
+        <item name="searchOrbViewStyle">@style/Widget.Leanback.SearchOrbViewStyle</item>
+        <item name="detailsDescriptionTitleStyle">@style/Widget.Leanback.DetailsDescriptionTitleStyle</item>
+        <item name="detailsDescriptionSubtitleStyle">@style/Widget.Leanback.DetailsDescriptionSubtitleStyle</item>
+        <item name="detailsDescriptionBodyStyle">@style/Widget.Leanback.DetailsDescriptionBodyStyle</item>
+        <item name="detailsActionButtonStyle">@style/Widget.Leanback.DetailsActionButtonStyle</item>
+
+        <!-- TODO should be null, and set programatically to avoid dependence on leanback theme -->
+        <item name="defaultBrandColor">@color/lb_default_brand_color</item>
+        <item name="defaultSearchColor">@null</item>
+        <item name="defaultSearchBrightColor">@null</item>
+        <item name="defaultSearchIcon">@null</item>
+    </style>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/lmp-preview-release/frameworks/support/v17/leanback/res/values/styles.xml -->
+    <eat-comment />
+
+    <style name="Widget.Leanback" parent="android:Widget.Holo" />
+
+    <style name="Widget.Leanback.BaseCardViewStyle" />
+
+    <style name="Widget.Leanback.DetailsActionButtonStyle" parent="android:Widget.Holo.Button.Borderless">
+        <item name="android:textAppearance">@style/TextAppearance.Leanback.DetailsActionButton</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:background">@drawable/lb_selector_action_bg</item>
+        <item name="android:drawablePadding">@dimen/lb_action_icon_margin</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:paddingLeft">@dimen/lb_action_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/lb_action_padding_horizontal</item>
+    </style>
+
+    <style name="Widget.Leanback.DetailsDescriptionBodyStyle">
+        <item name="android:textAppearance">@style/TextAppearance.Leanback.DetailsDescriptionBody</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="Widget.Leanback.DetailsDescriptionSubtitleStyle">
+        <item name="android:textAppearance">@style/TextAppearance.Leanback.DetailsDescriptionSubtitle</item>
+        <item name="android:maxLines">@integer/lb_details_description_subtitle_max_lines</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="Widget.Leanback.DetailsDescriptionTitleStyle">
+        <item name="android:textAppearance">@style/TextAppearance.Leanback.DetailsDescriptionTitle</item>
+        <item name="android:maxLines">@integer/lb_details_description_title_max_lines</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="Widget.Leanback.GridItems" />
+
+    <style name="Widget.Leanback.GridItems.VerticalGridView">
+        <item name="android:clipToPadding">false</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:paddingLeft">?attr/browsePaddingLeft</item>
+        <item name="android:paddingRight">?attr/browsePaddingRight</item>
+        <item name="android:paddingBottom">@dimen/lb_browse_item_vertical_margin</item>
+        <item name="android:paddingTop">?attr/browseRowsMarginTop</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="horizontalMargin">@dimen/lb_browse_item_horizontal_margin</item>
+        <item name="verticalMargin">@dimen/lb_browse_item_vertical_margin</item>
+        <item name="focusOutFront">true</item>
+    </style>
+
+    <style name="Widget.Leanback.Header">
+        <item name="android:minHeight">@dimen/lb_browse_header_height</item>
+        <item name="android:textAppearance">@style/TextAppearance.Leanback.Header</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">0</item>
+        <item name="android:paddingRight">@dimen/lb_browse_header_padding_right</item>
+    </style>
+
+    <style name="Widget.Leanback.Headers" />
+
+    <style name="Widget.Leanback.Headers.VerticalGridView">
+        <item name="android:paddingLeft">?attr/browsePaddingLeft</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="focusOutFront">true</item>
+        <item name="focusOutEnd">true</item>
+        <item name="verticalMargin">@dimen/lb_browse_headers_vertical_margin</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+
+    <style name="Widget.Leanback.ImageCardViewStyle" parent="Widget.Leanback.BaseCardViewStyle">
+        <item name="cardType">infoUnder</item>
+        <item name="infoVisibility">activated</item>
+        <item name="android:background">@color/lb_basic_card_bg_color</item>
+    </style>
+
+    <style name="Widget.Leanback.Row"></style>
+
+    <style name="Widget.Leanback.Row.Header" parent="Widget.Leanback.Header">
+        <item name="android:textAppearance">@style/TextAppearance.Leanback.Row.Header</item>
+    </style>
+
+    <style name="Widget.Leanback.Row.HorizontalGridView">
+        <item name="android:clipToPadding">false</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:paddingLeft">?attr/browsePaddingLeft</item>
+        <item name="android:paddingRight">?attr/browsePaddingRight</item>
+        <item name="android:paddingBottom">@dimen/lb_browse_item_vertical_margin</item>
+        <item name="android:paddingTop">@dimen/lb_browse_item_vertical_margin</item>
+        <item name="horizontalMargin">@dimen/lb_browse_item_horizontal_margin</item>
+        <item name="verticalMargin">@dimen/lb_browse_item_vertical_margin</item>
+        <item name="focusOutFront">true</item>
+        <item name="rowHeight">wrap_content</item>
+    </style>
+
+    <style name="Widget.Leanback.Row.HoverCardDescription">
+        <item name="android:textAppearance">@style/TextAppearance.Leanback.Row.HoverCardDescription</item>
+        <item name="android:maxWidth">@dimen/lb_browse_row_hovercard_max_width</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">4</item>
+    </style>
+
+    <style name="Widget.Leanback.Row.HoverCardTitle">
+        <item name="android:textAppearance">@style/TextAppearance.Leanback.Row.HoverCardTitle</item>
+        <item name="android:maxWidth">@dimen/lb_browse_row_hovercard_max_width</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="Widget.Leanback.Rows"></style>
+
+    <style name="Widget.Leanback.Rows.VerticalGridView">
+        <item name="android:paddingBottom">?attr/browsePaddingBottom</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="focusOutFront">true</item>
+        <item name="focusOutEnd">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+
+    <style name="Widget.Leanback.SearchOrbViewStyle">
+        <item name="searchOrbIcon">?attr/defaultSearchIcon</item>
+        <item name="searchOrbColor">?attr/defaultSearchColor</item>
+        <item name="searchOrbBrightColor">?attr/defaultSearchBrightColor</item>
+    </style>
+
+    <style name="Widget.Leanback.Title" />
+
+    <style name="Widget.Leanback.Title.Icon">
+        <item name="android:scaleType">fitEnd</item>
+    </style>
+
+    <style name="Widget.Leanback.Title.Text">
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">right</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textAppearance">@style/TextAppearance.Leanback.Title</item>
+    </style>
+
+    <style name="Widget.Leanback.TitleView">
+        <item name="searchAffordanceColor">?attr/defaultSearchColor</item>
+    </style>
+
+</resources>

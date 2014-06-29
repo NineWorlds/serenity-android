@@ -49,7 +49,7 @@
          <version>21.0.0-rc1</version>
          <type>aar</type>
       </dependency>
-      <dependency>
+<!--      <dependency>
          <groupId>com.android.support</groupId>
          <artifactId>appcompat-v7</artifactId>
          <version>21.0.0-rc1</version>
@@ -92,6 +92,7 @@
          <version>21.0.0-rc1</version>
          <type>aar</type>
       </dependency>
+-->
       <dependency>
          <groupId>com.googlecode.juniversalchardet</groupId>
          <artifactId>juniversalchardet</artifactId>
