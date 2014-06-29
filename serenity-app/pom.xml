@@ -12,7 +12,7 @@
    <packaging>apk</packaging>
 
    <properties>
-      <android-version>4.2.2_r2</android-version>
+      <android-version>L_r1</android-version>
    </properties>
 
 
@@ -26,11 +26,6 @@
          <groupId>com.google.analytics</groupId>
          <artifactId>mobile-analytics</artifactId>
          <version>2.0</version>
-      </dependency>
-      <dependency>
-         <groupId>android.support</groupId>
-         <artifactId>compatibility-v4</artifactId>
-         <version>19.0.1</version>
       </dependency>
       <dependency>
          <groupId>us.nineworlds.serenity</groupId>
@@ -47,6 +42,55 @@
          <artifactId>menudrawer</artifactId>
          <version>2.0.0-SNAPSHOT</version>
          <type>apklib</type>
+      </dependency>
+      <dependency>
+         <groupId>com.android.support</groupId>
+         <artifactId>support-v4</artifactId>
+         <version>21.0.0-rc1</version>
+         <type>aar</type>
+      </dependency>
+      <dependency>
+         <groupId>com.android.support</groupId>
+         <artifactId>appcompat-v7</artifactId>
+         <version>21.0.0-rc1</version>
+         <type>aar</type>
+      </dependency>
+      
+      <dependency>
+         <groupId>com.android.support</groupId>
+         <artifactId>gridlayout-v7</artifactId>
+         <version>21.0.0-rc1</version>
+         <type>aar</type>
+      </dependency>
+      <dependency>
+         <groupId>com.android.support</groupId>
+         <artifactId>cardview-v7</artifactId>
+         <version>21.0.0-rc1</version>
+         <type>aar</type>
+      </dependency>
+      <dependency>
+         <groupId>com.android.support</groupId>
+         <artifactId>mediarouter-v7</artifactId>
+         <version>21.0.0-rc1</version>
+         <type>aar</type>
+      </dependency>
+      <dependency>
+         <groupId>com.android.support</groupId>
+         <artifactId>leanback-v17</artifactId>
+         <version>21.0.0-rc1</version>
+         <type>aar</type>
+      </dependency>
+      <dependency>
+         <groupId>com.android.support</groupId>
+         <artifactId>recyclerview-v7</artifactId>
+         <version>21.0.0-rc1</version>
+         <type>aar</type>
+      </dependency>
+      <dependency>
+         <groupId>com.android.support</groupId>
+         <artifactId>palette-v7</artifactId>
+         <version>21.0.0-rc1</version>
+         <type>aar</type>
       </dependency>
       <dependency>
          <groupId>com.googlecode.juniversalchardet</groupId>
@@ -156,16 +200,10 @@
          <scope>test</scope>
       </dependency>
 
-      <!-- <dependency> -->
-      <!-- <groupId>android</groupId> -->
-      <!-- <artifactId>android</artifactId> -->
-      <!-- <version>${android-version}</version> -->
-      <!-- <scope>provided</scope> -->
-      <!-- </dependency> -->
       <dependency>
-         <groupId>com.google.android</groupId>
+         <groupId>android</groupId>
          <artifactId>android</artifactId>
-         <version>4.1.1.4</version>
+         <version>L_r1</version>
          <scope>provided</scope>
       </dependency>
 
@@ -188,7 +226,7 @@
             </executions>
             <configuration>
                <sdk>
-                  <platform>13</platform>
+                  <platform>L</platform>
                </sdk>
                <deleteConflictingFiles>true</deleteConflictingFiles>
                <zipalign>
@@ -247,7 +285,7 @@
                </dependency>
             </dependencies>
             <configuration>
-                <argLine>${argLine} -XX:MaxPermSize=256m</argLine>
+               <argLine>${argLine} -XX:MaxPermSize=256m</argLine>
             </configuration>
          </plugin>
       </plugins>

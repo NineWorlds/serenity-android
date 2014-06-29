@@ -119,13 +119,13 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		}
 
 		int columnWidth = a.getDimensionPixelOffset(
-				R.styleable.TwoWayGridView_columnWidth, -1);
+				R.styleable.TwoWayGridView_columnWidth1, -1);
 		if (columnWidth > 0) {
 			setColumnWidth(columnWidth);
 		}
 
 		int rowHeight = a.getDimensionPixelOffset(
-				R.styleable.TwoWayGridView_rowHeight, -1);
+				R.styleable.TwoWayGridView_rowHeight1, -1);
 		if (rowHeight > 0) {
 			setRowHeight(rowHeight);
 		}
@@ -224,8 +224,9 @@ public class TwoWayGridView extends TwoWayAbsListView {
 	 */
 	@Override
 	void fillGap(boolean down) {
-		if (DEBUG)
+		if (DEBUG) {
 			Log.i(TAG, "fillGap() down: " + down);
+		}
 		mGridBuilder.fillGap(down);
 	}
 
@@ -361,7 +362,7 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		mLayoutMode = LAYOUT_SET_SELECTION;
 		requestLayout();
 	}
-	
+
 	public void setSelectionInTouch(int position) {
 		setNextSelectedPositionInt(position);
 		setSelectedPositionInt(position);
@@ -484,9 +485,8 @@ public class TwoWayGridView extends TwoWayAbsListView {
 				handled = pageScroll(FOCUS_DOWN);
 				break;
 			}
-				
-		}
 
+		}
 
 		if (handled) {
 			return true;
@@ -893,9 +893,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		protected View makeAndAddView(int position, int y, boolean flow,
 				int childrenLeft, boolean selected, int where) {
 			View child;
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "makeAndAddView() - start - position: " + position
 						+ " mFirstPosition: " + mFirstPosition);
+			}
 			if (!mDataChanged) {
 				// Try to use an existing view for this position
 				child = mRecycler.getActiveView(position);
@@ -904,9 +905,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 					// This just needs to be positioned
 					setupChild(child, position, y, flow, childrenLeft,
 							selected, true, where);
-					if (DEBUG)
+					if (DEBUG) {
 						Log.i(TAG, "makeAndAddView() - end - position: "
 								+ position + "reused a view");
+					}
 					return child;
 				}
 			}
@@ -918,9 +920,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 			// This needs to be positioned and measured
 			setupChild(child, position, y, flow, childrenLeft, selected,
 					mIsScrap[0], where);
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "makeAndAddView() - end - position: " + position
 						+ "did NOT reuse a view - scrap: " + mIsScrap[0]);
+			}
 			return child;
 		}
 
@@ -970,9 +973,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		 *         the range that we draw.
 		 */
 		private View fillDown(int pos, int nextTop) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillDown() pos: " + pos + " nextTop: " + nextTop
 						+ " mFirstPosition: " + mFirstPosition);
+			}
 			View selectedView = null;
 
 			final int end = (getBottom() - getTop()) - mListPadding.bottom;
@@ -994,10 +998,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		}
 
 		private View makeRow(int startPos, int y, boolean flow) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "makeRow() startPos: " + startPos + " y: " + y
 						+ " flow: " + flow + " mFirstPosition: "
 						+ mFirstPosition);
+			}
 			final int columnWidth = mColumnWidth;
 			final int horizontalSpacing = mHorizontalSpacing;
 
@@ -1065,9 +1070,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		 * @return The view that is currently selected
 		 */
 		private View fillUp(int pos, int nextBottom) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillLeft() pos: " + pos + " nextBottom: "
 						+ nextBottom + " mFirstPosition: " + mFirstPosition);
+			}
 			View selectedView = null;
 
 			final int end = mListPadding.top;
@@ -1103,9 +1109,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		 * @return The view that is currently selected
 		 */
 		private View fillFromTop(int nextTop) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillFromTop() nextLeft: " + nextTop
 						+ " mFirstPosition: " + mFirstPosition);
+			}
 			mFirstPosition = Math.min(mFirstPosition, mSelectedPosition);
 			mFirstPosition = Math.min(mFirstPosition, mItemCount - 1);
 			if (mFirstPosition < 0) {
@@ -1116,10 +1123,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		}
 
 		private View fillFromBottom(int lastPosition, int nextBottom) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillFromBotom() lastPosition: " + lastPosition
 						+ " nextBottom: " + nextBottom + " mFirstPosition: "
 						+ mFirstPosition);
+			}
 			lastPosition = Math.max(lastPosition, mSelectedPosition);
 			lastPosition = Math.min(lastPosition, mItemCount - 1);
 
@@ -1131,10 +1139,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		}
 
 		private View fillSelection(int childrenTop, int childrenBottom) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillSelection() childrenTop: " + childrenTop
 						+ " childrenBottom: " + childrenBottom
 						+ " mFirstPosition: " + mFirstPosition);
+			}
 			final int selectedPosition = reconcileSelectedPosition();
 			final int numColumns = mNumColumns;
 			final int verticalSpacing = mVerticalSpacing;
@@ -1199,9 +1208,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		 *         the visible area.
 		 */
 		private View fillSpecific(int position, int top) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillSpecific() position: " + position + " top: "
 						+ top + " mFirstPosition: " + mFirstPosition);
+			}
 			final int numColumns = mNumColumns;
 
 			int motionRowStart;
@@ -1270,10 +1280,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 
 		private void correctTooHigh(int numColumns, int verticalSpacing,
 				int childCount) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "correctTooLeft() numColumns: " + numColumns
 						+ " verticalSpacing: " + verticalSpacing
 						+ " mFirstPosition: " + mFirstPosition);
+			}
 			// First see if the last item is visible
 			final int lastPosition = mFirstPosition + childCount - 1;
 			if (lastPosition == mItemCount - 1 && childCount > 0) {
@@ -1323,10 +1334,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 
 		private void correctTooLow(int numColumns, int verticalSpacing,
 				int childCount) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "correctTooLow() numColumns: " + numColumns
 						+ " verticalSpacing: " + verticalSpacing
 						+ " mFirstPosition: " + mFirstPosition);
+			}
 			if (mFirstPosition == 0 && childCount > 0) {
 				// Get the first child ...
 				final View firstChild = getChildAt(0);
@@ -1391,10 +1403,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		 */
 		private View fillFromSelection(int selectedTop, int childrenTop,
 				int childrenBottom) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillFromSelection() selectedTop: " + selectedTop
 						+ " childrenTop: " + childrenTop + " childrenBottom: "
 						+ childrenBottom + " mFirstPosition: " + mFirstPosition);
+			}
 			final int fadingEdgeLength = getVerticalFadingEdgeLength();
 			final int selectedPosition = mSelectedPosition;
 			final int numColumns = mNumColumns;
@@ -1653,10 +1666,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		 */
 		private View moveSelection(int delta, int childrenTop,
 				int childrenBottom) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "moveSelection() delta: " + delta + " childrenTop: "
 						+ childrenTop + " childrenBottom: " + childrenBottom
 						+ " mFirstPosition: " + mFirstPosition);
+			}
 			final int fadingEdgeLength = getVerticalFadingEdgeLength();
 			final int selectedPosition = mSelectedPosition;
 			final int numColumns = mNumColumns;
@@ -1760,8 +1774,9 @@ public class TwoWayGridView extends TwoWayAbsListView {
 			int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 			int widthSize = MeasureSpec.getSize(widthMeasureSpec);
 			int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "vertical onMeasure heightMode: " + heightMode);
+			}
 			if (widthMode == MeasureSpec.UNSPECIFIED) {
 				if (mColumnWidth > 0) {
 					widthSize = mColumnWidth + mListPadding.left
@@ -1832,9 +1847,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 
 			setMeasuredDimension(widthSize, heightSize);
 			mWidthMeasureSpec = widthMeasureSpec;
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "Vertical onMeasure widthSize: " + widthSize
 						+ " heightSize: " + heightSize);
+			}
 		}
 
 		@Override
@@ -1979,8 +1995,9 @@ public class TwoWayGridView extends TwoWayAbsListView {
 			} else if (mTouchMode > TOUCH_MODE_DOWN
 					&& mTouchMode < TOUCH_MODE_SCROLL) {
 				View child = getChildAt(mMotionPosition - mFirstPosition);
-				if (child != null)
+				if (child != null) {
 					positionSelector(child);
+				}
 			} else {
 				mSelectedTop = 0;
 				mSelectorRect.setEmpty();
@@ -2392,9 +2409,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 					// This just needs to be positioned
 					setupChild(child, position, x, flow, childrenTop, selected,
 							true, where);
-					if (DEBUG)
+					if (DEBUG) {
 						Log.i(TAG, "makeAndAddView() - end - position: "
 								+ position + " reused a view");
+					}
 					return child;
 				}
 			}
@@ -2406,9 +2424,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 			// This needs to be positioned and measured
 			setupChild(child, position, x, flow, childrenTop, selected,
 					mIsScrap[0], where);
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "makeAndAddView() - end - position: " + position
 						+ "did NOT reuse a view - scrap: " + mIsScrap[0]);
+			}
 			return child;
 		}
 
@@ -2457,9 +2476,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		 *         the range that we draw.
 		 */
 		private View fillRight(int pos, int nextLeft) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillRight() pos: " + pos + " nextLeft: " + nextLeft
 						+ " mFirstPosition: " + mFirstPosition);
+			}
 			View selectedView = null;
 
 			final int end = (getRight() - getLeft()) - mListPadding.right;
@@ -2481,10 +2501,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		}
 
 		private View makeColumn(int startPos, int x, boolean flow) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "makeColumn() startPos: " + startPos + " x: " + x
 						+ " flow: " + flow + " mFirstPosition: "
 						+ mFirstPosition);
+			}
 			final int rowHeight = mRowHeight;
 			final int verticalSpacing = mVerticalSpacing;
 
@@ -2552,9 +2573,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		 * @return The view that is currently selected
 		 */
 		private View fillLeft(int pos, int nextRight) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillLeft() pos: " + pos + " nextRight: "
 						+ nextRight + " mFirstPosition: " + mFirstPosition);
+			}
 			View selectedView = null;
 
 			final int end = mListPadding.left;
@@ -2590,9 +2612,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		 * @return The view that is currently selected
 		 */
 		private View fillFromTop(int nextLeft) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillFromTop() nextLeft: " + nextLeft
 						+ " mFirstPosition: " + mFirstPosition);
+			}
 			mFirstPosition = Math.min(mFirstPosition, mSelectedPosition);
 			mFirstPosition = Math.min(mFirstPosition, mItemCount - 1);
 			if (mFirstPosition < 0) {
@@ -2603,10 +2626,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		}
 
 		private View fillFromBottom(int lastPosition, int nextRight) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillFromBotom() lastPosition: " + lastPosition
 						+ " nextRight: " + nextRight + " mFirstPosition: "
 						+ mFirstPosition);
+			}
 			lastPosition = Math.max(lastPosition, mSelectedPosition);
 			lastPosition = Math.min(lastPosition, mItemCount - 1);
 
@@ -2618,10 +2642,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		}
 
 		private View fillSelection(int childrenLeft, int childrenRight) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillSelection() childrenLeft: " + childrenLeft
 						+ " childrenRight: " + childrenRight
 						+ " mFirstPosition: " + mFirstPosition);
+			}
 			final int selectedPosition = reconcileSelectedPosition();
 			final int numRows = mNumRows;
 			final int horizontalSpacing = mHorizontalSpacing;
@@ -2686,9 +2711,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		 *         the visible area.
 		 */
 		private View fillSpecific(int position, int left) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillSpecific() position: " + position + " left: "
 						+ left + " mFirstPosition: " + mFirstPosition);
+			}
 			final int numRows = mNumRows;
 
 			int motionColumnStart;
@@ -2756,10 +2782,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 
 		private void correctTooLeft(int numRows, int horizontalSpacing,
 				int childCount) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "correctTooLeft() numRows: " + numRows
 						+ " horizontalSpacing: " + horizontalSpacing
 						+ " mFirstPosition: " + mFirstPosition);
+			}
 			// First see if the last item is visible
 			final int lastPosition = mFirstPosition + childCount - 1;
 			if (lastPosition == mItemCount - 1 && childCount > 0) {
@@ -2809,10 +2836,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 
 		private void correctTooRight(int numRows, int horizontalSpacing,
 				int childCount) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "correctTooRight() numRows: " + numRows
 						+ " horizontalSpacing: " + horizontalSpacing
 						+ " mFirstPosition: " + mFirstPosition);
+			}
 			if (mFirstPosition == 0 && childCount > 0) {
 				// Get the first child ...
 				final View firstChild = getChildAt(0);
@@ -2879,10 +2907,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		 */
 		private View moveSelection(int delta, int childrenLeft,
 				int childrenRight) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "moveSelection() delta: " + delta
 						+ " childrenLeft: " + childrenLeft + " childrenRight: "
 						+ childrenRight + " mFirstPosition: " + mFirstPosition);
+			}
 			final int fadingEdgeLength = getHorizontalFadingEdgeLength();
 			final int selectedPosition = mSelectedPosition;
 			final int numRows = mNumRows;
@@ -3123,8 +3152,9 @@ public class TwoWayGridView extends TwoWayAbsListView {
 			} else if (mTouchMode > TOUCH_MODE_DOWN
 					&& mTouchMode < TOUCH_MODE_SCROLL) {
 				View child = getChildAt(mMotionPosition - mFirstPosition);
-				if (child != null)
+				if (child != null) {
 					positionSelector(child);
+				}
 			} else {
 				mSelectedTop = 0;
 				mSelectorRect.setEmpty();
@@ -3150,8 +3180,9 @@ public class TwoWayGridView extends TwoWayAbsListView {
 			int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 			int widthSize = MeasureSpec.getSize(widthMeasureSpec);
 			int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "horizontal onMeasure heightMode: " + heightMode);
+			}
 			if (heightMode == MeasureSpec.UNSPECIFIED) {
 				if (mRowHeight > 0) {
 					heightSize = mRowHeight + mListPadding.top
@@ -3223,9 +3254,10 @@ public class TwoWayGridView extends TwoWayAbsListView {
 
 			setMeasuredDimension(widthSize, heightSize);
 			mWidthMeasureSpec = widthMeasureSpec;
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "Horizontal onMeasure widthSize: " + widthSize
 						+ " heightSize: " + heightSize);
+			}
 		}
 
 		private void determineRows(int availableSpace) {
@@ -3303,10 +3335,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 
 				break;
 			}
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "determineRows() mRowHeight: " + mRowHeight
 						+ " mVerticalSpacing: " + mVerticalSpacing
 						+ " mStretchMode: " + mStretchMode);
+			}
 		}
 
 		/**
@@ -3325,10 +3358,11 @@ public class TwoWayGridView extends TwoWayAbsListView {
 		 */
 		private View fillFromSelection(int selectedLeft, int childrenLeft,
 				int childrenRight) {
-			if (DEBUG)
+			if (DEBUG) {
 				Log.i(TAG, "fillFromSelection() selectedLeft: " + selectedLeft
 						+ " childrenLeft: " + childrenLeft + " childrenRight: "
 						+ childrenRight + " mFirstPosition: " + mFirstPosition);
+			}
 			final int fadingEdgeLength = getHorizontalFadingEdgeLength();
 			final int selectedPosition = mSelectedPosition;
 			final int numRows = mNumRows;

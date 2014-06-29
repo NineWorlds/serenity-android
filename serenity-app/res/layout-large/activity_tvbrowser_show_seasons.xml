@@ -67,7 +67,7 @@
         app:scrollDirectionLandscape="horizontal"
         app:scrollDirectionPortrait="vertical"
         app:stretchMode="spacingWidthUniform"
-        app:rowHeight="120dp"
+        app:rowHeight1="120dp"
         android:focusable="true"
         android:visibility="gone"
         android:nextFocusDown="@+id/tvShowSeasonImageGalleryLayout"

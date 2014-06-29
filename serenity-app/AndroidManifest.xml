@@ -13,8 +13,8 @@
         android:xlargeScreens="true" />
 
     <uses-sdk
-        android:minSdkVersion="13"
-        android:targetSdkVersion="13" />
+        android:minSdkVersion="L"
+        android:targetSdkVersion="L" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

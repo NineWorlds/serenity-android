@@ -4,19 +4,19 @@ import android.media.MediaPlayer;
 import android.widget.MediaController.MediaPlayerControl;
 
 /**
- * A simple media player control. Handles the main events that can occur
- * while using the player to play a video.
+ * A simple media player control. Handles the main events that can occur while
+ * using the player to play a video.
  * 
  * @author dcarver
  * 
  */
 public class AudioMediaPlayerControl implements MediaPlayerControl {
 	MediaPlayer mediaPlayer;
-	
+
 	public AudioMediaPlayerControl(MediaPlayer p) {
 		mediaPlayer = p;
 	}
-	
+
 	@Override
 	public void start() {
 		mediaPlayer.start();
@@ -65,6 +65,12 @@ public class AudioMediaPlayerControl implements MediaPlayerControl {
 	@Override
 	public boolean canPause() {
 		return true;
+	}
+
+	@Override
+	public int getAudioSessionId() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
