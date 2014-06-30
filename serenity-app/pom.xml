@@ -74,6 +74,7 @@
          <version>21.0.0-rc1</version>
          <type>aar</type>
       </dependency>
+-->
       <dependency>
          <groupId>com.android.support</groupId>
          <artifactId>leanback-v17</artifactId>
@@ -86,6 +87,7 @@
          <version>21.0.0-rc1</version>
          <type>aar</type>
       </dependency>
+<!--
       <dependency>
          <groupId>com.android.support</groupId>
          <artifactId>palette-v7</artifactId>
