@@ -4,6 +4,7 @@ bin
 .classpath
 .project
 gen
+gen-external-apklibs
 bin
 signing.sh
 zip.txt

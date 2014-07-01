@@ -49,43 +49,38 @@
          <version>21.0.0-rc1</version>
          <type>aar</type>
       </dependency>
-<!--      <dependency>
-         <groupId>com.android.support</groupId>
-         <artifactId>appcompat-v7</artifactId>
-         <version>21.0.0-rc1</version>
-         <type>aar</type>
-      </dependency>
-      
-      <dependency>
-         <groupId>com.android.support</groupId>
-         <artifactId>gridlayout-v7</artifactId>
-         <version>21.0.0-rc1</version>
-         <type>aar</type>
-      </dependency>
-      <dependency>
-         <groupId>com.android.support</groupId>
-         <artifactId>cardview-v7</artifactId>
-         <version>21.0.0-rc1</version>
-         <type>aar</type>
-      </dependency>
-      <dependency>
-         <groupId>com.android.support</groupId>
-         <artifactId>mediarouter-v7</artifactId>
-         <version>21.0.0-rc1</version>
-         <type>aar</type>
-      </dependency>
--->
+       <dependency>
+           <groupId>com.android.support</groupId>
+           <artifactId>support-annotations</artifactId>
+           <version>21.0.0-rc1</version>
+       </dependency>
       <dependency>
          <groupId>com.android.support</groupId>
          <artifactId>leanback-v17</artifactId>
          <version>21.0.0-rc1</version>
          <type>aar</type>
+          <exclusions>
+              <exclusion>
+                      <groupId>com.android.support</groupId>
+                      <artifactId>recyclerview-v7</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>com.android.support</groupId>
+                  <artifactId>support-v4</artifactId>
+              </exclusion>
+          </exclusions>
       </dependency>
       <dependency>
          <groupId>com.android.support</groupId>
          <artifactId>recyclerview-v7</artifactId>
          <version>21.0.0-rc1</version>
          <type>aar</type>
+          <exclusions>
+              <exclusion>
+                  <groupId>com.android.support</groupId>
+                  <artifactId>support-v4</artifactId>
+              </exclusion>
+          </exclusions>
       </dependency>
 <!--
       <dependency>
