@@ -11,6 +11,14 @@
             backward-compatibility can go here.
         -->
     </style>
+    
+    <style name="CustomActionBarTheme"
+           parent="@style/Theme.AppCompat">
+        <item name="android:windowActionBarOverlay">true</item>
+
+        <!-- Support library compatibility -->
+        <item name="windowActionBarOverlay">true</item>
+    </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">

@@ -29,11 +29,15 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.widgets.DrawerLayout;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
@@ -44,10 +48,14 @@ import com.jess.ui.TwoWayGridView;
  * @author dcarver
  * 
  */
-public abstract class SerenityActivity extends Activity {
+public abstract class SerenityActivity extends ActionBarActivity {
 
 	protected ListView menuOptions;
 	protected MenuDrawer menuDrawer;
+	protected DrawerLayout drawerLayout;
+	protected ListView drawerList;
+	protected ActionBarDrawerToggle drawerToggle;
+	protected ActionBar actionBar;
 
 	protected abstract void createSideMenu();
 
@@ -203,8 +211,10 @@ public abstract class SerenityActivity extends Activity {
 				.getDefaultSharedPreferences(this);
 		boolean tvMode = prefs.getBoolean("serenity_tv_mode", false);
 		if (tvMode) {
-			menuOptions.setVisibility(View.VISIBLE);
-			menuOptions.requestFocusFromTouch();
+			if (menuOptions != null) {
+				menuOptions.setVisibility(View.VISIBLE);
+				menuOptions.requestFocusFromTouch();
+			}
 		}
 	}
 
@@ -213,7 +223,9 @@ public abstract class SerenityActivity extends Activity {
 				.getDefaultSharedPreferences(this);
 		boolean tvMode = prefs.getBoolean("serenity_tv_mode", false);
 		if (tvMode) {
-			menuOptions.setVisibility(View.GONE);
+			if (menuOptions != null) {
+				menuOptions.setVisibility(View.GONE);
+			}
 		}
 	}
 

@@ -23,7 +23,7 @@
 
 package us.nineworlds.serenity;
 
-import net.simonvt.menudrawer.MenuDrawer;
+import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -32,7 +32,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -45,14 +44,14 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 	private static final int ABOUT = 0;
 	private static final int CLEAR_CACHE = 1;
 	private static final int CLEAR_QUEUE = 2;
-	private final MenuDrawer menuDrawer;
+	private final DrawerLayout drawerLayout;
 
 	/**
 	 * 
 	 */
-	public MainMenuDrawerOnItemClickedListener(MenuDrawer drawer,
+	public MainMenuDrawerOnItemClickedListener(DrawerLayout drawerLayout,
 			ViewGroup focus) {
-		menuDrawer = drawer;
+		this.drawerLayout = drawerLayout;
 	}
 
 	/*
@@ -66,10 +65,7 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Activity activity = (Activity) view.getContext();
-		ListView lv = (ListView) menuDrawer.getMenuView().findViewById(
-				R.id.menu_list_options);
-		lv.setVisibility(View.GONE);
-		menuDrawer.toggleMenu(true);
+		toggleMenu();
 
 		switch (position) {
 		case CLEAR_CACHE:
@@ -89,6 +85,11 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 					Toast.LENGTH_LONG).show();
 			break;
 		}
+	}
+
+	protected void toggleMenu() {
+		drawerLayout.closeDrawers();
+		return;
 	}
 
 	protected void createClearCacheDialog(Context context) {

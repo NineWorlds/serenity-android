@@ -23,33 +23,46 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import us.nineworlds.serenity.R;
 import net.simonvt.menudrawer.MenuDrawer;
+import us.nineworlds.serenity.R;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class MenuDrawerOnClickListener implements OnClickListener {
 
 	private MenuDrawer menuDrawer;
-	
+	private RelativeLayout leftMenuDrawer;
+
 	/**
 	 * 
 	 */
 	public MenuDrawerOnClickListener(MenuDrawer drawer) {
 		menuDrawer = drawer;
 	}
-	
+
+	public MenuDrawerOnClickListener(RelativeLayout leftMenuDrawer) {
+		this.leftMenuDrawer = leftMenuDrawer;
+	}
+
 	@Override
 	public void onClick(View v) {
-		ListView lv = (ListView) menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
+		ListView lv = null;
+		if (menuDrawer != null) {
+			lv = (ListView) menuDrawer.getMenuView().findViewById(
+					R.id.menu_list_options);
+			menuDrawer.toggleMenu(true);
+		} else {
+			lv = (ListView) leftMenuDrawer.findViewById(R.id.menu_list_options);
+		}
 		lv.setVisibility(View.VISIBLE);
-		menuDrawer.toggleMenu(true);
 		lv.requestFocus();
+
 	}
 
 }
