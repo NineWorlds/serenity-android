@@ -36,7 +36,9 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
+import us.nineworlds.serenity.widgets.BadgeView;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
@@ -182,15 +184,19 @@ public class TVShowBannerImageGalleryAdapter extends
 					watchedView);
 		}
 
-		final TextView unwatchedCountView = (TextView) galleryCellView
-				.findViewById(R.id.unwatched_count);
+		ImageView mpiv = (ImageView) galleryCellView
+				.findViewById(R.id.posterImageView);
+		BadgeView badgeView = new BadgeView(context, mpiv);
+		Drawable backgroundDrawable = context.getResources().getDrawable(
+				R.drawable.episode_count_background);
+		badgeView.setBackgroundDrawable(backgroundDrawable);
+		badgeView.setText(pi.getShowsUnwatched());
+		badgeView.show();
+
 		if (pi.isWatched()) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
 			watchedView.setVisibility(View.VISIBLE);
-			unwatchedCountView.setVisibility(View.GONE);
-		} else {
-			unwatchedCountView.setVisibility(View.VISIBLE);
-			unwatchedCountView.setText(pi.getShowsUnwatched());
+			badgeView.hide();
 		}
 	}
 

@@ -14,17 +14,6 @@
         app:mutate_background="true"
         android:scaleType="fitXY" />
 
-    <TextView
-        android:id="@+id/unwatched_count"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="5dp"
-        android:gravity="center"
-        android:visibility="gone"
-        android:background="@drawable/episode_count_background"/>
     <ImageView
         android:id="@+id/posterWatchedIndicator"
         android:layout_width="33dp"
