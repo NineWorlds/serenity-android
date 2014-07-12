@@ -80,6 +80,10 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 			}
 		};
 
+		drawerLayout.setDrawerListener(drawerToggle);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setHomeButtonEnabled(true);
+
 		populateMenuDrawer();
 	}
 
@@ -100,6 +104,9 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		actionBar.setCustomView(R.layout.move_custom_actionbar);
+		actionBar.setDisplayShowCustomEnabled(true);
+
 		key = getIntent().getExtras().getString("key");
 
 		createSideMenu();

@@ -97,7 +97,7 @@
         <activity
             android:name="us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme" >
+            android:theme="@style/Theme.AppCompat.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

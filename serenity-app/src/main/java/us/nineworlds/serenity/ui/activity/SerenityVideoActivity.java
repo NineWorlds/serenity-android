@@ -45,7 +45,8 @@ import com.jess.ui.TwoWayGridView;
  * @author dcarver
  * 
  */
-public abstract class SerenityVideoActivity extends SerenityActivity {
+public abstract class SerenityVideoActivity extends
+		SerenityDrawerLayoutActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -55,12 +56,13 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 		boolean extPlayerVideoQueueEnabled = prefs.getBoolean(
 				"external_player_continuous_playback", false);
 
-		if (data != null && (data.hasExtra("position") || data.hasExtra("end_by"))) {
+		if (data != null
+				&& (data.hasExtra("position") || data.hasExtra("end_by"))) {
 			SerenityGallery gallery = findGalleryView();
 			View selectedView = null;
 			VideoContentInfo video = null;
 			BaseAdapter adapter = null;
-			
+
 			if (gallery != null) {
 				video = (VideoContentInfo) gallery.getSelectedItem();
 				adapter = (BaseAdapter) gallery.getAdapter();
@@ -87,10 +89,11 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 					adapter.notifyDataSetChanged();
 				}
 			} else if (data.hasExtra("position")) {
-				
+
 				if (selectedView != null) {
 					if (video != null) {
-						View watchedView = selectedView.findViewById(R.id.posterWatchedIndicator);
+						View watchedView = selectedView
+								.findViewById(R.id.posterWatchedIndicator);
 						updateProgress(data, video);
 						if (video.isWatched()) {
 							watchedView.setVisibility(View.VISIBLE);
@@ -105,9 +108,8 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 						}
 						adapter.notifyDataSetChanged();
 					}
-				}				
+				}
 			}
-			
 
 			if (externalPlayer && extPlayerVideoQueueEnabled) {
 				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
@@ -160,7 +162,8 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 	 */
 	protected boolean hasMXPlayerCompletedNormally(Intent data,
 			String mxplayerString) {
-		return data.hasExtra("end_by") && "playback_completion".equals(mxplayerString);
+		return data.hasExtra("end_by")
+				&& "playback_completion".equals(mxplayerString);
 	}
 
 	/**
@@ -219,6 +222,7 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 	protected void externalPlayerPlayNext() {
 		VideoContentInfo videoContentInfo = SerenityApplication
 				.getVideoPlaybackQueue().poll();
-		VideoPlayerIntentUtils.launchExternalPlayer(videoContentInfo, this, false);
+		VideoPlayerIntentUtils.launchExternalPlayer(videoContentInfo, this,
+				false);
 	}
 }

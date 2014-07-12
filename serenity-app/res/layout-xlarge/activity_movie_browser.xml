@@ -109,7 +109,6 @@
                 android:id="@+id/video_details_container"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/episodeTVSeriesTitle"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="10dp"
                 android:background="#AA000000"
@@ -210,18 +209,6 @@
                 </us.nineworlds.serenity.widgets.SerenityGallery>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/episodeTVSeriesTitle"
-                style="@android:style/TextAppearance.Holo.Large"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/metaDataRow"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="10dp"
-                android:background="#AA000000"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:visibility="gone" />
         </RelativeLayout>
 
         <ListView

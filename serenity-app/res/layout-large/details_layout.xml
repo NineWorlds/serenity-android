@@ -3,7 +3,6 @@
     android:id="@+id/dialog_video_details_container"
     android:layout_width="600dp"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/episodeTVSeriesTitle"
     android:layout_centerHorizontal="true"
     android:layout_marginLeft="10dp"
     android:background="#AA000000"

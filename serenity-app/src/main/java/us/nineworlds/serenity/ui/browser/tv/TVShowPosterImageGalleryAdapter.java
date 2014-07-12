@@ -23,18 +23,16 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import com.jess.ui.TwoWayAbsListView;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-
-import us.nineworlds.serenity.R;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
-import android.widget.ImageView;
+
+import com.jess.ui.TwoWayAbsListView;
 
 /**
  * 
@@ -44,14 +42,11 @@ import android.widget.ImageView;
 public class TVShowPosterImageGalleryAdapter extends
 		TVShowBannerImageGalleryAdapter {
 
-
-	private String key;
-
 	public TVShowPosterImageGalleryAdapter(Context c, String key,
 			String category) {
 		super(c, key, category);
 		showActivity = (SerenityMultiViewVideoActivity) c;
-		
+
 	}
 
 	/*
@@ -62,48 +57,42 @@ public class TVShowPosterImageGalleryAdapter extends
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = showActivity.getLayoutInflater().inflate(
-				R.layout.poster_tvshow_indicator_view, null);
+		View galleryCellView = convertView;
+		if (galleryCellView == null) {
+			galleryCellView = showActivity.getLayoutInflater().inflate(
+					R.layout.poster_tvshow_indicator_view, null);
+		}
 
 		SeriesContentInfo pi = tvShowList.get(position);
-		ImageView mpiv = (ImageView) galleryCellView
-				.findViewById(R.id.posterImageView);
-		
+
 		createImage(galleryCellView, pi, 120, 180);
 
 		toggleWatchedIndicator(galleryCellView, pi);
 		return galleryCellView;
 	}
-	
+
 	@Override
 	protected void createImage(View galleryCellView, SeriesContentInfo pi,
 			int imageWidth, int imageHeight) {
 		int width = ImageUtils.getDPI(imageWidth, context);
 		int height = ImageUtils.getDPI(imageHeight, context);
-		
+
 		initPosterMetaData(galleryCellView, pi, width, height, true);
-		
+
 		SerenityMultiViewVideoActivity c = showActivity;
-		
+
 		if (c.isGridViewActive()) {
-			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
+			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
+					width, height));
 
 		} else {
 			galleryCellView.setLayoutParams(new Gallery.LayoutParams(width,
 					height));
-		}		
+		}
 	}
 
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.github.kingargyle.plexappclient.ui.adapters.
-	 * AbstractPosterImageGalleryAdapter#fetchDataFromService()
-	 */
 	@Override
 	protected void fetchDataFromService() {
-		// TODO Auto-generated method stub
 
 	}
 

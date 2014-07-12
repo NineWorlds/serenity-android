@@ -31,7 +31,7 @@ import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.services.GDMService;
-import us.nineworlds.serenity.ui.activity.SerenityActivity;
+import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
@@ -68,7 +68,7 @@ import com.castillo.dd.DownloadService;
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
 
-public class MainActivity extends SerenityActivity {
+public class MainActivity extends SerenityDrawerLayoutActivity {
 
 	private class AutoConfigureHandlerRunnable implements Runnable {
 

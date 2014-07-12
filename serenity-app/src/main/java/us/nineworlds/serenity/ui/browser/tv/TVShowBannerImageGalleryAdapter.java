@@ -36,7 +36,6 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +70,6 @@ public class TVShowBannerImageGalleryAdapter extends
 	protected static List<SeriesContentInfo> tvShowList = null;
 
 	private final String key;
-	protected static ProgressDialog pd;
 	protected SerenityMultiViewVideoActivity showActivity;
 
 	public TVShowBannerImageGalleryAdapter(Context c, String key,
@@ -87,7 +85,10 @@ public class TVShowBannerImageGalleryAdapter extends
 	}
 
 	protected void fetchData() {
-		pd = ProgressDialog.show(context, "", "Retrieving Shows.");
+		context.setSupportProgressBarIndeterminate(true);
+		context.setSupportProgressBarVisibility(false);
+		context.setSupportProgressBarIndeterminateVisibility(true);
+
 		String url = factory.getSectionsURL(key, category);
 		VolleyUtils.volleyXmlGetRequest(url, new SeriesResponseListener(),
 				new DefaultLoggingVolleyErrorListener());
@@ -241,9 +242,7 @@ public class TVShowBannerImageGalleryAdapter extends
 				TextView tv = (TextView) context
 						.findViewById(R.id.tvShowItemCount);
 				if (tv == null) {
-					if (pd != null) {
-						pd.dismiss();
-					}
+					context.setSupportProgressBarIndeterminateVisibility(false);
 					return;
 				}
 				if (tvShowList.isEmpty()) {
@@ -264,9 +263,7 @@ public class TVShowBannerImageGalleryAdapter extends
 				posterGallery.requestFocus();
 			}
 
-			if (pd != null) {
-				pd.dismiss();
-			}
+			context.setSupportProgressBarIndeterminateVisibility(false);
 		}
 	}
 }

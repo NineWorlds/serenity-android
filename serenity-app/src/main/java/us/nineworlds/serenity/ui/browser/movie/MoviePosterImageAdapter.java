@@ -204,6 +204,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	@Override
 	protected void fetchDataFromService() {
 		context.setSupportProgressBarIndeterminate(true);
+		context.setSupportProgressBarVisibility(false);
 		context.setSupportProgressBarIndeterminateVisibility(true);
 
 		final PlexappFactory factory = SerenityApplication.getPlexFactory();

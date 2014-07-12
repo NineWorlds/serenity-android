@@ -60,6 +60,8 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		actionBar.setCustomView(R.layout.season_custom_actionbar);
+		actionBar.setDisplayShowCustomEnabled(true);
 
 		key = getIntent().getExtras().getString("key");
 
@@ -148,6 +150,10 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 				getSupportActionBar().setTitle(R.string.app_name);
 			}
 		};
+
+		drawerLayout.setDrawerListener(drawerToggle);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setHomeButtonEnabled(true);
 
 		populateMenuDrawer();
 	}

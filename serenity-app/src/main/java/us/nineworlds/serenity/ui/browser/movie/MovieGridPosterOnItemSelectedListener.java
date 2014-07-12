@@ -80,7 +80,7 @@ public class MovieGridPosterOnItemSelectedListener implements
 		subtitleSpinner.setVisibility(View.GONE);
 
 		TextView posterTitle = (TextView) context
-				.findViewById(R.id.movieBrowserPosterTitle);
+				.findViewById(R.id.movieActionBarPosterTitle);
 		posterTitle.setText(mi.getTitle());
 	}
 

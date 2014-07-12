@@ -28,23 +28,15 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.widgets.DrawerLayout;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.ListView;
 
 import com.jess.ui.TwoWayGridView;
 
@@ -54,22 +46,11 @@ import com.jess.ui.TwoWayGridView;
  */
 public abstract class SerenityActivity extends ActionBarActivity {
 
-	protected DrawerLayout drawerLayout;
-	protected ListView drawerList;
-	protected ActionBarDrawerToggle drawerToggle;
-	protected ActionBar actionBar;
-
 	protected abstract void createSideMenu();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		supportRequestWindowFeature(Window.FEATURE_PROGRESS);
-		actionBar = getSupportActionBar();
-		actionBar.setDisplayUseLogoEnabled(true);
-		actionBar.setBackgroundDrawable(new ColorDrawable(
-				R.color.card_background));
 
 	}
 
@@ -219,25 +200,4 @@ public abstract class SerenityActivity extends ActionBarActivity {
 		}
 
 	}
-
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		drawerToggle.syncState();
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		drawerToggle.onConfigurationChanged(newConfig);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (drawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 }

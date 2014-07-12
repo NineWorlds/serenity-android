@@ -4,6 +4,7 @@
     android:id="@+id/metaDataRow"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/card_background"
     android:orientation="horizontal" >
 
     <TextView
@@ -11,6 +12,7 @@
         style="@android:style/TextAppearance.Holo.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="left"
         android:layout_marginLeft="10dp"
         android:textColor="#F0F0F0"
         tools:ignore="SelectableText" >
@@ -21,7 +23,6 @@
         style="@android:style/TextAppearance.Holo.Medium"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
         android:gravity="right"
         android:textColor="#F0F0F0"
         tools:ignore="SelectableText" >

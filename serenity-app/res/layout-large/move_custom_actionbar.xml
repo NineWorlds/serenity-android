@@ -61,8 +61,9 @@
         android:spinnerMode="dropdown"
         android:visibility="gone" />
 
+    
     <TextView
-        android:id="@+id/movieBrowserPosterTitle"
+        android:id="@+id/movieActionBarPosterTitle"
         style="@android:style/TextAppearance.Holo.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
