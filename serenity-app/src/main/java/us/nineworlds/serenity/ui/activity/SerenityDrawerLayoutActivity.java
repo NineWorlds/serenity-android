@@ -27,6 +27,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.app.ActionBar;
@@ -45,11 +46,11 @@ public abstract class SerenityDrawerLayoutActivity extends SerenityActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		supportRequestWindowFeature(Window.FEATURE_PROGRESS);
 		actionBar = getSupportActionBar();
 		actionBar.setDisplayUseLogoEnabled(true);
 		actionBar.setBackgroundDrawable(new ColorDrawable(
 				R.color.card_background));
-		setSupportProgressBarIndeterminate(true);
 	}
 
 	@Override
@@ -57,6 +58,9 @@ public abstract class SerenityDrawerLayoutActivity extends SerenityActivity {
 		super.onPostCreate(savedInstanceState);
 		if (drawerToggle != null) {
 			drawerToggle.syncState();
+		}
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			setSupportProgressBarIndeterminate(true);
 		}
 	}
 

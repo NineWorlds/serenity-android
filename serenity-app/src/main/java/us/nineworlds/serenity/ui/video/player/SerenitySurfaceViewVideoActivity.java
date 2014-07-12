@@ -218,6 +218,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.video_playback);
+		getSupportActionBar().hide();
 		init();
 	}
 
