@@ -41,6 +41,7 @@
 
         <activity
             android:name="us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity"
+            android:hardwareAccelerated="true"
             android:label="@string/title_activity_movie_browser"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/CustomActionBarTheme" >

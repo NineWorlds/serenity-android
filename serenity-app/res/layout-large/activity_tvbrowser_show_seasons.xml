@@ -19,45 +19,7 @@
             android:orientation="vertical"
             tools:context=".ui.browser.tv.TVShowBrowserActivity" >
 
-            <LinearLayout
-                android:id="@+id/metaDataRow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#A0000000"
-                android:orientation="horizontal" >
-
-                <ImageButton
-                    android:id="@+id/menu_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:color/transparent"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="10dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/menudrawer_selector" />
-
-                <TextView
-                    android:id="@+id/tvShowSeasonsDetailText"
-                    style="@android:style/TextAppearance.Holo.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="#F0F0F0"
-                    tools:ignore="SelectableText" >
-                </TextView>
-
-                <TextView
-                    android:id="@+id/tvShowSeasonsItemCount"
-                    style="@android:style/TextAppearance.Holo.Medium"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:gravity="right"
-                    android:textColor="#F0F0F0"
-                    tools:ignore="SelectableText" >
-                </TextView>
-            </LinearLayout>
+            <include android:layout="@layout/season_custom_actionbar"/>
 
             <com.jess.ui.TwoWayGridView
                 xmlns:app="http://schemas.android.com/apk/res-auto"

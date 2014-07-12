@@ -16,101 +16,16 @@
             android:id="@+id/movieBrowserBackgroundLayout"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
             android:background="@drawable/movies"
             android:orientation="vertical"
-            android:padding="5dp"
-            tools:context=".ui.browser.movie.MovieBrowserActivity" >
-
-            <LinearLayout
-                android:id="@+id/metaDataRow"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginRight="10dp"
-                android:background="#A0000000"
-                android:orientation="horizontal" >
-
-                <ImageButton
-                    android:id="@+id/menu_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:color/transparent"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="10dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/menudrawer_selector" />
-
-                <TextView
-                    android:id="@+id/movieCategoryName"
-                    style="@android:style/TextAppearance.Holo.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:text="@string/category" />
-
-                <Spinner
-                    android:id="@+id/categoryFilter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/spinner_background"
-                    android:focusable="true"
-                    android:gravity="left"
-                    android:prompt="@string/movie_category_prompt"
-                    android:spinnerMode="dropdown" />
-
-                <Spinner
-                    android:id="@+id/categoryFilter2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/spinner_background"
-                    android:focusable="true"
-                    android:gravity="left"
-                    android:prompt="@string/movie_category_prompt2"
-                    android:spinnerMode="dropdown"
-                    android:visibility="invisible" />
-
-                <TextView
-                    android:id="@+id/subtitleFilter"
-                    style="@android:style/TextAppearance.Holo.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:focusable="false"
-                    android:text="Subtitle"
-                    android:visibility="gone" />
-
-                <Spinner
-                    android:id="@+id/videoSubtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/spinner_background"
-                    android:focusable="true"
-                    android:gravity="left"
-                    android:prompt="@string/movie_category_prompt2"
-                    android:spinnerMode="dropdown"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/movieBrowserPosterTitle"
-                    style="@android:style/TextAppearance.Holo.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            android:padding="5dp">
 
             <com.jess.ui.TwoWayGridView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/movieGridView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/metaDataRow"
                 android:layout_centerHorizontal="true"
                 android:layout_marginRight="10dp"
                 android:background="#A0000000"

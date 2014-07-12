@@ -88,8 +88,16 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 			public void onDrawerClosed(View drawerView) {
 				super.onDrawerClosed(drawerView);
 				getSupportActionBar().setTitle(R.string.app_name);
+				View gallery = findViewById(R.id.moviePosterGallery);
+				if (gallery != null) {
+					gallery.requestFocusFromTouch();
+				}
 			}
 		};
+
+		drawerLayout.setDrawerListener(drawerToggle);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setHomeButtonEnabled(true);
 
 		populateMenuDrawer();
 	}
@@ -139,6 +147,9 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		actionBar.setCustomView(R.layout.move_custom_actionbar);
+		actionBar.setDisplayShowCustomEnabled(true);
+
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		tvMode = prefs.getBoolean("serenity_tv_mode", true);
 		gridViewActive = prefs.getBoolean("movie_layout_grid", false);
@@ -154,8 +165,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		createSideMenu();
 
 		DisplayUtils.overscanCompensation(this,
-				findViewById(R.id.movieBrowserBackgroundLayout),
-				findViewById(R.id.menu_drawer_layout));
+				findViewById(R.id.movieBrowserBackgroundLayout));
 	}
 
 	@Override

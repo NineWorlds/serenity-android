@@ -26,16 +26,6 @@
                 android:background="#A0000000"
                 android:orientation="horizontal" >
 
-                <ImageButton
-                    android:id="@+id/menu_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:color/transparent"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="10dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/menudrawer_selector" />
 
                 <TextView
                     android:id="@+id/tvshow_CategoryName"
