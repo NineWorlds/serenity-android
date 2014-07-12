@@ -70,6 +70,9 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		actionBar.setCustomView(R.layout.tvshow_custom_actionbar);
+		actionBar.setDisplayShowCustomEnabled(true);
+
 		key = getIntent().getExtras().getString("key");
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -232,6 +235,10 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 				getSupportActionBar().setTitle(R.string.app_name);
 			}
 		};
+
+		drawerLayout.setDrawerListener(drawerToggle);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setHomeButtonEnabled(true);
 
 		populateMenuDrawer();
 	}

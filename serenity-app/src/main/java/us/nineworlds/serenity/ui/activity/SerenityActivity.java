@@ -69,7 +69,7 @@ public abstract class SerenityActivity extends ActionBarActivity {
 		actionBar = getSupportActionBar();
 		actionBar.setDisplayUseLogoEnabled(true);
 		actionBar.setBackgroundDrawable(new ColorDrawable(
-				android.R.color.transparent));
+				R.color.card_background));
 
 	}
 

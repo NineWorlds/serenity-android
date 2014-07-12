@@ -60,6 +60,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		key = getIntent().getExtras().getString("key");
 
 		createSideMenu();
