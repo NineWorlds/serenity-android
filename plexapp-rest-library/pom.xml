@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
    <parent>
       <groupId>us.nineworlds.serenity</groupId>
       <artifactId>serenity-parent</artifactId>
-      <version>1.7.4-SNAPSHOT</version>
+      <version>1.8.0-SNAPSHOT</version>
    </parent>
 
    <artifactId>plexapp-rest-library</artifactId>
