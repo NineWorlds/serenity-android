@@ -24,10 +24,6 @@
 package us.nineworlds.serenity;
 
 import static org.fest.assertions.api.ANDROID.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import net.simonvt.menudrawer.MenuDrawer;
-import net.simonvt.menudrawer.MenuDrawer.OnDrawerStateChangeListener;
 
 import org.fest.assertions.api.Assertions;
 import org.junit.After;
@@ -39,7 +35,6 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.SerenityShadowResources;
 import org.robolectric.shadows.ShadowActivity;
 
-import android.view.KeyEvent;
 import android.widget.Gallery;
 
 /**
@@ -75,7 +70,6 @@ public class MainActivityTest {
 
 	@Test
 	public void testCreatesMenu() throws Exception {
-		assertThat(activity.getMenuDrawer()).isNotNull();
 		assertThat(activity.findViewById(R.id.mainGalleryBackground))
 				.isVisible();
 	}
@@ -129,64 +123,6 @@ public class MainActivityTest {
 		ShadowActivity a = Robolectric.shadowOf(activity);
 		Gallery g = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
 		assertThat(g).isVisible().isEnabled();
-	}
-
-	boolean visible = false;
-
-	@Test
-	public void testMenuDrawerOpens() throws Exception {
-		visible = false;
-		KeyEvent keyEvent = mock(KeyEvent.class);
-		when(keyEvent.getKeyCode()).thenReturn(KeyEvent.KEYCODE_MENU);
-		MenuDrawer drawer = activity.getMenuDrawer();
-		drawer.setOnDrawerStateChangeListener(new OnDrawerStateChangeListener() {
-
-			@Override
-			public void onDrawerStateChange(int oldState, int newState) {
-				if (oldState == MenuDrawer.STATE_CLOSED
-						&& (newState == MenuDrawer.STATE_OPEN || newState == MenuDrawer.STATE_OPENING)) {
-					visible = true;
-				}
-			}
-
-			@Override
-			public void onDrawerSlide(float arg0, int arg1) {
-
-			}
-		});
-
-		activity.onKeyDown(KeyEvent.KEYCODE_MENU, keyEvent);
-		Thread.sleep(1000);
-		Assertions.assertThat(visible).isTrue();
-	}
-
-	@Test
-	public void testMenuDrawerCloses() throws Exception {
-		visible = true;
-		KeyEvent keyEvent = mock(KeyEvent.class);
-		when(keyEvent.getKeyCode()).thenReturn(KeyEvent.KEYCODE_MENU);
-		MenuDrawer drawer = activity.getMenuDrawer();
-		drawer.toggleMenu();
-
-		drawer.setOnDrawerStateChangeListener(new OnDrawerStateChangeListener() {
-
-			@Override
-			public void onDrawerStateChange(int oldState, int newState) {
-				if (oldState == MenuDrawer.STATE_OPENING
-						&& (newState == MenuDrawer.STATE_CLOSED || newState == MenuDrawer.STATE_CLOSING)) {
-					visible = false;
-				}
-			}
-
-			@Override
-			public void onDrawerSlide(float arg0, int arg1) {
-
-			}
-		});
-
-		Thread.sleep(1000);
-		drawer.toggleMenu();
-		Assertions.assertThat(visible).isFalse();
 	}
 
 }

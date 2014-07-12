@@ -23,11 +23,10 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
-
+import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
@@ -35,64 +34,67 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-/**
- * @author dcarver
- *
- */
-public class TVShowMenuDrawerOnItemClickedListener implements OnItemClickListener {
+public class TVShowMenuDrawerOnItemClickedListener implements
+		OnItemClickListener {
 	private static final int GRID_VIEW = 0;
 	private static final int DETAIL_VIEW = 1;
 	private static final int PLAY_ALL_QUEUE = 2;
-	private MenuDrawer menuDrawer;
-	
+	private final DrawerLayout menuDrawer;
+
 	/**
 	 * 
 	 */
-	public TVShowMenuDrawerOnItemClickedListener(MenuDrawer drawer) {
+	public TVShowMenuDrawerOnItemClickedListener(DrawerLayout drawer) {
 		menuDrawer = drawer;
 	}
 
-
-
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
+	 * .AdapterView, android.view.View, int, long)
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		SerenityMultiViewVideoActivity activity = (SerenityMultiViewVideoActivity) view.getContext();
-		
+		SerenityMultiViewVideoActivity activity = (SerenityMultiViewVideoActivity) view
+				.getContext();
+
 		switch (position) {
 		case GRID_VIEW:
-			menuDrawer.setContentView(R.layout.activity_tvbrowser_show_gridview_posters);
+			activity.setContentView(R.layout.activity_tvbrowser_show_gridview_posters);
 			toggleView(activity, true);
 			break;
 		case DETAIL_VIEW:
 			if (activity.isPosterLayoutActive()) {
-				menuDrawer.setContentView(R.layout.activity_tvbrowser_show_posters);
+				activity.setContentView(R.layout.activity_tvbrowser_show_posters);
 			} else {
-				menuDrawer.setContentView(R.layout.activity_tvbrowser_show_banners);
+				activity.setContentView(R.layout.activity_tvbrowser_show_banners);
 			}
 			toggleView(activity, false);
 			break;
 		case PLAY_ALL_QUEUE:
-			menuDrawer.toggleMenu();
-			if (!activity.getPackageManager().hasSystemFeature("android.hardware.touchscreen")) {
+			menuDrawer.closeDrawers();
+			if (!activity.getPackageManager().hasSystemFeature(
+					"android.hardware.touchscreen")) {
 				parent.setVisibility(View.INVISIBLE);
 			}
 			VideoPlayerIntentUtils.playAllFromQueue(activity);
 			return;
 		}
-		menuDrawer.toggleMenu();
+		menuDrawer.closeDrawers();
+		;
 		activity.recreate();
 	}
-
 
 	/**
 	 * @param activity
 	 */
-	protected void toggleView(SerenityMultiViewVideoActivity activity, boolean enableGridView) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+	protected void toggleView(SerenityMultiViewVideoActivity activity,
+			boolean enableGridView) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(activity);
 		Editor e = prefs.edit();
 		activity.setGridViewEnabled(enableGridView);
 		e.putBoolean("series_layout_grid", enableGridView);

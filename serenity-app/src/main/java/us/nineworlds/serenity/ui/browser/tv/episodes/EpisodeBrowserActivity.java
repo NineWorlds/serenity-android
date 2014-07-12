@@ -33,20 +33,19 @@ import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
+import us.nineworlds.serenity.widgets.DrawerLayout;
 import us.nineworlds.serenity.widgets.SerenityGallery;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import net.simonvt.menudrawer.MenuDrawer;
 
 public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
@@ -56,17 +55,32 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	private View metaData;
 	private boolean restarted_state = false;
 	private SharedPreferences prefs;
+
 	@Override
 	protected void createSideMenu() {
-		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
-		menuDrawer.setContentView(R.layout.activity_movie_browser);
-		menuDrawer.setMenuView(R.layout.menu_drawer);
-		
+		setContentView(R.layout.activity_movie_browser);
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawerList = (ListView) drawerLayout.findViewById(R.id.left_drawer);
+
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+				R.drawable.menudrawer_selector, R.string.drawer_open,
+				R.string.drawer_closed) {
+			@Override
+			public void onDrawerOpened(View drawerView) {
+
+				super.onDrawerOpened(drawerView);
+				getSupportActionBar().setTitle(R.string.app_name);
+				drawerList.requestFocusFromTouch();
+			}
+
+			@Override
+			public void onDrawerClosed(View drawerView) {
+				super.onDrawerClosed(drawerView);
+				getSupportActionBar().setTitle(R.string.app_name);
+			}
+		};
+
 		populateMenuDrawer();
-		hideMenuItems();
-		
-		View menu = findViewById(R.id.menu_button);
-		menu.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
 	}
 
 	/**
@@ -74,19 +88,20 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	 */
 	protected void populateMenuDrawer() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.play_all_from_queue), R.drawable.menu_play_all_queue));
-		
-		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
-		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-		menuOptions.setOnItemClickListener(new EpisodeMenuDrawerOnItemClickedListener(menuDrawer));
+		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
+				R.string.play_all_from_queue), R.drawable.menu_play_all_queue));
+
+		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+		drawerList
+				.setOnItemClickListener(new EpisodeMenuDrawerOnItemClickedListener(
+						drawerLayout));
 	}
-	
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
-		
+
 		createSideMenu();
 
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
@@ -95,39 +110,39 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		metaData.setVisibility(View.VISIBLE);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		DisplayUtils.overscanCompensation(this,
-				bgLayout,
+		DisplayUtils.overscanCompensation(this, bgLayout,
 				findViewById(R.id.menu_drawer_layout));
 
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu",
 				true);
 		if (menuKeySlidingMenu) {
 			if (keyCode == KeyEvent.KEYCODE_MENU) {
-				showMenuItems();
-				menuDrawer.toggleMenu();
+				if (drawerLayout.isDrawerOpen(drawerList)) {
+					drawerLayout.closeDrawers();
+				} else {
+					drawerLayout.openDrawer(drawerList);
+				}
 				return true;
 			}
 		}
-		
-		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
-			hideMenuItems();
-			menuDrawer.toggleMenu();
-			
+
+		if (keyCode == KeyEvent.KEYCODE_BACK
+				&& drawerLayout.isDrawerOpen(drawerList)) {
+			drawerLayout.closeDrawers();
+
 			View gallery = findViewById(R.id.moviePosterGallery);
 			if (gallery != null) {
 				gallery.requestFocusFromTouch();
-			}			
+			}
 			return true;
 		}
-		
-		
+
 		return super.onKeyDown(keyCode, event);
 	}
-	
 
 	@Override
 	protected void onStart() {
@@ -137,36 +152,35 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		}
 		restarted_state = false;
 	}
-	
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onStop()
-	 */
 	@Override
 	protected void onStop() {
 		super.onStop();
 		EasyTracker.getInstance().activityStop(this);
 	}
-	
+
 	/**
 	 * Populate the episode browser with data
 	 */
 	protected void setupEpisodeBrowser() {
-		boolean scrollingAnimation = prefs.getBoolean("animation_gallery_scrolling", true);
+		boolean scrollingAnimation = prefs.getBoolean(
+				"animation_gallery_scrolling", true);
 		posterGallery
 				.setAdapter(new EpisodePosterImageGalleryAdapter(this, key));
 		posterGallery
-				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(this));
+				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(
+						this));
 		posterGallery
 				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
-		if (key.contains("onDeck") || key.contains("recentlyAdded") || (key.contains("recentlyViewed") && !key.contains("recentlyViewedShows"))) {
+		if (key.contains("onDeck")
+				|| key.contains("recentlyAdded")
+				|| (key.contains("recentlyViewed") && !key
+						.contains("recentlyViewedShows"))) {
 			posterGallery
-			.setOnItemLongClickListener(new EpisodeBrowserOnLongClickListener());
+					.setOnItemLongClickListener(new EpisodeBrowserOnLongClickListener());
 		} else {
 			posterGallery
-			.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
+					.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
 		}
 		if (scrollingAnimation) {
 			posterGallery.setAnimationDuration(220);
@@ -185,17 +199,21 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	protected void onRestart() {
 		super.onRestart();
 		populateMenuDrawer();
-		
+
 		restarted_state = true;
 	}
-	
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.ui.activity.SerenityVideoActivity#onActivityResult(int, int, android.content.Intent)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * us.nineworlds.serenity.ui.activity.SerenityVideoActivity#onActivityResult
+	 * (int, int, android.content.Intent)
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
+
 		if (key != null && key.contains("onDeck")) {
 			recreate();
 			return;

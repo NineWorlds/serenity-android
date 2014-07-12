@@ -47,8 +47,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.res.Configuration;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -59,9 +57,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Gallery;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -257,27 +253,6 @@ public class MainActivity extends SerenityActivity {
 
 		drawerList = (ListView) findViewById(R.id.left_drawer);
 		populateMenuOptions();
-		hideMenuItems();
-	}
-
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		drawerToggle.syncState();
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		drawerToggle.onConfigurationChanged(newConfig);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (drawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	/**
@@ -352,13 +327,8 @@ public class MainActivity extends SerenityActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-		actionBar = getSupportActionBar();
 		actionBar.setCustomView(R.layout.clock_layout);
 		actionBar.setDisplayShowCustomEnabled(true);
-		actionBar.setDisplayUseLogoEnabled(false);
-		actionBar.setBackgroundDrawable(new ColorDrawable(
-				R.color.fity_percent_transparent));
 
 		setContentView(R.layout.activity_plex_app_main);
 
@@ -502,9 +472,8 @@ public class MainActivity extends SerenityActivity {
 	 */
 	@Override
 	public void openOptionsMenu() {
-		menuOptions.setVisibility(View.VISIBLE);
-		menuOptions.requestFocusFromTouch();
-		menuDrawer.toggleMenu();
+		drawerLayout.openDrawer(drawerList);
+		drawerList.requestFocusFromTouch();
 	}
 
 	private void setupGallery() {

@@ -1,110 +1,132 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tvshowBrowserLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/tvshows"
-    android:orientation="vertical"
-    tools:context=".ui.browser.tv.TVShowBrowserActivity" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
 
-    <LinearLayout
-        android:id="@+id/tvLine1"
+    <us.nineworlds.serenity.widgets.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#A0000000"
-        android:orientation="horizontal" >
+        android:layout_height="match_parent" >
 
-        <ImageButton android:id="@+id/menu_button"
-        android:layout_width="wrap_content"
-        android:paddingRight="10dp"
-        android:paddingLeft="5dp"
-        android:layout_height="28dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/menudrawer_selector"
-        android:layout_gravity="center_vertical"
-        android:scaleType="fitXY"
-        />
-        
-        
-        <TextView
-            android:id="@+id/tvshow_CategoryName"
-            style="@android:style/TextAppearance.Holo.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:focusable="false"
-            android:text="@string/category" />
+        <!-- The main content view -->
 
-        <Spinner
-            android:id="@+id/categoryFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/spinner_background"
-            android:focusable="true"
-            android:gravity="left"
-            android:prompt="@string/movie_category_prompt"
-            android:spinnerMode="dropdown" />
-
-        <Spinner
-            android:id="@+id/categoryFilter2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/spinner_background"
-            android:focusable="true"
-            android:gravity="left"
-            android:prompt="@string/movie_category_prompt2"
-            android:spinnerMode="dropdown"
-            android:visibility="invisible" />
-        
-        <TextView android:id="@+id/tvShowGridTitle"
-            style="@android:style/TextAppearance.Holo.Medium"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            />
-        
-
-        <TextView
-            android:id="@+id/tvShowItemCount"
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/tvshowBrowserLayout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:textColor="#F0F0F0"
-            android:textSize="20sp"
-            tools:ignore="SelectableText" >
-        </TextView>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:background="@drawable/tvshows"
+            android:orientation="vertical"
+            tools:context=".ui.browser.tv.TVShowBrowserActivity" >
 
-    <com.jess.ui.TwoWayGridView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/tvShowGridView"
-        android:layout_below="@+id/tvLine1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginRight="10dp"
-        android:padding="5dp"
-        android:background="#A0000000"
-        app:cacheColorHint="#E8E8E8"
-        app:columnWidth="160dp"
-        app:gravity="center"
-        app:horizontalSpacing="16dp"
-        app:numColumns="auto_fit"
-        app:numRows="3"
-        app:rowHeight="160dp"
-        app:scrollDirectionLandscape="horizontal"
-        app:scrollDirectionPortrait="vertical"
-        app:stretchMode="spacingWidthUniform"
-        app:verticalSpacing="10dp"
-        android:focusable="true"
-        android:nextFocusDown="@+id/tvShowGridView"
-        android:nextFocusLeft="@+id/tvShowGridView"
-        android:nextFocusRight="@+id/tvShowGridView" />
-    
+            <LinearLayout
+                android:id="@+id/tvLine1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#A0000000"
+                android:orientation="horizontal" >
 
-</RelativeLayout>
+                <ImageButton
+                    android:id="@+id/menu_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:color/transparent"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/menudrawer_selector" />
+
+                <TextView
+                    android:id="@+id/tvshow_CategoryName"
+                    style="@android:style/TextAppearance.Holo.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:focusable="false"
+                    android:text="@string/category" />
+
+                <Spinner
+                    android:id="@+id/categoryFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/spinner_background"
+                    android:focusable="true"
+                    android:gravity="left"
+                    android:prompt="@string/movie_category_prompt"
+                    android:spinnerMode="dropdown" />
+
+                <Spinner
+                    android:id="@+id/categoryFilter2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/spinner_background"
+                    android:focusable="true"
+                    android:gravity="left"
+                    android:prompt="@string/movie_category_prompt2"
+                    android:spinnerMode="dropdown"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/tvShowGridTitle"
+                    style="@android:style/TextAppearance.Holo.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvShowItemCount"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:textColor="#F0F0F0"
+                    android:textSize="20sp"
+                    tools:ignore="SelectableText" >
+                </TextView>
+            </LinearLayout>
+
+            <com.jess.ui.TwoWayGridView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/tvShowGridView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvLine1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="10dp"
+                android:background="#A0000000"
+                android:focusable="true"
+                android:nextFocusDown="@+id/tvShowGridView"
+                android:nextFocusLeft="@+id/tvShowGridView"
+                android:nextFocusRight="@+id/tvShowGridView"
+                android:padding="5dp"
+                app:cacheColorHint="#E8E8E8"
+                app:columnWidth="160dp"
+                app:gravity="center"
+                app:horizontalSpacing="16dp"
+                app:numColumns="auto_fit"
+                app:numRows="3"
+                app:rowHeight="160dp"
+                app:scrollDirectionLandscape="horizontal"
+                app:scrollDirectionPortrait="vertical"
+                app:stretchMode="spacingWidthUniform"
+                app:verticalSpacing="10dp" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/left_drawer"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="#111"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:focusableInTouchMode="true"
+            android:paddingTop="?android:attr/actionBarSize" />
+    </us.nineworlds.serenity.widgets.DrawerLayout>
+
+</merge>

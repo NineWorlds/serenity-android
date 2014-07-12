@@ -26,8 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.simonvt.menudrawer.MenuDrawer;
-
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.CategoryInfo;
@@ -36,11 +35,8 @@ import us.nineworlds.serenity.core.services.TVShowCategoryRetrievalIntentService
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
-import us.nineworlds.serenity.ui.listeners.MenuDrawerOnClickListener;
-
-import us.nineworlds.serenity.R;
-import com.google.analytics.tracking.android.EasyTracker;
-
+import us.nineworlds.serenity.ui.util.DisplayUtils;
+import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -49,15 +45,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import us.nineworlds.serenity.ui.util.DisplayUtils;
+
+import com.google.analytics.tracking.android.EasyTracker;
 
 /**
  * @author dcarver
@@ -70,17 +66,17 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	private static String key;
 	private Handler categoryHandler;
 	private SharedPreferences preferences;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		
+
 		createSideMenu();
 
 		DisplayUtils.overscanCompensation(this,
-				findViewById(R.id.tvshowBrowserLayout),
-				findViewById(R.id.menu_drawer_layout));
+				findViewById(R.id.tvshowBrowserLayout));
 	}
 
 	@Override
@@ -88,22 +84,23 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		super.onStart();
 		EasyTracker.getInstance().activityStart(this);
 	}
-	
 
 	@Override
 	protected void onStop() {
 		super.onStop();
 		EasyTracker.getInstance().activityStop(this);
 	}
-	
+
 	@Override
 	protected void onRestart() {
 		super.onRestart();
 		restarted_state = true;
 		populateMenuDrawer();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -122,41 +119,48 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int, android.view.KeyEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
+	 * android.view.KeyEvent)
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		Gallery gallery = (Gallery) findViewById(R.id.tvShowBannerGallery);
-		
-		boolean menuKeySlidingMenu = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("remote_control_menu",
-				true);
+
+		boolean menuKeySlidingMenu = PreferenceManager
+				.getDefaultSharedPreferences(this).getBoolean(
+						"remote_control_menu", true);
 		if (menuKeySlidingMenu) {
 			if (keyCode == KeyEvent.KEYCODE_MENU) {
-				showMenuItems();
-				menuDrawer.toggleMenu();
-				menuOptions.requestFocusFromTouch();
+				if (drawerLayout.isDrawerOpen(drawerList)) {
+					drawerLayout.closeDrawers();
+				} else {
+					drawerLayout.openDrawer(drawerList);
+				}
 				return true;
 			}
 		}
-		
-		if (keyCode == KeyEvent.KEYCODE_BACK && menuDrawer.isMenuVisible()) {
-			hideMenuItems();
-			menuDrawer.toggleMenu();
+
+		if (keyCode == KeyEvent.KEYCODE_BACK
+				&& drawerLayout.isDrawerOpen(drawerList)) {
+			drawerLayout.closeDrawers();
 			if (gallery != null) {
 				gallery.requestFocusFromTouch();
 			}
 			return true;
 		}
-		
+
 		if (gallery == null) {
-			return super.onKeyDown(keyCode, event);				
+			return super.onKeyDown(keyCode, event);
 		}
-		
-		AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+
+		AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery
+				.getAdapter();
 		if (adapter != null) {
-			int itemsCount =  adapter.getCount();
-			
+			int itemsCount = adapter.getCount();
+
 			if (contextMenuRequested(keyCode)) {
 				View view = gallery.getSelectedView();
 				view.performLongClick();
@@ -174,7 +178,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 			}
 			if (isKeyCodeSkipForward(keyCode)) {
 				int selectedItem = gallery.getSelectedItemPosition();
-				int newPosition = selectedItem  + 10;
+				int newPosition = selectedItem + 10;
 				if (newPosition > itemsCount) {
 					newPosition = itemsCount - 1;
 				}
@@ -182,40 +186,54 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 				gallery.requestFocusFromTouch();
 				return true;
 			}
-			if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY || keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
-				SeriesContentInfo info = (SeriesContentInfo) gallery.getSelectedItem();
+			if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
+					|| keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
+				SeriesContentInfo info = (SeriesContentInfo) gallery
+						.getSelectedItem();
 				new FindUnwatchedAsyncTask(this).execute(info);
 				return true;
 			}
 		}
-							
+
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	@Override
 	protected void createSideMenu() {
-		menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
-		menuDrawer.setMenuView(R.layout.menu_drawer);
-		
-		posterLayoutActive = preferences.getBoolean("series_layout_posters", false);
+
+		posterLayoutActive = preferences.getBoolean("series_layout_posters",
+				false);
 		gridViewActive = preferences.getBoolean("series_layout_grid", false);
 		if (isGridViewActive()) {
-			menuDrawer.setContentView(R.layout.activity_tvbrowser_show_gridview_posters);
+			setContentView(R.layout.activity_tvbrowser_show_gridview_posters);
 		} else if (posterLayoutActive) {
-			menuDrawer.setContentView(R.layout.activity_tvbrowser_show_posters);
+			setContentView(R.layout.activity_tvbrowser_show_posters);
 		} else {
-			menuDrawer.setContentView(R.layout.activity_tvbrowser_show_banners);
+			setContentView(R.layout.activity_tvbrowser_show_banners);
 		}
-		menuDrawer.setDrawerIndicatorEnabled(true);
-		
-		populateMenuDrawer();
-		hideMenuItems();
 
-		
-		View menuButton = findViewById(R.id.menu_button);
-		menuButton
-				.setOnClickListener(new MenuDrawerOnClickListener(menuDrawer));
-		
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawerList = (ListView) drawerLayout.findViewById(R.id.left_drawer);
+
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+				R.drawable.menudrawer_selector, R.string.drawer_open,
+				R.string.drawer_closed) {
+			@Override
+			public void onDrawerOpened(View drawerView) {
+
+				super.onDrawerOpened(drawerView);
+				getSupportActionBar().setTitle(R.string.app_name);
+				drawerList.requestFocusFromTouch();
+			}
+
+			@Override
+			public void onDrawerClosed(View drawerView) {
+				super.onDrawerClosed(drawerView);
+				getSupportActionBar().setTitle(R.string.app_name);
+			}
+		};
+
+		populateMenuDrawer();
 	}
 
 	/**
@@ -223,28 +241,36 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	 */
 	protected void populateMenuDrawer() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
-		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
-		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
-		
-		menuOptions = (ListView)menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
-		menuOptions.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-		menuOptions.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(menuDrawer));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View",
+				R.drawable.ic_action_collections_view_as_grid));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View",
+				R.drawable.ic_action_collections_view_detail));
+		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue",
+				R.drawable.menu_play_all_queue));
+
+		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+		drawerList
+				.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(
+						drawerLayout));
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
 	 */
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		
+
 		if (savedCategory != null) {
-			outState.putString("savedCategory", savedCategory );
+			outState.putString("savedCategory", savedCategory);
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#finish()
 	 */
 	@Override
@@ -252,20 +278,18 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		super.finish();
 		savedCategory = null;
 	}
-	
+
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		
+
 		savedCategory = savedInstanceState.getString("savedCategory");
 	}
-	
-	
 
 	private class CategoryHandler extends Handler {
 
 		private ArrayList<CategoryInfo> categories;
-		private Activity context;
+		private final Activity context;
 
 		public CategoryHandler(Activity context) {
 			this.context = context;
@@ -294,16 +318,16 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 					.findViewById(R.id.categoryFilter);
 			categorySpinner.setVisibility(View.VISIBLE);
 			categorySpinner.setAdapter(spinnerArrayAdapter);
-			
+
 			if (savedCategory == null) {
 				categorySpinner
 						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
 								"all", key));
 			} else {
 				categorySpinner
-				.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-						savedCategory, key, false));
-				
+						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+								savedCategory, key, false));
+
 			}
 			categorySpinner.requestFocus();
 		}

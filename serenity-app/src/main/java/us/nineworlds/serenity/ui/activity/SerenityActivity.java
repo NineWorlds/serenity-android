@@ -23,7 +23,6 @@
 
 package us.nineworlds.serenity.ui.activity;
 
-import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
@@ -34,11 +33,15 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -50,14 +53,22 @@ import com.jess.ui.TwoWayGridView;
  */
 public abstract class SerenityActivity extends ActionBarActivity {
 
-	protected ListView menuOptions;
-	protected MenuDrawer menuDrawer;
 	protected DrawerLayout drawerLayout;
 	protected ListView drawerList;
 	protected ActionBarDrawerToggle drawerToggle;
 	protected ActionBar actionBar;
 
 	protected abstract void createSideMenu();
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		actionBar = getSupportActionBar();
+		actionBar.setDisplayUseLogoEnabled(false);
+		actionBar.setBackgroundDrawable(new ColorDrawable(
+				R.color.fity_percent_transparent));
+
+	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -206,35 +217,24 @@ public abstract class SerenityActivity extends ActionBarActivity {
 
 	}
 
-	public void showMenuItems() {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		boolean tvMode = prefs.getBoolean("serenity_tv_mode", false);
-		if (tvMode) {
-			if (menuOptions != null) {
-				menuOptions.setVisibility(View.VISIBLE);
-				menuOptions.requestFocusFromTouch();
-			}
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		drawerToggle.syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		drawerToggle.onConfigurationChanged(newConfig);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (drawerToggle.onOptionsItemSelected(item)) {
+			return true;
 		}
-	}
-
-	public void hideMenuItems() {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		boolean tvMode = prefs.getBoolean("serenity_tv_mode", false);
-		if (tvMode) {
-			if (menuOptions != null) {
-				menuOptions.setVisibility(View.GONE);
-			}
-		}
-	}
-
-	public MenuDrawer getMenuDrawer() {
-		return menuDrawer;
-	}
-
-	public void setMenuDrawer(MenuDrawer menuDrawer) {
-		this.menuDrawer = menuDrawer;
+		return super.onOptionsItemSelected(item);
 	}
 
 }
