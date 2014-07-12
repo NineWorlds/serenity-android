@@ -43,6 +43,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ListView;
 
 import com.jess.ui.TwoWayGridView;
@@ -63,10 +64,12 @@ public abstract class SerenityActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		supportRequestWindowFeature(Window.FEATURE_PROGRESS);
 		actionBar = getSupportActionBar();
-		actionBar.setDisplayUseLogoEnabled(false);
+		actionBar.setDisplayUseLogoEnabled(true);
 		actionBar.setBackgroundDrawable(new ColorDrawable(
-				R.color.fity_percent_transparent));
+				android.R.color.transparent));
 
 	}
 
