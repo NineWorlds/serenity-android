@@ -57,13 +57,13 @@
             android:id="@+id/left_drawer"
             android:layout_width="240dp"
             android:layout_height="match_parent"
+            android:focusable="true"
             android:paddingTop="?android:attr/actionBarSize"
             android:layout_gravity="start"
             android:background="#111"
             android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
-            android:focusableInTouchMode="true" />
+            android:dividerHeight="0dp" />
         
     </us.nineworlds.serenity.widgets.DrawerLayout>
 

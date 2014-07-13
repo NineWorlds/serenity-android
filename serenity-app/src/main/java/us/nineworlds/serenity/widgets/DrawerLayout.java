@@ -66,7 +66,7 @@ public final class DrawerLayout extends android.support.v4.widget.DrawerLayout {
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			// prevent touch events from going through the drawer
-			return true;
+			return false;
 		}
 
 	};
