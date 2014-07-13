@@ -21,35 +21,12 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.listeners;
-
-import us.nineworlds.serenity.R;
-import net.simonvt.menudrawer.MenuDrawer;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ListView;
+package us.nineworlds.serenity;
 
 /**
- * @author dcarver
+ * @author davidcarver
  *
  */
-public class MenuDrawerOnClickListener implements OnClickListener {
-
-	private MenuDrawer menuDrawer;
-	
-	/**
-	 * 
-	 */
-	public MenuDrawerOnClickListener(MenuDrawer drawer) {
-		menuDrawer = drawer;
-	}
-	
-	@Override
-	public void onClick(View v) {
-		ListView lv = (ListView) menuDrawer.getMenuView().findViewById(R.id.menu_list_options);
-		lv.setVisibility(View.VISIBLE);
-		menuDrawer.toggleMenu(true);
-		lv.requestFocus();
-	}
+public class AndroidTV extends MainActivity {
 
 }

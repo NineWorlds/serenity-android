@@ -28,7 +28,6 @@ import java.util.List;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.ui.browser.movie.CategorySpinnerOnItemSelectedListener;
-
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
@@ -39,10 +38,10 @@ import android.widget.Spinner;
 public class CategoryHandler extends Handler {
 
 	private List<CategoryInfo> categories;
-	private Activity _context;
-	private String _savedCategory;
-	private String _key;
-	
+	private final Activity _context;
+	private final String _savedCategory;
+	private final String _key;
+
 	/**
 	 * 
 	 */
@@ -51,7 +50,7 @@ public class CategoryHandler extends Handler {
 		_savedCategory = savedCategory;
 		_key = key;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -76,17 +75,19 @@ public class CategoryHandler extends Handler {
 
 		Spinner categorySpinner = (Spinner) _context
 				.findViewById(R.id.categoryFilter);
-		categorySpinner.setVisibility(View.VISIBLE);
-		categorySpinner.setAdapter(spinnerArrayAdapter);
-		if (_savedCategory == null) {
-			categorySpinner
-					.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-							"all", _key));
-		} else {
-			categorySpinner
-			.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-					_savedCategory, _key, false));
+		if (categorySpinner != null) {
+			categorySpinner.setVisibility(View.VISIBLE);
+			categorySpinner.setAdapter(spinnerArrayAdapter);
+			if (_savedCategory == null) {
+				categorySpinner
+						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+								"all", _key));
+			} else {
+				categorySpinner
+						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+								_savedCategory, _key, false));
+			}
+			categorySpinner.requestFocus();
 		}
-		categorySpinner.requestFocus();
 	}
 }

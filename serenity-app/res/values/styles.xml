@@ -11,7 +11,19 @@
             backward-compatibility can go here.
         -->
     </style>
+    
+    <style name="CustomActionBarTheme"
+           parent="@style/Theme.AppCompat">
+        <item name="android:windowActionBarOverlay">true</item>
 
+        <!-- Support library compatibility -->
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+    
+    <style name="Theme.AppCompat.NoActionBar" parent="@style/Theme.AppCompat">
+        <item name="android:windowNoTitle">true</item>
+  </style>
+    
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->

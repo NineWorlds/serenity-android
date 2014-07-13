@@ -32,11 +32,11 @@ import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.VolleyUtils;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -59,7 +59,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
 	protected static List<VideoContentInfo> posterList = null;
-	protected static Activity context;
+	protected static ActionBarActivity context;
 	protected ImageLoader imageLoader;
 	protected static final int SIZE_HEIGHT = 400;
 	protected static final int SIZE_WIDTH = 200;
@@ -73,7 +73,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
 		queue = VolleyUtils.getRequestQueueInstance(c);
-		context = (Activity) c;
+		context = (ActionBarActivity) c;
 		posterList = new ArrayList<VideoContentInfo>();
 		imageLoader = SerenityApplication.getImageLoader();
 		this.key = key;
@@ -83,7 +83,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	public AbstractPosterImageGalleryAdapter(Context c, String key,
 			String category) {
 		queue = VolleyUtils.getRequestQueueInstance(c);
-		context = (Activity) c;
+		context = (ActionBarActivity) c;
 		this.key = key;
 		this.category = category;
 		posterList = new ArrayList<VideoContentInfo>();

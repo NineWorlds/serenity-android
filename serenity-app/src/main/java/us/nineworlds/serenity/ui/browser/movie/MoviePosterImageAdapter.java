@@ -42,7 +42,6 @@ import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.RoundedImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Messenger;
@@ -67,7 +66,6 @@ import com.jess.ui.TwoWayGridView;
 public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 	protected static AbstractPosterImageGalleryAdapter notifyAdapter;
-	protected static ProgressDialog pd;
 	private static SerenityMultiViewVideoActivity movieContext;
 	private DBMetaDataSource datasource;
 
@@ -205,8 +203,9 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 	@Override
 	protected void fetchDataFromService() {
-		pd = ProgressDialog.show(context, "",
-				context.getString(R.string.retrieving_movies));
+		context.setSupportProgressBarIndeterminate(true);
+		context.setSupportProgressBarVisibility(false);
+		context.setSupportProgressBarIndeterminateVisibility(true);
 
 		final PlexappFactory factory = SerenityApplication.getPlexFactory();
 		String url = factory.getSectionsURL(key, category);
@@ -220,9 +219,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {
-			if (pd != null) {
-				pd.dismiss();
-			}
+			context.setSupportProgressBarIndeterminateVisibility(false);
 		}
 
 	}
@@ -242,9 +239,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 			} catch (Exception e) {
 				Log.e(getClass().getName(), "Error populating posters.", e);
 			}
-			if (pd.isShowing()) {
-				pd.dismiss();
-			}
+			context.setSupportProgressBarIndeterminateVisibility(false);
 		}
 
 		/**

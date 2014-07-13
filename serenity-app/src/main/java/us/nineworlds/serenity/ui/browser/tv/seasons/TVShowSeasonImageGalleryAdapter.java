@@ -32,12 +32,13 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
+import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
-import android.app.Activity;
-import android.app.ProgressDialog;
+import us.nineworlds.serenity.widgets.BadgeView;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -61,13 +62,12 @@ import com.android.volley.Response;
 public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 
 	private List<SeriesContentInfo> seasonList = null;
-	private final Activity context;
+	private final SerenityDrawerLayoutActivity context;
 
-	private ProgressDialog pd;
 	private final String key;
 
 	public TVShowSeasonImageGalleryAdapter(Context c, String key) {
-		context = (Activity) c;
+		context = (SerenityDrawerLayoutActivity) c;
 		this.key = key;
 
 		seasonList = new ArrayList<SeriesContentInfo>();
@@ -76,7 +76,9 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	}
 
 	protected void fetchData() {
-		pd = ProgressDialog.show(context, "", "Retrieving Seasons");
+		context.setSupportProgressBarIndeterminate(true);
+		context.setSupportProgressBarVisibility(false);
+		context.setSupportProgressBarIndeterminateVisibility(true);
 
 		PlexappFactory factory = SerenityApplication.getPlexFactory();
 		String url = factory.getSeasonsURL(key);
@@ -135,15 +137,27 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 
 		ImageView watchedView = (ImageView) galleryCellView
 				.findViewById(R.id.posterWatchedIndicator);
-		final TextView unwatchedCountView = (TextView) galleryCellView
-				.findViewById(R.id.unwatched_count);
-		if (unwatched == 0) {
+
+		BadgeView badgeView = new BadgeView(context, mpiv);
+		Drawable backgroundDrawable = context.getResources().getDrawable(
+				R.drawable.episode_count_background);
+		badgeView.setBackgroundDrawable(backgroundDrawable);
+		badgeView.setText(pi.getShowsUnwatched());
+		badgeView.show();
+
+		if (pi.isWatched()) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
-			unwatchedCountView.setVisibility(View.GONE);
-		} else {
-			unwatchedCountView.setVisibility(View.VISIBLE);
-			unwatchedCountView.setText(pi.getShowsUnwatched());
+			watchedView.setVisibility(View.VISIBLE);
+			badgeView.hide();
 		}
+
+		// if (unwatched == 0) {
+		// watchedView.setImageResource(R.drawable.overlaywatched);
+		// unwatchedCountView.setVisibility(View.GONE);
+		// } else {
+		// unwatchedCountView.setVisibility(View.VISIBLE);
+		// unwatchedCountView.setText(pi.getShowsUnwatched());
+		// }
 
 		int watched = 0;
 		if (pi.getShowsWatched() != null) {
@@ -181,9 +195,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		public void onResponse(MediaContainer response) {
 			seasonList = new SeasonsMediaContainer(response).createSeries();
 			notifyDataSetChanged();
-			if (pd != null && pd.isShowing()) {
-				pd.dismiss();
-			}
+			context.setSupportProgressBarIndeterminateVisibility(false);
 
 			if (seasonList != null) {
 				if (!seasonList.isEmpty()) {

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-
     <string name="app_name">Serenity for Android</string>
     <string name="app_label">Serenity for Android</string>
     <string name="search_hint">Enter a word or phrase in a Movie, TV Show, or Episode.</string>
@@ -52,7 +51,6 @@
     <string name="no_videos_found_that_match_the_search_criteria">No videos found that match the search criteria</string>
     <string name="video_options">Video Options</string>
     <string name="view_all_episodes">View All Episodes</string>
-
     <string-array name="categoryListNames">
         <item>All</item>
         <item>Newest</item>
@@ -69,7 +67,6 @@
         <item>recentlyViewed</item>
         <item>unwatched</item>
     </string-array>
-
     <string name="select_the_starting_category_filter_">Select the starting category filter for movies.</string>
     <string name="categories_summary_preference_description">Categories are used to select the starting filter when browsing movies. The default is All.</string>
     <string name="preferred_filter">Preferred Filter</string>
@@ -149,7 +146,6 @@
     <string name="preferred_external_player">Preferred External Player</string>
     <string name="series_select_the_starting_category_filter_">Select the starting category filter for tv shows.</string>
     <string name="categories_series_summary_preference_description">Categories are used to select the starting filter when browsing tv shows. The default is All.</string>
-
     <string-array name="categoryListNamesSeries">
         <item>All</item>
         <item>Newest</item>
@@ -168,7 +164,6 @@
         <item>recentlyViewedShows</item>
         <item>unwatched</item>
     </string-array>
-
     <string name="resume_video">Resume Video</string>
     <string name="resume_the_video_from_">"Resume the video from "</string>
     <string name="_or_restart_">" or restart?"</string>
@@ -181,23 +176,20 @@
     <string name="prefs_advanced_options">Advanced Options</string>
     <string name="prefs_startup_boot_sum">Controls whether Serenity for Android launches immediately after the device has completed the boot up sequence.  Useful for those that want to provide a more home theater like experience.</string>
     <string name="prefs_auto_start_after_boot">Auto Start after Boot</string>
-
     <string name="playing_episode_toast">Playing %1$s %2$s: %3$s</string>
     <string name="no_unwatched_episode_toast">No unwatched episodes found</string>
-
     <string name="Controls">Controls</string>
     <string name="skip_forward_time_title">FF Skip Time</string>
     <string name="skip_forward_time_summary">Time to skip forward when FF button is pressed</string>
     <string name="skip_backward_time_title">REW Skip Time</string>
     <string name="skip_backward_time_summary">Time to skip backward when REW button is pressed</string>
     <string name="next_prev_behavior_title">Next/Prev button behavior</string>
-    <string name="next_prev_behavior_summary"><![CDATA[What should the Next & Prev buttons do]]></string>
+    <string name="next_prev_behavior_summary">What should the Next &amp; Prev buttons do</string>
     <string name="overscan_swap">Swap sides</string>
     <string name="overscan_instructions">Use D-Pad to adjust top-left, and bottom-right until no blue is visible. Use
         button to swap sides.  When finished press Back to save the changes.  You may use this instead of your
         devices built in overscan compensation.  The devices built in compensation takes precedence.
     </string>
-
     <string-array name="skipListNames">
         <item>10 Seconds</item>
         <item>30 Seconds</item>
@@ -210,7 +202,6 @@
         <item>60000</item>
         <item>180000</item>
     </string-array>
-
     <string-array name="nextPrevNames">
         <item>Next item in queue</item>
         <item>Skip 5%</item>
@@ -225,6 +216,7 @@
         <item>3000000</item>
         <item>6000000</item>
     </string-array>
-        <string name="mediacontroller_on_deck">"On Deck: "</string>
-
+    <string name="mediacontroller_on_deck">"On Deck: "</string>
+    <string name="drawer_open">Opened"</string>
+    <string name="drawer_closed">Closed</string>
 </resources>

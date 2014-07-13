@@ -23,7 +23,6 @@
 
 package us.nineworlds.serenity.ui.activity;
 
-import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
@@ -33,10 +32,11 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ListView;
 
 import com.jess.ui.TwoWayGridView;
 
@@ -44,12 +44,15 @@ import com.jess.ui.TwoWayGridView;
  * @author dcarver
  * 
  */
-public abstract class SerenityActivity extends Activity {
-
-	protected ListView menuOptions;
-	protected MenuDrawer menuDrawer;
+public abstract class SerenityActivity extends ActionBarActivity {
 
 	protected abstract void createSideMenu();
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -197,32 +200,4 @@ public abstract class SerenityActivity extends Activity {
 		}
 
 	}
-
-	public void showMenuItems() {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		boolean tvMode = prefs.getBoolean("serenity_tv_mode", false);
-		if (tvMode) {
-			menuOptions.setVisibility(View.VISIBLE);
-			menuOptions.requestFocusFromTouch();
-		}
-	}
-
-	public void hideMenuItems() {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		boolean tvMode = prefs.getBoolean("serenity_tv_mode", false);
-		if (tvMode) {
-			menuOptions.setVisibility(View.GONE);
-		}
-	}
-
-	public MenuDrawer getMenuDrawer() {
-		return menuDrawer;
-	}
-
-	public void setMenuDrawer(MenuDrawer menuDrawer) {
-		this.menuDrawer = menuDrawer;
-	}
-
 }

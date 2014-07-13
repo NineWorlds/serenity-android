@@ -23,10 +23,10 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import net.simonvt.menudrawer.MenuDrawer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
+import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
@@ -34,21 +34,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-/**
- * @author dcarver
- * 
- */
 public class MovieMenuDrawerOnItemClickedListener implements
 		OnItemClickListener {
 	private static final int GRID_VIEW = 0;
 	private static final int DETAIL_VIEW = 1;
 	private static final int PLAY_ALL_QUEUE = 2;
-	private final MenuDrawer menuDrawer;
+	private final DrawerLayout menuDrawer;
 
-	/**
-	 * 
-	 */
-	public MovieMenuDrawerOnItemClickedListener(MenuDrawer drawer) {
+	public MovieMenuDrawerOnItemClickedListener(DrawerLayout drawer) {
 		menuDrawer = drawer;
 	}
 
@@ -60,24 +53,25 @@ public class MovieMenuDrawerOnItemClickedListener implements
 
 		switch (position) {
 		case GRID_VIEW:
-			menuDrawer.setContentView(R.layout.activity_movie_browser_gridview);
+			activity.setContentView(R.layout.activity_movie_browser_gridview);
+
 			toggleView(activity, true);
 			break;
 		case DETAIL_VIEW:
-			menuDrawer.setContentView(R.layout.activity_movie_browser);
+			activity.setContentView(R.layout.activity_movie_browser);
 			toggleView(activity, false);
 			break;
 		case PLAY_ALL_QUEUE:
 			playAllFromQueue(parent, activity);
 			return;
 		}
-		menuDrawer.toggleMenu();
+		menuDrawer.closeDrawers();
 		activity.recreate();
 	}
 
 	private void playAllFromQueue(AdapterView<?> parent,
 			SerenityMultiViewVideoActivity activity) {
-		menuDrawer.toggleMenu();
+		menuDrawer.closeDrawers();
 		if (!activity.getPackageManager().hasSystemFeature(
 				"android.hardware.touchscreen")) {
 			parent.setVisibility(View.INVISIBLE);
@@ -87,12 +81,6 @@ public class MovieMenuDrawerOnItemClickedListener implements
 			gallery.requestFocusFromTouch();
 		}
 		VideoPlayerIntentUtils.playAllFromQueue(activity);
-	}
-
-	/**
-	 * @param listView
-	 */
-	public void hideMenuItems() {
 	}
 
 	/**

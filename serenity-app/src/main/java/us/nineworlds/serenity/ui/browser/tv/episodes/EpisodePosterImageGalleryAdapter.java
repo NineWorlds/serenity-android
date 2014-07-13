@@ -85,6 +85,10 @@ public class EpisodePosterImageGalleryAdapter extends
 
 	@Override
 	protected void fetchDataFromService() {
+		context.setSupportProgressBarIndeterminate(true);
+		context.setSupportProgressBarVisibility(false);
+		context.setSupportProgressBarIndeterminateVisibility(true);
+
 		retrieveEpisodes();
 	}
 
@@ -114,6 +118,7 @@ public class EpisodePosterImageGalleryAdapter extends
 			if (gallery != null) {
 				gallery.requestFocus();
 			}
+			context.setSupportProgressBarIndeterminateVisibility(false);
 		}
 	}
 
@@ -123,8 +128,9 @@ public class EpisodePosterImageGalleryAdapter extends
 		@Override
 		public void onErrorResponse(VolleyError error) {
 			super.onErrorResponse(error);
-		}
+			context.setSupportProgressBarIndeterminateVisibility(false);
 
+		}
 	}
 
 }

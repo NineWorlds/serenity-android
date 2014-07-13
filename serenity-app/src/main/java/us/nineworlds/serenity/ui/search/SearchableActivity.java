@@ -68,10 +68,9 @@ public class SearchableActivity extends SerenityVideoActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = this;
-
+		actionBar.setCustomView(R.layout.move_custom_actionbar);
 		setContentView(R.layout.activity_movie_browser);
-		View v = findViewById(R.id.metaDataRow);
-		v.setVisibility(View.GONE);
+
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
 		handleIntent(getIntent());
 	}

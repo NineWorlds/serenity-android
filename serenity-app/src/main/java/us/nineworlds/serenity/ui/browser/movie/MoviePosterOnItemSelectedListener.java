@@ -105,10 +105,15 @@ public class MoviePosterOnItemSelectedListener extends
 	protected void createVideoMetaData(ImageView v) {
 		super.createVideoMetaData(v);
 		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
-		subt.setVisibility(View.GONE);
+		if (subt != null) {
+			subt.setVisibility(View.GONE);
+		}
+
 		Spinner subtitleSpinner = (Spinner) context
 				.findViewById(R.id.videoSubtitle);
-		subtitleSpinner.setVisibility(View.GONE);
+		if (subtitleSpinner != null) {
+			subtitleSpinner.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
