@@ -59,6 +59,19 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="us.nineworlds.serenity.AndroidTV"
+            android:hardwareAccelerated="true"
+            android:label="@string/title_activity_main"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/CustomActionBarTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
             android:name="us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity"
             android:label="@string/title_activity_tvbrowser_show"
             android:screenOrientation="sensorLandscape"
@@ -124,8 +137,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
-        <activity android:name=".ui.activity.OverscanSetupActivity"/>
+        <activity android:name=".ui.activity.OverscanSetupActivity" />
 
         <service android:name=".core.services.MusicRetrievalIntentService" />
         <service android:name=".core.services.MusicAlbumRetrievalIntentService" />
@@ -140,7 +152,7 @@
         <service
             android:name=".core.services.GDMService"
             tools:ignore="MissingRegistered" />
-        <service android:name="us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService"/>
+        <service android:name="us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService" />
 
         <provider
             android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
@@ -150,9 +162,11 @@
         <receiver android:name="us.nineworlds.serenity.StartupBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>
