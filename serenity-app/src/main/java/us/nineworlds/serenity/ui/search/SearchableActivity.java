@@ -35,6 +35,7 @@ import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.app.SearchManager;
@@ -73,6 +74,8 @@ public class SearchableActivity extends SerenityVideoActivity {
 
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
 		handleIntent(getIntent());
+		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
+
 	}
 
 	@Override
