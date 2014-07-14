@@ -164,8 +164,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		createSideMenu();
 
-		DisplayUtils.overscanCompensation(this,
-				findViewById(R.id.movieBrowserBackgroundLayout));
+		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 	}
 
 	@Override

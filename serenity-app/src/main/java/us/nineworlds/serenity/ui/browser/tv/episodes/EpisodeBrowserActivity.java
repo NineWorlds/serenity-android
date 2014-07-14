@@ -117,8 +117,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		metaData.setVisibility(View.VISIBLE);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		DisplayUtils.overscanCompensation(this, bgLayout,
-				findViewById(R.id.menu_drawer_layout));
+		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 
 	}
 

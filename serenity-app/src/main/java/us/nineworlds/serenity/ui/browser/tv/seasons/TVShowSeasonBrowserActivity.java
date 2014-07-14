@@ -70,8 +70,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
 		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
 
-		DisplayUtils.overscanCompensation(this, tvShowSeasonsMainView,
-				findViewById(R.id.menu_drawer_layout));
+		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 	}
 
 	@Override

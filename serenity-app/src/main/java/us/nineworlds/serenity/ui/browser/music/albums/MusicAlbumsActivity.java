@@ -23,20 +23,18 @@
 
 package us.nineworlds.serenity.ui.browser.music.albums;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import com.jess.ui.TwoWayGridView;
-
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import us.nineworlds.serenity.ui.util.DisplayUtils;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import com.jess.ui.TwoWayGridView;
 
 /**
  * @author dcarver
@@ -62,11 +60,11 @@ public class MusicAlbumsActivity extends Activity {
 				.getDefaultSharedPreferences(this);
 		setContentView(R.layout.activity_music_artist_gridview);
 
-		DisplayUtils.overscanCompensation(this, findViewById(R.id.musicBrowserBackgroundLayout));
+		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 
-		TextView category = (TextView)findViewById(R.id.musicCategoryName);
+		TextView category = (TextView) findViewById(R.id.musicCategoryName);
 		category.setVisibility(View.GONE);
-		Spinner categoryFilter = (Spinner)findViewById(R.id.musicCategoryFilter);
+		Spinner categoryFilter = (Spinner) findViewById(R.id.musicCategoryFilter);
 		categoryFilter.setVisibility(View.GONE);
 
 	}
@@ -87,10 +85,11 @@ public class MusicAlbumsActivity extends Activity {
 	}
 
 	protected void setupMusicAdapters() {
-			TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.musicGridView);
-			gridView.setAdapter(new MusicAlbumsCoverAdapter(this, key));
-			gridView.setOnItemSelectedListener(new MusicAlbumsGridOnItemSelectedListener(this));
-			gridView.setOnItemClickListener(new MusicAlbumGridOnItemClickListener());
+		TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.musicGridView);
+		gridView.setAdapter(new MusicAlbumsCoverAdapter(this, key));
+		gridView.setOnItemSelectedListener(new MusicAlbumsGridOnItemSelectedListener(
+				this));
+		gridView.setOnItemClickListener(new MusicAlbumGridOnItemClickListener());
 	}
-	
+
 }

@@ -78,8 +78,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		createSideMenu();
 
-		DisplayUtils.overscanCompensation(this,
-				findViewById(R.id.tvshowBrowserLayout));
+		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 	}
 
 	@Override

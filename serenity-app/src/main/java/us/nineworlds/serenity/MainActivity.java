@@ -350,8 +350,10 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 		initDownloadService();
 
-		DisplayUtils.overscanCompensation(this, findViewById(R.id.mainLayout),
-				findViewById(R.id.menu_drawer_layout));
+		// DisplayUtils.overscanCompensation(this,
+		// findViewById(R.id.mainLayout),
+		// findViewById(R.id.left_drawer), actionBar.getCustomView());
+		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 
 	}
 

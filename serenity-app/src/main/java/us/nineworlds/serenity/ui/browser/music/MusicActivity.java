@@ -25,11 +25,10 @@ package us.nineworlds.serenity.ui.browser.music;
 
 import java.util.ArrayList;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,10 +39,10 @@ import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import us.nineworlds.serenity.ui.util.DisplayUtils;
+
+import com.google.analytics.tracking.android.EasyTracker;
 
 /**
  * @author dcarver
@@ -71,15 +70,14 @@ public class MusicActivity extends Activity {
 
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		
+
 		MUSIC_GRIDVIEW = prefs.getBoolean("music_layout_grid", false);
-		
+
 		if (!MUSIC_GRIDVIEW) {
 			setContentView(R.layout.activity_music_artist_posters);
 		} else {
 			setContentView(R.layout.activity_music_artist_gridview);
 		}
-
 
 		final RelativeLayout mainLayout;
 		if (MUSIC_GRIDVIEW) {
@@ -87,7 +85,7 @@ public class MusicActivity extends Activity {
 		} else {
 			mainLayout = (RelativeLayout) findViewById(R.id.musicArtistBrowserLayout);
 		}
-		DisplayUtils.overscanCompensation(this, mainLayout);
+		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 	}
 
 	/*
@@ -104,8 +102,10 @@ public class MusicActivity extends Activity {
 		}
 		restarted_state = false;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onRestart()
 	 */
 	@Override
@@ -115,7 +115,7 @@ public class MusicActivity extends Activity {
 	}
 
 	protected void setupMusicAdapters() {
-		
+
 		categoryHandler = new CategoryHandler();
 		Messenger messenger = new Messenger(categoryHandler);
 		Intent categoriesIntent = new Intent(this,
@@ -124,9 +124,9 @@ public class MusicActivity extends Activity {
 		categoriesIntent.putExtra("filterAlbums", true);
 		categoriesIntent.putExtra("MESSENGER", messenger);
 		startService(categoriesIntent);
-		context = this;		
+		context = this;
 	}
-	
+
 	private static class CategoryHandler extends Handler {
 
 		private ArrayList<CategoryInfo> categories;
@@ -164,5 +164,5 @@ public class MusicActivity extends Activity {
 		}
 
 	}
-	
+
 }

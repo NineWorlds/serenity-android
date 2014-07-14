@@ -30,48 +30,56 @@ import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
-
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class DisplayUtils {
-	
+
 	public static int screenWidthDP(Activity context) {
 		Display display = context.getWindowManager().getDefaultDisplay();
-	    DisplayMetrics outMetrics = new DisplayMetrics ();
-	    display.getMetrics(outMetrics);
+		DisplayMetrics outMetrics = new DisplayMetrics();
+		display.getMetrics(outMetrics);
 
-	    float density  = context.getResources().getDisplayMetrics().density;
-	    int dpWidth  = Float.valueOf(outMetrics.widthPixels / density).intValue();
-	    return dpWidth;
+		float density = context.getResources().getDisplayMetrics().density;
+		int dpWidth = Float.valueOf(outMetrics.widthPixels / density)
+				.intValue();
+		return dpWidth;
 	}
-	
+
 	public static int screenHeightDP(Activity context) {
 		Display display = context.getWindowManager().getDefaultDisplay();
-	    DisplayMetrics outMetrics = new DisplayMetrics ();
-	    display.getMetrics(outMetrics);
+		DisplayMetrics outMetrics = new DisplayMetrics();
+		display.getMetrics(outMetrics);
 
-	    float density  = context.getResources().getDisplayMetrics().density;
-	    int dpWidth  = Float.valueOf(outMetrics.heightPixels / density).intValue();
-	    return dpWidth;
+		float density = context.getResources().getDisplayMetrics().density;
+		int dpWidth = Float.valueOf(outMetrics.heightPixels / density)
+				.intValue();
+		return dpWidth;
 	}
 
 	public static void overscanCompensation(Context context, View... views) {
-		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		final SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
 
 		if (prefs.getBoolean("overscan_compensation", false)) {
 			for (View view : views) {
-				ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams)  view.getLayoutParams();
-				params.setMargins(
-						prefs.getInt("overscan_left", 50),
-						prefs.getInt("overscan_top", 50),
-						prefs.getInt("overscan_right", 50),
-						prefs.getInt("overscan_bottom", 50));
+				if (view != null) {
+					// ViewGroup.MarginLayoutParams params =
+					// (ViewGroup.MarginLayoutParams) view
+					// .getLayoutParams();
+
+					view.setPadding(prefs.getInt("overscan_left", 50),
+							prefs.getInt("overscan_top", 50),
+							prefs.getInt("overscan_right", 50),
+							prefs.getInt("overscan_bottom", 50));
+					// params.setMargins(prefs.getInt("overscan_left", 50),
+					// prefs.getInt("overscan_top", 50),
+					// prefs.getInt("overscan_right", 50),
+					// prefs.getInt("overscan_bottom", 50));
+				}
 			}
 		}
 	}
-	
 }
