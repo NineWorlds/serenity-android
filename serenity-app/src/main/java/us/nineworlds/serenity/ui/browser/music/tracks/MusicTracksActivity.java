@@ -28,10 +28,11 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
-import us.nineworlds.serenity.ui.util.DisplayUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -48,14 +49,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.analytics.tracking.android.EasyTracker;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 /**
  * @author dcarver
@@ -73,11 +76,13 @@ public class MusicTracksActivity extends Activity implements
 	private CheckBox randomPlay;
 	public static int currentPlayingItem = 0;
 
+	private MediaController mediaController;
+
 	private static final int MILLISECONDS_PER_MINUTE = 60000;
 	private static final int MILLISECONDS_PER_HOUR = 3600000;
 
-	private final Handler progressHandler = new Handler();
-	private final Runnable playbackRunnable = new Runnable() {
+	private Handler progressHandler = new Handler();
+	private Runnable playbackRunnable = new Runnable() {
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -138,20 +143,20 @@ public class MusicTracksActivity extends Activity implements
 			}
 		}
 	};
-
-	private final PhoneStateListener phoneStateListener = new PhoneStateListener() {
-		@Override
-		public void onCallStateChanged(int state, String incomingNumber) {
-			if (state == TelephonyManager.CALL_STATE_RINGING
-					|| state == TelephonyManager.CALL_STATE_OFFHOOK) {
-				if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-					mediaPlayer.pause();
-				}
-			}
-			super.onCallStateChanged(state, incomingNumber);
-		}
+	
+	private PhoneStateListener phoneStateListener = new PhoneStateListener() {
+	    @Override
+	    public void onCallStateChanged(int state, String incomingNumber) {
+	        if (state == TelephonyManager.CALL_STATE_RINGING ||
+	        	state == TelephonyManager.CALL_STATE_OFFHOOK) {
+	            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+	            	mediaPlayer.pause();
+	            }
+	        } 
+	        super.onCallStateChanged(state, incomingNumber);
+	    }
 	};
-
+	
 	private TelephonyManager mgr;
 
 	/*
@@ -166,7 +171,7 @@ public class MusicTracksActivity extends Activity implements
 
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-
+		
 		if (SerenityApplication.isRunningOnOUYA()) {
 			setContentView(R.layout.activity_music_ouya_track);
 		} else {
@@ -181,17 +186,17 @@ public class MusicTracksActivity extends Activity implements
 	protected void init() {
 		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setOnCompletionListener(this);
-
+		
 		initializeControls();
 
 		progressHandler.postDelayed(playbackRunnable, 1000);
 		AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		seekBar.setOnSeekBarChangeListener(new AudioTrackPlaybackListener(
 				mediaPlayer, am, currentTime, durationTime, seekBar));
-
+		
 		mgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-		if (mgr != null) {
-			mgr.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+		if(mgr != null) {
+		    mgr.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
 		}
 	}
 
@@ -226,10 +231,10 @@ public class MusicTracksActivity extends Activity implements
 		if (randomPlay != null) {
 			randomPlay.setVisibility(View.INVISIBLE);
 		}
-
+		
 		LinearLayout mediaProgressControl = (LinearLayout) findViewById(R.id.mediacontroller_progress_layout);
 		mediaProgressControl.setVisibility(View.INVISIBLE);
-
+		
 	}
 
 	/*
@@ -295,13 +300,13 @@ public class MusicTracksActivity extends Activity implements
 					}
 					return true;
 				}
-				if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
-						|| keyCode == KeyEvent.KEYCODE_F) {
+				if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD ||
+					keyCode == KeyEvent.KEYCODE_F) {
 					nextBtn.performClick();
 					return true;
 				}
-				if (keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
-						|| keyCode == KeyEvent.KEYCODE_R) {
+				if (keyCode == KeyEvent.KEYCODE_MEDIA_REWIND ||
+					keyCode == KeyEvent.KEYCODE_R) {
 					prevBtn.performClick();
 					return true;
 				}
@@ -326,7 +331,7 @@ public class MusicTracksActivity extends Activity implements
 		ListView lview = (ListView) findViewById(R.id.audioTracksListview);
 		int count = lview.getCount();
 		int nextItem = 0;
-
+		
 		if (randomPlay != null && randomPlay.isChecked()) {
 			nextItem = randomTrack(count);
 		} else if (currentPlayingItem < count) {
@@ -370,32 +375,32 @@ public class MusicTracksActivity extends Activity implements
 	protected int randomTrack(int count) {
 		int nextItem;
 		Random random = new Random(Calendar.getInstance().getTimeInMillis());
-		nextItem = Math.abs(random.nextInt(count)) - 1;
+		nextItem = Math.abs(random.nextInt(count)) -1;
 		if (nextItem < 0) {
 			nextItem = 0;
 		}
 		return nextItem;
 	}
-
+	
 	private class NextTrackOnClickListener implements OnClickListener {
-
+		
 		@Override
 		public void onClick(View v) {
 			ListView lview = (ListView) findViewById(R.id.audioTracksListview);
 			int nextItem = 0;
 			int count = lview.getAdapter().getCount();
 			if (currentPlayingItem < count) {
-				nextItem = currentPlayingItem + 1;
+				nextItem = currentPlayingItem + 1;				
 			}
-
+			
 			if (nextItem >= count) {
 				nextItem = 0;
 			}
-
+			
 			playNextItem(lview, nextItem);
 		}
 	}
-
+	
 	private class PrevTrackOnClickListener implements OnClickListener {
 
 		@Override
@@ -404,13 +409,13 @@ public class MusicTracksActivity extends Activity implements
 			int nextItem = 0;
 			int count = lview.getAdapter().getCount();
 			if (currentPlayingItem > 0) {
-				nextItem = currentPlayingItem - 1;
+				nextItem = currentPlayingItem - 1;				
 			} else {
 				nextItem = count - 1;
 			}
-
+						
 			playNextItem(lview, nextItem);
 		}
 	}
-
+	
 }

@@ -13,17 +13,16 @@
         style="@android:style/TextAppearance.Holo.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical|left"
         android:focusable="false"
         android:text="@string/category" />
-
     <Spinner
         android:id="@+id/categoryFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/spinner_background"
         android:focusable="true"
-        android:gravity="left"
+        android:gravity="center_vertical|left"
         android:prompt="@string/movie_category_prompt"
         android:spinnerMode="dropdown" />
 
@@ -32,9 +31,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/spinner_background"
         android:focusable="true"
-        android:gravity="left"
+        android:gravity="center_vertical|left"
         android:prompt="@string/movie_category_prompt2"
         android:spinnerMode="dropdown"
         android:visibility="invisible" />
@@ -45,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:gravity="center_vertical|left"
         android:focusable="false"
         android:text="Subtitle"
         android:visibility="gone" />
@@ -54,9 +53,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/spinner_background"
         android:focusable="true"
-        android:gravity="left"
+        android:gravity="center_vertical|left"
         android:prompt="@string/movie_category_prompt2"
         android:spinnerMode="dropdown"
         android:visibility="gone" />
@@ -69,6 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:gravity="center_vertical|left"
         android:textStyle="bold" />
 
 </LinearLayout>

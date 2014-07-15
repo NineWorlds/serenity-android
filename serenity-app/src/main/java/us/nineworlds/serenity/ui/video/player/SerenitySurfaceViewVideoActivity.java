@@ -223,7 +223,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			getSupportActionBar().hide();
 		}
 		init();
-
+		
 		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 
 	}
