@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/tvShowSeasonTitleRow"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginTop="@dimen/actionbarMargin"
+            android:layout_marginBottom="4dp"
             android:layout_marginRight="10dp"
             android:background="@color/card_background"
             android:focusable="true"
@@ -90,6 +91,6 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:focusableInTouchMode="true"
-        android:paddingTop="?android:attr/actionBarSize" />
+        android:layout_marginTop="?android:attr/actionBarSize" />
 
 </us.nineworlds.serenity.widgets.DrawerLayout>

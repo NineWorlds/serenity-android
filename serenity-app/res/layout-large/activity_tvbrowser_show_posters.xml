@@ -19,8 +19,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:background="#A0000000"
+            android:layout_marginTop="@dimen/actionbarMargin"
+            android:background="@color/card_background"
             android:padding="10dp" >
 
             <us.nineworlds.serenity.widgets.RoundedImageView
@@ -130,6 +130,6 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:focusableInTouchMode="true"
-        android:paddingTop="?android:attr/actionBarSize" />
+        android:layout_marginTop="?android:attr/actionBarSize" />
 
 </us.nineworlds.serenity.widgets.DrawerLayout>

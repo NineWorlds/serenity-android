@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -53,7 +53,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class EpisodePosterOnItemSelectedListener extends
 		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
@@ -91,7 +91,7 @@ public class EpisodePosterOnItemSelectedListener extends
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public EpisodePosterOnItemSelectedListener(Activity activity) {
 		super(activity);
@@ -101,6 +101,11 @@ public class EpisodePosterOnItemSelectedListener extends
 
 	@Override
 	public void createVideoDetail(ImageView v) {
+		View cardView = context.findViewById(R.id.video_details_container);
+		if (cardView != null) {
+			cardView.setVisibility(View.VISIBLE);
+		}
+
 		ImageView posterImage = (ImageView) context
 				.findViewById(R.id.video_poster);
 		posterImage.setVisibility(View.VISIBLE);

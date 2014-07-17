@@ -15,9 +15,17 @@
     <style name="CustomActionBarTheme"
            parent="@style/Theme.AppCompat">
         <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:actionBarStyle">@style/TransparentActionBar</item>
 
         <!-- Support library compatibility -->
         <item name="windowActionBarOverlay">true</item>
+        <item name="actionBarStyle">@style/TransparentActionBar</item>
+        
+    </style>
+    
+    <style name="TransparentActionBar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:background">@drawable/content_panel_dark</item>
+        <item name="background">@drawable/content_panel_dark</item>
     </style>
     
     <style name="Theme.AppCompat.NoActionBar" parent="@style/Theme.AppCompat">
