@@ -24,7 +24,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginTop="60dp"
             android:layout_marginRight="10dp"
             android:background="@color/card_background"
             android:focusable="true"

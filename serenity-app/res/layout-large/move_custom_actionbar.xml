@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
     android:layout_marginRight="10dp"
-    android:background="@color/card_background"
     android:orientation="horizontal" >
 
     <TextView

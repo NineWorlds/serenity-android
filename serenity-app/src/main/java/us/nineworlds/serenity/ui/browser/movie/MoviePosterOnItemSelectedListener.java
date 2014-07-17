@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -47,15 +47,15 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * When a poster is selected, update the information displayed in the browser.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class MoviePosterOnItemSelectedListener extends
-		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
+AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 
 	/**
-	 * 
+	 *
 	 */
 	public MoviePosterOnItemSelectedListener(Activity activity) {
 		super(activity);
@@ -63,6 +63,11 @@ public class MoviePosterOnItemSelectedListener extends
 
 	@Override
 	protected void createVideoDetail(ImageView v) {
+		View cardView = context.findViewById(R.id.video_details_container);
+		if (cardView != null) {
+			cardView.setVisibility(View.VISIBLE);
+		}
+
 		ImageView posterImage = (ImageView) context
 				.findViewById(R.id.video_poster);
 		posterImage.setVisibility(View.VISIBLE);
@@ -123,7 +128,7 @@ public class MoviePosterOnItemSelectedListener extends
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener
 	 * #fetchSubtitle(us.nineworlds.serenity.core.model.VideoContentInfo)

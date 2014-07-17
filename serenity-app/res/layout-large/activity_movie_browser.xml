@@ -17,6 +17,7 @@
 
             <ImageView
                 android:id="@+id/fanArt"
+                android:background="@drawable/movies"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:scaleType="fitXY" />
@@ -26,10 +27,11 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-	            android:layout_marginTop="?attr/actionBarSize"
+	            android:layout_marginTop="60dp"
                 android:layout_marginLeft="10dp"
-                android:background="#AA000000"
-                android:padding="10dp" >
+                android:background="@color/card_background"
+                android:visibility="invisible"
+                android:padding="5dp" >
 
                 <us.nineworlds.serenity.widgets.RoundedImageView
                     android:id="@+id/video_poster"
@@ -139,7 +141,7 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp"
             android:focusableInTouchMode="true"
-            android:paddingTop="?android:attr/actionBarSize" />
+            android:layout_marginTop="?android:attr/actionBarSize" />
     </us.nineworlds.serenity.widgets.DrawerLayout>
 
 </merge>
