@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -39,7 +39,7 @@ import android.widget.Gallery;
 
 /**
  * @author dcarver
- * 
+ *
  */
 @RunWith(SerenityRobolectricTestRunner.class)
 @Config(shadows = SerenityShadowResources.class, emulateSdk = 18)
@@ -71,7 +71,7 @@ public class MainActivityTest {
 	@Test
 	public void testCreatesMenu() throws Exception {
 		assertThat(activity.findViewById(R.id.mainGalleryBackground))
-				.isVisible();
+		.isVisible();
 	}
 
 	@Test
@@ -85,14 +85,14 @@ public class MainActivityTest {
 	public void testGalleryOnItemClickListenerIsSet() throws Exception {
 		Gallery gallery = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
 		Assertions.assertThat(gallery.getOnItemClickListener()).isNotNull()
-				.isInstanceOf(GalleryOnItemClickListener.class);
+		.isInstanceOf(GalleryOnItemClickListener.class);
 	}
 
 	@Test
 	public void testGalleryOnItemSelectedListenerIsSet() throws Exception {
 		Gallery gallery = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
 		Assertions.assertThat(gallery.getOnItemSelectedListener()).isNotNull()
-				.isInstanceOf(GalleryOnItemSelectedListener.class);
+		.isInstanceOf(GalleryOnItemSelectedListener.class);
 	}
 
 	@Test

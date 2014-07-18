@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -29,200 +29,53 @@ import java.util.List;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
-import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.services.GDMService;
+import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
+import us.nineworlds.serenity.handlers.DownloadHandler;
+import us.nineworlds.serenity.handlers.DownloadHandler.DownloadServiceConnection;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
-import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Gallery;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.castillo.dd.DSInterface;
-import com.castillo.dd.Download;
 import com.castillo.dd.DownloadService;
-import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
 
 public class MainActivity extends SerenityDrawerLayoutActivity {
 
-	private class AutoConfigureHandlerRunnable implements Runnable {
-
-		@Override
-		public void run() {
-			if (SerenityApplication.getPlexMediaServers().isEmpty()) {
-				return;
-			}
-			Server server = SerenityApplication.getPlexMediaServers().values()
-					.iterator().next();
-			String ipAddress = preferences.getString("server", "");
-			if (SerenityApplication.getPlexMediaServers().isEmpty()
-					&& "".equals(ipAddress)) {
-				Toast.makeText(
-						MainActivity.this,
-						"No servers discovered or configured. Use settings to configure the ip address manually.",
-						Toast.LENGTH_LONG).show();
-				return;
-			}
-			if ("".equals(ipAddress)) {
-				Editor edit = preferences.edit();
-				edit.putString("server", server.getIPAddress());
-				edit.apply();
-				Toast.makeText(
-						mainContext,
-						getResources().getText(
-								R.string.auto_configuring_server_using_)
-								+ server.getServerName(), Toast.LENGTH_LONG)
-						.show();
-				mainContext.recreate();
-			}
-		}
-	}
-
-	private static class DownloadHandler extends Handler {
-		@Override
-		public void handleMessage(Message msg) {
-			if ((msg.what == SerenityApplication.PROGRESS)
-					&& (!downloadsCancelled)) {
-				List<PendingDownload> pendingDownloads = SerenityApplication
-						.getPendingDownloads();
-				for (int i = 0; i < pendingDownloads.size(); i++) {
-					if (i == downloadIndex) {
-						try {
-							int status = dsInterface.getDownloadStatus(i);
-							pendingDownloads.get(i).setStatus(status);
-							if (status == Download.START) {
-								dsInterface.downloadFile(i);
-								notification(pendingDownloads.get(i)
-										.getFilename() + " has started.",
-										"Downloading "
-												+ pendingDownloads.get(i)
-														.getFilename());
-								pendingDownloads.get(i).setLaunchTime(
-										dsInterface.getDownloadLaunchTime(i));
-
-							} else if (status == Download.COMPLETE) {
-								Toast.makeText(
-										mainContext,
-										pendingDownloads.get(i).getFilename()
-												+ " has completed.",
-										Toast.LENGTH_LONG).show();
-
-								downloadIndex++;
-								if (downloadIndex >= pendingDownloads.size()
-										|| pendingDownloads.size() == 0) {
-									notificationManager.cancel(1);
-								}
-							}
-							if (status != Download.COMPLETE) {
-								pendingDownloads.get(i).setProgress(
-										dsInterface.getDownloadProgress(i));
-								pendingDownloads.get(i).setEllapsedTime(
-										dsInterface.getDownloadEllapsedTime(i));
-								pendingDownloads
-										.get(i)
-										.setRemainingTime(
-												dsInterface
-														.getDownloadRemainingTime(i));
-								pendingDownloads.get(i).setSpeed(
-										dsInterface.getDownloadSpeed(i));
-							} else {
-								pendingDownloads.get(i).setProgress(100);
-							}
-						} catch (Exception e) {
-							Log.e(getClass().getName(),
-									Log.getStackTraceString(e));
-						}
-					}
-				}
-				sendMessageDelayed(obtainMessage(SerenityApplication.PROGRESS),
-						50);
-			}
-		}
-
-		protected void notification(String tickerText, String expandedText) {
-			int icon = R.drawable.serenity_bonsai_logo;
-			long when = System.currentTimeMillis();
-			Notification notification = new Notification(icon, tickerText, when);
-			String expandedTitle = "Serenity Download";
-			Intent intent = new Intent(mainContext, MainActivity.class);
-			PendingIntent launchIntent = PendingIntent.getActivity(mainContext,
-					0, intent, 0);
-			notification.setLatestEventInfo(mainContext, expandedTitle,
-					expandedText, launchIntent);
-			int notificationRef = 1;
-			notificationManager.notify(notificationRef, notification);
-		}
-	}
-
-	private static int downloadIndex;
-	private static boolean downloadsCancelled = false;
-	private static DSInterface dsInterface;
-
 	public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
-	private static Activity mainContext;
-	private static NotificationManager notificationManager;
-
-	public static DSInterface getDsInterface() {
-		return dsInterface;
-	}
 
 	protected Handler autoConfigureHandler = new Handler();
 
-	private final ServiceConnection downloadService = new ServiceConnection() {
-		@Override
-		public void onServiceConnected(ComponentName className, IBinder service) {
-			dsInterface = DSInterface.Stub.asInterface(service);
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName className) {
-			dsInterface = null;
-		}
-	};
-
+	protected DownloadHandler downloadHandler;
+	private DownloadServiceConnection downloadService;
 	private final BroadcastReceiver gdmReciver = new GDMReceiver();
 
 	private Gallery mainGallery;
 
 	private View mainGalleryBackgroundView;
 
-	protected Handler mHandler = new DownloadHandler();
-
 	private SharedPreferences preferences;
 
 	private boolean restarted_state = false;
 
-	/**
-	 * 
-	 */
 	@Override
 	protected void createSideMenu() {
-		mainContext = this;
 		mainGalleryBackgroundView = findViewById(R.id.mainGalleryBackground);
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -255,9 +108,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		populateMenuOptions();
 	}
 
-	/**
-	 * 
-	 */
 	protected void populateMenuOptions() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem
@@ -276,32 +126,22 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 						drawerLayout, mainGallery));
 	}
 
-	/**
-	 * 
-	 */
 	protected void discoverPlexServers() {
 		Intent GDMService = new Intent(this, GDMService.class);
 		startService(GDMService);
 	}
 
-	/**
-	 * 
-	 */
 	protected void initDownloadService() {
+		downloadHandler = DownloadHandler.getInstance(this);
+		downloadService = downloadHandler.getDownloadService();
 		getApplicationContext().bindService(
 				new Intent(this, DownloadService.class), downloadService,
 				Context.BIND_AUTO_CREATE);
 
-		mHandler.sendMessage(mHandler
+		downloadHandler.sendMessage(downloadHandler
 				.obtainMessage(SerenityApplication.PROGRESS));
-
-		String svcName = Context.NOTIFICATION_SERVICE;
-		notificationManager = (NotificationManager) getSystemService(svcName);
 	}
 
-	/**
-	 * 
-	 */
 	protected void initPreferences() {
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		if (preferences != null) {
@@ -349,22 +189,10 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		}
 
 		initDownloadService();
-
-		// DisplayUtils.overscanCompensation(this,
-		// findViewById(R.id.mainLayout),
-		// findViewById(R.id.left_drawer), actionBar.getCustomView());
-		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
-
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main_menu, menu);
-		return super.onCreateOptionsMenu(menu);
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void initializeDefaultPlayer() {
 		boolean initialRun = preferences.getBoolean("serenity_first_run", true);
@@ -381,18 +209,12 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		mHandler.removeMessages(SerenityApplication.PROGRESS);
+		downloadHandler.removeMessages(SerenityApplication.PROGRESS);
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(gdmReciver);
 
 		getApplicationContext().unbindService(downloadService);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
-	 * android.view.KeyEvent)
-	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean menuKeySlidingMenu = preferences.getBoolean(
@@ -432,6 +254,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 		IntentFilter filters = new IntentFilter();
 		filters.addAction(GDMService.MSG_RECEIVED);
 		filters.addAction(GDMService.SOCKET_CLOSED);
@@ -451,8 +274,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 			EasyTracker.getInstance().activityStart(this);
 		}
 
-		autoConfigureHandler.postDelayed(new AutoConfigureHandlerRunnable(),
-				2500);
+		autoConfigureHandler.postDelayed(
+				new AutoConfigureHandlerRunnable(this), 2500);
 		if (restarted_state == false) {
 			setupGallery();
 		}
@@ -467,11 +290,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#openOptionsMenu()
-	 */
 	@Override
 	public void openOptionsMenu() {
 		drawerLayout.openDrawer(drawerList);
@@ -489,5 +307,4 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		mainGallery.setCallbackDuringFling(false);
 		mainGallery.requestFocusFromTouch();
 	}
-
 }
