@@ -128,7 +128,7 @@
             android:defaultValue="default"
             android:key="serenity_external_player_filter"
             android:summary="@string/preferred_external_player_summary"
-            android:title="@string/preferred_external_player" />
+            android:title="@string/preferred_external_player" />        
         
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/Controls">

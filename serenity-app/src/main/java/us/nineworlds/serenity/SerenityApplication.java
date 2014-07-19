@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -56,9 +56,9 @@ import com.squareup.okhttp.OkHttpClient;
 
 /**
  * Global manager for the Serenity application
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class SerenityApplication extends Application {
 
@@ -135,11 +135,11 @@ public class SerenityApplication extends Application {
 	 * Retrieves the video playback queue. Items will be added and removed from
 	 * the queue and used by the video player for playback of Episodes and
 	 * Movies.
-	 * 
+	 *
 	 * When an episode is finished playing it should be removed from the queue.
-	 * 
+	 *
 	 * This queue is thread safe.
-	 * 
+	 *
 	 * @return
 	 */
 	public static LinkedList<VideoContentInfo> getVideoPlaybackQueue() {
@@ -163,7 +163,7 @@ public class SerenityApplication extends Application {
 
 	/**
 	 * Checks if the app is running on OUYA.
-	 * 
+	 *
 	 * @return true if the app is running on OUYA
 	 */
 	public static boolean isRunningOnOUYA() {
@@ -178,7 +178,7 @@ public class SerenityApplication extends Application {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public SerenityApplication() {
 		pendingDownloads = new ArrayList<PendingDownload>();
@@ -217,7 +217,7 @@ public class SerenityApplication extends Application {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void init() {
 		configureImageLoader();
@@ -229,7 +229,7 @@ public class SerenityApplication extends Application {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void initializePlexappFactory() {
 		IConfiguration config = ServerConfig.getInstance(this);
@@ -237,7 +237,7 @@ public class SerenityApplication extends Application {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void installAnalytics() {
 		EasyTracker.getInstance().setContext(this);
