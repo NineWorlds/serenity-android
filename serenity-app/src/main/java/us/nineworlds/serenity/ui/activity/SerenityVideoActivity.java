@@ -28,6 +28,7 @@ import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
+import us.nineworlds.serenity.ui.util.PlayerResultHandler;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Intent;
@@ -44,7 +45,7 @@ import com.jess.ui.TwoWayGridView;
  *
  */
 public abstract class SerenityVideoActivity extends
-SerenityDrawerLayoutActivity {
+		SerenityDrawerLayoutActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -75,10 +76,18 @@ SerenityDrawerLayoutActivity {
 			}
 		}
 
-		if (data != null && externalPlayer) {
-			ExternalPlayerResultHandler externalPlayerHandler = new ExternalPlayerResultHandler(
-					resultCode, data, this, adapter);
-			externalPlayerHandler.updatePlaybackPosition(video, selectedView);
+		if (data != null) {
+			if (externalPlayer) {
+				ExternalPlayerResultHandler externalPlayerHandler = new ExternalPlayerResultHandler(
+						resultCode, data, this, adapter);
+				externalPlayerHandler.updatePlaybackPosition(video,
+						selectedView);
+			} else {
+				PlayerResultHandler playerResultHandler = new PlayerResultHandler(
+						data, adapter);
+				playerResultHandler.updateVideoPlaybackPosition(video,
+						selectedView);
+			}
 		}
 
 		if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {

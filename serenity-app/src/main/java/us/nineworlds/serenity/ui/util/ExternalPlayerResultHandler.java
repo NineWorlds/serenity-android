@@ -29,8 +29,6 @@ import us.nineworlds.serenity.core.externalplayer.ExternalPlayer;
 import us.nineworlds.serenity.core.externalplayer.ExternalPlayerFactory;
 import us.nineworlds.serenity.core.externalplayer.MXPlayer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.UpdateProgressRequest;
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,19 +37,17 @@ import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
-public class ExternalPlayerResultHandler {
+public class ExternalPlayerResultHandler extends PlayerResultHandler {
 
-	Intent data;
 	Activity activity;
 	String externalPlayerValue;
 	boolean extPlayerVideoQueueEnabled;
-	BaseAdapter adapter;
 	int resultCode;
 	ExternalPlayer externalPlayer;
 
 	public ExternalPlayerResultHandler(int resultCode, Intent data,
 			Activity activity, BaseAdapter adapter) {
-		this.data = data;
+		super(data, adapter);
 		this.activity = activity;
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(activity);
@@ -59,7 +55,6 @@ public class ExternalPlayerResultHandler {
 				"serenity_external_player_filter", "default");
 		extPlayerVideoQueueEnabled = preferences.getBoolean(
 				"external_player_continuous_playback", false);
-		this.adapter = adapter;
 		this.resultCode = resultCode;
 	}
 
@@ -107,33 +102,6 @@ public class ExternalPlayerResultHandler {
 	}
 
 	/**
-	 * @param video
-	 * @param selectedView
-	 */
-	private void updateVideoPlaybackPosition(VideoContentInfo video,
-			View selectedView) {
-		if (selectedView == null || video == null) {
-			return;
-		}
-
-		View watchedView = selectedView
-				.findViewById(R.id.posterWatchedIndicator);
-
-		updateProgress(data, video);
-		if (video.isWatched()) {
-			watchedView.setVisibility(View.VISIBLE);
-			toggleWatched(video);
-		} else if (video.isPartiallyWatched()) {
-			if (watchedView.isShown()) {
-				watchedView.setVisibility(View.INVISIBLE);
-			}
-			ImageUtils.toggleProgressIndicator(selectedView,
-					video.getResumeOffset(), video.getDuration());
-		}
-		adapter.notifyDataSetChanged();
-	}
-
-	/**
 	 * @param mxPlayerCompleted
 	 * @return
 	 */
@@ -163,18 +131,6 @@ public class ExternalPlayerResultHandler {
 	protected boolean hasMXPlayerCompletedNormally(Intent data) {
 		String mxplayerString = data.getStringExtra("end_by");
 		return "playback_completion".equals(mxplayerString);
-	}
-
-	/**
-	 * @param selectedView
-	 * @param video
-	 */
-	protected void toggleWatched(VideoContentInfo video) {
-		if (video.isWatched()) {
-			new WatchedVideoAsyncTask().execute(video.id());
-			video.setResumeOffset(0);
-			video.setViewCount(video.getViewCount() + 1);
-		}
 	}
 
 	/**
@@ -210,26 +166,6 @@ public class ExternalPlayerResultHandler {
 				.getVideoPlaybackQueue().poll();
 		VideoPlayerIntentUtils.launchExternalPlayer(videoContentInfo, activity,
 				false);
-	}
-
-	/**
-	 * @param data
-	 * @param video
-	 */
-	protected void updateProgress(Intent data, VideoContentInfo video) {
-		long position = 0;
-		position = data.getIntExtra("position", 0);
-
-		video.setResumeOffset(Long.valueOf(position).intValue());
-
-		if (video.isPartiallyWatched()) {
-			UpdateProgressRequest request = new UpdateProgressRequest(position,
-					video);
-			video.setResumeOffset(Long.valueOf(position).intValue());
-			request.execute();
-			return;
-		}
-
 	}
 
 }
