@@ -1,8 +1,8 @@
 /**
  * The MIT License (MIT)
- * 
+ *
  * Copyright (c) 2012-2013 David Carver
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -10,10 +10,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -29,7 +29,6 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -42,36 +41,38 @@ import android.widget.RelativeLayout;
 
 /**
  * A prepare listener that handles how a video should start playing.
- * 
+ *
  * It checks to see if the video has been previously viewed and if so will
- * present a dialog to allow resuming of a video from where it was
- * previously last viewed. Otherwise it will start play back of the video.
- * It also launches the Watched status update task and the progress update
- * handler.
- * 
+ * present a dialog to allow resuming of a video from where it was previously
+ * last viewed. Otherwise it will start play back of the video. It also launches
+ * the Watched status update task and the progress update handler.
+ *
  * @author dcarver
- * 
+ *
  */
 public class VideoPlayerPrepareListener implements OnPreparedListener {
 
-	private Context context;
-	private SurfaceView surfaceView;
-	private MediaController mediaController;
-	private int resumeOffset;
-	private MediaPlayer mediaPlayer;
-	private String plexAspectRatio;
-    private final boolean autoResume;
-    private Handler progressReportingHandler;
-	private Runnable progressRunnable;
+	private final Context context;
+	private final SurfaceView surfaceView;
+	private final MediaController mediaController;
+	private final int resumeOffset;
+	private final MediaPlayer mediaPlayer;
+	private final String plexAspectRatio;
+	private final boolean autoResume;
+	private final Handler progressReportingHandler;
+	private final Runnable progressRunnable;
 	private SharedPreferences preferences;
 
-	public VideoPlayerPrepareListener(Context c, MediaPlayer mp, MediaController con, SurfaceView v, int resumeOffset, boolean autoResume, String aspectRatio, Handler progress, Runnable progresrun) {
+	public VideoPlayerPrepareListener(Context c, MediaPlayer mp,
+			MediaController con, SurfaceView v, int resumeOffset,
+			boolean autoResume, String aspectRatio, Handler progress,
+			Runnable progresrun) {
 		context = c;
 		mediaController = con;
 		surfaceView = v;
 		mediaPlayer = mp;
-        this.autoResume = autoResume;
-        progressReportingHandler = progress;
+		this.autoResume = autoResume;
+		progressReportingHandler = progress;
 		progressRunnable = progresrun;
 		plexAspectRatio = aspectRatio;
 		this.resumeOffset = resumeOffset;
@@ -80,81 +81,91 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 	@Override
 	public void onPrepared(MediaPlayer mp) {
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		
-		android.view.ViewGroup.LayoutParams lp = setupAspectRatio(surfaceView, plexAspectRatio);
+
+		android.view.ViewGroup.LayoutParams lp = setupAspectRatio(surfaceView,
+				plexAspectRatio);
 		surfaceView.setLayoutParams(lp);
 		mediaController.setEnabled(true);
 
-		if (resumeOffset > 0 && SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
-            if (autoResume) {
-                if (!mediaPlayer.isPlaying()) {
-                    mediaPlayer.start();
-                }
-                mediaPlayer.seekTo(resumeOffset);
-                setMetaData();
-            } else {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        context, android.R.style.Theme_Holo_Dialog);
+		if (resumeOffset > 0
+				&& SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+			if (autoResume) {
+				if (!mediaPlayer.isPlaying()) {
+					mediaPlayer.start();
+				}
+				mediaPlayer.seekTo(resumeOffset);
+				setMetaData();
+			} else {
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+						context, android.R.style.Theme_Holo_Dialog);
 
-                alertDialogBuilder.setTitle(R.string.resume_video);
-                alertDialogBuilder
-                        .setMessage(context.getResources().getText(R.string.resume_the_video_from_) + TimeUtil.formatDuration(resumeOffset)  + context.getResources().getText(R.string._or_restart_))
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.resume,
-                                new DialogInterface.OnClickListener() {
+				alertDialogBuilder.setTitle(R.string.resume_video);
+				alertDialogBuilder
+						.setMessage(
+								context.getResources().getText(
+										R.string.resume_the_video_from_)
+										+ TimeUtil.formatDuration(resumeOffset)
+										+ context.getResources().getText(
+												R.string._or_restart_))
+						.setCancelable(false)
+						.setPositiveButton(R.string.resume,
+								new DialogInterface.OnClickListener() {
 
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                            int which) {
-                                        if (!mediaPlayer.isPlaying()) {
-                                            mediaPlayer.start();
-                                        }
-                                        mediaPlayer.seekTo(resumeOffset);
-                                        setMetaData();
-                                    }
-                                })
-                        .setNegativeButton(R.string.restart,
-                                new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										if (!mediaPlayer.isPlaying()) {
+											mediaPlayer.start();
+										}
+										mediaPlayer.seekTo(resumeOffset);
+										setMetaData();
+									}
+								})
+						.setNegativeButton(R.string.restart,
+								new DialogInterface.OnClickListener() {
 
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                            int which) {
-                                        mediaPlayer.start();
-                                        setMetaData();
-                                    }
-                                });
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										mediaPlayer.start();
+										setMetaData();
+									}
+								});
 
-                alertDialogBuilder.create();
-                AlertDialog dialog = alertDialogBuilder.show();
-                dialog.getButton(DialogInterface.BUTTON_POSITIVE).requestFocusFromTouch();
-                return;
-            }
+				alertDialogBuilder.create();
+				AlertDialog dialog = alertDialogBuilder.show();
+				dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+						.requestFocusFromTouch();
+				return;
+			}
 		} else {
-			mediaPlayer.start();			
+			mediaPlayer.start();
 			setMetaData();
 		}
 	}
-	
-	
+
 	/**
-	 * 
+	 *
 	 */
 	protected void setMetaData() {
 		boolean showOSD = preferences.getBoolean("internal_player_osd", true);
+		int osdDelayTime = Integer.parseInt(preferences.getString(
+				"osd_display_time", "5000"));
 		if (showOSD) {
-			mediaController.show(SerenitySurfaceViewVideoActivity.CONTROLLER_DELAY);
+			mediaController.show(osdDelayTime);
 		}
 		if (progressReportingHandler != null) {
 			progressReportingHandler.postDelayed(progressRunnable, 5000);
 		}
 	}
-	
+
 	/**
 	 * Setup the aspect ratio for the SurfaceView
-	 * 
+	 *
 	 * @return
 	 */
-	protected android.view.ViewGroup.LayoutParams setupAspectRatio(SurfaceView surfaceView, String plexAspectRatio) {
+	protected android.view.ViewGroup.LayoutParams setupAspectRatio(
+			SurfaceView surfaceView, String plexAspectRatio) {
 		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) surfaceView
 				.getLayoutParams();
 
@@ -199,6 +210,5 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 
 		return lp;
 	}
-	
-	
+
 }

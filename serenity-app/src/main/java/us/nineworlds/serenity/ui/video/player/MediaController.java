@@ -1,15 +1,15 @@
 /*
  * Copyright (C) 2011 VOV IO (http://vov.io/)
- * 
+ *
  * Based on the code from the Android Open Player
  * http://code.google.com/p/android-oplayer/
  */
 
 /**
  * The MIT License (MIT)
- * 
+ *
  * Copyright (c) 2012-2013 David Carver
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -17,10 +17,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -65,20 +65,20 @@ import android.widget.TextView;
 /**
  * Based on the Android Open Source MediaController but drastically refactored
  * and cleaned up.
- * 
+ *
  * DAC - 2013-03-28 - Cleaned up the code and removed the handling of the key
  * events. Also made it so that the mediacontroller popup windows is focusable
  * otherwise no keyevents were being fired.
- * 
+ *
  * DAC - 2014-05-20 - Fix issue on Android 4.3 or higher were mediacontroller
  * window position was not being calculated correctly.
- * 
+ *
  */
 public class MediaController extends FrameLayout {
 
 	private static final int FADE_OUT = 1;
 	private static final int SHOW_PROGRESS = 2;
-	private static final int DEFAULT_TIME_OUT = 3000;
+	private int defaultTimeOut = 5000;
 
 	private AudioManager audioManager;
 	private View anchorView;
@@ -114,6 +114,10 @@ public class MediaController extends FrameLayout {
 		rootView = this;
 		fromLayoutXML = true;
 		initController(context);
+	}
+
+	public void setOSDDelayTime(int delayTime) {
+		defaultTimeOut = delayTime;
 	}
 
 	public MediaController(MediaControllerDataObject mediaMetaData) {
@@ -347,7 +351,7 @@ public class MediaController extends FrameLayout {
 	/**
 	 * Create the view that holds the widgets that control playback. Derived
 	 * classes can override this to create their own.
-	 * 
+	 *
 	 * @return The controller view.
 	 */
 	protected View makeControllerView() {
@@ -374,18 +378,18 @@ public class MediaController extends FrameLayout {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		show(DEFAULT_TIME_OUT);
+		show(defaultTimeOut);
 		return true;
 	}
 
 	@Override
 	public boolean onTrackballEvent(MotionEvent ev) {
-		show(DEFAULT_TIME_OUT);
+		show(defaultTimeOut);
 		return false;
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void positionPopupWindow() {
 		int[] location = new int[2];
@@ -407,7 +411,7 @@ public class MediaController extends FrameLayout {
 	/**
 	 * Set the view that acts as the anchor for the control view. This can for
 	 * example be a VideoView, or your Activity's main view.
-	 * 
+	 *
 	 * @param view
 	 *            The view to which to anchor the controller when it is visible.
 	 */
@@ -429,17 +433,17 @@ public class MediaController extends FrameLayout {
 	 * <p>
 	 * Change the animation style resource for this controller.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * If the controller is showing, calling this method will take effect only
 	 * the next time the controller is shown.
 	 * </p>
-	 * 
+	 *
 	 * @param animationStyle
 	 *            animation style to use when the controller appears and
 	 *            disappears. Set to -1 for the default animation, 0 for no
 	 *            animation, or a resource identifier for an explicit animation.
-	 * 
+	 *
 	 */
 	public void setAnimationStyle(int animationStyle) {
 		this.animationStyle = animationStyle;
@@ -459,7 +463,7 @@ public class MediaController extends FrameLayout {
 
 	/**
 	 * Control the action when the seekbar dragged by user
-	 * 
+	 *
 	 * @param seekWhenDragging
 	 *            True the media will seek periodically
 	 */
@@ -525,13 +529,13 @@ public class MediaController extends FrameLayout {
 	}
 
 	public void show() {
-		show(DEFAULT_TIME_OUT);
+		show(defaultTimeOut);
 	}
 
 	/**
 	 * Show the controller on screen. It will go away automatically after
 	 * 'timeout' milliseconds of inactivity.
-	 * 
+	 *
 	 * @param timeout
 	 *            The timeout in milliseconds. Use 0 to show the controller
 	 *            until hide() is called.
@@ -616,7 +620,7 @@ public class MediaController extends FrameLayout {
 					mediaPlayerControl.seekTo((playbackDuration * bar
 							.getProgress()) / 1000);
 				}
-				show(DEFAULT_TIME_OUT);
+				show(defaultTimeOut);
 				showfadeMessgeHandler.removeMessages(SHOW_PROGRESS);
 				audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
 				draggingSeeker = false;

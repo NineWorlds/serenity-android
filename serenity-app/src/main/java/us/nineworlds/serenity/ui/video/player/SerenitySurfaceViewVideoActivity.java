@@ -74,12 +74,12 @@ import com.google.analytics.tracking.android.EasyTracker;
 /**
  * A view that handles the internal video playback and representation of a movie
  * or tv show.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class SerenitySurfaceViewVideoActivity extends SerenityActivity
-		implements SurfaceHolder.Callback {
+implements SurfaceHolder.Callback {
 
 	/**
 	 *
@@ -89,7 +89,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	int playbackPos = 0;
 
 	static final String TAG = "SerenitySurfaceViewVideoActivity";
-	static final int CONTROLLER_DELAY = 16000; // Sixteen seconds
+	private int osdDelayTime = 5000; // Sixteen seconds
 
 	private MediaPlayer mediaPlayer;
 	private String videoURL;
@@ -110,7 +110,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private boolean subtitlesPlaybackEnabled = true;
 	private String subtitleInputEncoding = null;
 	private boolean autoResume;
-
+	private SharedPreferences prefs;
 	private final Handler subtitleDisplayHandler = new Handler();
 	private final Runnable subtitle = new Runnable() {
 		@Override
@@ -139,7 +139,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			if (subtitlesPlaybackEnabled) {
 				subtitleDisplayHandler
-						.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+				.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
 			}
 
 		}
@@ -168,8 +168,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 						new UpdateProgressRequest().execute();
 						progressReportinghandler.postDelayed(this,
 								PROGRESS_UPDATE_DELAY); // Update progress every
-														// 5
-														// seconds
+						// 5
+						// seconds
 					} else {
 						new WatchedVideoAsyncTask().execute(videoId);
 					}
@@ -198,7 +198,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					resumeOffset, autoResume, aspectRatio,
 					progressReportinghandler, progressRunnable));
 			mediaPlayer
-					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
+			.setOnCompletionListener(new VideoPlayerOnCompletionListener());
 			mediaPlayer.prepareAsync();
 
 		} catch (Exception ex) {
@@ -223,7 +223,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			getSupportActionBar().hide();
 		}
 		init();
-		
+
 		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 
 	}
@@ -232,6 +232,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 * Initialize the mediaplayer and mediacontroller.
 	 */
 	protected void init() {
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		osdDelayTime = Integer.parseInt(prefs.getString("osd_display_time",
+				"5000"));
+
 		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setOnErrorListener(new SerenityOnErrorListener());
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
@@ -245,8 +249,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		holder.addCallback(this);
 		holder.setSizeFromLayout();
 
-		final SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
 		final boolean showTimeOfDay = prefs.getBoolean("showTimeOfDay", false);
 		timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
 
@@ -340,6 +342,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		mediaController.setAnchorView(videoActivityView);
 		mediaController.setMediaPlayer(new SerenityMediaPlayerControl(
 				mediaPlayer));
+		mediaController.setOSDDelayTime(osdDelayTime);
+
 	}
 
 	private MediaControllerDataObject initMetaData(String summary,
@@ -387,8 +391,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		final SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
 
 		if (isKeyCodeBack(keyCode)) {
 			if (mediaController.isShowing()) {
@@ -407,7 +409,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				if (mediaController.isShowing()) {
 					mediaController.hide();
 				} else {
-					mediaController.show(CONTROLLER_DELAY);
+					mediaController.show(osdDelayTime);
 				}
 			}
 			return true;
@@ -417,13 +419,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			if (isMediaPlayerStateValid()) {
 				if (mediaPlayer.isPlaying()) {
 					mediaPlayer.pause();
-					mediaController.show(CONTROLLER_DELAY);
+					mediaController.show(osdDelayTime);
 					progressReportinghandler.removeCallbacks(progressRunnable);
 				} else {
 					mediaPlayer.start();
 					mediaController.hide();
 					progressReportinghandler
-							.postDelayed(progressRunnable, 5000);
+					.postDelayed(progressRunnable, 5000);
 				}
 				return true;
 			}
@@ -435,13 +437,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					if (mediaController.isShowing()) {
 						mediaController.hide();
 					} else {
-						mediaController.show(CONTROLLER_DELAY);
+						mediaController.show(osdDelayTime);
 					}
 				} else {
 					mediaPlayer.start();
 					mediaController.hide();
 					progressReportinghandler
-							.postDelayed(progressRunnable, 5000);
+					.postDelayed(progressRunnable, 5000);
 				}
 				return true;
 			}
@@ -527,7 +529,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 				if (mediaPlayer.isPlaying()) {
 					mediaPlayer.pause();
 					if (!mediaController.isShowing()) {
-						mediaController.show(CONTROLLER_DELAY);
+						mediaController.show(osdDelayTime);
 					}
 				}
 				return true;
@@ -552,7 +554,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			skipOffset = 0;
 		}
 		if (!mediaController.isShowing()) {
-			mediaController.show(CONTROLLER_DELAY);
+			mediaController.show(osdDelayTime);
 		}
 		mediaPlayer.seekTo(skipOffset);
 	}
@@ -619,7 +621,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	protected void skipToPercentage(int newPos) {
 		mediaPlayer.seekTo(newPos);
 		if (!mediaController.isShowing()) {
-			mediaController.show(CONTROLLER_DELAY);
+			mediaController.show(osdDelayTime);
 		}
 	}
 
@@ -710,9 +712,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	/**
 	 * A task that updates the progress position of a video while it is being
 	 * played.
-	 * 
+	 *
 	 * @author dcarver
-	 * 
+	 *
 	 */
 	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
 
@@ -740,7 +742,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -762,7 +764,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	}
 
 	protected class VideoPlayerOnCompletionListener implements
-			OnCompletionListener {
+	OnCompletionListener {
 
 		@Override
 		public void onCompletion(MediaPlayer mp) {
@@ -784,7 +786,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media
 	 * .MediaPlayer, android.media.TimedText)

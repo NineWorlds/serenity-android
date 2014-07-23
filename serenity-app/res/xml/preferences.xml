@@ -113,6 +113,13 @@
             android:key="internal_player_osd"
             android:summary="@string/internal_player_osd_summary"
             android:title="@string/on_screen_display" />
+        <ListPreference android:defaultValue="5000"
+            android:key="osd_display_time"
+            android:summary = "Sets the amount of time the On Screen Display stays shown before fadding away."
+            android:title="On Screen Display Time"
+            android:entries="@array/osd_display_time"
+            android:entryValues="@array/osd_display_time_values"
+            />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/media_player_external" >
         <CheckBoxPreference
