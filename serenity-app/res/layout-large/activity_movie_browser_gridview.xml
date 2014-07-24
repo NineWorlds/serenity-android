@@ -24,8 +24,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/actionbarMargin"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="@dimen/actionbarMargin"
             android:background="@color/card_background"
             android:focusable="true"
             android:nextFocusDown="@+id/movieGridView"
@@ -47,16 +47,41 @@
 
     <!-- The navigation drawer -->
 
-    <ListView
+    <LinearLayout
         android:id="@+id/left_drawer"
         android:layout_width="240dp"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:layout_gravity="start"
+        android:layout_marginTop="?android:attr/actionBarSize"
         android:background="#111"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:focusableInTouchMode="true"
-        android:layout_marginTop="?android:attr/actionBarSize" />
+        android:orientation="vertical" >
+
+        
+        <ListView
+            android:id="@+id/left_drawer_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#111"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:layout_weight="1"
+            android:focusableInTouchMode="true" />
+
+        <Button
+            android:id="@+id/drawer_settings"
+            style="@android:style/TextAppearance.Holo.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/menu_item_selector"
+            android:layout_gravity="center_vertical"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:text="Settings"
+            android:textColor="@android:color/white"
+            tools:ignore="SelectableText" />
+        
+        
+    </LinearLayout>
 
 </us.nineworlds.serenity.widgets.DrawerLayout>

@@ -33,6 +33,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public abstract class SerenityDrawerLayoutActivity extends SerenityActivity {
@@ -41,6 +42,7 @@ public abstract class SerenityDrawerLayoutActivity extends SerenityActivity {
 	protected ListView drawerList;
 	protected ActionBarDrawerToggle drawerToggle;
 	protected ActionBar actionBar;
+	protected LinearLayout linearDrawerLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -7,5 +7,5 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:textColor="@android:color/white"
-    android:background="@drawable/album_list_view_selector"
+    android:background="@drawable/menu_item_selector"
     tools:ignore="SelectableText" />

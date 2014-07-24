@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -45,6 +45,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -71,7 +73,15 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		}
 
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		drawerList = (ListView) drawerLayout.findViewById(R.id.left_drawer);
+		linearDrawerLayout = (LinearLayout) findViewById(R.id.left_drawer);
+
+		Button settingsButton = (Button) findViewById(R.id.drawer_settings);
+		settingsButton
+		.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
+				drawerLayout));
+
+		drawerList = (ListView) drawerLayout
+				.findViewById(R.id.left_drawer_list);
 
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
 				R.drawable.menudrawer_selector, R.string.drawer_open,
@@ -103,7 +113,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void populateMenuDrawer() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
@@ -118,6 +128,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		drawerList
 				.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(
 						drawerLayout));
+
 	}
 
 	@Override
@@ -126,17 +137,17 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 				true);
 		if (menuKeySlidingMenu) {
 			if (keyCode == KeyEvent.KEYCODE_MENU) {
-				if (drawerLayout.isDrawerOpen(drawerList)) {
+				if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
 					drawerLayout.closeDrawers();
 				} else {
-					drawerLayout.openDrawer(drawerList);
+					drawerLayout.openDrawer(linearDrawerLayout);
 				}
 				return true;
 			}
 		}
 
 		if (keyCode == KeyEvent.KEYCODE_BACK
-				&& drawerLayout.isDrawerOpen(drawerList)) {
+				&& drawerLayout.isDrawerOpen(linearDrawerLayout)) {
 			drawerLayout.closeDrawers();
 			return true;
 		}
