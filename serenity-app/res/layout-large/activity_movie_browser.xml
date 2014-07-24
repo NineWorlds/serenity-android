@@ -154,7 +154,7 @@
             style="@android:style/TextAppearance.Holo.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/settings_icon"
+            android:drawableLeft="@drawable/ic_action_settings"
             android:background="@drawable/menu_item_selector"
             android:layout_gravity="center_vertical"
             android:focusable="true"
