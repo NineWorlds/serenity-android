@@ -20,9 +20,9 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/tvShowSeasonTitleRow"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/actionbarMargin"
             android:layout_marginBottom="4dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="@dimen/actionbarMargin"
             android:background="@color/card_background"
             android:focusable="true"
             android:nextFocusDown="@+id/tvShowSeasonImageGalleryLayout"
@@ -81,16 +81,6 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/left_drawer"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#111"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:focusableInTouchMode="true"
-        android:layout_marginTop="?android:attr/actionBarSize" />
+    <include layout="@layout/menu_drawer_with_navigation" />
 
 </us.nineworlds.serenity.widgets.DrawerLayout>

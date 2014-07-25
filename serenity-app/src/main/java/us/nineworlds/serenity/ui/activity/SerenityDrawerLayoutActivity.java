@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.activity;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.ui.listeners.SettingsMenuDrawerOnItemClickedListener;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
@@ -33,6 +34,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -82,6 +84,19 @@ public abstract class SerenityDrawerLayoutActivity extends SerenityActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	protected void initMenuDrawerViews() {
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		linearDrawerLayout = (LinearLayout) findViewById(R.id.left_drawer);
+	
+		Button settingsButton = (Button) findViewById(R.id.drawer_settings);
+		settingsButton
+				.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
+						drawerLayout));
+	
+		drawerList = (ListView) drawerLayout
+				.findViewById(R.id.left_drawer_list);
 	}
 
 }

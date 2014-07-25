@@ -35,7 +35,6 @@ import us.nineworlds.serenity.ui.activity.CategoryHandler;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -45,9 +44,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
@@ -61,7 +57,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -72,16 +68,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 			setContentView(R.layout.activity_movie_browser);
 		}
 
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		linearDrawerLayout = (LinearLayout) findViewById(R.id.left_drawer);
-
-		Button settingsButton = (Button) findViewById(R.id.drawer_settings);
-		settingsButton
-				.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
-						drawerLayout));
-
-		drawerList = (ListView) drawerLayout
-				.findViewById(R.id.left_drawer_list);
+		initMenuDrawerViews();
 
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
 				R.drawable.menudrawer_selector, R.string.drawer_open,
@@ -112,9 +99,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		populateMenuDrawer();
 	}
 
-	/**
-	 *
-	 */
 	protected void populateMenuDrawer() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View",
@@ -126,8 +110,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-		.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(
-				drawerLayout));
+				.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(
+						drawerLayout));
 
 	}
 
@@ -188,7 +172,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -208,7 +192,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -219,7 +203,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onRestart()
 	 */
 	@Override

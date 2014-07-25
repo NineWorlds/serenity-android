@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -36,7 +36,6 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,14 +49,13 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Gallery;
-import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
@@ -102,7 +100,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -123,7 +121,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
 	 * android.view.KeyEvent)
 	 */
@@ -136,17 +134,17 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 						"remote_control_menu", true);
 		if (menuKeySlidingMenu) {
 			if (keyCode == KeyEvent.KEYCODE_MENU) {
-				if (drawerLayout.isDrawerOpen(drawerList)) {
+				if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
 					drawerLayout.closeDrawers();
 				} else {
-					drawerLayout.openDrawer(drawerList);
+					drawerLayout.openDrawer(linearDrawerLayout);
 				}
 				return true;
 			}
 		}
 
 		if (keyCode == KeyEvent.KEYCODE_BACK
-				&& drawerLayout.isDrawerOpen(drawerList)) {
+				&& drawerLayout.isDrawerOpen(linearDrawerLayout)) {
 			drawerLayout.closeDrawers();
 			if (gallery != null) {
 				gallery.requestFocusFromTouch();
@@ -214,8 +212,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 			setContentView(R.layout.activity_tvbrowser_show_banners);
 		}
 
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		drawerList = (ListView) drawerLayout.findViewById(R.id.left_drawer);
+		initMenuDrawerViews();
 
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
 				R.drawable.menudrawer_selector, R.string.drawer_open,
@@ -243,7 +240,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void populateMenuDrawer() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
@@ -256,13 +253,13 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-				.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(
-						drawerLayout));
+		.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(
+				drawerLayout));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
 	 */
 	@Override
@@ -276,7 +273,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#finish()
 	 */
 	@Override
@@ -303,7 +300,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see android.os.Handler#handleMessage(android.os.Message)
 		 */
 		@Override
@@ -318,7 +315,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 			ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
 					context, R.layout.serenity_spinner_textview, categories);
 			spinnerArrayAdapter
-					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
 			categorySpinner = (Spinner) context
 					.findViewById(R.id.categoryFilter);
@@ -327,12 +324,12 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 			if (savedCategory == null) {
 				categorySpinner
-						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-								"all", key));
+				.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+						"all", key));
 			} else {
 				categorySpinner
-						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-								savedCategory, key, false));
+				.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+						savedCategory, key, false));
 
 			}
 			categorySpinner.requestFocus();

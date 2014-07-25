@@ -131,18 +131,9 @@
             </LinearLayout>
 
         </RelativeLayout>
+        
+        <include layout="@layout/menu_drawer_with_navigation"/>
 
-        <ListView
-            android:id="@+id/left_drawer"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="#111"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
-            android:focusableInTouchMode="true"
-            android:layout_marginTop="?android:attr/actionBarSize" />
     </us.nineworlds.serenity.widgets.DrawerLayout>
 
 </merge>

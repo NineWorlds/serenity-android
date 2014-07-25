@@ -40,6 +40,7 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityRobolectricTestRunner;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
+import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +54,7 @@ import android.view.View;
 public class GridSubtitleVolleyResponseListenerTest {
 
 	Serializer serializer;
-	MovieBrowserActivity movieBrowserActivity;
+	SerenityDrawerLayoutActivity movieBrowserActivity;
 
 	@Before
 	public void setUp() throws Exception {

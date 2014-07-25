@@ -21,9 +21,9 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.browser.movie;
+package us.nineworlds.serenity.ui.listeners;
 
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.content.Intent;
@@ -39,7 +39,7 @@ public class SettingsMenuDrawerOnItemClickedListener implements OnClickListener 
 
 	@Override
 	public void onClick(View view) {
-		SerenityMultiViewVideoActivity activity = (SerenityMultiViewVideoActivity) view
+		SerenityDrawerLayoutActivity activity = (SerenityDrawerLayoutActivity) view
 				.getContext();
 
 		Intent i = new Intent(activity, SerenityPreferenceActivity.class);

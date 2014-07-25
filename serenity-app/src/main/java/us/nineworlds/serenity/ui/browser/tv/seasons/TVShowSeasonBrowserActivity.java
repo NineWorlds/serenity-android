@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -32,7 +32,6 @@ import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.widgets.DrawerLayout;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -41,14 +40,13 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
-import android.widget.ListView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jess.ui.TwoWayGridView;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
@@ -129,8 +127,8 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 	@Override
 	protected void createSideMenu() {
 		setContentView(R.layout.activity_tvbrowser_show_seasons);
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		drawerList = (ListView) drawerLayout.findViewById(R.id.left_drawer);
+
+		initMenuDrawerViews();
 
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
 				R.drawable.menudrawer_selector, R.string.drawer_open,
@@ -181,17 +179,17 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 						"remote_control_menu", true);
 		if (menuKeySlidingMenu) {
 			if (keyCode == KeyEvent.KEYCODE_MENU) {
-				if (drawerLayout.isDrawerOpen(drawerList)) {
+				if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
 					drawerLayout.closeDrawers();
 				} else {
-					drawerLayout.openDrawer(drawerList);
+					drawerLayout.openDrawer(linearDrawerLayout);
 				}
 				return true;
 			}
 		}
 
 		if (keyCode == KeyEvent.KEYCODE_BACK
-				&& drawerLayout.isDrawerOpen(drawerList)) {
+				&& drawerLayout.isDrawerOpen(linearDrawerLayout)) {
 			drawerLayout.closeDrawers();
 			if (tvShowSeasonsGallery != null) {
 				tvShowSeasonsGallery.requestFocusFromTouch();
@@ -265,7 +263,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 	/**
 	 * Nothing really to update here now, so will return null.
-	 * 
+	 *
 	 */
 	@Override
 	protected SerenityGallery findGalleryView() {
@@ -274,7 +272,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 	/**
 	 * We want to update playback position and onscreen info when completing.
-	 * 
+	 *
 	 * So pass back the appropriate grid view in this case.
 	 */
 	@Override
