@@ -61,8 +61,10 @@
         <activity
             android:name="us.nineworlds.serenity.AndroidTV"
             android:hardwareAccelerated="true"
+            android:icon="@drawable/serenity_androidtv_banner"
             android:label="@string/title_activity_main"
             android:screenOrientation="sensorLandscape"
+            android:logo="@drawable/serenity_androidtv_banner"
             android:theme="@style/CustomActionBarTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
