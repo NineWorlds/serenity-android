@@ -153,8 +153,8 @@
             <enum name="columnWidth" value="2" />
             <enum name="spacingWidthUniform" value="3" />
         </attr>
-        <attr name="columnWidth" format="dimension" />
-        <attr name="rowHeight" format="dimension" />
+        <attr name="columnWidth"/>
+        <attr name="rowHeight"/>
         <attr name="numColumns" format="integer" min="0">
             <enum name="auto_fit" value="-1" />
         </attr>
