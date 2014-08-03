@@ -26,6 +26,7 @@ package us.nineworlds.serenity;
 import java.util.ArrayList;
 import java.util.List;
 
+import us.nineworlds.serenity.core.OnDeckRecommendations;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -263,6 +264,9 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 		// Start the auto-configuration service
 		discoverPlexServers();
+		OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(
+				this);
+		onDeckRecommendations.recommend();
 		mainGallery.requestFocusFromTouch();
 
 	}

@@ -103,14 +103,14 @@ public class ImageUtils {
 
 		return bitmapWithReflection;
 	}
-	
+
 	/**
-	 * Takes a value in pixels and converts it to a dpi value.  It adjusts
-	 * the dpi size based on the screen density that is returned by 
-	 * android.
+	 * Takes a value in pixels and converts it to a dpi value. It adjusts the
+	 * dpi size based on the screen density that is returned by android.
 	 * 
 	 * @param originalHeight
-	 * @param context The activity context
+	 * @param context
+	 *            The activity context
 	 * @return
 	 */
 	public static int getDPI(int pixelsize, Activity context) {
@@ -146,25 +146,24 @@ public class ImageUtils {
 			break;
 		}
 		}
-		
+
 		int dpi = Math.round((pixelsize * sizeMultiplier) / metrics.density);
 		return dpi;
 	}
-	
-	
+
 	/**
 	 * @param galleryCellView
 	 * @param pi
 	 * @param watchedView
 	 */
-	public static void toggleProgressIndicator(View galleryCellView, int dividend,
-			int divisor) {
+	public static void toggleProgressIndicator(View galleryCellView,
+			int dividend, int divisor) {
 		ProgressBar view = (ProgressBar) galleryCellView
 				.findViewById(R.id.posterInprogressIndicator);
 
 		final float percentWatched = Float.valueOf(dividend)
 				/ Float.valueOf(divisor);
-		
+
 		if (percentWatched < SerenityConstants.WATCHED_PERCENT) {
 			int progress = Float.valueOf(percentWatched * 100).intValue();
 			if (progress < 10) {
@@ -177,5 +176,10 @@ public class ImageUtils {
 			view.setVisibility(View.GONE);
 		}
 	}
-		
+
+	public static int dpToPx(int dp, Context ctx) {
+		float density = ctx.getResources().getDisplayMetrics().density;
+		return Math.round(dp * density);
+	}
+
 }

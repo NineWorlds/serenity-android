@@ -23,38 +23,64 @@
 
 package us.nineworlds.serenity;
 
+import us.nineworlds.serenity.core.OnDeckRecommendations;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 /**
- * Used to automatically launch Serenity for Android after boot
- * is completed on a device.  This is only enabled if the startup
- * preference option has been set to true.
+ * Used to automatically launch Serenity for Android after boot is completed on
+ * a device. This is only enabled if the startup preference option has been set
+ * to true.
  * 
  * @author dcarver
- *
+ * 
  */
 public class StartupBroadcastReceiver extends BroadcastReceiver {
 
+	Context context;
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		
+
+		this.context = context;
+
 		if (intent.getAction() == null) {
 			return;
 		}
-		
+
 		if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-			boolean startupAfterBoot = prefs.getBoolean("serenity_boot_startup", false);
-			if (startupAfterBoot) {
-				Intent i = new Intent(context, MainActivity.class);
-				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(i);
-			}
+			createRecomendations();
+			launchSerenityOnStartup();
 		}
+	}
+
+	/**
+	 * @param context
+	 */
+	protected void launchSerenityOnStartup() {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		boolean startupAfterBoot = prefs.getBoolean("serenity_boot_startup",
+				false);
+		if (startupAfterBoot) {
+			Intent i = new Intent(context, MainActivity.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(i);
+		}
+	}
+
+	protected void createRecomendations() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+			return;
+		}
+
+		OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(
+				context);
+		onDeckRecommendations.recommend();
 	}
 
 }
