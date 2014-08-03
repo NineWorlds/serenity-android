@@ -30,13 +30,14 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.externalplayer.ExternalPlayer;
-import us.nineworlds.serenity.core.externalplayer.ExternalPlayerFactory;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
+import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
+import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
+import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import android.annotation.TargetApi;
@@ -45,10 +46,8 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
@@ -136,7 +135,6 @@ public class OnDeckRecommendations {
 				new RecommendAsyncTask(episode, context).execute();
 			}
 		}
-
 	}
 
 	protected class RecommendAsyncTask extends AsyncTask {
@@ -152,25 +150,15 @@ public class OnDeckRecommendations {
 		protected Object doInBackground(Object... params) {
 			RecommendationBuilder builder = new RecommendationBuilder();
 			try {
-
-				final SharedPreferences prefs = PreferenceManager
-						.getDefaultSharedPreferences(context);
-				boolean externalPlayer = prefs.getBoolean("external_player",
-						false);
-
-				builder = builder.setContext(context)
+				PendingIntent intent = buildPendingIntent(video);
+				builder.setContext(context)
 						.setBackground(video.getBackgroundURL())
 						.setTitle(video.getTitle())
 						.setImage(video.getImageURL())
 						.setId(Integer.parseInt(video.id()))
 						.setDescription(video.getSummary())
-						.setSmallIcon(R.drawable.androidtv_icon_mono);
-				if (externalPlayer) {
-					PendingIntent intent = buildPendingIntent(video);
-					builder = builder.setIntent(intent);
-				}
-
-				builder.build();
+						.setSmallIcon(R.drawable.androidtv_icon_mono)
+						.setIntent(intent).build();
 			} catch (IOException ex) {
 				Log.e("OnDeckRecommendation", "Error building recommendation: "
 						+ builder.toString(), ex);
@@ -179,28 +167,27 @@ public class OnDeckRecommendations {
 		}
 
 		@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-		private PendingIntent buildPendingIntent(VideoContentInfo movie) {
-			SharedPreferences preferences = PreferenceManager
-					.getDefaultSharedPreferences(context);
-			String externalPlayerValue = preferences.getString(
-					"serenity_external_player_filter", "default");
-			ExternalPlayerFactory factory = new ExternalPlayerFactory(movie,
-					context);
-			ExternalPlayer extplay = factory
-					.createExternalPlayer(externalPlayerValue);
-			Intent intent = extplay.createIntent();
+		private PendingIntent buildPendingIntent(VideoContentInfo video) {
+			Intent intent = new Intent(context,
+					RecommendationPlayerActivity.class);
+			if (video instanceof MoviePosterInfo) {
+				intent.putExtra("serenity_video", (MoviePosterInfo) video);
+			}
+
+			if (video instanceof EpisodePosterInfo) {
+				intent.putExtra("serenity_video", (EpisodePosterInfo) video);
+			}
 
 			TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 			stackBuilder.addNextIntent(intent);
 			// Ensure a unique PendingIntents, otherwise all recommendations end
 			// up with the same
 			// PendingIntent
-			intent.setAction(movie.id());
+			intent.setAction(video.id());
 
 			PendingIntent pintent = stackBuilder.getPendingIntent(0,
 					PendingIntent.FLAG_UPDATE_CURRENT);
 			return pintent;
 		}
-
 	}
 }

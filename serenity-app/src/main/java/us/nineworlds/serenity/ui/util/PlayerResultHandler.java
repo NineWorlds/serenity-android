@@ -68,6 +68,13 @@ public class PlayerResultHandler {
 		adapter.notifyDataSetChanged();
 	}
 
+	public void updateVideoPlaybackPosition(VideoContentInfo video) {
+		updateProgress(data, video);
+		if (video.isWatched()) {
+			toggleWatched(video);
+		}
+	}
+
 	/**
 	 * @param selectedView
 	 * @param video
@@ -87,9 +94,9 @@ public class PlayerResultHandler {
 	protected void updateProgress(Intent data, VideoContentInfo video) {
 		long position = 0;
 		position = data.getIntExtra("position", 0);
-	
+
 		video.setResumeOffset(Long.valueOf(position).intValue());
-	
+
 		if (video.isPartiallyWatched()) {
 			UpdateProgressRequest request = new UpdateProgressRequest(position,
 					video);
@@ -97,7 +104,7 @@ public class PlayerResultHandler {
 			request.execute();
 			return;
 		}
-	
+
 	}
 
 }
