@@ -26,11 +26,11 @@ package us.nineworlds.serenity;
 import java.util.ArrayList;
 import java.util.List;
 
-import us.nineworlds.serenity.core.OnDeckRecommendations;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.GDMService;
+import us.nineworlds.serenity.core.services.OnDeckRecommendationAsyncTask;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.handlers.DownloadHandler;
 import us.nineworlds.serenity.handlers.DownloadHandler.DownloadServiceConnection;
@@ -264,9 +264,9 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 		// Start the auto-configuration service
 		discoverPlexServers();
-		OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(
+		OnDeckRecommendationAsyncTask recommendations = new OnDeckRecommendationAsyncTask(
 				this);
-		onDeckRecommendations.recommend();
+		recommendations.execute();
 		mainGallery.requestFocusFromTouch();
 
 	}

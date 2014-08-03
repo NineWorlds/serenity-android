@@ -38,6 +38,7 @@ import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
@@ -66,21 +67,6 @@ public class OnDeckRecommendations {
 		VolleyUtils.volleyXmlGetRequest(sectionsURL,
 				new LibraryResponseListener(),
 				new DefaultLoggingVolleyErrorListener());
-	}
-
-	protected void buildRecommendation(VideoContentInfo video) {
-
-		RecommendationBuilder builder = new RecommendationBuilder();
-		try {
-			builder.setContext(context).setBackground(video.getBackgroundURL())
-					.setTitle(video.getTitle()).setImage(video.getImageURL())
-					.setId(Integer.parseInt(video.id()))
-					.setDescription(video.getSummary())
-					.setSmallIcon(R.drawable.androidtv_icon_mono).build();
-		} catch (IOException ex) {
-			Log.e("OnDeckRecommendation", "Error building recommendation: "
-					+ builder.toString(), ex);
-		}
 	}
 
 	protected class LibraryResponseListener implements
@@ -114,8 +100,36 @@ public class OnDeckRecommendations {
 			MovieMediaContainer movieContainer = new MovieMediaContainer(mc);
 			List<VideoContentInfo> movies = movieContainer.createVideos();
 			for (VideoContentInfo movie : movies) {
-				buildRecommendation(movie);
+				new RecommendAsyncTask(movie, context).execute();
 			}
+		}
+	}
+
+	protected class RecommendAsyncTask extends AsyncTask {
+		private final VideoContentInfo video;
+		private final Context context;
+
+		public RecommendAsyncTask(VideoContentInfo video, Context context) {
+			this.video = video;
+			this.context = context;
+		}
+
+		@Override
+		protected Object doInBackground(Object... params) {
+			RecommendationBuilder builder = new RecommendationBuilder();
+			try {
+				builder.setContext(context)
+						.setBackground(video.getBackgroundURL())
+						.setTitle(video.getTitle())
+						.setImage(video.getImageURL())
+						.setId(Integer.parseInt(video.id()))
+						.setDescription(video.getSummary())
+						.setSmallIcon(R.drawable.androidtv_icon_mono).build();
+			} catch (IOException ex) {
+				Log.e("OnDeckRecommendation", "Error building recommendation: "
+						+ builder.toString(), ex);
+			}
+			return null;
 		}
 	}
 }

@@ -16,8 +16,6 @@ package us.nineworlds.serenity.core;
 
 import java.io.IOException;
 
-import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.ui.util.ImageUtils;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -27,16 +25,13 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 /*
  * This class builds recommendations as notifications with videos as inputs.
  */
 public class RecommendationBuilder {
 	private static final String TAG = "RecommendationBuilder";
-
-	private static int CARD_WIDTH = 313;
-	private static int CARD_HEIGHT = 176;
 
 	public static final String EXTRA_BACKGROUND_IMAGE_URL = "background_image_url";
 	private Context mContext;
@@ -113,13 +108,13 @@ public class RecommendationBuilder {
 			extras.putString(EXTRA_BACKGROUND_IMAGE_URL, mBackgroundUri);
 		}
 
-		ImageLoader imageLoader = SerenityApplication.getImageLoader();
-		String transcodedImageUrl = SerenityApplication.getPlexFactory()
-				.getImageURL(mImageUri,
-						ImageUtils.dpToPx(CARD_WIDTH, mContext),
-						ImageUtils.dpToPx(CARD_HEIGHT, mContext));
+		// ImageLoader imageLoader = SerenityApplication.getImageLoader();
+		// Bitmap image = imageLoader.loadImageSync(mImageUri, new
+		// ImageSize(176,
+		// 313));
 
-		Bitmap image = imageLoader.loadImageSync(transcodedImageUrl);
+		Bitmap image = Picasso.with(mContext).load(mImageUri).resize(200, 313)
+				.get();
 
 		Notification notification = new NotificationCompat.BigPictureStyle(
 				new NotificationCompat.Builder(mContext)

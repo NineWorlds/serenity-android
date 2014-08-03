@@ -23,7 +23,7 @@
 
 package us.nineworlds.serenity;
 
-import us.nineworlds.serenity.core.OnDeckRecommendations;
+import us.nineworlds.serenity.core.services.OnDeckRecommendationAsyncTask;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -78,9 +78,10 @@ public class StartupBroadcastReceiver extends BroadcastReceiver {
 			return;
 		}
 
-		OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(
+		OnDeckRecommendationAsyncTask onDeckRecommendations = new OnDeckRecommendationAsyncTask(
 				context);
-		onDeckRecommendations.recommend();
+		onDeckRecommendations.execute();
+
 	}
 
 }
