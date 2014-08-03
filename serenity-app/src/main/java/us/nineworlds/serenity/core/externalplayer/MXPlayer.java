@@ -25,52 +25,40 @@ package us.nineworlds.serenity.core.externalplayer;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class MXPlayer extends AbstractExternalPlayer implements ExternalPlayer {
 
 	private static final String PLAYER_CLASS_NAME = "com.mxtech.videoplayer.ad.ActivityScreen";
 	private static final String PLAYER_PACKAGE_NAME = "com.mxtech.videoplayer.ad";
-	
+
 	private boolean hardwareDecoding;
-	
-	public MXPlayer(VideoContentInfo vc, Activity ac) {
+
+	public MXPlayer(VideoContentInfo vc, Context ac) {
 		super(vc, ac);
 	}
-	
-	
-	
+
 	@Override
 	public void launch() {
-		Intent vpIntent = populateIntentValues();
-		setClassAndPackagename(vpIntent);
-		launchActivity(vpIntent);				
+		Intent vpIntent = createIntent();
+		launchActivity(vpIntent);
 	}
-
 
 	@Override
-	protected void setClassAndPackagename(Intent vpIntent) {
-		vpIntent.setPackage(PLAYER_PACKAGE_NAME);
-		vpIntent.setClassName(PLAYER_PACKAGE_NAME, PLAYER_CLASS_NAME);
-	}
-
-	/**
-	 * @return
-	 */
-	protected Intent populateIntentValues() {
-		Intent vpIntent = createIntent();
+	public Intent createIntent() {
+		Intent vpIntent = super.createIntent();
 		if (hardwareDecoding) {
 			vpIntent.putExtra("decode_mode", 1);
 		}
 		vpIntent.putExtra("title", videoContent.getTitle());
 		vpIntent.putExtra("return_result", true);
-		if (videoContent.getSubtitle() != null ) {
+		if (videoContent.getSubtitle() != null) {
 			Subtitle subtitle = videoContent.getSubtitle();
 			if (!"none".equals(subtitle.getFormat())) {
 				Uri[] subt = { Uri.parse(subtitle.getKey()) };
@@ -78,12 +66,21 @@ public class MXPlayer extends AbstractExternalPlayer implements ExternalPlayer {
 				vpIntent.putExtra("subs.enable", subt);
 			}
 		}
-		if (videoContent.getResumeOffset() != 0 && videoContent.isPartiallyWatched()) {
+		if (videoContent.getResumeOffset() != 0
+				&& videoContent.isPartiallyWatched()) {
 			vpIntent.putExtra("position", videoContent.getResumeOffset());
 		}
+
+		setClassAndPackagename(vpIntent);
+
 		return vpIntent;
 	}
 
+	@Override
+	protected void setClassAndPackagename(Intent vpIntent) {
+		vpIntent.setPackage(PLAYER_PACKAGE_NAME);
+		vpIntent.setClassName(PLAYER_PACKAGE_NAME, PLAYER_CLASS_NAME);
+	}
 
 	@Override
 	public boolean supportsResume() {
@@ -118,7 +115,6 @@ public class MXPlayer extends AbstractExternalPlayer implements ExternalPlayer {
 	@Override
 	public void disableHadwareDecoding() {
 		hardwareDecoding = false;
-		
 	}
 
 }

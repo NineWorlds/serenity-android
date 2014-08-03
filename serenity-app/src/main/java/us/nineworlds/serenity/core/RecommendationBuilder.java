@@ -16,6 +16,7 @@ package us.nineworlds.serenity.core;
 
 import java.io.IOException;
 
+import us.nineworlds.serenity.SerenityApplication;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -25,7 +26,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 /*
  * This class builds recommendations as notifications with videos as inputs.
@@ -108,13 +110,9 @@ public class RecommendationBuilder {
 			extras.putString(EXTRA_BACKGROUND_IMAGE_URL, mBackgroundUri);
 		}
 
-		// ImageLoader imageLoader = SerenityApplication.getImageLoader();
-		// Bitmap image = imageLoader.loadImageSync(mImageUri, new
-		// ImageSize(176,
-		// 313));
-
-		Bitmap image = Picasso.with(mContext).load(mImageUri).resize(200, 313)
-				.get();
+		ImageLoader imageLoader = SerenityApplication.getImageLoader();
+		Bitmap image = imageLoader.loadImageSync(mImageUri, new ImageSize(200,
+				300), SerenityApplication.getSycnOptions());
 
 		Notification notification = new NotificationCompat.BigPictureStyle(
 				new NotificationCompat.Builder(mContext)

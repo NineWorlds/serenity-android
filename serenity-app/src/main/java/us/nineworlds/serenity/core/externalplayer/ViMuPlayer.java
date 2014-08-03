@@ -25,38 +25,39 @@ package us.nineworlds.serenity.core.externalplayer;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 /**
  * @author dcarver
- *
+ * 
  */
-public class ViMuPlayer extends AbstractExternalPlayer implements ExternalPlayer{
+public class ViMuPlayer extends AbstractExternalPlayer implements
+		ExternalPlayer {
 
 	/**
 	 * @param vc
 	 * @param ac
 	 */
-	public ViMuPlayer(VideoContentInfo vc, Activity ac) {
+	public ViMuPlayer(VideoContentInfo vc, Context ac) {
 		super(vc, ac);
 	}
 
 	@Override
 	public void launch() {
 		Intent vpIntent = createIntent();
-		
+
 		vpIntent.putExtra("forcename", videoContent.getTitle());
 		vpIntent.putExtra("forcedirect", true);
 		vpIntent.putExtra("startfrom", videoContent.getResumeOffset());
-		if (videoContent.getSubtitle() != null ) {
+		if (videoContent.getSubtitle() != null) {
 			Subtitle subtitle = videoContent.getSubtitle();
 			if (!"none".equals(subtitle.getFormat())) {
 				vpIntent.putExtra("forcedsrt", subtitle.getKey());
-			}			
+			}
 		}
-		
-		setClassAndPackagename(vpIntent);		
+
+		setClassAndPackagename(vpIntent);
 		launchActivity(vpIntent);
 	}
 
@@ -80,8 +81,11 @@ public class ViMuPlayer extends AbstractExternalPlayer implements ExternalPlayer
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.core.externalplayer.ExternalPlayer#hasHardwareDecodingSupport()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see us.nineworlds.serenity.core.externalplayer.ExternalPlayer#
+	 * hasHardwareDecodingSupport()
 	 */
 	@Override
 	public boolean hasHardwareDecodingSupport() {
@@ -90,18 +94,19 @@ public class ViMuPlayer extends AbstractExternalPlayer implements ExternalPlayer
 
 	@Override
 	public void enableHardwareDecodinging() {
-		
+
 	}
 
 	@Override
 	public void disableHadwareDecoding() {
-		
+
 	}
 
 	@Override
 	protected void setClassAndPackagename(Intent vpIntent) {
 		vpIntent.setPackage("net.gtvbox.videoplayer");
-		vpIntent.setClassName("net.gtvbox.videoplayer", "net.gtvbox.videoplayer.PlayerActivity");
+		vpIntent.setClassName("net.gtvbox.videoplayer",
+				"net.gtvbox.videoplayer.PlayerActivity");
 	}
 
 }

@@ -56,15 +56,16 @@ import com.squareup.okhttp.OkHttpClient;
 
 /**
  * Global manager for the Serenity application
- *
+ * 
  * @author dcarver
- *
+ * 
  */
 public class SerenityApplication extends Application {
 
 	private static final String COM_GOOGLE_ANDROID_TV = "com.google.android.tv";
 	private static boolean enableTracking = true;
 	private static ImageLoader imageLoader;
+	private static DisplayImageOptions memoryCacheOnly;
 	private static DisplayImageOptions movieOptions;
 	private static DisplayImageOptions musicOptions;
 	private static List<PendingDownload> pendingDownloads;
@@ -119,6 +120,10 @@ public class SerenityApplication extends Application {
 		return musicOptions;
 	}
 
+	public static DisplayImageOptions getSycnOptions() {
+		return memoryCacheOnly;
+	}
+
 	public static List<PendingDownload> getPendingDownloads() {
 		return pendingDownloads;
 	}
@@ -135,11 +140,11 @@ public class SerenityApplication extends Application {
 	 * Retrieves the video playback queue. Items will be added and removed from
 	 * the queue and used by the video player for playback of Episodes and
 	 * Movies.
-	 *
+	 * 
 	 * When an episode is finished playing it should be removed from the queue.
-	 *
+	 * 
 	 * This queue is thread safe.
-	 *
+	 * 
 	 * @return
 	 */
 	public static LinkedList<VideoContentInfo> getVideoPlaybackQueue() {
@@ -163,7 +168,7 @@ public class SerenityApplication extends Application {
 
 	/**
 	 * Checks if the app is running on OUYA.
-	 *
+	 * 
 	 * @return true if the app is running on OUYA
 	 */
 	public static boolean isRunningOnOUYA() {
@@ -213,6 +218,10 @@ public class SerenityApplication extends Application {
 
 		movieOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
 				.cacheOnDisk(true).bitmapConfig(Bitmap.Config.ARGB_8888)
+				.resetViewBeforeLoading(true).build();
+
+		memoryCacheOnly = new DisplayImageOptions.Builder().cacheInMemory(true)
+				.cacheOnDisk(false).bitmapConfig(Bitmap.Config.ARGB_8888)
 				.resetViewBeforeLoading(true).build();
 	}
 

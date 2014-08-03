@@ -24,22 +24,22 @@
 package us.nineworlds.serenity.core.externalplayer;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public class MXPlayerPro extends MXPlayer {
 
 	private static final String PLAYER_CLASS_NAME = "com.mxtech.videoplayer.ActivityScreen";
 	private static final String PLAYER_PACKAGENAME = "com.mxtech.videoplayer.pro";
 
-	public MXPlayerPro(VideoContentInfo vc, Activity ac) {
+	public MXPlayerPro(VideoContentInfo vc, Context ac) {
 		super(vc, ac);
 	}
-	
+
 	@Override
 	protected void setClassAndPackagename(Intent vpIntent) {
 		vpIntent.setPackage(PLAYER_PACKAGENAME);

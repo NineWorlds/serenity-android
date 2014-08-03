@@ -24,20 +24,20 @@
 package us.nineworlds.serenity.core.externalplayer;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 /**
  * @author dcarver
- *
+ * 
  */
-public class SystemDefaultPlayer extends AbstractExternalPlayer implements ExternalPlayer {
+public class SystemDefaultPlayer extends AbstractExternalPlayer implements
+		ExternalPlayer {
 
-	
-	public SystemDefaultPlayer(VideoContentInfo vc, Activity ac) {
+	public SystemDefaultPlayer(VideoContentInfo vc, Context ac) {
 		super(vc, ac);
 	}
-	
+
 	@Override
 	public void launch() {
 		Intent vpIntent = createIntent();
@@ -81,7 +81,7 @@ public class SystemDefaultPlayer extends AbstractExternalPlayer implements Exter
 
 	@Override
 	protected void setClassAndPackagename(Intent vpIntent) {
-		
+
 	}
 
 }
