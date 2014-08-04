@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.video.player;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.services.OnDeckRecommendationAsyncTask;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
@@ -85,6 +86,10 @@ public class RecommendationPlayerActivity extends SerenityActivity {
 				playerResultHandler.updateVideoPlaybackPosition(video);
 			}
 		}
+
+		OnDeckRecommendationAsyncTask onDeckRecomendations = new OnDeckRecommendationAsyncTask(
+				getApplicationContext());
+		onDeckRecomendations.execute();
 
 		finish();
 	}

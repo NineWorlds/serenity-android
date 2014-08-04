@@ -27,6 +27,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.services.OnDeckRecommendationAsyncTask;
 import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
@@ -42,7 +43,7 @@ import com.jess.ui.TwoWayGridView;
 
 /**
  * @author dcarver
- *
+ * 
  */
 public abstract class SerenityVideoActivity extends
 		SerenityDrawerLayoutActivity {
@@ -109,6 +110,10 @@ public abstract class SerenityVideoActivity extends
 				}
 			}
 		}
+
+		OnDeckRecommendationAsyncTask onDeckRecomendations = new OnDeckRecommendationAsyncTask(
+				getApplicationContext());
+		onDeckRecomendations.execute();
 	}
 
 	/**
