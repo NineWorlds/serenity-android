@@ -45,10 +45,12 @@ public class StartupBroadcastReceiver extends BroadcastReceiver {
 
 	private static final int INITIAL_DELAY = 5000;
 
-	Context context;
+	private Context context;
+	private SharedPreferences preferences;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
 		this.context = context;
 
@@ -66,10 +68,8 @@ public class StartupBroadcastReceiver extends BroadcastReceiver {
 	 * @param context
 	 */
 	protected void launchSerenityOnStartup() {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		boolean startupAfterBoot = prefs.getBoolean("serenity_boot_startup",
-				false);
+		boolean startupAfterBoot = preferences.getBoolean(
+				"serenity_boot_startup", false);
 		if (startupAfterBoot) {
 			Intent i = new Intent(context, MainActivity.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -79,6 +79,13 @@ public class StartupBroadcastReceiver extends BroadcastReceiver {
 
 	protected void createRecomendations() {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+			return;
+		}
+
+		boolean onDeckRecommendations = preferences.getBoolean(
+				"androidtv_recommendation_ondeck", false);
+
+		if (onDeckRecommendations == false) {
 			return;
 		}
 

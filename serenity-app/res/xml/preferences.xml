@@ -45,6 +45,12 @@
             android:key="overscan_setup"
             android:title="@string/overscan_setup_title" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/android_tv_recommendations">
+        <CheckBoxPreference android:key="androidtv_recommendation_ondeck"
+            android:summary="@string/contribute_ondeck_movies_and_episodes"
+            android:title="@string/androidtv_ondeck_recommendations"
+            android:defaultValue="true" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/music_library" >
         <CheckBoxPreference
             android:key="plex_music_library"

@@ -231,4 +231,7 @@
     	<item>10000</item>
     	<item>15000</item>
     </string-array>
+    	<string name="android_tv_recommendations">Android TV Recommendations</string>
+    	<string name="contribute_ondeck_movies_and_episodes">Contribute OnDeck Movies and Episodes</string>
+    	<string name="androidtv_ondeck_recommendations">OnDeck Recommendations</string>
 </resources>

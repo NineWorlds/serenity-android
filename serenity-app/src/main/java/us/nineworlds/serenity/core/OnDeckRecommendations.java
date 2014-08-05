@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2014 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -46,8 +46,10 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
@@ -72,6 +74,15 @@ public class OnDeckRecommendations {
 	}
 
 	public void recommend() {
+		SharedPreferences preferences = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		boolean onDeckRecommendations = preferences.getBoolean(
+				"androidtv_recommendation_ondeck", false);
+
+		if (onDeckRecommendations == false) {
+			return;
+		}
+
 		String sectionsURL = factory.getSectionsURL();
 		VolleyUtils.volleyXmlGetRequest(sectionsURL,
 				new LibraryResponseListener(),
