@@ -168,7 +168,8 @@
             android:name=".core.services.GDMService"
             tools:ignore="MissingRegistered" />
         <service android:name="us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService" />
-
+        <service android:name="us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService"/>
+        
         <provider
             android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
             android:authorities="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider" >

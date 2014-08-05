@@ -30,7 +30,7 @@ import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.GDMService;
-import us.nineworlds.serenity.core.services.OnDeckRecommendationAsyncTask;
+import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.handlers.DownloadHandler;
 import us.nineworlds.serenity.handlers.DownloadHandler.DownloadServiceConnection;
@@ -112,9 +112,9 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 	protected void populateMenuOptions() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem
-				.add(new MenuDrawerItemImpl(getResources().getString(
-						R.string.options_main_about),
-						R.drawable.ic_action_action_about));
+		.add(new MenuDrawerItemImpl(getResources().getString(
+				R.string.options_main_about),
+				R.drawable.ic_action_action_about));
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
 				R.string.options_main_clear_image_cache),
 				R.drawable.ic_action_content_remove));
@@ -123,8 +123,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-				.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
-						drawerLayout, mainGallery));
+		.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
+				drawerLayout, mainGallery));
 	}
 
 	protected void discoverPlexServers() {
@@ -149,8 +149,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 			ServerConfig config = (ServerConfig) ServerConfig.getInstance();
 			if (config != null) {
 				preferences
-						.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
-								.getInstance()).getServerConfigChangeListener());
+				.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
+						.getInstance()).getServerConfigChangeListener());
 			}
 		}
 	}
@@ -264,9 +264,11 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 		// Start the auto-configuration service
 		discoverPlexServers();
-		OnDeckRecommendationAsyncTask recommendations = new OnDeckRecommendationAsyncTask(
-				this);
-		recommendations.execute();
+
+		Intent recommendationIntent = new Intent(getApplicationContext(),
+				OnDeckRecommendationIntentService.class);
+		startService(recommendationIntent);
+
 		mainGallery.requestFocusFromTouch();
 
 	}
@@ -304,10 +306,10 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		mainGallery.setAdapter(new MainMenuTextViewAdapter(this,
 				mainGalleryBackgroundView));
 		mainGallery
-				.setOnItemSelectedListener(new GalleryOnItemSelectedListener(
-						mainGalleryBackgroundView));
+		.setOnItemSelectedListener(new GalleryOnItemSelectedListener(
+				mainGalleryBackgroundView));
 		mainGallery
-				.setOnItemClickListener(new GalleryOnItemClickListener(this));
+		.setOnItemClickListener(new GalleryOnItemClickListener(this));
 		mainGallery.setCallbackDuringFling(false);
 		mainGallery.requestFocusFromTouch();
 	}

@@ -111,24 +111,24 @@ public class RecommendationBuilder {
 		}
 
 		ImageLoader imageLoader = SerenityApplication.getImageLoader();
-		Bitmap image = imageLoader.loadImageSync(mImageUri, new ImageSize(200,
-				300), SerenityApplication.getSycnOptions());
+		Bitmap image = imageLoader.loadImageSync(mImageUri, new ImageSize(300,
+				400), SerenityApplication.getSycnOptions());
 
 		Notification notification = new NotificationCompat.BigPictureStyle(
 				new NotificationCompat.Builder(mContext)
-						.setContentTitle(mTitle)
-						.setContentText(mDescription)
-						.setPriority(mPriority)
-						.setOngoing(true)
-						.setLocalOnly(true)
-						.setColor(
-								mContext.getResources()
-										.getColor(
-												us.nineworlds.serenity.R.color.holo_color))
-						// .setCategory(Notification.CATEGORY_RECOMMENDATION)
-						.setCategory("recommendation").setLargeIcon(image)
-						.setSmallIcon(mSmallIcon).setContentIntent(mIntent)
-						.setExtras(extras)).build();
+				.setContentTitle(mTitle)
+				.setContentText(mDescription)
+				.setPriority(mPriority)
+				.setOngoing(true)
+				.setLocalOnly(true)
+				.setColor(
+						mContext.getResources()
+						.getColor(
+								us.nineworlds.serenity.R.color.holo_color))
+								// .setCategory(Notification.CATEGORY_RECOMMENDATION)
+								.setCategory("recommendation").setLargeIcon(image)
+								.setSmallIcon(mSmallIcon).setContentIntent(mIntent)
+								.setExtras(extras)).build();
 
 		mNotificationManager.notify(mId, notification);
 		mNotificationManager = null;
