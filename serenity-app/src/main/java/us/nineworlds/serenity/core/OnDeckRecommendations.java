@@ -40,16 +40,14 @@ import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
-import android.annotation.TargetApi;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
@@ -90,7 +88,7 @@ public class OnDeckRecommendations {
 	}
 
 	protected class LibraryResponseListener implements
-	Response.Listener<MediaContainer> {
+			Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer mc) {
@@ -122,7 +120,7 @@ public class OnDeckRecommendations {
 	}
 
 	protected class MovieOnDeckResponseListener implements
-	Response.Listener<MediaContainer> {
+			Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer mc) {
@@ -135,7 +133,7 @@ public class OnDeckRecommendations {
 	}
 
 	protected class TVOnDeckResponseListener implements
-	Response.Listener<MediaContainer> {
+			Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer mc) {
@@ -173,13 +171,13 @@ public class OnDeckRecommendations {
 				}
 
 				builder.setContext(context).setBackground(backgroundURL)
-				.setTitle(video.getTitle())
-				.setImage(video.getImageURL())
-				.setId(Integer.parseInt(video.id()))
-				.setPriority(priority)
-				.setDescription(video.getSummary())
-				.setSmallIcon(R.drawable.androidtv_icon_mono)
-				.setIntent(intent).build();
+						.setTitle(video.getTitle())
+						.setImage(video.getImageURL())
+						.setId(Integer.parseInt(video.id()))
+						.setPriority(priority)
+						.setDescription(video.getSummary())
+						.setSmallIcon(R.drawable.androidtv_icon_mono)
+						.setIntent(intent).build();
 			} catch (IOException ex) {
 				Log.e("OnDeckRecommendation", "Error building recommendation: "
 						+ builder.toString(), ex);
@@ -187,7 +185,6 @@ public class OnDeckRecommendations {
 			return null;
 		}
 
-		@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 		private PendingIntent buildPendingIntent(VideoContentInfo video) {
 			Intent intent = new Intent(context,
 					RecommendationPlayerActivity.class);
