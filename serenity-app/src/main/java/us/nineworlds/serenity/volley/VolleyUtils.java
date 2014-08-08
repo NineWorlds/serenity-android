@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -31,11 +31,12 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class VolleyUtils {
 
@@ -52,6 +53,17 @@ public class VolleyUtils {
 			Response.Listener response, Response.ErrorListener error) {
 		SimpleXmlRequest<MediaContainer> request = new SimpleXmlRequest<MediaContainer>(
 				Request.Method.GET, url, MediaContainer.class, response, error);
+		if (queue == null) {
+			Log.e("VolleyUtils", "Initialize Request Queue!");
+			return null;
+		}
+		return queue.add(request);
+	}
+
+	public static Request volleyJSonGetRequest(String url,
+			Response.Listener response, Response.ErrorListener error) {
+		JsonObjectRequest request = new JsonObjectRequest(url, null, response,
+				error);
 		if (queue == null) {
 			Log.e("VolleyUtils", "Initialize Request Queue!");
 			return null;

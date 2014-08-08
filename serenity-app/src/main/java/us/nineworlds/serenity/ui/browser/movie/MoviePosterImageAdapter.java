@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -27,6 +27,7 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.TrailersYouTubeSearch;
 import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
@@ -59,9 +60,9 @@ import com.jess.ui.TwoWayAbsListView;
 import com.jess.ui.TwoWayGridView;
 
 /**
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
@@ -88,9 +89,9 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		if (convertView != null) {
 			galleryCellView = convertView;
 			galleryCellView.findViewById(R.id.posterInprogressIndicator)
-					.setVisibility(View.INVISIBLE);
+			.setVisibility(View.INVISIBLE);
 			galleryCellView.findViewById(R.id.posterWatchedIndicator)
-					.setVisibility(View.INVISIBLE);
+			.setVisibility(View.INVISIBLE);
 			galleryCellView.findViewById(R.id.infoGraphicMeta).setVisibility(
 					View.GONE);
 		} else {
@@ -181,6 +182,13 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 	public void fetchTrailer(VideoContentInfo mpi, View view) {
 
+		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
+		String queryURL = trailerSearch.queryURL(mpi);
+
+		// VolleyUtils.volleyJSonGetRequest(queryURL,
+		// new YouTubeTrailerSearchResponseListener(view, mpi),
+		// new DefaultLoggingVolleyErrorListener());
+
 		TrailerHandler trailerHandler = new TrailerGridHandler(mpi, context,
 				view);
 		Messenger messenger = new Messenger(trailerHandler);
@@ -215,21 +223,20 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	}
 
 	private class MoviePosterResponseErrorListener implements
-			Response.ErrorListener {
+	Response.ErrorListener {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {
 			context.setSupportProgressBarIndeterminateVisibility(false);
 		}
-
 	}
 
 	/**
 	 * @author dcarver
-	 * 
+	 *
 	 */
 	private class MoviePosterResponseListener implements
-			Response.Listener<MediaContainer> {
+	Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer response) {

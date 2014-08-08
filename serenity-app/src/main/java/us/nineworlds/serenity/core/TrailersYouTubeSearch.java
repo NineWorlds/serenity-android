@@ -24,9 +24,12 @@
 package us.nineworlds.serenity.core;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import java.util.List;
 
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.YouTubeVideoContentInfo;
 import android.util.Log;
 
@@ -51,6 +54,7 @@ public class TrailersYouTubeSearch {
 	private static JsonFactory JSON_FACTORY = new JacksonFactory();
 	private static String API_KEY = "AIzaSyBaVoUqzjCUOwxaYAz7yQDXIJzUyBQSako";
 	protected YouTubeVideoContentInfo videoInfo = new YouTubeVideoContentInfo();
+	private static final String TRAILER = " Offical Trailer";
 
 	private class DoNothingHttpRequestInitializer implements
 			HttpRequestInitializer {
@@ -91,6 +95,32 @@ public class TrailersYouTubeSearch {
 			Log.e("YouTubeSearch", e.getMessage(), e);
 		} catch (IOException e) {
 			Log.e("YouTubeSearch", e.getMessage(), e);
+		}
+		return null;
+	}
+
+	public String queryURL(VideoContentInfo video) {
+		String title = video.getTitle();
+		String year = video.getYear();
+		String show = video.getSeriesTitle();
+		String season = video.getSeason();
+		String episodeNum = video.getEpisodeNumber();
+		String videoTitle;
+		if (show == null) {
+			videoTitle = "\"" + title + "\"" + TRAILER + " HD" + " " + year;
+		} else {
+			videoTitle = "\"" + show + "\" " + season + " " + episodeNum
+					+ " Promo";
+		}
+
+		try {
+			String encodedTitle = URLEncoder.encode(videoTitle, "UTF-8");
+
+			String queryString = "https://www.googleapis.com/youtube/v3/search?part=id%2Csnippet&maxResults=1&order=relevance&q="
+					+ encodedTitle + "key=" + API_KEY;
+			return queryString;
+		} catch (UnsupportedEncodingException ex) {
+
 		}
 		return null;
 	}
