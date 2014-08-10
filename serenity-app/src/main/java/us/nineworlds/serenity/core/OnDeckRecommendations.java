@@ -73,7 +73,7 @@ public class OnDeckRecommendations {
 	}
 
 	public void recommend() {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
 			return;
 		}
 
@@ -190,6 +190,7 @@ public class OnDeckRecommendations {
 			return null;
 		}
 
+		
 		private PendingIntent buildPendingIntent(VideoContentInfo video) {
 			Intent intent = new Intent(context,
 					RecommendationPlayerActivity.class);
