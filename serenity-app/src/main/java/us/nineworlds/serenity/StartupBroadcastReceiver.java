@@ -82,6 +82,10 @@ public class StartupBroadcastReceiver extends BroadcastReceiver {
 			return;
 		}
 
+		if (!SerenityApplication.isLeanbackSupported(context)) {
+			return;
+		}
+
 		boolean onDeckRecommendations = preferences.getBoolean(
 				"androidtv_recommendation_ondeck", false);
 

@@ -37,6 +37,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -56,9 +57,9 @@ import com.squareup.okhttp.OkHttpClient;
 
 /**
  * Global manager for the Serenity application
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class SerenityApplication extends Application {
 
@@ -140,11 +141,11 @@ public class SerenityApplication extends Application {
 	 * Retrieves the video playback queue. Items will be added and removed from
 	 * the queue and used by the video player for playback of Episodes and
 	 * Movies.
-	 * 
+	 *
 	 * When an episode is finished playing it should be removed from the queue.
-	 * 
+	 *
 	 * This queue is thread safe.
-	 * 
+	 *
 	 * @return
 	 */
 	public static LinkedList<VideoContentInfo> getVideoPlaybackQueue() {
@@ -161,14 +162,20 @@ public class SerenityApplication extends Application {
 		return pm.hasSystemFeature("android.hardware.type.television");
 	}
 
+	public static boolean isLeanbackSupported(Context context) {
+		final PackageManager pm = context.getPackageManager();
+		return pm.hasSystemFeature("android.software.leanback");
+	}
+
 	public static boolean isGoogleTV(Context context) {
 		final PackageManager pm = context.getPackageManager();
+		FeatureInfo[] features = pm.getSystemAvailableFeatures();
 		return pm.hasSystemFeature(COM_GOOGLE_ANDROID_TV);
 	}
 
 	/**
 	 * Checks if the app is running on OUYA.
-	 * 
+	 *
 	 * @return true if the app is running on OUYA
 	 */
 	public static boolean isRunningOnOUYA() {

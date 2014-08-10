@@ -77,12 +77,17 @@ public class OnDeckRecommendations {
 			return;
 		}
 
+		if (!SerenityApplication.isLeanbackSupported(context)) {
+			return;
+		}
+
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		boolean onDeckRecommendations = preferences.getBoolean(
 				"androidtv_recommendation_ondeck", false);
+		boolean isAndroidTV = preferences.getBoolean("serenity_tv_mode", false);
 
-		if (onDeckRecommendations == false) {
+		if (onDeckRecommendations == false || isAndroidTV == false) {
 			return;
 		}
 
@@ -190,7 +195,6 @@ public class OnDeckRecommendations {
 			return null;
 		}
 
-		
 		private PendingIntent buildPendingIntent(VideoContentInfo video) {
 			Intent intent = new Intent(context,
 					RecommendationPlayerActivity.class);
