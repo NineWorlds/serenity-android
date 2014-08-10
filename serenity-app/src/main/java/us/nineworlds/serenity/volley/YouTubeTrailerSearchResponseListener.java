@@ -31,8 +31,14 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.DBMetaDataSource;
+import us.nineworlds.serenity.ui.util.ImageUtils;
+import android.app.Activity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
 
 import com.android.volley.Response;
 
@@ -41,7 +47,7 @@ import com.android.volley.Response;
  *
  */
 public class YouTubeTrailerSearchResponseListener implements
-		Response.Listener<JSONObject> {
+Response.Listener<JSONObject> {
 
 	View posterView;
 	VideoContentInfo video;
@@ -62,11 +68,30 @@ public class YouTubeTrailerSearchResponseListener implements
 					.findViewById(R.id.infoGraphicMeta);
 
 			JSONObject item = items.getJSONObject(0);
-			String id = item.getString("videoId");
+			JSONObject youtubeId = item.getJSONObject("id");
+
+			String id = youtubeId.getString("videoId");
 
 			createMetaData(id);
-			trailerIndicator.setVisibility(View.VISIBLE);
-			infoGraphicMeta.setVisibility(View.VISIBLE);
+			if (trailerIndicator != null) {
+				trailerIndicator.setVisibility(View.VISIBLE);
+				infoGraphicMeta.setVisibility(View.VISIBLE);
+			} else {
+				Activity context = (Activity) posterView.getContext();
+				LinearLayout infographicsView = (LinearLayout) context
+						.findViewById(R.id.movieInfoGraphicLayout);
+				ImageView ytImage = new ImageView(context);
+				ytImage.setImageResource(R.drawable.yt_social_icon_red_128px);
+				ytImage.setScaleType(ScaleType.FIT_XY);
+				int w = ImageUtils.getDPI(45, context);
+				int h = ImageUtils.getDPI(24, context);
+				ytImage.setLayoutParams(new LinearLayout.LayoutParams(w, h));
+				LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) ytImage
+						.getLayoutParams();
+				p.leftMargin = 5;
+				p.gravity = Gravity.CENTER_VERTICAL;
+				infographicsView.addView(ytImage);
+			}
 
 			video.setTrailer(true);
 			video.setTrailerId(id);

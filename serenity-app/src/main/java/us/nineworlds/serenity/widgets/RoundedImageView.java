@@ -13,16 +13,15 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
-@SuppressWarnings("UnusedDeclaration")
 public class RoundedImageView extends ImageView {
 
 	public static final String TAG = "RoundedImageView";
 	public static final float DEFAULT_RADIUS = 0f;
 	public static final float DEFAULT_BORDER_WIDTH = 0f;
 	private static final ScaleType[] SCALE_TYPES = { ScaleType.MATRIX,
-			ScaleType.FIT_XY, ScaleType.FIT_START, ScaleType.FIT_CENTER,
-			ScaleType.FIT_END, ScaleType.CENTER, ScaleType.CENTER_CROP,
-			ScaleType.CENTER_INSIDE };
+		ScaleType.FIT_XY, ScaleType.FIT_START, ScaleType.FIT_CENTER,
+		ScaleType.FIT_END, ScaleType.CENTER, ScaleType.CENTER_CROP,
+		ScaleType.CENTER_INSIDE };
 
 	private float cornerRadius = DEFAULT_RADIUS;
 	private float borderWidth = DEFAULT_BORDER_WIDTH;
@@ -98,7 +97,7 @@ public class RoundedImageView extends ImageView {
 
 	/**
 	 * Return the current scale type in use by this ImageView.
-	 * 
+	 *
 	 * @attr ref android.R.styleable#ImageView_scaleType
 	 * @see android.widget.ImageView.ScaleType
 	 */
@@ -110,7 +109,7 @@ public class RoundedImageView extends ImageView {
 	/**
 	 * Controls how the image should be resized or moved to match the size of
 	 * this ImageView.
-	 * 
+	 *
 	 * @param scaleType
 	 *            The desired scaling mode.
 	 * @attr ref android.R.styleable#ImageView_scaleType
@@ -221,8 +220,8 @@ public class RoundedImageView extends ImageView {
 
 		if (drawable instanceof RoundedDrawable) {
 			((RoundedDrawable) drawable).setScaleType(mScaleType)
-					.setCornerRadius(cornerRadius).setBorderWidth(borderWidth)
-					.setBorderColor(borderColor).setOval(isOval);
+			.setCornerRadius(cornerRadius).setBorderWidth(borderWidth)
+			.setBorderColor(borderColor).setOval(isOval);
 		} else if (drawable instanceof LayerDrawable) {
 			// loop through layers to and set drawable attrs
 			LayerDrawable ld = ((LayerDrawable) drawable);

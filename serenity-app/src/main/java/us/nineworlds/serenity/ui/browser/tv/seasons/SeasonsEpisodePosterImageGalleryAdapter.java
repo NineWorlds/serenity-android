@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -25,33 +25,24 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import java.util.List;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.jess.ui.TwoWayAbsListView;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.core.model.DBMetaData;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
-import us.nineworlds.serenity.core.util.DBMetaDataSource;
-import us.nineworlds.serenity.ui.listeners.TrailerGridHandler;
-import us.nineworlds.serenity.ui.listeners.TrailerHandler;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
-import us.nineworlds.serenity.volley.SimpleXmlRequest;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
-
+import us.nineworlds.serenity.core.TrailersYouTubeSearch;
+import us.nineworlds.serenity.core.model.DBMetaData;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.util.DBMetaDataSource;
+import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
+import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
+import us.nineworlds.serenity.volley.SimpleXmlRequest;
+import us.nineworlds.serenity.volley.VolleyUtils;
+import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,20 +50,27 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.jess.ui.TwoWayAbsListView;
+
 /**
  * Implementation of the Poster Image Gallery class for TV Shows.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class SeasonsEpisodePosterImageGalleryAdapter
-		extends
-		us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
+extends
+us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
 
 	private static SeasonsEpisodePosterImageGalleryAdapter notifyAdapter;
 	private DBMetaDataSource datasource;
-	private SharedPreferences prefs;
-	
+	private final SharedPreferences prefs;
+
 	public SeasonsEpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
@@ -163,7 +161,8 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 			} else {
 				View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
 				v.setVisibility(View.VISIBLE);
-				v.findViewById(R.id.trailerIndicator).setVisibility(View.VISIBLE);
+				v.findViewById(R.id.trailerIndicator).setVisibility(
+						View.VISIBLE);
 			}
 		}
 
@@ -176,7 +175,7 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 		}
 	}
 
-	public void fetchSubtitle(VideoContentInfo mpi, View view) {		
+	public void fetchSubtitle(VideoContentInfo mpi, View view) {
 		PlexappFactory factory = SerenityApplication.getPlexFactory();
 		String url = factory.getMovieMetadataURL("/library/metadata/"
 				+ mpi.id());
@@ -191,9 +190,9 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 					}
 				});
 		queue.add(xmlRequest);
-		
+
 	}
-	
+
 	/**
 	 * @param pi
 	 */
@@ -207,27 +206,22 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 		}
 		datasource.close();
 	}
-	
+
 	public void fetchTrailer(VideoContentInfo mpi, View view) {
-		
-		TrailerHandler trailerHandler = new TrailerGridHandler(mpi, context, view);
-		Messenger messenger = new Messenger(trailerHandler);
-		Intent intent = new Intent(context, YouTubeTrailerSearchIntentService.class);
-		intent.putExtra("videoTitle", mpi.getTitle());
-		intent.putExtra("year", mpi.getYear());
-		intent.putExtra("show", mpi.getSeriesTitle());
-		intent.putExtra("season", mpi.getSeason());
-		intent.putExtra("episodeNum", mpi.getEpisodeNumber());
-		intent.putExtra("MESSENGER", messenger);
-		context.startService(intent);
+
+		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
+		String queryURL = trailerSearch.queryURL(mpi);
+
+		VolleyUtils.volleyJSonGetRequest(queryURL,
+				new YouTubeTrailerSearchResponseListener(view, mpi),
+				new DefaultLoggingVolleyErrorListener());
 	}
-	
 
 	private static class EpisodeHandler extends Handler {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see android.os.Handler#handleMessage(android.os.Message)
 		 */
 		@Override

@@ -111,8 +111,8 @@ public class RecommendationBuilder {
 		}
 
 		ImageLoader imageLoader = SerenityApplication.getImageLoader();
-		Bitmap image = imageLoader.loadImageSync(mImageUri, new ImageSize(300,
-				400), SerenityApplication.getSycnOptions());
+		Bitmap image = imageLoader.loadImageSync(mImageUri, new ImageSize(176,
+				313), SerenityApplication.getSycnOptions());
 
 		Notification notification = new NotificationCompat.BigPictureStyle(
 				new NotificationCompat.Builder(mContext)
@@ -130,7 +130,11 @@ public class RecommendationBuilder {
 								.setSmallIcon(mSmallIcon).setContentIntent(mIntent)
 								.setExtras(extras)).build();
 
-		mNotificationManager.notify(mId, notification);
+		try {
+			mNotificationManager.notify(mId, notification);
+		} catch (Exception ex) {
+			Log.e(getClass().getName(), ex.getMessage(), ex);
+		}
 		mNotificationManager = null;
 		return notification;
 	}

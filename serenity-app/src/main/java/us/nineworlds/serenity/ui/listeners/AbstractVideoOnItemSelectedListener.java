@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -27,23 +27,23 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.TrailersYouTubeSearch;
 import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import us.nineworlds.serenity.core.util.DBMetaDataSource;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.SimpleXmlRequest;
 import us.nineworlds.serenity.volley.SubtitleVolleyResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
+import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Handler;
-import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -70,9 +70,9 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
  * Abstract class for handling video selection information. This can either be a
  * movie or a tv episode. This is primarily used in a detail view browsing
  * scenario.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public abstract class AbstractVideoOnItemSelectedListener implements
 		OnItemSelectedListener {
@@ -86,6 +86,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	private final Animation shrink;
 	private final Animation fadeIn;
 	private View previous;
+	protected View currentView;
 	protected int position;
 	protected BaseAdapter adapter;
 	protected VideoContentInfo videoInfo;
@@ -108,7 +109,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	/**
 	 * Create the images representing info such as sound, ratings, etc based on
 	 * the currently selected movie poster.
-	 * 
+	 *
 	 * @param position
 	 */
 	protected void createInfographicDetails(ImageView v) {
@@ -225,7 +226,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		queue.add(xmlRequest);
 	}
 
-	public void fetchTrailer(VideoContentInfo mpi) {
+	public void fetchTrailer(VideoContentInfo mpi, View view) {
 		checkDataBaseForTrailer(mpi);
 		if (mpi.hasTrailer()) {
 			if (videoInfo.hasTrailer()
@@ -249,14 +250,13 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 			return;
 		}
-		trailerHandler = new TrailerHandler(mpi, context);
-		Messenger messenger = new Messenger(trailerHandler);
-		Intent intent = new Intent(context,
-				YouTubeTrailerSearchIntentService.class);
-		intent.putExtra("videoTitle", mpi.getTitle());
-		intent.putExtra("year", mpi.getYear());
-		intent.putExtra("MESSENGER", messenger);
-		context.startService(intent);
+
+		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
+		String queryURL = trailerSearch.queryURL(mpi);
+
+		VolleyUtils.volleyJSonGetRequest(queryURL,
+				new YouTubeTrailerSearchResponseListener(view, mpi),
+				new DefaultLoggingVolleyErrorListener());
 	}
 
 	@Override
@@ -282,6 +282,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 		ImageView posterImageView = (ImageView) v
 				.findViewById(R.id.posterImageView);
+		currentView = posterImageView;
 
 		createVideoDetail(posterImageView);
 		createVideoMetaData(posterImageView);
@@ -291,7 +292,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 	/**
 	 * Change the background image of the activity.
-	 * 
+	 *
 	 * @param v
 	 */
 	public void changeBackgroundImage(View v) {
@@ -317,7 +318,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			if (YouTubeInitializationResult.SUCCESS
 					.equals(YouTubeApiServiceUtil
 							.isYouTubeApiServiceAvailable(context))) {
-				fetchTrailer(videoInfo);
+				fetchTrailer(videoInfo, currentView);
 			}
 		}
 

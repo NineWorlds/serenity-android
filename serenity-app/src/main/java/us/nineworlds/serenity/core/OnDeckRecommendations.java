@@ -46,6 +46,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -72,6 +73,10 @@ public class OnDeckRecommendations {
 	}
 
 	public void recommend() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			return;
+		}
+
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		boolean onDeckRecommendations = preferences.getBoolean(

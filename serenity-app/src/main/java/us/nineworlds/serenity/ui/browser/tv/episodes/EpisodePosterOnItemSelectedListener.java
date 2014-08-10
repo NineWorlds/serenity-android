@@ -29,17 +29,17 @@ import java.util.Date;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.TrailersYouTubeSearch;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
-import us.nineworlds.serenity.ui.listeners.TrailerHandler;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
+import us.nineworlds.serenity.volley.VolleyUtils;
+import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -56,7 +56,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  *
  */
 public class EpisodePosterOnItemSelectedListener extends
-		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
+AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 
 	private static final String DISPLAY_DATE_FORMAT = "MMMMMMMMM d, yyyy";
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -67,7 +67,7 @@ public class EpisodePosterOnItemSelectedListener extends
 	private int fadeInCount = 0;
 
 	@Override
-	public void fetchTrailer(VideoContentInfo mpi) {
+	public void fetchTrailer(VideoContentInfo mpi, View view) {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		if (prefs.getBoolean("episode_trailers", false) == false) {
@@ -77,17 +77,13 @@ public class EpisodePosterOnItemSelectedListener extends
 		if (mpi.hasTrailer()) {
 			return;
 		}
-		trailerHandler = new TrailerHandler(mpi, context);
-		Messenger messenger = new Messenger(trailerHandler);
-		Intent intent = new Intent(context,
-				YouTubeTrailerSearchIntentService.class);
-		intent.putExtra("videoTitle", mpi.getTitle());
-		intent.putExtra("year", mpi.getYear());
-		intent.putExtra("show", mpi.getSeriesTitle());
-		intent.putExtra("season", mpi.getSeason());
-		intent.putExtra("episodeNum", mpi.getEpisodeNumber());
-		intent.putExtra("MESSENGER", messenger);
-		context.startService(intent);
+
+		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
+		String queryURL = trailerSearch.queryURL(mpi);
+
+		VolleyUtils.volleyJSonGetRequest(queryURL,
+				new YouTubeTrailerSearchResponseListener(view, mpi),
+				new DefaultLoggingVolleyErrorListener());
 	}
 
 	/**
@@ -172,7 +168,7 @@ public class EpisodePosterOnItemSelectedListener extends
 		if (videoInfo.getOriginalAirDate() != null) {
 			try {
 				Date airDate = new SimpleDateFormat(DATE_FORMAT)
-						.parse(videoInfo.getOriginalAirDate());
+				.parse(videoInfo.getOriginalAirDate());
 				SimpleDateFormat format = new SimpleDateFormat(
 						DISPLAY_DATE_FORMAT);
 				String formatedDate = format.format(airDate);

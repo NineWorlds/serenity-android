@@ -31,21 +31,17 @@ import us.nineworlds.serenity.core.TrailersYouTubeSearch;
 import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
-import us.nineworlds.serenity.core.services.YouTubeTrailerSearchIntentService;
 import us.nineworlds.serenity.core.util.DBMetaDataSource;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.listeners.TrailerGridHandler;
-import us.nineworlds.serenity.ui.listeners.TrailerHandler;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
+import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import us.nineworlds.serenity.widgets.RoundedImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Messenger;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,9 +85,9 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		if (convertView != null) {
 			galleryCellView = convertView;
 			galleryCellView.findViewById(R.id.posterInprogressIndicator)
-			.setVisibility(View.INVISIBLE);
+					.setVisibility(View.INVISIBLE);
 			galleryCellView.findViewById(R.id.posterWatchedIndicator)
-			.setVisibility(View.INVISIBLE);
+					.setVisibility(View.INVISIBLE);
 			galleryCellView.findViewById(R.id.infoGraphicMeta).setVisibility(
 					View.GONE);
 		} else {
@@ -185,19 +181,19 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
 		String queryURL = trailerSearch.queryURL(mpi);
 
-		// VolleyUtils.volleyJSonGetRequest(queryURL,
-		// new YouTubeTrailerSearchResponseListener(view, mpi),
-		// new DefaultLoggingVolleyErrorListener());
+		VolleyUtils.volleyJSonGetRequest(queryURL,
+				new YouTubeTrailerSearchResponseListener(view, mpi),
+				new DefaultLoggingVolleyErrorListener());
 
-		TrailerHandler trailerHandler = new TrailerGridHandler(mpi, context,
-				view);
-		Messenger messenger = new Messenger(trailerHandler);
-		Intent intent = new Intent(context,
-				YouTubeTrailerSearchIntentService.class);
-		intent.putExtra("videoTitle", mpi.getTitle());
-		intent.putExtra("year", mpi.getYear());
-		intent.putExtra("MESSENGER", messenger);
-		context.startService(intent);
+		// TrailerHandler trailerHandler = new TrailerGridHandler(mpi, context,
+		// view);
+		// Messenger messenger = new Messenger(trailerHandler);
+		// Intent intent = new Intent(context,
+		// YouTubeTrailerSearchIntentService.class);
+		// intent.putExtra("videoTitle", mpi.getTitle());
+		// intent.putExtra("year", mpi.getYear());
+		// intent.putExtra("MESSENGER", messenger);
+		// context.startService(intent);
 	}
 
 	public void fetchSubtitle(VideoContentInfo mpi, View view) {
@@ -223,7 +219,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	}
 
 	private class MoviePosterResponseErrorListener implements
-	Response.ErrorListener {
+			Response.ErrorListener {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {
@@ -236,7 +232,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	 *
 	 */
 	private class MoviePosterResponseListener implements
-	Response.Listener<MediaContainer> {
+			Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer response) {

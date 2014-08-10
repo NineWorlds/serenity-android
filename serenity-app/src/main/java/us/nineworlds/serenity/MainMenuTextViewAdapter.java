@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -52,10 +52,10 @@ import com.android.volley.VolleyError;
 public class MainMenuTextViewAdapter extends BaseAdapter {
 
 	/** The parent context */
-	private static Context myContext;
+	private final Context myContext;
 	private RequestQueue queue;
 
-	public static List<MenuItem> menuItems;
+	public static List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
 	/** Simple Constructor saving the 'parent' context. */
 	public MainMenuTextViewAdapter(Context c) {
@@ -63,8 +63,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	}
 
 	public MainMenuTextViewAdapter(Context c, View v) {
-		myContext = c;
-		menuItems = new ArrayList<MenuItem>();
+		this(c);
 		fetchData();
 	}
 
@@ -106,7 +105,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	 * Create a Main Menu item view for the corresponding MenuItem. If an
 	 * appropriate type can not be found a default MainMenuTextView will be
 	 * created.
-	 * 
+	 *
 	 * @param v
 	 * @param menuItem
 	 * @return
@@ -160,7 +159,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 
 	/**
 	 * Sets the default values for the view passed to it.
-	 * 
+	 *
 	 * @param position
 	 * @param v
 	 */
@@ -179,7 +178,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	}
 
 	private class MainMenuVolleyResponseListener implements
-			Response.Listener<MediaContainer> {
+	Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer mc) {
@@ -191,7 +190,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	}
 
 	private class MainMenuResponseErrorListener extends
-			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
+	DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {
@@ -207,7 +206,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 					myContext,
 					"Unable to connect to Plex Library at "
 							+ factory.getSectionsURL(), Toast.LENGTH_LONG)
-					.show();
+							.show();
 			notifyDataSetChanged();
 
 			Activity c = (Activity) myContext;
