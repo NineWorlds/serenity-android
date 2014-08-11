@@ -51,8 +51,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Gallery;
 import android.widget.Spinner;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 /**
  * @author dcarver
  *
@@ -80,18 +78,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-		EasyTracker.getInstance().activityStart(this);
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		EasyTracker.getInstance().activityStop(this);
-	}
-
-	@Override
 	protected void onRestart() {
 		super.onRestart();
 		restarted_state = true;
@@ -100,7 +86,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -121,7 +107,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
 	 * android.view.KeyEvent)
 	 */
@@ -253,13 +239,13 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-		.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(
-				drawerLayout));
+				.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(
+						drawerLayout));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
 	 */
 	@Override
@@ -273,7 +259,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#finish()
 	 */
 	@Override
@@ -300,7 +286,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		/*
 		 * (non-Javadoc)
-		 *
+		 * 
 		 * @see android.os.Handler#handleMessage(android.os.Message)
 		 */
 		@Override
@@ -315,7 +301,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 			ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
 					context, R.layout.serenity_spinner_textview, categories);
 			spinnerArrayAdapter
-			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
 			categorySpinner = (Spinner) context
 					.findViewById(R.id.categoryFilter);
@@ -324,12 +310,12 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 			if (savedCategory == null) {
 				categorySpinner
-				.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-						"all", key));
+						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+								"all", key));
 			} else {
 				categorySpinner
-				.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-						savedCategory, key, false));
+						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+								savedCategory, key, false));
 
 			}
 			categorySpinner.requestFocus();

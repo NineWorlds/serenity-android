@@ -45,6 +45,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
@@ -55,7 +56,6 @@ import android.widget.Toast;
 
 import com.castillo.dd.DSInterface;
 import com.castillo.dd.PendingDownload;
-import com.google.analytics.tracking.android.Log;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 
@@ -391,8 +391,8 @@ public class AbstractVideoOnItemLongClickListener {
 					context.getString(R.string.starting_download_of_)
 					+ info.getTitle(), Toast.LENGTH_LONG).show();
 		} catch (Exception ex) {
-			Log.e("Unable to download " + info.getTitle() + "."
-					+ info.getContainer());
+			Log.e(getClass().getName(), "Unable to download " + info.getTitle()
+					+ "." + info.getContainer());
 		}
 	}
 

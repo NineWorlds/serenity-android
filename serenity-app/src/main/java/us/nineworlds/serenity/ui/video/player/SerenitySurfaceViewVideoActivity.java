@@ -69,8 +69,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 /**
  * A view that handles the internal video playback and representation of a movie
  * or tv show.
@@ -79,7 +77,7 @@ import com.google.analytics.tracking.android.EasyTracker;
  *
  */
 public class SerenitySurfaceViewVideoActivity extends SerenityActivity
-implements SurfaceHolder.Callback {
+		implements SurfaceHolder.Callback {
 
 	/**
 	 *
@@ -139,7 +137,7 @@ implements SurfaceHolder.Callback {
 			}
 			if (subtitlesPlaybackEnabled) {
 				subtitleDisplayHandler
-				.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+						.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
 			}
 
 		}
@@ -198,7 +196,7 @@ implements SurfaceHolder.Callback {
 					resumeOffset, autoResume, aspectRatio,
 					progressReportinghandler, progressRunnable));
 			mediaPlayer
-			.setOnCompletionListener(new VideoPlayerOnCompletionListener());
+					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
 			mediaPlayer.prepareAsync();
 
 		} catch (Exception ex) {
@@ -425,7 +423,7 @@ implements SurfaceHolder.Callback {
 					mediaPlayer.start();
 					mediaController.hide();
 					progressReportinghandler
-					.postDelayed(progressRunnable, 5000);
+							.postDelayed(progressRunnable, 5000);
 				}
 				return true;
 			}
@@ -443,7 +441,7 @@ implements SurfaceHolder.Callback {
 					mediaPlayer.start();
 					mediaController.hide();
 					progressReportinghandler
-					.postDelayed(progressRunnable, 5000);
+							.postDelayed(progressRunnable, 5000);
 				}
 				return true;
 			}
@@ -697,18 +695,6 @@ implements SurfaceHolder.Callback {
 		return false;
 	}
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-		EasyTracker.getInstance().activityStart(this);
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		EasyTracker.getInstance().activityStop(this);
-	}
-
 	/**
 	 * A task that updates the progress position of a video while it is being
 	 * played.
@@ -742,7 +728,7 @@ implements SurfaceHolder.Callback {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -764,7 +750,7 @@ implements SurfaceHolder.Callback {
 	}
 
 	protected class VideoPlayerOnCompletionListener implements
-	OnCompletionListener {
+			OnCompletionListener {
 
 		@Override
 		public void onCompletion(MediaPlayer mp) {
@@ -786,7 +772,7 @@ implements SurfaceHolder.Callback {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media
 	 * .MediaPlayer, android.media.TimedText)

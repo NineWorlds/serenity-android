@@ -55,7 +55,6 @@ import android.widget.Gallery;
 import android.widget.ListView;
 
 import com.castillo.dd.DownloadService;
-import com.google.analytics.tracking.android.EasyTracker;
 
 public class MainActivity extends SerenityDrawerLayoutActivity {
 
@@ -276,9 +275,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (SerenityApplication.isTrackingEnabled()) {
-			EasyTracker.getInstance().activityStart(this);
-		}
 
 		autoConfigureHandler.postDelayed(
 				new AutoConfigureHandlerRunnable(this), 2500);
@@ -291,9 +287,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (SerenityApplication.isTrackingEnabled()) {
-			EasyTracker.getInstance().activityStop(this);
-		}
 	}
 
 	@Override

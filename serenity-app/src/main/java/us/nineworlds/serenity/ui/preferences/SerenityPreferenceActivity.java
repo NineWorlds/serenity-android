@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -32,31 +32,27 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import android.preference.Preference;
 import us.nineworlds.serenity.MainActivity;
-import us.nineworlds.serenity.SerenityApplication;
-
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.Server;
-
-import com.google.analytics.tracking.android.EasyTracker;
-
+import us.nineworlds.serenity.ui.activity.OverscanSetupActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import us.nineworlds.serenity.ui.activity.OverscanSetupActivity;
-import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 /**
  * This is the main activity for managing user preferences in the app.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
-public class SerenityPreferenceActivity extends PreferenceActivity implements Preference.OnPreferenceClickListener {
+public class SerenityPreferenceActivity extends PreferenceActivity implements
+Preference.OnPreferenceClickListener {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +80,6 @@ public class SerenityPreferenceActivity extends PreferenceActivity implements Pr
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance().activityStart(this);
 		populateAvailablePlexMediaServers();
 		populateAvailableLocales();
 		populateSupportedPlayers();
@@ -95,7 +90,7 @@ public class SerenityPreferenceActivity extends PreferenceActivity implements Pr
 	 * Media Servers. The name of the Device and the device's IP address are
 	 * used as values in the entry. The user friendly name is used from the
 	 * device itself.
-	 * 
+	 *
 	 */
 	protected void populateAvailablePlexMediaServers() {
 		ListPreference discoveredServers = (ListPreference) findPreference("discoveredServer");
@@ -117,8 +112,7 @@ public class SerenityPreferenceActivity extends PreferenceActivity implements Pr
 		Iterator<Map.Entry<String, Server>> entIt = plexMediaServers.entrySet()
 				.iterator();
 		while (entIt.hasNext()) {
-			Map.Entry<String, Server> servers = entIt
-					.next();
+			Map.Entry<String, Server> servers = entIt.next();
 			Server device = servers.getValue();
 			ipAddresses.add(device.getIPAddress());
 		}
@@ -128,7 +122,7 @@ public class SerenityPreferenceActivity extends PreferenceActivity implements Pr
 		}
 
 	}
-	
+
 	protected void populateAvailableLocales() {
 		Locale[] locales = Locale.getAvailableLocales();
 		ListPreference preferenceLocales = (ListPreference) findPreference("preferred_subtitle_language");
@@ -148,52 +142,40 @@ public class SerenityPreferenceActivity extends PreferenceActivity implements Pr
 		preferenceLocales.setEntryValues(values);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.preference.PreferenceActivity#onStop()
-	 */
-	@Override
-	protected void onStop() {
-		super.onStop();
-		EasyTracker.getInstance().activityStop(this);
-	}
-	
 	protected void populateSupportedPlayers() {
 		ListPreference supportedPlayers = (ListPreference) findPreference("serenity_external_player_filter");
 		Map<String, String> availablePlayers = new HashMap<String, String>();
 		if (hasPlayerByName(this, "com.mxtech.videoplayer.ad")) {
 			availablePlayers.put("mxplayer", "MX Player");
 		}
-		
+
 		if (hasPlayerByName(this, "com.mxtech.videoplayer.pro")) {
 			availablePlayers.put("mxplayerpro", "MX Player Pro");
 		}
-		
+
 		if (hasPlayerByName(this, "net.gtvbox.videoplayer")) {
-			availablePlayers.put("vimu", "ViMu Player" );
+			availablePlayers.put("vimu", "ViMu Player");
 		}
-		
+
 		availablePlayers.put("default", "System Default");
-		
+
 		String[] entries = new String[availablePlayers.size()];
 		String[] values = new String[availablePlayers.size()];
 		ArrayList playerNames = new ArrayList();
 		ArrayList playerValues = new ArrayList();
-		
-		
+
 		for (Entry entry : availablePlayers.entrySet()) {
 			playerNames.add(entry.getValue());
 			playerValues.add(entry.getKey());
 		}
-		
+
 		playerNames.toArray(entries);
 		playerValues.toArray(values);
-		
+
 		supportedPlayers.setEntries(entries);
 		supportedPlayers.setEntryValues(values);
 	}
-	
+
 	protected boolean hasPlayerByName(Context context, String playerPackageName) {
 
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
@@ -208,7 +190,7 @@ public class SerenityPreferenceActivity extends PreferenceActivity implements Pr
 			}
 		}
 
-		return false;		
+		return false;
 	}
 
 	@Override

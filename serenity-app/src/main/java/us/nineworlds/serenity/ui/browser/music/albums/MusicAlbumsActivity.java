@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -33,12 +33,11 @@ import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.jess.ui.TwoWayGridView;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class MusicAlbumsActivity extends Activity {
 
@@ -47,7 +46,7 @@ public class MusicAlbumsActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -71,13 +70,12 @@ public class MusicAlbumsActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onStart()
 	 */
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance().activityStart(this);
 		if (restarted_state == false) {
 			setupMusicAdapters();
 		}

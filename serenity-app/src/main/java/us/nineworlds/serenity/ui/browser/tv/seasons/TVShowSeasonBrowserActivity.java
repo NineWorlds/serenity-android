@@ -41,7 +41,6 @@ import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.jess.ui.TwoWayGridView;
 
 /**
@@ -74,7 +73,6 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance().activityStart(this);
 		if (restarted_state == false) {
 			setupSeasons();
 		}
@@ -86,30 +84,19 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 		tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(
 				this, key));
 		tvShowSeasonsGallery
-				.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(
-						tvShowSeasonsMainView, this));
+		.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(
+				tvShowSeasonsMainView, this));
 		tvShowSeasonsGallery
-				.setOnItemClickListener(new TVShowSeasonOnItemClickListener(
-						this));
+		.setOnItemClickListener(new TVShowSeasonOnItemClickListener(
+				this));
 		tvShowSeasonsGallery
-				.setOnItemLongClickListener(new SeasonOnItemLongClickListener(
-						this));
+		.setOnItemLongClickListener(new SeasonOnItemLongClickListener(
+				this));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onStop()
-	 */
-	@Override
-	protected void onStop() {
-		super.onStop();
-		EasyTracker.getInstance().activityStop(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onRestart()
 	 */
 	@Override
@@ -121,7 +108,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -162,13 +149,13 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-				.setOnItemClickListener(new TVShowSeasonMenuDrawerOnItemClickedListener(
-						drawerLayout));
+		.setOnItemClickListener(new TVShowSeasonMenuDrawerOnItemClickedListener(
+				drawerLayout));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
 	 * android.view.KeyEvent)
 	 */

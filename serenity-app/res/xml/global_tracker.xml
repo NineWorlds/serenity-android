@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <integer name="ga_sessionTimeout">300</integer>
+
+    <!-- Enable automatic Activity measurement -->
+    <bool name="ga_autoActivityTracking">true</bool>
+    
+    <bool name="ga_reportUncaughtExceptions">true</bool>
+
+    <!-- The screen names that will appear in reports -->
+    
+    <screenName name="us.nineworlds.serenity.MainActivity">Main Menu</screenName>
+    <screenName name="us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity">Movie Browser</screenName>
+    <screenName name="us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity">TV Show Browser</screenName>
+    <screenName name="us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity">Season Browser</screenName>
+    <screenName name="us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity">Episode Browser</screenName>
+    <screenName name="us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity">Settings</screenName>
+    <screenName name="us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity">Internal Video Player</screenName>
+
+    <!--  The following value should be replaced with correct property id. -->
+    <string name="ga_trackingId">UA-38658181-1</string>
+</resources>

@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
@@ -45,8 +44,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	private static String key;
@@ -57,7 +54,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -110,8 +107,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-				.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(
-						drawerLayout));
+		.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(
+				drawerLayout));
 
 	}
 
@@ -165,14 +162,11 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (SerenityApplication.isTrackingEnabled()) {
-			EasyTracker.getInstance().activityStart(this);
-		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -192,18 +186,17 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance().activityStop(this);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onRestart()
 	 */
 	@Override

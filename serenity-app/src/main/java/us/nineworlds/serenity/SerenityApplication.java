@@ -24,6 +24,7 @@
 package us.nineworlds.serenity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,9 +46,10 @@ import android.preference.PreferenceManager;
 import android.widget.ImageView;
 
 import com.castillo.dd.PendingDownload;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.ExceptionReporter;
-import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.analytics.ExceptionReporter;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -77,10 +79,30 @@ public class SerenityApplication extends Application {
 
 	public static final int PROGRESS = 0xDEADBEEF;
 
+	public enum TrackerName {
+		APP_TRACKER, // Tracker used only in this app.
+		GLOBAL_TRACKER, // Tracker used by all the apps from a company. eg:
+		// roll-up tracking.
+		ECOMMERCE_TRACKER, // Tracker used by all ecommerce transactions from a
+		// company.
+	}
+
+	HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
+
 	private static LinkedList<VideoContentInfo> videoQueue = new LinkedList<VideoContentInfo>();
 
 	public static void disableTracking() {
 		enableTracking = false;
+	}
+
+	synchronized Tracker getTracker() {
+		if (!mTrackers.containsKey(TrackerName.GLOBAL_TRACKER)) {
+
+			GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+			Tracker t = analytics.newTracker(R.xml.global_tracker);
+			mTrackers.put(TrackerName.GLOBAL_TRACKER, t);
+		}
+		return mTrackers.get(TrackerName.GLOBAL_TRACKER);
 	}
 
 	public static void displayImage(String imageUrl, ImageView view) {
@@ -257,13 +279,13 @@ public class SerenityApplication extends Application {
 	 *
 	 */
 	protected void installAnalytics() {
-		EasyTracker.getInstance().setContext(this);
+		Tracker tracker = getTracker();
 		Thread.UncaughtExceptionHandler uncaughtExceptionHandler = Thread
 				.getDefaultUncaughtExceptionHandler();
 		if (uncaughtExceptionHandler instanceof ExceptionReporter) {
 			ExceptionReporter exceptionReporter = (ExceptionReporter) uncaughtExceptionHandler;
 			exceptionReporter
-					.setExceptionParser(new AnalyticsExceptionParser());
+			.setExceptionParser(new AnalyticsExceptionParser());
 		}
 	}
 
@@ -287,11 +309,12 @@ public class SerenityApplication extends Application {
 	protected void sendStartedApplicationEvent() {
 		String deviceModel = android.os.Build.MODEL;
 		if (enableTracking) {
-			Tracker tracker = EasyTracker.getTracker();
+			Tracker tracker = getTracker();
 			if (tracker != null) {
-				tracker.sendEvent("Devices", "Started Application",
-						deviceModel, (long) 0);
-
+				tracker.send(new HitBuilders.EventBuilder()
+						.setCategory("Devices")
+						.setAction("Started Application").setLabel(deviceModel)
+						.build());
 			}
 		}
 	}

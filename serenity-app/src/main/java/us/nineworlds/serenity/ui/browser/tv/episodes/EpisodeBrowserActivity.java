@@ -43,8 +43,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
 	private SerenityGallery posterGallery;
@@ -155,12 +153,6 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 			setupEpisodeBrowser();
 		}
 		restarted_state = false;
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		EasyTracker.getInstance().activityStop(this);
 	}
 
 	/**

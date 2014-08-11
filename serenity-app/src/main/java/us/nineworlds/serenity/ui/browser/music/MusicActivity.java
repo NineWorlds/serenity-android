@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -42,11 +42,9 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 /**
  * @author dcarver
- * 
+ *
  */
 public class MusicActivity extends Activity {
 
@@ -59,7 +57,7 @@ public class MusicActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -90,13 +88,12 @@ public class MusicActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onStart()
 	 */
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance().activityStart(this);
 		if (restarted_state == false) {
 			setupMusicAdapters();
 		}
@@ -105,7 +102,7 @@ public class MusicActivity extends Activity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onRestart()
 	 */
 	@Override
@@ -133,7 +130,7 @@ public class MusicActivity extends Activity {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see android.os.Handler#handleMessage(android.os.Message)
 		 */
 		@Override
@@ -151,15 +148,15 @@ public class MusicActivity extends Activity {
 			ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
 					context, R.layout.serenity_spinner_textview, categories);
 			spinnerArrayAdapter
-					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
 			categorySpinner = (Spinner) context
 					.findViewById(R.id.musicCategoryFilter);
 			categorySpinner.setVisibility(View.VISIBLE);
 			categorySpinner.setAdapter(spinnerArrayAdapter);
 			categorySpinner
-					.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-							"all", key));
+			.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+					"all", key));
 			categorySpinner.requestFocus();
 		}
 
