@@ -46,6 +46,7 @@ import android.widget.ImageView;
 
 import com.castillo.dd.PendingDownload;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.ExceptionReporter;
 import com.google.analytics.tracking.android.Tracker;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -103,9 +104,9 @@ public class SerenityApplication extends Application {
 	public static void displayImage(String imageUrl, ImageView view, int resId) {
 		final ImageViewAware imageViewAware = new ImageViewAware(view);
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.cacheInMemory(true).cacheOnDisk(true)
-				.bitmapConfig(Bitmap.Config.ARGB_8888)
-				.showImageForEmptyUri(resId).build();
+		.cacheInMemory(true).cacheOnDisk(true)
+		.bitmapConfig(Bitmap.Config.ARGB_8888)
+		.showImageForEmptyUri(resId).build();
 		imageLoader.displayImage(imageUrl, imageViewAware, options);
 	}
 
@@ -199,19 +200,19 @@ public class SerenityApplication extends Application {
 
 	protected void configureImageLoader() {
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-				.cacheInMemory(true).cacheOnDisk(true)
-				.bitmapConfig(Bitmap.Config.ARGB_8888)
-				.resetViewBeforeLoading(true)
-				.showImageForEmptyUri(R.drawable.default_video_cover).build();
+		.cacheInMemory(true).cacheOnDisk(true)
+		.bitmapConfig(Bitmap.Config.ARGB_8888)
+		.resetViewBeforeLoading(true)
+		.showImageForEmptyUri(R.drawable.default_video_cover).build();
 
 		setStaticImageOptions();
 
 		ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(
 				this)
-				.threadPoolSize(5)
-				.tasksProcessingOrder(QueueProcessingType.FIFO)
-				.imageDownloader(
-						new OKHttpImageLoader(this, new OkHttpClient()))
+		.threadPoolSize(5)
+		.tasksProcessingOrder(QueueProcessingType.FIFO)
+		.imageDownloader(
+				new OKHttpImageLoader(this, new OkHttpClient()))
 				.defaultDisplayImageOptions(defaultOptions).build();
 
 		imageLoader = ImageLoader.getInstance();
@@ -257,6 +258,13 @@ public class SerenityApplication extends Application {
 	 */
 	protected void installAnalytics() {
 		EasyTracker.getInstance().setContext(this);
+		Thread.UncaughtExceptionHandler uncaughtExceptionHandler = Thread
+				.getDefaultUncaughtExceptionHandler();
+		if (uncaughtExceptionHandler instanceof ExceptionReporter) {
+			ExceptionReporter exceptionReporter = (ExceptionReporter) uncaughtExceptionHandler;
+			exceptionReporter
+					.setExceptionParser(new AnalyticsExceptionParser());
+		}
 	}
 
 	@Override
