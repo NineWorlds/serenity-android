@@ -31,6 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowApplication;
 
 import us.nineworlds.serenity.SerenityRobolectricTestRunner;
 
@@ -42,18 +43,22 @@ import us.nineworlds.serenity.SerenityRobolectricTestRunner;
 @Config(emulateSdk = 18)
 public class SerenitySurfaceViewVideoPlayerTest {
 
-	SerenitySurfaceViewVideoActivity activity;
-
 	@Before
 	public void setUp() throws Exception {
-		activity = Robolectric
-				.buildActivity(SerenitySurfaceViewVideoActivity.class).create()
-				.get();
+		// Place this in the setup method for any test that is failing to keep
+		// it from trying to start
+		Robolectric.pauseMainLooper();
+		Robolectric.getBackgroundScheduler().pause();
+		Robolectric.getUiThreadScheduler().pause();
+
+		ShadowApplication shadowApplication = Robolectric
+				.shadowOf(Robolectric.application);
+		shadowApplication
+				.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		activity.finish();
 	}
 
 	@Test

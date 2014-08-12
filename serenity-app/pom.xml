@@ -150,6 +150,53 @@
 		<finalName>Serenity-${project.version}</finalName>
 		<plugins>
 			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.13</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.jacoco</groupId>
+						<artifactId>org.jacoco.core</artifactId>
+						<version>0.7.0.201403182114</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<argLine>${argLine} -noverify -XX:MaxPermSize=256m</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.0.201403182114</version>
+				<executions>
+					<execution>
+						<id>jacoco-initialize</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<excludes>
+								<exclude>**/android/support/**/*.class</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>jacoco-site</id>
+						<phase>package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<excludes>
+								<exclude>**/android/support/**/*.class</exclude>
+								<exclude>**/R$*.class</exclude>
+								<exclude>**/R.class</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
 				<executions>
@@ -180,50 +227,11 @@
 				<extensions>true</extensions>
 			</plugin>
 			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.0.201403182114</version>
-				<configuration>
-					<destfile>${project.basedir}/target/coverage-reports/jacoco.exec</destfile>
-					<datafile>${project.basedir}/target/coverage-reports/jacoco.exec</datafile>
-				</configuration>
-				<executions>
-					<execution>
-						<id>jacoco-initialize</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>jacoco-site</id>
-						<phase>package</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.13</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.jacoco</groupId>
-						<artifactId>org.jacoco.core</artifactId>
-						<version>0.7.0.201403182114</version>
-					</dependency>
-				</dependencies>
-				<configuration>
-					<argLine>${argLine} -noverify -XX:MaxPermSize=256m</argLine>
 				</configuration>
 			</plugin>
 		</plugins>

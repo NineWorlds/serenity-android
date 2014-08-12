@@ -30,21 +30,6 @@
             <checksumPolicy>warn</checksumPolicy>
          </releases>
       </repository>
-      <repository>
-         <id>android-rome-feed-reader-repository</id>
-         <name>Android ROME Feed Reader Repository</name>
-         <url>https://android-rome-feed-reader.googlecode.com/svn/maven2/releases</url>
-      </repository>
-      <repository>
-         <id>cling</id>
-         <url>http://4thline.org/m2/</url>
-         <layout>default</layout>
-         <releases>
-            <enabled>true</enabled>
-            <updatePolicy>always</updatePolicy>
-            <checksumPolicy>warn</checksumPolicy>
-         </releases>
-      </repository>
    </repositories>
 
    <build>
@@ -53,7 +38,7 @@
             <plugin>
                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                <artifactId>android-maven-plugin</artifactId>
-               <version>3.9.0-rc.2</version>
+               <version>3.7.0</version>
             </plugin>
             <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
             <plugin>
