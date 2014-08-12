@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -38,12 +38,12 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class MovieMediaContainer extends AbstractMediaContainer {
 
 	/**
-	 * 
+	 *
 	 */
 	public MovieMediaContainer(MediaContainer mc) {
 		super(mc);
@@ -58,12 +58,15 @@ public class MovieMediaContainer extends AbstractMediaContainer {
 	protected void createVideoContent(MediaContainer mc) {
 		String baseUrl = factory.baseURL();
 		List<Video> videos = mc.getVideos();
+		if (videos == null) {
+			return;
+		}
+
 		String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
 		StringBuilder sbuild = new StringBuilder();
 		sbuild.append(baseUrl);
 		sbuild.append(":/resources/movie-fanart.jpg");
 		String baseImageResource = sbuild.toString();
-		
 		for (Video movie : videos) {
 			VideoContentInfo mpi = new MoviePosterInfo();
 			mpi.setMediaTagIdentifier(mediaTagId);
@@ -81,7 +84,8 @@ public class MovieMediaContainer extends AbstractMediaContainer {
 			if (movie.getBackgroundImageKey() != null) {
 				StringBuilder builder = new StringBuilder();
 				builder.append(baseUrl);
-				builder.append(movie.getBackgroundImageKey().replaceFirst("/", ""));
+				builder.append(movie.getBackgroundImageKey().replaceFirst("/",
+						""));
 				burl = builder.toString();
 			}
 			mpi.setBackgroundURL(burl);
@@ -90,7 +94,8 @@ public class MovieMediaContainer extends AbstractMediaContainer {
 			if (movie.getThumbNailImageKey() != null) {
 				StringBuilder builder = new StringBuilder();
 				builder.append(baseUrl);
-				builder.append(movie.getThumbNailImageKey().replaceFirst("/", ""));
+				builder.append(movie.getThumbNailImageKey().replaceFirst("/",
+						""));
 				turl = builder.toString();
 			}
 
@@ -115,7 +120,7 @@ public class MovieMediaContainer extends AbstractMediaContainer {
 				StringBuilder builder = new StringBuilder();
 				builder.append(factory.baseURL());
 				builder.append(part.getKey().replaceFirst("/", ""));
-				
+
 				String directPlayUrl = builder.toString();
 				mpi.setDirectPlayUrl(directPlayUrl);
 
@@ -130,7 +135,7 @@ public class MovieMediaContainer extends AbstractMediaContainer {
 
 	/**
 	 * Create the video meta data around cast, direct, year produced, etc.
-	 * 
+	 *
 	 * @param video
 	 * @param videoContentInfo
 	 * @return
