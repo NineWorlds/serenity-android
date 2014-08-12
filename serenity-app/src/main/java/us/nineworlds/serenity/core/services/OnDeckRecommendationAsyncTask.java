@@ -44,7 +44,7 @@ public class OnDeckRecommendationAsyncTask extends AsyncTask {
 
 		OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(
 				context);
-		onDeckRecommendations.recommend();
+		onDeckRecommendations.recommended();
 		return null;
 	}
 

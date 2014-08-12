@@ -45,7 +45,7 @@ public class OnDeckRecommendationIntentService extends IntentService {
 
 		OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(
 				this);
-		onDeckRecommendations.recommend();
+		onDeckRecommendations.recommended();
 	}
 
 }
