@@ -195,6 +195,11 @@
 								<exclude>**/RecommendationBuilder.class</exclude>
 								<exclude>**/com/jess/ui/**/*.class</exclude>
 								<exclude>**/com/castillo/dd/**/*.class</exclude>
+								<exclude>**/BadgeView.class</exclude>
+								<exclude>**/RoundedImageView.class</exclude>
+								<exclude>**/DrawerLayout.class</exclude>
+								<exclude>**/us/nineworlds/serenity/widgets/*.class</exclude>
+								<exclude>**/us/nineworlds/serenity/ui/dialogs/*.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>
