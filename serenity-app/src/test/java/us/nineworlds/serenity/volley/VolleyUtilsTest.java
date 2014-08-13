@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -25,32 +25,59 @@ package us.nineworlds.serenity.volley;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(reportSdk = 14, emulateSdk = 18)
 public class VolleyUtilsTest {
 
+	RequestQueue queue;
+
+	@Before
+	public void setUp() {
+		queue = VolleyUtils.getRequestQueueInstance(Robolectric.application);
+	}
+
 	@Test
 	public void assertThatVolleyRequestQueueIsNotNull() {
-		RequestQueue queue = VolleyUtils
-				.getRequestQueueInstance(Robolectric.application);
+		queue = VolleyUtils.getRequestQueueInstance(Robolectric.application);
 		assertThat(queue).isNotNull();
 	}
 
 	@Test
 	public void assertThatVolleyRequestQueueIsSameInstance() {
-		RequestQueue queue = VolleyUtils
-				.getRequestQueueInstance(Robolectric.application);
 		RequestQueue queue2 = VolleyUtils
 				.getRequestQueueInstance(Robolectric.application);
 		assertThat(queue).isEqualTo(queue2);
 
 	}
+
+	@Test
+	public void assertThatXmlRequestIsNotNull() {
+		Response.Listener rlistener = Mockito.mock(Response.Listener.class);
+		Request request = VolleyUtils.volleyXmlGetRequest(
+				"http://www.example.com", rlistener,
+				new DefaultLoggingVolleyErrorListener());
+		assertThat(request).isNotNull();
+	}
+
+	@Test
+	public void assertThatJsonRequestIsNotNull() {
+		Response.Listener rlistener = Mockito.mock(Response.Listener.class);
+		Request request = VolleyUtils.volleyJSonGetRequest(
+				"http://www.example.com", rlistener,
+				new DefaultLoggingVolleyErrorListener());
+		assertThat(request).isNotNull();
+	}
+
 }
