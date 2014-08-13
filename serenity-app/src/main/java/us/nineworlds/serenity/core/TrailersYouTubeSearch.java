@@ -27,16 +27,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.YouTubeVideoContentInfo;
+import android.util.Log;
 
-/**
- * @author davidcarver
- *
- */
 public class TrailersYouTubeSearch {
 
-	private static String API_KEY = "AIzaSyBaVoUqzjCUOwxaYAz7yQDXIJzUyBQSako";
-	protected YouTubeVideoContentInfo videoInfo = new YouTubeVideoContentInfo();
 	private static final String TRAILER = " Offical Trailer";
 
 	public String queryURL(VideoContentInfo video) {
@@ -57,10 +51,12 @@ public class TrailersYouTubeSearch {
 			String encodedTitle = URLEncoder.encode(videoTitle, "UTF-8");
 
 			String queryString = "https://www.googleapis.com/youtube/v3/search?part=id%2Csnippet&maxResults=1&order=relevance&q="
-					+ encodedTitle + "&key=" + API_KEY;
+					+ encodedTitle
+					+ "&key="
+					+ SerenityConstants.YOUTUBE_SEARCH_API_KEY;
 			return queryString;
 		} catch (UnsupportedEncodingException ex) {
-
+			Log.e(getClass().getName(), "Error encoding string.", ex);
 		}
 		return null;
 	}

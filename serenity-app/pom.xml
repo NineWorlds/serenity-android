@@ -191,6 +191,10 @@
 								<exclude>**/android/support/**/*.class</exclude>
 								<exclude>**/R$*.class</exclude>
 								<exclude>**/R.class</exclude>
+								<exclude>**/SerenityConstants.class</exclude>
+								<exclude>**/RecommendationBuilder.class</exclude>
+								<exclude>**/com/jess/ui/**/*.class</exclude>
+								<exclude>**/com/castillo/dd/**/*.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>

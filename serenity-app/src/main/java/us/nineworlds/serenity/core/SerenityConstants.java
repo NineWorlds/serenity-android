@@ -33,6 +33,7 @@ public class SerenityConstants {
 	public static int EXIT_PLAYBACK_IMMEDIATELY = 1000;
 	public static int CLICKED_GRID_VIEW_ITEM = 0;
 	public static final float WATCHED_PERCENT = 0.90f;
+	public static final String YOUTUBE_SEARCH_API_KEY = "AIzaSyBaVoUqzjCUOwxaYAz7yQDXIJzUyBQSako";
 	public static final String YOUTUBE_BROWSER_API_KEY = "AIzaSyDA2rzmN9M_h38QLBnp1bjnZXcqAoT-1K0";
 	public static final String PREFERENCE_ONDECK_RECOMMENDATIONS = "androidtv_recommendation_ondeck";
 	public static final String PREFERENCE_TV_MODE = "serenity_tv_mode";
