@@ -47,6 +47,7 @@ public class RecommendationBuilder {
 	private String mImageUri;
 	private String mBackgroundUri;
 	private PendingIntent mIntent;
+	private int cardColor;
 
 	public RecommendationBuilder() {
 	}
@@ -96,6 +97,11 @@ public class RecommendationBuilder {
 		return this;
 	}
 
+	public RecommendationBuilder setColor(int colorValue) {
+		cardColor = colorValue;
+		return this;
+	}
+
 	public Notification build() throws IOException {
 
 		Log.d(TAG, "Building notification - " + this.toString());
@@ -114,21 +120,20 @@ public class RecommendationBuilder {
 		Bitmap image = imageLoader.loadImageSync(mImageUri, new ImageSize(176,
 				313), SerenityApplication.getSycnOptions());
 
-		Notification notification = new NotificationCompat.BigPictureStyle(
-				new NotificationCompat.Builder(mContext)
-				.setContentTitle(mTitle)
-				.setContentText(mDescription)
-				.setPriority(mPriority)
-				.setOngoing(true)
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(
+				mContext);
+
+		builder = builder.setContentTitle(mTitle).setContentText(mDescription)
+				.setPriority(mPriority).setOngoing(true)
 				.setLocalOnly(true)
-				.setColor(
-						mContext.getResources()
-						.getColor(
-								us.nineworlds.serenity.R.color.holo_color))
-								// .setCategory(Notification.CATEGORY_RECOMMENDATION)
-								.setCategory("recommendation").setLargeIcon(image)
-								.setSmallIcon(mSmallIcon).setContentIntent(mIntent)
-								.setExtras(extras)).build();
+				.setColor(cardColor)
+				// .setCategory(Notification.CATEGORY_RECOMMENDATION)
+				.setCategory("recommendation").setLargeIcon(image)
+				.setSmallIcon(mSmallIcon).setContentIntent(mIntent)
+				.setExtras(extras);
+
+		Notification notification = new NotificationCompat.BigPictureStyle(
+				builder).build();
 
 		try {
 			mNotificationManager.notify(mId, notification);

@@ -10,14 +10,17 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class RecommendAsyncTask extends AsyncTask {
 	private final VideoContentInfo video;
 	private final Context context;
@@ -29,31 +32,97 @@ public class RecommendAsyncTask extends AsyncTask {
 	}
 
 	@Override
-	protected Object doInBackground(Object... params) {
+	public Object doInBackground(Object... params) {
 		RecommendationBuilder builder = new RecommendationBuilder();
 		try {
-			PendingIntent intent = buildPendingIntent(video);
-			String backgroundURL = factory.getImageURL(
-					video.getBackgroundURL(), 1920, 1080);
-
-			int priority = 0;
-			if (video.viewedPercentage() > 0.0f) {
-				priority = Math.round(100 * video.viewedPercentage());
+			Notification notification = null;
+			if (video.getSeriesTitle() == null) {
+				notification = buildMovieRecommendation();
+			} else {
+				notification = buildSeriesRecommendation();
 			}
-
-			Notification notification = builder.setContext(context)
-					.setBackground(backgroundURL).setTitle(video.getTitle())
-					.setImage(video.getImageURL())
-					.setId(Integer.parseInt(video.id())).setPriority(priority)
-					.setDescription(video.getSummary())
-					.setSmallIcon(R.drawable.androidtv_icon_mono)
-					.setIntent(intent).build();
 			return notification;
 		} catch (IOException ex) {
 			Log.e("OnDeckRecommendation", "Error building recommendation: "
 					+ builder.toString(), ex);
 		}
 		return null;
+	}
+
+	private Notification buildMovieRecommendation() throws IOException {
+		RecommendationBuilder builder = new RecommendationBuilder();
+		PendingIntent intent = buildPendingIntent(video);
+		String backgroundURL = factory.getImageURL(video.getBackgroundURL(),
+				1920, 1080);
+
+		float viewedPercentage = video.viewedPercentage();
+		int priority = videoPriority(viewedPercentage);
+		int color = context.getResources().getColor(
+				us.nineworlds.serenity.R.color.holo_color);
+
+		Notification notification = builder.setContext(context)
+				.setBackground(backgroundURL).setTitle(video.getTitle())
+				.setImage(video.getImageURL())
+				.setId(Integer.parseInt(video.id())).setPriority(priority)
+				.setDescription(video.getSummary()).setColor(color)
+				.setSmallIcon(R.drawable.androidtv_icon_mono).setIntent(intent)
+				.build();
+		return notification;
+	}
+
+	private Notification buildSeriesRecommendation() throws IOException {
+		RecommendationBuilder builder = new RecommendationBuilder();
+		PendingIntent intent = buildPendingIntent(video);
+		String backgroundURL = factory.getImageURL(video.getBackgroundURL(),
+				1920, 1080);
+
+		float viewedPercentage = video.viewedPercentage();
+		int priority = videoPriority(viewedPercentage);
+		int color = context.getResources().getColor(
+				us.nineworlds.serenity.R.color.holo_color);
+		String title = video.getSeriesTitle();
+
+		String season = video.getSeason();
+		String episode = video.getEpisodeNumber();
+
+		String summary = video.getTitle();
+		if (season != null || episode != null) {
+			summary = summary + " - ";
+		}
+
+		if (season != null) {
+			summary = summary + season + " ";
+		}
+
+		if (episode != null) {
+			summary = summary + episode;
+		}
+		summary = summary.trim();
+
+		Notification notification = builder.setContext(context)
+				.setBackground(backgroundURL).setTitle(title)
+				.setImage(video.getImageURL())
+				.setId(Integer.parseInt(video.id())).setPriority(priority)
+				.setDescription(summary).setColor(color)
+				.setSmallIcon(R.drawable.androidtv_icon_mono).setIntent(intent)
+				.build();
+		return notification;
+	}
+
+	protected int videoPriority(float viewedPercentage) {
+		if (viewedPercentage > 0.80) {
+			return Notification.PRIORITY_MAX;
+		}
+
+		if (viewedPercentage > 0.40) {
+			return Notification.PRIORITY_HIGH;
+		}
+
+		if (viewedPercentage > 0.10) {
+			return Notification.PRIORITY_DEFAULT;
+		}
+
+		return Notification.PRIORITY_LOW;
 	}
 
 	public PendingIntent buildPendingIntent(VideoContentInfo video) {

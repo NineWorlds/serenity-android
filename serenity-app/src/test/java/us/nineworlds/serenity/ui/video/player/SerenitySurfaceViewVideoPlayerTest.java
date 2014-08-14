@@ -45,16 +45,10 @@ public class SerenitySurfaceViewVideoPlayerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		// Place this in the setup method for any test that is failing to keep
-		// it from trying to start
-		Robolectric.pauseMainLooper();
-		Robolectric.getBackgroundScheduler().pause();
-		Robolectric.getUiThreadScheduler().pause();
-
 		ShadowApplication shadowApplication = Robolectric
 				.shadowOf(Robolectric.application);
 		shadowApplication
-				.declareActionUnbindable("com.google.android.gms.analytics.service.START");
+		.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 	}
 
 	@After

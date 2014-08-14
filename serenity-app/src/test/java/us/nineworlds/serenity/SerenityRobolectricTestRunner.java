@@ -34,7 +34,7 @@ public class SerenityRobolectricTestRunner extends RobolectricTestRunner {
 		@Override
 		public Application createApplication(final Method method,
 				final AndroidManifest appManifest) {
-			return new TestApplication();
+			return new TestSerenityApplication();
 		}
 	}
 

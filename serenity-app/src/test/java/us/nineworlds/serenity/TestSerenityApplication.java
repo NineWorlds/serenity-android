@@ -23,23 +23,44 @@
 
 package us.nineworlds.serenity;
 
+import java.lang.reflect.Method;
+
+import org.robolectric.TestLifecycleApplication;
+
 import com.google.android.gms.analytics.GoogleAnalytics;
 
 /**
  * @author dcarver
  *
  */
-public class TestApplication extends SerenityApplication {
+public class TestSerenityApplication extends SerenityApplication implements
+		TestLifecycleApplication {
 
 	/**
 	 *
 	 */
-	public TestApplication() {
+	public TestSerenityApplication() {
 	}
 
 	@Override
 	protected void installAnalytics() {
 		GoogleAnalytics.getInstance(this).setAppOptOut(true);
 		disableTracking();
+	}
+
+	@Override
+	public void afterTest(Method arg0) {
+
+	}
+
+	@Override
+	public void beforeTest(Method arg0) {
+
+	}
+
+	@Override
+	public void prepareTest(Object arg0) {
+		// TODO Auto-generated method stub
+
 	}
 }

@@ -38,28 +38,22 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-
 @RunWith(RobolectricTestRunner.class)
 @Config(emulateSdk = 18)
 public class OnDeckRecommendationsTest {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final String ANDROID_SOFTWARE_LEANBACK = "android.software.leanback";
 	/**
-	 * 
+	 *
 	 */
 	private static final String ANDROID_HARDWARE_TYPE_TELEVISION = "android.hardware.type.television";
 	private OnDeckRecommendations onDeckRecommendations;
 
 	@Before
 	public void setUp() {
-		Robolectric.getBackgroundScheduler().pause();
-		Robolectric.getUiThreadScheduler().pause();
-		Robolectric.pauseMainLooper();
-		GoogleAnalytics.getInstance(Robolectric.application).setAppOptOut(true);
 		onDeckRecommendations = new OnDeckRecommendations(
 				Robolectric.application);
 	}
