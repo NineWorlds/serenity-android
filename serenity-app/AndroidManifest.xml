@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="us.nineworlds.serenity"
-    android:versionCode="83"
-    android:versionName="1.8.1-dev" >
+    android:versionCode="84"
+    android:versionName="1.8.1" >
 
     <!-- try to exclude phone devices from the list. Currently only support Tablets and TVs -->
     <supports-screens
