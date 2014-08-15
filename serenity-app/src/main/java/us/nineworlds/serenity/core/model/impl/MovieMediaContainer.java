@@ -80,6 +80,10 @@ public class MovieMediaContainer extends AbstractMediaContainer {
 			mpi.setViewCount(movie.getViewCount());
 			mpi.setRating(movie.getRating());
 
+			if (movie.getTagLine() != null) {
+				mpi.setTagLine(movie.getTagLine());
+			}
+
 			String burl = baseImageResource;
 			if (movie.getBackgroundImageKey() != null) {
 				StringBuilder builder = new StringBuilder();

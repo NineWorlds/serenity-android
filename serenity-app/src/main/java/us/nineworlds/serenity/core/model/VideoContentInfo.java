@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -29,7 +29,7 @@ import us.nineworlds.serenity.core.model.impl.Subtitle;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public interface VideoContentInfo extends ContentInfo {
 
@@ -64,7 +64,7 @@ public interface VideoContentInfo extends ContentInfo {
 	public String getContainer();
 
 	public String getParentPosterURL();
-	
+
 	public String getGrandParentPosterURL();
 
 	public void setActors(List<String> actors);
@@ -106,15 +106,15 @@ public interface VideoContentInfo extends ContentInfo {
 	public void setParentPosterURL(String parentPosterURL);
 
 	public void setGrandParentPosterURL(String parentPosterURL);
-	
+
 	public String getAudioChannels();
 
 	public void setAudioChannels(String audioChannels);
 
 	public void setResumeOffset(int offset);
-	
+
 	public void setDuration(int duration);
-	
+
 	public int getDuration();
 
 	public int getResumeOffset();
@@ -132,68 +132,73 @@ public interface VideoContentInfo extends ContentInfo {
 	public String getOriginalAirDate();
 
 	public void setContainer(String container);
-	
+
 	public void setSeriesTitle(String title);
-	
+
 	public String getSeriesTitle();
-	
+
 	public Subtitle getSubtitle();
-	
+
 	public void setSubtitle(Subtitle subtitle);
-	
+
 	public void setStudio(String studio);
-	
+
 	public String getStudio();
-	
+
 	public double getRating();
-	
+
 	public void setRating(double rating);
-	
+
 	public void setParentKey(String parentKey);
-	
+
 	public String getParentKey();
-	
+
 	/**
 	 * Indicates if a show has been partially watched
+	 * 
 	 * @return true if it has been watched
 	 */
 	public boolean isPartiallyWatched();
-	
+
 	/**
 	 * Indicates that the show has been watched
-	 * 
+	 *
 	 * Use getWatched to get the actual count
-	 * 
+	 *
 	 */
 	public boolean isWatched();
-	
+
 	/**
 	 * Indicates that the show has not been watched.
-	 * 
+	 *
 	 * Use getUnwatched to get the actual count.
-	 * 
+	 *
 	 */
 	public boolean isUnwatched();
-	
+
 	/**
-	 *  The percentage viewed
-	 * 
+	 * The percentage viewed
+	 *
 	 * @return
 	 */
 	public float viewedPercentage();
-	
+
 	public void toggleWatchStatus();
-	
+
 	public boolean hasTrailer();
-	
+
 	public void setTrailer(boolean trailer);
-	
+
 	public String trailerId();
-	
+
 	public void setTrailerId(String id);
-	
+
 	public void setAvailableSubTitles(List<Subtitle> subtitles);
-	
+
 	public List<Subtitle> getAvailableSubtitles();
+
+	public String getTagLine();
+
+	public void setTagLine(String tagLine);
 
 }

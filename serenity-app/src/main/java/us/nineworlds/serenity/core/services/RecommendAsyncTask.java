@@ -59,12 +59,16 @@ public class RecommendAsyncTask extends AsyncTask {
 		int priority = videoPriority(viewedPercentage);
 		int color = context.getResources().getColor(
 				us.nineworlds.serenity.R.color.holo_color);
+		String summary = video.getSummary();
+		if (video.getTagLine() != null) {
+			summary = video.getTagLine();
+		}
 
 		Notification notification = builder.setContext(context)
 				.setBackground(backgroundURL).setTitle(video.getTitle())
 				.setImage(video.getImageURL())
 				.setId(Integer.parseInt(video.id())).setPriority(priority)
-				.setDescription(video.getSummary()).setColor(color)
+				.setDescription(summary).setColor(color)
 				.setSmallIcon(R.drawable.androidtv_icon_mono).setIntent(intent)
 				.build();
 		return notification;

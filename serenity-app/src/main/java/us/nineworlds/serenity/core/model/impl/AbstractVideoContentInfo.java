@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -33,15 +33,14 @@ import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 
 /**
  * General information common t TV Shows and Videos/Movies
- * 
+ *
  * @author dcarver
- * 
+ *
  */
-public abstract class AbstractVideoContentInfo implements VideoContentInfo, Serializable {
+public abstract class AbstractVideoContentInfo implements VideoContentInfo,
+		Serializable {
 
 	private static final long serialVersionUID = 4744447508883279194L;
-	
-	private static final float WATCHED_PERCENTAGE = 0.90f;
 
 	private String id;
 
@@ -73,17 +72,18 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 	private String originalAirDate;
 	private String container;
 	private String seriesTitle;
-	
+
 	private Subtitle subtitle;
-	
+
 	private String mediaTagIdentifier;
 	private String studio;
 	private double rating;
 	private String parentURL;
 	private boolean trailer;
 	private String trailerId;
-	
+
 	private List<Subtitle> subtitles;
+	private String tagLine;
 
 	@Override
 	public String getSeriesTitle() {
@@ -187,7 +187,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
 	 * getDirectPlayUrl()
 	 */
@@ -198,7 +198,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
 	 * setDirectPlayUrl(java.lang.String)
 	 */
@@ -209,7 +209,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getActors
 	 * ()
@@ -221,7 +221,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getAudioCodec
 	 * ()
@@ -233,7 +233,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
 	 * getBackgroundURL()
 	 */
@@ -244,7 +244,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getCastInfo
 	 * ()
@@ -256,7 +256,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
 	 * getContentRating()
 	 */
@@ -267,7 +267,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getDirectors
 	 * ()
@@ -279,7 +279,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getGenres
 	 * ()
@@ -291,7 +291,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
 	 * getPlotSummary()
 	 */
@@ -302,7 +302,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getPosterURL
 	 * ()
@@ -314,7 +314,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getTitle
 	 * ()
@@ -326,7 +326,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getVideoCodec
 	 * ()
@@ -338,7 +338,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
 	 * getVideoResolution()
 	 */
@@ -349,7 +349,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getWriters
 	 * ()
@@ -361,7 +361,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#getYear()
 	 */
@@ -372,7 +372,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setActors
 	 * (java.util.List)
@@ -384,7 +384,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setAudioCodec
 	 * (java.lang.String)
@@ -396,7 +396,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
 	 * setBackgroundURL(java.lang.String)
 	 */
@@ -407,7 +407,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setCastInfo
 	 * (java.lang.String)
@@ -419,7 +419,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
 	 * setContentRating(java.lang.String)
 	 */
@@ -430,7 +430,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setDirectors
 	 * (java.util.List)
@@ -442,7 +442,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setGenres
 	 * (java.util.List)
@@ -454,7 +454,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
 	 * setPlotSummary(java.lang.String)
 	 */
@@ -465,7 +465,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setPosterURL
 	 * (java.lang.String)
@@ -477,7 +477,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setTitle
 	 * (java.lang.String)
@@ -489,7 +489,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setVideoCodec
 	 * (java.lang.String)
@@ -501,7 +501,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
 	 * setVideoResolution(java.lang.String)
 	 */
@@ -512,7 +512,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setWriters
 	 * (java.util.List)
@@ -524,7 +524,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.github.kingargyle.plexappclient.core.model.VideoContentInfo#setYear
 	 * (java.lang.String)
@@ -543,12 +543,12 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 	public void setParentPosterURL(String parentPosterURL) {
 		this.parentPosterURL = parentPosterURL;
 	}
-	
+
 	@Override
 	public void setGrandParentPosterURL(String posterURL) {
 		this.grandeParentPosterURL = posterURL;
 	}
-	
+
 	@Override
 	public String getGrandParentPosterURL() {
 		return this.grandeParentPosterURL;
@@ -563,7 +563,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 	public void setAudioChannels(String audioChannels) {
 		this.audioChannels = audioChannels;
 	}
-	
+
 	@Override
 	public int getDuration() {
 		return duration;
@@ -583,12 +583,12 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 	public void setMediaTagIdentifier(String mediaTagIdentifier) {
 		this.mediaTagIdentifier = mediaTagIdentifier;
 	}
-	
+
 	@Override
 	public void setStudio(String studio) {
 		this.studio = studio;
 	}
-	
+
 	@Override
 	public String getStudio() {
 		return studio;
@@ -603,19 +603,22 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 	public void setRating(double rating) {
 		this.rating = rating;
 	}
-	
+
 	@Override
 	public String getParentKey() {
 		return parentURL;
 	}
-	
+
 	@Override
 	public void setParentKey(String parentKey) {
 		this.parentURL = parentKey;
 	}
-	
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.core.model.VideoContentInfo#isPartiallyWatched()
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * us.nineworlds.serenity.core.model.VideoContentInfo#isPartiallyWatched()
 	 */
 	@Override
 	public boolean isPartiallyWatched() {
@@ -624,24 +627,24 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 			if (percentWatched <= SerenityConstants.WATCHED_PERCENT) {
 				return true;
 			}
-		}		
+		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean isWatched() {
 		final float percentWatched = viewedPercentage();
 		if (percentWatched > SerenityConstants.WATCHED_PERCENT) {
 			return true;
 		}
-		
+
 		if (getResumeOffset() == 0 && getViewCount() > 0) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public boolean isUnwatched() {
 		if (getViewCount() == 0) {
@@ -649,7 +652,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 		}
 		return false;
 	}
-	
+
 	@Override
 	public float viewedPercentage() {
 		float duration = Float.valueOf(getDuration());
@@ -657,11 +660,11 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 		if (duration == 0) {
 			return 0;
 		}
-		
+
 		float percentWatched = offset / duration;
 		return percentWatched;
 	}
-	
+
 	@Override
 	public void toggleWatchStatus() {
 		if (isPartiallyWatched() || isUnwatched()) {
@@ -669,38 +672,48 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 			setViewCount(getViewCount() + 1);
 			return;
 		}
-		
+
 		new UnWatchVideoAsyncTask().execute(id());
 		setViewCount(0);
 	}
-	
+
 	@Override
 	public void setTrailer(boolean trailer) {
-		this.trailer = trailer; 
+		this.trailer = trailer;
 	}
-	
+
 	@Override
 	public boolean hasTrailer() {
 		return trailer;
 	}
-	
+
 	@Override
 	public String trailerId() {
 		return trailerId;
 	}
-	
+
 	@Override
 	public void setTrailerId(String id) {
 		trailerId = id;
 	}
-	
+
 	@Override
 	public List<Subtitle> getAvailableSubtitles() {
 		return subtitles;
 	}
-	
+
 	@Override
 	public void setAvailableSubTitles(List<Subtitle> subtitles) {
 		this.subtitles = subtitles;
+	}
+
+	@Override
+	public String getTagLine() {
+		return tagLine;
+	}
+
+	@Override
+	public void setTagLine(String tagLine) {
+		this.tagLine = tagLine;
 	}
 }
