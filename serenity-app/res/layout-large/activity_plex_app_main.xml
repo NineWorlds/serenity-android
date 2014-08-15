@@ -1,68 +1,53 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+<us.nineworlds.serenity.widgets.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <us.nineworlds.serenity.widgets.DrawerLayout
-        android:id="@+id/drawer_layout"
+    <!-- The main content view -->
+
+    <RelativeLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <!-- The main content view -->
+        <ImageView
+            android:id="@+id/mainGalleryBackground"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/serenity_androidtv_banner" />
 
-        <RelativeLayout
-            android:id="@+id/mainLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <us.nineworlds.serenity.widgets.ReflectingLayout
+            android:id="@+id/relectionArea"
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/content_panel_dark" >
 
-            <ImageView
-                android:id="@+id/mainGalleryBackground"
+            <Gallery
+                android:id="@+id/mainGalleryMenu"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_centerInParent="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/serenity_androidtv_banner" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:animationDuration="1"
+                android:descendantFocusability="afterDescendants"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:nextFocusDown="@+id/mainGalleryMenu"
+                android:nextFocusLeft="@+id/mainGalleryMenu"
+                android:nextFocusRight="@+id/mainGalleryMenu"
+                android:nextFocusUp="@+id/menu_button"
+                android:spacing="50dp" >
 
+                <requestFocus />
+            </Gallery>
+        </us.nineworlds.serenity.widgets.ReflectingLayout>
+    </RelativeLayout>
+    <!-- The navigation drawer -->
 
-            <us.nineworlds.serenity.widgets.ReflectingLayout
-                android:id="@+id/relectionArea"
-                android:layout_width="fill_parent"
-                android:layout_height="80dp"
-                android:layout_centerInParent="true"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/content_panel_dark" >
+    <include layout="@layout/menu_drawer_with_navigation" />
 
-                <Gallery
-                    android:id="@+id/mainGalleryMenu"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:animationDuration="1"
-                    android:descendantFocusability="afterDescendants"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:nextFocusDown="@+id/mainGalleryMenu"
-                    android:nextFocusLeft="@+id/mainGalleryMenu"
-                    android:nextFocusRight="@+id/mainGalleryMenu"
-                    android:nextFocusUp="@+id/menu_button"
-                    android:spacing="50dp" >
-
-                    <requestFocus />
-                </Gallery>
-            </us.nineworlds.serenity.widgets.ReflectingLayout>
-        </RelativeLayout>
-        <!-- The navigation drawer -->
-
-        <ListView
-            android:id="@+id/left_drawer"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:focusable="true"
-            android:paddingTop="?android:attr/actionBarSize"
-            android:layout_gravity="start"
-            android:background="#111"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp" />
-        
-    </us.nineworlds.serenity.widgets.DrawerLayout>
-
-</merge>
+</us.nineworlds.serenity.widgets.DrawerLayout>

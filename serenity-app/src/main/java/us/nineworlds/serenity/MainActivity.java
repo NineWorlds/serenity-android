@@ -36,8 +36,8 @@ import us.nineworlds.serenity.handlers.DownloadHandler;
 import us.nineworlds.serenity.handlers.DownloadHandler.DownloadServiceConnection;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.listeners.SettingsMenuDrawerOnItemClickedListener;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -51,8 +51,8 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Gallery;
-import android.widget.ListView;
 
 import com.castillo.dd.DownloadService;
 
@@ -78,7 +78,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 	protected void createSideMenu() {
 		mainGalleryBackgroundView = findViewById(R.id.mainGalleryBackground);
 		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
 				R.drawable.menudrawer_selector, R.string.drawer_open,
@@ -104,7 +103,11 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
 
-		drawerList = (ListView) findViewById(R.id.left_drawer);
+		Button settingsButton = (Button) findViewById(R.id.drawer_settings);
+		settingsButton
+				.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
+						drawerLayout));
+
 		populateMenuOptions();
 	}
 
@@ -172,6 +175,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 		setContentView(R.layout.activity_plex_app_main);
 
+		initMenuDrawerViews();
+
 		createSideMenu();
 		initPreferences();
 
@@ -222,20 +227,20 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 		if (menuKeySlidingMenu) {
 			if (keyCode == KeyEvent.KEYCODE_MENU) {
-				if (drawerLayout.isDrawerOpen(drawerList)) {
+				if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
 					drawerLayout.closeDrawers();
 					mainGallery.requestFocusFromTouch();
 				} else {
-					drawerLayout.openDrawer(drawerList);
+					drawerLayout.openDrawer(linearDrawerLayout);
 					drawerList.requestFocusFromTouch();
 				}
 				return true;
 			}
 		}
 
-		if (drawerLayout.isDrawerOpen(drawerList)
+		if (drawerLayout.isDrawerOpen(linearDrawerLayout)
 				&& keyCode == KeyEvent.KEYCODE_BACK) {
-			drawerLayout.closeDrawer(drawerList);
+			drawerLayout.closeDrawer(linearDrawerLayout);
 			mainGallery.requestFocusFromTouch();
 			return true;
 		}
@@ -291,7 +296,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 	@Override
 	public void openOptionsMenu() {
-		drawerLayout.openDrawer(drawerList);
+		drawerLayout.openDrawer(linearDrawerLayout);
 		drawerList.requestFocusFromTouch();
 	}
 
