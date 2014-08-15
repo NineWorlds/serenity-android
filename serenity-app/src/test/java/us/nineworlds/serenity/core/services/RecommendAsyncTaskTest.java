@@ -120,6 +120,7 @@ public class RecommendAsyncTaskTest {
 		when(video.getImageURL()).thenReturn("http://www.example.com/");
 		when(video.getBackgroundURL()).thenReturn("http://www.example.com/");
 		when(video.viewedPercentage()).thenReturn(0.45f);
+
 		recommendTask = new RecommendAsyncTask(video, Robolectric.application);
 
 		Notification notification = (Notification) recommendTask

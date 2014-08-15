@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -33,23 +33,23 @@ import android.preference.PreferenceManager;
 /**
  * A configuration that reads information from the SharedPreferences store. This
  * information contains necessary info for connecting to the plex media server.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class ServerConfig implements IConfiguration {
 
 	private String serveraddress;
 	private String serverport;
 	private String discoveredServers;
-	private SharedPreferences preferences;
+	private final SharedPreferences preferences;
 	private static ServerConfig config;
 	private OnSharedPreferenceChangeListener listener;
 
 	/**
 	 * Sets up the configuration based on the context of the activity that
 	 * called it.
-	 * 
+	 *
 	 */
 	private ServerConfig(Context context) {
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -93,7 +93,7 @@ public class ServerConfig implements IConfiguration {
 
 	/**
 	 * This should only be called after a context has been set.
-	 * 
+	 *
 	 * @return
 	 */
 	public static IConfiguration getInstance() {
@@ -109,30 +109,30 @@ public class ServerConfig implements IConfiguration {
 
 	/**
 	 * Listen for Server Configuration Changes from the SharedPreferences.
-	 * 
+	 *
 	 * This handles updating the variables for accesing a plex media server.
-	 * 
+	 *
 	 * @author dcarver
-	 * 
+	 *
 	 */
 	public class ServerConfigChangeListener implements
-			OnSharedPreferenceChangeListener {
+	OnSharedPreferenceChangeListener {
 
 		@Override
 		public void onSharedPreferenceChanged(
 				SharedPreferences sharedPreferences, String key) {
 			if ("serverport".equals(key)) {
-				serverport = preferences.getString(key, "32400");
+				serverport = sharedPreferences.getString(key, "32400");
 				return;
 			}
 
 			if ("server".equals(key)) {
-				serveraddress = preferences.getString(key, "");
+				serveraddress = sharedPreferences.getString(key, "");
 				return;
 			}
 
 			if ("discoveredServer".equals(key)) {
-				discoveredServers = preferences.getString(key, "");
+				discoveredServers = sharedPreferences.getString(key, "");
 				serveraddress = discoveredServers;
 				storeServerAddress();
 				return;
