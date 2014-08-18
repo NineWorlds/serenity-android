@@ -23,50 +23,54 @@
 
 package us.nineworlds.serenity.core.services;
 
-import java.util.ArrayList;
+import static org.fest.assertions.api.Assertions.assertThat;
+
+import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
-import android.util.Log;
 
-/**
- * @author dcarver
- *
- */
-public abstract class AbstractCategoryService extends
-		AbstractPlexRESTIntentService {
+@RunWith(RobolectricTestRunner.class)
+@Config(emulateSdk = 18)
+public class TVCategoryRetrievalIntentServiceTest {
 
-	protected ArrayList<CategoryInfo> categories = new ArrayList<CategoryInfo>();
+	MockTVShowCategoryRetrievalIntentService service;
 
-	/**
-	 * @param name
-	 */
-	public AbstractCategoryService(String name) {
-		super(name);
+	@Before
+	public void setUp() {
+		service = new MockTVShowCategoryRetrievalIntentService();
 	}
 
-	/**
-	 * Populate the categories available.
-	 */
-	protected abstract void populateCategories();
+	@After
+	public void tearDown() {
 
-	@Override
-	public void sendMessageResults(Intent intent) {
-		Bundle extras = intent.getExtras();
-		if (extras != null) {
-			Messenger messenger = (Messenger) extras.get("MESSENGER");
-			Message msg = Message.obtain();
-			msg.obj = categories;
-			try {
-				messenger.send(msg);
-			} catch (RemoteException ex) {
-				Log.e(getClass().getName(), "Unable to send message", ex);
-			}
+	}
+
+	@Test
+	public void arrayListIsEmptyWhenNullIsPassedForBundleExtras() {
+		Intent intent = Mockito.mock(Intent.class);
+		service.onHandleIntent(intent);
+		assertThat(service.getCatagories()).isEmpty();
+	}
+
+	protected class MockTVShowCategoryRetrievalIntentService extends
+	TVShowCategoryRetrievalIntentService {
+
+		@Override
+		public void onHandleIntent(Intent intent) {
+			super.onHandleIntent(intent);
+		}
+
+		public List<CategoryInfo> getCatagories() {
+			return categories;
 		}
 	}
-
 }

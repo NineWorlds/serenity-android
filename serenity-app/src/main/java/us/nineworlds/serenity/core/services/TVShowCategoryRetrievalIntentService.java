@@ -41,10 +41,10 @@ import android.util.Log;
  *
  */
 public class TVShowCategoryRetrievalIntentService extends
-		AbstractCategoryService {
+AbstractCategoryService {
 
 	private String key;
-	private final ArrayList<String> excludeCategories;
+	protected final ArrayList<String> excludeCategories;
 
 	public TVShowCategoryRetrievalIntentService() {
 		super("TVCategoryRetrievalIntentService");
