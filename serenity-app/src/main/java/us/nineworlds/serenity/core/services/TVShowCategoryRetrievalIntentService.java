@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -29,22 +29,22 @@ import java.util.List;
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.CategoryInfo;
-
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 /**
  * Retrieves the available categories for filtering and returns them to the
  * calling service.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class TVShowCategoryRetrievalIntentService extends
 		AbstractCategoryService {
 
 	private String key;
-	private ArrayList<String> excludeCategories;
+	private final ArrayList<String> excludeCategories;
 
 	public TVShowCategoryRetrievalIntentService() {
 		super("TVCategoryRetrievalIntentService");
@@ -54,13 +54,15 @@ public class TVShowCategoryRetrievalIntentService extends
 		excludeCategories.add("folder");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.IntentService#onHandleIntent(android.content.Intent)
-	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
+		Bundle bundle = intent.getExtras();
+		if (bundle == null) {
+			Log.e(getClass().getName(), "Missing Extras.");
+			sendMessageResults(intent);
+			return;
+		}
+
 		key = intent.getExtras().getString("key");
 		populateCategories();
 		sendMessageResults(intent);
