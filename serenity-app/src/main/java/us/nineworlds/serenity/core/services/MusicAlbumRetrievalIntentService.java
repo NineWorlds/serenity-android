@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -40,9 +40,9 @@ import android.util.Log;
 
 /**
  * A service that retrieves music information from the Plex Media Server.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class MusicAlbumRetrievalIntentService extends
 		AbstractPlexRESTIntentService {
@@ -58,7 +58,6 @@ public class MusicAlbumRetrievalIntentService extends
 	public MusicAlbumRetrievalIntentService() {
 		super(MUSIC_RETRIEVAL_INTENT_SERVICE);
 		musicContentList = new ArrayList<MusicAlbumContentInfo>();
-
 	}
 
 	@Override
@@ -79,7 +78,12 @@ public class MusicAlbumRetrievalIntentService extends
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		key = intent.getExtras().getString("key", "");
+		Bundle bundle = intent.getExtras();
+		if (bundle == null) {
+			Log.e(getClass().getName(), "Missing intent extras");
+			return;
+		}
+		key = bundle.getString("key", "");
 		createPosters();
 		sendMessageResults(intent);
 	}
