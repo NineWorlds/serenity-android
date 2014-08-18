@@ -50,12 +50,12 @@ import android.widget.Scroller;
  * <p>
  * Views given to the Gallery should use {@link SerenityGallery.LayoutParams} as
  * their layout parameters type.
- * 
+ *
  * <p>
  * See the <a href="{@docRoot}
  * resources/tutorials/views/hello-gallery.html">Gallery tutorial</a>.
  * </p>
- * 
+ *
  * @attr ref android.R.styleable#Gallery_animationDuration
  * @attr ref android.R.styleable#Gallery_spacing
  * @attr ref android.R.styleable#Gallery_gravity
@@ -104,7 +104,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	/**
 	 * Helper for detecting touch gestures.
 	 */
-	private GestureDetector mGestureDetector;
+	private final GestureDetector mGestureDetector;
 
 	/**
 	 * The position of the item that received the user's down touch.
@@ -119,13 +119,13 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	/**
 	 * Executes the delta scrolls from a fling or scroll movement.
 	 */
-	private FlingRunnable mFlingRunnable = new FlingRunnable();
+	private final FlingRunnable mFlingRunnable = new FlingRunnable();
 
 	/**
 	 * Sets mSuppressSelectionChanged = false. This is used to set it to false
 	 * in the future. It will also trigger a selection changed.
 	 */
-	private Runnable mDisableSuppressSelectionChangedRunnable = new Runnable() {
+	private final Runnable mDisableSuppressSelectionChangedRunnable = new Runnable() {
 		@Override
 		public void run() {
 			mSuppressSelectionChanged = false;
@@ -181,13 +181,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	 * If true, mFirstPosition is the position of the rightmost child, and the
 	 * children are ordered right to left.
 	 */
-	private boolean mIsRtl = false;
-
-	/**
-	 * If true the reflection calls failed and this widget will behave
-	 * unpredictably if used further
-	 */
-	private boolean mBroken;
+	private final boolean mIsRtl = false;
 
 	public SerenityGallery(Context context) {
 		this(context, null);
@@ -261,9 +255,6 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 			groupFlagsValue |= FLAG_SUPPORT_STATIC_TRANSFORMATIONS;
 
 			groupFlags.set(this, groupFlagsValue);
-
-			// working!
-			mBroken = false;
 		} catch (NoSuchFieldException e) {
 			Log.e(getClass().getName(), e.getMessage(), e);
 		} catch (IllegalAccessException e) {
@@ -276,7 +267,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	 * while the items are being flinged. If false, only the final selected item
 	 * will cause the callback. If true, all items between the first and the
 	 * final will cause callbacks.
-	 * 
+	 *
 	 * @param shouldCallback
 	 *            Whether or not to callback on the listener while the items are
 	 *            being flinged.
@@ -289,7 +280,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	 * Whether or not to callback when an item that is not selected is clicked.
 	 * If false, the item will become selected (and re-centered). If true, the
 	 * {@link #getOnItemClickListener()} will get the callback.
-	 * 
+	 *
 	 * @param shouldCallback
 	 *            Whether or not to callback on the listener when a item that is
 	 *            not selected is clicked.
@@ -302,10 +293,10 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	/**
 	 * Sets how long the transition animation should run when a child view
 	 * changes position. Only relevant if animation is turned on.
-	 * 
+	 *
 	 * @param animationDurationMillis
 	 *            The duration of the transition, in milliseconds.
-	 * 
+	 *
 	 * @attr ref android.R.styleable#Gallery_animationDuration
 	 */
 	public void setAnimationDuration(int animationDurationMillis) {
@@ -314,10 +305,10 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 
 	/**
 	 * Sets the spacing between items in a Gallery
-	 * 
+	 *
 	 * @param spacing
 	 *            The spacing in pixels between items in the Gallery
-	 * 
+	 *
 	 * @attr ref android.R.styleable#Gallery_spacing
 	 */
 	public void setSpacing(int spacing) {
@@ -326,10 +317,10 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 
 	/**
 	 * Sets the alpha of items that are not selected in the Gallery.
-	 * 
+	 *
 	 * @param unselectedAlpha
 	 *            the alpha for the items that are not selected.
-	 * 
+	 *
 	 * @attr ref android.R.styleable#Gallery_unselectedAlpha
 	 */
 	public void setUnselectedAlpha(float unselectedAlpha) {
@@ -394,22 +385,22 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		long now = SystemClock.uptimeMillis();
-//		if (!SerenityApplication.isGoogleTV(getContext())) {
-//			if (Math.abs(now - mLastScrollEvent) > 50) {
-//				super.onLayout(changed, l, t, r, b);
-//
-//				/*
-//				 * Remember that we are in layout to prevent more layout request
-//				 * from being generated.
-//				 */
-//				mInLayout = true;
-//				layout(0, false);
-//				mInLayout = false;
-//			}
-//		} else {
-//			super.onLayout(changed, l, t, r, b);
-//			layout(0, true);
-//		}
+		// if (!SerenityApplication.isGoogleTV(getContext())) {
+		// if (Math.abs(now - mLastScrollEvent) > 50) {
+		// super.onLayout(changed, l, t, r, b);
+		//
+		// /*
+		// * Remember that we are in layout to prevent more layout request
+		// * from being generated.
+		// */
+		// mInLayout = true;
+		// layout(0, false);
+		// mInLayout = false;
+		// }
+		// } else {
+		// super.onLayout(changed, l, t, r, b);
+		// layout(0, true);
+		// }
 		if (Math.abs(now - mLastScrollEvent) > 100) {
 			super.onLayout(changed, l, t, r, b);
 
@@ -420,7 +411,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 			mInLayout = true;
 			layout(0, false);
 			mInLayout = false;
-		}		
+		}
 	}
 
 	@Override
@@ -432,7 +423,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	 * Tracks a motion scroll. In reality, this is used to do just about any
 	 * movement to items (touch scroll, arrow-key scroll, set an item as
 	 * selected).
-	 * 
+	 *
 	 * @param deltaX
 	 *            Change in X from the previous event.
 	 */
@@ -470,7 +461,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		setSelectionToCenterChild();
 
 		onScrollChanged(0, 0, 0, 0); // dummy values, View's implementation does
-										// not use these.
+		// not use these.
 
 		invalidate();
 	}
@@ -509,7 +500,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	/**
 	 * Offset the horizontal location of all children of this view by the
 	 * specified number of pixels.
-	 * 
+	 *
 	 * @param offset
 	 *            the number of pixels to offset
 	 */
@@ -536,7 +527,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 
 	/**
 	 * Detaches children that are off the screen (i.e.: Gallery bounds).
-	 * 
+	 *
 	 * @param toLeft
 	 *            Whether to detach children to the left of the Gallery, or to
 	 *            the right.
@@ -594,17 +585,21 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	 */
 	private void scrollIntoSlots() {
 
-		if (getChildCount() == 0 || mSelectedChild == null)
+		if (getChildCount() == 0 || mSelectedChild == null) {
 			return;
+		}
 
 		int selectedCenter = getCenterOfView(mSelectedChild);
 		int targetCenter = getCenterOfGallery();
 
 		int scrollAmount = targetCenter - selectedCenter;
-		// This makes the scrolling a bit smoother, but the image may not be centered.
-		// Ideally need to calculate the center of the selected Image and scroll to there
+		// This makes the scrolling a bit smoother, but the image may not be
+		// centered.
+		// Ideally need to calculate the center of the selected Image and scroll
+		// to there
 		// instead of scrolling back if using something like a Google TV.
-		if (scrollAmount != 0 && !SerenityApplication.isGoogleTV(mSelectedChild.getContext())) {
+		if (scrollAmount != 0
+				&& !SerenityApplication.isGoogleTV(mSelectedChild.getContext())) {
 			mFlingRunnable.startUsingDistance(scrollAmount);
 		} else {
 			onFinishedMovement();
@@ -635,8 +630,9 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	private void setSelectionToCenterChild() {
 
 		View selView = mSelectedChild;
-		if (mSelectedChild == null)
+		if (mSelectedChild == null) {
 			return;
+		}
 
 		int galleryCenter = getCenterOfGallery();
 
@@ -683,7 +679,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	 * <p>
 	 * We layout rarely, most of the time {@link #trackMotionScroll(int)} takes
 	 * care of repositioning, adding, and removing children.
-	 * 
+	 *
 	 * @param delta
 	 *            Change in the selected position. +1 means the selection is
 	 *            moving to the right, so views are scrolling to the left. -1
@@ -895,7 +891,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	 * getting a new one from the adapter. If we are animating, make sure there
 	 * is enough information in the view's layout parameters to animate from the
 	 * old to new positions.
-	 * 
+	 *
 	 * @param position
 	 *            Position in the gallery for the view to obtain
 	 * @param offset
@@ -943,7 +939,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	/**
 	 * Helper for makeAndAddView to set the position of a view and fill out its
 	 * layout parameters.
-	 * 
+	 *
 	 * @param child
 	 *            The view to position
 	 * @param offset
@@ -1000,7 +996,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 
 	/**
 	 * Figure out vertical placement based on mGravity
-	 * 
+	 *
 	 * @param child
 	 *            Child to place
 	 * @return Where the top of the child should be
@@ -1077,8 +1073,9 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 			removeCallbacks(mDisableSuppressSelectionChangedRunnable);
 
 			// This will get reset once we scroll into slots
-			if (!mSuppressSelectionChanged)
+			if (!mSuppressSelectionChanged) {
 				mSuppressSelectionChanged = true;
+			}
 		}
 
 		// Fling the gallery!
@@ -1092,8 +1089,9 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 			float distanceY) {
 
 		mLastScrollEvent = SystemClock.uptimeMillis();
-		if (localLOGV)
+		if (localLOGV) {
 			Log.v(TAG, String.valueOf(e2.getX() - e1.getX()));
+		}
 
 		/*
 		 * Now's a good time to tell our parent to stop intercepting our events!
@@ -1116,14 +1114,16 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 				 * the fling, and this scroll could possibly be a fling. Don't
 				 * do selection changes until we're sure it is not a fling.
 				 */
-				if (!mSuppressSelectionChanged)
+				if (!mSuppressSelectionChanged) {
 					mSuppressSelectionChanged = true;
+				}
 				postDelayed(mDisableSuppressSelectionChangedRunnable,
 						SCROLL_TO_FLING_UNCERTAINTY_TIMEOUT);
 			}
 		} else {
-			if (mSuppressSelectionChanged)
+			if (mSuppressSelectionChanged) {
 				mSuppressSelectionChanged = false;
+			}
 		}
 
 		// Track the motion
@@ -1285,7 +1285,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 
 	/**
 	 * Handles left, right, and clicking
-	 * 
+	 *
 	 * @see android.view.View#onKeyDown
 	 */
 	@Override
@@ -1331,9 +1331,13 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 					}, ViewConfiguration.getPressedStateDuration());
 
 					int selectedIndex = mSelectedPosition - mFirstPosition;
-					performItemClick(getChildAt(selectedIndex),
-							mSelectedPosition,
-							mAdapter.getItemId(mSelectedPosition));
+					if (event.isLongPress()) {
+						showContextMenu();
+					} else {
+						performItemClick(getChildAt(selectedIndex),
+								mSelectedPosition,
+								mAdapter.getItemId(mSelectedPosition));
+					}
 				}
 			}
 
@@ -1371,7 +1375,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 				return true;
 			}
 		}
-		
+
 		return false;
 
 	}
@@ -1429,9 +1433,9 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 
 	/**
 	 * Describes how the child views are aligned.
-	 * 
+	 *
 	 * @param gravity
-	 * 
+	 *
 	 * @attr ref android.R.styleable#Gallery_gravity
 	 */
 	public void setGravity(int gravity) {
@@ -1446,8 +1450,9 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		int selectedIndex = mSelectedPosition - mFirstPosition;
 
 		// Just to be safe
-		if (selectedIndex < 0)
+		if (selectedIndex < 0) {
 			return i;
+		}
 
 		if (i == childCount - 1) {
 			// Draw the selected child last
@@ -1487,7 +1492,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		/**
 		 * Tracks the decay of a fling scroll
 		 */
-		private Scroller mScroller;
+		private final Scroller mScroller;
 
 		/**
 		 * X value reported by mScroller on the previous fling
@@ -1504,8 +1509,9 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		}
 
 		public void startUsingVelocity(int initialVelocity) {
-			if (initialVelocity == 0)
+			if (initialVelocity == 0) {
 				return;
+			}
 
 			startCommon();
 
@@ -1517,8 +1523,9 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		}
 
 		public void startUsingDistance(int distance) {
-			if (distance == 0)
+			if (distance == 0) {
 				return;
+			}
 
 			startCommon();
 
@@ -1539,8 +1546,9 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 			 */
 			mScroller.forceFinished(true);
 
-			if (scrollIntoSlots)
+			if (scrollIntoSlots) {
 				scrollIntoSlots();
+			}
 		}
 
 		@Override
