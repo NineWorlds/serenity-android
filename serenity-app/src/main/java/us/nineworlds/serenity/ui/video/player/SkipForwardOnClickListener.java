@@ -9,11 +9,12 @@ public class SkipForwardOnClickListener implements View.OnClickListener {
 
 	public SkipForwardOnClickListener(MediaController mediaController) {
 		this.mediaController = mediaController;
-		mediaPlayerControl = mediaController.getMediaPlayerControl();
 	}
 
 	@Override
 	public void onClick(View v) {
+		MediaPlayerControl mediaPlayerControl = mediaController
+				.getMediaPlayerControl();
 		if (mediaPlayerControl == null) {
 			Log.e(getClass().getName(),
 					"Seeking failed due to media player in an illegalstate. MediaPlayerControl is null.");

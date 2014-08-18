@@ -193,7 +193,7 @@ public class MediaController extends FrameLayout {
 				.findViewById(R.id.osd_rewind_control);
 		if (skipBackwardButton != null) {
 			skipBackwardButton
-					.setOnClickListener(new SkipBackwardOnClickListener(this));
+			.setOnClickListener(new SkipBackwardOnClickListener(this));
 		}
 	}
 
@@ -202,7 +202,7 @@ public class MediaController extends FrameLayout {
 				.findViewById(R.id.osd_ff_control);
 		if (skipForwardButton != null) {
 			skipForwardButton
-					.setOnClickListener(new SkipForwardOnClickListener(this));
+			.setOnClickListener(new SkipForwardOnClickListener(this));
 		}
 	}
 
@@ -221,6 +221,11 @@ public class MediaController extends FrameLayout {
 		Activity c = (Activity) getContext();
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			c.onKeyDown(keyCode, event);
+			return true;
+		}
+		// return c.dispatchKeyEvent(event);
+		boolean superHandled = super.dispatchKeyEvent(event);
+		if (superHandled) {
 			return true;
 		}
 		return c.dispatchKeyEvent(event);
@@ -398,7 +403,7 @@ public class MediaController extends FrameLayout {
 
 		rootView.measure(MeasureSpec.makeMeasureSpec(anchorView.getWidth(),
 				MeasureSpec.AT_MOST), MeasureSpec.makeMeasureSpec(
-				anchorView.getHeight(), MeasureSpec.AT_MOST));
+						anchorView.getHeight(), MeasureSpec.AT_MOST));
 
 		int x = location[0] / 2;
 		int y = location[1] + anchorView.getHeight()
@@ -423,7 +428,7 @@ public class MediaController extends FrameLayout {
 			mediaControllerHUD.setContentView(rootView);
 			mediaControllerHUD.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
 			mediaControllerHUD
-					.setHeight(android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+			.setHeight(android.view.ViewGroup.LayoutParams.MATCH_PARENT);
 
 		}
 		initControllerView(rootView);
@@ -577,7 +582,7 @@ public class MediaController extends FrameLayout {
 	}
 
 	protected class SeekOnSeekBarChangeListener implements
-			OnSeekBarChangeListener {
+	OnSeekBarChangeListener {
 		@Override
 		public void onProgressChanged(SeekBar bar, int progress,
 				boolean fromuser) {

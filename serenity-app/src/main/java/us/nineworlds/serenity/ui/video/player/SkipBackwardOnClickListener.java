@@ -5,18 +5,18 @@ import android.view.View;
 
 public class SkipBackwardOnClickListener implements View.OnClickListener {
 	MediaController mediaController;
-	MediaPlayerControl mediaPlayerControl;
 
 	/**
-	 * 
+	 *
 	 */
 	public SkipBackwardOnClickListener(MediaController mediaController) {
 		this.mediaController = mediaController;
-		mediaPlayerControl = mediaController.getMediaPlayerControl();
 	}
 
 	@Override
 	public void onClick(View v) {
+		MediaPlayerControl mediaPlayerControl = mediaController
+				.getMediaPlayerControl();
 		try {
 			long skipOffset = mediaPlayerControl.getCurrentPosition() - 10000;
 			if (skipOffset < 0) {

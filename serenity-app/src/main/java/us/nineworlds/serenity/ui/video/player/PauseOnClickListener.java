@@ -6,11 +6,9 @@ public class PauseOnClickListener implements View.OnClickListener {
 	private static final int sDefaultTimeout = 3000;
 
 	MediaController mediaController;
-	MediaPlayerControl mediaPlayerControl;
 
 	public PauseOnClickListener(MediaController mediaController) {
 		this.mediaController = mediaController;
-		mediaPlayerControl = this.mediaController.getMediaPlayerControl();
 	}
 
 	@Override
@@ -20,6 +18,8 @@ public class PauseOnClickListener implements View.OnClickListener {
 	}
 
 	public void doPauseResume() {
+		MediaPlayerControl mediaPlayerControl = mediaController
+				.getMediaPlayerControl();
 		if (mediaPlayerControl.isPlaying()) {
 			mediaPlayerControl.pause();
 		} else {
