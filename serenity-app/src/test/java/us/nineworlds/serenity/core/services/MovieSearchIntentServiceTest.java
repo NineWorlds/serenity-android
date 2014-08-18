@@ -23,37 +23,49 @@
 
 package us.nineworlds.serenity.core.services;
 
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import static org.fest.assertions.api.Assertions.assertThat;
+
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 
-/**
- * @author dcarver
- *
- * @deprecated Need to migrate this to Volley for searching for movies.
- */
-@Deprecated
-public class MovieSearchIntentService extends MoviesRetrievalIntentService {
+@RunWith(RobolectricTestRunner.class)
+@Config(emulateSdk = 18)
+public class MovieSearchIntentServiceTest {
 
-	protected String query;
+	MockMovieSearchIntentService service;
 
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		Bundle bundle = intent.getExtras();
-		if (bundle == null) {
-			Log.e(getClass().getName(), "Missing intent extras");
-			return;
-		}
-		key = intent.getExtras().getString("key", "");
-		query = intent.getExtras().getString("query");
-		createPosters();
-		sendMessageResults(intent);
+	@Before
+	public void setUp() {
+		service = new MockMovieSearchIntentService();
 	}
 
-	@Override
-	protected MediaContainer retrieveVideos() throws Exception {
-		return factory.searchMovies(key, query);
+	@Test
+	public void assertThatVideoContentIsEmptyWhenBundleExtrasIsNull() {
+		Intent intent = Mockito.mock(Intent.class);
+		service.onHandleIntent(intent);
+		assertThat(service.getVideos()).isEmpty();
+	}
+
+	protected class MockMovieSearchIntentService extends
+	MovieSearchIntentService {
+
+		@Override
+		public void onHandleIntent(Intent intent) {
+			super.onHandleIntent(intent);
+		}
+
+		public List<VideoContentInfo> getVideos() {
+			return videoContentList;
+		}
 	}
 
 }

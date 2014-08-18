@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -40,9 +40,9 @@ import android.util.Log;
 
 /**
  * A service that retrieves movies information from the Plex Media Server.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService {
 
@@ -54,6 +54,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 	protected String key;
 	protected String category;
 
+	@Deprecated
 	public MoviesRetrievalIntentService() {
 		super(MOVIES_RETRIEVAL_INTENT_SERVICE);
 		videoContentList = new ArrayList<VideoContentInfo>();
@@ -78,7 +79,12 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		key = intent.getExtras().getString("key", "");
+		Bundle bundle = intent.getExtras();
+		if (bundle == null) {
+			Log.e(getClass().getName(), "Missing bundle extras.");
+			return;
+		}
+		key = bundle.getString("key", "");
 		category = intent.getExtras().getString("category", DEFAULT_CATEGORY);
 		createPosters();
 		sendMessageResults(intent);
@@ -109,6 +115,5 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 
 		return factory.retrieveSections(key, category);
 	}
-
 
 }
