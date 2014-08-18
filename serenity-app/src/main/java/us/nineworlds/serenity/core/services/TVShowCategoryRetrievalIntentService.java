@@ -41,7 +41,7 @@ import android.util.Log;
  *
  */
 public class TVShowCategoryRetrievalIntentService extends
-AbstractCategoryService {
+		AbstractCategoryService {
 
 	private String key;
 	protected final ArrayList<String> excludeCategories;
@@ -63,7 +63,7 @@ AbstractCategoryService {
 			return;
 		}
 
-		key = intent.getExtras().getString("key");
+		key = bundle.getString("key");
 		populateCategories();
 		sendMessageResults(intent);
 	}
