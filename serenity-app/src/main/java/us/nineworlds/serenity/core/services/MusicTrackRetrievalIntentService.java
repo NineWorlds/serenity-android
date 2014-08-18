@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -42,11 +42,12 @@ import android.util.Log;
 
 /**
  * A service that retrieves music information from the Plex Media Server.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
-public class MusicTrackRetrievalIntentService extends AbstractPlexRESTIntentService {
+public class MusicTrackRetrievalIntentService extends
+		AbstractPlexRESTIntentService {
 
 	private static final String MUSIC_RETRIEVAL_INTENT_SERVICE = "MusicTrackRetrievalIntentService";
 
@@ -78,7 +79,12 @@ public class MusicTrackRetrievalIntentService extends AbstractPlexRESTIntentServ
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		key = intent.getExtras().getString("key", "");
+		Bundle bundle = intent.getExtras();
+		if (bundle == null) {
+			Log.e(getClass().getName(), "Missing intent extras.");
+			return;
+		}
+		key = bundle.getString("key", "");
 		createPosters();
 		sendMessageResults(intent);
 	}
@@ -117,18 +123,17 @@ public class MusicTrackRetrievalIntentService extends AbstractPlexRESTIntentServ
 			List<Part> parts = mediaTrack.getVideoPart();
 			Part part = parts.get(0);
 			mpi.setDirectPlayUrl(baseUrl + part.getKey().substring(1));
-			mpi.setTitle(track
-					.getTitle());
+			mpi.setTitle(track.getTitle());
 			if (mc.getParentPosterURL() != null) {
-				mpi.setParentPosterURL(baseUrl + mc.getParentPosterURL().substring(1));
+				mpi.setParentPosterURL(baseUrl
+						+ mc.getParentPosterURL().substring(1));
 				mpi.setImageURL(baseUrl + mc.getParentPosterURL().substring(1));
 			}
-			
+
 			musicContentList.add(mpi);
 		}
 
 	}
-
 
 	protected MediaContainer retrieveVideos() throws Exception {
 		return factory.retrieveMusicMetaData(key);
