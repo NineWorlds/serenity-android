@@ -77,7 +77,7 @@ import android.widget.Toast;
  *
  */
 public class SerenitySurfaceViewVideoActivity extends SerenityActivity
-		implements SurfaceHolder.Callback {
+implements SurfaceHolder.Callback {
 
 	/**
 	 *
@@ -137,7 +137,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			if (subtitlesPlaybackEnabled) {
 				subtitleDisplayHandler
-						.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+				.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
 			}
 
 		}
@@ -196,7 +196,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					resumeOffset, autoResume, aspectRatio,
 					progressReportinghandler, progressRunnable));
 			mediaPlayer
-					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
+			.setOnCompletionListener(new VideoPlayerOnCompletionListener());
 			mediaPlayer.prepareAsync();
 
 		} catch (Exception ex) {
@@ -217,12 +217,11 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.video_playback);
+		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			getSupportActionBar().hide();
 		}
 		init();
-
-		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 
 	}
 
@@ -423,7 +422,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					mediaPlayer.start();
 					mediaController.hide();
 					progressReportinghandler
-							.postDelayed(progressRunnable, 5000);
+					.postDelayed(progressRunnable, 5000);
 				}
 				return true;
 			}
@@ -441,7 +440,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					mediaPlayer.start();
 					mediaController.hide();
 					progressReportinghandler
-							.postDelayed(progressRunnable, 5000);
+					.postDelayed(progressRunnable, 5000);
 				}
 				return true;
 			}
@@ -728,7 +727,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -750,7 +749,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	}
 
 	protected class VideoPlayerOnCompletionListener implements
-			OnCompletionListener {
+	OnCompletionListener {
 
 		@Override
 		public void onCompletion(MediaPlayer mp) {
@@ -772,7 +771,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media
 	 * .MediaPlayer, android.media.TimedText)
