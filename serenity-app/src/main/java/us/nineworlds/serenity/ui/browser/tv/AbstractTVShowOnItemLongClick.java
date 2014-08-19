@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -32,6 +32,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -39,7 +40,7 @@ import android.widget.ListView;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public abstract class AbstractTVShowOnItemLongClick {
 
@@ -49,14 +50,14 @@ public abstract class AbstractTVShowOnItemLongClick {
 	protected static View view;
 
 	/**
-	 * 
+	 *
 	 */
 	public void init() {
 		context = (Activity) view.getContext();
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void createAndShowDialog() {
 		dialog = new Dialog(context);
@@ -91,8 +92,8 @@ public abstract class AbstractTVShowOnItemLongClick {
 		 * .widget.AdapterView, android.view.View, int, long)
 		 */
 		@Override
-		public void onItemClick(android.widget.AdapterView<?> av, View v,
-				int position, long arg3) {
+		public void onItemClick(AdapterView<?> av, View v, int position,
+				long arg3) {
 
 			switch (position) {
 			case 0:

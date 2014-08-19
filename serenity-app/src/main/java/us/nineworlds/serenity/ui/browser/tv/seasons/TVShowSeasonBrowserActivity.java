@@ -39,7 +39,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.BaseAdapter;
-import android.widget.Gallery;
 
 import com.jess.ui.TwoWayGridView;
 
@@ -49,7 +48,7 @@ import com.jess.ui.TwoWayGridView;
  */
 public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
-	private Gallery tvShowSeasonsGallery;
+	private SerenityGallery tvShowSeasonsGallery;
 	private View tvShowSeasonsMainView;
 	private boolean restarted_state = false;
 	private String key;
@@ -65,7 +64,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 		createSideMenu();
 
 		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
-		tvShowSeasonsGallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
+		tvShowSeasonsGallery = (SerenityGallery) findViewById(R.id.tvShowSeasonImageGallery);
 
 		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 	}
@@ -92,6 +91,13 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 		tvShowSeasonsGallery
 		.setOnItemLongClickListener(new SeasonOnItemLongClickListener(
 				this));
+
+		tvShowSeasonsGallery.setPadding(5, 5, 5, 5);
+		tvShowSeasonsGallery.setAnimationDuration(1);
+		tvShowSeasonsGallery.setSpacing(15);
+		tvShowSeasonsGallery.setCallbackDuringFling(false);
+		tvShowSeasonsGallery.setAnimationCacheEnabled(true);
+
 	}
 
 	/*
@@ -186,7 +192,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 		View focusView = getCurrentFocus();
 
-		Gallery gallery = (Gallery) findViewById(R.id.tvShowSeasonImageGallery);
+		SerenityGallery gallery = (SerenityGallery) findViewById(R.id.tvShowSeasonImageGallery);
 		TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.episodeGridView);
 		if (gridView == null) {
 			gridView = (TwoWayGridView) findViewById(R.id.tvShowGridView);

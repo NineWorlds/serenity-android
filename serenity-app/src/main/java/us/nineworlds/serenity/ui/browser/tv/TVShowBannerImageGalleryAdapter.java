@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -37,11 +37,11 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.BadgeView;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -52,20 +52,20 @@ import com.android.volley.Response;
 import com.jess.ui.TwoWayGridView;
 
 /**
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class TVShowBannerImageGalleryAdapter extends
 		AbstractPosterImageGalleryAdapter {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final int BANNER_PIXEL_HEIGHT = 140;
 
 	/**
-	 * 
+	 *
 	 */
 	private static final int BANNER_PIXEL_WIDTH = 758;
 
@@ -137,8 +137,8 @@ public class TVShowBannerImageGalleryAdapter extends
 
 		initPosterMetaData(galleryCellView, pi, width, height, false);
 
-		galleryCellView
-				.setLayoutParams(new Gallery.LayoutParams(width, height));
+		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width,
+				height));
 	}
 
 	/**
@@ -228,7 +228,7 @@ public class TVShowBannerImageGalleryAdapter extends
 
 	/**
 	 * @author dcarver
-	 * 
+	 *
 	 */
 	protected class SeriesResponseListener implements
 			Response.Listener<MediaContainer> {
@@ -242,7 +242,7 @@ public class TVShowBannerImageGalleryAdapter extends
 		@Override
 		public void onResponse(MediaContainer response) {
 			tvShowList = new SeriesMediaContainer(response).createSeries();
-			Gallery posterGallery = (Gallery) context
+			SerenityGallery posterGallery = (SerenityGallery) context
 					.findViewById(R.id.tvShowBannerGallery);
 			if (tvShowList != null) {
 				TextView tv = (TextView) context

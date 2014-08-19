@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -31,10 +31,10 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.widgets.SerenityAdapterView;
+import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 import android.app.Activity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -47,12 +47,12 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 /**
  * Display selected TV Show Information.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class TVShowGalleryOnItemSelectedListener implements
-		OnItemSelectedListener {
+OnItemSelectedListener {
 
 	private final View bgLayout;
 	private final SerenityMultiViewVideoActivity context;
@@ -62,7 +62,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 	private SeriesContentInfo info;
 
 	/**
-	 * 
+	 *
 	 */
 	public TVShowGalleryOnItemSelectedListener(View bgv,
 			SerenityMultiViewVideoActivity activity) {
@@ -74,7 +74,8 @@ public class TVShowGalleryOnItemSelectedListener implements
 	}
 
 	@Override
-	public void onItemSelected(AdapterView<?> av, View v, int position, long id) {
+	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
+			long id) {
 
 		info = (SeriesContentInfo) av.getItemAtPosition(position);
 
@@ -152,7 +153,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void createTitle() {
 		TextView title = (TextView) context.findViewById(R.id.tvBrowserTitle);
@@ -160,7 +161,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void createSummary() {
 		TextView summary = (TextView) context
@@ -174,7 +175,7 @@ public class TVShowGalleryOnItemSelectedListener implements
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void createRatings() {
 		RatingBar ratingBar = (RatingBar) context
@@ -190,9 +191,9 @@ public class TVShowGalleryOnItemSelectedListener implements
 
 	/**
 	 * Change the background image of the activity.
-	 * 
+	 *
 	 * Should be a background activity
-	 * 
+	 *
 	 * @param v
 	 */
 	private void changeBackgroundImage(View v) {
@@ -212,12 +213,12 @@ public class TVShowGalleryOnItemSelectedListener implements
 		showImage.setMaxHeight(height);
 		showImage.setMaxWidth(width);
 		showImage
-				.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+		.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 		SerenityApplication.displayImage(mi.getThumbNailURL(), showImage);
 	}
 
 	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
+	public void onNothingSelected(SerenityAdapterView<?> arg0) {
 
 	}
 

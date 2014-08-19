@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,29 +23,25 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
-
-
+import us.nineworlds.serenity.widgets.SerenityAdapterView;
+import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemClickListener;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class TVShowSeasonOnItemClickListener implements OnItemClickListener {
 
-	private Activity context;
+	private final Activity context;
 
 	/**
-	 * 
+	 *
 	 */
 	public TVShowSeasonOnItemClickListener(Context c) {
 		context = (Activity) c;
@@ -59,11 +55,11 @@ public class TVShowSeasonOnItemClickListener implements OnItemClickListener {
 	 * .AdapterView, android.view.View, int, long)
 	 */
 	@Override
-	public void onItemClick(AdapterView<?> av, View view, int position,
+	public void onItemClick(SerenityAdapterView<?> av, View view, int position,
 			long arg3) {
 
-		SeriesContentInfo info = (SeriesContentInfo) av.getItemAtPosition(position);
-		ImageView tsi = (ImageView) view.findViewById(R.id.posterImageView);
+		SeriesContentInfo info = (SeriesContentInfo) av
+				.getItemAtPosition(position);
 
 		Intent i = new Intent(context, EpisodeBrowserActivity.class);
 		i.putExtra("key", info.getKey());

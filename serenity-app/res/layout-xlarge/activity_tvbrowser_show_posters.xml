@@ -112,7 +112,7 @@
                 android:background="#A0000000"
                 android:orientation="vertical" >
 
-                <Gallery
+                <us.nineworlds.serenity.widgets.SerenityGallery
                     android:id="@+id/tvShowBannerGallery"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
                     android:spacing="10dp" >
 
                     <requestFocus />
-                </Gallery>
+                </us.nineworlds.serenity.widgets.SerenityGallery>
             </LinearLayout>
         </RelativeLayout>
 

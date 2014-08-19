@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -37,12 +37,12 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.BadgeView;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -52,12 +52,12 @@ import com.android.volley.Response;
 
 /**
  * An adapter that handles the population of views for TV Show Seasons.
- * 
+ *
  * The fetching of the data is handled by a RESTFul Volley call to plex and then
  * the data is parsed and returned.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 
@@ -126,8 +126,8 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
 		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
-		galleryCellView
-				.setLayoutParams(new Gallery.LayoutParams(width, height));
+		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width,
+				height));
 
 		int unwatched = 0;
 
@@ -210,7 +210,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 				}
 			}
 
-			Gallery gallery = (Gallery) context
+			SerenityGallery gallery = (SerenityGallery) context
 					.findViewById(R.id.tvShowSeasonImageGallery);
 			if (gallery != null) {
 				gallery.requestFocusFromTouch();

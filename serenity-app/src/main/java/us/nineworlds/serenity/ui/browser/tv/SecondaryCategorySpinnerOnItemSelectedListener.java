@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,31 +23,29 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import com.jess.ui.TwoWayGridView;
-
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-
-import us.nineworlds.serenity.R;
-
+import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Gallery;
+
+import com.jess.ui.TwoWayGridView;
 
 /**
  * Populate the tv show banners based on the information from the Secondary
  * categories.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		OnItemSelectedListener {
 
 	private String selected;
-	private String key;
+	private final String key;
 	private boolean firstTimesw = true;
 
 	public SecondaryCategorySpinnerOnItemSelectedListener(
@@ -59,40 +57,46 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
-		
-		SerenityMultiViewVideoActivity context = (SerenityMultiViewVideoActivity) view.getContext();
+
+		SerenityMultiViewVideoActivity context = (SerenityMultiViewVideoActivity) view
+				.getContext();
 
 		SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter
 				.getItemAtPosition(position);
-		
+
 		if (firstTimesw) {
 			if (context.retrieveSavedSelectedGenreCategory() != null) {
-				int savedInstancePosition = getSavedInstancePosition(viewAdapter, context.retrieveSavedSelectedGenreCategory());
-				item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
+				int savedInstancePosition = getSavedInstancePosition(
+						viewAdapter,
+						context.retrieveSavedSelectedGenreCategory());
+				item = (SecondaryCategoryInfo) viewAdapter
+						.getItemAtPosition(savedInstancePosition);
 				viewAdapter.setSelection(savedInstancePosition);
 			}
 			firstTimesw = false;
 		}
-		
-		
+
 		if (selected.equalsIgnoreCase(item.getCategory())) {
 			return;
 		}
 
 		selected = item.getCategory();
 		context.setSavedSelectedGenreCategory(item.getCategory());
-		
-		SerenityMultiViewVideoActivity c = (SerenityMultiViewVideoActivity) view.getContext();
+
+		SerenityMultiViewVideoActivity c = (SerenityMultiViewVideoActivity) view
+				.getContext();
 
 		View bgLayout = c.findViewById(R.id.tvshowBrowserLayout);
 		if (c.isGridViewActive()) {
-			TwoWayGridView gridView = (TwoWayGridView) c.findViewById(R.id.tvShowGridView);
-			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(c, key, item.getParentCategory() + "/"
-					+ item.getCategory()));
-			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(bgLayout, c));
+			TwoWayGridView gridView = (TwoWayGridView) c
+					.findViewById(R.id.tvShowGridView);
+			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(c, key,
+					item.getParentCategory() + "/" + item.getCategory()));
+			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(
+					bgLayout, c));
 			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(c));
 		} else {
-			Gallery posterGallery = (Gallery) c
+			SerenityGallery posterGallery = (SerenityGallery) c
 					.findViewById(R.id.tvShowBannerGallery);
 
 			if (c.isPosterLayoutActive()) {
@@ -114,10 +118,19 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 			posterGallery
 					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
 			posterGallery.setCallbackDuringFling(false);
+			posterGallery.setAnimationDuration(1);
+			posterGallery.setSpacing(10);
+			posterGallery.setPadding(5, 5, 5, 5);
+			posterGallery.setAnimationCacheEnabled(true);
+			posterGallery.setHorizontalFadingEdgeEnabled(true);
+			posterGallery.setFocusableInTouchMode(false);
+			posterGallery.setDrawingCacheEnabled(true);
+			posterGallery.setUnselectedAlpha(0.75f);
 		}
 	}
-	
-	private int getSavedInstancePosition(AdapterView<?> viewAdapter, String category) {
+
+	private int getSavedInstancePosition(AdapterView<?> viewAdapter,
+			String category) {
 		int count = viewAdapter.getCount();
 		for (int i = 0; i < count; i++) {
 			CategoryInfo citem = (CategoryInfo) viewAdapter
@@ -128,7 +141,6 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		}
 		return 0;
 	}
-	
 
 	@Override
 	public void onNothingSelected(AdapterView<?> va) {

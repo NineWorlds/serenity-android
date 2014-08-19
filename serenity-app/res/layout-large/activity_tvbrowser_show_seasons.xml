@@ -67,7 +67,7 @@
             android:background="@color/card_background"
             android:orientation="vertical" >
 
-            <Gallery
+            <us.nineworlds.serenity.widgets.SerenityGallery
                 android:id="@+id/tvShowSeasonImageGallery"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                 android:spacing="25dp" >
 
                 <requestFocus />
-            </Gallery>
+            </us.nineworlds.serenity.widgets.SerenityGallery>
         </LinearLayout>
     </RelativeLayout>
 

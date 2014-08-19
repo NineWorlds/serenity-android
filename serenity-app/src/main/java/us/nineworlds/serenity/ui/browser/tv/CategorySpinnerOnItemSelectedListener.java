@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -25,16 +25,13 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import java.util.List;
 
-import com.jess.ui.TwoWayGridView;
-
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
-
-import us.nineworlds.serenity.R;
-
+import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -43,15 +40,16 @@ import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Gallery;
 import android.widget.Toast;
+
+import com.jess.ui.TwoWayGridView;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class CategorySpinnerOnItemSelectedListener implements
 		OnItemSelectedListener {
@@ -61,7 +59,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	private boolean firstSelection = true;
 	private static SerenityMultiViewVideoActivity context;
 	private static String category;
-	private Handler secondaryCategoryHandler;
+	private final Handler secondaryCategoryHandler;
 	private String savedInstanceCategory;
 
 	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
@@ -79,20 +77,21 @@ public class CategorySpinnerOnItemSelectedListener implements
 		savedInstanceCategory = defaultSelection;
 		firstSelection = sw;
 	}
-	
+
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 		context = (SerenityMultiViewVideoActivity) view.getContext();
 		CategoryInfo item = (CategoryInfo) viewAdapter
 				.getItemAtPosition(position);
-		
+
 		Spinner secondarySpinner = (Spinner) context
 				.findViewById(R.id.categoryFilter2);
-		
+
 		if (savedInstanceCategory != null) {
 			int savedInstancePosition = getSavedInstancePosition(viewAdapter);
-			item = (CategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
+			item = (CategoryInfo) viewAdapter
+					.getItemAtPosition(savedInstancePosition);
 			viewAdapter.setSelection(savedInstancePosition);
 			savedInstanceCategory = null;
 			if (item.getLevel() == 0) {
@@ -102,12 +101,12 @@ public class CategorySpinnerOnItemSelectedListener implements
 			}
 			return;
 		}
-		
 
 		if (firstSelection) {
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(context);
-			String filter = prefs.getString("serenity_series_category_filter", "all");
+			String filter = prefs.getString("serenity_series_category_filter",
+					"all");
 
 			int count = viewAdapter.getCount();
 			for (int i = 0; i < count; i++) {
@@ -144,7 +143,6 @@ public class CategorySpinnerOnItemSelectedListener implements
 		category = item.getCategory();
 		context.setSavedCategory(selected);
 
-
 		if (item.getLevel() == 0) {
 			populatePrimaryCategory(item, secondarySpinner);
 		} else {
@@ -174,7 +172,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void populateSecondaryCategory() {
 		Messenger messenger = new Messenger(secondaryCategoryHandler);
@@ -185,7 +183,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 		categoriesIntent.putExtra("MESSENGER", messenger);
 		context.startService(categoriesIntent);
 	}
-	
+
 	private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
 		int count = viewAdapter.getCount();
 		for (int i = 0; i < count; i++) {
@@ -196,7 +194,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 			}
 		}
 		return 0;
-	}	
+	}
 
 	/**
 	 * @param item
@@ -205,14 +203,18 @@ public class CategorySpinnerOnItemSelectedListener implements
 		View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
 
 		if (context.isGridViewActive()) {
-			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.tvShowGridView);
-			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(context, key, item.getCategory()));
-			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(bgLayout, context));
-			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(context));
+			TwoWayGridView gridView = (TwoWayGridView) context
+					.findViewById(R.id.tvShowGridView);
+			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(context,
+					key, item.getCategory()));
+			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(
+					bgLayout, context));
+			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(
+					context));
 			gridView.setOnItemLongClickListener(new TVShowGridOnItemLongClickListener());
-            gridView.setOnKeyListener(new TVShowGridOnKeyListener(context));
+			gridView.setOnKeyListener(new TVShowGridOnKeyListener(context));
 		} else {
-			Gallery posterGallery = (Gallery) context
+			SerenityGallery posterGallery = (SerenityGallery) context
 					.findViewById(R.id.tvShowBannerGallery);
 			if (!context.isPosterLayoutActive()) {
 				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
@@ -230,6 +232,14 @@ public class CategorySpinnerOnItemSelectedListener implements
 			posterGallery
 					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
 			posterGallery.setCallbackDuringFling(false);
+			posterGallery.setAnimationDuration(1);
+			posterGallery.setSpacing(10);
+			posterGallery.setPadding(5, 5, 5, 5);
+			posterGallery.setAnimationCacheEnabled(true);
+			posterGallery.setHorizontalFadingEdgeEnabled(true);
+			posterGallery.setFocusableInTouchMode(false);
+			posterGallery.setDrawingCacheEnabled(true);
+			posterGallery.setUnselectedAlpha(0.75f);
 
 		}
 

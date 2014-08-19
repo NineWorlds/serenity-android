@@ -36,6 +36,7 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,7 +49,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Gallery;
 import android.widget.Spinner;
 
 /**
@@ -86,7 +86,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -107,13 +107,13 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
 	 * android.view.KeyEvent)
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		Gallery gallery = (Gallery) findViewById(R.id.tvShowBannerGallery);
+		SerenityGallery gallery = (SerenityGallery) findViewById(R.id.tvShowBannerGallery);
 
 		boolean menuKeySlidingMenu = PreferenceManager
 				.getDefaultSharedPreferences(this).getBoolean(
@@ -239,13 +239,13 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-				.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(
-						drawerLayout));
+		.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(
+				drawerLayout));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
 	 */
 	@Override
@@ -259,7 +259,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#finish()
 	 */
 	@Override
@@ -286,7 +286,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see android.os.Handler#handleMessage(android.os.Message)
 		 */
 		@Override
@@ -301,7 +301,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 			ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
 					context, R.layout.serenity_spinner_textview, categories);
 			spinnerArrayAdapter
-					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
 			categorySpinner = (Spinner) context
 					.findViewById(R.id.categoryFilter);
@@ -310,12 +310,12 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 			if (savedCategory == null) {
 				categorySpinner
-						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-								"all", key));
+				.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+						"all", key));
 			} else {
 				categorySpinner
-						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-								savedCategory, key, false));
+				.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+						savedCategory, key, false));
 
 			}
 			categorySpinner.requestFocus();

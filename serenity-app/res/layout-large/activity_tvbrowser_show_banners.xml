@@ -108,16 +108,16 @@
             android:background="@color/card_background"
             android:orientation="vertical" >
 
-            <Gallery
+            <us.nineworlds.serenity.widgets.SerenityGallery
                 android:id="@+id/tvShowBannerGallery"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:animationDuration="1"
+                app:animationDuration="1"
                 android:padding="5dp"
-                android:spacing="10dp" >
+                app:spacing="10dp" >
 
                 <requestFocus />
-            </Gallery>
+            </us.nineworlds.serenity.widgets.SerenityGallery>
         </LinearLayout>
     </RelativeLayout>
     <!-- The navigation drawer -->
