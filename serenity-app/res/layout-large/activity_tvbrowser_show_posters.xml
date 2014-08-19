@@ -99,20 +99,22 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentBottom="true" 
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dip"
             android:layout_marginBottom="5dp"
+            android:gravity="bottom"
             android:background="#A0000000"
             android:orientation="vertical" >
 
             <us.nineworlds.serenity.widgets.SerenityGallery
                 android:id="@+id/tvShowBannerGallery"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:animationDuration="1"
-                android:padding="5dp"
-                android:spacing="10dp" >
+                android:layout_width="match_parent"
+                android:layout_gravity="center|center_vertical"
+                android:layout_height="wrap_content">
 
                 <requestFocus />
             </us.nineworlds.serenity.widgets.SerenityGallery>

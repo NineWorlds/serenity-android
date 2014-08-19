@@ -52,7 +52,7 @@ import com.jess.ui.TwoWayGridView;
  *
  */
 public class CategorySpinnerOnItemSelectedListener implements
-		OnItemSelectedListener {
+OnItemSelectedListener {
 
 	private String selected;
 	private static String key;
@@ -224,16 +224,16 @@ public class CategorySpinnerOnItemSelectedListener implements
 						context, key, item.getCategory()));
 			}
 			posterGallery
-					.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
-							bgLayout, context));
+			.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
+					bgLayout, context));
 			posterGallery
-					.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
-							context));
+			.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
+					context));
 			posterGallery
-					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
+			.setOnItemLongClickListener(new ShowOnItemLongClickListener());
 			posterGallery.setCallbackDuringFling(false);
 			posterGallery.setAnimationDuration(1);
-			posterGallery.setSpacing(10);
+			posterGallery.setSpacing(15);
 			posterGallery.setPadding(5, 5, 5, 5);
 			posterGallery.setAnimationCacheEnabled(true);
 			posterGallery.setHorizontalFadingEdgeEnabled(true);
@@ -271,11 +271,11 @@ public class CategorySpinnerOnItemSelectedListener implements
 					context, R.layout.serenity_spinner_textview,
 					secondaryCategories);
 			spinnerSecArrayAdapter
-					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 			secondarySpinner.setAdapter(spinnerSecArrayAdapter);
 			secondarySpinner
-					.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
-							category, key));
+			.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
+					category, key));
 
 		}
 

@@ -100,11 +100,11 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 					.findViewById(R.id.tvShowBannerGallery);
 
 			if (c.isPosterLayoutActive()) {
-				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(c,
+				posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(c,
 						key, item.getParentCategory() + "/"
 								+ item.getCategory()));
 			} else {
-				posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(c,
+				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(c,
 						key, item.getParentCategory() + "/"
 								+ item.getCategory()));
 			}
@@ -119,7 +119,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
 			posterGallery.setCallbackDuringFling(false);
 			posterGallery.setAnimationDuration(1);
-			posterGallery.setSpacing(10);
+			posterGallery.setSpacing(15);
 			posterGallery.setPadding(5, 5, 5, 5);
 			posterGallery.setAnimationCacheEnabled(true);
 			posterGallery.setHorizontalFadingEdgeEnabled(true);
