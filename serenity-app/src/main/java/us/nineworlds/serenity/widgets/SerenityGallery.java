@@ -183,6 +183,8 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	 */
 	private final boolean mIsRtl = false;
 
+	private boolean longPressHandled = false;
+
 	public SerenityGallery(Context context) {
 		this(context, null);
 	}
@@ -1258,23 +1260,23 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 	}
 
 	private boolean dispatchLongPress(View view, int position, long id) {
-		boolean handled = false;
+		longPressHandled = false;
 
 		if (mOnItemLongClickListener != null) {
-			handled = mOnItemLongClickListener.onItemLongClick(this,
+			longPressHandled = mOnItemLongClickListener.onItemLongClick(this,
 					mDownTouchView, mDownTouchPosition, id);
 		}
 
-		if (!handled) {
+		if (!longPressHandled) {
 			mContextMenuInfo = new AdapterContextMenuInfo(view, position, id);
-			handled = super.showContextMenuForChild(this);
+			longPressHandled = super.showContextMenuForChild(this);
 		}
 
-		if (handled) {
+		if (longPressHandled) {
 			performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 		}
 
-		return handled;
+		return longPressHandled;
 	}
 
 	@Override
@@ -1331,9 +1333,8 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 					}, ViewConfiguration.getPressedStateDuration());
 
 					int selectedIndex = mSelectedPosition - mFirstPosition;
-					if (event.isLongPress()) {
-						showContextMenu();
-					} else {
+
+					if (!longPressHandled) {
 						performItemClick(getChildAt(selectedIndex),
 								mSelectedPosition,
 								mAdapter.getItemId(mSelectedPosition));
@@ -1343,6 +1344,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 
 			// Clear the flag
 			mReceivedInvokeKeyDown = false;
+			longPressHandled = false;
 
 			return true;
 		}

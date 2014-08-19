@@ -31,15 +31,17 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 /**
  * An AdapterView is a view whose children are determined by an {@link Adapter}.
- * 
+ *
  * <p>
  * See {@link ListView}, {@link GridView}, {@link Spinner} and
  * {@link SerenityGallery} for commonly used subclasses of AdapterView.
- * 
+ *
  * <div class="special reference">
  * <h3>Developer Guides</h3>
  * <p>
@@ -213,7 +215,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	 * In addition to this, this view has other criteria for actually
 	 * determining the focusable state (such as whether its empty or the text
 	 * filter is shown).
-	 * 
+	 *
 	 * @see #setFocusable(boolean)
 	 * @see #checkFocus()
 	 */
@@ -252,7 +254,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 		 * <p>
 		 * Implementers can call getItemAtPosition(position) if they need to
 		 * access the data associated with the selected item.
-		 * 
+		 *
 		 * @param parent
 		 *            The AdapterView where the click happened.
 		 * @param view
@@ -270,7 +272,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * Register a callback to be invoked when an item in this AdapterView has
 	 * been clicked.
-	 * 
+	 *
 	 * @param listener
 	 *            The callback that will be invoked.
 	 */
@@ -288,7 +290,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 
 	/**
 	 * Call the OnItemClickListener, if it is defined.
-	 * 
+	 *
 	 * @param view
 	 *            The view within the AdapterView that was clicked.
 	 * @param position
@@ -299,6 +301,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	 *         called, false otherwise is returned.
 	 */
 	public boolean performItemClick(View view, int position, long id) {
+
 		if (mOnItemClickListener != null) {
 			playSoundEffect(SoundEffectConstants.CLICK);
 			mOnItemClickListener.onItemClick(this, view, position, id);
@@ -316,10 +319,10 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 		/**
 		 * Callback method to be invoked when an item in this view has been
 		 * clicked and held.
-		 * 
+		 *
 		 * Implementers can call getItemAtPosition(position) if they need to
 		 * access the data associated with the selected item.
-		 * 
+		 *
 		 * @param parent
 		 *            The AbsListView where the click happened
 		 * @param view
@@ -328,7 +331,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 		 *            The position of the view in the list
 		 * @param id
 		 *            The row id of the item that was clicked
-		 * 
+		 *
 		 * @return true if the callback consumed the long click, false otherwise
 		 */
 		boolean onItemLongClick(SerenityAdapterView<?> parent, View view,
@@ -338,7 +341,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * Register a callback to be invoked when an item in this AdapterView has
 	 * been clicked and held
-	 * 
+	 *
 	 * @param listener
 	 *            The callback that will run
 	 */
@@ -369,10 +372,10 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 		 * position is different from the previously selected position or if
 		 * there was no selected item.
 		 * </p>
-		 * 
+		 *
 		 * Impelmenters can call getItemAtPosition(position) if they need to
 		 * access the data associated with the selected item.
-		 * 
+		 *
 		 * @param parent
 		 *            The AdapterView where the selection happened
 		 * @param view
@@ -389,7 +392,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 		 * Callback method to be invoked when the selection disappears from this
 		 * view. The selection can disappear for instance when touch is
 		 * activated or when the adapter becomes empty.
-		 * 
+		 *
 		 * @param parent
 		 *            The AdapterView that now contains no selected item.
 		 */
@@ -399,7 +402,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * Register a callback to be invoked when an item in this AdapterView has
 	 * been selected.
-	 * 
+	 *
 	 * @param listener
 	 *            The callback that will run
 	 */
@@ -415,10 +418,10 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	 * Extra menu information provided to the
 	 * {@link android.view.View.OnCreateContextMenuListener#onCreateContextMenu(ContextMenu, View, ContextMenuInfo) }
 	 * callback when a context menu is brought up for this AdapterView.
-	 * 
+	 *
 	 */
 	public static class AdapterContextMenuInfo implements
-			ContextMenu.ContextMenuInfo {
+	ContextMenu.ContextMenuInfo {
 
 		public AdapterContextMenuInfo(View targetView, int position, long id) {
 			this.targetView = targetView;
@@ -446,7 +449,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 
 	/**
 	 * Returns the adapter currently associated with this widget.
-	 * 
+	 *
 	 * @return The adapter used to provide this view's content.
 	 */
 	public abstract T getAdapter();
@@ -454,7 +457,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * Sets the adapter that provides the data and the views to represent the
 	 * data in this widget.
-	 * 
+	 *
 	 * @param adapter
 	 *            The adapter to use to create this view's content.
 	 */
@@ -463,10 +466,10 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * This method is not supported and throws an UnsupportedOperationException
 	 * when called.
-	 * 
+	 *
 	 * @param child
 	 *            Ignored.
-	 * 
+	 *
 	 * @throws UnsupportedOperationException
 	 *             Every time this method is invoked.
 	 */
@@ -479,12 +482,12 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * This method is not supported and throws an UnsupportedOperationException
 	 * when called.
-	 * 
+	 *
 	 * @param child
 	 *            Ignored.
 	 * @param index
 	 *            Ignored.
-	 * 
+	 *
 	 * @throws UnsupportedOperationException
 	 *             Every time this method is invoked.
 	 */
@@ -497,12 +500,12 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * This method is not supported and throws an UnsupportedOperationException
 	 * when called.
-	 * 
+	 *
 	 * @param child
 	 *            Ignored.
 	 * @param params
 	 *            Ignored.
-	 * 
+	 *
 	 * @throws UnsupportedOperationException
 	 *             Every time this method is invoked.
 	 */
@@ -515,14 +518,14 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * This method is not supported and throws an UnsupportedOperationException
 	 * when called.
-	 * 
+	 *
 	 * @param child
 	 *            Ignored.
 	 * @param index
 	 *            Ignored.
 	 * @param params
 	 *            Ignored.
-	 * 
+	 *
 	 * @throws UnsupportedOperationException
 	 *             Every time this method is invoked.
 	 */
@@ -536,10 +539,10 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * This method is not supported and throws an UnsupportedOperationException
 	 * when called.
-	 * 
+	 *
 	 * @param child
 	 *            Ignored.
-	 * 
+	 *
 	 * @throws UnsupportedOperationException
 	 *             Every time this method is invoked.
 	 */
@@ -552,10 +555,10 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * This method is not supported and throws an UnsupportedOperationException
 	 * when called.
-	 * 
+	 *
 	 * @param index
 	 *            Ignored.
-	 * 
+	 *
 	 * @throws UnsupportedOperationException
 	 *             Every time this method is invoked.
 	 */
@@ -568,7 +571,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * This method is not supported and throws an UnsupportedOperationException
 	 * when called.
-	 * 
+	 *
 	 * @throws UnsupportedOperationException
 	 *             Every time this method is invoked.
 	 */
@@ -587,7 +590,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * Return the position of the currently selected item within the adapter's
 	 * data set
-	 * 
+	 *
 	 * @return int Position (starting at 0), or {@link #INVALID_POSITION} if
 	 *         there is nothing selected.
 	 */
@@ -638,7 +641,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * Get the position within the adapter's data set for the view, where view
 	 * is a an adapter item or a descendant of an adapter item.
-	 * 
+	 *
 	 * @param view
 	 *            an adapter item, or a descendant of an adapter item. This must
 	 *            be visible in this AdapterView at the time of the call.
@@ -673,7 +676,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * Returns the position within the adapter's data set for the first item
 	 * displayed on screen.
-	 * 
+	 *
 	 * @return The position within the adapter's data set
 	 */
 	public int getFirstVisiblePosition() {
@@ -683,7 +686,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * Returns the position within the adapter's data set for the last item
 	 * displayed on screen.
-	 * 
+	 *
 	 * @return The position within the adapter's data set
 	 */
 	public int getLastVisiblePosition() {
@@ -693,7 +696,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * Sets the currently selected item. To support accessibility subclasses
 	 * that override this method must invoke the overriden super method first.
-	 * 
+	 *
 	 * @param position
 	 *            Index (starting at 0) of the data item to be selected.
 	 */
@@ -714,7 +717,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	 * When the current adapter is empty, the AdapterView can display a special
 	 * view call the empty view. The empty view is used to provide feedback to
 	 * the user that no data is available in this AdapterView.
-	 * 
+	 *
 	 * @return The view to show if the adapter is empty.
 	 */
 	public View getEmptyView() {
@@ -724,7 +727,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * Indicates whether this view is in filter mode. Filter mode can for
 	 * instance be enabled by a user when typing on the keyboard.
-	 * 
+	 *
 	 * @return True if the view is in filter mode, false otherwise.
 	 */
 	boolean isInFilterMode() {
@@ -811,7 +814,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 
 	/**
 	 * Gets the data associated with the specified position in the list.
-	 * 
+	 *
 	 * @param position
 	 *            Which data to get
 	 * @return The data associated with the specified position in the list
@@ -952,8 +955,9 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	}
 
 	private void fireOnSelected() {
-		if (mOnItemSelectedListener == null)
+		if (mOnItemSelectedListener == null) {
 			return;
+		}
 
 		int selection = this.getSelectedItemPosition();
 		if (selection >= 0) {
@@ -1057,7 +1061,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	 * starts at mSyncPosition and then alternates between moving up and moving
 	 * down until 1) we find the right position, or 2) we run out of time, or 3)
 	 * we have looked at every position
-	 * 
+	 *
 	 * @return Position of the row that matches mSyncRowId, or
 	 *         {@link #INVALID_POSITION} if it can't be found
 	 */
@@ -1142,7 +1146,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 
 	/**
 	 * Find a position that can be selected (i.e., is not a separator).
-	 * 
+	 *
 	 * @param position
 	 *            The starting position to look at.
 	 * @param lookDown
@@ -1157,7 +1161,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 
 	/**
 	 * Utility to keep mSelectedPosition and mSelectedRowId in sync
-	 * 
+	 *
 	 * @param position
 	 *            Our current position
 	 */
@@ -1168,7 +1172,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 
 	/**
 	 * Utility to keep mNextSelectedPosition and mNextSelectedRowId in sync
-	 * 
+	 *
 	 * @param position
 	 *            Intended value for mSelectedPosition the next time we go
 	 *            through layout
@@ -1186,7 +1190,7 @@ public abstract class SerenityAdapterView<T extends Adapter> extends ViewGroup {
 	/**
 	 * Remember enough information to restore the screen state when the data has
 	 * changed.
-	 * 
+	 *
 	 */
 	void rememberSyncState() {
 		if (getChildCount() > 0) {
