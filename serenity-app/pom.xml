@@ -200,6 +200,7 @@
 								<exclude>**/DrawerLayout.class</exclude>
 								<exclude>**/us/nineworlds/serenity/widgets/*.class</exclude>
 								<exclude>**/us/nineworlds/serenity/ui/dialogs/*.class</exclude>
+								<exclude>**/us/nineworlds/serenity/core/model/*.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>
