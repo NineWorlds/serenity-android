@@ -13,13 +13,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
-        <ImageView
-            android:id="@+id/fanArt"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@drawable/movies"
-            android:scaleType="fitXY" />
-
         <RelativeLayout
             android:id="@+id/video_details_container"
             android:layout_width="fill_parent"

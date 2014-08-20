@@ -30,6 +30,7 @@ import java.util.Date;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.TrailersYouTubeSearch;
+import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -50,6 +51,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 /**
  * @author dcarver
@@ -181,9 +183,9 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 	}
 
 	@Override
-	public void changeBackgroundImage(View v) {
+	public void changeBackgroundImage() {
 		if (fadeIn == true || fadeInCount == 0) {
-			super.changeBackgroundImage(v);
+			super.changeBackgroundImage();
 			fadeIn = false;
 			fadeInCount += 1;
 			return;
@@ -195,10 +197,10 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 			return;
 		}
 
-		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
-		fanArt.clearAnimation();
-		SerenityApplication.displayImage(ei.getBackgroundURL(), fanArt,
-				SerenityApplication.getMovieOptions());
+		View fanArt = context.findViewById(R.id.movieBrowserBackgroundLayout);
+		imageLoader.loadImage(videoInfo.getBackgroundURL(), new ImageSize(1280,
+				720), new SerenityBackgroundLoaderListener(fanArt,
+				R.drawable.tvshows));
 	}
 
 	@Override

@@ -18,12 +18,6 @@
             android:layout_height="fill_parent"
             android:orientation="vertical" >
 
-            <ImageView
-                android:id="@+id/fanArt"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:scaleType="fitXY" />
-
 
             <RelativeLayout
                 android:id="@+id/video_details_container"

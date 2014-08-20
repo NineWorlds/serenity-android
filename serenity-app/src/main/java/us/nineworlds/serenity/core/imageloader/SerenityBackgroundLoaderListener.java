@@ -25,7 +25,7 @@ public class SerenityBackgroundLoaderListener extends
 	public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 
 		Activity activity = (Activity) bgLayout.getContext();
-		activity.runOnUiThread(new BitmapDisplayer(loadedImage, defaultImage,
+		activity.runOnUiThread(new BackgroundBitmapDisplayer(loadedImage, defaultImage,
 				bgLayout));
 
 	}

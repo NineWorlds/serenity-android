@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -24,30 +24,37 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import android.app.Activity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 /**
  * When a poster is selected, update the information displayed in the browser.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class MovieGridPosterOnItemSelectedListener implements
-		OnItemSelectedListener {
+OnItemSelectedListener {
 
 	private static Activity context;
 	private View previous;
 	private TwoWayAdapterView<?> adapter;
+	private final ImageLoader imageLoader = SerenityApplication
+			.getImageLoader();
 
 	/**
-	 * 
+	 *
 	 */
 	public MovieGridPosterOnItemSelectedListener(View bgv, Activity activity) {
 		context = activity;
@@ -68,6 +75,33 @@ public class MovieGridPosterOnItemSelectedListener implements
 		v.setPadding(5, 5, 5, 5);
 
 		createMovieMetaData();
+		changeBackgroundImage();
+	}
+
+	/**
+	 * Change the background image of the activity.
+	 *
+	 * @param v
+	 */
+	private void changeBackgroundImage() {
+		VideoContentInfo videoInfo = (VideoContentInfo) adapter
+				.getSelectedItem();
+
+		if (videoInfo.getBackgroundURL() == null) {
+			return;
+		}
+
+		ImageView fanArt = (ImageView) context
+				.findViewById(R.id.movieBrowserBackgroundLayout);
+		imageLoader.loadImage(videoInfo.getBackgroundURL(), new ImageSize(1280,
+				720), new SerenityBackgroundLoaderListener(fanArt,
+						R.drawable.movies));
+
+		// SerenityApplication.displayImage(videoInfo.getBackgroundURL(),
+		// fanArt,
+		// SerenityApplication.getMovieOptions(),
+		// new AnimationImageLoaderListener());
+
 	}
 
 	private void createMovieMetaData() {

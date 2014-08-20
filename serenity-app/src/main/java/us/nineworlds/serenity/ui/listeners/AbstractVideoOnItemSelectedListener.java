@@ -28,6 +28,7 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.TrailersYouTubeSearch;
+import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.DBMetaDataSource;
@@ -42,7 +43,6 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -64,7 +64,7 @@ import com.android.volley.VolleyError;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 /**
  * Abstract class for handling video selection information. This can either be a
@@ -93,6 +93,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	private DBMetaDataSource datasource;
 	protected RequestQueue queue;
 	protected Runnable checkDBRunnable;
+	protected ImageLoader imageLoader = SerenityApplication.getImageLoader();
 
 	public AbstractVideoOnItemSelectedListener(Activity c) {
 		context = c;
@@ -287,28 +288,19 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		createVideoDetail(posterImageView);
 		createVideoMetaData(posterImageView);
 		createInfographicDetails(posterImageView);
-		changeBackgroundImage(posterImageView);
+		changeBackgroundImage();
 	}
 
-	/**
-	 * Change the background image of the activity.
-	 *
-	 * @param v
-	 */
-	public void changeBackgroundImage(View v) {
+	public void changeBackgroundImage() {
 
 		if (videoInfo.getBackgroundURL() == null) {
 			return;
 		}
 
-		ImageView fanArt = (ImageView) context.findViewById(R.id.fanArt);
-		ImageLoader imageLoader = SerenityApplication.getImageLoader();
-		imageLoader.cancelDisplayTask(fanArt);
-
-		SerenityApplication.displayImage(videoInfo.getBackgroundURL(), fanArt,
-				SerenityApplication.getMovieOptions(),
-				new AnimationImageLoaderListener());
-
+		View fanArt = context.findViewById(R.id.movieBrowserBackgroundLayout);
+		imageLoader.loadImage(videoInfo.getBackgroundURL(), new ImageSize(1280,
+				720), new SerenityBackgroundLoaderListener(fanArt,
+						R.drawable.movies));
 	}
 
 	protected class CheckDatabaseRunnable implements Runnable {
@@ -322,30 +314,6 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 			}
 		}
 
-	}
-
-	private class AnimationImageLoaderListener extends
-			SimpleImageLoadingListener {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener
-		 * #onLoadingComplete(java.lang.String, android.view.View,
-		 * android.graphics.Bitmap)
-		 */
-		@Override
-		public void onLoadingComplete(String imageUri, View view,
-				Bitmap loadedImage) {
-			SharedPreferences preferences = PreferenceManager
-					.getDefaultSharedPreferences(context);
-			boolean shouldFadeIn = preferences.getBoolean(
-					"animation_background_fadein", false);
-			if (shouldFadeIn) {
-				view.startAnimation(fadeIn);
-			}
-		}
 	}
 
 }
