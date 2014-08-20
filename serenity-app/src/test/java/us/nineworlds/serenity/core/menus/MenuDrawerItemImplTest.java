@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2014 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -23,39 +23,39 @@
 
 package us.nineworlds.serenity.core.menus;
 
-public class MenuDrawerItemImpl implements MenuDrawerItem {
+import static org.fest.assertions.api.Assertions.assertThat;
 
-	private String text;
-	private int resourceID;
+import org.junit.Test;
 
-	public MenuDrawerItemImpl(String text) {
-		this.text = text;
+import us.nineworlds.serenity.R;
+
+public class MenuDrawerItemImplTest {
+
+	MenuDrawerItem menuItem;
+
+	@Test
+	public void constructorSetsMenuItemText() {
+		menuItem = new MenuDrawerItemImpl("Grid View");
+		assertThat(menuItem.getText()).isEqualTo("Grid View");
 	}
 
-	public MenuDrawerItemImpl(String text, int resourceID) {
-		this.text = text;
-		this.resourceID = resourceID;
+	@Test
+	public void constructSetsMenuItemTextAndImageId() {
+		menuItem = new MenuDrawerItemImpl("Grid View",
+				R.drawable.ic_action_collections_view_as_grid);
+		assertThat(menuItem.getText()).isEqualTo("Grid View");
+		assertThat(menuItem.getImageResourceID()).isEqualTo(
+				R.drawable.ic_action_collections_view_as_grid);
 	}
 
-	@Override
-	public String getText() {
-		return text;
+	@Test
+	public void overridingConstructorSetValuesWorks() {
+		menuItem = new MenuDrawerItemImpl("Grid View",
+				R.drawable.ic_action_collections_view_as_grid);
+		menuItem.setImageResourceID(R.drawable.ic_action_collections_view_detail);
+		menuItem.setText("Detail");
+		assertThat(menuItem.getText()).isEqualTo("Detail");
+		assertThat(menuItem.getImageResourceID()).isEqualTo(
+				R.drawable.ic_action_collections_view_detail);
 	}
-
-	@Override
-	public int getImageResourceID() {
-		return resourceID;
-	}
-
-	@Override
-	public void setText(String text) {
-		this.text = text;
-
-	}
-
-	@Override
-	public void setImageResourceID(int resourceId) {
-		resourceID = resourceId;
-	}
-
 }

@@ -23,39 +23,29 @@
 
 package us.nineworlds.serenity.core.menus;
 
-public class MenuDrawerItemImpl implements MenuDrawerItem {
+import static org.fest.assertions.api.Assertions.assertThat;
 
-	private String text;
-	private int resourceID;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-	public MenuDrawerItemImpl(String text) {
-		this.text = text;
+public class DialogMenuItemTest {
+
+	DialogMenuItem dialogMenuItem;
+
+	@Before
+	public void setUp() {
+		dialogMenuItem = new DialogMenuItem();
 	}
 
-	public MenuDrawerItemImpl(String text, int resourceID) {
-		this.text = text;
-		this.resourceID = resourceID;
-	}
-
-	@Override
-	public String getText() {
-		return text;
-	}
-
-	@Override
-	public int getImageResourceID() {
-		return resourceID;
-	}
-
-	@Override
-	public void setText(String text) {
-		this.text = text;
+	@After
+	public void tearDown() {
 
 	}
 
-	@Override
-	public void setImageResourceID(int resourceId) {
-		resourceID = resourceId;
+	@Test
+	public void settingActionReturnsExpectedActionNumber() {
+		dialogMenuItem.setMenuDialogAction(0);
+		assertThat(dialogMenuItem.getMenuDialogAction());
 	}
-
 }

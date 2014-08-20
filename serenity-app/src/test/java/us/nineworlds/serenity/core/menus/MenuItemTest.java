@@ -23,39 +23,52 @@
 
 package us.nineworlds.serenity.core.menus;
 
-public class MenuDrawerItemImpl implements MenuDrawerItem {
+import static org.fest.assertions.api.Assertions.assertThat;
 
-	private String text;
-	private int resourceID;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-	public MenuDrawerItemImpl(String text) {
-		this.text = text;
+public class MenuItemTest {
+
+	MenuItem menuItem;
+
+	@Before
+	public void setUp() {
+		menuItem = new MenuItem();
 	}
 
-	public MenuDrawerItemImpl(String text, int resourceID) {
-		this.text = text;
-		this.resourceID = resourceID;
-	}
-
-	@Override
-	public String getText() {
-		return text;
-	}
-
-	@Override
-	public int getImageResourceID() {
-		return resourceID;
-	}
-
-	@Override
-	public void setText(String text) {
-		this.text = text;
+	@After
+	public void tearDown() {
 
 	}
 
-	@Override
-	public void setImageResourceID(int resourceId) {
-		resourceID = resourceId;
+	@Test
+	public void typeReturnsValueSet() {
+		menuItem.setType("movie");
+		assertThat(menuItem.getType()).isEqualTo("movie");
 	}
 
+	@Test
+	public void titleReturnsExpectedValueSet() {
+		menuItem.setTitle("Movies");
+		assertThat(menuItem.getTitle()).isEqualTo("Movies");
+	}
+
+	@Test
+	public void sectionReturnsExpectuedValueSet() {
+		menuItem.setSection("1234");
+		assertThat(menuItem.getSection()).isEqualTo("1234");
+	}
+
+	@Test
+	public void toStringReturnsNullWhenNoTitleHasBeenSet() {
+		assertThat(menuItem.toString()).isNull();
+	}
+
+	@Test
+	public void toStringReturnsGeneratedValue() {
+		menuItem.setTitle("To String!");
+		assertThat(menuItem.toString()).isEqualTo("To String!");
+	}
 }
