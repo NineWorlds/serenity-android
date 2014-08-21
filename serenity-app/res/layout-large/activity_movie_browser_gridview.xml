@@ -13,10 +13,12 @@
         xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
         android:id="@+id/movieBrowserBackgroundLayout"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/movies"
-        android:orientation="vertical"
-        android:padding="5dp" >
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/fanArt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <com.jess.ui.TwoWayGridView
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -47,5 +49,6 @@
 
     <!-- The navigation drawer -->
 
-	<include layout="@layout/menu_drawer_with_navigation"/>
+    <include layout="@layout/menu_drawer_with_navigation" />
+
 </us.nineworlds.serenity.widgets.DrawerLayout>

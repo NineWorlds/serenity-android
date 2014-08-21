@@ -83,14 +83,14 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 		tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(
 				this, key));
 		tvShowSeasonsGallery
-		.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(
-				tvShowSeasonsMainView, this));
+				.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(
+						tvShowSeasonsMainView, this));
 		tvShowSeasonsGallery
-		.setOnItemClickListener(new TVShowSeasonOnItemClickListener(
-				this));
+				.setOnItemClickListener(new TVShowSeasonOnItemClickListener(
+						this));
 		tvShowSeasonsGallery
-		.setOnItemLongClickListener(new SeasonOnItemLongClickListener(
-				this));
+				.setOnItemLongClickListener(new SeasonOnItemLongClickListener(
+						this));
 
 		tvShowSeasonsGallery.setPadding(5, 5, 5, 5);
 		tvShowSeasonsGallery.setAnimationDuration(1);
@@ -102,7 +102,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onRestart()
 	 */
 	@Override
@@ -114,12 +114,15 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
 	protected void createSideMenu() {
 		setContentView(R.layout.activity_tvbrowser_show_seasons);
+
+		View fanArt = findViewById(R.id.fanArt);
+		fanArt.setBackgroundResource(R.drawable.tvshows);
 
 		initMenuDrawerViews();
 
@@ -155,13 +158,13 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-		.setOnItemClickListener(new TVShowSeasonMenuDrawerOnItemClickedListener(
-				drawerLayout));
+				.setOnItemClickListener(new TVShowSeasonMenuDrawerOnItemClickedListener(
+						drawerLayout));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
 	 * android.view.KeyEvent)
 	 */

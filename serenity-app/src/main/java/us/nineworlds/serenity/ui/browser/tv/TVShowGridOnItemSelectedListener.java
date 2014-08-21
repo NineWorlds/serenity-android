@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,45 +23,41 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import android.app.Activity;
 import android.os.Handler;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.jess.ui.TwoWayAdapterView;
 import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
-import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.R;
-
-import android.app.Activity;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 /**
  * Display selected TV Show Information.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
-public class TVShowGridOnItemSelectedListener implements
-		OnItemSelectedListener {
+public class TVShowGridOnItemSelectedListener implements OnItemSelectedListener {
 
-	private View bgLayout;
-	private Activity context;
-	private ImageLoader imageLoader;
+	private final Activity context;
+	private final ImageLoader imageLoader;
 	private View previous;
-	private ImageSize bgImageSize = new ImageSize(1280, 720);
+	private final ImageSize bgImageSize = new ImageSize(1280, 720);
 	private SeriesContentInfo videoInfo;
-	private Handler handler = new Handler();
+	private final Handler handler = new Handler();
 	private Runnable runnable;
 
 	/**
-	 * 
+	 *
 	 */
 	public TVShowGridOnItemSelectedListener(View bgv, Activity activity) {
-		bgLayout = bgv;
 		context = activity;
 
 		imageLoader = SerenityApplication.getImageLoader();
@@ -69,7 +65,8 @@ public class TVShowGridOnItemSelectedListener implements
 	}
 
 	@Override
-	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position, long id) {
+	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position,
+			long id) {
 
 		videoInfo = (SeriesContentInfo) av.getItemAtPosition(position);
 		if (previous != null) {
@@ -79,8 +76,9 @@ public class TVShowGridOnItemSelectedListener implements
 		previous = v;
 
 		v.setPadding(5, 5, 5, 5);
-		
-		final ImageView imageView = (ImageView) v.findViewById(R.id.posterImageView);
+
+		final ImageView imageView = (ImageView) v
+				.findViewById(R.id.posterImageView);
 
 		if (runnable != null) {
 			handler.removeCallbacks(runnable);
@@ -94,7 +92,8 @@ public class TVShowGridOnItemSelectedListener implements
 		};
 		handler.postDelayed(runnable, 500);
 
-		TextView titleView = (TextView) context.findViewById(R.id.tvShowGridTitle);
+		TextView titleView = (TextView) context
+				.findViewById(R.id.tvShowGridTitle);
 		if (titleView != null) {
 			titleView.setText(videoInfo.getTitle());
 		}
@@ -102,18 +101,20 @@ public class TVShowGridOnItemSelectedListener implements
 
 	/**
 	 * Change the background image of the activity.
-	 * 
+	 *
 	 * Should be a background activity
-	 * 
+	 *
 	 * @param v
 	 */
 	private void changeBackgroundImage(View v) {
 
 		ImageView mpiv = (ImageView) v;
 
-		imageLoader.loadImage(videoInfo.getBackgroundURL(), bgImageSize,
-				new SerenityBackgroundLoaderListener(bgLayout,
-						R.drawable.tvshows));
+		View fanArt = context.findViewById(R.id.fanArt);
+		imageLoader
+				.loadImage(videoInfo.getBackgroundURL(), bgImageSize,
+						new SerenityBackgroundLoaderListener(fanArt,
+								R.drawable.tvshows));
 	}
 
 	@Override

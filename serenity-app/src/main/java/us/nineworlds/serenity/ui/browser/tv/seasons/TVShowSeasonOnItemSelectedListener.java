@@ -45,9 +45,8 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public class TVShowSeasonOnItemSelectedListener implements
-OnItemSelectedListener {
+		OnItemSelectedListener {
 
-	private final View bgLayout;
 	private final Activity context;
 	private final ImageLoader imageLoader;
 	private View previous;
@@ -58,7 +57,6 @@ OnItemSelectedListener {
 	 *
 	 */
 	public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity) {
-		bgLayout = bgv;
 		context = activity;
 
 		imageLoader = SerenityApplication.getImageLoader();
@@ -76,10 +74,10 @@ OnItemSelectedListener {
 		episodeGrid.setAdapter(new SeasonsEpisodePosterImageGalleryAdapter(
 				context, info.getKey()));
 		episodeGrid
-				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
+		.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
 		episodeGrid.setOnItemClickListener(new GridVideoOnItemClickListener());
 		episodeGrid
-				.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
+		.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
@@ -112,15 +110,16 @@ OnItemSelectedListener {
 		SeriesContentInfo mi = info;
 
 		if (mi.getBackgroundURL() != null) {
+			View fanArt = context.findViewById(R.id.fanArt);
 			imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
-					new SerenityBackgroundLoaderListener(bgLayout,
+					new SerenityBackgroundLoaderListener(fanArt,
 							R.drawable.tvshows));
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android
 	 * .widget.AdapterView)

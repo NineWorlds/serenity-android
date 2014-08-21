@@ -12,10 +12,12 @@
         android:id="@+id/tvshowBrowserLayout"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/tvshows"
-        android:orientation="vertical"
         tools:context=".ui.browser.tv.TVShowBrowserActivity" >
 
+        <ImageView android:id="@+id/fanArt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+         />
         <RelativeLayout
             android:id="@+id/video_details_container"
             android:layout_width="fill_parent"

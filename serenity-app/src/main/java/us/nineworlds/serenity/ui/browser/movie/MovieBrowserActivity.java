@@ -54,7 +54,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
 	 */
 	@Override
@@ -64,6 +64,9 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		} else {
 			setContentView(R.layout.activity_movie_browser);
 		}
+
+		View fanArt = findViewById(R.id.fanArt);
+		fanArt.setBackgroundResource(R.drawable.movies);
 
 		initMenuDrawerViews();
 
@@ -107,8 +110,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-		.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(
-				drawerLayout));
+				.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(
+						drawerLayout));
 
 	}
 
@@ -166,7 +169,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -186,7 +189,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -196,7 +199,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onRestart()
 	 */
 	@Override

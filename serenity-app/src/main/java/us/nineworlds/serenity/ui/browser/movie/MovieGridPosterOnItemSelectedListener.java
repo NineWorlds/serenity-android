@@ -29,7 +29,6 @@ import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import android.app.Activity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -65,6 +64,7 @@ OnItemSelectedListener {
 			long id) {
 
 		adapter = av;
+		changeBackgroundImage();
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
@@ -75,7 +75,6 @@ OnItemSelectedListener {
 		v.setPadding(5, 5, 5, 5);
 
 		createMovieMetaData();
-		changeBackgroundImage();
 	}
 
 	/**
@@ -91,16 +90,10 @@ OnItemSelectedListener {
 			return;
 		}
 
-		ImageView fanArt = (ImageView) context
-				.findViewById(R.id.movieBrowserBackgroundLayout);
+		View fanArt = context.findViewById(R.id.fanArt);
 		imageLoader.loadImage(videoInfo.getBackgroundURL(), new ImageSize(1280,
 				720), new SerenityBackgroundLoaderListener(fanArt,
 						R.drawable.movies));
-
-		// SerenityApplication.displayImage(videoInfo.getBackgroundURL(),
-		// fanArt,
-		// SerenityApplication.getMovieOptions(),
-		// new AnimationImageLoaderListener());
 
 	}
 

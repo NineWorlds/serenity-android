@@ -18,14 +18,18 @@
             android:layout_height="fill_parent"
             android:orientation="vertical" >
 
+            <ImageView
+                android:id="@+id/fanArt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <RelativeLayout
                 android:id="@+id/video_details_container"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/actionbarMargin"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/actionbarMargin"
                 android:background="#AA000000"
                 android:padding="10dp" >
 
@@ -123,11 +127,9 @@
                     <requestFocus />
                 </us.nineworlds.serenity.widgets.SerenityGallery>
             </LinearLayout>
-
         </RelativeLayout>
-        
-        <include layout="@layout/menu_drawer_with_navigation"/>
 
+        <include layout="@layout/menu_drawer_with_navigation" />
     </us.nineworlds.serenity.widgets.DrawerLayout>
 
 </merge>

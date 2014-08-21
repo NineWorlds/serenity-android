@@ -52,9 +52,8 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public class TVShowGalleryOnItemSelectedListener implements
-OnItemSelectedListener {
+		OnItemSelectedListener {
 
-	private final View bgLayout;
 	private final SerenityMultiViewVideoActivity context;
 	private final ImageLoader imageLoader;
 	private View previous;
@@ -66,7 +65,6 @@ OnItemSelectedListener {
 	 */
 	public TVShowGalleryOnItemSelectedListener(View bgv,
 			SerenityMultiViewVideoActivity activity) {
-		bgLayout = bgv;
 		context = activity;
 
 		imageLoader = SerenityApplication.getImageLoader();
@@ -200,9 +198,12 @@ OnItemSelectedListener {
 
 		SeriesContentInfo mi = info;
 
-		imageLoader.loadImage(mi.getBackgroundURL(), bgImageSize,
-				new SerenityBackgroundLoaderListener(bgLayout,
-						R.drawable.tvshows));
+		View fanArt = context.findViewById(R.id.fanArt);
+
+		imageLoader
+				.loadImage(mi.getBackgroundURL(), bgImageSize,
+						new SerenityBackgroundLoaderListener(fanArt,
+								R.drawable.tvshows));
 
 		ImageView showImage = (ImageView) context
 				.findViewById(R.id.tvShowImage);
@@ -213,7 +214,7 @@ OnItemSelectedListener {
 		showImage.setMaxHeight(height);
 		showImage.setMaxWidth(width);
 		showImage
-		.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+				.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 		SerenityApplication.displayImage(mi.getThumbNailURL(), showImage);
 	}
 

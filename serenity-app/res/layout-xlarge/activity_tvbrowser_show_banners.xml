@@ -19,6 +19,11 @@
             android:orientation="vertical"
             tools:context=".ui.browser.tv.TVShowBrowserActivity" >
 
+            <ImageView
+                android:id="@+id/fanArt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
             <RelativeLayout
                 android:id="@+id/video_details_container"
                 android:layout_width="fill_parent"
@@ -125,7 +130,7 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <include layout="@layout/menu_drawer_with_navigation"/>
+        <include layout="@layout/menu_drawer_with_navigation" />
     </us.nineworlds.serenity.widgets.DrawerLayout>
 
 </merge>
