@@ -41,6 +41,7 @@ import us.nineworlds.serenity.R;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.TransitionDrawable;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.Animation;
@@ -78,7 +79,7 @@ public class BackgroundBitmapDisplayerTest {
 	}
 
 	@Test
-	public void backgroundViewHasFadinAnimationSet() throws Exception {
+	public void backgroundViewHasTransitionDrawableSet() throws Exception {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(Robolectric.application);
 		Editor editor = prefs.edit();
@@ -89,7 +90,26 @@ public class BackgroundBitmapDisplayerTest {
 				R.drawable.movies, backgroundView);
 		backgroundBitmapDisplayer.run();
 
-		assertThat(backgroundView.getAnimation()).isNotNull();
+		assertThat(backgroundView.getBackground()).isInstanceOf(
+				TransitionDrawable.class);
+	}
+
+	@Test
+	public void backgroundViewHasTransitionDrawableWithCrossfade()
+			throws Exception {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(Robolectric.application);
+		Editor editor = prefs.edit();
+		editor.putBoolean("animation_background_fadein", true);
+		editor.commit();
+
+		backgroundBitmapDisplayer = new BackgroundBitmapDisplayer(mockBitmap,
+				R.drawable.movies, backgroundView);
+		backgroundBitmapDisplayer.run();
+
+		TransitionDrawable transitionDrawable = (TransitionDrawable) backgroundView
+				.getBackground();
+		assertThat(transitionDrawable).isCrossFadeEnabled();
 	}
 
 	@Test
