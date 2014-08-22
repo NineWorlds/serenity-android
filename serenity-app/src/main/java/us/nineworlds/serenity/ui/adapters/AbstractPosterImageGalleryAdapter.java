@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -52,14 +52,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * browsing. Implementations need to implement the abstract methods to provide
  * functionality for retrieval and display of video content when browsing the
  * episodes.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
 	protected static List<VideoContentInfo> posterList = null;
-	protected static ActionBarActivity context;
+	protected ActionBarActivity context;
 	protected ImageLoader imageLoader;
 	protected static final int SIZE_HEIGHT = 400;
 	protected static final int SIZE_WIDTH = 200;
@@ -68,7 +68,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	protected String key;
 	protected String category;
 	protected Animation shrink;
-	protected Animation fadeIn;
 	protected RequestQueue queue;
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
@@ -90,7 +89,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
 		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
 		shrink.setInterpolator(new LinearInterpolator());
-		fadeIn = AnimationUtils.loadAnimation(c, R.anim.fade_in);
 
 		imageLoader = SerenityApplication.getImageLoader();
 		fetchDataFromService();
@@ -100,7 +98,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.widget.Adapter#getCount()
 	 */
 	@Override
@@ -111,7 +109,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.widget.Adapter#getItem(int)
 	 */
 	@Override
@@ -122,7 +120,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
 	@Override
@@ -135,7 +133,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	 * @param pi
 	 * @param watchedView
 	 */
-
 	public List<VideoContentInfo> getItems() {
 		return posterList;
 	}
@@ -143,6 +140,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 	/**
 	 * @param image
 	 */
+	@Deprecated
 	public void shrinkPosterAnimation(ImageView image, boolean isGridView) {
 		SharedPreferences preferences = PreferenceManager
 				.getDefaultSharedPreferences(context);
