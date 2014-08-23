@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -42,13 +42,13 @@ import android.widget.ProgressBar;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class ImageUtils {
 
 	/**
 	 * This code is courtesy of Neil Davies at http://www.inter-fuser.com
-	 * 
+	 *
 	 * @param context
 	 *            the current context
 	 * @param originalImage
@@ -92,7 +92,7 @@ public class ImageUtils {
 		Paint paint = new Paint();
 		LinearGradient shader = new LinearGradient(0,
 				originalImage.getHeight(), 0, bitmapWithReflection.getHeight()
-						+ reflectionGap, 0x70ffffff, 0x00ffffff, TileMode.CLAMP);
+				+ reflectionGap, 0x70ffffff, 0x00ffffff, TileMode.CLAMP);
 		// Set the paint to use this shader (linear gradient)
 		paint.setShader(shader);
 		// Set the Transfer mode to be porter duff and destination in
@@ -107,7 +107,7 @@ public class ImageUtils {
 	/**
 	 * Takes a value in pixels and converts it to a dpi value. It adjusts the
 	 * dpi size based on the screen density that is returned by android.
-	 * 
+	 *
 	 * @param originalHeight
 	 * @param context
 	 *            The activity context
@@ -118,6 +118,7 @@ public class ImageUtils {
 		context.getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		int heightPixels = metrics.heightPixels;
 		float sizeMultiplier = 1;
+
 		switch (metrics.densityDpi) {
 		case DisplayMetrics.DENSITY_LOW: {
 			break;

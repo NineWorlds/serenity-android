@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>us.nineworlds.serenity</groupId>
 		<artifactId>serenity-parent</artifactId>
-		<version>1.8.2-SNAPSHOT</version>
+		<version>1.8.2</version>
 	</parent>
 
 	<artifactId>serenity-app</artifactId>
@@ -57,12 +57,12 @@
 		<dependency>
 			<groupId>us.nineworlds.serenity</groupId>
 			<artifactId>subtitle-converter</artifactId>
-			<version>1.8.2-SNAPSHOT</version>
+			<version>1.8.2</version>
 		</dependency>
 		<dependency>
 			<groupId>us.nineworlds.serenity</groupId>
 			<artifactId>plexapp-rest-library</artifactId>
-			<version>1.8.2-SNAPSHOT</version>
+			<version>1.8.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.juniversalchardet</groupId>

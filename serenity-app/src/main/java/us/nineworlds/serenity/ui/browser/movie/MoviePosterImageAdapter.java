@@ -42,6 +42,7 @@ import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import us.nineworlds.serenity.widgets.RoundedImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,6 +118,10 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		} else {
 			width = ImageUtils.getDPI(120, context);
 			height = ImageUtils.getDPI(180, context);
+			if ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+				width = ImageUtils.getDPI(150, context);
+				height = ImageUtils.getDPI(220, context);
+			}
 			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
 					width, height));
