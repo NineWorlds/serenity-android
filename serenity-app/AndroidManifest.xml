@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="us.nineworlds.serenity"
     android:versionCode="86"
-    android:versionName="1.8.2" >
+    android:versionName="1.8.3-dev" >
 
     <!-- try to exclude phone devices from the list. Currently only support Tablets and TVs -->
     <supports-screens

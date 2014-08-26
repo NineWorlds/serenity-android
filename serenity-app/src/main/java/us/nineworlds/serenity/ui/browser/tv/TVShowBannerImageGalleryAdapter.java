@@ -57,7 +57,7 @@ import com.jess.ui.TwoWayGridView;
  *
  */
 public class TVShowBannerImageGalleryAdapter extends
-		AbstractPosterImageGalleryAdapter {
+AbstractPosterImageGalleryAdapter {
 
 	/**
 	 *
@@ -187,6 +187,7 @@ public class TVShowBannerImageGalleryAdapter extends
 		ImageView mpiv = (ImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
 		BadgeView badgeView = new BadgeView(context, mpiv);
+		badgeView.setTag("badge");
 		Drawable backgroundDrawable = context.getResources().getDrawable(
 				R.drawable.episode_count_background);
 		badgeView.setBackgroundDrawable(backgroundDrawable);
@@ -231,11 +232,11 @@ public class TVShowBannerImageGalleryAdapter extends
 	 *
 	 */
 	protected class SeriesResponseListener implements
-			Response.Listener<MediaContainer> {
+	Response.Listener<MediaContainer> {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see
 		 * com.android.volley.Response.Listener#onResponse(java.lang.Object)
 		 */
@@ -255,7 +256,7 @@ public class TVShowBannerImageGalleryAdapter extends
 					Toast.makeText(
 							context,
 							context.getString(R.string.no_shows_found_for_the_category_)
-									+ category, Toast.LENGTH_LONG).show();
+							+ category, Toast.LENGTH_LONG).show();
 				}
 				tv.setText(Integer.toString(tvShowList.size())
 						+ context.getString(R.string._item_s_));

@@ -79,6 +79,8 @@ public class SerenityApplication extends Application {
 
 	public static final int PROGRESS = 0xDEADBEEF;
 
+	private static final OkHttpClient okHttpClient = new OkHttpClient();
+
 	public enum TrackerName {
 		APP_TRACKER, // Tracker used only in this app.
 		GLOBAL_TRACKER, // Tracker used by all the apps from a company. eg:
@@ -138,6 +140,10 @@ public class SerenityApplication extends Application {
 
 	public static DisplayImageOptions getMovieOptions() {
 		return movieOptions;
+	}
+
+	public static OkHttpClient getOkHttpClient() {
+		return okHttpClient;
 	}
 
 	public static DisplayImageOptions getMusicOptions() {
@@ -234,7 +240,8 @@ public class SerenityApplication extends Application {
 		.threadPoolSize(5)
 		.tasksProcessingOrder(QueueProcessingType.FIFO)
 		.imageDownloader(
-				new OKHttpImageLoader(this, new OkHttpClient()))
+				new OKHttpImageLoader(this, SerenityApplication
+								.getOkHttpClient()))
 				.defaultDisplayImageOptions(defaultOptions).build();
 
 		imageLoader = ImageLoader.getInstance();

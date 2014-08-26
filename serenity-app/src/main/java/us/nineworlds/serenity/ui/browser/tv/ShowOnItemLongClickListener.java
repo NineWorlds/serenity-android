@@ -40,7 +40,7 @@ import android.widget.ImageView;
  *
  */
 public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick
-		implements OnItemLongClickListener {
+implements OnItemLongClickListener {
 
 	@Override
 	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
@@ -53,13 +53,13 @@ public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick
 
 		if (v == null) {
 			SerenityGallery g = (SerenityGallery) av;
-			view = g.getSelectedView().findViewById(R.id.posterImageView);
+			view = g.getSelectedView().findViewById(R.id.posterIndicatorView);
 			videoInfo = (SeriesContentInfo) g.getSelectedItem();
 		} else {
 			if (v instanceof ImageView) {
-				view = v;
+				view = av.findViewById(R.id.posterIndicatorView);
 			} else {
-				view = v.findViewById(R.id.posterImageView);
+				view = v.findViewById(R.id.posterIndicatorView);
 			}
 		}
 

@@ -75,7 +75,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public abstract class AbstractVideoOnItemSelectedListener implements
-OnItemSelectedListener {
+		OnItemSelectedListener {
 
 	public static final String CRLF = "\r\n";
 	public static final int WATCHED_VIEW_ID = 1000;
@@ -232,8 +232,8 @@ OnItemSelectedListener {
 		if (mpi.hasTrailer()) {
 			if (videoInfo.hasTrailer()
 					&& YouTubeInitializationResult.SUCCESS
-					.equals(YouTubeApiServiceUtil
-							.isYouTubeApiServiceAvailable(context))) {
+							.equals(YouTubeApiServiceUtil
+									.isYouTubeApiServiceAvailable(context))) {
 				ImageView ytImage = new ImageView(context);
 				ytImage.setImageResource(R.drawable.yt_social_icon_red_128px);
 				ytImage.setScaleType(ScaleType.FIT_XY);
@@ -298,9 +298,13 @@ OnItemSelectedListener {
 		}
 
 		View fanArt = context.findViewById(R.id.fanArt);
-		imageLoader.loadImage(videoInfo.getBackgroundURL(), new ImageSize(1280,
-				720), new SerenityBackgroundLoaderListener(fanArt,
-				R.drawable.movies));
+		String transcodingURL = SerenityApplication.getPlexFactory()
+				.getImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+
+		imageLoader
+				.loadImage(transcodingURL, new ImageSize(1280, 720),
+						new SerenityBackgroundLoaderListener(fanArt,
+								R.drawable.movies));
 	}
 
 	protected class CheckDatabaseRunnable implements Runnable {
