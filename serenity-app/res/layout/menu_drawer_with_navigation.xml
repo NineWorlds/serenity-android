@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/left_drawer"
+    android:layout_width="240dp"
+    android:layout_height="fill_parent"
+    android:layout_gravity="start"
+    android:layout_marginTop="?android:attr/actionBarSize"
+    android:background="#111"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/left_drawer_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#111"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:focusableInTouchMode="true" />
+
+    <Button
+        android:id="@+id/drawer_settings"
+        style="@android:style/TextAppearance.Holo.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/menu_item_selector"
+        android:paddingLeft="5dp"
+        android:drawableLeft="@drawable/ic_action_settings"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:text="Settings"
+        android:textColor="@android:color/white"/>
+
+</LinearLayout>

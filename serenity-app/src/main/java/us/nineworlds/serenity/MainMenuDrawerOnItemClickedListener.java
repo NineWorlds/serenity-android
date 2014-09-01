@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -29,7 +29,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
@@ -38,7 +37,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener {
 	private static final int ABOUT = 0;
@@ -47,16 +46,15 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 	private final DrawerLayout drawerLayout;
 
 	/**
-	 * 
+	 *
 	 */
-	public MainMenuDrawerOnItemClickedListener(DrawerLayout drawerLayout,
-			ViewGroup focus) {
+	public MainMenuDrawerOnItemClickedListener(DrawerLayout drawerLayout) {
 		this.drawerLayout = drawerLayout;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
 	 * .AdapterView, android.view.View, int, long)
@@ -82,7 +80,7 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 					activity,
 					activity.getResources().getString(
 							R.string.queue_has_been_cleared_),
-					Toast.LENGTH_LONG).show();
+							Toast.LENGTH_LONG).show();
 			break;
 		}
 	}
@@ -98,30 +96,30 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 
 		alertDialogBuilder.setTitle(R.string.options_main_clear_image_cache);
 		alertDialogBuilder
-				.setMessage(R.string.option_clear_the_image_cache_)
-				.setCancelable(true)
-				.setPositiveButton(R.string.clear,
-						new DialogInterface.OnClickListener() {
+		.setMessage(R.string.option_clear_the_image_cache_)
+		.setCancelable(true)
+		.setPositiveButton(R.string.clear,
+				new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
+			@Override
+			public void onClick(DialogInterface dialog,
+					int which) {
 
-								ImageLoader imageLoader = SerenityApplication
-										.getImageLoader();
-								imageLoader.clearDiscCache();
-								imageLoader.clearMemoryCache();
-							}
-						})
-				.setNegativeButton(R.string.cancel,
-						new DialogInterface.OnClickListener() {
+				ImageLoader imageLoader = SerenityApplication
+						.getImageLoader();
+				imageLoader.clearDiscCache();
+				imageLoader.clearMemoryCache();
+			}
+		})
+		.setNegativeButton(R.string.cancel,
+				new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
+			@Override
+			public void onClick(DialogInterface dialog,
+					int which) {
 
-							}
-						});
+			}
+		});
 
 		alertDialogBuilder.create();
 		alertDialogBuilder.show();
