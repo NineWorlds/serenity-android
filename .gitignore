@@ -10,6 +10,7 @@ zip.txt
 tmp
 *org.eclipse.core.resources.prefs
 *.orig
+.DS_S*
 
 
 
