@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.widgets.BadgeView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -47,7 +48,7 @@ public abstract class AbstractTVShowOnItemLongClick {
 	protected Dialog dialog;
 	protected Activity context;
 	protected SeriesContentInfo videoInfo;
-	protected static View view;
+	protected View view;
 
 	/**
 	 *
@@ -97,21 +98,35 @@ public abstract class AbstractTVShowOnItemLongClick {
 
 			switch (position) {
 			case 0:
-				View posterLayout = (View) view.getParent();
-				ImageView watchedView = (ImageView) posterLayout
-						.findViewById(R.id.posterWatchedIndicator);
-				View progressView = posterLayout
+				ImageView watchedView = (ImageView) view
+				.findViewById(R.id.posterWatchedIndicator);
+				View progressView = view
 						.findViewById(R.id.posterInprogressIndicator);
 				progressView.setVisibility(View.INVISIBLE);
 				if (videoInfo.isWatched()) {
 					watchedView.setVisibility(View.INVISIBLE);
 				} else {
+					BadgeView badgeView = (BadgeView) view
+							.findViewWithTag("badge");
+					if (badgeView != null) {
+						badgeView.hide(true);
+						badgeView.setVisibility(View.INVISIBLE);
+					}
 					watchedView.setImageResource(R.drawable.overlaywatched);
 					watchedView.setVisibility(View.VISIBLE);
 				}
 				videoInfo.toggleWatchedStatus();
 
-				Activity a = (Activity) v.getContext();
+				if (videoInfo.isUnwatched()) {
+					BadgeView badgeView = (BadgeView) view
+							.findViewWithTag("badge");
+					if (badgeView != null) {
+						badgeView.setText(videoInfo.getShowsUnwatched());
+						badgeView.setVisibility(View.VISIBLE);
+						badgeView.show(true);
+					}
+				}
+
 				break;
 			}
 			dialog.dismiss();

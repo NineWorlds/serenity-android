@@ -139,6 +139,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 				.findViewById(R.id.posterWatchedIndicator);
 
 		BadgeView badgeView = new BadgeView(context, mpiv);
+		badgeView.setTag("badge");
 		Drawable backgroundDrawable = context.getResources().getDrawable(
 				R.drawable.episode_count_background);
 		badgeView.setBackgroundDrawable(backgroundDrawable);
@@ -189,7 +190,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	}
 
 	private class SeaonsResponseListener implements
-			Response.Listener<MediaContainer> {
+	Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer response) {

@@ -108,11 +108,12 @@ public class TVShowGridOnItemSelectedListener implements OnItemSelectedListener 
 	 */
 	private void changeBackgroundImage(View v) {
 
-		ImageView mpiv = (ImageView) v;
-
 		View fanArt = context.findViewById(R.id.fanArt);
+		String transcodingURL = SerenityApplication.getPlexFactory()
+				.getImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+
 		imageLoader
-				.loadImage(videoInfo.getBackgroundURL(), bgImageSize,
+				.loadImage(transcodingURL, bgImageSize,
 						new SerenityBackgroundLoaderListener(fanArt,
 								R.drawable.tvshows));
 	}

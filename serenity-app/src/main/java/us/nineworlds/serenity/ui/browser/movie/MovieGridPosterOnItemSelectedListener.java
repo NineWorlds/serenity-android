@@ -44,7 +44,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public class MovieGridPosterOnItemSelectedListener implements
-OnItemSelectedListener {
+		OnItemSelectedListener {
 
 	private static Activity context;
 	private View previous;
@@ -91,9 +91,12 @@ OnItemSelectedListener {
 		}
 
 		View fanArt = context.findViewById(R.id.fanArt);
-		imageLoader.loadImage(videoInfo.getBackgroundURL(), new ImageSize(1280,
-				720), new SerenityBackgroundLoaderListener(fanArt,
-						R.drawable.movies));
+		String transcodingURL = SerenityApplication.getPlexFactory()
+				.getImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+		imageLoader
+				.loadImage(transcodingURL, new ImageSize(1280, 720),
+						new SerenityBackgroundLoaderListener(fanArt,
+								R.drawable.movies));
 
 	}
 

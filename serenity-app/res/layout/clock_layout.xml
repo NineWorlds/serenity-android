@@ -7,7 +7,6 @@
     <us.nineworlds.serenity.ui.views.TextClock
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="10dp"
         style="@android:style/TextAppearance.Holo.Medium"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

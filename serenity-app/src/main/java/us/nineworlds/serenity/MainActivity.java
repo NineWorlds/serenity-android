@@ -52,7 +52,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Gallery;
 
 import com.castillo.dd.DownloadService;
 
@@ -66,19 +65,10 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 	private DownloadServiceConnection downloadService;
 	private final BroadcastReceiver gdmReciver = new GDMReceiver();
 
-	private Gallery mainGallery;
-
-	private View mainGalleryBackgroundView;
-
 	private SharedPreferences preferences;
-
-	private boolean restarted_state = false;
 
 	@Override
 	protected void createSideMenu() {
-		mainGalleryBackgroundView = findViewById(R.id.mainGalleryBackground);
-		mainGallery = (Gallery) findViewById(R.id.mainGalleryMenu);
-
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
 				R.drawable.menudrawer_selector, R.string.drawer_open,
 				R.string.drawer_closed) {
@@ -95,7 +85,10 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 			public void onDrawerClosed(View drawerView) {
 				super.onDrawerClosed(drawerView);
 				getSupportActionBar().setTitle(R.string.app_name);
-				mainGallery.requestFocusFromTouch();
+				View menu = findViewById(R.id.mainGalleryMenu);
+				if (menu != null) {
+					menu.requestFocusFromTouch();
+				}
 			}
 		};
 
@@ -105,8 +98,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 		Button settingsButton = (Button) findViewById(R.id.drawer_settings);
 		settingsButton
-				.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
-						drawerLayout));
+		.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
+				drawerLayout));
 
 		populateMenuOptions();
 	}
@@ -114,9 +107,9 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 	protected void populateMenuOptions() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem
-		.add(new MenuDrawerItemImpl(getResources().getString(
-				R.string.options_main_about),
-				R.drawable.ic_action_action_about));
+				.add(new MenuDrawerItemImpl(getResources().getString(
+						R.string.options_main_about),
+						R.drawable.ic_action_action_about));
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
 				R.string.options_main_clear_image_cache),
 				R.drawable.ic_action_content_remove));
@@ -124,9 +117,14 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 				R.string.clear_queue), R.drawable.ic_action_content_remove));
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+		View menu = findViewById(R.id.mainGalleryMenu);
+		if (menu != null) {
+			menu.requestFocusFromTouch();
+		}
+
 		drawerList
-		.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
-				drawerLayout, mainGallery));
+				.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
+						drawerLayout));
 	}
 
 	protected void discoverPlexServers() {
@@ -151,8 +149,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 			ServerConfig config = (ServerConfig) ServerConfig.getInstance();
 			if (config != null) {
 				preferences
-				.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
-						.getInstance()).getServerConfigChangeListener());
+						.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
+								.getInstance()).getServerConfigChangeListener());
 			}
 		}
 	}
@@ -229,7 +227,10 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 			if (keyCode == KeyEvent.KEYCODE_MENU) {
 				if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
 					drawerLayout.closeDrawers();
-					mainGallery.requestFocusFromTouch();
+					View menu = findViewById(R.id.mainGalleryMenu);
+					if (menu != null) {
+						menu.requestFocusFromTouch();
+					}
 				} else {
 					drawerLayout.openDrawer(linearDrawerLayout);
 					drawerList.requestFocusFromTouch();
@@ -241,7 +242,10 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		if (drawerLayout.isDrawerOpen(linearDrawerLayout)
 				&& keyCode == KeyEvent.KEYCODE_BACK) {
 			drawerLayout.closeDrawer(linearDrawerLayout);
-			mainGallery.requestFocusFromTouch();
+			View menu = findViewById(R.id.mainGalleryMenu);
+			if (menu != null) {
+				menu.requestFocusFromTouch();
+			}
 			return true;
 		}
 
@@ -250,7 +254,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 	@Override
 	protected void onRestart() {
-		restarted_state = true;
 		populateMenuOptions();
 		super.onRestart();
 
@@ -273,8 +276,10 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 				OnDeckRecommendationIntentService.class);
 		startService(recommendationIntent);
 
-		mainGallery.requestFocusFromTouch();
-
+		View menu = findViewById(R.id.mainGalleryMenu);
+		if (menu != null) {
+			menu.requestFocusFromTouch();
+		}
 	}
 
 	@Override
@@ -283,10 +288,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 		autoConfigureHandler.postDelayed(
 				new AutoConfigureHandlerRunnable(this), 2500);
-		if (restarted_state == false) {
-			setupGallery();
-		}
-		restarted_state = false;
 	}
 
 	@Override
@@ -300,15 +301,4 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		drawerList.requestFocusFromTouch();
 	}
 
-	private void setupGallery() {
-		mainGallery.setAdapter(new MainMenuTextViewAdapter(this,
-				mainGalleryBackgroundView));
-		mainGallery
-		.setOnItemSelectedListener(new GalleryOnItemSelectedListener(
-				mainGalleryBackgroundView));
-		mainGallery
-		.setOnItemClickListener(new GalleryOnItemClickListener(this));
-		mainGallery.setCallbackDuringFling(false);
-		mainGallery.requestFocusFromTouch();
-	}
 }
