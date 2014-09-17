@@ -75,16 +75,11 @@ https://github.com/mosabua/maven-android-sdk-deployer
 
 Make sure to set the ANDROID_HOME environement variable to the location where your SDK is deployed.
 
-
-Maven 3.1.1 or higher is required.
-
-http://maven.apache.org/download.cgi
-
 To build the APK and APKLibraries from the command line:
 
-mvn clean install
+./mvnw clean install
 
-The application APK will be in serenity-app/target.  You can sideload this APK on your Google TV device.
+The application APK will be in serenity-app/target.  You can sideload this APK on your Android TV or Tablet device.
 
 Using Eclipse to Build:
 ===============
