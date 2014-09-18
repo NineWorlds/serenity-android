@@ -35,7 +35,9 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.SerenityShadowResources;
 import org.robolectric.shadows.ShadowActivity;
 
-import android.widget.Gallery;
+import us.nineworlds.serenity.fragments.MainMenuFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 /**
  * @author dcarver
@@ -51,11 +53,17 @@ public class MainActivityTest {
 	public void setUp() throws Exception {
 		try {
 			activity = Robolectric.buildActivity(MainActivity.class).attach()
-					.create().start().get();
+					.create().start().resume().get();
 		} catch (NullPointerException ex) {
 			activity = Robolectric.buildActivity(MainActivity.class).create()
 					.start().get();
 		}
+
+		FragmentManager fragmentManager = activity.getSupportFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
+		fragmentTransaction.add(new MainMenuFragment(), null);
+		fragmentTransaction.commit();
 	}
 
 	@After
@@ -75,27 +83,6 @@ public class MainActivityTest {
 	}
 
 	@Test
-	public void testGalleryAdapterIsNotNull() throws Exception {
-		Gallery gallery = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
-		assertThat(gallery.getAdapter()).isNotNull().isInstanceOf(
-				MainMenuTextViewAdapter.class);
-	}
-
-	@Test
-	public void testGalleryOnItemClickListenerIsSet() throws Exception {
-		Gallery gallery = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
-		Assertions.assertThat(gallery.getOnItemClickListener()).isNotNull()
-		.isInstanceOf(GalleryOnItemClickListener.class);
-	}
-
-	@Test
-	public void testGalleryOnItemSelectedListenerIsSet() throws Exception {
-		Gallery gallery = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
-		Assertions.assertThat(gallery.getOnItemSelectedListener()).isNotNull()
-		.isInstanceOf(GalleryOnItemSelectedListener.class);
-	}
-
-	@Test
 	public void testThatActivityIsDestroyed() throws Exception {
 		activity.onDestroy();
 		ShadowActivity a = Robolectric.shadowOf(activity);
@@ -108,21 +95,4 @@ public class MainActivityTest {
 		ShadowActivity a = Robolectric.shadowOf(activity);
 		Assertions.assertThat(a.isFinishing()).isFalse();
 	}
-
-	@Test
-	public void testThatActivityCallsOnResume() throws Exception {
-		activity.onResume();
-		ShadowActivity a = Robolectric.shadowOf(activity);
-		Gallery g = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
-		assertThat(g).isVisible().isEnabled();
-	}
-
-	@Test
-	public void testThatActivityCallsOnRestart() throws Exception {
-		activity.onRestart();
-		ShadowActivity a = Robolectric.shadowOf(activity);
-		Gallery g = (Gallery) activity.findViewById(R.id.mainGalleryMenu);
-		assertThat(g).isVisible().isEnabled();
-	}
-
 }

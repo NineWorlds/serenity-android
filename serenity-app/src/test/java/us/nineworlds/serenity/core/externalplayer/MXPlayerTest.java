@@ -25,6 +25,10 @@ package us.nineworlds.serenity.core.externalplayer;
 
 import static org.fest.assertions.api.ANDROID.assertThat;
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.After;
@@ -33,10 +37,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowActivity;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
@@ -55,13 +57,15 @@ public class MXPlayerTest {
 	@Mock
 	Subtitle subtitle;
 
+	@Mock
 	Activity activity;
 
 	@Before
 	public void setUp() {
-		activity = Robolectric.buildActivity(Activity.class).create().get();
 		MockitoAnnotations.initMocks(this);
 		when(videoInfo.getDirectPlayUrl()).thenReturn("http://www.example.com");
+		doNothing().when(activity).startActivityForResult(any(Intent.class),
+				anyInt());
 		mxplayer = new MXPlayer(videoInfo, activity);
 	}
 
@@ -144,9 +148,7 @@ public class MXPlayerTest {
 	@Test
 	public void activityIsLaunched() {
 		mxplayer.launch();
-		ShadowActivity sactivity = Robolectric.shadowOf(activity);
-		Intent i = sactivity.getNextStartedActivity();
-		assertThat(i).isNotNull();
+		verify(activity).startActivityForResult(any(Intent.class), anyInt());
 	}
 
 }
