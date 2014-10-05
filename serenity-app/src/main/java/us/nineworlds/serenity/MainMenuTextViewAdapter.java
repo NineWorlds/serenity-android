@@ -178,7 +178,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	}
 
 	private class MainMenuVolleyResponseListener implements
-	Response.Listener<MediaContainer> {
+			Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer mc) {
@@ -190,7 +190,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	}
 
 	private class MainMenuResponseErrorListener extends
-	DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
+			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {
@@ -206,7 +206,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 					myContext,
 					"Unable to connect to Plex Library at "
 							+ factory.getSectionsURL(), Toast.LENGTH_LONG)
-							.show();
+					.show();
 			notifyDataSetChanged();
 
 			Activity c = (Activity) myContext;

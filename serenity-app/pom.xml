@@ -201,6 +201,7 @@
 								<exclude>**/us/nineworlds/serenity/widgets/*.class</exclude>
 								<exclude>**/us/nineworlds/serenity/ui/dialogs/*.class</exclude>
 								<exclude>**/us/nineworlds/serenity/core/model/*.class</exclude>
+								<exclude>**/us/nineworlds/serenity/ui/views/TextClock*.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>
