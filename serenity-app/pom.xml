@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>com.nostra13.universalimageloader</groupId>
 			<artifactId>universal-image-loader</artifactId>
-			<version>1.9.2</version>
+			<version>1.9.3</version>
 		</dependency>
 		<dependency>
 		  <groupId>com.google.android.gms</groupId>
