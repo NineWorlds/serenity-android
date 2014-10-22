@@ -736,6 +736,38 @@ implements SurfaceHolder.Callback {
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		visibleInBackground();
+	}
+
+	@Override
+	public void onVisibleBehindCanceled() {
+		super.onVisibleBehindCanceled();
+		if (isMediaPlayerStateValid()) {
+			if (mediaPlayer.isPlaying()) {
+				mediaPlayer.pause();
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void visibleInBackground() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			boolean success = requestVisibleBehind(true);
+		}
+
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		visibleInBackground();
+	}
+
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			if (mediaController.isShowing()) {
