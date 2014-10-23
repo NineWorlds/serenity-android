@@ -12,7 +12,7 @@
 	<packaging>apk</packaging>
 
 	<properties>
-		<android-version>L_r1</android-version>
+		<android-version>5.0_r1</android-version>
 	</properties>
 
 	<dependencies>
@@ -140,7 +140,7 @@
 		<dependency>
 			<groupId>android</groupId>
 			<artifactId>android</artifactId>
-			<version>L_r1</version>
+			<version>${android-version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -221,7 +221,7 @@
 				</executions>
 				<configuration>
 					<sdk>
-						<platform>L</platform>
+						<platform>21</platform>
 					</sdk>
 					<deleteConflictingFiles>true</deleteConflictingFiles>
 					<zipalign>
