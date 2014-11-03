@@ -2,13 +2,15 @@ package us.nineworlds.serenity.core.services;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.RecommendationBuilder;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -24,11 +26,14 @@ import android.util.Log;
 public class RecommendAsyncTask extends AsyncTask {
 	private final VideoContentInfo video;
 	private final Context context;
-	private final PlexappFactory factory = SerenityApplication.getPlexFactory();
+
+	@Inject
+	protected PlexappFactory factory;
 
 	public RecommendAsyncTask(VideoContentInfo video, Context context) {
 		this.video = video;
 		this.context = context;
+		SerenityObjectGraph.getInstance().inject(this);
 	}
 
 	@Override

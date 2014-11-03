@@ -23,10 +23,14 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
 import android.app.Activity;
 import android.os.Handler;
 import android.view.View;
@@ -44,7 +48,8 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  * @author dcarver
  *
  */
-public class TVShowGridOnItemSelectedListener implements OnItemSelectedListener {
+public class TVShowGridOnItemSelectedListener extends BaseInjector implements
+		OnItemSelectedListener {
 
 	private final Activity context;
 	private final ImageLoader imageLoader;
@@ -54,13 +59,16 @@ public class TVShowGridOnItemSelectedListener implements OnItemSelectedListener 
 	private final Handler handler = new Handler();
 	private Runnable runnable;
 
-	/**
-	 *
-	 */
+	@Inject
+	SerenityImageLoader serenityImageLoader;
+
+	@Inject
+	PlexappFactory factory;
+
 	public TVShowGridOnItemSelectedListener(View bgv, Activity activity) {
 		context = activity;
 
-		imageLoader = SerenityApplication.getImageLoader();
+		imageLoader = serenityImageLoader.getImageLoader();
 
 	}
 
@@ -109,13 +117,13 @@ public class TVShowGridOnItemSelectedListener implements OnItemSelectedListener 
 	private void changeBackgroundImage(View v) {
 
 		View fanArt = context.findViewById(R.id.fanArt);
-		String transcodingURL = SerenityApplication.getPlexFactory()
-				.getImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+		String transcodingURL = factory.getImageURL(
+				videoInfo.getBackgroundURL(), 1280, 720);
 
 		imageLoader
-				.loadImage(transcodingURL, bgImageSize,
-						new SerenityBackgroundLoaderListener(fanArt,
-								R.drawable.tvshows));
+		.loadImage(transcodingURL, bgImageSize,
+				new SerenityBackgroundLoaderListener(fanArt,
+						R.drawable.tvshows));
 	}
 
 	@Override

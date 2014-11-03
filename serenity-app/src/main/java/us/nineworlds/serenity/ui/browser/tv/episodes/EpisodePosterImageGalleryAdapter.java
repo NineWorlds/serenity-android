@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,10 +23,8 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -45,9 +43,9 @@ import com.android.volley.VolleyError;
 
 /**
  * Implementation of the Poster Image Gallery class for TV Shows.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class EpisodePosterImageGalleryAdapter extends
 		AbstractPosterImageGalleryAdapter {
@@ -76,7 +74,7 @@ public class EpisodePosterImageGalleryAdapter extends
 
 		shrinkPosterAnimation(mpiv, false);
 
-		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
+		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
 
 		setWatchedStatus(galleryCellView, pi);
 
@@ -92,11 +90,7 @@ public class EpisodePosterImageGalleryAdapter extends
 		retrieveEpisodes();
 	}
 
-	/**
-	 * 
-	 */
 	public void retrieveEpisodes() {
-		final PlexappFactory factory = SerenityApplication.getPlexFactory();
 		String url = factory.getEpisodesURL(key);
 
 		VolleyUtils.volleyXmlGetRequest(url,

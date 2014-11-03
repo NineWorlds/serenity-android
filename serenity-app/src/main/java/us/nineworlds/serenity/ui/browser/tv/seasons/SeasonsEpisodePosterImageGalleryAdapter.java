@@ -25,10 +25,11 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.TrailersYouTubeSearch;
 import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -43,7 +44,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -64,17 +64,21 @@ import com.jess.ui.TwoWayAbsListView;
  *
  */
 public class SeasonsEpisodePosterImageGalleryAdapter
-extends
-us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
+		extends
+		us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
 
 	private static SeasonsEpisodePosterImageGalleryAdapter notifyAdapter;
 	private DBMetaDataSource datasource;
-	private final SharedPreferences prefs;
+
+	@Inject
+	protected SharedPreferences prefs;
+
+	@Inject
+	PlexappFactory plexFactory;
 
 	public SeasonsEpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
 		notifyAdapter = this;
-		prefs = PreferenceManager.getDefaultSharedPreferences(c);
 	}
 
 	@Override
@@ -143,10 +147,6 @@ us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
 
 	}
 
-	/**
-	 * @param galleryCellView
-	 * @param pi
-	 */
 	protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
 		checkDataBaseForTrailer(pi);
 
@@ -176,8 +176,7 @@ us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
 	}
 
 	public void fetchSubtitle(VideoContentInfo mpi, View view) {
-		PlexappFactory factory = SerenityApplication.getPlexFactory();
-		String url = factory.getMovieMetadataURL("/library/metadata/"
+		String url = plexFactory.getMovieMetadataURL("/library/metadata/"
 				+ mpi.id());
 		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(
 				Request.Method.GET, url, MediaContainer.class,
@@ -193,9 +192,6 @@ us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
 
 	}
 
-	/**
-	 * @param pi
-	 */
 	protected void checkDataBaseForTrailer(VideoContentInfo pi) {
 		datasource = new DBMetaDataSource(context);
 		datasource.open();
@@ -219,11 +215,6 @@ us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
 
 	private static class EpisodeHandler extends Handler {
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see android.os.Handler#handleMessage(android.os.Message)
-		 */
 		@Override
 		public void handleMessage(Message msg) {
 			posterList = (List<VideoContentInfo>) msg.obj;

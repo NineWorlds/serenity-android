@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -26,10 +26,13 @@ package us.nineworlds.serenity.ui.browser.music.tracks;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
 import us.nineworlds.serenity.core.services.MusicTrackRetrievalIntentService;
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -48,9 +51,9 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class TracksAdapter extends ArrayAdapter<AudioTrackContentInfo> {
 
@@ -62,12 +65,16 @@ public class TracksAdapter extends ArrayAdapter<AudioTrackContentInfo> {
 	private static Activity context;
 	private final String key;
 
+	@Inject
+	protected SerenityImageLoader serenityImageLoader;
+
 	public TracksAdapter(Activity context, String key) {
 		super(context, R.layout.track_listview_layout, R.id.trackTitle);
+		SerenityObjectGraph.getInstance().inject(this);
 		TracksAdapter.context = context;
 		this.key = key;
 		notifyAdapter = this;
-		imageLoader = SerenityApplication.getImageLoader();
+		imageLoader = serenityImageLoader.getImageLoader();
 		posterList = new ArrayList<AudioTrackContentInfo>();
 		addAll(posterList);
 		fetchDataFromService();
@@ -113,10 +120,10 @@ public class TracksAdapter extends ArrayAdapter<AudioTrackContentInfo> {
 			ImageView imageView = (ImageView) context
 					.findViewById(R.id.musicAlbumImage);
 			if (posterList != null && !posterList.isEmpty()) {
-				ImageLoader imageLoader = SerenityApplication.getImageLoader();
+				ImageLoader imageLoader = serenityImageLoader.getImageLoader();
 				if (posterList.get(0).getImageURL() != null
 						&& posterList.get(0).getImageURL().length() > 0) {
-					SerenityApplication.displayImage(posterList.get(0)
+					serenityImageLoader.displayImage(posterList.get(0)
 							.getImageURL(), imageView);
 				} else {
 					imageView.setImageResource(R.drawable.default_music);

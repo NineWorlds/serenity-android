@@ -24,13 +24,19 @@
 package us.nineworlds.serenity.ui.listeners;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.handlers.DownloadHandler;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
@@ -44,7 +50,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -67,12 +72,22 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
  * @author dcarver
  *
  */
-public class AbstractVideoOnItemLongClickListener {
+public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 
 	protected Dialog dialog;
 	protected Activity context;
 	protected VideoContentInfo info;
 	protected ImageView vciv;
+
+	@Inject
+	AndroidHelper androidHelper;
+
+	@Inject
+	@ForVideoQueue
+	LinkedList<VideoContentInfo> videoQueue;
+
+	@Inject
+	SharedPreferences prefs;
 
 	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
 			int position, long arg3) {
@@ -149,12 +164,12 @@ public class AbstractVideoOnItemLongClickListener {
 
 		if (info.hasTrailer()
 				&& YouTubeInitializationResult.SUCCESS
-				.equals(YouTubeApiServiceUtil
-						.isYouTubeApiServiceAvailable(context))) {
+						.equals(YouTubeApiServiceUtil
+								.isYouTubeApiServiceAvailable(context))) {
 			options.add(createMenuItemPlayTrailer());
 		}
 
-		if (!SerenityApplication.isGoogleTV(context) && hasSupportedCaster()) {
+		if (!androidHelper.isGoogleTV(context) && hasSupportedCaster()) {
 			options.add(createMenuItemFling());
 		}
 		return options;
@@ -232,7 +247,7 @@ public class AbstractVideoOnItemLongClickListener {
 	protected void performWatchedToggle() {
 		View posterLayout = (View) vciv.getParent();
 		posterLayout.findViewById(R.id.posterInprogressIndicator)
-		.setVisibility(View.INVISIBLE);
+				.setVisibility(View.INVISIBLE);
 
 		toggleGraphicIndicators(posterLayout);
 		info.toggleWatchStatus();
@@ -293,26 +308,24 @@ public class AbstractVideoOnItemLongClickListener {
 			final SenderAppAdapter adapter = new SenderAppAdapter(context);
 
 			new AlertDialog.Builder(context)
-			.setTitle(R.string.cast_fling_with_)
-			.setCancelable(true)
-			.setSingleChoiceItems(adapter, -1,
-					new DialogInterface.OnClickListener() {
+					.setTitle(R.string.cast_fling_with_)
+					.setCancelable(true)
+					.setSingleChoiceItems(adapter, -1,
+							new DialogInterface.OnClickListener() {
 
-				@Override
-				public void onClick(DialogInterface dialog,
-						int which) {
-					adapter.respondToClick(which, "", body);
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									adapter.respondToClick(which, "", body);
 
-					dialog.dismiss();
+									dialog.dismiss();
 
-				}
-			}).show();
+								}
+							}).show();
 		}
 	}
 
 	protected void performAddToQueue() {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
 		boolean extplayer = prefs.getBoolean("external_player", false);
 		boolean extplayerVideoQueue = prefs.getBoolean(
 				"external_player_continuous_playback", false);
@@ -324,18 +337,11 @@ public class AbstractVideoOnItemLongClickListener {
 			return;
 		}
 
-		SerenityApplication.getVideoPlaybackQueue().add(info);
+		videoQueue.add(info);
 	}
 
 	protected class DialogOnItemSelected implements OnItemClickListener {
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see
-		 * android.widget.AdapterView.OnItemClickListener#onItemClick(android
-		 * .widget.AdapterView, android.view.View, int, long)
-		 */
 		@Override
 		public void onItemClick(android.widget.AdapterView<?> arg0, View v,
 				int position, long arg3) {
@@ -389,7 +395,7 @@ public class AbstractVideoOnItemLongClickListener {
 			Toast.makeText(
 					context,
 					context.getString(R.string.starting_download_of_)
-					+ info.getTitle(), Toast.LENGTH_LONG).show();
+							+ info.getTitle(), Toast.LENGTH_LONG).show();
 		} catch (Exception ex) {
 			Log.e(getClass().getName(), "Unable to download " + info.getTitle()
 					+ "." + info.getContainer());
@@ -405,7 +411,7 @@ public class AbstractVideoOnItemLongClickListener {
 						Toast.makeText(
 								context,
 								context.getString(R.string.chosen_directory_)
-								+ chosenDir, Toast.LENGTH_LONG).show();
+										+ chosenDir, Toast.LENGTH_LONG).show();
 						startDownload(chosenDir);
 					}
 				});

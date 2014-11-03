@@ -24,12 +24,16 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -53,16 +57,18 @@ import com.jess.ui.TwoWayGridView;
  * @author dcarver
  *
  */
-public class SeasonOnItemLongClickListener implements OnItemLongClickListener {
+public class SeasonOnItemLongClickListener extends BaseInjector implements
+		OnItemLongClickListener {
 
 	protected Dialog dialog;
 	protected Activity context;
 	protected ImageView vciv;
 	protected SeriesContentInfo info;
 
-	/**
-	 *
-	 */
+	@Inject
+	@ForVideoQueue
+	protected LinkedList<VideoContentInfo> videoQueue;
+
 	public SeasonOnItemLongClickListener(Activity context) {
 		this.context = context;
 	}
@@ -128,11 +134,11 @@ public class SeasonOnItemLongClickListener implements OnItemLongClickListener {
 			SeasonsEpisodePosterImageGalleryAdapter adapter = (SeasonsEpisodePosterImageGalleryAdapter) gridView
 					.getAdapter();
 			List<VideoContentInfo> episodes = adapter.getItems();
-			SerenityApplication.getVideoPlaybackQueue().addAll(episodes);
+			videoQueue.addAll(episodes);
 			Toast.makeText(
 					context,
 					adapter.getCount()
-							+ " videos have been added to the queue.",
+					+ " videos have been added to the queue.",
 					Toast.LENGTH_LONG).show();
 			View v = context.findViewById(R.id.tvShowSeasonImageGallery);
 			if (v != null) {
@@ -145,7 +151,7 @@ public class SeasonOnItemLongClickListener implements OnItemLongClickListener {
 
 		/*
 		 * (non-Javadoc)
-		 *
+		 * 
 		 * @see
 		 * android.widget.AdapterView.OnItemClickListener#onItemClick(android
 		 * .widget.AdapterView, android.view.View, int, long)

@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -26,10 +26,13 @@ package us.nineworlds.serenity.ui.browser.music.albums;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.impl.MusicAlbumContentInfo;
 import us.nineworlds.serenity.core.services.MusicAlbumRetrievalIntentService;
+import us.nineworlds.serenity.injection.InjectingBaseAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.MusicAlbumImageView;
 import android.app.Activity;
@@ -40,18 +43,17 @@ import android.os.Message;
 import android.os.Messenger;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.jess.ui.TwoWayAbsListView;
 import com.jess.ui.TwoWayGridView;
 
 /**
- * 
+ *
  * @author dcarver
- * 
+ *
  */
-public class MusicAlbumsCoverAdapter extends BaseAdapter {
+public class MusicAlbumsCoverAdapter extends InjectingBaseAdapter {
 
 	protected static MusicAlbumsCoverAdapter notifyAdapter;
 	protected static ProgressDialog pd;
@@ -60,7 +62,11 @@ public class MusicAlbumsCoverAdapter extends BaseAdapter {
 	private static Activity context;
 	private final String key;
 
+	@Inject
+	protected SerenityImageLoader serenityImageLoader;
+
 	public MusicAlbumsCoverAdapter(Activity context, String key) {
+		super();
 		notifyAdapter = this;
 		MusicAlbumsCoverAdapter.context = context;
 		this.key = key;
@@ -79,8 +85,8 @@ public class MusicAlbumsCoverAdapter extends BaseAdapter {
 		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
 		if (pi.getImageURL() != null && pi.getImageURL().length() > 0) {
-			SerenityApplication.displayImage(pi.getImageURL(), mpiv,
-					SerenityApplication.getMusicOptions());
+			serenityImageLoader.displayImage(pi.getImageURL(), mpiv,
+					serenityImageLoader.getMusicOptions());
 		} else {
 			mpiv.setImageResource(R.drawable.default_music);
 		}

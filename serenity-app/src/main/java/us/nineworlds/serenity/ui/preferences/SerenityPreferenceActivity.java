@@ -32,10 +32,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.Server;
+import us.nineworlds.serenity.injection.ForMediaServers;
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.activity.OverscanSetupActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -54,9 +57,14 @@ import android.preference.PreferenceActivity;
 public class SerenityPreferenceActivity extends PreferenceActivity implements
 Preference.OnPreferenceClickListener {
 
+	@Inject
+	@ForMediaServers
+	ConcurrentHashMap<String, Server> mediaServers;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SerenityObjectGraph.getInstance().inject(this);
 		addPreferencesFromResource(R.xml.preferences);
 		findPreference("overscan_setup").setOnPreferenceClickListener(this);
 	}
@@ -94,22 +102,20 @@ Preference.OnPreferenceClickListener {
 	 */
 	protected void populateAvailablePlexMediaServers() {
 		ListPreference discoveredServers = (ListPreference) findPreference("discoveredServer");
-		ConcurrentHashMap<String, Server> plexMediaServers = SerenityApplication
-				.getPlexMediaServers();
-		if (plexMediaServers.isEmpty()) {
+		if (mediaServers.isEmpty()) {
 			discoveredServers.setEnabled(false);
 			return;
 		}
 
 		discoveredServers.setEnabled(true);
-		String entries[] = new String[plexMediaServers.size()];
-		String values[] = new String[plexMediaServers.size()];
+		String entries[] = new String[mediaServers.size()];
+		String values[] = new String[mediaServers.size()];
 
-		plexMediaServers.keySet().toArray(entries);
+		mediaServers.keySet().toArray(entries);
 		discoveredServers.setEntries(entries);
 
 		ArrayList<String> ipAddresses = new ArrayList<String>();
-		Iterator<Map.Entry<String, Server>> entIt = plexMediaServers.entrySet()
+		Iterator<Map.Entry<String, Server>> entIt = mediaServers.entrySet()
 				.iterator();
 		while (entIt.hasNext()) {
 			Map.Entry<String, Server> servers = entIt.next();

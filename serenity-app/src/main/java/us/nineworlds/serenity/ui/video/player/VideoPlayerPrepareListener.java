@@ -25,9 +25,15 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
+import java.util.LinkedList;
+
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -50,7 +56,8 @@ import android.widget.RelativeLayout;
  * @author dcarver
  *
  */
-public class VideoPlayerPrepareListener implements OnPreparedListener {
+public class VideoPlayerPrepareListener extends BaseInjector implements
+		OnPreparedListener {
 
 	private final Context context;
 	private final SurfaceView surfaceView;
@@ -61,7 +68,13 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 	private final boolean autoResume;
 	private final Handler progressReportingHandler;
 	private final Runnable progressRunnable;
-	private SharedPreferences preferences;
+
+	@Inject
+	protected SharedPreferences preferences;
+
+	@Inject
+	@ForVideoQueue
+	protected LinkedList<VideoContentInfo> videoQueue;
 
 	public VideoPlayerPrepareListener(Context c, MediaPlayer mp,
 			MediaController con, SurfaceView v, int resumeOffset,
@@ -80,15 +93,13 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 
 	@Override
 	public void onPrepared(MediaPlayer mp) {
-		preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
 		android.view.ViewGroup.LayoutParams lp = setupAspectRatio(surfaceView,
 				plexAspectRatio);
 		surfaceView.setLayoutParams(lp);
 		mediaController.setEnabled(true);
 
-		if (resumeOffset > 0
-				&& SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+		if (resumeOffset > 0 && videoQueue.isEmpty()) {
 			if (autoResume) {
 				if (!mediaPlayer.isPlaying()) {
 					mediaPlayer.start();
@@ -101,41 +112,41 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 
 				alertDialogBuilder.setTitle(R.string.resume_video);
 				alertDialogBuilder
-						.setMessage(
-								context.getResources().getText(
-										R.string.resume_the_video_from_)
-										+ TimeUtil.formatDuration(resumeOffset)
-										+ context.getResources().getText(
-												R.string._or_restart_))
-						.setCancelable(false)
-						.setPositiveButton(R.string.resume,
-								new DialogInterface.OnClickListener() {
+				.setMessage(
+						context.getResources().getText(
+								R.string.resume_the_video_from_)
+								+ TimeUtil.formatDuration(resumeOffset)
+								+ context.getResources().getText(
+										R.string._or_restart_))
+										.setCancelable(false)
+										.setPositiveButton(R.string.resume,
+												new DialogInterface.OnClickListener() {
 
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										if (!mediaPlayer.isPlaying()) {
-											mediaPlayer.start();
-										}
-										mediaPlayer.seekTo(resumeOffset);
-										setMetaData();
-									}
-								})
-						.setNegativeButton(R.string.restart,
-								new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialog,
+													int which) {
+												if (!mediaPlayer.isPlaying()) {
+													mediaPlayer.start();
+												}
+												mediaPlayer.seekTo(resumeOffset);
+												setMetaData();
+											}
+										})
+										.setNegativeButton(R.string.restart,
+												new DialogInterface.OnClickListener() {
 
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										mediaPlayer.start();
-										setMetaData();
-									}
-								});
+											@Override
+											public void onClick(DialogInterface dialog,
+													int which) {
+												mediaPlayer.start();
+												setMetaData();
+											}
+										});
 
 				alertDialogBuilder.create();
 				AlertDialog dialog = alertDialogBuilder.show();
 				dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-						.requestFocusFromTouch();
+				.requestFocusFromTouch();
 				return;
 			}
 		} else {
@@ -144,9 +155,6 @@ public class VideoPlayerPrepareListener implements OnPreparedListener {
 		}
 	}
 
-	/**
-	 *
-	 */
 	protected void setMetaData() {
 		boolean showOSD = preferences.getBoolean("internal_player_osd", true);
 		int osdDelayTime = Integer.parseInt(preferences.getString(

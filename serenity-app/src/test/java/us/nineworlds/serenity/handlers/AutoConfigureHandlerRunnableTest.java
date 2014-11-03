@@ -27,6 +27,8 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.inject.Inject;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +38,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowToast;
 
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.impl.GDMServer;
 import android.app.Activity;
@@ -47,6 +48,9 @@ public class AutoConfigureHandlerRunnableTest {
 
 	AutoConfigureHandlerRunnable handler;
 
+	@Inject
+	ConcurrentHashMap<String, Server> mediaServer;
+
 	@Before
 	public void setUp() {
 		Activity activity = Robolectric.buildActivity(Activity.class).create()
@@ -56,7 +60,7 @@ public class AutoConfigureHandlerRunnableTest {
 
 	@After
 	public void tearDown() {
-		SerenityApplication.getPlexMediaServers().clear();
+		mediaServer.clear();
 	}
 
 	@Test
@@ -72,9 +76,7 @@ public class AutoConfigureHandlerRunnableTest {
 		server.setHostName("test");
 		server.setIPAddress("10.0.0.1");
 
-		ConcurrentHashMap<String, Server> servers = SerenityApplication
-				.getPlexMediaServers();
-		servers.put("testserver", server);
+		mediaServer.put("testserver", server);
 
 		handler.run();
 		assertThat(ShadowToast.getTextOfLatestToast()).isNotNull();

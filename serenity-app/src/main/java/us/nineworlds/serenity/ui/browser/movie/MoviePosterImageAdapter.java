@@ -23,10 +23,8 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.TrailersYouTubeSearch;
 import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -56,11 +54,6 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.jess.ui.TwoWayAbsListView;
 import com.jess.ui.TwoWayGridView;
 
-/**
- *
- * @author dcarver
- *
- */
 public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 	protected static AbstractPosterImageGalleryAdapter notifyAdapter;
@@ -128,7 +121,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		}
 
 		shrinkPosterAnimation(mpiv, movieContext.isGridViewActive());
-		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
+		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
 
 		setWatchedStatus(galleryCellView, pi);
 
@@ -202,7 +195,6 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 	}
 
 	public void fetchSubtitle(VideoContentInfo mpi, View view) {
-		PlexappFactory factory = SerenityApplication.getPlexFactory();
 		String url = factory.getMovieMetadataURL("/library/metadata/"
 				+ mpi.id());
 		VolleyUtils.volleyXmlGetRequest(url,
@@ -216,7 +208,6 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		context.setSupportProgressBarVisibility(false);
 		context.setSupportProgressBarIndeterminateVisibility(true);
 
-		final PlexappFactory factory = SerenityApplication.getPlexFactory();
 		String url = factory.getSectionsURL(key, category);
 
 		VolleyUtils.volleyXmlGetRequest(url, new MoviePosterResponseListener(),
@@ -232,10 +223,6 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		}
 	}
 
-	/**
-	 * @author dcarver
-	 *
-	 */
 	private class MoviePosterResponseListener implements
 			Response.Listener<MediaContainer> {
 

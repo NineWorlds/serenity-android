@@ -25,10 +25,13 @@ package us.nineworlds.serenity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
+import us.nineworlds.serenity.injection.InjectingBaseAdapter;
 import us.nineworlds.serenity.ui.views.MainMenuTextView;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
@@ -41,7 +44,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.Toast;
 
@@ -49,7 +51,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-public class MainMenuTextViewAdapter extends BaseAdapter {
+public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
+
+	@Inject
+	PlexappFactory plexFactory;
 
 	/** The parent context */
 	private final Context myContext;
@@ -59,6 +64,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 
 	/** Simple Constructor saving the 'parent' context. */
 	public MainMenuTextViewAdapter(Context c) {
+		super();
 		myContext = c;
 	}
 
@@ -69,8 +75,8 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 
 	protected void fetchData() {
 		queue = VolleyUtils.getRequestQueueInstance(myContext);
-		PlexappFactory factory = SerenityApplication.getPlexFactory();
-		String url = factory.getSectionsURL();
+
+		String url = plexFactory.getSectionsURL();
 		VolleyUtils.volleyXmlGetRequest(url,
 				new MainMenuVolleyResponseListener(),
 				new MainMenuResponseErrorListener());
@@ -178,7 +184,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	}
 
 	private class MainMenuVolleyResponseListener implements
-			Response.Listener<MediaContainer> {
+	Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer mc) {
@@ -190,7 +196,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	}
 
 	private class MainMenuResponseErrorListener extends
-			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
+	DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {
@@ -198,15 +204,13 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 
 			MenuMediaContainer mc = new MenuMediaContainer(myContext);
 
-			PlexappFactory factory = SerenityApplication.getPlexFactory();
-
 			menuItems.add(mc.createSettingsMenu());
 			menuItems.add(mc.createOptionsMenu());
 			Toast.makeText(
 					myContext,
 					"Unable to connect to Plex Library at "
-							+ factory.getSectionsURL(), Toast.LENGTH_LONG)
-					.show();
+							+ plexFactory.getSectionsURL(), Toast.LENGTH_LONG)
+							.show();
 			notifyDataSetChanged();
 
 			Activity c = (Activity) myContext;

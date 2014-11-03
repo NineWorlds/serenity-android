@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,7 +23,10 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
@@ -34,17 +37,21 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class TVShowMenuDrawerOnItemClickedListener implements
-		OnItemClickListener {
+public class TVShowMenuDrawerOnItemClickedListener extends BaseInjector
+implements OnItemClickListener {
 	private static final int GRID_VIEW = 0;
 	private static final int DETAIL_VIEW = 1;
 	private static final int PLAY_ALL_QUEUE = 2;
 	private final DrawerLayout menuDrawer;
 
+	@Inject
+	VideoPlayerIntentUtils vpUtils;
+
 	/**
-	 * 
+	 *
 	 */
 	public TVShowMenuDrawerOnItemClickedListener(DrawerLayout drawer) {
+		super();
 		menuDrawer = drawer;
 	}
 
@@ -80,11 +87,10 @@ public class TVShowMenuDrawerOnItemClickedListener implements
 					"android.hardware.touchscreen")) {
 				parent.setVisibility(View.INVISIBLE);
 			}
-			VideoPlayerIntentUtils.playAllFromQueue(activity);
+			vpUtils.playAllFromQueue(activity);
 			return;
 		}
 		menuDrawer.closeDrawers();
-		;
 		activity.recreate();
 	}
 

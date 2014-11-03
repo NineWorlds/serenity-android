@@ -26,10 +26,13 @@ package us.nineworlds.serenity.ui.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.InjectingBaseAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import android.content.Context;
@@ -41,7 +44,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.android.volley.RequestQueue;
@@ -56,14 +58,21 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * @author dcarver
  *
  */
-public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
+public abstract class AbstractPosterImageGalleryAdapter extends
+		InjectingBaseAdapter {
+
+	@Inject
+	protected SerenityImageLoader serenityImageLoader;
+
+	@Inject
+	protected PlexappFactory factory;
 
 	protected static List<VideoContentInfo> posterList = null;
 	protected ActionBarActivity context;
 	protected ImageLoader imageLoader;
 	protected static final int SIZE_HEIGHT = 400;
 	protected static final int SIZE_WIDTH = 200;
-	protected PlexappFactory factory;
+
 	protected Handler handler;
 	protected String key;
 	protected String category;
@@ -74,7 +83,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 		queue = VolleyUtils.getRequestQueueInstance(c);
 		context = (ActionBarActivity) c;
 		posterList = new ArrayList<VideoContentInfo>();
-		imageLoader = SerenityApplication.getImageLoader();
+		imageLoader = serenityImageLoader.getImageLoader();
 		this.key = key;
 		fetchDataFromService();
 	}
@@ -90,7 +99,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
 		shrink.setInterpolator(new LinearInterpolator());
 
-		imageLoader = SerenityApplication.getImageLoader();
+		imageLoader = serenityImageLoader.getImageLoader();
 		fetchDataFromService();
 	}
 
@@ -98,7 +107,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.widget.Adapter#getCount()
 	 */
 	@Override
@@ -109,7 +118,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.widget.Adapter#getItem(int)
 	 */
 	@Override
@@ -120,7 +129,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends BaseAdapter {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
 	@Override

@@ -27,9 +27,9 @@
 			<version>1.9.3</version>
 		</dependency>
 		<dependency>
-		  <groupId>com.google.android.gms</groupId>
-		  <artifactId>google-play-services</artifactId>
-		  <version>19.0.0</version>		
+			<groupId>com.google.android.gms</groupId>
+			<artifactId>google-play-services</artifactId>
+			<version>19.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.android</groupId>
@@ -144,6 +144,18 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.squareup.dagger</groupId>
+			<artifactId>dagger</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.dagger</groupId>
+			<artifactId>dagger-compiler</artifactId>
+			<version>1.2.2</version>
+			<optional>true</optional>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -244,6 +256,13 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+				<dependencies>   
+			        <dependency>   
+						<groupId>com.squareup.dagger</groupId>
+						<artifactId>dagger-compiler</artifactId>
+						<version>1.2.2</version>
+			        </dependency>   
+			    </dependencies> 
 			</plugin>
 		</plugins>
 	</build>
@@ -361,12 +380,12 @@
 									<goal>manifest-update</goal>
 								</goals>
 								<phase>process-resources</phase>
-                                <configuration>
-                                    <manifest>
-                                        <versionName>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${maven.build.timestamp}</versionName>
-                                        <versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
-                                    </manifest>
-                                </configuration>	
+								<configuration>
+									<manifest>
+										<versionName>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${maven.build.timestamp}</versionName>
+										<versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
+									</manifest>
+								</configuration>
 							</execution>
 						</executions>
 						<configuration>

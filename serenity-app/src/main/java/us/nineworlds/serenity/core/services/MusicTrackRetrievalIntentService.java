@@ -31,7 +31,6 @@ import us.nineworlds.plex.rest.model.impl.Media;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Part;
 import us.nineworlds.plex.rest.model.impl.Track;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,7 +46,7 @@ import android.util.Log;
  *
  */
 public class MusicTrackRetrievalIntentService extends
-		AbstractPlexRESTIntentService {
+AbstractPlexRESTIntentService {
 
 	private static final String MUSIC_RETRIEVAL_INTENT_SERVICE = "MusicTrackRetrievalIntentService";
 
@@ -92,7 +91,6 @@ public class MusicTrackRetrievalIntentService extends
 	protected void createPosters() {
 		MediaContainer mc = null;
 		try {
-			factory = SerenityApplication.getPlexFactory();
 			mc = retrieveVideos();
 		} catch (IOException ex) {
 			Log.e("AbstractPosterImageGalleryAdapter",

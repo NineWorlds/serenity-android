@@ -2,29 +2,34 @@ package us.nineworlds.serenity.volley;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
+import us.nineworlds.serenity.injection.BaseInjector;
 import android.content.Context;
 
 import com.android.volley.Response;
 
-public class LibraryResponseListener implements
-		Response.Listener<MediaContainer> {
+public class LibraryResponseListener extends BaseInjector implements
+Response.Listener<MediaContainer> {
 
 	Context context;
-	final PlexappFactory factory = SerenityApplication.getPlexFactory();
+
+	@Inject
+	PlexappFactory factory;
 
 	public LibraryResponseListener(Context context) {
+		super();
 		this.context = context;
 	}
 
 	@Override
 	public void onResponse(MediaContainer mc) {
 		List<MenuItem> menuItems = new MenuMediaContainer(mc, context)
-				.createMenuItems();
+		.createMenuItems();
 		if (menuItems.isEmpty()) {
 			return;
 		}

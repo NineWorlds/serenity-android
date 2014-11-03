@@ -23,11 +23,14 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -51,8 +54,8 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  * @author dcarver
  *
  */
-public class TVShowGalleryOnItemSelectedListener implements
-OnItemSelectedListener {
+public class TVShowGalleryOnItemSelectedListener extends BaseInjector implements
+		OnItemSelectedListener {
 
 	private final SerenityMultiViewVideoActivity context;
 	private final ImageLoader imageLoader;
@@ -60,14 +63,18 @@ OnItemSelectedListener {
 	private final ImageSize bgImageSize = new ImageSize(1280, 720);
 	private SeriesContentInfo info;
 
-	/**
-	 *
-	 */
+	@Inject
+	protected SerenityImageLoader serenityImageLoader;
+
+	@Inject
+	protected PlexappFactory factory;
+
 	public TVShowGalleryOnItemSelectedListener(View bgv,
 			SerenityMultiViewVideoActivity activity) {
+		super();
 		context = activity;
 
-		imageLoader = SerenityApplication.getImageLoader();
+		imageLoader = serenityImageLoader.getImageLoader();
 
 	}
 
@@ -127,11 +134,9 @@ OnItemSelectedListener {
 			studiov.setLayoutParams(sparams);
 			String studio = info.getStudio();
 			studio = fixStudio(studio);
-			PlexappFactory factory = SerenityApplication.getPlexFactory();
 			String studioUrl = factory.getMediaTagURL("studio", studio,
 					info.getMediaTagIdentifier());
-			SerenityApplication.getImageLoader().displayImage(studioUrl,
-					studiov);
+			imageLoader.displayImage(studioUrl, studiov);
 		} else {
 			studiov.setVisibility(View.GONE);
 		}
@@ -150,17 +155,11 @@ OnItemSelectedListener {
 		return studio;
 	}
 
-	/**
-	 *
-	 */
 	protected void createTitle() {
 		TextView title = (TextView) context.findViewById(R.id.tvBrowserTitle);
 		title.setText(info.getTitle());
 	}
 
-	/**
-	 *
-	 */
 	protected void createSummary() {
 		TextView summary = (TextView) context
 				.findViewById(R.id.tvShowSeriesSummary);
@@ -172,9 +171,6 @@ OnItemSelectedListener {
 		}
 	}
 
-	/**
-	 *
-	 */
 	protected void createRatings() {
 		RatingBar ratingBar = (RatingBar) context
 				.findViewById(R.id.tvRatingbar);
@@ -200,13 +196,13 @@ OnItemSelectedListener {
 
 		View fanArt = context.findViewById(R.id.fanArt);
 
-		String transcodingURL = SerenityApplication.getPlexFactory()
-				.getImageURL(mi.getBackgroundURL(), 1280, 720);
+		String transcodingURL = factory.getImageURL(mi.getBackgroundURL(),
+				1280, 720);
 
 		imageLoader
-		.loadImage(transcodingURL, bgImageSize,
-				new SerenityBackgroundLoaderListener(fanArt,
-						R.drawable.tvshows));
+				.loadImage(transcodingURL, bgImageSize,
+						new SerenityBackgroundLoaderListener(fanArt,
+								R.drawable.tvshows));
 
 		ImageView showImage = (ImageView) context
 				.findViewById(R.id.tvShowImage);
@@ -217,8 +213,8 @@ OnItemSelectedListener {
 		showImage.setMaxHeight(height);
 		showImage.setMaxWidth(width);
 		showImage
-		.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-		SerenityApplication.displayImage(mi.getThumbNailURL(), showImage);
+				.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+		serenityImageLoader.displayImage(mi.getThumbNailURL(), showImage);
 	}
 
 	@Override

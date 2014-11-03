@@ -23,16 +23,19 @@
 
 package us.nineworlds.serenity.ui.util;
 
+import java.util.LinkedList;
+
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.externalplayer.ExternalPlayer;
 import us.nineworlds.serenity.core.externalplayer.ExternalPlayerFactory;
 import us.nineworlds.serenity.core.externalplayer.MXPlayer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
@@ -45,12 +48,20 @@ public class ExternalPlayerResultHandler extends PlayerResultHandler {
 	int resultCode;
 	ExternalPlayer externalPlayer;
 
+	@Inject
+	protected VideoPlayerIntentUtils vpUtils;
+
+	@Inject
+	@ForVideoQueue
+	protected LinkedList<VideoContentInfo> videoQueue;
+
+	@Inject
+	protected SharedPreferences preferences;
+
 	public ExternalPlayerResultHandler(int resultCode, Intent data,
 			Activity activity, BaseAdapter adapter) {
 		super(data, adapter);
 		this.activity = activity;
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(activity);
 		externalPlayerValue = preferences.getString(
 				"serenity_external_player_filter", "default");
 		extPlayerVideoQueueEnabled = preferences.getBoolean(
@@ -78,7 +89,7 @@ public class ExternalPlayerResultHandler extends PlayerResultHandler {
 	}
 
 	private void playNextQueueEntry() {
-		if (SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+		if (videoQueue.isEmpty()) {
 			return;
 		}
 
@@ -101,10 +112,6 @@ public class ExternalPlayerResultHandler extends PlayerResultHandler {
 		externalPlayerPlayNext();
 	}
 
-	/**
-	 * @param mxPlayerCompleted
-	 * @return
-	 */
 	private boolean shouldUpdatePlaybackPosition(boolean mxPlayerCompleted) {
 		return !mxPlayerCompleted && externalPlayer.supportsPlaybackPosition()
 				&& data.hasExtra("position");
@@ -123,49 +130,28 @@ public class ExternalPlayerResultHandler extends PlayerResultHandler {
 		return false;
 	}
 
-	/**
-	 * @param data
-	 * @param mxplayerString
-	 * @return
-	 */
 	protected boolean hasMXPlayerCompletedNormally(Intent data) {
 		String mxplayerString = data.getStringExtra("end_by");
 		return "playback_completion".equals(mxplayerString);
 	}
 
-	/**
-	 * @param data
-	 * @return
-	 */
 	protected boolean notMXPlayer(Intent data) {
 		return !data.hasExtra("end_by");
 	}
 
-	/**
-	 * @param resultCode
-	 * @return
-	 */
 	protected boolean isVimuUserCancelResult(int resultCode) {
 		return resultCode == 0 || resultCode == 4;
 	}
 
-	/**
-	 *
-	 */
 	protected void showQueueNotEmptyMessage() {
 		Toast.makeText(activity,
 				R.string.there_are_still_videos_int_the_queue_,
 				Toast.LENGTH_LONG).show();
 	}
 
-	/**
-	 * @param mxPlayerResume
-	 */
 	protected void externalPlayerPlayNext() {
-		VideoContentInfo videoContentInfo = SerenityApplication
-				.getVideoPlaybackQueue().poll();
-		VideoPlayerIntentUtils.launchExternalPlayer(videoContentInfo, activity,
-				false);
+		VideoContentInfo videoContentInfo = videoQueue.poll();
+		vpUtils.launchExternalPlayer(videoContentInfo, activity, false);
 	}
 
 }

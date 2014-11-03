@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012-2013 David Carver
+ * Copyright (c) 2012-2014 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -25,37 +25,22 @@ package us.nineworlds.serenity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.config.IConfiguration;
-import us.nineworlds.serenity.core.ServerConfig;
-import us.nineworlds.serenity.core.imageloader.OKHttpImageLoader;
-import us.nineworlds.serenity.core.model.Server;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
+import javax.inject.Inject;
+
+import us.nineworlds.serenity.core.util.AndroidHelper;
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.injection.modules.AndroidModule;
 import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.FeatureInfo;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.os.Build;
 import android.preference.PreferenceManager;
-import android.widget.ImageView;
 
 import com.castillo.dd.PendingDownload;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.squareup.okhttp.OkHttpClient;
 
 /**
@@ -66,16 +51,11 @@ import com.squareup.okhttp.OkHttpClient;
  */
 public class SerenityApplication extends Application {
 
-	private static final String COM_GOOGLE_ANDROID_TV = "com.google.android.tv";
-	private static boolean enableTracking = true;
-	private static ImageLoader imageLoader;
-	private static DisplayImageOptions memoryCacheOnly;
-	private static DisplayImageOptions movieOptions;
-	private static DisplayImageOptions musicOptions;
-	private static List<PendingDownload> pendingDownloads;
-	protected static PlexappFactory plexFactory;
+	@Inject
+	AndroidHelper androidHelper;
 
-	private static ConcurrentHashMap<String, Server> plexmediaServers = new ConcurrentHashMap<String, Server>();
+	private static boolean enableTracking = true;
+	private static List<PendingDownload> pendingDownloads;
 
 	public static final int PROGRESS = 0xDEADBEEF;
 
@@ -91,8 +71,6 @@ public class SerenityApplication extends Application {
 
 	HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
 
-	private static LinkedList<VideoContentInfo> videoQueue = new LinkedList<VideoContentInfo>();
-
 	public static void disableTracking() {
 		enableTracking = false;
 	}
@@ -107,184 +85,43 @@ public class SerenityApplication extends Application {
 		return mTrackers.get(TrackerName.GLOBAL_TRACKER);
 	}
 
-	public static void displayImage(String imageUrl, ImageView view) {
-		displayImage(imageUrl, view, null);
-	}
-
-	public static void displayImage(String imageUrl, ImageView view,
-			DisplayImageOptions displayImageOptions) {
-		displayImage(imageUrl, view, displayImageOptions, null);
-	}
-
-	public static void displayImage(String imageUrl, ImageView view,
-			DisplayImageOptions displayImageOptions,
-			ImageLoadingListener imageLoaderListener) {
-		final ImageViewAware imageViewAware = new ImageViewAware(view);
-		imageLoader.displayImage(plexFactory.getImageURL(imageUrl,
-				imageViewAware.getWidth(), imageViewAware.getHeight()), view,
-				displayImageOptions, imageLoaderListener);
-	}
-
-	public static void displayImage(String imageUrl, ImageView view, int resId) {
-		final ImageViewAware imageViewAware = new ImageViewAware(view);
-		DisplayImageOptions options = new DisplayImageOptions.Builder()
-		.cacheInMemory(true).cacheOnDisk(true)
-		.bitmapConfig(Bitmap.Config.ARGB_8888)
-		.showImageForEmptyUri(resId).build();
-		imageLoader.displayImage(imageUrl, imageViewAware, options);
-	}
-
-	public static ImageLoader getImageLoader() {
-		return imageLoader;
-	}
-
-	public static DisplayImageOptions getMovieOptions() {
-		return movieOptions;
-	}
-
 	public static OkHttpClient getOkHttpClient() {
 		return okHttpClient;
-	}
-
-	public static DisplayImageOptions getMusicOptions() {
-		return musicOptions;
-	}
-
-	public static DisplayImageOptions getSycnOptions() {
-		return memoryCacheOnly;
 	}
 
 	public static List<PendingDownload> getPendingDownloads() {
 		return pendingDownloads;
 	}
 
-	public static PlexappFactory getPlexFactory() {
-		return plexFactory;
-	}
-
-	public static ConcurrentHashMap<String, Server> getPlexMediaServers() {
-		return plexmediaServers;
-	}
-
-	/**
-	 * Retrieves the video playback queue. Items will be added and removed from
-	 * the queue and used by the video player for playback of Episodes and
-	 * Movies.
-	 *
-	 * When an episode is finished playing it should be removed from the queue.
-	 *
-	 * This queue is thread safe.
-	 *
-	 * @return
-	 */
-	public static LinkedList<VideoContentInfo> getVideoPlaybackQueue() {
-		return videoQueue;
-	}
-
-	public static boolean isAndroidTV(Context context) {
-		final PackageManager pm = context.getPackageManager();
-
-		if (Build.MODEL.startsWith("AFT")
-				&& Build.MANUFACTURER.equals("Amazon")) {
-			return true;
-		}
-		return pm.hasSystemFeature("android.hardware.type.television");
-	}
-
-	public static boolean isLeanbackSupported(Context context) {
-		final PackageManager pm = context.getPackageManager();
-		return pm.hasSystemFeature("android.software.leanback");
-	}
-
-	public static boolean isGoogleTV(Context context) {
-		final PackageManager pm = context.getPackageManager();
-		FeatureInfo[] features = pm.getSystemAvailableFeatures();
-		return pm.hasSystemFeature(COM_GOOGLE_ANDROID_TV);
-	}
-
-	/**
-	 * Checks if the app is running on OUYA.
-	 *
-	 * @return true if the app is running on OUYA
-	 */
-	public static boolean isRunningOnOUYA() {
-		if ("OUYA".equals(Build.MANUFACTURER)) {
-			return true;
-		}
-		return false;
-	}
-
 	public static boolean isTrackingEnabled() {
 		return enableTracking;
 	}
 
-	/**
-	 *
-	 */
 	public SerenityApplication() {
 		pendingDownloads = new ArrayList<PendingDownload>();
 
 	}
 
-	protected void configureImageLoader() {
-		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-		.cacheInMemory(true).cacheOnDisk(true)
-		.bitmapConfig(Bitmap.Config.ARGB_8888)
-		.resetViewBeforeLoading(true)
-		.showImageForEmptyUri(R.drawable.default_video_cover).build();
-
-		setStaticImageOptions();
-
-		ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(
-				this)
-		.threadPoolSize(5)
-		.tasksProcessingOrder(QueueProcessingType.FIFO)
-		.imageDownloader(
-				new OKHttpImageLoader(this, SerenityApplication
-								.getOkHttpClient()))
-				.defaultDisplayImageOptions(defaultOptions).build();
-
-		imageLoader = ImageLoader.getInstance();
-		imageLoader.init(imageLoaderconfig);
-	}
-
-	private void setStaticImageOptions() {
-		musicOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
-				.cacheOnDisk(true).bitmapConfig(Bitmap.Config.ARGB_8888)
-				.showImageForEmptyUri(R.drawable.default_music).build();
-
-		movieOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
-				.cacheOnDisk(true).bitmapConfig(Bitmap.Config.ARGB_8888)
-				.resetViewBeforeLoading(true).build();
-
-		memoryCacheOnly = new DisplayImageOptions.Builder().cacheInMemory(true)
-				.cacheOnDisk(false).bitmapConfig(Bitmap.Config.ARGB_8888)
-				.resetViewBeforeLoading(true).build();
-	}
-
-	/**
-	 *
-	 */
-	public void init() {
-		configureImageLoader();
-		initializePlexappFactory();
+	private void init() {
+		inject();
 		if (enableTracking) {
 			installAnalytics();
 		}
 		sendStartedApplicationEvent();
 	}
 
-	/**
-	 *
-	 */
-	protected void initializePlexappFactory() {
-		IConfiguration config = ServerConfig.getInstance(this);
-		plexFactory = PlexappFactory.getInstance(config);
+	protected void inject() {
+		SerenityObjectGraph objectGraph = SerenityObjectGraph.getInstance();
+		objectGraph.createObjectGraph(createModules());
+		objectGraph.inject(this);
 	}
 
-	/**
-	 *
-	 */
+	protected List<Object> createModules() {
+		List<Object> modules = new ArrayList<Object>();
+		modules.add(new AndroidModule(this));
+		return modules;
+	}
+
 	protected void installAnalytics() {
 		Tracker tracker = getTracker();
 		Thread.UncaughtExceptionHandler uncaughtExceptionHandler = Thread
@@ -300,11 +137,12 @@ public class SerenityApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		init();
+
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = prefs.edit();
-		if (isGoogleTV(this) || isAndroidTV(this)) {
+		if (androidHelper.isGoogleTV(this) || androidHelper.isAndroidTV(this)) {
 			editor.putBoolean("serenity_tv_mode", true);
 			editor.apply();
 		}

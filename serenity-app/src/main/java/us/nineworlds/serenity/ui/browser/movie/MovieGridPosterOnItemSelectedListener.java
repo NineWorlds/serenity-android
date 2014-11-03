@@ -23,10 +23,14 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
 import android.app.Activity;
 import android.view.View;
 import android.widget.Spinner;
@@ -43,19 +47,28 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  * @author dcarver
  *
  */
-public class MovieGridPosterOnItemSelectedListener implements
-		OnItemSelectedListener {
+public class MovieGridPosterOnItemSelectedListener extends BaseInjector
+implements OnItemSelectedListener {
 
 	private static Activity context;
 	private View previous;
 	private TwoWayAdapterView<?> adapter;
-	private final ImageLoader imageLoader = SerenityApplication
-			.getImageLoader();
+
+	@Inject
+	SerenityImageLoader serenityImageLoader;
+
+	@Inject
+	PlexappFactory plexFactory;
+
+	private final ImageLoader imageLoader;
 
 	/**
 	 *
 	 */
 	public MovieGridPosterOnItemSelectedListener(View bgv, Activity activity) {
+		super();
+
+		imageLoader = serenityImageLoader.getImageLoader();
 		context = activity;
 	}
 
@@ -77,11 +90,6 @@ public class MovieGridPosterOnItemSelectedListener implements
 		createMovieMetaData();
 	}
 
-	/**
-	 * Change the background image of the activity.
-	 *
-	 * @param v
-	 */
 	private void changeBackgroundImage() {
 		VideoContentInfo videoInfo = (VideoContentInfo) adapter
 				.getSelectedItem();
@@ -91,12 +99,12 @@ public class MovieGridPosterOnItemSelectedListener implements
 		}
 
 		View fanArt = context.findViewById(R.id.fanArt);
-		String transcodingURL = SerenityApplication.getPlexFactory()
-				.getImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+		String transcodingURL = plexFactory.getImageURL(
+				videoInfo.getBackgroundURL(), 1280, 720);
 		imageLoader
-				.loadImage(transcodingURL, new ImageSize(1280, 720),
-						new SerenityBackgroundLoaderListener(fanArt,
-								R.drawable.movies));
+		.loadImage(transcodingURL, new ImageSize(1280, 720),
+				new SerenityBackgroundLoaderListener(fanArt,
+						R.drawable.movies));
 
 	}
 

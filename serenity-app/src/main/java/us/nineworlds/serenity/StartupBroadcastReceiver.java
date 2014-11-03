@@ -23,10 +23,13 @@
 
 package us.nineworlds.serenity;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
+import us.nineworlds.serenity.core.util.AndroidHelper;
+import us.nineworlds.serenity.injection.InjectingBroadcastReceiver;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,7 +44,10 @@ import android.preference.PreferenceManager;
  * @author dcarver
  *
  */
-public class StartupBroadcastReceiver extends BroadcastReceiver {
+public class StartupBroadcastReceiver extends InjectingBroadcastReceiver {
+
+	@Inject
+	AndroidHelper androidHelper;
 
 	private static final int INITIAL_DELAY = 5000;
 
@@ -82,7 +88,7 @@ public class StartupBroadcastReceiver extends BroadcastReceiver {
 			return;
 		}
 
-		if (!SerenityApplication.isLeanbackSupported(context)) {
+		if (!androidHelper.isLeanbackSupported(context)) {
 			return;
 		}
 

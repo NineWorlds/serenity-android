@@ -23,10 +23,14 @@
 
 package us.nineworlds.serenity.ui.browser.music;
 
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.views.SerenityMusicImageView;
 import android.app.Activity;
 import android.view.View;
@@ -43,8 +47,8 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  * @author dcarver
  *
  */
-public class MusicPosterGalleryOnItemSelectedListener implements
-OnItemSelectedListener {
+public class MusicPosterGalleryOnItemSelectedListener extends BaseInjector
+		implements OnItemSelectedListener {
 
 	private final View bgLayout;
 	private final Activity context;
@@ -52,14 +56,18 @@ OnItemSelectedListener {
 	private View previous;
 	private final ImageSize bgImageSize = new ImageSize(1280, 720);
 
-	/**
-	 *
-	 */
+	@Inject
+	SerenityImageLoader serenityImageLoader;
+
+	@Inject
+	PlexappFactory plexFactory;
+
 	public MusicPosterGalleryOnItemSelectedListener(Activity activity) {
+		super();
 		bgLayout = activity.findViewById(R.id.musicArtistBrowserLayout);
 		context = activity;
 
-		imageLoader = SerenityApplication.getImageLoader();
+		imageLoader = serenityImageLoader.getImageLoader();
 
 	}
 
@@ -113,8 +121,8 @@ OnItemSelectedListener {
 		SerenityMusicImageView mpiv = (SerenityMusicImageView) v;
 		MusicArtistContentInfo mi = mpiv.getPosterInfo();
 
-		String transcodingURL = SerenityApplication.getPlexFactory()
-				.getImageURL(mi.getBackgroundURL(), 1280, 720);
+		String transcodingURL = plexFactory.getImageURL(mi.getBackgroundURL(),
+				1280, 720);
 
 		imageLoader
 				.loadImage(transcodingURL, bgImageSize,

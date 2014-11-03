@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,6 +23,10 @@
 
 package us.nineworlds.serenity;
 
+import javax.inject.Inject;
+
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.views.MainMenuTextView;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -35,7 +39,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 
-public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
+public class GalleryOnItemSelectedListener extends BaseInjector implements
+		OnItemSelectedListener {
+
+	@Inject
+	SerenityImageLoader imageLoader;
 
 	private final ImageView mainGalleryBackgroundView;
 	private MainMenuTextView preSelected;
@@ -63,7 +71,7 @@ public class GalleryOnItemSelectedListener implements OnItemSelectedListener {
 			preSelected = tv;
 
 			String url = "drawable://" + tv.getBackgroundImageId();
-			SerenityApplication.displayImage(url, mainGalleryBackgroundView,
+			imageLoader.displayImage(url, mainGalleryBackgroundView,
 					tv.getBackgroundImageId());
 
 			// mainGalleryBackgroundView.setImageResource(tv.getBackgroundImageId());

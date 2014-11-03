@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -27,21 +27,21 @@ import java.util.List;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
+import us.nineworlds.serenity.injection.InjectingBaseAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 /**
- * 
+ *
  * @author dcarver
- * 
+ *
  */
-public class MenuDrawerAdapter extends BaseAdapter {
+public class MenuDrawerAdapter extends InjectingBaseAdapter {
 
 	private final List<MenuDrawerItem> menuOptions;
 	private final Activity context;
@@ -89,8 +89,7 @@ public class MenuDrawerAdapter extends BaseAdapter {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		rowView = (TextView) inflater.inflate(
-				R.layout.serenity_menudrawer_listview_textview, parent,
-				false);
+				R.layout.serenity_menudrawer_listview_textview, parent, false);
 		return rowView;
 	}
 

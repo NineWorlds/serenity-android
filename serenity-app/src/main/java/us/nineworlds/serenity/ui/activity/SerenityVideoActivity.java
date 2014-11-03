@@ -23,11 +23,15 @@
 
 package us.nineworlds.serenity.ui.activity;
 
+import java.util.LinkedList;
+
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.OnDeckRecommendationAsyncTask;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
@@ -43,10 +47,14 @@ import com.jess.ui.TwoWayGridView;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public abstract class SerenityVideoActivity extends
 		SerenityDrawerLayoutActivity {
+
+	@Inject
+	@ForVideoQueue
+	LinkedList<VideoContentInfo> videoQueue;
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -94,14 +102,14 @@ public abstract class SerenityVideoActivity extends
 		if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
 
 			if (resultCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
-				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+				if (!videoQueue.isEmpty()) {
 					showQueueNotEmptyMessage();
 				}
 				return;
 			}
 
 			if (!externalPlayer) {
-				if (!SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+				if (!videoQueue.isEmpty()) {
 					Intent vpIntent = new Intent(this,
 							SerenitySurfaceViewVideoActivity.class);
 					startActivityForResult(vpIntent,
@@ -116,16 +124,10 @@ public abstract class SerenityVideoActivity extends
 		onDeckRecomendations.execute();
 	}
 
-	/**
-	 * @return
-	 */
 	protected SerenityGallery findGalleryView() {
 		return (SerenityGallery) findViewById(R.id.moviePosterGallery);
 	}
 
-	/**
-	 * @return
-	 */
 	protected TwoWayGridView findGridView() {
 		return (TwoWayGridView) findViewById(R.id.movieGridView);
 	}

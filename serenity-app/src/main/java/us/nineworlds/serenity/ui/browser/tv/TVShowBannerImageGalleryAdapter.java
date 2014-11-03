@@ -28,7 +28,6 @@ import java.util.List;
 
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
@@ -51,22 +50,10 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.jess.ui.TwoWayGridView;
 
-/**
- *
- * @author dcarver
- *
- */
 public class TVShowBannerImageGalleryAdapter extends
 AbstractPosterImageGalleryAdapter {
 
-	/**
-	 *
-	 */
 	private static final int BANNER_PIXEL_HEIGHT = 140;
-
-	/**
-	 *
-	 */
 	private static final int BANNER_PIXEL_WIDTH = 758;
 
 	protected static List<SeriesContentInfo> tvShowList = null;
@@ -79,10 +66,7 @@ AbstractPosterImageGalleryAdapter {
 		super(c, key, category);
 		showActivity = (SerenityMultiViewVideoActivity) c;
 		tvShowList = new ArrayList<SeriesContentInfo>();
-
-		imageLoader = SerenityApplication.getImageLoader();
 		this.key = key;
-		factory = SerenityApplication.getPlexFactory();
 		fetchData();
 	}
 
@@ -158,9 +142,9 @@ AbstractPosterImageGalleryAdapter {
 		mpiv.setMaxWidth(width);
 
 		if (isPoster) {
-			SerenityApplication.displayImage(pi.getThumbNailURL(), mpiv);
+			serenityImageLoader.displayImage(pi.getThumbNailURL(), mpiv);
 		} else {
-			SerenityApplication.displayImage(pi.getImageURL(), mpiv);
+			serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
 		}
 	}
 
@@ -201,11 +185,6 @@ AbstractPosterImageGalleryAdapter {
 		}
 	}
 
-	/**
-	 * @param galleryCellView
-	 * @param pi
-	 * @param watchedView
-	 */
 	protected void toggleProgressIndicator(View galleryCellView, int dividend,
 			int divisor, ImageView watchedView) {
 		final float percentWatched = Float.valueOf(dividend)
@@ -227,19 +206,9 @@ AbstractPosterImageGalleryAdapter {
 
 	}
 
-	/**
-	 * @author dcarver
-	 *
-	 */
 	protected class SeriesResponseListener implements
 	Response.Listener<MediaContainer> {
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see
-		 * com.android.volley.Response.Listener#onResponse(java.lang.Object)
-		 */
 		@Override
 		public void onResponse(MediaContainer response) {
 			tvShowList = new SeriesMediaContainer(response).createSeries();

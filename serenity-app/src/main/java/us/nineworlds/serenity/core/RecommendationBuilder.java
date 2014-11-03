@@ -16,7 +16,10 @@ package us.nineworlds.serenity.core;
 
 import java.io.IOException;
 
-import us.nineworlds.serenity.SerenityApplication;
+import javax.inject.Inject;
+
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.injection.BaseInjector;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -32,7 +35,11 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 /*
  * This class builds recommendations as notifications with videos as inputs.
  */
-public class RecommendationBuilder {
+public class RecommendationBuilder extends BaseInjector {
+
+	@Inject
+	SerenityImageLoader serenityImageLoader;
+
 	private static final String TAG = "RecommendationBuilder";
 
 	public static final String EXTRA_BACKGROUND_IMAGE_URL = "background_image_url";
@@ -116,9 +123,9 @@ public class RecommendationBuilder {
 			extras.putString(EXTRA_BACKGROUND_IMAGE_URL, mBackgroundUri);
 		}
 
-		ImageLoader imageLoader = SerenityApplication.getImageLoader();
+		ImageLoader imageLoader = serenityImageLoader.getImageLoader();
 		Bitmap image = imageLoader.loadImageSync(mImageUri, new ImageSize(176,
-				313), SerenityApplication.getSycnOptions());
+				313), serenityImageLoader.getSycnOptions());
 
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(
 				mContext);

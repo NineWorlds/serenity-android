@@ -28,7 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.TrailersYouTubeSearch;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -50,7 +49,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 /**
@@ -58,11 +56,10 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public class EpisodePosterOnItemSelectedListener extends
-AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
+		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 
 	private static final String DISPLAY_DATE_FORMAT = "MMMMMMMMM d, yyyy";
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
-	public ImageLoader imageLoader;
 
 	private String prevTitle;
 	private boolean fadeIn = true;
@@ -94,7 +91,6 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 	public EpisodePosterOnItemSelectedListener(Activity activity) {
 		super(activity);
 		context = activity;
-		imageLoader = SerenityApplication.getImageLoader();
 	}
 
 	@Override
@@ -113,17 +109,17 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 			int height = ImageUtils.getDPI(330, context);
 			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width,
 					height));
-			SerenityApplication.displayImage(videoInfo.getParentPosterURL(),
+			serenityImageLoader.displayImage(videoInfo.getParentPosterURL(),
 					posterImage);
 		} else if (videoInfo.getGrandParentPosterURL() != null) {
 			int width = ImageUtils.getDPI(240, context);
 			int height = ImageUtils.getDPI(330, context);
 			posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width,
 					height));
-			SerenityApplication.displayImage(
+			serenityImageLoader.displayImage(
 					videoInfo.getGrandParentPosterURL(), posterImage);
 		} else {
-			SerenityApplication.displayImage(videoInfo.getImageURL(),
+			serenityImageLoader.displayImage(videoInfo.getImageURL(),
 					posterImage);
 		}
 
@@ -170,7 +166,7 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 		if (videoInfo.getOriginalAirDate() != null) {
 			try {
 				Date airDate = new SimpleDateFormat(DATE_FORMAT)
-				.parse(videoInfo.getOriginalAirDate());
+						.parse(videoInfo.getOriginalAirDate());
 				SimpleDateFormat format = new SimpleDateFormat(
 						DISPLAY_DATE_FORMAT);
 				String formatedDate = format.format(airDate);
@@ -198,13 +194,13 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 		}
 
 		View fanArt = context.findViewById(R.id.fanArt);
-		String transcodingURL = SerenityApplication.getPlexFactory()
-				.getImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+		String transcodingURL = plexFactory.getImageURL(
+				videoInfo.getBackgroundURL(), 1280, 720);
 
 		imageLoader
-				.loadImage(transcodingURL, new ImageSize(1280, 720),
-						new SerenityBackgroundLoaderListener(fanArt,
-								R.drawable.tvshows));
+		.loadImage(transcodingURL, new ImageSize(1280, 720),
+				new SerenityBackgroundLoaderListener(fanArt,
+						R.drawable.tvshows));
 	}
 
 	@Override

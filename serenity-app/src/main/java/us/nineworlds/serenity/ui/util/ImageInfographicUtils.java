@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,11 +23,14 @@
 
 package us.nineworlds.serenity.ui.util;
 
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import android.app.Activity;
 import android.content.Context;
@@ -44,12 +47,18 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author dcarver
- * 
+ *
  */
-public class ImageInfographicUtils {
+public class ImageInfographicUtils extends BaseInjector {
 
 	private final int width;
 	private final int height;
+
+	@Inject
+	SerenityImageLoader serenityImageLoader;
+
+	@Inject
+	PlexappFactory factory;
 
 	public ImageInfographicUtils(int width, int height) {
 		this.width = width;
@@ -413,8 +422,7 @@ public class ImageInfographicUtils {
 			return null;
 		}
 
-		ImageLoader imageLoader = SerenityApplication.getImageLoader();
-		PlexappFactory factory = SerenityApplication.getPlexFactory();
+		ImageLoader imageLoader = serenityImageLoader.getImageLoader();
 		ImageView v = new ImageView(context);
 		v.setScaleType(ScaleType.FIT_XY);
 		int w = ImageUtils.getDPI(width, (Activity) v.getContext());
@@ -423,7 +431,7 @@ public class ImageInfographicUtils {
 		String mediaTagUrl = factory.getMediaTagURL("studio", studio,
 				identifier);
 		imageLoader.cancelDisplayTask(v);
-		SerenityApplication.displayImage(mediaTagUrl, v);
+		serenityImageLoader.displayImage(mediaTagUrl, v);
 		return v;
 	}
 

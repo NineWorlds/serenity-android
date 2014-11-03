@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,18 +23,13 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jess.ui.TwoWayAdapterView;
-import com.jess.ui.TwoWayAdapterView.OnItemLongClickListener;
-import com.jess.ui.TwoWayGridView;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
@@ -43,22 +38,28 @@ import android.app.Dialog;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView.ScaleType;
+
+import com.jess.ui.TwoWayAdapterView;
+import com.jess.ui.TwoWayAdapterView.OnItemLongClickListener;
+import com.jess.ui.TwoWayGridView;
 
 /**
  * A listener that handles long press for video content in Grid View classes.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
-public class GridVideoOnItemLongClickListener extends AbstractVideoOnItemLongClickListener implements
-		OnItemLongClickListener {
+public class GridVideoOnItemLongClickListener extends
+		AbstractVideoOnItemLongClickListener implements OnItemLongClickListener {
 
+	@Inject
+	protected SerenityImageLoader serenityImageLoader;
 
 	@Override
 	public boolean onItemLongClick(TwoWayAdapterView<?> av, View v,
@@ -81,24 +82,25 @@ public class GridVideoOnItemLongClickListener extends AbstractVideoOnItemLongCli
 
 		return onItemLongClick();
 	}
-	
+
 	@Override
 	protected ArrayList<DialogMenuItem> addMenuOptions() {
 		ArrayList<DialogMenuItem> options = super.addMenuOptions();
 		DialogMenuItem infoItem = createMenuItem("Details", 300);
 		options.add(infoItem);
-		if (info.getAvailableSubtitles() != null && !info.getAvailableSubtitles().isEmpty()) {
+		if (info.getAvailableSubtitles() != null
+				&& !info.getAvailableSubtitles().isEmpty()) {
 			DialogMenuItem menuItem = createMenuItem("Select Subtitle", 200);
 			options.add(menuItem);
 		}
 		return options;
 	}
-	
+
 	@Override
 	protected OnItemClickListener getDialogSelectedListener() {
 		return new GridDialogOnItemSelected();
 	}
-	
+
 	protected class GridDialogOnItemSelected implements OnItemClickListener {
 
 		@Override
@@ -136,47 +138,49 @@ public class GridVideoOnItemLongClickListener extends AbstractVideoOnItemLongCli
 		}
 
 	}
-	
+
 	Dialog subtitleDialog;
+
 	protected void performSubtitleSelection() {
 		dialog.dismiss();
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 				new ContextThemeWrapper(context,
 						android.R.style.Theme_Holo_Dialog));
 		builder.setTitle("Subtitle Selection");
-				
+
 		ListView modeList = new ListView(context);
 		modeList.setSelector(R.drawable.menu_item_selector);
 		List<Subtitle> options = info.getAvailableSubtitles();
-		
+
 		ArrayAdapter<Subtitle> modeAdapter = new ArrayAdapter<Subtitle>(
-				context, R.layout.simple_list_item,
-				R.id.list_item_text, options);
+				context, R.layout.simple_list_item, R.id.list_item_text,
+				options);
 		modeList.setAdapter(modeAdapter);
 		modeList.setOnItemClickListener(new SubTitleSelection());
-		
+
 		builder.setView(modeList);
-	    subtitleDialog = builder.create();
+		subtitleDialog = builder.create();
 		subtitleDialog.show();
-		
-		
+
 	}
-	
+
 	Dialog detailsDialog;
+
 	protected void performInfoDialog() {
 		dialog.dismiss();
-		detailsDialog =  new Dialog(
-				new ContextThemeWrapper(context,
-						android.R.style.Theme_Holo_Dialog));
+		detailsDialog = new Dialog(new ContextThemeWrapper(context,
+				android.R.style.Theme_Holo_Dialog));
 		detailsDialog.setContentView(R.layout.details_layout);
 		detailsDialog.setTitle("Details");
-		ImageLoader imageLoader = SerenityApplication.getImageLoader();
-		ImageView posterImage = (ImageView) detailsDialog.findViewById(R.id.video_poster);
+
+		ImageView posterImage = (ImageView) detailsDialog
+				.findViewById(R.id.video_poster);
 		posterImage.setVisibility(View.VISIBLE);
 		posterImage.setScaleType(ScaleType.FIT_XY);
-		SerenityApplication.displayImage(info.getImageURL(), posterImage);
-		
-		TextView summary = (TextView) detailsDialog.findViewById(R.id.movieSummary);
+		serenityImageLoader.displayImage(info.getImageURL(), posterImage);
+
+		TextView summary = (TextView) detailsDialog
+				.findViewById(R.id.movieSummary);
 		summary.setText(info.getSummary());
 
 		TextView title = (TextView) detailsDialog
@@ -184,7 +188,7 @@ public class GridVideoOnItemLongClickListener extends AbstractVideoOnItemLongCli
 		title.setText(info.getTitle());
 		detailsDialog.show();
 	}
-	
+
 	private class SubTitleSelection implements OnItemClickListener {
 
 		@Override
@@ -193,7 +197,7 @@ public class GridVideoOnItemLongClickListener extends AbstractVideoOnItemLongCli
 			info.setSubtitle(info.getAvailableSubtitles().get(position));
 			subtitleDialog.dismiss();
 		}
-		
+
 	}
-	
+
 }

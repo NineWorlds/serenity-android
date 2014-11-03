@@ -33,11 +33,12 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import javax.inject.Inject;
+
 import org.mozilla.universalchardet.UniversalDetector;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
@@ -47,6 +48,7 @@ import us.nineworlds.serenity.core.subtitles.formats.Caption;
 import us.nineworlds.serenity.core.subtitles.formats.FormatASS;
 import us.nineworlds.serenity.core.subtitles.formats.FormatSRT;
 import us.nineworlds.serenity.core.subtitles.formats.TimedTextObject;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import android.app.Activity;
@@ -77,11 +79,15 @@ import android.widget.Toast;
  *
  */
 public class SerenitySurfaceViewVideoActivity extends SerenityActivity
-implements SurfaceHolder.Callback {
+		implements SurfaceHolder.Callback {
 
-	/**
-	 *
-	 */
+	@Inject
+	@ForVideoQueue
+	protected LinkedList<VideoContentInfo> videoQueue;
+
+	@Inject
+	protected PlexappFactory plexFactory;
+
 	static final int PROGRESS_UPDATE_DELAY = 5000;
 	static final int SUBTITLE_DISPLAY_CHECK = 100;
 	int playbackPos = 0;
@@ -139,7 +145,7 @@ implements SurfaceHolder.Callback {
 			}
 			if (subtitlesPlaybackEnabled) {
 				subtitleDisplayHandler
-				.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+						.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
 			}
 
 		}
@@ -198,7 +204,7 @@ implements SurfaceHolder.Callback {
 					resumeOffset, autoResume, aspectRatio,
 					progressReportinghandler, progressRunnable));
 			mediaPlayer
-			.setOnCompletionListener(new VideoPlayerOnCompletionListener());
+					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
 			mediaPlayer.prepareAsync();
 
 		} catch (Exception ex) {
@@ -302,12 +308,10 @@ implements SurfaceHolder.Callback {
 	}
 
 	private void playBackFromVideoQueue() {
-		LinkedList<VideoContentInfo> queue = SerenityApplication
-				.getVideoPlaybackQueue();
-		if (queue.isEmpty()) {
+		if (videoQueue.isEmpty()) {
 			return;
 		}
-		VideoContentInfo video = queue.poll();
+		VideoContentInfo video = videoQueue.poll();
 		videoURL = video.getDirectPlayUrl();
 		this.video = video;
 		videoId = video.id();
@@ -444,31 +448,25 @@ implements SurfaceHolder.Callback {
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			PlexappFactory factory = SerenityApplication.getPlexFactory();
 			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
 				String offset = Integer.valueOf(
 						mediaPlayer.getCurrentPosition()).toString();
 				if (video != null) {
 					if (video.isWatched()) {
-						factory.setWatched(videoId);
-						factory.setProgress(videoId, "0");
+						plexFactory.setWatched(videoId);
+						plexFactory.setProgress(videoId, "0");
 					} else {
-						factory.setProgress(videoId, offset);
+						plexFactory.setProgress(videoId, offset);
 					}
 					video.setResumeOffset(Integer.valueOf(offset));
 				} else {
-					factory.setProgress(videoId, offset);
+					plexFactory.setProgress(videoId, offset);
 				}
 			}
 			return null;
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
-	 */
 	@Override
 	protected void createSideMenu() {
 
@@ -490,9 +488,6 @@ implements SurfaceHolder.Callback {
 		}
 	}
 
-	/**
-	 *
-	 */
 	private void visibleInBackground() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			boolean success = requestVisibleBehind(true);
@@ -520,7 +515,7 @@ implements SurfaceHolder.Callback {
 	}
 
 	protected class VideoPlayerOnCompletionListener implements
-	OnCompletionListener {
+			OnCompletionListener {
 
 		@Override
 		public void onCompletion(MediaPlayer mp) {
@@ -540,13 +535,6 @@ implements SurfaceHolder.Callback {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * android.media.MediaPlayer.OnTimedTextListener#onTimedText(android.media
-	 * .MediaPlayer, android.media.TimedText)
-	 */
 	public void onTimedText(Caption text) {
 		TextView subtitles = (TextView) findViewById(R.id.txtSubtitles);
 		if (text == null) {

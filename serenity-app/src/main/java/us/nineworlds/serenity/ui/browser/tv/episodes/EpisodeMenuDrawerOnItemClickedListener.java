@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.app.Activity;
@@ -33,17 +34,16 @@ import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * @author dcarver
- * 
+ *
  */
-public class EpisodeMenuDrawerOnItemClickedListener implements
-		OnItemClickListener {
+public class EpisodeMenuDrawerOnItemClickedListener extends BaseInjector
+implements OnItemClickListener {
 	private static final int PLAY_ALL_QUEUE = 0;
 	private final DrawerLayout menuDrawer;
+	protected VideoPlayerIntentUtils vpUtils;
 
-	/**
-	 * 
-	 */
 	public EpisodeMenuDrawerOnItemClickedListener(DrawerLayout drawer) {
+		super();
 		menuDrawer = drawer;
 	}
 
@@ -60,7 +60,7 @@ public class EpisodeMenuDrawerOnItemClickedListener implements
 				parent.setVisibility(View.INVISIBLE);
 			}
 			activity.findViewById(R.id.moviePosterGallery).requestFocus();
-			VideoPlayerIntentUtils.playAllFromQueue(activity);
+			vpUtils.playAllFromQueue(activity);
 			break;
 		}
 	}

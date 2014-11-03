@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,9 +23,12 @@
 
 package us.nineworlds.serenity.ui.browser.music.tracks;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
 import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,17 +39,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author dcarver
- * 
+ *
  */
-public class TracksOnItemSelectedListener implements OnItemSelectedListener {
+public class TracksOnItemSelectedListener extends BaseInjector implements
+OnItemSelectedListener {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android
-	 * .widget.AdapterView, android.view.View, int, long)
-	 */
+	@Inject
+	protected SerenityImageLoader serenityImageLoader;
+
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
@@ -56,24 +56,16 @@ public class TracksOnItemSelectedListener implements OnItemSelectedListener {
 				.getAdapter().getItem(position);
 		ImageView album = (ImageView) context
 				.findViewById(R.id.musicAlbumImage);
-		ImageLoader imageLoader = SerenityApplication.getImageLoader();
+		ImageLoader imageLoader = serenityImageLoader.getImageLoader();
 		if (track.getParentPosterURL() != null) {
-			SerenityApplication.displayImage(track.getParentPosterURL(), album);
+			serenityImageLoader.displayImage(track.getParentPosterURL(), album);
 		} else {
 			album.setImageResource(R.drawable.default_music);
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android
-	 * .widget.AdapterView)
-	 */
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
-		// TODO Auto-generated method stub
 
 	}
 

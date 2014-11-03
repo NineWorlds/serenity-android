@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
 import android.content.Intent;
@@ -93,7 +92,6 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
 	protected void createPosters() {
 		MediaContainer mc = null;
 		try {
-			factory = SerenityApplication.getPlexFactory();
 			mc = retrieveVideos();
 		} catch (IOException ex) {
 			Log.e("AbstractPosterImageGalleryAdapter",

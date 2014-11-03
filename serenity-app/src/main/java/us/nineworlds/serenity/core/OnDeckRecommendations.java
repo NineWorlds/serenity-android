@@ -23,20 +23,30 @@
 
 package us.nineworlds.serenity.core;
 
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.util.AndroidHelper;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.LibraryResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.preference.PreferenceManager;
 
-public class OnDeckRecommendations {
+public class OnDeckRecommendations extends BaseInjector {
+
+	@Inject
+	PlexappFactory factory;
+
+	@Inject
+	AndroidHelper androidHelper;
+
+	@Inject
+	SharedPreferences preferences;
 
 	private final Context context;
-	final PlexappFactory factory = SerenityApplication.getPlexFactory();
 
 	public OnDeckRecommendations(Context context) {
 		this.context = context;
@@ -48,12 +58,10 @@ public class OnDeckRecommendations {
 			return false;
 		}
 
-		if (!SerenityApplication.isLeanbackSupported(context)) {
+		if (!androidHelper.isLeanbackSupported(context)) {
 			return false;
 		}
 
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(context);
 		boolean onDeckRecommendations = preferences.getBoolean(
 				SerenityConstants.PREFERENCE_ONDECK_RECOMMENDATIONS, false);
 		boolean isAndroidTV = preferences.getBoolean(

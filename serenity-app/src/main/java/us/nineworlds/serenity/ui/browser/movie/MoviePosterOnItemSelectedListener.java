@@ -24,7 +24,6 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
@@ -52,7 +51,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  *
  */
 public class MoviePosterOnItemSelectedListener extends
-AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
+		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 
 	/**
 	 *
@@ -74,9 +73,9 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 		posterImage.setScaleType(ScaleType.FIT_XY);
 		posterImage.setMaxWidth(posterImage.getWidth());
 		posterImage.setMaxHeight(posterImage.getHeight());
-		ImageLoader imageLoader = SerenityApplication.getImageLoader();
+		ImageLoader imageLoader = serenityImageLoader.getImageLoader();
 		imageLoader.cancelDisplayTask(posterImage);
-		SerenityApplication.displayImage(videoInfo.getImageURL(), posterImage);
+		serenityImageLoader.displayImage(videoInfo.getImageURL(), posterImage);
 
 		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
 		summary.setText(videoInfo.getSummary());
@@ -128,7 +127,7 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener
 	 * #fetchSubtitle(us.nineworlds.serenity.core.model.VideoContentInfo)

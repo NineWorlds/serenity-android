@@ -23,15 +23,18 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.TrailersYouTubeSearch;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.DBMetaDataSource;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
@@ -74,8 +77,8 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  * @author dcarver
  *
  */
-public abstract class AbstractVideoOnItemSelectedListener implements
-		OnItemSelectedListener {
+public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
+implements OnItemSelectedListener {
 
 	public static final String CRLF = "\r\n";
 	public static final int WATCHED_VIEW_ID = 1000;
@@ -93,9 +96,18 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 	private DBMetaDataSource datasource;
 	protected RequestQueue queue;
 	protected Runnable checkDBRunnable;
-	protected ImageLoader imageLoader = SerenityApplication.getImageLoader();
+
+	@Inject
+	protected SerenityImageLoader serenityImageLoader;
+
+	@Inject
+	protected PlexappFactory plexFactory;
+
+	protected ImageLoader imageLoader;
 
 	public AbstractVideoOnItemSelectedListener(Activity c) {
+		super();
+		imageLoader = serenityImageLoader.getImageLoader();
 		context = c;
 		shrink = AnimationUtils.loadAnimation(context, R.anim.shrink);
 		fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
@@ -210,8 +222,7 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 
 	public void fetchSubtitle(VideoContentInfo mpi) {
 		queue = VolleyUtils.getRequestQueueInstance(context);
-		PlexappFactory factory = SerenityApplication.getPlexFactory();
-		String url = factory.getMovieMetadataURL("/library/metadata/"
+		String url = plexFactory.getMovieMetadataURL("/library/metadata/"
 				+ mpi.id());
 		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(
 				Request.Method.GET, url, MediaContainer.class,
@@ -298,8 +309,8 @@ public abstract class AbstractVideoOnItemSelectedListener implements
 		}
 
 		View fanArt = context.findViewById(R.id.fanArt);
-		String transcodingURL = SerenityApplication.getPlexFactory()
-				.getImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+		String transcodingURL = plexFactory.getImageURL(
+				videoInfo.getBackgroundURL(), 1280, 720);
 
 		imageLoader
 				.loadImage(transcodingURL, new ImageSize(1280, 720),

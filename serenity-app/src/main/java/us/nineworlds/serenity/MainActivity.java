@@ -26,11 +26,15 @@ package us.nineworlds.serenity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.core.ServerConfig;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.GDMService;
 import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.handlers.DownloadHandler;
 import us.nineworlds.serenity.handlers.DownloadHandler.DownloadServiceConnection;
@@ -56,6 +60,12 @@ import android.widget.Button;
 import com.castillo.dd.DownloadService;
 
 public class MainActivity extends SerenityDrawerLayoutActivity {
+
+	@Inject
+	SerenityImageLoader imageLoader;
+
+	@Inject
+	AndroidHelper androidHelper;
 
 	public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
 
@@ -98,8 +108,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 		Button settingsButton = (Button) findViewById(R.id.drawer_settings);
 		settingsButton
-		.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
-				drawerLayout));
+				.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
+						drawerLayout));
 
 		populateMenuOptions();
 	}
@@ -107,9 +117,9 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 	protected void populateMenuOptions() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem
-				.add(new MenuDrawerItemImpl(getResources().getString(
-						R.string.options_main_about),
-						R.drawable.ic_action_action_about));
+		.add(new MenuDrawerItemImpl(getResources().getString(
+				R.string.options_main_about),
+				R.drawable.ic_action_action_about));
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
 				R.string.options_main_clear_image_cache),
 				R.drawable.ic_action_content_remove));
@@ -123,8 +133,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		}
 
 		drawerList
-				.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
-						drawerLayout));
+		.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
+				drawerLayout));
 	}
 
 	protected void discoverPlexServers() {
@@ -149,8 +159,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 			ServerConfig config = (ServerConfig) ServerConfig.getInstance();
 			if (config != null) {
 				preferences
-						.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
-								.getInstance()).getServerConfigChangeListener());
+				.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
+						.getInstance()).getServerConfigChangeListener());
 			}
 		}
 	}
@@ -183,8 +193,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 			boolean watchedStatusFirstTime = preferences.getBoolean(
 					"watched_status_firsttime", true);
 			if (watchedStatusFirstTime) {
-				SerenityApplication.getImageLoader().clearDiscCache();
-				SerenityApplication.getImageLoader().clearMemoryCache();
+				imageLoader.getImageLoader().clearDiscCache();
+				imageLoader.getImageLoader().clearMemoryCache();
 				Editor editor = preferences.edit();
 				editor.putBoolean("watched_status_firsttime", false);
 				editor.apply();
@@ -201,7 +211,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		boolean initialRun = preferences.getBoolean("serenity_first_run", true);
 		if (initialRun) {
 			SharedPreferences.Editor editor = preferences.edit();
-			if (!SerenityApplication.isGoogleTV(this)) {
+			if (!androidHelper.isGoogleTV(this)) {
 				editor.putBoolean("external_player", true);
 			}
 			editor.putBoolean("serenity_first_run", false);

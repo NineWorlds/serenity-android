@@ -27,24 +27,22 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
+import us.nineworlds.serenity.injection.BaseInjector;
 import android.content.Intent;
 import android.view.View;
 import android.widget.BaseAdapter;
 
-public class PlayerResultHandler {
+public class PlayerResultHandler extends BaseInjector {
 
 	protected BaseAdapter adapter;
 	protected Intent data;
 
 	public PlayerResultHandler(Intent data, BaseAdapter adapter) {
+		super();
 		this.adapter = adapter;
 		this.data = data;
 	}
 
-	/**
-	 * @param video
-	 * @param selectedView
-	 */
 	public void updateVideoPlaybackPosition(VideoContentInfo video,
 			View selectedView) {
 		if (selectedView == null || video == null) {

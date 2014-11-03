@@ -23,6 +23,14 @@
 
 package us.nineworlds.serenity;
 
+import java.util.LinkedList;
+
+import javax.inject.Inject;
+
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -39,7 +47,16 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * @author dcarver
  *
  */
-public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener {
+public class MainMenuDrawerOnItemClickedListener extends BaseInjector implements
+OnItemClickListener {
+
+	@Inject
+	@ForVideoQueue
+	LinkedList<VideoContentInfo> videoQueue;
+
+	@Inject
+	SerenityImageLoader serenityImageLoader;
+
 	private static final int ABOUT = 0;
 	private static final int CLEAR_CACHE = 1;
 	private static final int CLEAR_QUEUE = 2;
@@ -75,7 +92,7 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 			about.show();
 			break;
 		case CLEAR_QUEUE:
-			SerenityApplication.getVideoPlaybackQueue().clear();
+			videoQueue.clear();
 			Toast.makeText(
 					activity,
 					activity.getResources().getString(
@@ -105,7 +122,7 @@ public class MainMenuDrawerOnItemClickedListener implements OnItemClickListener 
 			public void onClick(DialogInterface dialog,
 					int which) {
 
-				ImageLoader imageLoader = SerenityApplication
+				ImageLoader imageLoader = serenityImageLoader
 						.getImageLoader();
 				imageLoader.clearDiscCache();
 				imageLoader.clearMemoryCache();

@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -26,10 +26,13 @@ package us.nineworlds.serenity.ui.browser.music;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
 import us.nineworlds.serenity.core.services.MusicRetrievalIntentService;
+import us.nineworlds.serenity.injection.InjectingBaseAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.SerenityMusicImageView;
 import android.app.Activity;
@@ -40,18 +43,17 @@ import android.os.Message;
 import android.os.Messenger;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.jess.ui.TwoWayAbsListView;
 import com.jess.ui.TwoWayGridView;
 
 /**
- * 
+ *
  * @author dcarver
- * 
+ *
  */
-public class MusicPosterGridViewAdapter extends BaseAdapter {
+public class MusicPosterGridViewAdapter extends InjectingBaseAdapter {
 
 	protected static MusicPosterGridViewAdapter notifyAdapter;
 	protected static ProgressDialog pd;
@@ -61,8 +63,13 @@ public class MusicPosterGridViewAdapter extends BaseAdapter {
 	private final String key;
 	private final String category;
 
+	@Inject
+	SerenityImageLoader serenityImageLoader;
+
 	public MusicPosterGridViewAdapter(Activity context, String key,
 			String category) {
+		super();
+
 		notifyAdapter = this;
 		MusicPosterGridViewAdapter.context = context;
 		this.key = key;
@@ -81,8 +88,8 @@ public class MusicPosterGridViewAdapter extends BaseAdapter {
 		int width = ImageUtils.getDPI(180, context);
 		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new TwoWayAbsListView.LayoutParams(width, height));
-		SerenityApplication.displayImage(pi.getImageURL(), mpiv,
-				SerenityApplication.getMusicOptions());
+		serenityImageLoader.displayImage(pi.getImageURL(), mpiv,
+				serenityImageLoader.getMusicOptions());
 
 		return mpiv;
 	}

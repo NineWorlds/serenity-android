@@ -28,9 +28,11 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import android.app.Activity;
 import android.content.Context;
@@ -40,7 +42,6 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -61,6 +62,12 @@ import android.widget.Toast;
  */
 public class MusicTracksActivity extends Activity implements
 		OnCompletionListener {
+
+	@Inject
+	protected AndroidHelper androidHelper;
+
+	@Inject
+	protected SharedPreferences prefs;
 
 	private String key;
 	private boolean restarted_state = false;
@@ -162,10 +169,7 @@ public class MusicTracksActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		key = getIntent().getExtras().getString("key");
 
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-
-		if (SerenityApplication.isRunningOnOUYA()) {
+		if (androidHelper.isRunningOnOUYA()) {
 			setContentView(R.layout.activity_music_ouya_track);
 		} else {
 			setContentView(R.layout.activity_music_track);

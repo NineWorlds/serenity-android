@@ -26,12 +26,15 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
+import us.nineworlds.serenity.injection.InjectingBaseAdapter;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
@@ -42,7 +45,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -59,14 +61,21 @@ import com.android.volley.Response;
  * @author dcarver
  *
  */
-public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
+public class TVShowSeasonImageGalleryAdapter extends InjectingBaseAdapter {
 
 	private List<SeriesContentInfo> seasonList = null;
 	private final SerenityDrawerLayoutActivity context;
 
 	private final String key;
 
+	@Inject
+	PlexappFactory plexFactory;
+
+	@Inject
+	SerenityImageLoader serenityImageLoader;
+
 	public TVShowSeasonImageGalleryAdapter(Context c, String key) {
+		super();
 		context = (SerenityDrawerLayoutActivity) c;
 		this.key = key;
 
@@ -80,8 +89,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		context.setSupportProgressBarVisibility(false);
 		context.setSupportProgressBarIndeterminateVisibility(true);
 
-		PlexappFactory factory = SerenityApplication.getPlexFactory();
-		String url = factory.getSeasonsURL(key);
+		String url = plexFactory.getSeasonsURL(key);
 		VolleyUtils.volleyXmlGetRequest(url, new SeaonsResponseListener(),
 				new DefaultLoggingVolleyErrorListener());
 	}
@@ -125,7 +133,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 		int height = ImageUtils.getDPI(180, context);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
-		SerenityApplication.displayImage(pi.getImageURL(), mpiv);
+		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
 		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width,
 				height));
 
@@ -151,14 +159,6 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 			watchedView.setVisibility(View.VISIBLE);
 			badgeView.hide();
 		}
-
-		// if (unwatched == 0) {
-		// watchedView.setImageResource(R.drawable.overlaywatched);
-		// unwatchedCountView.setVisibility(View.GONE);
-		// } else {
-		// unwatchedCountView.setVisibility(View.VISIBLE);
-		// unwatchedCountView.setText(pi.getShowsUnwatched());
-		// }
 
 		int watched = 0;
 		if (pi.getShowsWatched() != null) {
@@ -190,7 +190,7 @@ public class TVShowSeasonImageGalleryAdapter extends BaseAdapter {
 	}
 
 	private class SeaonsResponseListener implements
-	Response.Listener<MediaContainer> {
+			Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer response) {

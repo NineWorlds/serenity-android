@@ -1,32 +1,41 @@
 package us.nineworlds.serenity.handlers;
 
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.Server;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.injection.ForMediaServers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-public class AutoConfigureHandlerRunnable implements Runnable {
+public class AutoConfigureHandlerRunnable extends BaseInjector implements
+		Runnable {
 
+	@Inject
 	SharedPreferences preferences;
+
+	@Inject
+	@ForMediaServers
+	ConcurrentHashMap<String, Server> mediaServers;
+
 	Context context;
 
 	public AutoConfigureHandlerRunnable(Context context) {
-		preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		this.context = context;
 	}
 
 	@Override
 	public void run() {
-		if (SerenityApplication.getPlexMediaServers().isEmpty()) {
+		if (mediaServers.isEmpty()) {
 			return;
 		}
-		Server server = SerenityApplication.getPlexMediaServers().values()
-				.iterator().next();
+		Server server = mediaServers.values().iterator().next();
 		String ipAddress = preferences.getString("server", "");
 		if ("".equals(ipAddress)) {
 			Editor edit = preferences.edit();

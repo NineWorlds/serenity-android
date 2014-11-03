@@ -24,8 +24,12 @@
 package us.nineworlds.serenity;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.robolectric.TestLifecycleApplication;
+
+import us.nineworlds.serenity.injection.modules.AndroidModule;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 
@@ -34,12 +38,19 @@ import com.google.android.gms.analytics.GoogleAnalytics;
  *
  */
 public class TestSerenityApplication extends SerenityApplication implements
-		TestLifecycleApplication {
+TestLifecycleApplication {
 
-	/**
-	 *
-	 */
 	public TestSerenityApplication() {
+		super();
+		inject();
+	}
+
+	@Override
+	protected List<Object> createModules() {
+		List<Object> modules = new ArrayList<Object>();
+		modules.add(new AndroidModule(this));
+		modules.add(new TestingModule());
+		return modules;
 	}
 
 	@Override
@@ -55,12 +66,10 @@ public class TestSerenityApplication extends SerenityApplication implements
 
 	@Override
 	public void beforeTest(Method arg0) {
-
 	}
 
 	@Override
 	public void prepareTest(Object arg0) {
-		// TODO Auto-generated method stub
 
 	}
 }

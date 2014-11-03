@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -22,6 +22,8 @@
  */
 
 package us.nineworlds.serenity.ui.video.player;
+
+import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -38,11 +40,14 @@ import android.preference.PreferenceManager;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class RecommendationPlayerActivity extends SerenityActivity {
 
 	VideoContentInfo video;
+
+	@Inject
+	protected VideoPlayerIntentUtils vpUtils;
 
 	@Override
 	protected void createSideMenu() {
@@ -64,7 +69,7 @@ public class RecommendationPlayerActivity extends SerenityActivity {
 					"serenity_video");
 			if (objVideo != null) {
 				video = (VideoContentInfo) objVideo;
-				VideoPlayerIntentUtils.playVideo(this, video, true);
+				vpUtils.playVideo(this, video, true);
 			}
 		}
 	}

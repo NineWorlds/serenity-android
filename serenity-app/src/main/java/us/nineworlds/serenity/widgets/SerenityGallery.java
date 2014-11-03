@@ -18,8 +18,11 @@ package us.nineworlds.serenity.widgets;
 
 import java.lang.reflect.Field;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.util.AndroidHelper;
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -61,7 +64,10 @@ import android.widget.Scroller;
  * @attr ref android.R.styleable#Gallery_gravity
  */
 public class SerenityGallery extends SerenityAbsSpinner implements
-		GestureDetector.OnGestureListener {
+GestureDetector.OnGestureListener {
+
+	@Inject
+	protected AndroidHelper androidHelper;
 
 	private static final String TAG = "Gallery";
 
@@ -195,6 +201,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 
 	public SerenityGallery(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		SerenityObjectGraph.getInstance().inject(this);
 
 		mGestureDetector = new GestureDetector(context, this);
 		mGestureDetector.setIsLongpressEnabled(true);
@@ -601,7 +608,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 		// to there
 		// instead of scrolling back if using something like a Google TV.
 		if (scrollAmount != 0
-				&& !SerenityApplication.isGoogleTV(mSelectedChild.getContext())) {
+				&& !androidHelper.isGoogleTV(mSelectedChild.getContext())) {
 			mFlingRunnable.startUsingDistance(scrollAmount);
 		} else {
 			onFinishedMovement();
@@ -1016,7 +1023,7 @@ public class SerenityGallery extends SerenityAbsSpinner implements
 			break;
 		case Gravity.CENTER_VERTICAL:
 			int availableSpace = myHeight - mSpinnerPadding.bottom
-					- mSpinnerPadding.top - childHeight;
+			- mSpinnerPadding.top - childHeight;
 			childTop = mSpinnerPadding.top + (availableSpace / 2);
 			break;
 		case Gravity.BOTTOM:

@@ -23,10 +23,14 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
@@ -44,8 +48,8 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  * @author dcarver
  *
  */
-public class TVShowSeasonOnItemSelectedListener implements
-OnItemSelectedListener {
+public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
+		OnItemSelectedListener {
 
 	private final Activity context;
 	private final ImageLoader imageLoader;
@@ -53,13 +57,16 @@ OnItemSelectedListener {
 	private final ImageSize bgImageSize = new ImageSize(1280, 720);
 	private SeriesContentInfo info;
 
-	/**
-	 *
-	 */
+	@Inject
+	protected SerenityImageLoader serenityImageLoader;
+
+	@Inject
+	protected PlexappFactory plexFactory;
+
 	public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity) {
 		context = activity;
 
-		imageLoader = SerenityApplication.getImageLoader();
+		imageLoader = serenityImageLoader.getImageLoader();
 	}
 
 	@Override
@@ -74,10 +81,10 @@ OnItemSelectedListener {
 		episodeGrid.setAdapter(new SeasonsEpisodePosterImageGalleryAdapter(
 				context, info.getKey()));
 		episodeGrid
-				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
+		.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
 		episodeGrid.setOnItemClickListener(new GridVideoOnItemClickListener());
 		episodeGrid
-				.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
+		.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
@@ -106,13 +113,12 @@ OnItemSelectedListener {
 	 */
 	private void changeBackgroundImage(View v) {
 
-		ImageView mpiv = (ImageView) v;
 		SeriesContentInfo mi = info;
 
 		if (mi.getBackgroundURL() != null) {
 			View fanArt = context.findViewById(R.id.fanArt);
-			String transcodingURL = SerenityApplication.getPlexFactory()
-					.getImageURL(mi.getBackgroundURL(), 1280, 720);
+			String transcodingURL = plexFactory.getImageURL(
+					mi.getBackgroundURL(), 1280, 720);
 
 			imageLoader.loadImage(transcodingURL, bgImageSize,
 					new SerenityBackgroundLoaderListener(fanArt,
@@ -120,13 +126,6 @@ OnItemSelectedListener {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected(android
-	 * .widget.AdapterView)
-	 */
 	@Override
 	public void onNothingSelected(SerenityAdapterView<?> arg0) {
 

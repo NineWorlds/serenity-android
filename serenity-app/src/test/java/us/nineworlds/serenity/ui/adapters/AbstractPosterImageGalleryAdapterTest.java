@@ -145,7 +145,7 @@ public class AbstractPosterImageGalleryAdapterTest {
 	}
 
 	public class FakePosterImageGalleryAdapter extends
-	AbstractPosterImageGalleryAdapter {
+			AbstractPosterImageGalleryAdapter {
 
 		/**
 		 * @param c

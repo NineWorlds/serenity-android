@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -29,7 +29,6 @@ import java.util.List;
 
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,9 +39,9 @@ import android.util.Log;
 
 /**
  * A service that retrieves music information from the Plex Media Server.
- * 
+ *
  * @author dcarver
- * 
+ *
  */
 public class MusicRetrievalIntentService extends AbstractPlexRESTIntentService {
 
@@ -87,7 +86,6 @@ public class MusicRetrievalIntentService extends AbstractPlexRESTIntentService {
 	protected void createPosters() {
 		MediaContainer mc = null;
 		try {
-			factory = SerenityApplication.getPlexFactory();
 			mc = retrieveVideos();
 		} catch (IOException ex) {
 			Log.e("AbstractPosterImageGalleryAdapter",

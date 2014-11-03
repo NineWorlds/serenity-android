@@ -34,12 +34,18 @@ package us.nineworlds.serenity.ui.video.player;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.core.util.TimeUtil;
+import us.nineworlds.serenity.injection.ForVideoQueue;
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import android.app.Activity;
 import android.content.Context;
@@ -108,9 +114,21 @@ public class MediaController extends FrameLayout {
 	private PopupWindow mediaControllerHUD;
 	private MediaControllerDataObject mediaMetaData;
 
+	@Inject
+	@ForVideoQueue
+	protected LinkedList<VideoContentInfo> videoQueue;
+
+	@Inject
+	protected SerenityImageLoader serenityImageLoader;
+
+	@Inject
+	protected AndroidHelper androidHelper;
+
 	@Deprecated
 	public MediaController(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		SerenityObjectGraph.getInstance().inject(this);
+
 		rootView = this;
 		fromLayoutXML = true;
 		initController(context);
@@ -122,6 +140,7 @@ public class MediaController extends FrameLayout {
 
 	public MediaController(MediaControllerDataObject mediaMetaData) {
 		super(mediaMetaData.getContext());
+		SerenityObjectGraph.getInstance().inject(this);
 		this.mediaMetaData = mediaMetaData;
 		if (!fromLayoutXML && initController(mediaMetaData.getContext())) {
 			initFloatingWindow();
@@ -142,13 +161,12 @@ public class MediaController extends FrameLayout {
 			return;
 		}
 
-		if (SerenityApplication.getVideoPlaybackQueue().isEmpty()) {
+		if (videoQueue.isEmpty()) {
 			txtNextVideo.setVisibility(View.GONE);
 			return;
 		}
 
-		VideoContentInfo nextVideo = SerenityApplication
-				.getVideoPlaybackQueue().peek();
+		VideoContentInfo nextVideo = videoQueue.peek();
 		txtNextVideo.setText(getResources().getString(
 				R.string.mediacontroller_on_deck)
 				+ nextVideo.getTitle());
@@ -170,7 +188,7 @@ public class MediaController extends FrameLayout {
 		posterView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
 		if (mediaMetaData.getPosterURL() != null) {
-			SerenityApplication.displayImage(mediaMetaData.getPosterURL(),
+			serenityImageLoader.displayImage(mediaMetaData.getPosterURL(),
 					posterView);
 		}
 	}
@@ -360,7 +378,7 @@ public class MediaController extends FrameLayout {
 	 * @return The controller view.
 	 */
 	protected View makeControllerView() {
-		if (SerenityApplication.isRunningOnOUYA()) {
+		if (androidHelper.isRunningOnOUYA()) {
 			return View.inflate(context,
 					R.layout.serenity_media_controller_ouya, this);
 		}
