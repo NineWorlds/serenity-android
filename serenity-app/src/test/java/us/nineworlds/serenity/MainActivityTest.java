@@ -25,6 +25,9 @@ package us.nineworlds.serenity;
 
 import static org.fest.assertions.api.ANDROID.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.fest.assertions.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
@@ -36,8 +39,12 @@ import org.robolectric.shadows.SerenityShadowResources;
 import org.robolectric.shadows.ShadowActivity;
 
 import us.nineworlds.serenity.fragments.MainMenuFragment;
+import us.nineworlds.serenity.injection.modules.AndroidModule;
+import us.nineworlds.serenity.injection.modules.SerenityModule;
+import us.nineworlds.serenity.test.InjectingTest;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import dagger.Module;
 
 /**
  * @author dcarver
@@ -45,12 +52,18 @@ import android.support.v4.app.FragmentTransaction;
  */
 @RunWith(SerenityRobolectricTestRunner.class)
 @Config(shadows = SerenityShadowResources.class, emulateSdk = 18)
-public class MainActivityTest {
+public class MainActivityTest extends InjectingTest {
 
 	MainActivity activity;
 
+	@Override
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
+
+		Robolectric.getBackgroundScheduler().pause();
+		Robolectric.getUiThreadScheduler().pause();
+
 		try {
 			activity = Robolectric.buildActivity(MainActivity.class).attach()
 					.create().start().resume().get();
@@ -89,10 +102,17 @@ public class MainActivityTest {
 		Assertions.assertThat(a.isDestroyed()).isTrue();
 	}
 
-	@Test
-	public void testThatActivityStops() throws Exception {
-		activity.onStop();
-		ShadowActivity a = Robolectric.shadowOf(activity);
-		Assertions.assertThat(a.isFinishing()).isFalse();
+	@Override
+	public List<Object> getModules() {
+		List<Object> modules = new ArrayList<Object>();
+		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new TestModule());
+		return modules;
+	}
+
+	@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, injects = {
+		MainActivity.class, MainActivityTest.class })
+	public class TestModule {
+
 	}
 }

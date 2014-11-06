@@ -25,6 +25,9 @@ package us.nineworlds.serenity.ui.video.player;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +37,10 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
 import us.nineworlds.serenity.SerenityRobolectricTestRunner;
+import us.nineworlds.serenity.injection.modules.AndroidModule;
+import us.nineworlds.serenity.injection.modules.SerenityModule;
+import us.nineworlds.serenity.test.InjectingTest;
+import dagger.Module;
 
 /**
  * @author dcarver
@@ -41,10 +48,12 @@ import us.nineworlds.serenity.SerenityRobolectricTestRunner;
  */
 @RunWith(SerenityRobolectricTestRunner.class)
 @Config(emulateSdk = 18)
-public class SerenitySurfaceViewVideoPlayerTest {
+public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 
+	@Override
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 		ShadowApplication shadowApplication = Robolectric
 				.shadowOf(Robolectric.application);
 		shadowApplication
@@ -61,6 +70,21 @@ public class SerenitySurfaceViewVideoPlayerTest {
 				.buildActivity(SerenitySurfaceViewVideoActivity.class).create()
 				.get();
 		assertThat(activity).isNotNull();
+	}
+
+	@Override
+	public List<Object> getModules() {
+		List<Object> modules = new ArrayList<Object>();
+		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new TestModule());
+		return modules;
+	}
+
+	@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, injects = {
+		SerenitySurfaceViewVideoActivity.class,
+		SerenitySurfaceViewVideoPlayerTest.class })
+	public class TestModule {
+
 	}
 
 }

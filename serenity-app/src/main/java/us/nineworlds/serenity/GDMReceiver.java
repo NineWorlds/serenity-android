@@ -8,12 +8,12 @@ import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.impl.GDMServer;
 import us.nineworlds.serenity.core.services.GDMService;
 import us.nineworlds.serenity.injection.ForMediaServers;
-import android.content.BroadcastReceiver;
+import us.nineworlds.serenity.injection.InjectingBroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-public class GDMReceiver extends BroadcastReceiver {
+public class GDMReceiver extends InjectingBroadcastReceiver {
 
 	@Inject
 	@ForMediaServers

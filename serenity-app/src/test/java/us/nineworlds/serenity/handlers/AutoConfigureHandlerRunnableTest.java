@@ -25,6 +25,8 @@ package us.nineworlds.serenity.handlers;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
@@ -40,19 +42,27 @@ import org.robolectric.shadows.ShadowToast;
 
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.impl.GDMServer;
+import us.nineworlds.serenity.injection.ForMediaServers;
+import us.nineworlds.serenity.injection.modules.AndroidModule;
+import us.nineworlds.serenity.injection.modules.SerenityModule;
+import us.nineworlds.serenity.test.InjectingTest;
 import android.app.Activity;
+import dagger.Module;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(emulateSdk = 18)
-public class AutoConfigureHandlerRunnableTest {
+public class AutoConfigureHandlerRunnableTest extends InjectingTest {
 
 	AutoConfigureHandlerRunnable handler;
 
 	@Inject
+	@ForMediaServers
 	ConcurrentHashMap<String, Server> mediaServer;
 
+	@Override
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
+		super.setUp();
 		Activity activity = Robolectric.buildActivity(Activity.class).create()
 				.get();
 		handler = new AutoConfigureHandlerRunnable(activity);
@@ -80,5 +90,20 @@ public class AutoConfigureHandlerRunnableTest {
 
 		handler.run();
 		assertThat(ShadowToast.getTextOfLatestToast()).isNotNull();
+	}
+
+	@Override
+	public List<Object> getModules() {
+		List<Object> modules = new ArrayList<Object>();
+		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new TestModule());
+		return modules;
+	}
+
+	@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, injects = {
+		AutoConfigureHandlerRunnable.class,
+		AutoConfigureHandlerRunnableTest.class })
+	public class TestModule {
+
 	}
 }
