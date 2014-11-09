@@ -24,6 +24,9 @@
 package us.nineworlds.serenity.ui.video.player;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
@@ -40,24 +45,30 @@ import us.nineworlds.serenity.SerenityRobolectricTestRunner;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
+import android.view.KeyEvent;
 import dagger.Module;
 
-/**
- * @author dcarver
- *
- */
 @RunWith(SerenityRobolectricTestRunner.class)
 @Config(emulateSdk = 18)
 public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 
+	@Mock
+	KeyEvent keyEvent;
+	SerenitySurfaceViewVideoActivity activity;
+
 	@Override
 	@Before
 	public void setUp() throws Exception {
+		MockitoAnnotations.initMocks(this);
 		super.setUp();
 		ShadowApplication shadowApplication = Robolectric
 				.shadowOf(Robolectric.application);
 		shadowApplication
-		.declareActionUnbindable("com.google.android.gms.analytics.service.START");
+				.declareActionUnbindable("com.google.android.gms.analytics.service.START");
+		activity = Robolectric
+				.buildActivity(SerenitySurfaceViewVideoActivity.class).create()
+				.get();
+
 	}
 
 	@After
@@ -65,11 +76,19 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 	}
 
 	@Test
-	public void testCreateVideoPlayerActivity() throws Exception {
-		SerenitySurfaceViewVideoActivity activity = Robolectric
-				.buildActivity(SerenitySurfaceViewVideoActivity.class).create()
-				.get();
-		assertThat(activity).isNotNull();
+	public void onBackPressedIsCalledWhenKeyCodeBackIsReceived() {
+		SerenitySurfaceViewVideoActivity spyActivity = spy(activity);
+		doNothing().when(spyActivity).onBackPressed();
+		spyActivity.onKeyDown(KeyEvent.KEYCODE_BACK, keyEvent);
+		verify(spyActivity).onBackPressed();
+	}
+
+	@Test
+	public void onKeyDownReturnsTrueWhenKeyCodeBackIsReceived() {
+		SerenitySurfaceViewVideoActivity spyActivity = spy(activity);
+		doNothing().when(spyActivity).onBackPressed();
+		boolean result = spyActivity.onKeyDown(KeyEvent.KEYCODE_BACK, keyEvent);
+		assertThat(result).isTrue();
 	}
 
 	@Override
@@ -81,8 +100,8 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 	}
 
 	@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, injects = {
-		SerenitySurfaceViewVideoActivity.class,
-		SerenitySurfaceViewVideoPlayerTest.class })
+			SerenitySurfaceViewVideoActivity.class,
+			SerenitySurfaceViewVideoPlayerTest.class })
 	public class TestModule {
 
 	}

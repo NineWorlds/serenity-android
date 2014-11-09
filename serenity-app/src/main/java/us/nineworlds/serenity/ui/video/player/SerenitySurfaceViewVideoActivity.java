@@ -260,7 +260,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		retrieveIntentExtras();
 		videoPlayerKeyCodeHandler = new VideoPlayerKeyCodeHandler(mediaPlayer,
 				mediaController, osdDelayTime, progressReportinghandler,
-				progressRunnable, prefs, timeOfDayView, this);
+				progressRunnable, timeOfDayView, this);
 	}
 
 	protected void retrieveIntentExtras() {
@@ -410,6 +410,11 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			onBackPressed();
+			return true;
+		}
 
 		if (videoPlayerKeyCodeHandler.onKeyDown(keyCode, event,
 				isMediaPlayerStateValid())) {

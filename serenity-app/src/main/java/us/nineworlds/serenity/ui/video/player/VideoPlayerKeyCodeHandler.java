@@ -23,6 +23,9 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
+import javax.inject.Inject;
+
+import us.nineworlds.serenity.injection.BaseInjector;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
@@ -31,23 +34,24 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
-public class VideoPlayerKeyCodeHandler {
+public class VideoPlayerKeyCodeHandler extends BaseInjector {
 
-	MediaPlayer mediaPlayer;
-	MediaController mediaController;
-	Handler progressReportinHandler;
-	Runnable progressRunnable;
-	SharedPreferences preferences;
-	View timeOfDayView;
-	Activity videoPlayerActivity;
+	@Inject
+	protected SharedPreferences preferences;
 
-	int osdDelayTime;
+	protected MediaPlayer mediaPlayer;
+	protected MediaController mediaController;
+	protected Handler progressReportinHandler;
+	protected Runnable progressRunnable;
+	protected View timeOfDayView;
+	protected Activity videoPlayerActivity;
+
+	protected int osdDelayTime;
 
 	public VideoPlayerKeyCodeHandler(MediaPlayer mediaPlayer,
 			MediaController mediaController, int osdDelayTime,
 			Handler progressReportingHandler, Runnable progressRunnable,
-			SharedPreferences preferences, View timeOfDay,
-			Activity videoPlayerActivity) {
+			View timeOfDay, Activity videoPlayerActivity) {
 		this.mediaPlayer = mediaPlayer;
 		this.mediaController = mediaController;
 		this.osdDelayTime = osdDelayTime;
