@@ -57,85 +57,40 @@ public class VideoPlayerKeyCodeHandler extends BaseInjector {
 		this.osdDelayTime = osdDelayTime;
 		this.progressReportinHandler = progressReportingHandler;
 		this.progressRunnable = progressRunnable;
-		this.preferences = preferences;
 		this.videoPlayerActivity = videoPlayerActivity;
 		this.timeOfDayView = timeOfDay;
 	}
 
 	public boolean onKeyDown(int keyCode, KeyEvent event,
 			boolean isMediaPlayerStateValid) {
-
-		if (isKeyCodeInfo(keyCode)) {
-			if (isMediaPlayerStateValid) {
-				if (mediaController.isShowing()) {
-					mediaController.hide();
-				} else {
-					mediaController.show(osdDelayTime);
-				}
-			}
-			return true;
-		}
-
-		if (isKeyCodePauseResume(keyCode)) {
-			if (isMediaPlayerStateValid) {
-				if (mediaPlayer.isPlaying()) {
-					mediaPlayer.pause();
-					mediaController.show(osdDelayTime);
-					progressReportinHandler.removeCallbacks(progressRunnable);
-				} else {
-					mediaPlayer.start();
-					mediaController.hide();
-					progressReportinHandler.postDelayed(progressRunnable, 5000);
-				}
-				return true;
-			}
-		}
-
-		if (isKeyCodePlay(keyCode)) {
-			if (isMediaPlayerStateValid) {
-				if (mediaPlayer.isPlaying()) {
-					if (mediaController.isShowing()) {
-						mediaController.hide();
-					} else {
-						mediaController.show(osdDelayTime);
-					}
-				} else {
-					mediaPlayer.start();
-					mediaController.hide();
-					progressReportinHandler.postDelayed(progressRunnable, 5000);
-				}
-				return true;
-			}
+		// All actions from here on require media to be in a valid state
+		if (!isMediaPlayerStateValid) {
+			return false;
 		}
 
 		final String nextPrevBehavior = preferences.getString(
 				"next_prev_behavior", "queue");
 
-		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
-			if (nextPrevBehavior.equals("queue")) {
+		if (isKeyCodeInfo(keyCode)) {
+			if (mediaController.isShowing()) {
 				mediaController.hide();
-				if (isMediaPlayerStateValid && mediaPlayer.isPlaying()) {
-					mediaPlayer.stop();
-				}
-				videoPlayerActivity.finish();
-				return true;
+			} else {
+				mediaController.show(osdDelayTime);
 			}
-			final int skipTo;
-			if (isMediaPlayerStateValid) {
-				final int currentPosition = mediaPlayer.getCurrentPosition();
-				final int duration = mediaPlayer.getDuration();
+			return true;
+		}
 
-				if (nextPrevBehavior.endsWith("%")) {
-					final Integer percent = Integer.valueOf(nextPrevBehavior
-							.substring(0, nextPrevBehavior.length() - 1));
-					skipTo = currentPosition + duration * percent / 100;
-				} else {
-					skipTo = currentPosition
-							+ Integer.valueOf(nextPrevBehavior);
-				}
-				skipToOffset(skipTo);
-				return true;
+		if (isKeyCodePauseResume(keyCode)) {
+			if (mediaPlayer.isPlaying()) {
+				mediaPlayer.pause();
+				mediaController.show(osdDelayTime);
+				progressReportinHandler.removeCallbacks(progressRunnable);
+			} else {
+				mediaPlayer.start();
+				mediaController.hide();
+				progressReportinHandler.postDelayed(progressRunnable, 5000);
 			}
+			return true;
 		}
 
 		if (keyCode == KeyEvent.KEYCODE_T) {
@@ -148,9 +103,28 @@ public class VideoPlayerKeyCodeHandler extends BaseInjector {
 			return true;
 		}
 
-		// All actions from here on require media to be in a valid state
-		if (!isMediaPlayerStateValid) {
-			return false;
+		if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+			if (nextPrevBehavior.equals("queue")) {
+				mediaController.hide();
+				if (mediaPlayer.isPlaying()) {
+					mediaPlayer.stop();
+				}
+				videoPlayerActivity.finish();
+				return true;
+			}
+			final int skipTo;
+			final int currentPosition = mediaPlayer.getCurrentPosition();
+			final int duration = mediaPlayer.getDuration();
+
+			if (nextPrevBehavior.endsWith("%")) {
+				final Integer percent = Integer.valueOf(nextPrevBehavior
+						.substring(0, nextPrevBehavior.length() - 1));
+				skipTo = currentPosition + duration * percent / 100;
+			} else {
+				skipTo = currentPosition + Integer.valueOf(nextPrevBehavior);
+			}
+			skipToOffset(skipTo);
+			return true;
 		}
 
 		try {
@@ -231,12 +205,8 @@ public class VideoPlayerKeyCodeHandler extends BaseInjector {
 				|| keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
 				|| keyCode == KeyEvent.KEYCODE_P
 				|| keyCode == KeyEvent.KEYCODE_SPACE
-				|| keyCode == KeyEvent.KEYCODE_BUTTON_A;
-	}
-
-	protected boolean isKeyCodePlay(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
-				|| keyCode == KeyEvent.KEYCODE_BUTTON_A;
+				|| keyCode == KeyEvent.KEYCODE_BUTTON_A
+				|| keyCode == KeyEvent.KEYCODE_MEDIA_PLAY;
 	}
 
 	protected boolean isKeyCodeInfo(int keyCode) {
