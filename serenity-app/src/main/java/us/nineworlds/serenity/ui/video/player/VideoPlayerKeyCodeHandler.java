@@ -188,7 +188,6 @@ public class VideoPlayerKeyCodeHandler extends BaseInjector {
 	protected boolean isKeyCodeSkipBack(int keyCode) {
 		return keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
 				|| keyCode == KeyEvent.KEYCODE_R
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
 				|| keyCode == KeyEvent.KEYCODE_BUTTON_L1
 				|| keyCode == KeyEvent.KEYCODE_BUTTON_L2;
 	}
@@ -217,52 +216,42 @@ public class VideoPlayerKeyCodeHandler extends BaseInjector {
 	}
 
 	protected boolean isSkipByPercentage(int keyCode) {
+		int duration = mediaPlayer.getDuration();
 		if (keyCode == KeyEvent.KEYCODE_1) {
-			int duration = mediaPlayer.getDuration();
-			int newPos = Math.round(duration * 0.10f);
-			skipToPercentage(newPos);
+			skipByPercentage(duration, 0.10f);
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_2) {
-			int duration = mediaPlayer.getDuration();
-			int newPos = Math.round(duration * 0.20f);
-			skipToPercentage(newPos);
+			skipByPercentage(duration, 0.20f);
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_3) {
-			int duration = mediaPlayer.getDuration();
-			int newPos = Math.round(duration * 0.30f);
-			skipToPercentage(newPos);
+			skipByPercentage(duration, 0.30f);
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_4) {
-			int duration = mediaPlayer.getDuration();
-			int newPos = Math.round(duration * 0.40f);
-			skipToPercentage(newPos);
+			skipByPercentage(duration, 0.40f);
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_5) {
-			int duration = mediaPlayer.getDuration();
-			int newPos = Math.round(duration * 0.50f);
-			skipToPercentage(newPos);
+			skipByPercentage(duration, 0.50f);
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_6) {
-			int duration = mediaPlayer.getDuration();
-			int newPos = Math.round(duration * 0.60f);
-			skipToPercentage(newPos);
+			skipByPercentage(duration, 0.60f);
+			return true;
+		}
+
+		if (keyCode == KeyEvent.KEYCODE_7) {
+			skipByPercentage(duration, 0.70f);
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_8) {
-			int duration = mediaPlayer.getDuration();
-			int newPos = Math.round(duration * 0.80f);
-			skipToPercentage(newPos);
+			skipByPercentage(duration, 0.80f);
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_9) {
-			int duration = mediaPlayer.getDuration();
-			int newPos = Math.round(duration * 0.90f);
-			skipToPercentage(newPos);
+			skipByPercentage(duration, 0.90f);
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_0) {
@@ -272,9 +261,11 @@ public class VideoPlayerKeyCodeHandler extends BaseInjector {
 		return false;
 	}
 
-	/**
-	 * @param newPos
-	 */
+	protected void skipByPercentage(int duration, float percentage) {
+		int newPos = Math.round(duration * percentage);
+		skipToPercentage(newPos);
+	}
+
 	protected void skipToPercentage(int newPos) {
 		mediaPlayer.seekTo(newPos);
 		if (!mediaController.isShowing()) {
@@ -282,7 +273,7 @@ public class VideoPlayerKeyCodeHandler extends BaseInjector {
 		}
 	}
 
-	private void skipToOffset(int skipOffset) {
+	protected void skipToOffset(int skipOffset) {
 		int duration = mediaPlayer.getDuration();
 		if (skipOffset > duration) {
 			skipOffset = duration - 1;

@@ -330,6 +330,261 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 		ANDROID.assertThat(timeOfDay).isVisible();
 	}
 
+	@Test
+	public void handlesKeyCodeMediaPreviousWhenUsingPercentage() {
+		doReturn("10%").when(mockPreferences).getString(
+				eq("next_prev_behavior"), anyString());
+		doNothing().when(mockMediaPlayer).seekTo(anyInt());
+		doReturn(10).when(mockMediaPlayer).getCurrentPosition();
+		doReturn(100).when(mockMediaPlayer).getDuration();
+
+		boolean result = keyCodeHandler.onKeyDown(
+				KeyEvent.KEYCODE_MEDIA_PREVIOUS, null, true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).seekTo(0);
+	}
+
+	@Test
+	public void handlesKeyCodeMediaPreviousWhenUsingDuration() {
+		doReturn("2000").when(mockPreferences).getString(
+				eq("next_prev_behavior"), anyString());
+		doNothing().when(mockMediaPlayer).seekTo(anyInt());
+		doReturn(9000).when(mockMediaPlayer).getCurrentPosition();
+		doReturn(10000).when(mockMediaPlayer).getDuration();
+
+		boolean result = keyCodeHandler.onKeyDown(
+				KeyEvent.KEYCODE_MEDIA_PREVIOUS, null, true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).seekTo(7000);
+	}
+
+	@Test
+	public void handlesKeyCodeMediaFastForwardReceived() {
+		doReturn("0").when(mockPreferences).getString(eq("skip_forward_time"),
+				anyString());
+		doNothing().when(mockMediaPlayer).seekTo(anyInt());
+		boolean result = keyCodeHandler.onKeyDown(
+				KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, null, true);
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void handlesKeyCodeFReceivedSkipsForward() {
+		doReturn("0").when(mockPreferences).getString(eq("skip_forward_time"),
+				anyString());
+		doNothing().when(mockMediaPlayer).seekTo(anyInt());
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_F, null,
+				true);
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void handlesKeyCodeButtonR1ReceivedSkipsForward() {
+		doReturn("0").when(mockPreferences).getString(eq("skip_forward_time"),
+				anyString());
+		doNothing().when(mockMediaPlayer).seekTo(anyInt());
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_BUTTON_R1,
+				null, true);
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void handlesKeyCodeButtonR2ReceivedSkipsForward() {
+		doReturn("0").when(mockPreferences).getString(eq("skip_forward_time"),
+				anyString());
+		doNothing().when(mockMediaPlayer).seekTo(anyInt());
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_BUTTON_R2,
+				null, true);
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void handlesKeyCodeMediaRewindSkipsBack() {
+		doReturn("0").when(mockPreferences).getString(eq("skip_backward_time"),
+				anyString());
+		doNothing().when(mockMediaPlayer).seekTo(anyInt());
+		boolean result = keyCodeHandler.onKeyDown(
+				KeyEvent.KEYCODE_MEDIA_REWIND, null, true);
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void handlesKeyCodeRSkipsBack() {
+		doReturn("0").when(mockPreferences).getString(eq("skip_backward_time"),
+				anyString());
+		doNothing().when(mockMediaPlayer).seekTo(anyInt());
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_R, null,
+				true);
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void handlesKeyCodeButtonL1SkipsBack() {
+		doReturn("0").when(mockPreferences).getString(eq("skip_backward_time"),
+				anyString());
+		doNothing().when(mockMediaPlayer).seekTo(anyInt());
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_BUTTON_L1,
+				null, true);
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void handlesKeyCodeButtonL2SkipsBack() {
+		doReturn("0").when(mockPreferences).getString(eq("skip_backward_time"),
+				anyString());
+		doNothing().when(mockMediaPlayer).seekTo(anyInt());
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_BUTTON_L2,
+				null, true);
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void handlesKeyCodeMediaStopPausesCurrentlyPlayingVideo() {
+		doReturn(true).when(mockMediaPlayer).isPlaying();
+		doNothing().when(mockMediaPlayer).pause();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_MEDIA_STOP,
+				null, true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).pause();
+	}
+
+	@Test
+	public void handlesKeyCodeMediaStopPausesCurrentlyPlayingVideoWhenMediaControllerNotShowingShowsMediaController() {
+		doReturn(true).when(mockMediaPlayer).isPlaying();
+		doNothing().when(mockMediaPlayer).pause();
+		doReturn(false).when(spyMediaController).isShowing();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_MEDIA_STOP,
+				null, true);
+		assertThat(result).isTrue();
+		verify(spyMediaController).show(anyInt());
+	}
+
+	@Test
+	public void handlesKeyCodeMediaStopWhenMediaControllerShowing() {
+		doReturn(true).when(mockMediaPlayer).isPlaying();
+		doNothing().when(mockMediaPlayer).pause();
+		doReturn(true).when(spyMediaController).isShowing();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_MEDIA_STOP,
+				null, true);
+		assertThat(result).isTrue();
+		verify(spyMediaController, times(0)).show(anyInt());
+	}
+
+	@Test
+	public void handlesKeyCodeMediaStopWhenMediaControllerIsNotPlaying() {
+		doReturn(false).when(mockMediaPlayer).isPlaying();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_MEDIA_STOP,
+				null, true);
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void handlesKeyCodeSPausesCurrentlyPlayingVideo() {
+		doReturn(true).when(mockMediaPlayer).isPlaying();
+		doNothing().when(mockMediaPlayer).pause();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_S, null,
+				true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).pause();
+	}
+
+	@Test
+	public void handlesKeyCode1ForSkipByPercentage() {
+		doReturn(1000).when(mockMediaPlayer).getDuration();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_1, null,
+				true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).seekTo(100);
+	}
+
+	@Test
+	public void handlesKeyCode2ForSkipByPercentage() {
+		doReturn(1000).when(mockMediaPlayer).getDuration();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_2, null,
+				true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).seekTo(200);
+	}
+
+	@Test
+	public void handlesKeyCode3ForSkipByPercentage() {
+		doReturn(1000).when(mockMediaPlayer).getDuration();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_3, null,
+				true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).seekTo(300);
+	}
+
+	@Test
+	public void handlesKeyCode4ForSkipByPercentage() {
+		doReturn(1000).when(mockMediaPlayer).getDuration();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_4, null,
+				true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).seekTo(400);
+	}
+
+	@Test
+	public void handlesKeyCode5ForSkipByPercentage() {
+		doReturn(1000).when(mockMediaPlayer).getDuration();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_5, null,
+				true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).seekTo(500);
+	}
+
+	@Test
+	public void handlesKeyCode6ForSkipByPercentage() {
+		doReturn(1000).when(mockMediaPlayer).getDuration();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_6, null,
+				true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).seekTo(600);
+	}
+
+	@Test
+	public void handlesKeyCode7ForSkipByPercentage() {
+		doReturn(1000).when(mockMediaPlayer).getDuration();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_7, null,
+				true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).seekTo(700);
+	}
+
+	@Test
+	public void handlesKeyCode8ForSkipByPercentage() {
+		doReturn(1000).when(mockMediaPlayer).getDuration();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_8, null,
+				true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).seekTo(800);
+	}
+
+	@Test
+	public void handlesKeyCode9ForSkipByPercentage() {
+		doReturn(1000).when(mockMediaPlayer).getDuration();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_9, null,
+				true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).seekTo(900);
+	}
+
+	@Test
+	public void handlesKeyCode0RestartsAtBeginning() {
+		doReturn(1000).when(mockMediaPlayer).getDuration();
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_0, null,
+				true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).seekTo(0);
+	}
+
+	@Test
+	public void unhandledKeyCodeReturnsFalse() {
+		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_AT, null,
+				true);
+		assertThat(result).isFalse();
+	}
+
 	private void demandBySeconds(String seconds, int currentPosition) {
 		doReturn(true).when(mockMediaPlayer).isPlaying();
 		doReturn(seconds).when(mockPreferences).getString(
@@ -388,8 +643,8 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 	}
 
 	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-		VideoPlayerKeyCodeHandlerTest.class,
-		VideoPlayerKeyCodeHandler.class })
+			VideoPlayerKeyCodeHandlerTest.class,
+			VideoPlayerKeyCodeHandler.class })
 	public class TestModule {
 
 		@Provides
