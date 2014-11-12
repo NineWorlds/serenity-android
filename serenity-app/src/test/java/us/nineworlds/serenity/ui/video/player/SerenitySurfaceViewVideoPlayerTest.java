@@ -24,8 +24,10 @@
 package us.nineworlds.serenity.ui.video.player;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
@@ -45,8 +47,13 @@ import us.nineworlds.serenity.SerenityRobolectricTestRunner;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity.VideoPlayerOnCompletionListener;
+import android.media.MediaPlayer;
+import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
+import android.view.SurfaceHolder;
 import dagger.Module;
+import dagger.Provides;
 
 @RunWith(SerenityRobolectricTestRunner.class)
 @Config(emulateSdk = 18)
@@ -54,6 +61,16 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 
 	@Mock
 	KeyEvent keyEvent;
+
+	@Mock
+	MediaPlayer mockMediaPlayer;
+
+	@Mock
+	SurfaceHolder mockSurfaceHolder;
+
+	@Mock
+	ActionBar mockActionBar;
+
 	SerenitySurfaceViewVideoActivity activity;
 
 	@Override
@@ -64,7 +81,7 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 		ShadowApplication shadowApplication = Robolectric
 				.shadowOf(Robolectric.application);
 		shadowApplication
-				.declareActionUnbindable("com.google.android.gms.analytics.service.START");
+		.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 		activity = Robolectric
 				.buildActivity(SerenitySurfaceViewVideoActivity.class).create()
 				.get();
@@ -91,6 +108,60 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 		assertThat(result).isTrue();
 	}
 
+	@Test
+	public void surfaceCreatedSetsMediaPlayerOnPreparedListener() {
+		doNothing().when(mockMediaPlayer).setOnPreparedListener(
+				any(VideoPlayerPrepareListener.class));
+
+		activity.surfaceCreated(mockSurfaceHolder);
+
+		verify(mockMediaPlayer).setOnPreparedListener(
+				any(VideoPlayerPrepareListener.class));
+	}
+
+	@Test
+	public void surfaceCreatedSetsMediaPlayerOnCompletionListener() {
+		doNothing().when(mockMediaPlayer).setOnCompletionListener(
+				any(VideoPlayerOnCompletionListener.class));
+
+		activity.surfaceCreated(mockSurfaceHolder);
+
+		verify(mockMediaPlayer).setOnCompletionListener(
+				any(VideoPlayerOnCompletionListener.class));
+	}
+
+	@Test
+	public void surfaceCreatedCallsMediaPlayerPrepareAsync() {
+		activity.surfaceCreated(mockSurfaceHolder);
+		verify(mockMediaPlayer).prepareAsync();
+	}
+
+	@Test
+	public void surfaceDestroyedReleasesMediaPlayerWhenNotInReleaseState() {
+		activity.setMediaplayerReleased(false);
+		activity.surfaceDestroyed(mockSurfaceHolder);
+		assertThat(activity.isMediaplayerReleased()).isTrue();
+		verify(mockMediaPlayer).release();
+	}
+
+	@Test
+	public void surfaceDestroyedDoesNotReleaseMediaPlayerWhenInReleaseState() {
+		activity.setMediaplayerReleased(true);
+		activity.surfaceDestroyed(mockSurfaceHolder);
+		assertThat(activity.isMediaplayerReleased()).isTrue();
+		verify(mockMediaPlayer, times(0)).release();
+	}
+
+	@Test
+	@Config(reportSdk = 13)
+	public void onCreateHidesCallsGetSupportActionBar() {
+		activity = Robolectric
+				.buildActivity(SerenitySurfaceViewVideoActivity.class).create()
+				.get();
+		ActionBar actionBar = activity.getSupportActionBar();
+		assertThat(actionBar.isShowing()).isFalse();
+	}
+
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
@@ -99,10 +170,15 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 		return modules;
 	}
 
-	@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, injects = {
-			SerenitySurfaceViewVideoActivity.class,
-			SerenitySurfaceViewVideoPlayerTest.class })
+	@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, overrides = true, injects = {
+		SerenitySurfaceViewVideoActivity.class,
+		SerenitySurfaceViewVideoPlayerTest.class })
 	public class TestModule {
+
+		@Provides
+		MediaPlayer providesMediaPlayer() {
+			return mockMediaPlayer;
+		}
 
 	}
 

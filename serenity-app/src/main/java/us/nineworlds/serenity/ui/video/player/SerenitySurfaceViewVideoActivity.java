@@ -78,7 +78,7 @@ import android.widget.Toast;
  *
  */
 public class SerenitySurfaceViewVideoActivity extends SerenityActivity
-implements SurfaceHolder.Callback {
+		implements SurfaceHolder.Callback {
 
 	@Inject
 	@ForVideoQueue
@@ -150,7 +150,7 @@ implements SurfaceHolder.Callback {
 					mediaController, surfaceView, resumeOffset, autoResume,
 					aspectRatio, progressReportinghandler, progressRunnable));
 			mediaPlayer
-			.setOnCompletionListener(new VideoPlayerOnCompletionListener());
+					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
 			mediaPlayer.prepareAsync();
 
 		} catch (Exception ex) {
@@ -190,8 +190,6 @@ implements SurfaceHolder.Callback {
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 		videoActivityView = findViewById(R.id.video_playeback);
 		timeOfDayView = findViewById(R.id.time_of_day);
-
-		DisplayUtils.overscanCompensation(this, videoActivityView);
 
 		surfaceView.setKeepScreenOn(true);
 		SurfaceHolder holder = surfaceView.getHolder();
@@ -386,36 +384,6 @@ implements SurfaceHolder.Callback {
 		return false;
 	}
 
-	/**
-	 * A task that updates the progress position of a video while it is being
-	 * played.
-	 *
-	 * @author dcarver
-	 *
-	 */
-	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-				String offset = Integer.valueOf(
-						mediaPlayer.getCurrentPosition()).toString();
-				if (video != null) {
-					if (video.isWatched()) {
-						plexFactory.setWatched(videoId);
-						plexFactory.setProgress(videoId, "0");
-					} else {
-						plexFactory.setProgress(videoId, offset);
-					}
-					video.setResumeOffset(Integer.valueOf(offset));
-				} else {
-					plexFactory.setProgress(videoId, offset);
-				}
-			}
-			return null;
-		}
-	}
-
 	@Override
 	protected void createSideMenu() {
 
@@ -464,7 +432,7 @@ implements SurfaceHolder.Callback {
 	}
 
 	protected class VideoPlayerOnCompletionListener implements
-	OnCompletionListener {
+			OnCompletionListener {
 
 		@Override
 		public void onCompletion(MediaPlayer mp) {
@@ -596,7 +564,7 @@ implements SurfaceHolder.Callback {
 			}
 			if (subtitlesPlaybackEnabled) {
 				subtitleDisplayHandler
-				.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+						.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
 			}
 
 		}
@@ -632,6 +600,36 @@ implements SurfaceHolder.Callback {
 						"Illegalstate exception occurred durring progress update. No further updates will occur.",
 						ex);
 			}
+		}
+	}
+
+	/**
+	 * A task that updates the progress position of a video while it is being
+	 * played.
+	 *
+	 * @author dcarver
+	 *
+	 */
+	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+				String offset = Integer.valueOf(
+						mediaPlayer.getCurrentPosition()).toString();
+				if (video != null) {
+					if (video.isWatched()) {
+						plexFactory.setWatched(videoId);
+						plexFactory.setProgress(videoId, "0");
+					} else {
+						plexFactory.setProgress(videoId, offset);
+					}
+					video.setResumeOffset(Integer.valueOf(offset));
+				} else {
+					plexFactory.setProgress(videoId, offset);
+				}
+			}
+			return null;
 		}
 	}
 
