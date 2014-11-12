@@ -103,6 +103,9 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 
 		MockitoAnnotations.initMocks(this);
 		super.setUp();
+
+		doReturn("5000").when(mockPreferences).getString("osd_display_time",
+				"5000");
 		mockActivity = Robolectric
 				.buildActivity(SerenitySurfaceViewVideoActivity.class).create()
 				.get();
@@ -643,8 +646,8 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 	}
 
 	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-			VideoPlayerKeyCodeHandlerTest.class,
-			VideoPlayerKeyCodeHandler.class })
+		VideoPlayerKeyCodeHandlerTest.class,
+		VideoPlayerKeyCodeHandler.class })
 	public class TestModule {
 
 		@Provides

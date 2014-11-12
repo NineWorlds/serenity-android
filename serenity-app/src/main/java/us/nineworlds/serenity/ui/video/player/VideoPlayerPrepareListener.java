@@ -57,7 +57,7 @@ import android.widget.RelativeLayout;
  *
  */
 public class VideoPlayerPrepareListener extends BaseInjector implements
-		OnPreparedListener {
+OnPreparedListener {
 
 	private final Context context;
 	private final SurfaceView surfaceView;
@@ -102,7 +102,7 @@ public class VideoPlayerPrepareListener extends BaseInjector implements
 		surfaceView.setLayoutParams(lp);
 		mediaController.setEnabled(true);
 
-		if (resumeOffset == 0 && !videoQueue.isEmpty()) {
+		if (!videoQueue.isEmpty() || resumeOffset == 0) {
 			mediaPlayer.start();
 			setMetaData();
 			return;
@@ -122,39 +122,39 @@ public class VideoPlayerPrepareListener extends BaseInjector implements
 
 		alertDialogBuilder.setTitle(R.string.resume_video);
 		alertDialogBuilder
-				.setMessage(
-						resources.getText(R.string.resume_the_video_from_)
-								+ TimeUtil.formatDuration(resumeOffset)
-								+ resources.getText(R.string._or_restart_))
+		.setMessage(
+				resources.getText(R.string.resume_the_video_from_)
+				+ TimeUtil.formatDuration(resumeOffset)
+				+ resources.getText(R.string._or_restart_))
 				.setCancelable(false)
 				.setPositiveButton(R.string.resume,
 						new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								if (!mediaPlayer.isPlaying()) {
-									mediaPlayer.start();
-								}
-								mediaPlayer.seekTo(resumeOffset);
-								setMetaData();
-							}
-						})
+					@Override
+					public void onClick(DialogInterface dialog,
+							int which) {
+						if (!mediaPlayer.isPlaying()) {
+							mediaPlayer.start();
+						}
+						mediaPlayer.seekTo(resumeOffset);
+						setMetaData();
+					}
+				})
 				.setNegativeButton(R.string.restart,
 						new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								mediaPlayer.start();
-								setMetaData();
-							}
-						});
+					@Override
+					public void onClick(DialogInterface dialog,
+							int which) {
+						mediaPlayer.start();
+						setMetaData();
+					}
+				});
 
 		alertDialogBuilder.create();
 		AlertDialog dialog = alertDialogBuilder.show();
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-				.requestFocusFromTouch();
+		.requestFocusFromTouch();
 	}
 
 	protected void setMetaData() {
