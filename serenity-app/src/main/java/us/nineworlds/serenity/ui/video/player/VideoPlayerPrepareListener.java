@@ -38,10 +38,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.view.SurfaceView;
 import android.widget.RelativeLayout;
 
@@ -63,11 +63,15 @@ public class VideoPlayerPrepareListener extends BaseInjector implements
 	private final SurfaceView surfaceView;
 	private final MediaController mediaController;
 	private final int resumeOffset;
-	private final MediaPlayer mediaPlayer;
 	private final String plexAspectRatio;
 	private final boolean autoResume;
 	private final Handler progressReportingHandler;
 	private final Runnable progressRunnable;
+
+	private MediaPlayer mediaPlayer;
+
+	@Inject
+	protected Resources resources;
 
 	@Inject
 	protected SharedPreferences preferences;
@@ -76,14 +80,12 @@ public class VideoPlayerPrepareListener extends BaseInjector implements
 	@ForVideoQueue
 	protected LinkedList<VideoContentInfo> videoQueue;
 
-	public VideoPlayerPrepareListener(Context c, MediaPlayer mp,
-			MediaController con, SurfaceView v, int resumeOffset,
-			boolean autoResume, String aspectRatio, Handler progress,
-			Runnable progresrun) {
-		context = c;
+	public VideoPlayerPrepareListener(MediaController con, SurfaceView v,
+			int resumeOffset, boolean autoResume, String aspectRatio,
+			Handler progress, Runnable progresrun) {
 		mediaController = con;
 		surfaceView = v;
-		mediaPlayer = mp;
+		context = v.getContext();
 		this.autoResume = autoResume;
 		progressReportingHandler = progress;
 		progressRunnable = progresrun;
@@ -93,66 +95,66 @@ public class VideoPlayerPrepareListener extends BaseInjector implements
 
 	@Override
 	public void onPrepared(MediaPlayer mp) {
+		mediaPlayer = mp;
 
 		android.view.ViewGroup.LayoutParams lp = setupAspectRatio(surfaceView,
 				plexAspectRatio);
 		surfaceView.setLayoutParams(lp);
 		mediaController.setEnabled(true);
 
-		if (resumeOffset > 0 && videoQueue.isEmpty()) {
-			if (autoResume) {
-				if (!mediaPlayer.isPlaying()) {
-					mediaPlayer.start();
-				}
-				mediaPlayer.seekTo(resumeOffset);
-				setMetaData();
-			} else {
-				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-						context, android.R.style.Theme_Holo_Dialog);
-
-				alertDialogBuilder.setTitle(R.string.resume_video);
-				alertDialogBuilder
-				.setMessage(
-						context.getResources().getText(
-								R.string.resume_the_video_from_)
-								+ TimeUtil.formatDuration(resumeOffset)
-								+ context.getResources().getText(
-										R.string._or_restart_))
-										.setCancelable(false)
-										.setPositiveButton(R.string.resume,
-												new DialogInterface.OnClickListener() {
-
-											@Override
-											public void onClick(DialogInterface dialog,
-													int which) {
-												if (!mediaPlayer.isPlaying()) {
-													mediaPlayer.start();
-												}
-												mediaPlayer.seekTo(resumeOffset);
-												setMetaData();
-											}
-										})
-										.setNegativeButton(R.string.restart,
-												new DialogInterface.OnClickListener() {
-
-											@Override
-											public void onClick(DialogInterface dialog,
-													int which) {
-												mediaPlayer.start();
-												setMetaData();
-											}
-										});
-
-				alertDialogBuilder.create();
-				AlertDialog dialog = alertDialogBuilder.show();
-				dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-				.requestFocusFromTouch();
-				return;
-			}
-		} else {
+		if (resumeOffset == 0 && !videoQueue.isEmpty()) {
 			mediaPlayer.start();
 			setMetaData();
+			return;
 		}
+
+		if (autoResume) {
+			if (!mediaPlayer.isPlaying()) {
+				mediaPlayer.start();
+			}
+			mediaPlayer.seekTo(resumeOffset);
+			setMetaData();
+			return;
+		}
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				context, android.R.style.Theme_Holo_Dialog);
+
+		alertDialogBuilder.setTitle(R.string.resume_video);
+		alertDialogBuilder
+				.setMessage(
+						resources.getText(R.string.resume_the_video_from_)
+								+ TimeUtil.formatDuration(resumeOffset)
+								+ resources.getText(R.string._or_restart_))
+				.setCancelable(false)
+				.setPositiveButton(R.string.resume,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								if (!mediaPlayer.isPlaying()) {
+									mediaPlayer.start();
+								}
+								mediaPlayer.seekTo(resumeOffset);
+								setMetaData();
+							}
+						})
+				.setNegativeButton(R.string.restart,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								mediaPlayer.start();
+								setMetaData();
+							}
+						});
+
+		alertDialogBuilder.create();
+		AlertDialog dialog = alertDialogBuilder.show();
+		dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+				.requestFocusFromTouch();
 	}
 
 	protected void setMetaData() {
@@ -167,20 +169,13 @@ public class VideoPlayerPrepareListener extends BaseInjector implements
 		}
 	}
 
-	/**
-	 * Setup the aspect ratio for the SurfaceView
-	 *
-	 * @return
-	 */
 	protected android.view.ViewGroup.LayoutParams setupAspectRatio(
 			SurfaceView surfaceView, String plexAspectRatio) {
 		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) surfaceView
 				.getLayoutParams();
 
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		boolean preferPlexAspectRatio = prefs.getBoolean("plex_aspect_ratio",
-				false);
+		boolean preferPlexAspectRatio = preferences.getBoolean(
+				"plex_aspect_ratio", false);
 
 		int surfaceViewHeight = surfaceView.getHeight();
 		int surfaceViewWidth = surfaceView.getWidth();

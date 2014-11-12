@@ -79,7 +79,7 @@ import android.widget.Toast;
  *
  */
 public class SerenitySurfaceViewVideoActivity extends SerenityActivity
-		implements SurfaceHolder.Callback {
+implements SurfaceHolder.Callback {
 
 	@Inject
 	@ForVideoQueue
@@ -145,7 +145,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			if (subtitlesPlaybackEnabled) {
 				subtitleDisplayHandler
-						.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+				.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
 			}
 
 		}
@@ -200,11 +200,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			mediaPlayer.setDisplay(holder);
 			mediaPlayer.setDataSource(videoURL);
 			mediaPlayer.setOnPreparedListener(new VideoPlayerPrepareListener(
-					this, mediaPlayer, mediaController, surfaceView,
-					resumeOffset, autoResume, aspectRatio,
-					progressReportinghandler, progressRunnable));
+					mediaController, surfaceView, resumeOffset, autoResume,
+					aspectRatio, progressReportinghandler, progressRunnable));
 			mediaPlayer
-					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
+			.setOnCompletionListener(new VideoPlayerOnCompletionListener());
 			mediaPlayer.prepareAsync();
 
 		} catch (Exception ex) {
@@ -520,7 +519,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	}
 
 	protected class VideoPlayerOnCompletionListener implements
-			OnCompletionListener {
+	OnCompletionListener {
 
 		@Override
 		public void onCompletion(MediaPlayer mp) {
