@@ -78,7 +78,7 @@ import android.widget.Toast;
  *
  */
 public class SerenitySurfaceViewVideoActivity extends SerenityActivity
-		implements SurfaceHolder.Callback {
+implements SurfaceHolder.Callback {
 
 	@Inject
 	@ForVideoQueue
@@ -89,6 +89,9 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	@Inject
 	protected SharedPreferences prefs;
+
+	@Inject
+	protected MediaPlayer mediaPlayer;
 
 	private final Handler subtitleDisplayHandler = new Handler();
 	private final Runnable subtitle = new SubtitleRunnable();
@@ -105,7 +108,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 
 	private VideoPlayerKeyCodeHandler videoPlayerKeyCodeHandler;
 
-	private MediaPlayer mediaPlayer;
 	private String videoURL;
 	private SurfaceView surfaceView;
 	private View videoActivityView;
@@ -125,6 +127,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private String subtitleInputEncoding = null;
 	private boolean autoResume;
 
+	public boolean isMediaplayerReleased() {
+		return mediaplayer_released;
+	}
+
+	public void setMediaplayerReleased(boolean mediaplayer_released) {
+		this.mediaplayer_released = mediaplayer_released;
+	}
+
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
@@ -140,7 +150,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 					mediaController, surfaceView, resumeOffset, autoResume,
 					aspectRatio, progressReportinghandler, progressRunnable));
 			mediaPlayer
-					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
+			.setOnCompletionListener(new VideoPlayerOnCompletionListener());
 			mediaPlayer.prepareAsync();
 
 		} catch (Exception ex) {
@@ -176,7 +186,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		osdDelayTime = Integer.parseInt(prefs.getString("osd_display_time",
 				"5000"));
 
-		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setOnErrorListener(new SerenityOnErrorListener());
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 		videoActivityView = findViewById(R.id.video_playeback);
@@ -455,7 +464,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	}
 
 	protected class VideoPlayerOnCompletionListener implements
-			OnCompletionListener {
+	OnCompletionListener {
 
 		@Override
 		public void onCompletion(MediaPlayer mp) {
@@ -587,7 +596,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			if (subtitlesPlaybackEnabled) {
 				subtitleDisplayHandler
-						.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+				.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
 			}
 
 		}
