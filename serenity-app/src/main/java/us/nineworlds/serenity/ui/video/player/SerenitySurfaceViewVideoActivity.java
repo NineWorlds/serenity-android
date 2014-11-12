@@ -104,8 +104,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	int playbackPos = 0;
 
 	static final String TAG = "SerenitySurfaceViewVideoActivity";
-	private int osdDelayTime = 5000; // Sixteen seconds
-
+	private int osdDelayTime = 5000;
 	private VideoPlayerKeyCodeHandler videoPlayerKeyCodeHandler;
 
 	private String videoURL;
@@ -200,9 +199,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
 
 		retrieveIntentExtras();
-		videoPlayerKeyCodeHandler = new VideoPlayerKeyCodeHandler(mediaPlayer,
-				mediaController, osdDelayTime, progressReportinghandler,
-				progressRunnable, timeOfDayView, this);
+		videoPlayerKeyCodeHandler = createVideoPlayerKeyCodeHandler();
+	}
+
+	protected VideoPlayerKeyCodeHandler createVideoPlayerKeyCodeHandler() {
+		return new VideoPlayerKeyCodeHandler(mediaPlayer, mediaController,
+				osdDelayTime, progressReportinghandler, progressRunnable,
+				timeOfDayView, this);
 	}
 
 	protected void retrieveIntentExtras() {
@@ -221,7 +224,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		new SubtitleAsyncTask().execute();
 	}
 
-	private void playbackFromIntent(Bundle extras) {
+	@Deprecated
+	protected void playbackFromIntent(Bundle extras) {
 		videoURL = extras.getString("videoUrl");
 		if (videoURL == null) {
 			videoURL = extras.getString("encodedvideoUrl");
@@ -249,7 +253,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		initMediaController(mediaMetaData);
 	}
 
-	private void playBackFromVideoQueue() {
+	protected void playBackFromVideoQueue() {
 		if (videoQueue.isEmpty()) {
 			return;
 		}
@@ -366,16 +370,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		return super.onKeyDown(keyCode, event);
 	}
 
-	/**
-	 * @param newPos
-	 */
-	protected void skipToPercentage(int newPos) {
-		mediaPlayer.seekTo(newPos);
-		if (!mediaController.isShowing()) {
-			mediaController.show(osdDelayTime);
-		}
-	}
-
 	protected boolean isMediaPlayerStateValid() {
 		if (mediaPlayer != null && mediaplayer_error_state == false
 				&& mediaplayer_released == false) {
@@ -405,7 +399,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 	}
 
-	private void visibleInBackground() {
+	protected void visibleInBackground() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			boolean success = requestVisibleBehind(true);
 		}
@@ -631,6 +625,19 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			}
 			return null;
 		}
+	}
+
+	public void setVideoPlayerKeyCodeHandler(
+			VideoPlayerKeyCodeHandler videoPlayerKeyCodeHandler) {
+		this.videoPlayerKeyCodeHandler = videoPlayerKeyCodeHandler;
+	}
+
+	protected void setSerenityMediaController(MediaController mediaController) {
+		this.mediaController = mediaController;
+	}
+
+	protected void setPlaybackPos(int playbackPos) {
+		this.playbackPos = playbackPos;
 	}
 
 }
