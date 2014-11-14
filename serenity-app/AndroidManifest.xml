@@ -93,7 +93,11 @@
         
         <provider android:authorities="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider" android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider">
         </provider>
-
+        <provider android:authorities="us.nineworlds.serenity.core.SerenityRecommendationContentProvider"
+                  android:name="us.nineworlds.serenity.core.SerenityRecommendationContentProvider"
+                  android:exported="true">
+        </provider>
+        
         <receiver android:name="us.nineworlds.serenity.StartupBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

@@ -1,12 +1,14 @@
 package us.nineworlds.serenity.core.services;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.inject.Inject;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.RecommendationBuilder;
+import us.nineworlds.serenity.core.SerenityRecommendationContentProvider;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
@@ -69,9 +71,13 @@ public class RecommendAsyncTask extends AsyncTask {
 			summary = video.getTagLine();
 		}
 
-		Notification notification = builder.setContext(context)
-				.setBackground(backgroundURL).setTitle(video.getTitle())
-				.setImage(video.getImageURL())
+		Notification notification = builder
+				.setContext(context)
+				.setBackgroundContentUri(
+						SerenityRecommendationContentProvider.CONTENT_URI
+								+ URLEncoder.encode(video.getBackgroundURL(),
+								"UTF-8")).setBackground(backgroundURL)
+								.setTitle(video.getTitle()).setImage(video.getImageURL())
 				.setId(Integer.parseInt(video.id())).setPriority(priority)
 				.setDescription(summary).setColor(color)
 				.setSmallIcon(R.drawable.androidtv_icon_mono).setIntent(intent)
@@ -108,13 +114,18 @@ public class RecommendAsyncTask extends AsyncTask {
 		}
 		summary = summary.trim();
 
-		Notification notification = builder.setContext(context)
-				.setBackground(backgroundURL).setTitle(title)
-				.setImage(video.getImageURL())
-				.setId(Integer.parseInt(video.id())).setPriority(priority)
-				.setDescription(summary).setColor(color)
-				.setSmallIcon(R.drawable.androidtv_icon_mono).setIntent(intent)
-				.build();
+		Notification notification = builder
+				.setContext(context)
+				.setBackground(backgroundURL)
+				.setBackgroundContentUri(
+						SerenityRecommendationContentProvider.CONTENT_URI
+								+ URLEncoder.encode(video.getBackgroundURL(),
+								"UTF-8")).setTitle(title)
+								.setImage(video.getImageURL())
+								.setId(Integer.parseInt(video.id())).setPriority(priority)
+								.setDescription(summary).setColor(color)
+								.setSmallIcon(R.drawable.androidtv_icon_mono).setIntent(intent)
+								.build();
 		return notification;
 	}
 
