@@ -53,6 +53,9 @@ public class SerenityApplication extends Application {
 	@Inject
 	AndroidHelper androidHelper;
 
+	@Inject
+	SharedPreferences preferences;
+
 	private static boolean enableTracking = true;
 	private static List<PendingDownload> pendingDownloads;
 
@@ -122,7 +125,7 @@ public class SerenityApplication extends Application {
 		if (uncaughtExceptionHandler instanceof ExceptionReporter) {
 			ExceptionReporter exceptionReporter = (ExceptionReporter) uncaughtExceptionHandler;
 			exceptionReporter
-					.setExceptionParser(new AnalyticsExceptionParser());
+			.setExceptionParser(new AnalyticsExceptionParser());
 		}
 	}
 
@@ -132,10 +135,10 @@ public class SerenityApplication extends Application {
 		init();
 
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		SharedPreferences.Editor editor = prefs.edit();
-		if (androidHelper.isGoogleTV(this) || androidHelper.isAndroidTV(this)) {
+		SharedPreferences.Editor editor = preferences.edit();
+		if (androidHelper.isGoogleTV() || androidHelper.isAndroidTV()
+				|| androidHelper.isAmazonFireTV()
+				|| androidHelper.isLeanbackSupported()) {
 			editor.putBoolean("serenity_tv_mode", true);
 			editor.apply();
 		}

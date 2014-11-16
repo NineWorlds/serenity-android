@@ -88,7 +88,7 @@ public class StartupBroadcastReceiver extends InjectingBroadcastReceiver {
 			return;
 		}
 
-		if (!androidHelper.isLeanbackSupported(context)) {
+		if (!androidHelper.isLeanbackSupported()) {
 			return;
 		}
 

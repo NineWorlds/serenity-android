@@ -58,7 +58,7 @@ public class OnDeckRecommendations extends BaseInjector {
 			return false;
 		}
 
-		if (!androidHelper.isLeanbackSupported(context)) {
+		if (!androidHelper.isLeanbackSupported()) {
 			return false;
 		}
 

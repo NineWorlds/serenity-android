@@ -176,7 +176,8 @@ import dagger.Provides;
 	AndroidTV.class, RecommendAsyncTask.class, RecommendationBuilder.class,
 	TVShowPosterImageGalleryAdapter.class, VideoPlayerKeyCodeHandler.class,
 	SerenitySurfaceViewVideoActivity.class, OkHttpStack.class,
-	SerenityRecommendationContentProvider.class, OKHttpImageLoader.class }, library = true)
+	SerenityRecommendationContentProvider.class, OKHttpImageLoader.class,
+	AndroidHelper.class }, library = true)
 public class AndroidModule {
 
 	private final Context applicationContext;
@@ -210,7 +211,7 @@ public class AndroidModule {
 	@Provides
 	@Singleton
 	AndroidHelper providesAndroidHelper() {
-		return new AndroidHelper(applicationContext);
+		return new AndroidHelper();
 	}
 
 	@Provides

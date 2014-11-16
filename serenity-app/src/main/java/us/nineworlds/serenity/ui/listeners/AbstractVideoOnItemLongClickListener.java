@@ -164,12 +164,12 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 
 		if (info.hasTrailer()
 				&& YouTubeInitializationResult.SUCCESS
-						.equals(YouTubeApiServiceUtil
-								.isYouTubeApiServiceAvailable(context))) {
+				.equals(YouTubeApiServiceUtil
+						.isYouTubeApiServiceAvailable(context))) {
 			options.add(createMenuItemPlayTrailer());
 		}
 
-		if (!androidHelper.isGoogleTV(context) && hasSupportedCaster()) {
+		if (!androidHelper.isGoogleTV() && hasSupportedCaster()) {
 			options.add(createMenuItemFling());
 		}
 		return options;
@@ -247,7 +247,7 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 	protected void performWatchedToggle() {
 		View posterLayout = (View) vciv.getParent();
 		posterLayout.findViewById(R.id.posterInprogressIndicator)
-				.setVisibility(View.INVISIBLE);
+		.setVisibility(View.INVISIBLE);
 
 		toggleGraphicIndicators(posterLayout);
 		info.toggleWatchStatus();
@@ -308,20 +308,20 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 			final SenderAppAdapter adapter = new SenderAppAdapter(context);
 
 			new AlertDialog.Builder(context)
-					.setTitle(R.string.cast_fling_with_)
-					.setCancelable(true)
-					.setSingleChoiceItems(adapter, -1,
-							new DialogInterface.OnClickListener() {
+			.setTitle(R.string.cast_fling_with_)
+			.setCancelable(true)
+			.setSingleChoiceItems(adapter, -1,
+					new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									adapter.respondToClick(which, "", body);
+				@Override
+				public void onClick(DialogInterface dialog,
+						int which) {
+					adapter.respondToClick(which, "", body);
 
-									dialog.dismiss();
+					dialog.dismiss();
 
-								}
-							}).show();
+				}
+			}).show();
 		}
 	}
 
@@ -395,7 +395,7 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 			Toast.makeText(
 					context,
 					context.getString(R.string.starting_download_of_)
-							+ info.getTitle(), Toast.LENGTH_LONG).show();
+					+ info.getTitle(), Toast.LENGTH_LONG).show();
 		} catch (Exception ex) {
 			Log.e(getClass().getName(), "Unable to download " + info.getTitle()
 					+ "." + info.getContainer());
@@ -411,7 +411,7 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 						Toast.makeText(
 								context,
 								context.getString(R.string.chosen_directory_)
-										+ chosenDir, Toast.LENGTH_LONG).show();
+								+ chosenDir, Toast.LENGTH_LONG).show();
 						startDownload(chosenDir);
 					}
 				});

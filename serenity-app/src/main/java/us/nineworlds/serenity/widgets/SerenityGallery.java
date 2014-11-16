@@ -64,7 +64,7 @@ import android.widget.Scroller;
  * @attr ref android.R.styleable#Gallery_gravity
  */
 public class SerenityGallery extends SerenityAbsSpinner implements
-GestureDetector.OnGestureListener {
+		GestureDetector.OnGestureListener {
 
 	@Inject
 	protected AndroidHelper androidHelper;
@@ -607,8 +607,7 @@ GestureDetector.OnGestureListener {
 		// Ideally need to calculate the center of the selected Image and scroll
 		// to there
 		// instead of scrolling back if using something like a Google TV.
-		if (scrollAmount != 0
-				&& !androidHelper.isGoogleTV(mSelectedChild.getContext())) {
+		if (scrollAmount != 0 && !androidHelper.isGoogleTV()) {
 			mFlingRunnable.startUsingDistance(scrollAmount);
 		} else {
 			onFinishedMovement();
@@ -1023,7 +1022,7 @@ GestureDetector.OnGestureListener {
 			break;
 		case Gravity.CENTER_VERTICAL:
 			int availableSpace = myHeight - mSpinnerPadding.bottom
-			- mSpinnerPadding.top - childHeight;
+					- mSpinnerPadding.top - childHeight;
 			childTop = mSpinnerPadding.top + (availableSpace / 2);
 			break;
 		case Gravity.BOTTOM:
