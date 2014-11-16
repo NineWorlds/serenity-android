@@ -31,7 +31,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 
-import us.nineworlds.serenity.SerenityApplication;
+import javax.inject.Inject;
+
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -66,6 +68,14 @@ public class SerenityRecommendationContentProvider extends ContentProvider {
 	public static String AUTHORITY = "us.nineworlds.serenity.core.SerenityRecommendationContentProvider";
 	public static String CONTENT_URI = "content://" + AUTHORITY + "/";
 
+	@Inject
+	OkHttpClient httpClient;
+
+	public SerenityRecommendationContentProvider() {
+		super();
+		SerenityObjectGraph.getInstance().inject(this);
+	}
+
 	@Override
 	public boolean onCreate() {
 		return true;
@@ -83,7 +93,6 @@ public class SerenityRecommendationContentProvider extends ContentProvider {
 					"UTF-8");
 			pipe = ParcelFileDescriptor.createPipe();
 
-			OkHttpClient httpClient = SerenityApplication.getOkHttpClient();
 			HttpURLConnection connection = httpClient.open(new URL(decodedUrl));
 
 			new TransferThread(connection.getInputStream(),

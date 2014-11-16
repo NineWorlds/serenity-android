@@ -41,7 +41,6 @@ import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.squareup.okhttp.OkHttpClient;
 
 /**
  * Global manager for the Serenity application
@@ -58,8 +57,6 @@ public class SerenityApplication extends Application {
 	private static List<PendingDownload> pendingDownloads;
 
 	public static final int PROGRESS = 0xDEADBEEF;
-
-	private static final OkHttpClient okHttpClient = new OkHttpClient();
 
 	public enum TrackerName {
 		APP_TRACKER, // Tracker used only in this app.
@@ -83,10 +80,6 @@ public class SerenityApplication extends Application {
 			mTrackers.put(TrackerName.GLOBAL_TRACKER, t);
 		}
 		return mTrackers.get(TrackerName.GLOBAL_TRACKER);
-	}
-
-	public static OkHttpClient getOkHttpClient() {
-		return okHttpClient;
 	}
 
 	public static List<PendingDownload> getPendingDownloads() {
@@ -129,7 +122,7 @@ public class SerenityApplication extends Application {
 		if (uncaughtExceptionHandler instanceof ExceptionReporter) {
 			ExceptionReporter exceptionReporter = (ExceptionReporter) uncaughtExceptionHandler;
 			exceptionReporter
-			.setExceptionParser(new AnalyticsExceptionParser());
+					.setExceptionParser(new AnalyticsExceptionParser());
 		}
 	}
 
@@ -157,9 +150,9 @@ public class SerenityApplication extends Application {
 			Tracker tracker = getTracker();
 			if (tracker != null) {
 				tracker.send(new HitBuilders.EventBuilder()
-						.setCategory("Devices")
-						.setAction("Started Application").setLabel(deviceModel)
-						.build());
+				.setCategory("Devices")
+				.setAction("Started Application").setLabel(deviceModel)
+				.build());
 			}
 		}
 	}

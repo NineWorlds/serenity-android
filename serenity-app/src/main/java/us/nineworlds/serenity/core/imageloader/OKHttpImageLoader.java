@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -28,6 +28,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import javax.inject.Inject;
+
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import android.content.Context;
 
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
@@ -38,28 +41,28 @@ import com.squareup.okhttp.OkHttpClient;
  *
  */
 public class OKHttpImageLoader extends BaseImageDownloader {
+	@Inject
+	protected OkHttpClient client;
 
-	private OkHttpClient client;
-	/**
-	 * @param context
-	 */
-	public OKHttpImageLoader(Context context, OkHttpClient client) {
+	public OKHttpImageLoader(Context context) {
 		super(context);
-		this.client = client;
+		SerenityObjectGraph.getInstance().inject(this);
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.nostra13.universalimageloader.core.download.BaseImageDownloader#getStreamFromNetwork(java.lang.String, java.lang.Object)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.nostra13.universalimageloader.core.download.BaseImageDownloader#
+	 * getStreamFromNetwork(java.lang.String, java.lang.Object)
 	 */
 	@Override
 	protected InputStream getStreamFromNetwork(String imageUri, Object extra)
 			throws IOException {
 		HttpURLConnection connection = client.open(new URL(imageUri));
-		
+
 		InputStream in = null;
 		in = connection.getInputStream();
 		return in;
 	}
-
 
 }
