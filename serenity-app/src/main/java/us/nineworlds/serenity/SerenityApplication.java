@@ -41,7 +41,6 @@ import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.squareup.okhttp.OkHttpClient;
 
 /**
  * Global manager for the Serenity application
@@ -54,12 +53,13 @@ public class SerenityApplication extends Application {
 	@Inject
 	AndroidHelper androidHelper;
 
+	@Inject
+	SharedPreferences preferences;
+
 	private static boolean enableTracking = true;
 	private static List<PendingDownload> pendingDownloads;
 
 	public static final int PROGRESS = 0xDEADBEEF;
-
-	private static final OkHttpClient okHttpClient = new OkHttpClient();
 
 	public enum TrackerName {
 		APP_TRACKER, // Tracker used only in this app.
@@ -83,10 +83,6 @@ public class SerenityApplication extends Application {
 			mTrackers.put(TrackerName.GLOBAL_TRACKER, t);
 		}
 		return mTrackers.get(TrackerName.GLOBAL_TRACKER);
-	}
-
-	public static OkHttpClient getOkHttpClient() {
-		return okHttpClient;
 	}
 
 	public static List<PendingDownload> getPendingDownloads() {
@@ -139,10 +135,10 @@ public class SerenityApplication extends Application {
 		init();
 
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		SharedPreferences.Editor editor = prefs.edit();
-		if (androidHelper.isGoogleTV(this) || androidHelper.isAndroidTV(this)) {
+		SharedPreferences.Editor editor = preferences.edit();
+		if (androidHelper.isGoogleTV() || androidHelper.isAndroidTV()
+				|| androidHelper.isAmazonFireTV()
+				|| androidHelper.isLeanbackSupported()) {
 			editor.putBoolean("serenity_tv_mode", true);
 			editor.apply();
 		}
@@ -157,9 +153,9 @@ public class SerenityApplication extends Application {
 			Tracker tracker = getTracker();
 			if (tracker != null) {
 				tracker.send(new HitBuilders.EventBuilder()
-						.setCategory("Devices")
-						.setAction("Started Application").setLabel(deviceModel)
-						.build());
+				.setCategory("Devices")
+				.setAction("Started Application").setLabel(deviceModel)
+				.build());
 			}
 		}
 	}

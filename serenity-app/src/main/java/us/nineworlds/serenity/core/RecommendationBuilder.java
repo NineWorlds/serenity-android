@@ -20,6 +20,7 @@ import javax.inject.Inject;
 
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.injection.BaseInjector;
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -35,6 +36,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 /*
  * This class builds recommendations as notifications with videos as inputs.
  */
+@SuppressLint("InlinedApi")
 public class RecommendationBuilder extends BaseInjector {
 
 	@Inject
@@ -42,7 +44,6 @@ public class RecommendationBuilder extends BaseInjector {
 
 	private static final String TAG = "RecommendationBuilder";
 
-	public static final String EXTRA_BACKGROUND_IMAGE_URL = "background_image_url";
 	private Context mContext;
 	private NotificationManager mNotificationManager;
 
@@ -53,10 +54,16 @@ public class RecommendationBuilder extends BaseInjector {
 	private String mDescription;
 	private String mImageUri;
 	private String mBackgroundUri;
+	private String backgroundContentUri;
 	private PendingIntent mIntent;
 	private int cardColor;
 
 	public RecommendationBuilder() {
+	}
+
+	public RecommendationBuilder setBackgroundContentUri(String contentUri) {
+		backgroundContentUri = contentUri;
+		return this;
 	}
 
 	public RecommendationBuilder setContext(Context context) {
@@ -120,7 +127,11 @@ public class RecommendationBuilder extends BaseInjector {
 
 		Bundle extras = new Bundle();
 		if (mBackgroundUri != null) {
-			extras.putString(EXTRA_BACKGROUND_IMAGE_URL, mBackgroundUri);
+			if (backgroundContentUri != null) {
+				extras.putString(Notification.EXTRA_BACKGROUND_IMAGE_URI,
+						backgroundContentUri);
+
+			}
 		}
 
 		ImageLoader imageLoader = serenityImageLoader.getImageLoader();
@@ -131,13 +142,11 @@ public class RecommendationBuilder extends BaseInjector {
 				mContext);
 
 		builder = builder.setContentTitle(mTitle).setContentText(mDescription)
-				.setPriority(mPriority).setOngoing(true)
-				.setLocalOnly(true)
+				.setPriority(mPriority).setOngoing(true).setLocalOnly(true)
 				.setColor(cardColor)
-				// .setCategory(Notification.CATEGORY_RECOMMENDATION)
-				.setCategory("recommendation").setLargeIcon(image)
-				.setSmallIcon(mSmallIcon).setContentIntent(mIntent)
-				.setExtras(extras);
+				.setCategory(Notification.CATEGORY_RECOMMENDATION)
+				.setLargeIcon(image).setSmallIcon(mSmallIcon)
+				.setContentIntent(mIntent).setExtras(extras);
 
 		Notification notification = new NotificationCompat.BigPictureStyle(
 				builder).build();

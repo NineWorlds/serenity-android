@@ -108,8 +108,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 
 		Button settingsButton = (Button) findViewById(R.id.drawer_settings);
 		settingsButton
-				.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
-						drawerLayout));
+		.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
+				drawerLayout));
 
 		populateMenuOptions();
 	}
@@ -117,9 +117,9 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 	protected void populateMenuOptions() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem
-		.add(new MenuDrawerItemImpl(getResources().getString(
-				R.string.options_main_about),
-				R.drawable.ic_action_action_about));
+				.add(new MenuDrawerItemImpl(getResources().getString(
+						R.string.options_main_about),
+						R.drawable.ic_action_action_about));
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
 				R.string.options_main_clear_image_cache),
 				R.drawable.ic_action_content_remove));
@@ -133,8 +133,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		}
 
 		drawerList
-		.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
-				drawerLayout));
+				.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
+						drawerLayout));
 	}
 
 	protected void discoverPlexServers() {
@@ -159,8 +159,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 			ServerConfig config = (ServerConfig) ServerConfig.getInstance();
 			if (config != null) {
 				preferences
-				.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
-						.getInstance()).getServerConfigChangeListener());
+						.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
+								.getInstance()).getServerConfigChangeListener());
 			}
 		}
 	}
@@ -211,7 +211,9 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		boolean initialRun = preferences.getBoolean("serenity_first_run", true);
 		if (initialRun) {
 			SharedPreferences.Editor editor = preferences.edit();
-			if (!androidHelper.isGoogleTV(this)) {
+			if (!androidHelper.isGoogleTV() && !androidHelper.isAndroidTV()
+					&& !androidHelper.isAmazonFireTV()
+					&& !androidHelper.isLeanbackSupported()) {
 				editor.putBoolean("external_player", true);
 			}
 			editor.putBoolean("serenity_first_run", false);

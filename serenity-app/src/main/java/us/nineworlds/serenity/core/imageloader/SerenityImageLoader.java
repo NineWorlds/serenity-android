@@ -28,7 +28,6 @@ import javax.inject.Singleton;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.injection.ApplicationContext;
 import us.nineworlds.serenity.injection.BaseInjector;
 import android.content.Context;
@@ -124,13 +123,10 @@ public class SerenityImageLoader extends BaseInjector {
 		setStaticImageOptions();
 
 		ImageLoaderConfiguration imageLoaderconfig = new ImageLoaderConfiguration.Builder(
-				context)
-				.threadPoolSize(5)
+				context).threadPoolSize(5)
 				.tasksProcessingOrder(QueueProcessingType.FIFO)
-				.imageDownloader(
-						new OKHttpImageLoader(context, SerenityApplication
-						.getOkHttpClient()))
-						.defaultDisplayImageOptions(defaultOptions).build();
+				.imageDownloader(new OKHttpImageLoader(context))
+				.defaultDisplayImageOptions(defaultOptions).build();
 
 		imageLoader = ImageLoader.getInstance();
 		imageLoader.init(imageLoaderconfig);

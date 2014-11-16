@@ -34,6 +34,9 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
+
+import com.squareup.okhttp.OkHttpClient;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -64,6 +67,12 @@ public class SerenityModule {
 	@Singleton
 	SerenityImageLoader providesSerenityImageLoader() {
 		return new SerenityImageLoader();
+	}
+
+	@Provides
+	@Singleton
+	OkHttpClient providesOkHttpClient() {
+		return new OkHttpClient();
 	}
 
 }

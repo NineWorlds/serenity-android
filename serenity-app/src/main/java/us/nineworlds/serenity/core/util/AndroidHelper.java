@@ -23,40 +23,45 @@
 
 package us.nineworlds.serenity.core.util;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import us.nineworlds.serenity.injection.ApplicationContext;
+import us.nineworlds.serenity.injection.BaseInjector;
 import android.content.Context;
 import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
 @Singleton
-public class AndroidHelper {
+public class AndroidHelper extends BaseInjector {
 
 	private static final String COM_GOOGLE_ANDROID_TV = "com.google.android.tv";
 
+	@Inject
+	@ApplicationContext
 	Context context;
 
-	public AndroidHelper(Context context) {
-		this.context = context;
-	}
-
-	public boolean isAndroidTV(Context context) {
+	public boolean isAndroidTV() {
 		final PackageManager pm = context.getPackageManager();
 
-		if (Build.MODEL.startsWith("AFT")
-				&& Build.MANUFACTURER.equals("Amazon")) {
+		if (isAmazonFireTV()) {
 			return true;
 		}
 		return pm.hasSystemFeature("android.hardware.type.television");
 	}
 
-	public boolean isLeanbackSupported(Context context) {
+	public boolean isAmazonFireTV() {
+		return Build.MODEL.startsWith("AFT")
+				&& Build.MANUFACTURER.equals("Amazon");
+	}
+
+	public boolean isLeanbackSupported() {
 		final PackageManager pm = context.getPackageManager();
 		return pm.hasSystemFeature("android.software.leanback");
 	}
 
-	public boolean isGoogleTV(Context context) {
+	public boolean isGoogleTV() {
 		final PackageManager pm = context.getPackageManager();
 		FeatureInfo[] features = pm.getSystemAvailableFeatures();
 		return pm.hasSystemFeature(COM_GOOGLE_ANDROID_TV);

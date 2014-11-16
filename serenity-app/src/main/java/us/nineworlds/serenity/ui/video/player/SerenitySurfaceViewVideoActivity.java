@@ -60,7 +60,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -88,16 +87,26 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	@Inject
 	protected PlexappFactory plexFactory;
 
+	@Inject
+	protected SharedPreferences prefs;
+
+	@Inject
+	protected MediaPlayer mediaPlayer;
+
+	private final Handler subtitleDisplayHandler = new Handler();
+	private final Runnable subtitle = new SubtitleRunnable();
+
+	private final Handler progressReportinghandler = new Handler();
+	private final Runnable progressRunnable = new ProgressRunnable();
+
 	static final int PROGRESS_UPDATE_DELAY = 5000;
 	static final int SUBTITLE_DISPLAY_CHECK = 100;
 	int playbackPos = 0;
 
 	static final String TAG = "SerenitySurfaceViewVideoActivity";
-	private int osdDelayTime = 5000; // Sixteen seconds
-
+	private int osdDelayTime = 5000;
 	private VideoPlayerKeyCodeHandler videoPlayerKeyCodeHandler;
 
-	private MediaPlayer mediaPlayer;
 	private String videoURL;
 	private SurfaceView surfaceView;
 	private View videoActivityView;
@@ -116,77 +125,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	private boolean subtitlesPlaybackEnabled = true;
 	private String subtitleInputEncoding = null;
 	private boolean autoResume;
-	private SharedPreferences prefs;
-	private final Handler subtitleDisplayHandler = new Handler();
-	private final Runnable subtitle = new Runnable() {
-		@Override
-		public void run() {
-			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-				if (hasSubtitles()) {
-					int currentPos = mediaPlayer.getCurrentPosition();
-					Collection<Caption> subtitles = subtitleTimedText.captions
-							.values();
-					for (Caption caption : subtitles) {
-						if (currentPos >= caption.start.getMilliseconds()
-								&& currentPos <= caption.end.getMilliseconds()) {
-							onTimedText(caption);
-							break;
-						} else if (currentPos > caption.end.getMilliseconds()) {
-							onTimedText(null);
-						}
-					}
-				} else {
-					subtitlesPlaybackEnabled = false;
-					Toast.makeText(
-							getApplicationContext(),
-							"Invalid or Missing Subtitle. Subtitle playback disabled.",
-							Toast.LENGTH_LONG).show();
-				}
-			}
-			if (subtitlesPlaybackEnabled) {
-				subtitleDisplayHandler
-						.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
-			}
 
-		}
+	public boolean isMediaplayerReleased() {
+		return mediaplayer_released;
+	}
 
-		/**
-		 * @return
-		 */
-		protected boolean hasSubtitles() {
-			return subtitleTimedText != null
-					&& subtitleTimedText.captions != null;
-		};
-	};
-
-	private final Handler progressReportinghandler = new Handler();
-	private final Runnable progressRunnable = new Runnable() {
-
-		@Override
-		public void run() {
-			try {
-				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-					float percentage = Float.valueOf(mediaPlayer
-							.getCurrentPosition())
-							/ Float.valueOf(mediaPlayer.getDuration());
-					playbackPos = mediaPlayer.getCurrentPosition();
-					if (percentage <= 90.f) {
-						new UpdateProgressRequest().execute();
-						progressReportinghandler.postDelayed(this,
-								PROGRESS_UPDATE_DELAY); // Update progress every
-						// 5
-						// seconds
-					} else {
-						new WatchedVideoAsyncTask().execute(videoId);
-					}
-				}
-			} catch (IllegalStateException ex) {
-				Log.w(getClass().getName(),
-						"Illegalstate exception occurred durring progress update. No further updates will occur.",
-						ex);
-			}
-		};
-	};
+	public void setMediaplayerReleased(boolean mediaplayer_released) {
+		this.mediaplayer_released = mediaplayer_released;
+	}
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -200,9 +146,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 			mediaPlayer.setDisplay(holder);
 			mediaPlayer.setDataSource(videoURL);
 			mediaPlayer.setOnPreparedListener(new VideoPlayerPrepareListener(
-					this, mediaPlayer, mediaController, surfaceView,
-					resumeOffset, autoResume, aspectRatio,
-					progressReportinghandler, progressRunnable));
+					mediaController, surfaceView, resumeOffset, autoResume,
+					aspectRatio, progressReportinghandler, progressRunnable));
 			mediaPlayer
 					.setOnCompletionListener(new VideoPlayerOnCompletionListener());
 			mediaPlayer.prepareAsync();
@@ -237,17 +182,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 	 * Initialize the mediaplayer and mediacontroller.
 	 */
 	protected void init() {
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		osdDelayTime = Integer.parseInt(prefs.getString("osd_display_time",
 				"5000"));
 
-		mediaPlayer = new MediaPlayer();
 		mediaPlayer.setOnErrorListener(new SerenityOnErrorListener());
 		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
 		videoActivityView = findViewById(R.id.video_playeback);
 		timeOfDayView = findViewById(R.id.time_of_day);
-
-		DisplayUtils.overscanCompensation(this, videoActivityView);
 
 		surfaceView.setKeepScreenOn(true);
 		SurfaceHolder holder = surfaceView.getHolder();
@@ -258,9 +199,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		timeOfDayView.setVisibility(showTimeOfDay ? View.VISIBLE : View.GONE);
 
 		retrieveIntentExtras();
-		videoPlayerKeyCodeHandler = new VideoPlayerKeyCodeHandler(mediaPlayer,
-				mediaController, osdDelayTime, progressReportinghandler,
-				progressRunnable, timeOfDayView, this);
+		videoPlayerKeyCodeHandler = createVideoPlayerKeyCodeHandler();
+	}
+
+	protected VideoPlayerKeyCodeHandler createVideoPlayerKeyCodeHandler() {
+		return new VideoPlayerKeyCodeHandler(mediaPlayer, mediaController,
+				osdDelayTime, progressReportinghandler, progressRunnable,
+				timeOfDayView, this);
 	}
 
 	protected void retrieveIntentExtras() {
@@ -279,7 +224,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		new SubtitleAsyncTask().execute();
 	}
 
-	private void playbackFromIntent(Bundle extras) {
+	@Deprecated
+	protected void playbackFromIntent(Bundle extras) {
 		videoURL = extras.getString("videoUrl");
 		if (videoURL == null) {
 			videoURL = extras.getString("encodedvideoUrl");
@@ -307,7 +253,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		initMediaController(mediaMetaData);
 	}
 
-	private void playBackFromVideoQueue() {
+	protected void playBackFromVideoQueue() {
 		if (videoQueue.isEmpty()) {
 			return;
 		}
@@ -424,52 +370,12 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		return super.onKeyDown(keyCode, event);
 	}
 
-	/**
-	 * @param newPos
-	 */
-	protected void skipToPercentage(int newPos) {
-		mediaPlayer.seekTo(newPos);
-		if (!mediaController.isShowing()) {
-			mediaController.show(osdDelayTime);
-		}
-	}
-
 	protected boolean isMediaPlayerStateValid() {
 		if (mediaPlayer != null && mediaplayer_error_state == false
 				&& mediaplayer_released == false) {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * A task that updates the progress position of a video while it is being
-	 * played.
-	 *
-	 * @author dcarver
-	 *
-	 */
-	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-				String offset = Integer.valueOf(
-						mediaPlayer.getCurrentPosition()).toString();
-				if (video != null) {
-					if (video.isWatched()) {
-						plexFactory.setWatched(videoId);
-						plexFactory.setProgress(videoId, "0");
-					} else {
-						plexFactory.setProgress(videoId, offset);
-					}
-					video.setResumeOffset(Integer.valueOf(offset));
-				} else {
-					plexFactory.setProgress(videoId, offset);
-				}
-			}
-			return null;
-		}
 	}
 
 	@Override
@@ -493,7 +399,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 	}
 
-	private void visibleInBackground() {
+	protected void visibleInBackground() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			boolean success = requestVisibleBehind(true);
 		}
@@ -623,4 +529,115 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		}
 
 	}
+
+	protected class SubtitleRunnable implements Runnable {
+
+		@Override
+		public void run() {
+			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+				if (hasSubtitles()) {
+					int currentPos = mediaPlayer.getCurrentPosition();
+					Collection<Caption> subtitles = subtitleTimedText.captions
+							.values();
+					for (Caption caption : subtitles) {
+						if (currentPos >= caption.start.getMilliseconds()
+								&& currentPos <= caption.end.getMilliseconds()) {
+							onTimedText(caption);
+							break;
+						} else if (currentPos > caption.end.getMilliseconds()) {
+							onTimedText(null);
+						}
+					}
+				} else {
+					subtitlesPlaybackEnabled = false;
+					Toast.makeText(
+							getApplicationContext(),
+							"Invalid or Missing Subtitle. Subtitle playback disabled.",
+							Toast.LENGTH_LONG).show();
+				}
+			}
+			if (subtitlesPlaybackEnabled) {
+				subtitleDisplayHandler
+						.postDelayed(this, SUBTITLE_DISPLAY_CHECK);
+			}
+
+		}
+
+		protected boolean hasSubtitles() {
+			return subtitleTimedText != null
+					&& subtitleTimedText.captions != null;
+		}
+	}
+
+	protected class ProgressRunnable implements Runnable {
+
+		@Override
+		public void run() {
+			try {
+				if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+					float percentage = Float.valueOf(mediaPlayer
+							.getCurrentPosition())
+							/ Float.valueOf(mediaPlayer.getDuration());
+					playbackPos = mediaPlayer.getCurrentPosition();
+					if (percentage <= 90.f) {
+						new UpdateProgressRequest().execute();
+						progressReportinghandler.postDelayed(this,
+								PROGRESS_UPDATE_DELAY); // Update progress every
+						// 5
+						// seconds
+					} else {
+						new WatchedVideoAsyncTask().execute(videoId);
+					}
+				}
+			} catch (IllegalStateException ex) {
+				Log.w(getClass().getName(),
+						"Illegalstate exception occurred durring progress update. No further updates will occur.",
+						ex);
+			}
+		}
+	}
+
+	/**
+	 * A task that updates the progress position of a video while it is being
+	 * played.
+	 *
+	 * @author dcarver
+	 *
+	 */
+	protected class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
+				String offset = Integer.valueOf(
+						mediaPlayer.getCurrentPosition()).toString();
+				if (video != null) {
+					if (video.isWatched()) {
+						plexFactory.setWatched(videoId);
+						plexFactory.setProgress(videoId, "0");
+					} else {
+						plexFactory.setProgress(videoId, offset);
+					}
+					video.setResumeOffset(Integer.valueOf(offset));
+				} else {
+					plexFactory.setProgress(videoId, offset);
+				}
+			}
+			return null;
+		}
+	}
+
+	public void setVideoPlayerKeyCodeHandler(
+			VideoPlayerKeyCodeHandler videoPlayerKeyCodeHandler) {
+		this.videoPlayerKeyCodeHandler = videoPlayerKeyCodeHandler;
+	}
+
+	protected void setSerenityMediaController(MediaController mediaController) {
+		this.mediaController = mediaController;
+	}
+
+	protected void setPlaybackPos(int playbackPos) {
+		this.playbackPos = playbackPos;
+	}
+
 }
