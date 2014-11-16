@@ -26,6 +26,8 @@ package us.nineworlds.serenity.ui.browser.tv;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -44,7 +46,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -61,7 +62,12 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	private boolean restarted_state = false;
 	private static String key;
 	private Handler categoryHandler;
-	private SharedPreferences preferences;
+
+	@Inject
+	protected SharedPreferences preferences;
+
+	@Inject
+	protected TVCategoryState categoryState;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +76,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		actionBar.setDisplayShowCustomEnabled(true);
 
 		key = getIntent().getExtras().getString("key");
-		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 		createSideMenu();
 
@@ -115,9 +120,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		SerenityGallery gallery = (SerenityGallery) findViewById(R.id.tvShowBannerGallery);
 
-		boolean menuKeySlidingMenu = PreferenceManager
-				.getDefaultSharedPreferences(this).getBoolean(
-						"remote_control_menu", true);
+		boolean menuKeySlidingMenu = preferences.getBoolean(
+				"remote_control_menu", true);
 		if (menuKeySlidingMenu) {
 			if (keyCode == KeyEvent.KEYCODE_MENU) {
 				if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
@@ -246,18 +250,13 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 						drawerLayout));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
-	 */
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		if (savedCategory != null) {
-			outState.putString("savedCategory", savedCategory);
-		}
+		// if (savedCategory != null) {
+		// outState.putString("savedCategory", savedCategory);
+		// }
 	}
 
 	/*
@@ -268,14 +267,14 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	@Override
 	public void finish() {
 		super.finish();
-		savedCategory = null;
+		// savedCategory = null;
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 
-		savedCategory = savedInstanceState.getString("savedCategory");
+		// savedCategory = savedInstanceState.getString("savedCategory");
 	}
 
 	private class CategoryHandler extends Handler {
@@ -287,11 +286,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 			this.context = context;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see android.os.Handler#handleMessage(android.os.Message)
-		 */
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.obj != null) {
@@ -311,14 +305,14 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 			categorySpinner.setVisibility(View.VISIBLE);
 			categorySpinner.setAdapter(spinnerArrayAdapter);
 
-			if (savedCategory == null) {
+			if (categoryState.getCategory() == null) {
 				categorySpinner
-						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+						.setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(
 								"all", key));
 			} else {
 				categorySpinner
-						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
-								savedCategory, key, false));
+						.setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(
+								categoryState.getCategory(), key, false));
 
 			}
 			categorySpinner.requestFocus();

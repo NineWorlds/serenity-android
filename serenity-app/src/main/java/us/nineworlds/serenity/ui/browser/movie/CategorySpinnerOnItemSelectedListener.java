@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -25,21 +25,20 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import java.util.List;
 
-import com.jess.ui.TwoWayGridView;
+import javax.inject.Inject;
 
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
-
-import us.nineworlds.serenity.R;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -53,12 +52,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.jess.ui.TwoWayGridView;
+
 /**
  * @author dcarver
- * 
+ *
  */
-public class CategorySpinnerOnItemSelectedListener implements
-		OnItemSelectedListener {
+public class CategorySpinnerOnItemSelectedListener extends BaseInjector
+		implements OnItemSelectedListener {
 
 	private String selected;
 	private static String key;
@@ -66,45 +67,50 @@ public class CategorySpinnerOnItemSelectedListener implements
 	private static SerenityMultiViewVideoActivity context;
 	private static String category;
 	private String savedInstanceCategory; // From a restarted activity
-	private Handler secondaryCategoryHandler;
-	private SharedPreferences prefs;
+	private final Handler secondaryCategoryHandler;
+
+	@Inject
+	protected SharedPreferences prefs;
+
+	@Inject
+	protected MovieSelectedCategoryState categoryState;
 
 	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
 			String ckey) {
+		super();
 		selected = defaultSelection;
 		key = ckey;
 		secondaryCategoryHandler = new SecondaryCategoryHandler();
 	}
-	
+
 	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
 			String ckey, boolean firstSelection) {
 		selected = defaultSelection;
 		key = ckey;
 		secondaryCategoryHandler = new SecondaryCategoryHandler();
 		savedInstanceCategory = defaultSelection;
-		this.firstSelection = firstSelection; 
+		this.firstSelection = firstSelection;
 	}
-	
 
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 		context = (SerenityMultiViewVideoActivity) view.getContext();
-		View bgLayout = context
-				.findViewById(R.id.movieBrowserBackgroundLayout);
+		View bgLayout = context.findViewById(R.id.movieBrowserBackgroundLayout);
 		if (prefs == null) {
 			prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		}
-		
+
 		CategoryInfo item = (CategoryInfo) viewAdapter
 				.getItemAtPosition(position);
-		
+
 		if (savedInstanceCategory != null) {
 			int savedInstancePosition = getSavedInstancePosition(viewAdapter);
-			item = (CategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
+			item = (CategoryInfo) viewAdapter
+					.getItemAtPosition(savedInstancePosition);
 			viewAdapter.setSelection(savedInstancePosition);
 			savedInstanceCategory = null;
-			if (item.getLevel() == 0) {			
+			if (item.getLevel() == 0) {
 				createGallery(item, bgLayout);
 			} else {
 				populateSecondaryCategory();
@@ -113,9 +119,9 @@ public class CategorySpinnerOnItemSelectedListener implements
 		}
 
 		if (firstSelection) {
-			
+
 			String filter = prefs.getString("serenity_category_filter", "all");
-			
+
 			int count = viewAdapter.getCount();
 			for (int i = 0; i < count; i++) {
 				CategoryInfo citem = (CategoryInfo) viewAdapter
@@ -127,7 +133,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 					continue;
 				}
 			}
-			
+
 			createGallery(item, bgLayout);
 
 			firstSelection = false;
@@ -140,7 +146,8 @@ public class CategorySpinnerOnItemSelectedListener implements
 
 		selected = item.getCategory();
 		category = item.getCategory();
-		context.setSavedCategory(selected);
+
+		categoryState.setCategory(selected);
 
 		Spinner secondarySpinner = (Spinner) context
 				.findViewById(R.id.categoryFilter2);
@@ -155,7 +162,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void populateSecondaryCategory() {
 		Messenger messenger = new Messenger(secondaryCategoryHandler);
@@ -166,7 +173,7 @@ public class CategorySpinnerOnItemSelectedListener implements
 		categoriesIntent.putExtra("MESSENGER", messenger);
 		context.startService(categoriesIntent);
 	}
-	
+
 	private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
 		int count = viewAdapter.getCount();
 		for (int i = 0; i < count; i++) {
@@ -184,21 +191,21 @@ public class CategorySpinnerOnItemSelectedListener implements
 	 * @param bgLayout
 	 */
 	protected void createGallery(CategoryInfo item, View bgLayout) {
-		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(context,
-				key, item.getCategory());
-		GalleryVideoOnItemClickListener onClick = new GalleryVideoOnItemClickListener(); 
+		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(
+				context, key, item.getCategory());
+		GalleryVideoOnItemClickListener onClick = new GalleryVideoOnItemClickListener();
 		GalleryVideoOnItemLongClickListener onLongClick = new GalleryVideoOnItemLongClickListener();
 		if (!context.isGridViewActive()) {
 			SerenityGallery posterGallery = (SerenityGallery) context
 					.findViewById(R.id.moviePosterGallery);
-			boolean scrollingAnimation = prefs.getBoolean("animation_gallery_scrolling", true);
+			boolean scrollingAnimation = prefs.getBoolean(
+					"animation_gallery_scrolling", true);
 			posterGallery.setAdapter(adapter);
 			posterGallery
-					.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(context));
-			posterGallery
-					.setOnItemClickListener(onClick);
-			posterGallery
-					.setOnItemLongClickListener(onLongClick);
+			.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
+							context));
+			posterGallery.setOnItemClickListener(onClick);
+			posterGallery.setOnItemLongClickListener(onLongClick);
 			posterGallery.setSpacing(25);
 			if (scrollingAnimation) {
 				posterGallery.setAnimationDuration(220);
@@ -212,10 +219,12 @@ public class CategorySpinnerOnItemSelectedListener implements
 			posterGallery.setDrawingCacheEnabled(true);
 			posterGallery.setUnselectedAlpha(0.75f);
 		} else {
-			TwoWayGridView gridView = (TwoWayGridView) context.findViewById(R.id.movieGridView);
+			TwoWayGridView gridView = (TwoWayGridView) context
+					.findViewById(R.id.movieGridView);
 			gridView.setAdapter(adapter);
 			gridView.setOnItemClickListener(new GridVideoOnItemClickListener());
-			gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener(bgLayout, context));
+			gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener(
+					bgLayout, context));
 			gridView.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
 		}
 	}
@@ -232,11 +241,12 @@ public class CategorySpinnerOnItemSelectedListener implements
 			List<SecondaryCategoryInfo> secondaryCategories = (List<SecondaryCategoryInfo>) msg.obj;
 
 			if (secondaryCategories == null || secondaryCategories.isEmpty()) {
-				Toast.makeText(context, R.string.no_entries_available_for_category_,
+				Toast.makeText(context,
+						R.string.no_entries_available_for_category_,
 						Toast.LENGTH_LONG).show();
 				return;
 			}
-						
+
 			Spinner secondarySpinner = (Spinner) context
 					.findViewById(R.id.categoryFilter2);
 			secondarySpinner.setVisibility(View.VISIBLE);
@@ -245,11 +255,11 @@ public class CategorySpinnerOnItemSelectedListener implements
 					context, R.layout.serenity_spinner_textview,
 					secondaryCategories);
 			spinnerSecArrayAdapter
-					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 			secondarySpinner.setAdapter(spinnerSecArrayAdapter);
 			secondarySpinner
-					.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
-							category, key));
+			.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
+					category, key));
 
 		}
 

@@ -33,6 +33,12 @@ import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.ForVideoQueue;
+import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
+import us.nineworlds.serenity.ui.browser.tv.TVCategoryState;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 import com.squareup.okhttp.OkHttpClient;
@@ -75,4 +81,35 @@ public class SerenityModule {
 		return new OkHttpClient();
 	}
 
+	@Provides
+	GalleryVideoOnItemClickListener providesGalleryVideoOnItemClickListener() {
+		return new GalleryVideoOnItemClickListener();
+	}
+
+	@Provides
+	GridVideoOnItemClickListener providesGridVideoOnItemClickListener() {
+		return new GridVideoOnItemClickListener();
+	}
+
+	@Provides
+	GalleryVideoOnItemLongClickListener providesGalleryVideoOnItemLongClickListener() {
+		return new GalleryVideoOnItemLongClickListener();
+	}
+
+	@Provides
+	GridVideoOnItemLongClickListener providesGridVideoOnItemLongClickListener() {
+		return new GridVideoOnItemLongClickListener();
+	}
+
+	@Provides
+	@Singleton
+	MovieSelectedCategoryState providesMovieSelectedCategoryState() {
+		return new MovieSelectedCategoryState();
+	}
+
+	@Provides
+	@Singleton
+	TVCategoryState providesTVCategoryState() {
+		return new TVCategoryState();
+	}
 }

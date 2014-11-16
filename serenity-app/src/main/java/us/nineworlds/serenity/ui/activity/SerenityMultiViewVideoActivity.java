@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -26,11 +26,10 @@ package us.nineworlds.serenity.ui.activity;
 import android.os.Bundle;
 
 /**
- * A activity that handles the indicator of whether toggling
- * between Grid and Detail view should occur.  Views
- * that need to support Detail and Grid view should extend
- * this view.
- * 
+ * A activity that handles the indicator of whether toggling between Grid and
+ * Detail view should occur. Views that need to support Detail and Grid view
+ * should extend this view.
+ *
  * @author dcarver
  *
  */
@@ -38,71 +37,56 @@ public abstract class SerenityMultiViewVideoActivity extends
 		SerenityVideoActivity {
 
 	protected boolean gridViewActive = false;
-	
-	protected boolean posterLayoutActive = false;
-	
-	protected String savedCategory;
 
-	protected String savedSelectedGenreCategory;
-	
+	protected boolean posterLayoutActive = false;
+
 	@Override
 	public void finish() {
 		super.finish();
-		savedCategory = null;
 	}
 
-    public boolean isGridViewActive() {
-    	return gridViewActive;
-    }
-    
-    /**
-     * Used to indicate whether posters or banners are shown.
-     * 
-     * @return
-     */
-    public boolean isPosterLayoutActive() {
-    	return posterLayoutActive;
-    }
-    
-    @Override
+	public boolean isGridViewActive() {
+		return gridViewActive;
+	}
+
+	/**
+	 * Used to indicate whether posters or banners are shown.
+	 *
+	 * @return
+	 */
+	public boolean isPosterLayoutActive() {
+		return posterLayoutActive;
+	}
+
+	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		
-		savedCategory = savedInstanceState.getString("savedCategory");
-		savedSelectedGenreCategory = savedInstanceState.getString("savedSelectedGenreCategory");
+
+		// savedCategory = savedInstanceState.getString("savedCategory");
+		// savedSelectedGenreCategory = savedInstanceState
+		// .getString("savedSelectedGenreCategory");
 	}
-    
-    @Override
+
+	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		
-		if (savedCategory != null) {
-			outState.putString("savedCategory", savedCategory );
-		}
-		if (savedSelectedGenreCategory != null) {
-			outState.putString("savedSelectedGenreCategory", savedSelectedGenreCategory);
-			
-		}
+
+		// if (savedCategory != null) {
+		// outState.putString("savedCategory", savedCategory);
+		// }
+		// if (savedSelectedGenreCategory != null) {
+		// outState.putString("savedSelectedGenreCategory",
+		// savedSelectedGenreCategory);
+		//
+		// }
 	}
 
 	public void setGridViewEnabled(boolean sw) {
-    	gridViewActive = sw;
-    }
+		gridViewActive = sw;
+	}
 
 	public void setPosterLayoutActive(boolean sw) {
-    	posterLayoutActive = sw;
-    }
+		posterLayoutActive = sw;
+	}
 
-	public void setSavedCategory(String category) {
-		savedCategory = category;
-	}
-	
-	public void setSavedSelectedGenreCategory(String category) {
-		savedSelectedGenreCategory = category;
-	}
-	
-	public String retrieveSavedSelectedGenreCategory() {
-		return savedSelectedGenreCategory;
-	}
-    
 }

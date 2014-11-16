@@ -25,10 +25,13 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -37,7 +40,6 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -51,8 +53,8 @@ import com.jess.ui.TwoWayGridView;
  * @author dcarver
  *
  */
-public class CategorySpinnerOnItemSelectedListener implements
-OnItemSelectedListener {
+public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector
+implements OnItemSelectedListener {
 
 	private String selected;
 	private static String key;
@@ -62,14 +64,20 @@ OnItemSelectedListener {
 	private final Handler secondaryCategoryHandler;
 	private String savedInstanceCategory;
 
-	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
+	@Inject
+	SharedPreferences prefs;
+
+	@Inject
+	TVCategoryState categoryState;
+
+	public TVCategorySpinnerOnItemSelectedListener(String defaultSelection,
 			String ckey) {
 		selected = defaultSelection;
 		key = ckey;
 		secondaryCategoryHandler = new SecondaryCategoryHandler();
 	}
 
-	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
+	public TVCategorySpinnerOnItemSelectedListener(String defaultSelection,
 			String ckey, boolean sw) {
 		selected = defaultSelection;
 		key = ckey;
@@ -103,8 +111,6 @@ OnItemSelectedListener {
 		}
 
 		if (firstSelection) {
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(context);
 			String filter = prefs.getString("serenity_series_category_filter",
 					"all");
 
@@ -141,7 +147,7 @@ OnItemSelectedListener {
 
 		selected = item.getCategory();
 		category = item.getCategory();
-		context.setSavedCategory(selected);
+		categoryState.setCategory(selected);
 
 		if (item.getLevel() == 0) {
 			populatePrimaryCategory(item, secondarySpinner);
@@ -151,10 +157,6 @@ OnItemSelectedListener {
 
 	}
 
-	/**
-	 * @param item
-	 * @param secondarySpinner
-	 */
 	protected void populatePrimaryCategory(CategoryInfo item,
 			Spinner secondarySpinner) {
 		if (item.getCategory().equals("newest")
@@ -171,9 +173,6 @@ OnItemSelectedListener {
 		}
 	}
 
-	/**
-	 *
-	 */
 	protected void populateSecondaryCategory() {
 		Messenger messenger = new Messenger(secondaryCategoryHandler);
 		Intent categoriesIntent = new Intent(context,
@@ -196,9 +195,6 @@ OnItemSelectedListener {
 		return 0;
 	}
 
-	/**
-	 * @param item
-	 */
 	protected void setupImageGallery(CategoryInfo item) {
 		View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
 
@@ -274,7 +270,7 @@ OnItemSelectedListener {
 			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 			secondarySpinner.setAdapter(spinnerSecArrayAdapter);
 			secondarySpinner
-			.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
+			.setOnItemSelectedListener(new TVSecondaryCategorySpinnerOnItemSelectedListener(
 					category, key));
 
 		}

@@ -26,6 +26,8 @@ package us.nineworlds.serenity.ui.browser.movie;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -39,7 +41,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Messenger;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -49,14 +50,13 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	private static String key;
 	private boolean restarted_state = false;
 	private Handler categoryHandler;
-	private SharedPreferences prefs = null;
-	private boolean tvMode = false;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
-	 */
+	@Inject
+	protected SharedPreferences prefs;
+
+	@Inject
+	protected MovieSelectedCategoryState categoryState;
+
 	@Override
 	protected void createSideMenu() {
 		if (gridViewActive) {
@@ -145,8 +145,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		actionBar.setCustomView(R.layout.move_custom_actionbar);
 		actionBar.setDisplayShowCustomEnabled(true);
 
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		tvMode = prefs.getBoolean("serenity_tv_mode", true);
 		gridViewActive = prefs.getBoolean("movie_layout_grid", false);
 
 		Intent intent = getIntent();
@@ -167,16 +165,12 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		super.onStart();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onResume()
-	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
 		if (restarted_state == false) {
-			categoryHandler = new CategoryHandler(this, savedCategory, key);
+			categoryHandler = new CategoryHandler(this,
+					categoryState.getCategory(), key);
 			Messenger messenger = new Messenger(categoryHandler);
 			Intent categoriesIntent = new Intent(this,
 					CategoryRetrievalIntentService.class);
@@ -187,21 +181,11 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		restarted_state = false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onStop()
-	 */
 	@Override
 	protected void onStop() {
 		super.onStop();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onRestart()
-	 */
 	@Override
 	protected void onRestart() {
 		super.onRestart();

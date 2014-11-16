@@ -23,9 +23,12 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.view.View;
@@ -41,15 +44,19 @@ import com.jess.ui.TwoWayGridView;
  * @author dcarver
  *
  */
-public class SecondaryCategorySpinnerOnItemSelectedListener implements
-		OnItemSelectedListener {
+public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
+		BaseInjector implements OnItemSelectedListener {
 
 	private String selected;
 	private final String key;
 	private boolean firstTimesw = true;
 
-	public SecondaryCategorySpinnerOnItemSelectedListener(
+	@Inject
+	protected TVCategoryState categoryState;
+
+	public TVSecondaryCategorySpinnerOnItemSelectedListener(
 			String defaultSelection, String key) {
+		super();
 		selected = defaultSelection;
 		this.key = key;
 	}
@@ -65,10 +72,8 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 				.getItemAtPosition(position);
 
 		if (firstTimesw) {
-			if (context.retrieveSavedSelectedGenreCategory() != null) {
-				int savedInstancePosition = getSavedInstancePosition(
-						viewAdapter,
-						context.retrieveSavedSelectedGenreCategory());
+			if (categoryState.getGenreCategory() != null) {
+				int savedInstancePosition = getSavedInstancePosition(viewAdapter);
 				item = (SecondaryCategoryInfo) viewAdapter
 						.getItemAtPosition(savedInstancePosition);
 				viewAdapter.setSelection(savedInstancePosition);
@@ -81,7 +86,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		}
 
 		selected = item.getCategory();
-		context.setSavedSelectedGenreCategory(item.getCategory());
+		categoryState.setGenreCategory(item.getCategory());
 
 		SerenityMultiViewVideoActivity c = (SerenityMultiViewVideoActivity) view
 				.getContext();
@@ -129,13 +134,12 @@ public class SecondaryCategorySpinnerOnItemSelectedListener implements
 		}
 	}
 
-	private int getSavedInstancePosition(AdapterView<?> viewAdapter,
-			String category) {
+	private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
 		int count = viewAdapter.getCount();
 		for (int i = 0; i < count; i++) {
 			CategoryInfo citem = (CategoryInfo) viewAdapter
 					.getItemAtPosition(i);
-			if (citem.getCategory().equals(category)) {
+			if (citem.getCategory().equals(categoryState.getGenreCategory())) {
 				return i;
 			}
 		}

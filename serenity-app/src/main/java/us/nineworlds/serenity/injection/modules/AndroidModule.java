@@ -65,11 +65,13 @@ import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.injection.ApplicationContext;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.browser.movie.CategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieMenuDrawerOnItemClickedListener;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
+import us.nineworlds.serenity.ui.browser.movie.SecondaryCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.music.MusicPosterGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.music.MusicPosterGalleryOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.music.MusicPosterGridViewAdapter;
@@ -78,6 +80,8 @@ import us.nineworlds.serenity.ui.browser.music.tracks.MusicTracksActivity;
 import us.nineworlds.serenity.ui.browser.music.tracks.TracksAdapter;
 import us.nineworlds.serenity.ui.browser.music.tracks.TracksOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.FindUnwatchedAsyncTask;
+import us.nineworlds.serenity.ui.browser.tv.TVCategorySpinnerOnItemSelectedListener;
+import us.nineworlds.serenity.ui.browser.tv.TVSecondaryCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBannerImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVShowGalleryOnItemSelectedListener;
@@ -124,63 +128,71 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module(includes = SerenityModule.class, injects = { GDMReceiver.class,
-	OnDeckRecommendations.class, MusicTracksActivity.class,
-	GalleryVideoOnItemLongClickListener.class,
-	GridVideoOnItemLongClickListener.class, MediaController.class,
-	SerenityGallery.class, MainActivity.class, SerenityApplication.class,
-	StartupBroadcastReceiver.class, RecommendationPlayerActivity.class,
-	EpisodeBrowserActivity.class, SearchableActivity.class,
-	MovieBrowserActivity.class, TVShowBrowserActivity.class,
-	TVShowSeasonBrowserActivity.class, AutoConfigureHandlerRunnable.class,
-	EpisodeMenuDrawerOnItemClickedListener.class,
-	ImageInfographicUtils.class, LibraryResponseListener.class,
-	MainMenuDrawerOnItemClickedListener.class,
-	MovieGridPosterOnItemSelectedListener.class,
-	MovieMenuDrawerOnItemClickedListener.class,
-	MusicPosterGalleryOnItemSelectedListener.class,
-	PlayerResultHandler.class, ExternalPlayerResultHandler.class,
-	SeasonOnItemLongClickListener.class, MenuMediaContainer.class,
-	MovieMediaContainer.class, SeriesMediaContainer.class,
-	SubtitleMediaContainer.class, EpisodeMediaContainer.class,
-	SeasonsMediaContainer.class, GalleryVideoOnItemClickListener.class,
-	GridVideoOnItemClickListener.class,
-	GalleryVideoOnItemLongClickListener.class,
-	EpisodeBrowserOnLongClickListener.class,
-	GridVideoOnItemLongClickListener.class,
-	EpisodePosterOnItemSelectedListener.class,
-	MoviePosterOnItemSelectedListener.class, SerenityImageLoader.class,
-	TracksOnItemSelectedListener.class,
-	TVShowGalleryOnItemSelectedListener.class,
-	TVShowGridOnItemSelectedListener.class, TVShowGridOnKeyListener.class,
-	TVShowMenuDrawerOnItemClickedListener.class,
-	TVShowSeasonMenuDrawerOnItemClickedListener.class,
-	TVShowSeasonOnItemSelectedListener.class, VideoPlayerIntentUtils.class,
-	VideoPlayerPrepareListener.class, CategoryRetrievalIntentService.class,
-	TVShowCategoryRetrievalIntentService.class,
-	MoviesRetrievalIntentService.class, MovieSearchIntentService.class,
-	MusicAlbumRetrievalIntentService.class,
-	MusicRetrievalIntentService.class,
-	SecondaryCategoryRetrievalIntentService.class,
-	MainMenuTextViewAdapter.class, EpisodePosterImageGalleryAdapter.class,
-	SeasonsEpisodePosterImageGalleryAdapter.class,
-	MoviePosterImageAdapter.class, SearchAdapter.class,
-	TVShowBannerImageGalleryAdapter.class, MenuDrawerAdapter.class,
-	MusicAlbumsCoverAdapter.class, MusicPosterGalleryAdapter.class,
-	MusicPosterGridViewAdapter.class,
-	TVShowSeasonImageGalleryAdapter.class,
-	OnDeckRecommendationIntentService.class, CompletedVideoRequest.class,
-	FindUnwatchedAsyncTask.class, TracksAdapter.class,
-	UnWatchVideoAsyncTask.class, UpdateProgressRequest.class,
-	WatchedVideoAsyncTask.class, GalleryOnItemSelectedListener.class,
-	SerenityImageLoader.class, SerenityPreferenceActivity.class,
-	AndroidTV.class, RecommendAsyncTask.class, RecommendationBuilder.class,
-	TVShowPosterImageGalleryAdapter.class, VideoPlayerKeyCodeHandler.class,
-	SerenitySurfaceViewVideoActivity.class, OkHttpStack.class,
-	SerenityRecommendationContentProvider.class, OKHttpImageLoader.class,
-	AndroidHelper.class }, library = true)
+		OnDeckRecommendations.class, MusicTracksActivity.class,
+		GalleryVideoOnItemLongClickListener.class,
+		GridVideoOnItemLongClickListener.class, MediaController.class,
+		SerenityGallery.class, MainActivity.class, SerenityApplication.class,
+		StartupBroadcastReceiver.class, RecommendationPlayerActivity.class,
+		EpisodeBrowserActivity.class, SearchableActivity.class,
+		MovieBrowserActivity.class, TVShowBrowserActivity.class,
+		TVShowSeasonBrowserActivity.class, AutoConfigureHandlerRunnable.class,
+		EpisodeMenuDrawerOnItemClickedListener.class,
+		ImageInfographicUtils.class, LibraryResponseListener.class,
+		MainMenuDrawerOnItemClickedListener.class,
+		MovieGridPosterOnItemSelectedListener.class,
+		MovieMenuDrawerOnItemClickedListener.class,
+		MusicPosterGalleryOnItemSelectedListener.class,
+		PlayerResultHandler.class, ExternalPlayerResultHandler.class,
+		SeasonOnItemLongClickListener.class, MenuMediaContainer.class,
+		MovieMediaContainer.class, SeriesMediaContainer.class,
+		SubtitleMediaContainer.class, EpisodeMediaContainer.class,
+		SeasonsMediaContainer.class, GalleryVideoOnItemClickListener.class,
+		GridVideoOnItemClickListener.class,
+		GalleryVideoOnItemLongClickListener.class,
+		EpisodeBrowserOnLongClickListener.class,
+		GridVideoOnItemLongClickListener.class,
+		EpisodePosterOnItemSelectedListener.class,
+		MoviePosterOnItemSelectedListener.class, SerenityImageLoader.class,
+		TracksOnItemSelectedListener.class,
+		TVShowGalleryOnItemSelectedListener.class,
+		TVShowGridOnItemSelectedListener.class, TVShowGridOnKeyListener.class,
+		TVShowMenuDrawerOnItemClickedListener.class,
+		TVShowSeasonMenuDrawerOnItemClickedListener.class,
+		TVShowSeasonOnItemSelectedListener.class, VideoPlayerIntentUtils.class,
+		VideoPlayerPrepareListener.class, CategoryRetrievalIntentService.class,
+		TVShowCategoryRetrievalIntentService.class,
+		MoviesRetrievalIntentService.class, MovieSearchIntentService.class,
+		MusicAlbumRetrievalIntentService.class,
+		MusicRetrievalIntentService.class,
+		SecondaryCategoryRetrievalIntentService.class,
+		MainMenuTextViewAdapter.class, EpisodePosterImageGalleryAdapter.class,
+		SeasonsEpisodePosterImageGalleryAdapter.class,
+		MoviePosterImageAdapter.class, SearchAdapter.class,
+		TVShowBannerImageGalleryAdapter.class, MenuDrawerAdapter.class,
+		MusicAlbumsCoverAdapter.class, MusicPosterGalleryAdapter.class,
+		MusicPosterGridViewAdapter.class,
+		TVShowSeasonImageGalleryAdapter.class,
+		OnDeckRecommendationIntentService.class, CompletedVideoRequest.class,
+		FindUnwatchedAsyncTask.class, TracksAdapter.class,
+		UnWatchVideoAsyncTask.class, UpdateProgressRequest.class,
+		WatchedVideoAsyncTask.class, GalleryOnItemSelectedListener.class,
+		SerenityImageLoader.class, SerenityPreferenceActivity.class,
+		AndroidTV.class, RecommendAsyncTask.class, RecommendationBuilder.class,
+		TVShowPosterImageGalleryAdapter.class, VideoPlayerKeyCodeHandler.class,
+		SerenitySurfaceViewVideoActivity.class, OkHttpStack.class,
+		SerenityRecommendationContentProvider.class, OKHttpImageLoader.class,
+		AndroidHelper.class,
+		SecondaryCategorySpinnerOnItemSelectedListener.class,
+		CategorySpinnerOnItemSelectedListener.class,
+		TVCategorySpinnerOnItemSelectedListener.class,
+		TVSecondaryCategorySpinnerOnItemSelectedListener.class }, library = true)
 public class AndroidModule {
 
 	private final Context applicationContext;
+
+	public AndroidModule(Application application) {
+		applicationContext = application.getApplicationContext();
+	}
 
 	@Provides
 	@Singleton
@@ -189,10 +201,6 @@ public class AndroidModule {
 				.getInstance(applicationContext);
 
 		return PlexappFactory.getInstance(serverConfig);
-	}
-
-	public AndroidModule(Application application) {
-		applicationContext = application.getApplicationContext();
 	}
 
 	@Provides
