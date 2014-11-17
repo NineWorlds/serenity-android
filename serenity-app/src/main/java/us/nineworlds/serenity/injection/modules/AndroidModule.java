@@ -65,7 +65,7 @@ import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.injection.ApplicationContext;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
-import us.nineworlds.serenity.ui.browser.movie.CategorySpinnerOnItemSelectedListener;
+import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieMenuDrawerOnItemClickedListener;
@@ -183,7 +183,7 @@ import dagger.Provides;
 		SerenityRecommendationContentProvider.class, OKHttpImageLoader.class,
 		AndroidHelper.class,
 		SecondaryCategorySpinnerOnItemSelectedListener.class,
-		CategorySpinnerOnItemSelectedListener.class,
+		MovieCategorySpinnerOnItemSelectedListener.class,
 		TVCategorySpinnerOnItemSelectedListener.class,
 		TVSecondaryCategorySpinnerOnItemSelectedListener.class }, library = true)
 public class AndroidModule {

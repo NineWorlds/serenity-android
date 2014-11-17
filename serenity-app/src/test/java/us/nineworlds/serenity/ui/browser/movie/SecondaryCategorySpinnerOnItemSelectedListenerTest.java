@@ -23,6 +23,15 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,50 +45,332 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowApplication;
 
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.AdapterView;
+
+import com.jess.ui.TwoWayGridView;
+
 import dagger.Module;
 import dagger.Provides;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(emulateSdk = 18)
 public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
-		InjectingTest {
+InjectingTest {
 
 	@Mock
-	SharedPreferences mockSharedPreferences;
+	protected SharedPreferences mockSharedPreferences;
 
 	@Mock
-	View mockView;
+	protected View mockView;
 
 	@Mock
-	AdapterView mockAdapterView;
+	protected AdapterView mockAdapterView;
 
 	@Mock
-	SecondaryCategoryInfo mockCategoryInfo;
+	protected SecondaryCategoryInfo mockCategoryInfo;
 
-	SecondaryCategorySpinnerOnItemSelectedListener onItemSelectedListener;
+	@Mock
+	protected SerenityMultiViewVideoActivity mockMultiViewVideoActivity;
+
+	@Mock
+	protected MovieSelectedCategoryState mockCategoryState;
+
+	@Mock
+	protected MoviePosterImageAdapter mockPosterImageAdapter;
+
+	@Mock
+	protected SerenityGallery mockGallery;
+
+	MovieBrowserActivity movieBrowserActivity = Robolectric
+			.buildActivity(MovieBrowserActivity.class).create().get();
+
+	protected SecondaryCategorySpinnerOnItemSelectedListener onItemSelectedListener;
+	protected SecondaryCategorySpinnerOnItemSelectedListener spyOnItemSelectedListener;
 
 	@Override
 	@Before
 	public void setUp() throws Exception {
+		Robolectric.getBackgroundScheduler().pause();
+		Robolectric.getUiThreadScheduler().pause();
 		MockitoAnnotations.initMocks(this);
 		super.setUp();
+
+		ShadowApplication shadowApplication = Robolectric
+				.shadowOf(Robolectric.application);
+		shadowApplication
+		.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
 		onItemSelectedListener = new SecondaryCategorySpinnerOnItemSelectedListener(
 				"Action", "59");
 
+		spyOnItemSelectedListener = spy(onItemSelectedListener);
 	}
 
 	@Test
-	public void doStuff() {
+	public void verifyThatGalleryRefreshIsCalledWhenGridViewIsNotActiveAndFirstTimeIsTrue() {
+		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
+				anyInt());
+		doReturn("All").when(mockCategoryInfo).getCategory();
 
+		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
+		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
+				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
+				any(AbstractPosterImageGalleryAdapter.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+				any(AbstractPosterImageGalleryAdapter.class));
+
+		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
+				0);
+
+		verify(mockView).getContext();
+		verify(spyOnItemSelectedListener)
+				.refreshGallery(mockPosterImageAdapter);
+
+	}
+
+	@Test
+	public void verifyViewAdapterSetSelectionIsNotCalledWhenFirstTimeSwitchIsFalse() {
+		spyOnItemSelectedListener.setFirstTimesw(false);
+		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
+				anyInt());
+		doReturn("All").when(mockCategoryInfo).getCategory();
+
+		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
+		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
+				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
+				any(AbstractPosterImageGalleryAdapter.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+				any(AbstractPosterImageGalleryAdapter.class));
+
+		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
+				0);
+
+		verify(mockAdapterView, times(0)).setSelection(anyInt());
+		verify(mockCategoryState, times(0)).getGenreCategory();
+	}
+
+	@Test
+	public void verifyCategoryStateSetsGenreCategoryWhenGenresDoNotMatch() {
+		spyOnItemSelectedListener.setFirstTimesw(false);
+		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
+				anyInt());
+		doReturn("All").when(mockCategoryInfo).getCategory();
+
+		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
+		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
+				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
+				any(AbstractPosterImageGalleryAdapter.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+				any(AbstractPosterImageGalleryAdapter.class));
+
+		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
+				0);
+
+		verify(mockCategoryState).setGenreCategory("All");
+	}
+
+	@Test
+	public void verifyRefreshGridViewAdapterIsCalledWhenGridViewIsActive() {
+		spyOnItemSelectedListener.setFirstTimesw(false);
+		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
+				anyInt());
+		doReturn("All").when(mockCategoryInfo).getCategory();
+
+		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
+		doReturn(true).when(mockMultiViewVideoActivity).isGridViewActive();
+		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
+		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
+				any(AbstractPosterImageGalleryAdapter.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+				any(AbstractPosterImageGalleryAdapter.class));
+
+		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
+				0);
+
+		verify(spyOnItemSelectedListener).refreshGridView(
+				mockPosterImageAdapter);
+	}
+
+	@Test
+	public void verifyGetPosterAdapterIsNotCalledWhenSelectedAndItemCategoryAreTheSame() {
+		spyOnItemSelectedListener.setFirstTimesw(false);
+		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
+				anyInt());
+		doReturn("Action").when(mockCategoryInfo).getCategory();
+
+		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
+		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
+				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
+				any(AbstractPosterImageGalleryAdapter.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+				any(AbstractPosterImageGalleryAdapter.class));
+
+		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
+				0);
+
+		verify(spyOnItemSelectedListener, times(0)).getPosterImageAdapter(
+				any(SecondaryCategoryInfo.class));
+	}
+
+	@Test
+	public void verifyThatFirstTimeSwitchIsSetToFalseAfterRetrievingSavedPosition() {
+		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
+				anyInt());
+		doReturn("All").when(mockCategoryInfo).getCategory();
+		doReturn("Action").when(mockCategoryState).getGenreCategory();
+		doReturn(0).when(spyOnItemSelectedListener).getSavedInstancePosition(
+				any(AdapterView.class));
+
+		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
+		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
+				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
+				any(AbstractPosterImageGalleryAdapter.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+				any(AbstractPosterImageGalleryAdapter.class));
+
+		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
+				0);
+
+		assertThat(spyOnItemSelectedListener.isFirstTimesw()).isFalse();
+	}
+
+	@Test
+	public void verifyThatCategoryStateForGenreIsCalledWhenFirstTimeSwitchIsTrue() {
+		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
+				anyInt());
+		doReturn("All").when(mockCategoryInfo).getCategory();
+		doReturn("Action").when(mockCategoryState).getGenreCategory();
+		doReturn(0).when(spyOnItemSelectedListener).getSavedInstancePosition(
+				any(AdapterView.class));
+
+		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
+		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
+				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
+				any(AbstractPosterImageGalleryAdapter.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+				any(AbstractPosterImageGalleryAdapter.class));
+
+		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
+				0);
+
+		verify(mockCategoryState).getGenreCategory();
+		verify(mockAdapterView).setSelection(anyInt());
+		verify(mockAdapterView, times(2)).getItemAtPosition(0);
+	}
+
+	@Test
+	public void refreshGallerySetsExpectedAdapter() {
+		movieBrowserActivity = Robolectric
+				.buildActivity(MovieBrowserActivity.class).create().get();
+
+		spyOnItemSelectedListener
+				.setMultiViewVideoActivity(movieBrowserActivity);
+
+		spyOnItemSelectedListener.findViews();
+		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
+
+		SerenityGallery gallery = (SerenityGallery) movieBrowserActivity
+				.findViewById(R.id.moviePosterGallery);
+		assertThat(gallery.getAdapter()).isEqualTo(mockPosterImageAdapter);
+	}
+
+	@Test
+	public void refreshGallerySetsOnItemClickListener() {
+		movieBrowserActivity = Robolectric
+				.buildActivity(MovieBrowserActivity.class).create().get();
+
+		spyOnItemSelectedListener
+				.setMultiViewVideoActivity(movieBrowserActivity);
+
+		spyOnItemSelectedListener.findViews();
+		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
+
+		SerenityGallery gallery = (SerenityGallery) movieBrowserActivity
+				.findViewById(R.id.moviePosterGallery);
+		assertThat(gallery.getOnItemClickListener()).isInstanceOf(
+				GalleryVideoOnItemClickListener.class);
+	}
+
+	@Test
+	public void refreshGallerySetsOnItemLongClickListener() {
+		movieBrowserActivity = Robolectric
+				.buildActivity(MovieBrowserActivity.class).create().get();
+
+		spyOnItemSelectedListener
+				.setMultiViewVideoActivity(movieBrowserActivity);
+
+		spyOnItemSelectedListener.findViews();
+		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
+
+		SerenityGallery gallery = (SerenityGallery) movieBrowserActivity
+				.findViewById(R.id.moviePosterGallery);
+		assertThat(gallery.getOnItemLongClickListener()).isInstanceOf(
+				GalleryVideoOnItemLongClickListener.class);
+	}
+
+	@Test
+	public void refreshGridSetsOnItemLongClickListener() {
+		doReturn(true).when(mockSharedPreferences).getBoolean(
+				"movie_layout_grid", false);
+		doReturn(1).when(mockPosterImageAdapter).getViewTypeCount();
+
+		movieBrowserActivity = Robolectric
+				.buildActivity(MovieBrowserActivity.class).create().get();
+		spyOnItemSelectedListener
+				.setMultiViewVideoActivity(movieBrowserActivity);
+
+		spyOnItemSelectedListener.findViews();
+
+		spyOnItemSelectedListener.refreshGridView(mockPosterImageAdapter);
+
+		TwoWayGridView gridView = (TwoWayGridView) movieBrowserActivity
+				.findViewById(R.id.movieGridView);
+		assertThat(gridView.getOnItemLongClickListener()).isInstanceOf(
+				GridVideoOnItemLongClickListener.class);
+	}
+
+	@Test
+	public void refreshGridSetsOnItemClickListener() {
+		doReturn(true).when(mockSharedPreferences).getBoolean(
+				"movie_layout_grid", false);
+		doReturn(1).when(mockPosterImageAdapter).getViewTypeCount();
+
+		movieBrowserActivity = Robolectric
+				.buildActivity(MovieBrowserActivity.class).create().get();
+		spyOnItemSelectedListener
+				.setMultiViewVideoActivity(movieBrowserActivity);
+
+		spyOnItemSelectedListener.findViews();
+
+		spyOnItemSelectedListener.refreshGridView(mockPosterImageAdapter);
+
+		TwoWayGridView gridView = (TwoWayGridView) movieBrowserActivity
+				.findViewById(R.id.movieGridView);
+		assertThat(gridView.getOnItemClickListener()).isInstanceOf(
+				GridVideoOnItemClickListener.class);
 	}
 
 	@Override
@@ -91,8 +382,9 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 	}
 
 	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-			SecondaryCategorySpinnerOnItemSelectedListener.class,
-			SecondaryCategorySpinnerOnItemSelectedListenerTest.class })
+		SecondaryCategorySpinnerOnItemSelectedListener.class,
+		SecondaryCategorySpinnerOnItemSelectedListenerTest.class,
+		MovieBrowserActivity.class })
 	public class TestModule {
 
 		@Provides
@@ -100,6 +392,13 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		SharedPreferences providesSharedPreferences() {
 			return mockSharedPreferences;
 		}
+
+		@Provides
+		@Singleton
+		MovieSelectedCategoryState providesMovieSelectedCategoryState() {
+			return mockCategoryState;
+		}
+
 	}
 
 }

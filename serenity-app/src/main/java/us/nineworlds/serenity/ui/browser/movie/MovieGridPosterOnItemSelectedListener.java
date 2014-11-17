@@ -62,19 +62,17 @@ implements OnItemSelectedListener {
 
 	private final ImageLoader imageLoader;
 
-	/**
-	 *
-	 */
-	public MovieGridPosterOnItemSelectedListener(View bgv, Activity activity) {
+	public MovieGridPosterOnItemSelectedListener(View bgv) {
 		super();
 
 		imageLoader = serenityImageLoader.getImageLoader();
-		context = activity;
 	}
 
 	@Override
 	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position,
 			long id) {
+
+		context = (Activity) v.getContext();
 
 		adapter = av;
 		changeBackgroundImage();

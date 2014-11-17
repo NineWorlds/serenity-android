@@ -75,7 +75,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener extends
 
 	protected SerenityGallery posterGallery;
 
-	protected SerenityMultiViewVideoActivity multiViewVideoActivity;
+	private SerenityMultiViewVideoActivity multiViewVideoActivity;
 
 	protected TwoWayGridView gridView;
 
@@ -94,22 +94,22 @@ public class SecondaryCategorySpinnerOnItemSelectedListener extends
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 
-		multiViewVideoActivity = (SerenityMultiViewVideoActivity) view
-				.getContext();
+		setMultiViewVideoActivity((SerenityMultiViewVideoActivity) view
+				.getContext());
 
 		findViews();
 
 		SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter
 				.getItemAtPosition(position);
 
-		if (firstTimesw) {
+		if (isFirstTimesw()) {
 			if (categoryState.getGenreCategory() != null) {
 				int savedInstancePosition = getSavedInstancePosition(viewAdapter);
 				item = (SecondaryCategoryInfo) viewAdapter
 						.getItemAtPosition(savedInstancePosition);
 				viewAdapter.setSelection(savedInstancePosition);
 			}
-			firstTimesw = false;
+			setFirstTimesw(false);
 		}
 
 		if (selected.equalsIgnoreCase(item.getCategory())) {
@@ -120,11 +120,9 @@ public class SecondaryCategorySpinnerOnItemSelectedListener extends
 
 		categoryState.setGenreCategory(item.getCategory());
 
-		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(
-				multiViewVideoActivity, key, item.getParentCategory() + "/"
-						+ item.getCategory());
+		AbstractPosterImageGalleryAdapter adapter = getPosterImageAdapter(item);
 
-		if (multiViewVideoActivity.isGridViewActive()) {
+		if (getMultiViewVideoActivity().isGridViewActive()) {
 			refreshGridView(adapter);
 			return;
 		}
@@ -133,13 +131,25 @@ public class SecondaryCategorySpinnerOnItemSelectedListener extends
 
 	}
 
-	protected void findViews() {
-		bgLayout = multiViewVideoActivity
-				.findViewById(R.id.movieBrowserBackgroundLayout);
+	/**
+	 * @param item
+	 * @return
+	 */
+	protected AbstractPosterImageGalleryAdapter getPosterImageAdapter(
+			SecondaryCategoryInfo item) {
+		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(
+				getMultiViewVideoActivity(), key, item.getParentCategory()
+				+ "/" + item.getCategory());
+		return adapter;
+	}
 
-		gridView = (TwoWayGridView) multiViewVideoActivity
-				.findViewById(R.id.movieGridView);
-		posterGallery = (SerenityGallery) multiViewVideoActivity
+	protected void findViews() {
+		bgLayout = getMultiViewVideoActivity().findViewById(
+				R.id.movieBrowserBackgroundLayout);
+
+		gridView = (TwoWayGridView) getMultiViewVideoActivity().findViewById(
+				R.id.movieGridView);
+		posterGallery = (SerenityGallery) getMultiViewVideoActivity()
 				.findViewById(R.id.moviePosterGallery);
 	}
 
@@ -149,7 +159,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener extends
 		posterGallery.setAdapter(adapter);
 		posterGallery
 				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
-						multiViewVideoActivity));
+						getMultiViewVideoActivity()));
 
 		posterGallery.setOnItemClickListener(galleryOnItemClickListener);
 		posterGallery
@@ -172,7 +182,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener extends
 		gridView.setAdapter(adapter);
 		gridView.setOnItemClickListener(gridVideoOnItemClickListener);
 		gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener(
-				bgLayout, multiViewVideoActivity));
+				bgLayout));
 		gridView.setOnItemLongClickListener(gridVideoOnItemLongClickListener);
 	}
 
@@ -191,6 +201,23 @@ public class SecondaryCategorySpinnerOnItemSelectedListener extends
 	@Override
 	public void onNothingSelected(AdapterView<?> va) {
 
+	}
+
+	protected boolean isFirstTimesw() {
+		return firstTimesw;
+	}
+
+	protected void setFirstTimesw(boolean firstTimesw) {
+		this.firstTimesw = firstTimesw;
+	}
+
+	protected SerenityMultiViewVideoActivity getMultiViewVideoActivity() {
+		return multiViewVideoActivity;
+	}
+
+	protected void setMultiViewVideoActivity(
+			SerenityMultiViewVideoActivity multiViewVideoActivity) {
+		this.multiViewVideoActivity = multiViewVideoActivity;
 	}
 
 }

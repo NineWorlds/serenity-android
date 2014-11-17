@@ -44,7 +44,6 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -54,12 +53,31 @@ import android.widget.Toast;
 
 import com.jess.ui.TwoWayGridView;
 
-/**
- * @author dcarver
- *
- */
-public class CategorySpinnerOnItemSelectedListener extends BaseInjector
+public class MovieCategorySpinnerOnItemSelectedListener extends BaseInjector
 		implements OnItemSelectedListener {
+
+	@Inject
+	protected SharedPreferences prefs;
+
+	@Inject
+	protected MovieSelectedCategoryState categoryState;
+
+	@Inject
+	protected GalleryVideoOnItemClickListener galleryOnItemClickListener;
+
+	@Inject
+	protected GridVideoOnItemClickListener gridVideoOnItemClickListener;
+
+	@Inject
+	protected GalleryVideoOnItemLongClickListener galleryOnItemLongClickListener;
+
+	@Inject
+	protected GridVideoOnItemLongClickListener gridVideoOnItemLongClickListener;
+
+	protected SerenityGallery posterGallery;
+	protected TwoWayGridView gridView;
+	protected View bgLayout;
+	protected Spinner secondarySpinner;
 
 	private String selected;
 	private static String key;
@@ -69,13 +87,7 @@ public class CategorySpinnerOnItemSelectedListener extends BaseInjector
 	private String savedInstanceCategory; // From a restarted activity
 	private final Handler secondaryCategoryHandler;
 
-	@Inject
-	protected SharedPreferences prefs;
-
-	@Inject
-	protected MovieSelectedCategoryState categoryState;
-
-	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
+	public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection,
 			String ckey) {
 		super();
 		selected = defaultSelection;
@@ -83,23 +95,19 @@ public class CategorySpinnerOnItemSelectedListener extends BaseInjector
 		secondaryCategoryHandler = new SecondaryCategoryHandler();
 	}
 
-	public CategorySpinnerOnItemSelectedListener(String defaultSelection,
+	public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection,
 			String ckey, boolean firstSelection) {
-		selected = defaultSelection;
-		key = ckey;
-		secondaryCategoryHandler = new SecondaryCategoryHandler();
+		this(defaultSelection, key);
 		savedInstanceCategory = defaultSelection;
-		this.firstSelection = firstSelection;
+		this.setFirstSelection(firstSelection);
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 		context = (SerenityMultiViewVideoActivity) view.getContext();
-		View bgLayout = context.findViewById(R.id.movieBrowserBackgroundLayout);
-		if (prefs == null) {
-			prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		}
+
+		findViews();
 
 		CategoryInfo item = (CategoryInfo) viewAdapter
 				.getItemAtPosition(position);
@@ -118,7 +126,7 @@ public class CategorySpinnerOnItemSelectedListener extends BaseInjector
 			}
 		}
 
-		if (firstSelection) {
+		if (isFirstSelection()) {
 
 			String filter = prefs.getString("serenity_category_filter", "all");
 
@@ -136,7 +144,7 @@ public class CategorySpinnerOnItemSelectedListener extends BaseInjector
 
 			createGallery(item, bgLayout);
 
-			firstSelection = false;
+			setFirstSelection(false);
 			return;
 		}
 
@@ -146,11 +154,7 @@ public class CategorySpinnerOnItemSelectedListener extends BaseInjector
 
 		selected = item.getCategory();
 		category = item.getCategory();
-
 		categoryState.setCategory(selected);
-
-		Spinner secondarySpinner = (Spinner) context
-				.findViewById(R.id.categoryFilter2);
 
 		if (item.getLevel() == 0) {
 			secondarySpinner.setVisibility(View.INVISIBLE);
@@ -158,12 +162,17 @@ public class CategorySpinnerOnItemSelectedListener extends BaseInjector
 		} else {
 			populateSecondaryCategory();
 		}
+	}
+
+	protected void findViews() {
+		bgLayout = context.findViewById(R.id.movieBrowserBackgroundLayout);
+		posterGallery = (SerenityGallery) context
+				.findViewById(R.id.moviePosterGallery);
+		gridView = (TwoWayGridView) context.findViewById(R.id.movieGridView);
+		secondarySpinner = (Spinner) context.findViewById(R.id.categoryFilter2);
 
 	}
 
-	/**
-	 *
-	 */
 	protected void populateSecondaryCategory() {
 		Messenger messenger = new Messenger(secondaryCategoryHandler);
 		Intent categoriesIntent = new Intent(context,
@@ -186,52 +195,60 @@ public class CategorySpinnerOnItemSelectedListener extends BaseInjector
 		return 0;
 	}
 
-	/**
-	 * @param item
-	 * @param bgLayout
-	 */
 	protected void createGallery(CategoryInfo item, View bgLayout) {
 		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(
 				context, key, item.getCategory());
-		GalleryVideoOnItemClickListener onClick = new GalleryVideoOnItemClickListener();
-		GalleryVideoOnItemLongClickListener onLongClick = new GalleryVideoOnItemLongClickListener();
-		if (!context.isGridViewActive()) {
-			SerenityGallery posterGallery = (SerenityGallery) context
-					.findViewById(R.id.moviePosterGallery);
-			boolean scrollingAnimation = prefs.getBoolean(
-					"animation_gallery_scrolling", true);
-			posterGallery.setAdapter(adapter);
-			posterGallery
-			.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
-							context));
-			posterGallery.setOnItemClickListener(onClick);
-			posterGallery.setOnItemLongClickListener(onLongClick);
-			posterGallery.setSpacing(25);
-			if (scrollingAnimation) {
-				posterGallery.setAnimationDuration(220);
-			} else {
-				posterGallery.setAnimationDuration(1);
-			}
-			posterGallery.setAnimationCacheEnabled(true);
-			posterGallery.setCallbackDuringFling(false);
-			posterGallery.setHorizontalFadingEdgeEnabled(true);
-			posterGallery.setFocusableInTouchMode(false);
-			posterGallery.setDrawingCacheEnabled(true);
-			posterGallery.setUnselectedAlpha(0.75f);
-		} else {
-			TwoWayGridView gridView = (TwoWayGridView) context
-					.findViewById(R.id.movieGridView);
-			gridView.setAdapter(adapter);
-			gridView.setOnItemClickListener(new GridVideoOnItemClickListener());
-			gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener(
-					bgLayout, context));
-			gridView.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
+		if (context.isGridViewActive()) {
+			refreshGridView(adapter);
+			return;
 		}
+		refreshDetailGallery(adapter);
+	}
+
+	protected void refreshGridView(AbstractPosterImageGalleryAdapter adapter) {
+		gridView.setAdapter(adapter);
+		gridView.setOnItemClickListener(gridVideoOnItemClickListener);
+		gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener(
+				bgLayout));
+		gridView.setOnItemLongClickListener(gridVideoOnItemLongClickListener);
+	}
+
+	protected void refreshDetailGallery(
+			AbstractPosterImageGalleryAdapter adapter) {
+		boolean scrollingAnimation = prefs.getBoolean(
+				"animation_gallery_scrolling", true);
+		posterGallery.setAdapter(adapter);
+		posterGallery
+				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
+						context));
+		posterGallery.setOnItemClickListener(galleryOnItemClickListener);
+		posterGallery
+				.setOnItemLongClickListener(galleryOnItemLongClickListener);
+		posterGallery.setSpacing(25);
+		if (scrollingAnimation) {
+			posterGallery.setAnimationDuration(220);
+		} else {
+			posterGallery.setAnimationDuration(1);
+		}
+		posterGallery.setAnimationCacheEnabled(true);
+		posterGallery.setCallbackDuringFling(false);
+		posterGallery.setHorizontalFadingEdgeEnabled(true);
+		posterGallery.setFocusableInTouchMode(false);
+		posterGallery.setDrawingCacheEnabled(true);
+		posterGallery.setUnselectedAlpha(0.75f);
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> va) {
 
+	}
+
+	public boolean isFirstSelection() {
+		return firstSelection;
+	}
+
+	public void setFirstSelection(boolean firstSelection) {
+		this.firstSelection = firstSelection;
 	}
 
 	private static class SecondaryCategoryHandler extends Handler {
@@ -255,12 +272,11 @@ public class CategorySpinnerOnItemSelectedListener extends BaseInjector
 					context, R.layout.serenity_spinner_textview,
 					secondaryCategories);
 			spinnerSecArrayAdapter
-			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 			secondarySpinner.setAdapter(spinnerSecArrayAdapter);
 			secondarySpinner
-			.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
-					category, key));
-
+					.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
+							category, key));
 		}
 
 	}

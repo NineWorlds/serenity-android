@@ -27,7 +27,7 @@ import java.util.List;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
-import us.nineworlds.serenity.ui.browser.movie.CategorySpinnerOnItemSelectedListener;
+import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
@@ -80,11 +80,11 @@ public class CategoryHandler extends Handler {
 			categorySpinner.setAdapter(spinnerArrayAdapter);
 			if (_savedCategory == null) {
 				categorySpinner
-						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+						.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
 								"all", _key));
 			} else {
 				categorySpinner
-						.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener(
+						.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
 								_savedCategory, _key, false));
 			}
 			categorySpinner.requestFocus();
