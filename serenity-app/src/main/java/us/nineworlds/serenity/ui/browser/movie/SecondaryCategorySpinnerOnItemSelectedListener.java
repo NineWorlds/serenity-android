@@ -23,71 +23,23 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import javax.inject.Inject;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
-import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-import com.jess.ui.TwoWayGridView;
-
 /**
  * Populate the movie posters based on the information from the Secondary
  * categories.
- *
- * @author dcarver
- *
  */
 public class SecondaryCategorySpinnerOnItemSelectedListener extends
-		BaseInjector implements OnItemSelectedListener {
-
-	@Inject
-	protected SharedPreferences prefs;
-
-	@Inject
-	protected GalleryVideoOnItemClickListener galleryOnItemClickListener;
-
-	@Inject
-	protected GridVideoOnItemClickListener gridVideoOnItemClickListener;
-
-	@Inject
-	protected GalleryVideoOnItemLongClickListener galleryOnItemLongClickListener;
-
-	@Inject
-	protected GridVideoOnItemLongClickListener gridVideoOnItemLongClickListener;
-
-	@Inject
-	protected MovieSelectedCategoryState categoryState;
-
-	protected View bgLayout;
-
-	protected SerenityGallery posterGallery;
-
-	private SerenityMultiViewVideoActivity multiViewVideoActivity;
-
-	protected TwoWayGridView gridView;
-
-	private String selected;
-	private final String key;
-	private boolean firstTimesw = true;
+		BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
 	public SecondaryCategorySpinnerOnItemSelectedListener(
 			String defaultSelection, String key) {
-		super();
-		selected = defaultSelection;
-		this.key = key;
+		super(defaultSelection, key);
 	}
 
 	@Override
@@ -102,14 +54,14 @@ public class SecondaryCategorySpinnerOnItemSelectedListener extends
 		SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter
 				.getItemAtPosition(position);
 
-		if (isFirstTimesw()) {
+		if (isFirstSelection()) {
 			if (categoryState.getGenreCategory() != null) {
 				int savedInstancePosition = getSavedInstancePosition(viewAdapter);
 				item = (SecondaryCategoryInfo) viewAdapter
 						.getItemAtPosition(savedInstancePosition);
 				viewAdapter.setSelection(savedInstancePosition);
 			}
-			setFirstTimesw(false);
+			setFirstSelection(false);
 		}
 
 		if (selected.equalsIgnoreCase(item.getCategory())) {
@@ -131,93 +83,17 @@ public class SecondaryCategorySpinnerOnItemSelectedListener extends
 
 	}
 
-	/**
-	 * @param item
-	 * @return
-	 */
 	protected AbstractPosterImageGalleryAdapter getPosterImageAdapter(
 			SecondaryCategoryInfo item) {
 		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(
 				getMultiViewVideoActivity(), key, item.getParentCategory()
-				+ "/" + item.getCategory());
+						+ "/" + item.getCategory());
 		return adapter;
 	}
 
-	protected void findViews() {
-		bgLayout = getMultiViewVideoActivity().findViewById(
-				R.id.movieBrowserBackgroundLayout);
-
-		gridView = (TwoWayGridView) getMultiViewVideoActivity().findViewById(
-				R.id.movieGridView);
-		posterGallery = (SerenityGallery) getMultiViewVideoActivity()
-				.findViewById(R.id.moviePosterGallery);
-	}
-
-	protected void refreshGallery(AbstractPosterImageGalleryAdapter adapter) {
-		boolean scrollingAnimation = prefs.getBoolean(
-				"animation_gallery_scrolling", true);
-		posterGallery.setAdapter(adapter);
-		posterGallery
-				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
-						getMultiViewVideoActivity()));
-
-		posterGallery.setOnItemClickListener(galleryOnItemClickListener);
-		posterGallery
-				.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
-		if (scrollingAnimation) {
-			posterGallery.setAnimationDuration(220);
-		} else {
-			posterGallery.setAnimationDuration(1);
-		}
-		posterGallery.setSpacing(25);
-		posterGallery.setAnimationCacheEnabled(true);
-		posterGallery.setCallbackDuringFling(false);
-		posterGallery.setHorizontalFadingEdgeEnabled(true);
-		posterGallery.setFocusableInTouchMode(false);
-		posterGallery.setDrawingCacheEnabled(true);
-		posterGallery.setUnselectedAlpha(0.75f);
-	}
-
-	protected void refreshGridView(AbstractPosterImageGalleryAdapter adapter) {
-		gridView.setAdapter(adapter);
-		gridView.setOnItemClickListener(gridVideoOnItemClickListener);
-		gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener(
-				bgLayout));
-		gridView.setOnItemLongClickListener(gridVideoOnItemLongClickListener);
-	}
-
-	protected int getSavedInstancePosition(AdapterView<?> viewAdapter) {
-		int count = viewAdapter.getCount();
-		for (int i = 0; i < count; i++) {
-			CategoryInfo citem = (CategoryInfo) viewAdapter
-					.getItemAtPosition(i);
-			if (citem.getCategory().equals(categoryState.getGenreCategory())) {
-				return i;
-			}
-		}
-		return 0;
-	}
-
 	@Override
-	public void onNothingSelected(AdapterView<?> va) {
-
-	}
-
-	protected boolean isFirstTimesw() {
-		return firstTimesw;
-	}
-
-	protected void setFirstTimesw(boolean firstTimesw) {
-		this.firstTimesw = firstTimesw;
-	}
-
-	protected SerenityMultiViewVideoActivity getMultiViewVideoActivity() {
-		return multiViewVideoActivity;
-	}
-
-	protected void setMultiViewVideoActivity(
-			SerenityMultiViewVideoActivity multiViewVideoActivity) {
-		this.multiViewVideoActivity = multiViewVideoActivity;
+	protected String getSavedCategory() {
+		return categoryState.getGenreCategory();
 	}
 
 }

@@ -41,6 +41,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
@@ -48,6 +49,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
@@ -147,7 +149,7 @@ InjectingTest {
 
 	@Test
 	public void verifyViewAdapterSetSelectionIsNotCalledWhenFirstTimeSwitchIsFalse() {
-		spyOnItemSelectedListener.setFirstTimesw(false);
+		spyOnItemSelectedListener.setFirstSelection(false);
 		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
 				anyInt());
 		doReturn("All").when(mockCategoryInfo).getCategory();
@@ -169,7 +171,7 @@ InjectingTest {
 
 	@Test
 	public void verifyCategoryStateSetsGenreCategoryWhenGenresDoNotMatch() {
-		spyOnItemSelectedListener.setFirstTimesw(false);
+		spyOnItemSelectedListener.setFirstSelection(false);
 		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
 				anyInt());
 		doReturn("All").when(mockCategoryInfo).getCategory();
@@ -190,7 +192,7 @@ InjectingTest {
 
 	@Test
 	public void verifyRefreshGridViewAdapterIsCalledWhenGridViewIsActive() {
-		spyOnItemSelectedListener.setFirstTimesw(false);
+		spyOnItemSelectedListener.setFirstSelection(false);
 		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
 				anyInt());
 		doReturn("All").when(mockCategoryInfo).getCategory();
@@ -213,7 +215,7 @@ InjectingTest {
 
 	@Test
 	public void verifyGetPosterAdapterIsNotCalledWhenSelectedAndItemCategoryAreTheSame() {
-		spyOnItemSelectedListener.setFirstTimesw(false);
+		spyOnItemSelectedListener.setFirstSelection(false);
 		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
 				anyInt());
 		doReturn("Action").when(mockCategoryInfo).getCategory();
@@ -253,7 +255,7 @@ InjectingTest {
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
 				0);
 
-		assertThat(spyOnItemSelectedListener.isFirstTimesw()).isFalse();
+		assertThat(spyOnItemSelectedListener.isFirstSelection()).isFalse();
 	}
 
 	@Test
@@ -371,6 +373,56 @@ InjectingTest {
 				.findViewById(R.id.movieGridView);
 		assertThat(gridView.getOnItemClickListener()).isInstanceOf(
 				GridVideoOnItemClickListener.class);
+	}
+
+	@Test
+	public void returnThePositionForTheSavedCategoryState() {
+
+		doReturn(2).when(mockAdapterView).getCount();
+
+		CategoryInfo mockCategoryInfo1 = Mockito.mock(CategoryInfo.class);
+		CategoryInfo mockCategoryInfo2 = Mockito.mock(CategoryInfo.class);
+
+		doReturn(mockCategoryInfo1).when(mockAdapterView).getItemAtPosition(0);
+		doReturn(mockCategoryInfo2).when(mockAdapterView).getItemAtPosition(1);
+
+		demandMockCategory("Action", mockCategoryInfo1);
+		demandMockCategory("All", mockCategoryInfo2);
+
+		doReturn("All").when(mockCategoryState).getGenreCategory();
+
+		int result = onItemSelectedListener
+				.getSavedInstancePosition(mockAdapterView);
+
+		assertThat(result).isEqualTo(1);
+
+	}
+
+	@Test
+	public void returnTheFirstPositionWhenCategoryStateNotFound() {
+
+		doReturn(2).when(mockAdapterView).getCount();
+
+		CategoryInfo mockCategoryInfo1 = Mockito.mock(CategoryInfo.class);
+		CategoryInfo mockCategoryInfo2 = Mockito.mock(CategoryInfo.class);
+
+		doReturn(mockCategoryInfo1).when(mockAdapterView).getItemAtPosition(0);
+		doReturn(mockCategoryInfo2).when(mockAdapterView).getItemAtPosition(1);
+
+		demandMockCategory("Action", mockCategoryInfo1);
+		demandMockCategory("Alpha", mockCategoryInfo2);
+
+		doReturn("All").when(mockCategoryState).getGenreCategory();
+
+		int result = onItemSelectedListener
+				.getSavedInstancePosition(mockAdapterView);
+
+		assertThat(result).isEqualTo(0);
+
+	}
+
+	private void demandMockCategory(String value, CategoryInfo mockCategoryInfo) {
+		doReturn(value).when(mockCategoryInfo).getCategory();
 	}
 
 	@Override
