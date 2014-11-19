@@ -51,11 +51,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  *
  */
 public class MoviePosterOnItemSelectedListener extends
-		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
+AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 
-	/**
-	 *
-	 */
 	public MoviePosterOnItemSelectedListener(Activity activity) {
 		super(activity);
 	}
@@ -127,7 +124,7 @@ public class MoviePosterOnItemSelectedListener extends
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener
 	 * #fetchSubtitle(us.nineworlds.serenity.core.model.VideoContentInfo)

@@ -91,7 +91,7 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 		for (int i = 0; i < count; i++) {
 			CategoryInfo citem = (CategoryInfo) viewAdapter
 					.getItemAtPosition(i);
-			if (citem.getCategory().equals(categoryState.getGenreCategory())) {
+			if (citem.getCategory().equals(getSavedCategory())) {
 				return i;
 			}
 		}

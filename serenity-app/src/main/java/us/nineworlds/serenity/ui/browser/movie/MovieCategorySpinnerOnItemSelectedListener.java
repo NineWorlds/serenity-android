@@ -145,13 +145,23 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 	}
 
 	protected void createGallery(CategoryInfo item, View bgLayout) {
-		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(
-				getMultiViewVideoActivity(), key, item.getCategory());
+		AbstractPosterImageGalleryAdapter adapter = getPosterImageAdapter(item);
 		if (getMultiViewVideoActivity().isGridViewActive()) {
 			refreshGridView(adapter);
 			return;
 		}
 		refreshGallery(adapter);
+	}
+
+	/**
+	 * @param item
+	 * @return
+	 */
+	protected AbstractPosterImageGalleryAdapter getPosterImageAdapter(
+			CategoryInfo item) {
+		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(
+				getMultiViewVideoActivity(), key, item.getCategory());
+		return adapter;
 	}
 
 	private class SecondaryCategoryHandler extends Handler {
