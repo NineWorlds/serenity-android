@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -38,24 +38,16 @@ import android.widget.Spinner;
 public class CategoryHandler extends Handler {
 
 	private List<CategoryInfo> categories;
-	private final Activity _context;
-	private final String _savedCategory;
-	private final String _key;
+	private final Activity context;
+	private final String savedCategory;
+	private final String key;
 
-	/**
-	 * 
-	 */
 	public CategoryHandler(Activity context, String savedCategory, String key) {
-		_context = context;
-		_savedCategory = savedCategory;
-		_key = key;
+		this.context = context;
+		this.savedCategory = savedCategory;
+		this.key = key;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.os.Handler#handleMessage(android.os.Message)
-	 */
 	@Override
 	public void handleMessage(Message msg) {
 		if (msg.obj != null) {
@@ -69,23 +61,23 @@ public class CategoryHandler extends Handler {
 	 */
 	protected void setupMovieBrowser() {
 		ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
-				_context, R.layout.serenity_spinner_textview, categories);
+				context, R.layout.serenity_spinner_textview, categories);
 		spinnerArrayAdapter
 				.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
-		Spinner categorySpinner = (Spinner) _context
+		Spinner categorySpinner = (Spinner) context
 				.findViewById(R.id.categoryFilter);
 		if (categorySpinner != null) {
 			categorySpinner.setVisibility(View.VISIBLE);
 			categorySpinner.setAdapter(spinnerArrayAdapter);
-			if (_savedCategory == null) {
+			if (savedCategory == null) {
 				categorySpinner
 						.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
-								"all", _key));
+								"all", key));
 			} else {
 				categorySpinner
 						.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
-								_savedCategory, _key, false));
+								savedCategory, key, false));
 			}
 			categorySpinner.requestFocus();
 		}

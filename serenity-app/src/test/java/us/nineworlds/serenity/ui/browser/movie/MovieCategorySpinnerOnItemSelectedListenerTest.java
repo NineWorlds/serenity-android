@@ -38,7 +38,6 @@ import java.util.List;
 import javax.inject.Singleton;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -47,6 +46,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowApplication;
 
 import us.nineworlds.serenity.R;
@@ -62,6 +62,7 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.AdapterView;
@@ -90,7 +91,7 @@ InjectingTest {
 	protected AdapterView mockAdapterView;
 
 	@Mock
-	protected SecondaryCategoryInfo mockCategoryInfo;
+	protected CategoryInfo mockCategoryInfo;
 
 	@Mock
 	protected SerenityMultiViewVideoActivity mockMultiViewVideoActivity;
@@ -146,7 +147,35 @@ InjectingTest {
 	}
 
 	@Test
-	@Ignore
+	public void populatesSecondaryCategoriesWhenItemLevelIsGreaterThanZero() {
+		movieBrowserActivity = Robolectric
+				.buildActivity(MovieBrowserActivity.class).create().get();
+		spyOnItemSelectedListener.setFirstSelection(false);
+		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
+				anyInt());
+		doReturn("action").when(mockCategoryInfo).getCategory();
+		doReturn(1).when(mockCategoryInfo).getLevel();
+
+		doReturn(movieBrowserActivity).when(mockView).getContext();
+
+		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
+		.getPosterImageAdapter(any(CategoryInfo.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
+				any(AbstractPosterImageGalleryAdapter.class));
+		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+				any(AbstractPosterImageGalleryAdapter.class));
+
+		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
+				0);
+
+		ShadowActivity shadowActivity = Robolectric
+				.shadowOf(movieBrowserActivity);
+		Intent intent = shadowActivity.getNextStartedService();
+		assertThat(intent).isNotNull();
+
+	}
+
+	@Test
 	public void verifyViewAdapterSetSelectionIsNotCalledWhenFirstTimeSwitchIsFalse() {
 		spyOnItemSelectedListener.setFirstSelection(false);
 		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
@@ -228,7 +257,7 @@ InjectingTest {
 		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
 		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).createGallery(
-				any(CategoryInfo.class), any(View.class));
+				any(CategoryInfo.class));
 
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
@@ -287,8 +316,8 @@ InjectingTest {
 
 		verify(mockCategoryInfo, times(2)).getCategory();
 		verify(mockAdapterView).setSelection(anyInt());
-		verify(spyOnItemSelectedListener).createGallery(
-				any(CategoryInfo.class), any(View.class));
+		verify(spyOnItemSelectedListener)
+				.createGallery(any(CategoryInfo.class));
 	}
 
 	@Test

@@ -36,7 +36,6 @@ import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.SharedPreferences;
-import android.view.View;
 import android.widget.AdapterView;
 
 import com.jess.ui.TwoWayGridView;
@@ -63,7 +62,6 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 
 	protected SerenityGallery posterGallery;
 	protected TwoWayGridView gridView;
-	protected View bgLayout;
 
 	protected SerenityMultiViewVideoActivity multiViewVideoActivity;
 
@@ -77,9 +75,6 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 	}
 
 	protected void findViews() {
-		bgLayout = getMultiViewVideoActivity().findViewById(
-				R.id.movieBrowserBackgroundLayout);
-
 		gridView = (TwoWayGridView) getMultiViewVideoActivity().findViewById(
 				R.id.movieGridView);
 		posterGallery = (SerenityGallery) getMultiViewVideoActivity()
@@ -132,8 +127,7 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 	protected void refreshGridView(AbstractPosterImageGalleryAdapter adapter) {
 		gridView.setAdapter(adapter);
 		gridView.setOnItemClickListener(gridVideoOnItemClickListener);
-		gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener(
-				bgLayout));
+		gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener());
 		gridView.setOnItemLongClickListener(gridVideoOnItemLongClickListener);
 	}
 

@@ -43,7 +43,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class MovieCategorySpinnerOnItemSelectedListener extends
-BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
+		BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
 	protected Spinner secondarySpinner;
 
@@ -82,7 +82,7 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 			viewAdapter.setSelection(savedInstancePosition);
 			savedInstanceCategory = null;
 			if (item.getLevel() == 0) {
-				createGallery(item, bgLayout);
+				createGallery(item);
 			} else {
 				populateSecondaryCategory();
 				return;
@@ -105,7 +105,7 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 				}
 			}
 
-			createGallery(item, bgLayout);
+			createGallery(item);
 
 			setFirstSelection(false);
 			return;
@@ -121,7 +121,7 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
 		if (item.getLevel() == 0) {
 			secondarySpinner.setVisibility(View.INVISIBLE);
-			createGallery(item, bgLayout);
+			createGallery(item);
 		} else {
 			populateSecondaryCategory();
 		}
@@ -144,7 +144,7 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 		getMultiViewVideoActivity().startService(categoriesIntent);
 	}
 
-	protected void createGallery(CategoryInfo item, View bgLayout) {
+	protected void createGallery(CategoryInfo item) {
 		AbstractPosterImageGalleryAdapter adapter = getPosterImageAdapter(item);
 		if (getMultiViewVideoActivity().isGridViewActive()) {
 			refreshGridView(adapter);
@@ -185,11 +185,11 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 					getMultiViewVideoActivity(),
 					R.layout.serenity_spinner_textview, secondaryCategories);
 			spinnerSecArrayAdapter
-					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 			secondarySpinner.setAdapter(spinnerSecArrayAdapter);
 			secondarySpinner
-					.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
-							category, key));
+			.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
+					category, key));
 		}
 
 	}
