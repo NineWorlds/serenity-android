@@ -67,6 +67,9 @@ public abstract class AbstractPosterImageGalleryAdapter extends
 	@Inject
 	protected PlexappFactory factory;
 
+	@Inject
+	protected VolleyUtils volley;
+
 	protected static List<VideoContentInfo> posterList = null;
 	protected ActionBarActivity context;
 	protected ImageLoader imageLoader;
@@ -80,7 +83,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends
 	protected RequestQueue queue;
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
-		queue = VolleyUtils.getRequestQueueInstance(c);
+		queue = volley.getRequestQueue();
 		context = (ActionBarActivity) c;
 		posterList = new ArrayList<VideoContentInfo>();
 		imageLoader = serenityImageLoader.getImageLoader();
@@ -90,7 +93,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key,
 			String category) {
-		queue = VolleyUtils.getRequestQueueInstance(c);
+		queue = volley.getRequestQueue();
 		context = (ActionBarActivity) c;
 		this.key = key;
 		this.category = category;
@@ -105,50 +108,27 @@ public abstract class AbstractPosterImageGalleryAdapter extends
 
 	protected abstract void fetchDataFromService();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.Adapter#getCount()
-	 */
 	@Override
 	public int getCount() {
 
 		return posterList.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.Adapter#getItem(int)
-	 */
 	@Override
 	public Object getItem(int position) {
 
 		return posterList.get(position);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.Adapter#getItemId(int)
-	 */
 	@Override
 	public long getItemId(int position) {
 		return position;
 	}
 
-	/**
-	 * @param galleryCellView
-	 * @param pi
-	 * @param watchedView
-	 */
 	public List<VideoContentInfo> getItems() {
 		return posterList;
 	}
 
-	/**
-	 * @param image
-	 */
 	@Deprecated
 	public void shrinkPosterAnimation(ImageView image, boolean isGridView) {
 		SharedPreferences preferences = PreferenceManager
@@ -160,10 +140,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends
 		}
 	}
 
-	/**
-	 * @param galleryCellView
-	 * @param pi
-	 */
 	public void setWatchedStatus(View galleryCellView, VideoContentInfo pi) {
 		ImageView watchedView = (ImageView) galleryCellView
 				.findViewById(R.id.posterWatchedIndicator);

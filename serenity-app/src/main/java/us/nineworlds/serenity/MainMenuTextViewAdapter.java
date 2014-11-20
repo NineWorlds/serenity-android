@@ -56,6 +56,9 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 	@Inject
 	PlexappFactory plexFactory;
 
+	@Inject
+	VolleyUtils volley;
+
 	/** The parent context */
 	private final Context myContext;
 	private RequestQueue queue;
@@ -74,11 +77,10 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 	}
 
 	protected void fetchData() {
-		queue = VolleyUtils.getRequestQueueInstance(myContext);
+		queue = volley.getRequestQueue();
 
 		String url = plexFactory.getSectionsURL();
-		VolleyUtils.volleyXmlGetRequest(url,
-				new MainMenuVolleyResponseListener(),
+		volley.volleyXmlGetRequest(url, new MainMenuVolleyResponseListener(),
 				new MainMenuResponseErrorListener());
 	}
 
@@ -184,7 +186,7 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 	}
 
 	private class MainMenuVolleyResponseListener implements
-	Response.Listener<MediaContainer> {
+			Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer mc) {
@@ -196,7 +198,7 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 	}
 
 	private class MainMenuResponseErrorListener extends
-	DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
+			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {
@@ -210,7 +212,7 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 					myContext,
 					"Unable to connect to Plex Library at "
 							+ plexFactory.getSectionsURL(), Toast.LENGTH_LONG)
-							.show();
+					.show();
 			notifyDataSetChanged();
 
 			Activity c = (Activity) myContext;

@@ -38,7 +38,6 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
 import us.nineworlds.serenity.volley.SimpleXmlRequest;
-import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -64,8 +63,8 @@ import com.jess.ui.TwoWayAbsListView;
  *
  */
 public class SeasonsEpisodePosterImageGalleryAdapter
-		extends
-		us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
+extends
+us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
 
 	private static SeasonsEpisodePosterImageGalleryAdapter notifyAdapter;
 	private DBMetaDataSource datasource;
@@ -208,7 +207,7 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
 		String queryURL = trailerSearch.queryURL(mpi);
 
-		VolleyUtils.volleyJSonGetRequest(queryURL,
+		volley.volleyJSonGetRequest(queryURL,
 				new YouTubeTrailerSearchResponseListener(view, mpi),
 				new DefaultLoggingVolleyErrorListener());
 	}

@@ -19,7 +19,10 @@ Response.Listener<MediaContainer> {
 	Context context;
 
 	@Inject
-	PlexappFactory factory;
+	protected PlexappFactory factory;
+
+	@Inject
+	protected VolleyUtils volley;
 
 	public LibraryResponseListener(Context context) {
 		super();
@@ -38,7 +41,7 @@ Response.Listener<MediaContainer> {
 			if ("movie".equals(library.getType())) {
 				String section = library.getSection();
 				String onDeckURL = factory.getSectionsURL(section, "onDeck");
-				VolleyUtils.volleyXmlGetRequest(onDeckURL,
+				volley.volleyXmlGetRequest(onDeckURL,
 						new MovieOnDeckResponseListener(context),
 						new DefaultLoggingVolleyErrorListener());
 			}
@@ -46,7 +49,7 @@ Response.Listener<MediaContainer> {
 			if ("show".equals(library.getType())) {
 				String section = library.getSection();
 				String onDeckUrl = factory.getSectionsURL(section, "onDeck");
-				VolleyUtils.volleyXmlGetRequest(onDeckUrl,
+				volley.volleyXmlGetRequest(onDeckUrl,
 						new TVOnDeckResponseListener(context),
 						new DefaultLoggingVolleyErrorListener());
 			}

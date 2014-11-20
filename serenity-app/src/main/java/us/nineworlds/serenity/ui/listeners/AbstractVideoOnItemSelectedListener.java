@@ -78,7 +78,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
-implements OnItemSelectedListener {
+		implements OnItemSelectedListener {
 
 	public static final String CRLF = "\r\n";
 	public static final int WATCHED_VIEW_ID = 1000;
@@ -102,6 +102,9 @@ implements OnItemSelectedListener {
 
 	@Inject
 	protected PlexappFactory plexFactory;
+
+	@Inject
+	protected VolleyUtils volley;
 
 	protected ImageLoader imageLoader;
 
@@ -221,7 +224,7 @@ implements OnItemSelectedListener {
 	}
 
 	public void fetchSubtitle(VideoContentInfo mpi) {
-		queue = VolleyUtils.getRequestQueueInstance(context);
+		queue = volley.getRequestQueue();
 		String url = plexFactory.getMovieMetadataURL("/library/metadata/"
 				+ mpi.id());
 		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(
@@ -243,8 +246,8 @@ implements OnItemSelectedListener {
 		if (mpi.hasTrailer()) {
 			if (videoInfo.hasTrailer()
 					&& YouTubeInitializationResult.SUCCESS
-							.equals(YouTubeApiServiceUtil
-									.isYouTubeApiServiceAvailable(context))) {
+					.equals(YouTubeApiServiceUtil
+							.isYouTubeApiServiceAvailable(context))) {
 				ImageView ytImage = new ImageView(context);
 				ytImage.setImageResource(R.drawable.yt_social_icon_red_128px);
 				ytImage.setScaleType(ScaleType.FIT_XY);
@@ -266,7 +269,7 @@ implements OnItemSelectedListener {
 		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
 		String queryURL = trailerSearch.queryURL(mpi);
 
-		VolleyUtils.volleyJSonGetRequest(queryURL,
+		volley.volleyJSonGetRequest(queryURL,
 				new YouTubeTrailerSearchResponseListener(view, mpi),
 				new DefaultLoggingVolleyErrorListener());
 	}
@@ -313,9 +316,9 @@ implements OnItemSelectedListener {
 				videoInfo.getBackgroundURL(), 1280, 720);
 
 		imageLoader
-				.loadImage(transcodingURL, new ImageSize(1280, 720),
-						new SerenityBackgroundLoaderListener(fanArt,
-								R.drawable.movies));
+		.loadImage(transcodingURL, new ImageSize(1280, 720),
+				new SerenityBackgroundLoaderListener(fanArt,
+						R.drawable.movies));
 	}
 
 	protected class CheckDatabaseRunnable implements Runnable {

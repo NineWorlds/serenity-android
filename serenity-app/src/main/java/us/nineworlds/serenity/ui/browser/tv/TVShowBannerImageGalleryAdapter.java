@@ -34,7 +34,6 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.BadgeView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Context;
@@ -51,7 +50,7 @@ import com.android.volley.Response;
 import com.jess.ui.TwoWayGridView;
 
 public class TVShowBannerImageGalleryAdapter extends
-AbstractPosterImageGalleryAdapter {
+		AbstractPosterImageGalleryAdapter {
 
 	private static final int BANNER_PIXEL_HEIGHT = 140;
 	private static final int BANNER_PIXEL_WIDTH = 758;
@@ -76,7 +75,7 @@ AbstractPosterImageGalleryAdapter {
 		context.setSupportProgressBarIndeterminateVisibility(true);
 
 		String url = factory.getSectionsURL(key, category);
-		VolleyUtils.volleyXmlGetRequest(url, new SeriesResponseListener(),
+		volley.volleyXmlGetRequest(url, new SeriesResponseListener(),
 				new DefaultLoggingVolleyErrorListener());
 	}
 
@@ -207,7 +206,7 @@ AbstractPosterImageGalleryAdapter {
 	}
 
 	protected class SeriesResponseListener implements
-	Response.Listener<MediaContainer> {
+			Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer response) {
@@ -225,7 +224,7 @@ AbstractPosterImageGalleryAdapter {
 					Toast.makeText(
 							context,
 							context.getString(R.string.no_shows_found_for_the_category_)
-							+ category, Toast.LENGTH_LONG).show();
+									+ category, Toast.LENGTH_LONG).show();
 				}
 				tv.setText(Integer.toString(tvShowList.size())
 						+ context.getString(R.string._item_s_));

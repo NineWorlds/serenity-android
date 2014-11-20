@@ -65,8 +65,8 @@ import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.injection.ApplicationContext;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
-import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
+import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieMenuDrawerOnItemClickedListener;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
@@ -117,6 +117,7 @@ import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerKeyCodeHandler;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
 import us.nineworlds.serenity.volley.LibraryResponseListener;
+import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Application;
 import android.content.Context;
@@ -185,7 +186,8 @@ import dagger.Provides;
 		SecondaryCategorySpinnerOnItemSelectedListener.class,
 		MovieCategorySpinnerOnItemSelectedListener.class,
 		TVCategorySpinnerOnItemSelectedListener.class,
-		TVSecondaryCategorySpinnerOnItemSelectedListener.class }, library = true)
+		TVSecondaryCategorySpinnerOnItemSelectedListener.class,
+		VolleyUtils.class }, library = true)
 public class AndroidModule {
 
 	private final Context applicationContext;
@@ -231,6 +233,12 @@ public class AndroidModule {
 	@Provides
 	MediaPlayer providesMediaPlayer() {
 		return new MediaPlayer();
+	}
+
+	@Provides
+	@Singleton
+	VolleyUtils providesVolleyUtils() {
+		return new VolleyUtils();
 	}
 
 }

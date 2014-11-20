@@ -25,6 +25,11 @@ package us.nineworlds.serenity.volley;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,31 +38,41 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import us.nineworlds.serenity.injection.modules.AndroidModule;
+import us.nineworlds.serenity.injection.modules.SerenityModule;
+import us.nineworlds.serenity.test.InjectingTest;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 
+import dagger.Module;
+
 @RunWith(RobolectricTestRunner.class)
 @Config(reportSdk = 14, emulateSdk = 18)
-public class VolleyUtilsTest {
+public class VolleyUtilsTest extends InjectingTest {
 
 	RequestQueue queue;
 
+	@Inject
+	VolleyUtils volley;
+
+	@Override
 	@Before
-	public void setUp() {
-		queue = VolleyUtils.getRequestQueueInstance(Robolectric.application);
+	public void setUp() throws Exception {
+		super.setUp();
+		queue = volley.getRequestQueue();
 	}
 
 	@Test
 	public void assertThatVolleyRequestQueueIsNotNull() {
-		queue = VolleyUtils.getRequestQueueInstance(Robolectric.application);
+		queue = volley.getRequestQueue();
 		assertThat(queue).isNotNull();
 	}
 
 	@Test
 	public void assertThatVolleyRequestQueueIsSameInstance() {
-		RequestQueue queue2 = VolleyUtils
-				.getRequestQueueInstance(Robolectric.application);
+		RequestQueue queue2 = volley.getRequestQueue();
 		assertThat(queue).isEqualTo(queue2);
 
 	}
@@ -65,19 +80,31 @@ public class VolleyUtilsTest {
 	@Test
 	public void assertThatXmlRequestIsNotNull() {
 		Response.Listener rlistener = Mockito.mock(Response.Listener.class);
-		Request request = VolleyUtils.volleyXmlGetRequest(
-				"http://www.example.com", rlistener,
-				new DefaultLoggingVolleyErrorListener());
+		Request request = volley.volleyXmlGetRequest("http://www.example.com",
+				rlistener, new DefaultLoggingVolleyErrorListener());
 		assertThat(request).isNotNull();
 	}
 
 	@Test
 	public void assertThatJsonRequestIsNotNull() {
 		Response.Listener rlistener = Mockito.mock(Response.Listener.class);
-		Request request = VolleyUtils.volleyJSonGetRequest(
-				"http://www.example.com", rlistener,
-				new DefaultLoggingVolleyErrorListener());
+		Request request = volley.volleyJSonGetRequest("http://www.example.com",
+				rlistener, new DefaultLoggingVolleyErrorListener());
 		assertThat(request).isNotNull();
+	}
+
+	@Override
+	public List<Object> getModules() {
+		List<Object> modules = new ArrayList<Object>();
+		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new TestModule());
+		return modules;
+	}
+
+	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
+		VolleyUtils.class, VolleyUtilsTest.class })
+	public class TestModule {
+
 	}
 
 }

@@ -30,7 +30,6 @@ import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Context;
 import android.view.View;
@@ -48,7 +47,7 @@ import com.android.volley.VolleyError;
  *
  */
 public class EpisodePosterImageGalleryAdapter extends
-		AbstractPosterImageGalleryAdapter {
+AbstractPosterImageGalleryAdapter {
 
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
@@ -93,13 +92,12 @@ public class EpisodePosterImageGalleryAdapter extends
 	public void retrieveEpisodes() {
 		String url = factory.getEpisodesURL(key);
 
-		VolleyUtils.volleyXmlGetRequest(url,
-				new EpisodePosterResponseListener(),
+		volley.volleyXmlGetRequest(url, new EpisodePosterResponseListener(),
 				new EpisodeResponseErrorListener());
 	}
 
 	private class EpisodePosterResponseListener implements
-			Response.Listener<MediaContainer> {
+	Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer response) {
@@ -117,7 +115,7 @@ public class EpisodePosterImageGalleryAdapter extends
 	}
 
 	private class EpisodeResponseErrorListener extends
-			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
+	DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {

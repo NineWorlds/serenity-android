@@ -74,6 +74,9 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingBaseAdapter {
 	@Inject
 	SerenityImageLoader serenityImageLoader;
 
+	@Inject
+	VolleyUtils volley;
+
 	public TVShowSeasonImageGalleryAdapter(Context c, String key) {
 		super();
 		context = (SerenityDrawerLayoutActivity) c;
@@ -90,7 +93,7 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingBaseAdapter {
 		context.setSupportProgressBarIndeterminateVisibility(true);
 
 		String url = plexFactory.getSeasonsURL(key);
-		VolleyUtils.volleyXmlGetRequest(url, new SeaonsResponseListener(),
+		volley.volleyXmlGetRequest(url, new SeaonsResponseListener(),
 				new DefaultLoggingVolleyErrorListener());
 	}
 
@@ -190,7 +193,7 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingBaseAdapter {
 	}
 
 	private class SeaonsResponseListener implements
-			Response.Listener<MediaContainer> {
+	Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer response) {

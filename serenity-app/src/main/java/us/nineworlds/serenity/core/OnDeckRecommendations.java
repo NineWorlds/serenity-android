@@ -46,11 +46,14 @@ public class OnDeckRecommendations extends BaseInjector {
 	@Inject
 	SharedPreferences preferences;
 
+	@Inject
+	VolleyUtils volley;
+
 	private final Context context;
 
 	public OnDeckRecommendations(Context context) {
+		super();
 		this.context = context;
-		VolleyUtils.getRequestQueueInstance(context);
 	}
 
 	public boolean recommended() {
@@ -72,9 +75,8 @@ public class OnDeckRecommendations extends BaseInjector {
 		}
 
 		String sectionsURL = factory.getSectionsURL();
-		VolleyUtils.volleyXmlGetRequest(sectionsURL,
-				new LibraryResponseListener(context),
-				new DefaultLoggingVolleyErrorListener());
+		volley.volleyXmlGetRequest(sectionsURL, new LibraryResponseListener(
+				context), new DefaultLoggingVolleyErrorListener());
 		return true;
 	}
 }

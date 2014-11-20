@@ -35,7 +35,6 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import us.nineworlds.serenity.widgets.RoundedImageView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -72,9 +71,11 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		if (position > posterList.size()) {
 			position = posterList.size() - 1;
 		}
+
 		if (position < 0) {
 			position = 0;
 		}
+
 		View galleryCellView = null;
 		if (convertView != null) {
 			galleryCellView = convertView;
@@ -128,10 +129,6 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		return galleryCellView;
 	}
 
-	/**
-	 * @param galleryCellView
-	 * @param pi
-	 */
 	protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
 		if (movieContext.isGridViewActive()) {
 			checkDataBaseForTrailer(pi);
@@ -160,9 +157,6 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		}
 	}
 
-	/**
-	 * @param pi
-	 */
 	protected void checkDataBaseForTrailer(VideoContentInfo pi) {
 		datasource = new DBMetaDataSource(context);
 		datasource.open();
@@ -179,27 +173,16 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
 		String queryURL = trailerSearch.queryURL(mpi);
 
-		VolleyUtils.volleyJSonGetRequest(queryURL,
+		volley.volleyJSonGetRequest(queryURL,
 				new YouTubeTrailerSearchResponseListener(view, mpi),
 				new DefaultLoggingVolleyErrorListener());
-
-		// TrailerHandler trailerHandler = new TrailerGridHandler(mpi, context,
-		// view);
-		// Messenger messenger = new Messenger(trailerHandler);
-		// Intent intent = new Intent(context,
-		// YouTubeTrailerSearchIntentService.class);
-		// intent.putExtra("videoTitle", mpi.getTitle());
-		// intent.putExtra("year", mpi.getYear());
-		// intent.putExtra("MESSENGER", messenger);
-		// context.startService(intent);
 	}
 
 	public void fetchSubtitle(VideoContentInfo mpi, View view) {
 		String url = factory.getMovieMetadataURL("/library/metadata/"
 				+ mpi.id());
-		VolleyUtils.volleyXmlGetRequest(url,
-				new GridSubtitleVolleyResponseListener(mpi, context, view),
-				new DefaultLoggingVolleyErrorListener());
+		volley.volleyXmlGetRequest(url, new GridSubtitleVolleyResponseListener(
+				mpi, context, view), new DefaultLoggingVolleyErrorListener());
 	}
 
 	@Override
@@ -210,7 +193,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 		String url = factory.getSectionsURL(key, category);
 
-		VolleyUtils.volleyXmlGetRequest(url, new MoviePosterResponseListener(),
+		volley.volleyXmlGetRequest(url, new MoviePosterResponseListener(),
 				new MoviePosterResponseErrorListener());
 	}
 

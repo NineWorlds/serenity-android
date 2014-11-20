@@ -23,8 +23,13 @@
 
 package us.nineworlds.serenity.volley;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.OkHttpStack;
+import us.nineworlds.serenity.injection.ApplicationContext;
+import us.nineworlds.serenity.injection.BaseInjector;
 import android.content.Context;
 import android.util.Log;
 
@@ -34,23 +39,26 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-/**
- * @author dcarver
- *
- */
-public class VolleyUtils {
+@Singleton
+public class VolleyUtils extends BaseInjector {
 
-	private static RequestQueue queue;
+	@Inject
+	@ApplicationContext
+	Context context;
 
-	public static RequestQueue getRequestQueueInstance(Context context) {
-		if (queue == null) {
-			queue = Volley.newRequestQueue(context, new OkHttpStack());
-		}
+	private final RequestQueue queue;
+
+	public VolleyUtils() {
+		super();
+		queue = Volley.newRequestQueue(context, new OkHttpStack());
+	}
+
+	public RequestQueue getRequestQueue() {
 		return queue;
 	}
 
-	public static Request volleyXmlGetRequest(String url,
-			Response.Listener response, Response.ErrorListener error) {
+	public Request volleyXmlGetRequest(String url, Response.Listener response,
+			Response.ErrorListener error) {
 		SimpleXmlRequest<MediaContainer> request = new SimpleXmlRequest<MediaContainer>(
 				Request.Method.GET, url, MediaContainer.class, response, error);
 		if (queue == null) {
@@ -60,8 +68,8 @@ public class VolleyUtils {
 		return queue.add(request);
 	}
 
-	public static Request volleyJSonGetRequest(String url,
-			Response.Listener response, Response.ErrorListener error) {
+	public Request volleyJSonGetRequest(String url, Response.Listener response,
+			Response.ErrorListener error) {
 		JsonObjectRequest request = new JsonObjectRequest(url, null, response,
 				error);
 		if (queue == null) {
