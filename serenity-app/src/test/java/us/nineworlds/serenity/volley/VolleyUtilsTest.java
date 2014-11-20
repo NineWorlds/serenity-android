@@ -102,7 +102,7 @@ public class VolleyUtilsTest extends InjectingTest {
 	}
 
 	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-		VolleyUtils.class, VolleyUtilsTest.class })
+			VolleyUtils.class, VolleyUtilsTest.class })
 	public class TestModule {
 
 	}
