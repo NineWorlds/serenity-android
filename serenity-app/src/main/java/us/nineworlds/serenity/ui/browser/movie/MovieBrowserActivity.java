@@ -161,11 +161,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-	}
-
-	@Override
 	protected void onResume() {
 		super.onResume();
 		if (restarted_state == false) {
@@ -179,11 +174,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 			startService(categoriesIntent);
 		}
 		restarted_state = false;
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import android.view.accessibility.AccessibilityEvent;
  * state, namely first to any opened drawer, and if no drawer is opened to the
  * main content.
  */
-public final class DrawerLayout extends android.support.v4.widget.DrawerLayout {
+public class DrawerLayout extends android.support.v4.widget.DrawerLayout {
 
 	private DrawerListener m_wrappedListener;
 
@@ -146,7 +146,7 @@ public final class DrawerLayout extends android.support.v4.widget.DrawerLayout {
 		// to avoid the focus search finding layouts when a more precise search
 		// among the focusable children would be more interesting.
 		if (descendantFocusability != FOCUS_AFTER_DESCENDANTS ||
-		// No focusable descendants
+				// No focusable descendants
 				(focusableCount == views.size())) {
 			// Note that we can't call the superclass here, because it will
 			// add all views in. So we need to do the same thing View does.

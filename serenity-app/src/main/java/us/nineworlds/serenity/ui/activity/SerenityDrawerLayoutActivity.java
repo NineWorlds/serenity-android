@@ -89,12 +89,12 @@ public abstract class SerenityDrawerLayoutActivity extends SerenityActivity {
 	protected void initMenuDrawerViews() {
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		linearDrawerLayout = (LinearLayout) findViewById(R.id.left_drawer);
-	
+
 		Button settingsButton = (Button) findViewById(R.id.drawer_settings);
 		settingsButton
-				.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
-						drawerLayout));
-	
+		.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
+				drawerLayout));
+
 		drawerList = (ListView) drawerLayout
 				.findViewById(R.id.left_drawer_list);
 	}

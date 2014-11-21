@@ -47,6 +47,9 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 	@Inject
 	VideoPlayerIntentUtils vpUtils;
 
+	@Inject
+	SharedPreferences prefs;
+
 	public MovieMenuDrawerOnItemClickedListener(DrawerLayout drawer) {
 		super();
 		menuDrawer = drawer;
@@ -95,8 +98,7 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 	 */
 	protected void toggleView(SerenityMultiViewVideoActivity activity,
 			boolean enableGridView) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(activity);
+		prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 		Editor e = prefs.edit();
 		activity.setGridViewEnabled(enableGridView);
 		e.putBoolean("movie_layout_grid", enableGridView);
