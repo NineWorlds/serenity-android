@@ -24,13 +24,25 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Singleton;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
@@ -41,14 +53,23 @@ import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import dagger.Module;
+import dagger.Provides;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(emulateSdk = 18)
 public class MovieBrowserActivityTest extends InjectingTest {
+
+	@Mock
+	SharedPreferences mockSharedPreferences;
 
 	MovieBrowserActivity movieBrowserActivity;
 
@@ -57,6 +78,8 @@ public class MovieBrowserActivityTest extends InjectingTest {
 	public void setUp() throws Exception {
 		Robolectric.getBackgroundScheduler().pause();
 		Robolectric.getUiThreadScheduler().pause();
+
+		MockitoAnnotations.initMocks(this);
 		super.setUp();
 
 	}
@@ -113,6 +136,71 @@ public class MovieBrowserActivityTest extends InjectingTest {
 				"CategoryRetrievalIntentService");
 	}
 
+	@Test
+	public void restartCallsPopulateMenuDrawer() {
+		doReturn(true).when(mockSharedPreferences).getBoolean(anyString(),
+				anyBoolean());
+		movieBrowserActivity = Robolectric
+				.buildActivity(MovieBrowserActivity.class).create().get();
+		MovieBrowserActivity spyActivity = Mockito.spy(movieBrowserActivity);
+		doNothing().when(spyActivity).populateMenuDrawer();
+
+		spyActivity.onRestart();
+
+		verify(spyActivity).populateMenuDrawer();
+	}
+
+	@Test
+	public void onKeyDownClosesMenuDrawerWhenMenuKeyIsPressed() {
+		doReturn(true).when(mockSharedPreferences).getBoolean(
+				"remote_control_menu", true);
+
+		movieBrowserActivity = Robolectric
+				.buildActivity(MovieBrowserActivity.class).create().get();
+		DrawerLayout drawerLayout = (DrawerLayout) movieBrowserActivity
+				.findViewById(R.id.drawer_layout);
+		LinearLayout linearLayout = (LinearLayout) movieBrowserActivity
+				.findViewById(R.id.left_drawer);
+
+		drawerLayout.openDrawer(linearLayout);
+		movieBrowserActivity.onKeyDown(KeyEvent.KEYCODE_MENU, null);
+
+		assumeFalse(drawerLayout.isDrawerOpen(linearLayout));
+	}
+
+	@Test
+	public void onKeyDownOpensMenuDrawerWhenMenuKeyIsPressed() {
+		doReturn(true).when(mockSharedPreferences).getBoolean(
+				"remote_control_menu", true);
+
+		movieBrowserActivity = Robolectric
+				.buildActivity(MovieBrowserActivity.class).create().get();
+
+		DrawerLayout drawerLayout = (DrawerLayout) movieBrowserActivity
+				.findViewById(R.id.drawer_layout);
+		LinearLayout linearLayout = (LinearLayout) movieBrowserActivity
+				.findViewById(R.id.left_drawer);
+		drawerLayout.openDrawer(linearLayout);
+		movieBrowserActivity.onKeyDown(KeyEvent.KEYCODE_BACK, null);
+
+		assertThat(drawerLayout.isDrawerOpen(linearLayout)).isTrue();
+	}
+
+	@Test
+	public void onKeyDownBackClosesDrawerWhenDrawerIsOpen() {
+		doReturn(false).when(mockSharedPreferences).getBoolean(
+				"remote_control_menu", true);
+
+		movieBrowserActivity = Robolectric
+				.buildActivity(MovieBrowserActivity.class).create().get();
+
+		movieBrowserActivity.onKeyDown(KeyEvent.KEYCODE_MENU, null);
+
+		DrawerLayout drawerLayout = (DrawerLayout) movieBrowserActivity
+				.findViewById(R.id.drawer_layout);
+		assumeTrue(drawerLayout.isDrawerOpen(Gravity.LEFT));
+	}
+
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
@@ -121,10 +209,15 @@ public class MovieBrowserActivityTest extends InjectingTest {
 		return modules;
 	}
 
-	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, injects = {
+	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
 		MovieBrowserActivity.class, MovieBrowserActivityTest.class })
 	public class TestModule {
 
+		@Provides
+		@Singleton
+		SharedPreferences providesSharedPreferences() {
+			return mockSharedPreferences;
+		}
 	}
 
 }
