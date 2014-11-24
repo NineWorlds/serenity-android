@@ -47,7 +47,6 @@ import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -79,24 +78,6 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  */
 public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 		implements OnItemSelectedListener {
-
-	public static final String CRLF = "\r\n";
-	public static final int WATCHED_VIEW_ID = 1000;
-	public static final float WATCHED_PERCENT = 0.98f;
-	protected Activity context;
-	public Handler trailerHandler;
-	protected Handler checkDatabaseHandler = new Handler();
-	private final Animation shrink;
-	private final Animation fadeIn;
-	private View previous;
-	protected View currentView;
-	protected int position;
-	protected BaseAdapter adapter;
-	protected VideoContentInfo videoInfo;
-	private DBMetaDataSource datasource;
-	protected RequestQueue queue;
-	protected Runnable checkDBRunnable;
-
 	@Inject
 	protected SerenityImageLoader serenityImageLoader;
 
@@ -106,14 +87,30 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 	@Inject
 	protected VolleyUtils volley;
 
+	@Inject
+	protected SharedPreferences preferences;
+
+	public static final String CRLF = "\r\n";
+	public static final int WATCHED_VIEW_ID = 1000;
+	public static final float WATCHED_PERCENT = 0.98f;
+	protected Activity context;
+	public Handler trailerHandler;
+	protected Handler checkDatabaseHandler = new Handler();
+	private Animation fadeIn;
+	private View previous;
+	protected View currentView;
+	protected int position;
+	protected BaseAdapter adapter;
+	protected VideoContentInfo videoInfo;
+	private DBMetaDataSource datasource;
+	protected RequestQueue queue;
+	protected Runnable checkDBRunnable;
+
 	protected ImageLoader imageLoader;
 
-	public AbstractVideoOnItemSelectedListener(Activity c) {
+	public AbstractVideoOnItemSelectedListener() {
 		super();
 		imageLoader = serenityImageLoader.getImageLoader();
-		context = c;
-		shrink = AnimationUtils.loadAnimation(context, R.anim.shrink);
-		fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
 	}
 
 	protected abstract void createVideoDetail(ImageView v);
@@ -209,9 +206,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 
 	}
 
-	/**
-	 * @param pi
-	 */
 	protected void checkDataBaseForTrailer(VideoContentInfo pi) {
 		datasource = new DBMetaDataSource(context);
 		datasource.open();
@@ -277,18 +271,14 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 	@Override
 	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
 			long id) {
+		context = (Activity) v.getContext();
+		fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
 		videoInfo = (VideoContentInfo) av.getItemAtPosition(position);
 		changeBackgroundImage();
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		boolean shouldShrink = preferences.getBoolean(
-				"animation_shrink_posters", false);
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);
-			if (shouldShrink) {
-				previous.setAnimation(shrink);
-			}
 		}
 
 		previous = v;

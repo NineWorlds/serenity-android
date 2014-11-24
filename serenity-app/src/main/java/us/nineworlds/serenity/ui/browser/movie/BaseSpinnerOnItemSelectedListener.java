@@ -104,12 +104,11 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 				"animation_gallery_scrolling", true);
 		posterGallery.setAdapter(adapter);
 		posterGallery
-		.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(
-				getMultiViewVideoActivity()));
+				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener());
 
 		posterGallery.setOnItemClickListener(galleryOnItemClickListener);
 		posterGallery
-		.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
+				.setOnItemLongClickListener(galleryOnItemLongClickListener);
 		if (scrollingAnimation) {
 			posterGallery.setAnimationDuration(220);
 		} else {

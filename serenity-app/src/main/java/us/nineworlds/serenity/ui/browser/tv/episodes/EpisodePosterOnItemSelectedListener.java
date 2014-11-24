@@ -37,7 +37,6 @@ import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -55,7 +54,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public class EpisodePosterOnItemSelectedListener extends
-AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
+		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 
 	private static final String DISPLAY_DATE_FORMAT = "MMMMMMMMM d, yyyy";
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -63,6 +62,9 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 	private String prevTitle;
 	private boolean fadeIn = true;
 	private int fadeInCount = 0;
+
+	public EpisodePosterOnItemSelectedListener() {
+	}
 
 	@Override
 	public void fetchTrailer(VideoContentInfo mpi, View view) {
@@ -82,14 +84,6 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 		volley.volleyJSonGetRequest(queryURL,
 				new YouTubeTrailerSearchResponseListener(view, mpi),
 				new DefaultLoggingVolleyErrorListener());
-	}
-
-	/**
-	 *
-	 */
-	public EpisodePosterOnItemSelectedListener(Activity activity) {
-		super(activity);
-		context = activity;
 	}
 
 	@Override
@@ -165,7 +159,7 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 		if (videoInfo.getOriginalAirDate() != null) {
 			try {
 				Date airDate = new SimpleDateFormat(DATE_FORMAT)
-				.parse(videoInfo.getOriginalAirDate());
+						.parse(videoInfo.getOriginalAirDate());
 				SimpleDateFormat format = new SimpleDateFormat(
 						DISPLAY_DATE_FORMAT);
 				String formatedDate = format.format(airDate);
@@ -197,9 +191,9 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 				videoInfo.getBackgroundURL(), 1280, 720);
 
 		imageLoader
-				.loadImage(transcodingURL, new ImageSize(1280, 720),
-						new SerenityBackgroundLoaderListener(fanArt,
-								R.drawable.tvshows));
+		.loadImage(transcodingURL, new ImageSize(1280, 720),
+				new SerenityBackgroundLoaderListener(fanArt,
+						R.drawable.tvshows));
 	}
 
 	@Override

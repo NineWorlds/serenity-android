@@ -93,8 +93,8 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-		.setOnItemClickListener(new EpisodeMenuDrawerOnItemClickedListener(
-				drawerLayout));
+				.setOnItemClickListener(new EpisodeMenuDrawerOnItemClickedListener(
+						drawerLayout));
 	}
 
 	@Override
@@ -162,21 +162,20 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		boolean scrollingAnimation = prefs.getBoolean(
 				"animation_gallery_scrolling", true);
 		posterGallery
-		.setAdapter(new EpisodePosterImageGalleryAdapter(this, key));
+				.setAdapter(new EpisodePosterImageGalleryAdapter(this, key));
 		posterGallery
-		.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(
-				this));
+				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
 		posterGallery
-		.setOnItemClickListener(new GalleryVideoOnItemClickListener());
+				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
 		if (key.contains("onDeck")
 				|| key.contains("recentlyAdded")
 				|| (key.contains("recentlyViewed") && !key
 						.contains("recentlyViewedShows"))) {
 			posterGallery
-			.setOnItemLongClickListener(new EpisodeBrowserOnLongClickListener());
+					.setOnItemLongClickListener(new EpisodeBrowserOnLongClickListener());
 		} else {
 			posterGallery
-			.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
+					.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
 		}
 		if (scrollingAnimation) {
 			posterGallery.setAnimationDuration(220);
@@ -201,7 +200,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * us.nineworlds.serenity.ui.activity.SerenityVideoActivity#onActivityResult
 	 * (int, int, android.content.Intent)

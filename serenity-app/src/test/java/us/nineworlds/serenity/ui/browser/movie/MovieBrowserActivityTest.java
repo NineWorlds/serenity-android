@@ -81,7 +81,6 @@ public class MovieBrowserActivityTest extends InjectingTest {
 
 		MockitoAnnotations.initMocks(this);
 		super.setUp();
-
 	}
 
 	@Test
@@ -210,7 +209,7 @@ public class MovieBrowserActivityTest extends InjectingTest {
 	}
 
 	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-		MovieBrowserActivity.class, MovieBrowserActivityTest.class })
+			MovieBrowserActivity.class, MovieBrowserActivityTest.class })
 	public class TestModule {
 
 		@Provides
