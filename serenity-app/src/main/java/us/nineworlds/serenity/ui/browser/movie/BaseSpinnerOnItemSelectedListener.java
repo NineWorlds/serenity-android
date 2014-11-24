@@ -30,10 +30,6 @@ import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.SharedPreferences;
 import android.widget.AdapterView;
@@ -47,18 +43,6 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 
 	@Inject
 	protected SharedPreferences prefs;
-
-	@Inject
-	protected GalleryVideoOnItemClickListener galleryOnItemClickListener;
-
-	@Inject
-	protected GridVideoOnItemClickListener gridVideoOnItemClickListener;
-
-	@Inject
-	protected GalleryVideoOnItemLongClickListener galleryOnItemLongClickListener;
-
-	@Inject
-	protected GridVideoOnItemLongClickListener gridVideoOnItemLongClickListener;
 
 	protected SerenityGallery posterGallery;
 	protected TwoWayGridView gridView;
@@ -105,9 +89,6 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 
 	protected void refreshGridView(AbstractPosterImageGalleryAdapter adapter) {
 		gridView.setAdapter(adapter);
-		gridView.setOnItemClickListener(gridVideoOnItemClickListener);
-		gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener());
-		gridView.setOnItemLongClickListener(gridVideoOnItemLongClickListener);
 	}
 
 	protected SerenityMultiViewVideoActivity getMultiViewVideoActivity() {

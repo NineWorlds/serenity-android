@@ -106,6 +106,7 @@ public class MovieMenuDrawerOnItemClickListenerTest extends InjectingTest {
 		spyMovieBrowserActivity.setGridViewEnabled(false);
 
 		doNothing().when(spyMovieBrowserActivity).recreate();
+		doNothing().when(spyMovieBrowserActivity).setContentView(anyInt());
 
 		doReturn(spyMovieBrowserActivity).when(mockView).getContext();
 		doReturn(mockEditor).when(sharedPreferences).edit();
@@ -135,6 +136,7 @@ public class MovieMenuDrawerOnItemClickListenerTest extends InjectingTest {
 		spyMovieBrowserActivity.setGridViewEnabled(false);
 
 		doNothing().when(spyMovieBrowserActivity).recreate();
+		doNothing().when(spyMovieBrowserActivity).setContentView(anyInt());
 
 		doReturn(spyMovieBrowserActivity).when(mockView).getContext();
 		doReturn(mockEditor).when(sharedPreferences).edit();

@@ -47,7 +47,6 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
 import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -99,33 +98,32 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 		ShadowApplication shadowApplication = Robolectric
 				.shadowOf(Robolectric.application);
 		shadowApplication
-				.declareActionUnbindable("com.google.android.gms.analytics.service.START");
+		.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
 		MockitoAnnotations.initMocks(this);
 		super.setUp();
 		doReturn(true).when(mockPreferences).getBoolean("movie_layout_grid",
 				false);
 		doReturn(mockImageLoader).when(mockSerenityImageLoader)
-		.getImageLoader();
+				.getImageLoader();
 
 		onItemSelectedListener = new MovieGridPosterOnItemSelectedListener();
 		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
+				.buildActivity(MovieBrowserActivity.class).create().start()
+				.get();
 		doReturn(movieBrowserActivity).when(mockView).getContext();
 	}
 
 	@Test
 	public void whenItemIsSelectedTheBackgroundIsChanged() {
 		doReturn(mockVideoContentInfo).when(mockTwoWayAdapterView)
-				.getSelectedItem();
+		.getSelectedItem();
 		String expectedBackgroundUrl = "http://www.example.com/some/image";
 		doReturn(expectedBackgroundUrl).when(mockVideoContentInfo)
-		.getBackgroundURL();
+				.getBackgroundURL();
 		String expectedTranscodingUrl = "http://www.example.com/transcodingUrl";
 		doReturn(expectedTranscodingUrl).when(mockPlexFactory).getImageURL(
 				anyString(), anyInt(), anyInt());
-
-		View fanArt = movieBrowserActivity.findViewById(R.id.fanArt);
 
 		onItemSelectedListener.onItemSelected(mockTwoWayAdapterView, mockView,
 				0, 0);
@@ -137,7 +135,7 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 			String expectedTranscodingUrl) {
 		verify(mockVideoContentInfo, times(2)).getBackgroundURL();
 		verify(mockPlexFactory).getImageURL(expectedBackgroundUrl, 1280, 720);
-		verify(mockSerenityImageLoader).getImageLoader();
+		verify(mockSerenityImageLoader, times(3)).getImageLoader();
 		verify(mockImageLoader).loadImage(eq(expectedTranscodingUrl),
 				any(ImageSize.class),
 				any(SerenityBackgroundLoaderListener.class));
@@ -153,8 +151,8 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 	}
 
 	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-		MovieGridPosterOnItemSelectedListener.class,
-		MovieGridPosterOnItemSelectedListenerTest.class })
+			MovieGridPosterOnItemSelectedListener.class,
+			MovieGridPosterOnItemSelectedListenerTest.class })
 	public class TestModule {
 
 		@Provides

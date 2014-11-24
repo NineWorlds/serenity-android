@@ -76,7 +76,7 @@ import dagger.Provides;
 @RunWith(RobolectricTestRunner.class)
 @Config(emulateSdk = 18)
 public class MovieCategorySpinnerOnItemSelectedListenerTest extends
-InjectingTest {
+		InjectingTest {
 
 	@Mock
 	protected SharedPreferences mockSharedPreferences;
@@ -120,7 +120,7 @@ InjectingTest {
 		ShadowApplication shadowApplication = Robolectric
 				.shadowOf(Robolectric.application);
 		shadowApplication
-		.declareActionUnbindable("com.google.android.gms.analytics.service.START");
+				.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
 		onItemSelectedListener = new MovieCategorySpinnerOnItemSelectedListener(
 				"All", "59");
@@ -142,7 +142,7 @@ InjectingTest {
 
 		verify(mockView).getContext();
 		verify(spyOnItemSelectedListener)
-		.refreshGallery(mockPosterImageAdapter);
+				.refreshGallery(mockPosterImageAdapter);
 
 	}
 
@@ -159,7 +159,7 @@ InjectingTest {
 		doReturn(movieBrowserActivity).when(mockView).getContext();
 
 		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(CategoryInfo.class));
+				.getPosterImageAdapter(any(CategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGridView(
@@ -184,7 +184,7 @@ InjectingTest {
 
 		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
 		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
+				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGridView(
@@ -206,10 +206,10 @@ InjectingTest {
 
 		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
 		doReturn(mockSecondarySpinner).when(mockMultiViewVideoActivity)
-				.findViewById(R.id.categoryFilter2);
+		.findViewById(R.id.categoryFilter2);
 
 		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
+				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGridView(
@@ -231,7 +231,7 @@ InjectingTest {
 		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
 		doReturn(true).when(mockMultiViewVideoActivity).isGridViewActive();
 		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
+				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGridView(
@@ -253,9 +253,9 @@ InjectingTest {
 
 		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
 		doReturn(mockSecondarySpinner).when(mockMultiViewVideoActivity)
-		.findViewById(R.id.categoryFilter2);
+				.findViewById(R.id.categoryFilter2);
 		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
+				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).createGallery(
 				any(CategoryInfo.class));
 
@@ -282,7 +282,7 @@ InjectingTest {
 
 		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
 		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
+				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGridView(
@@ -317,7 +317,7 @@ InjectingTest {
 		verify(mockCategoryInfo, times(2)).getCategory();
 		verify(mockAdapterView).setSelection(anyInt());
 		verify(spyOnItemSelectedListener)
-				.createGallery(any(CategoryInfo.class));
+		.createGallery(any(CategoryInfo.class));
 	}
 
 	@Test
@@ -326,7 +326,7 @@ InjectingTest {
 				.buildActivity(MovieBrowserActivity.class).create().get();
 
 		spyOnItemSelectedListener
-		.setMultiViewVideoActivity(movieBrowserActivity);
+				.setMultiViewVideoActivity(movieBrowserActivity);
 
 		spyOnItemSelectedListener.findViews();
 		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
@@ -343,7 +343,7 @@ InjectingTest {
 				.get();
 
 		spyOnItemSelectedListener
-		.setMultiViewVideoActivity(movieBrowserActivity);
+				.setMultiViewVideoActivity(movieBrowserActivity);
 
 		spyOnItemSelectedListener.findViews();
 		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
@@ -361,7 +361,7 @@ InjectingTest {
 				.get();
 
 		spyOnItemSelectedListener
-		.setMultiViewVideoActivity(movieBrowserActivity);
+				.setMultiViewVideoActivity(movieBrowserActivity);
 
 		spyOnItemSelectedListener.findViews();
 		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
@@ -379,9 +379,10 @@ InjectingTest {
 		doReturn(1).when(mockPosterImageAdapter).getViewTypeCount();
 
 		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
+				.buildActivity(MovieBrowserActivity.class).create().start()
+				.get();
 		spyOnItemSelectedListener
-		.setMultiViewVideoActivity(movieBrowserActivity);
+				.setMultiViewVideoActivity(movieBrowserActivity);
 
 		spyOnItemSelectedListener.findViews();
 
@@ -400,9 +401,10 @@ InjectingTest {
 		doReturn(1).when(mockPosterImageAdapter).getViewTypeCount();
 
 		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
+				.buildActivity(MovieBrowserActivity.class).create().start()
+				.get();
 		spyOnItemSelectedListener
-		.setMultiViewVideoActivity(movieBrowserActivity);
+				.setMultiViewVideoActivity(movieBrowserActivity);
 
 		spyOnItemSelectedListener.findViews();
 
@@ -462,7 +464,7 @@ InjectingTest {
 
 	protected void demandAdapters() {
 		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(CategoryInfo.class));
+				.getPosterImageAdapter(any(CategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGridView(
@@ -482,9 +484,9 @@ InjectingTest {
 	}
 
 	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-		MovieCategorySpinnerOnItemSelectedListener.class,
-		MovieCategorySpinnerOnItemSelectedListenerTest.class,
-		MovieBrowserActivity.class })
+			MovieCategorySpinnerOnItemSelectedListener.class,
+			MovieCategorySpinnerOnItemSelectedListenerTest.class,
+			MovieBrowserActivity.class })
 	public class TestModule {
 
 		@Provides

@@ -32,9 +32,6 @@ import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MovieSearchIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
-import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
@@ -128,14 +125,6 @@ public class SearchableActivity extends SerenityVideoActivity {
 		SerenityGallery posterGallery = (SerenityGallery) context
 				.findViewById(R.id.moviePosterGallery);
 		posterGallery.setAdapter(new SearchAdapter(context, videos));
-		posterGallery
-		.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener());
-		posterGallery
-		.setOnItemClickListener(new GalleryVideoOnItemClickListener());
-		posterGallery
-		.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
-		posterGallery.setSpacing(25);
-		posterGallery.setAnimationDuration(1);
 	}
 
 	protected static class MovieSearchHandler extends Handler {
