@@ -100,27 +100,7 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 	}
 
 	protected void refreshGallery(AbstractPosterImageGalleryAdapter adapter) {
-		boolean scrollingAnimation = prefs.getBoolean(
-				"animation_gallery_scrolling", true);
 		posterGallery.setAdapter(adapter);
-		posterGallery
-				.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener());
-
-		posterGallery.setOnItemClickListener(galleryOnItemClickListener);
-		posterGallery
-				.setOnItemLongClickListener(galleryOnItemLongClickListener);
-		if (scrollingAnimation) {
-			posterGallery.setAnimationDuration(220);
-		} else {
-			posterGallery.setAnimationDuration(1);
-		}
-		posterGallery.setSpacing(25);
-		posterGallery.setAnimationCacheEnabled(true);
-		posterGallery.setCallbackDuringFling(false);
-		posterGallery.setHorizontalFadingEdgeEnabled(true);
-		posterGallery.setFocusableInTouchMode(false);
-		posterGallery.setDrawingCacheEnabled(true);
-		posterGallery.setUnselectedAlpha(0.75f);
 	}
 
 	protected void refreshGridView(AbstractPosterImageGalleryAdapter adapter) {

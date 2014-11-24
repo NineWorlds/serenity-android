@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -119,6 +120,7 @@ public class MovieMenuDrawerOnItemClickListenerTest extends InjectingTest {
 		spyMovieBrowserActivity.setGridViewEnabled(true);
 
 		doNothing().when(spyMovieBrowserActivity).recreate();
+		doNothing().when(spyMovieBrowserActivity).setContentView(anyInt());
 
 		doReturn(spyMovieBrowserActivity).when(mockView).getContext();
 		doReturn(mockEditor).when(sharedPreferences).edit();
@@ -151,8 +153,8 @@ public class MovieMenuDrawerOnItemClickListenerTest extends InjectingTest {
 	}
 
 	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-		MovieMenuDrawerOnItemClickedListener.class,
-		MovieMenuDrawerOnItemClickListenerTest.class })
+			MovieMenuDrawerOnItemClickedListener.class,
+			MovieMenuDrawerOnItemClickListenerTest.class })
 	public class TestModule {
 
 		@Provides

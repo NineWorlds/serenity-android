@@ -49,6 +49,7 @@
                 android:layout_toRightOf="@+id/video_poster"
                 android:gravity="left|center_vertical"
                 android:paddingLeft="10dp"
+                android:paddingRight="0dp"
                 android:textColor="#F0F0F0"
                 android:textStyle="bold"
                 tools:ignore="SelectableText" />
@@ -98,31 +99,14 @@
                 android:orientation="horizontal" >
             </LinearLayout>
         </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/tableRow2"
+        
+        <fragment android:id="@+id/galleryFragmentContainer"
+            android:name="us.nineworlds.serenity.fragments.VideoGalleryFragment"
+            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dip"
-            android:background="#A0000000"
-            android:gravity="bottom"
-            android:padding="5dp" >
+        />
 
-            <us.nineworlds.serenity.widgets.SerenityGallery
-                android:id="@+id/moviePosterGallery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|center_vertical"
-                android:nextFocusUp="@+id/categoryFilter"
-                android:spacing="25dp" >
-
-                <requestFocus />
-            </us.nineworlds.serenity.widgets.SerenityGallery>
-        </LinearLayout>
     </RelativeLayout>
     
     <!-- The navigation drawer -->

@@ -8,6 +8,10 @@
         <ignore path="src/main/java/us/nineworlds/serenity/ui/video/player/SerenitySurfaceViewVideoActivity.java" />
         <ignore path="src/main/java/us/nineworlds/serenity/ui/video/player/VideoPlayerPrepareListener.java" />
     </issue>
+    <issue id="RtlSymmetry">
+        <ignore path="res/layout-large/activity_movie_browser.xml" />
+        <ignore path="res/layout-xlarge/activity_movie_browser.xml" />
+    </issue>
     <issue id="SelectableText">
         <ignore path="res/layout/serenity_spinner_textview_dropdown.xml" />
     </issue>

@@ -302,7 +302,8 @@ InjectingTest {
 	@Test
 	public void refreshGallerySetsOnItemClickListener() {
 		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
+				.buildActivity(MovieBrowserActivity.class).create().start()
+				.get();
 
 		spyOnItemSelectedListener
 				.setMultiViewVideoActivity(movieBrowserActivity);
@@ -319,7 +320,8 @@ InjectingTest {
 	@Test
 	public void refreshGallerySetsOnItemLongClickListener() {
 		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
+				.buildActivity(MovieBrowserActivity.class).create().start()
+				.get();
 
 		spyOnItemSelectedListener
 				.setMultiViewVideoActivity(movieBrowserActivity);
