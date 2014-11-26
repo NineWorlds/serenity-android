@@ -48,7 +48,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public class MovieGridPosterOnItemSelectedListener extends BaseInjector
-		implements OnItemSelectedListener {
+implements OnItemSelectedListener {
 
 	private static Activity context;
 	private View previous;
@@ -71,6 +71,9 @@ public class MovieGridPosterOnItemSelectedListener extends BaseInjector
 	@Override
 	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position,
 			long id) {
+		if (v == null) {
+			return;
+		}
 
 		context = (Activity) v.getContext();
 
@@ -100,9 +103,9 @@ public class MovieGridPosterOnItemSelectedListener extends BaseInjector
 		String transcodingURL = plexFactory.getImageURL(
 				videoInfo.getBackgroundURL(), 1280, 720);
 		imageLoader
-				.loadImage(transcodingURL, new ImageSize(1280, 720),
-						new SerenityBackgroundLoaderListener(fanArt,
-								R.drawable.movies));
+		.loadImage(transcodingURL, new ImageSize(1280, 720),
+				new SerenityBackgroundLoaderListener(fanArt,
+						R.drawable.movies));
 
 	}
 

@@ -26,11 +26,18 @@ package us.nineworlds.serenity.fragments;
 import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import us.nineworlds.serenity.injection.InjectingFragment;
+import us.nineworlds.serenity.ui.activity.CategoryHandler;
+import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
+import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Messenger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +51,9 @@ public class VideoGridFragment extends InjectingFragment {
 
 	@Inject
 	protected GridVideoOnItemLongClickListener onItemLongClickListener;
+
+	@Inject
+	protected MovieSelectedCategoryState categoryState;
 
 	protected MovieGridPosterOnItemSelectedListener onItemSelectedListener;
 
@@ -66,6 +76,18 @@ public class VideoGridFragment extends InjectingFragment {
 		gridView.setOnItemClickListener(onItemClickListener);
 		gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener());
 		gridView.setOnItemLongClickListener(onItemLongClickListener);
+
+		MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
+		String key = MovieBrowserActivity.getKey();
+		Handler categoryHandler = new CategoryHandler(getActivity(),
+				categoryState.getCategory(), key);
+		Messenger messenger = new Messenger(categoryHandler);
+		Intent categoriesIntent = new Intent(getActivity(),
+				CategoryRetrievalIntentService.class);
+		categoriesIntent.putExtra("key", key);
+		categoriesIntent.putExtra("MESSENGER", messenger);
+		activity.startService(categoriesIntent);
+
 	}
 
 }

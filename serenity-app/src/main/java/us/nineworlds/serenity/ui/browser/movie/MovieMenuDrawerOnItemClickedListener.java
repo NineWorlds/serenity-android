@@ -26,19 +26,26 @@ package us.nineworlds.serenity.ui.browser.movie;
 import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.fragments.VideoGalleryFragment;
+import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.jess.ui.TwoWayGridView;
+
 public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
-		implements OnItemClickListener {
+implements OnItemClickListener {
 	private static final int GRID_VIEW = 0;
 	private static final int DETAIL_VIEW = 1;
 	private static final int PLAY_ALL_QUEUE = 2;
@@ -60,15 +67,41 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 			long id) {
 		SerenityMultiViewVideoActivity activity = (SerenityMultiViewVideoActivity) view
 				.getContext();
+		FragmentManager fragmentManager = activity.getSupportFragmentManager();
+		VideoGalleryFragment videoGalleryFragment = (VideoGalleryFragment) fragmentManager
+				.findFragmentByTag("videoGallery_fragment");
+		VideoGridFragment videoGridFragment = (VideoGridFragment) fragmentManager
+				.findFragmentByTag("videoGrid_fragment");
+		FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
+		SerenityGallery gallery = (SerenityGallery) activity
+				.findViewById(R.id.moviePosterGallery);
+		TwoWayGridView grid = (TwoWayGridView) activity
+				.findViewById(R.id.movieGridView);
+		AbstractPosterImageGalleryAdapter adapter = null;
 
 		switch (position) {
 		case GRID_VIEW:
-			activity.setContentView(R.layout.activity_movie_browser_gridview);
+			adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+			activity.setGridViewEnabled(true);
 
+			fragmentTransaction.hide(videoGalleryFragment);
+			fragmentTransaction.show(videoGridFragment);
+			fragmentTransaction.commit();
+
+			grid.setAdapter(adapter);
+			grid.requestFocusFromTouch();
 			toggleView(activity, true);
 			break;
 		case DETAIL_VIEW:
-			activity.setContentView(R.layout.activity_movie_browser);
+			adapter = (AbstractPosterImageGalleryAdapter) grid.getAdapter();
+			activity.setGridViewEnabled(false);
+
+			fragmentTransaction.hide(videoGridFragment);
+			fragmentTransaction.show(videoGalleryFragment);
+			fragmentTransaction.commit();
+			gallery.setAdapter(adapter);
+			gallery.requestFocus();
 			toggleView(activity, false);
 			break;
 		case PLAY_ALL_QUEUE:
@@ -76,7 +109,6 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 			return;
 		}
 		menuDrawer.closeDrawers();
-		activity.recreate();
 	}
 
 	private void playAllFromQueue(AdapterView<?> parent,
@@ -87,8 +119,12 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 			parent.setVisibility(View.INVISIBLE);
 		}
 		View gallery = activity.findViewById(R.id.moviePosterGallery);
-		if (gallery != null) {
+		if (!activity.isGridViewActive()) {
 			gallery.requestFocusFromTouch();
+		} else {
+			TwoWayGridView grid = (TwoWayGridView) activity
+					.findViewById(R.id.movieGridView);
+			grid.requestFocusFromTouch();
 		}
 		vpUtils.playAllFromQueue(activity);
 	}
@@ -98,7 +134,6 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 	 */
 	protected void toggleView(SerenityMultiViewVideoActivity activity,
 			boolean enableGridView) {
-		prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 		Editor e = prefs.edit();
 		activity.setGridViewEnabled(enableGridView);
 		e.putBoolean("movie_layout_grid", enableGridView);

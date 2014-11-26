@@ -26,13 +26,20 @@ package us.nineworlds.serenity.fragments;
 import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import us.nineworlds.serenity.injection.InjectingFragment;
+import us.nineworlds.serenity.ui.activity.CategoryHandler;
+import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
+import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Messenger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +54,9 @@ public class VideoGalleryFragment extends InjectingFragment {
 
 	@Inject
 	GalleryVideoOnItemLongClickListener onItemLongClickListener;
+
+	@Inject
+	protected MovieSelectedCategoryState categoryState;
 
 	MoviePosterOnItemSelectedListener onItemSelectedListener;
 
@@ -89,6 +99,23 @@ public class VideoGalleryFragment extends InjectingFragment {
 		videoGallery.setFocusableInTouchMode(false);
 		videoGallery.setDrawingCacheEnabled(true);
 		videoGallery.setUnselectedAlpha(0.75f);
+
+		MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
+		String key = MovieBrowserActivity.getKey();
+		Handler categoryHandler = new CategoryHandler(getActivity(),
+				categoryState.getCategory(), key);
+		Messenger messenger = new Messenger(categoryHandler);
+		Intent categoriesIntent = new Intent(getActivity(),
+				CategoryRetrievalIntentService.class);
+		categoriesIntent.putExtra("key", key);
+		categoriesIntent.putExtra("MESSENGER", messenger);
+		activity.startService(categoriesIntent);
+
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 	}
 
 }

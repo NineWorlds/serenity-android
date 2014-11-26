@@ -31,26 +31,23 @@ import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
-import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
-import us.nineworlds.serenity.ui.activity.CategoryHandler;
+import us.nineworlds.serenity.fragments.VideoGalleryFragment;
+import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Messenger;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 
 public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	private static String key;
-	private boolean restarted_state = false;
-	private Handler categoryHandler;
-
 	@Inject
 	protected SharedPreferences prefs;
 
@@ -59,10 +56,23 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	@Override
 	protected void createSideMenu() {
+		setContentView(R.layout.activity_movie_browser);
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
+		VideoGalleryFragment videoGalleryFragment = (VideoGalleryFragment) fragmentManager
+				.findFragmentByTag("videoGallery_fragment");
+		VideoGridFragment videoGridFragment = (VideoGridFragment) fragmentManager
+				.findFragmentByTag("videoGrid_fragment");
+
 		if (gridViewActive) {
-			setContentView(R.layout.activity_movie_browser_gridview);
+			fragmentTransaction.hide(videoGalleryFragment);
+			fragmentTransaction.show(videoGridFragment);
+			fragmentTransaction.commit();
 		} else {
-			setContentView(R.layout.activity_movie_browser);
+			fragmentTransaction.hide(videoGridFragment);
+			fragmentTransaction.show(videoGalleryFragment);
+			fragmentTransaction.commit();
 		}
 
 		View fanArt = findViewById(R.id.fanArt);
@@ -86,7 +96,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 				super.onDrawerClosed(drawerView);
 				getSupportActionBar().setTitle(R.string.app_name);
 				View gallery = findViewById(R.id.moviePosterGallery);
-				if (gallery != null) {
+				if (!isGridViewActive()) {
 					gallery.requestFocusFromTouch();
 				}
 			}
@@ -163,24 +173,20 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (restarted_state == false) {
-			categoryHandler = new CategoryHandler(this,
-					categoryState.getCategory(), key);
-			Messenger messenger = new Messenger(categoryHandler);
-			Intent categoriesIntent = new Intent(this,
-					CategoryRetrievalIntentService.class);
-			categoriesIntent.putExtra("key", key);
-			categoriesIntent.putExtra("MESSENGER", messenger);
-			startService(categoriesIntent);
-		}
-		restarted_state = false;
 	}
 
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		restarted_state = true;
 		populateMenuDrawer();
+	}
+
+	public static String getKey() {
+		return key;
+	}
+
+	public static void setKey(String key) {
+		MovieBrowserActivity.key = key;
 	}
 
 }

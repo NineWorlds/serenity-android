@@ -135,7 +135,7 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 			String expectedTranscodingUrl) {
 		verify(mockVideoContentInfo, times(2)).getBackgroundURL();
 		verify(mockPlexFactory).getImageURL(expectedBackgroundUrl, 1280, 720);
-		verify(mockSerenityImageLoader, times(3)).getImageLoader();
+		verify(mockSerenityImageLoader, times(4)).getImageLoader();
 		verify(mockImageLoader).loadImage(eq(expectedTranscodingUrl),
 				any(ImageSize.class),
 				any(SerenityBackgroundLoaderListener.class));
