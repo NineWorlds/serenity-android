@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -26,10 +26,13 @@ package us.nineworlds.serenity.core.model.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuItem;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -37,11 +40,14 @@ import android.preference.PreferenceManager;
 /**
  * Represents the meta data returned for the various libraries in Plex. Used to
  * construct the main menu items for Serenity.
- * 
+ *
  * @author davidcarver
- * 
+ *
  */
 public class MenuMediaContainer extends AbstractMediaContainer {
+
+	@Inject
+	protected AndroidHelper androidHelper;
 
 	private static final String SETTINGS_SECTION_KEY = "0";
 	private static final String SETTINGS_TYPE = "settings";
@@ -92,14 +98,23 @@ public class MenuMediaContainer extends AbstractMediaContainer {
 			}
 		}
 
-		if (!menuItems.isEmpty()) {
-			menuItems.add(createSearchMenu());
+		if (isAndroidSearchSupported()) {
+			if (!menuItems.isEmpty()) {
+				menuItems.add(createSearchMenu());
+			}
 		}
 
 		menuItems.add(createSettingsMenu());
 		menuItems.add(createOptionsMenu());
 
 		return menuItems;
+	}
+
+	/**
+	 * @return
+	 */
+	private boolean isAndroidSearchSupported() {
+		return !androidHelper.isLeanbackSupported();
 	}
 
 	protected boolean isImplemented(Directory item) {
@@ -112,7 +127,7 @@ public class MenuMediaContainer extends AbstractMediaContainer {
 	/**
 	 * Create the settings MenuItem since there is no option to retrieve this
 	 * from Plex itself.
-	 * 
+	 *
 	 */
 	public MenuItem createSettingsMenu() {
 		MenuItem settingsMenuItem = new MenuItem();
@@ -125,7 +140,7 @@ public class MenuMediaContainer extends AbstractMediaContainer {
 	/**
 	 * Create the settings MenuItem since there is no option to retrieve this
 	 * from Plex itself.
-	 * 
+	 *
 	 */
 	public MenuItem createSearchMenu() {
 		MenuItem searchMenuItem = new MenuItem();
@@ -138,7 +153,7 @@ public class MenuMediaContainer extends AbstractMediaContainer {
 	/**
 	 * Create the settings MenuItem since there is no option to retrieve this
 	 * from Plex itself.
-	 * 
+	 *
 	 */
 	public MenuItem createOptionsMenu() {
 		MenuItem optionsMenuItem = new MenuItem();

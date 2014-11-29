@@ -69,7 +69,7 @@ public class SearchableActivity extends SerenityVideoActivity {
 		super.onCreate(savedInstanceState);
 		context = this;
 		actionBar.setCustomView(R.layout.move_custom_actionbar);
-		setContentView(R.layout.activity_movie_browser);
+		setContentView(R.layout.activity_movie_search_browser);
 
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
 		handleIntent(getIntent());
@@ -118,10 +118,6 @@ public class SearchableActivity extends SerenityVideoActivity {
 
 	}
 
-	/**
-	 * @param item
-	 * @param bgLayout
-	 */
 	protected static void createGallery(List<VideoContentInfo> videos,
 			View bgLayout) {
 		SerenityGallery posterGallery = (SerenityGallery) context
