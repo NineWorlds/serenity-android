@@ -26,7 +26,7 @@ package us.nineworlds.serenity.ui.browser.movie;
 import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.fragments.VideoGalleryFragment;
+import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
@@ -68,7 +68,7 @@ implements OnItemClickListener {
 		SerenityMultiViewVideoActivity activity = (SerenityMultiViewVideoActivity) view
 				.getContext();
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
-		VideoGalleryFragment videoGalleryFragment = (VideoGalleryFragment) fragmentManager
+		MovieVideoGalleryFragment videoGalleryFragment = (MovieVideoGalleryFragment) fragmentManager
 				.findFragmentByTag("videoGallery_fragment");
 		VideoGridFragment videoGridFragment = (VideoGridFragment) fragmentManager
 				.findFragmentByTag("videoGrid_fragment");

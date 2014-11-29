@@ -26,35 +26,36 @@ package us.nineworlds.serenity.ui.browser.tv.episodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.jess.ui.TwoWayGridView;
+
 public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
-	private SerenityGallery posterGallery;
-	private String key;
+	@Inject
+	protected SharedPreferences prefs;
+
+	private static String key;
 	private View bgLayout;
 	private View metaData;
-	private boolean restarted_state = false;
-	private SharedPreferences prefs;
 
 	@Override
 	protected void createSideMenu() {
-		setContentView(R.layout.activity_movie_browser);
+		setContentView(R.layout.activity_episode_browser);
 
 		initMenuDrawerViews();
 
@@ -83,9 +84,6 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		populateMenuDrawer();
 	}
 
-	/**
-	 *
-	 */
 	protected void populateMenuDrawer() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
@@ -93,8 +91,8 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-				.setOnItemClickListener(new EpisodeMenuDrawerOnItemClickedListener(
-						drawerLayout));
+		.setOnItemClickListener(new EpisodeMenuDrawerOnItemClickedListener(
+				drawerLayout));
 	}
 
 	@Override
@@ -108,10 +106,8 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		createSideMenu();
 
 		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
-		posterGallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
 		metaData = findViewById(R.id.metaDataRow);
 		metaData.setVisibility(View.VISIBLE);
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 
@@ -147,64 +143,11 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-		if (restarted_state == false) {
-			setupEpisodeBrowser();
-		}
-		restarted_state = false;
-	}
-
-	/**
-	 * Populate the episode browser with data
-	 */
-	protected void setupEpisodeBrowser() {
-		boolean scrollingAnimation = prefs.getBoolean(
-				"animation_gallery_scrolling", true);
-		posterGallery
-				.setAdapter(new EpisodePosterImageGalleryAdapter(this, key));
-		posterGallery
-				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
-		posterGallery
-				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
-		if (key.contains("onDeck")
-				|| key.contains("recentlyAdded")
-				|| (key.contains("recentlyViewed") && !key
-						.contains("recentlyViewedShows"))) {
-			posterGallery
-					.setOnItemLongClickListener(new EpisodeBrowserOnLongClickListener());
-		} else {
-			posterGallery
-					.setOnItemLongClickListener(new GalleryVideoOnItemLongClickListener());
-		}
-		if (scrollingAnimation) {
-			posterGallery.setAnimationDuration(220);
-		} else {
-			posterGallery.setAnimationDuration(1);
-		}
-		posterGallery.setSpacing(25);
-		posterGallery.setCallbackDuringFling(false);
-		posterGallery.setFocusableInTouchMode(false);
-		posterGallery.setDrawingCacheEnabled(true);
-		posterGallery.setHorizontalFadingEdgeEnabled(true);
-		posterGallery.setUnselectedAlpha(0.75f);
-	}
-
-	@Override
 	protected void onRestart() {
 		super.onRestart();
 		populateMenuDrawer();
-
-		restarted_state = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * us.nineworlds.serenity.ui.activity.SerenityVideoActivity#onActivityResult
-	 * (int, int, android.content.Intent)
-	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -215,4 +158,17 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 		}
 	}
 
+	public static String getKey() {
+		return key;
+	}
+
+	@Override
+	protected SerenityGallery findGalleryView() {
+		return (SerenityGallery) findViewById(R.id.moviePosterGallery);
+	}
+
+	@Override
+	protected TwoWayGridView findGridView() {
+		return null;
+	}
 }

@@ -50,7 +50,7 @@ import com.jess.ui.TwoWayGridView;
  *
  */
 public abstract class SerenityVideoActivity extends
-		SerenityDrawerLayoutActivity {
+SerenityDrawerLayoutActivity {
 
 	@Inject
 	@ForVideoQueue
@@ -124,13 +124,9 @@ public abstract class SerenityVideoActivity extends
 		onDeckRecomendations.execute();
 	}
 
-	protected SerenityGallery findGalleryView() {
-		return (SerenityGallery) findViewById(R.id.moviePosterGallery);
-	}
+	protected abstract SerenityGallery findGalleryView();
 
-	protected TwoWayGridView findGridView() {
-		return (TwoWayGridView) findViewById(R.id.movieGridView);
-	}
+	protected abstract TwoWayGridView findGridView();
 
 	/**
 	 *

@@ -20,23 +20,12 @@
 
         <fragment
             android:id="@+id/galleryFragmentContainer"
-            android:name="us.nineworlds.serenity.fragments.MovieVideoGalleryFragment"
+            android:name="us.nineworlds.serenity.fragments.EpisodeVideoGalleryFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:tag="videoGallery_fragment"
             android:layout_alignParentBottom="true" />
-        
-        <fragment android:id="@+id/gridFragmentContainer"
-            android:name="us.nineworlds.serenity.fragments.VideoGridFragment"
-            android:layout_centerHorizontal="true"
-            android:tag="videoGrid_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/actionbarMargin"
-        />
-        
-        
-        
+            
     </RelativeLayout>
 
     <!-- The navigation drawer -->

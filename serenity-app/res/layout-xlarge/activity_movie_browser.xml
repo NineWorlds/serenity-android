@@ -104,7 +104,7 @@
             </RelativeLayout>
 
         <fragment android:id="@+id/galleryFragmentContainer"
-            android:name="us.nineworlds.serenity.fragments.VideoGalleryFragment"
+            android:name="us.nineworlds.serenity.fragments.MovieVideoGalleryFragment"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

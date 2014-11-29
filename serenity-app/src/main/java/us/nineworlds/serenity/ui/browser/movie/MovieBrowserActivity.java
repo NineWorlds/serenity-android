@@ -31,11 +31,12 @@ import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
-import us.nineworlds.serenity.fragments.VideoGalleryFragment;
+import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
+import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,6 +45,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
+
+import com.jess.ui.TwoWayGridView;
 
 public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
@@ -60,7 +63,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager
 				.beginTransaction();
-		VideoGalleryFragment videoGalleryFragment = (VideoGalleryFragment) fragmentManager
+		MovieVideoGalleryFragment videoGalleryFragment = (MovieVideoGalleryFragment) fragmentManager
 				.findFragmentByTag("videoGallery_fragment");
 		VideoGridFragment videoGridFragment = (VideoGridFragment) fragmentManager
 				.findFragmentByTag("videoGrid_fragment");
@@ -120,8 +123,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-				.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(
-						drawerLayout));
+		.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(
+				drawerLayout));
 
 	}
 
@@ -187,6 +190,16 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	public static void setKey(String key) {
 		MovieBrowserActivity.key = key;
+	}
+
+	@Override
+	protected SerenityGallery findGalleryView() {
+		return (SerenityGallery) findViewById(R.id.moviePosterGallery);
+	}
+
+	@Override
+	protected TwoWayGridView findGridView() {
+		return (TwoWayGridView) findViewById(R.id.movieGridView);
 	}
 
 }

@@ -26,25 +26,23 @@ package us.nineworlds.serenity.fragments;
 import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import us.nineworlds.serenity.injection.InjectingFragment;
-import us.nineworlds.serenity.ui.activity.CategoryHandler;
-import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserOnLongClickListener;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Messenger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class VideoGalleryFragment extends InjectingFragment {
+public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
 	@Inject
 	SharedPreferences preferences;
@@ -62,7 +60,7 @@ public class VideoGalleryFragment extends InjectingFragment {
 
 	private SerenityGallery videoGallery;
 
-	public VideoGalleryFragment() {
+	public EpisodeVideoGalleryFragment() {
 		super();
 	}
 
@@ -77,40 +75,41 @@ public class VideoGalleryFragment extends InjectingFragment {
 	public void onStart() {
 		super.onStart();
 
-		boolean scrollingAnimation = preferences.getBoolean(
-				"animation_gallery_scrolling", true);
-
 		videoGallery = (SerenityGallery) getActivity().findViewById(
 				R.id.moviePosterGallery);
 
-		videoGallery.setOnItemSelectedListener(onItemSelectedListener);
+		boolean scrollingAnimation = preferences.getBoolean(
+				"animation_gallery_scrolling", true);
+		String key = ((EpisodeBrowserActivity) getActivity()).getKey();
 
-		videoGallery.setOnItemClickListener(onItemClickListener);
-		videoGallery.setOnItemLongClickListener(onItemLongClickListener);
+		videoGallery.setAdapter(new EpisodePosterImageGalleryAdapter(
+				getActivity(), key));
+
+		videoGallery
+				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
+		videoGallery
+				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
+		if (key.contains("onDeck")
+				|| key.contains("recentlyAdded")
+				|| (key.contains("recentlyViewed") && !key
+						.contains("recentlyViewedShows"))) {
+			videoGallery
+					.setOnItemLongClickListener(new EpisodeBrowserOnLongClickListener());
+		} else {
+			videoGallery.setOnItemLongClickListener(onItemLongClickListener);
+		}
+
 		if (scrollingAnimation) {
 			videoGallery.setAnimationDuration(220);
 		} else {
 			videoGallery.setAnimationDuration(1);
 		}
 		videoGallery.setSpacing(25);
-		videoGallery.setAnimationCacheEnabled(true);
 		videoGallery.setCallbackDuringFling(false);
-		videoGallery.setHorizontalFadingEdgeEnabled(true);
 		videoGallery.setFocusableInTouchMode(false);
 		videoGallery.setDrawingCacheEnabled(true);
+		videoGallery.setHorizontalFadingEdgeEnabled(true);
 		videoGallery.setUnselectedAlpha(0.75f);
-
-		MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
-		String key = MovieBrowserActivity.getKey();
-		Handler categoryHandler = new CategoryHandler(getActivity(),
-				categoryState.getCategory(), key);
-		Messenger messenger = new Messenger(categoryHandler);
-		Intent categoriesIntent = new Intent(getActivity(),
-				CategoryRetrievalIntentService.class);
-		categoriesIntent.putExtra("key", key);
-		categoriesIntent.putExtra("MESSENGER", messenger);
-		activity.startService(categoriesIntent);
-
 	}
 
 	@Override

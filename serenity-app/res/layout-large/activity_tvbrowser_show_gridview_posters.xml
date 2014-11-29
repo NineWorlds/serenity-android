@@ -27,6 +27,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginRight="10dp"
             android:layout_marginTop="@dimen/actionbarMargin"
+            android:layout_marginBottom="5dp"
             android:background="@color/card_background"
             android:focusable="true"
             android:nextFocusDown="@+id/tvShowGridView"

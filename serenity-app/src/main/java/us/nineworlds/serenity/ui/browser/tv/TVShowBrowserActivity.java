@@ -52,10 +52,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-/**
- * @author dcarver
- *
- */
+import com.jess.ui.TwoWayGridView;
+
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	private static Spinner categorySpinner;
@@ -317,5 +315,20 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 			}
 			categorySpinner.requestFocus();
 		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+	}
+
+	@Override
+	protected SerenityGallery findGalleryView() {
+		return (SerenityGallery) findViewById(R.id.tvShowBannerGallery);
+	}
+
+	@Override
+	protected TwoWayGridView findGridView() {
+		return (TwoWayGridView) findViewById(R.id.tvShowGridView);
 	}
 }

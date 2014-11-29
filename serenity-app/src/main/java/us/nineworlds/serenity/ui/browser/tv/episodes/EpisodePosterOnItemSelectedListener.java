@@ -49,12 +49,8 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
-/**
- * @author dcarver
- *
- */
 public class EpisodePosterOnItemSelectedListener extends
-		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
+AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 
 	private static final String DISPLAY_DATE_FORMAT = "MMMMMMMMM d, yyyy";
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -159,7 +155,7 @@ public class EpisodePosterOnItemSelectedListener extends
 		if (videoInfo.getOriginalAirDate() != null) {
 			try {
 				Date airDate = new SimpleDateFormat(DATE_FORMAT)
-						.parse(videoInfo.getOriginalAirDate());
+				.parse(videoInfo.getOriginalAirDate());
 				SimpleDateFormat format = new SimpleDateFormat(
 						DISPLAY_DATE_FORMAT);
 				String formatedDate = format.format(airDate);
@@ -191,9 +187,9 @@ public class EpisodePosterOnItemSelectedListener extends
 				videoInfo.getBackgroundURL(), 1280, 720);
 
 		imageLoader
-		.loadImage(transcodingURL, new ImageSize(1280, 720),
-				new SerenityBackgroundLoaderListener(fanArt,
-						R.drawable.tvshows));
+				.loadImage(transcodingURL, new ImageSize(1280, 720),
+						new SerenityBackgroundLoaderListener(fanArt,
+								R.drawable.tvshows));
 	}
 
 	@Override

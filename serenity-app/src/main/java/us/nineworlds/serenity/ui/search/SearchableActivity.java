@@ -45,6 +45,8 @@ import android.provider.SearchRecentSuggestions;
 import android.view.View;
 import android.widget.Toast;
 
+import com.jess.ui.TwoWayGridView;
+
 /**
  * Implements basic search functionality for movies.
  *
@@ -144,5 +146,15 @@ public class SearchableActivity extends SerenityVideoActivity {
 				}
 			}
 		}
+	}
+
+	@Override
+	protected SerenityGallery findGalleryView() {
+		return (SerenityGallery) findViewById(R.id.moviePosterGallery);
+	}
+
+	@Override
+	protected TwoWayGridView findGridView() {
+		return null;
 	}
 }
