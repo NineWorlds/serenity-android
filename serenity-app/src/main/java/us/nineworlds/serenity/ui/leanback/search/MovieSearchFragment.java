@@ -26,11 +26,16 @@ package us.nineworlds.serenity.ui.leanback.search;
 import java.net.URLEncoder;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MovieSearchIntentService;
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -58,9 +63,13 @@ public class MovieSearchFragment extends SearchFragment implements
 
 	private Handler searchHandler;
 
+	@Inject
+	VideoPlayerIntentUtils vpUtils;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SerenityObjectGraph.getInstance().inject(this);
 
 		menuItems = MainMenuTextViewAdapter.menuItems;
 
@@ -83,7 +92,9 @@ public class MovieSearchFragment extends SearchFragment implements
 					Object item,
 					android.support.v17.leanback.widget.RowPresenter.ViewHolder rowViewHolder,
 					Row row) {
-
+				Activity activity = getActivity();
+				VideoContentInfo video = (VideoContentInfo) item;
+				vpUtils.playVideo(activity, video, false);
 			}
 		});
 	}

@@ -28,6 +28,9 @@ import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.ui.util.ImageUtils;
+import android.app.Activity;
 import android.content.Context;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.Presenter;
@@ -47,6 +50,7 @@ public class CardPresenter extends Presenter {
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent) {
+		SerenityObjectGraph.getInstance().inject(this);
 		context = parent.getContext();
 		imageLoader = serenityImageLoader.getImageLoader();
 
@@ -54,7 +58,7 @@ public class CardPresenter extends Presenter {
 		imageView.setFocusable(true);
 		imageView.setFocusableInTouchMode(true);
 		imageView.setBackgroundColor(context.getResources().getColor(
-				R.color.card_background));
+				R.color.holo_color));
 		return new CardPresenterViewHolder(imageView);
 	}
 
@@ -69,6 +73,9 @@ public class CardPresenter extends Presenter {
 		if (video.getImageURL() != null) {
 			imageCardView.setTitleText(video.getTitle());
 			imageCardView.setContentText(video.getStudio());
+			imageCardView.setMainImageDimensions(
+					ImageUtils.getDPI(240, (Activity) context),
+					ImageUtils.getDPI(360, (Activity) context));
 			cardHolder.updateCardViewImage(video.getImageURL());
 		}
 
@@ -81,7 +88,7 @@ public class CardPresenter extends Presenter {
 		vh.mCardView.setMainImage(null);
 	}
 
-	static class CardPresenterViewHolder extends Presenter.ViewHolder {
+	class CardPresenterViewHolder extends Presenter.ViewHolder {
 		private VideoContentInfo video;
 		private final ImageCardView mCardView;
 
@@ -103,7 +110,7 @@ public class CardPresenter extends Presenter {
 		}
 
 		protected void updateCardViewImage(String url) {
-			imageLoader.displayImage(url, mCardView.getMainImageView());
+			serenityImageLoader.displayImage(url, mCardView.getMainImageView());
 		}
 	}
 }

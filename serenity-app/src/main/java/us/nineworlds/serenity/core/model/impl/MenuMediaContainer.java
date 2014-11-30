@@ -98,23 +98,14 @@ public class MenuMediaContainer extends AbstractMediaContainer {
 			}
 		}
 
-		if (isAndroidSearchSupported()) {
-			if (!menuItems.isEmpty()) {
-				menuItems.add(createSearchMenu());
-			}
+		if (!menuItems.isEmpty()) {
+			menuItems.add(createSearchMenu());
 		}
 
 		menuItems.add(createSettingsMenu());
 		menuItems.add(createOptionsMenu());
 
 		return menuItems;
-	}
-
-	/**
-	 * @return
-	 */
-	private boolean isAndroidSearchSupported() {
-		return !androidHelper.isLeanbackSupported();
 	}
 
 	protected boolean isImplemented(Directory item) {
