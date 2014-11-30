@@ -41,7 +41,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 
 public class GalleryOnItemSelectedListener extends BaseInjector implements
-OnItemSelectedListener {
+		OnItemSelectedListener {
 
 	@Inject
 	SerenityImageLoader imageLoader;
@@ -55,6 +55,10 @@ OnItemSelectedListener {
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View v, int position,
 			long arg3) {
+		if (v == null) {
+			return;
+		}
+
 		Activity context = (Activity) v.getContext();
 		mainGalleryBackgroundView = (ImageView) context
 				.findViewById(R.id.mainGalleryBackground);

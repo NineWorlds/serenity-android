@@ -28,14 +28,19 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MovieSearchIntentService;
+import us.nineworlds.serenity.injection.ApplicationContext;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,13 +54,18 @@ import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.ObjectAdapter;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
+import android.support.v17.leanback.widget.OnItemViewSelectedListener;
 import android.support.v17.leanback.widget.Presenter.ViewHolder;
 import android.support.v17.leanback.widget.Row;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+
 public class MovieSearchFragment extends SearchFragment implements
-		SearchResultProvider {
+SearchResultProvider {
 
 	private ArrayObjectAdapter rowsAdapter;
 	private List<MenuItem> menuItems;
@@ -64,7 +74,17 @@ public class MovieSearchFragment extends SearchFragment implements
 	private Handler searchHandler;
 
 	@Inject
+	@ApplicationContext
+	Context context;
+
+	@Inject
 	VideoPlayerIntentUtils vpUtils;
+
+	@Inject
+	PlexappFactory plexFactory;
+
+	@Inject
+	SerenityImageLoader serenityImageLoader;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +117,46 @@ public class MovieSearchFragment extends SearchFragment implements
 				vpUtils.playVideo(activity, video, false);
 			}
 		});
+
+		setOnItemViewSelectedListener(new OnItemViewSelectedListener() {
+
+			private VideoContentInfo video;
+
+			@Override
+			public void onItemSelected(
+					ViewHolder arg0,
+					Object item,
+					android.support.v17.leanback.widget.RowPresenter.ViewHolder arg2,
+					Row arg3) {
+				if (item == null) {
+					return;
+				}
+
+				video = (VideoContentInfo) item;
+				changeBackgroundImage();
+			}
+
+			public void changeBackgroundImage() {
+
+				if (video.getBackgroundURL() == null) {
+					return;
+				}
+
+				View fanArt = getActivity().findViewById(R.id.fanArt);
+				String transcodingURL = plexFactory.getImageURL(
+						video.getBackgroundURL(), 1280, 720);
+
+				ImageLoader imageLoader = serenityImageLoader.getImageLoader();
+
+				imageLoader.loadImage(transcodingURL, new ImageSize(1280, 720),
+						new SerenityBackgroundLoaderListener(fanArt,
+								R.drawable.movies));
+			}
+
+		});
+
+		setBadgeDrawable(context.getResources().getDrawable(
+				R.drawable.androidtv_icon_mono));
 	}
 
 	private void queryByWords(String words) {
