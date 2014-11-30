@@ -32,7 +32,6 @@ import us.nineworlds.serenity.ui.activity.CategoryHandler;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
-import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -72,18 +71,25 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		onItemSelectedListener = new MoviePosterOnItemSelectedListener();
-		return inflater.inflate(R.layout.video_gallery_fragment, container);
+		View view = inflater
+				.inflate(R.layout.video_gallery_fragment, container);
+		setupGallery(view);
+		return view;
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
+	}
 
+	protected void setupGallery(View view) {
 		boolean scrollingAnimation = preferences.getBoolean(
 				"animation_gallery_scrolling", true);
 
-		videoGallery = (SerenityGallery) getActivity().findViewById(
-				R.id.moviePosterGallery);
+		Activity context = (Activity) view.getContext();
+
+		videoGallery = (SerenityGallery) view
+				.findViewById(R.id.moviePosterGallery);
 
 		videoGallery.setOnItemSelectedListener(onItemSelectedListener);
 
@@ -104,13 +110,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 		videoGallery.setUnselectedAlpha(0.75f);
 
 		String key = null;
-		if (getActivity() instanceof MovieBrowserActivity) {
-			key = ((MovieBrowserActivity) getActivity()).getKey();
-		} else {
-			key = ((EpisodeBrowserActivity) getActivity()).getKey();
-		}
-
-		Activity activity = getActivity();
+		key = MovieBrowserActivity.getKey();
 
 		Handler categoryHandler = new CategoryHandler(getActivity(),
 				categoryState.getCategory(), key);
@@ -119,13 +119,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 				CategoryRetrievalIntentService.class);
 		categoriesIntent.putExtra("key", key);
 		categoriesIntent.putExtra("MESSENGER", messenger);
-		activity.startService(categoriesIntent);
-
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
+		context.startService(categoriesIntent);
 	}
 
 }

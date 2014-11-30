@@ -63,21 +63,20 @@ public class VideoGridFragment extends InjectingFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		onItemSelectedListener = new MovieGridPosterOnItemSelectedListener();
-		return inflater.inflate(R.layout.video_grid_fragment, container);
+		View view = inflater.inflate(R.layout.video_grid_fragment, container);
+		setupGrid(view);
+		return view;
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
-
-		gridView = (TwoWayGridView) getActivity().findViewById(
-				R.id.movieGridView);
+	protected void setupGrid(View view) {
+		gridView = (TwoWayGridView) view.findViewById(R.id.movieGridView);
 
 		gridView.setOnItemClickListener(onItemClickListener);
 		gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener());
 		gridView.setOnItemLongClickListener(onItemLongClickListener);
 
-		MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
+		MovieBrowserActivity activity = (MovieBrowserActivity) view
+				.getContext();
 		String key = MovieBrowserActivity.getKey();
 		Handler categoryHandler = new CategoryHandler(getActivity(),
 				categoryState.getCategory(), key);
@@ -87,7 +86,6 @@ public class VideoGridFragment extends InjectingFragment {
 		categoriesIntent.putExtra("key", key);
 		categoriesIntent.putExtra("MESSENGER", messenger);
 		activity.startService(categoriesIntent);
-
 	}
 
 }
