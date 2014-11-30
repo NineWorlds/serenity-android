@@ -43,7 +43,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class MovieCategorySpinnerOnItemSelectedListener extends
-		BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
+BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
 	protected Spinner secondarySpinner;
 
@@ -67,6 +67,10 @@ public class MovieCategorySpinnerOnItemSelectedListener extends
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
+		if (view == null) {
+			return;
+		}
+
 		setMultiViewVideoActivity((SerenityMultiViewVideoActivity) view
 				.getContext());
 
@@ -185,11 +189,11 @@ public class MovieCategorySpinnerOnItemSelectedListener extends
 					getMultiViewVideoActivity(),
 					R.layout.serenity_spinner_textview, secondaryCategories);
 			spinnerSecArrayAdapter
-			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 			secondarySpinner.setAdapter(spinnerSecArrayAdapter);
 			secondarySpinner
-			.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
-					category, key));
+					.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
+							category, key));
 		}
 
 	}

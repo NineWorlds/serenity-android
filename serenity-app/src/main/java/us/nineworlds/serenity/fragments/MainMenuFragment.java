@@ -41,25 +41,22 @@ public class MainMenuFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.main_menu_view, container);
+		View view = inflater.inflate(R.layout.main_menu_view, container);
+		setupGallery(view);
+		return view;
 	}
 
 	@Override
 	public void onStart() {
-		setupGallery();
 		super.onStart();
 	}
 
-	private void setupGallery() {
-		mainGallery = (Gallery) getView().findViewById(R.id.mainGalleryMenu);
+	private void setupGallery(View view) {
+		mainGallery = (Gallery) view.findViewById(R.id.mainGalleryMenu);
 
-		View mainGalleryBackgroundView = getActivity().findViewById(
-				R.id.mainGalleryBackground);
-		mainGallery.setAdapter(new MainMenuTextViewAdapter(getActivity(),
-				mainGalleryBackgroundView));
+		mainGallery.setAdapter(new MainMenuTextViewAdapter(getActivity()));
 		mainGallery
-		.setOnItemSelectedListener(new GalleryOnItemSelectedListener(
-				mainGalleryBackgroundView));
+		.setOnItemSelectedListener(new GalleryOnItemSelectedListener());
 		mainGallery.setOnItemClickListener(new GalleryOnItemClickListener(
 				getActivity()));
 		mainGallery.setCallbackDuringFling(false);

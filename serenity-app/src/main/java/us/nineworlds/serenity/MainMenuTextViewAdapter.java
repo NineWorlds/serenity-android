@@ -69,10 +69,6 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 	public MainMenuTextViewAdapter(Context c) {
 		super();
 		myContext = c;
-	}
-
-	public MainMenuTextViewAdapter(Context c, View v) {
-		this(c);
 		fetchData();
 	}
 
@@ -186,7 +182,7 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 	}
 
 	private class MainMenuVolleyResponseListener implements
-	Response.Listener<MediaContainer> {
+			Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer mc) {
@@ -198,7 +194,7 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 	}
 
 	private class MainMenuResponseErrorListener extends
-	DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
+			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {
@@ -212,7 +208,7 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 					myContext,
 					"Unable to connect to Plex Library at "
 							+ plexFactory.getSectionsURL(), Toast.LENGTH_LONG)
-							.show();
+					.show();
 			notifyDataSetChanged();
 
 			Activity c = (Activity) myContext;

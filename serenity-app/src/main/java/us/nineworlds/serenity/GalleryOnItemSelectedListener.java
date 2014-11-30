@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.views.MainMenuTextView;
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -40,21 +41,23 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 
 public class GalleryOnItemSelectedListener extends BaseInjector implements
-		OnItemSelectedListener {
+OnItemSelectedListener {
 
 	@Inject
 	SerenityImageLoader imageLoader;
 
-	private final ImageView mainGalleryBackgroundView;
+	private ImageView mainGalleryBackgroundView;
 	private MainMenuTextView preSelected;
 
-	public GalleryOnItemSelectedListener(View v) {
-		mainGalleryBackgroundView = (ImageView) v;
+	public GalleryOnItemSelectedListener() {
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View v, int position,
 			long arg3) {
+		Activity context = (Activity) v.getContext();
+		mainGalleryBackgroundView = (ImageView) context
+				.findViewById(R.id.mainGalleryBackground);
 		if (v instanceof MainMenuTextView) {
 			mainGalleryBackgroundView.clearAnimation();
 			MainMenuTextView tv = (MainMenuTextView) v;
