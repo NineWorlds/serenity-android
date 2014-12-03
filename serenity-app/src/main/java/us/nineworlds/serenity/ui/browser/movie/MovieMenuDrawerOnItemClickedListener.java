@@ -45,7 +45,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.jess.ui.TwoWayGridView;
 
 public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
-implements OnItemClickListener {
+		implements OnItemClickListener {
 	private static final int GRID_VIEW = 0;
 	private static final int DETAIL_VIEW = 1;
 	private static final int PLAY_ALL_QUEUE = 2;
@@ -79,11 +79,15 @@ implements OnItemClickListener {
 		TwoWayGridView grid = (TwoWayGridView) activity
 				.findViewById(R.id.movieGridView);
 		AbstractPosterImageGalleryAdapter adapter = null;
+		View titleActionBar = activity
+				.findViewById(R.id.movieActionBarPosterTitle);
 
 		switch (position) {
 		case GRID_VIEW:
 			adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
 			activity.setGridViewEnabled(true);
+
+			titleActionBar.setVisibility(View.VISIBLE);
 
 			fragmentTransaction.hide(videoGalleryFragment);
 			fragmentTransaction.show(videoGridFragment);
@@ -96,6 +100,8 @@ implements OnItemClickListener {
 		case DETAIL_VIEW:
 			adapter = (AbstractPosterImageGalleryAdapter) grid.getAdapter();
 			activity.setGridViewEnabled(false);
+
+			titleActionBar.setVisibility(View.GONE);
 
 			fragmentTransaction.hide(videoGridFragment);
 			fragmentTransaction.show(videoGalleryFragment);
