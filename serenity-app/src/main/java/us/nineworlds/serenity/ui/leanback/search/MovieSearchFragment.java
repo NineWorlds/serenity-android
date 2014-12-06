@@ -65,7 +65,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 public class MovieSearchFragment extends SearchFragment implements
-SearchResultProvider {
+		SearchResultProvider {
 
 	private ArrayObjectAdapter rowsAdapter;
 	private List<MenuItem> menuItems;
@@ -222,5 +222,4 @@ SearchResultProvider {
 			}
 		}
 	}
-
 }

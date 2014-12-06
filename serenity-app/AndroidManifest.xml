@@ -1,201 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="us.nineworlds.serenity"
-    android:versionCode="1009000"
-    android:versionName="1.9.0-dev" >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" android:versionCode="1009001" android:versionName="1.9.1.20141202-2318" package="us.nineworlds.serenity">
 
     <!-- try to exclude phone devices from the list. Currently only support Tablets and TVs -->
-    <supports-screens
-        android:largeScreens="true"
-        android:normalScreens="false"
-        android:smallScreens="false"
-        android:xlargeScreens="true" />
+    <supports-screens android:largeScreens="true" android:normalScreens="false" android:smallScreens="false" android:xlargeScreens="true"/>
 
-    <uses-sdk
-        android:minSdkVersion="13"
-        android:targetSdkVersion="19" />
+    <uses-sdk android:minSdkVersion="13" android:targetSdkVersion="19"/>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
-    <uses-feature
-        android:name="android.hardware.touchscreen"
-        android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 
-    <application
-        android:name="us.nineworlds.serenity.SerenityApplication"
-        android:allowBackup="true"
-        android:hardwareAccelerated="true"
-        android:icon="@drawable/serenity_bonsai_logo"
-        android:label="@string/app_name"
-        android:largeHeap="true"
-        android:theme="@style/AppTheme" >
-        <meta-data
-            android:name="android.app.default_searchable"
-            android:value="us.nineworlds.serenity.ui.search.SearchableActivity" />
+    <application android:allowBackup="true" android:hardwareAccelerated="true" android:icon="@drawable/serenity_bonsai_logo" android:label="@string/app_name" android:largeHeap="true" android:name="us.nineworlds.serenity.SerenityApplication" android:theme="@style/AppTheme">
+        <meta-data android:name="android.app.default_searchable" android:value="us.nineworlds.serenity.ui.search.SearchableActivity"/>
 
-        <activity
-            android:name="us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity"
-            android:hardwareAccelerated="true"
-            android:label="@string/title_activity_movie_browser"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme" >
+        <activity android:hardwareAccelerated="true" android:label="@string/title_activity_movie_browser" android:name="us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
         </activity>
-        <activity
-            android:name="us.nineworlds.serenity.MainActivity"
-            android:hardwareAccelerated="true"
-            android:label="@string/title_activity_main"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme" >
+        <activity android:hardwareAccelerated="true" android:label="@string/title_activity_main" android:name="us.nineworlds.serenity.MainActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name="us.nineworlds.serenity.AndroidTV"
-            android:hardwareAccelerated="true"
-            android:icon="@drawable/serenity_androidtv_banner"
-            android:label="@string/title_activity_main"
-            android:logo="@drawable/serenity_androidtv_banner"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme" >
+        <activity android:hardwareAccelerated="true" android:icon="@drawable/serenity_androidtv_banner" android:label="@string/title_activity_main" android:logo="@drawable/serenity_androidtv_banner" android:name="us.nineworlds.serenity.AndroidTV" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name="us.nineworlds.serenity.ui.leanback.search.SearchActivity"
-            android:hardwareAccelerated="true"
-            android:icon="@drawable/serenity_androidtv_banner"
-            android:label="Search"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/Theme.Leanback" >
-             >
+        <activity android:hardwareAccelerated="true" android:icon="@drawable/serenity_androidtv_banner" android:label="Search" android:name="us.nineworlds.serenity.ui.leanback.search.SearchActivity" android:screenOrientation="sensorLandscape" android:theme="@style/Theme.Leanback">
+             &gt;
         </activity>
-        <activity
-            android:name="us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity"
-            android:label="@string/title_activity_tvbrowser_show"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme" >
+        <activity android:label="@string/title_activity_tvbrowser_show" android:name="us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
         </activity>
-        <activity
-            android:name="us.nineworlds.serenity.ui.browser.music.MusicActivity"
-            android:label="@string/title_activity_tvbrowser_show"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme" >
+        <activity android:label="@string/title_activity_tvbrowser_show" android:name="us.nineworlds.serenity.ui.browser.music.MusicActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
         </activity>
-        <activity
-            android:name="us.nineworlds.serenity.ui.browser.music.albums.MusicAlbumsActivity"
-            android:label="@string/title_activity_tvbrowser_show"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme" >
+        <activity android:label="@string/title_activity_tvbrowser_show" android:name="us.nineworlds.serenity.ui.browser.music.albums.MusicAlbumsActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
         </activity>
-        <activity
-            android:name="us.nineworlds.serenity.ui.browser.music.tracks.MusicTracksActivity"
-            android:label="@string/title_activity_tvbrowser_show"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme" >
+        <activity android:label="@string/title_activity_tvbrowser_show" android:name="us.nineworlds.serenity.ui.browser.music.tracks.MusicTracksActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
         </activity>
-        <activity
-            android:name="us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity"
-            android:label="@string/title_activity_tvbrowser_show_season"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme" >
+        <activity android:label="@string/title_activity_tvbrowser_show_season" android:name="us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
         </activity>
-        <activity
-            android:name="us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity"
-            android:label="@string/title_activity_tvbrowser_show_episodes"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme" >
+        <activity android:label="@string/title_activity_tvbrowser_show_episodes" android:name="us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
         </activity>
-        <activity
-            android:name="us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/Theme.AppCompat.NoActionBar" >
+        <activity android:name="us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity" android:screenOrientation="sensorLandscape" android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name="us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/Theme.AppCompat.NoActionBar" >
+        <activity android:name="us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity" android:screenOrientation="sensorLandscape" android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.preferences.SerenityPreferenceActivity"
-            android:screenOrientation="sensorLandscape" >
+        <activity android:name=".ui.preferences.SerenityPreferenceActivity" android:screenOrientation="sensorLandscape">
         </activity>
-        <activity
-            android:name="us.nineworlds.serenity.ui.search.SearchableActivity"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme" >
+        <activity android:name="us.nineworlds.serenity.ui.search.SearchableActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.SEARCH"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
 
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable"/>
         </activity>
-        <activity android:name=".ui.activity.OverscanSetupActivity" />
+        <activity android:name=".ui.activity.OverscanSetupActivity"/>
 
-        <service android:name=".core.services.MusicRetrievalIntentService" />
-        <service android:name=".core.services.MusicAlbumRetrievalIntentService" />
-        <service android:name=".core.services.MusicTrackRetrievalIntentService" />
-        <service android:name=".core.services.CategoryRetrievalIntentService" />
-        <service android:name=".core.services.SecondaryCategoryRetrievalIntentService" />
-        <service android:name=".core.services.TVShowCategoryRetrievalIntentService" />
-        <service android:name=".core.services.MovieSearchIntentService" />
-        <service
-            android:name="com.castillo.dd.DownloadService"
-            tools:ignore="MissingRegistered" />
-        <service
-            android:name=".core.services.GDMService"
-            tools:ignore="MissingRegistered" />
-        <service
-            android:name="us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService"
-            android:enabled="true"
-            android:exported="true" />
+        <service android:name=".core.services.MusicRetrievalIntentService"/>
+        <service android:name=".core.services.MusicAlbumRetrievalIntentService"/>
+        <service android:name=".core.services.MusicTrackRetrievalIntentService"/>
+        <service android:name=".core.services.CategoryRetrievalIntentService"/>
+        <service android:name=".core.services.SecondaryCategoryRetrievalIntentService"/>
+        <service android:name=".core.services.TVShowCategoryRetrievalIntentService"/>
+        <service android:name=".core.services.MovieSearchIntentService"/>
+        <service android:name="com.castillo.dd.DownloadService" tools:ignore="MissingRegistered"/>
+        <service android:name=".core.services.GDMService" tools:ignore="MissingRegistered"/>
+        <service android:enabled="true" android:exported="true" android:name="us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService"/>
 
-        <provider
-            android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
-            android:authorities="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider" >
+        <provider android:authorities="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider" android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider">
         </provider>
-        <provider
-            android:name="us.nineworlds.serenity.core.SerenityRecommendationContentProvider"
-            android:authorities="us.nineworlds.serenity.core.SerenityRecommendationContentProvider"
-            android:exported="true" >
+        <provider android:authorities="us.nineworlds.serenity.core.SerenityRecommendationContentProvider" android:exported="true" android:name="us.nineworlds.serenity.core.SerenityRecommendationContentProvider">
         </provider>
 
-        <receiver android:name="us.nineworlds.serenity.StartupBroadcastReceiver" >
+        <receiver android:name="us.nineworlds.serenity.StartupBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>
     </application>
