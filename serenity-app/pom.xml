@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>us.nineworlds.android</groupId>
 			<artifactId>leanback-v17</artifactId>
-			<version>21.0.0</version>
+			<version>21.0.2</version>
 			<type>apklib</type>
 		</dependency>
 <!--		<dependency>
