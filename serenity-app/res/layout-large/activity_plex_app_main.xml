@@ -13,11 +13,11 @@
 
         <ImageView
             android:id="@+id/mainGalleryBackground"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:scaleType="fitXY"
-            android:src="@drawable/serenity_androidtv_banner" />
+            android:src="@drawable/serenity_bonsai_splash" />
         
         
         <fragment android:id="@+id/mainMenuFragment"
