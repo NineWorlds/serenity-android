@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2013 David Carver
+ * Copyright (c) 2012 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -21,39 +21,48 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.activity;
+package us.nineworlds.serenity.volley;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.impl.CategoryMediaContainer;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
+import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import android.app.Activity;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-public class CategoryHandler extends Handler {
+import com.android.volley.Response;
+
+public class MovieCategoryResponseListener extends BaseInjector implements
+		Response.Listener<MediaContainer> {
+
+	@Inject
+	MovieSelectedCategoryState categoryState;
 
 	private List<CategoryInfo> categories;
 	private final Activity context;
-	private final String savedCategory;
 	private final String key;
 
-	public CategoryHandler(Activity context, String savedCategory, String key) {
+	public MovieCategoryResponseListener(Activity context, String key) {
+		super();
 		this.context = context;
-		this.savedCategory = savedCategory;
 		this.key = key;
 	}
 
 	@Override
-	public void handleMessage(Message msg) {
-		if (msg.obj != null) {
-			categories = (List<CategoryInfo>) msg.obj;
-			setupMovieBrowser();
-		}
+	public void onResponse(MediaContainer mediaContainer) {
+		CategoryMediaContainer categoryMediaContainer = new CategoryMediaContainer(
+				mediaContainer);
+		categories = categoryMediaContainer.createCategories();
+		setupMovieBrowser();
 	}
 
 	/**
@@ -63,24 +72,24 @@ public class CategoryHandler extends Handler {
 		ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
 				context, R.layout.serenity_spinner_textview, categories);
 		spinnerArrayAdapter
-		.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+				.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
 		Spinner categorySpinner = (Spinner) context
 				.findViewById(R.id.categoryFilter);
 		if (categorySpinner != null) {
 			categorySpinner.setVisibility(View.VISIBLE);
 			categorySpinner.setAdapter(spinnerArrayAdapter);
-			if (savedCategory == null) {
+			if (categoryState.getCategory() == null) {
 				categorySpinner
-				.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
-						"all", key));
+						.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
+								"all", key));
 			} else {
-				// categorySpinner
-				// .setOnItemSelectedListener(new
-				// MovieCategorySpinnerOnItemSelectedListener(
-				// savedCategory, key, false));
+				categorySpinner
+						.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
+								categoryState.getCategory(), key, false));
 			}
 			categorySpinner.requestFocus();
 		}
 	}
+
 }

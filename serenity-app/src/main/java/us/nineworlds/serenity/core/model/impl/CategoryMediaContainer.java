@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.services;
+package us.nineworlds.serenity.core.model.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,67 +29,44 @@ import java.util.List;
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.CategoryInfo;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 
-/**
- * Retrieves the available categories for filtering and returns them to the
- * calling service.
- *
- * @author dcarver
- *
- */
-public class CategoryRetrievalIntentService extends AbstractCategoryService {
+public class CategoryMediaContainer extends AbstractMediaContainer {
 
-	private String key;
-	private boolean filterAlbums;
+	protected ArrayList<CategoryInfo> categories = new ArrayList<CategoryInfo>();
+	protected boolean filterAlbums;
 
-	public CategoryRetrievalIntentService() {
-		super("CategoryRetrievalIntentService");
+	public CategoryMediaContainer(MediaContainer mc) {
+		super(mc);
 	}
 
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		Bundle extras = intent.getExtras();
-		if (extras == null) {
-			Log.e(getClass().getName(), "Missing bundle extras.");
-			sendMessageResults(intent);
-			return;
-		}
-
-		key = extras.getString("key");
-		filterAlbums = intent.getExtras().getBoolean("filterAlbums", false);
+	public List<CategoryInfo> createCategories() {
+		filterAlbums = false;
 		populateCategories();
-		sendMessageResults(intent);
+		return categories;
 	}
 
-	@Override
+	public List<CategoryInfo> createCatagoriesFilteringAlbums() {
+		filterAlbums = true;
+		populateCategories();
+		return categories;
+	}
+
 	protected void populateCategories() {
-		try {
-			MediaContainer mediaContainer = factory.retrieveSections(key);
-			List<Directory> dirs = mediaContainer.getDirectories();
-			categories = new ArrayList<CategoryInfo>();
-			for (Directory dir : dirs) {
-				if (resultsNotFiltered(dir)) {
-					CategoryInfo category = new CategoryInfo();
-					category.setCategory(dir.getKey());
-					category.setCategoryDetail(dir.getTitle());
-					if (dir.getSecondary() > 0) {
-						category.setLevel(dir.getSecondary());
-					}
-					categories.add(category);
+		List<Directory> dirs = mc.getDirectories();
+		categories = new ArrayList<CategoryInfo>();
+		for (Directory dir : dirs) {
+			if (resultsNotFiltered(dir)) {
+				CategoryInfo category = new CategoryInfo();
+				category.setCategory(dir.getKey());
+				category.setCategoryDetail(dir.getTitle());
+				if (dir.getSecondary() > 0) {
+					category.setLevel(dir.getSecondary());
 				}
+				categories.add(category);
 			}
-		} catch (Exception e) {
-			Log.e(getClass().getName(), e.getMessage(), e);
 		}
 	}
 
-	/**
-	 * @param dir
-	 * @return
-	 */
 	protected boolean resultsNotFiltered(Directory dir) {
 		if (filterAlbums) {
 			if (dir.getKey().equals("year") || dir.getKey().equals("decade")) {

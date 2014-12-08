@@ -25,16 +25,19 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
-import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import android.content.Intent;
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
+import us.nineworlds.serenity.volley.MovieSecondaryCategoryResponseListener;
+import us.nineworlds.serenity.volley.VolleyUtils;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Messenger;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -44,6 +47,12 @@ import android.widget.Toast;
 
 public class MovieCategorySpinnerOnItemSelectedListener extends
 BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
+
+	@Inject
+	PlexappFactory factory;
+
+	@Inject
+	VolleyUtils volleyUtils;
 
 	protected Spinner secondarySpinner;
 
@@ -139,13 +148,20 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 	}
 
 	protected void populateSecondaryCategory() {
-		Messenger messenger = new Messenger(secondaryCategoryHandler);
-		Intent categoriesIntent = new Intent(getMultiViewVideoActivity(),
-				SecondaryCategoryRetrievalIntentService.class);
-		categoriesIntent.putExtra("key", key);
-		categoriesIntent.putExtra("category", category);
-		categoriesIntent.putExtra("MESSENGER", messenger);
-		getMultiViewVideoActivity().startService(categoriesIntent);
+		String url = factory.getSectionsURL(key, category);
+		MovieSecondaryCategoryResponseListener response = new MovieSecondaryCategoryResponseListener(
+				getMultiViewVideoActivity(), category, key);
+
+		volleyUtils.volleyXmlGetRequest(url, response,
+				new DefaultLoggingVolleyErrorListener());
+
+		// Messenger messenger = new Messenger(secondaryCategoryHandler);
+		// Intent categoriesIntent = new Intent(getMultiViewVideoActivity(),
+		// SecondaryCategoryRetrievalIntentService.class);
+		// categoriesIntent.putExtra("key", key);
+		// categoriesIntent.putExtra("category", category);
+		// categoriesIntent.putExtra("MESSENGER", messenger);
+		// getMultiViewVideoActivity().startService(categoriesIntent);
 	}
 
 	protected void createGallery(CategoryInfo item) {

@@ -42,9 +42,6 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
  */
 public class MovieMediaContainer extends AbstractMediaContainer {
 
-	/**
-	 *
-	 */
 	public MovieMediaContainer(MediaContainer mc) {
 		super(mc);
 	}

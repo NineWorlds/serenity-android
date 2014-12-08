@@ -25,22 +25,21 @@ package us.nineworlds.serenity.fragments;
 
 import javax.inject.Inject;
 
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import us.nineworlds.serenity.injection.InjectingFragment;
-import us.nineworlds.serenity.ui.activity.CategoryHandler;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
+import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
+import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Messenger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +57,12 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
 	@Inject
 	protected MovieSelectedCategoryState categoryState;
+
+	@Inject
+	protected VolleyUtils volleyUtils;
+
+	@Inject
+	PlexappFactory factory;
 
 	MoviePosterOnItemSelectedListener onItemSelectedListener;
 
@@ -112,14 +117,20 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 		String key = null;
 		key = MovieBrowserActivity.getKey();
 
-		Handler categoryHandler = new CategoryHandler(getActivity(),
-				categoryState.getCategory(), key);
-		Messenger messenger = new Messenger(categoryHandler);
-		Intent categoriesIntent = new Intent(getActivity(),
-				CategoryRetrievalIntentService.class);
-		categoriesIntent.putExtra("key", key);
-		categoriesIntent.putExtra("MESSENGER", messenger);
-		context.startService(categoriesIntent);
-	}
+		MovieCategoryResponseListener response = new MovieCategoryResponseListener(
+				getActivity(), key);
+		String url = factory.getSectionsUrl(key);
+		volleyUtils.volleyXmlGetRequest(url, response,
+				new DefaultLoggingVolleyErrorListener());
 
+		// Handler categoryHandler = new CategoryHandler(getActivity(),
+		// categoryState.getCategory(), key);
+		// Messenger messenger = new Messenger(categoryHandler);
+		// Intent categoriesIntent = new Intent(getActivity(),
+		// CategoryRetrievalIntentService.class);
+		// categoriesIntent.putExtra("key", key);
+		// categoriesIntent.putExtra("MESSENGER", messenger);
+		// context.startService(categoriesIntent);
+
+	}
 }
