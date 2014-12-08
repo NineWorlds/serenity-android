@@ -68,6 +68,7 @@ public class TVCategoryResponseListener extends BaseInjector implements
 	protected void setupShows() {
 		ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
 				context, R.layout.serenity_spinner_textview, categories);
+
 		spinnerArrayAdapter
 				.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
@@ -87,7 +88,6 @@ public class TVCategoryResponseListener extends BaseInjector implements
 
 		}
 		categorySpinner.requestFocus();
-		categorySpinner.setSelection(0);
 	}
 
 }

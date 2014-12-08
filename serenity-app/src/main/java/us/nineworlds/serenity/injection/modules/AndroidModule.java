@@ -50,6 +50,7 @@ import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
 import us.nineworlds.serenity.core.model.impl.SecondaryCategoryMediaContainer;
 import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
 import us.nineworlds.serenity.core.model.impl.SubtitleMediaContainer;
+import us.nineworlds.serenity.core.model.impl.TVCategoryMediaContainer;
 import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import us.nineworlds.serenity.core.services.CompletedVideoRequest;
 import us.nineworlds.serenity.core.services.MovieSearchIntentService;
@@ -126,6 +127,7 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerKeyCodeHandler;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
 import us.nineworlds.serenity.volley.LibraryResponseListener;
 import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
+import us.nineworlds.serenity.volley.TVCategoryResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Application;
@@ -201,7 +203,8 @@ import dagger.Provides;
 	EpisodeVideoGalleryFragment.class, MenuMediaContainer.class,
 	MovieSearchGalleryFragment.class, CardPresenter.class,
 	MovieSearchFragment.class, MovieCategoryResponseListener.class,
-	CategoryMediaContainer.class, SecondaryCategoryMediaContainer.class }, library = true)
+	CategoryMediaContainer.class, SecondaryCategoryMediaContainer.class,
+	TVCategoryResponseListener.class, TVCategoryMediaContainer.class }, library = true)
 public class AndroidModule {
 
 	private final Context applicationContext;

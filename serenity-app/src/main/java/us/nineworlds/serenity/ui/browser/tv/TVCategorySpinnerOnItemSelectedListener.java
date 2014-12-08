@@ -23,29 +23,24 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
-import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
-import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
+import us.nineworlds.serenity.volley.TVSecondaryCategoryResponseListener;
+import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.jess.ui.TwoWayGridView;
 
@@ -61,7 +56,6 @@ implements OnItemSelectedListener {
 	private boolean firstSelection = true;
 	private static SerenityMultiViewVideoActivity context;
 	private static String category;
-	private final Handler secondaryCategoryHandler;
 	private String savedInstanceCategory;
 
 	@Inject
@@ -70,18 +64,22 @@ implements OnItemSelectedListener {
 	@Inject
 	TVCategoryState categoryState;
 
+	@Inject
+	PlexappFactory factory;
+
+	@Inject
+	VolleyUtils volleyUtils;
+
 	public TVCategorySpinnerOnItemSelectedListener(String defaultSelection,
 			String ckey) {
 		selected = defaultSelection;
 		key = ckey;
-		secondaryCategoryHandler = new SecondaryCategoryHandler();
 	}
 
 	public TVCategorySpinnerOnItemSelectedListener(String defaultSelection,
 			String ckey, boolean sw) {
 		selected = defaultSelection;
 		key = ckey;
-		secondaryCategoryHandler = new SecondaryCategoryHandler();
 		savedInstanceCategory = defaultSelection;
 		firstSelection = sw;
 	}
@@ -174,13 +172,19 @@ implements OnItemSelectedListener {
 	}
 
 	protected void populateSecondaryCategory() {
-		Messenger messenger = new Messenger(secondaryCategoryHandler);
-		Intent categoriesIntent = new Intent(context,
-				SecondaryCategoryRetrievalIntentService.class);
-		categoriesIntent.putExtra("key", key);
-		categoriesIntent.putExtra("category", category);
-		categoriesIntent.putExtra("MESSENGER", messenger);
-		context.startService(categoriesIntent);
+		String url = factory.getSectionsURL(key, category);
+		TVSecondaryCategoryResponseListener response = new TVSecondaryCategoryResponseListener(
+				context, category, key);
+		volleyUtils.volleyXmlGetRequest(url, response,
+				new DefaultLoggingVolleyErrorListener());
+
+		// Messenger messenger = new Messenger(secondaryCategoryHandler);
+		// Intent categoriesIntent = new Intent(context,
+		// SecondaryCategoryRetrievalIntentService.class);
+		// categoriesIntent.putExtra("key", key);
+		// categoriesIntent.putExtra("category", category);
+		// categoriesIntent.putExtra("MESSENGER", messenger);
+		// context.startService(categoriesIntent);
 	}
 
 	private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
@@ -243,37 +247,6 @@ implements OnItemSelectedListener {
 
 	@Override
 	public void onNothingSelected(AdapterView<?> va) {
-
-	}
-
-	private static class SecondaryCategoryHandler extends Handler {
-
-		@Override
-		public void handleMessage(Message msg) {
-			List<SecondaryCategoryInfo> secondaryCategories = (List<SecondaryCategoryInfo>) msg.obj;
-
-			if (secondaryCategories == null || secondaryCategories.isEmpty()) {
-				Toast.makeText(context,
-						R.string.no_entries_available_for_category_,
-						Toast.LENGTH_LONG).show();
-				return;
-			}
-
-			Spinner secondarySpinner = (Spinner) context
-					.findViewById(R.id.categoryFilter2);
-			secondarySpinner.setVisibility(View.VISIBLE);
-
-			ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(
-					context, R.layout.serenity_spinner_textview,
-					secondaryCategories);
-			spinnerSecArrayAdapter
-			.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
-			secondarySpinner.setAdapter(spinnerSecArrayAdapter);
-			secondarySpinner
-			.setOnItemSelectedListener(new TVSecondaryCategorySpinnerOnItemSelectedListener(
-					category, key));
-
-		}
 
 	}
 

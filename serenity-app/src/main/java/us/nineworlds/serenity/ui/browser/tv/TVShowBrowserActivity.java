@@ -28,44 +28,43 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
-import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.services.TVShowCategoryRetrievalIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
+import us.nineworlds.serenity.volley.TVCategoryResponseListener;
+import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.jess.ui.TwoWayGridView;
 
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
-	private static Spinner categorySpinner;
 	private boolean restarted_state = false;
 	private static String key;
-	private Handler categoryHandler;
-
 	@Inject
 	protected SharedPreferences preferences;
 
 	@Inject
 	protected TVCategoryState categoryState;
+
+	@Inject
+	protected VolleyUtils volleyUtils;
+
+	@Inject
+	protected PlexappFactory factory;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +88,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -97,20 +96,18 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		super.onResume();
 		populateMenuDrawer();
 		if (!restarted_state) {
-			categoryHandler = new CategoryHandler(this);
-			Messenger messenger = new Messenger(categoryHandler);
-			Intent categoriesIntent = new Intent(this,
-					TVShowCategoryRetrievalIntentService.class);
-			categoriesIntent.putExtra("key", key);
-			categoriesIntent.putExtra("MESSENGER", messenger);
-			startService(categoriesIntent);
+			String url = factory.getSectionsUrl(key);
+			TVCategoryResponseListener response = new TVCategoryResponseListener(
+					this, key);
+			volleyUtils.volleyXmlGetRequest(url, response,
+					new DefaultLoggingVolleyErrorListener());
 		}
 
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
 	 * android.view.KeyEvent)
 	 */
@@ -244,8 +241,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
 		drawerList
-				.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(
-						drawerLayout));
+		.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(
+				drawerLayout));
 	}
 
 	@Override
@@ -259,7 +256,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#finish()
 	 */
 	@Override
@@ -273,48 +270,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		super.onRestoreInstanceState(savedInstanceState);
 
 		// savedCategory = savedInstanceState.getString("savedCategory");
-	}
-
-	private class CategoryHandler extends Handler {
-
-		private ArrayList<CategoryInfo> categories;
-		private final Activity context;
-
-		public CategoryHandler(Activity context) {
-			this.context = context;
-		}
-
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.obj != null) {
-				categories = (ArrayList<CategoryInfo>) msg.obj;
-				setupShows();
-			}
-		}
-
-		protected void setupShows() {
-			ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
-					context, R.layout.serenity_spinner_textview, categories);
-			spinnerArrayAdapter
-					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
-
-			categorySpinner = (Spinner) context
-					.findViewById(R.id.categoryFilter);
-			categorySpinner.setVisibility(View.VISIBLE);
-			categorySpinner.setAdapter(spinnerArrayAdapter);
-
-			if (categoryState.getCategory() == null) {
-				categorySpinner
-						.setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(
-								"all", key));
-			} else {
-				categorySpinner
-						.setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(
-								categoryState.getCategory(), key, false));
-
-			}
-			categorySpinner.requestFocus();
-		}
 	}
 
 	@Override
