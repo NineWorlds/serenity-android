@@ -46,7 +46,6 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowActivity;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
@@ -54,7 +53,6 @@ import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.widgets.DrawerLayout;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -120,19 +118,6 @@ public class MovieBrowserActivityTest extends InjectingTest {
 		ListAdapter adapter = drawerList.getAdapter();
 		MenuDrawerItem item = (MenuDrawerItem) adapter.getItem(2);
 		assertThat(item.getText()).isEqualTo("Play All from Queue");
-	}
-
-	@Test
-	public void resumeStartsCategoriesService() {
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().resume()
-				.get();
-		ShadowActivity shadowActivity = Robolectric
-				.shadowOf(movieBrowserActivity);
-		Intent serviceIntent = shadowActivity.getNextStartedService();
-		assertThat(serviceIntent).isNotNull();
-		assertThat(serviceIntent.getComponent().getClassName()).contains(
-				"CategoryRetrievalIntentService");
 	}
 
 	@Test
@@ -209,7 +194,7 @@ public class MovieBrowserActivityTest extends InjectingTest {
 	}
 
 	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-			MovieBrowserActivity.class, MovieBrowserActivityTest.class })
+		MovieBrowserActivity.class, MovieBrowserActivityTest.class })
 	public class TestModule {
 
 		@Provides
