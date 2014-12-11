@@ -14,7 +14,7 @@ import android.content.Context;
 import com.android.volley.Response;
 
 public class LibraryResponseListener extends BaseInjector implements
-Response.Listener<MediaContainer> {
+		Response.Listener<MediaContainer> {
 
 	Context context;
 
@@ -31,8 +31,7 @@ Response.Listener<MediaContainer> {
 
 	@Override
 	public void onResponse(MediaContainer mc) {
-		List<MenuItem> menuItems = new MenuMediaContainer(mc, context)
-		.createMenuItems();
+		List<MenuItem> menuItems = new MenuMediaContainer(mc).createMenuItems();
 		if (menuItems.isEmpty()) {
 			return;
 		}

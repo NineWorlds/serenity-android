@@ -186,7 +186,7 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 
 		@Override
 		public void onResponse(MediaContainer mc) {
-			menuItems = new MenuMediaContainer(mc, myContext).createMenuItems();
+			menuItems = new MenuMediaContainer(mc).createMenuItems();
 			notifyDataSetChanged();
 			Activity c = (Activity) myContext;
 			c.findViewById(R.id.mainGalleryMenu).requestFocus();
@@ -200,7 +200,7 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 		public void onErrorResponse(VolleyError error) {
 			super.onErrorResponse(error);
 
-			MenuMediaContainer mc = new MenuMediaContainer(myContext);
+			MenuMediaContainer mc = new MenuMediaContainer(null);
 
 			menuItems.add(mc.createSettingsMenu());
 			menuItems.add(mc.createOptionsMenu());

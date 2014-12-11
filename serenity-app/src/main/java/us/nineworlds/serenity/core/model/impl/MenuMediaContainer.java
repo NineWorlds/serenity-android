@@ -33,9 +33,8 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.util.AndroidHelper;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.content.res.Resources;
 
 /**
  * Represents the meta data returned for the various libraries in Plex. Used to
@@ -49,33 +48,23 @@ public class MenuMediaContainer extends AbstractMediaContainer {
 	@Inject
 	protected AndroidHelper androidHelper;
 
+	@Inject
+	protected SharedPreferences preferences;
+
+	@Inject
+	protected Resources resources;
+
 	private static final String SETTINGS_SECTION_KEY = "0";
 	private static final String SETTINGS_TYPE = "settings";
 	private static final String SEARCH_TYPE = "search";
 	private static final String OPTIONS_TYPE = "options";
 	protected ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
-	protected Context context;
 
-	/**
-	 * @param mc
-	 */
 	public MenuMediaContainer(MediaContainer mc) {
 		super(mc);
 	}
 
-	public MenuMediaContainer(Context c) {
-		super(null);
-		context = c;
-	}
-
-	public MenuMediaContainer(MediaContainer mc, Context c) {
-		super(mc);
-		context = c;
-	}
-
 	public List<MenuItem> createMenuItems() {
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(context);
 		List<Directory> dirs = mc.getDirectories();
 
 		if (dirs != null) {
@@ -122,7 +111,7 @@ public class MenuMediaContainer extends AbstractMediaContainer {
 	 */
 	public MenuItem createSettingsMenu() {
 		MenuItem settingsMenuItem = new MenuItem();
-		settingsMenuItem.setTitle(context.getString(R.string.settings));
+		settingsMenuItem.setTitle(resources.getString(R.string.settings));
 		settingsMenuItem.setType(SETTINGS_TYPE);
 		settingsMenuItem.setSection(SETTINGS_SECTION_KEY);
 		return settingsMenuItem;
@@ -135,7 +124,7 @@ public class MenuMediaContainer extends AbstractMediaContainer {
 	 */
 	public MenuItem createSearchMenu() {
 		MenuItem searchMenuItem = new MenuItem();
-		searchMenuItem.setTitle(context.getString(R.string.search));
+		searchMenuItem.setTitle(resources.getString(R.string.search));
 		searchMenuItem.setType(SEARCH_TYPE);
 		searchMenuItem.setSection(SETTINGS_SECTION_KEY);
 		return searchMenuItem;
@@ -148,7 +137,7 @@ public class MenuMediaContainer extends AbstractMediaContainer {
 	 */
 	public MenuItem createOptionsMenu() {
 		MenuItem optionsMenuItem = new MenuItem();
-		optionsMenuItem.setTitle(context.getString(R.string.options));
+		optionsMenuItem.setTitle(resources.getString(R.string.options));
 		optionsMenuItem.setType(OPTIONS_TYPE);
 		optionsMenuItem.setSection(SETTINGS_SECTION_KEY);
 		return optionsMenuItem;
