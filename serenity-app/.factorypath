@@ -8,8 +8,7 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/com/nostra13/universalimageloader/universal-image-loader/1.9.3/universal-image-loader-1.9.3.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/google/android/gms/google-play-services/19.0.0/google-play-services-19.0.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/google/android/youtube-android-player-api/1.0.0/youtube-android-player-api-1.0.0.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/us/nineworlds/android/support-v4/21.0.0/support-v4-21.0.0.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/us/nineworlds/android/support-annotations/21.0.0/support-annotations-21.0.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/us/nineworlds/android/support-v4/21.0.2/support-v4-21.0.2.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/simpleframework/simple-xml/2.7/simple-xml-2.7.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/mcxiaoke/volley/library/1.0.6/library-1.0.6.jar" enabled="true" runInBatchMode="false"/>
