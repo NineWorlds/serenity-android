@@ -11,7 +11,7 @@ import android.content.Context;
 import com.android.volley.Response;
 
 public class TVOnDeckResponseListener implements
-		Response.Listener<MediaContainer> {
+Response.Listener<MediaContainer> {
 
 	Context context;
 
@@ -21,8 +21,7 @@ public class TVOnDeckResponseListener implements
 
 	@Override
 	public void onResponse(MediaContainer mc) {
-		EpisodeMediaContainer episodeContainer = new EpisodeMediaContainer(mc,
-				context);
+		EpisodeMediaContainer episodeContainer = new EpisodeMediaContainer(mc);
 		List<VideoContentInfo> episodes = episodeContainer.createVideos();
 		for (VideoContentInfo episode : episodes) {
 			new RecommendAsyncTask(episode, context).execute();

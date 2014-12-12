@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MediaContainer size="27" allowSync="1" art="/library/metadata/210/art/1411797165" banner="/library/metadata/210/banner/1411797165" grandparentContentRating="TV-PG" grandparentStudio="FOX" grandparentTheme="/library/metadata/210/theme/1411797165" grandparentTitle="The Adventures of Brisco County, Jr." identifier="com.plexapp.plugins.library" key="211" librarySectionID="3" librarySectionTitle="TV Shows" librarySectionUUID="4a670a8b-5828-4842-b249-a4defd8bb6c6" mediaTagPrefix="/system/bundle/media/flags/" mediaTagVersion="1411796624" nocache="1" parentIndex="1" parentTitle="" theme="/library/metadata/210/theme/1411797165" thumb="/library/metadata/211/thumb/1411797164" title1="The Adventures of Brisco County, Jr." title2="Season 1" viewGroup="episode" viewMode="65592">
+<Video ratingKey="212" key="/library/metadata/212" parentRatingKey="211" type="episode" title="Pilot" parentKey="/library/metadata/211" summary="When marshal Brisco County Sr. is gunned down by John Bly and his gang of outlaws, his son, bounty hunter Brisco County Jr., comes back from the East to gain revenge on the killers." index="1" rating="6.6999998092651403" year="1993" thumb="/library/metadata/212/thumb/1411797143" duration="5589000" originallyAvailableAt="1993-08-27" addedAt="1411796869" updatedAt="1411797143">
+<Media videoResolution="480" id="210" duration="5589000" bitrate="1051" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="210" key="/library/parts/210/file.avi" duration="5589000" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x01 - Pilot (DVDRip).avi" size="733956096" container="avi" />
+</Media>
+<Writer tag="David Simkins" />
+<Writer tag="Jeffrey Boam" />
+<Director tag="Bryan Spicer" />
+</Video>
+<Video ratingKey="213" key="/library/metadata/213" parentRatingKey="211" type="episode" title="The Orb Scholar" titleSort="Orb Scholar" parentKey="/library/metadata/211" summary="Brisco follows a lead on Bly to the town of Poker Flats. He finds Bly, the orb, and an old friend who once left him to die at the hands of the Swill brothers." index="2" rating="6" year="1993" thumb="/library/metadata/213/thumb/1411797143" duration="2715922" originallyAvailableAt="1993-09-03" addedAt="1411796869" updatedAt="1411797143">
+<Media videoResolution="480" id="211" duration="2715922" bitrate="1081" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="211" key="/library/parts/211/file.avi" duration="2715922" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x02 - The Orb Scholar (DVDRip).avi" size="366995456" container="avi" />
+</Media>
+<Writer tag="Carlton Cuse" />
+<Director tag="Andy Tennant" />
+</Video>
+<Video ratingKey="214" key="/library/metadata/214" parentRatingKey="211" type="episode" title="No Man&apos;s Land" parentKey="/library/metadata/211" summary="The Swill brothers (Will, Bill, Gil, and Phil) steal an experimental Army tank. Brisco is injured while pursuing them, and his ally Professor Wickwire takes him to a town populated entirely by women who have decided to move out on their own. The Swills arrive in town and go on a rampage, only to be thwarted by Brisco, Lord Bowler, the Professor, and the women." index="3" rating="6" year="1993" thumb="/library/metadata/214/thumb/1411797144" duration="2677049" originallyAvailableAt="1993-09-10" addedAt="1411796869" updatedAt="1411797144">
+<Media videoResolution="480" id="212" duration="2677049" bitrate="1097" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="212" key="/library/parts/212/file.avi" duration="2677049" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x03 - No Man&apos;s Land (DVDRip).avi" size="366979072" container="avi" />
+</Media>
+<Writer tag="Tom Chehak" />
+<Director tag="Kim Manners" />
+</Video>
+<Video ratingKey="215" key="/library/metadata/215" parentRatingKey="211" type="episode" title="Brisco in Jalisco" parentKey="/library/metadata/211" summary="Brisco and Socrates head south of the border when the Westerfield Club orders them to recover some stolen guns. Not only is Dixie involved with both the evil general and the revolutionaries the guns are heading for, but it turns out Pete Hutter (previously thought killed in the pilot) is behind the gun-smuggling operation. The guns are blown up in a massive explosion Brisco engineers to keep them out of everyone&apos;s hands. The revolutionaries promise to name a county after Brisco." index="4" rating="6" year="1993" thumb="/library/metadata/215/thumb/1411797145" duration="2731729" originallyAvailableAt="1993-09-17" addedAt="1411796869" updatedAt="1411797145">
+<Media videoResolution="480" id="213" duration="2731729" bitrate="1075" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="213" key="/library/parts/213/file.avi" duration="2731729" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x04 - Brisco in Jalisco (DVDRip).avi" size="366989312" container="avi" />
+</Media>
+<Writer tag="Jeffrey Boam" />
+<Writer tag="Carlton Cuse" />
+<Director tag="James A. Contner" />
+</Video>
+<Video ratingKey="216" key="/library/metadata/216" parentRatingKey="211" type="episode" title="Socrates&apos; Sister" parentKey="/library/metadata/211" summary="Brisco manages to capture Jack Randolph, one of Bly&apos;s gang. However, he claims to be a different Jack Randolph. Socrates&apos; sister Iphigenia arrives to defend him, and it turns out she was also in a romantic correspondence with him. Randolph is the real Randolph, and uses Iphigenia to break out and try to recover stolen treasure in a submerged town." index="5" rating="6" year="1993" thumb="/library/metadata/216/thumb/1411797145" duration="2715713" originallyAvailableAt="1993-09-24" addedAt="1411796869" updatedAt="1411797145">
+<Media videoResolution="480" id="214" duration="2715713" bitrate="1081" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="214" key="/library/parts/214/file.avi" duration="2715713" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x05 - Socrates&apos; Sister (DVDRip).avi" size="366987264" container="avi" />
+</Media>
+<Writer tag="Chris Ruppenthal" />
+<Director tag="Greg Beeman" />
+</Video>
+<Video ratingKey="217" key="/library/metadata/217" parentRatingKey="211" type="episode" title="Riverboat" parentKey="/library/metadata/211" summary="Socrates sends out an S.O.S. to Brisco when he loses Westerfield Club money to Brett Bones, a member of John Bly&apos;s gang, in a poker game. Brisco, Bowler, Socrates and Wylie set up a scam to get the money back and put Bones in prison. Dixie shows up, but is she friend or foe?" index="6" rating="6" year="1993" thumb="/library/metadata/217/thumb/1411797146" duration="2742114" originallyAvailableAt="1993-10-01" addedAt="1411796869" updatedAt="1411797146">
+<Media videoResolution="480" id="215" duration="2742114" bitrate="1071" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="215" key="/library/parts/215/file.avi" duration="2742114" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x06 - Riverboat (DVDRip).avi" size="366999552" container="avi" />
+</Media>
+<Writer tag="John Warren" />
+<Director tag="Fred Gerber" />
+</Video>
+<Video ratingKey="218" key="/library/metadata/218" parentRatingKey="211" type="episode" title="Pirates!" parentKey="/library/metadata/211" summary="Blackbeard LaCutte, a member of Bly&apos;s gang, fancies himself a pirate of the land, and intercepts stagecoaches and wagons and &quot;&quot;boards&quot;&quot; them. Brisco and Bowler team up again to track him down when LaCutte steals a town&apos;s supplies, including the medicine necessarily to cure a dying boy. In a final swordfight, LaCutte drowns in a pool of quicksand." index="7" rating="6" year="1993" thumb="/library/metadata/218/thumb/1411797147" duration="2754919" originallyAvailableAt="1993-10-08" addedAt="1411796869" updatedAt="1411797147">
+<Media videoResolution="480" id="216" duration="2754919" bitrate="1066" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="216" key="/library/parts/216/file.avi" duration="2754919" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x07 - Pirates (DVDRip).avi" size="366987264" container="avi" />
+</Media>
+<Writer tag="Richard Outten" />
+<Director tag="Daniel Attias" />
+</Video>
+<Video ratingKey="219" key="/library/metadata/219" parentRatingKey="211" type="episode" title="Senior Spirit" parentKey="/library/metadata/211" summary="On the trail of Bly once more, Brisco is confronted by the ghost of his father, who hints at his mysterious destiny with the Orb, hints that there are other Orbs, and helps him to track down Bly. Brisco Jr. must also deal with his obsession with Bly, and decide which is more important: bringing in the outlaw or endangering innocent lives. The trail leads to a farm manned by an innocent old couple who turn out not to be so innocent after all. In the final shootout, Bly escapes and one of his lackeys activates the Orb that Bly already has, destroying it once and for all." index="8" rating="6" year="1993" thumb="/library/metadata/219/thumb/1411797148" duration="2726224" originallyAvailableAt="1993-10-15" addedAt="1411796869" updatedAt="1411797148">
+<Media videoResolution="480" id="217" duration="2726224" bitrate="1077" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="217" key="/library/parts/217/file.avi" duration="2726224" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x08 - Senior Spirit (DVDRip).avi" size="366991360" container="avi" />
+</Media>
+<Writer tag="John McNamara" />
+<Director tag="Michael Lange" />
+</Video>
+<Video ratingKey="220" key="/library/metadata/220" parentRatingKey="211" type="episode" title="Brisco for the Defense" parentKey="/library/metadata/211" summary="Brisco is called upon by an old friend, a doctor, to serve as defense lawyer when the guy is accused of murdering a prominent citizen. Despite the hostility of the townsfolk, the sheriff, and the judge (who is disdainful of Brisco&apos;s Harvard roots, having graduated from Yale himself), Brisco figures out that the citizen wasn&apos;t so well-liked, and in fact had left a number of little revenge ploys after his death (such as a case of anthrax for the local cattlemen). Using the new science of fingerprints, Brisco manages to solve the case: the murder victim killed himself and set up the doctor (who had been seeing his wife on the side) to make it look like the murderer. The doctor&apos;s jilted girlfriend was in cahoots, and the wife slugs her when she tries to pull a gun on the preceedings." index="9" rating="6" year="1993" thumb="/library/metadata/220/thumb/1411797148" duration="2738194" originallyAvailableAt="1993-10-22" addedAt="1411796869" updatedAt="1411797148">
+<Media videoResolution="480" id="218" duration="2738194" bitrate="1072" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="218" key="/library/parts/218/file.avi" duration="2738194" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x09 - Brisco for the Defense (DVDRip).avi" size="366991360" container="avi" />
+</Media>
+<Writer tag="John McNamara" />
+<Writer tag="David Simkins" />
+<Director tag="Andy Tennant" />
+</Video>
+<Video ratingKey="221" key="/library/metadata/221" parentRatingKey="211" type="episode" title="Showdown" parentKey="/library/metadata/211" summary="Brisco returns to his hometown to help an old friend of the family, the town sheriff, deal with a villianous cattle baron. He also renews a relationship with the sheriff&apos;s daughter and his previous girlfriend." index="10" year="1993" thumb="/library/metadata/221/thumb/1411797150" duration="2681888" originallyAvailableAt="1993-10-29" addedAt="1411796869" updatedAt="1411797150">
+<Media videoResolution="480" id="219" duration="2681888" bitrate="1095" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="219" key="/library/parts/219/file.avi" duration="2681888" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x10 - Showdown (DVDRip).avi" size="366999552" container="avi" />
+</Media>
+<Writer tag="David Simkins" />
+<Director tag="Kim Manners" />
+</Video>
+<Video ratingKey="222" key="/library/metadata/222" parentRatingKey="211" type="episode" title="Deep in the Heart of Dixie" parentKey="/library/metadata/211" summary="A ruthless assassin, Winston Smiles, is on the trail of Dixe Cousins because of vital evidence that she has against his employer. Brisco and Bowler come to her aid, and the trail leads to a nunnery where Dixie hid the evidence." index="11" rating="6" year="1993" thumb="/library/metadata/222/thumb/1411797151" duration="2693816" originallyAvailableAt="1993-11-05" addedAt="1411796869" updatedAt="1411797151">
+<Media videoResolution="480" id="220" duration="2693816" bitrate="1090" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="220" key="/library/parts/220/file.avi" duration="2693816" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x11 - Deep in the Heart of Dixie (DVDRip).avi" size="366989312" container="avi" />
+</Media>
+<Writer tag="Brad Kern" />
+<Writer tag="John Wirth" />
+<Director tag="Joe Napolitano" />
+</Video>
+<Video ratingKey="223" key="/library/metadata/223" parentRatingKey="211" type="episode" title="Crystal Hawks" parentKey="/library/metadata/211" summary="A series of mysterious robberies and the apparent murder of a bank manager implicate Brisco, who has a price put on his head. A female bounty hunter, Crystal Hawks, is the most persistent who captures Brisco several times (after he escapes several times). It turns out that Big Smith, Bly&apos;s former henchman, survived the fall in the pilot episode and was purified by the power of the Orb. Now he is redeeming himself by breaking into banks and returning money, and killing the bank manager he previously consorted with. Bly is also on Big Smith&apos;s trail, hopping to recover that particular Orb. In the end, Brisco clears his name, captures Smith and Bly, and turns them over to the government. However, Bly manages to escape by using the now-virtuous Smith as a shield, getting him killed in the process." index="12" rating="6" year="1993" thumb="/library/metadata/223/thumb/1411797152" duration="2709373" originallyAvailableAt="1993-11-12" addedAt="1411796870" updatedAt="1411797152">
+<Media videoResolution="480" id="221" duration="2709373" bitrate="1084" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="221" key="/library/parts/221/file.avi" duration="2709373" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x12 - Crystal Hawks (DVDRip).avi" size="366991360" container="avi" />
+</Media>
+<Writer tag="John McNamara" />
+<Director tag="Win Phelps" />
+</Video>
+<Video ratingKey="224" key="/library/metadata/224" parentRatingKey="211" type="episode" title="Steel Horses" parentKey="/library/metadata/211" summary="Juno Dawkins, another member of Bly&apos;s gang, is planning to steal an Orb for his boss. To intercept the high-speed government transport, he steals four prototype &quot;&quot;iron horses&quot;&quot; (i.e., motorcycles) from a Westerfield Club project being supervised by Socrates. To keep Socrates from getting fired and to bring in another member of Bly&apos;s gang, Brisco and Bly go after Dawkins and his gang. They manage to capture one of the &quot;&quot;iron horses&quot;&quot; and take it to Professor Wickwire and the Schwenke sisters to upgrade it. Since Juno only speaks German with his henchmen, they prevail upon the Schwenke sisters to get the gang&apos;s location out of one of the henchmen. They manage to do so, and take off after Dawkins and his remaining gang on a revved-up motorcycle. A jealous Comet still manages to prove useful and Dawkins is rounded up." index="13" rating="6" year="1993" thumb="/library/metadata/224/thumb/1411797153" duration="2709749" originallyAvailableAt="1993-11-19" addedAt="1411796870" updatedAt="1411797153">
+<Media videoResolution="480" id="222" duration="2709749" bitrate="1084" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="222" key="/library/parts/222/file.avi" duration="2709749" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x13 - Steel Horses (DVDRip).avi" size="367001600" container="avi" />
+</Media>
+<Writer tag="Tom Chehak" />
+<Director tag="Kim Manners" />
+</Video>
+<Video ratingKey="225" key="/library/metadata/225" parentRatingKey="211" type="episode" title="Mail Order Brides" parentKey="/library/metadata/211" summary="While back on the trail of the Swill brothers, Brisco and Bowler rescue three mail-order brides making their way to Denver who had their dowries stolen by the Swills. The Swills&apos; newest plan is to steal a bull sent from Madrid, Spain to Madrid, CA as a token of peace and hold it for ransom. After escaping from the Swills&apos; mother Lil (who holds them responsible for the death of her son Gil, in No Man&apos;s Land), they manage to thwart the Swills in Madrid." index="14" rating="6" year="1993" thumb="/library/metadata/225/thumb/1411797153" duration="2682346" originallyAvailableAt="1993-12-10" addedAt="1411796870" updatedAt="1411797153">
+<Media videoResolution="480" id="223" duration="2682346" bitrate="1095" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="223" key="/library/parts/223/file.avi" duration="2682346" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x14 - Mail Order Brides (DVDRips).avi" size="366989312" container="avi" />
+</Media>
+<Writer tag="David Simkins" />
+<Writer tag="John Wirth" />
+<Director tag="Michael Schultz" />
+<Director tag="Tom Chehak" />
+</Video>
+<Video ratingKey="226" key="/library/metadata/226" parentRatingKey="211" type="episode" title="AKA Kansas" parentKey="/library/metadata/211" summary="Another of Bly&apos;s gang, Doc McCoy, is planning to steal an experimental weapon from a government facility. McCoy is Dixie Cousins&apos; ex-husband, and is interested in renewing their relationship. Brisco manages to use Dixie to infiltrate McCoy&apos;s gang under the assumed alias of Kansas Wily Stafford. Unfortunately, the real Wily shows up. Ultimiately, we find out that McCoy is after one of the Orbs. As Brisco tries to get the Orb, he meets a future version of himself bearing another Orb, who has come back in time to help Brisco and assure he gets the Orb in the present." index="15" year="1993" thumb="/library/metadata/226/thumb/1411797154" duration="2756212" originallyAvailableAt="1993-12-17" addedAt="1411796870" updatedAt="1411797154">
+<Media videoResolution="480" id="224" duration="2756212" bitrate="1065" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="224" key="/library/parts/224/file.avi" duration="2756212" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x15 - AKA Kansas (DVDRips).avi" size="366995456" container="avi" />
+</Media>
+<Writer tag="Brad Kern" />
+<Writer tag="John McNamara" />
+<Director tag="Rob Bowman" />
+</Video>
+<Video ratingKey="227" key="/library/metadata/227" parentRatingKey="211" type="episode" title="Bounty Hunter&apos;s Convention" parentKey="/library/metadata/211" summary="Brisco and Bowler are invited to a gathering of bounty hunters brought together to look at new &quot;&quot;futuristic&quot;&quot; devices for law enforcement and capturing criminals. However, the bounty hunters are being picked off, &quot;&quot;Ten Little Indians&quot;&quot; style, one by one. The pair must figure out who is responsible, and how to stop them." index="16" rating="6" year="1994" thumb="/library/metadata/227/thumb/1411797155" duration="2737735" originallyAvailableAt="1994-01-07" addedAt="1411796870" updatedAt="1411797155">
+<Media videoResolution="480" id="225" duration="2737735" bitrate="1072" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="225" key="/library/parts/225/file.avi" duration="2737735" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x16 - Bounty Hunter&apos;s Convention (DVDRips).avi" size="367003648" container="avi" />
+</Media>
+<Writer tag="James L. Novack" />
+<Director tag="Kim Manners" />
+</Video>
+<Video ratingKey="228" key="/library/metadata/228" parentRatingKey="211" type="episode" title="Fountain of Youth" parentKey="/library/metadata/211" summary="Brisco and Bowler are seemingly contacted by Professor Coles (from The Orb Scholar), but its actually a ploy by John Bly, who is in cahoots with the professor&apos;s daughter. She is suffering from an aging disease and needs the Orb&apos;s power to heal herself. She sells out her own father to try and obtain it. Brisco eventually corners Bly and shoots him with a bullet made of orb metal. This traps Bly in the Orb (at least for now) and Brisco turns it over to the government." index="17" rating="6" year="1994" thumb="/library/metadata/228/thumb/1411797155" duration="2694233" originallyAvailableAt="1994-01-14" addedAt="1411796870" updatedAt="1411797155">
+<Media videoResolution="480" id="226" duration="2694233" bitrate="1090" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="226" key="/library/parts/226/file.avi" duration="2694233" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x17 - Fountain of Youth (DVDRips).avi" size="366993408" container="avi" />
+</Media>
+<Writer tag="Kathryn Baker" />
+<Director tag="Michael Caffey" />
+</Video>
+<Video ratingKey="229" key="/library/metadata/229" parentRatingKey="211" type="episode" title="Hard Rock" parentKey="/library/metadata/211" summary="Brisco and Bowler arrive in Hard Rock, and foil local thug Roy Hondo from breaking up the restaurant run by Bowler&apos;s ex-girlfriend Lenore. It turns out Hondo is running a protection racket. A young gunfighter, Whip, is trying to call out Hondo, and it is revealed that he is Hondo&apos;s son. Brisco manages to break up Hondo&apos;s racket and bring in Hondo himself." index="18" rating="6" year="1994" thumb="/library/metadata/229/thumb/1411797157" duration="2815313" originallyAvailableAt="1994-02-04" addedAt="1411796870" updatedAt="1411797157">
+<Media videoResolution="480" id="227" duration="2815313" bitrate="1043" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="227" key="/library/parts/227/file.avi" duration="2815313" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x18 - Hard Rock (DVDRips).avi" size="366989312" container="avi" />
+</Media>
+<Writer tag="John McNamara" />
+<Director tag="Joseph L. Scanlon" />
+</Video>
+<Video ratingKey="230" key="/library/metadata/230" parentRatingKey="211" type="episode" title="Brooklyn Dodgers" parentKey="/library/metadata/211" summary="Brisco and Bowler run afoul of two orphans, who are being hunted by the New York City mob because of their inheritance. The bounty hunters agree to help get the orphans to San Francisco, while Socrates finds out that the kids&apos; mother is actually alive." index="19" rating="6" year="1994" thumb="/library/metadata/230/thumb/1411797157" duration="2714086" originallyAvailableAt="1994-02-11" addedAt="1411796871" updatedAt="1411797157">
+<Media videoResolution="480" id="228" duration="2714086" bitrate="1082" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="228" key="/library/parts/228/file.avi" duration="2714086" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x19 - Brooklyn Dodgers (DVDRips).avi" size="366991360" container="avi" />
+</Media>
+<Writer tag="Donald Marcus" />
+<Director tag="Kim Manners" />
+</Video>
+<Video ratingKey="231" key="/library/metadata/231" parentRatingKey="211" type="episode" title="Bye Bly" parentKey="/library/metadata/211" summary="The last member of Bly&apos;s gang, a cat-burglar named Pepe Bendrix, escapes Bowler and Brisco but is arrested by Agent Brown, who offers him a pardon in return for Pepe&apos;s recovering the last Orb. Meanwhile, a time traveller, Karina, arrives and tells Brisco that the Orbs are artifacts from the future. Bly, a criminal from the future (somewhere between Brisco&apos;s and Karina&apos;s time) managed to steal the Orbs and sent them to the past (Brisco&apos;s present). Pepe frees Bly from the Orb, who was previously imprisoned in it. Eventually Brisco confronts Bly, who uses his powers to kill Bowler before being killed himself when Brisco throws him out a window. Brisco uses the Orb to travel back in time, change the outcome so that Bowler isn&apos;t killed, and drives one of the Orb&apos;s rods into Bly, turning him into dust. Karina departs with the two remaining Orbs, and Brisco and Bowler are contacted by President Cleveland, who makes them his special agents." index="20" rating="6" year="1994" thumb="/library/metadata/231/thumb/1411797158" duration="2723221" originallyAvailableAt="1994-02-18" addedAt="1411796871" updatedAt="1411797158">
+<Media videoResolution="480" id="229" duration="2723221" bitrate="1078" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="229" key="/library/parts/229/file.avi" duration="2723221" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x20 - Bye Bly (DVDRips).avi" size="366989312" container="avi" />
+</Media>
+<Writer tag="Carlton Cuse" />
+<Director tag="Kim Manners" />
+</Video>
+<Video ratingKey="232" key="/library/metadata/232" parentRatingKey="211" type="episode" title="Ned Zed" parentKey="/library/metadata/211" summary="A father reads his son a bed-time story from a dime novel, of how Brisco County and his &quot;&quot;loyal sidekick&quot;&quot; Lord Bowler brought in the notorious Ned Zed." index="21" rating="6" year="1994" thumb="/library/metadata/232/thumb/1411797159" duration="2714212" originallyAvailableAt="1994-03-11" addedAt="1411796871" updatedAt="1411797159">
+<Media videoResolution="480" id="230" duration="2714212" bitrate="1082" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="230" key="/library/parts/230/file.avi" duration="2714212" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x21 - Ned Zed (DVDRips).avi" size="366989312" container="avi" />
+</Media>
+<Writer tag="Jeffrey Boam" />
+<Director tag="Bryan Spicer" />
+</Video>
+<Video ratingKey="233" key="/library/metadata/233" parentRatingKey="211" type="episode" title="Stagecoach" parentKey="/library/metadata/211" summary="Brisco is assigned to transport an English spy, Emma Steed, to Mexico as part of an exchange. Trouble arises when it turns out there is an assassin aboard the stagecoach, sent to make sure Steed doesn&apos;t get to her destination." index="22" rating="6" year="1994" thumb="/library/metadata/233/thumb/1411797160" duration="2794750" originallyAvailableAt="1994-04-01" addedAt="1411796871" updatedAt="1411797160">
+<Media videoResolution="480" id="231" duration="2794750" bitrate="1051" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="231" key="/library/parts/231/file.avi" duration="2794750" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x22 - Stagecoach (DVDRips).avi" size="366987264" container="avi" />
+</Media>
+<Writer tag="Jeff Vlaming" />
+<Director tag="Felix Enriquez Alcala" />
+</Video>
+<Video ratingKey="234" key="/library/metadata/234" parentRatingKey="211" type="episode" title="Wild Card" parentKey="/library/metadata/211" summary="Dixie Cousins and her cousin Dolly attempt to start up a casino and dance hall, but run afoul of the Tataglia clan: a group of suspiciously Mafia-like Italian crimelords. They have Whip try to win the casino back in a card game from the youngest, most impetuous Tataglia - Dino. He succeeds, but Dino puts the strongarm on Whip and takes the deed back. Brisco and Bowler come into town on the trail of a stagecoach robber, who they suspect is Dixie. It was: she was robbing a shipment of Tataglia money. A marshall is on her trail. The two sides struggle over who will control the casino, as Brisco and the others open up a rival place. Papa Tataglia is none too happy, particularly when Dino gets captured. A final card game lets Dixie and the others win the day." index="23" rating="6" year="1994" thumb="/library/metadata/234/thumb/1411797160" duration="2772812" originallyAvailableAt="1994-04-08" addedAt="1411796871" updatedAt="1411797160">
+<Media videoResolution="480" id="232" duration="2772812" bitrate="1059" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="232" key="/library/parts/232/file.avi" duration="2772812" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x23 - Wild Card (DVDRips).avi" size="366989312" container="avi" />
+</Media>
+<Writer tag="Brad Kern" />
+<Writer tag="John Wirth" />
+<Director tag="Larry Shaw" />
+</Video>
+<Video ratingKey="235" key="/library/metadata/235" parentRatingKey="211" type="episode" title="And Baby Makes Three" parentKey="/library/metadata/211" summary="Pete Hutter gets hold of a Chinese baby who happens to be the future Emperor of China. He is killed by &quot;&quot;Chinese death stars&quot;&quot; (but only temporarily) and Dixie Cousins gets hold of the baby. She ends up going to Brisco and Bowler for help. The head of the Black Lotus assassins after the baby, Chan, killed Brisco&apos;s mother when trying to get at his father, and also is an old rival of Brisco&apos;s contact and family friend Lee Pow (from the premiere episode). Further complicating things, they free Pete, who gets hold of the baby and tries to ransom it back for &quot;&quot;Pete&apos;s Piece&quot;&quot; and a da Vinci flying machine. Lee Pow and his allies show up along with the Black Lotus, and Chan defeats Lee Pow. Brisco manages to beat Chan, avenging his mother, and Dixie is invited to travel to China with the baby." index="24" rating="6" year="1994" thumb="/library/metadata/235/thumb/1411797161" duration="2758506" originallyAvailableAt="1994-04-22" addedAt="1411796871" updatedAt="1411797161">
+<Media videoResolution="480" id="233" duration="2758506" bitrate="1064" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="233" key="/library/parts/233/file.avi" duration="2758506" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x24 - And Baby Makes Three (DVDRips).avi" size="366993408" container="avi" />
+</Media>
+<Writer tag="Tracy Friedman" />
+<Director tag="Kevin S. Bright" />
+</Video>
+<Video ratingKey="236" key="/library/metadata/236" parentRatingKey="211" type="episode" title="Bad Luck Betty" parentKey="/library/metadata/211" summary="During his birthday celebration, Socrates mysteriously disappears. Brisco, Bowler and Whip follow the trail to the strange town of Midnightville. They found out that Socrates was a lawyer there, and one case he took was of the local undertaker, Donald Grayson, who was executed for killing his wife. The trio take up residence at the daughter&apos;s boarding house, and try to locate Socrates. However, other folks who participated in the trial are being found dead, murdered in grisly manners. Ultimately they discover that the daughter Diana is the one responsible: she was the one who shot her mother, and her father took the blame. Diana is now schizophrenic, and assumes the role of her father to gain revenge on those she holds responsible for his death. She is captured and locked up." index="25" rating="6" year="1994" thumb="/library/metadata/236/thumb/1411797162" duration="2724847" originallyAvailableAt="1994-04-29" addedAt="1411796871" updatedAt="1411797162">
+<Media videoResolution="480" id="234" duration="2724847" bitrate="1077" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="234" key="/library/parts/234/file.avi" duration="2724847" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x25 - Bad Luck Betty (DVDRips).avi" size="366997504" container="avi" />
+</Media>
+<Writer tag="Tony Blake" />
+<Writer tag="Paul Jackson" />
+<Director tag="Joseph Scanlan" />
+</Video>
+<Video ratingKey="237" key="/library/metadata/237" parentRatingKey="211" type="episode" title="High Treason (1)" parentKey="/library/metadata/211" summary="The episode begins with Brisco and Bowler captured by the U.S. Army and put on trial as traitors. In flashback at their trial, they tell of how they were unofficially sent by the President to recover the daughter of a newspaper magnate, kidnapped by a Mexican bandit. They put together a team of Professor Wickwire, Sheriff Vila, Pete Hutter, and Whip Morgan, but when they break out the daughter they find she is there willingly due to her romance with the bandit. They rescue her anyway, to discover that it is all a plot by General Quarry, the person railroading them through the court-martial, to overthrow the President. They are found guilty and at the end of part 1 are lined up in front of a firing squad with death imminent..." index="26" rating="6" year="1994" thumb="/library/metadata/237/thumb/1411797163" duration="2806387" originallyAvailableAt="1994-05-13" addedAt="1411796872" updatedAt="1411797163">
+<Media videoResolution="480" id="235" duration="2806387" bitrate="1046" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="235" key="/library/parts/235/file.avi" duration="2806387" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x26 - High Treason (Part 1) (DVDRips).avi" size="366993408" container="avi" />
+</Media>
+<Writer tag="Brad Kern" />
+<Writer tag="Tom Chehak" />
+<Director tag="Kim Manners" />
+</Video>
+<Video ratingKey="238" key="/library/metadata/238" parentRatingKey="211" type="episode" title="High Treason (2)" parentKey="/library/metadata/211" summary="In part 2, Brisco and Bowler manage to escape the firing squad by faking their deaths. Unfortunately, their ploy doesn&apos;t last long and the megalomaniacal General Quarry sends Colonel March and a squad of elite trackers on their trail. The bounty hunters manage to ultimately bring Quarry to justice and clear their names." index="27" year="1994" thumb="/library/metadata/238/thumb/1411797164" duration="2700656" originallyAvailableAt="1994-05-20" addedAt="1411796872" updatedAt="1411797164">
+<Media videoResolution="480" id="236" duration="2700656" bitrate="1087" width="512" height="384" aspectRatio="1.33" audioChannels="2" audioCodec="mp3" videoCodec="mpeg4" container="avi" videoFrameRate="24p">
+<Part id="236" key="/library/parts/236/file.avi" duration="2700656" file="/mnt/videos/TV Shows/Adeventures of Brisco County Jr/Season 1/The Adventures of Brisco County Jr - 1x27 - High Treason (Part 2) (DVDRips).avi" size="366993408" container="avi" />
+</Media>
+<Writer tag="Tom Chehak" />
+<Writer tag="John Wirth" />
+<Director tag="Joseph Scanlan" />
+</Video>
+</MediaContainer>

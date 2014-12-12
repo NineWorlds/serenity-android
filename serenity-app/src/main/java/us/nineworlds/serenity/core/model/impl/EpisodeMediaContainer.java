@@ -26,7 +26,8 @@ package us.nineworlds.serenity.core.model.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import us.nineworlds.plex.rest.PlexappFactory;
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.model.impl.Director;
 import us.nineworlds.plex.rest.model.impl.Genre;
 import us.nineworlds.plex.rest.model.impl.Media;
@@ -36,28 +37,21 @@ import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.plex.rest.model.impl.Writer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import android.content.Context;
+import android.content.res.Resources;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class EpisodeMediaContainer extends MovieMediaContainer {
 
-	protected Context context;
+	@Inject
+	Resources resources;
 
-	/**
-	 * @param mc
-	 */
-	public EpisodeMediaContainer(MediaContainer mc, Context context) {
+	public EpisodeMediaContainer(MediaContainer mc) {
 		super(mc);
-		this.context = context;
 	}
 
-	/**
-	 * @param mc
-	 * @param baseUrl
-	 */
 	@Override
 	protected void createVideoContent(MediaContainer mc) {
 		String baseUrl = factory.baseURL();
@@ -69,15 +63,14 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 		List<Video> videos = mc.getVideos();
 		if (videos != null) {
 			for (Video episode : videos) {
-				videoList.add(createEpisodeContentInfo(context, factory, mc,
-						baseUrl, parentPosterURL, episode));
+				videoList.add(createEpisodeContentInfo(mc, baseUrl,
+						parentPosterURL, episode));
 			}
 		}
 	}
 
-	public static EpisodePosterInfo createEpisodeContentInfo(Context context,
-			PlexappFactory factory, MediaContainer mc, String baseUrl,
-			String parentPosterURL, Video episode) {
+	public EpisodePosterInfo createEpisodeContentInfo(MediaContainer mc,
+			String baseUrl, String parentPosterURL, Video episode) {
 		EpisodePosterInfo epi = new EpisodePosterInfo();
 		if (parentPosterURL != null) {
 			epi.setParentPosterURL(parentPosterURL);
@@ -140,17 +133,17 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 			Part part = parts.get(0);
 
 			if (episode.getSeason() != null) {
-				String season = context.getString(R.string.season_)
+				String season = resources.getString(R.string.season_)
 						+ episode.getSeason();
 				epi.setSeason(season);
 			} else if (mc.getParentIndex() != null) {
-				String season = context.getString(R.string.season_)
+				String season = resources.getString(R.string.season_)
 						+ mc.getParentIndex();
 				epi.setSeason(season);
 			}
 
 			if (episode.getEpisode() != null) {
-				String episodeNum = context.getString(R.string.episode_)
+				String episodeNum = resources.getString(R.string.episode_)
 						+ episode.getEpisode();
 				epi.setEpisodeNumber(episodeNum);
 			}
@@ -187,7 +180,7 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 
 	}
 
-	private static void createVideoDetailsStatic(Video video,
+	private void createVideoDetailsStatic(Video video,
 			VideoContentInfo videoContentInfo) {
 		if (video.getYear() != null) {
 			videoContentInfo.setYear(video.getYear());

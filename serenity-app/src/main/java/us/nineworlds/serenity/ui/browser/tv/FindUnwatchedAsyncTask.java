@@ -47,7 +47,7 @@ import android.widget.Toast;
  *
  */
 public class FindUnwatchedAsyncTask extends
-		AsyncTask<SeriesContentInfo, Void, EpisodePosterInfo> {
+AsyncTask<SeriesContentInfo, Void, EpisodePosterInfo> {
 
 	@Inject
 	protected PlexappFactory factory;
@@ -90,13 +90,14 @@ public class FindUnwatchedAsyncTask extends
 								"show")) {
 					parentPosterURL = baseUrl
 							+ episodeContainer.getParentPosterURL()
-									.substring(1);
+							.substring(1);
 				}
 				for (Video episode : episodes) {
-					final EpisodePosterInfo videoInfo = EpisodeMediaContainer
-							.createEpisodeContentInfo(activity, factory,
-									episodeContainer, baseUrl, parentPosterURL,
-									episode);
+					EpisodeMediaContainer emc = new EpisodeMediaContainer(
+							episodeContainer);
+					final EpisodePosterInfo videoInfo = emc
+							.createEpisodeContentInfo(episodeContainer,
+									baseUrl, parentPosterURL, episode);
 					if (videoInfo.isWatched()) {
 						continue;
 					}

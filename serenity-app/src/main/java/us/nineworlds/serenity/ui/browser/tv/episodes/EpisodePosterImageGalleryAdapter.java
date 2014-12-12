@@ -47,7 +47,7 @@ import com.android.volley.VolleyError;
  *
  */
 public class EpisodePosterImageGalleryAdapter extends
-AbstractPosterImageGalleryAdapter {
+		AbstractPosterImageGalleryAdapter {
 
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
@@ -97,12 +97,11 @@ AbstractPosterImageGalleryAdapter {
 	}
 
 	private class EpisodePosterResponseListener implements
-	Response.Listener<MediaContainer> {
+			Response.Listener<MediaContainer> {
 
 		@Override
 		public void onResponse(MediaContainer response) {
-			EpisodeMediaContainer episodes = new EpisodeMediaContainer(
-					response, context);
+			EpisodeMediaContainer episodes = new EpisodeMediaContainer(response);
 			posterList = episodes.createVideos();
 			notifyDataSetChanged();
 			SerenityGallery gallery = (SerenityGallery) context
@@ -115,7 +114,7 @@ AbstractPosterImageGalleryAdapter {
 	}
 
 	private class EpisodeResponseErrorListener extends
-	DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
+			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
 
 		@Override
 		public void onErrorResponse(VolleyError error) {
