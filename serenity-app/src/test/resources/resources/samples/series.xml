@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MediaContainer size="5" allowSync="1" art="/library/metadata/423/art/1411797237" banner="/library/metadata/423/banner/1411797237" identifier="com.plexapp.plugins.library" key="423" librarySectionID="3" librarySectionTitle="TV Shows" librarySectionUUID="4a670a8b-5828-4842-b249-a4defd8bb6c6" mediaTagPrefix="/system/bundle/media/flags/" mediaTagVersion="1411796624" nocache="1" parentIndex="1" parentTitle="Game of Thrones" parentYear="2011" summary="Seven noble families fight for control of the mythical land of Westeros. Friction between the houses leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war, a neglected military order of misfits, the Night&apos;s Watch, is all that stands between the realms of men and icy horrors beyond." theme="/library/metadata/423/theme/1411797237" thumb="/library/metadata/423/thumb/1411797237" title1="TV Shows" title2="Game of Thrones" viewGroup="season" viewMode="65593">
+<Directory leafCount="40" thumb="/library/metadata/423/thumb/1411797237" viewedLeafCount="0" key="/library/metadata/423/allLeaves" title="All episodes" />
+<Directory ratingKey="424" key="/library/metadata/424/children" parentRatingKey="423" type="season" title="Season 1" parentKey="/library/metadata/423" summary="" index="1" thumb="/library/metadata/424/thumb/1411797234" leafCount="10" viewedLeafCount="0" addedAt="1411796891" updatedAt="1411797234">
+</Directory>
+<Directory ratingKey="435" key="/library/metadata/435/children" parentRatingKey="423" type="season" title="Season 2" parentKey="/library/metadata/423" summary="" index="2" thumb="/library/metadata/435/thumb/1411797236" leafCount="10" viewedLeafCount="0" addedAt="1411796893" updatedAt="1411797236">
+</Directory>
+<Directory ratingKey="446" key="/library/metadata/446/children" parentRatingKey="423" type="season" title="Season 3" parentKey="/library/metadata/423" summary="" index="3" thumb="/library/metadata/446/thumb/1411797236" leafCount="10" viewedLeafCount="0" addedAt="1411796894" updatedAt="1411797236">
+</Directory>
+<Directory ratingKey="457" key="/library/metadata/457/children" parentRatingKey="423" type="season" title="Season 4" parentKey="/library/metadata/423" summary="" index="4" thumb="/library/metadata/457/thumb/1411797237" leafCount="10" viewedLeafCount="0" addedAt="1411796896" updatedAt="1411797237">
+</Directory>
+</MediaContainer>
