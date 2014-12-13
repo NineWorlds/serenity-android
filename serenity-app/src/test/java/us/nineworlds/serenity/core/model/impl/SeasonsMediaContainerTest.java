@@ -57,7 +57,7 @@ import dagger.Provides;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(emulateSdk = 18)
-public class SeriesMediaContainerTest extends InjectingTest {
+public class SeasonsMediaContainerTest extends InjectingTest {
 
 	@Mock
 	MediaContainer mockMediaContainer;
@@ -65,7 +65,7 @@ public class SeriesMediaContainerTest extends InjectingTest {
 	@Mock
 	PlexappFactory mockFactory;
 
-	SeriesMediaContainer episodeMediaContainer;
+	SeasonsMediaContainer seasonMediaContainer;
 
 	List<VideoContentInfo> videos;
 
@@ -79,34 +79,34 @@ public class SeriesMediaContainerTest extends InjectingTest {
 
 		doReturn("http://1.1.1.1:32400/").when(mockFactory).baseURL();
 
-		episodeMediaContainer = new SeriesMediaContainer(createTestVideos());
+		seasonMediaContainer = new SeasonsMediaContainer(createTestVideos());
 	}
 
 	@Test
 	public void createMoviesReturnsAnEmptyListWhenNoItems() {
-		episodeMediaContainer = new SeriesMediaContainer(mockMediaContainer);
+		seasonMediaContainer = new SeasonsMediaContainer(mockMediaContainer);
 		doReturn(new ArrayList<Video>()).when(mockMediaContainer).getVideos();
-		List<SeriesContentInfo> result = episodeMediaContainer.createSeries();
+		List<SeriesContentInfo> result = seasonMediaContainer.createSeries();
 		assertThat(result).isEmpty();
 	}
 
 	@Test
 	public void createMovieReturnsAnEmptyListWhenNoVideos() {
-		episodeMediaContainer = new SeriesMediaContainer(mockMediaContainer);
+		seasonMediaContainer = new SeasonsMediaContainer(mockMediaContainer);
 		doReturn(null).when(mockMediaContainer).getVideos();
-		List<SeriesContentInfo> result = episodeMediaContainer.createSeries();
+		List<SeriesContentInfo> result = seasonMediaContainer.createSeries();
 		assertThat(result).isEmpty();
 	}
 
 	@Test
 	public void createMoviesReturnsANonEmptyListWhenThereAreVideos() {
-		List<SeriesContentInfo> result = episodeMediaContainer.createSeries();
+		List<SeriesContentInfo> result = seasonMediaContainer.createSeries();
 		assertThat(result).isNotEmpty();
 	}
 
 	@Test
 	public void directPlayUrlIsNotNullForAVideo() {
-		List<SeriesContentInfo> result = episodeMediaContainer.createSeries();
+		List<SeriesContentInfo> result = seasonMediaContainer.createSeries();
 		SeriesContentInfo videoContentInfo = result.get(0);
 		assertThat(videoContentInfo.getTitle()).isNotNull().isNotEmpty();
 	}
@@ -121,7 +121,7 @@ public class SeriesMediaContainerTest extends InjectingTest {
 
 	protected MediaContainer createTestVideos() throws Exception {
 		InputStream inputstream = this.getClass().getResourceAsStream(
-				"/resources/samples/issue9_tvshows.xml");
+				"/resources/samples/series.xml");
 		Serializer serializer = new Persister();
 
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class,
@@ -131,7 +131,7 @@ public class SeriesMediaContainerTest extends InjectingTest {
 	}
 
 	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-			SeriesMediaContainerTest.class, MovieMediaContainer.class })
+		SeasonsMediaContainerTest.class, MovieMediaContainer.class })
 	public class TestModule {
 
 		@Provides
