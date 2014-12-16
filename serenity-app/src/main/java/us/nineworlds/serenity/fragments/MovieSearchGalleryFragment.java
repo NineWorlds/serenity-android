@@ -58,12 +58,24 @@ public class MovieSearchGalleryFragment extends InjectingFragment {
 
 	public MovieSearchGalleryFragment() {
 		super();
+
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+
+	}
+
+	@Override
+	public void onViewStateRestored(Bundle savedInstanceState) {
+
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		onItemSelectedListener = new MoviePosterOnItemSelectedListener();
+
 		return inflater.inflate(R.layout.video_gallery_fragment, container);
 	}
 

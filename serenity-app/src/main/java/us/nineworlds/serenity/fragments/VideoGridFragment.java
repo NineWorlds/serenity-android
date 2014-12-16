@@ -64,6 +64,10 @@ public class VideoGridFragment extends InjectingFragment {
 
 	private TwoWayGridView gridView;
 
+	public VideoGridFragment() {
+		setRetainInstance(false);
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -71,6 +75,16 @@ public class VideoGridFragment extends InjectingFragment {
 		View view = inflater.inflate(R.layout.video_grid_fragment, container);
 		setupGrid(view);
 		return view;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+
+	}
+
+	@Override
+	public void onViewStateRestored(Bundle savedInstanceState) {
+
 	}
 
 	protected void setupGrid(View view) {

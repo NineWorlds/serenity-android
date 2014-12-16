@@ -38,12 +38,26 @@ public class MainMenuFragment extends Fragment {
 
 	Gallery mainGallery;
 
+	public MainMenuFragment() {
+		setRetainInstance(false);
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.main_menu_view, container);
 		setupGallery(view);
 		return view;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+
+	}
+
+	@Override
+	public void onViewStateRestored(Bundle savedInstanceState) {
+
 	}
 
 	@Override

@@ -70,6 +70,18 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
 	public MovieVideoGalleryFragment() {
 		super();
+		setRetainInstance(false);
+
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+
+	}
+
+	@Override
+	public void onViewStateRestored(Bundle savedInstanceState) {
+
 	}
 
 	@Override
