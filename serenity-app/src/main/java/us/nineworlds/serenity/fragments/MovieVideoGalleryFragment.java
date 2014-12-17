@@ -80,11 +80,6 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 	}
 
 	@Override
-	public void onViewStateRestored(Bundle savedInstanceState) {
-
-	}
-
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		onItemSelectedListener = new MoviePosterOnItemSelectedListener();

@@ -56,11 +56,6 @@ public class MainMenuFragment extends Fragment {
 	}
 
 	@Override
-	public void onViewStateRestored(Bundle savedInstanceState) {
-
-	}
-
-	@Override
 	public void onStart() {
 		super.onStart();
 	}
@@ -70,7 +65,7 @@ public class MainMenuFragment extends Fragment {
 
 		mainGallery.setAdapter(new MainMenuTextViewAdapter(getActivity()));
 		mainGallery
-		.setOnItemSelectedListener(new GalleryOnItemSelectedListener());
+				.setOnItemSelectedListener(new GalleryOnItemSelectedListener());
 		mainGallery.setOnItemClickListener(new GalleryOnItemClickListener(
 				getActivity()));
 		mainGallery.setCallbackDuringFling(false);

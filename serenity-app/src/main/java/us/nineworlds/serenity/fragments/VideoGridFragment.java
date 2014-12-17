@@ -82,11 +82,6 @@ public class VideoGridFragment extends InjectingFragment {
 
 	}
 
-	@Override
-	public void onViewStateRestored(Bundle savedInstanceState) {
-
-	}
-
 	protected void setupGrid(View view) {
 		gridView = (TwoWayGridView) view.findViewById(R.id.movieGridView);
 
