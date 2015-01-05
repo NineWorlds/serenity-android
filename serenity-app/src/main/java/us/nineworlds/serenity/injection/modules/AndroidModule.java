@@ -83,6 +83,7 @@ import us.nineworlds.serenity.ui.browser.music.MusicPosterGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.music.MusicPosterGalleryOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.music.MusicPosterGridViewAdapter;
 import us.nineworlds.serenity.ui.browser.music.albums.MusicAlbumsCoverAdapter;
+import us.nineworlds.serenity.ui.browser.music.tracks.AudioTrackPlaybackListener;
 import us.nineworlds.serenity.ui.browser.music.tracks.MusicTracksActivity;
 import us.nineworlds.serenity.ui.browser.music.tracks.TracksAdapter;
 import us.nineworlds.serenity.ui.browser.music.tracks.TracksOnItemSelectedListener;
@@ -204,7 +205,8 @@ import dagger.Provides;
 	MovieSearchGalleryFragment.class, CardPresenter.class,
 	MovieSearchFragment.class, MovieCategoryResponseListener.class,
 	CategoryMediaContainer.class, SecondaryCategoryMediaContainer.class,
-	TVCategoryResponseListener.class, TVCategoryMediaContainer.class }, library = true)
+	TVCategoryResponseListener.class, TVCategoryMediaContainer.class,
+	AudioTrackPlaybackListener.class, ServerConfig.class }, library = true)
 public class AndroidModule {
 
 	private final Context applicationContext;

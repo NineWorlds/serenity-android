@@ -23,12 +23,14 @@
 
 package us.nineworlds.serenity.core;
 
+import javax.inject.Inject;
+
 import us.nineworlds.plex.rest.config.IConfiguration;
+import us.nineworlds.serenity.injection.BaseInjector;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.preference.PreferenceManager;
 
 /**
  * A configuration that reads information from the SharedPreferences store. This
@@ -37,12 +39,15 @@ import android.preference.PreferenceManager;
  * @author dcarver
  *
  */
-public class ServerConfig implements IConfiguration {
+public class ServerConfig extends BaseInjector implements IConfiguration {
 
 	private String serveraddress;
 	private String serverport;
 	private String discoveredServers;
-	private final SharedPreferences preferences;
+
+	@Inject
+	protected SharedPreferences preferences;
+
 	private static ServerConfig config;
 	private OnSharedPreferenceChangeListener listener;
 
@@ -52,8 +57,7 @@ public class ServerConfig implements IConfiguration {
 	 *
 	 */
 	private ServerConfig(Context context) {
-		preferences = PreferenceManager.getDefaultSharedPreferences(context);
-
+		super();
 		serveraddress = preferences.getString("server", "");
 		discoveredServers = preferences.getString("discoveredServer", "");
 		serverport = preferences.getString("serverport", "32400");
@@ -116,7 +120,7 @@ public class ServerConfig implements IConfiguration {
 	 *
 	 */
 	public class ServerConfigChangeListener implements
-	OnSharedPreferenceChangeListener {
+			OnSharedPreferenceChangeListener {
 
 		@Override
 		public void onSharedPreferenceChanged(

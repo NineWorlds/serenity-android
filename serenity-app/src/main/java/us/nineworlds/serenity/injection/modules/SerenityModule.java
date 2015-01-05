@@ -31,6 +31,7 @@ import javax.inject.Singleton;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
@@ -48,6 +49,12 @@ import dagger.Provides;
 
 @Module(library = true)
 public class SerenityModule {
+
+	@Provides
+	@Singleton
+	TimeUtil providesTimeUtil() {
+		return new TimeUtil();
+	}
 
 	@Provides
 	@Singleton

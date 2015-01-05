@@ -60,6 +60,9 @@ public class ImageInfographicUtils extends BaseInjector {
 	@Inject
 	PlexappFactory factory;
 
+	@Inject
+	protected TimeUtil timeUtil;
+
 	public ImageInfographicUtils(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -438,7 +441,7 @@ public class ImageInfographicUtils extends BaseInjector {
 	public TextView createDurationView(long duration, Context context) {
 		TextView tv = new TextView(context);
 		tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
-		tv.setText(TimeUtil.formatDurationHoursMinutes(duration));
+		tv.setText(timeUtil.formatDurationHoursMinutes(duration));
 		tv.setTypeface(Typeface.DEFAULT_BOLD);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
