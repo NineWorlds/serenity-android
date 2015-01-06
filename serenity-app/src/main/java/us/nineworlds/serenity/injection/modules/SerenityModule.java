@@ -41,6 +41,8 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
+import us.nineworlds.serenity.ui.util.VideoQueueHelper;
+import us.nineworlds.serenity.ui.util.YouTubeUtils;
 
 import com.squareup.okhttp.OkHttpClient;
 
@@ -54,6 +56,18 @@ public class SerenityModule {
 	@Singleton
 	TimeUtil providesTimeUtil() {
 		return new TimeUtil();
+	}
+
+	@Provides
+	@Singleton
+	YouTubeUtils providesYouTubeUtils() {
+		return new YouTubeUtils();
+	}
+
+	@Provides
+	@Singleton
+	VideoQueueHelper providesVideoQueueHelper() {
+		return new VideoQueueHelper();
 	}
 
 	@Provides

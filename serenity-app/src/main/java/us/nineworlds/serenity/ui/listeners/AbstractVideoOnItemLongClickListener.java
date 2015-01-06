@@ -39,17 +39,14 @@ import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
+import us.nineworlds.serenity.ui.util.VideoQueueHelper;
+import us.nineworlds.serenity.ui.util.YouTubeUtils;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -80,14 +77,20 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 	protected ImageView vciv;
 
 	@Inject
-	AndroidHelper androidHelper;
+	protected AndroidHelper androidHelper;
 
 	@Inject
 	@ForVideoQueue
-	LinkedList<VideoContentInfo> videoQueue;
+	protected LinkedList<VideoContentInfo> videoQueue;
 
 	@Inject
-	SharedPreferences prefs;
+	protected SharedPreferences prefs;
+
+	@Inject
+	protected YouTubeUtils youTubeUtils;
+
+	@Inject
+	protected VideoQueueHelper videoQueueHelper;
 
 	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
 			int position, long arg3) {
@@ -116,9 +119,6 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 		return onItemLongClick();
 	}
 
-	/**
-	 * @return
-	 */
 	protected boolean onItemLongClick() {
 		context = (Activity) vciv.getContext();
 
@@ -153,9 +153,6 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 		return new DialogOnItemSelected();
 	}
 
-	/**
-	 * @return
-	 */
 	protected ArrayList<DialogMenuItem> addMenuOptions() {
 		ArrayList<DialogMenuItem> options = new ArrayList<DialogMenuItem>();
 		options.add(createMenuItemToggleWatchStatus());
@@ -169,34 +166,31 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 			options.add(createMenuItemPlayTrailer());
 		}
 
-		if (!androidHelper.isGoogleTV() && hasSupportedCaster()) {
+		if (!androidHelper.isGoogleTV() && androidHelper.hasSupportedCaster()) {
 			options.add(createMenuItemFling());
 		}
 		return options;
 	}
 
-	/**
-	 * @return
-	 */
-	protected DialogMenuItem createMenuItemToggleWatchStatus() {
+	private DialogMenuItem createMenuItemToggleWatchStatus() {
 		return createMenuItem(
 				context.getString(R.string.toggle_watched_status), 0);
 	}
 
-	protected DialogMenuItem createMenuItemDownload() {
+	private DialogMenuItem createMenuItemDownload() {
 		return createMenuItem(
 				context.getString(R.string.download_video_to_device), 1);
 	}
 
-	protected DialogMenuItem createMenuItemAddToQueue() {
+	private DialogMenuItem createMenuItemAddToQueue() {
 		return createMenuItem(context.getString(R.string.add_video_to_queue), 2);
 	}
 
-	protected DialogMenuItem createMenuItemPlayTrailer() {
+	private DialogMenuItem createMenuItemPlayTrailer() {
 		return createMenuItem("Play Trailer", 3);
 	}
 
-	protected DialogMenuItem createMenuItemFling() {
+	private DialogMenuItem createMenuItemFling() {
 		return createMenuItem(context.getString(R.string.cast_fling_with_), 4);
 	}
 
@@ -205,43 +199,6 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 		menuItem.setTitle(title);
 		menuItem.setMenuDialogAction(action);
 		return menuItem;
-	}
-
-	/**
-	 * @return
-	 */
-	protected boolean hasSupportedCaster() {
-		return hasAbleRemote(context) || hasGoogleTVRemote(context)
-				|| hasAllCast(context);
-	}
-
-	protected boolean hasAbleRemote(Context context) {
-		return hasRemoteByName(context, "com.entertailion.android.remote");
-	}
-
-	protected boolean hasGoogleTVRemote(Context context) {
-		return hasRemoteByName(context, "com.google.android.apps.tvremote");
-	}
-
-	protected boolean hasAllCast(Context context) {
-		return hasRemoteByName(context, "com.koushikdutta.cast");
-	}
-
-	protected boolean hasRemoteByName(Context context, String remotePackageName) {
-
-		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-		final List<ResolveInfo> pkgAppsList = context.getPackageManager()
-				.queryIntentActivities(mainIntent, 0);
-
-		for (ResolveInfo resolveInfo : pkgAppsList) {
-			String packageName = resolveInfo.activityInfo.packageName;
-			if (packageName.contains(remotePackageName)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	protected void performWatchedToggle() {
@@ -274,72 +231,6 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 				View.INVISIBLE);
 	}
 
-	protected void performPlayTrailer() {
-		if (info.hasTrailer()) {
-			if (YouTubeInitializationResult.SUCCESS
-					.equals(YouTubeApiServiceUtil
-							.isYouTubeApiServiceAvailable(context))) {
-				// Intent intent =
-				// YouTubeStandalonePlayer.createVideoIntent(context,
-				// SerenityConstants.YOUTUBE_BROWSER_API_KEY, info.trailerId(),
-				// 0, true, true);
-				// context.startActivity(intent);
-				Intent youTubei = new Intent(Intent.ACTION_VIEW,
-						Uri.parse("http://www.youtube.com/watch?v="
-								+ info.trailerId()));
-				context.startActivity(youTubei);
-				return;
-			}
-			Toast.makeText(context, "YouTube Player not installed",
-					Toast.LENGTH_LONG).show();
-		} else {
-			Toast.makeText(context, "No Trailers found for this video.",
-					Toast.LENGTH_LONG).show();
-		}
-	}
-
-	protected void performGoogleTVSecondScreen() {
-		if (hasAbleRemote(context) || hasGoogleTVRemote(context)
-				|| hasAllCast(context)) {
-			dialog.dismiss();
-
-			final String body = info.getDirectPlayUrl();
-
-			final SenderAppAdapter adapter = new SenderAppAdapter(context);
-
-			new AlertDialog.Builder(context)
-			.setTitle(R.string.cast_fling_with_)
-			.setCancelable(true)
-			.setSingleChoiceItems(adapter, -1,
-					new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog,
-						int which) {
-					adapter.respondToClick(which, "", body);
-
-					dialog.dismiss();
-
-				}
-			}).show();
-		}
-	}
-
-	protected void performAddToQueue() {
-		boolean extplayer = prefs.getBoolean("external_player", false);
-		boolean extplayerVideoQueue = prefs.getBoolean(
-				"external_player_continuous_playback", false);
-		if (extplayer && !extplayerVideoQueue) {
-			Toast.makeText(
-					context,
-					R.string.external_player_video_queue_support_has_not_been_enabled_,
-					Toast.LENGTH_LONG).show();
-			return;
-		}
-
-		videoQueue.add(info);
-	}
-
 	protected class DialogOnItemSelected implements OnItemClickListener {
 
 		@Override
@@ -357,13 +248,13 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 				startDownload();
 				break;
 			case 2:
-				performAddToQueue();
+				videoQueueHelper.performAddToQueue(info);
 				break;
 			case 3:
-				performPlayTrailer();
+				youTubeUtils.performPlayTrailer(info, context);
 				break;
 			case 4:
-				performGoogleTVSecondScreen();
+				androidHelper.performGoogleTVSecondScreen(info, dialog);
 			}
 			v.requestFocusFromTouch();
 			dialog.dismiss();

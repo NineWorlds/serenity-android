@@ -23,14 +23,24 @@
 
 package us.nineworlds.serenity.core.util;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.ApplicationContext;
 import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.ui.listeners.SenderAppAdapter;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Build;
 
 @Singleton
@@ -71,6 +81,66 @@ public class AndroidHelper extends BaseInjector {
 		if ("OUYA".equals(Build.MANUFACTURER)) {
 			return true;
 		}
+		return false;
+	}
+
+	public void performGoogleTVSecondScreen(VideoContentInfo videoInfo,
+			Dialog dialog) {
+		if (hasSupportedCaster()) {
+			dialog.dismiss();
+
+			final String body = videoInfo.getDirectPlayUrl();
+
+			final SenderAppAdapter adapter = new SenderAppAdapter(context);
+
+			new AlertDialog.Builder(context)
+			.setTitle(R.string.cast_fling_with_)
+			.setCancelable(true)
+			.setSingleChoiceItems(adapter, -1,
+					new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog,
+						int which) {
+					adapter.respondToClick(which, "", body);
+
+					dialog.dismiss();
+
+				}
+			}).show();
+		}
+	}
+
+	public boolean hasSupportedCaster() {
+		return hasAbleRemote() || hasGoogleTVRemote() || hasAllCast();
+	}
+
+	protected boolean hasAbleRemote() {
+		return hasRemoteByName(context, "com.entertailion.android.remote");
+	}
+
+	protected boolean hasGoogleTVRemote() {
+		return hasRemoteByName(context, "com.google.android.apps.tvremote");
+	}
+
+	protected boolean hasAllCast() {
+		return hasRemoteByName(context, "com.koushikdutta.cast");
+	}
+
+	protected boolean hasRemoteByName(Context context, String remotePackageName) {
+
+		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+		final List<ResolveInfo> pkgAppsList = context.getPackageManager()
+				.queryIntentActivities(mainIntent, 0);
+
+		for (ResolveInfo resolveInfo : pkgAppsList) {
+			String packageName = resolveInfo.activityInfo.packageName;
+			if (packageName.contains(remotePackageName)) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 }

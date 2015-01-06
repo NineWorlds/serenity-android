@@ -122,6 +122,7 @@ import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
+import us.nineworlds.serenity.ui.util.VideoQueueHelper;
 import us.nineworlds.serenity.ui.video.player.MediaController;
 import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
@@ -208,7 +209,7 @@ import dagger.Provides;
 		CategoryMediaContainer.class, SecondaryCategoryMediaContainer.class,
 		TVCategoryResponseListener.class, TVCategoryMediaContainer.class,
 		AudioTrackPlaybackListener.class, ServerConfig.class,
-		SubtitleSpinnerOnItemSelectedListener.class }, library = true)
+		SubtitleSpinnerOnItemSelectedListener.class, VideoQueueHelper.class }, library = true)
 public class AndroidModule {
 
 	private final Context applicationContext;
