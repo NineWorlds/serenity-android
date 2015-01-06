@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -35,17 +35,17 @@ import android.database.sqlite.SQLiteDatabase;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class DBMetaDataSource {
 
 	private SQLiteDatabase database;
-	private SerenityDBHelper dbHelper;
-	private String[] allColumsn = { SerenityDBHelper.KEY_ID,
+	private final SerenityDBHelper dbHelper;
+	private final String[] allColumsn = { SerenityDBHelper.KEY_ID,
 			SerenityDBHelper.KEY_PLEX_ID, SerenityDBHelper.KEY_YOUTUBE_ID };
 
 	/**
-	 * 
+	 *
 	 */
 	public DBMetaDataSource(Context context) {
 		dbHelper = new SerenityDBHelper(context);
@@ -104,9 +104,12 @@ public class DBMetaDataSource {
 
 		return metaData;
 	}
-	
+
 	public DBMetaData findMetaDataByPlexId(String plexId) {
-		Cursor cursor = database.query(SerenityDBHelper.TABLE_EXTERNAL_METADATA, allColumsn, SerenityDBHelper.KEY_PLEX_ID + " = " + plexId, null, null, null, null, null);
+		Cursor cursor = database.query(
+				SerenityDBHelper.TABLE_EXTERNAL_METADATA, allColumsn,
+				SerenityDBHelper.KEY_PLEX_ID + " = " + plexId, null, null,
+				null, null, null);
 		cursor.moveToFirst();
 		DBMetaData metaData = null;
 		if (!cursor.isAfterLast()) {
