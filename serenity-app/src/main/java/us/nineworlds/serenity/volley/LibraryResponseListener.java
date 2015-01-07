@@ -41,7 +41,7 @@ public class LibraryResponseListener extends BaseInjector implements
 				String section = library.getSection();
 				String onDeckURL = factory.getSectionsURL(section, "onDeck");
 				volley.volleyXmlGetRequest(onDeckURL,
-						new MovieOnDeckResponseListener(context),
+						new MovieOnDeckRecommendationResponseListener(context),
 						new DefaultLoggingVolleyErrorListener());
 			}
 
@@ -49,7 +49,7 @@ public class LibraryResponseListener extends BaseInjector implements
 				String section = library.getSection();
 				String onDeckUrl = factory.getSectionsURL(section, "onDeck");
 				volley.volleyXmlGetRequest(onDeckUrl,
-						new TVOnDeckResponseListener(context),
+						new TVOnDeckRecommendationResponseListener(context),
 						new DefaultLoggingVolleyErrorListener());
 			}
 		}

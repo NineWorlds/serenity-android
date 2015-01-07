@@ -27,10 +27,7 @@ import us.nineworlds.serenity.core.OnDeckRecommendations;
 import android.app.IntentService;
 import android.content.Intent;
 
-/**
- * @author dcarver
- *
- */
+//AndroidTVCodeMash2015-Recommendations
 public class OnDeckRecommendationIntentService extends IntentService {
 
 	/**

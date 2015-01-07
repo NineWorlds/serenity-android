@@ -10,12 +10,13 @@ import android.content.Context;
 
 import com.android.volley.Response;
 
-public class MovieOnDeckResponseListener implements
+//AndroidTVCodeMash2015-Recommendations
+public class MovieOnDeckRecommendationResponseListener implements
 		Response.Listener<MediaContainer> {
 
 	Context context;
 
-	public MovieOnDeckResponseListener(Context context) {
+	public MovieOnDeckRecommendationResponseListener(Context context) {
 		this.context = context;
 	}
 
