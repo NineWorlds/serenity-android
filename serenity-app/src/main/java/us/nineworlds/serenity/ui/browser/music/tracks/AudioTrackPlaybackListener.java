@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -26,9 +26,11 @@ package us.nineworlds.serenity.ui.browser.music.tracks;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.core.util.TimeUtil;
-
-
+import us.nineworlds.serenity.injection.BaseInjector;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.Log;
@@ -36,28 +38,30 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-/**
- * @author dcarver
- * 
- */
-public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
-	private boolean dragging = false;
-	private boolean instantSeeking = true;
-	private AudioManager audioManager;
-	private long duration;
-	private SeekBar progressBar;
-	private MediaPlayer mediaPlayer;
-	private TextView currentTimeView, endTimeView;
+public class AudioTrackPlaybackListener extends BaseInjector implements
+		OnSeekBarChangeListener {
 
-	
-	public AudioTrackPlaybackListener(MediaPlayer mp, AudioManager am, TextView ctv, TextView etv, SeekBar progress) {
+	@Inject
+	TimeUtil timeUtil;
+
+	private boolean dragging = false;
+	private final boolean instantSeeking = true;
+	private final AudioManager audioManager;
+	private long duration;
+	private final SeekBar progressBar;
+	private final MediaPlayer mediaPlayer;
+	private final TextView currentTimeView, endTimeView;
+
+	public AudioTrackPlaybackListener(MediaPlayer mp, AudioManager am,
+			TextView ctv, TextView etv, SeekBar progress) {
+		super();
 		mediaPlayer = mp;
 		audioManager = am;
 		currentTimeView = ctv;
 		endTimeView = ctv;
 		progressBar = progress;
 	}
-	
+
 	@Override
 	public void onStartTrackingTouch(SeekBar bar) {
 		dragging = true;
@@ -79,16 +83,18 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 
 		long newposition = ((duration * progress) / 1000);
 		String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-				.format(new Date(Long.valueOf(newposition)));
+		.format(new Date(Long.valueOf(newposition)));
 		if (instantSeeking) {
-			if (newposition >= Integer.MIN_VALUE && newposition <= Integer.MAX_VALUE) {
+			if (newposition >= Integer.MIN_VALUE
+					&& newposition <= Integer.MAX_VALUE) {
 				mediaPlayer.seekTo((int) newposition);
 			}
 		}
-		if (currentTimeView != null)
+		if (currentTimeView != null) {
 			currentTimeView.setText(time);
+		}
 	}
-	
+
 	private long setProgress() {
 		if (mediaPlayer == null || dragging) {
 			return 0;
@@ -111,11 +117,11 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 			this.duration = duration;
 
 			if (endTimeView != null) {
-				endTimeView.setText(TimeUtil.formatDuration(duration));
+				endTimeView.setText(timeUtil.formatDuration(duration));
 			}
 
 			if (currentTimeView != null) {
-				currentTimeView.setText(TimeUtil.formatDuration(position));
+				currentTimeView.setText(timeUtil.formatDuration(position));
 			}
 		} catch (IllegalStateException ex) {
 			Log.i(getClass().getName(),
@@ -123,7 +129,7 @@ public class AudioTrackPlaybackListener implements OnSeekBarChangeListener {
 		}
 
 		return position;
-	}	
+	}
 
 	@Override
 	public void onStopTrackingTouch(SeekBar bar) {

@@ -10,12 +10,12 @@ import android.content.Context;
 
 import com.android.volley.Response;
 
-public class TVOnDeckResponseListener implements
+public class TVOnDeckRecommendationResponseListener implements
 Response.Listener<MediaContainer> {
 
 	Context context;
 
-	public TVOnDeckResponseListener(Context context) {
+	public TVOnDeckRecommendationResponseListener(Context context) {
 		this.context = context;
 	}
 

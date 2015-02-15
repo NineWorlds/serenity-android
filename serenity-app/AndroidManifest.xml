@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" android:versionCode="1009002" android:versionName="1.9.2.20141220-1247" package="us.nineworlds.serenity">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" android:versionCode="1009002" android:versionName="1.9.2-dev" package="us.nineworlds.serenity">
 
     <!-- try to exclude phone devices from the list. Currently only support Tablets and TVs -->
     <supports-screens android:largeScreens="true" android:normalScreens="false" android:smallScreens="false" android:xlargeScreens="true"/>

@@ -31,6 +31,7 @@ import javax.inject.Singleton;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
@@ -40,6 +41,8 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
+import us.nineworlds.serenity.ui.util.VideoQueueHelper;
+import us.nineworlds.serenity.ui.util.YouTubeUtils;
 
 import com.squareup.okhttp.OkHttpClient;
 
@@ -48,6 +51,24 @@ import dagger.Provides;
 
 @Module(library = true)
 public class SerenityModule {
+
+	@Provides
+	@Singleton
+	TimeUtil providesTimeUtil() {
+		return new TimeUtil();
+	}
+
+	@Provides
+	@Singleton
+	YouTubeUtils providesYouTubeUtils() {
+		return new YouTubeUtils();
+	}
+
+	@Provides
+	@Singleton
+	VideoQueueHelper providesVideoQueueHelper() {
+		return new VideoQueueHelper();
+	}
 
 	@Provides
 	@Singleton

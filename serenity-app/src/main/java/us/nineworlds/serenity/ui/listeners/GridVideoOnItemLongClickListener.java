@@ -56,7 +56,7 @@ import com.jess.ui.TwoWayGridView;
  *
  */
 public class GridVideoOnItemLongClickListener extends
-		AbstractVideoOnItemLongClickListener implements OnItemLongClickListener {
+AbstractVideoOnItemLongClickListener implements OnItemLongClickListener {
 
 	@Inject
 	protected SerenityImageLoader serenityImageLoader;
@@ -118,13 +118,13 @@ public class GridVideoOnItemLongClickListener extends
 				startDownload();
 				break;
 			case 2:
-				performAddToQueue();
+				videoQueueHelper.performAddToQueue(info);
 				break;
 			case 3:
-				performPlayTrailer();
+				youTubeUtils.performPlayTrailer(info, context);
 				break;
 			case 4:
-				performGoogleTVSecondScreen();
+				androidHelper.performGoogleTVSecondScreen(info, dialog);
 				break;
 			case 300:
 				performInfoDialog();

@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2012-2015 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -21,28 +21,39 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.services;
+package us.nineworlds.serenity.ui.util;
 
-import us.nineworlds.serenity.core.OnDeckRecommendations;
-import android.app.IntentService;
+import javax.inject.Singleton;
+
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
+import android.widget.Toast;
 
-//AndroidTVCodeMash2015-Recommendations
-public class OnDeckRecommendationIntentService extends IntentService {
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
 
-	/**
-	 * @param name
-	 */
-	public OnDeckRecommendationIntentService() {
-		super("OnDeckRecommendationIntentService");
-	}
+@Singleton
+public class YouTubeUtils {
 
-	@Override
-	protected void onHandleIntent(Intent intent) {
-
-		OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(
-				this);
-		onDeckRecommendations.recommended();
+	public void performPlayTrailer(VideoContentInfo info, Activity activity) {
+		if (info.hasTrailer()) {
+			if (YouTubeInitializationResult.SUCCESS
+					.equals(YouTubeApiServiceUtil
+							.isYouTubeApiServiceAvailable(activity))) {
+				Intent youTubei = new Intent(Intent.ACTION_VIEW,
+						Uri.parse("http://www.youtube.com/watch?v="
+								+ info.trailerId()));
+				activity.startActivity(youTubei);
+				return;
+			}
+			Toast.makeText(activity, "YouTube Player not installed",
+					Toast.LENGTH_LONG).show();
+		} else {
+			Toast.makeText(activity, "No Trailers found for this video.",
+					Toast.LENGTH_LONG).show();
+		}
 	}
 
 }

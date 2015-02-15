@@ -41,9 +41,13 @@ import android.preference.PreferenceManager;
  * a device. This is only enabled if the startup preference option has been set
  * to true.
  *
+ * Recommendations are always run if on an Android TV device or a device that
+ * supports the leanback feature.
+ *
  * @author dcarver
  *
  */
+// AndroidTVCodeMash2015-Recommendations
 public class StartupBroadcastReceiver extends InjectingBroadcastReceiver {
 
 	@Inject

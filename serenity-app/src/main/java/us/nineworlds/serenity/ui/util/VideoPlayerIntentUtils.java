@@ -53,6 +53,9 @@ public class VideoPlayerIntentUtils extends BaseInjector {
 	@Inject
 	protected SharedPreferences prefs;
 
+	@Inject
+	protected TimeUtil timeUtil;
+
 	/**
 	 * This must run on a UI thread.
 	 *
@@ -117,9 +120,9 @@ public class VideoPlayerIntentUtils extends BaseInjector {
 					Toast.makeText(
 							context,
 							context.getResources()
-							.getString(
-									R.string.external_player_video_queue_support_has_not_been_enabled_),
-									Toast.LENGTH_LONG).show();
+									.getString(
+											R.string.external_player_video_queue_support_has_not_been_enabled_),
+							Toast.LENGTH_LONG).show();
 				}
 			} else {
 				Intent vpIntent = new Intent(context,
@@ -143,38 +146,38 @@ public class VideoPlayerIntentUtils extends BaseInjector {
 
 		alertDialogBuilder.setTitle(R.string.resume_video);
 		alertDialogBuilder
-				.setMessage(
-				context.getResources().getText(
-						R.string.resume_the_video_from_)
-						+ TimeUtil.formatDuration(video
-								.getResumeOffset())
+		.setMessage(
+						context.getResources().getText(
+								R.string.resume_the_video_from_)
+								+ timeUtil.formatDuration(video
+										.getResumeOffset())
 								+ context.getResources().getText(
 										R.string._or_restart_))
-				.setCancelable(false)
-				.setPositiveButton(R.string.resume,
-						new DialogInterface.OnClickListener() {
+										.setCancelable(false)
+										.setPositiveButton(R.string.resume,
+												new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								launchPlayer(video, c);
-							}
-						})
-				.setNegativeButton(R.string.restart,
-						new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialog,
+													int which) {
+												launchPlayer(video, c);
+											}
+										})
+										.setNegativeButton(R.string.restart,
+												new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								video.setResumeOffset(0);
-								launchPlayer(video, c);
-							}
-						});
+											@Override
+											public void onClick(DialogInterface dialog,
+													int which) {
+												video.setResumeOffset(0);
+												launchPlayer(video, c);
+											}
+										});
 
 		alertDialogBuilder.create();
 		AlertDialog dialog = alertDialogBuilder.show();
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-		.requestFocusFromTouch();
+				.requestFocusFromTouch();
 	}
 
 	public void playVideo(Activity activity, VideoContentInfo videoInfo,
