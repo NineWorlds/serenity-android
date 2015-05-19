@@ -207,10 +207,10 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 	}
 
 	@Test
-	public void handlesKeyCodePauseWhenMediaPlayerIsPlayingKeyCodeMediaPlay() {
+	public void handlesKeyCodePauseWhenMediaPlayerIsPlayingKeyCodeMediaPlayPause() {
 		demandMediaPause();
-		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_MEDIA_PLAY,
-				null, true);
+		boolean result = keyCodeHandler.onKeyDown(
+				KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, null, true);
 		assertThat(result).isTrue();
 		verify(mockMediaPlayer).pause();
 		verify(spyMediaController).show(OSD_DISPLAY_TIME);
@@ -223,6 +223,18 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 		demandMediaPauseWhenNotPlaying();
 		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_MEDIA_PAUSE,
 				null, true);
+		assertThat(result).isTrue();
+		verify(mockMediaPlayer).start();
+		verify(spyMediaController).hide();
+		verify(mockProgressReportingHandler).postDelayed(mockProgressRunnable,
+				PLEX_UPDATE_TIME);
+	}
+
+	@Test
+	public void handlesKeyCodePlayPauseWhenMediaPlayerIsNotPlaying() {
+		demandMediaPauseWhenNotPlaying();
+		boolean result = keyCodeHandler.onKeyDown(
+				KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, null, true);
 		assertThat(result).isTrue();
 		verify(mockMediaPlayer).start();
 		verify(spyMediaController).hide();

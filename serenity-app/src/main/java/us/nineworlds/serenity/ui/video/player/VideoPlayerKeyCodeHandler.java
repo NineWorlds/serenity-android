@@ -80,6 +80,21 @@ public class VideoPlayerKeyCodeHandler extends BaseInjector {
 			return true;
 		}
 
+		if (isKeyCodePlay(keyCode)) {
+			if (mediaPlayer.isPlaying()) {
+				if (mediaController.isShowing()) {
+					mediaController.hide();
+				} else {
+					mediaController.show(osdDelayTime);
+				}
+			} else {
+				mediaPlayer.start();
+				mediaController.hide();
+				progressReportinHandler.postDelayed(progressRunnable, 5000);
+			}
+			return true;
+		}
+
 		if (isKeyCodePauseResume(keyCode)) {
 			if (mediaPlayer.isPlaying()) {
 				mediaPlayer.pause();
@@ -213,6 +228,10 @@ public class VideoPlayerKeyCodeHandler extends BaseInjector {
 				|| keyCode == KeyEvent.KEYCODE_I
 				|| keyCode == KeyEvent.KEYCODE_MENU
 				|| keyCode == KeyEvent.KEYCODE_BUTTON_Y;
+	}
+
+	protected boolean isKeyCodePlay(int keyCode) {
+		return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY;
 	}
 
 	protected boolean isSkipByPercentage(int keyCode) {
