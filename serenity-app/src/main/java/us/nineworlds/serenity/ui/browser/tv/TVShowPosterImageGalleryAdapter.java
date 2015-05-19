@@ -57,11 +57,8 @@ TVShowBannerImageGalleryAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = convertView;
-		if (galleryCellView == null) {
-			galleryCellView = showActivity.getLayoutInflater().inflate(
-					R.layout.poster_tvshow_indicator_view, null);
-		}
+		View galleryCellView = showActivity.getLayoutInflater().inflate(
+        R.layout.poster_tvshow_indicator_view, null);
 
 		SeriesContentInfo pi = tvShowList.get(position);
 
