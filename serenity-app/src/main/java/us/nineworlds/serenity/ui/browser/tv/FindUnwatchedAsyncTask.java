@@ -118,7 +118,7 @@ AsyncTask<SeriesContentInfo, Void, EpisodePosterInfo> {
 			toast = activity.getString(R.string.no_unwatched_episode_toast);
 		} else {
 			toast = activity.getString(R.string.playing_episode_toast,
-					info.getSeason(), info.getEpisodeNumber(), info.getTitle());
+					info.getSeason(), info.getEpisode(), info.getTitle());
 			vpUtils.playVideo(activity, info, true);
 		}
 		Toast.makeText(activity, toast, Toast.LENGTH_LONG).show();

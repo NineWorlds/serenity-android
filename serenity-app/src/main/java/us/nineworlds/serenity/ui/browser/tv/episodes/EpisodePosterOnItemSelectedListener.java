@@ -135,7 +135,7 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 				.findViewById(R.id.movieBrowserPosterTitle);
 		String epTitle = videoInfo.getTitle();
 		String season = videoInfo.getSeason();
-		String episode = videoInfo.getEpisodeNumber();
+		String episode = videoInfo.getEpisode();
 
 		if (season != null || episode != null) {
 			epTitle = epTitle + " - ";

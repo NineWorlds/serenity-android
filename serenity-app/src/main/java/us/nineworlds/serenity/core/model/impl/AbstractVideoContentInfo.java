@@ -26,10 +26,12 @@ package us.nineworlds.serenity.core.model.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
+import android.content.res.Resources;
 
 /**
  * General information common t TV Shows and Videos/Movies
@@ -41,6 +43,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo,
 		Serializable {
 
 	private static final long serialVersionUID = 4744447508883279194L;
+	private final Resources resources;
 
 	private String id;
 
@@ -67,8 +70,8 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo,
 	private int resumeOffset;
 	private int duration;
 
-	private String season;
-	private String episodeNumber;
+	private int seasonNumber;
+	private int episodeNumber;
 	private String originalAirDate;
 	private String container;
 	private String seriesTitle;
@@ -84,6 +87,14 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo,
 
 	private List<Subtitle> subtitles;
 	private String tagLine;
+
+	public AbstractVideoContentInfo() {
+		this(null);
+	}
+
+	public AbstractVideoContentInfo(Resources resources) {
+		this.resources = resources;
+	}
 
 	@Override
 	public String getSeriesTitle() {
@@ -117,21 +128,31 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo,
 
 	@Override
 	public String getSeason() {
-		return season;
+		return resources.getString(R.string.season_) + seasonNumber;
 	}
 
 	@Override
-	public void setSeason(String season) {
-		this.season = season;
+	public int getSeasonNumber() {
+		return seasonNumber;
 	}
 
 	@Override
-	public String getEpisodeNumber() {
+	public void setSeasonNumber(int seasonNumber) {
+		this.seasonNumber = seasonNumber;
+	}
+
+	@Override
+	public String getEpisode() {
+		return resources.getString(R.string.episode_) + episodeNumber;
+	}
+
+	@Override
+	public int getEpisodeNumber() {
 		return episodeNumber;
 	}
 
 	@Override
-	public void setEpisodeNumber(String episodeNumber) {
+	public void setEpisodeNumber(int episodeNumber) {
 		this.episodeNumber = episodeNumber;
 	}
 
@@ -185,12 +206,23 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo,
 		this.aspectRatio = aspectRatio;
 	}
 
+	@Override
+	public String getLongTitle() {
+		final String seriesTitle = getSeriesTitle();
+		if (seriesTitle == null) {
+			return getTitle();
+		}
+
+
+		return resources.getString(R.string.long_title, seriesTitle, getSeasonNumber(), getEpisodeNumber(), getTitle());
+	}
+
 	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
-	 * getDirectPlayUrl()
-	 */
+     * (non-Javadoc)
+     *
+     * @see com.github.kingargyle.plexappclient.core.model.VideoContentInfo#
+     * getDirectPlayUrl()
+     */
 	@Override
 	public String getDirectPlayUrl() {
 		return directPlayUrl;

@@ -121,8 +121,8 @@ us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
 			metaText = pi.getSeason() + " ";
 		}
 
-		if (pi.getEpisodeNumber() != null) {
-			metaText = metaText + pi.getEpisodeNumber();
+		if (pi.getEpisode() != null) {
+			metaText = metaText + pi.getEpisode();
 		}
 
 		if (metaText.length() > 0) {

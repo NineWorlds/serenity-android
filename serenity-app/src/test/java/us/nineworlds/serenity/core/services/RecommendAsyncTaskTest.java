@@ -62,7 +62,7 @@ public class RecommendAsyncTaskTest {
 		when(video.getTitle()).thenReturn("Show Title");
 		when(video.getSeriesTitle()).thenReturn("Series Title");
 		when(video.getSeason()).thenReturn("Season 1");
-		when(video.getEpisodeNumber()).thenReturn("Episode 1");
+		when(video.getEpisode()).thenReturn("Episode 1");
 		when(video.getImageURL()).thenReturn("http://www.example.com/");
 		when(video.getBackgroundURL()).thenReturn("http://www.example.com/");
 

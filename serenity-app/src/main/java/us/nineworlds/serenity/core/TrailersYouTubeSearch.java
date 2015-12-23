@@ -38,7 +38,7 @@ public class TrailersYouTubeSearch {
 		String year = video.getYear();
 		String show = video.getSeriesTitle();
 		String season = video.getSeason();
-		String episodeNum = video.getEpisodeNumber();
+		String episodeNum = video.getEpisode();
 		String videoTitle;
 		if (show == null) {
 			videoTitle = "\"" + title + "\"" + TRAILER + " HD" + " " + year;

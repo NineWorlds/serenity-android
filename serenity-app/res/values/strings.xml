@@ -28,6 +28,8 @@
     <string name="download_manager_download_complete_for_">"Download complete for "</string>
     <string name="no_libraries_found">No Movies or TV Show Libraries found. Use the Plex Web App to add some.</string>
     <string name="unknown">Unknown</string>
+    <!-- Probably no need to translate. S##E## notation is common in most languages anyway -->
+    <string name="long_title">"<xliff:g id="series">%s</xliff:g> S<xliff:g id="season">%02d</xliff:g>E<xliff:g id="episode">%02d</xliff:g>: <xliff:g id="title">%s</xliff:g>"</string>
     <string name="season_">"Season "</string>
     <string name="episode_">"Episode "</string>
     <string name="settings">Settings</string>

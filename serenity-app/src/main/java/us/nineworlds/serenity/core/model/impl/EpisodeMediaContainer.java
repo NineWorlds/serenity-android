@@ -35,7 +35,6 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Part;
 import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.plex.rest.model.impl.Writer;
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import android.content.res.Resources;
 
@@ -71,7 +70,7 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 
 	public EpisodePosterInfo createEpisodeContentInfo(MediaContainer mc,
 			String baseUrl, String parentPosterURL, Video episode) {
-		EpisodePosterInfo epi = new EpisodePosterInfo();
+		EpisodePosterInfo epi = new EpisodePosterInfo(resources);
 		if (parentPosterURL != null) {
 			epi.setParentPosterURL(parentPosterURL);
 		}
@@ -132,22 +131,16 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 			List<Part> parts = media.getVideoPart();
 			Part part = parts.get(0);
 
+			final int seasonNumber;
 			if (episode.getSeason() != null) {
-				String season = resources.getString(R.string.season_)
-						+ episode.getSeason();
-				epi.setSeason(season);
-			} else if (mc.getParentIndex() != null) {
-				String season = resources.getString(R.string.season_)
-						+ mc.getParentIndex();
-				epi.setSeason(season);
+				seasonNumber = parseInt(episode.getSeason(), 0);
+			} else {
+				seasonNumber = parseInt(mc.getParentIndex(), 0);
 			}
+			epi.setSeasonNumber(seasonNumber);
 
-			if (episode.getEpisode() != null) {
-				String episodeNum = resources.getString(R.string.episode_)
-						+ episode.getEpisode();
-				epi.setEpisodeNumber(episodeNum);
-			}
-			// setSeasonEpisode(epi, part);
+			final int episodeNumber = parseInt(episode.getEpisode(), 0);
+			epi.setEpisodeNumber(episodeNumber);
 
 			epi.setAudioCodec(media.getAudioCodec());
 			epi.setVideoCodec(media.getVideoCodec());
@@ -165,6 +158,17 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 		epi.setCastInfo("");
 
 		return epi;
+	}
+
+	private static int parseInt(String numberString, int defaultValue) {
+		if (numberString == null) {
+			return defaultValue;
+		}
+		try {
+			return Integer.parseInt(numberString);
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
 	}
 
 	/**
