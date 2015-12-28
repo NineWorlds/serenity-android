@@ -25,8 +25,13 @@ package us.nineworlds.serenity.core.model.impl;
 
 import java.io.Serializable;
 
+import android.content.res.Resources;
+
 public class EpisodePosterInfo extends AbstractVideoContentInfo implements Serializable {
 
 	private static final long serialVersionUID = 5331132648154894964L;
 
+	public EpisodePosterInfo(Resources resources) {
+		super(resources);
+	}
 }

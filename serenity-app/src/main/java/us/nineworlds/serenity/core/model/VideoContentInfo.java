@@ -33,6 +33,8 @@ import us.nineworlds.serenity.core.model.impl.Subtitle;
  */
 public interface VideoContentInfo extends ContentInfo {
 
+	String getLongTitle();
+
 	public String getDirectPlayUrl();
 
 	public void setDirectPlayUrl(String directPlayUrl);
@@ -121,11 +123,15 @@ public interface VideoContentInfo extends ContentInfo {
 
 	public String getSeason();
 
-	public void setSeason(String season);
+	public int getSeasonNumber();
 
-	public String getEpisodeNumber();
+	public void setSeasonNumber(int season);
 
-	public void setEpisodeNumber(String episodeNum);
+	public String getEpisode();
+
+	public int getEpisodeNumber();
+
+	public void setEpisodeNumber(int episodeNum);
 
 	public void setOriginalAirDate(String airDate);
 

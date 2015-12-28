@@ -262,7 +262,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		this.video = video;
 		videoId = video.id();
 		String summary = video.getSummary();
-		String title = video.getTitle();
+		String title = video.getLongTitle();
 		String posterURL = video.getImageURL();
 		;
 		if (video instanceof EpisodePosterInfo) {

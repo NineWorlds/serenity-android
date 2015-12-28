@@ -67,7 +67,7 @@ public class TrailerYouTubeSearchTest {
 		when(episode.getTitle()).thenReturn("Currahee");
 		when(episode.getSeriesTitle()).thenReturn("Band of Brothers");
 		when(episode.getSeason()).thenReturn("Season 1");
-		when(episode.getEpisodeNumber()).thenReturn("1");
+		when(episode.getEpisode()).thenReturn("1");
 		when(episode.getYear()).thenReturn("2001");
 
 		String result = ytsearch.queryURL(episode);

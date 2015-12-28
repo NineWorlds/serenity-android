@@ -100,7 +100,7 @@ public class RecommendAsyncTask extends AsyncTask {
 		String title = video.getSeriesTitle();
 
 		String season = video.getSeason();
-		String episode = video.getEpisodeNumber();
+		String episode = video.getEpisode();
 
 		String summary = video.getTitle();
 		if (season != null || episode != null) {
