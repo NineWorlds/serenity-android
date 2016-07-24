@@ -12,5 +12,9 @@ tmp
 *.orig
 .DS_S*
 .factorypath
+*.iml
+gen-external-apklibs
+gen
+*.idea
 
 
