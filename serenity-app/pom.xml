@@ -12,7 +12,7 @@
 	<packaging>apk</packaging>
 
 	<properties>
-		<android-version>5.0_r1</android-version>
+		<android-version>6.0_r3</android-version>
 	</properties>
 
 	<dependencies>
@@ -37,22 +37,16 @@
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>us.nineworlds.android</groupId>
+			<groupId>com.android.support</groupId>
 			<artifactId>appcompat-v7</artifactId>
-			<version>20.0.0</version>
-			<type>apklib</type>
-			<exclusions>
-				<exclusion>
-					<artifactId>compatibility-v4</artifactId>
-					<groupId>android.support</groupId>
-				</exclusion>
-			</exclusions>
+			<version>23.4.0</version>
+			<type>aar</type>
 		</dependency>
 		<dependency>
-			<groupId>us.nineworlds.android</groupId>
+			<groupId>com.android.support</groupId>
 			<artifactId>leanback-v17</artifactId>
-			<version>21.0.2</version>
-			<type>apklib</type>
+			<version>23.4.0</version>
+			<type>aar</type>
 		</dependency>
 		<dependency>
 			<groupId>us.nineworlds.serenity</groupId>
@@ -233,7 +227,7 @@
 				</executions>
 				<configuration>
 					<sdk>
-						<platform>21</platform>
+						<platform>23</platform>
 					</sdk>
 					<deleteConflictingFiles>true</deleteConflictingFiles>
 					<zipalign>

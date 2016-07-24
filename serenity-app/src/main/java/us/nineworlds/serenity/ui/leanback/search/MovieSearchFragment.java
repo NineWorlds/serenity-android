@@ -201,7 +201,7 @@ public class MovieSearchFragment extends SearchFragment implements
 			listRowAdapter.add(video);
 		}
 
-		HeaderItem header = new HeaderItem(0, "Search Results", null);
+		HeaderItem header = new HeaderItem(0, "Search Results");
 		rowsAdapter.add(new ListRow(header, listRowAdapter));
 	}
 

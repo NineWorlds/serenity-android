@@ -2,6 +2,7 @@ package us.nineworlds.serenity.handlers;
 
 import java.util.List;
 
+import android.support.v4.app.NotificationCompat;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.SerenityApplication;
@@ -111,13 +112,20 @@ public class DownloadHandler extends Handler {
 	protected void notification(String tickerText, String expandedText) {
 		int icon = R.drawable.serenity_bonsai_logo;
 		long when = System.currentTimeMillis();
-		Notification notification = new Notification(icon, tickerText, when);
+		NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(context);
 		String expandedTitle = "Serenity Download";
 		Intent intent = new Intent(context, MainActivity.class);
 		PendingIntent launchIntent = PendingIntent.getActivity(context, 0,
 				intent, 0);
-		notification.setLatestEventInfo(context, expandedTitle, expandedText,
-				launchIntent);
+		Notification notification = nBuilder.setSmallIcon(icon)
+				.setTicker(tickerText)
+				.setWhen(when)
+				.setContentIntent(launchIntent)
+				.setContentText(expandedText)
+				.setContentTitle(expandedTitle)
+				.build();
 		int notificationRef = 1;
 		notificationManager.notify(notificationRef, notification);
 	}
