@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.injection.modules;
 
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Singleton;
@@ -73,7 +74,7 @@ public class SerenityModule {
 	@Provides
 	@Singleton
 	@ForMediaServers
-	ConcurrentHashMap<String, Server> providesMediaServers() {
+	Map<String, Server> providesMediaServers() {
 		return new ConcurrentHashMap<String, Server>();
 	}
 

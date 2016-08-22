@@ -64,7 +64,7 @@ public class SerenityBackgroundLoadListenerTest {
 	@Test
 	public void assertThatBackgroundBitmapDisplayerIsRunOnUIThread() {
 		SerenityBackgroundLoaderListener listener = new SerenityBackgroundLoaderListener(
-				backgroundView, R.drawable.movies);
+				backgroundView, R.drawable.movies, activity);
 		listener.onLoadingComplete(null, backgroundView, null);
 		verify(activity).runOnUiThread(any(BackgroundBitmapDisplayer.class));
 	}

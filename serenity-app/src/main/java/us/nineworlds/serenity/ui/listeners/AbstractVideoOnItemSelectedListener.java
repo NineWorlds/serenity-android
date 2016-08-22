@@ -94,7 +94,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 	public static final int WATCHED_VIEW_ID = 1000;
 	public static final float WATCHED_PERCENT = 0.98f;
 	protected Activity context;
-	public Handler trailerHandler;
 	protected Handler checkDatabaseHandler = new Handler();
 	private Animation fadeIn;
 	private View previous;
@@ -123,7 +122,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 	 * Create the images representing info such as sound, ratings, etc based on
 	 * the currently selected movie poster.
 	 *
-	 * @param position
 	 */
 	protected void createInfographicDetails(ImageView v) {
 
@@ -308,7 +306,7 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 		imageLoader
 		.loadImage(transcodingURL, new ImageSize(1280, 720),
 				new SerenityBackgroundLoaderListener(fanArt,
-						R.drawable.movies));
+						R.drawable.movies, context));
 	}
 
 	protected class CheckDatabaseRunnable implements Runnable {

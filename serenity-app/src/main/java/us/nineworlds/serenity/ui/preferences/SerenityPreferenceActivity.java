@@ -59,7 +59,7 @@ Preference.OnPreferenceClickListener {
 
 	@Inject
 	@ForMediaServers
-	ConcurrentHashMap<String, Server> mediaServers;
+	Map<String, Server> mediaServers;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -110,6 +110,7 @@ Preference.OnPreferenceClickListener {
 		discoveredServers.setEnabled(true);
 		String entries[] = new String[mediaServers.size()];
 		String values[] = new String[mediaServers.size()];
+
 
 		mediaServers.keySet().toArray(entries);
 		discoveredServers.setEntries(entries);

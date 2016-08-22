@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
@@ -94,7 +95,7 @@ public class VideoGridFragment extends InjectingFragment {
 		String key = MovieBrowserActivity.getKey();
 
 		MovieCategoryResponseListener response = new MovieCategoryResponseListener(
-				getActivity(), key);
+				(SerenityMultiViewVideoActivity) getActivity(), key);
 		String url = factory.getSectionsUrl(key);
 		volleyUtils.volleyXmlGetRequest(url, response,
 				new DefaultLoggingVolleyErrorListener());

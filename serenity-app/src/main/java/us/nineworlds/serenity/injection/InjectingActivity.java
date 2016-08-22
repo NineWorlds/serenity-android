@@ -23,9 +23,9 @@
 
 package us.nineworlds.serenity.injection;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
-public abstract class InjectingActivity extends ActionBarActivity {
+public abstract class InjectingActivity extends AppCompatActivity {
 
 	public InjectingActivity() {
 		SerenityObjectGraph.getInstance().inject(this);

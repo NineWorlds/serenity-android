@@ -189,7 +189,7 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 		imageLoader
 				.loadImage(transcodingURL, new ImageSize(1280, 720),
 						new SerenityBackgroundLoaderListener(fanArt,
-								R.drawable.tvshows));
+								R.drawable.tvshows, context));
 	}
 
 	@Override

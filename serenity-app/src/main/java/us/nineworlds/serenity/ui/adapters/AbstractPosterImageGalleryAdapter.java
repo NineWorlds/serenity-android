@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import android.support.v7.app.AppCompatActivity;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
@@ -39,7 +40,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -71,7 +71,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends
 	protected VolleyUtils volley;
 
 	protected static List<VideoContentInfo> posterList = null;
-	protected ActionBarActivity context;
+	protected AppCompatActivity context;
 	protected ImageLoader imageLoader;
 	protected static final int SIZE_HEIGHT = 400;
 	protected static final int SIZE_WIDTH = 200;
@@ -84,7 +84,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
 		queue = volley.getRequestQueue();
-		context = (ActionBarActivity) c;
+		context = (AppCompatActivity) c;
 		posterList = new ArrayList<VideoContentInfo>();
 		imageLoader = serenityImageLoader.getImageLoader();
 		this.key = key;
@@ -94,7 +94,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends
 	public AbstractPosterImageGalleryAdapter(Context c, String key,
 			String category) {
 		queue = volley.getRequestQueue();
-		context = (ActionBarActivity) c;
+		context = (AppCompatActivity) c;
 		this.key = key;
 		this.category = category;
 		posterList = new ArrayList<VideoContentInfo>();

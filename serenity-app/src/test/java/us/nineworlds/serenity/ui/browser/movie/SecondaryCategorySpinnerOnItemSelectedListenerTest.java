@@ -119,7 +119,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 				.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
 		onItemSelectedListener = new SecondaryCategorySpinnerOnItemSelectedListener(
-				"Action", "59");
+				"Action", "59", movieBrowserActivity);
 
 		spyOnItemSelectedListener = spy(onItemSelectedListener);
 	}

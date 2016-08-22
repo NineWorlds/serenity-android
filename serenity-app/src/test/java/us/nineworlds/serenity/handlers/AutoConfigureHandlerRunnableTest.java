@@ -27,6 +27,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
@@ -57,7 +58,7 @@ public class AutoConfigureHandlerRunnableTest extends InjectingTest {
 
 	@Inject
 	@ForMediaServers
-	ConcurrentHashMap<String, Server> mediaServer;
+	Map<String, Server> mediaServer;
 
 	@Override
 	@Before

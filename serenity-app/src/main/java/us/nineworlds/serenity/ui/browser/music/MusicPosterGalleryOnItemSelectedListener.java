@@ -127,7 +127,7 @@ public class MusicPosterGalleryOnItemSelectedListener extends BaseInjector
 		imageLoader
 				.loadImage(transcodingURL, bgImageSize,
 						new SerenityBackgroundLoaderListener(bgLayout,
-								R.drawable.music));
+								R.drawable.music, context));
 	}
 
 	@Override

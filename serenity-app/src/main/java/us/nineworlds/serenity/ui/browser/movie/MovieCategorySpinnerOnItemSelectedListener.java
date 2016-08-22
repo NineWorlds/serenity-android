@@ -54,6 +54,8 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 	@Inject
 	VolleyUtils volleyUtils;
 
+	private SerenityMultiViewVideoActivity activity;
+
 	protected Spinner secondarySpinner;
 
 	private static String category;
@@ -61,14 +63,15 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 	private final Handler secondaryCategoryHandler;
 
 	public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection,
-			String ckey) {
+			String ckey, SerenityMultiViewVideoActivity activity) {
 		super(defaultSelection, ckey);
 		secondaryCategoryHandler = new SecondaryCategoryHandler();
+		this.activity = activity;
 	}
 
 	public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection,
-			String ckey, boolean firstSelection) {
-		this(defaultSelection, key);
+			String ckey, boolean firstSelection, SerenityMultiViewVideoActivity activity) {
+		this(defaultSelection, key, activity);
 		savedInstanceCategory = defaultSelection;
 		this.setFirstSelection(firstSelection);
 	}
@@ -80,8 +83,7 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 			return;
 		}
 
-		setMultiViewVideoActivity((SerenityMultiViewVideoActivity) view
-				.getContext());
+		setMultiViewVideoActivity(activity);
 
 		findViews();
 
@@ -154,14 +156,6 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
 		volleyUtils.volleyXmlGetRequest(url, response,
 				new DefaultLoggingVolleyErrorListener());
-
-		// Messenger messenger = new Messenger(secondaryCategoryHandler);
-		// Intent categoriesIntent = new Intent(getMultiViewVideoActivity(),
-		// SecondaryCategoryRetrievalIntentService.class);
-		// categoriesIntent.putExtra("key", key);
-		// categoriesIntent.putExtra("category", category);
-		// categoriesIntent.putExtra("MESSENGER", messenger);
-		// getMultiViewVideoActivity().startService(categoriesIntent);
 	}
 
 	protected void createGallery(CategoryInfo item) {
@@ -209,7 +203,7 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 			secondarySpinner.setAdapter(spinnerSecArrayAdapter);
 			secondarySpinner
 					.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
-							category, key));
+							category, key, activity));
 		}
 
 	}

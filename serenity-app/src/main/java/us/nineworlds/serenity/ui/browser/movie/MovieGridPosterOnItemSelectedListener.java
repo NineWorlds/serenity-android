@@ -105,7 +105,7 @@ implements OnItemSelectedListener {
 		imageLoader
 		.loadImage(transcodingURL, new ImageSize(1280, 720),
 				new SerenityBackgroundLoaderListener(fanArt,
-						R.drawable.movies));
+						R.drawable.movies, context));
 
 	}
 

@@ -50,23 +50,22 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
 	private String selected;
 	private final String key;
 	private boolean firstTimesw = true;
+	private SerenityMultiViewVideoActivity activity;
 
 	@Inject
 	protected TVCategoryState categoryState;
 
 	public TVSecondaryCategorySpinnerOnItemSelectedListener(
-			String defaultSelection, String key) {
+			String defaultSelection, String key, SerenityMultiViewVideoActivity serenityMultiViewVideoActivity) {
 		super();
 		selected = defaultSelection;
 		this.key = key;
+		activity = serenityMultiViewVideoActivity;
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
-
-		SerenityMultiViewVideoActivity context = (SerenityMultiViewVideoActivity) view
-				.getContext();
 
 		SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter
 				.getItemAtPosition(position);
@@ -88,38 +87,36 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
 		selected = item.getCategory();
 		categoryState.setGenreCategory(item.getCategory());
 
-		SerenityMultiViewVideoActivity c = (SerenityMultiViewVideoActivity) view
-				.getContext();
 
-		View bgLayout = c.findViewById(R.id.tvshowBrowserLayout);
-		if (c.isGridViewActive()) {
-			TwoWayGridView gridView = (TwoWayGridView) c
+		View bgLayout = activity.findViewById(R.id.tvshowBrowserLayout);
+		if (activity.isGridViewActive()) {
+			TwoWayGridView gridView = (TwoWayGridView) activity
 					.findViewById(R.id.tvShowGridView);
-			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(c, key,
+			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(activity, key,
 					item.getParentCategory() + "/" + item.getCategory()));
 			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(
-					bgLayout, c));
-			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(c));
+					bgLayout, activity));
+			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(activity));
 		} else {
-			SerenityGallery posterGallery = (SerenityGallery) c
+			SerenityGallery posterGallery = (SerenityGallery) activity
 					.findViewById(R.id.tvShowBannerGallery);
 
-			if (c.isPosterLayoutActive()) {
-				posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(c,
+			if (activity.isPosterLayoutActive()) {
+				posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(activity,
 						key, item.getParentCategory() + "/"
 								+ item.getCategory()));
 			} else {
-				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(c,
+				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(activity,
 						key, item.getParentCategory() + "/"
 								+ item.getCategory()));
 			}
 
 			posterGallery
 					.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
-							bgLayout, c));
+							bgLayout, activity));
 			posterGallery
 					.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
-							c));
+							activity));
 			posterGallery
 					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
 			posterGallery.setCallbackDuringFling(false);

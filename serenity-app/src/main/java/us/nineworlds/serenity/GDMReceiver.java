@@ -1,5 +1,6 @@
 package us.nineworlds.serenity;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
@@ -17,7 +18,7 @@ public class GDMReceiver extends InjectingBroadcastReceiver {
 
 	@Inject
 	@ForMediaServers
-	ConcurrentHashMap<String, Server> servers;
+	Map<String, Server> servers;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -35,7 +36,7 @@ public class GDMReceiver extends InjectingBroadcastReceiver {
 			server.setServerName(serverName);
 			server.setIPAddress(ipAddress);
 			if (!servers.containsKey(serverName)) {
-				servers.putIfAbsent(serverName, server);
+				servers.put(serverName, server);
 				Log.d(getClass().getName(), "Adding " + serverName);
 			} else {
 				Log.d(getClass().getName(), serverName + " already added.");

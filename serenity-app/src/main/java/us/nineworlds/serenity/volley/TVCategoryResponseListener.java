@@ -32,6 +32,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.impl.TVCategoryMediaContainer;
 import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.TVCategoryState;
 import android.app.Activity;
@@ -48,10 +49,10 @@ public class TVCategoryResponseListener extends BaseInjector implements
 	TVCategoryState categoryState;
 
 	private List<CategoryInfo> categories;
-	private final Activity context;
+	private final SerenityMultiViewVideoActivity context;
 	private final String key;
 
-	public TVCategoryResponseListener(Activity context, String key) {
+	public TVCategoryResponseListener(SerenityMultiViewVideoActivity context, String key) {
 		super();
 		this.context = context;
 		this.key = key;
@@ -80,11 +81,11 @@ public class TVCategoryResponseListener extends BaseInjector implements
 		if (categoryState.getCategory() == null) {
 			categorySpinner
 					.setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(
-							"all", key));
+							"all", key, context));
 		} else {
 			categorySpinner
 					.setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(
-							categoryState.getCategory(), key, false));
+							categoryState.getCategory(), key, false, context));
 
 		}
 		categorySpinner.requestFocus();

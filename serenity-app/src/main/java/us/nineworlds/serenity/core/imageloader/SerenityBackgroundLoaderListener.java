@@ -1,7 +1,10 @@
 package us.nineworlds.serenity.core.imageloader;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -11,20 +14,20 @@ public class SerenityBackgroundLoaderListener extends
 
 	private final View bgLayout;
 	private final int defaultImage;
+	private final Activity activity;
 
 	/**
 	 * 
 	 */
-	public SerenityBackgroundLoaderListener(View view, int defaultImage) {
+	public SerenityBackgroundLoaderListener(View view, int defaultImage, Activity activity) {
 		bgLayout = view;
 		this.defaultImage = defaultImage;
+		this.activity = activity;
 
 	}
 
 	@Override
 	public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-
-		Activity activity = (Activity) bgLayout.getContext();
 		activity.runOnUiThread(new BackgroundBitmapDisplayer(loadedImage, defaultImage,
 				bgLayout));
 

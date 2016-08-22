@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.handlers;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
@@ -22,7 +23,7 @@ public class AutoConfigureHandlerRunnable extends BaseInjector implements
 
 	@Inject
 	@ForMediaServers
-	ConcurrentHashMap<String, Server> mediaServers;
+	Map<String, Server> mediaServers;
 
 	Context context;
 

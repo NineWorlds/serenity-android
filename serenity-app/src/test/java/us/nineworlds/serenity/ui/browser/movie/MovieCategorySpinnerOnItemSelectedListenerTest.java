@@ -121,7 +121,7 @@ InjectingTest {
 		.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
 		onItemSelectedListener = new MovieCategorySpinnerOnItemSelectedListener(
-				"All", "59");
+				"All", "59", mockMultiViewVideoActivity);
 
 		spyOnItemSelectedListener = spy(onItemSelectedListener);
 	}

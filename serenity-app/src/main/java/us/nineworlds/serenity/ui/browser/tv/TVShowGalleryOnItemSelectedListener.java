@@ -202,7 +202,7 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector implements
 		imageLoader
 				.loadImage(transcodingURL, bgImageSize,
 						new SerenityBackgroundLoaderListener(fanArt,
-								R.drawable.tvshows));
+								R.drawable.tvshows, context));
 
 		ImageView showImage = (ImageView) context
 				.findViewById(R.id.tvShowImage);

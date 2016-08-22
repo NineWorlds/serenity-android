@@ -27,6 +27,7 @@ import java.util.LinkedList;
 
 import javax.inject.Inject;
 
+import android.content.res.Resources;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -57,6 +58,9 @@ OnItemClickListener {
 	@Inject
 	SerenityImageLoader serenityImageLoader;
 
+	@Inject
+	Resources resources;
+
 	private static final int ABOUT = 0;
 	private static final int CLEAR_CACHE = 1;
 	private static final int CLEAR_QUEUE = 2;
@@ -79,7 +83,6 @@ OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Activity activity = (Activity) view.getContext();
 		toggleMenu();
 
 		switch (position) {
@@ -94,9 +97,8 @@ OnItemClickListener {
 		case CLEAR_QUEUE:
 			videoQueue.clear();
 			Toast.makeText(
-					activity,
-					activity.getResources().getString(
-							R.string.queue_has_been_cleared_),
+					view.getContext(),
+					resources.getString(R.string.queue_has_been_cleared_),
 							Toast.LENGTH_LONG).show();
 			break;
 		}

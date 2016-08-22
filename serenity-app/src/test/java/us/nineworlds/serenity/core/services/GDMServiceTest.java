@@ -25,6 +25,7 @@ package us.nineworlds.serenity.core.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
@@ -61,7 +62,7 @@ public class GDMServiceTest extends InjectingTest {
 
 	@Inject
 	@ForMediaServers
-	ConcurrentHashMap<String, Server> mediaServers;
+	Map<String, Server> mediaServers;
 
 	private final BroadcastReceiver gdmReciver = new GDMReceiver();
 

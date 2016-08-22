@@ -31,6 +31,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.support.v7.app.AppCompatActivity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,6 @@ import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 import android.content.Context;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import dagger.Module;
@@ -65,7 +65,7 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 		Robolectric.getBackgroundScheduler().pause();
 		Robolectric.getUiThreadScheduler().pause();
 
-		ActionBarActivity activity = Robolectric
+		AppCompatActivity activity = Robolectric
 				.buildActivity(MainActivity.class).create().get();
 		abstractPosterImageGalleryAdapter = new FakePosterImageGalleryAdapter(
 				activity, "12345");

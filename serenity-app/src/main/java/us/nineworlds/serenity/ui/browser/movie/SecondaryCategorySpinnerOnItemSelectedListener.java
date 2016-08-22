@@ -37,17 +37,19 @@ import android.widget.AdapterView.OnItemSelectedListener;
 public class SecondaryCategorySpinnerOnItemSelectedListener extends
 		BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
+	SerenityMultiViewVideoActivity activity;
+
 	public SecondaryCategorySpinnerOnItemSelectedListener(
-			String defaultSelection, String key) {
+			String defaultSelection, String key, SerenityMultiViewVideoActivity activity) {
 		super(defaultSelection, key);
+		this.activity = activity;
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
 
-		setMultiViewVideoActivity((SerenityMultiViewVideoActivity) view
-				.getContext());
+		setMultiViewVideoActivity(activity);
 
 		findViews();
 

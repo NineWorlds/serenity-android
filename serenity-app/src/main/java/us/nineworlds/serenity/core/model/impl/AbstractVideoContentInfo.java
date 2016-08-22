@@ -43,7 +43,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo,
 		Serializable {
 
 	private static final long serialVersionUID = 4744447508883279194L;
-	private final Resources resources;
+	private transient final Resources resources;
 
 	private String id;
 

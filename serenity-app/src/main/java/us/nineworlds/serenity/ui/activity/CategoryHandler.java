@@ -38,11 +38,11 @@ import android.widget.Spinner;
 public class CategoryHandler extends Handler {
 
 	private List<CategoryInfo> categories;
-	private final Activity context;
+	private final SerenityMultiViewVideoActivity context;
 	private final String savedCategory;
 	private final String key;
 
-	public CategoryHandler(Activity context, String savedCategory, String key) {
+	public CategoryHandler(SerenityMultiViewVideoActivity context, String savedCategory, String key) {
 		this.context = context;
 		this.savedCategory = savedCategory;
 		this.key = key;
@@ -73,7 +73,7 @@ public class CategoryHandler extends Handler {
 			if (savedCategory == null) {
 				categorySpinner
 				.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
-						"all", key));
+						"all", key, context));
 			} else {
 				// categorySpinner
 				// .setOnItemSelectedListener(new

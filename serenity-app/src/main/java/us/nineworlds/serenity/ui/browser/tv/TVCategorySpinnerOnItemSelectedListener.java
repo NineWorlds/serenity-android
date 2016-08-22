@@ -71,23 +71,24 @@ implements OnItemSelectedListener {
 	VolleyUtils volleyUtils;
 
 	public TVCategorySpinnerOnItemSelectedListener(String defaultSelection,
-			String ckey) {
+			String ckey, SerenityMultiViewVideoActivity activity) {
 		selected = defaultSelection;
 		key = ckey;
+		context = activity;
 	}
 
 	public TVCategorySpinnerOnItemSelectedListener(String defaultSelection,
-			String ckey, boolean sw) {
+			String ckey, boolean sw, SerenityMultiViewVideoActivity activity) {
 		selected = defaultSelection;
 		key = ckey;
 		savedInstanceCategory = defaultSelection;
 		firstSelection = sw;
+		context = activity;
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
 			int position, long id) {
-		context = (SerenityMultiViewVideoActivity) view.getContext();
 		CategoryInfo item = (CategoryInfo) viewAdapter
 				.getItemAtPosition(position);
 

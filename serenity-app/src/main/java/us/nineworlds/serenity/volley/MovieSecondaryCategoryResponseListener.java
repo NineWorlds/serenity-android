@@ -29,6 +29,7 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.impl.SecondaryCategoryMediaContainer;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.movie.SecondaryCategorySpinnerOnItemSelectedListener;
 import android.app.Activity;
 import android.view.View;
@@ -41,11 +42,11 @@ import com.android.volley.Response;
 public class MovieSecondaryCategoryResponseListener implements
 		Response.Listener<MediaContainer> {
 
-	protected Activity context;
+	protected SerenityMultiViewVideoActivity context;
 	protected String category;
 	protected String key;
 
-	public MovieSecondaryCategoryResponseListener(Activity context,
+	public MovieSecondaryCategoryResponseListener(SerenityMultiViewVideoActivity context,
 			String category, String key) {
 		super();
 		this.category = category;
@@ -80,6 +81,6 @@ public class MovieSecondaryCategoryResponseListener implements
 		secondarySpinner.setAdapter(spinnerSecArrayAdapter);
 		secondarySpinner
 				.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
-						category, key));
+						category, key, context));
 	}
 }
