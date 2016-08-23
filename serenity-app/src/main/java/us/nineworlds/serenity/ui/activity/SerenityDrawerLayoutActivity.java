@@ -55,6 +55,9 @@ public abstract class SerenityDrawerLayoutActivity extends SerenityActivity {
 		}
 		actionBar = getSupportActionBar();
 		actionBar.setDisplayUseLogoEnabled(true);
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
 		actionBar.setBackgroundDrawable(new ColorDrawable(
 				R.color.card_background));
 	}
