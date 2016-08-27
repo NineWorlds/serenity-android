@@ -25,6 +25,8 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import javax.inject.Inject;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
@@ -65,8 +67,8 @@ implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		SerenityMultiViewVideoActivity activity = (SerenityMultiViewVideoActivity) view
-				.getContext();
+		SerenityMultiViewVideoActivity activity = getActivity(view
+				.getContext());
 
 		switch (position) {
 		case GRID_VIEW:
@@ -106,4 +108,16 @@ implements OnItemClickListener {
 		e.putBoolean("series_layout_grid", enableGridView);
 		e.apply();
 	}
+
+	protected SerenityMultiViewVideoActivity getActivity(Context contextWrapper) {
+		Context context = contextWrapper;
+		while (context instanceof ContextWrapper) {
+			if (context instanceof SerenityMultiViewVideoActivity) {
+				return (SerenityMultiViewVideoActivity) context;
+			}
+			context = ((ContextWrapper)context).getBaseContext();
+		}
+		return null;
+	}
+
 }

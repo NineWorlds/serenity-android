@@ -25,8 +25,11 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import javax.inject.Inject;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.app.Activity;
@@ -47,10 +50,21 @@ public class TVShowSeasonMenuDrawerOnItemClickedListener extends BaseInjector
 		menuDrawer = drawer;
 	}
 
+	protected Activity getActivity(Context contextWrapper) {
+		Context context = contextWrapper;
+		while (context instanceof ContextWrapper) {
+			if (context instanceof Activity) {
+				return (Activity) context;
+			}
+			context = ((ContextWrapper)context).getBaseContext();
+		}
+		return null;
+	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Activity activity = (Activity) view.getContext();
+		Activity activity = getActivity(view.getContext());
 
 		switch (position) {
 		case PLAY_ALL_QUEUE:

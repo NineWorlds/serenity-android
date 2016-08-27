@@ -25,6 +25,9 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import javax.inject.Inject;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
@@ -62,11 +65,22 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 		menuDrawer = drawer;
 	}
 
+	protected SerenityMultiViewVideoActivity getActivity(Context contextWrapper) {
+		Context context = contextWrapper;
+		while (context instanceof ContextWrapper) {
+			if (context instanceof SerenityMultiViewVideoActivity) {
+				return (SerenityMultiViewVideoActivity) context;
+			}
+			context = ((ContextWrapper)context).getBaseContext();
+		}
+		return null;
+	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		SerenityMultiViewVideoActivity activity = (SerenityMultiViewVideoActivity) view
-				.getContext();
+		SerenityMultiViewVideoActivity activity = getActivity(view
+				.getContext());
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
 		MovieVideoGalleryFragment videoGalleryFragment = (MovieVideoGalleryFragment) fragmentManager
 				.findFragmentByTag("videoGallery_fragment");
