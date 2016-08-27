@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.leanback.search;
 
 import javax.inject.Inject;
 
+import android.content.ContextWrapper;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -73,13 +74,25 @@ public class CardPresenter extends Presenter {
 		if (video.getImageURL() != null) {
 			imageCardView.setTitleText(video.getTitle());
 			imageCardView.setContentText(video.getStudio());
+			Activity activity = getActivity(context);
 			imageCardView.setMainImageDimensions(
-					ImageUtils.getDPI(240, (Activity) context),
-					ImageUtils.getDPI(360, (Activity) context));
+					ImageUtils.getDPI(240, activity),
+					ImageUtils.getDPI(360, activity));
 			cardHolder.updateCardViewImage(video.getImageURL());
 		}
-
 	}
+
+	private Activity getActivity(Context contextWrapper) {
+		Context context = contextWrapper;
+		while (context instanceof ContextWrapper) {
+			if (context instanceof Activity) {
+				return (Activity)context;
+			}
+			context = ((ContextWrapper)context).getBaseContext();
+		}
+		return null;
+	}
+
 
 	@Override
 	public void onUnbindViewHolder(ViewHolder viewHolder) {

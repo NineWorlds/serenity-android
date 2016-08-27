@@ -39,6 +39,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import android.content.ContextWrapper;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -80,6 +81,7 @@ import android.widget.TextView;
  * window position was not being calculated correctly.
  *
  */
+@SuppressWarnings("MagicConstant")
 public class MediaController extends FrameLayout {
 
 	private static final int FADE_OUT = 1;
@@ -236,10 +238,21 @@ public class MediaController extends FrameLayout {
 		}
 	}
 
+	private Activity getActivity() {
+		Context context = getContext();
+		while (context instanceof ContextWrapper) {
+			if (context instanceof Activity) {
+				return (Activity)context;
+			}
+			context = ((ContextWrapper)context).getBaseContext();
+		}
+		return null;
+	}
+
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		int keyCode = event.getKeyCode();
-		Activity c = (Activity) getContext();
+		Activity c = getActivity();
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			c.onKeyDown(keyCode, event);
 			return true;
@@ -398,7 +411,7 @@ public class MediaController extends FrameLayout {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		Activity c = (Activity) getContext();
+		Activity c = getActivity();
 		return c.onKeyDown(keyCode, event);
 	}
 

@@ -35,6 +35,7 @@ import java.util.LinkedList;
 
 import javax.inject.Inject;
 
+import android.support.v7.app.ActionBar;
 import org.mozilla.universalchardet.UniversalDetector;
 
 import us.nineworlds.plex.rest.PlexappFactory;
@@ -172,7 +173,10 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
 		setContentView(R.layout.video_playback);
 		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			getSupportActionBar().hide();
+			ActionBar supportActionBar = getSupportActionBar();
+			if (supportActionBar != null) {
+				supportActionBar.hide();
+			}
 		}
 		init();
 
