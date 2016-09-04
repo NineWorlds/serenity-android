@@ -150,6 +150,12 @@
 			<optional>true</optional>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.github.vganin</groupId>
+			<artifactId>dpadaware-recyclerview</artifactId>
+			<version>1.0.0</version>
+			<type>aar</type>
+		</dependency>
 	</dependencies>
 
 	<build>
