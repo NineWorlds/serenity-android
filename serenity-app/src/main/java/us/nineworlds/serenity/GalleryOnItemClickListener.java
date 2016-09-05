@@ -29,7 +29,6 @@ import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.music.MusicActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
-import us.nineworlds.serenity.ui.views.MainMenuTextView;
 
 import android.app.Activity;
 import android.content.Context;

@@ -23,7 +23,6 @@
 
 package us.nineworlds.serenity.fragments;
 
-import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -33,7 +32,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import net.ganin.darv.DpadAwareRecyclerView;
-import net.ganin.darv.ExtGridLayoutManager;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.GalleryOnItemClickListener;
@@ -41,18 +39,13 @@ import us.nineworlds.serenity.GalleryOnItemSelectedListener;
 import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Gallery;
 import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
 import us.nineworlds.serenity.injection.InjectingFragment;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.views.MainMenuTextView;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
-import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -67,7 +60,6 @@ public class MainMenuFragment extends InjectingFragment {
 	VolleyUtils volley;
 
 	private Unbinder unbinder;
-	private RequestQueue queue;
 
 	List menuItems = new ArrayList();
 
@@ -89,8 +81,6 @@ public class MainMenuFragment extends InjectingFragment {
 	}
 
 	protected void fetchData() {
-		queue = volley.getRequestQueue();
-
 		String url = plexFactory.getSectionsURL();
 		volley.volleyXmlGetRequest(url, new MainMenuVolleyResponseListener(),
 				new MainMenuResponseErrorListener());
@@ -106,7 +96,7 @@ public class MainMenuFragment extends InjectingFragment {
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
 		mainGallery.setLayoutManager(linearLayoutManager);
 
-		MainMenuTextViewAdapter adapter = new MainMenuTextViewAdapter(getActivity());
+		MainMenuTextViewAdapter adapter = new MainMenuTextViewAdapter();
 		adapter.menuItems = this.menuItems;
 		mainGallery.setAdapter(adapter);
 		mainGallery
@@ -134,7 +124,6 @@ public class MainMenuFragment extends InjectingFragment {
 
 			menuItems.add(mc.createSettingsMenu());
 			menuItems.add(mc.createOptionsMenu());
-
 
 			setupGallery();
 
