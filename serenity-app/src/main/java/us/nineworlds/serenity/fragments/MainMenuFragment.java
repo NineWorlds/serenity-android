@@ -23,6 +23,19 @@
 
 package us.nineworlds.serenity.fragments;
 
+import android.app.Activity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.widget.Toast;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import net.ganin.darv.DpadAwareRecyclerView;
+import net.ganin.darv.ExtGridLayoutManager;
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.GalleryOnItemClickListener;
 import us.nineworlds.serenity.GalleryOnItemSelectedListener;
 import us.nineworlds.serenity.MainMenuTextViewAdapter;
@@ -33,26 +46,54 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Gallery;
+import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
+import us.nineworlds.serenity.injection.InjectingFragment;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.views.MainMenuTextView;
+import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
+import us.nineworlds.serenity.volley.VolleyUtils;
+import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
-public class MainMenuFragment extends Fragment {
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
-	Gallery mainGallery;
+public class MainMenuFragment extends InjectingFragment {
+
+	@Inject
+	PlexappFactory plexFactory;
+
+	@Inject
+	VolleyUtils volley;
+
+	private Unbinder unbinder;
+	private RequestQueue queue;
+
+	List menuItems = new ArrayList();
 
 	public MainMenuFragment() {
 		setRetainInstance(false);
 	}
 
+	@BindView(R.id.mainGalleryMenu)
+	DpadAwareRecyclerView mainGallery;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.main_menu_view, container);
-		setupGallery(view);
+		unbinder = ButterKnife.bind(this, view);
+		fetchData();
+
 		return view;
 	}
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
+	protected void fetchData() {
+		queue = volley.getRequestQueue();
 
+		String url = plexFactory.getSectionsURL();
+		volley.volleyXmlGetRequest(url, new MainMenuVolleyResponseListener(),
+				new MainMenuResponseErrorListener());
 	}
 
 	@Override
@@ -60,21 +101,63 @@ public class MainMenuFragment extends Fragment {
 		super.onStart();
 	}
 
-	private void setupGallery(View view) {
-		mainGallery = (Gallery) view.findViewById(R.id.mainGalleryMenu);
+	private void setupGallery() {
+//		SerenityMenuGridLayoutManager layoutManager = new SerenityMenuGridLayoutManager.Builder(getActivity()).circular(true).orientation(ExtGridLayoutManager.HORIZONTAL).spanCount(1).build();
+		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+		mainGallery.setLayoutManager(linearLayoutManager);
 
-		mainGallery.setAdapter(new MainMenuTextViewAdapter(getActivity()));
+		MainMenuTextViewAdapter adapter = new MainMenuTextViewAdapter(getActivity());
+		adapter.menuItems = this.menuItems;
+		mainGallery.setAdapter(adapter);
 		mainGallery
 				.setOnItemSelectedListener(new GalleryOnItemSelectedListener());
 		mainGallery.setOnItemClickListener(new GalleryOnItemClickListener(
 				getActivity()));
-		mainGallery.setCallbackDuringFling(false);
-		mainGallery.requestFocusFromTouch();
+		mainGallery.setVisibility(View.VISIBLE);
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override
-	public void onResume() {
-		mainGallery.requestFocusFromTouch();
-		super.onResume();
+	public void onDestroyView() {
+		super.onDestroyView();
+		unbinder.unbind();
 	}
+
+	private class MainMenuResponseErrorListener extends
+			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
+
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			super.onErrorResponse(error);
+
+			MenuMediaContainer mc = new MenuMediaContainer(null);
+
+			menuItems.add(mc.createSettingsMenu());
+			menuItems.add(mc.createOptionsMenu());
+
+
+			setupGallery();
+
+			Toast.makeText(
+					getActivity(),
+					"Unable to connect to Plex Library at "
+							+ plexFactory.getSectionsURL(), Toast.LENGTH_LONG)
+					.show();
+
+			mainGallery.requestFocus();
+		}
+	}
+
+	private class MainMenuVolleyResponseListener implements
+			Response.Listener<MediaContainer> {
+
+		@Override
+		public void onResponse(MediaContainer mc) {
+			menuItems = new MenuMediaContainer(mc).createMenuItems();
+			setupGallery();
+			mainGallery.setVisibility(View.VISIBLE);
+			mainGallery.requestFocus();
+		}
+	}
+
 }

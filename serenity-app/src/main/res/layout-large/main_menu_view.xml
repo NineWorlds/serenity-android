@@ -1,28 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <us.nineworlds.serenity.widgets.ReflectingLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relectionArea"
-    android:layout_width="fill_parent"
-    android:layout_height="80dp"
-    android:layout_centerInParent="true"
-    android:layout_marginBottom="10dp"
-    android:background="@drawable/content_panel_dark" >
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 android:id="@+id/relectionArea"
+                                                 android:layout_width="fill_parent"
+                                                 android:layout_height="80dp"
+                                                 android:layout_centerInParent="true"
+                                                 android:layout_marginBottom="10dp"
+                                                 android:background="@drawable/content_panel_dark">
 
-    <Gallery
-        android:id="@+id/mainGalleryMenu"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:animationDuration="1"
-        android:descendantFocusability="afterDescendants"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:nextFocusDown="@+id/mainGalleryMenu"
-        android:nextFocusLeft="@+id/mainGalleryMenu"
-        android:nextFocusRight="@+id/mainGalleryMenu"
-        android:nextFocusUp="@+id/menu_button"
-        android:spacing="50dp" >
-
-        <requestFocus />
-    </Gallery>
+    <net.ganin.darv.DpadAwareRecyclerView
+            android:id="@+id/mainGalleryMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:selectorVelocity="1000"
+            app:smoothScrolling="true"
+            app:foregroundSelector="@drawable/main_menu_item_foreground_selector"
+            android:nextFocusDown="@+id/mainGalleryMenu"
+            android:nextFocusUp="@+id/menu_button"/>
 
 </us.nineworlds.serenity.widgets.ReflectingLayout>

@@ -153,8 +153,21 @@
 		<dependency>
 			<groupId>com.github.vganin</groupId>
 			<artifactId>dpadaware-recyclerview</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 			<type>aar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.jakewharton</groupId>
+			<artifactId>butterknife</artifactId>
+			<version>8.4.0</version>
+			<type>aar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.jakewharton</groupId>
+			<artifactId>butterknife-compiler</artifactId>
+			<version>8.4.0</version>
+			<optional>true</optional>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

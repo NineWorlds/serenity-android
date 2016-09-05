@@ -23,6 +23,8 @@
 
 package us.nineworlds.serenity;
 
+import net.ganin.darv.DpadAwareRecyclerView;
+import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.music.MusicActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
@@ -33,14 +35,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 
-/**
- * @author dcarver
- * 
- */
-public class GalleryOnItemClickListener implements OnItemClickListener {
+public class GalleryOnItemClickListener implements DpadAwareRecyclerView.OnItemClickListener {
 
 	private static final String MENU_TYPE_SEARCH = "search";
 	private static final String MENU_TYPE_SHOW = "show";
@@ -49,49 +45,53 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
 	private static final String MENU_TYPE_OPTIONS = "options";
 	private Activity context;
 
-	/**
-	 * 
-	 */
 	public GalleryOnItemClickListener(Context c) {
 		context = (Activity) c;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
-	 * .AdapterView, android.view.View, int, long)
-	 */
 	@Override
-	public void onItemClick(AdapterView<?> av, View view, int position,
-			long arg3) {
+	public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+		MainMenuTextViewAdapter mainMenuTextViewAdapter = (MainMenuTextViewAdapter) dpadAwareRecyclerView.getAdapter();
+		MenuItem menuItem = mainMenuTextViewAdapter.getItemAtPosition(i);
+		String librarySection = menuItem.getSection();
+		String activityType = menuItem.getType();
 
-		MainMenuTextView v = (MainMenuTextView) view;
-		String librarySection = v.getLibraryKey();
-
-		String activityType = v.getActivityType();
-
-		Intent i = null;
-
-		if (MENU_TYPE_MOVIE.equalsIgnoreCase(activityType)) {
-			i = new Intent(context, MovieBrowserActivity.class);
-		} else if (MENU_TYPE_SHOW.equalsIgnoreCase(activityType)) {
-			i = new Intent(context, TVShowBrowserActivity.class);
-		} else if (MENU_TYPE_SEARCH.equalsIgnoreCase(activityType)) {
+		if (MENU_TYPE_SEARCH.equalsIgnoreCase(activityType)) {
 			context.onSearchRequested();
 			return;
-		} else if (MENU_TYPE_OPTIONS.equalsIgnoreCase(activityType)) {
-			context.openOptionsMenu();
-			return;
-		} else if (MENU_TYPE_MUSIC.equalsIgnoreCase(activityType)) {
-			i = new Intent(context, MusicActivity.class);
-		} else {
-			i = new Intent(context, SerenityPreferenceActivity.class);
 		}
 
-		i.putExtra("key", librarySection);
-		context.startActivityForResult(i, 0);
-	}
+		if (MENU_TYPE_OPTIONS.equalsIgnoreCase(activityType)) {
+			context.openOptionsMenu();
+			return;
+		}
 
+		Intent intent;
+
+
+		if (MENU_TYPE_MOVIE.equalsIgnoreCase(activityType)) {
+			intent = new Intent(context, MovieBrowserActivity.class);
+			intent.putExtra("key", librarySection);
+			context.startActivityForResult(intent, 0);
+			return;
+		}
+
+		if (MENU_TYPE_SHOW.equalsIgnoreCase(activityType)) {
+			intent = new Intent(context, TVShowBrowserActivity.class);
+			intent.putExtra("key", librarySection);
+			context.startActivityForResult(intent, 0);
+			return;
+		}
+
+		if (MENU_TYPE_MUSIC.equalsIgnoreCase(activityType)) {
+			intent = new Intent(context, MusicActivity.class);
+			intent.putExtra("key", librarySection);
+			context.startActivityForResult(intent, 0);
+			return;
+		}
+
+		intent = new Intent(context, SerenityPreferenceActivity.class);
+		intent.putExtra("key", librarySection);
+		context.startActivityForResult(intent, 0);
+	}
 }

@@ -27,6 +27,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.menus.MenuItem;
@@ -51,17 +59,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
-
-	@Inject
-	PlexappFactory plexFactory;
-
-	@Inject
-	VolleyUtils volley;
+public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
 	/** The parent context */
 	private final Context myContext;
-	private RequestQueue queue;
 
 	public static List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
@@ -69,25 +70,27 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 	public MainMenuTextViewAdapter(Context c) {
 		super();
 		myContext = c;
-		fetchData();
 	}
 
-	protected void fetchData() {
-		queue = volley.getRequestQueue();
-
-		String url = plexFactory.getSectionsURL();
-		volley.volleyXmlGetRequest(url, new MainMenuVolleyResponseListener(),
-				new MainMenuResponseErrorListener());
-	}
 
 	@Override
-	public int getCount() {
+	public int getItemCount() {
 		return menuItems.size();
 	}
 
 	@Override
-	public Object getItem(int position) {
-		return position;
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		FrameLayout mainMenuTextView = (FrameLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mainmenu, parent, false);
+		return new MainMenuViewHolder(mainMenuTextView);
+	}
+
+	@Override
+	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+		MenuItem menuItem = menuItems.get(position);
+
+		MainMenuViewHolder mainMenuViewHolder = (MainMenuViewHolder) holder;
+		//createView(mainMenuViewHolder.mainMenuTextView, menuItem);
+		setDefaults(menuItem.getTitle(), mainMenuViewHolder.mainMenuTextView);
 	}
 
 	@Override
@@ -95,125 +98,88 @@ public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
 		return position;
 	}
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		MenuItem menuItem = menuItems.get(position);
-
-		MainMenuTextView v = createView(menuItem);
-		setDefaults(menuItem.getTitle(), v);
-
-		return v;
-	}
 
 	/**
 	 * Create a Main Menu item view for the corresponding MenuItem. If an
 	 * appropriate type can not be found a default MainMenuTextView will be
 	 * created.
 	 *
-	 * @param v
 	 * @param menuItem
 	 * @return
 	 */
-	MainMenuTextView createView(MenuItem menuItem) {
-		MainMenuTextView v = null;
+	protected void createView(MainMenuTextView mainMenuTextView, MenuItem menuItem) {
 		if ("movie".equals(menuItem.getType())) {
-			v = new MainMenuTextView(myContext, R.drawable.movies);
-			v.setLibraryKey(menuItem.getSection());
-			v.setActivityType(menuItem.getType());
-			return v;
+			mainMenuTextView.setBackgroundId(R.drawable.movies);
+			mainMenuTextView.setLibraryKey(menuItem.getSection());
+			mainMenuTextView.setActivityType(menuItem.getType());
+			return;
 		}
 
 		if ("show".equals(menuItem.getType())) {
-			v = new MainMenuTextView(myContext, R.drawable.tvshows);
-			v.setLibraryKey(menuItem.getSection());
-			v.setActivityType(menuItem.getType());
-			return v;
+			mainMenuTextView.setBackgroundId(R.drawable.tvshows);
+			mainMenuTextView.setLibraryKey(menuItem.getSection());
+			mainMenuTextView.setActivityType(menuItem.getType());
+			return;
 		}
 
 		if ("artist".equals(menuItem.getType())) {
-			v = new MainMenuTextView(myContext, R.drawable.music);
-			v.setLibraryKey(menuItem.getSection());
-			v.setActivityType(menuItem.getType());
-			return v;
+			mainMenuTextView.setBackgroundId(R.drawable.music);
+			mainMenuTextView.setLibraryKey(menuItem.getSection());
+			mainMenuTextView.setActivityType(menuItem.getType());
+			return;
 		}
 
 		if ("settings".equals(menuItem.getType())) {
-			v = new MainMenuTextView(myContext, R.drawable.settings);
-			v.setLibraryKey("0");
-			v.setActivityType(menuItem.getType());
-			return v;
+			mainMenuTextView.setBackgroundId(R.drawable.settings);
+			mainMenuTextView.setLibraryKey("0");
+			mainMenuTextView.setActivityType(menuItem.getType());
+			return;
 		}
 
 		if ("options".equals(menuItem.getType())) {
-			v = new MainMenuTextView(myContext, R.drawable.settings);
-			v.setLibraryKey("0");
-			v.setActivityType(menuItem.getType());
-			return v;
+			mainMenuTextView.setBackgroundId(R.drawable.settings);
+			mainMenuTextView.setLibraryKey("0");
+			mainMenuTextView.setActivityType(menuItem.getType());
+			return;
 		}
 
 		if ("search".equals(menuItem.getType())) {
-			v = new MainMenuTextView(myContext, R.drawable.search);
-			v.setLibraryKey("0");
-			v.setActivityType(menuItem.getType());
-			return v;
+			mainMenuTextView.setBackgroundId(R.drawable.search);
+			mainMenuTextView.setLibraryKey("0");
+			mainMenuTextView.setActivityType(menuItem.getType());
+			return;
 		}
 
-		return new MainMenuTextView(myContext, R.drawable.serenity_bonsai_logo);
+		mainMenuTextView.setBackgroundId(R.drawable.serenity_bonsai_logo);
 	}
 
-	/**
-	 * Sets the default values for the view passed to it.
-	 *
-	 * @param position
-	 * @param v
-	 */
-	void setDefaults(String title, MainMenuTextView v) {
+	void setDefaults(String title, TextView v) {
 		v.setText(title);
 		v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
 		v.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-		v.setTextColor(Color.parseColor("#414141"));
 		v.setGravity(Gravity.CENTER_VERTICAL);
 		v.setLines(1);
 		v.setHorizontallyScrolling(true);
 		v.setEllipsize(TruncateAt.MARQUEE);
-		v.setLayoutParams(new Gallery.LayoutParams(
+		v.setLayoutParams(new FrameLayout.LayoutParams(
 				android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
 				android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 	}
 
-	private class MainMenuVolleyResponseListener implements
-			Response.Listener<MediaContainer> {
-
-		@Override
-		public void onResponse(MediaContainer mc) {
-			menuItems = new MenuMediaContainer(mc).createMenuItems();
-			notifyDataSetChanged();
-			Activity c = (Activity) myContext;
-			c.findViewById(R.id.mainGalleryMenu).requestFocus();
+	public MenuItem getItemAtPosition(int position) {
+		if (position > menuItems.size()) {
+			return null;
 		}
+		return menuItems.get(position);
 	}
 
-	private class MainMenuResponseErrorListener extends
-			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
+	public class MainMenuViewHolder extends RecyclerView.ViewHolder {
 
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			super.onErrorResponse(error);
+		public TextView mainMenuTextView;
 
-			MenuMediaContainer mc = new MenuMediaContainer(null);
-
-			menuItems.add(mc.createSettingsMenu());
-			menuItems.add(mc.createOptionsMenu());
-			Toast.makeText(
-					myContext,
-					"Unable to connect to Plex Library at "
-							+ plexFactory.getSectionsURL(), Toast.LENGTH_LONG)
-					.show();
-			notifyDataSetChanged();
-
-			Activity c = (Activity) myContext;
-			c.findViewById(R.id.mainGalleryMenu).requestFocus();
+		public MainMenuViewHolder(View itemView) {
+			super(itemView);
+			mainMenuTextView = (TextView) itemView.findViewById(R.id.main_menu_item);
 		}
 	}
-
 }

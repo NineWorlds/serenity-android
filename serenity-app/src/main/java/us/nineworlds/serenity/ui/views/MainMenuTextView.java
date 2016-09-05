@@ -44,6 +44,10 @@ public class MainMenuTextView extends TextView {
 		this.activityType = activityType;
 	}
 
+	public void setBackgroundId(int backgroundId) {
+		this.backgroundId = backgroundId;
+	}
+
 	/**
 	 * @param context
 	 */

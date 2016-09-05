@@ -65,10 +65,7 @@ import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.core.util.AndroidHelper;
-import us.nineworlds.serenity.fragments.EpisodeVideoGalleryFragment;
-import us.nineworlds.serenity.fragments.MovieSearchGalleryFragment;
-import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
-import us.nineworlds.serenity.fragments.VideoGridFragment;
+import us.nineworlds.serenity.fragments.*;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.injection.ApplicationContext;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
@@ -143,6 +140,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module(includes = SerenityModule.class, injects = { GDMReceiver.class,
+		MainMenuFragment.class,
 		OnDeckRecommendations.class, MusicTracksActivity.class,
 		GalleryVideoOnItemLongClickListener.class,
 		GridVideoOnItemLongClickListener.class, MediaController.class,
