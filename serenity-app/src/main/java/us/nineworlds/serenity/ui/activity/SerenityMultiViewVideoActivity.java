@@ -151,6 +151,8 @@ public abstract class SerenityMultiViewVideoActivity extends SerenityVideoActivi
 			}
 		}
 
+		gallery.requestFocus();
+
 		if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
 
 			if (resultCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
@@ -159,6 +161,8 @@ public abstract class SerenityMultiViewVideoActivity extends SerenityVideoActivi
 				}
 				return;
 			}
+
+
 
 			if (!externalPlayer) {
 				if (!videoQueue.isEmpty()) {
