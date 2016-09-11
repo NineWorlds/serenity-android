@@ -94,23 +94,25 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dip"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="5dip"
+        android:layout_marginTop="5dp"
         android:background="#A0000000"
         android:gravity="bottom"
         android:padding="5dp" >
 
-        <us.nineworlds.serenity.widgets.SerenityGallery
+        <net.ganin.darv.DpadAwareRecyclerView
             android:id="@+id/moviePosterGallery"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center|center_vertical"
             android:nextFocusUp="@+id/categoryFilter"
-            android:spacing="25dp" >
+            app:selectorVelocity="1000"
+            app:smoothScrolling="true"
+            app:backgroundSelector="@drawable/main_menu_item_foreground_selector">
+            <requestFocus/>
+        </net.ganin.darv.DpadAwareRecyclerView>
 
-            <requestFocus />
-        </us.nineworlds.serenity.widgets.SerenityGallery>
     </LinearLayout>
 
 </RelativeLayout>

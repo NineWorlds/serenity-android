@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import javax.inject.Inject;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
@@ -74,17 +75,17 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
 			long id) {
 		info = (SeriesContentInfo) av.getItemAtPosition(position);
 		ImageView mpiv = (ImageView) v.findViewById(R.id.posterImageView);
-		TwoWayGridView episodeGrid = (TwoWayGridView) context
+		DpadAwareRecyclerView episodeGrid = (DpadAwareRecyclerView) context
 				.findViewById(R.id.episodeGridView);
 
 		episodeGrid.setVisibility(View.VISIBLE);
 		episodeGrid.setAdapter(new SeasonsEpisodePosterImageGalleryAdapter(
 				context, info.getKey()));
-		episodeGrid
-		.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
-		episodeGrid.setOnItemClickListener(new GridVideoOnItemClickListener());
-		episodeGrid
-		.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
+//		episodeGrid
+//		.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
+//		episodeGrid.setOnItemClickListener(new GridVideoOnItemClickListener());
+//		episodeGrid
+//		.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
 
 		if (previous != null) {
 			previous.setPadding(0, 0, 0, 0);

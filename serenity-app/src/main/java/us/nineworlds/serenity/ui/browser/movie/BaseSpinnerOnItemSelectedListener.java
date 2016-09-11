@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import javax.inject.Inject;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -44,7 +45,7 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 	@Inject
 	protected SharedPreferences prefs;
 
-	protected SerenityGallery posterGallery;
+	protected DpadAwareRecyclerView posterGallery;
 	protected TwoWayGridView gridView;
 
 	protected SerenityMultiViewVideoActivity multiViewVideoActivity;
@@ -61,7 +62,7 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 	protected void findViews() {
 		gridView = (TwoWayGridView) getMultiViewVideoActivity().findViewById(
 				R.id.movieGridView);
-		posterGallery = (SerenityGallery) getMultiViewVideoActivity()
+		posterGallery = (DpadAwareRecyclerView) getMultiViewVideoActivity()
 				.findViewById(R.id.moviePosterGallery);
 	}
 
@@ -85,10 +86,11 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 
 	protected void refreshGallery(AbstractPosterImageGalleryAdapter adapter) {
 		posterGallery.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
 	}
 
 	protected void refreshGridView(AbstractPosterImageGalleryAdapter adapter) {
-		gridView.setAdapter(adapter);
+		//gridView.setAdapter(adapter);
 	}
 
 	protected SerenityMultiViewVideoActivity getMultiViewVideoActivity() {

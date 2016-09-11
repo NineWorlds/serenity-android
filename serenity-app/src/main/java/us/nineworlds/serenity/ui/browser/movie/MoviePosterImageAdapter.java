@@ -23,6 +23,13 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.TrailersYouTubeSearch;
@@ -65,7 +72,6 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		notifyAdapter = this;
 	}
 
-	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		if (position > posterList.size()) {
@@ -96,7 +102,6 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		RoundedImageView mpiv = (RoundedImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
 
-		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
 		int width = 0;
 		int height = 0;
@@ -121,7 +126,6 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 					width, height));
 		}
 
-		shrinkPosterAnimation(mpiv, movieContext.isGridViewActive());
 		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
 
 		setWatchedStatus(galleryCellView, pi);
@@ -140,10 +144,9 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 					fetchTrailer(pi, galleryCellView);
 				}
 			} else {
-				View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
-				v.setVisibility(View.VISIBLE);
-				v.findViewById(R.id.trailerIndicator).setVisibility(
-						View.VISIBLE);
+				//v.setVisibility(View.VISIBLE);
+				//v.findViewById(R.id.trailerIndicator).setVisibility(
+				//		View.VISIBLE);
 			}
 
 			if (pi.getAvailableSubtitles() != null) {
@@ -187,14 +190,65 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 	@Override
 	protected void fetchDataFromService() {
-		context.setSupportProgressBarIndeterminate(true);
-		context.setSupportProgressBarVisibility(false);
-		context.setSupportProgressBarIndeterminateVisibility(true);
-
 		String url = factory.getSectionsURL(key, category);
 
 		volley.volleyXmlGetRequest(url, new MoviePosterResponseListener(),
 				new MoviePosterResponseErrorListener());
+	}
+
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = LayoutInflater.from(movieContext).inflate(R.layout.poster_indicator_view, parent, false);
+		return new MoviePosterViewHolder(view);
+	}
+
+	@Override
+	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+		MoviePosterViewHolder viewHolder = (MoviePosterViewHolder) holder;
+		if (position > posterList.size()) {
+			position = posterList.size() - 1;
+		}
+
+		if (position < 0) {
+			position = 0;
+		}
+
+		viewHolder.poseterInprogressIndicator.setVisibility(View.INVISIBLE);
+		viewHolder.posterWatchedIndicator.setVisibility(View.INVISIBLE);
+		viewHolder.infoGraphicMetaContainer.setVisibility(View.GONE);
+
+		VideoContentInfo pi = posterList.get(position);
+		//gridViewMetaData(galleryCellView, pi);
+
+		RoundedImageView mpiv = viewHolder.posterImageView;
+
+		//mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
+		int width = 0;
+		int height = 0;
+
+		width = ImageUtils.getDPI(130, context);
+		height = ImageUtils.getDPI(200, context);
+		mpiv.setMaxHeight(height);
+		mpiv.setMaxWidth(width);
+		if (!movieContext.isGridViewActive()) {
+			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+			viewHolder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(
+					width, height));
+		} else {
+			width = ImageUtils.getDPI(120, context);
+			height = ImageUtils.getDPI(180, context);
+			if ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+				width = ImageUtils.getDPI(150, context);
+				height = ImageUtils.getDPI(220, context);
+			}
+			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+			//galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
+			//		width, height));
+		}
+
+		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
+
+		setWatchedStatus(viewHolder.itemView, pi);
 	}
 
 	private class MoviePosterResponseErrorListener implements
@@ -228,7 +282,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 			posterList = movies.createVideos();
 			notifyAdapter.notifyDataSetChanged();
 			if (!movieContext.isGridViewActive()) {
-				SerenityGallery posterGallery = (SerenityGallery) movieContext
+				DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) movieContext
 						.findViewById(R.id.moviePosterGallery);
 				posterGallery.requestFocusFromTouch();
 			} else {
@@ -236,6 +290,27 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 						.findViewById(R.id.movieGridView);
 				gridView.requestFocusFromTouch();
 			}
+		}
+
+	}
+
+	protected class MoviePosterViewHolder extends RecyclerView.ViewHolder {
+
+		@BindView(R.id.posterInprogressIndicator)
+		public ProgressBar poseterInprogressIndicator;
+
+		@BindView(R.id.posterWatchedIndicator)
+		public ImageView posterWatchedIndicator;
+
+		@BindView(R.id.infoGraphicMeta)
+		public LinearLayout infoGraphicMetaContainer;
+
+		@BindView(R.id.posterImageView)
+		public RoundedImageView posterImageView;
+
+		public MoviePosterViewHolder(View itemView) {
+			super(itemView);
+			ButterKnife.bind(this, itemView);
 		}
 
 	}

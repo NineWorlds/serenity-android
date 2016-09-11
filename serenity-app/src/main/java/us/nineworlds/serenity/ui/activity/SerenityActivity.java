@@ -23,6 +23,8 @@
 
 package us.nineworlds.serenity.ui.activity;
 
+import android.support.v7.widget.RecyclerView;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
@@ -40,6 +42,8 @@ import android.view.View;
 
 import com.jess.ui.TwoWayGridView;
 
+import static android.support.v7.widget.RecyclerView.*;
+
 /**
  * @author dcarver
  *
@@ -56,7 +60,7 @@ public abstract class SerenityActivity extends InjectingActivity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
+		DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) findViewById(R.id.moviePosterGallery);
 		TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
 		if (gridView == null) {
 			gridView = (TwoWayGridView) findViewById(R.id.tvShowGridView);
@@ -74,12 +78,13 @@ public abstract class SerenityActivity extends InjectingActivity {
 		}
 
 		if (adapter != null) {
-			int itemsCount = adapter.getCount();
+			int itemsCount = adapter.getItemCount();
 
 			if (contextMenuRequested(keyCode)) {
 				View view = null;
 				if (gallery != null) {
-					view = gallery.getSelectedView();
+					LayoutManager layoutManager = gallery.getLayoutManager();
+					view = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
 				} else {
 					view = gridView.getSelectedView();
 				}
@@ -112,10 +117,6 @@ public abstract class SerenityActivity extends InjectingActivity {
 		return super.onKeyDown(keyCode, event);
 	}
 
-	/**
-	 * @param keyCode
-	 * @return
-	 */
 	protected boolean contextMenuRequested(int keyCode) {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);

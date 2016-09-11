@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
+import android.support.v7.widget.RecyclerView;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -53,7 +54,6 @@ public class EpisodePosterImageGalleryAdapter extends
 		super(c, key);
 	}
 
-	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View galleryCellView = context.getLayoutInflater().inflate(
 				R.layout.poster_indicator_view, null);
@@ -71,8 +71,6 @@ public class EpisodePosterImageGalleryAdapter extends
 		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width,
 				height));
 
-		shrinkPosterAnimation(mpiv, false);
-
 		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
 
 		setWatchedStatus(galleryCellView, pi);
@@ -82,10 +80,6 @@ public class EpisodePosterImageGalleryAdapter extends
 
 	@Override
 	protected void fetchDataFromService() {
-		context.setSupportProgressBarIndeterminate(true);
-		context.setSupportProgressBarVisibility(false);
-		context.setSupportProgressBarIndeterminateVisibility(true);
-
 		retrieveEpisodes();
 	}
 
@@ -94,6 +88,16 @@ public class EpisodePosterImageGalleryAdapter extends
 
 		volley.volleyXmlGetRequest(url, new EpisodePosterResponseListener(),
 				new EpisodeResponseErrorListener());
+	}
+
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		return null;
+	}
+
+	@Override
+	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
 	}
 
 	private class EpisodePosterResponseListener implements

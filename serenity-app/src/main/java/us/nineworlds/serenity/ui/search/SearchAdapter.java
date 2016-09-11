@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.search;
 
 import java.util.List;
 
+import android.support.v7.widget.RecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -48,7 +49,6 @@ public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
 		posterList = videos;
 	}
 
-	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View galleryCellView = context.getLayoutInflater().inflate(
 				R.layout.poster_indicator_view, null);
@@ -88,4 +88,13 @@ public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
 
 	}
 
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		return null;
+	}
+
+	@Override
+	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+	}
 }

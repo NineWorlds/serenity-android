@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import javax.inject.Inject;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
@@ -90,15 +91,15 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
 
 		View bgLayout = activity.findViewById(R.id.tvshowBrowserLayout);
 		if (activity.isGridViewActive()) {
-			TwoWayGridView gridView = (TwoWayGridView) activity
-					.findViewById(R.id.tvShowGridView);
-			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(activity, key,
-					item.getParentCategory() + "/" + item.getCategory()));
-			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(
-					bgLayout, activity));
-			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(activity));
+//			TwoWayGridView gridView = (TwoWayGridView) activity
+//					.findViewById(R.id.tvShowGridView);
+//			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(activity, key,
+//					item.getParentCategory() + "/" + item.getCategory()));
+//			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(
+//					bgLayout, activity));
+//			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(activity));
 		} else {
-			SerenityGallery posterGallery = (SerenityGallery) activity
+			DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) activity
 					.findViewById(R.id.tvShowBannerGallery);
 
 			if (activity.isPosterLayoutActive()) {
@@ -111,23 +112,23 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
 								+ item.getCategory()));
 			}
 
-			posterGallery
-					.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
-							bgLayout, activity));
-			posterGallery
-					.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
-							activity));
-			posterGallery
-					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
-			posterGallery.setCallbackDuringFling(false);
-			posterGallery.setAnimationDuration(1);
-			posterGallery.setSpacing(15);
-			posterGallery.setPadding(5, 5, 5, 5);
-			posterGallery.setAnimationCacheEnabled(true);
-			posterGallery.setHorizontalFadingEdgeEnabled(true);
-			posterGallery.setFocusableInTouchMode(false);
-			posterGallery.setDrawingCacheEnabled(true);
-			posterGallery.setUnselectedAlpha(0.75f);
+//			posterGallery
+//					.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
+//							bgLayout, activity));
+//			posterGallery
+//					.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
+//							activity));
+//			posterGallery
+//					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
+//			posterGallery.setCallbackDuringFling(false);
+//			posterGallery.setAnimationDuration(1);
+//			posterGallery.setSpacing(15);
+//			posterGallery.setPadding(5, 5, 5, 5);
+//			posterGallery.setAnimationCacheEnabled(true);
+//			posterGallery.setHorizontalFadingEdgeEnabled(true);
+//			posterGallery.setFocusableInTouchMode(false);
+//			posterGallery.setDrawingCacheEnabled(true);
+//			posterGallery.setUnselectedAlpha(0.75f);
 		}
 	}
 

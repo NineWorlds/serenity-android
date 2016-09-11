@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.listeners;
 
 import javax.inject.Inject;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
@@ -77,7 +78,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
-		implements OnItemSelectedListener {
+		implements OnItemSelectedListener, DpadAwareRecyclerView.OnItemSelectedListener {
 	@Inject
 	protected SerenityImageLoader serenityImageLoader;
 

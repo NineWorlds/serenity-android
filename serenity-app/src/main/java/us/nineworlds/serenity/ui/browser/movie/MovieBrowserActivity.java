@@ -28,15 +28,16 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -56,6 +57,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	@Inject
 	protected MovieSelectedCategoryState categoryState;
+
+	DpadAwareRecyclerView.Adapter adapter;
 
 	@Override
 	protected void createSideMenu() {
@@ -178,6 +181,12 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		super.onResume();
 	}
 
+	protected void onPause() {
+		DpadAwareRecyclerView galleryView = findGalleryView();
+		adapter = galleryView.getAdapter();
+		super.onPause();
+	}
+
 	@Override
 	protected void onRestart() {
 		super.onRestart();
@@ -193,8 +202,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	}
 
 	@Override
-	protected SerenityGallery findGalleryView() {
-		return (SerenityGallery) findViewById(R.id.moviePosterGallery);
+	protected DpadAwareRecyclerView findGalleryView() {
+		return (DpadAwareRecyclerView) findViewById(R.id.moviePosterGallery);
 	}
 
 	@Override
@@ -202,4 +211,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		return (TwoWayGridView) findViewById(R.id.movieGridView);
 	}
 
+	@Override
+	public AbstractPosterImageGalleryAdapter getAdapter() {
+		return (AbstractPosterImageGalleryAdapter) adapter;
+	}
 }

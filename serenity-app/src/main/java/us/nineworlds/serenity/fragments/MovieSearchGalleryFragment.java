@@ -86,7 +86,7 @@ public class MovieSearchGalleryFragment extends InjectingFragment {
 
 		videoGallery.setOnItemSelectedListener(onItemSelectedListener);
 
-		videoGallery.setOnItemClickListener(onItemClickListener);
+		//videoGallery.setOnItemClickListener(onItemClickListener);
 
 		videoGallery.setOnItemLongClickListener(onItemLongClickListener);
 		if (scrollingAnimation) {

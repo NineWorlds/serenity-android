@@ -67,7 +67,6 @@ public class GalleryOnItemClickListener implements DpadAwareRecyclerView.OnItemC
 
 		Intent intent;
 
-
 		if (MENU_TYPE_MOVIE.equalsIgnoreCase(activityType)) {
 			intent = new Intent(context, MovieBrowserActivity.class);
 			intent.putExtra("key", librarySection);

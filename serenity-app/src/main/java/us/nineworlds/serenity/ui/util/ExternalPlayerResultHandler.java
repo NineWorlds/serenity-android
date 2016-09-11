@@ -39,6 +39,7 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 public class ExternalPlayerResultHandler extends PlayerResultHandler {
 
@@ -59,7 +60,7 @@ public class ExternalPlayerResultHandler extends PlayerResultHandler {
 	protected SharedPreferences preferences;
 
 	public ExternalPlayerResultHandler(int resultCode, Intent data,
-			Activity activity, BaseAdapter adapter) {
+			Activity activity, AbstractPosterImageGalleryAdapter adapter) {
 		super(data, adapter);
 		this.activity = activity;
 		externalPlayerValue = preferences.getString(

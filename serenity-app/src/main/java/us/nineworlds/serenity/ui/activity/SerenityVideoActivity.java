@@ -27,11 +27,14 @@ import java.util.LinkedList;
 
 import javax.inject.Inject;
 
+import android.support.v7.widget.RecyclerView;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.OnDeckRecommendationAsyncTask;
 import us.nineworlds.serenity.injection.ForVideoQueue;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
@@ -49,8 +52,7 @@ import com.jess.ui.TwoWayGridView;
  * @author dcarver
  *
  */
-public abstract class SerenityVideoActivity extends
-SerenityDrawerLayoutActivity {
+public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity {
 
 	@Inject
 	@ForVideoQueue
@@ -61,15 +63,16 @@ SerenityDrawerLayoutActivity {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
-		SerenityGallery gallery = findGalleryView();
+		DpadAwareRecyclerView gallery = findGalleryView();
 		View selectedView = null;
 		VideoContentInfo video = null;
 		BaseAdapter adapter = null;
 
 		if (gallery != null) {
-			video = (VideoContentInfo) gallery.getSelectedItem();
-			adapter = (BaseAdapter) gallery.getAdapter();
-			selectedView = gallery.getSelectedView();
+			AbstractPosterImageGalleryAdapter adapter2 = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+			video = (VideoContentInfo) adapter2.getItem(gallery.getSelectedItemPosition());
+			RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
+			selectedView = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
 		} else {
 			TwoWayGridView gridView = findGridView();
 			if (gridView != null) {
@@ -87,15 +90,15 @@ SerenityDrawerLayoutActivity {
 
 		if (data != null) {
 			if (externalPlayer) {
-				ExternalPlayerResultHandler externalPlayerHandler = new ExternalPlayerResultHandler(
-						resultCode, data, this, adapter);
-				externalPlayerHandler.updatePlaybackPosition(video,
-						selectedView);
+//				ExternalPlayerResultHandler externalPlayerHandler = new ExternalPlayerResultHandler(
+//						resultCode, data, this, adapter);
+//				externalPlayerHandler.updatePlaybackPosition(video,
+//						selectedView);
 			} else {
-				PlayerResultHandler playerResultHandler = new PlayerResultHandler(
-						data, adapter);
-				playerResultHandler.updateVideoPlaybackPosition(video,
-						selectedView);
+//				PlayerResultHandler playerResultHandler = new PlayerResultHandler(
+//						data, adapter);
+//				playerResultHandler.updateVideoPlaybackPosition(video,
+//						selectedView);
 			}
 		}
 
@@ -124,7 +127,7 @@ SerenityDrawerLayoutActivity {
 		onDeckRecomendations.execute();
 	}
 
-	protected abstract SerenityGallery findGalleryView();
+	protected abstract DpadAwareRecyclerView findGalleryView();
 
 	protected abstract TwoWayGridView findGridView();
 

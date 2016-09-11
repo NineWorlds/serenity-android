@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import javax.inject.Inject;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
@@ -204,18 +205,18 @@ implements OnItemSelectedListener {
 		View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
 
 		if (context.isGridViewActive()) {
-			TwoWayGridView gridView = (TwoWayGridView) context
-					.findViewById(R.id.tvShowGridView);
-			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(context,
-					key, item.getCategory()));
-			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(
-					bgLayout, context));
-			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(
-					context));
-			gridView.setOnItemLongClickListener(new TVShowGridOnItemLongClickListener());
-			gridView.setOnKeyListener(new TVShowGridOnKeyListener(context));
+//			TwoWayGridView gridView = (TwoWayGridView) context
+//					.findViewById(R.id.tvShowGridView);
+//			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(context,
+//					key, item.getCategory()));
+//			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(
+//					bgLayout, context));
+//			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(
+//					context));
+//			gridView.setOnItemLongClickListener(new TVShowGridOnItemLongClickListener());
+//			gridView.setOnKeyListener(new TVShowGridOnKeyListener(context));
 		} else {
-			SerenityGallery posterGallery = (SerenityGallery) context
+			DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) context
 					.findViewById(R.id.tvShowBannerGallery);
 			if (!context.isPosterLayoutActive()) {
 				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
@@ -224,26 +225,24 @@ implements OnItemSelectedListener {
 				posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(
 						context, key, item.getCategory()));
 			}
-			posterGallery
-			.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
-					bgLayout, context));
-			posterGallery
-			.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
-					context));
-			posterGallery
-			.setOnItemLongClickListener(new ShowOnItemLongClickListener());
-			posterGallery.setCallbackDuringFling(false);
-			posterGallery.setAnimationDuration(1);
-			posterGallery.setSpacing(15);
-			posterGallery.setPadding(5, 5, 5, 5);
-			posterGallery.setAnimationCacheEnabled(true);
-			posterGallery.setHorizontalFadingEdgeEnabled(true);
-			posterGallery.setFocusableInTouchMode(false);
-			posterGallery.setDrawingCacheEnabled(true);
-			posterGallery.setUnselectedAlpha(0.75f);
-
+//			posterGallery
+//			.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
+//					bgLayout, context));
+//			posterGallery
+//			.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
+//					context));
+//			posterGallery
+//			.setOnItemLongClickListener(new ShowOnItemLongClickListener());
+//			posterGallery.setCallbackDuringFling(false);
+//			posterGallery.setAnimationDuration(1);
+//			posterGallery.setSpacing(15);
+//			posterGallery.setPadding(5, 5, 5, 5);
+//			posterGallery.setAnimationCacheEnabled(true);
+//			posterGallery.setHorizontalFadingEdgeEnabled(true);
+//			posterGallery.setFocusableInTouchMode(false);
+//			posterGallery.setDrawingCacheEnabled(true);
+//			posterGallery.setUnselectedAlpha(0.75f);
 		}
-
 	}
 
 	@Override

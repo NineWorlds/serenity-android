@@ -23,10 +23,12 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
+import android.support.v7.widget.RecyclerView;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemClickListener;
 
 import android.view.View;
 
@@ -34,13 +36,12 @@ import android.view.View;
  * @author dcarver
  * 
  */
-public class GalleryVideoOnItemClickListener extends AbstractVideoOnItemClickListener implements OnItemClickListener {
+public class GalleryVideoOnItemClickListener extends AbstractVideoOnItemClickListener implements DpadAwareRecyclerView.OnItemClickListener {
 
 	@Override
-	public void onItemClick(SerenityAdapterView<?> av, View v, int arg2,
-			long arg3) {
-		videoInfo = (VideoContentInfo) av.getItemAtPosition(arg2);
-		onItemClick(v.findViewById(R.id.posterImageView));
+	public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+		MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) dpadAwareRecyclerView.getAdapter();
+		videoInfo = (VideoContentInfo) adapter.getItem(i);
+		onItemClick(view);
 	}
-
 }

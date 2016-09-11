@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.search;
 import java.net.URLEncoder;
 import java.util.List;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuItem;
@@ -122,7 +123,7 @@ public class SearchableActivity extends SerenityVideoActivity {
 			View bgLayout) {
 		SerenityGallery posterGallery = (SerenityGallery) context
 				.findViewById(R.id.moviePosterGallery);
-		posterGallery.setAdapter(new SearchAdapter(context, videos));
+//		posterGallery.setAdapter(new SearchAdapter(context, videos));
 	}
 
 	protected static class MovieSearchHandler extends Handler {
@@ -145,8 +146,8 @@ public class SearchableActivity extends SerenityVideoActivity {
 	}
 
 	@Override
-	protected SerenityGallery findGalleryView() {
-		return (SerenityGallery) findViewById(R.id.moviePosterGallery);
+	protected DpadAwareRecyclerView findGalleryView() {
+		return (DpadAwareRecyclerView) findViewById(R.id.moviePosterGallery);
 	}
 
 	@Override

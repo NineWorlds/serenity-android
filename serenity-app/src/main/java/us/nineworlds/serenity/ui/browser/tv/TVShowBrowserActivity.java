@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
@@ -144,7 +145,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery
 				.getAdapter();
 		if (adapter != null) {
-			int itemsCount = adapter.getCount();
+			int itemsCount = adapter.getItemCount();
 
 			if (contextMenuRequested(keyCode)) {
 				View view = gallery.getSelectedView();
@@ -254,6 +255,11 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		// }
 	}
 
+	@Override
+	public AbstractPosterImageGalleryAdapter getAdapter() {
+		return null;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -278,8 +284,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	}
 
 	@Override
-	protected SerenityGallery findGalleryView() {
-		return (SerenityGallery) findViewById(R.id.tvShowBannerGallery);
+	protected DpadAwareRecyclerView findGalleryView() {
+		return (DpadAwareRecyclerView) findViewById(R.id.tvShowBannerGallery);
 	}
 
 	@Override

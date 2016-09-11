@@ -25,9 +25,15 @@ package us.nineworlds.serenity.fragments;
 
 import javax.inject.Inject;
 
+import android.content.res.Resources;
+import android.support.v7.widget.LinearLayoutManager;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
+import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
@@ -44,6 +50,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import static butterknife.ButterKnife.*;
 
 public class MovieVideoGalleryFragment extends InjectingFragment {
 
@@ -65,80 +73,51 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 	@Inject
 	PlexappFactory factory;
 
+	@Inject
+	Resources resources;
+
 	MoviePosterOnItemSelectedListener onItemSelectedListener;
 
-	private SerenityGallery videoGallery;
+	@BindView(R.id.moviePosterGallery)
+	DpadAwareRecyclerView videoGallery;
 
 	public MovieVideoGalleryFragment() {
 		super();
-		setRetainInstance(false);
-
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-
+		setRetainInstance(true);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		onItemSelectedListener = new MoviePosterOnItemSelectedListener();
-		View view = inflater
-				.inflate(R.layout.video_gallery_fragment, container);
+		View view = inflater.inflate(R.layout.video_gallery_fragment, container);
+		bind(this, view);
 		setupGallery(view);
 		return view;
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
-	}
-
 	protected void setupGallery(View view) {
-		boolean scrollingAnimation = preferences.getBoolean(
-				"animation_gallery_scrolling", true);
+//		boolean scrollingAnimation = preferences.getBoolean(
+//				"animation_gallery_scrolling", true);
+		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+		linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
-		Activity context = (Activity) view.getContext();
-
-		videoGallery = (SerenityGallery) view
-				.findViewById(R.id.moviePosterGallery);
+		videoGallery.setLayoutManager(linearLayoutManager);
+		videoGallery.addItemDecoration(new SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing)));
 
 		videoGallery.setOnItemSelectedListener(onItemSelectedListener);
-
 		videoGallery.setOnItemClickListener(onItemClickListener);
 
-		videoGallery.setOnItemLongClickListener(onItemLongClickListener);
-		if (scrollingAnimation) {
-			videoGallery.setAnimationDuration(220);
-		} else {
-			videoGallery.setAnimationDuration(1);
-		}
-		videoGallery.setSpacing(25);
-		videoGallery.setAnimationCacheEnabled(true);
-		videoGallery.setCallbackDuringFling(false);
 		videoGallery.setHorizontalFadingEdgeEnabled(true);
 		videoGallery.setFocusableInTouchMode(false);
 		videoGallery.setDrawingCacheEnabled(true);
-		videoGallery.setUnselectedAlpha(0.75f);
 
-		String key = null;
-		key = MovieBrowserActivity.getKey();
+		String key = MovieBrowserActivity.getKey();
 
 		MovieCategoryResponseListener response = new MovieCategoryResponseListener(
 				(SerenityMultiViewVideoActivity) getActivity(), key);
 		String url = factory.getSectionsUrl(key);
 		volleyUtils.volleyXmlGetRequest(url, response,
 				new DefaultLoggingVolleyErrorListener());
-
-		// Handler categoryHandler = new CategoryHandler(getActivity(),
-		// categoryState.getCategory(), key);
-		// Messenger messenger = new Messenger(categoryHandler);
-		// Intent categoriesIntent = new Intent(getActivity(),
-		// CategoryRetrievalIntentService.class);
-		// categoriesIntent.putExtra("key", key);
-		// categoriesIntent.putExtra("MESSENGER", messenger);
-		// context.startService(categoriesIntent);
-
 	}
 }

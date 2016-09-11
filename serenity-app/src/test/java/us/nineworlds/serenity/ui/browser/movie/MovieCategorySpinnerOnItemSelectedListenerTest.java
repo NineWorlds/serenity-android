@@ -37,6 +37,7 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -300,7 +301,7 @@ InjectingTest {
 		spyOnItemSelectedListener.findViews();
 		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
 
-		SerenityGallery gallery = (SerenityGallery) movieBrowserActivity
+		DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) movieBrowserActivity
 				.findViewById(R.id.moviePosterGallery);
 		assertThat(gallery.getAdapter()).isEqualTo(mockPosterImageAdapter);
 	}
@@ -345,7 +346,7 @@ InjectingTest {
 	public void refreshGridSetsOnItemLongClickListener() {
 		doReturn(true).when(mockSharedPreferences).getBoolean(
 				"movie_layout_grid", false);
-		doReturn(1).when(mockPosterImageAdapter).getViewTypeCount();
+		doReturn(1).when(mockPosterImageAdapter).getItemCount();
 
 		movieBrowserActivity = Robolectric
 				.buildActivity(MovieBrowserActivity.class).create().start()
@@ -367,7 +368,7 @@ InjectingTest {
 	public void refreshGridSetsOnItemClickListener() {
 		doReturn(true).when(mockSharedPreferences).getBoolean(
 				"movie_layout_grid", false);
-		doReturn(1).when(mockPosterImageAdapter).getViewTypeCount();
+		doReturn(1).when(mockPosterImageAdapter).getItemCount();
 
 		movieBrowserActivity = Robolectric
 				.buildActivity(MovieBrowserActivity.class).create().start()

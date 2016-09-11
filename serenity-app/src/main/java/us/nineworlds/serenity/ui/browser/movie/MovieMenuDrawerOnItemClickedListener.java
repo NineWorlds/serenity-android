@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
@@ -88,11 +89,11 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 				.findFragmentByTag("videoGrid_fragment");
 		FragmentTransaction fragmentTransaction = fragmentManager
 				.beginTransaction();
-		SerenityGallery gallery = (SerenityGallery) activity
+		DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) activity
 				.findViewById(R.id.moviePosterGallery);
-		TwoWayGridView grid = (TwoWayGridView) activity
+		DpadAwareRecyclerView grid = (DpadAwareRecyclerView) activity
 				.findViewById(R.id.movieGridView);
-		AbstractPosterImageGalleryAdapter adapter = null;
+		AbstractPosterImageGalleryAdapter adapter;
 		View titleActionBar = activity
 				.findViewById(R.id.movieActionBarPosterTitle);
 

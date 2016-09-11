@@ -23,6 +23,9 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import android.support.v7.widget.RecyclerView;
+import android.view.animation.AnimationUtils;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
@@ -51,7 +54,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  *
  */
 public class MoviePosterOnItemSelectedListener extends
-		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
+		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener, DpadAwareRecyclerView.OnItemSelectedListener {
+
+	int lastPos = -1;
 
 	public MoviePosterOnItemSelectedListener() {
 		super();
@@ -137,4 +142,43 @@ public class MoviePosterOnItemSelectedListener extends
 		super.fetchSubtitle(mpi);
 	}
 
+	@Override
+	public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+		context = (Activity) view.getContext();
+		if (lastPos != i) {
+			lastPos = i;
+		} else {
+			return;
+		}
+
+		MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) dpadAwareRecyclerView.getAdapter();
+		if (i > adapter.getItemCount()) {
+			return;
+		}
+
+		position = i;
+//		fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
+		videoInfo = (VideoContentInfo) adapter.getItem(position);
+		if (videoInfo == null) {
+			return;
+		}
+
+		changeBackgroundImage();
+
+		view.setPadding(0, 0, 0, 0);
+
+		ImageView posterImageView = (ImageView) view
+				.findViewById(R.id.posterImageView);
+		currentView = posterImageView;
+
+		createVideoDetail(posterImageView);
+		createVideoMetaData(posterImageView);
+		createInfographicDetails(posterImageView);
+	}
+
+	@Override
+	public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+
+	}
 }

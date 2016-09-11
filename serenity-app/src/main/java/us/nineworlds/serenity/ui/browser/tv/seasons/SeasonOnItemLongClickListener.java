@@ -137,7 +137,7 @@ public class SeasonOnItemLongClickListener extends BaseInjector implements
 			videoQueue.addAll(episodes);
 			Toast.makeText(
 					context,
-					adapter.getCount()
+					adapter.getItemCount()
 					+ " videos have been added to the queue.",
 					Toast.LENGTH_LONG).show();
 			View v = context.findViewById(R.id.tvShowSeasonImageGallery);

@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -163,8 +164,8 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	}
 
 	@Override
-	protected SerenityGallery findGalleryView() {
-		return (SerenityGallery) findViewById(R.id.moviePosterGallery);
+	protected DpadAwareRecyclerView findGalleryView() {
+		return (DpadAwareRecyclerView) findViewById(R.id.moviePosterGallery);
 	}
 
 	@Override

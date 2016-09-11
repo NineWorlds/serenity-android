@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.support.v7.widget.RecyclerView;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
@@ -70,17 +71,12 @@ public class TVShowBannerImageGalleryAdapter extends
 	}
 
 	protected void fetchData() {
-		context.setSupportProgressBarIndeterminate(true);
-		context.setSupportProgressBarVisibility(false);
-		context.setSupportProgressBarIndeterminateVisibility(true);
-
 		String url = factory.getSectionsURL(key, category);
 		volley.volleyXmlGetRequest(url, new SeriesResponseListener(),
 				new DefaultLoggingVolleyErrorListener());
 	}
 
-	@Override
-	public int getCount() {
+	public int getItemCount() {
 		return tvShowList.size();
 	}
 
@@ -90,11 +86,20 @@ public class TVShowBannerImageGalleryAdapter extends
 	}
 
 	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		return null;
+	}
+
+	@Override
+	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+	}
+
+	@Override
 	public long getItemId(int position) {
 		return position;
 	}
 
-	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		View galleryCellView = context.getLayoutInflater().inflate(
@@ -109,10 +114,6 @@ public class TVShowBannerImageGalleryAdapter extends
 		return galleryCellView;
 	}
 
-	/**
-	 * @param galleryCellView
-	 * @param pi
-	 */
 	protected void createImage(View galleryCellView, SeriesContentInfo pi,
 			int imageWidth, int imageHeight) {
 		int width = ImageUtils.getDPI(imageWidth, context);

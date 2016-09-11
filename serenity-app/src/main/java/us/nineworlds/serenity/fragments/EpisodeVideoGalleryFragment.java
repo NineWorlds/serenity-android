@@ -25,6 +25,7 @@ package us.nineworlds.serenity.fragments;
 
 import javax.inject.Inject;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
@@ -58,7 +59,7 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
 	MoviePosterOnItemSelectedListener onItemSelectedListener;
 
-	private SerenityGallery videoGallery;
+	private DpadAwareRecyclerView videoGallery;
 
 	public EpisodeVideoGalleryFragment() {
 		super();
@@ -75,7 +76,7 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
 	public void onStart() {
 		super.onStart();
 
-		videoGallery = (SerenityGallery) getActivity().findViewById(
+		videoGallery = (DpadAwareRecyclerView) getActivity().findViewById(
 				R.id.moviePosterGallery);
 
 		boolean scrollingAnimation = preferences.getBoolean(
@@ -87,29 +88,21 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
 		videoGallery
 				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
-		videoGallery
-				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
+//		videoGallery
+//				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
 		if (key.contains("onDeck")
 				|| key.contains("recentlyAdded")
 				|| (key.contains("recentlyViewed") && !key
 						.contains("recentlyViewedShows"))) {
-			videoGallery
-					.setOnItemLongClickListener(new EpisodeBrowserOnLongClickListener());
+//			videoGallery
+//					.setOnItemLongClickListener(new EpisodeBrowserOnLongClickListener());
 		} else {
-			videoGallery.setOnItemLongClickListener(onItemLongClickListener);
+//			videoGallery.setOnItemLongClickListener(onItemLongClickListener);
 		}
 
-		if (scrollingAnimation) {
-			videoGallery.setAnimationDuration(220);
-		} else {
-			videoGallery.setAnimationDuration(1);
-		}
-		videoGallery.setSpacing(25);
-		videoGallery.setCallbackDuringFling(false);
 		videoGallery.setFocusableInTouchMode(false);
 		videoGallery.setDrawingCacheEnabled(true);
 		videoGallery.setHorizontalFadingEdgeEnabled(true);
-		videoGallery.setUnselectedAlpha(0.75f);
 	}
 
 	@Override

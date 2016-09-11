@@ -30,6 +30,7 @@ import javax.inject.Inject;
 
 import android.support.v7.app.AppCompatActivity;
 import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -59,7 +60,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  *
  */
 public abstract class AbstractPosterImageGalleryAdapter extends
-		InjectingBaseAdapter {
+		InjectingRecyclerViewAdapter {
 
 	@Inject
 	protected SerenityImageLoader serenityImageLoader;
@@ -79,7 +80,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends
 	protected Handler handler;
 	protected String key;
 	protected String category;
-	protected Animation shrink;
 	protected RequestQueue queue;
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
@@ -99,9 +99,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends
 		this.category = category;
 		posterList = new ArrayList<VideoContentInfo>();
 
-		shrink = AnimationUtils.loadAnimation(c, R.anim.shrink);
-		shrink.setInterpolator(new LinearInterpolator());
-
 		imageLoader = serenityImageLoader.getImageLoader();
 		fetchDataFromService();
 	}
@@ -109,15 +106,20 @@ public abstract class AbstractPosterImageGalleryAdapter extends
 	protected abstract void fetchDataFromService();
 
 	@Override
-	public int getCount() {
-
+	public int getItemCount() {
 		return posterList.size();
 	}
 
-	@Override
 	public Object getItem(int position) {
-
-		return posterList.get(position);
+		if (position >  posterList.size()) {
+			return null;
+		}
+		try {
+			return posterList.get(position);
+		} catch (IndexOutOfBoundsException ex) {
+			ex.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -127,17 +129,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends
 
 	public List<VideoContentInfo> getItems() {
 		return posterList;
-	}
-
-	@Deprecated
-	public void shrinkPosterAnimation(ImageView image, boolean isGridView) {
-		SharedPreferences preferences = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		boolean shouldShrink = preferences.getBoolean(
-				"animation_shrink_posters", false);
-		if (shouldShrink && !isGridView) {
-			image.setAnimation(shrink);
-		}
 	}
 
 	public void setWatchedStatus(View galleryCellView, VideoContentInfo pi) {

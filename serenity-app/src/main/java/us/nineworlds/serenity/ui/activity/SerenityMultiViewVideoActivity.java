@@ -23,9 +23,12 @@
 
 package us.nineworlds.serenity.ui.activity;
 
+import android.support.v7.widget.RecyclerView;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.OnDeckRecommendationAsyncTask;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
@@ -47,17 +50,16 @@ import com.jess.ui.TwoWayGridView;
  * @author dcarver
  *
  */
-public abstract class SerenityMultiViewVideoActivity extends
-SerenityVideoActivity {
+public abstract class SerenityMultiViewVideoActivity extends SerenityVideoActivity {
 
 	protected boolean gridViewActive = false;
-
-	protected boolean posterLayoutActive = false;
 
 	@Override
 	public void finish() {
 		super.finish();
 	}
+
+	protected boolean posterLayoutActive = false;
 
 	public boolean isGridViewActive() {
 		return gridViewActive;
@@ -103,25 +105,26 @@ SerenityVideoActivity {
 		posterLayoutActive = sw;
 	}
 
+	public abstract AbstractPosterImageGalleryAdapter getAdapter();
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
-		SerenityGallery gallery = findGalleryView();
+		DpadAwareRecyclerView gallery = findGalleryView();
 		View selectedView = null;
 		VideoContentInfo video = null;
-		BaseAdapter adapter = null;
+		AbstractPosterImageGalleryAdapter adapter = getAdapter();
 
 		if (!isGridViewActive()) {
-			video = (VideoContentInfo) gallery.getSelectedItem();
-			adapter = (BaseAdapter) gallery.getAdapter();
-			selectedView = gallery.getSelectedView();
+			RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
+			video = (VideoContentInfo) adapter.getItem(gallery.getSelectedItemPosition());
+			selectedView = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
 		} else {
 			TwoWayGridView gridView = findGridView();
 			if (gridView != null) {
 				video = (VideoContentInfo) gridView.getSelectedItem();
-				adapter = (BaseAdapter) gridView.getAdapter();
 				selectedView = gridView.getSelectedView();
 				if (video == null) {
 					video = (VideoContentInfo) gridView
@@ -139,7 +142,9 @@ SerenityVideoActivity {
 				externalPlayerHandler.updatePlaybackPosition(video,
 						selectedView);
 			} else {
-				PlayerResultHandler playerResultHandler = new PlayerResultHandler(
+				PlayerResultHandler playerResultHandler =
+
+						new PlayerResultHandler(
 						data, adapter);
 				playerResultHandler.updateVideoPlaybackPosition(video,
 						selectedView);

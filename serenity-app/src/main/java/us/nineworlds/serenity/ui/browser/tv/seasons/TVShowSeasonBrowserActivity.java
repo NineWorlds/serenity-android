@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -262,7 +263,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 	 *
 	 */
 	@Override
-	protected SerenityGallery findGalleryView() {
+	protected DpadAwareRecyclerView findGalleryView() {
 		return null;
 	}
 

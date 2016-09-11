@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.util;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
@@ -34,10 +35,10 @@ import android.widget.BaseAdapter;
 
 public class PlayerResultHandler extends BaseInjector {
 
-	protected BaseAdapter adapter;
+	protected DpadAwareRecyclerView.Adapter adapter;
 	protected Intent data;
 
-	public PlayerResultHandler(Intent data, BaseAdapter adapter) {
+	public PlayerResultHandler(Intent data, DpadAwareRecyclerView.Adapter adapter) {
 		super();
 		this.adapter = adapter;
 		this.data = data;
@@ -73,10 +74,6 @@ public class PlayerResultHandler extends BaseInjector {
 		}
 	}
 
-	/**
-	 * @param selectedView
-	 * @param video
-	 */
 	protected void toggleWatched(VideoContentInfo video) {
 		if (video.isWatched()) {
 			new WatchedVideoAsyncTask().execute(video.id());
