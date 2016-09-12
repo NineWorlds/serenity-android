@@ -73,7 +73,7 @@ public class VideoGridFragment extends MovieVideoGalleryFragment {
 	}
 
 	protected LinearLayoutManager createLayoutManager() {
-		GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 4);
+		GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
 		layoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
 		return layoutManager;
 	}

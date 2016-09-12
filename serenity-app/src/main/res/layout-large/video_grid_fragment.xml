@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:layout_width="match_parent"
-             android:layout_height="wrap_content"
+             android:layout_height="match_parent"
              xmlns:android="http://schemas.android.com/apk/res/android">
     <net.ganin.darv.DpadAwareRecyclerView
             android:id="@+id/moviePosterView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:nextFocusUp="@+id/categoryFilter"
             app:selectorVelocity="1000"
             app:smoothScrolling="true"
