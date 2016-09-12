@@ -110,21 +110,8 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		height = ImageUtils.getDPI(200, context);
 		mpiv.setMaxHeight(height);
 		mpiv.setMaxWidth(width);
-		if (!movieContext.isGridViewActive()) {
-			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-			galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(
-					width, height));
-		} else {
-			width = ImageUtils.getDPI(120, context);
-			height = ImageUtils.getDPI(180, context);
-			if ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
-				width = ImageUtils.getDPI(150, context);
-				height = ImageUtils.getDPI(220, context);
-			}
-			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
-					width, height));
-		}
+		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+		galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
 
 		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
 
@@ -235,19 +222,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		mpiv.setMaxHeight(height);
 		mpiv.setMaxWidth(width);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-		viewHolder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(
-					width, height));
-//		} else {
-//			width = ImageUtils.getDPI(120, context);
-//			height = ImageUtils.getDPI(180, context);
-//			if ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
-//				width = ImageUtils.getDPI(150, context);
-//				height = ImageUtils.getDPI(220, context);
-//			}
-//			mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-//			viewHolder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(
-//					width, height));
-//		}
+		viewHolder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
 
 		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
 

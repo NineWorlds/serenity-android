@@ -2,6 +2,6 @@
 <resources>
     <dimen name="small_image">100dp</dimen>
     <dimen name="actionbarMargin">60dp</dimen>
-    <dimen name="horizontal_spacing">25dp</dimen>
-    <dimen name="grid_spacing_dimen">10dp</dimen>
+    <dimen name="horizontal_spacing">15dp</dimen>
+    <dimen name="grid_spacing_dimen">5dp</dimen>
 </resources>

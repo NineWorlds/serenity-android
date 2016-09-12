@@ -33,6 +33,7 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.recyclerutils.GridSpacingItemDecoration;
+import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
@@ -75,13 +76,13 @@ public class VideoGridFragment extends MovieVideoGalleryFragment {
 	}
 
 	protected LinearLayoutManager createLayoutManager() {
-		GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-		layoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
+		SerenityMenuGridLayoutManager layoutManager = new SerenityMenuGridLayoutManager(getActivity(), 3, SerenityMenuGridLayoutManager.HORIZONTAL, false);
+		layoutManager.setCircular(true);
 		return layoutManager;
 	}
 
 	@Override
 	protected RecyclerView.ItemDecoration createItemDecorator() {
-		return new GridSpacingItemDecoration(3, resources.getDimensionPixelSize(R.dimen.grid_spacing_dimen), true);
+		return new ItemOffsetDecoration(resources.getDimensionPixelSize(R.dimen.grid_spacing_dimen));
 	}
 }
