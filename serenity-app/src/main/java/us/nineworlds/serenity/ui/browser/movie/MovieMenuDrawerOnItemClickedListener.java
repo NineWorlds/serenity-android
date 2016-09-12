@@ -93,37 +93,34 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 		switch (position) {
 		case GRID_VIEW:
 			activity.setGridViewEnabled(true);
-			menuDrawer.closeDrawers();
+
+			fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
 			titleActionBar.setVisibility(View.VISIBLE);
 
-//			VideoGridFragment videoGridFragment = new VideoGridFragment();
-//			fragmentManager.popBackStackImmediate();
-//			viewById.removeAllViews();
-//			fragmentTransaction.replace(R.id.fragment_container, videoGridFragment);
-//			fragmentTransaction.commit();
-//
-//			gallery.setAdapter(adapter);
-//			gallery.requestFocusFromTouch();
+			VideoGridFragment videoGridFragment = new VideoGridFragment();
+			fragmentManager.popBackStackImmediate();
+			fragmentTransaction.replace(R.id.fragment_container, videoGridFragment);
+			fragmentTransaction.commit();
+
+			gallery.setAdapter(adapter);
+			gallery.requestFocusFromTouch();
 			toggleView(activity, true);
-			activity.recreate();
 			break;
 		case DETAIL_VIEW:
 			activity.setGridViewEnabled(false);
-			menuDrawer.closeDrawers();
+			fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
 			titleActionBar.setVisibility(View.GONE);
 
-//			MovieVideoGalleryFragment movieVideoGalleryFragment = new MovieVideoGalleryFragment();
-//			fragmentManager.popBackStackImmediate();
-//			viewById.removeAllViews();
-//			fragmentTransaction.replace(R.id.fragment_container, movieVideoGalleryFragment);
-//			fragmentTransaction.commit();
-//
-//			gallery.setAdapter(adapter);
-//			gallery.requestFocus();
+			MovieVideoGalleryFragment movieVideoGalleryFragment = new MovieVideoGalleryFragment();
+			fragmentManager.popBackStackImmediate();
+			fragmentTransaction.replace(R.id.fragment_container, movieVideoGalleryFragment);
+			fragmentTransaction.commit();
+
+			gallery.setAdapter(adapter);
+			gallery.requestFocus();
 			toggleView(activity, false);
-			activity.recreate();
 			break;
 		case PLAY_ALL_QUEUE:
 			playAllFromQueue(parent, activity);

@@ -76,7 +76,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 			movieVideoGalleryFragment = new MovieVideoGalleryFragment();
 			fragmentTransaction.replace(R.id.fragment_container, movieVideoGalleryFragment);
 		}
-		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 
 
