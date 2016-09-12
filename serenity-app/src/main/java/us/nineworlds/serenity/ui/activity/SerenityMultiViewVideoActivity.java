@@ -113,27 +113,13 @@ public abstract class SerenityMultiViewVideoActivity extends SerenityVideoActivi
 				.getDefaultSharedPreferences(this);
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
 		DpadAwareRecyclerView gallery = findGalleryView();
-		View selectedView = null;
-		VideoContentInfo video = null;
+		View selectedView;
+		VideoContentInfo video;
 		AbstractPosterImageGalleryAdapter adapter = getAdapter();
 
-		if (!isGridViewActive()) {
-			RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
-			video = (VideoContentInfo) adapter.getItem(gallery.getSelectedItemPosition());
-			selectedView = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
-		} else {
-			TwoWayGridView gridView = findGridView();
-			if (gridView != null) {
-				video = (VideoContentInfo) gridView.getSelectedItem();
-				selectedView = gridView.getSelectedView();
-				if (video == null) {
-					video = (VideoContentInfo) gridView
-							.getItemAtPosition(SerenityConstants.CLICKED_GRID_VIEW_ITEM);
-					gridView.setSelectionInTouch(SerenityConstants.CLICKED_GRID_VIEW_ITEM);
-					selectedView = gridView.getSelectedView();
-				}
-			}
-		}
+		RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
+		video = (VideoContentInfo) adapter.getItem(gallery.getSelectedItemPosition());
+		selectedView = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
 
 		if (data != null) {
 			if (externalPlayer) {

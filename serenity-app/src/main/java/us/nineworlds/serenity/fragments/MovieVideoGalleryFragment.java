@@ -27,8 +27,8 @@ import javax.inject.Inject;
 
 import android.content.res.Resources;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
@@ -43,8 +43,6 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -76,10 +74,10 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 	@Inject
 	Resources resources;
 
-	MoviePosterOnItemSelectedListener onItemSelectedListener;
+	protected DpadAwareRecyclerView.OnItemSelectedListener onItemSelectedListener;
 
-	@BindView(R.id.moviePosterGallery)
-	DpadAwareRecyclerView videoGallery;
+	@BindView(R.id.moviePosterView)
+	protected DpadAwareRecyclerView videoGallery;
 
 	public MovieVideoGalleryFragment() {
 		super();
@@ -90,17 +88,18 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		onItemSelectedListener = new MoviePosterOnItemSelectedListener();
-		View view = inflater.inflate(R.layout.video_gallery_fragment, container);
+		View view = inflateView(inflater, container);
 		bind(this, view);
-		setupGallery(view);
+		setupRecyclerView();
 		return view;
 	}
 
-	protected void setupGallery(View view) {
-//		boolean scrollingAnimation = preferences.getBoolean(
-//				"animation_gallery_scrolling", true);
-		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-		linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+	protected View inflateView(LayoutInflater inflater, ViewGroup container) {
+		return inflater.inflate(R.layout.video_gallery_fragment, null);
+	}
+
+	protected void setupRecyclerView() {
+		RecyclerView.LayoutManager linearLayoutManager = createLayoutManager();
 
 		videoGallery.setLayoutManager(linearLayoutManager);
 		videoGallery.addItemDecoration(new SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing)));
@@ -119,5 +118,11 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 		String url = factory.getSectionsUrl(key);
 		volleyUtils.volleyXmlGetRequest(url, response,
 				new DefaultLoggingVolleyErrorListener());
+	}
+
+	protected LinearLayoutManager createLayoutManager() {
+		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+		linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+		return linearLayoutManager;
 	}
 }

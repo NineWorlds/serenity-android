@@ -25,6 +25,9 @@ package us.nineworlds.serenity.fragments;
 
 import javax.inject.Inject;
 
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
@@ -32,6 +35,7 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
@@ -43,71 +47,35 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jess.ui.TwoWayGridView;
+import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
-public class VideoGridFragment extends InjectingFragment {
+import static butterknife.ButterKnife.bind;
 
-	@Inject
-	protected GridVideoOnItemClickListener onItemClickListener;
-
-	@Inject
-	protected GridVideoOnItemLongClickListener onItemLongClickListener;
-
-	@Inject
-	protected MovieSelectedCategoryState categoryState;
-
-	@Inject
-	protected PlexappFactory factory;
-
-	@Inject
-	protected VolleyUtils volleyUtils;
-
-	protected MovieGridPosterOnItemSelectedListener onItemSelectedListener;
-
-	private TwoWayGridView gridView;
+public class VideoGridFragment extends MovieVideoGalleryFragment {
 
 	public VideoGridFragment() {
-		setRetainInstance(false);
+		super();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		onItemSelectedListener = new MovieGridPosterOnItemSelectedListener();
-		View view = inflater.inflate(R.layout.video_grid_fragment, container);
-		setupGrid(view);
+		View view = inflateView(inflater, container);
+		bind(this, view);
+		setupRecyclerView();
 		return view;
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
-
+	protected View inflateView(LayoutInflater inflater, ViewGroup container) {
+		return inflater.inflate(R.layout.video_grid_fragment, null);
 	}
 
-	protected void setupGrid(View view) {
-		gridView = (TwoWayGridView) view.findViewById(R.id.movieGridView);
-
-		gridView.setOnItemClickListener(onItemClickListener);
-		gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener());
-		gridView.setOnItemLongClickListener(onItemLongClickListener);
-
-		MovieBrowserActivity activity = (MovieBrowserActivity) view
-				.getContext();
-		String key = MovieBrowserActivity.getKey();
-
-		MovieCategoryResponseListener response = new MovieCategoryResponseListener(
-				(SerenityMultiViewVideoActivity) getActivity(), key);
-		String url = factory.getSectionsUrl(key);
-		volleyUtils.volleyXmlGetRequest(url, response,
-				new DefaultLoggingVolleyErrorListener());
-
-		// Handler categoryHandler = new CategoryHandler(getActivity(),
-		// categoryState.getCategory(), key);
-		// Messenger messenger = new Messenger(categoryHandler);
-		// Intent categoriesIntent = new Intent(getActivity(),
-		// CategoryRetrievalIntentService.class);
-		// categoriesIntent.putExtra("key", key);
-		// categoriesIntent.putExtra("MESSENGER", messenger);
-		// activity.startService(categoriesIntent);
+	protected LinearLayoutManager createLayoutManager() {
+		GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 4);
+		layoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
+		return layoutManager;
 	}
 
 }

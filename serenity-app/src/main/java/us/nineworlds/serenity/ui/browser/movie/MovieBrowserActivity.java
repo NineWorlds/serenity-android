@@ -58,28 +58,27 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	@Inject
 	protected MovieSelectedCategoryState categoryState;
 
+	VideoGridFragment videoGridFragment;
+	MovieVideoGalleryFragment movieVideoGalleryFragment;
+
 	DpadAwareRecyclerView.Adapter adapter;
 
 	@Override
 	protected void createSideMenu() {
 		setContentView(R.layout.activity_movie_browser);
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager
+		FragmentTransaction fragmentTransaction = getSupportFragmentManager()
 				.beginTransaction();
-		MovieVideoGalleryFragment videoGalleryFragment = (MovieVideoGalleryFragment) fragmentManager
-				.findFragmentByTag("videoGallery_fragment");
-		VideoGridFragment videoGridFragment = (VideoGridFragment) fragmentManager
-				.findFragmentByTag("videoGrid_fragment");
 
 		if (gridViewActive) {
-			fragmentTransaction.hide(videoGalleryFragment);
-			fragmentTransaction.show(videoGridFragment);
-			fragmentTransaction.commit();
+			videoGridFragment = new VideoGridFragment();
+			fragmentTransaction.replace(R.id.fragment_container, videoGridFragment);
 		} else {
-			fragmentTransaction.hide(videoGridFragment);
-			fragmentTransaction.show(videoGalleryFragment);
-			fragmentTransaction.commit();
+			movieVideoGalleryFragment = new MovieVideoGalleryFragment();
+			fragmentTransaction.replace(R.id.fragment_container, movieVideoGalleryFragment);
 		}
+		fragmentTransaction.addToBackStack(null);
+		fragmentTransaction.commit();
+
 
 		View fanArt = findViewById(R.id.fanArt);
 		fanArt.setBackgroundResource(R.drawable.movies);
@@ -101,10 +100,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 			public void onDrawerClosed(View drawerView) {
 				super.onDrawerClosed(drawerView);
 				getSupportActionBar().setTitle(R.string.app_name);
-				View gallery = findViewById(R.id.moviePosterGallery);
-				if (!isGridViewActive()) {
-					gallery.requestFocusFromTouch();
-				}
+				View gallery = findViewById(R.id.moviePosterView);
+				gallery.requestFocusFromTouch();
 			}
 		};
 
@@ -183,7 +180,9 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	protected void onPause() {
 		DpadAwareRecyclerView galleryView = findGalleryView();
-		adapter = galleryView.getAdapter();
+		if (galleryView != null) {
+			adapter = galleryView.getAdapter();
+		}
 		super.onPause();
 	}
 
@@ -197,18 +196,14 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		return key;
 	}
 
-	public static void setKey(String key) {
-		MovieBrowserActivity.key = key;
-	}
-
 	@Override
 	protected DpadAwareRecyclerView findGalleryView() {
-		return (DpadAwareRecyclerView) findViewById(R.id.moviePosterGallery);
+		return (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
 	}
 
 	@Override
 	protected TwoWayGridView findGridView() {
-		return (TwoWayGridView) findViewById(R.id.movieGridView);
+		return null;
 	}
 
 	@Override

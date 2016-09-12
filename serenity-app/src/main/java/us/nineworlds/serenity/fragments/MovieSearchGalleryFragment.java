@@ -82,7 +82,7 @@ public class MovieSearchGalleryFragment extends InjectingFragment {
 				"animation_gallery_scrolling", true);
 
 		videoGallery = (SerenityGallery) getActivity().findViewById(
-				R.id.moviePosterGallery);
+				R.id.moviePosterView);
 
 		videoGallery.setOnItemSelectedListener(onItemSelectedListener);
 

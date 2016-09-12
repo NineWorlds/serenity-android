@@ -23,26 +23,17 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.SerenityConstants;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import com.jess.ui.TwoWayAdapterView;
-import com.jess.ui.TwoWayAdapterView.OnItemClickListener;
 import android.view.View;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
-/**
- * Implementation of an onItemClickListener for the Poster Grid View.
- * @author dcarver
- * 
- */
-public class GridVideoOnItemClickListener extends AbstractVideoOnItemClickListener implements OnItemClickListener {
+public class GridVideoOnItemClickListener extends AbstractVideoOnItemClickListener implements DpadAwareRecyclerView.OnItemClickListener {
 
 	@Override
-	public void onItemClick(TwoWayAdapterView<?> av, View v, int arg2,
-			long arg3) {
-		SerenityConstants.CLICKED_GRID_VIEW_ITEM = arg2;
-		videoInfo = (VideoContentInfo) av.getItemAtPosition(arg2);
-		onItemClick(v.findViewById(R.id.posterImageView));
+	public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+		AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+		videoInfo = (VideoContentInfo) adapter.getItem(i);
+		onItemClick(view);
 	}
-
 }

@@ -16,23 +16,12 @@
             android:layout_height="match_parent"
          />
 
-        <fragment
-            android:id="@+id/galleryFragmentContainer"
-            android:name="us.nineworlds.serenity.fragments.MovieVideoGalleryFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:tag="videoGallery_fragment"
-            android:layout_alignParentBottom="true" />
-        
-        <fragment android:id="@+id/gridFragmentContainer"
-            android:name="us.nineworlds.serenity.fragments.VideoGridFragment"
-            android:layout_centerHorizontal="true"
-            android:tag="videoGrid_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="@dimen/actionbarMargin"
-        />
+        <FrameLayout android:id="@+id/fragment_container"
+                     android:layout_width="match_parent"
+                     android:layout_marginTop="@dimen/actionbarMargin"
+                     android:layout_alignParentBottom="true"
+                     android:layout_height="wrap_content">
+        </FrameLayout>
 
     </RelativeLayout>
 

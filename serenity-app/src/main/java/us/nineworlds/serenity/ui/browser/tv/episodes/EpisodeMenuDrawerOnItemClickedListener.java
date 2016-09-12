@@ -27,7 +27,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.app.Activity;
@@ -77,7 +76,7 @@ implements OnItemClickListener {
 					"android.hardware.touchscreen")) {
 				parent.setVisibility(View.INVISIBLE);
 			}
-			activity.findViewById(R.id.moviePosterGallery).requestFocus();
+			activity.findViewById(R.id.moviePosterView).requestFocus();
 			vpUtils.playAllFromQueue(activity);
 			break;
 		}

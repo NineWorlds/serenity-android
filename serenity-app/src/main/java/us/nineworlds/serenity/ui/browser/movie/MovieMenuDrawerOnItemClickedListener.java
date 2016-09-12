@@ -25,10 +25,11 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import javax.inject.Inject;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.widget.FrameLayout;
 import net.ganin.darv.DpadAwareRecyclerView;
+import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
@@ -37,7 +38,6 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.support.v4.app.FragmentManager;
@@ -83,47 +83,47 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 		SerenityMultiViewVideoActivity activity = getActivity(view
 				.getContext());
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
-		MovieVideoGalleryFragment videoGalleryFragment = (MovieVideoGalleryFragment) fragmentManager
-				.findFragmentByTag("videoGallery_fragment");
-		VideoGridFragment videoGridFragment = (VideoGridFragment) fragmentManager
-				.findFragmentByTag("videoGrid_fragment");
-		FragmentTransaction fragmentTransaction = fragmentManager
-				.beginTransaction();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) activity
-				.findViewById(R.id.moviePosterGallery);
-		DpadAwareRecyclerView grid = (DpadAwareRecyclerView) activity
-				.findViewById(R.id.movieGridView);
-		AbstractPosterImageGalleryAdapter adapter;
-		View titleActionBar = activity
-				.findViewById(R.id.movieActionBarPosterTitle);
+				.findViewById(R.id.moviePosterView);
+		AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+		View titleActionBar = activity.findViewById(R.id.movieActionBarPosterTitle);
+		FrameLayout viewById = (FrameLayout) activity.findViewById(R.id.fragment_container);
 
 		switch (position) {
 		case GRID_VIEW:
-			adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
 			activity.setGridViewEnabled(true);
+			menuDrawer.closeDrawers();
 
 			titleActionBar.setVisibility(View.VISIBLE);
 
-			fragmentTransaction.hide(videoGalleryFragment);
-			fragmentTransaction.show(videoGridFragment);
-			fragmentTransaction.commit();
-
-			grid.setAdapter(adapter);
-			grid.requestFocusFromTouch();
+//			VideoGridFragment videoGridFragment = new VideoGridFragment();
+//			fragmentManager.popBackStackImmediate();
+//			viewById.removeAllViews();
+//			fragmentTransaction.replace(R.id.fragment_container, videoGridFragment);
+//			fragmentTransaction.commit();
+//
+//			gallery.setAdapter(adapter);
+//			gallery.requestFocusFromTouch();
 			toggleView(activity, true);
+			activity.recreate();
 			break;
 		case DETAIL_VIEW:
-			adapter = (AbstractPosterImageGalleryAdapter) grid.getAdapter();
 			activity.setGridViewEnabled(false);
+			menuDrawer.closeDrawers();
 
 			titleActionBar.setVisibility(View.GONE);
 
-			fragmentTransaction.hide(videoGridFragment);
-			fragmentTransaction.show(videoGalleryFragment);
-			fragmentTransaction.commit();
-			gallery.setAdapter(adapter);
-			gallery.requestFocus();
+//			MovieVideoGalleryFragment movieVideoGalleryFragment = new MovieVideoGalleryFragment();
+//			fragmentManager.popBackStackImmediate();
+//			viewById.removeAllViews();
+//			fragmentTransaction.replace(R.id.fragment_container, movieVideoGalleryFragment);
+//			fragmentTransaction.commit();
+//
+//			gallery.setAdapter(adapter);
+//			gallery.requestFocus();
 			toggleView(activity, false);
+			activity.recreate();
 			break;
 		case PLAY_ALL_QUEUE:
 			playAllFromQueue(parent, activity);
@@ -139,14 +139,8 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 				"android.hardware.touchscreen")) {
 			parent.setVisibility(View.INVISIBLE);
 		}
-		View gallery = activity.findViewById(R.id.moviePosterGallery);
-		if (!activity.isGridViewActive()) {
-			gallery.requestFocusFromTouch();
-		} else {
-			TwoWayGridView grid = (TwoWayGridView) activity
-					.findViewById(R.id.movieGridView);
-			grid.requestFocusFromTouch();
-		}
+		View gallery = activity.findViewById(R.id.moviePosterView);
+		gallery.requestFocusFromTouch();
 		vpUtils.playAllFromQueue(activity);
 	}
 

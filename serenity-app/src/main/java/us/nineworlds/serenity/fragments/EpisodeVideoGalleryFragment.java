@@ -31,12 +31,10 @@ import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
-import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserOnLongClickListener;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -77,7 +75,7 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
 		super.onStart();
 
 		videoGallery = (DpadAwareRecyclerView) getActivity().findViewById(
-				R.id.moviePosterGallery);
+				R.id.moviePosterView);
 
 		boolean scrollingAnimation = preferences.getBoolean(
 				"animation_gallery_scrolling", true);

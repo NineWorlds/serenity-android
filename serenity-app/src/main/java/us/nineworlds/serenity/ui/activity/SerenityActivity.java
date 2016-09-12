@@ -23,7 +23,6 @@
 
 package us.nineworlds.serenity.ui.activity;
 
-import android.support.v7.widget.RecyclerView;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -60,22 +59,14 @@ public abstract class SerenityActivity extends InjectingActivity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) findViewById(R.id.moviePosterGallery);
-		TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
-		if (gridView == null) {
-			gridView = (TwoWayGridView) findViewById(R.id.tvShowGridView);
-		}
+		DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
 
-		if (gallery == null && gridView == null) {
+		if (gallery == null) {
 			return super.onKeyDown(keyCode, event);
 		}
 
 		AbstractPosterImageGalleryAdapter adapter = null;
-		if (gallery != null) {
-			adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
-		} else {
-			adapter = (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
-		}
+		adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
 
 		if (adapter != null) {
 			int itemsCount = adapter.getItemCount();
@@ -85,8 +76,6 @@ public abstract class SerenityActivity extends InjectingActivity {
 				if (gallery != null) {
 					LayoutManager layoutManager = gallery.getLayoutManager();
 					view = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
-				} else {
-					view = gridView.getSelectedView();
 				}
 				view.performLongClick();
 				return true;
@@ -160,14 +149,14 @@ public abstract class SerenityActivity extends InjectingActivity {
 		if (resultCode == Activity.RESULT_OK) {
 			if (data != null
 					&& data.getAction().equals("com.mxtech.intent.result.VIEW")) {
-				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
+				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterView);
 				VideoContentInfo video = null;
 				View selectedView = null;
 				if (gallery != null) {
 					video = (VideoContentInfo) gallery.getSelectedItem();
 					selectedView = gallery.getSelectedView();
 				} else {
-					TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
+					TwoWayGridView gridView = null;
 					if (gridView != null) {
 						video = (VideoContentInfo) gridView.getSelectedItem();
 						selectedView = gridView.getSelectedView();

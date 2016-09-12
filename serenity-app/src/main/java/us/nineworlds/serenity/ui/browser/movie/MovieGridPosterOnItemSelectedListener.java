@@ -25,6 +25,8 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import javax.inject.Inject;
 
+import android.support.v7.widget.RecyclerView;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
@@ -36,10 +38,9 @@ import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.jess.ui.TwoWayAdapterView;
-import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 /**
  * When a poster is selected, update the information displayed in the browser.
@@ -48,17 +49,18 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public class MovieGridPosterOnItemSelectedListener extends BaseInjector
-implements OnItemSelectedListener {
+implements DpadAwareRecyclerView.OnItemSelectedListener {
 
 	private static Activity context;
-	private View previous;
-	private TwoWayAdapterView<?> adapter;
+	private AbstractPosterImageGalleryAdapter adapter;
 
 	@Inject
 	SerenityImageLoader serenityImageLoader;
 
 	@Inject
 	PlexappFactory plexFactory;
+
+	int lastPos = -1;
 
 	private final ImageLoader imageLoader;
 
@@ -68,33 +70,7 @@ implements OnItemSelectedListener {
 		imageLoader = serenityImageLoader.getImageLoader();
 	}
 
-	@Override
-	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position,
-			long id) {
-		if (v == null) {
-			return;
-		}
-
-		context = (Activity) v.getContext();
-
-		adapter = av;
-		changeBackgroundImage();
-
-		if (previous != null) {
-			previous.setPadding(0, 0, 0, 0);
-		}
-
-		previous = v;
-
-		v.setPadding(5, 5, 5, 5);
-
-		createMovieMetaData();
-	}
-
-	private void changeBackgroundImage() {
-		VideoContentInfo videoInfo = (VideoContentInfo) adapter
-				.getSelectedItem();
-
+	private void changeBackgroundImage(VideoContentInfo videoInfo) {
 		if (videoInfo.getBackgroundURL() == null) {
 			return;
 		}
@@ -109,9 +85,8 @@ implements OnItemSelectedListener {
 
 	}
 
-	private void createMovieMetaData() {
-
-		VideoContentInfo mi = (VideoContentInfo) adapter.getSelectedItem();
+	private void createMovieMetaData(VideoContentInfo videoContentInfo) {
+		VideoContentInfo mi = videoContentInfo;
 		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
 		subt.setVisibility(View.GONE);
 		Spinner subtitleSpinner = (Spinner) context
@@ -124,11 +99,33 @@ implements OnItemSelectedListener {
 	}
 
 	@Override
-	public void onNothingSelected(TwoWayAdapterView<?> av) {
-		if (previous != null) {
-			previous.setPadding(0, 0, 0, 0);
-			previous.refreshDrawableState();
+	public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+		context = (Activity) view.getContext();
+
+		if (lastPos != i) {
+			lastPos = i;
+		} else {
+			return;
 		}
+
+		adapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+		if (i > adapter.getItemCount()) {
+			return;
+		}
+
+		VideoContentInfo videoContentInfo = (VideoContentInfo) adapter.getItem(i);
+		if (videoContentInfo == null) {
+			return;
+		}
+
+		changeBackgroundImage(videoContentInfo);
+
+		createMovieMetaData(videoContentInfo);
+
+	}
+
+	@Override
+	public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
 
 	}
 }

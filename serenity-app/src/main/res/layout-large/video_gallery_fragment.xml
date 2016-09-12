@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="@dimen/actionbarMargin"
         android:background="@color/card_background"
         android:padding="5dp"
         android:visibility="invisible" >
@@ -102,7 +101,7 @@
         android:padding="5dp" >
 
         <net.ganin.darv.DpadAwareRecyclerView
-            android:id="@+id/moviePosterGallery"
+            android:id="@+id/moviePosterView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center|center_vertical"

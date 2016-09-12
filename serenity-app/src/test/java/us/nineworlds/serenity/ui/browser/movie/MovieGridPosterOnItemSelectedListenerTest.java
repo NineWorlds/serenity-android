@@ -125,8 +125,8 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 		doReturn(expectedTranscodingUrl).when(mockPlexFactory).getImageURL(
 				anyString(), anyInt(), anyInt());
 
-		onItemSelectedListener.onItemSelected(mockTwoWayAdapterView, mockView,
-				0, 0);
+//		onItemSelectedListener.onItemSelected(mockTwoWayAdapterView, mockView,
+//				0, 0);
 
 		verifyExpectedFanArtCalls(expectedBackgroundUrl, expectedTranscodingUrl);
 	}

@@ -136,7 +136,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
 
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
@@ -160,7 +160,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
 
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
@@ -182,7 +182,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
 
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
@@ -204,13 +204,13 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
 
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
 				0);
 
-		verify(spyOnItemSelectedListener).refreshGridView(
+		verify(spyOnItemSelectedListener).refreshGallery(
 				mockPosterImageAdapter);
 	}
 
@@ -226,7 +226,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
 
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
@@ -250,7 +250,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGridView(
+		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
 
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
@@ -273,8 +273,6 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
 		doNothing().when(spyOnItemSelectedListener).refreshGallery(
 				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGridView(
-				any(AbstractPosterImageGalleryAdapter.class));
 
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
 				0);
@@ -296,7 +294,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
 
 		DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) movieBrowserActivity
-				.findViewById(R.id.moviePosterGallery);
+				.findViewById(R.id.moviePosterView);
 		assertThat(gallery.getAdapter()).isEqualTo(mockPosterImageAdapter);
 	}
 
@@ -313,7 +311,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
 
 		SerenityGallery gallery = (SerenityGallery) movieBrowserActivity
-				.findViewById(R.id.moviePosterGallery);
+				.findViewById(R.id.moviePosterView);
 		assertThat(gallery.getOnItemClickListener()).isInstanceOf(
 				GalleryVideoOnItemClickListener.class);
 	}
@@ -331,7 +329,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
 
 		SerenityGallery gallery = (SerenityGallery) movieBrowserActivity
-				.findViewById(R.id.moviePosterGallery);
+				.findViewById(R.id.moviePosterView);
 		assertThat(gallery.getOnItemLongClickListener()).isInstanceOf(
 				GalleryVideoOnItemLongClickListener.class);
 	}
@@ -350,10 +348,9 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 
 		spyOnItemSelectedListener.findViews();
 
-		spyOnItemSelectedListener.refreshGridView(mockPosterImageAdapter);
+		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
 
-		TwoWayGridView gridView = (TwoWayGridView) movieBrowserActivity
-				.findViewById(R.id.movieGridView);
+		TwoWayGridView gridView = null;
 		assertThat(gridView.getOnItemLongClickListener()).isInstanceOf(
 				GridVideoOnItemLongClickListener.class);
 	}
@@ -372,10 +369,9 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 
 		spyOnItemSelectedListener.findViews();
 
-		spyOnItemSelectedListener.refreshGridView(mockPosterImageAdapter);
+		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
 
-		TwoWayGridView gridView = (TwoWayGridView) movieBrowserActivity
-				.findViewById(R.id.movieGridView);
+		TwoWayGridView gridView = null;
 		assertThat(gridView.getOnItemClickListener()).isInstanceOf(
 				GridVideoOnItemClickListener.class);
 	}

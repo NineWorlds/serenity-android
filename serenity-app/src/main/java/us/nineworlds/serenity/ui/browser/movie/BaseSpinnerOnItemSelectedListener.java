@@ -31,7 +31,6 @@ import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.SharedPreferences;
 import android.widget.AdapterView;
 
@@ -46,7 +45,6 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 	protected SharedPreferences prefs;
 
 	protected DpadAwareRecyclerView posterGallery;
-	protected TwoWayGridView gridView;
 
 	protected SerenityMultiViewVideoActivity multiViewVideoActivity;
 
@@ -60,10 +58,8 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 	}
 
 	protected void findViews() {
-		gridView = (TwoWayGridView) getMultiViewVideoActivity().findViewById(
-				R.id.movieGridView);
 		posterGallery = (DpadAwareRecyclerView) getMultiViewVideoActivity()
-				.findViewById(R.id.moviePosterGallery);
+				.findViewById(R.id.moviePosterView);
 	}
 
 	protected int getSavedInstancePosition(AdapterView<?> viewAdapter) {
@@ -87,10 +83,6 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 	protected void refreshGallery(AbstractPosterImageGalleryAdapter adapter) {
 		posterGallery.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
-	}
-
-	protected void refreshGridView(AbstractPosterImageGalleryAdapter adapter) {
-		//gridView.setAdapter(adapter);
 	}
 
 	protected SerenityMultiViewVideoActivity getMultiViewVideoActivity() {

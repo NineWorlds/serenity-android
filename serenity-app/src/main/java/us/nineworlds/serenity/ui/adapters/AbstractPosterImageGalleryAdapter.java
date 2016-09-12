@@ -59,8 +59,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * @author dcarver
  *
  */
-public abstract class AbstractPosterImageGalleryAdapter extends
-		InjectingRecyclerViewAdapter {
+public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecyclerViewAdapter {
 
 	@Inject
 	protected SerenityImageLoader serenityImageLoader;

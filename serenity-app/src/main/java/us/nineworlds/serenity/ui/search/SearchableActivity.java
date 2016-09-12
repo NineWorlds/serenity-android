@@ -122,7 +122,7 @@ public class SearchableActivity extends SerenityVideoActivity {
 	protected static void createGallery(List<VideoContentInfo> videos,
 			View bgLayout) {
 		SerenityGallery posterGallery = (SerenityGallery) context
-				.findViewById(R.id.moviePosterGallery);
+				.findViewById(R.id.moviePosterView);
 //		posterGallery.setAdapter(new SearchAdapter(context, videos));
 	}
 
@@ -147,7 +147,7 @@ public class SearchableActivity extends SerenityVideoActivity {
 
 	@Override
 	protected DpadAwareRecyclerView findGalleryView() {
-		return (DpadAwareRecyclerView) findViewById(R.id.moviePosterGallery);
+		return (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
 	}
 
 	@Override

@@ -160,10 +160,6 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
 	protected void createGallery(CategoryInfo item) {
 		AbstractPosterImageGalleryAdapter adapter = getPosterImageAdapter(item);
-		if (getMultiViewVideoActivity().isGridViewActive()) {
-			refreshGridView(adapter);
-			return;
-		}
 		refreshGallery(adapter);
 	}
 

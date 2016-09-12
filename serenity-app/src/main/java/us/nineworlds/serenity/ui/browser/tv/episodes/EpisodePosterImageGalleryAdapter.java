@@ -109,7 +109,7 @@ public class EpisodePosterImageGalleryAdapter extends
 			posterList = episodes.createVideos();
 			notifyDataSetChanged();
 			SerenityGallery gallery = (SerenityGallery) context
-					.findViewById(R.id.moviePosterGallery);
+					.findViewById(R.id.moviePosterView);
 			if (gallery != null) {
 				gallery.requestFocus();
 			}

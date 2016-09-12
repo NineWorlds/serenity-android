@@ -35,7 +35,6 @@ import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -133,7 +132,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 				&& drawerLayout.isDrawerOpen(linearDrawerLayout)) {
 			drawerLayout.closeDrawers();
 
-			View gallery = findViewById(R.id.moviePosterGallery);
+			View gallery = findViewById(R.id.moviePosterView);
 			if (gallery != null) {
 				gallery.requestFocusFromTouch();
 			}
@@ -165,7 +164,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
 	@Override
 	protected DpadAwareRecyclerView findGalleryView() {
-		return (DpadAwareRecyclerView) findViewById(R.id.moviePosterGallery);
+		return (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
 	}
 
 	@Override
