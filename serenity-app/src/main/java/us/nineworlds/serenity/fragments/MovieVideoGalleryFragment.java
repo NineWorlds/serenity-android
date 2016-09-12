@@ -98,11 +98,15 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 		return inflater.inflate(R.layout.video_gallery_fragment, null);
 	}
 
+	protected RecyclerView.ItemDecoration createItemDecorator() {
+		return new SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing));
+	}
+
 	protected void setupRecyclerView() {
 		RecyclerView.LayoutManager linearLayoutManager = createLayoutManager();
 
 		videoGallery.setLayoutManager(linearLayoutManager);
-		videoGallery.addItemDecoration(new SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing)));
+		videoGallery.addItemDecoration(createItemDecorator());
 
 		videoGallery.setOnItemSelectedListener(onItemSelectedListener);
 		videoGallery.setOnItemClickListener(onItemClickListener);

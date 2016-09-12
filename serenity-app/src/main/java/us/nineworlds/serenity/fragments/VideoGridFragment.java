@@ -27,10 +27,12 @@ import javax.inject.Inject;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
+import us.nineworlds.serenity.recyclerutils.GridSpacingItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
@@ -78,4 +80,8 @@ public class VideoGridFragment extends MovieVideoGalleryFragment {
 		return layoutManager;
 	}
 
+	@Override
+	protected RecyclerView.ItemDecoration createItemDecorator() {
+		return new GridSpacingItemDecoration(3, resources.getDimensionPixelSize(R.dimen.grid_spacing_dimen), true);
+	}
 }
