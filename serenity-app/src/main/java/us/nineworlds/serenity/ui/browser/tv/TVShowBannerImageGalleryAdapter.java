@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import butterknife.BindView;
@@ -114,7 +115,7 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 
 		initPosterMetaData(galleryCellView, pi, width, height, false);
 
-		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width,
+		galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
 				height));
 	}
 
@@ -124,8 +125,7 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 	 * @param width
 	 * @param height
 	 */
-	protected void initPosterMetaData(View galleryCellView,
-			SeriesContentInfo pi, int width, int height, boolean isPoster) {
+	protected void initPosterMetaData(View galleryCellView, SeriesContentInfo pi, int width, int height, boolean isPoster) {
 		ImageView mpiv = (ImageView) galleryCellView
 				.findViewById(R.id.posterImageView);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
@@ -161,20 +161,15 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 					watchedView);
 		}
 
-		ImageView mpiv = (ImageView) galleryCellView
-				.findViewById(R.id.posterImageView);
-		BadgeView badgeView = new BadgeView(context, mpiv);
-		badgeView.setTag("badge");
-		Drawable backgroundDrawable = context.getResources().getDrawable(
-				R.drawable.episode_count_background);
-		badgeView.setBackgroundDrawable(backgroundDrawable);
-		badgeView.setText(pi.getShowsUnwatched());
-		badgeView.show();
+		TextView badgeCount = (TextView) galleryCellView.findViewById(R.id.badge_count);
+		badgeCount.setText(pi.getShowsUnwatched());
 
 		if (pi.isWatched()) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
 			watchedView.setVisibility(View.VISIBLE);
-			badgeView.hide();
+			badgeCount.setVisibility(View.GONE);
+		} else {
+			badgeCount.setVisibility(View.VISIBLE);
 		}
 	}
 

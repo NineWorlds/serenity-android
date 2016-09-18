@@ -47,6 +47,23 @@
                 android:progressDrawable="@drawable/scrubber_progress_holo"
                 android:visibility="invisible"/>
 
+        <TextView android:id="@+id/badge_count"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textColor="@color/white"
+                  android:background="@drawable/item_badge_count"
+                  android:paddingLeft="8dp"
+                  android:paddingRight="8dp"
+                  android:paddingTop="6dp"
+                  android:paddingBottom="6dp"
+                  android:layout_marginLeft="5dp"
+                  android:layout_marginRight="5dp"
+                  android:layout_alignParentTop="true"
+                  android:layout_alignParentRight="true"
+                  android:layout_alignParentEnd="true"
+                  android:visibility="visible"
+        />
+
     </RelativeLayout>
 
 </FrameLayout>

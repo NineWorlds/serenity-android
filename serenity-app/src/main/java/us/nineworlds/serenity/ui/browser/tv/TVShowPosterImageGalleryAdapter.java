@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -42,23 +43,14 @@ public class TVShowPosterImageGalleryAdapter extends TVShowBannerImageGalleryAda
 	}
 
 	@Override
-	protected void createImage(View galleryCellView, SeriesContentInfo pi,
-			int imageWidth, int imageHeight) {
-		int width = ImageUtils.getDPI(imageWidth, context);
-		int height = ImageUtils.getDPI(imageHeight, context);
+	protected void createImage(View galleryCellView, SeriesContentInfo pi, int imageWidth, int imageHeight) {
+		int width = ImageUtils.getDPI(130, context);
+		int height = ImageUtils.getDPI(200, context);
 
 		initPosterMetaData(galleryCellView, pi, width, height, true);
 
-		SerenityMultiViewVideoActivity c = showActivity;
+		galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
 
-		if (c.isGridViewActive()) {
-			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
-					width, height));
-
-		} else {
-			galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(
-					width, height));
-		}
 	}
 
 	@Override
