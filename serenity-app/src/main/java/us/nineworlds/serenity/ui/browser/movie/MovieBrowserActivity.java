@@ -201,8 +201,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 	}
 
 	@Override
-	protected TwoWayGridView findGridView() {
-		return null;
+	protected DpadAwareRecyclerView findGridView() {
+		return findGalleryView();
 	}
 
 	@Override

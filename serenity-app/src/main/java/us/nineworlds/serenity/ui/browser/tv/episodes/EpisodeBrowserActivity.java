@@ -33,6 +33,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import android.content.Intent;
@@ -149,6 +150,11 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	}
 
 	@Override
+	public AbstractPosterImageGalleryAdapter getAdapter() {
+		return null;
+	}
+
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
@@ -168,7 +174,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	}
 
 	@Override
-	protected TwoWayGridView findGridView() {
+	protected DpadAwareRecyclerView findGridView() {
 		return null;
 	}
 }

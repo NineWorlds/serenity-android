@@ -31,6 +31,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
@@ -258,6 +259,11 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
 	}
 
+	@Override
+	public AbstractPosterImageGalleryAdapter getAdapter() {
+		return null;
+	}
+
 	/**
 	 * Nothing really to update here now, so will return null.
 	 *
@@ -273,7 +279,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 	 * So pass back the appropriate grid view in this case.
 	 */
 	@Override
-	protected TwoWayGridView findGridView() {
-		return (TwoWayGridView) findViewById(R.id.episodeGridView);
+	protected DpadAwareRecyclerView findGridView() {
+		return (DpadAwareRecyclerView) findViewById(R.id.episodeGridView);
 	}
 }

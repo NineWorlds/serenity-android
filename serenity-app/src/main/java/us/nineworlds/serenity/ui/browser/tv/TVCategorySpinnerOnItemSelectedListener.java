@@ -35,7 +35,6 @@ import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.TVSecondaryCategoryResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
@@ -43,14 +42,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
 
-import com.jess.ui.TwoWayGridView;
-
 /**
  * @author dcarver
  *
  */
-public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector
-implements OnItemSelectedListener {
+public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implements OnItemSelectedListener {
 
 	private String selected;
 	private static String key;
@@ -179,14 +175,6 @@ implements OnItemSelectedListener {
 				context, category, key);
 		volleyUtils.volleyXmlGetRequest(url, response,
 				new DefaultLoggingVolleyErrorListener());
-
-		// Messenger messenger = new Messenger(secondaryCategoryHandler);
-		// Intent categoriesIntent = new Intent(context,
-		// SecondaryCategoryRetrievalIntentService.class);
-		// categoriesIntent.putExtra("key", key);
-		// categoriesIntent.putExtra("category", category);
-		// categoriesIntent.putExtra("MESSENGER", messenger);
-		// context.startService(categoriesIntent);
 	}
 
 	private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
@@ -202,19 +190,13 @@ implements OnItemSelectedListener {
 	}
 
 	protected void setupImageGallery(CategoryInfo item) {
-		View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
+		DpadAwareRecyclerView recyclerView;
 
 		if (context.isGridViewActive()) {
-//			TwoWayGridView gridView = (TwoWayGridView) context
-//					.findViewById(R.id.tvShowGridView);
-//			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(context,
-//					key, item.getCategory()));
-//			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(
-//					bgLayout, context));
-//			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(
-//					context));
-//			gridView.setOnItemLongClickListener(new TVShowGridOnItemLongClickListener());
-//			gridView.setOnKeyListener(new TVShowGridOnKeyListener(context));
+			recyclerView = (DpadAwareRecyclerView) context.findViewById(R.id.tvShowGridView);
+			recyclerView.setAdapter(new TVShowPosterImageGalleryAdapter(context,
+					key, item.getCategory()));
+			recyclerView.setOnKeyListener(new TVShowGridOnKeyListener(context));
 		} else {
 			DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) context
 					.findViewById(R.id.tvShowBannerGallery);
@@ -226,22 +208,7 @@ implements OnItemSelectedListener {
 						context, key, item.getCategory()));
 			}
 //			posterGallery
-//			.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
-//					bgLayout, context));
-//			posterGallery
-//			.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
-//					context));
-//			posterGallery
 //			.setOnItemLongClickListener(new ShowOnItemLongClickListener());
-//			posterGallery.setCallbackDuringFling(false);
-//			posterGallery.setAnimationDuration(1);
-//			posterGallery.setSpacing(15);
-//			posterGallery.setPadding(5, 5, 5, 5);
-//			posterGallery.setAnimationCacheEnabled(true);
-//			posterGallery.setHorizontalFadingEdgeEnabled(true);
-//			posterGallery.setFocusableInTouchMode(false);
-//			posterGallery.setDrawingCacheEnabled(true);
-//			posterGallery.setUnselectedAlpha(0.75f);
 		}
 	}
 

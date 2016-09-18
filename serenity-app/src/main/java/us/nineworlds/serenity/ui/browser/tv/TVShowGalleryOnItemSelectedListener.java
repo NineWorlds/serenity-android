@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import javax.inject.Inject;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
@@ -32,10 +33,9 @@ import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 import android.app.Activity;
 import android.view.View;
 import android.widget.ImageView;
@@ -55,11 +55,10 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public class TVShowGalleryOnItemSelectedListener extends BaseInjector implements
-		OnItemSelectedListener {
+		DpadAwareRecyclerView.OnItemSelectedListener {
 
 	private final SerenityMultiViewVideoActivity context;
 	private final ImageLoader imageLoader;
-	private View previous;
 	private final ImageSize bgImageSize = new ImageSize(1280, 720);
 	private SeriesContentInfo info;
 
@@ -69,33 +68,11 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector implements
 	@Inject
 	protected PlexappFactory factory;
 
-	public TVShowGalleryOnItemSelectedListener(View bgv,
-			SerenityMultiViewVideoActivity activity) {
+	public TVShowGalleryOnItemSelectedListener(SerenityMultiViewVideoActivity activity) {
 		super();
 		context = activity;
 
 		imageLoader = serenityImageLoader.getImageLoader();
-
-	}
-
-	@Override
-	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
-			long id) {
-
-		info = (SeriesContentInfo) av.getItemAtPosition(position);
-
-		if (previous != null) {
-			previous.setPadding(0, 0, 0, 0);
-		}
-
-		previous = v;
-
-		v.setPadding(5, 5, 5, 5);
-
-		ImageView imageView = (ImageView) v.findViewById(R.id.posterImageView);
-
-		createTVShowDetail(imageView);
-		changeBackgroundImage(imageView);
 
 	}
 
@@ -218,8 +195,19 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector implements
 	}
 
 	@Override
-	public void onNothingSelected(SerenityAdapterView<?> arg0) {
+	public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+		AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+		info = (SeriesContentInfo) abstractPosterImageGalleryAdapter.getItem(i);
+
+		ImageView imageView = (ImageView) view.findViewById(R.id.posterImageView);
+
+		createTVShowDetail(imageView);
+		changeBackgroundImage(imageView);
 
 	}
 
+	@Override
+	public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+
+	}
 }

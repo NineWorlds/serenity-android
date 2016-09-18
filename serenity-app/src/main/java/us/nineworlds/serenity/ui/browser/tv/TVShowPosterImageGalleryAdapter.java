@@ -23,49 +23,22 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.jess.ui.TwoWayAbsListView;
 
-/**
- *
- * @author dcarver
- *
- */
-public class TVShowPosterImageGalleryAdapter extends
-TVShowBannerImageGalleryAdapter {
+public class TVShowPosterImageGalleryAdapter extends TVShowBannerImageGalleryAdapter {
 
 	public TVShowPosterImageGalleryAdapter(Context c, String key,
 			String category) {
 		super(c, key, category);
 		showActivity = (SerenityMultiViewVideoActivity) c;
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see android.widget.Adapter#getView(int, android.view.View,
-	 * android.view.ViewGroup)
-	 */
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = showActivity.getLayoutInflater().inflate(
-        R.layout.poster_tvshow_indicator_view, null);
-
-		SeriesContentInfo pi = tvShowList.get(position);
-
-		createImage(galleryCellView, pi, 120, 180);
-
-		toggleWatchedIndicator(galleryCellView, pi);
-		return galleryCellView;
 	}
 
 	@Override

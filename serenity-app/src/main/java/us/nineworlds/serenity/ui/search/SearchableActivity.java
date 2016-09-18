@@ -33,6 +33,7 @@ import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MovieSearchIntentService;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
@@ -146,12 +147,17 @@ public class SearchableActivity extends SerenityVideoActivity {
 	}
 
 	@Override
+	public AbstractPosterImageGalleryAdapter getAdapter() {
+		return null;
+	}
+
+	@Override
 	protected DpadAwareRecyclerView findGalleryView() {
 		return (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
 	}
 
 	@Override
-	protected TwoWayGridView findGridView() {
+	protected DpadAwareRecyclerView findGridView() {
 		return null;
 	}
 }

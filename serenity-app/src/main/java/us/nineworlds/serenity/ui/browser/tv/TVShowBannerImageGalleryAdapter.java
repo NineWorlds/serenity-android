@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import butterknife.BindView;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
@@ -50,8 +53,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.jess.ui.TwoWayGridView;
 
-public class TVShowBannerImageGalleryAdapter extends
-		AbstractPosterImageGalleryAdapter {
+public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 
 	private static final int BANNER_PIXEL_HEIGHT = 140;
 	private static final int BANNER_PIXEL_WIDTH = 758;
@@ -87,31 +89,22 @@ public class TVShowBannerImageGalleryAdapter extends
 
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		return null;
+		View view = LayoutInflater.from(context).inflate(R.layout.poster_tvshow_indicator_view, parent, false);
+		return new TVShowViewHolder(view);
 	}
 
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+		SeriesContentInfo pi = tvShowList.get(position);
+		createImage(holder.itemView, pi, BANNER_PIXEL_WIDTH,
+				BANNER_PIXEL_HEIGHT);
 
+		toggleWatchedIndicator(holder.itemView, pi);
 	}
 
 	@Override
 	public long getItemId(int position) {
 		return position;
-	}
-
-	public View getView(int position, View convertView, ViewGroup parent) {
-
-		View galleryCellView = context.getLayoutInflater().inflate(
-				R.layout.poster_tvshow_indicator_view, null);
-
-		SeriesContentInfo pi = tvShowList.get(position);
-		createImage(galleryCellView, pi, BANNER_PIXEL_WIDTH,
-				BANNER_PIXEL_HEIGHT);
-
-		toggleWatchedIndicator(galleryCellView, pi);
-
-		return galleryCellView;
 	}
 
 	protected void createImage(View galleryCellView, SeriesContentInfo pi,
@@ -212,8 +205,8 @@ public class TVShowBannerImageGalleryAdapter extends
 		@Override
 		public void onResponse(MediaContainer response) {
 			tvShowList = new SeriesMediaContainer(response).createSeries();
-			SerenityGallery posterGallery = (SerenityGallery) context
-					.findViewById(R.id.tvShowBannerGallery);
+			DpadAwareRecyclerView recyclerView = (DpadAwareRecyclerView) (context
+					.findViewById(R.id.tvShowBannerGallery) != null ? context.findViewById(R.id.tvShowBannerGallery) : context.findViewById(R.id.tvShowGridView));
 			if (tvShowList != null) {
 				TextView tv = (TextView) context
 						.findViewById(R.id.tvShowItemCount);
@@ -231,15 +224,14 @@ public class TVShowBannerImageGalleryAdapter extends
 						+ context.getString(R.string._item_s_));
 			}
 			notifyDataSetChanged();
-			if (showActivity.isGridViewActive()) {
-				TwoWayGridView gridView = (TwoWayGridView) context
-						.findViewById(R.id.tvShowGridView);
-				gridView.requestFocusFromTouch();
-			} else {
-				posterGallery.requestFocus();
-			}
+			recyclerView.requestFocus();
+		}
+	}
 
-			context.setSupportProgressBarIndeterminateVisibility(false);
+	public class TVShowViewHolder extends RecyclerView.ViewHolder {
+
+		public TVShowViewHolder(View itemView) {
+			super(itemView);
 		}
 	}
 }

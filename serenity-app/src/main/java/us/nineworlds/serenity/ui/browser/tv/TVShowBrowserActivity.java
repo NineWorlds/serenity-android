@@ -28,12 +28,16 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
+import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
@@ -50,11 +54,14 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.jess.ui.TwoWayGridView;
+import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	private boolean restarted_state = false;
 	private static String key;
+	private RecyclerView.Adapter adapter;
+
 	@Inject
 	protected SharedPreferences preferences;
 
@@ -87,11 +94,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		populateMenuDrawer();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see android.app.Activity#onResume()
-	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -106,15 +108,9 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
-	 * android.view.KeyEvent)
-	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		SerenityGallery gallery = (SerenityGallery) findViewById(R.id.tvShowBannerGallery);
+		DpadAwareRecyclerView gallery = findGalleryView();
 
 		boolean menuKeySlidingMenu = preferences.getBoolean(
 				"remote_control_menu", true);
@@ -148,7 +144,9 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 			int itemsCount = adapter.getItemCount();
 
 			if (contextMenuRequested(keyCode)) {
-				View view = gallery.getSelectedView();
+				int pos = gallery.getSelectedItemPosition();
+				RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
+				View view = layoutManager.findViewByPosition(pos);
 				view.performLongClick();
 				return true;
 			}
@@ -174,8 +172,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 			}
 			if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
 					|| keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
-				SeriesContentInfo info = (SeriesContentInfo) gallery
-						.getSelectedItem();
+				int selectedItem = gallery.getSelectedItemPosition();
+				SeriesContentInfo info = (SeriesContentInfo) ((AbstractPosterImageGalleryAdapter) gallery.getAdapter()).getItem(selectedItem);
 				new FindUnwatchedAsyncTask(this).execute(info);
 				return true;
 			}
@@ -197,6 +195,21 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		} else {
 			setContentView(R.layout.activity_tvbrowser_show_banners);
 		}
+
+		DpadAwareRecyclerView dpadAwareRecyclerView = findGalleryView() != null ? findGalleryView() : findGridView();
+		if (!gridViewActive) {
+			LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+			dpadAwareRecyclerView.setLayoutManager(linearLayoutManager);
+			dpadAwareRecyclerView.addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
+			dpadAwareRecyclerView.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(this));
+		} else {
+			SerenityMenuGridLayoutManager serenityMenuGridLayoutManager = new SerenityMenuGridLayoutManager(this, 3, SerenityMenuGridLayoutManager.HORIZONTAL, false);
+			serenityMenuGridLayoutManager.setCircular(true);
+			dpadAwareRecyclerView.setLayoutManager(serenityMenuGridLayoutManager);
+			dpadAwareRecyclerView.addItemDecoration(new ItemOffsetDecoration(getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
+		}
+		dpadAwareRecyclerView.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));
+
 
 		View fanArt = findViewById(R.id.fanArt);
 		fanArt.setBackgroundResource(R.drawable.tvshows);
@@ -228,9 +241,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		populateMenuDrawer();
 	}
 
-	/**
-	 *
-	 */
 	protected void populateMenuDrawer() {
 		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
 		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View",
@@ -247,40 +257,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
-		// if (savedCategory != null) {
-		// outState.putString("savedCategory", savedCategory);
-		// }
-	}
-
-	@Override
 	public AbstractPosterImageGalleryAdapter getAdapter() {
 		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see android.app.Activity#finish()
-	 */
-	@Override
-	public void finish() {
-		super.finish();
-		// savedCategory = null;
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-
-		// savedCategory = savedInstanceState.getString("savedCategory");
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
 	}
 
 	@Override
@@ -289,7 +267,17 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	}
 
 	@Override
-	protected TwoWayGridView findGridView() {
-		return (TwoWayGridView) findViewById(R.id.tvShowGridView);
+	protected DpadAwareRecyclerView findGridView() {
+		return (DpadAwareRecyclerView) findViewById(R.id.tvShowGridView);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		DpadAwareRecyclerView galleryView = findGalleryView() != null ? findGalleryView() : findGridView();
+		if (galleryView != null) {
+			adapter = galleryView.getAdapter();
+		}
 	}
 }

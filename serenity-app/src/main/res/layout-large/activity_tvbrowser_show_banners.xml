@@ -115,14 +115,18 @@
             android:background="@color/card_background"
             android:orientation="vertical" >
 
-            <us.nineworlds.serenity.widgets.SerenityGallery
-                android:id="@+id/tvShowBannerGallery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|center_vertical">
+            <net.ganin.darv.DpadAwareRecyclerView
+                    android:id="@+id/tvShowBannerGallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|center_vertical"
+                    android:nextFocusUp="@+id/categoryFilter"
+                    app:selectorVelocity="2000"
+                    app:smoothScrolling="true"
+                    app:backgroundSelector="@drawable/main_menu_item_foreground_selector">
+                <requestFocus/>
+            </net.ganin.darv.DpadAwareRecyclerView>
 
-                <requestFocus />
-            </us.nineworlds.serenity.widgets.SerenityGallery>
         </LinearLayout>
     </RelativeLayout>
     <!-- The navigation drawer -->

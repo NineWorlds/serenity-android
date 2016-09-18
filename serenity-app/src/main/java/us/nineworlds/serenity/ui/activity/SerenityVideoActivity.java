@@ -58,49 +58,39 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
 	@ForVideoQueue
 	LinkedList<VideoContentInfo> videoQueue;
 
+	public abstract AbstractPosterImageGalleryAdapter getAdapter();
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		boolean externalPlayer = prefs.getBoolean("external_player", false);
-		DpadAwareRecyclerView gallery = findGalleryView();
-		View selectedView = null;
-		VideoContentInfo video = null;
-		BaseAdapter adapter = null;
+		DpadAwareRecyclerView gallery = findGalleryView() != null ? findGalleryView() : findGridView();
+		View selectedView;
+		VideoContentInfo video;
+		AbstractPosterImageGalleryAdapter adapter = getAdapter();
 
-		if (gallery != null) {
-			AbstractPosterImageGalleryAdapter adapter2 = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
-			video = (VideoContentInfo) adapter2.getItem(gallery.getSelectedItemPosition());
-			RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
-			selectedView = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
-		} else {
-			TwoWayGridView gridView = findGridView();
-			if (gridView != null) {
-				video = (VideoContentInfo) gridView.getSelectedItem();
-				adapter = (BaseAdapter) gridView.getAdapter();
-				selectedView = gridView.getSelectedView();
-				if (video == null) {
-					video = (VideoContentInfo) gridView
-							.getItemAtPosition(SerenityConstants.CLICKED_GRID_VIEW_ITEM);
-					gridView.setSelectionInTouch(SerenityConstants.CLICKED_GRID_VIEW_ITEM);
-					selectedView = gridView.getSelectedView();
-				}
-			}
-		}
+		RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
+		video = (VideoContentInfo) adapter.getItem(gallery.getSelectedItemPosition());
+		selectedView = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
 
 		if (data != null) {
 			if (externalPlayer) {
-//				ExternalPlayerResultHandler externalPlayerHandler = new ExternalPlayerResultHandler(
-//						resultCode, data, this, adapter);
-//				externalPlayerHandler.updatePlaybackPosition(video,
-//						selectedView);
+				ExternalPlayerResultHandler externalPlayerHandler = new ExternalPlayerResultHandler(
+						resultCode, data, this, adapter);
+				externalPlayerHandler.updatePlaybackPosition(video,
+						selectedView);
 			} else {
-//				PlayerResultHandler playerResultHandler = new PlayerResultHandler(
-//						data, adapter);
-//				playerResultHandler.updateVideoPlaybackPosition(video,
-//						selectedView);
+				PlayerResultHandler playerResultHandler =
+
+						new PlayerResultHandler(
+								data, adapter);
+				playerResultHandler.updateVideoPlaybackPosition(video,
+						selectedView);
 			}
 		}
+
+		gallery.requestFocus();
 
 		if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
 
@@ -129,11 +119,8 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
 
 	protected abstract DpadAwareRecyclerView findGalleryView();
 
-	protected abstract TwoWayGridView findGridView();
+	protected abstract DpadAwareRecyclerView findGridView();
 
-	/**
-	 *
-	 */
 	protected void showQueueNotEmptyMessage() {
 		Toast.makeText(this, R.string.there_are_still_videos_int_the_queue_,
 				Toast.LENGTH_LONG).show();

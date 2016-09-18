@@ -74,96 +74,12 @@ public abstract class SerenityMultiViewVideoActivity extends SerenityVideoActivi
 		return posterLayoutActive;
 	}
 
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-
-		// savedCategory = savedInstanceState.getString("savedCategory");
-		// savedSelectedGenreCategory = savedInstanceState
-		// .getString("savedSelectedGenreCategory");
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
-		// if (savedCategory != null) {
-		// outState.putString("savedCategory", savedCategory);
-		// }
-		// if (savedSelectedGenreCategory != null) {
-		// outState.putString("savedSelectedGenreCategory",
-		// savedSelectedGenreCategory);
-		//
-		// }
-	}
-
 	public void setGridViewEnabled(boolean sw) {
 		gridViewActive = sw;
 	}
 
 	public void setPosterLayoutActive(boolean sw) {
 		posterLayoutActive = sw;
-	}
-
-	public abstract AbstractPosterImageGalleryAdapter getAdapter();
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		boolean externalPlayer = prefs.getBoolean("external_player", false);
-		DpadAwareRecyclerView gallery = findGalleryView();
-		View selectedView;
-		VideoContentInfo video;
-		AbstractPosterImageGalleryAdapter adapter = getAdapter();
-
-		RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
-		video = (VideoContentInfo) adapter.getItem(gallery.getSelectedItemPosition());
-		selectedView = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
-
-		if (data != null) {
-			if (externalPlayer) {
-				ExternalPlayerResultHandler externalPlayerHandler = new ExternalPlayerResultHandler(
-						resultCode, data, this, adapter);
-				externalPlayerHandler.updatePlaybackPosition(video,
-						selectedView);
-			} else {
-				PlayerResultHandler playerResultHandler =
-
-						new PlayerResultHandler(
-						data, adapter);
-				playerResultHandler.updateVideoPlaybackPosition(video,
-						selectedView);
-			}
-		}
-
-		gallery.requestFocus();
-
-		if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
-
-			if (resultCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
-				if (!videoQueue.isEmpty()) {
-					showQueueNotEmptyMessage();
-				}
-				return;
-			}
-
-
-
-			if (!externalPlayer) {
-				if (!videoQueue.isEmpty()) {
-					Intent vpIntent = new Intent(this,
-							SerenitySurfaceViewVideoActivity.class);
-					startActivityForResult(vpIntent,
-							SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
-					return;
-				}
-			}
-		}
-
-		OnDeckRecommendationAsyncTask onDeckRecomendations = new OnDeckRecommendationAsyncTask(
-				getApplicationContext());
-		onDeckRecomendations.execute();
 	}
 
 }

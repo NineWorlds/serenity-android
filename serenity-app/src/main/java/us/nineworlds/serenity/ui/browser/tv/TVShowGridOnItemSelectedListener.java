@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import javax.inject.Inject;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
@@ -37,10 +38,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jess.ui.TwoWayAdapterView;
-import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 /**
  * Display selected TV Show Information.
@@ -49,11 +49,10 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public class TVShowGridOnItemSelectedListener extends BaseInjector implements
-		OnItemSelectedListener {
+		DpadAwareRecyclerView.OnItemSelectedListener {
 
 	private final Activity context;
 	private final ImageLoader imageLoader;
-	private View previous;
 	private final ImageSize bgImageSize = new ImageSize(1280, 720);
 	private SeriesContentInfo videoInfo;
 	private final Handler handler = new Handler();
@@ -70,41 +69,6 @@ public class TVShowGridOnItemSelectedListener extends BaseInjector implements
 
 		imageLoader = serenityImageLoader.getImageLoader();
 
-	}
-
-	@Override
-	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position,
-			long id) {
-
-		videoInfo = (SeriesContentInfo) av.getItemAtPosition(position);
-		if (previous != null) {
-			previous.setPadding(0, 0, 0, 0);
-		}
-
-		previous = v;
-
-		v.setPadding(5, 5, 5, 5);
-
-		final ImageView imageView = (ImageView) v
-				.findViewById(R.id.posterImageView);
-
-		if (runnable != null) {
-			handler.removeCallbacks(runnable);
-		}
-		runnable = new Runnable() {
-			@Override
-			public void run() {
-				changeBackgroundImage(imageView);
-				runnable = null;
-			}
-		};
-		handler.postDelayed(runnable, 500);
-
-		TextView titleView = (TextView) context
-				.findViewById(R.id.tvShowGridTitle);
-		if (titleView != null) {
-			titleView.setText(videoInfo.getTitle());
-		}
 	}
 
 	/**
@@ -127,8 +91,34 @@ public class TVShowGridOnItemSelectedListener extends BaseInjector implements
 	}
 
 	@Override
-	public void onNothingSelected(TwoWayAdapterView<?> arg0) {
+	public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+		AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+		videoInfo = (SeriesContentInfo) adapter.getItem(i);
+
+		final ImageView imageView = (ImageView) view.findViewById(R.id.posterImageView);
+
+		if (runnable != null) {
+			handler.removeCallbacks(runnable);
+		}
+		runnable = new Runnable() {
+			@Override
+			public void run() {
+				changeBackgroundImage(imageView);
+				runnable = null;
+			}
+		};
+		handler.postDelayed(runnable, 500);
+
+		TextView titleView = (TextView) context
+				.findViewById(R.id.tvShowGridTitle);
+		if (titleView != null) {
+			titleView.setText(videoInfo.getTitle());
+		}
 
 	}
 
+	@Override
+	public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+
+	}
 }

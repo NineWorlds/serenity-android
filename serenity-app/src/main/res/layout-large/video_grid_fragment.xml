@@ -18,18 +18,3 @@
         <requestFocus/>
     </net.ganin.darv.DpadAwareRecyclerView>
 </FrameLayout>
-        <!--<net.ganin.darv.DpadAwareRecyclerView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="300dp"-->
-        <!--android:id="@+id/moviePosterView"-->
-        <!--android:layout_marginRight="10dp"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:background="@color/card_background"-->
-        <!--android:focusable="true"-->
-        <!--android:nextFocusDown="@+id/movieGridView"-->
-        <!--android:nextFocusLeft="@+id/movieGridView"-->
-        <!--android:nextFocusRight="@+id/movieGridView"-->
-        <!--android:padding="5dp"-->
-        <!--app:selectorVelocity="1000"-->
-        <!--app:smoothScrolling="true"-->
-        <!--app:backgroundSelector="@drawable/main_menu_item_foreground_selector"/>-->

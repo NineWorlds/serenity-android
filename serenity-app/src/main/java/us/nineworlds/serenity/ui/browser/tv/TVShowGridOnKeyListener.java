@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import javax.inject.Inject;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -33,6 +34,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.jess.ui.TwoWayAdapterView;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 public class TVShowGridOnKeyListener extends BaseInjector implements
 		View.OnKeyListener {
@@ -60,9 +62,10 @@ public class TVShowGridOnKeyListener extends BaseInjector implements
 	}
 
 	protected SeriesContentInfo getSelectedSeries(View v) {
-		final TwoWayAdapterView gridView = (TwoWayAdapterView) v;
-		final SeriesContentInfo info = (SeriesContentInfo) gridView
-				.getSelectedItem();
+		final DpadAwareRecyclerView gridView = (DpadAwareRecyclerView) v;
+		AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
+		int pos = gridView.getSelectedItemPosition();
+		final SeriesContentInfo info = (SeriesContentInfo) adapter.getItem(pos);
 		return info;
 	}
 

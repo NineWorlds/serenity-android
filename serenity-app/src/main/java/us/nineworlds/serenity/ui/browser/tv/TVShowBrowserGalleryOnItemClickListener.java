@@ -23,11 +23,11 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemClickListener;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -39,7 +39,7 @@ import android.widget.ImageView;
  *
  */
 public class TVShowBrowserGalleryOnItemClickListener implements
-OnItemClickListener {
+		DpadAwareRecyclerView.OnItemClickListener {
 
 	private final Activity context;
 
@@ -50,25 +50,16 @@ OnItemClickListener {
 		context = (Activity) c;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
-	 * .AdapterView, android.view.View, int, long)
-	 */
 	@Override
-	public void onItemClick(SerenityAdapterView<?> av, View view, int position,
-			long arg3) {
-
-		SeriesContentInfo videoInfo = (SeriesContentInfo) av
-				.getItemAtPosition(position);
+	public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+		AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+		SeriesContentInfo videoInfo = (SeriesContentInfo) abstractPosterImageGalleryAdapter.getItem(i);
 
 		ImageView tsi = (ImageView) view.findViewById(R.id.posterImageView);
 
-		Intent i = new Intent(context, TVShowSeasonBrowserActivity.class);
-		i.putExtra("key", videoInfo.getKey());
-		context.startActivityForResult(i, 0);
-	}
+		Intent intent = new Intent(context, TVShowSeasonBrowserActivity.class);
+		intent.putExtra("key", videoInfo.getKey());
+		context.startActivityForResult(intent, 0);
 
+	}
 }

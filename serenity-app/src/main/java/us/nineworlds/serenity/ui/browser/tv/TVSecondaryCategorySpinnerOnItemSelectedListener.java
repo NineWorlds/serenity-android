@@ -90,14 +90,13 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
 
 
 		View bgLayout = activity.findViewById(R.id.tvshowBrowserLayout);
+		DpadAwareRecyclerView dpadAwareRecyclerView;
 		if (activity.isGridViewActive()) {
-//			TwoWayGridView gridView = (TwoWayGridView) activity
-//					.findViewById(R.id.tvShowGridView);
-//			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(activity, key,
-//					item.getParentCategory() + "/" + item.getCategory()));
-//			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(
-//					bgLayout, activity));
-//			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(activity));
+			dpadAwareRecyclerView = (DpadAwareRecyclerView) activity.findViewById(R.id.tvShowGridView);
+			dpadAwareRecyclerView.setAdapter(new TVShowPosterImageGalleryAdapter(activity, key,
+					item.getParentCategory() + "/" + item.getCategory()));
+			dpadAwareRecyclerView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(
+					bgLayout, activity));
 		} else {
 			DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) activity
 					.findViewById(R.id.tvShowBannerGallery);
@@ -112,23 +111,10 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
 								+ item.getCategory()));
 			}
 
-//			posterGallery
-//					.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
-//							bgLayout, activity));
-//			posterGallery
-//					.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
-//							activity));
+			posterGallery
+					.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(activity));
 //			posterGallery
 //					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
-//			posterGallery.setCallbackDuringFling(false);
-//			posterGallery.setAnimationDuration(1);
-//			posterGallery.setSpacing(15);
-//			posterGallery.setPadding(5, 5, 5, 5);
-//			posterGallery.setAnimationCacheEnabled(true);
-//			posterGallery.setHorizontalFadingEdgeEnabled(true);
-//			posterGallery.setFocusableInTouchMode(false);
-//			posterGallery.setDrawingCacheEnabled(true);
-//			posterGallery.setUnselectedAlpha(0.75f);
 		}
 	}
 
