@@ -206,7 +206,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 			SerenityMenuGridLayoutManager serenityMenuGridLayoutManager = new SerenityMenuGridLayoutManager(this, 3, SerenityMenuGridLayoutManager.HORIZONTAL, false);
 			serenityMenuGridLayoutManager.setCircular(true);
 			dpadAwareRecyclerView.setLayoutManager(serenityMenuGridLayoutManager);
-			dpadAwareRecyclerView.addItemDecoration(new ItemOffsetDecoration(getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
+			dpadAwareRecyclerView.addItemDecoration(new ItemOffsetDecoration(getResources().getDimensionPixelSize(R.dimen.grid_spacing_dimen)));
 		}
 		dpadAwareRecyclerView.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));
 
