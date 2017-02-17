@@ -30,6 +30,26 @@
             <checksumPolicy>warn</checksumPolicy>
          </releases>
       </repository>
+      <repository>
+         <id>android-sdk</id>
+         <url>file://${env.ANDROID_HOME}/extras/android/m2repository/</url>
+         <layout>default</layout>
+         <releases>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+         </releases>         
+      </repository>
+      <repository>
+         <id>google-services</id>
+         <url>file://${env.ANDROID_HOME}/extras/google/m2repository/</url>
+         <layout>default</layout>
+         <releases>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+         </releases>         
+      </repository>
    </repositories>
 
    <build>
