@@ -82,6 +82,10 @@ dependencies {
   }
   testCompile 'org.robolectric:shadows-core:3.2.2'
   testCompile 'org.robolectric:shadows-httpclient:3.2.2'
+  testCompile 'org.robolectric:shadows-support-v4:3.2.2'
+  testCompile 'org.robolectric:shadows-play-services:3.2.2'
+  testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
+
   testCompile ('com.squareup:fest-android:1.0.7') {
     exclude module: 'support-v4'
   }

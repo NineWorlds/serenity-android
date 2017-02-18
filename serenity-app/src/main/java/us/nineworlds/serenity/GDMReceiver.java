@@ -1,20 +1,20 @@
 package us.nineworlds.serenity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import javax.inject.Inject;
-
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.impl.GDMServer;
 import us.nineworlds.serenity.core.services.GDMService;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.InjectingBroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
 
 public class GDMReceiver extends InjectingBroadcastReceiver {
+
+	SerenityObjectGraph objectGraph;
 
 	@Inject
 	@ForMediaServers
@@ -22,6 +22,10 @@ public class GDMReceiver extends InjectingBroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		if (objectGraph == null) {
+			objectGraph = SerenityObjectGraph.getInstance();
+			objectGraph.inject(this);
+		}
 
 		if (intent.getAction().equals(GDMService.MSG_RECEIVED)) {
 			String message = intent.getStringExtra("data").trim();

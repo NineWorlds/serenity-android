@@ -41,7 +41,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.GDMReceiver;
-import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
@@ -72,8 +71,7 @@ public class GDMServiceTest extends InjectingTest {
 		IntentFilter filters = new IntentFilter();
 		filters.addAction(GDMService.MSG_RECEIVED);
 		filters.addAction(GDMService.SOCKET_CLOSED);
-		MainActivity activity = new MainActivity();
-		LocalBroadcastManager.getInstance(activity).registerReceiver(
+		LocalBroadcastManager.getInstance(application).registerReceiver(
 				gdmReciver, filters);
 	}
 

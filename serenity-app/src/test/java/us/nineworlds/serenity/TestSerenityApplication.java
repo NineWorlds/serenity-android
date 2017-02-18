@@ -49,6 +49,10 @@ TestLifecycleApplication {
 		return modules;
 	}
 
+	@Override protected void setDefaultPreferences() {
+
+	}
+
 	@Override
 	protected void installAnalytics() {
 		GoogleAnalytics.getInstance(this).setAppOptOut(true);

@@ -131,6 +131,10 @@ public class SerenityApplication extends Application {
 		super.onCreate();
 		init();
 
+		setDefaultPreferences();
+	}
+
+	protected void setDefaultPreferences() {
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 		SharedPreferences.Editor editor = preferences.edit();
 		if (androidHelper.isGoogleTV() || androidHelper.isAndroidTV()

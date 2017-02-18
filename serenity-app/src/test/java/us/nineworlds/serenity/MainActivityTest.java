@@ -28,7 +28,6 @@ import android.support.v4.app.FragmentTransaction;
 import dagger.Module;
 import java.util.ArrayList;
 import java.util.List;
-import org.fest.assertions.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -88,13 +87,7 @@ public class MainActivityTest extends InjectingTest {
 		assertThat(activity.findViewById(R.id.mainGalleryBackground))
 		.isVisible();
 	}
-
-	@Test
-	public void testThatActivityIsDestroyed() throws Exception {
-		activity.onDestroy();
-		Assertions.assertThat(activity.isDestroyed()).isTrue();
-	}
-
+	
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
