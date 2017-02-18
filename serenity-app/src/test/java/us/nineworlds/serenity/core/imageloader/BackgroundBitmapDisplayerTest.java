@@ -35,7 +35,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowView;
@@ -44,6 +43,7 @@ import us.nineworlds.serenity.R;
 
 import static org.fest.assertions.api.ANDROID.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.RuntimeEnvironment.application;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -60,7 +60,7 @@ public class BackgroundBitmapDisplayerTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		initMocks(this);
 		backgroundView = new View(application);
 	}
 

@@ -31,13 +31,13 @@ import dagger.Provides;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Singleton;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
@@ -60,6 +60,9 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.robolectric.Robolectric.buildActivity;
+import static org.robolectric.Robolectric.getBackgroundThreadScheduler;
+import static org.robolectric.Robolectric.getForegroundThreadScheduler;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
@@ -91,19 +94,18 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 	@Mock
 	protected SerenityGallery mockGallery;
 
-	MovieBrowserActivity movieBrowserActivity = Robolectric
-			.buildActivity(MovieBrowserActivity.class).create().get();
-
+	MovieBrowserActivity movieBrowserActivity;
 	protected SecondaryCategorySpinnerOnItemSelectedListener onItemSelectedListener;
 	protected SecondaryCategorySpinnerOnItemSelectedListener spyOnItemSelectedListener;
 
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		Robolectric.getBackgroundThreadScheduler().pause();
-		Robolectric.getForegroundThreadScheduler().pause();
+		getBackgroundThreadScheduler().pause();
+		getForegroundThreadScheduler().pause();
 		MockitoAnnotations.initMocks(this);
 		super.setUp();
+		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
 
 		ShadowApplication shadowApplication = Shadows
 				.shadowOf(application);
@@ -114,6 +116,13 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 				"Action", "59", movieBrowserActivity);
 
 		spyOnItemSelectedListener = spy(onItemSelectedListener);
+	}
+
+	@After
+	public void tearDown() {
+		if (movieBrowserActivity != null) {
+			movieBrowserActivity.finish();
+		}
 	}
 
 	@Test

@@ -66,7 +66,9 @@ public class GridSubtitleVolleyResponseListenerTest {
 
 	@After
 	public void tearDown() throws Exception {
-
+		if (movieBrowserActivity != null) {
+			movieBrowserActivity.finish();
+		}
 	}
 
 	@Test

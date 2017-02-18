@@ -95,7 +95,6 @@ InjectingTest {
 
 	@Mock protected DpadAwareRecyclerView mockPosterGallery;
 
-	MovieBrowserActivity movieBrowserActivity;
 	protected MovieCategorySpinnerOnItemSelectedListener onItemSelectedListener;
 	protected MovieCategorySpinnerOnItemSelectedListener spyOnItemSelectedListener;
 

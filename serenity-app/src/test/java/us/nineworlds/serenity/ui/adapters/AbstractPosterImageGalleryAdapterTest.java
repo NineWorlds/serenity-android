@@ -59,6 +59,7 @@ import static org.robolectric.RuntimeEnvironment.application;
 public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
 	AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter;
+	AppCompatActivity activity;
 
 	@Override
 	@Before
@@ -67,7 +68,7 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 		Robolectric.getBackgroundThreadScheduler().pause();
 		Robolectric.getForegroundThreadScheduler().pause();
 
-		AppCompatActivity activity = Robolectric
+		activity = Robolectric
 				.buildActivity(MainActivity.class).create().get();
 		abstractPosterImageGalleryAdapter = new FakePosterImageGalleryAdapter(
 				activity, "12345");
@@ -75,7 +76,9 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
 	@After
 	public void tearDown() {
-
+		if (activity != null) {
+			activity.finish();
+		}
 	}
 
 	@Test

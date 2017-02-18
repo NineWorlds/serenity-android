@@ -23,11 +23,10 @@
 
 package us.nineworlds.serenity.core.menus;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class DialogMenuItemTest {
 
@@ -36,11 +35,6 @@ public class DialogMenuItemTest {
 	@Before
 	public void setUp() {
 		dialogMenuItem = new DialogMenuItem();
-	}
-
-	@After
-	public void tearDown() {
-
 	}
 
 	@Test

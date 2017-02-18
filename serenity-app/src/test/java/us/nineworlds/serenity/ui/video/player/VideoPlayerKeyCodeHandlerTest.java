@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Singleton;
 import org.fest.assertions.api.ANDROID;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -120,6 +121,13 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 				spyMediaController, OSD_DISPLAY_TIME,
 				mockProgressReportingHandler, mockProgressRunnable, timeOfDay,
 				mockActivity);
+	}
+
+	@After
+	public void tearDown() {
+		if (mockActivity != null) {
+			mockActivity.finish();
+		}
 	}
 
 	@Override

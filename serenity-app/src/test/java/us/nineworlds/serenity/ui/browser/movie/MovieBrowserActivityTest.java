@@ -34,13 +34,12 @@ import dagger.Provides;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Singleton;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import us.nineworlds.serenity.BuildConfig;
@@ -59,6 +58,10 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.robolectric.Robolectric.buildActivity;
+import static org.robolectric.Robolectric.getBackgroundThreadScheduler;
+import static org.robolectric.Robolectric.getForegroundThreadScheduler;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
@@ -73,17 +76,23 @@ public class MovieBrowserActivityTest extends InjectingTest {
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		Robolectric.getBackgroundThreadScheduler().pause();
-		Robolectric.getForegroundThreadScheduler().pause();
+		getBackgroundThreadScheduler().pause();
+		getForegroundThreadScheduler().pause();
 
-		MockitoAnnotations.initMocks(this);
+		initMocks(this);
 		super.setUp();
+	}
+
+	@After
+	public void tearDown() {
+		if (movieBrowserActivity != null) {
+			movieBrowserActivity.finish();
+		}
 	}
 
 	@Test
 	public void menuOptionsHasGridView() {
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
+		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
 		ListView drawerList = (ListView) movieBrowserActivity
 				.findViewById(R.id.left_drawer_list);
 
@@ -95,8 +104,7 @@ public class MovieBrowserActivityTest extends InjectingTest {
 
 	@Test
 	public void menuOptionsHasDetailView() {
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
+		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
 		ListView drawerList = (ListView) movieBrowserActivity
 				.findViewById(R.id.left_drawer_list);
 
@@ -108,8 +116,7 @@ public class MovieBrowserActivityTest extends InjectingTest {
 
 	@Test
 	public void menuOptionsHasPlayAllFromQueue() {
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
+		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
 		ListView drawerList = (ListView) movieBrowserActivity
 				.findViewById(R.id.left_drawer_list);
 
@@ -123,8 +130,7 @@ public class MovieBrowserActivityTest extends InjectingTest {
 	public void restartCallsPopulateMenuDrawer() {
 		doReturn(true).when(mockSharedPreferences).getBoolean(anyString(),
 				anyBoolean());
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
+		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
 		MovieBrowserActivity spyActivity = Mockito.spy(movieBrowserActivity);
 		doNothing().when(spyActivity).populateMenuDrawer();
 
@@ -138,8 +144,7 @@ public class MovieBrowserActivityTest extends InjectingTest {
 		doReturn(true).when(mockSharedPreferences).getBoolean(
 				"remote_control_menu", true);
 
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
+		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
 		DrawerLayout drawerLayout = (DrawerLayout) movieBrowserActivity
 				.findViewById(R.id.drawer_layout);
 		LinearLayout linearLayout = (LinearLayout) movieBrowserActivity
@@ -156,8 +161,7 @@ public class MovieBrowserActivityTest extends InjectingTest {
 		doReturn(true).when(mockSharedPreferences).getBoolean(
 				"remote_control_menu", true);
 
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
+		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
 
 		DrawerLayout drawerLayout = (DrawerLayout) movieBrowserActivity
 				.findViewById(R.id.drawer_layout);
@@ -174,8 +178,7 @@ public class MovieBrowserActivityTest extends InjectingTest {
 		doReturn(false).when(mockSharedPreferences).getBoolean(
 				"remote_control_menu", true);
 
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
+		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
 
 		movieBrowserActivity.onKeyDown(KeyEvent.KEYCODE_MENU, null);
 

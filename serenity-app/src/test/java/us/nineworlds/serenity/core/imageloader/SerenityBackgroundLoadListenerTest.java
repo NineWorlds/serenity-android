@@ -58,7 +58,9 @@ public class SerenityBackgroundLoadListenerTest {
 
 	@After
 	public void tearDown() {
-
+		if (activity != null) {
+			activity.finish();
+		}
 	}
 
 	@Test

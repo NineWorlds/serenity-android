@@ -58,11 +58,13 @@ public class AutoConfigureHandlerRunnableTest extends InjectingTest {
 	@ForMediaServers
 	Map<String, Server> mediaServer;
 
+	Activity activity;
+
 	@Override
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		Activity activity = Robolectric.buildActivity(Activity.class).create()
+		activity = Robolectric.buildActivity(Activity.class).create()
 				.get();
 		handler = new AutoConfigureHandlerRunnable(activity);
 	}
@@ -70,6 +72,9 @@ public class AutoConfigureHandlerRunnableTest extends InjectingTest {
 	@After
 	public void tearDown() {
 		mediaServer.clear();
+		if (activity != null) {
+			activity.finish();
+		}
 	}
 
 	@Test

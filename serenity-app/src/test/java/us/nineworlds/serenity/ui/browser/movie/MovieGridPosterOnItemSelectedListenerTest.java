@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Singleton;
 import net.ganin.darv.DpadAwareRecyclerView;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -113,6 +114,13 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 				.buildActivity(MovieBrowserActivity.class).create().start()
 				.get();
 		doReturn(movieBrowserActivity).when(mockView).getContext();
+	}
+
+	@After
+	public void tearDown() {
+		if (movieBrowserActivity != null) {
+			movieBrowserActivity.finish();
+		}
 	}
 
 	@Test

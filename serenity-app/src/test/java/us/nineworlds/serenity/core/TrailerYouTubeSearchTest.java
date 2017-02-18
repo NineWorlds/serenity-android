@@ -23,15 +23,13 @@
 
 package us.nineworlds.serenity.core;
 
+import org.junit.Before;
+import org.junit.Test;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 public class TrailerYouTubeSearchTest {
 
@@ -40,11 +38,6 @@ public class TrailerYouTubeSearchTest {
 	@Before
 	public void setUp() {
 		ytsearch = new TrailersYouTubeSearch();
-	}
-
-	@After
-	public void tearDown() {
-
 	}
 
 	@Test

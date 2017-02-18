@@ -134,6 +134,10 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 
 	@After
 	public void tearDown() throws Exception {
+		if (activity != null) {
+			activity.finish();
+		}
+
 		videoQueue.clear();
 	}
 

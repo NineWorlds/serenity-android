@@ -36,7 +36,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import us.nineworlds.serenity.BuildConfig;
@@ -52,6 +51,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.RuntimeEnvironment.application;
 
 // UnitTestCodeMash2015
@@ -83,7 +83,7 @@ public class SubtitleSpinnerOnItemSelectedListenerTest extends InjectingTest {
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		initMocks(this);
 		super.setUp();
 		subtitleSpinnerOnItemSelectedListener = new SubtitleSpinnerOnItemSelectedListener(
 				mockVideoContentInfo);

@@ -74,7 +74,9 @@ public class MainActivityTest extends InjectingTest {
 
 	@After
 	public void tearDown() throws Exception {
-
+		if (activity != null) {
+			activity.finish();
+		}
 	}
 
 	@Test

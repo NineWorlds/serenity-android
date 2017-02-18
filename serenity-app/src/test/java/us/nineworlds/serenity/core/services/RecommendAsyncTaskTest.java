@@ -24,8 +24,6 @@
 package us.nineworlds.serenity.core.services;
 
 import android.app.Notification;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -44,16 +42,6 @@ import static org.robolectric.RuntimeEnvironment.application;
 public class RecommendAsyncTaskTest {
 
 	RecommendAsyncTask recommendTask;
-
-	@Before
-	public void setUp() throws Exception {
-
-	}
-
-	@After
-	public void tearDown() throws Exception {
-
-	}
 
 	@Test
 	public void createsValidNotificationForSeries() {
