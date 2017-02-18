@@ -216,17 +216,6 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 	}
 
 	@Test
-	@Config(sdk = 13)
-	public void onCreateHidesCallsGetSupportActionBar() {
-		activity = Robolectric
-				.buildActivity(SerenitySurfaceViewVideoActivity.class).create()
-				.get();
-
-		ActionBar actionBar = activity.getSupportActionBar();
-		assertThat(actionBar.isShowing()).isFalse();
-	}
-
-	@Test
 	public void retrieveIntentExtrasWithIntentSetsAutoResumeFromBundleExtra() {
 		SerenitySurfaceViewVideoActivity spyActivity = spy(activity);
 

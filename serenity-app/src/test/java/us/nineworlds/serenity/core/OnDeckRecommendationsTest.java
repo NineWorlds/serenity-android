@@ -28,7 +28,6 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -61,14 +60,6 @@ public class OnDeckRecommendationsTest {
 	@After
 	public void tearDown() {
 
-	}
-
-	@Test
-	@Config(sdk = 14)
-	@Ignore("Robolectric removed support for API 14, need to mock this out.")
-	public void recommendationsDoNotOccurForVersionBelowJellyBean() {
-		boolean result = onDeckRecommendations.recommended();
-		assertThat(result).isFalse();
 	}
 
 	@Test

@@ -23,8 +23,13 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
+import android.app.Activity;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 import javax.inject.Inject;
-
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
@@ -32,18 +37,8 @@ import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
-import android.app.Activity;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.jess.ui.TwoWayGridView;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 /**
  * @author dcarver

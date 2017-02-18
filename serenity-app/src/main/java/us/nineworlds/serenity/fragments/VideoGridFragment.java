@@ -23,33 +23,15 @@
 
 package us.nineworlds.serenity.fragments;
 
-import javax.inject.Inject;
-
-import android.support.v7.widget.GridLayoutManager;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.injection.InjectingFragment;
-import us.nineworlds.serenity.recyclerutils.GridSpacingItemDecoration;
-import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
-import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
-import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.jess.ui.TwoWayGridView;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
+import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
 import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
 import static butterknife.ButterKnife.bind;

@@ -25,7 +25,6 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import android.content.SharedPreferences;
 import android.view.View;
-import com.jess.ui.TwoWayAdapterView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import dagger.Module;
@@ -33,6 +32,7 @@ import dagger.Provides;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Singleton;
+import net.ganin.darv.DpadAwareRecyclerView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,6 +50,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -72,9 +73,6 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 	SerenityImageLoader mockSerenityImageLoader;
 
 	@Mock
-	TwoWayAdapterView mockTwoWayAdapterView;
-
-	@Mock
 	VideoContentInfo mockVideoContentInfo;
 
 	@Mock
@@ -85,6 +83,12 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 
 	@Mock
 	View mockView;
+
+	@Mock
+	DpadAwareRecyclerView mockRecyclerView;
+
+	@Mock
+	AbstractPosterImageGalleryAdapter mockAdapater;
 
 	MovieGridPosterOnItemSelectedListener onItemSelectedListener;
 
@@ -113,17 +117,17 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 
 	@Test
 	public void whenItemIsSelectedTheBackgroundIsChanged() {
-		doReturn(mockVideoContentInfo).when(mockTwoWayAdapterView)
-		.getSelectedItem();
 		String expectedBackgroundUrl = "http://www.example.com/some/image";
 		doReturn(expectedBackgroundUrl).when(mockVideoContentInfo)
 				.getBackgroundURL();
 		String expectedTranscodingUrl = "http://www.example.com/transcodingUrl";
 		doReturn(expectedTranscodingUrl).when(mockPlexFactory).getImageURL(
 				anyString(), anyInt(), anyInt());
+		doReturn(mockAdapater).when(mockRecyclerView).getAdapter();
+		doReturn(2).when(mockAdapater).getItemCount();
+		doReturn(mockVideoContentInfo).when(mockAdapater).getItem(anyInt());
 
-//		onItemSelectedListener.onItemSelected(mockTwoWayAdapterView, mockView,
-//				0, 0);
+		onItemSelectedListener.onItemSelected(mockRecyclerView, mockView, 0, 0);
 
 		verifyExpectedFanArtCalls(expectedBackgroundUrl, expectedTranscodingUrl);
 	}
@@ -132,7 +136,7 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 			String expectedTranscodingUrl) {
 		verify(mockVideoContentInfo, times(2)).getBackgroundURL();
 		verify(mockPlexFactory).getImageURL(expectedBackgroundUrl, 1280, 720);
-		verify(mockSerenityImageLoader, times(4)).getImageLoader();
+		verify(mockSerenityImageLoader, times(2)).getImageLoader();
 		verify(mockImageLoader).loadImage(eq(expectedTranscodingUrl),
 				any(ImageSize.class),
 				any(SerenityBackgroundLoaderListener.class));

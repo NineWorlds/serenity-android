@@ -23,12 +23,13 @@
 
 package us.nineworlds.serenity.injection.modules;
 
+import com.squareup.okhttp.OkHttpClient;
+import dagger.Module;
+import dagger.Provides;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.inject.Singleton;
-
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -39,16 +40,9 @@ import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.browser.tv.TVCategoryState;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.ui.util.VideoQueueHelper;
 import us.nineworlds.serenity.ui.util.YouTubeUtils;
-
-import com.squareup.okhttp.OkHttpClient;
-
-import dagger.Module;
-import dagger.Provides;
 
 @Module(library = true)
 public class SerenityModule {
@@ -109,18 +103,8 @@ public class SerenityModule {
 	}
 
 	@Provides
-	GridVideoOnItemClickListener providesGridVideoOnItemClickListener() {
-		return new GridVideoOnItemClickListener();
-	}
-
-	@Provides
 	GalleryVideoOnItemLongClickListener providesGalleryVideoOnItemLongClickListener() {
 		return new GalleryVideoOnItemLongClickListener();
-	}
-
-	@Provides
-	GridVideoOnItemLongClickListener providesGridVideoOnItemLongClickListener() {
-		return new GridVideoOnItemLongClickListener();
 	}
 
 	@Provides

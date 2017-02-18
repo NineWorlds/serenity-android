@@ -26,13 +26,11 @@ package us.nineworlds.serenity.ui.browser.movie;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.AdapterView;
-import com.jess.ui.TwoWayGridView;
 import dagger.Module;
 import dagger.Provides;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Singleton;
-import net.ganin.darv.DpadAwareRecyclerView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +43,6 @@ import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 import us.nineworlds.serenity.BuildConfig;
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
@@ -53,10 +50,6 @@ import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -121,29 +114,6 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 				"Action", "59", movieBrowserActivity);
 
 		spyOnItemSelectedListener = spy(onItemSelectedListener);
-	}
-
-	@Test
-	public void verifyThatGalleryRefreshIsCalledWhenGridViewIsNotActiveAndFirstTimeIsTrue() {
-		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
-				anyInt());
-		doReturn("All").when(mockCategoryInfo).getCategory();
-
-		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-
-		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
-				0);
-
-		verify(mockView).getContext();
-		verify(spyOnItemSelectedListener)
-		.refreshGallery(mockPosterImageAdapter);
-
 	}
 
 	@Test
@@ -278,100 +248,6 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		verify(mockCategoryState).getGenreCategory();
 		verify(mockAdapterView).setSelection(anyInt());
 		verify(mockAdapterView, times(2)).getItemAtPosition(0);
-	}
-
-	@Test
-	public void refreshGallerySetsExpectedAdapter() {
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().get();
-
-		spyOnItemSelectedListener
-		.setMultiViewVideoActivity(movieBrowserActivity);
-
-		spyOnItemSelectedListener.findViews();
-		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
-
-		DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) movieBrowserActivity
-				.findViewById(R.id.moviePosterView);
-		assertThat(gallery.getAdapter()).isEqualTo(mockPosterImageAdapter);
-	}
-
-	@Test
-	public void refreshGallerySetsOnItemClickListener() {
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().start()
-				.get();
-
-		spyOnItemSelectedListener
-		.setMultiViewVideoActivity(movieBrowserActivity);
-
-		spyOnItemSelectedListener.findViews();
-		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
-
-		SerenityGallery gallery = (SerenityGallery) movieBrowserActivity
-				.findViewById(R.id.moviePosterView);
-		assertThat(gallery.getOnItemClickListener()).isInstanceOf(
-				GalleryVideoOnItemClickListener.class);
-	}
-
-	@Test
-	public void refreshGallerySetsOnItemLongClickListener() {
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().start()
-				.get();
-
-		spyOnItemSelectedListener
-		.setMultiViewVideoActivity(movieBrowserActivity);
-
-		spyOnItemSelectedListener.findViews();
-		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
-
-		SerenityGallery gallery = (SerenityGallery) movieBrowserActivity
-				.findViewById(R.id.moviePosterView);
-		assertThat(gallery.getOnItemLongClickListener()).isInstanceOf(
-				GalleryVideoOnItemLongClickListener.class);
-	}
-
-	@Test
-	public void refreshGridSetsOnItemLongClickListener() {
-		doReturn(true).when(mockSharedPreferences).getBoolean(
-				"movie_layout_grid", false);
-		doReturn(1).when(mockPosterImageAdapter).getItemCount();
-
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().start()
-				.get();
-		spyOnItemSelectedListener
-		.setMultiViewVideoActivity(movieBrowserActivity);
-
-		spyOnItemSelectedListener.findViews();
-
-		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
-
-		TwoWayGridView gridView = null;
-		assertThat(gridView.getOnItemLongClickListener()).isInstanceOf(
-				GridVideoOnItemLongClickListener.class);
-	}
-
-	@Test
-	public void refreshGridSetsOnItemClickListener() {
-		doReturn(true).when(mockSharedPreferences).getBoolean(
-				"movie_layout_grid", false);
-		doReturn(1).when(mockPosterImageAdapter).getItemCount();
-
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().start()
-				.get();
-		spyOnItemSelectedListener
-		.setMultiViewVideoActivity(movieBrowserActivity);
-
-		spyOnItemSelectedListener.findViews();
-
-		spyOnItemSelectedListener.refreshGallery(mockPosterImageAdapter);
-
-		TwoWayGridView gridView = null;
-		assertThat(gridView.getOnItemClickListener()).isInstanceOf(
-				GridVideoOnItemClickListener.class);
 	}
 
 	@Test

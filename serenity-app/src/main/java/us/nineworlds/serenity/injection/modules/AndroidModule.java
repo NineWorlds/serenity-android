@@ -120,8 +120,6 @@ import us.nineworlds.serenity.ui.leanback.search.CardPresenter;
 import us.nineworlds.serenity.ui.leanback.search.MovieSearchFragment;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.SubtitleSpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 import us.nineworlds.serenity.ui.search.SearchAdapter;
@@ -146,7 +144,7 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 		MainMenuFragment.class,
 		OnDeckRecommendations.class, MusicTracksActivity.class,
 		GalleryVideoOnItemLongClickListener.class,
-		GridVideoOnItemLongClickListener.class, MediaController.class,
+		MediaController.class,
 		SerenityGallery.class, MainActivity.class, SerenityApplication.class,
 		StartupBroadcastReceiver.class, RecommendationPlayerActivity.class,
 		EpisodeBrowserActivity.class, SearchableActivity.class,
@@ -163,10 +161,9 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 		MovieMediaContainer.class, SeriesMediaContainer.class,
 		SubtitleMediaContainer.class, EpisodeMediaContainer.class,
 		SeasonsMediaContainer.class, GalleryVideoOnItemClickListener.class,
-		GridVideoOnItemClickListener.class,
 		GalleryVideoOnItemLongClickListener.class,
 		EpisodeBrowserOnLongClickListener.class,
-		GridVideoOnItemLongClickListener.class,
+
 		EpisodePosterOnItemSelectedListener.class,
 		MoviePosterOnItemSelectedListener.class, SerenityImageLoader.class,
 		TracksOnItemSelectedListener.class,

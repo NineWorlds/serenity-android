@@ -87,7 +87,7 @@ public class MainActivityTest extends InjectingTest {
 		assertThat(activity.findViewById(R.id.mainGalleryBackground))
 		.isVisible();
 	}
-	
+
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();

@@ -23,13 +23,17 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import javax.inject.Inject;
-
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.widget.FrameLayout;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import javax.inject.Inject;
 import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
@@ -38,15 +42,6 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-
-import com.jess.ui.TwoWayGridView;
 
 public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 		implements OnItemClickListener {
@@ -88,7 +83,6 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
 				.findViewById(R.id.moviePosterView);
 		AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
 		View titleActionBar = activity.findViewById(R.id.movieActionBarPosterTitle);
-		FrameLayout viewById = (FrameLayout) activity.findViewById(R.id.fragment_container);
 
 		switch (position) {
 		case GRID_VIEW:
