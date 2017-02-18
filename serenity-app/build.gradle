@@ -3,12 +3,14 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:2.2.3'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.5.0'
   }
 
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 android {
   defaultConfig {
@@ -37,7 +39,7 @@ android {
 
   buildTypes {
     debug {
-
+      testCoverageEnabled = true
     }
     release {
 //      signingConfig signingConfigs.release
@@ -52,10 +54,19 @@ android {
   }
 
   testOptions {
-
     unitTests.returnDefaultValues = true
+    unitTests.all {
+      maxParallelForks = 2
+      forkEvery = 50
+      minHeapSize = "512m"
+      maxHeapSize = "1024m"
+    }
   }
+}
 
+
+junitJacoco {
+  jacocoVersion = '0.7.2.201409121644' // type String
 }
 
 dependencies {
