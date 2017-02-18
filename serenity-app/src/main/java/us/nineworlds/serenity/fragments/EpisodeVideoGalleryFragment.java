@@ -86,16 +86,10 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
 		videoGallery
 				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
-//		videoGallery
-//				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
 		if (key.contains("onDeck")
 				|| key.contains("recentlyAdded")
 				|| (key.contains("recentlyViewed") && !key
 						.contains("recentlyViewedShows"))) {
-//			videoGallery
-//					.setOnItemLongClickListener(new EpisodeBrowserOnLongClickListener());
-		} else {
-//			videoGallery.setOnItemLongClickListener(onItemLongClickListener);
 		}
 
 		videoGallery.setFocusableInTouchMode(false);

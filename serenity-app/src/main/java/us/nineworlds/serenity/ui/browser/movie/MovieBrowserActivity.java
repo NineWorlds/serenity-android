@@ -23,11 +23,16 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
+import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
@@ -38,16 +43,6 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.KeyEvent;
-import android.view.View;
-
-import com.jess.ui.TwoWayGridView;
 
 public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
@@ -65,22 +60,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 
 	@Override
 	protected void createSideMenu() {
-		setContentView(R.layout.activity_movie_browser);
-		FragmentTransaction fragmentTransaction = getSupportFragmentManager()
-				.beginTransaction();
-
-		if (gridViewActive) {
-			videoGridFragment = new VideoGridFragment();
-			fragmentTransaction.replace(R.id.fragment_container, videoGridFragment);
-		} else {
-			movieVideoGalleryFragment = new MovieVideoGalleryFragment();
-			fragmentTransaction.replace(R.id.fragment_container, movieVideoGalleryFragment);
-		}
-		fragmentTransaction.commit();
-
-
-		View fanArt = findViewById(R.id.fanArt);
-		fanArt.setBackgroundResource(R.drawable.movies);
+		createContentView();
 
 		initMenuDrawerViews();
 
@@ -109,6 +89,24 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
 		actionBar.setHomeButtonEnabled(true);
 
 		populateMenuDrawer();
+	}
+
+	protected void createContentView() {
+		setContentView(R.layout.activity_movie_browser);
+		FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+				.beginTransaction();
+
+		if (gridViewActive) {
+			videoGridFragment = new VideoGridFragment();
+			fragmentTransaction.replace(R.id.fragment_container, videoGridFragment);
+		} else {
+			movieVideoGalleryFragment = new MovieVideoGalleryFragment();
+			fragmentTransaction.replace(R.id.fragment_container, movieVideoGalleryFragment);
+		}
+		fragmentTransaction.commit();
+
+		View fanArt = findViewById(R.id.fanArt);
+		fanArt.setBackgroundResource(R.drawable.movies);
 	}
 
 	protected void populateMenuDrawer() {

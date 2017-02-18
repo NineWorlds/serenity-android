@@ -23,19 +23,6 @@
 
 package us.nineworlds.serenity.ui.search;
 
-import java.net.URLEncoder;
-import java.util.List;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.serenity.MainMenuTextViewAdapter;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.menus.MenuItem;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.MovieSearchIntentService;
-import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
@@ -44,10 +31,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.provider.SearchRecentSuggestions;
-import android.view.View;
 import android.widget.Toast;
-
-import com.jess.ui.TwoWayGridView;
+import java.net.URLEncoder;
+import java.util.List;
+import net.ganin.darv.DpadAwareRecyclerView;
+import us.nineworlds.serenity.MainMenuTextViewAdapter;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.menus.MenuItem;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.services.MovieSearchIntentService;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 /**
  * Implements basic search functionality for movies.
@@ -55,10 +50,9 @@ import com.jess.ui.TwoWayGridView;
  * @author dcarver
  *
  */
-public class SearchableActivity extends SerenityVideoActivity {
+public class SearchableActivity extends SerenityMultiViewVideoActivity {
 
 	protected Handler searchHandler;
-	protected static View bgLayout;
 	protected static Activity context;
 
 	@Override
@@ -73,7 +67,6 @@ public class SearchableActivity extends SerenityVideoActivity {
 		actionBar.setCustomView(R.layout.move_custom_actionbar);
 		setContentView(R.layout.activity_movie_search_browser);
 
-		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
 		handleIntent(getIntent());
 		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 
@@ -120,11 +113,12 @@ public class SearchableActivity extends SerenityVideoActivity {
 
 	}
 
-	protected static void createGallery(List<VideoContentInfo> videos,
-			View bgLayout) {
-		SerenityGallery posterGallery = (SerenityGallery) context
+	protected static void createGallery(List<VideoContentInfo> videos) {
+		DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) context
 				.findViewById(R.id.moviePosterView);
-//		posterGallery.setAdapter(new SearchAdapter(context, videos));
+		posterGallery.setAdapter(new SearchAdapter(context, videos));
+		posterGallery.setFocusable(true);
+		posterGallery.requestFocusFromTouch();
 	}
 
 	protected static class MovieSearchHandler extends Handler {
@@ -140,7 +134,7 @@ public class SearchableActivity extends SerenityVideoActivity {
 							Toast.LENGTH_LONG).show();
 					context.finish();
 				} else {
-					createGallery(videos, bgLayout);
+					createGallery(videos);
 				}
 			}
 		}
@@ -148,7 +142,8 @@ public class SearchableActivity extends SerenityVideoActivity {
 
 	@Override
 	public AbstractPosterImageGalleryAdapter getAdapter() {
-		return null;
+		DpadAwareRecyclerView dpadAwareRecyclerView = (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
+		return (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
 	}
 
 	@Override

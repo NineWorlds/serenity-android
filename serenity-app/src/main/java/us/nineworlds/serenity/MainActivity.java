@@ -289,6 +289,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
 		startService(recommendationIntent);
 
 		View menu = findViewById(R.id.mainGalleryMenu);
+		menu.setFocusable(true);
 		if (menu != null) {
 			menu.requestFocusFromTouch();
 		}

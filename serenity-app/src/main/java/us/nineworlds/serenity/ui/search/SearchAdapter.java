@@ -23,78 +23,26 @@
 
 package us.nineworlds.serenity.ui.search;
 
-import java.util.List;
-
-import android.support.v7.widget.RecyclerView;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Context;
-import android.graphics.Color;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import java.util.List;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 
 /**
  * @author dcarver
  *
  */
-public class SearchAdapter extends AbstractPosterImageGalleryAdapter {
+public class SearchAdapter extends MoviePosterImageAdapter {
 
 	public SearchAdapter(Context c, List<VideoContentInfo> videos) {
-		super(c, null);
+		super(c, null, null);
 		posterList = videos;
 	}
 
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = context.getLayoutInflater().inflate(
-				R.layout.poster_indicator_view, null);
 
-		VideoContentInfo pi = posterList.get(position);
-		ImageView mpiv = (ImageView) galleryCellView
-				.findViewById(R.id.posterImageView);
-
-		mpiv.setBackgroundColor(Color.BLACK);
-		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(160, context);
-		int height = ImageUtils.getDPI(220, context);
-		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width,
-				height));
-		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
-
-		if (pi.getViewCount() > 0) {
-			ImageView viewed = (ImageView) galleryCellView
-					.findViewById(R.id.posterWatchedIndicator);
-			viewed.setImageResource(R.drawable.overlaywatched);
-		}
-
-		return galleryCellView;
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter#
-	 * fetchDataFromService()
-	 */
 	@Override
 	protected void fetchDataFromService() {
 
 	}
 
-	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		return null;
-	}
-
-	@Override
-	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-	}
 }
