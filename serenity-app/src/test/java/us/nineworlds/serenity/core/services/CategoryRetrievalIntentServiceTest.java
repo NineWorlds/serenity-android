@@ -23,29 +23,28 @@
 
 package us.nineworlds.serenity.core.services;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
+import android.content.Intent;
+import dagger.Module;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
-import android.content.Intent;
-import dagger.Module;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class CategoryRetrievalIntentServiceTest extends InjectingTest {
 
 	MockCategoryRetrievalIntentService service;
@@ -85,7 +84,7 @@ public class CategoryRetrievalIntentServiceTest extends InjectingTest {
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(application));
 		modules.add(new TestModule());
 		return modules;
 	}

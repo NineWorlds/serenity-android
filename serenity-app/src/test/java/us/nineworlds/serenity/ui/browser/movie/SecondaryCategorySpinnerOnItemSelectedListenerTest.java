@@ -23,20 +23,15 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
+import android.content.SharedPreferences;
+import android.view.View;
+import android.widget.AdapterView;
+import com.jess.ui.TwoWayGridView;
+import dagger.Module;
+import dagger.Provides;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Singleton;
-
 import net.ganin.darv.DpadAwareRecyclerView;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,9 +41,10 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
-
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
@@ -62,17 +58,19 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.content.SharedPreferences;
-import android.view.View;
-import android.widget.AdapterView;
 
-import com.jess.ui.TwoWayGridView;
-
-import dagger.Module;
-import dagger.Provides;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		InjectingTest {
 
@@ -109,13 +107,13 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		Robolectric.getBackgroundScheduler().pause();
-		Robolectric.getUiThreadScheduler().pause();
+		Robolectric.getBackgroundThreadScheduler().pause();
+		Robolectric.getForegroundThreadScheduler().pause();
 		MockitoAnnotations.initMocks(this);
 		super.setUp();
 
-		ShadowApplication shadowApplication = Robolectric
-				.shadowOf(Robolectric.application);
+		ShadowApplication shadowApplication = Shadows
+				.shadowOf(application);
 		shadowApplication
 				.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
@@ -429,7 +427,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(application));
 		modules.add(new TestModule());
 		return modules;
 	}

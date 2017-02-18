@@ -23,34 +23,33 @@
 
 package us.nineworlds.serenity.volley;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
+import android.view.LayoutInflater;
+import android.view.View;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.SerenityShadowResources;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityRobolectricTestRunner;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
-import android.view.LayoutInflater;
-import android.view.View;
+
+import static org.fest.assertions.api.Assertions.assertThat;
 
 /**
  * @author dcarver
  * 
  */
-@RunWith(SerenityRobolectricTestRunner.class)
-@Config(shadows = SerenityShadowResources.class, emulateSdk = 18)
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class GridSubtitleVolleyResponseListenerTest {
 
 	Serializer serializer;
@@ -59,8 +58,8 @@ public class GridSubtitleVolleyResponseListenerTest {
 	@Before
 	public void setUp() throws Exception {
 		serializer = new Persister();
-		Robolectric.getBackgroundScheduler().pause();
-		Robolectric.getUiThreadScheduler().pause();
+		Robolectric.getBackgroundThreadScheduler().pause();
+		Robolectric.getForegroundThreadScheduler().pause();
 		movieBrowserActivity = Robolectric
 				.buildActivity(MovieBrowserActivity.class).create().get();
 	}

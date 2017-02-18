@@ -23,11 +23,6 @@
 
 package us.nineworlds.serenity;
 
-import javax.inject.Inject;
-
-import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
-import us.nineworlds.serenity.core.util.AndroidHelper;
-import us.nineworlds.serenity.injection.InjectingBroadcastReceiver;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -35,6 +30,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import javax.inject.Inject;
+import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
+import us.nineworlds.serenity.core.util.AndroidHelper;
+import us.nineworlds.serenity.injection.InjectingBroadcastReceiver;
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
 
 /**
  * Used to automatically launch Serenity for Android after boot is completed on
@@ -53,6 +53,8 @@ public class StartupBroadcastReceiver extends InjectingBroadcastReceiver {
 	@Inject
 	AndroidHelper androidHelper;
 
+	SerenityObjectGraph objectGraph;
+
 	private static final int INITIAL_DELAY = 5000;
 
 	private Context context;
@@ -60,6 +62,11 @@ public class StartupBroadcastReceiver extends InjectingBroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		if (objectGraph == null ) {
+			objectGraph = SerenityObjectGraph.getInstance();
+			objectGraph.inject(this);
+		}
+
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
 		this.context = context;
@@ -74,9 +81,6 @@ public class StartupBroadcastReceiver extends InjectingBroadcastReceiver {
 		}
 	}
 
-	/**
-	 * @param context
-	 */
 	protected void launchSerenityOnStartup() {
 		boolean startupAfterBoot = preferences.getBoolean(
 				"serenity_boot_startup", false);

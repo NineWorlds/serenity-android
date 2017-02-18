@@ -23,20 +23,17 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-
+import android.content.SharedPreferences;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import dagger.Module;
+import dagger.Provides;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Singleton;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,24 +43,26 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.widgets.DrawerLayout;
-import android.content.SharedPreferences;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import dagger.Module;
-import dagger.Provides;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class MovieBrowserActivityTest extends InjectingTest {
 
 	@Mock
@@ -74,8 +73,8 @@ public class MovieBrowserActivityTest extends InjectingTest {
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		Robolectric.getBackgroundScheduler().pause();
-		Robolectric.getUiThreadScheduler().pause();
+		Robolectric.getBackgroundThreadScheduler().pause();
+		Robolectric.getForegroundThreadScheduler().pause();
 
 		MockitoAnnotations.initMocks(this);
 		super.setUp();
@@ -188,7 +187,7 @@ public class MovieBrowserActivityTest extends InjectingTest {
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(application));
 		modules.add(new TestModule());
 		return modules;
 	}

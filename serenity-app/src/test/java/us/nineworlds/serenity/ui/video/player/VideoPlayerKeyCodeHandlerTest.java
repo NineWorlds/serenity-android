@@ -23,6 +23,33 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.media.MediaPlayer;
+import android.os.Handler;
+import android.view.KeyEvent;
+import android.view.View;
+import dagger.Module;
+import dagger.Provides;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Singleton;
+import org.fest.assertions.api.ANDROID;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowActivity;
+import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.injection.modules.AndroidModule;
+import us.nineworlds.serenity.injection.modules.SerenityModule;
+import us.nineworlds.serenity.test.InjectingTest;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
@@ -34,37 +61,10 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Singleton;
-
-import org.fest.assertions.api.ANDROID;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowActivity;
-
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
-import us.nineworlds.serenity.test.InjectingTest;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.media.MediaPlayer;
-import android.os.Handler;
-import android.view.KeyEvent;
-import android.view.View;
-import dagger.Module;
-import dagger.Provides;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 
 	private static final int OSD_DISPLAY_TIME = 5000;
@@ -98,8 +98,8 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		Robolectric.getBackgroundScheduler().pause();
-		Robolectric.getUiThreadScheduler().pause();
+		Robolectric.getBackgroundThreadScheduler().pause();
+		Robolectric.getForegroundThreadScheduler().pause();
 
 		MockitoAnnotations.initMocks(this);
 		super.setUp();
@@ -114,7 +114,7 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 		spyMediaController = spy(new MediaController(
 				mockMediaControllerDataObject));
 
-		timeOfDay = new View(Robolectric.application);
+		timeOfDay = new View(RuntimeEnvironment.application);
 
 		keyCodeHandler = new VideoPlayerKeyCodeHandler(mockMediaPlayer,
 				spyMediaController, OSD_DISPLAY_TIME,
@@ -125,7 +125,7 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(RuntimeEnvironment.application));
 		modules.add(new TestModule());
 		return modules;
 	}
@@ -252,7 +252,7 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 				null, true);
 		assertThat(result).isTrue();
 		verify(mockMediaPlayer).stop();
-		ShadowActivity shadowActivity = Robolectric.shadowOf(mockActivity);
+		ShadowActivity shadowActivity = shadowOf(mockActivity);
 		assertThat(shadowActivity.isFinishing()).isTrue();
 		verify(mockPreferences).getString("next_prev_behavior", "queue");
 	}
@@ -266,7 +266,7 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 				null, true);
 		assertThat(result).isTrue();
 		verify(mockMediaPlayer, times(0)).stop();
-		ShadowActivity shadowActivity = Robolectric.shadowOf(mockActivity);
+		ShadowActivity shadowActivity = shadowOf(mockActivity);
 		assertThat(shadowActivity.isFinishing()).isTrue();
 		verify(mockPreferences).getString("next_prev_behavior", "queue");
 	}

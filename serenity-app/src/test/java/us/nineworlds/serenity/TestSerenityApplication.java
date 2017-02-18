@@ -23,15 +23,12 @@
 
 package us.nineworlds.serenity;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.robolectric.TestLifecycleApplication;
-
 import us.nineworlds.serenity.injection.modules.AndroidModule;
-
-import com.google.android.gms.analytics.GoogleAnalytics;
 
 /**
  * @author dcarver
@@ -42,7 +39,6 @@ TestLifecycleApplication {
 
 	public TestSerenityApplication() {
 		super();
-		inject();
 	}
 
 	@Override

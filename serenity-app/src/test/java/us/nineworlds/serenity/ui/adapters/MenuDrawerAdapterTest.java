@@ -23,11 +23,12 @@
 
 package us.nineworlds.serenity.ui.adapters;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
+import android.app.Activity;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,16 +36,15 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
-import android.app.Activity;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class MenuDrawerAdapterTest {
 
 	MenuDrawerAdapter menuDrawerAdapter;
@@ -80,7 +80,7 @@ public class MenuDrawerAdapterTest {
 
 	@Test
 	public void viewReusesTextViewAndPopulatesItWithNewValues() {
-		TextView textView = new TextView(Robolectric.application);
+		TextView textView = new TextView(application);
 		textView.setText("test text");
 
 		View newTextView = menuDrawerAdapter.getView(0, textView, null);
@@ -91,7 +91,7 @@ public class MenuDrawerAdapterTest {
 
 	@Test
 	public void createsNewViewAndPopulatesItWithValues() {
-		FrameLayout frameLayout = new FrameLayout(Robolectric.application);
+		FrameLayout frameLayout = new FrameLayout(application);
 		View newView = menuDrawerAdapter.getView(0, frameLayout, null);
 		TextView textView = (TextView) newView;
 		assertThat(textView.getText()).isEqualTo("test");

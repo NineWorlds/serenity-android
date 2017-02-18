@@ -23,24 +23,6 @@
 
 package us.nineworlds.serenity.volley;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Calendar;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.core.OkHttpStack;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -51,17 +33,34 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Calendar;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+import org.robolectric.shadows.httpclient.FakeHttp;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.core.OkHttpStack;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(reportSdk = 14, emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class SimpleXmlRequestTest {
 
 	MockWebServer webserver;
 
 	@Before
 	public void setUp() throws Exception {
-		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
-		Robolectric.getFakeHttpLayer().interceptResponseContent(false);
+		FakeHttp.getFakeHttpLayer().interceptHttpRequests(false);
+		FakeHttp.getFakeHttpLayer().interceptResponseContent(false);
 
 		webserver = new MockWebServer();
 
@@ -88,7 +87,7 @@ public class SimpleXmlRequestTest {
 				new MockSuccessListener(), new MockErrorListener());
 		request.setShouldCache(false);
 		RequestQueue requestQueu = Volley.newRequestQueue(
-				Robolectric.application, new OkHttpStack());
+				application, new OkHttpStack());
 		Request r = requestQueu.add(request);
 		long startTime = Calendar.getInstance().getTimeInMillis();
 		long endTime = startTime + 3000;

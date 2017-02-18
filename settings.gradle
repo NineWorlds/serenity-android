@@ -1,0 +1,1 @@
+include 'subtitle-converter', 'plexapp-rest-library', 'serenity-app'

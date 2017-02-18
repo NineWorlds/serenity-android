@@ -23,8 +23,15 @@
 
 package us.nineworlds.serenity.injection.modules;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.media.MediaPlayer;
+import android.preference.PreferenceManager;
+import dagger.Module;
+import dagger.Provides;
 import javax.inject.Singleton;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.AndroidTV;
@@ -65,7 +72,11 @@ import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.core.util.AndroidHelper;
-import us.nineworlds.serenity.fragments.*;
+import us.nineworlds.serenity.fragments.EpisodeVideoGalleryFragment;
+import us.nineworlds.serenity.fragments.MainMenuFragment;
+import us.nineworlds.serenity.fragments.MovieSearchGalleryFragment;
+import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
+import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.injection.ApplicationContext;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
@@ -130,14 +141,6 @@ import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
 import us.nineworlds.serenity.volley.TVCategoryResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.media.MediaPlayer;
-import android.preference.PreferenceManager;
-import dagger.Module;
-import dagger.Provides;
 
 @Module(includes = SerenityModule.class, injects = { GDMReceiver.class,
 		MainMenuFragment.class,
@@ -213,7 +216,7 @@ public class AndroidModule {
 	private final Context applicationContext;
 
 	public AndroidModule(Application application) {
-		applicationContext = application.getApplicationContext();
+		this.applicationContext = application;
 	}
 
 	@Provides

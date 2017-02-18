@@ -23,31 +23,30 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
-
+import dagger.Module;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
-import dagger.Module;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class CategoryMediaContainerTest extends InjectingTest {
 
 	@Mock
@@ -115,7 +114,7 @@ public class CategoryMediaContainerTest extends InjectingTest {
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(application));
 		modules.add(new TestModule());
 		return modules;
 	}

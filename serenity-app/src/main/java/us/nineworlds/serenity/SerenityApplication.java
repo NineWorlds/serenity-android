@@ -23,24 +23,21 @@
 
 package us.nineworlds.serenity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import us.nineworlds.serenity.core.util.AndroidHelper;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import com.castillo.dd.PendingDownload;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import javax.inject.Inject;
+import us.nineworlds.serenity.core.util.AndroidHelper;
+import us.nineworlds.serenity.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.injection.modules.AndroidModule;
 
 /**
  * Global manager for the Serenity application
@@ -144,9 +141,6 @@ public class SerenityApplication extends Application {
 		}
 	}
 
-	/**
-	 * @param deviceModel
-	 */
 	protected void sendStartedApplicationEvent() {
 		String deviceModel = android.os.Build.MODEL;
 		if (enableTracking) {

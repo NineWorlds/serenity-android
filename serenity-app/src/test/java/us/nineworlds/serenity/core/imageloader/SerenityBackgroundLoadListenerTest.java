@@ -23,11 +23,8 @@
 
 package us.nineworlds.serenity.core.imageloader;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import android.app.Activity;
+import android.view.View;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,13 +32,16 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
-import android.app.Activity;
-import android.view.View;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class SerenityBackgroundLoadListenerTest {
 
 	View backgroundView;

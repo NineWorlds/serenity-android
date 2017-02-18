@@ -23,35 +23,33 @@
 
 package us.nineworlds.serenity.handlers;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
+import android.app.Activity;
+import dagger.Module;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import javax.inject.Inject;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowToast;
-
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.impl.GDMServer;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
-import android.app.Activity;
-import dagger.Module;
+
+import static org.fest.assertions.api.Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class AutoConfigureHandlerRunnableTest extends InjectingTest {
 
 	AutoConfigureHandlerRunnable handler;
@@ -96,7 +94,7 @@ public class AutoConfigureHandlerRunnableTest extends InjectingTest {
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(RuntimeEnvironment.application));
 		modules.add(new TestModule());
 		return modules;
 	}

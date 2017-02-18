@@ -23,48 +23,6 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import javax.inject.Singleton;
-
-import org.fest.assertions.api.ANDROID;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
-import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowApplication;
-import org.robolectric.shadows.ShadowSurfaceView;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityRobolectricTestRunner;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
-import us.nineworlds.serenity.injection.ForVideoQueue;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
-import us.nineworlds.serenity.test.InjectingTest;
-import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity.VideoPlayerOnCompletionListener;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -75,9 +33,51 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import dagger.Module;
 import dagger.Provides;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import javax.inject.Singleton;
+import org.fest.assertions.api.ANDROID;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.Shadows;
+import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowApplication;
+import org.robolectric.shadows.ShadowSurfaceView;
+import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
+import us.nineworlds.serenity.injection.ForVideoQueue;
+import us.nineworlds.serenity.injection.modules.AndroidModule;
+import us.nineworlds.serenity.injection.modules.SerenityModule;
+import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity.VideoPlayerOnCompletionListener;
 
-@RunWith(SerenityRobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.robolectric.RuntimeEnvironment.application;
+
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 
 	@Mock
@@ -116,8 +116,8 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		super.setUp();
-		ShadowApplication shadowApplication = Robolectric
-				.shadowOf(Robolectric.application);
+		ShadowApplication shadowApplication = Shadows
+				.shadowOf(application);
 		shadowApplication
 		.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
@@ -209,14 +209,14 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 		SurfaceView surfaceView = (SurfaceView) activity
 				.findViewById(R.id.surfaceView);
 
-		ShadowSurfaceView shadowSurfaceView = (ShadowSurfaceView) Robolectric
+		ShadowSurfaceView shadowSurfaceView = Shadows
 				.shadowOf(surfaceView);
 		Set callbacks = shadowSurfaceView.getFakeSurfaceHolder().getCallbacks();
 		assertThat(callbacks).isNotEmpty();
 	}
 
 	@Test
-	@Config(reportSdk = 13)
+	@Config(sdk = 13)
 	public void onCreateHidesCallsGetSupportActionBar() {
 		activity = Robolectric
 				.buildActivity(SerenitySurfaceViewVideoActivity.class).create()
@@ -279,15 +279,6 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 		doNothing().when(spyActivity).visibleInBackground();
 		spyActivity.onResume();
 		verify(spyActivity).visibleInBackground();
-	}
-
-	@Test
-	@Ignore
-	public void onResumeRequestsVisibileBehindOnLollipopDevicesOrHigher() {
-		SerenitySurfaceViewVideoActivity spyActivity = spy(activity);
-		doReturn(true).when(spyActivity).requestVisibleBehind(anyBoolean());
-		spyActivity.onResume();
-		verify(spyActivity).requestVisibleBehind(true);
 	}
 
 	@Test
@@ -375,7 +366,7 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 		activity.setPlaybackPos(100);
 		activity.setExitResultCodeFinished();
 
-		ShadowActivity shadowActivity = Robolectric.shadowOf(activity);
+		ShadowActivity shadowActivity = Shadows.shadowOf(activity);
 		Intent resultIntent = shadowActivity.getResultIntent();
 		int position = resultIntent.getExtras().getInt("position");
 		assertThat(position).isEqualTo(100);
@@ -423,7 +414,7 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(RuntimeEnvironment.application));
 		modules.add(new TestModule());
 		return modules;
 	}

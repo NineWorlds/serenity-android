@@ -23,25 +23,25 @@
 
 package us.nineworlds.serenity.core;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import us.nineworlds.serenity.BuildConfig;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class ServerConfigTest {
 
 	SharedPreferences.OnSharedPreferenceChangeListener serverConfigChangeListener;
@@ -50,7 +50,7 @@ public class ServerConfigTest {
 	@Before
 	public void setUp() {
 		serverConfig = (ServerConfig) ServerConfig
-				.getInstance(Robolectric.application);
+				.getInstance(application);
 		serverConfigChangeListener = serverConfig
 				.getServerConfigChangeListener();
 	}
@@ -82,7 +82,7 @@ public class ServerConfigTest {
 	@Test
 	public void serverSetsNewServerAddressBasedOnDiscoveredServers() {
 		Editor reditor = PreferenceManager.getDefaultSharedPreferences(
-				Robolectric.application).edit();
+				application).edit();
 
 		SharedPreferences prefs = mock(SharedPreferences.class);
 		when(prefs.getString("discoveredServer", "")).thenReturn("10.0.0.3");

@@ -23,21 +23,6 @@
 
 package us.nineworlds.serenity.core.imageloader;
 
-import static org.fest.assertions.api.ANDROID.assertThat;
-import static org.junit.Assert.assertEquals;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowView;
-
-import us.nineworlds.serenity.R;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
@@ -45,9 +30,25 @@ import android.graphics.drawable.TransitionDrawable;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.Animation;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowView;
+import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.R;
+
+import static org.fest.assertions.api.ANDROID.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.robolectric.RuntimeEnvironment.application;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class BackgroundBitmapDisplayerTest {
 
 	View backgroundView;
@@ -60,7 +61,7 @@ public class BackgroundBitmapDisplayerTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		backgroundView = new View(Robolectric.application);
+		backgroundView = new View(application);
 	}
 
 	@After
@@ -81,7 +82,7 @@ public class BackgroundBitmapDisplayerTest {
 	@Test
 	public void backgroundViewHasTransitionDrawableSet() throws Exception {
 		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(Robolectric.application);
+				.getDefaultSharedPreferences(application);
 		Editor editor = prefs.edit();
 		editor.putBoolean("animation_background_fadein", true);
 		editor.commit();
@@ -98,7 +99,7 @@ public class BackgroundBitmapDisplayerTest {
 	public void backgroundViewHasTransitionDrawableWithCrossfade()
 			throws Exception {
 		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(Robolectric.application);
+				.getDefaultSharedPreferences(application);
 		Editor editor = prefs.edit();
 		editor.putBoolean("animation_background_fadein", true);
 		editor.commit();
@@ -118,7 +119,7 @@ public class BackgroundBitmapDisplayerTest {
 				R.drawable.movies, backgroundView);
 		backgroundBitmapDisplayer.run();
 
-		ShadowView shadowView = Robolectric.shadowOf(backgroundView);
+		ShadowView shadowView = shadowOf(backgroundView);
 		assertEquals("Resource Ids did not match.",
 				shadowView.getBackgroundResourceId(), R.drawable.movies);
 	}

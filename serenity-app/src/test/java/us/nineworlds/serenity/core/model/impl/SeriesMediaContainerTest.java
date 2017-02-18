@@ -23,40 +23,38 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
-
+import dagger.Module;
+import dagger.Provides;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Singleton;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Video;
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
-import dagger.Module;
-import dagger.Provides;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class SeriesMediaContainerTest extends InjectingTest {
 
 	@Mock
@@ -114,7 +112,7 @@ public class SeriesMediaContainerTest extends InjectingTest {
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(application));
 		modules.add(new TestModule());
 		return modules;
 	}

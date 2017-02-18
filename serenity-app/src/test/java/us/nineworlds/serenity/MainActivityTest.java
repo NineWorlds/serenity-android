@@ -23,35 +23,29 @@
 
 package us.nineworlds.serenity;
 
-import static org.fest.assertions.api.ANDROID.assertThat;
-
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import dagger.Module;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.fest.assertions.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.SerenityShadowResources;
-import org.robolectric.shadows.ShadowActivity;
-
 import us.nineworlds.serenity.fragments.MainMenuFragment;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import dagger.Module;
 
-/**
- * @author dcarver
- *
- */
-@RunWith(SerenityRobolectricTestRunner.class)
-@Config(shadows = SerenityShadowResources.class, emulateSdk = 18)
+import static org.fest.assertions.api.ANDROID.assertThat;
+
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class MainActivityTest extends InjectingTest {
 
 	MainActivity activity;
@@ -61,8 +55,8 @@ public class MainActivityTest extends InjectingTest {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		Robolectric.getBackgroundScheduler().pause();
-		Robolectric.getUiThreadScheduler().pause();
+		Robolectric.getBackgroundThreadScheduler().pause();
+		Robolectric.getForegroundThreadScheduler().pause();
 
 		try {
 			activity = Robolectric.buildActivity(MainActivity.class).attach()
@@ -98,14 +92,13 @@ public class MainActivityTest extends InjectingTest {
 	@Test
 	public void testThatActivityIsDestroyed() throws Exception {
 		activity.onDestroy();
-		ShadowActivity a = Robolectric.shadowOf(activity);
-		Assertions.assertThat(a.isDestroyed()).isTrue();
+		Assertions.assertThat(activity.isDestroyed()).isTrue();
 	}
 
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(RuntimeEnvironment.application));
 		modules.add(new TestModule());
 		return modules;
 	}

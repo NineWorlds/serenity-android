@@ -23,39 +23,6 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowAlertDialog;
-import org.robolectric.shadows.ShadowDialog;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.ForVideoQueue;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
-import us.nineworlds.serenity.test.InjectingTest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -66,9 +33,41 @@ import android.view.SurfaceView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import dagger.Module;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import javax.inject.Inject;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowAlertDialog;
+import org.robolectric.shadows.ShadowDialog;
+import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.ForVideoQueue;
+import us.nineworlds.serenity.injection.modules.AndroidModule;
+import us.nineworlds.serenity.injection.modules.SerenityModule;
+import us.nineworlds.serenity.test.InjectingTest;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.robolectric.RuntimeEnvironment.application;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class VideoPlayerPrepareListenerTest extends InjectingTest {
 
 	protected VideoPlayerPrepareListener videoPlayerPrepareListener;
@@ -103,13 +102,13 @@ public class VideoPlayerPrepareListenerTest extends InjectingTest {
 		super.setUp();
 		int resumeOffset = 0;
 
-		surfaceView = new SurfaceView(Robolectric.application);
+		surfaceView = new SurfaceView(application);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(1920,
 				1080);
 		surfaceView.setLayoutParams(lp);
 
-		doReturn(Robolectric.application).when(mockMediaControllerDataObject)
-				.getContext();
+		doReturn(application).when(mockMediaControllerDataObject)
+												 .getContext();
 
 		spyMediaController = spy(new MediaController(
 				mockMediaControllerDataObject));
@@ -122,7 +121,7 @@ public class VideoPlayerPrepareListenerTest extends InjectingTest {
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(application));
 		modules.add(new TestModule());
 		return modules;
 	}
@@ -151,7 +150,7 @@ public class VideoPlayerPrepareListenerTest extends InjectingTest {
 
 		Dialog resumeDialog = ShadowDialog.getLatestDialog();
 		assertThat(resumeDialog).isNotNull();
-		ShadowDialog shadowDialog = Robolectric.shadowOf(resumeDialog);
+		ShadowDialog shadowDialog = shadowOf(resumeDialog);
 		assertThat(shadowDialog.getTitle()).isEqualTo(
 				resources.getText(R.string.resume_video));
 	}
@@ -165,7 +164,7 @@ public class VideoPlayerPrepareListenerTest extends InjectingTest {
 		videoPlayerPrepareListener.onPrepared(mockMediaPlayer);
 
 		Dialog resumeDialog = ShadowDialog.getLatestDialog();
-		ShadowDialog shadowDialog = Robolectric.shadowOf(resumeDialog);
+		ShadowDialog shadowDialog = shadowOf(resumeDialog);
 
 		assertThat(shadowDialog.getTitle()).isEqualTo(
 				resources.getText(R.string.resume_video));
@@ -181,7 +180,6 @@ public class VideoPlayerPrepareListenerTest extends InjectingTest {
 
 		AlertDialog resumeDialog = (AlertDialog) ShadowAlertDialog
 				.getLatestDialog();
-		ShadowAlertDialog shadowDialog = Robolectric.shadowOf(resumeDialog);
 		Button resumeButton = resumeDialog
 				.getButton(DialogInterface.BUTTON_POSITIVE);
 		resumeButton.performClick();
@@ -198,7 +196,6 @@ public class VideoPlayerPrepareListenerTest extends InjectingTest {
 
 		AlertDialog resumeDialog = (AlertDialog) ShadowAlertDialog
 				.getLatestDialog();
-		ShadowAlertDialog shadowDialog = Robolectric.shadowOf(resumeDialog);
 		Button resumeButton = resumeDialog
 				.getButton(DialogInterface.BUTTON_NEGATIVE);
 

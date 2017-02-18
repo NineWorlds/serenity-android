@@ -23,19 +23,16 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
+import android.content.SharedPreferences;
+import android.view.View;
+import com.jess.ui.TwoWayAdapterView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+import dagger.Module;
+import dagger.Provides;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Singleton;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,26 +42,27 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
-
 import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
-import android.content.SharedPreferences;
-import android.view.View;
 
-import com.jess.ui.TwoWayAdapterView;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
-
-import dagger.Module;
-import dagger.Provides;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.robolectric.RuntimeEnvironment.application;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 
 	@Mock
@@ -95,8 +93,7 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		ShadowApplication shadowApplication = Robolectric
-				.shadowOf(Robolectric.application);
+		ShadowApplication shadowApplication = shadowOf(application);
 		shadowApplication
 		.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
@@ -144,7 +141,7 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(application));
 		modules.add(new TestModule());
 
 		return modules;

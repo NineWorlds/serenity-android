@@ -23,23 +23,24 @@
 
 package us.nineworlds.serenity.core;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-import org.robolectric.res.builder.RobolectricPackageManager;
-
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+import org.robolectric.res.builder.RobolectricPackageManager;
+import us.nineworlds.serenity.BuildConfig;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class OnDeckRecommendationsTest {
 
 	/**
@@ -54,8 +55,7 @@ public class OnDeckRecommendationsTest {
 
 	@Before
 	public void setUp() {
-		onDeckRecommendations = new OnDeckRecommendations(
-				Robolectric.application);
+		onDeckRecommendations = new OnDeckRecommendations(application);
 	}
 
 	@After
@@ -64,22 +64,23 @@ public class OnDeckRecommendationsTest {
 	}
 
 	@Test
-	@Config(emulateSdk = 18, reportSdk = 14)
+	@Config(sdk = 14)
+	@Ignore("Robolectric removed support for API 14, need to mock this out.")
 	public void recommendationsDoNotOccurForVersionBelowJellyBean() {
 		boolean result = onDeckRecommendations.recommended();
 		assertThat(result).isFalse();
 	}
 
 	@Test
-	@Config(emulateSdk = 18, reportSdk = 17)
+	@Config(sdk = 17)
 	public void recommendationsOccurForJellyBeanOrHigher() {
-		RobolectricPackageManager pm = (RobolectricPackageManager) Robolectric.application
+		RobolectricPackageManager pm = (RobolectricPackageManager) application
 				.getPackageManager();
 		pm.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
 		pm.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, true);
 
 		SharedPreferences prefrences = PreferenceManager
-				.getDefaultSharedPreferences(Robolectric.application);
+				.getDefaultSharedPreferences(application);
 		Editor edit = prefrences.edit();
 		edit.putBoolean(SerenityConstants.PREFERENCE_ONDECK_RECOMMENDATIONS,
 				true);
@@ -91,15 +92,15 @@ public class OnDeckRecommendationsTest {
 	}
 
 	@Test
-	@Config(emulateSdk = 18, reportSdk = 17)
+	@Config(sdk = 17)
 	public void recommendationsOccurForJellyBeanOrHigherFailOnGoogleTV4DevicesWithOutLeanback() {
-		RobolectricPackageManager pm = (RobolectricPackageManager) Robolectric.application
+		RobolectricPackageManager pm = (RobolectricPackageManager) application
 				.getPackageManager();
 		pm.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
 		pm.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, false);
 
 		SharedPreferences prefrences = PreferenceManager
-				.getDefaultSharedPreferences(Robolectric.application);
+				.getDefaultSharedPreferences(application);
 		Editor edit = prefrences.edit();
 		edit.putBoolean(SerenityConstants.PREFERENCE_ONDECK_RECOMMENDATIONS,
 				true);
@@ -111,15 +112,15 @@ public class OnDeckRecommendationsTest {
 	}
 
 	@Test
-	@Config(emulateSdk = 18, reportSdk = 17)
+	@Config(sdk = 17)
 	public void recommendationsOccurForJellyBeanOrHigherFailWhenAndroidTVModeIsFalse() {
-		RobolectricPackageManager pm = (RobolectricPackageManager) Robolectric.application
+		RobolectricPackageManager pm = (RobolectricPackageManager) application
 				.getPackageManager();
 		pm.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
 		pm.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, true);
 
 		SharedPreferences prefrences = PreferenceManager
-				.getDefaultSharedPreferences(Robolectric.application);
+				.getDefaultSharedPreferences(application);
 		Editor edit = prefrences.edit();
 		edit.putBoolean(SerenityConstants.PREFERENCE_ONDECK_RECOMMENDATIONS,
 				true);

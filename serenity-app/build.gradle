@@ -1,0 +1,109 @@
+buildscript {
+
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.2.3'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+  }
+
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+
+android {
+  defaultConfig {
+    versionCode 20
+    versionName "1.9.5-SNAPSHOT"
+
+    minSdkVersion 17
+    targetSdkVersion 25
+  }
+
+
+  compileSdkVersion 25
+  buildToolsVersion "25.0.2"
+
+  signingConfigs {
+    release {
+      storeFile file('my.keystore')
+      storePassword 'storepassword'
+      keyAlias 'keyalias'
+      keyPassword 'keypassword'
+    }
+  }
+
+  targetCompatibility = '1.7'
+  sourceCompatibility = '1.7'
+
+  buildTypes {
+    debug {
+
+    }
+    release {
+//      signingConfig signingConfigs.release
+    }
+  }
+
+  lintOptions {
+    checkReleaseBuilds false
+    // Or, if you prefer, you can continue to check for errors in release builds,
+    // but continue the build even when errors are found:
+    abortOnError false
+  }
+
+  testOptions {
+
+    unitTests.returnDefaultValues = true
+  }
+
+}
+
+dependencies {
+
+  compile 'org.apache.commons:commons-lang3:3.3.2'
+  compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+  compile 'com.google.android.gms:play-services-analytics-impl:10.0.1'
+  compile 'com.google.android:youtube-player-api:1.2.2'
+  compile 'com.android.support:appcompat-v7:25.+'
+  compile 'com.android.support:leanback-v17:25.+'
+  compile 'com.android.support:support-v4:25.+'
+  compile project(':plexapp-rest-library')
+  compile project(':subtitle-converter')
+  compile 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
+  compile 'com.mcxiaoke.volley:library:1.0.6'
+  compile('com.squareup.okhttp:okhttp:1.6.0') {
+    exclude group: 'com.android.support'
+  }
+  compile 'com.squareup.okhttp:okhttp-urlconnection:1.6.0'
+  compile 'com.squareup.picasso:picasso:2.3.1'
+  testCompile 'junit:junit:4.11'
+  testCompile ('org.robolectric:robolectric:3.2.2') {
+    exclude module: 'support-v4'
+  }
+  testCompile 'org.robolectric:shadows-core:3.2.2'
+  testCompile 'org.robolectric:shadows-httpclient:3.2.2'
+  testCompile ('com.squareup:fest-android:1.0.7') {
+    exclude module: 'support-v4'
+  }
+  testCompile 'org.mockito:mockito-all:1.9.5'
+  testCompile 'com.squareup.okhttp:mockwebserver:1.6.0'
+  testCompile 'commons-io:commons-io:2.4'
+  compile 'com.squareup.dagger:dagger:1.2.2'
+  apt 'com.squareup.dagger:dagger-compiler:1.2.2'
+  compile 'com.github.vganin:dpadaware-recyclerview:1.0.1'
+  compile 'com.jakewharton:butterknife:8.4.0'
+  apt 'com.jakewharton:butterknife-compiler:8.4.0'
+  testApt 'com.squareup.dagger:dagger-compiler:1.2.2'
+}
+
+/*
+ * Gets the version name from the latest Git tag
+ */
+def getVersionName = { ->
+  def stdout = new ByteArrayOutputStream()
+  exec {
+    commandLine 'git', 'describe', '--tags'
+    standardOutput = stdout
+  }
+  return stdout.toString().trim()
+}

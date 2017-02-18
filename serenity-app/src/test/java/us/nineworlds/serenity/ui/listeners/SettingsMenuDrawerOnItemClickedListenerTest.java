@@ -23,23 +23,23 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-
+import android.content.Intent;
+import android.view.View;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.widgets.DrawerLayout;
-import android.content.Intent;
-import android.view.View;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 // UnitTestCodeMash2015
 // Mockito with out building Activity.
@@ -47,7 +47,7 @@ import android.view.View;
 // Using Robolectric.buildActivity(Activity.class).create().get()  adds about 300ms everytime it is called.
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(constants = BuildConfig.class)
 public class SettingsMenuDrawerOnItemClickedListenerTest {
 
 	@Mock
@@ -63,7 +63,7 @@ public class SettingsMenuDrawerOnItemClickedListenerTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		initMocks(this);
 		onItemClickedListener = new SettingsMenuDrawerOnItemClickedListener(
 				mockDrawerLayout);
 
