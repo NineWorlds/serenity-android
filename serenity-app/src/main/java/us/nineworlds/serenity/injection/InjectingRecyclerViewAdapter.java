@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -21,55 +21,15 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.ui.browser.tv.seasons;
+package us.nineworlds.serenity.injection;
 
+import android.widget.BaseAdapter;
 
+import net.ganin.darv.DpadAwareRecyclerView;
 
+public abstract class InjectingRecyclerViewAdapter extends DpadAwareRecyclerView.Adapter {
 
-import com.jess.ui.TwoWayAdapterView;
-import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
-
-import android.view.View;
-
-/**
- * @author dcarver
- * 
- */
-public class EpisodePosterOnItemSelectedListener implements OnItemSelectedListener {
-
-
-	private View previous;
-	
-	
-	/**
-	 * 
-	 */
-	public EpisodePosterOnItemSelectedListener() {
+	public InjectingRecyclerViewAdapter() {
+		SerenityObjectGraph.getInstance().inject(this);
 	}
-
-
-
-	@Override
-	public void onNothingSelected(TwoWayAdapterView<?> av) {
-
-	}
-
-	/* (non-Javadoc)
-	 * @see us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener#onItemSelected(us.nineworlds.serenity.widgets.SerenityAdapterView, android.view.View, int, long)
-	 */
-	@Override
-	public void onItemSelected(TwoWayAdapterView<?> parent, View view,
-			int position, long id) {
-		
-		if (previous != null) {
-			previous.setPadding(0, 0, 0, 0);
-		}
-
-		previous = view;
-
-		view.setPadding(5, 5, 5, 5);
-		
-		
-	}
-
 }

@@ -105,8 +105,8 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 	protected void setupRecyclerView() {
 		RecyclerView.LayoutManager linearLayoutManager = createLayoutManager();
 
-		videoGallery.setLayoutManager(linearLayoutManager);
 		videoGallery.addItemDecoration(createItemDecorator());
+		videoGallery.setLayoutManager(linearLayoutManager);
 
 		videoGallery.setOnItemSelectedListener(onItemSelectedListener);
 		videoGallery.setOnItemClickListener(onItemClickListener);

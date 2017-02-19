@@ -26,18 +26,22 @@ package us.nineworlds.serenity.ui.browser.tv.episodes;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.TrailersYouTubeSearch;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import us.nineworlds.serenity.widgets.SerenityAdapterView;
 import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
+
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -51,9 +55,9 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 public class EpisodePosterOnItemSelectedListener extends
-AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
+AbstractVideoOnItemSelectedListener {
 
-	private static final String DISPLAY_DATE_FORMAT = "MMMMMMMMM d, yyyy";
+	private static final String DISPLAY_DATE_FORMAT = "MMMM d, yyyy";
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 
 	private String prevTitle;
@@ -155,10 +159,10 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 		vte.setVisibility(View.INVISIBLE);
 		if (videoInfo.getOriginalAirDate() != null) {
 			try {
-				Date airDate = new SimpleDateFormat(DATE_FORMAT)
+				Date airDate = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
 				.parse(videoInfo.getOriginalAirDate());
 				SimpleDateFormat format = new SimpleDateFormat(
-						DISPLAY_DATE_FORMAT);
+						DISPLAY_DATE_FORMAT, Locale.getDefault());
 				String formatedDate = format.format(airDate);
 				vte.setVisibility(View.VISIBLE);
 				vte.setText("Aired " + formatedDate);
@@ -218,7 +222,29 @@ AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
 
 	@Override
 	public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+		context = (Activity) view.getContext();
 
+		EpisodePosterImageGalleryAdapter adapter = (EpisodePosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+		if (i > adapter.getItemCount()) {
+			return;
+		}
+
+		position = i;
+
+		videoInfo = (VideoContentInfo) adapter.getItem(position);
+		if (videoInfo == null) {
+			return;
+		}
+
+		changeBackgroundImage();
+
+		ImageView posterImageView = (ImageView) view
+				.findViewById(R.id.posterImageView);
+		currentView = posterImageView;
+
+		createVideoDetail(posterImageView);
+		createVideoMetaData(posterImageView);
+		createInfographicDetails(posterImageView);
 	}
 
 	@Override

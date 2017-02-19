@@ -34,7 +34,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
-import us.nineworlds.serenity.injection.InjectingBaseAdapter;
+import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
@@ -43,6 +43,8 @@ import us.nineworlds.serenity.widgets.BadgeView;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -51,6 +53,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
+
+import net.ganin.darv.DpadAwareRecyclerView;
 
 /**
  * An adapter that handles the population of views for TV Show Seasons.
@@ -61,7 +65,7 @@ import com.android.volley.Response;
  * @author dcarver
  *
  */
-public class TVShowSeasonImageGalleryAdapter extends InjectingBaseAdapter {
+public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapter {
 
 	private List<SeriesContentInfo> seasonList = null;
 	private final SerenityDrawerLayoutActivity context;
@@ -88,47 +92,27 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingBaseAdapter {
 	}
 
 	protected void fetchData() {
-		context.setSupportProgressBarIndeterminate(true);
-		context.setSupportProgressBarVisibility(false);
-		context.setSupportProgressBarIndeterminateVisibility(true);
-
 		String url = plexFactory.getSeasonsURL(key);
 		volley.volleyXmlGetRequest(url, new SeaonsResponseListener(),
 				new DefaultLoggingVolleyErrorListener());
 	}
 
-	@Override
-	public int getCount() {
 
-		return seasonList.size();
-	}
-
-	@Override
 	public Object getItem(int position) {
-
 		return seasonList.get(position);
 	}
 
 	@Override
-	public long getItemId(int position) {
-		return position;
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_tvshow_indicator_view, null);
+		SeasonViewHolder seasonViewHolder = new SeasonViewHolder(view);
+		return seasonViewHolder;
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = context.getLayoutInflater().inflate(
-				R.layout.poster_tvshow_indicator_view, null);
-
-		if (position > getCount() - 1) {
-			position = getCount() - 1;
-		}
-
-		if (position < 0) {
-			position = 0;
-		}
-
+	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 		SeriesContentInfo pi = seasonList.get(position);
-		ImageView mpiv = (ImageView) galleryCellView
+		ImageView mpiv = (ImageView) holder.itemView
 				.findViewById(R.id.posterImageView);
 		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
 		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -137,7 +121,7 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingBaseAdapter {
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
 		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
-		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width,
+		holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
 				height));
 
 		int unwatched = 0;
@@ -146,21 +130,17 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingBaseAdapter {
 			unwatched = Integer.parseInt(pi.getShowsUnwatched());
 		}
 
-		ImageView watchedView = (ImageView) galleryCellView
+		ImageView watchedView = (ImageView) holder.itemView
 				.findViewById(R.id.posterWatchedIndicator);
 
-		BadgeView badgeView = new BadgeView(context, mpiv);
-		badgeView.setTag("badge");
-		Drawable backgroundDrawable = context.getResources().getDrawable(
-				R.drawable.episode_count_background);
-		badgeView.setBackgroundDrawable(backgroundDrawable);
-		badgeView.setText(pi.getShowsUnwatched());
-		badgeView.show();
+		TextView badgeCount = (TextView) holder.itemView.findViewById(R.id.badge_count);
+		badgeCount.setText(pi.getShowsUnwatched());
+		badgeCount.setVisibility(View.VISIBLE);
 
 		if (pi.isWatched()) {
 			watchedView.setImageResource(R.drawable.overlaywatched);
 			watchedView.setVisibility(View.VISIBLE);
-			badgeView.hide();
+			badgeCount.setVisibility(View.INVISIBLE);
 		}
 
 		int watched = 0;
@@ -169,11 +149,19 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingBaseAdapter {
 		}
 
 		if (pi.isPartiallyWatched()) {
-			toggleProgressIndicator(galleryCellView, watched, pi.totalShows(),
+			toggleProgressIndicator(holder.itemView, watched, pi.totalShows(),
 					watchedView);
 		}
+	}
 
-		return galleryCellView;
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	@Override
+	public int getItemCount() {
+		return seasonList.size();
 	}
 
 	protected void toggleProgressIndicator(View galleryCellView, int dividend,
@@ -199,7 +187,6 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingBaseAdapter {
 		public void onResponse(MediaContainer response) {
 			seasonList = new SeasonsMediaContainer(response).createSeries();
 			notifyDataSetChanged();
-			context.setSupportProgressBarIndeterminateVisibility(false);
 
 			if (seasonList != null) {
 				if (!seasonList.isEmpty()) {
@@ -214,11 +201,19 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingBaseAdapter {
 				}
 			}
 
-			SerenityGallery gallery = (SerenityGallery) context
+			DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) context
 					.findViewById(R.id.tvShowSeasonImageGallery);
 			if (gallery != null) {
 				gallery.requestFocusFromTouch();
 			}
 		}
+	}
+
+	public class SeasonViewHolder extends DpadAwareRecyclerView.ViewHolder {
+
+		public SeasonViewHolder(View itemView) {
+			super(itemView);
+		}
+
 	}
 }

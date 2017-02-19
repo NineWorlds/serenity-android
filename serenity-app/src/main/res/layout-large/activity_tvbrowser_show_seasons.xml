@@ -17,8 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.jess.ui.TwoWayGridView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <net.ganin.darv.DpadAwareRecyclerView
             android:id="@+id/episodeGridView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -33,15 +32,9 @@
             android:nextFocusLeft="@+id/tvShowSeasonImageGalleryLayout"
             android:nextFocusRight="@+id/tvShowSeasonImageGalleryLayout"
             android:visibility="gone"
-            app:cacheColorHint="#E8E8E8"
-            app:gravity="center"
-            app:horizontalSpacing="16dp"
-            app:numColumns="auto_fit"
-            app:numRows="2"
-            app:rowHeight="120dp"
-            app:scrollDirectionLandscape="horizontal"
-            app:scrollDirectionPortrait="vertical"
-            app:stretchMode="spacingWidthUniform" />
+            app:selectorVelocity="2000"
+            app:smoothScrolling="true"
+            app:backgroundSelector="@drawable/main_menu_item_foreground_selector"/>
 
         <LinearLayout
             android:id="@+id/tvShowSeasonTitleRow"
@@ -71,17 +64,18 @@
             android:background="@color/card_background"
             android:orientation="vertical" >
 
-            <us.nineworlds.serenity.widgets.SerenityGallery
+            <net.ganin.darv.DpadAwareRecyclerView
                 android:id="@+id/tvShowSeasonImageGallery"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
-                android:animationDuration="1"
                 android:padding="5dp"
-                android:spacing="25dp" >
+                app:selectorVelocity="2000"
+                app:smoothScrolling="true"
+                app:backgroundSelector="@drawable/main_menu_item_foreground_selector">
 
                 <requestFocus />
-            </us.nineworlds.serenity.widgets.SerenityGallery>
+            </net.ganin.darv.DpadAwareRecyclerView>
         </LinearLayout>
     </RelativeLayout>
 

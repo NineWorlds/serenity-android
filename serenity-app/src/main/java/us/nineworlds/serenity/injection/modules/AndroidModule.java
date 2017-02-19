@@ -207,7 +207,8 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 		CategoryMediaContainer.class, SecondaryCategoryMediaContainer.class,
 		TVCategoryResponseListener.class, TVCategoryMediaContainer.class,
 		AudioTrackPlaybackListener.class, ServerConfig.class,
-		SubtitleSpinnerOnItemSelectedListener.class, VideoQueueHelper.class }, library = true)
+		SubtitleSpinnerOnItemSelectedListener.class, VideoQueueHelper.class,
+		us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener.class}, library = true)
 public class AndroidModule {
 
 	private final Context applicationContext;

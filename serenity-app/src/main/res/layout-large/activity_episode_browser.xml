@@ -21,6 +21,7 @@
         <fragment
             android:id="@+id/galleryFragmentContainer"
             android:name="us.nineworlds.serenity.fragments.EpisodeVideoGalleryFragment"
+            android:layout_marginTop="@dimen/actionbarMargin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:tag="videoGallery_fragment"

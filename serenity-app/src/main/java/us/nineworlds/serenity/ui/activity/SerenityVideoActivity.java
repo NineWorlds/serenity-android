@@ -69,6 +69,9 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
 		View selectedView;
 		VideoContentInfo video;
 		AbstractPosterImageGalleryAdapter adapter = getAdapter();
+		if (adapter == null) {
+			return;
+		}
 
 		RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
 		video = (VideoContentInfo) adapter.getItem(gallery.getSelectedItemPosition());

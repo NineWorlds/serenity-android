@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
+import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.widget.RecyclerView;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
@@ -33,6 +34,7 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -40,6 +42,8 @@ import android.widget.RelativeLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+
+import net.ganin.darv.DpadAwareRecyclerView;
 
 /**
  * Implementation of the Poster Image Gallery class for TV Shows.
@@ -52,30 +56,6 @@ public class EpisodePosterImageGalleryAdapter extends
 
 	public EpisodePosterImageGalleryAdapter(Context c, String key) {
 		super(c, key);
-	}
-
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = context.getLayoutInflater().inflate(
-				R.layout.poster_indicator_view, null);
-
-		VideoContentInfo pi = posterList.get(position);
-		ImageView mpiv = (ImageView) galleryCellView
-				.findViewById(R.id.posterImageView);
-		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
-		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(300, context);
-		int height = ImageUtils.getDPI(187, context);
-		mpiv.setMaxHeight(height);
-		mpiv.setMaxWidth(width);
-		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width,
-				height));
-
-		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
-
-		setWatchedStatus(galleryCellView, pi);
-
-		return galleryCellView;
 	}
 
 	@Override
@@ -92,12 +72,35 @@ public class EpisodePosterImageGalleryAdapter extends
 
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		return null;
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_indicator_view, null);
+		return new EpisodeViewHolder(view);
 	}
 
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+		VideoContentInfo pi = posterList.get(position);
+		ImageView mpiv = (ImageView) holder.itemView
+				.findViewById(R.id.posterImageView);
+		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
+		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
+		int width = ImageUtils.getDPI(300, context);
+		int height = ImageUtils.getDPI(187, context);
+		mpiv.setMaxHeight(height);
+		mpiv.setMaxWidth(width);
+		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+		holder.itemView.setLayoutParams(new SerenityGallery.LayoutParams(width,
+				height));
 
+		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
+
+		setWatchedStatus(holder.itemView, pi);
+	}
+
+	public class EpisodeViewHolder extends DpadAwareRecyclerView.ViewHolder {
+
+		public EpisodeViewHolder(View itemView) {
+			super(itemView);
+		}
 	}
 
 	private class EpisodePosterResponseListener implements
@@ -108,12 +111,11 @@ public class EpisodePosterImageGalleryAdapter extends
 			EpisodeMediaContainer episodes = new EpisodeMediaContainer(response);
 			posterList = episodes.createVideos();
 			notifyDataSetChanged();
-			SerenityGallery gallery = (SerenityGallery) context
+			DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) context
 					.findViewById(R.id.moviePosterView);
 			if (gallery != null) {
 				gallery.requestFocus();
 			}
-			context.setSupportProgressBarIndeterminateVisibility(false);
 		}
 	}
 
@@ -123,8 +125,6 @@ public class EpisodePosterImageGalleryAdapter extends
 		@Override
 		public void onErrorResponse(VolleyError error) {
 			super.onErrorResponse(error);
-			context.setSupportProgressBarIndeterminateVisibility(false);
-
 		}
 	}
 
