@@ -47,7 +47,7 @@ android {
 
   buildTypes {
     debug {
-      testCoverageEnabled = true
+
     }
     release {
 //      signingConfig signingConfigs.release
@@ -81,11 +81,11 @@ dependencies {
 
   compile 'org.apache.commons:commons-lang3:3.3.2'
   compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
-  compile 'com.google.android.gms:play-services-analytics-impl:10.0.1'
+  compile 'com.google.android.gms:play-services-analytics-impl:10.2.0'
   compile 'com.google.android:youtube-player-api:1.2.2'
-  compile 'com.android.support:appcompat-v7:25.+'
-  compile 'com.android.support:leanback-v17:25.+'
-  compile 'com.android.support:support-v4:25.+'
+  compile 'com.android.support:appcompat-v7:25.2.0'
+  compile 'com.android.support:leanback-v17:25.2.0'
+  compile 'com.android.support:support-v4:25.2.0'
   compile project(':plexapp-rest-library')
   compile project(':subtitle-converter')
   compile 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'

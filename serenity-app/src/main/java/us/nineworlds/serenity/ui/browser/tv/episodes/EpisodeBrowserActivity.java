@@ -50,6 +50,8 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 	@Inject
 	protected SharedPreferences prefs;
 
+	public AbstractPosterImageGalleryAdapter seasonEpisodeAdapter;
+
 	private static String key;
 	private View bgLayout;
 	private View metaData;
@@ -151,7 +153,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
 	@Override
 	public AbstractPosterImageGalleryAdapter getAdapter() {
-		return null;
+		return seasonEpisodeAdapter;
 	}
 
 	@Override

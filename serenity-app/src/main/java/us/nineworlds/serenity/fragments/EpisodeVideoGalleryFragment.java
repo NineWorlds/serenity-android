@@ -86,13 +86,16 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
             String key = ((EpisodeBrowserActivity) getActivity()).getKey();
 
-            videoGallery.setAdapter(new EpisodePosterImageGalleryAdapter(
-                    getActivity(), key));
+            EpisodeBrowserActivity browserActivity = (EpisodeBrowserActivity) getActivity();
+            browserActivity.seasonEpisodeAdapter = new EpisodePosterImageGalleryAdapter(getActivity(), key);
+
+            videoGallery.setAdapter(browserActivity.seasonEpisodeAdapter);
             videoGallery.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
             videoGallery.addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
             videoGallery
                     .setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
             videoGallery.setOnItemClickListener(new EpisodePosterOnItemClickListener());
+            videoGallery.setSelectorVelocity(0);
         }
     }
 

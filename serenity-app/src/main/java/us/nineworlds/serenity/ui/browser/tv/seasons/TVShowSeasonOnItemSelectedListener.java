@@ -43,6 +43,7 @@ import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
+import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
 
 public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
         DpadAwareRecyclerView.OnItemSelectedListener {
@@ -90,7 +91,9 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
                 .findViewById(R.id.episodeGridView);
 
         episodeGrid.setVisibility(View.VISIBLE);
-        episodeGrid.setAdapter(new SeasonsEpisodePosterImageGalleryAdapter(context, info.getKey()));
+        TVShowSeasonBrowserActivity seasonBrowserActivity = (TVShowSeasonBrowserActivity) context;
+        seasonBrowserActivity.adapter = new SeasonsEpisodePosterImageGalleryAdapter(context, info.getKey());
+        episodeGrid.setAdapter(seasonBrowserActivity.adapter);
         episodeGrid.setLayoutManager(new GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false));
         episodeGrid.setOnItemClickListener(new EpisodePosterOnItemClickListener());
 

@@ -56,6 +56,7 @@ import com.jess.ui.TwoWayGridView;
 public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
     private DpadAwareRecyclerView tvShowSeasonsGallery;
+    public AbstractPosterImageGalleryAdapter adapter;
     private View tvShowSeasonsMainView;
     private boolean restarted_state = false;
     private String key;
@@ -86,6 +87,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
     }
 
     protected void setupSeasons() {
+
         tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(
                 this, key));
         tvShowSeasonsGallery.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -236,7 +238,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
     @Override
     public AbstractPosterImageGalleryAdapter getAdapter() {
-        return null;
+        return adapter;
     }
 
     /**
@@ -245,8 +247,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
      */
     @Override
     protected DpadAwareRecyclerView findGalleryView() {
-        DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) findViewById(R.id.tvShowSeasonImageGallery);
-        return gallery;
+        return null;
     }
 
     /**
