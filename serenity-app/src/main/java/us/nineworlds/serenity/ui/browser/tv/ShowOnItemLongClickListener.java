@@ -25,9 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
+
 import android.view.View;
 import android.widget.ImageView;
 
@@ -39,30 +37,9 @@ import android.widget.ImageView;
  * @author dcarver
  *
  */
-public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick
-implements OnItemLongClickListener {
+public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick {
 
-	@Override
-	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
-			int position, long arg3) {
-
-		videoInfo = (SeriesContentInfo) av.getItemAtPosition(position);
-
-		// Google TV is sending back different results than Nexus 7
-		// So we try to handle the different results.
-
-		if (v == null) {
-			SerenityGallery g = (SerenityGallery) av;
-			view = g.getSelectedView().findViewById(R.id.posterIndicatorView);
-			videoInfo = (SeriesContentInfo) g.getSelectedItem();
-		} else {
-			if (v instanceof ImageView) {
-				view = av.findViewById(R.id.posterIndicatorView);
-			} else {
-				view = v.findViewById(R.id.posterIndicatorView);
-			}
-		}
-
+	public boolean onItemLongClick(View v, int position, long arg3) {
 		init();
 
 		createAndShowDialog();

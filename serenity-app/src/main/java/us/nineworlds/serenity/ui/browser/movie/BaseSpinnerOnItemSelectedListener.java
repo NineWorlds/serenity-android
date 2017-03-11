@@ -34,8 +34,6 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import android.content.SharedPreferences;
 import android.widget.AdapterView;
 
-import com.jess.ui.TwoWayGridView;
-
 public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 
 	@Inject

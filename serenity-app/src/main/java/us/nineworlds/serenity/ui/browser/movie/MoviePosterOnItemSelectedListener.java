@@ -23,16 +23,12 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import android.support.v7.widget.RecyclerView;
-import android.view.animation.AnimationUtils;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -54,7 +50,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  *
  */
 public class MoviePosterOnItemSelectedListener extends
-		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener, DpadAwareRecyclerView.OnItemSelectedListener {
+		AbstractVideoOnItemSelectedListener implements DpadAwareRecyclerView.OnItemSelectedListener {
 
 	int lastPos = -1;
 
@@ -120,11 +116,6 @@ public class MoviePosterOnItemSelectedListener extends
 		if (subtitleSpinner != null) {
 			subtitleSpinner.setVisibility(View.GONE);
 		}
-	}
-
-	@Override
-	public void onNothingSelected(SerenityAdapterView<?> av) {
-
 	}
 
 	@Override

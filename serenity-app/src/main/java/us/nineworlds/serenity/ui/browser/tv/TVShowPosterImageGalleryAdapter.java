@@ -27,11 +27,9 @@ import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Context;
 import android.view.View;
 
-import com.jess.ui.TwoWayAbsListView;
 
 public class TVShowPosterImageGalleryAdapter extends TVShowBannerImageGalleryAdapter {
 

@@ -25,8 +25,6 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemClickListener;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

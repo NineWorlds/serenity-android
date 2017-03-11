@@ -34,9 +34,6 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.injection.ForVideoQueue;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -48,7 +45,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.jess.ui.TwoWayGridView;
 
 /**
  * A listener that handles long press for video content in Poster Gallery
@@ -57,8 +53,7 @@ import com.jess.ui.TwoWayGridView;
  * @author dcarver
  *
  */
-public class SeasonOnItemLongClickListener extends BaseInjector implements
-		OnItemLongClickListener {
+public class SeasonOnItemLongClickListener extends BaseInjector implements View.OnLongClickListener {
 
 	protected Dialog dialog;
 	protected Activity context;
@@ -73,32 +68,32 @@ public class SeasonOnItemLongClickListener extends BaseInjector implements
 		this.context = context;
 	}
 
-	@Override
-	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
-			int position, long arg3) {
-
-		// Google TV is sending back different results than Nexus 7
-		// So we try to handle the different results.
-
-		info = (SeriesContentInfo) av.getItemAtPosition(position);
-
-		if (v == null) {
-			SerenityGallery g = (SerenityGallery) av;
-			vciv = (ImageView) g.getSelectedView().findViewById(
-					R.id.posterImageView);
-		} else {
-			if (v instanceof ImageView) {
-				vciv = (ImageView) v;
-			} else {
-				vciv = (ImageView) av.getSelectedView().findViewById(
-						R.id.posterImageView);
-				;
-			}
-		}
-
-		return onItemLongClick();
-
-	}
+//	@Override
+//	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
+//			int position, long arg3) {
+//
+//		// Google TV is sending back different results than Nexus 7
+//		// So we try to handle the different results.
+//
+//		info = (SeriesContentInfo) av.getItemAtPosition(position);
+//
+//		if (v == null) {
+//			SerenityGallery g = (SerenityGallery) av;
+//			vciv = (ImageView) g.getSelectedView().findViewById(
+//					R.id.posterImageView);
+//		} else {
+//			if (v instanceof ImageView) {
+//				vciv = (ImageView) v;
+//			} else {
+//				vciv = (ImageView) av.getSelectedView().findViewById(
+//						R.id.posterImageView);
+//				;
+//			}
+//		}
+//
+//		return onItemLongClick();
+//
+//	}
 
 	/**
 	 * @return
@@ -128,23 +123,25 @@ public class SeasonOnItemLongClickListener extends BaseInjector implements
 	}
 
 	protected void performAddToQueue() {
-		TwoWayGridView gridView = (TwoWayGridView) context
-				.findViewById(R.id.episodeGridView);
-		if (gridView != null) {
-			SeasonsEpisodePosterImageGalleryAdapter adapter = (SeasonsEpisodePosterImageGalleryAdapter) gridView
-					.getAdapter();
-			List<VideoContentInfo> episodes = adapter.getItems();
-			videoQueue.addAll(episodes);
-			Toast.makeText(
-					context,
-					adapter.getItemCount()
-					+ " videos have been added to the queue.",
-					Toast.LENGTH_LONG).show();
-			View v = context.findViewById(R.id.tvShowSeasonImageGallery);
-			if (v != null) {
-				v.requestFocusFromTouch();
-			}
-		}
+//			SeasonsEpisodePosterImageGalleryAdapter adapter = (SeasonsEpisodePosterImageGalleryAdapter) gridView
+//					.getAdapter();
+//			List<VideoContentInfo> episodes = adapter.getItems();
+//			videoQueue.addAll(episodes);
+//			Toast.makeText(
+//					context,
+//					adapter.getItemCount()
+//					+ " videos have been added to the queue.",
+//					Toast.LENGTH_LONG).show();
+//			View v = context.findViewById(R.id.tvShowSeasonImageGallery);
+//			if (v != null) {
+//				v.requestFocusFromTouch();
+//			}
+//		}
+	}
+
+	@Override
+	public boolean onLongClick(View v) {
+		return false;
 	}
 
 	protected class DialogOnItemSelected implements OnItemClickListener {

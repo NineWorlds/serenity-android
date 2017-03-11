@@ -33,7 +33,6 @@ import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.jess.ui.TwoWayAdapterView;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 public class TVShowGridOnKeyListener extends BaseInjector implements

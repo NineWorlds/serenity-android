@@ -25,14 +25,6 @@ package us.nineworlds.serenity.ui.listeners;
 
 
 
-import us.nineworlds.serenity.R;
-
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.view.View;
-import android.widget.ImageView;
 
 /**
  * A listener that handles long press for video content in Poster Gallery classes.
@@ -40,30 +32,16 @@ import android.widget.ImageView;
  * @author dcarver
  * 
  */
-public class GalleryVideoOnItemLongClickListener extends AbstractVideoOnItemLongClickListener implements
-		OnItemLongClickListener {
+public class GalleryVideoOnItemLongClickListener extends AbstractVideoOnItemLongClickListener {
 
 
 	@Override
-	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
-			int position, long arg3) {
+	public boolean onItemLongClick() {
 
 		// Google TV is sending back different results than Nexus 7
-		// So we try to handle the different results.
-		
-		info = (VideoContentInfo) av.getSelectedItem();
 
-		if (v == null) {
-			SerenityGallery g = (SerenityGallery) av;
-			vciv = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
-		} else {
-			if (v instanceof ImageView) {
-				vciv = (ImageView) v;
-			} else {
-				
-				vciv = (ImageView) av.getSelectedView().findViewById(R.id.posterImageView);
-			}
-		}
+		// So we try to handle the different results.
+//		info = (VideoContentInfo) av.getSelectedItem();
 
 		return onItemLongClick();
 		

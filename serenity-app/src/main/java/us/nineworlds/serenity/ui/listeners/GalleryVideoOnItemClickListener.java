@@ -23,12 +23,10 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import android.support.v7.widget.RecyclerView;
 import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.serenity.R;
+
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
 
 import android.view.View;
 

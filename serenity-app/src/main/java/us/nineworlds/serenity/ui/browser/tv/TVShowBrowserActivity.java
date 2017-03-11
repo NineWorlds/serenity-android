@@ -45,15 +45,11 @@ import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.TVCategoryResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
-
-import com.jess.ui.TwoWayGridView;
 import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {

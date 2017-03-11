@@ -38,15 +38,13 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
-import us.nineworlds.serenity.widgets.SerenityGallery;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.BaseAdapter;
 import android.widget.Toast;
 
-import com.jess.ui.TwoWayGridView;
 
 /**
  * @author dcarver

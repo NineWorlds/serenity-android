@@ -43,8 +43,6 @@ import us.nineworlds.serenity.volley.SimpleXmlRequest;
 import us.nineworlds.serenity.volley.SubtitleVolleyResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
 import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -78,7 +76,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
-		implements OnItemSelectedListener, DpadAwareRecyclerView.OnItemSelectedListener {
+		implements DpadAwareRecyclerView.OnItemSelectedListener {
 	@Inject
 	protected SerenityImageLoader serenityImageLoader;
 
@@ -267,33 +265,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 				new DefaultLoggingVolleyErrorListener());
 	}
 
-	@Override
-	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
-			long id) {
-		context = (Activity) v.getContext();
-		fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
-
-		videoInfo = (VideoContentInfo) av.getItemAtPosition(position);
-		changeBackgroundImage();
-
-		if (previous != null) {
-			previous.setPadding(0, 0, 0, 0);
-		}
-
-		previous = v;
-
-		v.setPadding(5, 5, 5, 5);
-		v.clearAnimation();
-
-		ImageView posterImageView = (ImageView) v
-				.findViewById(R.id.posterImageView);
-		currentView = posterImageView;
-
-		createVideoDetail(posterImageView);
-		createVideoMetaData(posterImageView);
-		createInfographicDetails(posterImageView);
-	}
-
 	public void changeBackgroundImage() {
 
 		if (videoInfo.getBackgroundURL() == null) {
@@ -322,5 +293,4 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 		}
 
 	}
-
 }

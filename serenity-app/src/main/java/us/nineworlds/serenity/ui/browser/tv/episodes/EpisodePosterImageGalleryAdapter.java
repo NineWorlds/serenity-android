@@ -23,7 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
-import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.widget.RecyclerView;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
@@ -32,7 +31,7 @@ import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

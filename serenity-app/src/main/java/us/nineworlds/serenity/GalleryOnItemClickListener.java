@@ -26,7 +26,6 @@ package us.nineworlds.serenity;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
-import us.nineworlds.serenity.ui.browser.music.MusicActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 
@@ -34,6 +33,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
 public class GalleryOnItemClickListener implements DpadAwareRecyclerView.OnItemClickListener {
 
@@ -82,9 +82,7 @@ public class GalleryOnItemClickListener implements DpadAwareRecyclerView.OnItemC
 		}
 
 		if (MENU_TYPE_MUSIC.equalsIgnoreCase(activityType)) {
-			intent = new Intent(context, MusicActivity.class);
-			intent.putExtra("key", librarySection);
-			context.startActivityForResult(intent, 0);
+			Toast.makeText(context, "Music support has been removed.", Toast.LENGTH_LONG);
 			return;
 		}
 

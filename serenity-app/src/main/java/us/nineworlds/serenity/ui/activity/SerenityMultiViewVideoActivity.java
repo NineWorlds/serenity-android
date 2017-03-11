@@ -23,24 +23,6 @@
 
 package us.nineworlds.serenity.ui.activity;
 
-import android.support.v7.widget.RecyclerView;
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.serenity.core.SerenityConstants;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.OnDeckRecommendationAsyncTask;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
-import us.nineworlds.serenity.ui.util.PlayerResultHandler;
-import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.BaseAdapter;
-
-import com.jess.ui.TwoWayGridView;
 
 /**
  * A activity that handles the indicator of whether toggling between Grid and

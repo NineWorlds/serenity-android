@@ -26,10 +26,8 @@ package us.nineworlds.serenity.ui.browser.tv;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import butterknife.BindView;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
@@ -39,10 +37,7 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.widgets.BadgeView;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -52,7 +47,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
-import com.jess.ui.TwoWayGridView;
 
 public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 

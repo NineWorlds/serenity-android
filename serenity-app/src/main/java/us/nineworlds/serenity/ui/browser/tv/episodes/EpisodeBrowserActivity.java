@@ -43,8 +43,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.jess.ui.TwoWayGridView;
-
 public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
 	@Inject

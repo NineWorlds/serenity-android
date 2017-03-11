@@ -44,9 +44,8 @@ import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
 import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import us.nineworlds.serenity.widgets.RoundedImageView;
-import us.nineworlds.serenity.widgets.SerenityGallery;
+
 import android.content.Context;
-import android.content.res.Configuration;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,8 +56,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.jess.ui.TwoWayAbsListView;
-import com.jess.ui.TwoWayGridView;
 
 public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 

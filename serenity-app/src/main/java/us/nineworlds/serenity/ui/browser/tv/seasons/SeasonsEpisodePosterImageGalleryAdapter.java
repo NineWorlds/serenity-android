@@ -39,25 +39,20 @@ import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
 import us.nineworlds.serenity.volley.SimpleXmlRequest;
 import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.jess.ui.TwoWayAbsListView;
-
 import net.ganin.darv.DpadAwareRecyclerView;
 
 public class SeasonsEpisodePosterImageGalleryAdapter

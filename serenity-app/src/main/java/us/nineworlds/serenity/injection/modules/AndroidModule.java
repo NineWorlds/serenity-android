@@ -87,14 +87,6 @@ import us.nineworlds.serenity.ui.browser.movie.MovieMenuDrawerOnItemClickedListe
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.SecondaryCategorySpinnerOnItemSelectedListener;
-import us.nineworlds.serenity.ui.browser.music.MusicPosterGalleryAdapter;
-import us.nineworlds.serenity.ui.browser.music.MusicPosterGalleryOnItemSelectedListener;
-import us.nineworlds.serenity.ui.browser.music.MusicPosterGridViewAdapter;
-import us.nineworlds.serenity.ui.browser.music.albums.MusicAlbumsCoverAdapter;
-import us.nineworlds.serenity.ui.browser.music.tracks.AudioTrackPlaybackListener;
-import us.nineworlds.serenity.ui.browser.music.tracks.MusicTracksActivity;
-import us.nineworlds.serenity.ui.browser.music.tracks.TracksAdapter;
-import us.nineworlds.serenity.ui.browser.music.tracks.TracksOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.FindUnwatchedAsyncTask;
 import us.nineworlds.serenity.ui.browser.tv.TVCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.TVSecondaryCategorySpinnerOnItemSelectedListener;
@@ -138,11 +130,10 @@ import us.nineworlds.serenity.volley.LibraryResponseListener;
 import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
 import us.nineworlds.serenity.volley.TVCategoryResponseListener;
 import us.nineworlds.serenity.volley.VolleyUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 
 @Module(includes = SerenityModule.class, injects = { GDMReceiver.class,
 		MainMenuFragment.class,
-		OnDeckRecommendations.class, MusicTracksActivity.class,
+		OnDeckRecommendations.class,
 		GalleryVideoOnItemLongClickListener.class,
 		MediaController.class,
 		SerenityGallery.class, MainActivity.class, SerenityApplication.class,
@@ -155,7 +146,6 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 		MainMenuDrawerOnItemClickedListener.class,
 		MovieGridPosterOnItemSelectedListener.class,
 		MovieMenuDrawerOnItemClickedListener.class,
-		MusicPosterGalleryOnItemSelectedListener.class,
 		PlayerResultHandler.class, ExternalPlayerResultHandler.class,
 		SeasonOnItemLongClickListener.class, MenuMediaContainer.class,
 		MovieMediaContainer.class, SeriesMediaContainer.class,
@@ -166,7 +156,6 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 
 		EpisodePosterOnItemSelectedListener.class,
 		MoviePosterOnItemSelectedListener.class, SerenityImageLoader.class,
-		TracksOnItemSelectedListener.class,
 		TVShowGalleryOnItemSelectedListener.class,
 		TVShowGridOnItemSelectedListener.class, TVShowGridOnKeyListener.class,
 		TVShowMenuDrawerOnItemClickedListener.class,
@@ -182,11 +171,9 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 		SeasonsEpisodePosterImageGalleryAdapter.class,
 		MoviePosterImageAdapter.class, SearchAdapter.class,
 		TVShowBannerImageGalleryAdapter.class, MenuDrawerAdapter.class,
-		MusicAlbumsCoverAdapter.class, MusicPosterGalleryAdapter.class,
-		MusicPosterGridViewAdapter.class,
 		TVShowSeasonImageGalleryAdapter.class,
 		OnDeckRecommendationIntentService.class, CompletedVideoRequest.class,
-		FindUnwatchedAsyncTask.class, TracksAdapter.class,
+		FindUnwatchedAsyncTask.class,
 		UnWatchVideoAsyncTask.class, UpdateProgressRequest.class,
 		WatchedVideoAsyncTask.class, GalleryOnItemSelectedListener.class,
 		SerenityImageLoader.class, SerenityPreferenceActivity.class,
@@ -206,7 +193,7 @@ import us.nineworlds.serenity.widgets.SerenityGallery;
 		MovieSearchFragment.class, MovieCategoryResponseListener.class,
 		CategoryMediaContainer.class, SecondaryCategoryMediaContainer.class,
 		TVCategoryResponseListener.class, TVCategoryMediaContainer.class,
-		AudioTrackPlaybackListener.class, ServerConfig.class,
+		ServerConfig.class,
 		SubtitleSpinnerOnItemSelectedListener.class, VideoQueueHelper.class,
 		us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener.class}, library = true)
 public class AndroidModule {

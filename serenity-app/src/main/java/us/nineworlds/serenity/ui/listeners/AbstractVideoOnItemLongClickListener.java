@@ -41,8 +41,7 @@ import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.VideoQueueHelper;
 import us.nineworlds.serenity.ui.util.YouTubeUtils;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityGallery;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -92,32 +91,6 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 	@Inject
 	protected VideoQueueHelper videoQueueHelper;
 
-	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
-			int position, long arg3) {
-
-		// Google TV is sending back different results than Nexus 7
-		// So we try to handle the different results.
-
-		info = (VideoContentInfo) av.getSelectedItem();
-
-		if (v == null) {
-			SerenityGallery g = (SerenityGallery) av;
-			vciv = (ImageView) g.getSelectedView().findViewById(
-					R.id.posterImageView);
-			info = (VideoContentInfo) g.getSelectedItem();
-		} else {
-			if (v instanceof ImageView) {
-				vciv = (ImageView) v;
-			} else {
-				SerenityGallery g = (SerenityGallery) v;
-				vciv = (ImageView) g.getSelectedView().findViewById(
-						R.id.posterImageView);
-				info = (VideoContentInfo) g.getSelectedItem();
-			}
-		}
-
-		return onItemLongClick();
-	}
 
 	protected boolean onItemLongClick() {
 		context = (Activity) vciv.getContext();
