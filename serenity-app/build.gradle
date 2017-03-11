@@ -22,8 +22,8 @@ apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 android {
   defaultConfig {
-    versionCode 20
-    versionName "1.9.5-SNAPSHOT"
+    versionCode 2000000
+    versionName "2.0.0-M1"
 
     minSdkVersion 17
     targetSdkVersion 25
