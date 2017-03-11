@@ -37,7 +37,6 @@ import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -193,11 +192,6 @@ AbstractVideoOnItemSelectedListener {
 				.loadImage(transcodingURL, new ImageSize(1280, 720),
 						new SerenityBackgroundLoaderListener(fanArt,
 								R.drawable.tvshows, context));
-	}
-
-	@Override
-	public void onNothingSelected(SerenityAdapterView<?> av) {
-
 	}
 
 	@Override

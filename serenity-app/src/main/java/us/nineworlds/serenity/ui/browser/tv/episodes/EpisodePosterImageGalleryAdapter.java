@@ -87,7 +87,7 @@ public class EpisodePosterImageGalleryAdapter extends
 		mpiv.setMaxHeight(height);
 		mpiv.setMaxWidth(width);
 		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-		holder.itemView.setLayoutParams(new SerenityGallery.LayoutParams(width,
+		holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
 				height));
 
 		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);

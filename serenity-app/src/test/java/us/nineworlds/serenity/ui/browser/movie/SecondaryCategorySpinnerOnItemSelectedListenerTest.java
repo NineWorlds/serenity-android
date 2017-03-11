@@ -90,9 +90,6 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 	@Mock
 	protected MoviePosterImageAdapter mockPosterImageAdapter;
 
-	@Mock
-	protected SerenityGallery mockGallery;
-
 	MovieBrowserActivity movieBrowserActivity;
 	protected SecondaryCategorySpinnerOnItemSelectedListener onItemSelectedListener;
 	protected SecondaryCategorySpinnerOnItemSelectedListener spyOnItemSelectedListener;

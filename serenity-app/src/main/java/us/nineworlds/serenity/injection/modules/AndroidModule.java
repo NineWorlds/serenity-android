@@ -136,7 +136,7 @@ import us.nineworlds.serenity.volley.VolleyUtils;
 		OnDeckRecommendations.class,
 		GalleryVideoOnItemLongClickListener.class,
 		MediaController.class,
-		SerenityGallery.class, MainActivity.class, SerenityApplication.class,
+		MainActivity.class, SerenityApplication.class,
 		StartupBroadcastReceiver.class, RecommendationPlayerActivity.class,
 		EpisodeBrowserActivity.class, SearchableActivity.class,
 		MovieBrowserActivity.class, TVShowBrowserActivity.class,
