@@ -51,16 +51,6 @@
             android:title="@string/androidtv_ondeck_recommendations"
             android:defaultValue="true" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/music_library" >
-        <CheckBoxPreference
-            android:key="plex_music_library"
-            android:summary="@string/music_library_preference_summary"
-            android:title="@string/enable_plex_music_library_support" />
-        <CheckBoxPreference
-            android:key="music_layout_grid"
-            android:summary="@string/music_layout_grid_summary"
-            android:title="@string/music_grid_poster_layout" />
-    </PreferenceCategory>
     <PreferenceCategory android:title="@string/video_library" >
         <CheckBoxPreference
             android:key="automatic_subtitle_selection"
@@ -99,15 +89,6 @@
             android:key="animation_background_fadein"
             android:summary="@string/movie_fadein_animation_summary"
             android:title="@string/fade_in_background_fan_art" />
-        <CheckBoxPreference
-            android:key="animation_shrink_posters"
-            android:summary="@string/emphasize_poster_summary"
-            android:title="@string/poster_selected_emphasis" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="animation_gallery_scrolling"
-            android:summary="@string/enable_gallery_scrolling"
-            android:title="@string/enable_gallery_scrolling_animation" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/media_player_internal" >
         <CheckBoxPreference
