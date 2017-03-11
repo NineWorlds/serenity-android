@@ -25,14 +25,18 @@ package us.nineworlds.serenity.core;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.res.builder.RobolectricPackageManager;
+import org.robolectric.shadows.ShadowPackageManager;
+
 import us.nineworlds.serenity.BuildConfig;
 
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -42,13 +46,7 @@ import static org.robolectric.RuntimeEnvironment.application;
 @Config(constants = BuildConfig.class)
 public class OnDeckRecommendationsTest {
 
-	/**
-	 *
-	 */
 	private static final String ANDROID_SOFTWARE_LEANBACK = "android.software.leanback";
-	/**
-	 *
-	 */
 	private static final String ANDROID_HARDWARE_TYPE_TELEVISION = "android.hardware.type.television";
 	private OnDeckRecommendations onDeckRecommendations;
 
@@ -65,10 +63,10 @@ public class OnDeckRecommendationsTest {
 	@Test
 	@Config(sdk = 17)
 	public void recommendationsOccurForJellyBeanOrHigher() {
-		RobolectricPackageManager pm = (RobolectricPackageManager) application
-				.getPackageManager();
-		pm.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
-		pm.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, true);
+		ShadowPackageManager shadowPackageManager = Shadows.shadowOf(application
+				.getPackageManager());
+		shadowPackageManager.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
+		shadowPackageManager.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, true);
 
 		SharedPreferences prefrences = PreferenceManager
 				.getDefaultSharedPreferences(application);
@@ -85,10 +83,10 @@ public class OnDeckRecommendationsTest {
 	@Test
 	@Config(sdk = 17)
 	public void recommendationsOccurForJellyBeanOrHigherFailOnGoogleTV4DevicesWithOutLeanback() {
-		RobolectricPackageManager pm = (RobolectricPackageManager) application
-				.getPackageManager();
-		pm.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
-		pm.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, false);
+		ShadowPackageManager shadowPackageManager = Shadows.shadowOf(application
+				.getPackageManager());
+		shadowPackageManager.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
+		shadowPackageManager.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, false);
 
 		SharedPreferences prefrences = PreferenceManager
 				.getDefaultSharedPreferences(application);
@@ -105,10 +103,10 @@ public class OnDeckRecommendationsTest {
 	@Test
 	@Config(sdk = 17)
 	public void recommendationsOccurForJellyBeanOrHigherFailWhenAndroidTVModeIsFalse() {
-		RobolectricPackageManager pm = (RobolectricPackageManager) application
-				.getPackageManager();
-		pm.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
-		pm.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, true);
+		ShadowPackageManager shadowPackageManager = Shadows.shadowOf(application
+				.getPackageManager());
+		shadowPackageManager.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
+		shadowPackageManager.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, true);
 
 		SharedPreferences prefrences = PreferenceManager
 				.getDefaultSharedPreferences(application);

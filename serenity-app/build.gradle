@@ -96,13 +96,13 @@ dependencies {
   compile 'com.squareup.okhttp:okhttp-urlconnection:1.6.0'
   compile 'com.squareup.picasso:picasso:2.3.1'
   testCompile 'junit:junit:4.11'
-  testCompile ('org.robolectric:robolectric:3.2.2') {
+  testCompile ('org.robolectric:robolectric:3.3.1') {
     exclude module: 'support-v4'
   }
-  testCompile 'org.robolectric:shadows-core:3.2.2'
-  testCompile 'org.robolectric:shadows-httpclient:3.2.2'
-  testCompile 'org.robolectric:shadows-support-v4:3.2.2'
-  testCompile 'org.robolectric:shadows-play-services:3.2.2'
+  testCompile 'org.robolectric:shadows-core:3.3.1'
+  testCompile 'org.robolectric:shadows-httpclient:3.3.1'
+  testCompile 'org.robolectric:shadows-support-v4:3.3.1'
+  testCompile 'org.robolectric:shadows-play-services:3.3.1'
   testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
 
   testCompile ('com.squareup:fest-android:1.0.7') {
