@@ -35,10 +35,10 @@ android {
 
   signingConfigs {
     release {
-      storeFile file('my.keystore')
-      storePassword 'storepassword'
-      keyAlias 'keyalias'
-      keyPassword 'keypassword'
+      storeFile file(project.property("keystore"))
+      storePassword project.property("storepass")
+      keyAlias project.property("keyalias")
+      keyPassword project.property("keypass")
     }
   }
 
@@ -50,7 +50,9 @@ android {
 
     }
     release {
-//      signingConfig signingConfigs.release
+      signingConfig signingConfigs.release
+      zipAlignEnabled true
+      minifyEnabled false
     }
   }
 
