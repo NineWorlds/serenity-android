@@ -84,11 +84,11 @@ dependencies {
 
   compile 'org.apache.commons:commons-lang3:3.3.2'
   compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
-  compile 'com.google.android.gms:play-services-analytics-impl:10.2.0'
+  compile 'com.google.android.gms:play-services-analytics-impl:10.2.1'
   compile 'com.google.android:youtube-player-api:1.2.2'
-  compile 'com.android.support:appcompat-v7:25.2.0'
-  compile 'com.android.support:leanback-v17:25.2.0'
-  compile 'com.android.support:support-v4:25.2.0'
+  compile 'com.android.support:appcompat-v7:25.3.1'
+  compile 'com.android.support:leanback-v17:25.3.1'
+  compile 'com.android.support:support-v4:25.3.1'
   compile project(':plexapp-rest-library')
   compile project(':subtitle-converter')
   compile 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
@@ -99,13 +99,13 @@ dependencies {
   compile 'com.squareup.okhttp:okhttp-urlconnection:1.6.0'
   compile 'com.squareup.picasso:picasso:2.3.1'
   testCompile 'junit:junit:4.11'
-  testCompile ('org.robolectric:robolectric:3.3.1') {
+  testCompile ('org.robolectric:robolectric:3.3.2') {
     exclude module: 'support-v4'
   }
-  testCompile 'org.robolectric:shadows-core:3.3.1'
-  testCompile 'org.robolectric:shadows-httpclient:3.3.1'
-  testCompile 'org.robolectric:shadows-support-v4:3.3.1'
-  testCompile 'org.robolectric:shadows-play-services:3.3.1'
+  testCompile 'org.robolectric:shadows-core:3.3.2'
+  testCompile 'org.robolectric:shadows-httpclient:3.3.2'
+  testCompile 'org.robolectric:shadows-support-v4:3.3.2'
+  testCompile 'org.robolectric:shadows-play-services:3.3.2'
   testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
 
   testCompile ('com.squareup:fest-android:1.0.7') {
