@@ -53,8 +53,9 @@ public class TestPlexFactory {
 	@Before
 	public void setUp() throws Exception {
 		config = new MockConfig();
-		URL url = this.getClass().getResource("/");
-		File rootfile = new File(url.getPath());
+		//URL url = this.getClass().getResource("/");
+
+		File rootfile = new File("src/test/resources");
 		server = new NanoHTTPD(Integer.parseInt(config.getPort()), rootfile);
 	}
 	
@@ -86,17 +87,6 @@ public class TestPlexFactory {
 		MediaContainer mediaContainer = factory.retrieveSections();
 		assertNotNull(mediaContainer);
 		assertEquals(2, mediaContainer.getSize());
-	}
-	
-	@Test
-	public void testRetrieveSectionByKeyMissing() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		try {
-			factory.retrieveSections("5");
-			fail("Should not get to this point");
-		} catch (Exception ex) {
-			
-		}		
 	}
 	
 	@Test

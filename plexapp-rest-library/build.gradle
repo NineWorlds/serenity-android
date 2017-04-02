@@ -5,14 +5,16 @@ sourceCompatibility = '1.7'
 
 dependencies {
 
-  compile('org.simpleframework:simple-xml:2.7') {
+  compile 'com.squareup.retrofit2:retrofit:2.2.0'
+  compile ('com.squareup.retrofit2:converter-simplexml:2.2.0') {
     exclude group: 'stax'
     exclude group: 'xpp3'
   }
+  compile 'com.squareup.retrofit2:converter-scalars:2.2.0'
+
 
   testCompile 'junit:junit:4.11'
   testCompile 'xmlunit:xmlunit:1.3'
-
 
 }
 

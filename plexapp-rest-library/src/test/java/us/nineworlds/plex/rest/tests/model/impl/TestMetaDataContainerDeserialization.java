@@ -23,6 +23,7 @@
 
 package us.nineworlds.plex.rest.tests.model.impl;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -61,15 +62,20 @@ public class TestMetaDataContainerDeserialization {
 	
 	@Test
 	public void testSimpleDeserialization() throws Exception {
-		InputStream file = this.getClass().getResourceAsStream("/samples/root.xml");
+		File file = testFile("/samples/root.xml");
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 		
 		assertEquals(10, mediaContainer.getSize());
 	}
+
+	File testFile(String path) {
+		File file = new File("src/test/resources" + path);
+		return file;
+	}
 	
 	@Test
 	public void testLibraryDeserialization() throws Exception {
-		InputStream file = this.getClass().getResourceAsStream("/samples/library.xml");
+		File file = testFile("/samples/library.xml");
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 		
 		List<Directory> directories = mediaContainer.getDirectories();
@@ -79,7 +85,7 @@ public class TestMetaDataContainerDeserialization {
 	
 	@Test
 	public void testMoviesDeserialization() throws Exception {
-		InputStream file = this.getClass().getResourceAsStream("/samples/movies.xml");
+		File file = testFile("/samples/movies.xml");
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 
 		List<Video> videos = mediaContainer.getVideos();
@@ -88,7 +94,7 @@ public class TestMetaDataContainerDeserialization {
 	
 	@Test
 	public void testSectionDeserialization() throws Exception {
-		InputStream file = this.getClass().getResourceAsStream("/samples/sections.xml");
+		File file = testFile("/samples/sections.xml");
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 
 		List<Directory> directories = mediaContainer.getDirectories();
@@ -97,7 +103,7 @@ public class TestMetaDataContainerDeserialization {
 	
 	@Test
 	public void testMovieSectionDeserialization() throws Exception {
-		InputStream file = this.getClass().getResourceAsStream("/samples/moviesSection.xml");
+		File file = testFile("/samples/moviesSection.xml");
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 
 		List<Directory> directories = mediaContainer.getDirectories();
@@ -107,7 +113,7 @@ public class TestMetaDataContainerDeserialization {
 	
 	@Test
 	public void testAllMoviesDeserialization() throws Exception {
-		InputStream file = this.getClass().getResourceAsStream("/samples/allmovies.xml");
+		File file = testFile("/samples/allmovies.xml");
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 
 		List<Video> videos = mediaContainer.getVideos();
@@ -121,7 +127,7 @@ public class TestMetaDataContainerDeserialization {
 	
 	@Test
 	public void testMoviesPartDeserialization() throws Exception {
-		InputStream file = this.getClass().getResourceAsStream("/samples/allmovies.xml");
+		File file = testFile("/samples/allmovies.xml");
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 		List<Video> videos = mediaContainer.getVideos();
 		Video video = videos.get(0);
@@ -138,7 +144,7 @@ public class TestMetaDataContainerDeserialization {
 	
 	@Test
 	public void testMalformedTVShows() {
-		InputStream file = this.getClass().getResourceAsStream("/samples/issue9_tvshows_bad.xml");
+		File file = testFile("/samples/issue9_tvshows_bad.xml");
 		try {
 			MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 			fail("Parsing was allowed to occur, check the file to make sure it is still bad.");

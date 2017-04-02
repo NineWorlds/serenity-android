@@ -130,7 +130,7 @@ public class MainMenuFragment extends InjectingFragment {
 			Toast.makeText(
 					getActivity(),
 					"Unable to connect to Plex Library at "
-							+ plexFactory.getSectionsURL(), Toast.LENGTH_LONG)
+							+ plexFactory.baseURL(), Toast.LENGTH_LONG)
 					.show();
 
 			mainGallery.requestFocus();

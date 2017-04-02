@@ -48,12 +48,10 @@ public class PlexappFactory {
 
 	private static PlexappFactory instance = null;
 
-	private ResourcePaths resourcePath = null;
-	private Serializer serializer = null;
+	private PlexappClient client;
 
 	private PlexappFactory(IConfiguration config) {
-		resourcePath = new ResourcePaths(config);
-		serializer = new Persister();
+		client = PlexappClient.getInstance(config);
 	}
 
 	public static PlexappFactory getInstance(IConfiguration config) {
@@ -70,10 +68,7 @@ public class PlexappFactory {
 	 * @throws Exception
 	 */
 	public MediaContainer retrieveRootData() throws Exception {
-		String rootURL = resourcePath.getRoot();
-		MediaContainer mediaContainer = serializeResource(rootURL);
-
-		return mediaContainer;
+		return client.retrieveRootData();
 	}
 
 	/**
@@ -84,10 +79,7 @@ public class PlexappFactory {
 	 * @throws Exception
 	 */
 	public MediaContainer retrieveLibrary() throws Exception {
-		String libraryURL = resourcePath.getLibraryURL();
-		MediaContainer mediaContainer = serializeResource(libraryURL);
-
-		return mediaContainer;
+		return client.retrieveLibrary();
 	}
 	
 	/**
@@ -98,10 +90,7 @@ public class PlexappFactory {
 	 * @throws Exception
 	 */
 	public MediaContainer retrieveSections() throws Exception {
-		String sectionsURL = resourcePath.getSectionsURL();
-		MediaContainer mediaContainer = serializeResource(sectionsURL);
-
-		return mediaContainer;
+		return client.retrieveSections();
 	}
 	
 	/**
@@ -113,10 +102,7 @@ public class PlexappFactory {
 	 * @throws Exception
 	 */
 	public MediaContainer retrieveSections(String key) throws Exception {
-		String sectionsURL = resourcePath.getSectionsURL(key);
-		MediaContainer mediaContainer = serializeResource(sectionsURL);
-
-		return mediaContainer;
+		return client.retrieveSections(key);
 	}
 	
 	/**
@@ -129,57 +115,41 @@ public class PlexappFactory {
 	 * @throws Exception
 	 */
 	public MediaContainer retrieveSections(String key, String category) throws Exception {
-		String moviesURL = resourcePath.getSectionsURL(key, category);
-		MediaContainer mediaContainer = serializeResource(moviesURL);
-		return mediaContainer;
+		return client.retrieveSections(key, category);
 	}
 	
 	public MediaContainer retrieveSections(String key, String category, String secondaryCategory) throws Exception {
-		String moviesURL = resourcePath.getSectionsURL(key, category, secondaryCategory);
-		MediaContainer mediaContainer = serializeResource(moviesURL);
-		return mediaContainer;
+		return client.retrieveSections(key, category, secondaryCategory);
 	}
 	
 	
 	public MediaContainer retrieveSeasons(String key) throws Exception {
-		String seasonsURL = resourcePath.getSeasonsURL(key);
-		MediaContainer mediaContainer = serializeResource(seasonsURL);
-		return mediaContainer;
+		return client.retrieveSeasons(key);
 	}
 	
 	public MediaContainer retrieveMusicMetaData(String key) throws Exception {
-		String seasonsURL = resourcePath.getSeasonsURL(key);
-		MediaContainer mediaContainer = serializeResource(seasonsURL);
-		return mediaContainer;
+		return client.retrieveMusicMetaData(key);
 	}
 	
 	
 	public MediaContainer retrieveEpisodes(String key) throws Exception {
-		String episodesURL = resourcePath.getEpisodesURL(key);
-		MediaContainer mediaContainer = serializeResource(episodesURL);
-		return mediaContainer;
+		return client.retrieveEpisodes(key);
 	}
 	
 	public MediaContainer retrieveMovieMetaData(String key) throws Exception {
-		String episodesURL = resourcePath.getMovieMetaDataURL(key);
-		MediaContainer mediaContainer = serializeResource(episodesURL);
-		return mediaContainer;
+		return client.retrieveMovieMetaData(key);
 	}
 		
 	public MediaContainer searchMovies(String key, String query) throws Exception {
-		String searchURL = resourcePath.getMovieSearchURL(key, query);
-		MediaContainer mediaContainer = serializeResource(searchURL);
-		return mediaContainer;
+		return client.searchMovies(key, query);
 	}
 	
 	public MediaContainer searchEpisodes(String key, String query) throws Exception {
-		String searchURL = resourcePath.getEpisodeSearchURL(key, query);
-		MediaContainer mediaContainer = serializeResource(searchURL);
-		return mediaContainer;
+		return client.searchEpisodes(key, query);
 	}
 	
 	public String baseURL() {
-		return resourcePath.getRoot();
+		return client.baseURL();
 	}
 
 	/**
@@ -187,9 +157,12 @@ public class PlexappFactory {
 	 * @param key
 	 * @return
 	 */
-	public boolean setWatched(String key) {
-		String resourceURL = resourcePath.getWatchedUrl(key);
-		return requestSuccessful(resourceURL);
+	public boolean setWatched(String key)  {
+		try {
+			return client.setWatched(key);
+		} catch (IOException e) {
+		}
+		return false;
 	}
 	
 	/**
@@ -199,113 +172,32 @@ public class PlexappFactory {
 	 * @return
 	 */
 	public boolean setUnWatched(String key) {
-		String resourceURL = resourcePath.getUnwatchedUrl(key);
-		return requestSuccessful(resourceURL);
-	}
-	
-	public boolean setProgress(String key, String offset) {
-		String resourceURL = resourcePath.getProgressUrl(key, offset);
-		return requestSuccessful(resourceURL);
-	}
-	
-
-	/**
-	 * @param resourceURL
-	 * @param con
-	 * @return
-	 */
-	protected boolean requestSuccessful(String resourceURL) {
-		HttpURLConnection con = null;
 		try {
-			URL url = new URL(resourceURL);
-			con = (HttpURLConnection) url.openConnection();
-			con.setDefaultUseCaches(false);
-			int responseCode = con.getResponseCode();
-			if (responseCode == 200) {
-				return true;
-			}
-		} catch (Exception ex) {
-			return false;
-		} finally {
-			if (con != null) {
-				con.disconnect();
-			}
+			return client.setUnWatched(key);
+		} catch (IOException e) {
 		}
 		return false;
 	}
 	
-	public String getProgressURL(String key, String offset) {
-		return resourcePath.getProgressUrl(key, offset);
+	public boolean setProgress(String key, String offset) {
+		try {
+			return client.setProgress(key, offset);
+		} catch (IOException e) {
+		}
+		return false;
 	}
 	
-	public String getMovieSearchURL(String key, String query) {
-		return resourcePath.getMovieSearchURL(key, query);
-	}
-	
-	public String getTVShowSearchURL(String key, String query) {
-		return resourcePath.getMovieSearchURL(key, query);
-	}
 
-	public String getEpisodeSearchURL(String key, String query) {
-		return resourcePath.getMovieSearchURL(key, query);
-	}
-	
 	public String getMediaTagURL(String resourceType, String resourceName, String identifier) {
-		return resourcePath.getMediaTagURL(resourceType, resourceName, identifier);
+		return client.getMediaTagURL(resourceType, resourceName, identifier);
 	}
 	
 	public String getSectionsURL(String key, String category) {
-		return resourcePath.getSectionsURL(key, category);
-	}
-	
-	public String getSectionsURL() {
-		return resourcePath.getSectionsURL();
-	}
-	
-	public String getSectionsUrl(String key) {
-		return resourcePath.getSectionsURL(key);
-	}
-	
-	public String getMovieMetadataURL(String key) {
-		return resourcePath.getMovieMetaDataURL(key);
-	}
-	
-	public String getEpisodesURL(String key) {
-		return resourcePath.getEpisodesURL(key);
-	}
-	
-	public String getSeasonsURL(String key) {
-		return resourcePath.getSeasonsURL(key);
+		return client.getSeasonsURL(key);
 	}
 
     public String getImageURL(String url, int width, int height) {
-        return resourcePath.getImageURL(url, width, height);
+        return client.getImageURL(url, width, height);
     }
-
-    /**
-	 * Given a resource's URL, read and return the serialized MediaContainer
-	 * @param resourceURL
-	 * @return
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 * @throws Exception
-	 */
-	private MediaContainer serializeResource(String resourceURL)
-			throws MalformedURLException, IOException, Exception {
-		MediaContainer mediaContainer;
-		URL url = new URL(resourceURL);
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		// We only want the updated data if something has changed.
-		con.addRequestProperty("Cache-Control", "max-age=0");
-		mediaContainer = serializer.read(MediaContainer.class,
-				con.getInputStream(), false);
-		return mediaContainer;
-	}
-	
-	public MediaContainer serializeResourceFromString(String xmlString) throws Exception {
-		MediaContainer container = serializer.read(MediaContainer.class, xmlString, false);
-		return container;
-	}
-
 
 }

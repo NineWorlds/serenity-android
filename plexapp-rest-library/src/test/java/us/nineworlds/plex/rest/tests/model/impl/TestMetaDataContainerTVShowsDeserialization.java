@@ -23,6 +23,7 @@
 
 package us.nineworlds.plex.rest.tests.model.impl;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -58,14 +59,14 @@ public class TestMetaDataContainerTVShowsDeserialization {
 	
 	@Test
 	public void testSimpleDeserialization() throws Exception {
-		InputStream file = this.getClass().getResourceAsStream("/library/sections/6/all/index.xml");
+		File file = testFile("/library/sections/6/all/index.xml");
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 		assertEquals(6, mediaContainer.getSize());
 	}
 	
 	@Test
 	public void testDirectoryTVShow() throws Exception {
-		InputStream file = this.getClass().getResourceAsStream("/library/sections/6/all/index.xml");
+		File file = testFile("/library/sections/6/all/index.xml");
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 		List<Directory> directories = mediaContainer.getDirectories();
 		assertEquals(6, directories.size());
@@ -79,7 +80,7 @@ public class TestMetaDataContainerTVShowsDeserialization {
 	
 	@Test
 	public void testTVShowGenre() throws Exception {
-		InputStream file = this.getClass().getResourceAsStream("/library/sections/6/all/index.xml");
+		File file = testFile("/library/sections/6/all/index.xml");
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 		List<Directory> directories = mediaContainer.getDirectories();		
 		Directory tvShow = directories.get(0);
@@ -88,6 +89,11 @@ public class TestMetaDataContainerTVShowsDeserialization {
 		Genre genre = genres.get(0);
 		assertEquals("Action and Adventure", genre.getTag());
 	}
-	
-	
+
+	File testFile(String path) {
+		File file = new File("src/test/resources" + path);
+		return file;
+	}
+
+
 }

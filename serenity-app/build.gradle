@@ -97,6 +97,12 @@ dependencies {
     exclude group: 'com.android.support'
   }
   compile 'com.squareup.okhttp3:okhttp-urlconnection:3.6.0'
+  compile 'com.squareup.dagger:dagger:1.2.2'
+  apt 'com.squareup.dagger:dagger-compiler:1.2.2'
+  compile 'com.github.vganin:dpadaware-recyclerview:1.0.1'
+  compile 'com.jakewharton:butterknife:8.4.0'
+  apt 'com.jakewharton:butterknife-compiler:8.4.0'
+
   testCompile 'junit:junit:4.11'
   testCompile ('org.robolectric:robolectric:3.3.2') {
     exclude module: 'support-v4'
@@ -113,11 +119,6 @@ dependencies {
   testCompile 'org.mockito:mockito-all:1.9.5'
   testCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
   testCompile 'commons-io:commons-io:2.4'
-  compile 'com.squareup.dagger:dagger:1.2.2'
-  apt 'com.squareup.dagger:dagger-compiler:1.2.2'
-  compile 'com.github.vganin:dpadaware-recyclerview:1.0.1'
-  compile 'com.jakewharton:butterknife:8.4.0'
-  apt 'com.jakewharton:butterknife-compiler:8.4.0'
   testApt 'com.squareup.dagger:dagger-compiler:1.2.2'
 }
 
