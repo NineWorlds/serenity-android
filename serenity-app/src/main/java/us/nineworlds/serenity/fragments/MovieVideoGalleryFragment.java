@@ -31,23 +31,38 @@ import android.support.v7.widget.RecyclerView;
 import butterknife.BindView;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.impl.CategoryMediaContainer;
+import us.nineworlds.serenity.events.MainCategoryEvent;
 import us.nineworlds.serenity.injection.InjectingFragment;
+import us.nineworlds.serenity.jobs.MovieCategoryJob;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
+import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import com.birbit.android.jobqueue.JobManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import static butterknife.ButterKnife.*;
 
@@ -66,13 +81,19 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 	protected MovieSelectedCategoryState categoryState;
 
 	@Inject
-	protected VolleyUtils volleyUtils;
+	EventBus eventBus;
+
+	@Inject
+	JobManager jobManager;
 
 	@Inject
 	PlexappFactory factory;
 
 	@Inject
 	Resources resources;
+
+	private List<CategoryInfo> categories;
+
 
 	protected DpadAwareRecyclerView.OnItemSelectedListener onItemSelectedListener;
 
@@ -82,6 +103,18 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 	public MovieVideoGalleryFragment() {
 		super();
 		setRetainInstance(true);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		eventBus.register(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		eventBus.unregister(this);
 	}
 
 	@Override
@@ -117,11 +150,8 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
 		String key = MovieBrowserActivity.getKey();
 
-		MovieCategoryResponseListener response = new MovieCategoryResponseListener(
-				(SerenityMultiViewVideoActivity) getActivity(), key);
-		String url = factory.getSectionsUrl(key);
-		volleyUtils.volleyXmlGetRequest(url, response,
-				new DefaultLoggingVolleyErrorListener());
+		MovieCategoryJob job = new MovieCategoryJob(key);
+		jobManager.addJob(job);
 	}
 
 	protected LinearLayoutManager createLayoutManager() {
@@ -129,4 +159,40 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 		linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 		return linearLayoutManager;
 	}
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onMainCategoryResponse(MainCategoryEvent event) {
+		CategoryMediaContainer categoryMediaContainer = new CategoryMediaContainer(
+				event.getMediaContainer());
+		categories = categoryMediaContainer.createCategories();
+		setupMovieBrowser(event.getKey());
+	}
+
+	/**
+	 * Setup the Gallery and Category spinners
+	 */
+	protected void setupMovieBrowser(String key) {
+		ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
+				getActivity(), R.layout.serenity_spinner_textview, categories);
+		spinnerArrayAdapter
+				.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+
+		Spinner categorySpinner = (Spinner) getActivity()
+				.findViewById(R.id.categoryFilter);
+		if (categorySpinner != null) {
+			categorySpinner.setVisibility(View.VISIBLE);
+			categorySpinner.setAdapter(spinnerArrayAdapter);
+			if (categoryState.getCategory() == null) {
+				categorySpinner
+						.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
+								"all", key, (SerenityMultiViewVideoActivity) getActivity()));
+			} else {
+				categorySpinner
+						.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
+								categoryState.getCategory(), key, false, (SerenityMultiViewVideoActivity) getActivity()));
+			}
+			categorySpinner.requestFocus();
+		}
+	}
+
 }

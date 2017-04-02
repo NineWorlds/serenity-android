@@ -12,7 +12,7 @@ import android.app.Activity;
 import android.view.View;
 
 public class GridSubtitleVolleyResponseListener extends
-		SubtitleVolleyResponseListener {
+        SubtitleResponseListener {
 
 	private final View view;
 

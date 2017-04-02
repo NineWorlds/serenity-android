@@ -29,6 +29,12 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
+
+import com.birbit.android.jobqueue.JobManager;
+import com.birbit.android.jobqueue.config.Configuration;
+
+import org.greenrobot.eventbus.EventBus;
+
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -72,6 +78,8 @@ import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.core.util.AndroidHelper;
+import us.nineworlds.serenity.events.ErrorMainMenuEvent;
+import us.nineworlds.serenity.events.MainMenuEvent;
 import us.nineworlds.serenity.fragments.EpisodeVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.MainMenuFragment;
 import us.nineworlds.serenity.fragments.MovieSearchGalleryFragment;
@@ -79,6 +87,7 @@ import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.injection.ApplicationContext;
+import us.nineworlds.serenity.jobs.MainMenuRetrievalJob;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
@@ -195,7 +204,10 @@ import us.nineworlds.serenity.volley.VolleyUtils;
 		TVCategoryResponseListener.class, TVCategoryMediaContainer.class,
 		ServerConfig.class,
 		SubtitleSpinnerOnItemSelectedListener.class, VideoQueueHelper.class,
-		us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener.class}, library = true)
+		us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener.class,
+		MainMenuRetrievalJob.class,
+		MainMenuEvent.class,
+		ErrorMainMenuEvent.class}, library = true)
 public class AndroidModule {
 
 	private final Context applicationContext;
@@ -247,6 +259,24 @@ public class AndroidModule {
 	@Singleton
 	VolleyUtils providesVolleyUtils() {
 		return new VolleyUtils();
+	}
+
+	@Provides
+	@Singleton
+	JobManager providesJobManager() {
+		Configuration configuration = new Configuration.Builder(applicationContext)
+				.minConsumerCount(1)
+				.maxConsumerCount(5)
+				.loadFactor(3)
+				.consumerKeepAlive(120)
+				.build();
+		return new JobManager(configuration);
+	}
+
+	@Provides
+	@Singleton
+	EventBus providesEventBus() {
+		return EventBus.getDefault();
 	}
 
 }

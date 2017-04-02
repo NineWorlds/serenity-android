@@ -17,13 +17,13 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 
-public class SubtitleVolleyResponseListener implements
+public class SubtitleResponseListener implements
 Response.Listener<MediaContainer> {
 
 	protected VideoContentInfo video;
 	protected Activity context;
 
-	public SubtitleVolleyResponseListener(VideoContentInfo video, Activity c) {
+	public SubtitleResponseListener(VideoContentInfo video, Activity c) {
 		this.video = video;
 		context = c;
 	}

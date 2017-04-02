@@ -27,9 +27,6 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -109,7 +106,7 @@ public class PlexappClient {
      * @throws Exception
      */
     public MediaContainer retrieveLibrary() throws Exception {
-        Call<MediaContainer> call = mediaContainerclient.retireveLibrary();
+        Call<MediaContainer> call = mediaContainerclient.retrieveLibrary();
         MediaContainer mediaContainer = call.execute().body();
         return mediaContainer;
     }

@@ -14,7 +14,7 @@ public interface PlexMediaContainerService {
     Call<MediaContainer> retrieveRoot();
 
     @GET("library")
-    Call<MediaContainer> retireveLibrary();
+    Call<MediaContainer> retrieveLibrary();
 
     @GET("library/sections")
     Call<MediaContainer> retrieveSections();

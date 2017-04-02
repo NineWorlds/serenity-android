@@ -25,20 +25,16 @@ package us.nineworlds.serenity.core;
 
 import javax.inject.Inject;
 
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.LibraryResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
+import us.nineworlds.serenity.jobs.OnDeckRecommendationsJob;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
-public class OnDeckRecommendations extends BaseInjector {
+import com.birbit.android.jobqueue.JobManager;
 
-	@Inject
-	PlexappFactory factory;
+public class OnDeckRecommendations extends BaseInjector {
 
 	@Inject
 	AndroidHelper androidHelper;
@@ -47,7 +43,7 @@ public class OnDeckRecommendations extends BaseInjector {
 	SharedPreferences preferences;
 
 	@Inject
-	VolleyUtils volley;
+	JobManager jobManager;
 
 	private final Context context;
 
@@ -70,13 +66,14 @@ public class OnDeckRecommendations extends BaseInjector {
 		boolean isAndroidTV = preferences.getBoolean(
 				SerenityConstants.PREFERENCE_TV_MODE, false);
 
-		if (onDeckRecommendations == false || isAndroidTV == false) {
+		if (!onDeckRecommendations || !isAndroidTV) {
 			return false;
 		}
 
-		String sectionsURL = factory.getSectionsURL();
-		volley.volleyXmlGetRequest(sectionsURL, new LibraryResponseListener(
-				context), new DefaultLoggingVolleyErrorListener());
+		jobManager.addJob(new OnDeckRecommendationsJob());
+
 		return true;
 	}
+
+
 }

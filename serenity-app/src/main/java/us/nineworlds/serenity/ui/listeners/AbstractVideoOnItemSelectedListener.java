@@ -27,7 +27,6 @@ import javax.inject.Inject;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.TrailersYouTubeSearch;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
@@ -35,22 +34,20 @@ import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.DBMetaDataSource;
+import us.nineworlds.serenity.events.SubtitleEvent;
 import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.jobs.SubtitleJob;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.SimpleXmlRequest;
-import us.nineworlds.serenity.volley.SubtitleVolleyResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
+import us.nineworlds.serenity.volley.SubtitleResponseListener;
 import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -58,14 +55,16 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.birbit.android.jobqueue.JobManager;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Abstract class for handling video selection information. This can either be a
@@ -84,31 +83,28 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 	protected PlexappFactory plexFactory;
 
 	@Inject
-	protected VolleyUtils volley;
-
-	@Inject
 	protected SharedPreferences preferences;
 
-	public static final String CRLF = "\r\n";
+	@Inject
+	JobManager jobManager;
+
+	@Inject
+	EventBus eventBus;
+
 	public static final int WATCHED_VIEW_ID = 1000;
-	public static final float WATCHED_PERCENT = 0.98f;
 	protected Activity context;
-	protected Handler checkDatabaseHandler = new Handler();
-	private Animation fadeIn;
-	private View previous;
 	protected View currentView;
 	protected int position;
 	protected BaseAdapter adapter;
 	protected VideoContentInfo videoInfo;
-	private DBMetaDataSource datasource;
 	protected RequestQueue queue;
-	protected Runnable checkDBRunnable;
 
 	protected ImageLoader imageLoader;
 
 	public AbstractVideoOnItemSelectedListener() {
 		super();
 		imageLoader = serenityImageLoader.getImageLoader();
+		eventBus.register(this);
 	}
 
 	protected abstract void createVideoDetail(ImageView v);
@@ -194,75 +190,15 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 		if (studiov != null) {
 			infographicsView.addView(studiov);
 		}
-
-		if (checkDBRunnable != null) {
-			checkDatabaseHandler.removeCallbacks(checkDBRunnable);
-		}
-		checkDBRunnable = new CheckDatabaseRunnable();
-		checkDatabaseHandler.post(checkDBRunnable);
-
-	}
-
-	protected void checkDataBaseForTrailer(VideoContentInfo pi) {
-		datasource = new DBMetaDataSource(context);
-		datasource.open();
-		DBMetaData metaData = datasource.findMetaDataByPlexId(pi.id());
-		if (metaData != null) {
-			pi.setTrailer(true);
-			pi.setTrailerId(metaData.getYouTubeID());
-		}
-		datasource.close();
 	}
 
 	public void fetchSubtitle(VideoContentInfo mpi) {
-		queue = volley.getRequestQueue();
-		String url = plexFactory.getMovieMetadataURL("/library/metadata/"
-				+ mpi.id());
-		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(
-				Request.Method.GET, url, MediaContainer.class,
-				new SubtitleVolleyResponseListener(mpi, context),
-				new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						Log.e(getClass().getCanonicalName(),
-								"Subtitle Retrieval failure: ", error);
-					}
-				});
-		queue.add(xmlRequest);
+		jobManager.addJob(new SubtitleJob("/library/metadata/" + mpi.id()));
 	}
 
-	public void fetchTrailer(VideoContentInfo mpi, View view) {
-		checkDataBaseForTrailer(mpi);
-		if (mpi.hasTrailer()) {
-			if (videoInfo.hasTrailer()
-					&& YouTubeInitializationResult.SUCCESS
-					.equals(YouTubeApiServiceUtil
-							.isYouTubeApiServiceAvailable(context))) {
-				ImageView ytImage = new ImageView(context);
-				ytImage.setImageResource(R.drawable.yt_social_icon_red_128px);
-				ytImage.setScaleType(ScaleType.FIT_XY);
-				int w = ImageUtils.getDPI(45, context);
-				int h = ImageUtils.getDPI(24, context);
-				ytImage.setLayoutParams(new LinearLayout.LayoutParams(w, h));
-				LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) ytImage
-						.getLayoutParams();
-				p.leftMargin = 5;
-				p.gravity = Gravity.CENTER_VERTICAL;
-				LinearLayout infographicsView = (LinearLayout) context
-						.findViewById(R.id.movieInfoGraphicLayout);
-				infographicsView.addView(ytImage);
-			}
-
-			return;
-		}
-
-		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
-		String queryURL = trailerSearch.queryURL(mpi);
-
-		volley.volleyJSonGetRequest(queryURL,
-				new YouTubeTrailerSearchResponseListener(view, mpi),
-				new DefaultLoggingVolleyErrorListener());
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onSubtitleEvent(SubtitleEvent event) {
+		new SubtitleResponseListener(event.getVideoContentInfo(), context).onResponse(event.getMediaContainer());
 	}
 
 	public void changeBackgroundImage() {
@@ -279,18 +215,5 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 		.loadImage(transcodingURL, new ImageSize(1280, 720),
 				new SerenityBackgroundLoaderListener(fanArt,
 						R.drawable.movies, context));
-	}
-
-	protected class CheckDatabaseRunnable implements Runnable {
-
-		@Override
-		public void run() {
-			if (YouTubeInitializationResult.SUCCESS
-					.equals(YouTubeApiServiceUtil
-							.isYouTubeApiServiceAvailable(context))) {
-				fetchTrailer(videoInfo, currentView);
-			}
-		}
-
 	}
 }

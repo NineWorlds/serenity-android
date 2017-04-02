@@ -31,11 +31,12 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.events.MovieSecondaryCategoryEvent;
+import us.nineworlds.serenity.jobs.MovieSecondaryCategoryJob;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.MovieSecondaryCategoryResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -45,6 +46,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.birbit.android.jobqueue.JobManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 public class MovieCategorySpinnerOnItemSelectedListener extends
 BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
@@ -52,7 +59,10 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 	PlexappFactory factory;
 
 	@Inject
-	VolleyUtils volleyUtils;
+	EventBus eventBus;
+
+	@Inject
+	JobManager jobManager;
 
 	private SerenityMultiViewVideoActivity activity;
 
@@ -150,13 +160,16 @@ BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 	}
 
 	protected void populateSecondaryCategory() {
-		String url = factory.getSectionsURL(key, category);
+		jobManager.addJob(new MovieSecondaryCategoryJob(key, category));
+	}
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onSecondaryCategoryEvent(MovieSecondaryCategoryEvent event) {
 		MovieSecondaryCategoryResponseListener response = new MovieSecondaryCategoryResponseListener(
 				getMultiViewVideoActivity(), category, key);
-
-		volleyUtils.volleyXmlGetRequest(url, response,
-				new DefaultLoggingVolleyErrorListener());
+		response.onResponse(event.getMediaContainer());
 	}
+
 
 	protected void createGallery(CategoryInfo item) {
 		AbstractPosterImageGalleryAdapter adapter = getPosterImageAdapter(item);

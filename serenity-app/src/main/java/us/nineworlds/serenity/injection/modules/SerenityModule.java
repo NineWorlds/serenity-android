@@ -23,6 +23,8 @@
 
 package us.nineworlds.serenity.injection.modules;
 
+import com.birbit.android.jobqueue.JobManager;
+
 import dagger.Module;
 import dagger.Provides;
 import java.util.LinkedList;
@@ -119,4 +121,5 @@ public class SerenityModule {
 	TVCategoryState providesTVCategoryState() {
 		return new TVCategoryState();
 	}
+
 }

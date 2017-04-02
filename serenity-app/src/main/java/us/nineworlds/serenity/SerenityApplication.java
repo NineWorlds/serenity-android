@@ -26,6 +26,8 @@ package us.nineworlds.serenity;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import com.birbit.android.jobqueue.JobManager;
 import com.castillo.dd.PendingDownload;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -52,6 +54,9 @@ public class SerenityApplication extends Application {
 
 	@Inject
 	SharedPreferences preferences;
+
+	@Inject
+	JobManager jobManager;
 
 	private static boolean enableTracking = true;
 	private static List<PendingDownload> pendingDownloads;
@@ -101,6 +106,7 @@ public class SerenityApplication extends Application {
 			installAnalytics();
 		}
 		sendStartedApplicationEvent();
+		jobManager.start();
 	}
 
 	protected void inject() {
@@ -156,5 +162,11 @@ public class SerenityApplication extends Application {
 				.build());
 			}
 		}
+	}
+
+	@Override
+	public void onTerminate() {
+		jobManager.stop();
+		super.onTerminate();
 	}
 }
