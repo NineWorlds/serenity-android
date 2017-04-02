@@ -6,10 +6,11 @@ import java.net.URL;
 
 import javax.inject.Inject;
 
+import okhttp3.OkHttpClient;
+import okhttp3.OkUrlFactory;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 
 import com.android.volley.toolbox.HurlStack;
-import com.squareup.okhttp.OkHttpClient;
 
 public class OkHttpStack extends HurlStack {
 
@@ -22,6 +23,7 @@ public class OkHttpStack extends HurlStack {
 
 	@Override
 	protected HttpURLConnection createConnection(URL url) throws IOException {
-		return client.open(url);
+		OkUrlFactory factory = new OkUrlFactory(client);
+		return factory.open(url);
 	}
 }

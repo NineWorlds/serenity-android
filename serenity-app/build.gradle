@@ -93,11 +93,10 @@ dependencies {
   compile project(':subtitle-converter')
   compile 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
   compile 'com.mcxiaoke.volley:library:1.0.6'
-  compile('com.squareup.okhttp:okhttp:1.6.0') {
+  compile('com.squareup.okhttp3:okhttp:3.6.0') {
     exclude group: 'com.android.support'
   }
-  compile 'com.squareup.okhttp:okhttp-urlconnection:1.6.0'
-  compile 'com.squareup.picasso:picasso:2.3.1'
+  compile 'com.squareup.okhttp3:okhttp-urlconnection:3.6.0'
   testCompile 'junit:junit:4.11'
   testCompile ('org.robolectric:robolectric:3.3.2') {
     exclude module: 'support-v4'
@@ -112,7 +111,7 @@ dependencies {
     exclude module: 'support-v4'
   }
   testCompile 'org.mockito:mockito-all:1.9.5'
-  testCompile 'com.squareup.okhttp:mockwebserver:1.6.0'
+  testCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
   testCompile 'commons-io:commons-io:2.4'
   compile 'com.squareup.dagger:dagger:1.2.2'
   apt 'com.squareup.dagger:dagger-compiler:1.2.2'

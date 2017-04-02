@@ -38,7 +38,9 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import com.squareup.okhttp.OkHttpClient;
+import okhttp3.OkHttpClient;
+import okhttp3.OkUrlFactory;
+
 
 /**
  * Provides a background image for Recommendations for a RecommendationCardView.
@@ -89,7 +91,9 @@ public class SerenityRecommendationContentProvider extends ContentProvider {
 					"UTF-8");
 			pipe = ParcelFileDescriptor.createPipe();
 
-			HttpURLConnection connection = httpClient.open(new URL(decodedUrl));
+			OkUrlFactory factory = new OkUrlFactory(httpClient);
+
+			HttpURLConnection connection = factory.open(new URL(decodedUrl));
 
 			new TransferThread(connection.getInputStream(),
 					new ParcelFileDescriptor.AutoCloseOutputStream(pipe[1]))

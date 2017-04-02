@@ -30,11 +30,12 @@ import java.net.URL;
 
 import javax.inject.Inject;
 
+import okhttp3.OkHttpClient;
+import okhttp3.OkUrlFactory;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import android.content.Context;
 
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-import com.squareup.okhttp.OkHttpClient;
 
 /**
  * @author dcarver
@@ -58,7 +59,8 @@ public class OKHttpImageLoader extends BaseImageDownloader {
 	@Override
 	protected InputStream getStreamFromNetwork(String imageUri, Object extra)
 			throws IOException {
-		HttpURLConnection connection = client.open(new URL(imageUri));
+		OkUrlFactory factory = new OkUrlFactory(client);
+		HttpURLConnection connection = factory.open(new URL(imageUri));
 
 		InputStream in = null;
 		in = connection.getInputStream();

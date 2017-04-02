@@ -23,13 +23,14 @@
 
 package us.nineworlds.serenity.injection.modules;
 
-import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
 import dagger.Provides;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Singleton;
+
+import okhttp3.OkHttpClient;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
