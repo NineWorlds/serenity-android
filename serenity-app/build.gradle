@@ -20,6 +20,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
+if (!project.hasProperty("keystore")) {
+    ext.keystore = ""
+    ext.storepass = ""
+    ext.keyalias = ""
+    ext.keypass = ""
+}
+
 android {
   defaultConfig {
     versionCode 2000000
