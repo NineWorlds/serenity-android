@@ -1,4 +1,4 @@
-anguage: android
+language: android
 android:
   components:
     - tools # to get the new `repository-11.xml`
