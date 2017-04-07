@@ -20,13 +20,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
-if (!project.hasProperty("keystore")) {
-    ext.keystore = ""
-    ext.storepass = ""
-    ext.keyalias = ""
-    ext.keypass = ""
-}
-
 android {
   defaultConfig {
     versionCode 2000000
@@ -40,6 +33,7 @@ android {
   compileSdkVersion 25
   buildToolsVersion "25.0.2"
 
+if (project.hasProperty("keystore")) {
   signingConfigs {
     release {
       storeFile file(project.property("keystore"))
@@ -48,6 +42,7 @@ android {
       keyPassword project.property("keypass")
     }
   }
+}
 
   targetCompatibility = '1.7'
   sourceCompatibility = '1.7'
@@ -58,7 +53,9 @@ android {
 
     }
     release {
-      signingConfig signingConfigs.release
+      if (project.hasProperty("keystore")) {
+          signingConfig signingConfigs.release
+      }
       zipAlignEnabled true
       minifyEnabled false
     }
