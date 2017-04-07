@@ -36,6 +36,8 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.events.TVCategoryEvent;
+import us.nineworlds.serenity.jobs.TVCategoryJob;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
@@ -44,12 +46,18 @@ import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.TVCategoryResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
+
+import com.birbit.android.jobqueue.JobManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
@@ -65,10 +73,13 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 	protected TVCategoryState categoryState;
 
 	@Inject
-	protected VolleyUtils volleyUtils;
+	protected PlexappFactory factory;
 
 	@Inject
-	protected PlexappFactory factory;
+	EventBus eventBus;
+
+	@Inject
+	JobManager jobManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,13 +106,14 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		super.onResume();
 		populateMenuDrawer();
 		if (!restarted_state) {
-			String url = factory.getSectionsUrl(key);
-			TVCategoryResponseListener response = new TVCategoryResponseListener(
-					this, key);
-			volleyUtils.volleyXmlGetRequest(url, response,
-					new DefaultLoggingVolleyErrorListener());
+			jobManager.addJob(new TVCategoryJob(key));
 		}
+	}
 
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onTVCategoryResponse(TVCategoryEvent event) {
+		new TVCategoryResponseListener(
+				this, key).onResponse(event.getMediaContainer());
 	}
 
 	@Override
@@ -275,5 +287,17 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
 		if (galleryView != null) {
 			adapter = galleryView.getAdapter();
 		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		eventBus.register(this);
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		eventBus.unregister(this);
 	}
 }

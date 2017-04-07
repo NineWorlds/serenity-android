@@ -135,10 +135,8 @@ import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerKeyCodeHandler;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
-import us.nineworlds.serenity.volley.LibraryResponseListener;
 import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
 import us.nineworlds.serenity.volley.TVCategoryResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
 
 @Module(includes = SerenityModule.class, injects = { GDMReceiver.class,
 		MainMenuFragment.class,
@@ -151,7 +149,7 @@ import us.nineworlds.serenity.volley.VolleyUtils;
 		MovieBrowserActivity.class, TVShowBrowserActivity.class,
 		TVShowSeasonBrowserActivity.class, AutoConfigureHandlerRunnable.class,
 		EpisodeMenuDrawerOnItemClickedListener.class,
-		ImageInfographicUtils.class, LibraryResponseListener.class,
+		ImageInfographicUtils.class,
 		MainMenuDrawerOnItemClickedListener.class,
 		MovieGridPosterOnItemSelectedListener.class,
 		MovieMenuDrawerOnItemClickedListener.class,
@@ -195,7 +193,7 @@ import us.nineworlds.serenity.volley.VolleyUtils;
 		MovieCategorySpinnerOnItemSelectedListener.class,
 		TVCategorySpinnerOnItemSelectedListener.class,
 		TVSecondaryCategorySpinnerOnItemSelectedListener.class,
-		VolleyUtils.class, MovieVideoGalleryFragment.class,
+		MovieVideoGalleryFragment.class,
 		VideoGridFragment.class, EpisodeBrowserActivity.class,
 		EpisodeVideoGalleryFragment.class, MenuMediaContainer.class,
 		MovieSearchGalleryFragment.class, CardPresenter.class,
@@ -253,12 +251,6 @@ public class AndroidModule {
 	@Provides
 	MediaPlayer providesMediaPlayer() {
 		return new MediaPlayer();
-	}
-
-	@Provides
-	@Singleton
-	VolleyUtils providesVolleyUtils() {
-		return new VolleyUtils();
 	}
 
 	@Provides

@@ -34,11 +34,11 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
+import us.nineworlds.serenity.events.SerenityEvent;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -53,6 +53,9 @@ import android.widget.TextView;
 import com.android.volley.Response;
 
 import net.ganin.darv.DpadAwareRecyclerView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * An adapter that handles the population of views for TV Show Seasons.
@@ -76,9 +79,6 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
 	@Inject
 	SerenityImageLoader serenityImageLoader;
 
-	@Inject
-	VolleyUtils volley;
-
 	public TVShowSeasonImageGalleryAdapter(Context c, String key) {
 		super();
 		context = (SerenityDrawerLayoutActivity) c;
@@ -93,6 +93,12 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
 		String url = plexFactory.getSeasonsURL(key);
 		volley.volleyXmlGetRequest(url, new SeaonsResponseListener(),
 				new DefaultLoggingVolleyErrorListener());
+	}
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onSeasonResponseEvent(SerenityEvent event) {
+		MediaContainer mediaContainer = event.getMediaContainer();
+		new SeaonsResponseListener().onResponse(mediaContainer);
 	}
 
 

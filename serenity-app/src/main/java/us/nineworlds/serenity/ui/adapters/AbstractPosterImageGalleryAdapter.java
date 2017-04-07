@@ -34,20 +34,12 @@ import us.nineworlds.serenity.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.InjectingBaseAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.volley.VolleyUtils;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
-import com.android.volley.RequestQueue;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -67,9 +59,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
 	@Inject
 	protected PlexappFactory factory;
 
-	@Inject
-	protected VolleyUtils volley;
-
 	protected static List<VideoContentInfo> posterList = null;
 	protected AppCompatActivity context;
 	protected ImageLoader imageLoader;
@@ -79,10 +68,8 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
 	protected Handler handler;
 	protected String key;
 	protected String category;
-	protected RequestQueue queue;
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key) {
-		queue = volley.getRequestQueue();
 		context = (AppCompatActivity) c;
 		posterList = new ArrayList<VideoContentInfo>();
 		imageLoader = serenityImageLoader.getImageLoader();
@@ -92,7 +79,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
 
 	public AbstractPosterImageGalleryAdapter(Context c, String key,
 			String category) {
-		queue = volley.getRequestQueue();
 		context = (AppCompatActivity) c;
 		this.key = key;
 		this.category = category;
