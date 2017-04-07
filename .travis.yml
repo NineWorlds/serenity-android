@@ -14,5 +14,5 @@ jdk:
    - oraclejdk8
 
 script:
-   - ./gradlew jacocoReportDebug
+   - ./gradlew jacocoTestReportDebug
    
