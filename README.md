@@ -76,7 +76,7 @@ To build the APK and APKLibraries from the command line:
 
     ./gradlew clean assembleDebug
 
-The application APK will be in serenity-app/target.  You can sideload this APK on your Android TV or Fire TV device.
+The application APK will be in serenity-app/build/outputs.  You can sideload this APK on your Android TV or Fire TV device.
 
 Open Source Projects:
 =====
