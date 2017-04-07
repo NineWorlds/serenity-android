@@ -50,6 +50,8 @@ public class PlexappFactory {
 
 	private PlexappClient client;
 
+	private static ResourcePaths resourcePath;
+
 	private PlexappFactory(IConfiguration config) {
 		client = PlexappClient.getInstance(config);
 	}
@@ -58,6 +60,7 @@ public class PlexappFactory {
 		if (instance == null) {
 			instance = new PlexappFactory(config);
 		}
+		resourcePath = new ResourcePaths(config);
 		return instance;
 	}
 
@@ -196,7 +199,28 @@ public class PlexappFactory {
 		return client.getSeasonsURL(key);
 	}
 
-    public String getImageURL(String url, int width, int height) {
+	public String getSectionsURL() {
+		return resourcePath.getSectionsURL();
+	}
+
+	public String getSectionsUrl(String key) {
+		return resourcePath.getSectionsURL(key);
+	}
+
+	public String getMovieMetadataURL(String key) {
+		return resourcePath.getMovieMetaDataURL(key);
+	}
+
+	public String getEpisodesURL(String key) {
+		return resourcePath.getEpisodesURL(key);
+	}
+
+	public String getSeasonsURL(String key) {
+		return resourcePath.getSeasonsURL(key);
+	}
+
+
+	public String getImageURL(String url, int width, int height) {
         return client.getImageURL(url, width, height);
     }
 

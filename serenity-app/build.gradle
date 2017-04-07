@@ -11,6 +11,9 @@ buildscript {
 
 }
 
+evaluationDependsOn(':plexapp-rest-library')
+evaluationDependsOn(':subtitle-converter')
+
 repositories {
   jcenter()
   mavenCentral()
