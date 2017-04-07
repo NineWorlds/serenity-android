@@ -18,14 +18,11 @@ What does this support
 * Browsing by Genre for TV Shows and Movies
 * Browsing by Season for TV Shows
 * Download Videos for offline playback
-* Tablets and Android TV devices (running 3.2 or higher)
+* Android TV and Fire TV devices running Android 4.1 or higher
 * Playback videos from Queue
 * Optional to playback movie trailers and episode previews from YouTube.
 * Multiple views, from Grid View to Detail View.
 * Auto discovery and works with all Plex 9 Media Servers, no server restriction.
-* Second screen support including AllCast for Chromecasting your videos.
-* Beta Music Library support.
-
 
 What is currently not targeted:
 
