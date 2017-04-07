@@ -14,5 +14,7 @@ jdk:
    - oraclejdk8
 
 script:
+   - ./gradlew plexapp-rest-library:build
+   - ./gradlew subtitle-converter:build
    - ./gradlew jacocoTestReportDebug
    
