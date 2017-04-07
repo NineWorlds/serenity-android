@@ -14,6 +14,9 @@ buildscript {
 repositories {
   jcenter()
   mavenCentral()
+  maven {
+     url "http://kingargyle.github.io/repo"
+  }
 }
 
 apply plugin: 'com.android.application'
