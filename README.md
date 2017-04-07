@@ -83,9 +83,14 @@ Open Source Projects:
 
 This project uses several open source projects and source code:
 
-* LeftNavBarLibrary (http://code.google.com/p/googletv-android-samples/) from the google tv project.  This is packaged as a apklib for reuse.
 * Android-Universal-ImageLoader (https://github.com/nostra13/Android-Universal-Image-Loader) - a nice library for managing image caches and downloading of images in the background.  Extremely fast response times both in the library and from the developer.
 * Simple (http://simple.sourceforge.net/) - provides a nice interface to Serialize and Deserialize XML information.
+* Dagger 1.2
+* Retrofit 2
+* OkHttp 3
+* Android Priority Job Manager
+* GreenRobot EventBus
+
 
 Unit Testing Frameworks
 ------
