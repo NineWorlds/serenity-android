@@ -36,6 +36,7 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
 import us.nineworlds.serenity.events.SerenityEvent;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
+import us.nineworlds.serenity.jobs.SeasonsRetrievalJob;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
@@ -51,9 +52,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
+import com.birbit.android.jobqueue.JobManager;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -79,20 +82,26 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
 	@Inject
 	SerenityImageLoader serenityImageLoader;
 
+	@Inject
+	JobManager jobManager;
+
+	@Inject
+	EventBus eventBus;
+
 	public TVShowSeasonImageGalleryAdapter(Context c, String key) {
 		super();
 		context = (SerenityDrawerLayoutActivity) c;
 		this.key = key;
 
 		seasonList = new ArrayList<SeriesContentInfo>();
-
+		eventBus.register(this);
 		fetchData();
 	}
 
 	protected void fetchData() {
 		String url = plexFactory.getSeasonsURL(key);
-		volley.volleyXmlGetRequest(url, new SeaonsResponseListener(),
-				new DefaultLoggingVolleyErrorListener());
+		SeasonsRetrievalJob seasonsRetrievalJob = new SeasonsRetrievalJob(key);
+		jobManager.addJobInBackground(seasonsRetrievalJob);
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN)

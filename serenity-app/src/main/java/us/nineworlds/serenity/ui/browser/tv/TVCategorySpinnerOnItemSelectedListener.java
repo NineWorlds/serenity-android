@@ -29,23 +29,33 @@ import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.core.model.impl.SecondaryCategoryMediaContainer;
+import us.nineworlds.serenity.events.TVCategorySecondaryEvent;
 import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.jobs.TVCategoryJob;
+import us.nineworlds.serenity.jobs.TVCategorySecondaryJob;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
 import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 import us.nineworlds.serenity.volley.TVSecondaryCategoryResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-/**
- * @author dcarver
- *
- */
+import com.birbit.android.jobqueue.JobManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
+
 public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implements OnItemSelectedListener {
 
 	private String selected;
@@ -56,6 +66,12 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
 	private String savedInstanceCategory;
 
 	@Inject
+	JobManager jobManager;
+
+    @Inject
+    EventBus eventBus;
+
+	@Inject
 	SharedPreferences prefs;
 
 	@Inject
@@ -64,14 +80,12 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
 	@Inject
 	PlexappFactory factory;
 
-	@Inject
-	VolleyUtils volleyUtils;
-
 	public TVCategorySpinnerOnItemSelectedListener(String defaultSelection,
 			String ckey, SerenityMultiViewVideoActivity activity) {
 		selected = defaultSelection;
 		key = ckey;
 		context = activity;
+        eventBus.register(this);
 	}
 
 	public TVCategorySpinnerOnItemSelectedListener(String defaultSelection,
@@ -81,7 +95,8 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
 		savedInstanceCategory = defaultSelection;
 		firstSelection = sw;
 		context = activity;
-	}
+        eventBus.register(this);
+    }
 
 	@Override
 	public void onItemSelected(AdapterView<?> viewAdapter, View view,
@@ -170,11 +185,9 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
 	}
 
 	protected void populateSecondaryCategory() {
-		String url = factory.getSectionsURL(key, category);
-		TVSecondaryCategoryResponseListener response = new TVSecondaryCategoryResponseListener(
-				context, category, key);
-		volleyUtils.volleyXmlGetRequest(url, response,
-				new DefaultLoggingVolleyErrorListener());
+		TVCategorySecondaryJob tvCategoryJob = new TVCategorySecondaryJob(key, category);
+		jobManager.addJobInBackground(tvCategoryJob);
+
 	}
 
 	private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
@@ -211,6 +224,37 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
 //			.setOnItemLongClickListener(new ShowOnItemLongClickListener());
 		}
 	}
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onTVCategorySecondaryResponse(TVCategorySecondaryEvent event) {
+		SecondaryCategoryMediaContainer scMediaContainer = new SecondaryCategoryMediaContainer(
+				event.getMediaContainer(), event.getCategory());
+
+		List<SecondaryCategoryInfo> secondaryCategories = scMediaContainer
+				.createCategories();
+
+		if (secondaryCategories == null || secondaryCategories.isEmpty()) {
+			Toast.makeText(context,
+					R.string.no_entries_available_for_category_,
+					Toast.LENGTH_LONG).show();
+			return;
+		}
+
+		Spinner secondarySpinner = (Spinner) context
+				.findViewById(R.id.categoryFilter2);
+		secondarySpinner.setVisibility(View.VISIBLE);
+
+		ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(
+				context, R.layout.serenity_spinner_textview,
+				secondaryCategories);
+		spinnerSecArrayAdapter
+				.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+		secondarySpinner.setAdapter(spinnerSecArrayAdapter);
+		secondarySpinner
+				.setOnItemSelectedListener(new TVSecondaryCategorySpinnerOnItemSelectedListener(
+						category, key, context));
+	}
+
 
 	@Override
 	public void onNothingSelected(AdapterView<?> va) {

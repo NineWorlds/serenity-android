@@ -32,17 +32,13 @@ import butterknife.ButterKnife;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.TrailersYouTubeSearch;
-import us.nineworlds.serenity.core.model.DBMetaData;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
-import us.nineworlds.serenity.core.util.DBMetaDataSource;
+import us.nineworlds.serenity.events.MovieRetrievalEvent;
+import us.nineworlds.serenity.jobs.MovieRetrievalJob;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
-import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import us.nineworlds.serenity.widgets.RoundedImageView;
 
 import android.content.Context;
@@ -54,19 +50,30 @@ import android.widget.RelativeLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
-import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.birbit.android.jobqueue.JobManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import javax.inject.Inject;
 
 public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
+	@Inject
+	JobManager jobManager;
+
+	@Inject
+	EventBus eventBus;
+
 	protected static AbstractPosterImageGalleryAdapter notifyAdapter;
 	private static SerenityMultiViewVideoActivity movieContext;
-	private DBMetaDataSource datasource;
 
 	public MoviePosterImageAdapter(Context c, String key, String category) {
 		super(c, key, category);
 		movieContext = (SerenityMultiViewVideoActivity) c;
 		notifyAdapter = this;
+		eventBus.register(this);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -119,65 +126,19 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
 	protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
 		if (movieContext.isGridViewActive()) {
-			checkDataBaseForTrailer(pi);
-
-			if (pi.hasTrailer() == false) {
-				if (YouTubeInitializationResult.SUCCESS
-						.equals(YouTubeApiServiceUtil
-								.isYouTubeApiServiceAvailable(context))) {
-					fetchTrailer(pi, galleryCellView);
-				}
-			} else {
-				//v.setVisibility(View.VISIBLE);
-				//v.findViewById(R.id.trailerIndicator).setVisibility(
-				//		View.VISIBLE);
-			}
-
 			if (pi.getAvailableSubtitles() != null) {
 				View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
 				v.setVisibility(View.VISIBLE);
 				v.findViewById(R.id.subtitleIndicator).setVisibility(
 						View.VISIBLE);
-			} else {
-				fetchSubtitle(pi, galleryCellView);
 			}
 		}
 	}
 
-	protected void checkDataBaseForTrailer(VideoContentInfo pi) {
-		datasource = new DBMetaDataSource(context);
-		datasource.open();
-		DBMetaData metaData = datasource.findMetaDataByPlexId(pi.id());
-		if (metaData != null) {
-			pi.setTrailer(true);
-			pi.setTrailerId(metaData.getYouTubeID());
-		}
-		datasource.close();
-	}
-
-	public void fetchTrailer(VideoContentInfo mpi, View view) {
-
-		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
-		String queryURL = trailerSearch.queryURL(mpi);
-
-		volley.volleyJSonGetRequest(queryURL,
-				new YouTubeTrailerSearchResponseListener(view, mpi),
-				new DefaultLoggingVolleyErrorListener());
-	}
-
-	public void fetchSubtitle(VideoContentInfo mpi, View view) {
-		String url = factory.getMovieMetadataURL("/library/metadata/"
-				+ mpi.id());
-		volley.volleyXmlGetRequest(url, new GridSubtitleVolleyResponseListener(
-				mpi, context, view), new DefaultLoggingVolleyErrorListener());
-	}
-
 	@Override
 	protected void fetchDataFromService() {
-		String url = factory.getSectionsURL(key, category);
-
-		volley.volleyXmlGetRequest(url, new MoviePosterResponseListener(),
-				new MoviePosterResponseErrorListener());
+		MovieRetrievalJob movieRetrievalJob = new MovieRetrievalJob(key, category);
+		jobManager.addJobInBackground(movieRetrievalJob);
 	}
 
 	@Override
@@ -235,30 +196,19 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 		}
 	}
 
-	private class MoviePosterResponseListener implements
-			Response.Listener<MediaContainer> {
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onMoviePosterResponse(MovieRetrievalEvent event) {
+		populatePosters(event.getMediaContainer());
 
-		@Override
-		public void onResponse(MediaContainer response) {
-			try {
-				MediaContainer mc = response;
-				populatePosters(mc);
-			} catch (Exception e) {
-				Log.e(getClass().getName(), "Error populating posters.", e);
-			}
-		}
+	}
 
-		/**
-		 * @param mc
-		 */
-		protected void populatePosters(MediaContainer mc) {
-			MovieMediaContainer movies = new MovieMediaContainer(mc);
-			posterList = movies.createVideos();
-			notifyAdapter.notifyDataSetChanged();
-			DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) movieContext
-					.findViewById(R.id.moviePosterView);
-			posterGallery.requestFocusFromTouch();
-		}
+	protected void populatePosters(MediaContainer mc) {
+		MovieMediaContainer movies = new MovieMediaContainer(mc);
+		posterList = movies.createVideos();
+		notifyAdapter.notifyDataSetChanged();
+		DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) movieContext
+				.findViewById(R.id.moviePosterView);
+		posterGallery.requestFocusFromTouch();
 	}
 
 	protected class MoviePosterViewHolder extends RecyclerView.ViewHolder {

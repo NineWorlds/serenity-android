@@ -23,6 +23,7 @@
     <uses-feature android:name="android.hardware.location.gps" android:required="false"/>
     <uses-feature android:name="android.hardware.microphone" android:required="false"/>
     <uses-feature android:name="android.hardware.sensor" android:required="false"/>
+    <uses-feature android:name="android.software.leanback" android:required="false" />
 
     <application android:allowBackup="true" android:hardwareAccelerated="true" android:icon="@drawable/serenity_bonsai_logo" android:label="@string/app_name" android:largeHeap="true" android:name="us.nineworlds.serenity.SerenityApplication" android:theme="@style/AppTheme">
         <meta-data android:name="android.app.default_searchable" android:value="us.nineworlds.serenity.ui.search.SearchableActivity"/>
@@ -48,12 +49,6 @@
         </activity>
         <activity android:label="@string/title_activity_tvbrowser_show" android:name="us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
         </activity>
-        <activity android:label="@string/title_activity_tvbrowser_show" android:name="us.nineworlds.serenity.ui.browser.music.MusicActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
-        </activity>
-        <activity android:label="@string/title_activity_tvbrowser_show" android:name="us.nineworlds.serenity.ui.browser.music.albums.MusicAlbumsActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
-        </activity>
-        <activity android:label="@string/title_activity_tvbrowser_show" android:name="us.nineworlds.serenity.ui.browser.music.tracks.MusicTracksActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
-        </activity>
         <activity android:label="@string/title_activity_tvbrowser_show_season" android:name="us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
         </activity>
         <activity android:label="@string/title_activity_tvbrowser_show_episodes" android:name="us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity" android:screenOrientation="sensorLandscape" android:theme="@style/CustomActionBarTheme">
@@ -61,7 +56,6 @@
         <activity android:name="us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity" android:screenOrientation="sensorLandscape" android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

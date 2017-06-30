@@ -65,26 +65,6 @@ AbstractVideoOnItemSelectedListener {
 	}
 
 	@Override
-	public void fetchTrailer(VideoContentInfo mpi, View view) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		if (prefs.getBoolean("episode_trailers", false) == false) {
-			return;
-		}
-		checkDataBaseForTrailer(mpi);
-		if (mpi.hasTrailer()) {
-			return;
-		}
-
-		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
-		String queryURL = trailerSearch.queryURL(mpi);
-
-		volley.volleyJSonGetRequest(queryURL,
-				new YouTubeTrailerSearchResponseListener(view, mpi),
-				new DefaultLoggingVolleyErrorListener());
-	}
-
-	@Override
 	public void createVideoDetail(ImageView v) {
 		View cardView = context.findViewById(R.id.video_details_container);
 		if (cardView != null) {
