@@ -58,7 +58,10 @@ public class PlexappClient {
 
     private PlexappClient(IConfiguration config) {
         resourcePath = new ResourcePaths(config);
-        init();
+
+        if (resourcePath.getHost() != null && resourcePath.getHost().length() > 0) {
+            init();
+        }
     }
 
     public static PlexappClient getInstance(IConfiguration config) {
@@ -86,6 +89,13 @@ public class PlexappClient {
         textClient = stringAdapter.create(PlexTextService.class);
     }
 
+    private void reinitIfNecessary() {
+        if (mediaContainerclient != null && textClient != null) {
+            return;
+        }
+        init();
+    }
+
     /**
      * Retrieve the root metadata from the Plex Media Server.
      *
@@ -93,6 +103,7 @@ public class PlexappClient {
      * @throws Exception
      */
     public MediaContainer retrieveRootData() throws Exception {
+        reinitIfNecessary();
         Call<MediaContainer> call = mediaContainerclient.retrieveRoot();
         MediaContainer mediaContainer = call.execute().body();
         return mediaContainer;
@@ -106,6 +117,7 @@ public class PlexappClient {
      * @throws Exception
      */
     public MediaContainer retrieveLibrary() throws Exception {
+        reinitIfNecessary();
         Call<MediaContainer> call = mediaContainerclient.retrieveLibrary();
         MediaContainer mediaContainer = call.execute().body();
         return mediaContainer;
@@ -119,6 +131,7 @@ public class PlexappClient {
      * @throws Exception
      */
     public MediaContainer retrieveSections() throws Exception {
+        reinitIfNecessary();
         Call<MediaContainer> call = mediaContainerclient.retrieveSections();
         return call.execute().body();
     }
@@ -132,6 +145,7 @@ public class PlexappClient {
      * @throws Exception
      */
     public MediaContainer retrieveSections(String key) throws Exception {
+        reinitIfNecessary();
         Call<MediaContainer> call = mediaContainerclient.retrieveSections(key);
         return call.execute().body();
     }
@@ -146,43 +160,51 @@ public class PlexappClient {
      * @throws Exception
      */
     public MediaContainer retrieveSections(String key, String category) throws Exception {
+        reinitIfNecessary();
         Call<MediaContainer> call = mediaContainerclient.retrieveSections(key, category);
         return call.execute().body();
     }
 
     public MediaContainer retrieveSections(String key, String category, String secondaryCategory) throws Exception {
+        reinitIfNecessary();
         Call<MediaContainer> call = mediaContainerclient.retrieveSections(key, category, secondaryCategory);
         return call.execute().body();
     }
 
 
     public MediaContainer retrieveSeasons(String key) throws Exception {
+        reinitIfNecessary();
         Call<MediaContainer> call = mediaContainerclient.retrieveItemByUrlPath(key.replaceFirst("/", ""));
         return call.execute().body();
     }
 
     public MediaContainer retrieveMusicMetaData(String key) throws Exception {
+        reinitIfNecessary();
         Call<MediaContainer> call = mediaContainerclient.retrieveItemByUrlPath(key);
         return call.execute().body();
     }
 
 
     public MediaContainer retrieveEpisodes(String key) throws Exception {
+        reinitIfNecessary();
         Call<MediaContainer> call = mediaContainerclient.retrieveItemByUrlPath(key);
         return call.execute().body();
     }
 
     public MediaContainer retrieveMovieMetaData(String key) throws Exception {
+        reinitIfNecessary();
         Call<MediaContainer> call = mediaContainerclient.retrieveItemByUrlPath(key);
         return call.execute().body();
     }
 
     public MediaContainer searchMovies(String key, String query) throws Exception {
+        reinitIfNecessary();
         Call<MediaContainer> call = mediaContainerclient.movieSearch(key, query);
         return call.execute().body();
     }
 
     public MediaContainer searchEpisodes(String key, String query) throws Exception {
+        reinitIfNecessary();
         Call<MediaContainer> call = mediaContainerclient.episodeSearch(key, query);
         MediaContainer mediaContainer = call.execute().body();
         return mediaContainer;
@@ -198,6 +220,7 @@ public class PlexappClient {
      * @return
      */
     public boolean setWatched(String key) throws IOException {
+        reinitIfNecessary();
         Call<String> call = textClient.watched(key);
         Response<String> response = call.execute();
 
@@ -211,12 +234,14 @@ public class PlexappClient {
      * @return
      */
     public boolean setUnWatched(String key) throws IOException {
+        reinitIfNecessary();
         Call<String> call = textClient.unwatched(key);
         Response<String> response = call.execute();
         return requestSuccessful(response);
     }
 
     public boolean setProgress(String key, String offset) throws IOException {
+        reinitIfNecessary();
         Call<String> call = textClient.progress(key, offset);
         Response<String> response = call.execute();
         return requestSuccessful(response);
