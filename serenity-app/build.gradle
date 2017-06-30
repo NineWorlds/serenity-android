@@ -4,16 +4,22 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.3.0'
+    classpath 'com.android.tools.build:gradle:2.3.3'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.5.0'
   }
 
 }
 
+evaluationDependsOn(':plexapp-rest-library')
+evaluationDependsOn(':subtitle-converter')
+
 repositories {
   jcenter()
   mavenCentral()
+  maven {
+     url "http://kingargyle.github.io/repo"
+  }
 }
 
 apply plugin: 'com.android.application'
@@ -33,6 +39,7 @@ android {
   compileSdkVersion 25
   buildToolsVersion "25.0.2"
 
+if (project.hasProperty("keystore")) {
   signingConfigs {
     release {
       storeFile file(project.property("keystore"))
@@ -41,6 +48,7 @@ android {
       keyPassword project.property("keypass")
     }
   }
+}
 
   targetCompatibility = '1.7'
   sourceCompatibility = '1.7'
@@ -51,7 +59,9 @@ android {
 
     }
     release {
-      signingConfig signingConfigs.release
+      if (project.hasProperty("keystore")) {
+          signingConfig signingConfigs.release
+      }
       zipAlignEnabled true
       minifyEnabled false
     }
