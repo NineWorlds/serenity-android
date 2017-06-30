@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -29,6 +29,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
@@ -38,33 +39,33 @@ import static butterknife.ButterKnife.bind;
 
 public class VideoGridFragment extends MovieVideoGalleryFragment {
 
-	public VideoGridFragment() {
-		super();
-	}
+    public VideoGridFragment() {
+        super();
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		onItemSelectedListener = new MovieGridPosterOnItemSelectedListener();
-		View view = inflateView(inflater, container);
-		bind(this, view);
-		setupRecyclerView();
-		return view;
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        onItemSelectedListener = new MovieGridPosterOnItemSelectedListener();
+        View view = inflateView(inflater, container);
+        bind(this, view);
+        setupRecyclerView();
+        return view;
+    }
 
-	@Override
-	protected View inflateView(LayoutInflater inflater, ViewGroup container) {
-		return inflater.inflate(R.layout.video_grid_fragment, null);
-	}
+    @Override
+    protected View inflateView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.video_grid_fragment, null);
+    }
 
-	protected LinearLayoutManager createLayoutManager() {
-		SerenityMenuGridLayoutManager layoutManager = new SerenityMenuGridLayoutManager(getActivity(), 3, SerenityMenuGridLayoutManager.HORIZONTAL, false);
-		layoutManager.setCircular(true);
-		return layoutManager;
-	}
+    protected LinearLayoutManager createLayoutManager() {
+        SerenityMenuGridLayoutManager layoutManager = new SerenityMenuGridLayoutManager(getActivity(), 3, SerenityMenuGridLayoutManager.HORIZONTAL, false);
+        layoutManager.setCircular(true);
+        return layoutManager;
+    }
 
-	@Override
-	protected RecyclerView.ItemDecoration createItemDecorator() {
-		return new ItemOffsetDecoration(resources.getDimensionPixelSize(R.dimen.grid_spacing_dimen));
-	}
+    @Override
+    protected RecyclerView.ItemDecoration createItemDecorator() {
+        return new ItemOffsetDecoration(resources.getDimensionPixelSize(R.dimen.grid_spacing_dimen));
+    }
 }

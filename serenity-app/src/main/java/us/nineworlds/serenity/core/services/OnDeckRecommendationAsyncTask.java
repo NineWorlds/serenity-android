@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,29 +23,30 @@
 
 package us.nineworlds.serenity.core.services;
 
-import us.nineworlds.serenity.core.OnDeckRecommendations;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import us.nineworlds.serenity.core.OnDeckRecommendations;
+
 /**
  * @author dcarver
- * 
+ *
  */
 public class OnDeckRecommendationAsyncTask extends AsyncTask {
 
-	Context context;
+    Context context;
 
-	public OnDeckRecommendationAsyncTask(Context context) {
-		this.context = context;
-	}
+    public OnDeckRecommendationAsyncTask(Context context) {
+        this.context = context;
+    }
 
-	@Override
-	protected Object doInBackground(Object... params) {
+    @Override
+    protected Object doInBackground(Object... params) {
 
-		OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(
-				context);
-		onDeckRecommendations.recommended();
-		return null;
-	}
+        OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(
+                context);
+        onDeckRecommendations.recommended();
+        return null;
+    }
 
 }

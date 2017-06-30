@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,42 +23,43 @@
 
 package us.nineworlds.serenity.core;
 
+import android.util.Log;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import android.util.Log;
 
 public class TrailersYouTubeSearch {
 
-	private static final String TRAILER = " Offical Trailer";
+    private static final String TRAILER = " Offical Trailer";
 
-	public String queryURL(VideoContentInfo video) {
-		String title = video.getTitle();
-		String year = video.getYear();
-		String show = video.getSeriesTitle();
-		String season = video.getSeason();
-		String episodeNum = video.getEpisode();
-		String videoTitle;
-		if (show == null) {
-			videoTitle = "\"" + title + "\"" + TRAILER + " HD" + " " + year;
-		} else {
-			videoTitle = "\"" + show + "\" " + season + " " + episodeNum
-					+ " Promo";
-		}
+    public String queryURL(VideoContentInfo video) {
+        String title = video.getTitle();
+        String year = video.getYear();
+        String show = video.getSeriesTitle();
+        String season = video.getSeason();
+        String episodeNum = video.getEpisode();
+        String videoTitle;
+        if (show == null) {
+            videoTitle = "\"" + title + "\"" + TRAILER + " HD" + " " + year;
+        } else {
+            videoTitle = "\"" + show + "\" " + season + " " + episodeNum
+                    + " Promo";
+        }
 
-		try {
-			String encodedTitle = URLEncoder.encode(videoTitle, "UTF-8");
+        try {
+            String encodedTitle = URLEncoder.encode(videoTitle, "UTF-8");
 
-			String queryString = "https://www.googleapis.com/youtube/v3/search?part=id%2Csnippet&maxResults=1&order=relevance&q="
-					+ encodedTitle
-					+ "&key="
-					+ SerenityConstants.YOUTUBE_SEARCH_API_KEY;
-			return queryString;
-		} catch (UnsupportedEncodingException ex) {
-			Log.e(getClass().getName(), "Error encoding string.", ex);
-		}
-		return null;
-	}
+            String queryString = "https://www.googleapis.com/youtube/v3/search?part=id%2Csnippet&maxResults=1&order=relevance&q="
+                    + encodedTitle
+                    + "&key="
+                    + SerenityConstants.YOUTUBE_SEARCH_API_KEY;
+            return queryString;
+        } catch (UnsupportedEncodingException ex) {
+            Log.e(getClass().getName(), "Error encoding string.", ex);
+        }
+        return null;
+    }
 
 }

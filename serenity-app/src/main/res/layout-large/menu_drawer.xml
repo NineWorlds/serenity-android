@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:id="@+id/menu_drawer_layout"
     android:layout_height="match_parent"
-    android:background="#50000000" >
+    android:background="#50000000">
 
     <LinearLayout
         android:id="@+id/title_bar_layout"
@@ -12,7 +12,7 @@
         android:background="@android:color/background_dark"
         android:gravity="center_vertical"
         android:paddingLeft="8dip"
-        android:paddingRight="8dip" >
+        android:paddingRight="8dip">
 
         <ImageView
             android:id="@+id/left_icon"
@@ -29,7 +29,7 @@
             android:layout_marginRight="8dip"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/title"
@@ -79,11 +79,11 @@
         android:nextFocusUp="@+id/menu_list_options"
         android:nextFocusRight="@+id/menu_list_options"
         android:nextFocusLeft="@+id/menu_list_options"
-        android:scrollingCache="true" >
-    </ListView>
+        android:scrollingCache="true"></ListView>
 
-    
-    <LinearLayout android:id="@+id/menu_help"
+
+    <LinearLayout
+        android:id="@+id/menu_help"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -91,10 +91,11 @@
         android:layout_above="@+id/menu_settings"
         android:layout_alignParentBottom="true"
         android:visibility="gone"
-        android:addStatesFromChildren="true" >
+        android:addStatesFromChildren="true">
 
 
-        <TextView android:id="@+id/menu_help_text"
+        <TextView
+            android:id="@+id/menu_help_text"
             android:layout_width="0dp"
             style="@android:style/TextAppearance.Holo.Medium"
             android:text="Help"
@@ -109,11 +110,11 @@
             android:nextFocusUp="@+id/menu_list_options"
             android:nextFocusRight="@+id/menu_help_text"
             android:nextFocusLeft="@+id/menu_help_text"
-            android:clickable="true"
-             />
+            android:clickable="true" />
     </LinearLayout>
-    
-    <LinearLayout android:id="@+id/menu_settings"
+
+    <LinearLayout
+        android:id="@+id/menu_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/background_dark"
@@ -121,9 +122,10 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:visibility="gone"
-        android:addStatesFromChildren="true" >
-        
-        <TextView android:id="@+id/menu_settings_text"
+        android:addStatesFromChildren="true">
+
+        <TextView
+            android:id="@+id/menu_settings_text"
             android:layout_width="0dp"
             style="@android:style/TextAppearance.Holo.Medium"
             android:text="Help"
@@ -139,9 +141,8 @@
             android:nextFocusRight="@+id/menu_settings_text"
             android:nextFocusLeft="@+id/menu_settings_text"
             android:clickable="true"
-            android:visibility="gone"
-             />
-        
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </RelativeLayout>

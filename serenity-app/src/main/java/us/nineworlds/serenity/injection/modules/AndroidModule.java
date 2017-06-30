@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -35,9 +35,10 @@ import com.birbit.android.jobqueue.config.Configuration;
 
 import org.greenrobot.eventbus.EventBus;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
-import javax.inject.Singleton;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.AndroidTV;
@@ -87,7 +88,17 @@ import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.injection.ApplicationContext;
+import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
 import us.nineworlds.serenity.jobs.MainMenuRetrievalJob;
+import us.nineworlds.serenity.jobs.MovieCategoryJob;
+import us.nineworlds.serenity.jobs.MovieRetrievalJob;
+import us.nineworlds.serenity.jobs.MovieSecondaryCategoryJob;
+import us.nineworlds.serenity.jobs.OnDeckRecommendationsJob;
+import us.nineworlds.serenity.jobs.SeasonsRetrievalJob;
+import us.nineworlds.serenity.jobs.SubtitleJob;
+import us.nineworlds.serenity.jobs.TVCategoryJob;
+import us.nineworlds.serenity.jobs.TVCategorySecondaryJob;
+import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
@@ -138,137 +149,148 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
 import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
 import us.nineworlds.serenity.volley.TVCategoryResponseListener;
 
-@Module(includes = SerenityModule.class, injects = { GDMReceiver.class,
-		MainMenuFragment.class,
-		OnDeckRecommendations.class,
-		GalleryVideoOnItemLongClickListener.class,
-		MediaController.class,
-		MainActivity.class, SerenityApplication.class,
-		StartupBroadcastReceiver.class, RecommendationPlayerActivity.class,
-		EpisodeBrowserActivity.class, SearchableActivity.class,
-		MovieBrowserActivity.class, TVShowBrowserActivity.class,
-		TVShowSeasonBrowserActivity.class, AutoConfigureHandlerRunnable.class,
-		EpisodeMenuDrawerOnItemClickedListener.class,
-		ImageInfographicUtils.class,
-		MainMenuDrawerOnItemClickedListener.class,
-		MovieGridPosterOnItemSelectedListener.class,
-		MovieMenuDrawerOnItemClickedListener.class,
-		PlayerResultHandler.class, ExternalPlayerResultHandler.class,
-		SeasonOnItemLongClickListener.class, MenuMediaContainer.class,
-		MovieMediaContainer.class, SeriesMediaContainer.class,
-		SubtitleMediaContainer.class, EpisodeMediaContainer.class,
-		SeasonsMediaContainer.class, GalleryVideoOnItemClickListener.class,
-		GalleryVideoOnItemLongClickListener.class,
-		EpisodeBrowserOnLongClickListener.class,
+@Module(includes = SerenityModule.class, injects = {GDMReceiver.class,
+        MainMenuFragment.class,
+        OnDeckRecommendations.class,
+        GalleryVideoOnItemLongClickListener.class,
+        MediaController.class,
+        MainActivity.class, SerenityApplication.class,
+        StartupBroadcastReceiver.class, RecommendationPlayerActivity.class,
+        EpisodeBrowserActivity.class, SearchableActivity.class,
+        MovieBrowserActivity.class, TVShowBrowserActivity.class,
+        TVShowSeasonBrowserActivity.class, AutoConfigureHandlerRunnable.class,
+        EpisodeMenuDrawerOnItemClickedListener.class,
+        ImageInfographicUtils.class,
+        MainMenuDrawerOnItemClickedListener.class,
+        MovieGridPosterOnItemSelectedListener.class,
+        MovieMenuDrawerOnItemClickedListener.class,
+        PlayerResultHandler.class, ExternalPlayerResultHandler.class,
+        SeasonOnItemLongClickListener.class, MenuMediaContainer.class,
+        MovieMediaContainer.class, SeriesMediaContainer.class,
+        SubtitleMediaContainer.class, EpisodeMediaContainer.class,
+        SeasonsMediaContainer.class, GalleryVideoOnItemClickListener.class,
+        GalleryVideoOnItemLongClickListener.class,
+        EpisodeBrowserOnLongClickListener.class,
 
-		EpisodePosterOnItemSelectedListener.class,
-		MoviePosterOnItemSelectedListener.class, SerenityImageLoader.class,
-		TVShowGalleryOnItemSelectedListener.class,
-		TVShowGridOnItemSelectedListener.class, TVShowGridOnKeyListener.class,
-		TVShowMenuDrawerOnItemClickedListener.class,
-		TVShowSeasonMenuDrawerOnItemClickedListener.class,
-		TVShowSeasonOnItemSelectedListener.class, VideoPlayerIntentUtils.class,
-		VideoPlayerPrepareListener.class, CategoryRetrievalIntentService.class,
-		TVShowCategoryRetrievalIntentService.class,
-		MoviesRetrievalIntentService.class, MovieSearchIntentService.class,
-		MusicAlbumRetrievalIntentService.class,
-		MusicRetrievalIntentService.class,
-		SecondaryCategoryRetrievalIntentService.class,
-		MainMenuTextViewAdapter.class, EpisodePosterImageGalleryAdapter.class,
-		SeasonsEpisodePosterImageGalleryAdapter.class,
-		MoviePosterImageAdapter.class, SearchAdapter.class,
-		TVShowBannerImageGalleryAdapter.class, MenuDrawerAdapter.class,
-		TVShowSeasonImageGalleryAdapter.class,
-		OnDeckRecommendationIntentService.class, CompletedVideoRequest.class,
-		FindUnwatchedAsyncTask.class,
-		UnWatchVideoAsyncTask.class, UpdateProgressRequest.class,
-		WatchedVideoAsyncTask.class, GalleryOnItemSelectedListener.class,
-		SerenityImageLoader.class, SerenityPreferenceActivity.class,
-		AndroidTV.class, RecommendAsyncTask.class, RecommendationBuilder.class,
-		TVShowPosterImageGalleryAdapter.class, VideoPlayerKeyCodeHandler.class,
-		SerenitySurfaceViewVideoActivity.class, OkHttpStack.class,
-		SerenityRecommendationContentProvider.class, OKHttpImageLoader.class,
-		AndroidHelper.class,
-		SecondaryCategorySpinnerOnItemSelectedListener.class,
-		MovieCategorySpinnerOnItemSelectedListener.class,
-		TVCategorySpinnerOnItemSelectedListener.class,
-		TVSecondaryCategorySpinnerOnItemSelectedListener.class,
-		MovieVideoGalleryFragment.class,
-		VideoGridFragment.class, EpisodeBrowserActivity.class,
-		EpisodeVideoGalleryFragment.class, MenuMediaContainer.class,
-		MovieSearchGalleryFragment.class, CardPresenter.class,
-		MovieSearchFragment.class, MovieCategoryResponseListener.class,
-		CategoryMediaContainer.class, SecondaryCategoryMediaContainer.class,
-		TVCategoryResponseListener.class, TVCategoryMediaContainer.class,
-		ServerConfig.class,
-		SubtitleSpinnerOnItemSelectedListener.class, VideoQueueHelper.class,
-		us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener.class,
-		MainMenuRetrievalJob.class,
-		MainMenuEvent.class,
-		ErrorMainMenuEvent.class}, library = true)
+        EpisodePosterOnItemSelectedListener.class,
+        MoviePosterOnItemSelectedListener.class, SerenityImageLoader.class,
+        TVShowGalleryOnItemSelectedListener.class,
+        TVShowGridOnItemSelectedListener.class, TVShowGridOnKeyListener.class,
+        TVShowMenuDrawerOnItemClickedListener.class,
+        TVShowSeasonMenuDrawerOnItemClickedListener.class,
+        TVShowSeasonOnItemSelectedListener.class, VideoPlayerIntentUtils.class,
+        VideoPlayerPrepareListener.class, CategoryRetrievalIntentService.class,
+        TVShowCategoryRetrievalIntentService.class,
+        MoviesRetrievalIntentService.class, MovieSearchIntentService.class,
+        MusicAlbumRetrievalIntentService.class,
+        MusicRetrievalIntentService.class,
+        SecondaryCategoryRetrievalIntentService.class,
+        MainMenuTextViewAdapter.class, EpisodePosterImageGalleryAdapter.class,
+        SeasonsEpisodePosterImageGalleryAdapter.class,
+        MoviePosterImageAdapter.class, SearchAdapter.class,
+        TVShowBannerImageGalleryAdapter.class, MenuDrawerAdapter.class,
+        TVShowSeasonImageGalleryAdapter.class,
+        OnDeckRecommendationIntentService.class, CompletedVideoRequest.class,
+        FindUnwatchedAsyncTask.class,
+        UnWatchVideoAsyncTask.class, UpdateProgressRequest.class,
+        WatchedVideoAsyncTask.class, GalleryOnItemSelectedListener.class,
+        SerenityImageLoader.class, SerenityPreferenceActivity.class,
+        AndroidTV.class, RecommendAsyncTask.class, RecommendationBuilder.class,
+        TVShowPosterImageGalleryAdapter.class, VideoPlayerKeyCodeHandler.class,
+        SerenitySurfaceViewVideoActivity.class, OkHttpStack.class,
+        SerenityRecommendationContentProvider.class, OKHttpImageLoader.class,
+        AndroidHelper.class,
+        SecondaryCategorySpinnerOnItemSelectedListener.class,
+        MovieCategorySpinnerOnItemSelectedListener.class,
+        TVCategorySpinnerOnItemSelectedListener.class,
+        TVSecondaryCategorySpinnerOnItemSelectedListener.class,
+        MovieVideoGalleryFragment.class,
+        VideoGridFragment.class, EpisodeBrowserActivity.class,
+        EpisodeVideoGalleryFragment.class, MenuMediaContainer.class,
+        MovieSearchGalleryFragment.class, CardPresenter.class,
+        MovieSearchFragment.class, MovieCategoryResponseListener.class,
+        CategoryMediaContainer.class, SecondaryCategoryMediaContainer.class,
+        TVCategoryResponseListener.class, TVCategoryMediaContainer.class,
+        ServerConfig.class,
+        SubtitleSpinnerOnItemSelectedListener.class, VideoQueueHelper.class,
+        us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener.class,
+        MainMenuRetrievalJob.class,
+        MainMenuEvent.class,
+        OnDeckRecommendationsJob.class,
+        EpisodesRetrievalJob.class,
+        MainMenuRetrievalJob.class,
+        MovieCategoryJob.class,
+        MovieRetrievalJob.class,
+        MovieSecondaryCategoryJob.class,
+        SeasonsRetrievalJob.class,
+        SubtitleJob.class,
+        TVCategoryJob.class,
+        TVCategorySecondaryJob.class,
+        TVShowRetrievalJob.class,
+        ErrorMainMenuEvent.class}, library = true)
 public class AndroidModule {
 
-	private final Context applicationContext;
+    private final Context applicationContext;
 
-	public AndroidModule(Application application) {
-		this.applicationContext = application;
-	}
+    public AndroidModule(Application application) {
+        this.applicationContext = application;
+    }
 
-	@Provides
-	@Singleton
-	PlexappFactory providesPlexFactory() {
-		IConfiguration serverConfig = ServerConfig
-				.getInstance(applicationContext);
+    @Provides
+    @Singleton
+    PlexappFactory providesPlexFactory() {
+        IConfiguration serverConfig = ServerConfig
+                .getInstance(applicationContext);
 
-		return PlexappFactory.getInstance(serverConfig);
-	}
+        return PlexappFactory.getInstance(serverConfig);
+    }
 
-	@Provides
-	@ApplicationContext
-	Context providesApplicationContext() {
-		return applicationContext;
-	}
+    @Provides
+    @ApplicationContext
+    Context providesApplicationContext() {
+        return applicationContext;
+    }
 
-	@Provides
-	@Singleton
-	SharedPreferences providesSharedPreferences() {
-		return PreferenceManager
-				.getDefaultSharedPreferences(applicationContext);
-	}
+    @Provides
+    @Singleton
+    SharedPreferences providesSharedPreferences() {
+        return PreferenceManager
+                .getDefaultSharedPreferences(applicationContext);
+    }
 
-	@Provides
-	@Singleton
-	AndroidHelper providesAndroidHelper() {
-		return new AndroidHelper();
-	}
+    @Provides
+    @Singleton
+    AndroidHelper providesAndroidHelper() {
+        return new AndroidHelper();
+    }
 
-	@Provides
-	@Singleton
-	Resources providesResources() {
-		return applicationContext.getResources();
-	}
+    @Provides
+    @Singleton
+    Resources providesResources() {
+        return applicationContext.getResources();
+    }
 
-	@Provides
-	MediaPlayer providesMediaPlayer() {
-		return new MediaPlayer();
-	}
+    @Provides
+    MediaPlayer providesMediaPlayer() {
+        return new MediaPlayer();
+    }
 
-	@Provides
-	@Singleton
-	JobManager providesJobManager() {
-		Configuration configuration = new Configuration.Builder(applicationContext)
-				.minConsumerCount(1)
-				.maxConsumerCount(5)
-				.loadFactor(3)
-				.consumerKeepAlive(120)
-				.build();
-		return new JobManager(configuration);
-	}
+    @Provides
+    @Singleton
+    JobManager providesJobManager() {
+        Configuration configuration = new Configuration.Builder(applicationContext)
+                .minConsumerCount(1)
+                .maxConsumerCount(5)
+                .loadFactor(3)
+                .consumerKeepAlive(120)
+                .build();
+        return new JobManager(configuration);
+    }
 
-	@Provides
-	@Singleton
-	EventBus providesEventBus() {
-		return EventBus.getDefault();
-	}
+    @Provides
+    @Singleton
+    EventBus providesEventBus() {
+        return EventBus.getDefault();
+    }
 
 }

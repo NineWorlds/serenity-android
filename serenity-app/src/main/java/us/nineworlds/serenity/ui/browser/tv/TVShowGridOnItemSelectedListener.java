@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,15 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import javax.inject.Inject;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.injection.BaseInjector;
 import android.app.Activity;
 import android.os.Handler;
 import android.view.View;
@@ -40,6 +31,17 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
+
+import net.ganin.darv.DpadAwareRecyclerView;
+
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 /**
@@ -49,76 +51,76 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
  *
  */
 public class TVShowGridOnItemSelectedListener extends BaseInjector implements
-		DpadAwareRecyclerView.OnItemSelectedListener {
+        DpadAwareRecyclerView.OnItemSelectedListener {
 
-	private final Activity context;
-	private final ImageLoader imageLoader;
-	private final ImageSize bgImageSize = new ImageSize(1280, 720);
-	private SeriesContentInfo videoInfo;
-	private final Handler handler = new Handler();
-	private Runnable runnable;
+    private final Activity context;
+    private final ImageLoader imageLoader;
+    private final ImageSize bgImageSize = new ImageSize(1280, 720);
+    private SeriesContentInfo videoInfo;
+    private final Handler handler = new Handler();
+    private Runnable runnable;
 
-	@Inject
-	SerenityImageLoader serenityImageLoader;
+    @Inject
+    SerenityImageLoader serenityImageLoader;
 
-	@Inject
-	PlexappFactory factory;
+    @Inject
+    PlexappFactory factory;
 
-	public TVShowGridOnItemSelectedListener(View bgv, Activity activity) {
-		context = activity;
+    public TVShowGridOnItemSelectedListener(View bgv, Activity activity) {
+        context = activity;
 
-		imageLoader = serenityImageLoader.getImageLoader();
+        imageLoader = serenityImageLoader.getImageLoader();
 
-	}
+    }
 
-	/**
-	 * Change the background image of the activity.
-	 *
-	 * Should be a background activity
-	 *
-	 * @param v
-	 */
-	private void changeBackgroundImage(View v) {
+    /**
+     * Change the background image of the activity.
+     *
+     * Should be a background activity
+     *
+     * @param v
+     */
+    private void changeBackgroundImage(View v) {
 
-		View fanArt = context.findViewById(R.id.fanArt);
-		String transcodingURL = factory.getImageURL(
-				videoInfo.getBackgroundURL(), 1280, 720);
+        View fanArt = context.findViewById(R.id.fanArt);
+        String transcodingURL = factory.getImageURL(
+                videoInfo.getBackgroundURL(), 1280, 720);
 
-		imageLoader
-		.loadImage(transcodingURL, bgImageSize,
-				new SerenityBackgroundLoaderListener(fanArt,
-						R.drawable.tvshows, context));
-	}
+        imageLoader
+                .loadImage(transcodingURL, bgImageSize,
+                        new SerenityBackgroundLoaderListener(fanArt,
+                                R.drawable.tvshows, context));
+    }
 
-	@Override
-	public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-		AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
-		videoInfo = (SeriesContentInfo) adapter.getItem(i);
+    @Override
+    public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+        AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+        videoInfo = (SeriesContentInfo) adapter.getItem(i);
 
-		final ImageView imageView = (ImageView) view.findViewById(R.id.posterImageView);
+        final ImageView imageView = (ImageView) view.findViewById(R.id.posterImageView);
 
-		if (runnable != null) {
-			handler.removeCallbacks(runnable);
-		}
-		runnable = new Runnable() {
-			@Override
-			public void run() {
-				changeBackgroundImage(imageView);
-				runnable = null;
-			}
-		};
-		handler.postDelayed(runnable, 500);
+        if (runnable != null) {
+            handler.removeCallbacks(runnable);
+        }
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                changeBackgroundImage(imageView);
+                runnable = null;
+            }
+        };
+        handler.postDelayed(runnable, 500);
 
-		TextView titleView = (TextView) context
-				.findViewById(R.id.tvShowGridTitle);
-		if (titleView != null) {
-			titleView.setText(videoInfo.getTitle());
-		}
+        TextView titleView = (TextView) context
+                .findViewById(R.id.tvShowGridTitle);
+        if (titleView != null) {
+            titleView.setText(videoInfo.getTitle());
+        }
 
-	}
+    }
 
-	@Override
-	public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+    @Override
+    public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
 
-	}
+    }
 }

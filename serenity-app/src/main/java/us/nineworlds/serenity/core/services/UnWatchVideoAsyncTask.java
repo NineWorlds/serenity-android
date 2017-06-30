@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,26 +23,27 @@
 
 package us.nineworlds.serenity.core.services;
 
+import android.os.AsyncTask;
+
 import javax.inject.Inject;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
-import android.os.AsyncTask;
 
 public class UnWatchVideoAsyncTask extends AsyncTask<String, Void, Void> {
 
-	@Inject
-	PlexappFactory factory;
+    @Inject
+    PlexappFactory factory;
 
-	public UnWatchVideoAsyncTask() {
-		SerenityObjectGraph.getInstance().inject(this);
-	}
+    public UnWatchVideoAsyncTask() {
+        SerenityObjectGraph.getInstance().inject(this);
+    }
 
-	@Override
-	protected Void doInBackground(String... params) {
-		String id = params[0];
-		factory.setUnWatched(id);
-		return null;
-	}
+    @Override
+    protected Void doInBackground(String... params) {
+        String id = params[0];
+        factory.setUnWatched(id);
+        return null;
+    }
 
 }

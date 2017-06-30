@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,20 +23,10 @@
 
 package us.nineworlds.serenity;
 
-import java.util.LinkedList;
-
-import javax.inject.Inject;
-
-import android.content.res.Resources;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.injection.ForVideoQueue;
-import us.nineworlds.serenity.widgets.DrawerLayout;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -44,105 +34,115 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.LinkedList;
+
+import javax.inject.Inject;
+
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.injection.ForVideoQueue;
+import us.nineworlds.serenity.widgets.DrawerLayout;
+
 /**
  * @author dcarver
  *
  */
 public class MainMenuDrawerOnItemClickedListener extends BaseInjector implements
-OnItemClickListener {
+        OnItemClickListener {
 
-	@Inject
-	@ForVideoQueue
-	LinkedList<VideoContentInfo> videoQueue;
+    @Inject
+    @ForVideoQueue
+    LinkedList<VideoContentInfo> videoQueue;
 
-	@Inject
-	SerenityImageLoader serenityImageLoader;
+    @Inject
+    SerenityImageLoader serenityImageLoader;
 
-	@Inject
-	Resources resources;
+    @Inject
+    Resources resources;
 
-	private static final int ABOUT = 0;
-	private static final int CLEAR_CACHE = 1;
-	private static final int CLEAR_QUEUE = 2;
-	private final DrawerLayout drawerLayout;
+    private static final int ABOUT = 0;
+    private static final int CLEAR_CACHE = 1;
+    private static final int CLEAR_QUEUE = 2;
+    private final DrawerLayout drawerLayout;
 
-	/**
-	 *
-	 */
-	public MainMenuDrawerOnItemClickedListener(DrawerLayout drawerLayout) {
-		this.drawerLayout = drawerLayout;
-	}
+    /**
+     *
+     */
+    public MainMenuDrawerOnItemClickedListener(DrawerLayout drawerLayout) {
+        this.drawerLayout = drawerLayout;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
-	 * .AdapterView, android.view.View, int, long)
-	 */
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		toggleMenu();
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
+     * .AdapterView, android.view.View, int, long)
+     */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+                            long id) {
+        toggleMenu();
 
-		switch (position) {
-		case CLEAR_CACHE:
-			createClearCacheDialog(view.getContext());
-			break;
-		case ABOUT:
-			AboutDialog about = new AboutDialog(view.getContext());
-			about.setTitle(R.string.about_title_serenity_for_google_tv);
-			about.show();
-			break;
-		case CLEAR_QUEUE:
-			videoQueue.clear();
-			Toast.makeText(
-					view.getContext(),
-					resources.getString(R.string.queue_has_been_cleared_),
-							Toast.LENGTH_LONG).show();
-			break;
-		}
-	}
+        switch (position) {
+            case CLEAR_CACHE:
+                createClearCacheDialog(view.getContext());
+                break;
+            case ABOUT:
+                AboutDialog about = new AboutDialog(view.getContext());
+                about.setTitle(R.string.about_title_serenity_for_google_tv);
+                about.show();
+                break;
+            case CLEAR_QUEUE:
+                videoQueue.clear();
+                Toast.makeText(
+                        view.getContext(),
+                        resources.getString(R.string.queue_has_been_cleared_),
+                        Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
 
-	protected void toggleMenu() {
-		drawerLayout.closeDrawers();
-		return;
-	}
+    protected void toggleMenu() {
+        drawerLayout.closeDrawers();
+        return;
+    }
 
-	protected void createClearCacheDialog(Context context) {
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-				context, android.R.style.Theme_Holo_Dialog);
+    protected void createClearCacheDialog(Context context) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context, android.R.style.Theme_Holo_Dialog);
 
-		alertDialogBuilder.setTitle(R.string.options_main_clear_image_cache);
-		alertDialogBuilder
-		.setMessage(R.string.option_clear_the_image_cache_)
-		.setCancelable(true)
-		.setPositiveButton(R.string.clear,
-				new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setTitle(R.string.options_main_clear_image_cache);
+        alertDialogBuilder
+                .setMessage(R.string.option_clear_the_image_cache_)
+                .setCancelable(true)
+                .setPositiveButton(R.string.clear,
+                        new DialogInterface.OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog,
-					int which) {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
 
-				ImageLoader imageLoader = serenityImageLoader
-						.getImageLoader();
-				imageLoader.clearDiscCache();
-				imageLoader.clearMemoryCache();
-			}
-		})
-		.setNegativeButton(R.string.cancel,
-				new DialogInterface.OnClickListener() {
+                                ImageLoader imageLoader = serenityImageLoader
+                                        .getImageLoader();
+                                imageLoader.clearDiscCache();
+                                imageLoader.clearMemoryCache();
+                            }
+                        })
+                .setNegativeButton(R.string.cancel,
+                        new DialogInterface.OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog,
-					int which) {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
 
-			}
-		});
+                            }
+                        });
 
-		alertDialogBuilder.create();
-		alertDialogBuilder.show();
+        alertDialogBuilder.create();
+        alertDialogBuilder.show();
 
-	}
+    }
 
 }

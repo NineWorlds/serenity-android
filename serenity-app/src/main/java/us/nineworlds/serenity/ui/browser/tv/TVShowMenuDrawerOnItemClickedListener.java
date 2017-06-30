@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,15 +23,8 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import javax.inject.Inject;
-
 import android.content.Context;
 import android.content.ContextWrapper;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
-import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
@@ -39,85 +32,93 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import javax.inject.Inject;
+
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
+import us.nineworlds.serenity.widgets.DrawerLayout;
+
 public class TVShowMenuDrawerOnItemClickedListener extends BaseInjector
-implements OnItemClickListener {
-	private static final int GRID_VIEW = 0;
-	private static final int DETAIL_VIEW = 1;
-	private static final int PLAY_ALL_QUEUE = 2;
-	private final DrawerLayout menuDrawer;
+        implements OnItemClickListener {
+    private static final int GRID_VIEW = 0;
+    private static final int DETAIL_VIEW = 1;
+    private static final int PLAY_ALL_QUEUE = 2;
+    private final DrawerLayout menuDrawer;
 
-	@Inject
-	VideoPlayerIntentUtils vpUtils;
+    @Inject
+    VideoPlayerIntentUtils vpUtils;
 
-	/**
-	 *
-	 */
-	public TVShowMenuDrawerOnItemClickedListener(DrawerLayout drawer) {
-		super();
-		menuDrawer = drawer;
-	}
+    /**
+     *
+     */
+    public TVShowMenuDrawerOnItemClickedListener(DrawerLayout drawer) {
+        super();
+        menuDrawer = drawer;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
-	 * .AdapterView, android.view.View, int, long)
-	 */
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		SerenityMultiViewVideoActivity activity = getActivity(view
-				.getContext());
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
+     * .AdapterView, android.view.View, int, long)
+     */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+                            long id) {
+        SerenityMultiViewVideoActivity activity = getActivity(view
+                .getContext());
 
-		switch (position) {
-		case GRID_VIEW:
-			activity.setContentView(R.layout.activity_tvbrowser_show_gridview_posters);
-			toggleView(activity, true);
-			break;
-		case DETAIL_VIEW:
-			if (activity.isPosterLayoutActive()) {
-				activity.setContentView(R.layout.activity_tvbrowser_show_posters);
-			} else {
-				activity.setContentView(R.layout.activity_tvbrowser_show_banners);
-			}
-			toggleView(activity, false);
-			break;
-		case PLAY_ALL_QUEUE:
-			menuDrawer.closeDrawers();
-			if (!activity.getPackageManager().hasSystemFeature(
-					"android.hardware.touchscreen")) {
-				parent.setVisibility(View.INVISIBLE);
-			}
-			vpUtils.playAllFromQueue(activity);
-			return;
-		}
-		menuDrawer.closeDrawers();
-		activity.recreate();
-	}
+        switch (position) {
+            case GRID_VIEW:
+                activity.setContentView(R.layout.activity_tvbrowser_show_gridview_posters);
+                toggleView(activity, true);
+                break;
+            case DETAIL_VIEW:
+                if (activity.isPosterLayoutActive()) {
+                    activity.setContentView(R.layout.activity_tvbrowser_show_posters);
+                } else {
+                    activity.setContentView(R.layout.activity_tvbrowser_show_banners);
+                }
+                toggleView(activity, false);
+                break;
+            case PLAY_ALL_QUEUE:
+                menuDrawer.closeDrawers();
+                if (!activity.getPackageManager().hasSystemFeature(
+                        "android.hardware.touchscreen")) {
+                    parent.setVisibility(View.INVISIBLE);
+                }
+                vpUtils.playAllFromQueue(activity);
+                return;
+        }
+        menuDrawer.closeDrawers();
+        activity.recreate();
+    }
 
-	/**
-	 * @param activity
-	 */
-	protected void toggleView(SerenityMultiViewVideoActivity activity,
-			boolean enableGridView) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(activity);
-		Editor e = prefs.edit();
-		activity.setGridViewEnabled(enableGridView);
-		e.putBoolean("series_layout_grid", enableGridView);
-		e.apply();
-	}
+    /**
+     * @param activity
+     */
+    protected void toggleView(SerenityMultiViewVideoActivity activity,
+                              boolean enableGridView) {
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(activity);
+        Editor e = prefs.edit();
+        activity.setGridViewEnabled(enableGridView);
+        e.putBoolean("series_layout_grid", enableGridView);
+        e.apply();
+    }
 
-	protected SerenityMultiViewVideoActivity getActivity(Context contextWrapper) {
-		Context context = contextWrapper;
-		while (context instanceof ContextWrapper) {
-			if (context instanceof SerenityMultiViewVideoActivity) {
-				return (SerenityMultiViewVideoActivity) context;
-			}
-			context = ((ContextWrapper)context).getBaseContext();
-		}
-		return null;
-	}
+    protected SerenityMultiViewVideoActivity getActivity(Context contextWrapper) {
+        Context context = contextWrapper;
+        while (context instanceof ContextWrapper) {
+            if (context instanceof SerenityMultiViewVideoActivity) {
+                return (SerenityMultiViewVideoActivity) context;
+            }
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+        return null;
+    }
 
 }

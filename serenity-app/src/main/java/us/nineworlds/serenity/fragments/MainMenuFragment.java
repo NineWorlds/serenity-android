@@ -23,43 +23,40 @@
 
 package us.nineworlds.serenity.fragments;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 import com.birbit.android.jobqueue.JobManager;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.GalleryOnItemClickListener;
 import us.nineworlds.serenity.GalleryOnItemSelectedListener;
 import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
-
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
 import us.nineworlds.serenity.events.ErrorMainMenuEvent;
 import us.nineworlds.serenity.events.MainMenuEvent;
 import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.jobs.MainMenuRetrievalJob;
-
-import javax.inject.Inject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainMenuFragment extends InjectingFragment {
 
@@ -88,18 +85,17 @@ public class MainMenuFragment extends InjectingFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_menu_view, container);
         unbinder = ButterKnife.bind(this, view);
-        fetchData();
-
         return view;
     }
 
     protected void fetchData() {
-        jobManager.addJob(new MainMenuRetrievalJob());
+        jobManager.addJobInBackground(new MainMenuRetrievalJob());
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        fetchData();
         eventBus.register(this);
     }
 

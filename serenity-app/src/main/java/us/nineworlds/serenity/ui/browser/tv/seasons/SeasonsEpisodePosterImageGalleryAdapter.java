@@ -23,22 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.TrailersYouTubeSearch;
-import us.nineworlds.serenity.core.model.DBMetaData;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.util.DBMetaDataSource;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
-import us.nineworlds.serenity.volley.SimpleXmlRequest;
-import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -48,12 +32,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
-import com.google.android.youtube.player.YouTubeInitializationResult;
+
 import net.ganin.darv.DpadAwareRecyclerView;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 
 public class SeasonsEpisodePosterImageGalleryAdapter
         extends

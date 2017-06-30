@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -22,89 +22,87 @@
  */
 package us.nineworlds.serenity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import us.nineworlds.serenity.core.menus.MenuItem;
-import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils.TruncateAt;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
-import static butterknife.ButterKnife.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import us.nineworlds.serenity.core.menus.MenuItem;
+
+import static butterknife.ButterKnife.bind;
 
 public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
-	public static List<MenuItem> menuItems = new ArrayList<MenuItem>();
+    public static List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
-	public MainMenuTextViewAdapter() {
-		super();
-	}
+    public MainMenuTextViewAdapter() {
+        super();
+    }
 
 
-	@Override
-	public int getItemCount() {
-		return menuItems.size();
-	}
+    @Override
+    public int getItemCount() {
+        return menuItems.size();
+    }
 
-	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		FrameLayout mainMenuTextView = (FrameLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mainmenu, parent, false);
-		return new MainMenuViewHolder(mainMenuTextView);
-	}
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        FrameLayout mainMenuTextView = (FrameLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mainmenu, parent, false);
+        return new MainMenuViewHolder(mainMenuTextView);
+    }
 
-	@Override
-	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-		MenuItem menuItem = menuItems.get(position);
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        MenuItem menuItem = menuItems.get(position);
 
-		MainMenuViewHolder mainMenuViewHolder = (MainMenuViewHolder) holder;
-		//createView(mainMenuViewHolder.mainMenuTextView, menuItem);
-		setDefaults(menuItem.getTitle(), mainMenuViewHolder.mainMenuTextView);
-	}
+        MainMenuViewHolder mainMenuViewHolder = (MainMenuViewHolder) holder;
+        //createView(mainMenuViewHolder.mainMenuTextView, menuItem);
+        setDefaults(menuItem.getTitle(), mainMenuViewHolder.mainMenuTextView);
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-	void setDefaults(String title, TextView v) {
-		v.setText(title);
-		v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
-		v.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-		v.setGravity(Gravity.CENTER_VERTICAL);
-		v.setLines(1);
-		v.setHorizontallyScrolling(true);
-		v.setEllipsize(TruncateAt.MARQUEE);
-		v.setLayoutParams(new FrameLayout.LayoutParams(
-				android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-				android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-	}
+    void setDefaults(String title, TextView v) {
+        v.setText(title);
+        v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
+        v.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        v.setGravity(Gravity.CENTER_VERTICAL);
+        v.setLines(1);
+        v.setHorizontallyScrolling(true);
+        v.setEllipsize(TruncateAt.MARQUEE);
+        v.setLayoutParams(new FrameLayout.LayoutParams(
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+    }
 
-	public MenuItem getItemAtPosition(int position) {
-		if (position > menuItems.size()) {
-			return null;
-		}
-		return menuItems.get(position);
-	}
+    public MenuItem getItemAtPosition(int position) {
+        if (position > menuItems.size()) {
+            return null;
+        }
+        return menuItems.get(position);
+    }
 
-	public class MainMenuViewHolder extends RecyclerView.ViewHolder {
+    public class MainMenuViewHolder extends RecyclerView.ViewHolder {
 
-		@BindView(R.id.main_menu_item)
-		public TextView mainMenuTextView;
+        @BindView(R.id.main_menu_item)
+        public TextView mainMenuTextView;
 
-		public MainMenuViewHolder(View itemView) {
-			super(itemView);
-			bind(this, itemView);
-		}
-	}
+        public MainMenuViewHolder(View itemView) {
+            super(itemView);
+            bind(this, itemView);
+        }
+    }
 }

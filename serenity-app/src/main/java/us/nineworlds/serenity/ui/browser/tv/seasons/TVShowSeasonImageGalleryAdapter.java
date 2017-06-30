@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -22,24 +22,6 @@
  */
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
-import us.nineworlds.serenity.events.SerenityEvent;
-import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
-import us.nineworlds.serenity.jobs.SeasonsRetrievalJob;
-import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -60,6 +42,23 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
+import us.nineworlds.serenity.events.SerenityEvent;
+import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
+import us.nineworlds.serenity.jobs.SeasonsRetrievalJob;
+import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
+import us.nineworlds.serenity.ui.util.ImageUtils;
+
 /**
  * An adapter that handles the population of views for TV Show Seasons.
  *
@@ -71,162 +70,162 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapter {
 
-	private List<SeriesContentInfo> seasonList = null;
-	private final SerenityDrawerLayoutActivity context;
+    private List<SeriesContentInfo> seasonList = null;
+    private final SerenityDrawerLayoutActivity context;
 
-	private final String key;
+    private final String key;
 
-	@Inject
-	PlexappFactory plexFactory;
+    @Inject
+    PlexappFactory plexFactory;
 
-	@Inject
-	SerenityImageLoader serenityImageLoader;
+    @Inject
+    SerenityImageLoader serenityImageLoader;
 
-	@Inject
-	JobManager jobManager;
+    @Inject
+    JobManager jobManager;
 
-	@Inject
-	EventBus eventBus;
+    @Inject
+    EventBus eventBus;
 
-	public TVShowSeasonImageGalleryAdapter(Context c, String key) {
-		super();
-		context = (SerenityDrawerLayoutActivity) c;
-		this.key = key;
+    public TVShowSeasonImageGalleryAdapter(Context c, String key) {
+        super();
+        context = (SerenityDrawerLayoutActivity) c;
+        this.key = key;
 
-		seasonList = new ArrayList<SeriesContentInfo>();
-		eventBus.register(this);
-		fetchData();
-	}
+        seasonList = new ArrayList<SeriesContentInfo>();
+        eventBus.register(this);
+        fetchData();
+    }
 
-	protected void fetchData() {
-		String url = plexFactory.getSeasonsURL(key);
-		SeasonsRetrievalJob seasonsRetrievalJob = new SeasonsRetrievalJob(key);
-		jobManager.addJobInBackground(seasonsRetrievalJob);
-	}
+    protected void fetchData() {
+        String url = plexFactory.getSeasonsURL(key);
+        SeasonsRetrievalJob seasonsRetrievalJob = new SeasonsRetrievalJob(key);
+        jobManager.addJobInBackground(seasonsRetrievalJob);
+    }
 
-	@Subscribe(threadMode = ThreadMode.MAIN)
-	public void onSeasonResponseEvent(SerenityEvent event) {
-		MediaContainer mediaContainer = event.getMediaContainer();
-		new SeaonsResponseListener().onResponse(mediaContainer);
-	}
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSeasonResponseEvent(SerenityEvent event) {
+        MediaContainer mediaContainer = event.getMediaContainer();
+        new SeaonsResponseListener().onResponse(mediaContainer);
+    }
 
 
-	public Object getItem(int position) {
-		return seasonList.get(position);
-	}
+    public Object getItem(int position) {
+        return seasonList.get(position);
+    }
 
-	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_tvshow_indicator_view, null);
-		SeasonViewHolder seasonViewHolder = new SeasonViewHolder(view);
-		return seasonViewHolder;
-	}
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_tvshow_indicator_view, null);
+        SeasonViewHolder seasonViewHolder = new SeasonViewHolder(view);
+        return seasonViewHolder;
+    }
 
-	@Override
-	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-		SeriesContentInfo pi = seasonList.get(position);
-		ImageView mpiv = (ImageView) holder.itemView
-				.findViewById(R.id.posterImageView);
-		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
-		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(120, context);
-		int height = ImageUtils.getDPI(180, context);
-		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        SeriesContentInfo pi = seasonList.get(position);
+        ImageView mpiv = (ImageView) holder.itemView
+                .findViewById(R.id.posterImageView);
+        mpiv.setBackgroundResource(R.drawable.gallery_item_background);
+        mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
+        int width = ImageUtils.getDPI(120, context);
+        int height = ImageUtils.getDPI(180, context);
+        mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
-		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
-		holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
-				height));
+        serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
+        holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
+                height));
 
-		int unwatched = 0;
+        int unwatched = 0;
 
-		if (pi.getShowsUnwatched() != null) {
-			unwatched = Integer.parseInt(pi.getShowsUnwatched());
-		}
+        if (pi.getShowsUnwatched() != null) {
+            unwatched = Integer.parseInt(pi.getShowsUnwatched());
+        }
 
-		ImageView watchedView = (ImageView) holder.itemView
-				.findViewById(R.id.posterWatchedIndicator);
+        ImageView watchedView = (ImageView) holder.itemView
+                .findViewById(R.id.posterWatchedIndicator);
 
-		TextView badgeCount = (TextView) holder.itemView.findViewById(R.id.badge_count);
-		badgeCount.setText(pi.getShowsUnwatched());
-		badgeCount.setVisibility(View.VISIBLE);
+        TextView badgeCount = (TextView) holder.itemView.findViewById(R.id.badge_count);
+        badgeCount.setText(pi.getShowsUnwatched());
+        badgeCount.setVisibility(View.VISIBLE);
 
-		if (pi.isWatched()) {
-			watchedView.setImageResource(R.drawable.overlaywatched);
-			watchedView.setVisibility(View.VISIBLE);
-			badgeCount.setVisibility(View.INVISIBLE);
-		}
+        if (pi.isWatched()) {
+            watchedView.setImageResource(R.drawable.overlaywatched);
+            watchedView.setVisibility(View.VISIBLE);
+            badgeCount.setVisibility(View.INVISIBLE);
+        }
 
-		int watched = 0;
-		if (pi.getShowsWatched() != null) {
-			watched = Integer.parseInt(pi.getShowsWatched());
-		}
+        int watched = 0;
+        if (pi.getShowsWatched() != null) {
+            watched = Integer.parseInt(pi.getShowsWatched());
+        }
 
-		if (pi.isPartiallyWatched()) {
-			toggleProgressIndicator(holder.itemView, watched, pi.totalShows(),
-					watchedView);
-		}
-	}
+        if (pi.isPartiallyWatched()) {
+            toggleProgressIndicator(holder.itemView, watched, pi.totalShows(),
+                    watchedView);
+        }
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-	@Override
-	public int getItemCount() {
-		return seasonList.size();
-	}
+    @Override
+    public int getItemCount() {
+        return seasonList.size();
+    }
 
-	protected void toggleProgressIndicator(View galleryCellView, int dividend,
-			int divisor, ImageView watchedView) {
-		final float percentWatched = Float.valueOf(dividend)
-				/ Float.valueOf(divisor);
+    protected void toggleProgressIndicator(View galleryCellView, int dividend,
+                                           int divisor, ImageView watchedView) {
+        final float percentWatched = Float.valueOf(dividend)
+                / Float.valueOf(divisor);
 
-		final ProgressBar view = (ProgressBar) galleryCellView
-				.findViewById(R.id.posterInprogressIndicator);
-		int progress = Float.valueOf(percentWatched * 100).intValue();
-		if (progress < 10) {
-			progress = 10;
-		}
-		view.setProgress(progress);
-		view.setVisibility(View.VISIBLE);
-		watchedView.setVisibility(View.INVISIBLE);
-	}
+        final ProgressBar view = (ProgressBar) galleryCellView
+                .findViewById(R.id.posterInprogressIndicator);
+        int progress = Float.valueOf(percentWatched * 100).intValue();
+        if (progress < 10) {
+            progress = 10;
+        }
+        view.setProgress(progress);
+        view.setVisibility(View.VISIBLE);
+        watchedView.setVisibility(View.INVISIBLE);
+    }
 
-	private class SeaonsResponseListener implements
-	Response.Listener<MediaContainer> {
+    private class SeaonsResponseListener implements
+            Response.Listener<MediaContainer> {
 
-		@Override
-		public void onResponse(MediaContainer response) {
-			seasonList = new SeasonsMediaContainer(response).createSeries();
-			notifyDataSetChanged();
+        @Override
+        public void onResponse(MediaContainer response) {
+            seasonList = new SeasonsMediaContainer(response).createSeries();
+            notifyDataSetChanged();
 
-			if (seasonList != null) {
-				if (!seasonList.isEmpty()) {
-					TextView titleView = (TextView) context
-							.findViewById(R.id.tvShowSeasonsDetailText);
-					titleView.setText(seasonList.get(0).getParentTitle());
-					TextView textView = (TextView) context
-							.findViewById(R.id.tvShowSeasonsItemCount);
-					textView.setText(Integer.toString(seasonList.size())
-							+ context.getString(R.string._item_s_));
+            if (seasonList != null) {
+                if (!seasonList.isEmpty()) {
+                    TextView titleView = (TextView) context
+                            .findViewById(R.id.tvShowSeasonsDetailText);
+                    titleView.setText(seasonList.get(0).getParentTitle());
+                    TextView textView = (TextView) context
+                            .findViewById(R.id.tvShowSeasonsItemCount);
+                    textView.setText(Integer.toString(seasonList.size())
+                            + context.getString(R.string._item_s_));
 
-				}
-			}
+                }
+            }
 
-			DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) context
-					.findViewById(R.id.tvShowSeasonImageGallery);
-			if (gallery != null) {
-				gallery.requestFocusFromTouch();
-			}
-		}
-	}
+            DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) context
+                    .findViewById(R.id.tvShowSeasonImageGallery);
+            if (gallery != null) {
+                gallery.requestFocusFromTouch();
+            }
+        }
+    }
 
-	public class SeasonViewHolder extends DpadAwareRecyclerView.ViewHolder {
+    public class SeasonViewHolder extends DpadAwareRecyclerView.ViewHolder {
 
-		public SeasonViewHolder(View itemView) {
-			super(itemView);
-		}
+        public SeasonViewHolder(View itemView) {
+            super(itemView);
+        }
 
-	}
+    }
 }

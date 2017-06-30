@@ -11,53 +11,53 @@
             backward-compatibility can go here.
         -->
     </style>
-    
-    <style name="CustomActionBarTheme"
-           parent="@style/Theme.AppCompat">
+
+    <style name="CustomActionBarTheme" parent="@style/Theme.AppCompat">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:actionBarStyle">@style/TransparentActionBar</item>
 
         <!-- Support library compatibility -->
         <item name="windowActionBarOverlay">true</item>
         <item name="actionBarStyle">@style/TransparentActionBar</item>
-        
+
     </style>
-    
+
     <style name="TransparentActionBar" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:background">@drawable/content_panel_dark</item>
         <item name="background">@drawable/content_panel_dark</item>
     </style>
-    
+
     <style name="Theme.AppCompat.NoActionBar" parent="@style/Theme.AppCompat">
         <item name="android:windowNoTitle">true</item>
-  </style>
-    
+    </style>
+
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    
+
     <style name="SerenitySpinner">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:background">#80000000</item>
     </style>
-    
+
     <style name="selected_main_menu_text">
         <item name="android:textSize">50sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+
     <style name="normal_main_menu_text">
         <item name="android:textSize">30sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-    
 
-    <style name="PopupAnimation" parent="android:Animation" mce_bogus="1">      
-         <item name="android:windowEnterAnimation">@anim/fade_in_mediacontroller</item>  
-        <item name="android:windowExitAnimation">@anim/fade_out_mediacontroller</item>  
-    </style>  
+
+    <style name="PopupAnimation" parent="android:Animation" mce_bogus="1">
+        <item name="android:windowEnterAnimation">@anim/fade_in_mediacontroller</item>
+        <item name="android:windowExitAnimation">@anim/fade_out_mediacontroller</item>
+    </style>
 </resources>

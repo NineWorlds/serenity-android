@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,49 +23,50 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import javax.inject.Inject;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.injection.BaseInjector;
 import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
 
+import net.ganin.darv.DpadAwareRecyclerView;
+
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 public class TVShowGridOnKeyListener extends BaseInjector implements
-		View.OnKeyListener {
+        View.OnKeyListener {
 
-	@Inject
-	protected PlexappFactory factory;
+    @Inject
+    protected PlexappFactory factory;
 
-	private final Activity activity;
+    private final Activity activity;
 
-	public TVShowGridOnKeyListener(Activity activity) {
-		super();
-		this.activity = activity;
-	}
+    public TVShowGridOnKeyListener(Activity activity) {
+        super();
+        this.activity = activity;
+    }
 
-	@Override
-	public boolean onKey(View v, int keyCode, KeyEvent event) {
-		if ((keyCode != KeyEvent.KEYCODE_MEDIA_PLAY && keyCode != KeyEvent.KEYCODE_BUTTON_R1)
-				|| event.getAction() == KeyEvent.ACTION_DOWN) {
-			return false;
-		}
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if ((keyCode != KeyEvent.KEYCODE_MEDIA_PLAY && keyCode != KeyEvent.KEYCODE_BUTTON_R1)
+                || event.getAction() == KeyEvent.ACTION_DOWN) {
+            return false;
+        }
 
-		final SeriesContentInfo info = getSelectedSeries(v);
-		new FindUnwatchedAsyncTask(activity).execute(info);
-		return true;
-	}
+        final SeriesContentInfo info = getSelectedSeries(v);
+        new FindUnwatchedAsyncTask(activity).execute(info);
+        return true;
+    }
 
-	protected SeriesContentInfo getSelectedSeries(View v) {
-		final DpadAwareRecyclerView gridView = (DpadAwareRecyclerView) v;
-		AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
-		int pos = gridView.getSelectedItemPosition();
-		final SeriesContentInfo info = (SeriesContentInfo) adapter.getItem(pos);
-		return info;
-	}
+    protected SeriesContentInfo getSelectedSeries(View v) {
+        final DpadAwareRecyclerView gridView = (DpadAwareRecyclerView) v;
+        AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
+        int pos = gridView.getSelectedItemPosition();
+        final SeriesContentInfo info = (SeriesContentInfo) adapter.getItem(pos);
+        return info;
+    }
 
 }

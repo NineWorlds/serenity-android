@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,64 +23,64 @@
 
 package us.nineworlds.serenity.ui.activity;
 
-import java.util.List;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.CategoryInfo;
-import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
-import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import java.util.List;
+
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
+
 public class CategoryHandler extends Handler {
 
-	private List<CategoryInfo> categories;
-	private final SerenityMultiViewVideoActivity context;
-	private final String savedCategory;
-	private final String key;
+    private List<CategoryInfo> categories;
+    private final SerenityMultiViewVideoActivity context;
+    private final String savedCategory;
+    private final String key;
 
-	public CategoryHandler(SerenityMultiViewVideoActivity context, String savedCategory, String key) {
-		this.context = context;
-		this.savedCategory = savedCategory;
-		this.key = key;
-	}
+    public CategoryHandler(SerenityMultiViewVideoActivity context, String savedCategory, String key) {
+        this.context = context;
+        this.savedCategory = savedCategory;
+        this.key = key;
+    }
 
-	@Override
-	public void handleMessage(Message msg) {
-		if (msg.obj != null) {
-			categories = (List<CategoryInfo>) msg.obj;
-			setupMovieBrowser();
-		}
-	}
+    @Override
+    public void handleMessage(Message msg) {
+        if (msg.obj != null) {
+            categories = (List<CategoryInfo>) msg.obj;
+            setupMovieBrowser();
+        }
+    }
 
-	/**
-	 * Setup the Gallery and Category spinners
-	 */
-	protected void setupMovieBrowser() {
-		ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
-				context, R.layout.serenity_spinner_textview, categories);
-		spinnerArrayAdapter
-		.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+    /**
+     * Setup the Gallery and Category spinners
+     */
+    protected void setupMovieBrowser() {
+        ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
+                context, R.layout.serenity_spinner_textview, categories);
+        spinnerArrayAdapter
+                .setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
-		Spinner categorySpinner = (Spinner) context
-				.findViewById(R.id.categoryFilter);
-		if (categorySpinner != null) {
-			categorySpinner.setVisibility(View.VISIBLE);
-			categorySpinner.setAdapter(spinnerArrayAdapter);
-			if (savedCategory == null) {
-				categorySpinner
-				.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
-						"all", key, context));
-			} else {
-				// categorySpinner
-				// .setOnItemSelectedListener(new
-				// MovieCategorySpinnerOnItemSelectedListener(
-				// savedCategory, key, false));
-			}
-			categorySpinner.requestFocus();
-		}
-	}
+        Spinner categorySpinner = (Spinner) context
+                .findViewById(R.id.categoryFilter);
+        if (categorySpinner != null) {
+            categorySpinner.setVisibility(View.VISIBLE);
+            categorySpinner.setAdapter(spinnerArrayAdapter);
+            if (savedCategory == null) {
+                categorySpinner
+                        .setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
+                                "all", key, context));
+            } else {
+                // categorySpinner
+                // .setOnItemSelectedListener(new
+                // MovieCategorySpinnerOnItemSelectedListener(
+                // savedCategory, key, false));
+            }
+            categorySpinner.requestFocus();
+        }
+    }
 }

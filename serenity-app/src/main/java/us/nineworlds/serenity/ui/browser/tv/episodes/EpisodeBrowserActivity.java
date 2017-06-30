@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,19 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.menus.MenuDrawerItem;
-import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
-import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
-import us.nineworlds.serenity.ui.util.DisplayUtils;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -43,138 +30,153 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
 
+import net.ganin.darv.DpadAwareRecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.menus.MenuDrawerItem;
+import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
+import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
+
 public class EpisodeBrowserActivity extends SerenityVideoActivity {
 
-	@Inject
-	protected SharedPreferences prefs;
+    @Inject
+    protected SharedPreferences prefs;
 
-	public AbstractPosterImageGalleryAdapter seasonEpisodeAdapter;
+    public AbstractPosterImageGalleryAdapter seasonEpisodeAdapter;
 
-	private static String key;
-	private View bgLayout;
-	private View metaData;
+    private static String key;
+    private View bgLayout;
+    private View metaData;
 
-	@Override
-	protected void createSideMenu() {
-		setContentView(R.layout.activity_episode_browser);
+    @Override
+    protected void createSideMenu() {
+        setContentView(R.layout.activity_episode_browser);
 
-		initMenuDrawerViews();
+        initMenuDrawerViews();
 
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-				R.drawable.menudrawer_selector, R.string.drawer_open,
-				R.string.drawer_closed) {
-			@Override
-			public void onDrawerOpened(View drawerView) {
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+                R.drawable.menudrawer_selector, R.string.drawer_open,
+                R.string.drawer_closed) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
 
-				super.onDrawerOpened(drawerView);
-				getSupportActionBar().setTitle(R.string.app_name);
-				drawerList.requestFocusFromTouch();
-			}
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle(R.string.app_name);
+                drawerList.requestFocusFromTouch();
+            }
 
-			@Override
-			public void onDrawerClosed(View drawerView) {
-				super.onDrawerClosed(drawerView);
-				getSupportActionBar().setTitle(R.string.app_name);
-			}
-		};
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                getSupportActionBar().setTitle(R.string.app_name);
+            }
+        };
 
-		drawerLayout.setDrawerListener(drawerToggle);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setHomeButtonEnabled(true);
+        drawerLayout.setDrawerListener(drawerToggle);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
 
-		populateMenuDrawer();
-	}
+        populateMenuDrawer();
+    }
 
-	protected void populateMenuDrawer() {
-		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-		drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
-				R.string.play_all_from_queue), R.drawable.menu_play_all_queue));
+    protected void populateMenuDrawer() {
+        List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
+        drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
+                R.string.play_all_from_queue), R.drawable.menu_play_all_queue));
 
-		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-		drawerList
-		.setOnItemClickListener(new EpisodeMenuDrawerOnItemClickedListener(
-				drawerLayout));
-	}
+        drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+        drawerList
+                .setOnItemClickListener(new EpisodeMenuDrawerOnItemClickedListener(
+                        drawerLayout));
+    }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		actionBar.setCustomView(R.layout.move_custom_actionbar);
-		actionBar.setDisplayShowCustomEnabled(true);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        actionBar.setCustomView(R.layout.move_custom_actionbar);
+        actionBar.setDisplayShowCustomEnabled(true);
 
-		key = getIntent().getExtras().getString("key");
+        key = getIntent().getExtras().getString("key");
 
-		createSideMenu();
+        createSideMenu();
 
-		bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
-		metaData = findViewById(R.id.metaDataRow);
-		metaData.setVisibility(View.VISIBLE);
+        bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
+        metaData = findViewById(R.id.metaDataRow);
+        metaData.setVisibility(View.VISIBLE);
 
-		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
+        DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 
-	}
+    }
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu",
-				true);
-		if (menuKeySlidingMenu) {
-			if (keyCode == KeyEvent.KEYCODE_MENU) {
-				if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-					drawerLayout.closeDrawers();
-				} else {
-					drawerLayout.openDrawer(linearDrawerLayout);
-				}
-				return true;
-			}
-		}
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu",
+                true);
+        if (menuKeySlidingMenu) {
+            if (keyCode == KeyEvent.KEYCODE_MENU) {
+                if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
+                    drawerLayout.closeDrawers();
+                } else {
+                    drawerLayout.openDrawer(linearDrawerLayout);
+                }
+                return true;
+            }
+        }
 
-		if (keyCode == KeyEvent.KEYCODE_BACK
-				&& drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-			drawerLayout.closeDrawers();
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
+            drawerLayout.closeDrawers();
 
-			View gallery = findViewById(R.id.moviePosterView);
-			if (gallery != null) {
-				gallery.requestFocusFromTouch();
-			}
-			return true;
-		}
+            View gallery = findViewById(R.id.moviePosterView);
+            if (gallery != null) {
+                gallery.requestFocusFromTouch();
+            }
+            return true;
+        }
 
-		return super.onKeyDown(keyCode, event);
-	}
+        return super.onKeyDown(keyCode, event);
+    }
 
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		populateMenuDrawer();
-	}
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        populateMenuDrawer();
+    }
 
-	@Override
-	public AbstractPosterImageGalleryAdapter getAdapter() {
-		return seasonEpisodeAdapter;
-	}
+    @Override
+    public AbstractPosterImageGalleryAdapter getAdapter() {
+        return seasonEpisodeAdapter;
+    }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-		if (key != null && key.contains("onDeck")) {
-			recreate();
-			return;
-		}
-	}
+        if (key != null && key.contains("onDeck")) {
+            recreate();
+            return;
+        }
+    }
 
-	public static String getKey() {
-		return key;
-	}
+    public static String getKey() {
+        return key;
+    }
 
-	@Override
-	protected DpadAwareRecyclerView findGalleryView() {
-		return (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
-	}
+    @Override
+    protected DpadAwareRecyclerView findGalleryView() {
+        return (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
+    }
 
-	@Override
-	protected DpadAwareRecyclerView findGridView() {
-		return null;
-	}
+    @Override
+    protected DpadAwareRecyclerView findGridView() {
+        return null;
+    }
 }

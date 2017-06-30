@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -22,6 +22,11 @@
  */
 
 package us.nineworlds.serenity.ui.browser.tv;
+
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -37,91 +42,87 @@ import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
-import android.app.Activity;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 /**
  * @author dcarver
  *
  */
 public class FindUnwatchedAsyncTask extends
-AsyncTask<SeriesContentInfo, Void, EpisodePosterInfo> {
+        AsyncTask<SeriesContentInfo, Void, EpisodePosterInfo> {
 
-	@Inject
-	protected PlexappFactory factory;
+    @Inject
+    protected PlexappFactory factory;
 
-	@Inject
-	VideoPlayerIntentUtils vpUtils;
+    @Inject
+    VideoPlayerIntentUtils vpUtils;
 
-	protected Activity activity;
+    protected Activity activity;
 
-	/**
-	 *
-	 */
-	public FindUnwatchedAsyncTask(Activity context) {
-		this.activity = context;
-		SerenityObjectGraph.getInstance().inject(this);
-	}
+    /**
+     *
+     */
+    public FindUnwatchedAsyncTask(Activity context) {
+        this.activity = context;
+        SerenityObjectGraph.getInstance().inject(this);
+    }
 
-	@Override
-	protected EpisodePosterInfo doInBackground(SeriesContentInfo... infos) {
-		return findFirstUnwatchedEpisode(infos[0]);
-	}
+    @Override
+    protected EpisodePosterInfo doInBackground(SeriesContentInfo... infos) {
+        return findFirstUnwatchedEpisode(infos[0]);
+    }
 
-	private EpisodePosterInfo findFirstUnwatchedEpisode(SeriesContentInfo info) {
-		if (Integer.valueOf(info.getShowsUnwatched()) == 0) {
-			return null;
-		}
-		try {
-			final MediaContainer seasonContainer = factory.retrieveSeasons(info
-					.getKey());
-			final List<Directory> seasons = seasonContainer.getDirectories();
-			for (Directory season : seasons) {
-				final MediaContainer episodeContainer = factory
-						.retrieveEpisodes(season.getKey());
-				final List<Video> episodes = episodeContainer.getVideos();
+    private EpisodePosterInfo findFirstUnwatchedEpisode(SeriesContentInfo info) {
+        if (Integer.valueOf(info.getShowsUnwatched()) == 0) {
+            return null;
+        }
+        try {
+            final MediaContainer seasonContainer = factory.retrieveSeasons(info
+                    .getKey());
+            final List<Directory> seasons = seasonContainer.getDirectories();
+            for (Directory season : seasons) {
+                final MediaContainer episodeContainer = factory
+                        .retrieveEpisodes(season.getKey());
+                final List<Video> episodes = episodeContainer.getVideos();
 
-				String baseUrl = factory.baseURL();
-				String parentPosterURL = null;
-				if (episodeContainer.getParentPosterURL() != null
-						&& !episodeContainer.getParentPosterURL().contains(
-								"show")) {
-					parentPosterURL = baseUrl
-							+ episodeContainer.getParentPosterURL()
-							.substring(1);
-				}
-				for (Video episode : episodes) {
-					EpisodeMediaContainer emc = new EpisodeMediaContainer(
-							episodeContainer);
-					final EpisodePosterInfo videoInfo = emc
-							.createEpisodeContentInfo(episodeContainer,
-									baseUrl, parentPosterURL, episode);
-					if (videoInfo.isWatched()) {
-						continue;
-					}
-					return videoInfo;
-				}
-			}
-		} catch (Exception e) {
-			Log.d(getClass().getName(),
-					"Unable to find first unwatched episode.", e);
-		}
-		return null;
-	}
+                String baseUrl = factory.baseURL();
+                String parentPosterURL = null;
+                if (episodeContainer.getParentPosterURL() != null
+                        && !episodeContainer.getParentPosterURL().contains(
+                        "show")) {
+                    parentPosterURL = baseUrl
+                            + episodeContainer.getParentPosterURL()
+                            .substring(1);
+                }
+                for (Video episode : episodes) {
+                    EpisodeMediaContainer emc = new EpisodeMediaContainer(
+                            episodeContainer);
+                    final EpisodePosterInfo videoInfo = emc
+                            .createEpisodeContentInfo(episodeContainer,
+                                    baseUrl, parentPosterURL, episode);
+                    if (videoInfo.isWatched()) {
+                        continue;
+                    }
+                    return videoInfo;
+                }
+            }
+        } catch (Exception e) {
+            Log.d(getClass().getName(),
+                    "Unable to find first unwatched episode.", e);
+        }
+        return null;
+    }
 
-	@Override
-	protected void onPostExecute(EpisodePosterInfo info) {
-		final String toast;
-		if (info == null) {
-			toast = activity.getString(R.string.no_unwatched_episode_toast);
-		} else {
-			toast = activity.getString(R.string.playing_episode_toast,
-					info.getSeason(), info.getEpisode(), info.getTitle());
-			vpUtils.playVideo(activity, info, true);
-		}
-		Toast.makeText(activity, toast, Toast.LENGTH_LONG).show();
-	}
+    @Override
+    protected void onPostExecute(EpisodePosterInfo info) {
+        final String toast;
+        if (info == null) {
+            toast = activity.getString(R.string.no_unwatched_episode_toast);
+        } else {
+            toast = activity.getString(R.string.playing_episode_toast,
+                    info.getSeason(), info.getEpisode(), info.getTitle());
+            vpUtils.playVideo(activity, info, true);
+        }
+        Toast.makeText(activity, toast, Toast.LENGTH_LONG).show();
+    }
 
 }

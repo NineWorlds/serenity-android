@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -26,7 +26,6 @@ package us.nineworlds.serenity.ui.browser.tv;
 import android.view.View;
 
 
-
 /**
  * A listener that handles long press for video content. Includes displaying a
  * dialog for toggling watched and unwatched status as well for possibly playing
@@ -38,12 +37,12 @@ import android.view.View;
 public class TVShowGridOnItemLongClickListener extends AbstractTVShowOnItemLongClick implements View.OnLongClickListener {
 
 
-	@Override
-	public boolean onLongClick(View v) {
-		init();
+    @Override
+    public boolean onLongClick(View v) {
+        init();
 
-		createAndShowDialog();
+        createAndShowDialog();
 
-		return true;
-	}
+        return true;
+    }
 }

@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,27 +23,28 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
-import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
-import us.nineworlds.serenity.widgets.DrawerLayout;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
+import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
+import us.nineworlds.serenity.widgets.DrawerLayout;
+
 public class SettingsMenuDrawerOnItemClickedListener implements OnClickListener {
-	private final DrawerLayout menuDrawer;
+    private final DrawerLayout menuDrawer;
 
-	public SettingsMenuDrawerOnItemClickedListener(DrawerLayout drawer) {
-		menuDrawer = drawer;
-	}
+    public SettingsMenuDrawerOnItemClickedListener(DrawerLayout drawer) {
+        menuDrawer = drawer;
+    }
 
-	@Override
-	public void onClick(View view) {
-		SerenityDrawerLayoutActivity activity = (SerenityDrawerLayoutActivity) view
-				.getContext();
+    @Override
+    public void onClick(View view) {
+        SerenityDrawerLayoutActivity activity = (SerenityDrawerLayoutActivity) view
+                .getContext();
 
-		Intent i = new Intent(activity, SerenityPreferenceActivity.class);
-		activity.startActivity(i);
-		menuDrawer.closeDrawers();
-	}
+        Intent i = new Intent(activity, SerenityPreferenceActivity.class);
+        activity.startActivity(i);
+        menuDrawer.closeDrawers();
+    }
 }

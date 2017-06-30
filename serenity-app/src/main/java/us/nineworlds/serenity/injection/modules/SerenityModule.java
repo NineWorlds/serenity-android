@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,15 +23,14 @@
 
 package us.nineworlds.serenity.injection.modules;
 
-import com.birbit.android.jobqueue.JobManager;
-
-import dagger.Module;
-import dagger.Provides;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import javax.inject.Singleton;
 
+import dagger.Module;
+import dagger.Provides;
 import okhttp3.OkHttpClient;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.Server;
@@ -50,76 +49,76 @@ import us.nineworlds.serenity.ui.util.YouTubeUtils;
 @Module(library = true)
 public class SerenityModule {
 
-	@Provides
-	@Singleton
-	TimeUtil providesTimeUtil() {
-		return new TimeUtil();
-	}
+    @Provides
+    @Singleton
+    TimeUtil providesTimeUtil() {
+        return new TimeUtil();
+    }
 
-	@Provides
-	@Singleton
-	YouTubeUtils providesYouTubeUtils() {
-		return new YouTubeUtils();
-	}
+    @Provides
+    @Singleton
+    YouTubeUtils providesYouTubeUtils() {
+        return new YouTubeUtils();
+    }
 
-	@Provides
-	@Singleton
-	VideoQueueHelper providesVideoQueueHelper() {
-		return new VideoQueueHelper();
-	}
+    @Provides
+    @Singleton
+    VideoQueueHelper providesVideoQueueHelper() {
+        return new VideoQueueHelper();
+    }
 
-	@Provides
-	@Singleton
-	@ForMediaServers
-	Map<String, Server> providesMediaServers() {
-		return new ConcurrentHashMap<String, Server>();
-	}
+    @Provides
+    @Singleton
+    @ForMediaServers
+    Map<String, Server> providesMediaServers() {
+        return new ConcurrentHashMap<String, Server>();
+    }
 
-	@Provides
-	@Singleton
-	@ForVideoQueue
-	LinkedList<VideoContentInfo> providesVideoQueue() {
-		return new LinkedList<VideoContentInfo>();
-	}
+    @Provides
+    @Singleton
+    @ForVideoQueue
+    LinkedList<VideoContentInfo> providesVideoQueue() {
+        return new LinkedList<VideoContentInfo>();
+    }
 
-	@Provides
-	@Singleton
-	VideoPlayerIntentUtils providesVideoPlayerUtils() {
-		return new VideoPlayerIntentUtils();
-	}
+    @Provides
+    @Singleton
+    VideoPlayerIntentUtils providesVideoPlayerUtils() {
+        return new VideoPlayerIntentUtils();
+    }
 
-	@Provides
-	@Singleton
-	SerenityImageLoader providesSerenityImageLoader() {
-		return new SerenityImageLoader();
-	}
+    @Provides
+    @Singleton
+    SerenityImageLoader providesSerenityImageLoader() {
+        return new SerenityImageLoader();
+    }
 
-	@Provides
-	@Singleton
-	OkHttpClient providesOkHttpClient() {
-		return new OkHttpClient();
-	}
+    @Provides
+    @Singleton
+    OkHttpClient providesOkHttpClient() {
+        return new OkHttpClient();
+    }
 
-	@Provides
-	GalleryVideoOnItemClickListener providesGalleryVideoOnItemClickListener() {
-		return new GalleryVideoOnItemClickListener();
-	}
+    @Provides
+    GalleryVideoOnItemClickListener providesGalleryVideoOnItemClickListener() {
+        return new GalleryVideoOnItemClickListener();
+    }
 
-	@Provides
-	GalleryVideoOnItemLongClickListener providesGalleryVideoOnItemLongClickListener() {
-		return new GalleryVideoOnItemLongClickListener();
-	}
+    @Provides
+    GalleryVideoOnItemLongClickListener providesGalleryVideoOnItemLongClickListener() {
+        return new GalleryVideoOnItemLongClickListener();
+    }
 
-	@Provides
-	@Singleton
-	MovieSelectedCategoryState providesMovieSelectedCategoryState() {
-		return new MovieSelectedCategoryState();
-	}
+    @Provides
+    @Singleton
+    MovieSelectedCategoryState providesMovieSelectedCategoryState() {
+        return new MovieSelectedCategoryState();
+    }
 
-	@Provides
-	@Singleton
-	TVCategoryState providesTVCategoryState() {
-		return new TVCategoryState();
-	}
+    @Provides
+    @Singleton
+    TVCategoryState providesTVCategoryState() {
+        return new TVCategoryState();
+    }
 
 }

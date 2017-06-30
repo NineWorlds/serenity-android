@@ -14,7 +14,7 @@
     <string name="video_title">Reproductor de Vídeo</string>
     <string name="movie_category_prompt">Escoja una categoría</string>
     <string name="movie_category_prompt2">Género / Colección</string>
-    
+
     <string name="category">Categoría:</string>
     <string name="year">Año</string>
     <string name="genre">Género</string>
@@ -52,8 +52,8 @@
     <string name="no_videos_found_that_match_the_search_criteria">No se encontraron videos que coinciden con los criterios de búsqueda</string>
     <string name="video_options">Opciones de vídeo</string>
     <string name="view_all_episodes">Ver todos los Episodios</string>
-    
-   <string-array name="categoryListNames">
+
+    <string-array name="categoryListNames">
         <item>Todo</item>
         <item>El más nuevo</item>
         <item>On Deck</item>
@@ -61,7 +61,7 @@
         <item>Visto recientemente</item>
         <item>Desatendido</item>
     </string-array>
-    
+
     <string name="select_the_starting_category_filter_">Seleccione el filtro de categoría básica.</string>
     <string name="categories_summary_preference_description">Las categorías se utilizan para seleccionar el filtro de partida al navegar por las películas y programas de televisión. El valor predeterminado es Todo.</string>
     <string name="preferred_filter">Filtrar preferente</string>
@@ -102,9 +102,9 @@
     <string name="force_mx_player_resume_position_">Fuerza MX Reproductor Reanudar Position.</string>
     <string name="prefer_plex_media_server_s_aspect_ratio_">Prefiero relación de aspecto de Plex Media Server\'s.</string>
     <string name="plex_aspect_ratio">Plex Relación de aspecto</string>
-    
+
     <string name="auto_configuring_server_using_">"Servidor de configuración automática utilizando "</string>
-    
+
     <string name="changelog_full_title">Serenidad para Android Listado de cambios</string>
     <string name="changelog_title">¿Qué hay de nuevo</string>
     <string name="changelog_ok_button">Bueno</string>
@@ -116,34 +116,34 @@
     <string name="play_all_from_queue">Reproducir todo de la cola</string>
     <string name="external_player_video_queue_support_has_not_been_enabled_">La ayuda del jugador de colas de vídeo externa no se ha habilitado.</string>
     <string name="queue_is_empty_">Cola está vacía.</string>
-    <string name="media_player_internal">Media Player - Interno</string>    
+    <string name="media_player_internal">Media Player - Interno</string>
     <string name="media_player_external">Media Player - Externo</string>
-    
-    <string name="no_play_store_installed_on_device">No Play Store instalado en el dispositivo</string>    
-    <string name="rate_it_">De su nota!</string>    
-    <string name="remind_me_later">Recuérdame más tarde</string>    
-    <string name="no_thanks">No, gracias</string>    
-    <string name="if_you_enjoy_using_">"Si te gusta usar "</string>    
-    <string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, Por favor, tome un momento para evaluarlo. Gracias por su apoyo!</string>    
-    <string name="rate_">"Rate "</string>    
-    <string name="cast_fling_with_">Cast / aventura con ...</string>    
-    <string name="add_video_to_queue">Añadir vídeo a cola</string>    
-    <string name="there_are_still_videos_int_the_queue_">Todavía hay vídeos int la cola.</string>    
-   
-    <string name="remote_control_menu_summary">Cuando se activa la tecla de menú se abre el menú de la diapositiva, de lo contrario, se activará el menú contextual de un elemento, si está disponible.</string>    
-    <string name="enable_sliding_menu">Habilitar Sliding Menu</string>    
-    <string name="preference_remote_control">Control Remoto</string>    
-    
-    <string name="overscan_adjustement_summary">Ajusta la pantalla para que los artículos no se cortan. Puede ser necesaria cuando se ejecuta en Ouya u otros dispositivos de TV Android.</string>    
-    <string name="overscan_compensation">Overscan Compensación</string>    
-    <string name="display_adjustements">Mostrar Ajustes</string>    
 
-    <string name="add_season_to_queue">Añadir a la cola de la temporada</string>    
-    <string name="season_options">Opciones Temporada</string>    
-    
+    <string name="no_play_store_installed_on_device">No Play Store instalado en el dispositivo</string>
+    <string name="rate_it_">De su nota!</string>
+    <string name="remind_me_later">Recuérdame más tarde</string>
+    <string name="no_thanks">No, gracias</string>
+    <string name="if_you_enjoy_using_">"Si te gusta usar "</string>
+    <string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, Por favor, tome un momento para evaluarlo. Gracias por su apoyo!</string>
+    <string name="rate_">"Rate "</string>
+    <string name="cast_fling_with_">Cast / aventura con ...</string>
+    <string name="add_video_to_queue">Añadir vídeo a cola</string>
+    <string name="there_are_still_videos_int_the_queue_">Todavía hay vídeos int la cola.</string>
+
+    <string name="remote_control_menu_summary">Cuando se activa la tecla de menú se abre el menú de la diapositiva, de lo contrario, se activará el menú contextual de un elemento, si está disponible.</string>
+    <string name="enable_sliding_menu">Habilitar Sliding Menu</string>
+    <string name="preference_remote_control">Control Remoto</string>
+
+    <string name="overscan_adjustement_summary">Ajusta la pantalla para que los artículos no se cortan. Puede ser necesaria cuando se ejecuta en Ouya u otros dispositivos de TV Android.</string>
+    <string name="overscan_compensation">Overscan Compensación</string>
+    <string name="display_adjustements">Mostrar Ajustes</string>
+
+    <string name="add_season_to_queue">Añadir a la cola de la temporada</string>
+    <string name="season_options">Opciones Temporada</string>
+
     <string name="series_select_the_starting_category_filter_">Seleccione el filtro de categorías de partida para programas de televisión.</string>
     <string name="categories_series_summary_preference_description">Las categorías se utilizan para seleccionar el filtro de partida cuando se navega por programas de televisión. El valor predeterminado es Todo.</string>
-    
+
     <string-array name="categoryListNamesSeries">
         <item>Todo</item>
         <item>El más nuevo</item>
@@ -153,7 +153,7 @@
         <item>Espectáculos vistos recientemente</item>
         <item>Desatendido</item>
     </string-array>
-    
+
     <string name="resume_video">Reanudar vídeo</string>
     <string name="resume_the_video_from_">"Reanudar el vídeo de "</string>
     <string name="_or_restart_">" o reiniciar?"</string>
@@ -163,11 +163,11 @@
     <string name="prefer_grid_view_for_series">Prefiero cuadricula para la Serie</string>
     <string name="enables_video_queue_support_for_external_players_">Activa el soporte de cola de vídeo para los jugadores exteriores.</string>
     <string name="enable_video_queue_for_external_players">Habilitar cola vídeo para los jugadores externos</string>
-    
+
     <string name="prefs_advanced_options">Opciones avanzadas</string>
     <string name="prefs_startup_boot_sum">Controla si la serenidad para Android lanza inmediatamente después de que el dispositivo haya terminado la secuencia de arranque. Útil para aquellos que quieren ofrecer una más de cine en casa como experiencia.</string>
     <string name="prefs_auto_start_after_boot">Inicio automático después de Boot</string>
-    
+
     <string name="playing_episode_toast">Jugar %1$s %2$s: %3$s</string>
     <string name="no_unwatched_episode_toast">No hay episodios no vistos encontrado</string>
 
@@ -211,5 +211,5 @@
         <item>3000000</item>
         <item>6000000</item>
     </string-array>
-    
+
 </resources>

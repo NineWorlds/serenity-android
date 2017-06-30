@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,24 +23,25 @@
 
 package us.nineworlds.serenity.ui.adapters;
 
+import android.content.Context;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import android.support.v7.app.AppCompatActivity;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import android.content.Context;
-import android.os.Handler;
-import android.view.View;
-import android.widget.ImageView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * An abstract class for handling the creation of video content for use during
@@ -53,82 +54,82 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  */
 public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecyclerViewAdapter {
 
-	@Inject
-	protected SerenityImageLoader serenityImageLoader;
+    @Inject
+    protected SerenityImageLoader serenityImageLoader;
 
-	@Inject
-	protected PlexappFactory factory;
+    @Inject
+    protected PlexappFactory factory;
 
-	protected static List<VideoContentInfo> posterList = null;
-	protected AppCompatActivity context;
-	protected ImageLoader imageLoader;
-	protected static final int SIZE_HEIGHT = 400;
-	protected static final int SIZE_WIDTH = 200;
+    protected static List<VideoContentInfo> posterList = null;
+    protected AppCompatActivity context;
+    protected ImageLoader imageLoader;
+    protected static final int SIZE_HEIGHT = 400;
+    protected static final int SIZE_WIDTH = 200;
 
-	protected Handler handler;
-	protected String key;
-	protected String category;
+    protected Handler handler;
+    protected String key;
+    protected String category;
 
-	public AbstractPosterImageGalleryAdapter(Context c, String key) {
-		context = (AppCompatActivity) c;
-		posterList = new ArrayList<VideoContentInfo>();
-		imageLoader = serenityImageLoader.getImageLoader();
-		this.key = key;
-		fetchDataFromService();
-	}
+    public AbstractPosterImageGalleryAdapter(Context c, String key) {
+        context = (AppCompatActivity) c;
+        posterList = new ArrayList<VideoContentInfo>();
+        imageLoader = serenityImageLoader.getImageLoader();
+        this.key = key;
+        fetchDataFromService();
+    }
 
-	public AbstractPosterImageGalleryAdapter(Context c, String key,
-			String category) {
-		context = (AppCompatActivity) c;
-		this.key = key;
-		this.category = category;
-		posterList = new ArrayList<VideoContentInfo>();
+    public AbstractPosterImageGalleryAdapter(Context c, String key,
+                                             String category) {
+        context = (AppCompatActivity) c;
+        this.key = key;
+        this.category = category;
+        posterList = new ArrayList<VideoContentInfo>();
 
-		imageLoader = serenityImageLoader.getImageLoader();
-		fetchDataFromService();
-	}
+        imageLoader = serenityImageLoader.getImageLoader();
+        fetchDataFromService();
+    }
 
-	protected abstract void fetchDataFromService();
+    protected abstract void fetchDataFromService();
 
-	@Override
-	public int getItemCount() {
-		return posterList.size();
-	}
+    @Override
+    public int getItemCount() {
+        return posterList.size();
+    }
 
-	public Object getItem(int position) {
-		if (position >  posterList.size()) {
-			return null;
-		}
-		try {
-			return posterList.get(position);
-		} catch (IndexOutOfBoundsException ex) {
-			ex.printStackTrace();
-			return null;
-		}
-	}
+    public Object getItem(int position) {
+        if (position > posterList.size()) {
+            return null;
+        }
+        try {
+            return posterList.get(position);
+        } catch (IndexOutOfBoundsException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-	public List<VideoContentInfo> getItems() {
-		return posterList;
-	}
+    public List<VideoContentInfo> getItems() {
+        return posterList;
+    }
 
-	public void setWatchedStatus(View galleryCellView, VideoContentInfo pi) {
-		ImageView watchedView = (ImageView) galleryCellView
-				.findViewById(R.id.posterWatchedIndicator);
+    public void setWatchedStatus(View galleryCellView, VideoContentInfo pi) {
+        ImageView watchedView = (ImageView) galleryCellView
+                .findViewById(R.id.posterWatchedIndicator);
 
-		if (pi.isPartiallyWatched()) {
-			ImageUtils.toggleProgressIndicator(galleryCellView,
-					pi.getResumeOffset(), pi.getDuration());
-		} else if (pi.isWatched()) {
-			watchedView.setImageResource(R.drawable.overlaywatched);
-			watchedView.setVisibility(View.VISIBLE);
-		} else {
-			watchedView.setVisibility(View.INVISIBLE);
-		}
-	}
+        if (pi.isPartiallyWatched()) {
+            ImageUtils.toggleProgressIndicator(galleryCellView,
+                    pi.getResumeOffset(), pi.getDuration());
+        } else if (pi.isWatched()) {
+            watchedView.setImageResource(R.drawable.overlaywatched);
+            watchedView.setVisibility(View.VISIBLE);
+        } else {
+            watchedView.setVisibility(View.INVISIBLE);
+        }
+    }
 
 }

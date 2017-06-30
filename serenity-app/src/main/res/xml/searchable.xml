@@ -5,5 +5,5 @@
     android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
     android:searchSuggestAuthority="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
     android:searchSuggestSelection=" ?">
-       
+
 </searchable>

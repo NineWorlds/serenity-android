@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <!-- The main content view -->
 
-    <RelativeLayout
-        xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
         android:id="@+id/tvshowBrowserLayout"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.browser.tv.TVShowBrowserActivity" >
+        tools:context=".ui.browser.tv.TVShowBrowserActivity">
 
-        <ImageView android:id="@+id/fanArt"
+        <ImageView
+            android:id="@+id/fanArt"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-         />
+            android:layout_height="match_parent" />
+
         <RelativeLayout
             android:id="@+id/video_details_container"
             android:layout_width="fill_parent"
@@ -25,7 +25,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/actionbarMargin"
             android:background="@color/card_background"
-            android:padding="5dp" >
+            android:padding="5dp">
 
             <us.nineworlds.serenity.widgets.RoundedImageView
                 android:id="@+id/tvShowImage"
@@ -45,7 +45,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_toRightOf="@+id/tvShowImage"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/tvShowRating"
@@ -60,8 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="4"
-                    android:stepSize="0.1" >
-                </RatingBar>
+                    android:stepSize="0.1"></RatingBar>
 
                 <ImageView
                     android:id="@+id/tvShowStudio"
@@ -113,18 +112,19 @@
             android:layout_marginBottom="5dp"
             android:gravity="bottom"
             android:background="@color/card_background"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <net.ganin.darv.DpadAwareRecyclerView
-                    android:id="@+id/tvShowBannerGallery"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center|center_vertical"
-                    android:nextFocusUp="@+id/categoryFilter"
-                    app:selectorVelocity="2000"
-                    app:smoothScrolling="true"
-                    app:backgroundSelector="@drawable/main_menu_item_foreground_selector">
-                <requestFocus/>
+                android:id="@+id/tvShowBannerGallery"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|center_vertical"
+                android:nextFocusUp="@+id/categoryFilter"
+                app:selectorVelocity="2000"
+                app:smoothScrolling="true"
+                app:backgroundSelector="@drawable/main_menu_item_foreground_selector">
+
+                <requestFocus />
             </net.ganin.darv.DpadAwareRecyclerView>
 
         </LinearLayout>

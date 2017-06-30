@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,6 +23,13 @@
 
 package us.nineworlds.serenity.core;
 
+import android.content.ContentProvider;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
+import android.util.Log;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,13 +37,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-
-import android.content.ContentProvider;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.ParcelFileDescriptor;
-import android.util.Log;
 
 import okhttp3.OkHttpClient;
 import okhttp3.OkUrlFactory;
@@ -64,103 +64,103 @@ import okhttp3.OkUrlFactory;
  */
 public class SerenityRecommendationContentProvider extends ContentProvider {
 
-	public static String AUTHORITY = "us.nineworlds.serenity.core.SerenityRecommendationContentProvider";
-	public static String CONTENT_URI = "content://" + AUTHORITY + "/";
+    public static String AUTHORITY = "us.nineworlds.serenity.core.SerenityRecommendationContentProvider";
+    public static String CONTENT_URI = "content://" + AUTHORITY + "/";
 
-	OkHttpClient httpClient = new OkHttpClient();
+    OkHttpClient httpClient = new OkHttpClient();
 
-	public SerenityRecommendationContentProvider() {
-		super();
-	}
+    public SerenityRecommendationContentProvider() {
+        super();
+    }
 
-	@Override
-	public boolean onCreate() {
-		return true;
-	}
+    @Override
+    public boolean onCreate() {
+        return true;
+    }
 
-	@Override
-	public ParcelFileDescriptor openFile(Uri uri, String mode)
-			throws FileNotFoundException {
+    @Override
+    public ParcelFileDescriptor openFile(Uri uri, String mode)
+            throws FileNotFoundException {
 
-		ParcelFileDescriptor[] pipe = null;
+        ParcelFileDescriptor[] pipe = null;
 
-		String url = uri.getPath();
+        String url = uri.getPath();
 
-		try {
-			String decodedUrl = URLDecoder.decode(url.replaceFirst("/", ""),
-					"UTF-8");
-			pipe = ParcelFileDescriptor.createPipe();
+        try {
+            String decodedUrl = URLDecoder.decode(url.replaceFirst("/", ""),
+                    "UTF-8");
+            pipe = ParcelFileDescriptor.createPipe();
 
-			OkUrlFactory factory = new OkUrlFactory(httpClient);
+            OkUrlFactory factory = new OkUrlFactory(httpClient);
 
-			HttpURLConnection connection = factory.open(new URL(decodedUrl));
+            HttpURLConnection connection = factory.open(new URL(decodedUrl));
 
-			new TransferThread(connection.getInputStream(),
-					new ParcelFileDescriptor.AutoCloseOutputStream(pipe[1]))
-					.start();
-		} catch (IOException e) {
-			Log.e(getClass().getSimpleName(), "Exception opening pipe", e);
-			throw new FileNotFoundException("Could not open pipe for: "
-					+ uri.toString());
-		}
+            new TransferThread(connection.getInputStream(),
+                    new ParcelFileDescriptor.AutoCloseOutputStream(pipe[1]))
+                    .start();
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Exception opening pipe", e);
+            throw new FileNotFoundException("Could not open pipe for: "
+                    + uri.toString());
+        }
 
-		return (pipe[0]);
-	}
+        return (pipe[0]);
+    }
 
-	@Override
-	public Cursor query(Uri uri, String[] projection, String selection,
-			String[] selectionArgs, String sortOrder) {
-		return null;
-	}
+    @Override
+    public Cursor query(Uri uri, String[] projection, String selection,
+                        String[] selectionArgs, String sortOrder) {
+        return null;
+    }
 
-	@Override
-	public String getType(Uri uri) {
-		return "image/*";
-	}
+    @Override
+    public String getType(Uri uri) {
+        return "image/*";
+    }
 
-	@Override
-	public Uri insert(Uri uri, ContentValues values) {
-		return null;
-	}
+    @Override
+    public Uri insert(Uri uri, ContentValues values) {
+        return null;
+    }
 
-	@Override
-	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		return 0;
-	}
+    @Override
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        return 0;
+    }
 
-	@Override
-	public int update(Uri uri, ContentValues values, String selection,
-			String[] selectionArgs) {
-		return 0;
-	}
+    @Override
+    public int update(Uri uri, ContentValues values, String selection,
+                      String[] selectionArgs) {
+        return 0;
+    }
 
-	static class TransferThread extends Thread {
-		InputStream in;
-		OutputStream out;
+    static class TransferThread extends Thread {
+        InputStream in;
+        OutputStream out;
 
-		TransferThread(InputStream in, OutputStream out) {
-			this.in = in;
-			this.out = out;
-		}
+        TransferThread(InputStream in, OutputStream out) {
+            this.in = in;
+            this.out = out;
+        }
 
-		@Override
-		public void run() {
-			byte[] buf = new byte[8192];
-			int len;
+        @Override
+        public void run() {
+            byte[] buf = new byte[8192];
+            int len;
 
-			try {
-				while ((len = in.read(buf)) > 0) {
-					out.write(buf, 0, len);
-				}
+            try {
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
 
-				in.close();
-				out.flush();
-				out.close();
-			} catch (IOException e) {
-				Log.e(getClass().getSimpleName(),
-						"Exception transferring file", e);
-			}
-		}
-	}
+                in.close();
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(),
+                        "Exception transferring file", e);
+            }
+        }
+    }
 
 }

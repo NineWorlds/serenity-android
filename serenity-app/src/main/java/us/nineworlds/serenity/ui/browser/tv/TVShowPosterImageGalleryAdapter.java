@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,37 +23,39 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import android.content.Context;
+import android.view.View;
+
 import net.ganin.darv.DpadAwareRecyclerView;
+
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
-import android.content.Context;
-import android.view.View;
 
 
 public class TVShowPosterImageGalleryAdapter extends TVShowBannerImageGalleryAdapter {
 
-	public TVShowPosterImageGalleryAdapter(Context c, String key,
-			String category) {
-		super(c, key, category);
-		showActivity = (SerenityMultiViewVideoActivity) c;
+    public TVShowPosterImageGalleryAdapter(Context c, String key,
+                                           String category) {
+        super(c, key, category);
+        showActivity = (SerenityMultiViewVideoActivity) c;
 
-	}
+    }
 
-	@Override
-	protected void createImage(View galleryCellView, SeriesContentInfo pi, int imageWidth, int imageHeight) {
-		int width = ImageUtils.getDPI(130, context);
-		int height = ImageUtils.getDPI(200, context);
+    @Override
+    protected void createImage(View galleryCellView, SeriesContentInfo pi, int imageWidth, int imageHeight) {
+        int width = ImageUtils.getDPI(130, context);
+        int height = ImageUtils.getDPI(200, context);
 
-		initPosterMetaData(galleryCellView, pi, width, height, true);
+        initPosterMetaData(galleryCellView, pi, width, height, true);
 
-		galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
+        galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
 
-	}
+    }
 
-	@Override
-	protected void fetchDataFromService() {
+    @Override
+    protected void fetchDataFromService() {
 
-	}
+    }
 
 }

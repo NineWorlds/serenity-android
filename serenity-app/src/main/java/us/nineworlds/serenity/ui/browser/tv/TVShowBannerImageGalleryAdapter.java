@@ -23,25 +23,9 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
-import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -50,14 +34,28 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
 import com.birbit.android.jobqueue.JobManager;
+
+import net.ganin.darv.DpadAwareRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
+import us.nineworlds.serenity.events.TVShowRetrievalEvent;
+import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 
 public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 
@@ -207,8 +205,8 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onTVShowResponse(MediaContainer response) {
-        tvShowList = new SeriesMediaContainer(response).createSeries();
+    public void onTVShowResponse(TVShowRetrievalEvent event) {
+        tvShowList = new SeriesMediaContainer(event.getMediaContainer()).createSeries();
         DpadAwareRecyclerView recyclerView = (DpadAwareRecyclerView) (context
                 .findViewById(R.id.tvShowBannerGallery) != null ? context.findViewById(R.id.tvShowBannerGallery) : context.findViewById(R.id.tvShowGridView));
         if (tvShowList != null) {

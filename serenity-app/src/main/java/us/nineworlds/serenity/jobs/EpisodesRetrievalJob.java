@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.events.EpisodesRetrievalEvent;
 import us.nineworlds.serenity.events.TVShowRetrievalEvent;
 import us.nineworlds.serenity.injection.InjectingJob;
 
@@ -36,7 +37,7 @@ public class EpisodesRetrievalJob extends InjectingJob {
     @Override
     public void onRun() throws Throwable {
         MediaContainer mediaContainer = client.retrieveEpisodes(key);
-        TVShowRetrievalEvent event = new TVShowRetrievalEvent(mediaContainer);
+        EpisodesRetrievalEvent event = new EpisodesRetrievalEvent(mediaContainer);
         eventBus.post(event);
     }
 

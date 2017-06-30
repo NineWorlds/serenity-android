@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -33,178 +33,178 @@ import us.nineworlds.serenity.core.model.impl.Subtitle;
  */
 public interface VideoContentInfo extends ContentInfo {
 
-	String getLongTitle();
+    String getLongTitle();
 
-	public String getDirectPlayUrl();
+    public String getDirectPlayUrl();
 
-	public void setDirectPlayUrl(String directPlayUrl);
+    public void setDirectPlayUrl(String directPlayUrl);
 
-	public List<String> getActors();
+    public List<String> getActors();
 
-	public String getAudioCodec();
+    public String getAudioCodec();
 
-	public String getCastInfo();
+    public String getCastInfo();
 
-	public String getContentRating();
+    public String getContentRating();
 
-	public List<String> getDirectors();
+    public List<String> getDirectors();
 
-	public List<String> getGenres();
+    public List<String> getGenres();
 
-	public String getVideoCodec();
+    public String getVideoCodec();
 
-	public String getVideoResolution();
+    public String getVideoResolution();
 
-	public List<String> getWriters();
+    public List<String> getWriters();
 
-	public String getYear();
+    public String getYear();
 
-	public String getAspectRatio();
+    public String getAspectRatio();
 
-	public int getViewCount();
+    public int getViewCount();
 
-	public String getContainer();
+    public String getContainer();
 
-	public String getParentPosterURL();
+    public String getParentPosterURL();
 
-	public String getGrandParentPosterURL();
+    public String getGrandParentPosterURL();
 
-	public void setActors(List<String> actors);
+    public void setActors(List<String> actors);
 
-	public void setAudioCodec(String audioCodec);
+    public void setAudioCodec(String audioCodec);
 
-	@Override
-	public void setBackgroundURL(String backgroundURL);
+    @Override
+    public void setBackgroundURL(String backgroundURL);
 
-	public void setCastInfo(String castInfo);
+    public void setCastInfo(String castInfo);
 
-	public void setContentRating(String contentRating);
+    public void setContentRating(String contentRating);
 
-	public void setDirectors(List<String> directors);
+    public void setDirectors(List<String> directors);
 
-	public void setGenres(List<String> genres);
+    public void setGenres(List<String> genres);
 
-	@Override
-	public void setSummary(String plotSummary);
+    @Override
+    public void setSummary(String plotSummary);
 
-	@Override
-	public void setImageURL(String posterURL);
+    @Override
+    public void setImageURL(String posterURL);
 
-	@Override
-	public void setTitle(String title);
+    @Override
+    public void setTitle(String title);
 
-	public void setVideoCodec(String videoCodec);
+    public void setVideoCodec(String videoCodec);
 
-	public void setVideoResolution(String videoResolution);
+    public void setVideoResolution(String videoResolution);
 
-	public void setWriters(List<String> writers);
+    public void setWriters(List<String> writers);
 
-	public void setYear(String year);
+    public void setYear(String year);
 
-	public void setAspectRatio(String ratio);
+    public void setAspectRatio(String ratio);
 
-	public void setViewCount(int viewCount);
+    public void setViewCount(int viewCount);
 
-	public void setParentPosterURL(String parentPosterURL);
+    public void setParentPosterURL(String parentPosterURL);
 
-	public void setGrandParentPosterURL(String parentPosterURL);
+    public void setGrandParentPosterURL(String parentPosterURL);
 
-	public String getAudioChannels();
+    public String getAudioChannels();
 
-	public void setAudioChannels(String audioChannels);
+    public void setAudioChannels(String audioChannels);
 
-	public void setResumeOffset(int offset);
+    public void setResumeOffset(int offset);
 
-	public void setDuration(int duration);
+    public void setDuration(int duration);
 
-	public int getDuration();
+    public int getDuration();
 
-	public int getResumeOffset();
+    public int getResumeOffset();
 
-	public String getSeason();
+    public String getSeason();
 
-	public int getSeasonNumber();
+    public int getSeasonNumber();
 
-	public void setSeasonNumber(int season);
+    public void setSeasonNumber(int season);
 
-	public String getEpisode();
+    public String getEpisode();
 
-	public int getEpisodeNumber();
+    public int getEpisodeNumber();
 
-	public void setEpisodeNumber(int episodeNum);
+    public void setEpisodeNumber(int episodeNum);
 
-	public void setOriginalAirDate(String airDate);
+    public void setOriginalAirDate(String airDate);
 
-	public String getOriginalAirDate();
+    public String getOriginalAirDate();
 
-	public void setContainer(String container);
+    public void setContainer(String container);
 
-	public void setSeriesTitle(String title);
+    public void setSeriesTitle(String title);
 
-	public String getSeriesTitle();
+    public String getSeriesTitle();
 
-	public Subtitle getSubtitle();
+    public Subtitle getSubtitle();
 
-	public void setSubtitle(Subtitle subtitle);
+    public void setSubtitle(Subtitle subtitle);
 
-	public void setStudio(String studio);
+    public void setStudio(String studio);
 
-	public String getStudio();
+    public String getStudio();
 
-	public double getRating();
+    public double getRating();
 
-	public void setRating(double rating);
+    public void setRating(double rating);
 
-	public void setParentKey(String parentKey);
+    public void setParentKey(String parentKey);
 
-	public String getParentKey();
+    public String getParentKey();
 
-	/**
-	 * Indicates if a show has been partially watched
-	 * 
-	 * @return true if it has been watched
-	 */
-	public boolean isPartiallyWatched();
+    /**
+     * Indicates if a show has been partially watched
+     *
+     * @return true if it has been watched
+     */
+    public boolean isPartiallyWatched();
 
-	/**
-	 * Indicates that the show has been watched
-	 *
-	 * Use getWatched to get the actual count
-	 *
-	 */
-	public boolean isWatched();
+    /**
+     * Indicates that the show has been watched
+     *
+     * Use getWatched to get the actual count
+     *
+     */
+    public boolean isWatched();
 
-	/**
-	 * Indicates that the show has not been watched.
-	 *
-	 * Use getUnwatched to get the actual count.
-	 *
-	 */
-	public boolean isUnwatched();
+    /**
+     * Indicates that the show has not been watched.
+     *
+     * Use getUnwatched to get the actual count.
+     *
+     */
+    public boolean isUnwatched();
 
-	/**
-	 * The percentage viewed
-	 *
-	 * @return
-	 */
-	public float viewedPercentage();
+    /**
+     * The percentage viewed
+     *
+     * @return
+     */
+    public float viewedPercentage();
 
-	public void toggleWatchStatus();
+    public void toggleWatchStatus();
 
-	public boolean hasTrailer();
+    public boolean hasTrailer();
 
-	public void setTrailer(boolean trailer);
+    public void setTrailer(boolean trailer);
 
-	public String trailerId();
+    public String trailerId();
 
-	public void setTrailerId(String id);
+    public void setTrailerId(String id);
 
-	public void setAvailableSubTitles(List<Subtitle> subtitles);
+    public void setAvailableSubTitles(List<Subtitle> subtitles);
 
-	public List<Subtitle> getAvailableSubtitles();
+    public List<Subtitle> getAvailableSubtitles();
 
-	public String getTagLine();
+    public String getTagLine();
 
-	public void setTagLine(String tagLine);
+    public void setTagLine(String tagLine);
 
 }

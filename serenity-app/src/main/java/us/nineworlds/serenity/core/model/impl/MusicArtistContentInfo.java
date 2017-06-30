@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -32,72 +32,72 @@ import us.nineworlds.serenity.core.model.ArtistContentInfo;
  *
  */
 public class MusicArtistContentInfo implements ArtistContentInfo, Serializable {
-	
-	private static final long serialVersionUID = -3671771266686596176L;
-	private String id;
-	private String summary;
-	private String backgroundImageURL;
-	private String imageURL;
-	private String title;
 
-	@Override
-	public String id() {
-		return id;
-	}
+    private static final long serialVersionUID = -3671771266686596176L;
+    private String id;
+    private String summary;
+    private String backgroundImageURL;
+    private String imageURL;
+    private String title;
 
-	@Override
-	public String getSummary() {
-		return summary;
-	}
+    @Override
+    public String id() {
+        return id;
+    }
 
-	@Override
-	public String getBackgroundURL() {
-		return backgroundImageURL;
-	}
+    @Override
+    public String getSummary() {
+        return summary;
+    }
 
-	@Override
-	public String getImageURL() {
-		return imageURL;
-	}
+    @Override
+    public String getBackgroundURL() {
+        return backgroundImageURL;
+    }
 
-	@Override
-	public String getTitle() {
-		return title;
-	}
+    @Override
+    public String getImageURL() {
+        return imageURL;
+    }
 
-	@Override
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    @Override
+    public String getTitle() {
+        return title;
+    }
 
-	@Override
-	public void setImageURL(String imageURL) {
-		this.imageURL = imageURL;
-	}
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	@Override
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
+    @Override
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
 
-	@Override
-	public void setBackgroundURL(String backgroundURL) {
-		this.backgroundImageURL = backgroundURL;
-	}
+    @Override
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 
-	@Override
-	public void setId(String id) {
-		this.id = id;
-	}
+    @Override
+    public void setBackgroundURL(String backgroundURL) {
+        this.backgroundImageURL = backgroundURL;
+    }
 
-	@Override
-	public String getMediaTagIdentifier() {
-		return null;
-	}
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	@Override
-	public void setMediaTagIdentifier(String mediaTagIdentifier) {
+    @Override
+    public String getMediaTagIdentifier() {
+        return null;
+    }
 
-	}
+    @Override
+    public void setMediaTagIdentifier(String mediaTagIdentifier) {
+
+    }
 
 }

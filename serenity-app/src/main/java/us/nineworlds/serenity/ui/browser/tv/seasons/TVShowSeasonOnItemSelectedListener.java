@@ -32,9 +32,9 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
-import javax.inject.Inject;
-
 import net.ganin.darv.DpadAwareRecyclerView;
+
+import javax.inject.Inject;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
@@ -42,8 +42,6 @@ import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
-import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
 
 public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
         DpadAwareRecyclerView.OnItemSelectedListener {

@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <us.nineworlds.serenity.widgets.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <!-- The main content view -->
 
     <RelativeLayout
-        xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
         android:id="@+id/movieBrowserBackgroundLayout"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-        
-        <ImageView android:id="@+id/fanArt"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:id="@+id/fanArt"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-         />
+            android:layout_height="match_parent" />
 
         <fragment
             android:id="@+id/galleryFragmentContainer"
@@ -26,7 +24,7 @@
             android:layout_height="wrap_content"
             android:tag="videoGallery_fragment"
             android:layout_alignParentBottom="true" />
-            
+
     </RelativeLayout>
 
     <!-- The navigation drawer -->

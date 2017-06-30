@@ -23,26 +23,14 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
-import android.support.v7.widget.RecyclerView;
-
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
-import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.birbit.android.jobqueue.JobManager;
 
 import net.ganin.darv.DpadAwareRecyclerView;
@@ -53,11 +41,20 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
+import us.nineworlds.serenity.events.EpisodesRetrievalEvent;
+import us.nineworlds.serenity.events.TVShowRetrievalEvent;
+import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.util.ImageUtils;
+
 /**
  * Implementation of the Poster Image Gallery class for TV Shows.
  *
  * @author dcarver
- *
  */
 public class EpisodePosterImageGalleryAdapter extends
         AbstractPosterImageGalleryAdapter {
@@ -118,8 +115,8 @@ public class EpisodePosterImageGalleryAdapter extends
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEpisodeResponse(MediaContainer response) {
-        EpisodeMediaContainer episodes = new EpisodeMediaContainer(response);
+    public void onEpisodeResponse(EpisodesRetrievalEvent event) {
+        EpisodeMediaContainer episodes = new EpisodeMediaContainer(event.getMediaContainer());
         posterList = episodes.createVideos();
         notifyDataSetChanged();
         DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) context

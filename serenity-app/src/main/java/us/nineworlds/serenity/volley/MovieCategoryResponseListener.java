@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -22,6 +22,12 @@
  */
 
 package us.nineworlds.serenity.volley;
+
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import com.android.volley.Response;
 
 import java.util.List;
 
@@ -35,62 +41,56 @@ import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
-import android.app.Activity;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
-import com.android.volley.Response;
 
 public class MovieCategoryResponseListener extends BaseInjector implements
-		Response.Listener<MediaContainer> {
+        Response.Listener<MediaContainer> {
 
-	@Inject
-	MovieSelectedCategoryState categoryState;
+    @Inject
+    MovieSelectedCategoryState categoryState;
 
-	private List<CategoryInfo> categories;
-	private final SerenityMultiViewVideoActivity context;
-	private final String key;
+    private List<CategoryInfo> categories;
+    private final SerenityMultiViewVideoActivity context;
+    private final String key;
 
-	public MovieCategoryResponseListener(SerenityMultiViewVideoActivity context, String key) {
-		super();
-		this.context = context;
-		this.key = key;
-	}
+    public MovieCategoryResponseListener(SerenityMultiViewVideoActivity context, String key) {
+        super();
+        this.context = context;
+        this.key = key;
+    }
 
-	@Override
-	public void onResponse(MediaContainer mediaContainer) {
-		CategoryMediaContainer categoryMediaContainer = new CategoryMediaContainer(
-				mediaContainer);
-		categories = categoryMediaContainer.createCategories();
-		setupMovieBrowser();
-	}
+    @Override
+    public void onResponse(MediaContainer mediaContainer) {
+        CategoryMediaContainer categoryMediaContainer = new CategoryMediaContainer(
+                mediaContainer);
+        categories = categoryMediaContainer.createCategories();
+        setupMovieBrowser();
+    }
 
-	/**
-	 * Setup the Gallery and Category spinners
-	 */
-	protected void setupMovieBrowser() {
-		ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
-				context, R.layout.serenity_spinner_textview, categories);
-		spinnerArrayAdapter
-				.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+    /**
+     * Setup the Gallery and Category spinners
+     */
+    protected void setupMovieBrowser() {
+        ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
+                context, R.layout.serenity_spinner_textview, categories);
+        spinnerArrayAdapter
+                .setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
-		Spinner categorySpinner = (Spinner) context
-				.findViewById(R.id.categoryFilter);
-		if (categorySpinner != null) {
-			categorySpinner.setVisibility(View.VISIBLE);
-			categorySpinner.setAdapter(spinnerArrayAdapter);
-			if (categoryState.getCategory() == null) {
-				categorySpinner
-						.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
-								"all", key, context));
-			} else {
-				categorySpinner
-						.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
-								categoryState.getCategory(), key, false, context));
-			}
-			categorySpinner.requestFocus();
-		}
-	}
+        Spinner categorySpinner = (Spinner) context
+                .findViewById(R.id.categoryFilter);
+        if (categorySpinner != null) {
+            categorySpinner.setVisibility(View.VISIBLE);
+            categorySpinner.setAdapter(spinnerArrayAdapter);
+            if (categoryState.getCategory() == null) {
+                categorySpinner
+                        .setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
+                                "all", key, context));
+            } else {
+                categorySpinner
+                        .setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
+                                categoryState.getCategory(), key, false, context));
+            }
+            categorySpinner.requestFocus();
+        }
+    }
 
 }

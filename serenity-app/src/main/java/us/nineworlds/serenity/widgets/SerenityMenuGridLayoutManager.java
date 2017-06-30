@@ -5,8 +5,8 @@ import android.support.annotation.DimenRes;
 import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.AttributeSet;
 import android.view.View;
+
 import net.ganin.darv.ExtGridLayoutManager;
 
 public class SerenityMenuGridLayoutManager extends ExtGridLayoutManager {
@@ -57,7 +57,7 @@ public class SerenityMenuGridLayoutManager extends ExtGridLayoutManager {
 
         @NonNull
         public SerenityMenuGridLayoutManager.Builder spanCount(int spanCount) {
-            if(spanCount < 1 && spanCount != 0) {
+            if (spanCount < 1 && spanCount != 0) {
                 throw new IllegalArgumentException("Span count must be > 0 or AUTO_FIT");
             } else {
                 this.mSpanCount = spanCount;
@@ -104,7 +104,7 @@ public class SerenityMenuGridLayoutManager extends ExtGridLayoutManager {
         @NonNull
         private SerenityMenuGridLayoutManager configure(@NonNull SerenityMenuGridLayoutManager inst) {
             inst.setCircular(this.mCircular);
-            if(this.mOffsetEnabled) {
+            if (this.mOffsetEnabled) {
                 inst.setOffset(this.mOffsetFraction);
             }
 

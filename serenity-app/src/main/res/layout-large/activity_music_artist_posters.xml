@@ -6,7 +6,7 @@
     android:background="@drawable/music"
     android:orientation="vertical">
 
-   <LinearLayout
+    <LinearLayout
         android:id="@+id/metaDataRow"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginRight="10dp"
         android:background="#A0000000"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/musicCategoryName"
@@ -48,7 +48,7 @@
             android:spinnerMode="dropdown"
             android:visibility="invisible" />
 
-        
+
     </LinearLayout>
 
     <LinearLayout
@@ -59,7 +59,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/content_panel_dark"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/musicTitle"
@@ -71,8 +71,7 @@
             android:gravity="left"
             android:textColor="#F0F0F0"
             android:textStyle="bold"
-            tools:ignore="SelectableText" >
-        </TextView>
+            tools:ignore="SelectableText"></TextView>
 
         <TextView
             android:id="@+id/musicArtistSummary"
@@ -85,8 +84,7 @@
             android:gravity="top"
             android:maxLines="7"
             android:textColor="#F0F0F0"
-            tools:ignore="SelectableText" >
-        </TextView>
+            tools:ignore="SelectableText"></TextView>
 
     </LinearLayout>
 
@@ -96,7 +94,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:background="#A0000000"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <Gallery
             android:id="@+id/musicArtistGallery"
@@ -104,7 +102,7 @@
             android:layout_height="wrap_content"
             android:animationDuration="1"
             android:padding="5dp"
-            android:spacing="10dp" >
+            android:spacing="10dp">
 
             <requestFocus />
         </Gallery>

@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -32,9 +32,12 @@ import android.os.Message;
 import android.os.Messenger;
 import android.provider.SearchRecentSuggestions;
 import android.widget.Toast;
+
+import net.ganin.darv.DpadAwareRecyclerView;
+
 import java.net.URLEncoder;
 import java.util.List;
-import net.ganin.darv.DpadAwareRecyclerView;
+
 import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuItem;
@@ -52,107 +55,107 @@ import us.nineworlds.serenity.ui.util.DisplayUtils;
  */
 public class SearchableActivity extends SerenityMultiViewVideoActivity {
 
-	protected Handler searchHandler;
-	protected static Activity context;
+    protected Handler searchHandler;
+    protected static Activity context;
 
-	@Override
-	protected void createSideMenu() {
+    @Override
+    protected void createSideMenu() {
 
-	}
+    }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		context = this;
-		actionBar.setCustomView(R.layout.move_custom_actionbar);
-		setContentView(R.layout.activity_movie_search_browser);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = this;
+        actionBar.setCustomView(R.layout.move_custom_actionbar);
+        setContentView(R.layout.activity_movie_search_browser);
 
-		handleIntent(getIntent());
-		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
+        handleIntent(getIntent());
+        DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 
-	}
+    }
 
-	@Override
-	protected void onNewIntent(Intent intent) {
-		setIntent(intent);
-		handleIntent(intent);
-	}
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
 
-	protected void handleIntent(Intent intent) {
-		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-			String query = intent.getStringExtra(SearchManager.QUERY);
-			String key = null;
+    protected void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            String key = null;
 
-			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
-					this, SerenitySuggestionProvider.AUTHORITY,
-					SerenitySuggestionProvider.MODE);
-			suggestions.saveRecentQuery(query, null);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
+                    this, SerenitySuggestionProvider.AUTHORITY,
+                    SerenitySuggestionProvider.MODE);
+            suggestions.saveRecentQuery(query, null);
 
-			searchHandler = new MovieSearchHandler();
-			Messenger messenger = new Messenger(searchHandler);
+            searchHandler = new MovieSearchHandler();
+            Messenger messenger = new Messenger(searchHandler);
 
-			List<MenuItem> menuItems = MainMenuTextViewAdapter.menuItems;
+            List<MenuItem> menuItems = MainMenuTextViewAdapter.menuItems;
 
-			if (menuItems != null) {
+            if (menuItems != null) {
 
-				for (MenuItem menuItem : menuItems) {
-					if ("movie".equals(menuItem.getType())) {
-						key = menuItem.getSection();
-					}
-				}
-			}
+                for (MenuItem menuItem : menuItems) {
+                    if ("movie".equals(menuItem.getType())) {
+                        key = menuItem.getSection();
+                    }
+                }
+            }
 
-			Intent searchIntent = new Intent(this,
-					MovieSearchIntentService.class);
+            Intent searchIntent = new Intent(this,
+                    MovieSearchIntentService.class);
 
-			searchIntent.putExtra("key", key);
-			searchIntent.putExtra("query", URLEncoder.encode(query));
-			searchIntent.putExtra("MESSENGER", messenger);
-			startService(searchIntent);
-		}
+            searchIntent.putExtra("key", key);
+            searchIntent.putExtra("query", URLEncoder.encode(query));
+            searchIntent.putExtra("MESSENGER", messenger);
+            startService(searchIntent);
+        }
 
-	}
+    }
 
-	protected static void createGallery(List<VideoContentInfo> videos) {
-		DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) context
-				.findViewById(R.id.moviePosterView);
-		posterGallery.setAdapter(new SearchAdapter(context, videos));
-		posterGallery.setFocusable(true);
-		posterGallery.requestFocusFromTouch();
-	}
+    protected static void createGallery(List<VideoContentInfo> videos) {
+        DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) context
+                .findViewById(R.id.moviePosterView);
+        posterGallery.setAdapter(new SearchAdapter(context, videos));
+        posterGallery.setFocusable(true);
+        posterGallery.requestFocusFromTouch();
+    }
 
-	protected static class MovieSearchHandler extends Handler {
+    protected static class MovieSearchHandler extends Handler {
 
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.obj != null) {
-				List<VideoContentInfo> videos = (List<VideoContentInfo>) msg.obj;
-				if (videos != null && videos.isEmpty()) {
-					Toast.makeText(
-							context,
-							R.string.no_videos_found_that_match_the_search_criteria,
-							Toast.LENGTH_LONG).show();
-					context.finish();
-				} else {
-					createGallery(videos);
-				}
-			}
-		}
-	}
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.obj != null) {
+                List<VideoContentInfo> videos = (List<VideoContentInfo>) msg.obj;
+                if (videos != null && videos.isEmpty()) {
+                    Toast.makeText(
+                            context,
+                            R.string.no_videos_found_that_match_the_search_criteria,
+                            Toast.LENGTH_LONG).show();
+                    context.finish();
+                } else {
+                    createGallery(videos);
+                }
+            }
+        }
+    }
 
-	@Override
-	public AbstractPosterImageGalleryAdapter getAdapter() {
-		DpadAwareRecyclerView dpadAwareRecyclerView = (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
-		return (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
-	}
+    @Override
+    public AbstractPosterImageGalleryAdapter getAdapter() {
+        DpadAwareRecyclerView dpadAwareRecyclerView = (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
+        return (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+    }
 
-	@Override
-	protected DpadAwareRecyclerView findGalleryView() {
-		return (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
-	}
+    @Override
+    protected DpadAwareRecyclerView findGalleryView() {
+        return (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
+    }
 
-	@Override
-	protected DpadAwareRecyclerView findGridView() {
-		return null;
-	}
+    @Override
+    protected DpadAwareRecyclerView findGridView() {
+        return null;
+    }
 }

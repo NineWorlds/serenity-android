@@ -222,18 +222,18 @@
     <string name="drawer_open">Opened"</string>
     <string name="drawer_closed">Closed</string>
     <string-array name="osd_display_time">
-    	<item>3 seconds</item>
-    	<item>5 seconds</item>
-    	<item>10 seconds</item>
-    	<item>15 seconds</item>
+        <item>3 seconds</item>
+        <item>5 seconds</item>
+        <item>10 seconds</item>
+        <item>15 seconds</item>
     </string-array>
     <string-array name="osd_display_time_values">
-    	<item>3000</item>
-    	<item>5000</item>
-    	<item>10000</item>
-    	<item>15000</item>
+        <item>3000</item>
+        <item>5000</item>
+        <item>10000</item>
+        <item>15000</item>
     </string-array>
-    	<string name="android_tv_recommendations">Android TV Recommendations</string>
-    	<string name="contribute_ondeck_movies_and_episodes">Contribute OnDeck Movies and Episodes</string>
-    	<string name="androidtv_ondeck_recommendations">OnDeck Recommendations</string>
+    <string name="android_tv_recommendations">Android TV Recommendations</string>
+    <string name="contribute_ondeck_movies_and_episodes">Contribute OnDeck Movies and Episodes</string>
+    <string name="androidtv_ondeck_recommendations">OnDeck Recommendations</string>
 </resources>

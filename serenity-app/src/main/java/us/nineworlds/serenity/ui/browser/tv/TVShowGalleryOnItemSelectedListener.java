@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,19 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import javax.inject.Inject;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
-import us.nineworlds.serenity.ui.util.ImageUtils;
 import android.app.Activity;
 import android.view.View;
 import android.widget.ImageView;
@@ -48,6 +35,21 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
+import net.ganin.darv.DpadAwareRecyclerView;
+
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
+import us.nineworlds.serenity.ui.util.ImageUtils;
+
 /**
  * Display selected TV Show Information.
  *
@@ -55,159 +57,159 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  *
  */
 public class TVShowGalleryOnItemSelectedListener extends BaseInjector implements
-		DpadAwareRecyclerView.OnItemSelectedListener {
+        DpadAwareRecyclerView.OnItemSelectedListener {
 
-	private final SerenityMultiViewVideoActivity context;
-	private final ImageLoader imageLoader;
-	private final ImageSize bgImageSize = new ImageSize(1280, 720);
-	private SeriesContentInfo info;
+    private final SerenityMultiViewVideoActivity context;
+    private final ImageLoader imageLoader;
+    private final ImageSize bgImageSize = new ImageSize(1280, 720);
+    private SeriesContentInfo info;
 
-	@Inject
-	protected SerenityImageLoader serenityImageLoader;
+    @Inject
+    protected SerenityImageLoader serenityImageLoader;
 
-	@Inject
-	protected PlexappFactory factory;
+    @Inject
+    protected PlexappFactory factory;
 
-	public TVShowGalleryOnItemSelectedListener(SerenityMultiViewVideoActivity activity) {
-		super();
-		context = activity;
+    public TVShowGalleryOnItemSelectedListener(SerenityMultiViewVideoActivity activity) {
+        super();
+        context = activity;
 
-		imageLoader = serenityImageLoader.getImageLoader();
+        imageLoader = serenityImageLoader.getImageLoader();
 
-	}
+    }
 
-	private void createTVShowDetail(ImageView v) {
+    private void createTVShowDetail(ImageView v) {
 
-		createSummary();
+        createSummary();
 
-		createTitle();
+        createTitle();
 
-		ImageView imageView = (ImageView) context
-				.findViewById(R.id.tvShowRating);
-		ImageInfographicUtils infog = new ImageInfographicUtils(74, 40);
+        ImageView imageView = (ImageView) context
+                .findViewById(R.id.tvShowRating);
+        ImageInfographicUtils infog = new ImageInfographicUtils(74, 40);
 
-		int w = ImageUtils.getDPI(74, (Activity) v.getContext());
-		int h = ImageUtils.getDPI(40, (Activity) v.getContext());
+        int w = ImageUtils.getDPI(74, (Activity) v.getContext());
+        int h = ImageUtils.getDPI(40, (Activity) v.getContext());
 
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w, h);
-		params.topMargin = 10;
-		params.rightMargin = 5;
-		imageView.setLayoutParams(params);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w, h);
+        params.topMargin = 10;
+        params.rightMargin = 5;
+        imageView.setLayoutParams(params);
 
-		ImageView content = infog.createTVContentRating(
-				info.getContentRating(), context);
-		imageView.setImageDrawable(content.getDrawable());
-		imageView.setScaleType(ScaleType.FIT_XY);
+        ImageView content = infog.createTVContentRating(
+                info.getContentRating(), context);
+        imageView.setImageDrawable(content.getDrawable());
+        imageView.setScaleType(ScaleType.FIT_XY);
 
-		ImageView studiov = (ImageView) context.findViewById(R.id.tvShowStudio);
-		if (info.getStudio() != null) {
-			studiov.setVisibility(View.VISIBLE);
-			LinearLayout.LayoutParams sparams = new LinearLayout.LayoutParams(
-					w, h);
-			sparams.rightMargin = 5;
-			sparams.topMargin = 10;
-			sparams.leftMargin = 5;
+        ImageView studiov = (ImageView) context.findViewById(R.id.tvShowStudio);
+        if (info.getStudio() != null) {
+            studiov.setVisibility(View.VISIBLE);
+            LinearLayout.LayoutParams sparams = new LinearLayout.LayoutParams(
+                    w, h);
+            sparams.rightMargin = 5;
+            sparams.topMargin = 10;
+            sparams.leftMargin = 5;
 
-			studiov.setLayoutParams(sparams);
-			String studio = info.getStudio();
-			studio = fixStudio(studio);
-			String studioUrl = factory.getMediaTagURL("studio", studio,
-					info.getMediaTagIdentifier());
-			imageLoader.displayImage(studioUrl, studiov);
-		} else {
-			studiov.setVisibility(View.GONE);
-		}
+            studiov.setLayoutParams(sparams);
+            String studio = info.getStudio();
+            studio = fixStudio(studio);
+            String studioUrl = factory.getMediaTagURL("studio", studio,
+                    info.getMediaTagIdentifier());
+            imageLoader.displayImage(studioUrl, studiov);
+        } else {
+            studiov.setVisibility(View.GONE);
+        }
 
-		createRatings();
+        createRatings();
 
-	}
+    }
 
-	private String fixStudio(String studio) {
-		if ("FOX".equals(studio)) {
-			return "Fox";
-		}
-		if ("Starz!".equals(studio)) {
-			return "Starz";
-		}
-		return studio;
-	}
+    private String fixStudio(String studio) {
+        if ("FOX".equals(studio)) {
+            return "Fox";
+        }
+        if ("Starz!".equals(studio)) {
+            return "Starz";
+        }
+        return studio;
+    }
 
-	protected void createTitle() {
-		TextView title = (TextView) context.findViewById(R.id.tvBrowserTitle);
-		title.setText(info.getTitle());
-	}
+    protected void createTitle() {
+        TextView title = (TextView) context.findViewById(R.id.tvBrowserTitle);
+        title.setText(info.getTitle());
+    }
 
-	protected void createSummary() {
-		TextView summary = (TextView) context
-				.findViewById(R.id.tvShowSeriesSummary);
-		String plotSummary = info.getSummary();
-		if (plotSummary == null) {
-			summary.setText("");
-		} else {
-			summary.setText(plotSummary);
-		}
-	}
+    protected void createSummary() {
+        TextView summary = (TextView) context
+                .findViewById(R.id.tvShowSeriesSummary);
+        String plotSummary = info.getSummary();
+        if (plotSummary == null) {
+            summary.setText("");
+        } else {
+            summary.setText(plotSummary);
+        }
+    }
 
-	protected void createRatings() {
-		RatingBar ratingBar = (RatingBar) context
-				.findViewById(R.id.tvRatingbar);
-		ratingBar.setMax(4);
-		ratingBar.setIsIndicator(true);
-		ratingBar.setStepSize(0.1f);
-		ratingBar.setNumStars(4);
-		ratingBar.setPadding(0, 0, 5, 0);
-		double rating = info.getRating();
-		ratingBar.setRating((float) (rating / 2.5));
-	}
+    protected void createRatings() {
+        RatingBar ratingBar = (RatingBar) context
+                .findViewById(R.id.tvRatingbar);
+        ratingBar.setMax(4);
+        ratingBar.setIsIndicator(true);
+        ratingBar.setStepSize(0.1f);
+        ratingBar.setNumStars(4);
+        ratingBar.setPadding(0, 0, 5, 0);
+        double rating = info.getRating();
+        ratingBar.setRating((float) (rating / 2.5));
+    }
 
-	/**
-	 * Change the background image of the activity.
-	 *
-	 * Should be a background activity
-	 *
-	 * @param v
-	 */
-	private void changeBackgroundImage(View v) {
+    /**
+     * Change the background image of the activity.
+     *
+     * Should be a background activity
+     *
+     * @param v
+     */
+    private void changeBackgroundImage(View v) {
 
-		SeriesContentInfo mi = info;
+        SeriesContentInfo mi = info;
 
-		View fanArt = context.findViewById(R.id.fanArt);
+        View fanArt = context.findViewById(R.id.fanArt);
 
-		String transcodingURL = factory.getImageURL(mi.getBackgroundURL(),
-				1280, 720);
+        String transcodingURL = factory.getImageURL(mi.getBackgroundURL(),
+                1280, 720);
 
-		imageLoader
-				.loadImage(transcodingURL, bgImageSize,
-						new SerenityBackgroundLoaderListener(fanArt,
-								R.drawable.tvshows, context));
+        imageLoader
+                .loadImage(transcodingURL, bgImageSize,
+                        new SerenityBackgroundLoaderListener(fanArt,
+                                R.drawable.tvshows, context));
 
-		ImageView showImage = (ImageView) context
-				.findViewById(R.id.tvShowImage);
-		showImage.setVisibility(View.VISIBLE);
-		showImage.setScaleType(ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(250, context);
-		int height = ImageUtils.getDPI(350, context);
-		showImage.setMaxHeight(height);
-		showImage.setMaxWidth(width);
-		showImage
-				.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-		serenityImageLoader.displayImage(mi.getThumbNailURL(), showImage);
-	}
+        ImageView showImage = (ImageView) context
+                .findViewById(R.id.tvShowImage);
+        showImage.setVisibility(View.VISIBLE);
+        showImage.setScaleType(ScaleType.FIT_XY);
+        int width = ImageUtils.getDPI(250, context);
+        int height = ImageUtils.getDPI(350, context);
+        showImage.setMaxHeight(height);
+        showImage.setMaxWidth(width);
+        showImage
+                .setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+        serenityImageLoader.displayImage(mi.getThumbNailURL(), showImage);
+    }
 
-	@Override
-	public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-		AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
-		info = (SeriesContentInfo) abstractPosterImageGalleryAdapter.getItem(i);
+    @Override
+    public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+        AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+        info = (SeriesContentInfo) abstractPosterImageGalleryAdapter.getItem(i);
 
-		ImageView imageView = (ImageView) view.findViewById(R.id.posterImageView);
+        ImageView imageView = (ImageView) view.findViewById(R.id.posterImageView);
 
-		createTVShowDetail(imageView);
-		changeBackgroundImage(imageView);
+        createTVShowDetail(imageView);
+        changeBackgroundImage(imageView);
 
-	}
+    }
 
-	@Override
-	public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+    @Override
+    public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
 
-	}
+    }
 }

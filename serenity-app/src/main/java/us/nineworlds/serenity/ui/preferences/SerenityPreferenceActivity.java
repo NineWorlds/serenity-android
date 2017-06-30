@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,6 +23,14 @@
 
 package us.nineworlds.serenity.ui.preferences;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,7 +38,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
@@ -40,13 +47,6 @@ import us.nineworlds.serenity.core.model.Server;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.activity.OverscanSetupActivity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ResolveInfo;
-import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
 
 /**
  * This is the main activity for managing user preferences in the app.
@@ -55,158 +55,158 @@ import android.preference.PreferenceActivity;
  *
  */
 public class SerenityPreferenceActivity extends PreferenceActivity implements
-Preference.OnPreferenceClickListener {
+        Preference.OnPreferenceClickListener {
 
-	@Inject
-	@ForMediaServers
-	Map<String, Server> mediaServers;
+    @Inject
+    @ForMediaServers
+    Map<String, Server> mediaServers;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		SerenityObjectGraph.getInstance().inject(this);
-		addPreferencesFromResource(R.xml.preferences);
-		findPreference("overscan_setup").setOnPreferenceClickListener(this);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SerenityObjectGraph.getInstance().inject(this);
+        addPreferencesFromResource(R.xml.preferences);
+        findPreference("overscan_setup").setOnPreferenceClickListener(this);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#finish()
-	 */
-	@Override
-	public void finish() {
-		setResult(MainActivity.MAIN_MENU_PREFERENCE_RESULT_CODE);
-		super.finish();
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.app.Activity#finish()
+     */
+    @Override
+    public void finish() {
+        setResult(MainActivity.MAIN_MENU_PREFERENCE_RESULT_CODE);
+        super.finish();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onStart()
-	 */
-	@Override
-	protected void onStart() {
-		super.onStart();
-		populateAvailablePlexMediaServers();
-		populateAvailableLocales();
-		populateSupportedPlayers();
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.app.Activity#onStart()
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        populateAvailablePlexMediaServers();
+        populateAvailableLocales();
+        populateSupportedPlayers();
+    }
 
-	/**
-	 * Populates the Discovered Devices preference list with available Plex
-	 * Media Servers. The name of the Device and the device's IP address are
-	 * used as values in the entry. The user friendly name is used from the
-	 * device itself.
-	 *
-	 */
-	protected void populateAvailablePlexMediaServers() {
-		ListPreference discoveredServers = (ListPreference) findPreference("discoveredServer");
-		if (mediaServers.isEmpty()) {
-			discoveredServers.setEnabled(false);
-			return;
-		}
+    /**
+     * Populates the Discovered Devices preference list with available Plex
+     * Media Servers. The name of the Device and the device's IP address are
+     * used as values in the entry. The user friendly name is used from the
+     * device itself.
+     *
+     */
+    protected void populateAvailablePlexMediaServers() {
+        ListPreference discoveredServers = (ListPreference) findPreference("discoveredServer");
+        if (mediaServers.isEmpty()) {
+            discoveredServers.setEnabled(false);
+            return;
+        }
 
-		discoveredServers.setEnabled(true);
-		String entries[] = new String[mediaServers.size()];
-		String values[] = new String[mediaServers.size()];
+        discoveredServers.setEnabled(true);
+        String entries[] = new String[mediaServers.size()];
+        String values[] = new String[mediaServers.size()];
 
 
-		mediaServers.keySet().toArray(entries);
-		discoveredServers.setEntries(entries);
+        mediaServers.keySet().toArray(entries);
+        discoveredServers.setEntries(entries);
 
-		ArrayList<String> ipAddresses = new ArrayList<String>();
-		Iterator<Map.Entry<String, Server>> entIt = mediaServers.entrySet()
-				.iterator();
-		while (entIt.hasNext()) {
-			Map.Entry<String, Server> servers = entIt.next();
-			Server device = servers.getValue();
-			ipAddresses.add(device.getIPAddress());
-		}
-		if (!ipAddresses.isEmpty()) {
-			ipAddresses.toArray(values);
-			discoveredServers.setEntryValues(values);
-		}
+        ArrayList<String> ipAddresses = new ArrayList<String>();
+        Iterator<Map.Entry<String, Server>> entIt = mediaServers.entrySet()
+                .iterator();
+        while (entIt.hasNext()) {
+            Map.Entry<String, Server> servers = entIt.next();
+            Server device = servers.getValue();
+            ipAddresses.add(device.getIPAddress());
+        }
+        if (!ipAddresses.isEmpty()) {
+            ipAddresses.toArray(values);
+            discoveredServers.setEntryValues(values);
+        }
 
-	}
+    }
 
-	protected void populateAvailableLocales() {
-		Locale[] locales = Locale.getAvailableLocales();
-		ListPreference preferenceLocales = (ListPreference) findPreference("preferred_subtitle_language");
-		ArrayList<String> localNames = new ArrayList<String>();
-		ArrayList<String> localCodes = new ArrayList<String>();
-		for (Locale local : locales) {
-			if (!localNames.contains(local.getDisplayLanguage())) {
-				localNames.add(local.getDisplayLanguage());
-				localCodes.add(local.getISO3Language());
-			}
-		}
-		String entries[] = new String[localNames.size()];
-		String values[] = new String[localCodes.size()];
-		localNames.toArray(entries);
-		localCodes.toArray(values);
-		preferenceLocales.setEntries(entries);
-		preferenceLocales.setEntryValues(values);
-	}
+    protected void populateAvailableLocales() {
+        Locale[] locales = Locale.getAvailableLocales();
+        ListPreference preferenceLocales = (ListPreference) findPreference("preferred_subtitle_language");
+        ArrayList<String> localNames = new ArrayList<String>();
+        ArrayList<String> localCodes = new ArrayList<String>();
+        for (Locale local : locales) {
+            if (!localNames.contains(local.getDisplayLanguage())) {
+                localNames.add(local.getDisplayLanguage());
+                localCodes.add(local.getISO3Language());
+            }
+        }
+        String entries[] = new String[localNames.size()];
+        String values[] = new String[localCodes.size()];
+        localNames.toArray(entries);
+        localCodes.toArray(values);
+        preferenceLocales.setEntries(entries);
+        preferenceLocales.setEntryValues(values);
+    }
 
-	protected void populateSupportedPlayers() {
-		ListPreference supportedPlayers = (ListPreference) findPreference("serenity_external_player_filter");
-		Map<String, String> availablePlayers = new HashMap<String, String>();
-		if (hasPlayerByName(this, "com.mxtech.videoplayer.ad")) {
-			availablePlayers.put("mxplayer", "MX Player");
-		}
+    protected void populateSupportedPlayers() {
+        ListPreference supportedPlayers = (ListPreference) findPreference("serenity_external_player_filter");
+        Map<String, String> availablePlayers = new HashMap<String, String>();
+        if (hasPlayerByName(this, "com.mxtech.videoplayer.ad")) {
+            availablePlayers.put("mxplayer", "MX Player");
+        }
 
-		if (hasPlayerByName(this, "com.mxtech.videoplayer.pro")) {
-			availablePlayers.put("mxplayerpro", "MX Player Pro");
-		}
+        if (hasPlayerByName(this, "com.mxtech.videoplayer.pro")) {
+            availablePlayers.put("mxplayerpro", "MX Player Pro");
+        }
 
-		if (hasPlayerByName(this, "net.gtvbox.videoplayer")) {
-			availablePlayers.put("vimu", "ViMu Player");
-		}
+        if (hasPlayerByName(this, "net.gtvbox.videoplayer")) {
+            availablePlayers.put("vimu", "ViMu Player");
+        }
 
-		availablePlayers.put("default", "System Default");
+        availablePlayers.put("default", "System Default");
 
-		String[] entries = new String[availablePlayers.size()];
-		String[] values = new String[availablePlayers.size()];
-		ArrayList playerNames = new ArrayList();
-		ArrayList playerValues = new ArrayList();
+        String[] entries = new String[availablePlayers.size()];
+        String[] values = new String[availablePlayers.size()];
+        ArrayList playerNames = new ArrayList();
+        ArrayList playerValues = new ArrayList();
 
-		for (Entry entry : availablePlayers.entrySet()) {
-			playerNames.add(entry.getValue());
-			playerValues.add(entry.getKey());
-		}
+        for (Entry entry : availablePlayers.entrySet()) {
+            playerNames.add(entry.getValue());
+            playerValues.add(entry.getKey());
+        }
 
-		playerNames.toArray(entries);
-		playerValues.toArray(values);
+        playerNames.toArray(entries);
+        playerValues.toArray(values);
 
-		supportedPlayers.setEntries(entries);
-		supportedPlayers.setEntryValues(values);
-	}
+        supportedPlayers.setEntries(entries);
+        supportedPlayers.setEntryValues(values);
+    }
 
-	protected boolean hasPlayerByName(Context context, String playerPackageName) {
+    protected boolean hasPlayerByName(Context context, String playerPackageName) {
 
-		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-		final List<ResolveInfo> pkgAppsList = context.getPackageManager()
-				.queryIntentActivities(mainIntent, 0);
+        final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        final List<ResolveInfo> pkgAppsList = context.getPackageManager()
+                .queryIntentActivities(mainIntent, 0);
 
-		for (ResolveInfo resolveInfo : pkgAppsList) {
-			String packageName = resolveInfo.activityInfo.packageName;
-			if (packageName.contains(playerPackageName)) {
-				return true;
-			}
-		}
+        for (ResolveInfo resolveInfo : pkgAppsList) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            if (packageName.contains(playerPackageName)) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean onPreferenceClick(Preference preference) {
-		final String key = preference.getKey();
-		if ("overscan_setup".equals(key)) {
-			startActivity(new Intent(this, OverscanSetupActivity.class));
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public boolean onPreferenceClick(Preference preference) {
+        final String key = preference.getKey();
+        if ("overscan_setup".equals(key)) {
+            startActivity(new Intent(this, OverscanSetupActivity.class));
+            return true;
+        }
+        return false;
+    }
 }

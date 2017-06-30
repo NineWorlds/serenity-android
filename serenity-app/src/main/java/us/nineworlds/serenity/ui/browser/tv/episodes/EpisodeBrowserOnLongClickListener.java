@@ -23,12 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
-import java.util.ArrayList;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.menus.DialogMenuItem;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -38,6 +32,12 @@ import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import java.util.ArrayList;
+
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.menus.DialogMenuItem;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 
 public class EpisodeBrowserOnLongClickListener extends
         GalleryVideoOnItemLongClickListener {

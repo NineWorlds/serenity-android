@@ -1,209 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-<string name="app_name">Serenity für Android</string>
-<string name="app_label">Serenity für Android</string>
-<string name="search_hint">Geben Sie ein Wort oder einen Satz aus einem Film, einer Serie oder einer Folge ein.</string>
-<string name="menu_settings">Einstellungen</string>
-<string name="menu_search">Suchen</string>
-<string name="title_activity_movie_browser">Filme</string>
-<string name="title_activity_main">Serenity für Android</string>
-<string name="title_activity_tvbrowser_show">TV Serien</string>
-<string name="title_activity_tvbrowser_show_season">TV Serien Staffeln</string>
-<string name="title_activity_tvbrowser_show_episodes">TV Serien Episoden</string>
-<string name="movie_category_prompt">Wählen Sie eine Kategorie</string>
-<string name="movie_category_prompt2">Genre / Sammlung</string>
-<string name="category">Kategorie:</string>
-<string name="year">Jahr</string>
-<string name="genre">Genre</string>
-<string name="writers">Schriftsteller</string>
-<string name="directors">Regisseur</string>
-<string name="tvshows">TV Serien:</string>
-<string name="about_title_serenity_for_google_tv">Serenity für Android</string>
-<string name="options_main_about">über</string>
-<string name="options_main_clear_image_cache">Bilder Cache löschen</string>
-<string name="option_clear_the_image_cache_">Bilder Cache löschen?</string>
-<string name="clear">Löschen</string>
-<string name="cancel">Abbrechen</string>
-<string name="download_manager_download_complete_for_">"Download abgeschlossen für "</string>
-<string name="no_libraries_found">Keine Filme oder TV-Serien Bibliotheken gefunden. Verwenden Sie die Plex Web App um einige hinzuzufügen.</string>
-<string name="unknown">Unbekannt</string>
-<string name="season_">"Staffel "</string>
-<string name="settings">Einstellungen</string>
-<string name="search">Suchen</string>
-<string name="options">Optionen</string>
-<string name="no_entries_available_for_category_">Keine Einträge in dieser Kategorie.</string>
-<string name="retrieving_movies">empfange Filme</string>
-<string name="no_shows_found_for_the_category_">"Keine Shows in der Kategorie gefunden: "</string>
-<string name="_item_s_">" Einträge"</string>
-<string name="watched_">gesehen:</string>
-<string name="unwatched_">noch nicht gesehen:</string>
-<string name="retrieving_episodes">empfange Folgen</string>
-<string name="new_folder">Neuer Ordner</string>
-<string name="new_folder_name">Neuer Ordnernamen</string>
-<string name="toggle_watched_status">Gesehen-Status ändern</string>
-<string name="download_video_to_device">Video herunterladen</string>
-<string name="play_on_tv">auf dem TV abspielen</string>
-<string name="starting_download_of_">"starte Download von "</string>
-<string name="chosen_directory_">"ausgewähltes Verzeichnis: "</string>
-<string name="no_videos_found_that_match_the_search_criteria">Keine Videos gefunden, die den Suchkriterien entsprechen</string>
-<string name="video_options">Video-Optionen</string>
-<string name="view_all_episodes">Alle Folgen ansehen</string>
+    <string name="app_name">Serenity für Android</string>
+    <string name="app_label">Serenity für Android</string>
+    <string name="search_hint">Geben Sie ein Wort oder einen Satz aus einem Film, einer Serie oder einer Folge ein.</string>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="menu_search">Suchen</string>
+    <string name="title_activity_movie_browser">Filme</string>
+    <string name="title_activity_main">Serenity für Android</string>
+    <string name="title_activity_tvbrowser_show">TV Serien</string>
+    <string name="title_activity_tvbrowser_show_season">TV Serien Staffeln</string>
+    <string name="title_activity_tvbrowser_show_episodes">TV Serien Episoden</string>
+    <string name="movie_category_prompt">Wählen Sie eine Kategorie</string>
+    <string name="movie_category_prompt2">Genre / Sammlung</string>
+    <string name="category">Kategorie:</string>
+    <string name="year">Jahr</string>
+    <string name="genre">Genre</string>
+    <string name="writers">Schriftsteller</string>
+    <string name="directors">Regisseur</string>
+    <string name="tvshows">TV Serien:</string>
+    <string name="about_title_serenity_for_google_tv">Serenity für Android</string>
+    <string name="options_main_about">über</string>
+    <string name="options_main_clear_image_cache">Bilder Cache löschen</string>
+    <string name="option_clear_the_image_cache_">Bilder Cache löschen?</string>
+    <string name="clear">Löschen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="download_manager_download_complete_for_">"Download abgeschlossen für "</string>
+    <string name="no_libraries_found">Keine Filme oder TV-Serien Bibliotheken gefunden. Verwenden Sie die Plex Web App um einige hinzuzufügen.</string>
+    <string name="unknown">Unbekannt</string>
+    <string name="season_">"Staffel "</string>
+    <string name="settings">Einstellungen</string>
+    <string name="search">Suchen</string>
+    <string name="options">Optionen</string>
+    <string name="no_entries_available_for_category_">Keine Einträge in dieser Kategorie.</string>
+    <string name="retrieving_movies">empfange Filme</string>
+    <string name="no_shows_found_for_the_category_">"Keine Shows in der Kategorie gefunden: "</string>
+    <string name="_item_s_">" Einträge"</string>
+    <string name="watched_">gesehen:</string>
+    <string name="unwatched_">noch nicht gesehen:</string>
+    <string name="retrieving_episodes">empfange Folgen</string>
+    <string name="new_folder">Neuer Ordner</string>
+    <string name="new_folder_name">Neuer Ordnernamen</string>
+    <string name="toggle_watched_status">Gesehen-Status ändern</string>
+    <string name="download_video_to_device">Video herunterladen</string>
+    <string name="play_on_tv">auf dem TV abspielen</string>
+    <string name="starting_download_of_">"starte Download von "</string>
+    <string name="chosen_directory_">"ausgewähltes Verzeichnis: "</string>
+    <string name="no_videos_found_that_match_the_search_criteria">Keine Videos gefunden, die den Suchkriterien entsprechen</string>
+    <string name="video_options">Video-Optionen</string>
+    <string name="view_all_episodes">Alle Folgen ansehen</string>
 
-<string-array name="categoryListNames">
-    <item>Alle</item>
-    <item>Neueste</item>
-    <item>On Deck</item>
-    <item>Vor kurzem hinzugefügt</item>
-    <item>Zuletzt angesehen</item>
-    <item>noch nicht gesehen</item>
-</string-array>
+    <string-array name="categoryListNames">
+        <item>Alle</item>
+        <item>Neueste</item>
+        <item>On Deck</item>
+        <item>Vor kurzem hinzugefügt</item>
+        <item>Zuletzt angesehen</item>
+        <item>noch nicht gesehen</item>
+    </string-array>
 
-<string name="select_the_starting_category_filter_">Wählen Sie den Start-Filter für Filme.</string>
-<string name="categories_summary_preference_description">Filter welcher bei der Filmauswahl vorbelegt werden soll. Die Standardeinstellung ist Alle.</string>
-<string name="preferred_filter">bevorzugter Filter</string>
-<string name="server_settings">Server-Einstellungen</string>
-<string name="server_settings_summary">Eine Liste der verfügbaren Plex Media Server im Netzwerk. Ein bevorzugter Server hat vorrang.</string>
-<string name="preferred_ipaddress_summary">Der Domain-Name oder IP-Adresse für Ihre wichtigsten Plex Media Server. Dies erfolgt bevorzugt über alle erkannten Server ausgewählt.</string>
-<string name="preferred_server_address">Bevorzugte Server Adresse</string>
-<string name="default_port_summary">Die Port-Nummer für den Server (in der Regel 32400).</string>
-<string name="server_port">Server-Port</string>
-<string name="discovered_servers_">gefundene Server.</string>
-<string name="music_library">Musik Sammlung</string>
-<string name="music_library_preference_summary">Experimenteller Plex Musik-Bibliothek Support. Dies bietet sehr einfache Wiedergabeunterstützung für Musik-Bibliotheken und ist noch in der Entwicklung.</string>
-<string name="enable_plex_music_library_support">Plex Musik Bibliothek Support aktivieren</string>
-<string name="music_layout_grid_summary">Poster-Layout für Musik. Hat nur eine Auswirkung, wenn Musikbibliothek Support aktiviert ist.</string>
-<string name="music_grid_poster_layout">Musik Poster-Layout</string>
-<string name="video_library">Videothek</string>
-<string name="subtitle_automatic_selection_summary">Versuchen Untertitlel automatsch auf Basis der bevorzugten Sprache auszuwählen.</string>
-<string name="automatically_select_subtitles_">Untertitel automatisch wählen.</string>
-<string name="subtitle_language_selection_summary">Bevorugte Sprache für Untertitel.</string>
-<string name="subtitle_language_preference">Untertitel Spracheinstellung</string>
-<string name="prefer_poster_layout_for_series_">Poster-Layout für Serie bevorzugen.</string>
-<string name="series_poster_layout">Poster-Layout für Serien</string>
-<string name="poster_grid_layout_for_movies_">Poster-Layout für Filme bevorzugen.</string>
-<string name="movie_grid_poster_layout">Poster-Layout für Filme</string>
-<string name="animations">Animationen</string>
-<string name="fade_in_the_main_menu_background_art_">Hauptmenü-Hintergrundbild langsam einblenden.</string>
-<string name="fade_in_main_menu_backround">Hauptmenü-Hintergrund langsam einblenden</string>
-<string name="movie_fadein_animation_summary">Hintergrundbilder in Filmen und Serien langsam einblenden.</string>
-<string name="fade_in_background_fan_art">Hintergrundbilder in Filmen und Serien langsam einblenden</string>
-<string name="emphasize_poster_summary">Das ausgewählte Element beim Durchblättern der Detailansicht betonen. Nur Google TV-Geräte.</string>
-<string name="poster_selected_emphasis">ausgewähltes Element betonen</string>
-<string name="media_player">externer Media Player</string>
-<string name="use_external_media_player_">externen Media Player verwenden.</string>
-<string name="external_player">Verwenden Sie einen externen Media-Player.</string>
-<string name="internal_player_osd_summary">Videonformationen bei Start der Wiedergabe im internen Player anzeigen.</string>
-<string name="on_screen_display">On Screen Display</string>
-<string name="mx_player_resume_summary">MX Player zwingen die zuletzt gespielte Position von Plex zu verwenden, anstatt seiner eigenen.</string>
-<string name="force_mx_player_resume_position_">MX Player zuletzt gespielte Position vorgeben.</string>
-<string name="prefer_plex_media_server_s_aspect_ratio_">Seitenverhältnis des Plex Media Server verwenden.</string>
-<string name="plex_aspect_ratio">Plex Seitenverhältnis</string>
-<string name="enable_gallery_scrolling">Scrollanimation in Galerie Ansichten für Filme und Serien.</string>
-<string name="enable_gallery_scrolling_animation">Scrollanimation in Galerien aktivieren</string>
-<string name="tutorial">Tutorial</string>
-<string name="auto_configuring_server_using_">"Auto Konfiguration Server mit "</string>
-<string name="changelog_full_title">Serenity für Android Change Log</string>
-<string name="changelog_title">Was gibt es Neues</string>
-<string name="changelog_ok_button">OK</string>
-<string name="changelog_show_full">mehr…</string>
-<string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>
-<string name="clear_queue">Warteschlange leeren</string>
-<string name="queue_has_been_cleared_">Warteschlange wurde geleert.</string>
-<string name="play_all_from_queue">Warteschlange abspielen</string>
-<string name="external_player_video_queue_support_has_not_been_enabled_">Externer Player Video-Queue-Unterstützung nicht aktiviert wurde.</string>
-<string name="queue_is_empty_">Queue ist leer.</string>
-<string name="media_player_internal">Media Player - Internal</string>
-<string name="media_player_external">Media Player - External</string>
-<string name="no_play_store_installed_on_device">Kein Play Store auf dem Gerät installiert</string>
-<string name="rate_it_">Bewerten Sie es!</string>
-<string name="remind_me_later">Später erinnern</string>
-<string name="no_thanks">Nein, danke</string>
-<string name="if_you_enjoy_using_">"Wenn Sie gerne mit "</string>
-<string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, bitte einen Moment Zeit nehmen, um es zu bewerten. Vielen Dank für Ihre Unterstützung!</string>
-<string name="rate_">"Einschätzen "</string>
-<string name="cast_fling_with_">Cast / mit Fling...</string>
-<string name="add_video_to_queue">Video zur Warteschlange hinzufügen</string>
-<string name="there_are_still_videos_int_the_queue_">Es gibt immer noch Videos in der Warteschlange.</string>
-<string name="remote_control_menu_summary">Wenn diese Option aktiviert ist, öffmet die Menü-Taste das Menü oder das Kontextmenü für das ausgewählte Element.</string>
-<string name="enable_sliding_menu">Sliding Menu aktivieren</string>
-<string name="preference_remote_control">Fernsteuerung</string>
-<string name="overscan_adjustement_summary">Stellt sicher, dass Controls nicht abgeschnitten werden. U.U. notwendig auf OUYA oder anderen Android TV-Geräten.</string>
-<string name="overscan_compensation">Overscan Compensation</string>
-<string name="display_adjustements">Anzeige-Einstellungen</string>
-<string name="add_season_to_queue">Staffel zur Warteschlange hinzufügen</string>
-<string name="season_options">Staffel Optionen</string>
-<string name="preferred_external_player_summary">Externen Player zum Abspielen der Videoinhalte auswählem. Nicht alle Player unterstützen alle Funktionen. MX-Player und MX Player Pro unterstützt die Plex Wiedergabe-Position zu aktualisieren. Standardmäßig wird der Standard-Player des Systems verwendet, welcher über begrenzte Funktionalität verfügt.</string>
-<string name="preferred_external_player">Bevorzugter Externe Player</string>
-<string name="series_select_the_starting_category_filter_">Wählen Sie den Start-Filter für Serien.</string>
-<string name="categories_series_summary_preference_description">Filter welcher bei der Serienauswahl vorbelegt werden soll. Die Standardeinstellung ist Alle.</string>
+    <string name="select_the_starting_category_filter_">Wählen Sie den Start-Filter für Filme.</string>
+    <string name="categories_summary_preference_description">Filter welcher bei der Filmauswahl vorbelegt werden soll. Die Standardeinstellung ist Alle.</string>
+    <string name="preferred_filter">bevorzugter Filter</string>
+    <string name="server_settings">Server-Einstellungen</string>
+    <string name="server_settings_summary">Eine Liste der verfügbaren Plex Media Server im Netzwerk. Ein bevorzugter Server hat vorrang.</string>
+    <string name="preferred_ipaddress_summary">Der Domain-Name oder IP-Adresse für Ihre wichtigsten Plex Media Server. Dies erfolgt bevorzugt über alle erkannten Server ausgewählt.</string>
+    <string name="preferred_server_address">Bevorzugte Server Adresse</string>
+    <string name="default_port_summary">Die Port-Nummer für den Server (in der Regel 32400).</string>
+    <string name="server_port">Server-Port</string>
+    <string name="discovered_servers_">gefundene Server.</string>
+    <string name="music_library">Musik Sammlung</string>
+    <string name="music_library_preference_summary">Experimenteller Plex Musik-Bibliothek Support. Dies bietet sehr einfache Wiedergabeunterstützung für Musik-Bibliotheken und ist noch in der Entwicklung.</string>
+    <string name="enable_plex_music_library_support">Plex Musik Bibliothek Support aktivieren</string>
+    <string name="music_layout_grid_summary">Poster-Layout für Musik. Hat nur eine Auswirkung, wenn Musikbibliothek Support aktiviert ist.</string>
+    <string name="music_grid_poster_layout">Musik Poster-Layout</string>
+    <string name="video_library">Videothek</string>
+    <string name="subtitle_automatic_selection_summary">Versuchen Untertitlel automatsch auf Basis der bevorzugten Sprache auszuwählen.</string>
+    <string name="automatically_select_subtitles_">Untertitel automatisch wählen.</string>
+    <string name="subtitle_language_selection_summary">Bevorugte Sprache für Untertitel.</string>
+    <string name="subtitle_language_preference">Untertitel Spracheinstellung</string>
+    <string name="prefer_poster_layout_for_series_">Poster-Layout für Serie bevorzugen.</string>
+    <string name="series_poster_layout">Poster-Layout für Serien</string>
+    <string name="poster_grid_layout_for_movies_">Poster-Layout für Filme bevorzugen.</string>
+    <string name="movie_grid_poster_layout">Poster-Layout für Filme</string>
+    <string name="animations">Animationen</string>
+    <string name="fade_in_the_main_menu_background_art_">Hauptmenü-Hintergrundbild langsam einblenden.</string>
+    <string name="fade_in_main_menu_backround">Hauptmenü-Hintergrund langsam einblenden</string>
+    <string name="movie_fadein_animation_summary">Hintergrundbilder in Filmen und Serien langsam einblenden.</string>
+    <string name="fade_in_background_fan_art">Hintergrundbilder in Filmen und Serien langsam einblenden</string>
+    <string name="emphasize_poster_summary">Das ausgewählte Element beim Durchblättern der Detailansicht betonen. Nur Google TV-Geräte.</string>
+    <string name="poster_selected_emphasis">ausgewähltes Element betonen</string>
+    <string name="media_player">externer Media Player</string>
+    <string name="use_external_media_player_">externen Media Player verwenden.</string>
+    <string name="external_player">Verwenden Sie einen externen Media-Player.</string>
+    <string name="internal_player_osd_summary">Videonformationen bei Start der Wiedergabe im internen Player anzeigen.</string>
+    <string name="on_screen_display">On Screen Display</string>
+    <string name="mx_player_resume_summary">MX Player zwingen die zuletzt gespielte Position von Plex zu verwenden, anstatt seiner eigenen.</string>
+    <string name="force_mx_player_resume_position_">MX Player zuletzt gespielte Position vorgeben.</string>
+    <string name="prefer_plex_media_server_s_aspect_ratio_">Seitenverhältnis des Plex Media Server verwenden.</string>
+    <string name="plex_aspect_ratio">Plex Seitenverhältnis</string>
+    <string name="enable_gallery_scrolling">Scrollanimation in Galerie Ansichten für Filme und Serien.</string>
+    <string name="enable_gallery_scrolling_animation">Scrollanimation in Galerien aktivieren</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="auto_configuring_server_using_">"Auto Konfiguration Server mit "</string>
+    <string name="changelog_full_title">Serenity für Android Change Log</string>
+    <string name="changelog_title">Was gibt es Neues</string>
+    <string name="changelog_ok_button">OK</string>
+    <string name="changelog_show_full">mehr…</string>
+    <string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>
+    <string name="clear_queue">Warteschlange leeren</string>
+    <string name="queue_has_been_cleared_">Warteschlange wurde geleert.</string>
+    <string name="play_all_from_queue">Warteschlange abspielen</string>
+    <string name="external_player_video_queue_support_has_not_been_enabled_">Externer Player Video-Queue-Unterstützung nicht aktiviert wurde.</string>
+    <string name="queue_is_empty_">Queue ist leer.</string>
+    <string name="media_player_internal">Media Player - Internal</string>
+    <string name="media_player_external">Media Player - External</string>
+    <string name="no_play_store_installed_on_device">Kein Play Store auf dem Gerät installiert</string>
+    <string name="rate_it_">Bewerten Sie es!</string>
+    <string name="remind_me_later">Später erinnern</string>
+    <string name="no_thanks">Nein, danke</string>
+    <string name="if_you_enjoy_using_">"Wenn Sie gerne mit "</string>
+    <string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, bitte einen Moment Zeit nehmen, um es zu bewerten. Vielen Dank für Ihre Unterstützung!</string>
+    <string name="rate_">"Einschätzen "</string>
+    <string name="cast_fling_with_">Cast / mit Fling...</string>
+    <string name="add_video_to_queue">Video zur Warteschlange hinzufügen</string>
+    <string name="there_are_still_videos_int_the_queue_">Es gibt immer noch Videos in der Warteschlange.</string>
+    <string name="remote_control_menu_summary">Wenn diese Option aktiviert ist, öffmet die Menü-Taste das Menü oder das Kontextmenü für das ausgewählte Element.</string>
+    <string name="enable_sliding_menu">Sliding Menu aktivieren</string>
+    <string name="preference_remote_control">Fernsteuerung</string>
+    <string name="overscan_adjustement_summary">Stellt sicher, dass Controls nicht abgeschnitten werden. U.U. notwendig auf OUYA oder anderen Android TV-Geräten.</string>
+    <string name="overscan_compensation">Overscan Compensation</string>
+    <string name="display_adjustements">Anzeige-Einstellungen</string>
+    <string name="add_season_to_queue">Staffel zur Warteschlange hinzufügen</string>
+    <string name="season_options">Staffel Optionen</string>
+    <string name="preferred_external_player_summary">Externen Player zum Abspielen der Videoinhalte auswählem. Nicht alle Player unterstützen alle Funktionen. MX-Player und MX Player Pro unterstützt die Plex Wiedergabe-Position zu aktualisieren. Standardmäßig wird der Standard-Player des Systems verwendet, welcher über begrenzte Funktionalität verfügt.</string>
+    <string name="preferred_external_player">Bevorzugter Externe Player</string>
+    <string name="series_select_the_starting_category_filter_">Wählen Sie den Start-Filter für Serien.</string>
+    <string name="categories_series_summary_preference_description">Filter welcher bei der Serienauswahl vorbelegt werden soll. Die Standardeinstellung ist Alle.</string>
 
-<string-array name="categoryListNamesSeries">
-    <item>Alle</item>
-    <item>Neueste</item>
-    <item>On Deck</item>
-    <item>Vor kurzem hinzugefügt</item>
-    <item>Kürzlich angesehene Folgen</item>
-    <item>Zuletzt angesehen Shows</item>
-    <item>noch nicht gesehen</item>
-</string-array>
+    <string-array name="categoryListNamesSeries">
+        <item>Alle</item>
+        <item>Neueste</item>
+        <item>On Deck</item>
+        <item>Vor kurzem hinzugefügt</item>
+        <item>Kürzlich angesehene Folgen</item>
+        <item>Zuletzt angesehen Shows</item>
+        <item>noch nicht gesehen</item>
+    </string-array>
 
-<string name="resume_video">Video fortsetzen</string>
-<string name="resume_the_video_from_">"Video fortsetzen von "</string>
-<string name="_or_restart_">" oder starten?"</string>
-<string name="resume">fortsetzen</string>
-<string name="restart">Neustarten</string>
-<string name="tv_shows_will_be_displayed_in_a_grid_view_">Serien in einer Rasteransicht darstellen</string>
-<string name="prefer_grid_view_for_series">Raster-Ansicht für Serien</string>
-<string name="enables_video_queue_support_for_external_players_">Ermöglicht die Verwendung der Warteschlange für externe Player.</string>
-<string name="enable_video_queue_for_external_players">Warteschlange für externe Player aktivieren</string>
+    <string name="resume_video">Video fortsetzen</string>
+    <string name="resume_the_video_from_">"Video fortsetzen von "</string>
+    <string name="_or_restart_">" oder starten?"</string>
+    <string name="resume">fortsetzen</string>
+    <string name="restart">Neustarten</string>
+    <string name="tv_shows_will_be_displayed_in_a_grid_view_">Serien in einer Rasteransicht darstellen</string>
+    <string name="prefer_grid_view_for_series">Raster-Ansicht für Serien</string>
+    <string name="enables_video_queue_support_for_external_players_">Ermöglicht die Verwendung der Warteschlange für externe Player.</string>
+    <string name="enable_video_queue_for_external_players">Warteschlange für externe Player aktivieren</string>
 
-<string name="prefs_advanced_options">Erweiterte Optionen</string>
-<string name="prefs_startup_boot_sum">Serenity für Android sofort nach Start des Gerät starten.</string>
-<string name="prefs_auto_start_after_boot">Auto-Start nach dem Start</string>
+    <string name="prefs_advanced_options">Erweiterte Optionen</string>
+    <string name="prefs_startup_boot_sum">Serenity für Android sofort nach Start des Gerät starten.</string>
+    <string name="prefs_auto_start_after_boot">Auto-Start nach dem Start</string>
 
-<string name="playing_episode_toast">Spielend %1$s %2$s: %3$s</string>
-<string name="no_unwatched_episode_toast">Keine unbeobachtet Episoden gefunden</string>
+    <string name="playing_episode_toast">Spielend %1$s %2$s: %3$s</string>
+    <string name="no_unwatched_episode_toast">Keine unbeobachtet Episoden gefunden</string>
 
-<string name="Controls">Controls</string>
-<string name="skip_forward_time_title">Fast Forward überspringen Zeit</string>
-<string name="skip_forward_time_summary">Zeit, vorwärts zu überspringen, wenn FF-Taste gedrückt wird</string>
-<string name="skip_backward_time_title">REW überspringen Zeit</string>
-<string name="skip_backward_time_summary">Zeit, zurück zu springen, wenn REW-Taste gedrückt wird</string>
-<string name="next_prev_behavior_title">Vor / Zurück-Taste Verhalten</string>
-<string name="next_prev_behavior_summary"><![CDATA[Was sollten die Nächste und Vorherige Tasten tun]]></string>
-<string name="overscan_swap">Swap-Seiten</string>
-<string name="overscan_instructions">Verwenden D-Pad nach oben links und unten rechts ein, bis kein Blau sehen ist. Verwenden 
+    <string name="Controls">Controls</string>
+    <string name="skip_forward_time_title">Fast Forward überspringen Zeit</string>
+    <string name="skip_forward_time_summary">Zeit, vorwärts zu überspringen, wenn FF-Taste gedrückt wird</string>
+    <string name="skip_backward_time_title">REW überspringen Zeit</string>
+    <string name="skip_backward_time_summary">Zeit, zurück zu springen, wenn REW-Taste gedrückt wird</string>
+    <string name="next_prev_behavior_title">Vor / Zurück-Taste Verhalten</string>
+    <string name="next_prev_behavior_summary"><![CDATA[Was sollten die Nächste und Vorherige Tasten tun]]></string>
+    <string name="overscan_swap">Swap-Seiten</string>
+    <string name="overscan_instructions">Verwenden D-Pad nach oben links und unten rechts ein, bis kein Blau sehen ist. Verwenden
    -Taste, um Seiten zu tauschen. Wenn Sie fertig sind drücken Sie auf Zurück, um die Änderungen zu speichern. Sie können diese verwenden, anstatt Ihren 
    Geräte im Overscan-Kompensation gebaut. Die Entschädigung eingebauten Geräte Vorrang.
 </string>
 
-<string-array name="skipListNames">
-  <item>10 Sekunden</item>
-  <item>30 Sekunden</item>
-  <item>1 Minute</item>
-  <item>3 Minutes</item>
-</string-array>
-<string-array name="skipListValues">
-  <item>10000</item>
-  <item>30000</item>
-  <item>60000</item>
-  <item>180000</item>
-</string-array>
+    <string-array name="skipListNames">
+        <item>10 Sekunden</item>
+        <item>30 Sekunden</item>
+        <item>1 Minute</item>
+        <item>3 Minutes</item>
+    </string-array>
+    <string-array name="skipListValues">
+        <item>10000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>180000</item>
+    </string-array>
 
-<string-array name="nextPrevNames">
-  <item>Nächster Artikel in der Warteschlange</item>
-  <item>überspringen 5%</item>
-  <item>überspringen 10%</item>
-  <item>überspringen 5 minutes</item>
-  <item>überspringen 10 minutes</item>
-</string-array>
-<string-array name="nextPrevValues">
-  <item>queue</item>
-  <item>5%</item>
-  <item>10%</item>
-  <item>3000000</item>
-  <item>6000000</item>
-</string-array>
+    <string-array name="nextPrevNames">
+        <item>Nächster Artikel in der Warteschlange</item>
+        <item>überspringen 5%</item>
+        <item>überspringen 10%</item>
+        <item>überspringen 5 minutes</item>
+        <item>überspringen 10 minutes</item>
+    </string-array>
+    <string-array name="nextPrevValues">
+        <item>queue</item>
+        <item>5%</item>
+        <item>10%</item>
+        <item>3000000</item>
+        <item>6000000</item>
+    </string-array>
 
 </resources>
