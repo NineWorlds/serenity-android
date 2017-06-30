@@ -32,7 +32,7 @@ public interface PlexMediaContainerService {
                                           @Path("secondaryCategory") String secondaryCategory);
 
     @GET("{urlPath}")
-    Call<MediaContainer> retrieveItemByUrlPath(@Path("urlPath") String key);
+    Call<MediaContainer> retrieveItemByUrlPath(@Path(value = "urlPath", encoded = true) String key);
 
 
     @GET("library/sections/{key}/search?type=1")

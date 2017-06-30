@@ -33,7 +33,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.Response;
 import com.birbit.android.jobqueue.JobManager;
 
 import net.ganin.darv.DpadAwareRecyclerView;
@@ -53,6 +52,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
+import us.nineworlds.serenity.events.SeasonsRetrievalEvent;
 import us.nineworlds.serenity.events.SerenityEvent;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.jobs.SeasonsRetrievalJob;
@@ -61,12 +61,11 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 
 /**
  * An adapter that handles the population of views for TV Show Seasons.
- *
+ * <p>
  * The fetching of the data is handled by a RESTFul Volley call to plex and then
  * the data is parsed and returned.
  *
  * @author dcarver
- *
  */
 public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapter {
 
@@ -98,19 +97,14 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
     }
 
     protected void fetchData() {
-        String url = plexFactory.getSeasonsURL(key);
         SeasonsRetrievalJob seasonsRetrievalJob = new SeasonsRetrievalJob(key);
         jobManager.addJobInBackground(seasonsRetrievalJob);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSeasonResponseEvent(SerenityEvent event) {
-        MediaContainer mediaContainer = event.getMediaContainer();
-        new SeaonsResponseListener().onResponse(mediaContainer);
-    }
-
-
     public Object getItem(int position) {
+        if (seasonList.isEmpty()) {
+            return null;
+        }
         return seasonList.get(position);
     }
 
@@ -192,32 +186,29 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
         watchedView.setVisibility(View.INVISIBLE);
     }
 
-    private class SeaonsResponseListener implements
-            Response.Listener<MediaContainer> {
 
-        @Override
-        public void onResponse(MediaContainer response) {
-            seasonList = new SeasonsMediaContainer(response).createSeries();
-            notifyDataSetChanged();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSeasonsRetrievalResponse(SeasonsRetrievalEvent event) {
+        seasonList = new SeasonsMediaContainer(event.getMediaContainer()).createSeries();
+        notifyDataSetChanged();
 
-            if (seasonList != null) {
-                if (!seasonList.isEmpty()) {
-                    TextView titleView = (TextView) context
-                            .findViewById(R.id.tvShowSeasonsDetailText);
-                    titleView.setText(seasonList.get(0).getParentTitle());
-                    TextView textView = (TextView) context
-                            .findViewById(R.id.tvShowSeasonsItemCount);
-                    textView.setText(Integer.toString(seasonList.size())
-                            + context.getString(R.string._item_s_));
+        if (seasonList != null) {
+            if (!seasonList.isEmpty()) {
+                TextView titleView = (TextView) context
+                        .findViewById(R.id.tvShowSeasonsDetailText);
+                titleView.setText(seasonList.get(0).getParentTitle());
+                TextView textView = (TextView) context
+                        .findViewById(R.id.tvShowSeasonsItemCount);
+                textView.setText(Integer.toString(seasonList.size())
+                        + context.getString(R.string._item_s_));
 
-                }
             }
+        }
 
-            DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) context
-                    .findViewById(R.id.tvShowSeasonImageGallery);
-            if (gallery != null) {
-                gallery.requestFocusFromTouch();
-            }
+        DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) context
+                .findViewById(R.id.tvShowSeasonImageGallery);
+        if (gallery != null) {
+            gallery.requestFocusFromTouch();
         }
     }
 
