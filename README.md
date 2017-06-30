@@ -18,14 +18,11 @@ What does this support
 * Browsing by Genre for TV Shows and Movies
 * Browsing by Season for TV Shows
 * Download Videos for offline playback
-* Tablets and Android TV devices (running 3.2 or higher)
+* Android TV and Fire TV devices running Android 4.1 or higher
 * Playback videos from Queue
 * Optional to playback movie trailers and episode previews from YouTube.
 * Multiple views, from Grid View to Detail View.
 * Auto discovery and works with all Plex 9 Media Servers, no server restriction.
-* Second screen support including AllCast for Chromecasting your videos.
-* Beta Music Library support.
-
 
 What is currently not targeted:
 
@@ -76,16 +73,21 @@ To build the APK and APKLibraries from the command line:
 
     ./gradlew clean assembleDebug
 
-The application APK will be in serenity-app/target.  You can sideload this APK on your Android TV or Fire TV device.
+The application APK will be in serenity-app/build/outputs.  You can sideload this APK on your Android TV or Fire TV device.
 
 Open Source Projects:
 =====
 
 This project uses several open source projects and source code:
 
-* LeftNavBarLibrary (http://code.google.com/p/googletv-android-samples/) from the google tv project.  This is packaged as a apklib for reuse.
 * Android-Universal-ImageLoader (https://github.com/nostra13/Android-Universal-Image-Loader) - a nice library for managing image caches and downloading of images in the background.  Extremely fast response times both in the library and from the developer.
 * Simple (http://simple.sourceforge.net/) - provides a nice interface to Serialize and Deserialize XML information.
+* Dagger 1.2
+* Retrofit 2
+* OkHttp 3
+* Android Priority Job Manager
+* GreenRobot EventBus
+
 
 Unit Testing Frameworks
 ------
