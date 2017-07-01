@@ -77,9 +77,15 @@ public class PlexappClient {
     private void init() {
         Serializer serializer = new Persister();
 
+        HttpLoggingInterceptor logger = new HttpLoggingInterceptor();
+        OkHttpClient.Builder okClient = new OkHttpClient.Builder();
+        logger.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+        okClient.addInterceptor(logger);
+
         Retrofit.Builder builder = new Retrofit.Builder();
         Retrofit mediaContainerAdapter = builder.baseUrl(resourcePath.getRoot())
                 .addConverterFactory(SimpleXmlConverterFactory.createNonStrict(serializer))
+                .client(okClient.build())
                 .build();
 
         mediaContainerclient = mediaContainerAdapter.create(PlexMediaContainerService.class);
@@ -87,6 +93,7 @@ public class PlexappClient {
         Retrofit stringAdapter = new Retrofit.Builder()
                 .baseUrl(resourcePath.getRoot())
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .client(okClient.build())
                 .build();
 
         textClient = stringAdapter.create(PlexTextService.class);
