@@ -2,7 +2,11 @@
 
 package us.nineworlds.serenity.ui.views;
 
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
@@ -26,7 +30,7 @@ public class TextClock extends TextView {
      * The default formatting pattern in 12-hour mode. This pattenr is used
      * if {@link #setFormat12Hour(CharSequence)} is called with a null pattern
      * or if no pattern was specified when creating an instance of this class.
-     *
+     * <p>
      * This default pattern shows only the time, hours and minutes, and an am/pm
      * indicator.
      *
@@ -39,7 +43,7 @@ public class TextClock extends TextView {
      * The default formatting pattern in 24-hour mode. This pattenr is used
      * if {@link #setFormat24Hour(CharSequence)} is called with a null pattern
      * or if no pattern was specified when creating an instance of this class.
-     *
+     * <p>
      * This default pattern shows only the time, hours and minutes.
      *
      * @see #setFormat24Hour(CharSequence)
@@ -90,7 +94,7 @@ public class TextClock extends TextView {
      * respectively for the 24-hour and 12-hour modes.
      *
      * @param context The Context the view is running in, through which it can
-     *        access the current theme, resources, etc.
+     *                access the current theme, resources, etc.
      */
     @SuppressWarnings("UnusedDeclaration")
     public TextClock(Context context) {
@@ -101,13 +105,13 @@ public class TextClock extends TextView {
     /**
      * Creates a new clock inflated from XML. This object's properties are
      * intialized from the attributes specified in XML.
-     *
+     * <p>
      * This constructor uses a default style of 0, so the only attribute values
      * applied are those in the Context's Theme and the given AttributeSet.
      *
      * @param context The Context the view is running in, through which it can
-     *        access the current theme, resources, etc.
-     * @param attrs The attributes of the XML tag that is inflating the view
+     *                access the current theme, resources, etc.
+     * @param attrs   The attributes of the XML tag that is inflating the view
      */
     @SuppressWarnings("UnusedDeclaration")
     public TextClock(Context context, AttributeSet attrs) {
@@ -118,13 +122,13 @@ public class TextClock extends TextView {
      * Creates a new clock inflated from XML. This object's properties are
      * intialized from the attributes specified in XML.
      *
-     * @param context The Context the view is running in, through which it can
-     *        access the current theme, resources, etc.
-     * @param attrs The attributes of the XML tag that is inflating the view
+     * @param context  The Context the view is running in, through which it can
+     *                 access the current theme, resources, etc.
+     * @param attrs    The attributes of the XML tag that is inflating the view
      * @param defStyle The default style to apply to this view. If 0, no style
-     *        will be applied (beyond what is included in the theme). This may
-     *        either be an attribute resource, whose value will be retrieved
-     *        from the current theme, or an explicit style resource
+     *                 will be applied (beyond what is included in the theme). This may
+     *                 either be an attribute resource, whose value will be retrieved
+     *                 from the current theme, or an explicit style resource
      */
     public TextClock(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -151,7 +155,6 @@ public class TextClock extends TextView {
      * {@link android.text.format.DateFormat}.
      *
      * @return A {@link CharSequence} or null.
-     *
      * @see #setFormat12Hour(CharSequence)
      * @see #is24HourModeEnabled()
      */
@@ -164,14 +167,13 @@ public class TextClock extends TextView {
      * Specifies the formatting pattern used to display the date and/or time
      * in 12-hour mode. The formatting pattern syntax is described in
      * {@link android.text.format.DateFormat}.
-     *
+     * <p>
      * If this pattern is set to null, {@link #getFormat24Hour()} will be used
      * even in 12-hour mode. If both 24-hour and 12-hour formatting patterns
      * are set to null, {@link #DEFAULT_FORMAT_24_HOUR} and
      * {@link #DEFAULT_FORMAT_12_HOUR} will be used instead.
      *
      * @param format A date/time formatting pattern as described in {@link android.text.format.DateFormat}
-     *
      * @see #getFormat12Hour()
      * @see #is24HourModeEnabled()
      * @see #DEFAULT_FORMAT_12_HOUR
@@ -190,7 +192,6 @@ public class TextClock extends TextView {
      * {@link android.text.format.DateFormat}.
      *
      * @return A {@link CharSequence} or null.
-     *
      * @see #setFormat24Hour(CharSequence)
      * @see #is24HourModeEnabled()
      */
@@ -203,14 +204,13 @@ public class TextClock extends TextView {
      * Specifies the formatting pattern used to display the date and/or time
      * in 24-hour mode. The formatting pattern syntax is described in
      * {@link android.text.format.DateFormat}.
-     *
+     * <p>
      * If this pattern is set to null, {@link #getFormat12Hour()} will be used
      * even in 24-hour mode. If both 24-hour and 12-hour formatting patterns
      * are set to null, {@link #DEFAULT_FORMAT_24_HOUR} and
      * {@link #DEFAULT_FORMAT_12_HOUR} will be used instead.
      *
      * @param format A date/time formatting pattern as described in {@link android.text.format.DateFormat}
-     *
      * @see #getFormat24Hour()
      * @see #is24HourModeEnabled()
      * @see #DEFAULT_FORMAT_24_HOUR
@@ -225,18 +225,17 @@ public class TextClock extends TextView {
 
     /**
      * Indicates whether the system is currently using the 24-hour mode.
-     *
+     * <p>
      * When the system is in 24-hour mode, this view will use the pattern
      * returned by {@link #getFormat24Hour()}. In 12-hour mode, the pattern
      * returned by {@link #getFormat12Hour()} is used instead.
-     *
+     * <p>
      * If either one of the formats is null, the other format is used. If
      * both formats are null, the default values {@link #DEFAULT_FORMAT_12_HOUR}
      * and {@link #DEFAULT_FORMAT_24_HOUR} are used instead.
      *
      * @return true if time should be displayed in 24-hour format, false if it
-     *         should be displayed in 12-hour format.
-     *
+     * should be displayed in 12-hour format.
      * @see #setFormat12Hour(CharSequence)
      * @see #getFormat12Hour()
      * @see #setFormat24Hour(CharSequence)
@@ -250,8 +249,7 @@ public class TextClock extends TextView {
      * Indicates which time zone is currently used by this view.
      *
      * @return The ID of the current time zone or null if the default time zone,
-     *         as set by the user, must be used
-     *
+     * as set by the user, must be used
      * @see TimeZone
      * @see java.util.TimeZone#getAvailableIDs()
      * @see #setTimeZone(String)
@@ -268,7 +266,6 @@ public class TextClock extends TextView {
      * @param timeZone The desired time zone's ID as specified in {@link TimeZone}
      *                 or null to user the time zone specified by the user
      *                 (system time zone)
-     *
      * @see #getTimeZone()
      * @see java.util.TimeZone#getAvailableIDs()
      * @see TimeZone#getTimeZone(String)
@@ -283,7 +280,6 @@ public class TextClock extends TextView {
     /**
      * Selects either one of {@link #getFormat12Hour()} or {@link #getFormat24Hour()}
      * depending on whether the user has selected 24-hour format.
-     *
      */
     private void chooseFormat() {
         final boolean format24Requested = is24HourModeEnabled();

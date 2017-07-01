@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <us.nineworlds.serenity.widgets.ReflectingLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 android:id="@+id/relectionArea"
-                                                 android:layout_width="fill_parent"
-                                                 android:layout_height="90dp"
-                                                 android:padding="5dp"
-                                                 android:layout_centerInParent="true"
-                                                 android:background="@drawable/content_panel_dark">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relectionArea"
+    android:layout_width="fill_parent"
+    android:layout_height="90dp"
+    android:padding="5dp"
+    android:layout_centerInParent="true"
+    android:background="@drawable/content_panel_dark">
 
     <net.ganin.darv.DpadAwareRecyclerView
-            android:id="@+id/mainGalleryMenu"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:paddingLeft="5dp"
-            app:selectorVelocity="1000"
-            app:smoothScrolling="true"
-            app:backgroundSelector="@drawable/main_menu_item_foreground_selector"
-            android:nextFocusUp="@+id/menu_button"/>
+        android:id="@+id/mainGalleryMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:paddingLeft="5dp"
+        app:selectorVelocity="1000"
+        app:smoothScrolling="true"
+        app:backgroundSelector="@drawable/main_menu_item_foreground_selector"
+        android:nextFocusUp="@+id/menu_button" />
 
 </us.nineworlds.serenity.widgets.ReflectingLayout>

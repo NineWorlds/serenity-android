@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/server_settings" >
+    <PreferenceCategory android:title="@string/server_settings">
         <ListPreference
             android:defaultValue=""
             android:key="discoveredServer"
@@ -19,7 +19,7 @@
             android:summary="@string/default_port_summary"
             android:title="@string/server_port" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/preferred_filter" >
+    <PreferenceCategory android:title="@string/preferred_filter">
         <ListPreference
             android:defaultValue="all"
             android:entries="@array/categoryListNames"
@@ -34,9 +34,9 @@
             android:key="serenity_series_category_filter"
             android:summary="@string/categories_series_summary_preference_description"
             android:title="@string/series_select_the_starting_category_filter_" />
-        
+
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/display_adjustements" >
+    <PreferenceCategory android:title="@string/display_adjustements">
         <CheckBoxPreference
             android:key="overscan_compensation"
             android:summary="@string/overscan_adjustement_summary"
@@ -46,12 +46,13 @@
             android:title="@string/overscan_setup_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/android_tv_recommendations">
-        <CheckBoxPreference android:key="androidtv_recommendation_ondeck"
+        <CheckBoxPreference
+            android:key="androidtv_recommendation_ondeck"
             android:summary="@string/contribute_ondeck_movies_and_episodes"
             android:title="@string/androidtv_ondeck_recommendations"
             android:defaultValue="true" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/video_library" >
+    <PreferenceCategory android:title="@string/video_library">
         <CheckBoxPreference
             android:key="automatic_subtitle_selection"
             android:summary="@string/subtitle_automatic_selection_summary"
@@ -74,12 +75,13 @@
             android:key="movie_layout_grid"
             android:summary="@string/poster_grid_layout_for_movies_"
             android:title="@string/movie_grid_poster_layout" />
-        <CheckBoxPreference android:key="episode_trailers"
+        <CheckBoxPreference
+            android:key="episode_trailers"
             android:title="Enable Episode Previews"
             android:summary="When enabled the app will try and search YouTube for episode promos and previews. Disable if you are not finding relevant trailers from YouTube."
-            android:defaultValue="false"/>
+            android:defaultValue="false" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/animations" >
+    <PreferenceCategory android:title="@string/animations">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="animation_background_mainmenu_fadein"
@@ -90,7 +92,7 @@
             android:summary="@string/movie_fadein_animation_summary"
             android:title="@string/fade_in_background_fan_art" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/media_player_internal" >
+    <PreferenceCategory android:title="@string/media_player_internal">
         <CheckBoxPreference
             android:key="plex_aspect_ratio"
             android:summary="@string/prefer_plex_media_server_s_aspect_ratio_"
@@ -100,15 +102,15 @@
             android:key="internal_player_osd"
             android:summary="@string/internal_player_osd_summary"
             android:title="@string/on_screen_display" />
-        <ListPreference android:defaultValue="5000"
+        <ListPreference
+            android:defaultValue="5000"
             android:key="osd_display_time"
-            android:summary = "Sets the amount of time the On Screen Display stays shown before fadding away."
+            android:summary="Sets the amount of time the On Screen Display stays shown before fadding away."
             android:title="On Screen Display Time"
             android:entries="@array/osd_display_time"
-            android:entryValues="@array/osd_display_time_values"
-            />
+            android:entryValues="@array/osd_display_time_values" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/media_player_external" >
+    <PreferenceCategory android:title="@string/media_player_external">
         <CheckBoxPreference
             android:key="external_player"
             android:summary="@string/use_external_media_player_"
@@ -117,13 +119,13 @@
             android:key="external_player_continuous_playback"
             android:summary="@string/enables_video_queue_support_for_external_players_"
             android:title="@string/enable_video_queue_for_external_players" />
-        
+
         <ListPreference
             android:defaultValue="default"
             android:key="serenity_external_player_filter"
             android:summary="@string/preferred_external_player_summary"
-            android:title="@string/preferred_external_player" />        
-        
+            android:title="@string/preferred_external_player" />
+
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/Controls">
         <ListPreference
@@ -132,31 +134,31 @@
             android:summary="@string/skip_forward_time_summary"
             android:entries="@array/skipListNames"
             android:entryValues="@array/skipListValues"
-            android:defaultValue="30000"/>
+            android:defaultValue="30000" />
         <ListPreference
             android:key="skip_backward_time"
             android:title="@string/skip_backward_time_title"
             android:summary="@string/skip_backward_time_summary"
             android:entries="@array/skipListNames"
             android:entryValues="@array/skipListValues"
-            android:defaultValue="10000"/>
+            android:defaultValue="10000" />
         <ListPreference
             android:key="next_prev_behavior"
             android:title="@string/next_prev_behavior_title"
             android:summary="@string/next_prev_behavior_summary"
             android:entries="@array/nextPrevNames"
             android:entryValues="@array/nextPrevValues"
-            android:defaultValue="queue"/>
+            android:defaultValue="queue" />
 
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/preference_remote_control" >
+    <PreferenceCategory android:title="@string/preference_remote_control">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="remote_control_menu"
             android:summary="@string/remote_control_menu_summary"
             android:title="@string/enable_sliding_menu" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/prefs_advanced_options" >
+    <PreferenceCategory android:title="@string/prefs_advanced_options">
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="serenity_boot_startup"
@@ -165,7 +167,7 @@
         <CheckBoxPreference
             android:key="serenity_tv_mode"
             android:summary="The app is running on a device connected to a TV with a Remote or Game Controller."
-            android:title="Android TV mode"/>
+            android:title="Android TV mode" />
     </PreferenceCategory>
-    
+
 </PreferenceScreen>

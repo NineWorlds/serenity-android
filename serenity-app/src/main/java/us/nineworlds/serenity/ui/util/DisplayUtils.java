@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -33,53 +33,53 @@ import android.view.View;
 
 /**
  * @author dcarver
- * 
+ *
  */
 public class DisplayUtils {
 
-	public static int screenWidthDP(Activity context) {
-		Display display = context.getWindowManager().getDefaultDisplay();
-		DisplayMetrics outMetrics = new DisplayMetrics();
-		display.getMetrics(outMetrics);
+    public static int screenWidthDP(Activity context) {
+        Display display = context.getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
 
-		float density = context.getResources().getDisplayMetrics().density;
-		int dpWidth = Float.valueOf(outMetrics.widthPixels / density)
-				.intValue();
-		return dpWidth;
-	}
+        float density = context.getResources().getDisplayMetrics().density;
+        int dpWidth = Float.valueOf(outMetrics.widthPixels / density)
+                .intValue();
+        return dpWidth;
+    }
 
-	public static int screenHeightDP(Activity context) {
-		Display display = context.getWindowManager().getDefaultDisplay();
-		DisplayMetrics outMetrics = new DisplayMetrics();
-		display.getMetrics(outMetrics);
+    public static int screenHeightDP(Activity context) {
+        Display display = context.getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
 
-		float density = context.getResources().getDisplayMetrics().density;
-		int dpWidth = Float.valueOf(outMetrics.heightPixels / density)
-				.intValue();
-		return dpWidth;
-	}
+        float density = context.getResources().getDisplayMetrics().density;
+        int dpWidth = Float.valueOf(outMetrics.heightPixels / density)
+                .intValue();
+        return dpWidth;
+    }
 
-	public static void overscanCompensation(Context context, View... views) {
-		final SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
+    public static void overscanCompensation(Context context, View... views) {
+        final SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(context);
 
-		if (prefs.getBoolean("overscan_compensation", false)) {
-			for (View view : views) {
-				if (view != null) {
-					// ViewGroup.MarginLayoutParams params =
-					// (ViewGroup.MarginLayoutParams) view
-					// .getLayoutParams();
+        if (prefs.getBoolean("overscan_compensation", false)) {
+            for (View view : views) {
+                if (view != null) {
+                    // ViewGroup.MarginLayoutParams params =
+                    // (ViewGroup.MarginLayoutParams) view
+                    // .getLayoutParams();
 
-					view.setPadding(prefs.getInt("overscan_left", 50),
-							prefs.getInt("overscan_top", 50),
-							prefs.getInt("overscan_right", 50),
-							prefs.getInt("overscan_bottom", 50));
-					// params.setMargins(prefs.getInt("overscan_left", 50),
-					// prefs.getInt("overscan_top", 50),
-					// prefs.getInt("overscan_right", 50),
-					// prefs.getInt("overscan_bottom", 50));
-				}
-			}
-		}
-	}
+                    view.setPadding(prefs.getInt("overscan_left", 50),
+                            prefs.getInt("overscan_top", 50),
+                            prefs.getInt("overscan_right", 50),
+                            prefs.getInt("overscan_bottom", 50));
+                    // params.setMargins(prefs.getInt("overscan_left", 50),
+                    // prefs.getInt("overscan_top", 50),
+                    // prefs.getInt("overscan_right", 50),
+                    // prefs.getInt("overscan_bottom", 50));
+                }
+            }
+        }
+    }
 }

@@ -7,7 +7,7 @@
     android:layout_marginLeft="10dp"
     android:background="#AA000000"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/video_poster"

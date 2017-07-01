@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,17 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.injection.ForVideoQueue;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -43,7 +32,17 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+import javax.inject.Inject;
+
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 
 
 /**
@@ -55,18 +54,18 @@ import android.widget.Toast;
  */
 public class SeasonOnItemLongClickListener extends BaseInjector implements View.OnLongClickListener {
 
-	protected Dialog dialog;
-	protected Activity context;
-	protected ImageView vciv;
-	protected SeriesContentInfo info;
+    protected Dialog dialog;
+    protected Activity context;
+    protected ImageView vciv;
+    protected SeriesContentInfo info;
 
-	@Inject
-	@ForVideoQueue
-	protected LinkedList<VideoContentInfo> videoQueue;
+    @Inject
+    @ForVideoQueue
+    protected LinkedList<VideoContentInfo> videoQueue;
 
-	public SeasonOnItemLongClickListener(Activity context) {
-		this.context = context;
-	}
+    public SeasonOnItemLongClickListener(Activity context) {
+        this.context = context;
+    }
 
 //	@Override
 //	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
@@ -95,34 +94,34 @@ public class SeasonOnItemLongClickListener extends BaseInjector implements View.
 //
 //	}
 
-	/**
-	 * @return
-	 */
-	protected boolean onItemLongClick() {
-		dialog = new Dialog(context);
-		AlertDialog.Builder builder = new AlertDialog.Builder(
-				new ContextThemeWrapper(context, android.R.style.Theme_Holo));
-		builder.setTitle(context.getString(R.string.season_options));
+    /**
+     * @return
+     */
+    protected boolean onItemLongClick() {
+        dialog = new Dialog(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                new ContextThemeWrapper(context, android.R.style.Theme_Holo));
+        builder.setTitle(context.getString(R.string.season_options));
 
-		ListView modeList = new ListView(context);
-		modeList.setSelector(R.drawable.menu_item_selector);
-		ArrayList<String> options = new ArrayList<String>();
-		options.add(context.getString(R.string.add_season_to_queue));
+        ListView modeList = new ListView(context);
+        modeList.setSelector(R.drawable.menu_item_selector);
+        ArrayList<String> options = new ArrayList<String>();
+        options.add(context.getString(R.string.add_season_to_queue));
 
-		ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context,
-				R.layout.simple_list_item, R.id.list_item_text, options);
+        ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context,
+                R.layout.simple_list_item, R.id.list_item_text, options);
 
-		modeList.setAdapter(modeAdapter);
-		modeList.setOnItemClickListener(new DialogOnItemSelected());
+        modeList.setAdapter(modeAdapter);
+        modeList.setOnItemClickListener(new DialogOnItemSelected());
 
-		builder.setView(modeList);
-		dialog = builder.create();
-		dialog.show();
+        builder.setView(modeList);
+        dialog = builder.create();
+        dialog.show();
 
-		return true;
-	}
+        return true;
+    }
 
-	protected void performAddToQueue() {
+    protected void performAddToQueue() {
 //			SeasonsEpisodePosterImageGalleryAdapter adapter = (SeasonsEpisodePosterImageGalleryAdapter) gridView
 //					.getAdapter();
 //			List<VideoContentInfo> episodes = adapter.getItems();
@@ -137,36 +136,36 @@ public class SeasonOnItemLongClickListener extends BaseInjector implements View.
 //				v.requestFocusFromTouch();
 //			}
 //		}
-	}
+    }
 
-	@Override
-	public boolean onLongClick(View v) {
-		return false;
-	}
+    @Override
+    public boolean onLongClick(View v) {
+        return false;
+    }
 
-	protected class DialogOnItemSelected implements OnItemClickListener {
+    protected class DialogOnItemSelected implements OnItemClickListener {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.widget.AdapterView.OnItemClickListener#onItemClick(android
-		 * .widget.AdapterView, android.view.View, int, long)
-		 */
-		@Override
-		public void onItemClick(android.widget.AdapterView<?> arg0, View v,
-				int position, long arg3) {
+        /*
+         * (non-Javadoc)
+         *
+         * @see
+         * android.widget.AdapterView.OnItemClickListener#onItemClick(android
+         * .widget.AdapterView, android.view.View, int, long)
+         */
+        @Override
+        public void onItemClick(android.widget.AdapterView<?> arg0, View v,
+                                int position, long arg3) {
 
-			switch (position) {
-			case 0:
-				performAddToQueue();
-				break;
-			default:
+            switch (position) {
+                case 0:
+                    performAddToQueue();
+                    break;
+                default:
 
-			}
-			dialog.dismiss();
-		}
+            }
+            dialog.dismiss();
+        }
 
-	}
+    }
 
 }

@@ -1,16 +1,15 @@
 <us.nineworlds.serenity.widgets.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <!-- The main content view -->
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tvshowBrowserLayout"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/tvshows" >
+        android:background="@drawable/tvshows">
 
         <ImageView
             android:id="@+id/fanArt"
@@ -18,24 +17,25 @@
             android:layout_height="match_parent" />
 
         <FrameLayout android:layout_width="match_parent"
-                     android:layout_height="match_parent"
-                     android:layout_marginRight="10dp"
-                     android:layout_marginTop="@dimen/actionbarMargin"
-                     android:layout_marginBottom="5dp"
-                     xmlns:android="http://schemas.android.com/apk/res/android">
-            <net.ganin.darv.DpadAwareRecyclerView
-                    android:id="@+id/tvShowGridView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:selectorVelocity="1000"
-                    app:smoothScrolling="true"
-                    android:background="@color/card_background"
-                    android:visibility="visible"
-                    android:layout_marginBottom="5dp"
-                    app:backgroundSelector="@drawable/main_menu_item_foreground_selector"
-                    xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
-                    xmlns:android="http://schemas.android.com/apk/res/android">
-                <requestFocus/>
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="@dimen/actionbarMargin"
+            android:layout_marginBottom="5dp"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <net.ganin.darv.DpadAwareRecyclerView android:id="@+id/tvShowGridView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:selectorVelocity="1000"
+                app:smoothScrolling="true"
+                android:background="@color/card_background"
+                android:visibility="visible"
+                android:layout_marginBottom="5dp"
+                app:backgroundSelector="@drawable/main_menu_item_foreground_selector"
+                xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
+                xmlns:android="http://schemas.android.com/apk/res/android">
+
+                <requestFocus />
             </net.ganin.darv.DpadAwareRecyclerView>
         </FrameLayout>
     </RelativeLayout>

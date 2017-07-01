@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -32,31 +32,31 @@ import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 
 public class SecondaryCategoryMediaContainer extends AbstractMediaContainer {
 
-	private List<SecondaryCategoryInfo> categories = new ArrayList<SecondaryCategoryInfo>();
+    private List<SecondaryCategoryInfo> categories = new ArrayList<SecondaryCategoryInfo>();
 
-	protected String parentCategoryKey;
+    protected String parentCategoryKey;
 
-	public SecondaryCategoryMediaContainer(MediaContainer mc,
-			String parentCategoryKey) {
-		super(mc);
-		this.parentCategoryKey = parentCategoryKey;
-	}
+    public SecondaryCategoryMediaContainer(MediaContainer mc,
+                                           String parentCategoryKey) {
+        super(mc);
+        this.parentCategoryKey = parentCategoryKey;
+    }
 
-	public List<SecondaryCategoryInfo> createCategories() {
-		populateSecondaryCategories();
-		return categories;
-	}
+    public List<SecondaryCategoryInfo> createCategories() {
+        populateSecondaryCategories();
+        return categories;
+    }
 
-	protected void populateSecondaryCategories() {
-		List<Directory> dirs = mc.getDirectories();
-		categories = new ArrayList<SecondaryCategoryInfo>();
-		for (Directory dir : dirs) {
-			SecondaryCategoryInfo category = new SecondaryCategoryInfo();
-			category.setCategory(dir.getKey());
-			category.setCategoryDetail(dir.getTitle());
-			category.setParentCategory(parentCategoryKey);
-			categories.add(category);
-		}
-	}
+    protected void populateSecondaryCategories() {
+        List<Directory> dirs = mc.getDirectories();
+        categories = new ArrayList<SecondaryCategoryInfo>();
+        for (Directory dir : dirs) {
+            SecondaryCategoryInfo category = new SecondaryCategoryInfo();
+            category.setCategory(dir.getKey());
+            category.setCategoryDetail(dir.getTitle());
+            category.setParentCategory(parentCategoryKey);
+            categories.add(category);
+        }
+    }
 
 }

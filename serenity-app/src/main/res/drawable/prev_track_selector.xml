@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2011 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +15,9 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/osd_prev_track_nf" android:state_activated="true"/>
-    <item android:drawable="@drawable/osd_prev_track_fo" android:state_focused="true"/>
-    <item android:drawable="@drawable/osd_prev_track_fo" android:state_pressed="true"/>
-    <item android:drawable="@drawable/osd_prev_track_nf"/>
+    <item android:drawable="@drawable/osd_prev_track_nf" android:state_activated="true" />
+    <item android:drawable="@drawable/osd_prev_track_fo" android:state_focused="true" />
+    <item android:drawable="@drawable/osd_prev_track_fo" android:state_pressed="true" />
+    <item android:drawable="@drawable/osd_prev_track_nf" />
 
 </selector>

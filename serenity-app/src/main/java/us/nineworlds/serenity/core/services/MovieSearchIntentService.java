@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,10 +23,11 @@
 
 package us.nineworlds.serenity.core.services;
 
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
 
 /**
  * @author dcarver
@@ -36,24 +37,24 @@ import android.util.Log;
 @Deprecated
 public class MovieSearchIntentService extends MoviesRetrievalIntentService {
 
-	protected String query;
+    protected String query;
 
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		Bundle bundle = intent.getExtras();
-		if (bundle == null) {
-			Log.e(getClass().getName(), "Missing intent extras");
-			return;
-		}
-		key = intent.getExtras().getString("key", "");
-		query = intent.getExtras().getString("query");
-		createPosters();
-		sendMessageResults(intent);
-	}
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        Bundle bundle = intent.getExtras();
+        if (bundle == null) {
+            Log.e(getClass().getName(), "Missing intent extras");
+            return;
+        }
+        key = intent.getExtras().getString("key", "");
+        query = intent.getExtras().getString("query");
+        createPosters();
+        sendMessageResults(intent);
+    }
 
-	@Override
-	protected MediaContainer retrieveVideos() throws Exception {
-		return factory.searchMovies(key, query);
-	}
+    @Override
+    protected MediaContainer retrieveVideos() throws Exception {
+        return factory.searchMovies(key, query);
+    }
 
 }

@@ -5,64 +5,63 @@ import android.media.MediaPlayer;
 /**
  * A simple media player control. Handles the main events that can occur
  * while using the player to play a video.
- * 
+ *
  * @author dcarver
- * 
  */
 public class SerenityMediaPlayerControl implements MediaPlayerControl {
-	MediaPlayer mediaPlayer;
-	
-	public SerenityMediaPlayerControl(MediaPlayer p) {
-		mediaPlayer = p;
-	}
-	
-	@Override
-	public void start() {
-		mediaPlayer.start();
-	}
+    MediaPlayer mediaPlayer;
 
-	@Override
-	public void seekTo(long pos) {
-		mediaPlayer.seekTo((int) pos);
-	}
+    public SerenityMediaPlayerControl(MediaPlayer p) {
+        mediaPlayer = p;
+    }
 
-	@Override
-	public void pause() {
-		mediaPlayer.pause();
-	}
+    @Override
+    public void start() {
+        mediaPlayer.start();
+    }
 
-	@Override
-	public boolean isPlaying() {
-		return mediaPlayer.isPlaying();
-	}
+    @Override
+    public void seekTo(long pos) {
+        mediaPlayer.seekTo((int) pos);
+    }
 
-	@Override
-	public long getDuration() {
-		return mediaPlayer.getDuration();
-	}
+    @Override
+    public void pause() {
+        mediaPlayer.pause();
+    }
 
-	@Override
-	public long getCurrentPosition() {
-		return mediaPlayer.getCurrentPosition();
-	}
+    @Override
+    public boolean isPlaying() {
+        return mediaPlayer.isPlaying();
+    }
 
-	@Override
-	public int getBufferPercentage() {
-		return 0;
-	}
+    @Override
+    public long getDuration() {
+        return mediaPlayer.getDuration();
+    }
 
-	@Override
-	public boolean canSeekForward() {
-		return true;
-	}
+    @Override
+    public long getCurrentPosition() {
+        return mediaPlayer.getCurrentPosition();
+    }
 
-	@Override
-	public boolean canSeekBackward() {
-		return true;
-	}
+    @Override
+    public int getBufferPercentage() {
+        return 0;
+    }
 
-	@Override
-	public boolean canPause() {
-		return true;
-	}
+    @Override
+    public boolean canSeekForward() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekBackward() {
+        return true;
+    }
+
+    @Override
+    public boolean canPause() {
+        return true;
+    }
 }

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView  
-    android:id="@+id/textViewSpinnerItemDropDown" 
-    android:layout_width="fill_parent" 
+<TextView android:id="@+id/textViewSpinnerItemDropDown"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     style="@android:style/TextAppearance.Holo.Medium"
     android:textColor="@android:color/white"
     android:background="@drawable/spinner_item_background"
-    android:padding="5dp" 
+    android:padding="5dp"
     xmlns:android="http://schemas.android.com/apk/res/android" />

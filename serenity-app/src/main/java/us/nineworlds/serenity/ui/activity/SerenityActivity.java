@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,16 +23,19 @@
 
 package us.nineworlds.serenity.ui.activity;
 
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.injection.InjectingActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
-import static android.support.v7.widget.RecyclerView.*;
+
+import net.ganin.darv.DpadAwareRecyclerView;
+
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.injection.InjectingActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+
+import static android.support.v7.widget.RecyclerView.LayoutManager;
 
 /**
  * @author dcarver
@@ -40,98 +43,98 @@ import static android.support.v7.widget.RecyclerView.*;
  */
 public abstract class SerenityActivity extends InjectingActivity {
 
-	protected abstract void createSideMenu();
+    protected abstract void createSideMenu();
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-	}
+    }
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
 
-		if (gallery == null) {
-			return super.onKeyDown(keyCode, event);
-		}
+        if (gallery == null) {
+            return super.onKeyDown(keyCode, event);
+        }
 
-		AbstractPosterImageGalleryAdapter adapter = null;
-		adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+        AbstractPosterImageGalleryAdapter adapter = null;
+        adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
 
-		if (adapter != null) {
-			int itemsCount = adapter.getItemCount();
+        if (adapter != null) {
+            int itemsCount = adapter.getItemCount();
 
-			if (contextMenuRequested(keyCode)) {
-				View view = null;
-				if (gallery != null) {
-					LayoutManager layoutManager = gallery.getLayoutManager();
-					view = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
-				}
-				view.performLongClick();
-				return true;
-			}
+            if (contextMenuRequested(keyCode)) {
+                View view = null;
+                if (gallery != null) {
+                    LayoutManager layoutManager = gallery.getLayoutManager();
+                    view = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
+                }
+                view.performLongClick();
+                return true;
+            }
 
-			if (gallery != null) {
-				if (isKeyCodeSkipBack(keyCode)) {
-					int selectedItem = gallery.getSelectedItemPosition();
-					int newPosition = selectedItem - 10;
-					if (newPosition < 0) {
-						newPosition = 0;
-					}
-					gallery.setSelection(newPosition);
-					return true;
-				}
-				if (isKeyCodeSkipForward(keyCode)) {
-					int selectedItem = gallery.getSelectedItemPosition();
-					int newPosition = selectedItem + 10;
-					if (newPosition > itemsCount) {
-						newPosition = itemsCount - 1;
-					}
-					gallery.setSelection(newPosition);
-					return true;
-				}
-			}
-		}
+            if (gallery != null) {
+                if (isKeyCodeSkipBack(keyCode)) {
+                    int selectedItem = gallery.getSelectedItemPosition();
+                    int newPosition = selectedItem - 10;
+                    if (newPosition < 0) {
+                        newPosition = 0;
+                    }
+                    gallery.setSelection(newPosition);
+                    return true;
+                }
+                if (isKeyCodeSkipForward(keyCode)) {
+                    int selectedItem = gallery.getSelectedItemPosition();
+                    int newPosition = selectedItem + 10;
+                    if (newPosition > itemsCount) {
+                        newPosition = itemsCount - 1;
+                    }
+                    gallery.setSelection(newPosition);
+                    return true;
+                }
+            }
+        }
 
-		return super.onKeyDown(keyCode, event);
-	}
+        return super.onKeyDown(keyCode, event);
+    }
 
-	protected boolean contextMenuRequested(int keyCode) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu",
-				true);
-		return keyCode == KeyEvent.KEYCODE_C
-				|| keyCode == KeyEvent.KEYCODE_BUTTON_Y
-				|| keyCode == KeyEvent.KEYCODE_BUTTON_R2
-				|| keyCode == KeyEvent.KEYCODE_PROG_RED
-				|| (keyCode == KeyEvent.KEYCODE_MENU && menuKeySlidingMenu == false);
-	}
+    protected boolean contextMenuRequested(int keyCode) {
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu",
+                true);
+        return keyCode == KeyEvent.KEYCODE_C
+                || keyCode == KeyEvent.KEYCODE_BUTTON_Y
+                || keyCode == KeyEvent.KEYCODE_BUTTON_R2
+                || keyCode == KeyEvent.KEYCODE_PROG_RED
+                || (keyCode == KeyEvent.KEYCODE_MENU && menuKeySlidingMenu == false);
+    }
 
-	/**
-	 * @param keyCode
-	 * @return
-	 */
-	protected boolean isKeyCodeSkipForward(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_F
-				|| keyCode == KeyEvent.KEYCODE_PAGE_UP
-				|| keyCode == KeyEvent.KEYCODE_CHANNEL_UP
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_NEXT
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
-				|| keyCode == KeyEvent.KEYCODE_BUTTON_R1;
-	}
+    /**
+     * @param keyCode
+     * @return
+     */
+    protected boolean isKeyCodeSkipForward(int keyCode) {
+        return keyCode == KeyEvent.KEYCODE_F
+                || keyCode == KeyEvent.KEYCODE_PAGE_UP
+                || keyCode == KeyEvent.KEYCODE_CHANNEL_UP
+                || keyCode == KeyEvent.KEYCODE_MEDIA_NEXT
+                || keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
+                || keyCode == KeyEvent.KEYCODE_BUTTON_R1;
+    }
 
-	/**
-	 * @param keyCode
-	 * @return
-	 */
-	protected boolean isKeyCodeSkipBack(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_R
-				|| keyCode == KeyEvent.KEYCODE_PAGE_DOWN
-				|| keyCode == KeyEvent.KEYCODE_CHANNEL_DOWN
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
-				|| keyCode == KeyEvent.KEYCODE_BUTTON_L1;
-	}
+    /**
+     * @param keyCode
+     * @return
+     */
+    protected boolean isKeyCodeSkipBack(int keyCode) {
+        return keyCode == KeyEvent.KEYCODE_R
+                || keyCode == KeyEvent.KEYCODE_PAGE_DOWN
+                || keyCode == KeyEvent.KEYCODE_CHANNEL_DOWN
+                || keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
+                || keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
+                || keyCode == KeyEvent.KEYCODE_BUTTON_L1;
+    }
 }

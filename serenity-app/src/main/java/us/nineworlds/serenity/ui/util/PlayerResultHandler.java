@@ -23,6 +23,9 @@
 
 package us.nineworlds.serenity.ui.util;
 
+import android.content.Intent;
+import android.view.View;
+
 import net.ganin.darv.DpadAwareRecyclerView;
 
 import us.nineworlds.serenity.R;
@@ -30,10 +33,6 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.injection.BaseInjector;
-
-import android.content.Intent;
-import android.view.View;
-import android.widget.BaseAdapter;
 
 public class PlayerResultHandler extends BaseInjector {
 

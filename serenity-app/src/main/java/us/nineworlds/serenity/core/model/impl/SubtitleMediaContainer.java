@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -36,45 +36,45 @@ import us.nineworlds.plex.rest.model.impl.Stream;
  */
 public class SubtitleMediaContainer extends AbstractMediaContainer {
 
-	/**
-	 * @param mc
-	 */
-	public SubtitleMediaContainer(MediaContainer mc) {
-		super(mc);
-	}
+    /**
+     * @param mc
+     */
+    public SubtitleMediaContainer(MediaContainer mc) {
+        super(mc);
+    }
 
-	public List<Subtitle> createSubtitle() {
-		List<Stream> streams = mc.getVideos().get(0).getMedias().get(0)
-				.getVideoPart().get(0).getStreams();
-		List<Subtitle> subtitles = new ArrayList<Subtitle>();
-		if (streams == null) {
-			return Collections.emptyList();
-		}
-		for (Stream stream : streams) {
-			if ("srt".equals(stream.getFormat())
-					|| "ass".equals(stream.getFormat())) {
+    public List<Subtitle> createSubtitle() {
+        List<Stream> streams = mc.getVideos().get(0).getMedias().get(0)
+                .getVideoPart().get(0).getStreams();
+        List<Subtitle> subtitles = new ArrayList<Subtitle>();
+        if (streams == null) {
+            return Collections.emptyList();
+        }
+        for (Stream stream : streams) {
+            if ("srt".equals(stream.getFormat())
+                    || "ass".equals(stream.getFormat())) {
 
-				Subtitle subtitle = new Subtitle();
-				subtitle = new Subtitle();
-				subtitle.setFormat(stream.getFormat());
-				subtitle.setLanguageCode(stream.getLanguageCode());
-				if (stream.getKey() == null) {
-					continue;
-				}
-				subtitle.setKey(factory.baseURL()
-						+ stream.getKey().replaceFirst("/", ""));
-				if (stream.getLanguage() == null) {
-					subtitle.setDescription("Unknown (" + stream.getFormat()
-							+ ")");
-				} else {
-					subtitle.setDescription(stream.getLanguage() + " ("
-							+ stream.getFormat() + ")");
-				}
-				subtitles.add(subtitle);
-			}
-		}
-		return subtitles;
+                Subtitle subtitle = new Subtitle();
+                subtitle = new Subtitle();
+                subtitle.setFormat(stream.getFormat());
+                subtitle.setLanguageCode(stream.getLanguageCode());
+                if (stream.getKey() == null) {
+                    continue;
+                }
+                subtitle.setKey(factory.baseURL()
+                        + stream.getKey().replaceFirst("/", ""));
+                if (stream.getLanguage() == null) {
+                    subtitle.setDescription("Unknown (" + stream.getFormat()
+                            + ")");
+                } else {
+                    subtitle.setDescription(stream.getLanguage() + " ("
+                            + stream.getFormat() + ")");
+                }
+                subtitles.add(subtitle);
+            }
+        }
+        return subtitles;
 
-	}
+    }
 
 }

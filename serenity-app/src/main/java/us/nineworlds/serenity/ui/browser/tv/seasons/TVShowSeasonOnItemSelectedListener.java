@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import android.app.Activity;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,9 +33,9 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
-import javax.inject.Inject;
-
 import net.ganin.darv.DpadAwareRecyclerView;
+
+import javax.inject.Inject;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
@@ -42,8 +43,6 @@ import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
-import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
 
 public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
         DpadAwareRecyclerView.OnItemSelectedListener {
@@ -84,6 +83,10 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
     @Override
     public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
         TVShowSeasonImageGalleryAdapter adapter = (TVShowSeasonImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+        if (i < 0) {
+            Log.e(TVShowSeasonOnItemSelectedListener.class.getCanonicalName(), "Season list size: " + adapter.getItemCount() + " position: " + i);
+            i = 0;
+        }
 
         info = (SeriesContentInfo) adapter.getItem(i);
         ImageView mpiv = (ImageView) view.findViewById(R.id.posterImageView);

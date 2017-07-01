@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,23 +23,23 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
+import android.view.View;
+
 import net.ganin.darv.DpadAwareRecyclerView;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 
-import android.view.View;
-
 /**
  * @author dcarver
- * 
+ *
  */
 public class GalleryVideoOnItemClickListener extends AbstractVideoOnItemClickListener implements DpadAwareRecyclerView.OnItemClickListener {
 
-	@Override
-	public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-		MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) dpadAwareRecyclerView.getAdapter();
-		videoInfo = (VideoContentInfo) adapter.getItem(i);
-		onItemClick(view);
-	}
+    @Override
+    public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+        MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) dpadAwareRecyclerView.getAdapter();
+        videoInfo = (VideoContentInfo) adapter.getItem(i);
+        onItemClick(view);
+    }
 }

@@ -1,5 +1,7 @@
 package us.nineworlds.serenity.core;
 
+import com.android.volley.toolbox.HurlStack;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -10,20 +12,18 @@ import okhttp3.OkHttpClient;
 import okhttp3.OkUrlFactory;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 
-import com.android.volley.toolbox.HurlStack;
-
 public class OkHttpStack extends HurlStack {
 
-	@Inject
-	OkHttpClient client;
+    @Inject
+    OkHttpClient client;
 
-	public OkHttpStack() {
-		SerenityObjectGraph.getInstance().inject(this);
-	}
+    public OkHttpStack() {
+        SerenityObjectGraph.getInstance().inject(this);
+    }
 
-	@Override
-	protected HttpURLConnection createConnection(URL url) throws IOException {
-		OkUrlFactory factory = new OkUrlFactory(client);
-		return factory.open(url);
-	}
+    @Override
+    protected HttpURLConnection createConnection(URL url) throws IOException {
+        OkUrlFactory factory = new OkUrlFactory(client);
+        return factory.open(url);
+    }
 }

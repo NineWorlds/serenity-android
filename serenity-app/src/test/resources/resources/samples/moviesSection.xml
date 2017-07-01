@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<MediaContainer size="19" allowSync="0" art="/:/resources/movie-fanart.jpg" content="secondary" identifier="com.plexapp.plugins.library" mediaTagPrefix="/system/bundle/media/flags/" mediaTagVersion="1343603771" sortAsc="1" title1="Movies" viewGroup="secondary" viewMode="65592">
-<Directory key="all" title="All Movies" />
-<Directory key="unwatched" title="Unwatched" />
-<Directory key="newest" title="Recently Released" />
-<Directory key="recentlyAdded" title="Recently Added" />
-<Directory key="recentlyViewed" title="Recently Viewed" />
-<Directory key="onDeck" title="On Deck" />
-<Directory key="collection" title="By Collection" />
-<Directory key="genre" title="By Genre" />
-<Directory key="year" title="By Year" />
-<Directory key="decade" title="By Decade" />
-<Directory key="director" title="By Director" />
-<Directory key="actor" title="By Starring Actor" />
-<Directory key="country" title="By Country" />
-<Directory key="contentRating" title="By Content Rating" />
-<Directory key="rating" title="By Rating" />
-<Directory key="resolution" title="By Resolution" />
-<Directory key="firstCharacter" title="By First Letter" />
-<Directory key="folder" title="By Folder" />
-<Directory prompt="Search Movies" search="1" key="search?type=1" title="Search..." />
+<MediaContainer size="19" allowSync="0" art="/:/resources/movie-fanart.jpg" content="secondary"
+    identifier="com.plexapp.plugins.library" mediaTagPrefix="/system/bundle/media/flags/"
+    mediaTagVersion="1343603771" sortAsc="1" title1="Movies" viewGroup="secondary" viewMode="65592">
+    <Directory key="all" title="All Movies" />
+    <Directory key="unwatched" title="Unwatched" />
+    <Directory key="newest" title="Recently Released" />
+    <Directory key="recentlyAdded" title="Recently Added" />
+    <Directory key="recentlyViewed" title="Recently Viewed" />
+    <Directory key="onDeck" title="On Deck" />
+    <Directory key="collection" title="By Collection" />
+    <Directory key="genre" title="By Genre" />
+    <Directory key="year" title="By Year" />
+    <Directory key="decade" title="By Decade" />
+    <Directory key="director" title="By Director" />
+    <Directory key="actor" title="By Starring Actor" />
+    <Directory key="country" title="By Country" />
+    <Directory key="contentRating" title="By Content Rating" />
+    <Directory key="rating" title="By Rating" />
+    <Directory key="resolution" title="By Resolution" />
+    <Directory key="firstCharacter" title="By First Letter" />
+    <Directory key="folder" title="By Folder" />
+    <Directory prompt="Search Movies" search="1" key="search?type=1" title="Search..." />
 </MediaContainer>

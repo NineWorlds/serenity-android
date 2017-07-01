@@ -6,7 +6,7 @@
     android:layout_gravity="start"
     android:layout_marginTop="?android:attr/actionBarSize"
     android:background="#111"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <ListView
         android:id="@+id/left_drawer_list"
@@ -31,6 +31,6 @@
         android:focusable="true"
         android:gravity="center_vertical"
         android:text="Settings"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

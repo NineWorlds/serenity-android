@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mediacontroller"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity">
 
     <TextView
         android:id="@+id/mediacontroller_title"
@@ -33,7 +34,7 @@
         android:maxLines="5"
         tools:ignore="SelectableText" />
 
-    
+
     <us.nineworlds.serenity.widgets.RoundedImageView
         android:id="@+id/mediacontroller_poster_art"
         android:layout_width="150dp"
@@ -47,7 +48,7 @@
         android:scaleType="centerInside"
         android:src="@drawable/default_video_cover"
         tools:ignore="ContentDescription" />
-    
+
     <TextView
         android:id="@+id/mediacontroller_next_video"
         style="@android:style/TextAppearance.Holo.Medium"
@@ -64,7 +65,7 @@
         android:visibility="gone"
         android:textStyle="bold"
         tools:ignore="SelectableText" />
-    
+
 
     <LinearLayout
         android:orientation="horizontal"
@@ -74,8 +75,7 @@
         android:layout_above="@+id/mediacontroller_progress_layout"
         android:layout_marginBottom="15dp"
         android:layout_toRightOf="@+id/mediacontroller_poster_art"
-        android:background="#50000000" >
-    </LinearLayout>
+        android:background="#50000000"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/mediacontroller_progress_layout"
@@ -86,7 +86,7 @@
         android:layout_marginRight="10dp"
         android:layout_toRightOf="@+id/mediacontroller_poster_art"
         android:background="#50000000"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/mediacontroller_time_current"
@@ -128,7 +128,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="#50000000"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/useless_spacer"
@@ -156,7 +156,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            style="@android:style/MediaButton.Pause"            
+            style="@android:style/MediaButton.Pause"
             android:src="@drawable/pause_selector"
             android:focusable="true"
             android:clickable="true"
@@ -164,9 +164,8 @@
             android:nextFocusRight="@+id/osd_ff_control"
             android:nextFocusUp="@+id/mediacontroller_seekbar"
             android:scaleType="fitXY"
-            tools:ignore="ContentDescription" >
-        </ImageButton>
-        
+            tools:ignore="ContentDescription"></ImageButton>
+
         <ImageButton
             android:id="@+id/osd_ff_control"
             android:layout_width="wrap_content"

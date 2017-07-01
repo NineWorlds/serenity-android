@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -31,44 +31,44 @@ import java.util.concurrent.TimeUnit;
  */
 public class TimeUtil {
 
-	private static final int MILLISECONDS_PER_MINUTE = 60000;
-	private static final int MILLISECONDS_PER_HOUR = 3600000;
+    private static final int MILLISECONDS_PER_MINUTE = 60000;
+    private static final int MILLISECONDS_PER_HOUR = 3600000;
 
-	/**
-	 * Return a formated duration in hh:mm:ss format.
-	 *
-	 * @param duration
-	 *            number of milliseconds that have passed.
-	 * @return formatted string
-	 */
-	public String formatDuration(long duration) {
-		long tempdur = duration;
-		long hours = TimeUnit.MILLISECONDS.toHours(duration);
+    /**
+     * Return a formated duration in hh:mm:ss format.
+     *
+     * @param duration
+     *            number of milliseconds that have passed.
+     * @return formatted string
+     */
+    public String formatDuration(long duration) {
+        long tempdur = duration;
+        long hours = TimeUnit.MILLISECONDS.toHours(duration);
 
-		tempdur = tempdur - (hours * MILLISECONDS_PER_HOUR);
+        tempdur = tempdur - (hours * MILLISECONDS_PER_HOUR);
 
-		long minutes = tempdur / MILLISECONDS_PER_MINUTE;
-		tempdur = tempdur - (minutes * MILLISECONDS_PER_MINUTE);
+        long minutes = tempdur / MILLISECONDS_PER_MINUTE;
+        tempdur = tempdur - (minutes * MILLISECONDS_PER_MINUTE);
 
-		long seconds = tempdur / 1000;
-		if (hours > 0) {
-			return String.format("%2d:%02d:%02d", hours, minutes, seconds);
-		}
-		return String.format("%02d:%02d", minutes, seconds);
-	}
+        long seconds = tempdur / 1000;
+        if (hours > 0) {
+            return String.format("%2d:%02d:%02d", hours, minutes, seconds);
+        }
+        return String.format("%02d:%02d", minutes, seconds);
+    }
 
-	public String formatDurationHoursMinutes(long duration) {
-		long tempdur = duration;
-		long hours = TimeUnit.MILLISECONDS.toHours(duration);
+    public String formatDurationHoursMinutes(long duration) {
+        long tempdur = duration;
+        long hours = TimeUnit.MILLISECONDS.toHours(duration);
 
-		tempdur = tempdur - (hours * MILLISECONDS_PER_HOUR);
+        tempdur = tempdur - (hours * MILLISECONDS_PER_HOUR);
 
-		long minutes = tempdur / MILLISECONDS_PER_MINUTE;
-		tempdur = tempdur - (minutes * MILLISECONDS_PER_MINUTE);
+        long minutes = tempdur / MILLISECONDS_PER_MINUTE;
+        tempdur = tempdur - (minutes * MILLISECONDS_PER_MINUTE);
 
-		if (hours > 0) {
-			return String.format("%2dH %02dM", hours, minutes);
-		}
-		return String.format("%02dM", minutes);
-	}
+        if (hours > 0) {
+            return String.format("%2dH %02dM", hours, minutes);
+        }
+        return String.format("%02dM", minutes);
+    }
 }

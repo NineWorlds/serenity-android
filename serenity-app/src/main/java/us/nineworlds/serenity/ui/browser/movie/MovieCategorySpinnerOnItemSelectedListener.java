@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,19 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.CategoryInfo;
-import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.MovieSecondaryCategoryResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -45,168 +32,194 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.birbit.android.jobqueue.JobManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.events.MovieSecondaryCategoryEvent;
+import us.nineworlds.serenity.jobs.MovieSecondaryCategoryJob;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.volley.MovieSecondaryCategoryResponseListener;
+
 public class MovieCategorySpinnerOnItemSelectedListener extends
-BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
+        BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
-	@Inject
-	PlexappFactory factory;
+    @Inject
+    PlexappFactory factory;
 
-	@Inject
-	VolleyUtils volleyUtils;
+    @Inject
+    EventBus eventBus;
 
-	private SerenityMultiViewVideoActivity activity;
+    @Inject
+    JobManager jobManager;
 
-	protected Spinner secondarySpinner;
+    private SerenityMultiViewVideoActivity activity;
 
-	private static String category;
-	private String savedInstanceCategory; // From a restarted activity
-	private final Handler secondaryCategoryHandler;
+    protected Spinner secondarySpinner;
 
-	public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection,
-			String ckey, SerenityMultiViewVideoActivity activity) {
-		super(defaultSelection, ckey);
-		secondaryCategoryHandler = new SecondaryCategoryHandler();
-		this.activity = activity;
-	}
+    private static String category;
+    private String savedInstanceCategory; // From a restarted activity
+    private final Handler secondaryCategoryHandler;
 
-	public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection,
-			String ckey, boolean firstSelection, SerenityMultiViewVideoActivity activity) {
-		this(defaultSelection, key, activity);
-		savedInstanceCategory = defaultSelection;
-		this.setFirstSelection(firstSelection);
-	}
+    public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection,
+                                                      String ckey, SerenityMultiViewVideoActivity activity) {
+        super(defaultSelection, ckey);
+        secondaryCategoryHandler = new SecondaryCategoryHandler();
+        this.activity = activity;
+    }
 
-	@Override
-	public void onItemSelected(AdapterView<?> viewAdapter, View view,
-			int position, long id) {
-		if (view == null) {
-			return;
-		}
+    public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection,
+                                                      String ckey, boolean firstSelection, SerenityMultiViewVideoActivity activity) {
+        this(defaultSelection, key, activity);
+        savedInstanceCategory = defaultSelection;
+        this.setFirstSelection(firstSelection);
+    }
 
-		setMultiViewVideoActivity(activity);
+    @Override
+    public void onItemSelected(AdapterView<?> viewAdapter, View view,
+                               int position, long id) {
+        if (view == null) {
+            return;
+        }
 
-		findViews();
+        setMultiViewVideoActivity(activity);
 
-		CategoryInfo item = (CategoryInfo) viewAdapter
-				.getItemAtPosition(position);
+        findViews();
 
-		if (savedInstanceCategory != null) {
-			int savedInstancePosition = getSavedInstancePosition(viewAdapter);
-			item = (CategoryInfo) viewAdapter
-					.getItemAtPosition(savedInstancePosition);
-			viewAdapter.setSelection(savedInstancePosition);
-			savedInstanceCategory = null;
-			if (item.getLevel() == 0) {
-				createGallery(item);
-			} else {
-				populateSecondaryCategory();
-				return;
-			}
-		}
+        CategoryInfo item = (CategoryInfo) viewAdapter
+                .getItemAtPosition(position);
 
-		if (isFirstSelection()) {
+        if (savedInstanceCategory != null) {
+            int savedInstancePosition = getSavedInstancePosition(viewAdapter);
+            item = (CategoryInfo) viewAdapter
+                    .getItemAtPosition(savedInstancePosition);
+            viewAdapter.setSelection(savedInstancePosition);
+            savedInstanceCategory = null;
+            if (item.getLevel() == 0) {
+                createGallery(item);
+            } else {
+                populateSecondaryCategory();
+                return;
+            }
+        }
 
-			String filter = prefs.getString("serenity_category_filter", "all");
+        if (isFirstSelection()) {
 
-			int count = viewAdapter.getCount();
-			for (int i = 0; i < count; i++) {
-				CategoryInfo citem = (CategoryInfo) viewAdapter
-						.getItemAtPosition(i);
-				if (citem.getCategory().equals(filter)) {
-					item = citem;
-					selected = citem.getCategory();
-					viewAdapter.setSelection(i);
-					continue;
-				}
-			}
+            String filter = prefs.getString("serenity_category_filter", "all");
 
-			createGallery(item);
+            int count = viewAdapter.getCount();
+            for (int i = 0; i < count; i++) {
+                CategoryInfo citem = (CategoryInfo) viewAdapter
+                        .getItemAtPosition(i);
+                if (citem.getCategory().equals(filter)) {
+                    item = citem;
+                    selected = citem.getCategory();
+                    viewAdapter.setSelection(i);
+                    continue;
+                }
+            }
 
-			setFirstSelection(false);
-			return;
-		}
+            createGallery(item);
 
-		if (selected.equalsIgnoreCase(item.getCategory())) {
-			return;
-		}
+            setFirstSelection(false);
+            return;
+        }
 
-		selected = item.getCategory();
-		category = item.getCategory();
-		categoryState.setCategory(selected);
+        if (selected.equalsIgnoreCase(item.getCategory())) {
+            return;
+        }
 
-		if (item.getLevel() == 0) {
-			secondarySpinner.setVisibility(View.INVISIBLE);
-			createGallery(item);
-		} else {
-			populateSecondaryCategory();
-		}
-	}
+        selected = item.getCategory();
+        category = item.getCategory();
+        categoryState.setCategory(selected);
 
-	@Override
-	protected void findViews() {
-		super.findViews();
-		secondarySpinner = (Spinner) getMultiViewVideoActivity().findViewById(
-				R.id.categoryFilter2);
-	}
+        if (item.getLevel() == 0) {
+            secondarySpinner.setVisibility(View.INVISIBLE);
+            createGallery(item);
+        } else {
+            populateSecondaryCategory();
+        }
+    }
 
-	protected void populateSecondaryCategory() {
-		String url = factory.getSectionsURL(key, category);
-		MovieSecondaryCategoryResponseListener response = new MovieSecondaryCategoryResponseListener(
-				getMultiViewVideoActivity(), category, key);
+    @Override
+    protected void findViews() {
+        super.findViews();
+        secondarySpinner = (Spinner) getMultiViewVideoActivity().findViewById(
+                R.id.categoryFilter2);
+    }
 
-		volleyUtils.volleyXmlGetRequest(url, response,
-				new DefaultLoggingVolleyErrorListener());
-	}
+    protected void populateSecondaryCategory() {
+        jobManager.addJobInBackground(new MovieSecondaryCategoryJob(key, category));
+    }
 
-	protected void createGallery(CategoryInfo item) {
-		AbstractPosterImageGalleryAdapter adapter = getPosterImageAdapter(item);
-		refreshGallery(adapter);
-	}
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSecondaryCategoryEvent(MovieSecondaryCategoryEvent event) {
+        MovieSecondaryCategoryResponseListener response = new MovieSecondaryCategoryResponseListener(
+                getMultiViewVideoActivity(), category, key);
+        response.onResponse(event.getMediaContainer());
+    }
 
-	/**
-	 * @param item
-	 * @return
-	 */
-	protected AbstractPosterImageGalleryAdapter getPosterImageAdapter(
-			CategoryInfo item) {
-		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(
-				getMultiViewVideoActivity(), key, item.getCategory());
-		return adapter;
-	}
 
-	private class SecondaryCategoryHandler extends Handler {
+    protected void createGallery(CategoryInfo item) {
+        AbstractPosterImageGalleryAdapter adapter = getPosterImageAdapter(item);
+        refreshGallery(adapter);
+    }
 
-		@Override
-		public void handleMessage(Message msg) {
-			List<SecondaryCategoryInfo> secondaryCategories = (List<SecondaryCategoryInfo>) msg.obj;
+    /**
+     * @param item
+     * @return
+     */
+    protected AbstractPosterImageGalleryAdapter getPosterImageAdapter(
+            CategoryInfo item) {
+        AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(
+                getMultiViewVideoActivity(), key, item.getCategory());
+        return adapter;
+    }
 
-			if (secondaryCategories == null || secondaryCategories.isEmpty()) {
-				Toast.makeText(getMultiViewVideoActivity(),
-						R.string.no_entries_available_for_category_,
-						Toast.LENGTH_LONG).show();
-				return;
-			}
+    private class SecondaryCategoryHandler extends Handler {
 
-			Spinner secondarySpinner = (Spinner) getMultiViewVideoActivity()
-					.findViewById(R.id.categoryFilter2);
-			secondarySpinner.setVisibility(View.VISIBLE);
+        @Override
+        public void handleMessage(Message msg) {
+            List<SecondaryCategoryInfo> secondaryCategories = (List<SecondaryCategoryInfo>) msg.obj;
 
-			ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(
-					getMultiViewVideoActivity(),
-					R.layout.serenity_spinner_textview, secondaryCategories);
-			spinnerSecArrayAdapter
-					.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
-			secondarySpinner.setAdapter(spinnerSecArrayAdapter);
-			secondarySpinner
-					.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
-							category, key, activity));
-		}
+            if (secondaryCategories == null || secondaryCategories.isEmpty()) {
+                Toast.makeText(getMultiViewVideoActivity(),
+                        R.string.no_entries_available_for_category_,
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
 
-	}
+            Spinner secondarySpinner = (Spinner) getMultiViewVideoActivity()
+                    .findViewById(R.id.categoryFilter2);
+            secondarySpinner.setVisibility(View.VISIBLE);
 
-	@Override
-	protected String getSavedCategory() {
-		return categoryState.getCategory();
-	}
+            ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(
+                    getMultiViewVideoActivity(),
+                    R.layout.serenity_spinner_textview, secondaryCategories);
+            spinnerSecArrayAdapter
+                    .setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+            secondarySpinner.setAdapter(spinnerSecArrayAdapter);
+            secondarySpinner
+                    .setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
+                            category, key, activity));
+        }
+
+    }
+
+    @Override
+    protected String getSavedCategory() {
+        return categoryState.getCategory();
+    }
 
 }

@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -22,6 +22,24 @@
  */
 
 package us.nineworlds.serenity.ui.listeners;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.SharedPreferences;
+import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.View;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.castillo.dd.DSInterface;
+import com.castillo.dd.PendingDownload;
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -42,24 +60,6 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.VideoQueueHelper;
 import us.nineworlds.serenity.ui.util.YouTubeUtils;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.SharedPreferences;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.View;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import com.castillo.dd.DSInterface;
-import com.castillo.dd.PendingDownload;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-
 /**
  * A listener that handles long press for video content. Includes displaying a
  * dialog for toggling watched and unwatched status as well for possibly playing
@@ -70,217 +70,217 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
  */
 public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 
-	protected Dialog dialog;
-	protected Activity context;
-	protected VideoContentInfo info;
-	protected ImageView vciv;
+    protected Dialog dialog;
+    protected Activity context;
+    protected VideoContentInfo info;
+    protected ImageView vciv;
 
-	@Inject
-	protected AndroidHelper androidHelper;
+    @Inject
+    protected AndroidHelper androidHelper;
 
-	@Inject
-	@ForVideoQueue
-	protected LinkedList<VideoContentInfo> videoQueue;
+    @Inject
+    @ForVideoQueue
+    protected LinkedList<VideoContentInfo> videoQueue;
 
-	@Inject
-	protected SharedPreferences prefs;
+    @Inject
+    protected SharedPreferences prefs;
 
-	@Inject
-	protected YouTubeUtils youTubeUtils;
+    @Inject
+    protected YouTubeUtils youTubeUtils;
 
-	@Inject
-	protected VideoQueueHelper videoQueueHelper;
+    @Inject
+    protected VideoQueueHelper videoQueueHelper;
 
 
-	protected boolean onItemLongClick() {
-		context = (Activity) vciv.getContext();
+    protected boolean onItemLongClick() {
+        context = (Activity) vciv.getContext();
 
-		dialog = new Dialog(context);
-		AlertDialog.Builder builder = new AlertDialog.Builder(
-				new ContextThemeWrapper(context,
-						android.R.style.Theme_Holo_Dialog));
-		builder.setTitle(context.getString(R.string.video_options));
+        dialog = new Dialog(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                new ContextThemeWrapper(context,
+                        android.R.style.Theme_Holo_Dialog));
+        builder.setTitle(context.getString(R.string.video_options));
 
-		ListView modeList = new ListView(context);
-		modeList.setSelector(R.drawable.menu_item_selector);
-		ArrayList<DialogMenuItem> options = addMenuOptions();
+        ListView modeList = new ListView(context);
+        modeList.setSelector(R.drawable.menu_item_selector);
+        ArrayList<DialogMenuItem> options = addMenuOptions();
 
-		ArrayAdapter<DialogMenuItem> modeAdapter = new ArrayAdapter<DialogMenuItem>(
-				context, R.layout.simple_list_item, R.id.list_item_text,
-				options);
+        ArrayAdapter<DialogMenuItem> modeAdapter = new ArrayAdapter<DialogMenuItem>(
+                context, R.layout.simple_list_item, R.id.list_item_text,
+                options);
 
-		modeList.setAdapter(modeAdapter);
-		modeList.setOnItemClickListener(getDialogSelectedListener());
+        modeList.setAdapter(modeAdapter);
+        modeList.setOnItemClickListener(getDialogSelectedListener());
 
-		builder.setView(modeList);
-		dialog = builder.create();
-		dialog.show();
+        builder.setView(modeList);
+        dialog = builder.create();
+        dialog.show();
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * @return
-	 */
-	protected OnItemClickListener getDialogSelectedListener() {
-		return new DialogOnItemSelected();
-	}
+    /**
+     * @return
+     */
+    protected OnItemClickListener getDialogSelectedListener() {
+        return new DialogOnItemSelected();
+    }
 
-	protected ArrayList<DialogMenuItem> addMenuOptions() {
-		ArrayList<DialogMenuItem> options = new ArrayList<DialogMenuItem>();
-		options.add(createMenuItemToggleWatchStatus());
-		options.add(createMenuItemDownload());
-		options.add(createMenuItemAddToQueue());
+    protected ArrayList<DialogMenuItem> addMenuOptions() {
+        ArrayList<DialogMenuItem> options = new ArrayList<DialogMenuItem>();
+        options.add(createMenuItemToggleWatchStatus());
+        options.add(createMenuItemDownload());
+        options.add(createMenuItemAddToQueue());
 
-		if (info.hasTrailer()
-				&& YouTubeInitializationResult.SUCCESS
-				.equals(YouTubeApiServiceUtil
-						.isYouTubeApiServiceAvailable(context))) {
-			options.add(createMenuItemPlayTrailer());
-		}
+        if (info.hasTrailer()
+                && YouTubeInitializationResult.SUCCESS
+                .equals(YouTubeApiServiceUtil
+                        .isYouTubeApiServiceAvailable(context))) {
+            options.add(createMenuItemPlayTrailer());
+        }
 
-		if (!androidHelper.isGoogleTV() && androidHelper.hasSupportedCaster()) {
-			options.add(createMenuItemFling());
-		}
-		return options;
-	}
+        if (!androidHelper.isGoogleTV() && androidHelper.hasSupportedCaster()) {
+            options.add(createMenuItemFling());
+        }
+        return options;
+    }
 
-	private DialogMenuItem createMenuItemToggleWatchStatus() {
-		return createMenuItem(
-				context.getString(R.string.toggle_watched_status), 0);
-	}
+    private DialogMenuItem createMenuItemToggleWatchStatus() {
+        return createMenuItem(
+                context.getString(R.string.toggle_watched_status), 0);
+    }
 
-	private DialogMenuItem createMenuItemDownload() {
-		return createMenuItem(
-				context.getString(R.string.download_video_to_device), 1);
-	}
+    private DialogMenuItem createMenuItemDownload() {
+        return createMenuItem(
+                context.getString(R.string.download_video_to_device), 1);
+    }
 
-	private DialogMenuItem createMenuItemAddToQueue() {
-		return createMenuItem(context.getString(R.string.add_video_to_queue), 2);
-	}
+    private DialogMenuItem createMenuItemAddToQueue() {
+        return createMenuItem(context.getString(R.string.add_video_to_queue), 2);
+    }
 
-	private DialogMenuItem createMenuItemPlayTrailer() {
-		return createMenuItem("Play Trailer", 3);
-	}
+    private DialogMenuItem createMenuItemPlayTrailer() {
+        return createMenuItem("Play Trailer", 3);
+    }
 
-	private DialogMenuItem createMenuItemFling() {
-		return createMenuItem(context.getString(R.string.cast_fling_with_), 4);
-	}
+    private DialogMenuItem createMenuItemFling() {
+        return createMenuItem(context.getString(R.string.cast_fling_with_), 4);
+    }
 
-	protected DialogMenuItem createMenuItem(String title, int action) {
-		DialogMenuItem menuItem = new DialogMenuItem();
-		menuItem.setTitle(title);
-		menuItem.setMenuDialogAction(action);
-		return menuItem;
-	}
+    protected DialogMenuItem createMenuItem(String title, int action) {
+        DialogMenuItem menuItem = new DialogMenuItem();
+        menuItem.setTitle(title);
+        menuItem.setMenuDialogAction(action);
+        return menuItem;
+    }
 
-	protected void performWatchedToggle() {
-		View posterLayout = (View) vciv.getParent();
-		posterLayout.findViewById(R.id.posterInprogressIndicator)
-		.setVisibility(View.INVISIBLE);
+    protected void performWatchedToggle() {
+        View posterLayout = (View) vciv.getParent();
+        posterLayout.findViewById(R.id.posterInprogressIndicator)
+                .setVisibility(View.INVISIBLE);
 
-		toggleGraphicIndicators(posterLayout);
-		info.toggleWatchStatus();
-	}
+        toggleGraphicIndicators(posterLayout);
+        info.toggleWatchStatus();
+    }
 
-	/**
-	 * @param posterLayout
-	 */
-	protected void toggleGraphicIndicators(View posterLayout) {
-		if (info.isPartiallyWatched() || info.isUnwatched()) {
-			final float percentWatched = info.viewedPercentage();
-			if (percentWatched <= 0.90f) {
-				ImageInfographicUtils.setWatchedCount(vciv, context, info);
-				ImageView view = (ImageView) posterLayout
-						.findViewById(R.id.posterWatchedIndicator);
-				view.setImageResource(R.drawable.overlaywatched);
-				view.setVisibility(View.VISIBLE);
-				return;
-			}
-		}
+    /**
+     * @param posterLayout
+     */
+    protected void toggleGraphicIndicators(View posterLayout) {
+        if (info.isPartiallyWatched() || info.isUnwatched()) {
+            final float percentWatched = info.viewedPercentage();
+            if (percentWatched <= 0.90f) {
+                ImageInfographicUtils.setWatchedCount(vciv, context, info);
+                ImageView view = (ImageView) posterLayout
+                        .findViewById(R.id.posterWatchedIndicator);
+                view.setImageResource(R.drawable.overlaywatched);
+                view.setVisibility(View.VISIBLE);
+                return;
+            }
+        }
 
-		ImageInfographicUtils.setUnwatched(vciv, context, info);
-		posterLayout.findViewById(R.id.posterWatchedIndicator).setVisibility(
-				View.INVISIBLE);
-	}
+        ImageInfographicUtils.setUnwatched(vciv, context, info);
+        posterLayout.findViewById(R.id.posterWatchedIndicator).setVisibility(
+                View.INVISIBLE);
+    }
 
-	protected class DialogOnItemSelected implements OnItemClickListener {
+    protected class DialogOnItemSelected implements OnItemClickListener {
 
-		@Override
-		public void onItemClick(android.widget.AdapterView<?> arg0, View v,
-				int position, long arg3) {
+        @Override
+        public void onItemClick(android.widget.AdapterView<?> arg0, View v,
+                                int position, long arg3) {
 
-			DialogMenuItem menuItem = (DialogMenuItem) arg0
-					.getItemAtPosition(position);
+            DialogMenuItem menuItem = (DialogMenuItem) arg0
+                    .getItemAtPosition(position);
 
-			switch (menuItem.getMenuDialogAction()) {
-			case 0:
-				performWatchedToggle();
-				break;
-			case 1:
-				startDownload();
-				break;
-			case 2:
-				videoQueueHelper.performAddToQueue(info);
-				break;
-			case 3:
-				youTubeUtils.performPlayTrailer(info, context);
-				break;
-			case 4:
-				androidHelper.performGoogleTVSecondScreen(info, dialog);
-			}
-			v.requestFocusFromTouch();
-			dialog.dismiss();
-		}
+            switch (menuItem.getMenuDialogAction()) {
+                case 0:
+                    performWatchedToggle();
+                    break;
+                case 1:
+                    startDownload();
+                    break;
+                case 2:
+                    videoQueueHelper.performAddToQueue(info);
+                    break;
+                case 3:
+                    youTubeUtils.performPlayTrailer(info, context);
+                    break;
+                case 4:
+                    androidHelper.performGoogleTVSecondScreen(info, dialog);
+            }
+            v.requestFocusFromTouch();
+            dialog.dismiss();
+        }
 
-	}
+    }
 
-	protected void startDownload() {
-		directoryChooser();
-	}
+    protected void startDownload() {
+        directoryChooser();
+    }
 
-	protected void startDownload(String destination) {
+    protected void startDownload(String destination) {
 
-		List<PendingDownload> pendingDownloads = SerenityApplication
-				.getPendingDownloads();
-		PendingDownload pendingDownload = new PendingDownload();
-		String filename = info.getTitle() + "." + info.getContainer();
-		pendingDownload.setFilename(filename);
-		pendingDownload.setUrl(info.getDirectPlayUrl());
+        List<PendingDownload> pendingDownloads = SerenityApplication
+                .getPendingDownloads();
+        PendingDownload pendingDownload = new PendingDownload();
+        String filename = info.getTitle() + "." + info.getContainer();
+        pendingDownload.setFilename(filename);
+        pendingDownload.setUrl(info.getDirectPlayUrl());
 
-		pendingDownloads.add(pendingDownload);
-		int pos = pendingDownloads.size() - 1;
+        pendingDownloads.add(pendingDownload);
+        int pos = pendingDownloads.size() - 1;
 
-		try {
-			DSInterface downloadService = DownloadHandler.getInstance(context)
-					.getDownloadServiceInterface();
-			downloadService.addFileDownloadlist(info.getDirectPlayUrl(),
-					destination, filename, pos);
-			Toast.makeText(
-					context,
-					context.getString(R.string.starting_download_of_)
-					+ info.getTitle(), Toast.LENGTH_LONG).show();
-		} catch (Exception ex) {
-			Log.e(getClass().getName(), "Unable to download " + info.getTitle()
-					+ "." + info.getContainer());
-		}
-	}
+        try {
+            DSInterface downloadService = DownloadHandler.getInstance(context)
+                    .getDownloadServiceInterface();
+            downloadService.addFileDownloadlist(info.getDirectPlayUrl(),
+                    destination, filename, pos);
+            Toast.makeText(
+                    context,
+                    context.getString(R.string.starting_download_of_)
+                            + info.getTitle(), Toast.LENGTH_LONG).show();
+        } catch (Exception ex) {
+            Log.e(getClass().getName(), "Unable to download " + info.getTitle()
+                    + "." + info.getContainer());
+        }
+    }
 
-	protected void directoryChooser() {
-		// Create DirectoryChooserDialog and register a callback
-		DirectoryChooserDialog directoryChooserDialog = new DirectoryChooserDialog(
-				context, new DirectoryChooserDialog.ChosenDirectoryListener() {
-					@Override
-					public void onChosenDir(String chosenDir) {
-						Toast.makeText(
-								context,
-								context.getString(R.string.chosen_directory_)
-								+ chosenDir, Toast.LENGTH_LONG).show();
-						startDownload(chosenDir);
-					}
-				});
-		directoryChooserDialog.setNewFolderEnabled(true);
-		directoryChooserDialog.chooseDirectory("");
-	}
+    protected void directoryChooser() {
+        // Create DirectoryChooserDialog and register a callback
+        DirectoryChooserDialog directoryChooserDialog = new DirectoryChooserDialog(
+                context, new DirectoryChooserDialog.ChosenDirectoryListener() {
+            @Override
+            public void onChosenDir(String chosenDir) {
+                Toast.makeText(
+                        context,
+                        context.getString(R.string.chosen_directory_)
+                                + chosenDir, Toast.LENGTH_LONG).show();
+                startDownload(chosenDir);
+            }
+        });
+        directoryChooserDialog.setNewFolderEnabled(true);
+        directoryChooserDialog.chooseDirectory("");
+    }
 
 }

@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -22,6 +22,8 @@
  */
 
 package us.nineworlds.serenity.core.model.impl;
+
+import android.content.res.Resources;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,6 @@ import us.nineworlds.plex.rest.model.impl.Part;
 import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.plex.rest.model.impl.Writer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import android.content.res.Resources;
 
 /**
  * @author dcarver
@@ -44,174 +45,174 @@ import android.content.res.Resources;
  */
 public class EpisodeMediaContainer extends MovieMediaContainer {
 
-	@Inject
-	Resources resources;
+    @Inject
+    Resources resources;
 
-	public EpisodeMediaContainer(MediaContainer mc) {
-		super(mc);
-	}
+    public EpisodeMediaContainer(MediaContainer mc) {
+        super(mc);
+    }
 
-	@Override
-	protected void createVideoContent(MediaContainer mc) {
-		String baseUrl = factory.baseURL();
-		String parentPosterURL = null;
-		if (mc.getParentPosterURL() != null
-				&& !mc.getParentPosterURL().contains("show")) {
-			parentPosterURL = baseUrl + mc.getParentPosterURL().substring(1);
-		}
-		List<Video> videos = mc.getVideos();
-		if (videos != null) {
-			for (Video episode : videos) {
-				videoList.add(createEpisodeContentInfo(mc, baseUrl,
-						parentPosterURL, episode));
-			}
-		}
-	}
+    @Override
+    protected void createVideoContent(MediaContainer mc) {
+        String baseUrl = factory.baseURL();
+        String parentPosterURL = null;
+        if (mc.getParentPosterURL() != null
+                && !mc.getParentPosterURL().contains("show")) {
+            parentPosterURL = baseUrl + mc.getParentPosterURL().substring(1);
+        }
+        List<Video> videos = mc.getVideos();
+        if (videos != null) {
+            for (Video episode : videos) {
+                videoList.add(createEpisodeContentInfo(mc, baseUrl,
+                        parentPosterURL, episode));
+            }
+        }
+    }
 
-	public EpisodePosterInfo createEpisodeContentInfo(MediaContainer mc,
-			String baseUrl, String parentPosterURL, Video episode) {
-		EpisodePosterInfo epi = new EpisodePosterInfo(resources);
-		if (parentPosterURL != null) {
-			epi.setParentPosterURL(parentPosterURL);
-		}
-		epi.setId(episode.getRatingKey());
-		epi.setParentKey(episode.getParentKey());
-		epi.setSummary(episode.getSummary());
-		epi.setViewCount(episode.getViewCount());
-		epi.setResumeOffset(Long.valueOf(episode.getViewOffset()).intValue());
-		epi.setDuration(Long.valueOf(episode.getDuration()).intValue());
+    public EpisodePosterInfo createEpisodeContentInfo(MediaContainer mc,
+                                                      String baseUrl, String parentPosterURL, Video episode) {
+        EpisodePosterInfo epi = new EpisodePosterInfo(resources);
+        if (parentPosterURL != null) {
+            epi.setParentPosterURL(parentPosterURL);
+        }
+        epi.setId(episode.getRatingKey());
+        epi.setParentKey(episode.getParentKey());
+        epi.setSummary(episode.getSummary());
+        epi.setViewCount(episode.getViewCount());
+        epi.setResumeOffset(Long.valueOf(episode.getViewOffset()).intValue());
+        epi.setDuration(Long.valueOf(episode.getDuration()).intValue());
 
-		epi.setOriginalAirDate(episode.getOriginallyAvailableDate());
+        epi.setOriginalAirDate(episode.getOriginallyAvailableDate());
 
-		if (episode.getParentThumbNailImageKey() != null) {
-			epi.setParentPosterURL(baseUrl
-					+ episode.getParentThumbNailImageKey().substring(1));
-		}
+        if (episode.getParentThumbNailImageKey() != null) {
+            epi.setParentPosterURL(baseUrl
+                    + episode.getParentThumbNailImageKey().substring(1));
+        }
 
-		if (episode.getGrandParentThumbNailImageKey() != null) {
-			epi.setGrandParentPosterURL(baseUrl
-					+ episode.getGrandParentThumbNailImageKey().substring(1));
-		}
+        if (episode.getGrandParentThumbNailImageKey() != null) {
+            epi.setGrandParentPosterURL(baseUrl
+                    + episode.getGrandParentThumbNailImageKey().substring(1));
+        }
 
-		String burl = factory.baseURL() + ":/resources/show-fanart.jpg";
-		if (episode.getBackgroundImageKey() != null) {
-			burl = baseUrl
-					+ episode.getBackgroundImageKey().replaceFirst("/", "");
-		} else if (mc.getArt() != null) {
-			burl = baseUrl + mc.getArt().replaceFirst("/", "");
-		}
+        String burl = factory.baseURL() + ":/resources/show-fanart.jpg";
+        if (episode.getBackgroundImageKey() != null) {
+            burl = baseUrl
+                    + episode.getBackgroundImageKey().replaceFirst("/", "");
+        } else if (mc.getArt() != null) {
+            burl = baseUrl + mc.getArt().replaceFirst("/", "");
+        }
 
-		epi.setBackgroundURL(burl);
+        epi.setBackgroundURL(burl);
 
-		String turl = "";
-		if (episode.getThumbNailImageKey() != null) {
-			turl = baseUrl
-					+ episode.getThumbNailImageKey().replaceFirst("/", "");
-		}
+        String turl = "";
+        if (episode.getThumbNailImageKey() != null) {
+            turl = baseUrl
+                    + episode.getThumbNailImageKey().replaceFirst("/", "");
+        }
 
-		epi.setImageURL(turl);
-		epi.setTitle(episode.getTitle());
+        epi.setImageURL(turl);
+        epi.setTitle(episode.getTitle());
 
-		if (episode.getGrandParentTitle() != null) {
-			epi.setSeriesTitle(episode.getGrandParentTitle());
-		}
+        if (episode.getGrandParentTitle() != null) {
+            epi.setSeriesTitle(episode.getGrandParentTitle());
+        }
 
-		if (epi.getSeriesTitle() == null) {
-			epi.setSeriesTitle(mc.getTitle1());
-		}
+        if (epi.getSeriesTitle() == null) {
+            epi.setSeriesTitle(mc.getTitle1());
+        }
 
-		epi.setContentRating(episode.getContentRating());
+        epi.setContentRating(episode.getContentRating());
 
-		List<Media> mediacont = episode.getMedias();
-		if (mediacont != null && !mediacont.isEmpty()) {
-			// We grab the first media container until we know more about
-			// why there can be multiples.
-			Media media = mediacont.get(0);
-			epi.setContainer(media.getContainer());
-			List<Part> parts = media.getVideoPart();
-			Part part = parts.get(0);
+        List<Media> mediacont = episode.getMedias();
+        if (mediacont != null && !mediacont.isEmpty()) {
+            // We grab the first media container until we know more about
+            // why there can be multiples.
+            Media media = mediacont.get(0);
+            epi.setContainer(media.getContainer());
+            List<Part> parts = media.getVideoPart();
+            Part part = parts.get(0);
 
-			final int seasonNumber;
-			if (episode.getSeason() != null) {
-				seasonNumber = parseInt(episode.getSeason(), 0);
-			} else {
-				seasonNumber = parseInt(mc.getParentIndex(), 0);
-			}
-			epi.setSeasonNumber(seasonNumber);
+            final int seasonNumber;
+            if (episode.getSeason() != null) {
+                seasonNumber = parseInt(episode.getSeason(), 0);
+            } else {
+                seasonNumber = parseInt(mc.getParentIndex(), 0);
+            }
+            epi.setSeasonNumber(seasonNumber);
 
-			final int episodeNumber = parseInt(episode.getEpisode(), 0);
-			epi.setEpisodeNumber(episodeNumber);
+            final int episodeNumber = parseInt(episode.getEpisode(), 0);
+            epi.setEpisodeNumber(episodeNumber);
 
-			epi.setAudioCodec(media.getAudioCodec());
-			epi.setVideoCodec(media.getVideoCodec());
-			epi.setVideoResolution(media.getVideoResolution());
-			epi.setAspectRatio(media.getAspectRatio());
-			epi.setAudioChannels(media.getAudioChannels());
+            epi.setAudioCodec(media.getAudioCodec());
+            epi.setVideoCodec(media.getVideoCodec());
+            epi.setVideoResolution(media.getVideoResolution());
+            epi.setAspectRatio(media.getAspectRatio());
+            epi.setAudioChannels(media.getAudioChannels());
 
-			String directPlayUrl = factory.baseURL()
-					+ part.getKey().replaceFirst("/", "");
-			epi.setDirectPlayUrl(directPlayUrl);
+            String directPlayUrl = factory.baseURL()
+                    + part.getKey().replaceFirst("/", "");
+            epi.setDirectPlayUrl(directPlayUrl);
 
-		}
+        }
 
-		createVideoDetailsStatic(episode, epi);
-		epi.setCastInfo("");
+        createVideoDetailsStatic(episode, epi);
+        epi.setCastInfo("");
 
-		return epi;
-	}
+        return epi;
+    }
 
-	private static int parseInt(String numberString, int defaultValue) {
-		if (numberString == null) {
-			return defaultValue;
-		}
-		try {
-			return Integer.parseInt(numberString);
-		} catch (NumberFormatException e) {
-			return defaultValue;
-		}
-	}
+    private static int parseInt(String numberString, int defaultValue) {
+        if (numberString == null) {
+            return defaultValue;
+        }
+        try {
+            return Integer.parseInt(numberString);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
 
-	/**
-	 * @param video
-	 * @param videoContentInfo
-	 * @return
-	 */
-	@Override
-	protected void createVideoDetails(Video video,
-			VideoContentInfo videoContentInfo) {
+    /**
+     * @param video
+     * @param videoContentInfo
+     * @return
+     */
+    @Override
+    protected void createVideoDetails(Video video,
+                                      VideoContentInfo videoContentInfo) {
 
-		createVideoDetailsStatic(video, videoContentInfo);
+        createVideoDetailsStatic(video, videoContentInfo);
 
-	}
+    }
 
-	private void createVideoDetailsStatic(Video video,
-			VideoContentInfo videoContentInfo) {
-		if (video.getYear() != null) {
-			videoContentInfo.setYear(video.getYear());
-		}
+    private void createVideoDetailsStatic(Video video,
+                                          VideoContentInfo videoContentInfo) {
+        if (video.getYear() != null) {
+            videoContentInfo.setYear(video.getYear());
+        }
 
-		if (video.getGenres() != null && video.getGenres().size() > 0) {
-			ArrayList<String> g = new ArrayList<String>();
-			for (Genre genre : video.getGenres()) {
-				g.add(genre.getTag());
-			}
-			videoContentInfo.setGenres(g);
-		}
+        if (video.getGenres() != null && video.getGenres().size() > 0) {
+            ArrayList<String> g = new ArrayList<String>();
+            for (Genre genre : video.getGenres()) {
+                g.add(genre.getTag());
+            }
+            videoContentInfo.setGenres(g);
+        }
 
-		if (video.getWriters() != null && video.getWriters().size() > 0) {
-			ArrayList<String> w = new ArrayList<String>();
-			for (Writer writer : video.getWriters()) {
-				w.add(writer.getTag());
-			}
-			videoContentInfo.setWriters(w);
-		}
+        if (video.getWriters() != null && video.getWriters().size() > 0) {
+            ArrayList<String> w = new ArrayList<String>();
+            for (Writer writer : video.getWriters()) {
+                w.add(writer.getTag());
+            }
+            videoContentInfo.setWriters(w);
+        }
 
-		if (video.getDirectors() != null && video.getDirectors().size() > 0) {
-			ArrayList<String> d = new ArrayList<String>();
-			for (Director director : video.getDirectors()) {
-				d.add(director.getTag());
-			}
-			videoContentInfo.setDirectors(d);
-		}
-	}
+        if (video.getDirectors() != null && video.getDirectors().size() > 0) {
+            ArrayList<String> d = new ArrayList<String>();
+            for (Director director : video.getDirectors()) {
+                d.add(director.getTag());
+            }
+            videoContentInfo.setDirectors(d);
+        }
+    }
 }

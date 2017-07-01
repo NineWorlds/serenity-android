@@ -23,18 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.menus.MenuDrawerItem;
-import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
-import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
-import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
-import us.nineworlds.serenity.ui.util.DisplayUtils;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -43,9 +31,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 
+import net.ganin.darv.DpadAwareRecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.menus.MenuDrawerItem;
+import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
+import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
+import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
+
 /**
  * @author dcarver
- *
  */
 public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
@@ -237,7 +238,6 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
     /**
      * Nothing really to update here now, so will return null.
-     *
      */
     @Override
     protected DpadAwareRecyclerView findGalleryView() {
@@ -246,7 +246,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
     /**
      * We want to update playback position and onscreen info when completing.
-     *
+     * <p>
      * So pass back the appropriate grid view in this case.
      */
     @Override

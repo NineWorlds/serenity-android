@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_alignParentTop="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/video_details_container"
@@ -14,7 +14,7 @@
         android:layout_marginLeft="10dp"
         android:background="@color/card_background"
         android:padding="5dp"
-        android:visibility="invisible" >
+        android:visibility="invisible">
 
         <us.nineworlds.serenity.widgets.RoundedImageView
             android:id="@+id/video_poster"
@@ -83,8 +83,7 @@
             android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/video_poster"
             android:gravity="bottom"
-            android:orientation="horizontal" >
-        </LinearLayout>
+            android:orientation="horizontal"></LinearLayout>
     </RelativeLayout>
 
     <LinearLayout
@@ -98,7 +97,7 @@
         android:layout_marginTop="5dp"
         android:background="#A0000000"
         android:gravity="bottom"
-        android:padding="5dp" >
+        android:padding="5dp">
 
         <net.ganin.darv.DpadAwareRecyclerView
             android:id="@+id/moviePosterView"
@@ -109,7 +108,8 @@
             app:selectorVelocity="1000"
             app:smoothScrolling="true"
             app:backgroundSelector="@drawable/main_menu_item_foreground_selector">
-            <requestFocus/>
+
+            <requestFocus />
         </net.ganin.darv.DpadAwareRecyclerView>
 
     </LinearLayout>

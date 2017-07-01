@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,26 +23,27 @@
 
 package us.nineworlds.serenity.core.externalplayer;
 
-import us.nineworlds.serenity.core.model.VideoContentInfo;
 import android.content.Context;
 import android.content.Intent;
 
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+
 /**
  * @author dcarver
- * 
+ *
  */
 public class MXPlayerPro extends MXPlayer {
 
-	private static final String PLAYER_CLASS_NAME = "com.mxtech.videoplayer.ActivityScreen";
-	private static final String PLAYER_PACKAGENAME = "com.mxtech.videoplayer.pro";
+    private static final String PLAYER_CLASS_NAME = "com.mxtech.videoplayer.ActivityScreen";
+    private static final String PLAYER_PACKAGENAME = "com.mxtech.videoplayer.pro";
 
-	public MXPlayerPro(VideoContentInfo vc, Context ac) {
-		super(vc, ac);
-	}
+    public MXPlayerPro(VideoContentInfo vc, Context ac) {
+        super(vc, ac);
+    }
 
-	@Override
-	protected void setClassAndPackagename(Intent vpIntent) {
-		vpIntent.setPackage(PLAYER_PACKAGENAME);
-		vpIntent.setClassName(PLAYER_PACKAGENAME, PLAYER_CLASS_NAME);
-	}
+    @Override
+    protected void setClassAndPackagename(Intent vpIntent) {
+        vpIntent.setPackage(PLAYER_PACKAGENAME);
+        vpIntent.setClassName(PLAYER_PACKAGENAME, PLAYER_CLASS_NAME);
+    }
 }

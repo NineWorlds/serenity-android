@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,15 +23,16 @@
 
 package us.nineworlds.serenity.core.services;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.CategoryInfo;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 
 /**
  * Retrieves the available categories for filtering and returns them to the
@@ -42,65 +43,65 @@ import android.util.Log;
  */
 public class CategoryRetrievalIntentService extends AbstractCategoryService {
 
-	private String key;
-	private boolean filterAlbums;
+    private String key;
+    private boolean filterAlbums;
 
-	public CategoryRetrievalIntentService() {
-		super("CategoryRetrievalIntentService");
-	}
+    public CategoryRetrievalIntentService() {
+        super("CategoryRetrievalIntentService");
+    }
 
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		Bundle extras = intent.getExtras();
-		if (extras == null) {
-			Log.e(getClass().getName(), "Missing bundle extras.");
-			sendMessageResults(intent);
-			return;
-		}
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (extras == null) {
+            Log.e(getClass().getName(), "Missing bundle extras.");
+            sendMessageResults(intent);
+            return;
+        }
 
-		key = extras.getString("key");
-		filterAlbums = intent.getExtras().getBoolean("filterAlbums", false);
-		populateCategories();
-		sendMessageResults(intent);
-	}
+        key = extras.getString("key");
+        filterAlbums = intent.getExtras().getBoolean("filterAlbums", false);
+        populateCategories();
+        sendMessageResults(intent);
+    }
 
-	@Override
-	protected void populateCategories() {
-		try {
-			MediaContainer mediaContainer = factory.retrieveSections(key);
-			List<Directory> dirs = mediaContainer.getDirectories();
-			categories = new ArrayList<CategoryInfo>();
-			for (Directory dir : dirs) {
-				if (resultsNotFiltered(dir)) {
-					CategoryInfo category = new CategoryInfo();
-					category.setCategory(dir.getKey());
-					category.setCategoryDetail(dir.getTitle());
-					if (dir.getSecondary() > 0) {
-						category.setLevel(dir.getSecondary());
-					}
-					categories.add(category);
-				}
-			}
-		} catch (Exception e) {
-			Log.e(getClass().getName(), e.getMessage(), e);
-		}
-	}
+    @Override
+    protected void populateCategories() {
+        try {
+            MediaContainer mediaContainer = factory.retrieveSections(key);
+            List<Directory> dirs = mediaContainer.getDirectories();
+            categories = new ArrayList<CategoryInfo>();
+            for (Directory dir : dirs) {
+                if (resultsNotFiltered(dir)) {
+                    CategoryInfo category = new CategoryInfo();
+                    category.setCategory(dir.getKey());
+                    category.setCategoryDetail(dir.getTitle());
+                    if (dir.getSecondary() > 0) {
+                        category.setLevel(dir.getSecondary());
+                    }
+                    categories.add(category);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(getClass().getName(), e.getMessage(), e);
+        }
+    }
 
-	/**
-	 * @param dir
-	 * @return
-	 */
-	protected boolean resultsNotFiltered(Directory dir) {
-		if (filterAlbums) {
-			if (dir.getKey().equals("year") || dir.getKey().equals("decade")) {
-				return false;
-			}
-		}
-		return !"folder".equals(dir.getKey())
-				&& !"Search...".equals(dir.getTitle())
-				&& !"Search Artists...".equals(dir.getTitle())
-				&& !"Search Albums...".equals(dir.getTitle())
-				&& !"Search Tracks...".equals(dir.getTitle());
-	}
+    /**
+     * @param dir
+     * @return
+     */
+    protected boolean resultsNotFiltered(Directory dir) {
+        if (filterAlbums) {
+            if (dir.getKey().equals("year") || dir.getKey().equals("decade")) {
+                return false;
+            }
+        }
+        return !"folder".equals(dir.getKey())
+                && !"Search...".equals(dir.getTitle())
+                && !"Search Artists...".equals(dir.getTitle())
+                && !"Search Albums...".equals(dir.getTitle())
+                && !"Search Tracks...".equals(dir.getTitle());
+    }
 
 }

@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,6 +23,13 @@
 
 package us.nineworlds.serenity.core.services;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +39,6 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Part;
 import us.nineworlds.plex.rest.model.impl.Track;
 import us.nineworlds.serenity.core.model.impl.AudioTrackContentInfo;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
-import android.util.Log;
 
 /**
  * A service that retrieves music information from the Plex Media Server.
@@ -46,95 +47,95 @@ import android.util.Log;
  *
  */
 public class MusicTrackRetrievalIntentService extends
-AbstractPlexRESTIntentService {
+        AbstractPlexRESTIntentService {
 
-	private static final String MUSIC_RETRIEVAL_INTENT_SERVICE = "MusicTrackRetrievalIntentService";
+    private static final String MUSIC_RETRIEVAL_INTENT_SERVICE = "MusicTrackRetrievalIntentService";
 
-	protected List<AudioTrackContentInfo> musicContentList = null;
-	protected String key;
-	protected String category;
+    protected List<AudioTrackContentInfo> musicContentList = null;
+    protected String key;
+    protected String category;
 
-	public MusicTrackRetrievalIntentService() {
-		super(MUSIC_RETRIEVAL_INTENT_SERVICE);
-		musicContentList = new ArrayList<AudioTrackContentInfo>();
+    public MusicTrackRetrievalIntentService() {
+        super(MUSIC_RETRIEVAL_INTENT_SERVICE);
+        musicContentList = new ArrayList<AudioTrackContentInfo>();
 
-	}
+    }
 
-	@Override
-	public void sendMessageResults(Intent intent) {
-		Bundle extras = intent.getExtras();
-		if (extras != null) {
-			Messenger messenger = (Messenger) extras.get("MESSENGER");
-			Message msg = Message.obtain();
-			msg.obj = musicContentList;
-			try {
-				messenger.send(msg);
-			} catch (RemoteException ex) {
-				Log.e(getClass().getName(), "Unable to send message", ex);
-			}
-		}
+    @Override
+    public void sendMessageResults(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            Messenger messenger = (Messenger) extras.get("MESSENGER");
+            Message msg = Message.obtain();
+            msg.obj = musicContentList;
+            try {
+                messenger.send(msg);
+            } catch (RemoteException ex) {
+                Log.e(getClass().getName(), "Unable to send message", ex);
+            }
+        }
 
-	}
+    }
 
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		Bundle bundle = intent.getExtras();
-		if (bundle == null) {
-			Log.e(getClass().getName(), "Missing intent extras.");
-			return;
-		}
-		key = bundle.getString("key", "");
-		createPosters();
-		sendMessageResults(intent);
-	}
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        Bundle bundle = intent.getExtras();
+        if (bundle == null) {
+            Log.e(getClass().getName(), "Missing intent extras.");
+            return;
+        }
+        key = bundle.getString("key", "");
+        createPosters();
+        sendMessageResults(intent);
+    }
 
-	protected void createPosters() {
-		MediaContainer mc = null;
-		try {
-			mc = retrieveVideos();
-		} catch (IOException ex) {
-			Log.e("AbstractPosterImageGalleryAdapter",
-					"Unable to talk to server: ", ex);
-		} catch (Exception e) {
-			Log.e("AbstractPosterImageGalleryAdapter", "Oops.", e);
-		}
+    protected void createPosters() {
+        MediaContainer mc = null;
+        try {
+            mc = retrieveVideos();
+        } catch (IOException ex) {
+            Log.e("AbstractPosterImageGalleryAdapter",
+                    "Unable to talk to server: ", ex);
+        } catch (Exception e) {
+            Log.e("AbstractPosterImageGalleryAdapter", "Oops.", e);
+        }
 
-		if (mc != null && mc.getSize() > 0) {
-			createVideoContent(mc);
-		}
+        if (mc != null && mc.getSize() > 0) {
+            createVideoContent(mc);
+        }
 
-	}
+    }
 
-	protected void createVideoContent(MediaContainer mc) {
-		String baseUrl = factory.baseURL();
-		List<Track> tracks = mc.getTracks();
-		String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
-		for (Track track : tracks) {
-			AudioTrackContentInfo mpi = new AudioTrackContentInfo();
-			mpi.setMediaTagIdentifier(mediaTagId);
-			mpi.setId(track.getKey());
-			mpi.setSummary(track.getSummary());
-			mpi.setDuration(track.getDuration());
-			List<Media> medias = track.getMedias();
-			Media mediaTrack = medias.get(0);
-			mpi.setAudioChannels(mediaTrack.getAudioChannels());
-			List<Part> parts = mediaTrack.getVideoPart();
-			Part part = parts.get(0);
-			mpi.setDirectPlayUrl(baseUrl + part.getKey().substring(1));
-			mpi.setTitle(track.getTitle());
-			if (mc.getParentPosterURL() != null) {
-				mpi.setParentPosterURL(baseUrl
-						+ mc.getParentPosterURL().substring(1));
-				mpi.setImageURL(baseUrl + mc.getParentPosterURL().substring(1));
-			}
+    protected void createVideoContent(MediaContainer mc) {
+        String baseUrl = factory.baseURL();
+        List<Track> tracks = mc.getTracks();
+        String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
+        for (Track track : tracks) {
+            AudioTrackContentInfo mpi = new AudioTrackContentInfo();
+            mpi.setMediaTagIdentifier(mediaTagId);
+            mpi.setId(track.getKey());
+            mpi.setSummary(track.getSummary());
+            mpi.setDuration(track.getDuration());
+            List<Media> medias = track.getMedias();
+            Media mediaTrack = medias.get(0);
+            mpi.setAudioChannels(mediaTrack.getAudioChannels());
+            List<Part> parts = mediaTrack.getVideoPart();
+            Part part = parts.get(0);
+            mpi.setDirectPlayUrl(baseUrl + part.getKey().substring(1));
+            mpi.setTitle(track.getTitle());
+            if (mc.getParentPosterURL() != null) {
+                mpi.setParentPosterURL(baseUrl
+                        + mc.getParentPosterURL().substring(1));
+                mpi.setImageURL(baseUrl + mc.getParentPosterURL().substring(1));
+            }
 
-			musicContentList.add(mpi);
-		}
+            musicContentList.add(mpi);
+        }
 
-	}
+    }
 
-	protected MediaContainer retrieveVideos() throws Exception {
-		return factory.retrieveMusicMetaData(key);
-	}
+    protected MediaContainer retrieveVideos() throws Exception {
+        return factory.retrieveMusicMetaData(key);
+    }
 
 }

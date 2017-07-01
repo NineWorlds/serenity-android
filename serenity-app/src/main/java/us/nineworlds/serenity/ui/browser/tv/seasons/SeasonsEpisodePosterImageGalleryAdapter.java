@@ -23,22 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.TrailersYouTubeSearch;
-import us.nineworlds.serenity.core.model.DBMetaData;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.util.DBMetaDataSource;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
-import us.nineworlds.serenity.volley.SimpleXmlRequest;
-import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -48,19 +32,23 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
-import com.google.android.youtube.player.YouTubeInitializationResult;
+
 import net.ganin.darv.DpadAwareRecyclerView;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 
 public class SeasonsEpisodePosterImageGalleryAdapter
         extends
         us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
 
     private static SeasonsEpisodePosterImageGalleryAdapter notifyAdapter;
-    private DBMetaDataSource datasource;
 
     @Inject
     protected SharedPreferences prefs;
@@ -135,70 +123,8 @@ public class SeasonsEpisodePosterImageGalleryAdapter
     }
 
     protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
-        checkDataBaseForTrailer(pi);
-
-        boolean trailersEnabled = prefs.getBoolean("episode_trailers", false);
-        if (trailersEnabled) {
-            if (pi.hasTrailer() == false) {
-                if (YouTubeInitializationResult.SUCCESS
-                        .equals(YouTubeApiServiceUtil
-                                .isYouTubeApiServiceAvailable(context))) {
-                    fetchTrailer(pi, galleryCellView);
-                }
-            } else {
-                View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
-                v.setVisibility(View.VISIBLE);
-                v.findViewById(R.id.trailerIndicator).setVisibility(
-                        View.VISIBLE);
-            }
-        }
-
-        if (pi.getAvailableSubtitles() != null) {
-            View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
-            v.setVisibility(View.VISIBLE);
-            v.findViewById(R.id.subtitleIndicator).setVisibility(View.VISIBLE);
-        } else {
-            fetchSubtitle(pi, galleryCellView);
-        }
     }
 
-    public void fetchSubtitle(VideoContentInfo mpi, View view) {
-        String url = plexFactory.getMovieMetadataURL("/library/metadata/"
-                + mpi.id());
-        SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(
-                Request.Method.GET, url, MediaContainer.class,
-                new GridSubtitleVolleyResponseListener(mpi, context, view),
-                new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-        queue.add(xmlRequest);
-
-    }
-
-    protected void checkDataBaseForTrailer(VideoContentInfo pi) {
-        datasource = new DBMetaDataSource(context);
-        datasource.open();
-        DBMetaData metaData = datasource.findMetaDataByPlexId(pi.id());
-        if (metaData != null) {
-            pi.setTrailer(true);
-            pi.setTrailerId(metaData.getYouTubeID());
-        }
-        datasource.close();
-    }
-
-    public void fetchTrailer(VideoContentInfo mpi, View view) {
-
-        TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
-        String queryURL = trailerSearch.queryURL(mpi);
-
-        volley.volleyJSonGetRequest(queryURL,
-                new YouTubeTrailerSearchResponseListener(view, mpi),
-                new DefaultLoggingVolleyErrorListener());
-    }
 
     private static class EpisodeHandler extends Handler {
 

@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -26,39 +26,39 @@ package us.nineworlds.serenity.core.model;
 /**
  * Data Object that represents the DB Meta Data Table
  * @author dcarver
- * 
+ *
  */
 public class DBMetaData {
 
-	private long id;
-	private String plexId;
-	private String youTubeID;
+    private long id;
+    private String plexId;
+    private String youTubeID;
 
-	public long getId() {
-		return id;
-	}
-	
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getYouTubeID() {
-		return youTubeID;
-	}
-
-	public void setYouTubeID(String youTubeID) {
-		this.youTubeID = youTubeID;
-	}
+    public long getId() {
+        return id;
+    }
 
 
-	public String getPlexId() {
-		return plexId;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getYouTubeID() {
+        return youTubeID;
+    }
+
+    public void setYouTubeID(String youTubeID) {
+        this.youTubeID = youTubeID;
+    }
 
 
-	public void setPlexId(String plexId) {
-		this.plexId = plexId;
-	}
+    public String getPlexId() {
+        return plexId;
+    }
+
+
+    public void setPlexId(String plexId) {
+        this.plexId = plexId;
+    }
 
 }

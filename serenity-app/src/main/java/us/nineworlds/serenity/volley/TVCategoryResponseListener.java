@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -22,6 +22,12 @@
  */
 
 package us.nineworlds.serenity.volley;
+
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import com.android.volley.Response;
 
 import java.util.List;
 
@@ -35,60 +41,54 @@ import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.TVCategoryState;
-import android.app.Activity;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
-import com.android.volley.Response;
 
 public class TVCategoryResponseListener extends BaseInjector implements
-		Response.Listener<MediaContainer> {
+        Response.Listener<MediaContainer> {
 
-	@Inject
-	TVCategoryState categoryState;
+    @Inject
+    TVCategoryState categoryState;
 
-	private List<CategoryInfo> categories;
-	private final SerenityMultiViewVideoActivity context;
-	private final String key;
+    private List<CategoryInfo> categories;
+    private final SerenityMultiViewVideoActivity context;
+    private final String key;
 
-	public TVCategoryResponseListener(SerenityMultiViewVideoActivity context, String key) {
-		super();
-		this.context = context;
-		this.key = key;
-	}
+    public TVCategoryResponseListener(SerenityMultiViewVideoActivity context, String key) {
+        super();
+        this.context = context;
+        this.key = key;
+    }
 
-	@Override
-	public void onResponse(MediaContainer mediaContainer) {
-		TVCategoryMediaContainer categoryMediaContainer = new TVCategoryMediaContainer(
-				mediaContainer);
-		categories = categoryMediaContainer.createCategories();
-		setupShows();
-	}
+    @Override
+    public void onResponse(MediaContainer mediaContainer) {
+        TVCategoryMediaContainer categoryMediaContainer = new TVCategoryMediaContainer(
+                mediaContainer);
+        categories = categoryMediaContainer.createCategories();
+        setupShows();
+    }
 
-	protected void setupShows() {
-		ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
-				context, R.layout.serenity_spinner_textview, categories);
+    protected void setupShows() {
+        ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
+                context, R.layout.serenity_spinner_textview, categories);
 
-		spinnerArrayAdapter
-				.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+        spinnerArrayAdapter
+                .setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
-		Spinner categorySpinner = (Spinner) context
-				.findViewById(R.id.categoryFilter);
-		categorySpinner.setVisibility(View.VISIBLE);
-		categorySpinner.setAdapter(spinnerArrayAdapter);
+        Spinner categorySpinner = (Spinner) context
+                .findViewById(R.id.categoryFilter);
+        categorySpinner.setVisibility(View.VISIBLE);
+        categorySpinner.setAdapter(spinnerArrayAdapter);
 
-		if (categoryState.getCategory() == null) {
-			categorySpinner
-					.setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(
-							"all", key, context));
-		} else {
-			categorySpinner
-					.setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(
-							categoryState.getCategory(), key, false, context));
+        if (categoryState.getCategory() == null) {
+            categorySpinner
+                    .setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(
+                            "all", key, context));
+        } else {
+            categorySpinner
+                    .setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(
+                            categoryState.getCategory(), key, false, context));
 
-		}
-		categorySpinner.requestFocus();
-	}
+        }
+        categorySpinner.requestFocus();
+    }
 
 }

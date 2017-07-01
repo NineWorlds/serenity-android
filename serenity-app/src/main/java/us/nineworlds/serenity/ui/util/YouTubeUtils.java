@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,9 +23,6 @@
 
 package us.nineworlds.serenity.ui.util;
 
-import javax.inject.Singleton;
-
-import us.nineworlds.serenity.core.model.VideoContentInfo;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -34,26 +31,30 @@ import android.widget.Toast;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 
+import javax.inject.Singleton;
+
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+
 @Singleton
 public class YouTubeUtils {
 
-	public void performPlayTrailer(VideoContentInfo info, Activity activity) {
-		if (info.hasTrailer()) {
-			if (YouTubeInitializationResult.SUCCESS
-					.equals(YouTubeApiServiceUtil
-							.isYouTubeApiServiceAvailable(activity))) {
-				Intent youTubei = new Intent(Intent.ACTION_VIEW,
-						Uri.parse("http://www.youtube.com/watch?v="
-								+ info.trailerId()));
-				activity.startActivity(youTubei);
-				return;
-			}
-			Toast.makeText(activity, "YouTube Player not installed",
-					Toast.LENGTH_LONG).show();
-		} else {
-			Toast.makeText(activity, "No Trailers found for this video.",
-					Toast.LENGTH_LONG).show();
-		}
-	}
+    public void performPlayTrailer(VideoContentInfo info, Activity activity) {
+        if (info.hasTrailer()) {
+            if (YouTubeInitializationResult.SUCCESS
+                    .equals(YouTubeApiServiceUtil
+                            .isYouTubeApiServiceAvailable(activity))) {
+                Intent youTubei = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://www.youtube.com/watch?v="
+                                + info.trailerId()));
+                activity.startActivity(youTubei);
+                return;
+            }
+            Toast.makeText(activity, "YouTube Player not installed",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(activity, "No Trailers found for this video.",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
 
 }

@@ -23,25 +23,23 @@
 
 package us.nineworlds.serenity;
 
-import javax.inject.Inject;
-
-import android.support.v4.content.ContextCompat;
-import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
-import us.nineworlds.serenity.core.menus.MenuItem;
-import us.nineworlds.serenity.injection.BaseInjector;
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import net.ganin.darv.DpadAwareRecyclerView;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.core.menus.MenuItem;
+import us.nineworlds.serenity.injection.BaseInjector;
 
 public class GalleryOnItemSelectedListener extends BaseInjector implements
         DpadAwareRecyclerView.OnItemSelectedListener {

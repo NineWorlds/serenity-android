@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
     android:id="@+id/musicBrowserBackgroundLayout"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="@drawable/music"
     android:orientation="vertical"
     android:padding="5dp"
-    tools:context=".ui.browser.music.MusicTrackActivity" >
+    tools:context=".ui.browser.music.MusicTrackActivity">
 
     <ImageView
         android:id="@+id/musicAlbumImage"
@@ -36,9 +35,10 @@
         android:nextFocusLeft="@+id/mediacontroller_seekbar"
         android:scrollbars="vertical"
         android:scrollingCache="true">
+
         <requestFocus />
-     </ListView>
-     
+    </ListView>
+
     <TextView
         android:id="@+id/track_playing"
         android:layout_width="410dp"
@@ -51,7 +51,7 @@
         android:background="#50000000"
         android:textStyle="bold"
         tools:targetApi="13" />
-    
+
     <LinearLayout
         android:id="@+id/mediacontroller_progress_layout"
         android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:background="#50000000"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/mediacontroller_time_current"
@@ -85,8 +85,7 @@
             android:nextFocusDown="@+id/audioPause"
             android:nextFocusRight="@+id/audioTracksListview"
             android:progressDrawable="@drawable/scrubber_progress_holo"
-            android:thumb="@drawable/seekerbar_selector"
-             />
+            android:thumb="@drawable/seekerbar_selector" />
 
         <TextView
             android:id="@+id/mediacontroller_time_total"
@@ -100,38 +99,39 @@
 
     </LinearLayout>
 
-    <ImageButton android:id="@+id/audioPrevTrack"
+    <ImageButton
+        android:id="@+id/audioPrevTrack"
         android:src="@drawable/prev_track_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#50000000" 
+        android:background="#50000000"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp" 
+        android:layout_marginTop="5dp"
         android:nextFocusUp="@+id/mediacontroller_seekbar"
-        android:nextFocusRight="@+id/audioSkipBack"        
-        android:layout_below="@+id/mediacontroller_progress_layout"
-        />
-    
-    <ImageButton android:id="@+id/audioSkipBack"
+        android:nextFocusRight="@+id/audioSkipBack"
+        android:layout_below="@+id/mediacontroller_progress_layout" />
+
+    <ImageButton
+        android:id="@+id/audioSkipBack"
         android:src="@drawable/skipback_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#50000000" 
+        android:background="#50000000"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp" 
+        android:layout_marginTop="5dp"
         android:nextFocusUp="@+id/mediacontroller_seekbar"
         android:nextFocusLeft="@+id/audioPrevTrack"
-        android:nextFocusRight="@+id/audioPause"        
+        android:nextFocusRight="@+id/audioPause"
         android:layout_below="@+id/mediacontroller_progress_layout"
-        android:layout_toRightOf="@+id/audioPrevTrack"
-        />
-    
-    <ImageButton android:id="@+id/audioPause"
-        android:layout_marginTop="5dp" 
+        android:layout_toRightOf="@+id/audioPrevTrack" />
+
+    <ImageButton
+        android:id="@+id/audioPause"
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
         android:background="#50000000"
         android:src="@drawable/pause_selector"
         android:layout_marginLeft="10dp"
@@ -139,37 +139,36 @@
         android:nextFocusLeft="@+id/audioSkipBack"
         android:nextFocusRight="@+id/audioSkipForward"
         android:layout_below="@+id/mediacontroller_progress_layout"
-        android:layout_toRightOf="@+id/audioSkipBack"
-        />
-    
-    <ImageButton android:id="@+id/audioSkipForward"
-        android:layout_marginTop="5dp" 
+        android:layout_toRightOf="@+id/audioSkipBack" />
+
+    <ImageButton
+        android:id="@+id/audioSkipForward"
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
         android:src="@drawable/skipforward_selector"
         android:background="#50000000"
-        android:layout_marginLeft="10dp" 
+        android:layout_marginLeft="10dp"
         android:layout_below="@+id/mediacontroller_progress_layout"
         android:layout_toRightOf="@+id/audioPause"
         android:nextFocusRight="@+id/audioNextTrack"
         android:nextFocusUp="@+id/mediacontroller_seekbar"
-        android:nextFocusLeft="@+id/audioPause"
-        />
-    
-    <ImageButton android:id="@+id/audioNextTrack"
-        android:layout_marginTop="5dp" 
+        android:nextFocusLeft="@+id/audioPause" />
+
+    <ImageButton
+        android:id="@+id/audioNextTrack"
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
         android:src="@drawable/next_track_selector"
         android:background="#50000000"
-        android:layout_marginLeft="10dp" 
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_below="@+id/mediacontroller_progress_layout"
         android:layout_toRightOf="@+id/audioSkipForward"
         android:nextFocusRight="@+id/audioTracksListview"
         android:nextFocusUp="@+id/mediacontroller_seekbar"
-        android:nextFocusLeft="@+id/audioSkipForward"
-        />    
-    
+        android:nextFocusLeft="@+id/audioSkipForward" />
+
 
 </RelativeLayout>

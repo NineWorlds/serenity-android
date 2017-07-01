@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,263 +23,214 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.TrailersYouTubeSearch;
-import us.nineworlds.serenity.core.model.DBMetaData;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
-import us.nineworlds.serenity.core.util.DBMetaDataSource;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.GridSubtitleVolleyResponseListener;
-import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
-import us.nineworlds.serenity.widgets.RoundedImageView;
-
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
-import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.birbit.android.jobqueue.JobManager;
+
+import net.ganin.darv.DpadAwareRecyclerView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
+import us.nineworlds.serenity.events.MovieRetrievalEvent;
+import us.nineworlds.serenity.jobs.MovieRetrievalJob;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.widgets.RoundedImageView;
 
 public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
-	protected static AbstractPosterImageGalleryAdapter notifyAdapter;
-	private static SerenityMultiViewVideoActivity movieContext;
-	private DBMetaDataSource datasource;
+    @Inject
+    JobManager jobManager;
 
-	public MoviePosterImageAdapter(Context c, String key, String category) {
-		super(c, key, category);
-		movieContext = (SerenityMultiViewVideoActivity) c;
-		notifyAdapter = this;
-	}
+    @Inject
+    EventBus eventBus;
 
-	public View getView(int position, View convertView, ViewGroup parent) {
+    protected static AbstractPosterImageGalleryAdapter notifyAdapter;
+    private static SerenityMultiViewVideoActivity movieContext;
 
-		if (position > posterList.size()) {
-			position = posterList.size() - 1;
-		}
+    public MoviePosterImageAdapter(Context c, String key, String category) {
+        super(c, key, category);
+        movieContext = (SerenityMultiViewVideoActivity) c;
+        notifyAdapter = this;
+        eventBus.register(this);
+    }
 
-		if (position < 0) {
-			position = 0;
-		}
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-		View galleryCellView = null;
-		if (convertView != null) {
-			galleryCellView = convertView;
-			galleryCellView.findViewById(R.id.posterInprogressIndicator)
-					.setVisibility(View.INVISIBLE);
-			galleryCellView.findViewById(R.id.posterWatchedIndicator)
-					.setVisibility(View.INVISIBLE);
-			galleryCellView.findViewById(R.id.infoGraphicMeta).setVisibility(
-					View.GONE);
-		} else {
-			galleryCellView = context.getLayoutInflater().inflate(
-					R.layout.poster_indicator_view, null);
-		}
+        if (position > posterList.size()) {
+            position = posterList.size() - 1;
+        }
 
-		VideoContentInfo pi = posterList.get(position);
-		gridViewMetaData(galleryCellView, pi);
+        if (position < 0) {
+            position = 0;
+        }
 
-		RoundedImageView mpiv = (RoundedImageView) galleryCellView
-				.findViewById(R.id.posterImageView);
+        View galleryCellView = null;
+        if (convertView != null) {
+            galleryCellView = convertView;
+            galleryCellView.findViewById(R.id.posterInprogressIndicator)
+                    .setVisibility(View.INVISIBLE);
+            galleryCellView.findViewById(R.id.posterWatchedIndicator)
+                    .setVisibility(View.INVISIBLE);
+            galleryCellView.findViewById(R.id.infoGraphicMeta).setVisibility(
+                    View.GONE);
+        } else {
+            galleryCellView = context.getLayoutInflater().inflate(
+                    R.layout.poster_indicator_view, null);
+        }
 
-		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		int width = 0;
-		int height = 0;
+        VideoContentInfo pi = posterList.get(position);
+        gridViewMetaData(galleryCellView, pi);
 
-		width = ImageUtils.getDPI(130, context);
-		height = ImageUtils.getDPI(200, context);
-		mpiv.setMaxHeight(height);
-		mpiv.setMaxWidth(width);
-		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-		galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
+        RoundedImageView mpiv = (RoundedImageView) galleryCellView
+                .findViewById(R.id.posterImageView);
 
-		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
+        mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
+        int width = 0;
+        int height = 0;
 
-		setWatchedStatus(galleryCellView, pi);
+        width = ImageUtils.getDPI(130, context);
+        height = ImageUtils.getDPI(200, context);
+        mpiv.setMaxHeight(height);
+        mpiv.setMaxWidth(width);
+        mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+        galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
 
-		return galleryCellView;
-	}
+        serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
 
-	protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
-		if (movieContext.isGridViewActive()) {
-			checkDataBaseForTrailer(pi);
+        setWatchedStatus(galleryCellView, pi);
 
-			if (pi.hasTrailer() == false) {
-				if (YouTubeInitializationResult.SUCCESS
-						.equals(YouTubeApiServiceUtil
-								.isYouTubeApiServiceAvailable(context))) {
-					fetchTrailer(pi, galleryCellView);
-				}
-			} else {
-				//v.setVisibility(View.VISIBLE);
-				//v.findViewById(R.id.trailerIndicator).setVisibility(
-				//		View.VISIBLE);
-			}
+        return galleryCellView;
+    }
 
-			if (pi.getAvailableSubtitles() != null) {
-				View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
-				v.setVisibility(View.VISIBLE);
-				v.findViewById(R.id.subtitleIndicator).setVisibility(
-						View.VISIBLE);
-			} else {
-				fetchSubtitle(pi, galleryCellView);
-			}
-		}
-	}
+    protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
+        if (movieContext.isGridViewActive()) {
+            if (pi.getAvailableSubtitles() != null) {
+                View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
+                v.setVisibility(View.VISIBLE);
+                v.findViewById(R.id.subtitleIndicator).setVisibility(
+                        View.VISIBLE);
+            }
+        }
+    }
 
-	protected void checkDataBaseForTrailer(VideoContentInfo pi) {
-		datasource = new DBMetaDataSource(context);
-		datasource.open();
-		DBMetaData metaData = datasource.findMetaDataByPlexId(pi.id());
-		if (metaData != null) {
-			pi.setTrailer(true);
-			pi.setTrailerId(metaData.getYouTubeID());
-		}
-		datasource.close();
-	}
+    @Override
+    protected void fetchDataFromService() {
+        MovieRetrievalJob movieRetrievalJob = new MovieRetrievalJob(key, category);
+        jobManager.addJobInBackground(movieRetrievalJob);
+    }
 
-	public void fetchTrailer(VideoContentInfo mpi, View view) {
+    @Override
+    public int getItemCount() {
+        Log.i(this.getClass().getSimpleName(), "Item Count Called for Grid.");
+        return super.getItemCount();
+    }
 
-		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
-		String queryURL = trailerSearch.queryURL(mpi);
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(movieContext).inflate(R.layout.poster_indicator_view, parent, false);
+        return new MoviePosterViewHolder(view);
+    }
 
-		volley.volleyJSonGetRequest(queryURL,
-				new YouTubeTrailerSearchResponseListener(view, mpi),
-				new DefaultLoggingVolleyErrorListener());
-	}
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        MoviePosterViewHolder viewHolder = (MoviePosterViewHolder) holder;
+        if (position > posterList.size()) {
+            position = posterList.size() - 1;
+        }
 
-	public void fetchSubtitle(VideoContentInfo mpi, View view) {
-		String url = factory.getMovieMetadataURL("/library/metadata/"
-				+ mpi.id());
-		volley.volleyXmlGetRequest(url, new GridSubtitleVolleyResponseListener(
-				mpi, context, view), new DefaultLoggingVolleyErrorListener());
-	}
+        if (position < 0) {
+            position = 0;
+        }
 
-	@Override
-	protected void fetchDataFromService() {
-		String url = factory.getSectionsURL(key, category);
+        viewHolder.poseterInprogressIndicator.setVisibility(View.INVISIBLE);
+        viewHolder.posterWatchedIndicator.setVisibility(View.INVISIBLE);
+        viewHolder.infoGraphicMetaContainer.setVisibility(View.GONE);
 
-		volley.volleyXmlGetRequest(url, new MoviePosterResponseListener(),
-				new MoviePosterResponseErrorListener());
-	}
+        VideoContentInfo pi = posterList.get(position);
 
-	@Override
-	public int getItemCount() {
-		Log.i(this.getClass().getSimpleName(), "Item Count Called for Grid.");
-		return super.getItemCount();
-	}
+        RoundedImageView mpiv = viewHolder.posterImageView;
 
-	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(movieContext).inflate(R.layout.poster_indicator_view, parent, false);
-		return new MoviePosterViewHolder(view);
-	}
+        int width = 0;
+        int height = 0;
 
-	@Override
-	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-		MoviePosterViewHolder viewHolder = (MoviePosterViewHolder) holder;
-		if (position > posterList.size()) {
-			position = posterList.size() - 1;
-		}
+        width = ImageUtils.getDPI(130, context);
+        height = ImageUtils.getDPI(200, context);
+        mpiv.setMaxHeight(height);
+        mpiv.setMaxWidth(width);
+        mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+        viewHolder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
 
-		if (position < 0) {
-			position = 0;
-		}
+        serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
 
-		viewHolder.poseterInprogressIndicator.setVisibility(View.INVISIBLE);
-		viewHolder.posterWatchedIndicator.setVisibility(View.INVISIBLE);
-		viewHolder.infoGraphicMetaContainer.setVisibility(View.GONE);
+        setWatchedStatus(viewHolder.itemView, pi);
+    }
 
-		VideoContentInfo pi = posterList.get(position);
+    private class MoviePosterResponseErrorListener implements
+            Response.ErrorListener {
 
-		RoundedImageView mpiv = viewHolder.posterImageView;
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            context.setSupportProgressBarIndeterminateVisibility(false);
+        }
+    }
 
-		int width = 0;
-		int height = 0;
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMoviePosterResponse(MovieRetrievalEvent event) {
+        populatePosters(event.getMediaContainer());
 
-		width = ImageUtils.getDPI(130, context);
-		height = ImageUtils.getDPI(200, context);
-		mpiv.setMaxHeight(height);
-		mpiv.setMaxWidth(width);
-		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-		viewHolder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
+    }
 
-		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
+    protected void populatePosters(MediaContainer mc) {
+        MovieMediaContainer movies = new MovieMediaContainer(mc);
+        posterList = movies.createVideos();
+        notifyAdapter.notifyDataSetChanged();
+        DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) movieContext
+                .findViewById(R.id.moviePosterView);
+        posterGallery.requestFocusFromTouch();
+    }
 
-		setWatchedStatus(viewHolder.itemView, pi);
-	}
+    protected class MoviePosterViewHolder extends RecyclerView.ViewHolder {
 
-	private class MoviePosterResponseErrorListener implements
-			Response.ErrorListener {
+        @BindView(R.id.posterInprogressIndicator)
+        public ProgressBar poseterInprogressIndicator;
 
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			context.setSupportProgressBarIndeterminateVisibility(false);
-		}
-	}
+        @BindView(R.id.posterWatchedIndicator)
+        public ImageView posterWatchedIndicator;
 
-	private class MoviePosterResponseListener implements
-			Response.Listener<MediaContainer> {
+        @BindView(R.id.infoGraphicMeta)
+        public LinearLayout infoGraphicMetaContainer;
 
-		@Override
-		public void onResponse(MediaContainer response) {
-			try {
-				MediaContainer mc = response;
-				populatePosters(mc);
-			} catch (Exception e) {
-				Log.e(getClass().getName(), "Error populating posters.", e);
-			}
-		}
+        @BindView(R.id.posterImageView)
+        public RoundedImageView posterImageView;
 
-		/**
-		 * @param mc
-		 */
-		protected void populatePosters(MediaContainer mc) {
-			MovieMediaContainer movies = new MovieMediaContainer(mc);
-			posterList = movies.createVideos();
-			notifyAdapter.notifyDataSetChanged();
-			DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) movieContext
-					.findViewById(R.id.moviePosterView);
-			posterGallery.requestFocusFromTouch();
-		}
-	}
+        public MoviePosterViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
 
-	protected class MoviePosterViewHolder extends RecyclerView.ViewHolder {
-
-		@BindView(R.id.posterInprogressIndicator)
-		public ProgressBar poseterInprogressIndicator;
-
-		@BindView(R.id.posterWatchedIndicator)
-		public ImageView posterWatchedIndicator;
-
-		@BindView(R.id.infoGraphicMeta)
-		public LinearLayout infoGraphicMetaContainer;
-
-		@BindView(R.id.posterImageView)
-		public RoundedImageView posterImageView;
-
-		public MoviePosterViewHolder(View itemView) {
-			super(itemView);
-			ButterKnife.bind(this, itemView);
-		}
-
-	}
+    }
 
 }

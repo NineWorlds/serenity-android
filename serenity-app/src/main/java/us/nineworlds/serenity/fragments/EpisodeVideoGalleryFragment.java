@@ -23,9 +23,16 @@
 
 package us.nineworlds.serenity.fragments;
 
-import javax.inject.Inject;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import net.ganin.darv.DpadAwareRecyclerView;
+
+import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
@@ -38,13 +45,6 @@ import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelected
 import us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 public class EpisodeVideoGalleryFragment extends InjectingFragment {
 

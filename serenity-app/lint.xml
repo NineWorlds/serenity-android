@@ -5,8 +5,10 @@
         <ignore path="src/main/java/us/nineworlds/serenity/ui/video/player/MediaController.java" />
     </issue>
     <issue id="NewApi">
-        <ignore path="src/main/java/us/nineworlds/serenity/ui/video/player/SerenitySurfaceViewVideoActivity.java" />
-        <ignore path="src/main/java/us/nineworlds/serenity/ui/video/player/VideoPlayerPrepareListener.java" />
+        <ignore
+            path="src/main/java/us/nineworlds/serenity/ui/video/player/SerenitySurfaceViewVideoActivity.java" />
+        <ignore
+            path="src/main/java/us/nineworlds/serenity/ui/video/player/VideoPlayerPrepareListener.java" />
     </issue>
     <issue id="RtlSymmetry">
         <ignore path="res/layout-large/activity_movie_browser.xml" />

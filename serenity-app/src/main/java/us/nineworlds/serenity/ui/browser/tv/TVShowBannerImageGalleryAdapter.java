@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,21 +23,9 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -46,181 +34,206 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
+import com.birbit.android.jobqueue.JobManager;
+
+import net.ganin.darv.DpadAwareRecyclerView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
+import us.nineworlds.serenity.events.TVShowRetrievalEvent;
+import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 
 public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 
-	private static final int BANNER_PIXEL_HEIGHT = 140;
-	private static final int BANNER_PIXEL_WIDTH = 758;
+    @Inject
+    JobManager jobManager;
 
-	protected static List<SeriesContentInfo> tvShowList = null;
+    @Inject
+    EventBus eventBus;
 
-	private final String key;
-	protected SerenityMultiViewVideoActivity showActivity;
+    private static final int BANNER_PIXEL_HEIGHT = 140;
+    private static final int BANNER_PIXEL_WIDTH = 758;
 
-	public TVShowBannerImageGalleryAdapter(Context c, String key,
-			String category) {
-		super(c, key, category);
-		showActivity = (SerenityMultiViewVideoActivity) c;
-		tvShowList = new ArrayList<SeriesContentInfo>();
-		this.key = key;
-		fetchData();
-	}
+    protected static List<SeriesContentInfo> tvShowList = null;
 
-	protected void fetchData() {
-		String url = factory.getSectionsURL(key, category);
-		volley.volleyXmlGetRequest(url, new SeriesResponseListener(),
-				new DefaultLoggingVolleyErrorListener());
-	}
+    private final String key;
+    protected SerenityMultiViewVideoActivity showActivity;
 
-	public int getItemCount() {
-		return tvShowList.size();
-	}
+    public TVShowBannerImageGalleryAdapter(Context c, String key,
+                                           String category) {
+        super(c, key, category);
+        showActivity = (SerenityMultiViewVideoActivity) c;
+        tvShowList = new ArrayList<SeriesContentInfo>();
+        this.key = key;
+        eventBus.register(this);
 
-	@Override
-	public Object getItem(int position) {
-		return tvShowList.get(position);
-	}
+        fetchData();
+    }
 
-	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(context).inflate(R.layout.poster_tvshow_indicator_view, parent, false);
-		return new TVShowViewHolder(view);
-	}
+    protected void fetchData() {
+        TVShowRetrievalJob tvShowRetrievalJob = new TVShowRetrievalJob(key, category);
+        jobManager.addJobInBackground(tvShowRetrievalJob);
+    }
 
-	@Override
-	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-		SeriesContentInfo pi = tvShowList.get(position);
-		createImage(holder.itemView, pi, BANNER_PIXEL_WIDTH,
-				BANNER_PIXEL_HEIGHT);
+    public int getItemCount() {
+        return tvShowList.size();
+    }
 
-		toggleWatchedIndicator(holder.itemView, pi);
-	}
+    @Override
+    public Object getItem(int position) {
+        return tvShowList.get(position);
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.poster_tvshow_indicator_view, parent, false);
+        return new TVShowViewHolder(view);
+    }
 
-	protected void createImage(View galleryCellView, SeriesContentInfo pi,
-			int imageWidth, int imageHeight) {
-		int width = ImageUtils.getDPI(imageWidth, context);
-		int height = ImageUtils.getDPI(imageHeight, context);
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        SeriesContentInfo pi = tvShowList.get(position);
+        createImage(holder.itemView, pi, BANNER_PIXEL_WIDTH,
+                BANNER_PIXEL_HEIGHT);
 
-		initPosterMetaData(galleryCellView, pi, width, height, false);
+        toggleWatchedIndicator(holder.itemView, pi);
+    }
 
-		galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
-				height));
-	}
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-	/**
-	 * @param galleryCellView
-	 * @param pi
-	 * @param width
-	 * @param height
-	 */
-	protected void initPosterMetaData(View galleryCellView, SeriesContentInfo pi, int width, int height, boolean isPoster) {
-		ImageView mpiv = (ImageView) galleryCellView
-				.findViewById(R.id.posterImageView);
-		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
-		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-		mpiv.setMaxHeight(height);
-		mpiv.setMaxWidth(width);
+    protected void createImage(View galleryCellView, SeriesContentInfo pi,
+                               int imageWidth, int imageHeight) {
+        int width = ImageUtils.getDPI(imageWidth, context);
+        int height = ImageUtils.getDPI(imageHeight, context);
 
-		if (isPoster) {
-			serenityImageLoader.displayImage(pi.getThumbNailURL(), mpiv);
-		} else {
-			serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
-		}
-	}
+        initPosterMetaData(galleryCellView, pi, width, height, false);
 
-	/**
-	 * @param galleryCellView
-	 * @param pi
-	 */
-	protected void toggleWatchedIndicator(View galleryCellView,
-			SeriesContentInfo pi) {
+        galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
+                height));
+    }
 
-		int watched = 0;
-		if (pi.getShowsWatched() != null) {
-			watched = Integer.parseInt(pi.getShowsWatched());
-		}
-		ImageView watchedView = (ImageView) galleryCellView
-				.findViewById(R.id.posterWatchedIndicator);
-		watchedView.setVisibility(View.INVISIBLE);
+    /**
+     * @param galleryCellView
+     * @param pi
+     * @param width
+     * @param height
+     */
+    protected void initPosterMetaData(View galleryCellView, SeriesContentInfo pi, int width, int height, boolean isPoster) {
+        ImageView mpiv = (ImageView) galleryCellView
+                .findViewById(R.id.posterImageView);
+        mpiv.setBackgroundResource(R.drawable.gallery_item_background);
+        mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
+        mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+        mpiv.setMaxHeight(height);
+        mpiv.setMaxWidth(width);
 
-		if (pi.isPartiallyWatched()) {
-			toggleProgressIndicator(galleryCellView, watched, pi.totalShows(),
-					watchedView);
-		}
+        if (isPoster) {
+            serenityImageLoader.displayImage(pi.getThumbNailURL(), mpiv);
+        } else {
+            serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
+        }
+    }
 
-		TextView badgeCount = (TextView) galleryCellView.findViewById(R.id.badge_count);
-		badgeCount.setText(pi.getShowsUnwatched());
+    /**
+     * @param galleryCellView
+     * @param pi
+     */
+    protected void toggleWatchedIndicator(View galleryCellView,
+                                          SeriesContentInfo pi) {
 
-		if (pi.isWatched()) {
-			watchedView.setImageResource(R.drawable.overlaywatched);
-			watchedView.setVisibility(View.VISIBLE);
-			badgeCount.setVisibility(View.GONE);
-		} else {
-			badgeCount.setVisibility(View.VISIBLE);
-		}
-	}
+        int watched = 0;
+        if (pi.getShowsWatched() != null) {
+            watched = Integer.parseInt(pi.getShowsWatched());
+        }
+        ImageView watchedView = (ImageView) galleryCellView
+                .findViewById(R.id.posterWatchedIndicator);
+        watchedView.setVisibility(View.INVISIBLE);
 
-	protected void toggleProgressIndicator(View galleryCellView, int dividend,
-			int divisor, ImageView watchedView) {
-		final float percentWatched = Float.valueOf(dividend)
-				/ Float.valueOf(divisor);
+        if (pi.isPartiallyWatched()) {
+            toggleProgressIndicator(galleryCellView, watched, pi.totalShows(),
+                    watchedView);
+        }
 
-		final ProgressBar view = (ProgressBar) galleryCellView
-				.findViewById(R.id.posterInprogressIndicator);
-		int progress = Float.valueOf(percentWatched * 100).intValue();
-		if (progress < 10) {
-			progress = 10;
-		}
-		view.setProgress(progress);
-		view.setVisibility(View.VISIBLE);
-		watchedView.setVisibility(View.INVISIBLE);
-	}
+        TextView badgeCount = (TextView) galleryCellView.findViewById(R.id.badge_count);
+        badgeCount.setText(pi.getShowsUnwatched());
 
-	@Override
-	protected void fetchDataFromService() {
+        if (pi.isWatched()) {
+            watchedView.setImageResource(R.drawable.overlaywatched);
+            watchedView.setVisibility(View.VISIBLE);
+            badgeCount.setVisibility(View.GONE);
+        } else {
+            badgeCount.setVisibility(View.VISIBLE);
+        }
+    }
 
-	}
+    protected void toggleProgressIndicator(View galleryCellView, int dividend,
+                                           int divisor, ImageView watchedView) {
+        final float percentWatched = Float.valueOf(dividend)
+                / Float.valueOf(divisor);
 
-	protected class SeriesResponseListener implements
-			Response.Listener<MediaContainer> {
+        final ProgressBar view = (ProgressBar) galleryCellView
+                .findViewById(R.id.posterInprogressIndicator);
+        int progress = Float.valueOf(percentWatched * 100).intValue();
+        if (progress < 10) {
+            progress = 10;
+        }
+        view.setProgress(progress);
+        view.setVisibility(View.VISIBLE);
+        watchedView.setVisibility(View.INVISIBLE);
+    }
 
-		@Override
-		public void onResponse(MediaContainer response) {
-			tvShowList = new SeriesMediaContainer(response).createSeries();
-			DpadAwareRecyclerView recyclerView = (DpadAwareRecyclerView) (context
-					.findViewById(R.id.tvShowBannerGallery) != null ? context.findViewById(R.id.tvShowBannerGallery) : context.findViewById(R.id.tvShowGridView));
-			if (tvShowList != null) {
-				TextView tv = (TextView) context
-						.findViewById(R.id.tvShowItemCount);
-				if (tv == null) {
-					context.setSupportProgressBarIndeterminateVisibility(false);
-					return;
-				}
-				if (tvShowList.isEmpty()) {
-					Toast.makeText(
-							context,
-							context.getString(R.string.no_shows_found_for_the_category_)
-									+ category, Toast.LENGTH_LONG).show();
-				}
-				tv.setText(Integer.toString(tvShowList.size())
-						+ context.getString(R.string._item_s_));
-			}
-			notifyDataSetChanged();
-			recyclerView.requestFocus();
-		}
-	}
+    @Override
+    protected void fetchDataFromService() {
 
-	public class TVShowViewHolder extends RecyclerView.ViewHolder {
+    }
 
-		public TVShowViewHolder(View itemView) {
-			super(itemView);
-		}
-	}
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onTVShowResponse(TVShowRetrievalEvent event) {
+        tvShowList = new SeriesMediaContainer(event.getMediaContainer()).createSeries();
+        DpadAwareRecyclerView recyclerView = (DpadAwareRecyclerView) (context
+                .findViewById(R.id.tvShowBannerGallery) != null ? context.findViewById(R.id.tvShowBannerGallery) : context.findViewById(R.id.tvShowGridView));
+        if (tvShowList != null) {
+            TextView tv = (TextView) context
+                    .findViewById(R.id.tvShowItemCount);
+            if (tv == null) {
+                context.setSupportProgressBarIndeterminateVisibility(false);
+                return;
+            }
+            if (tvShowList.isEmpty()) {
+                Toast.makeText(
+                        context,
+                        context.getString(R.string.no_shows_found_for_the_category_)
+                                + category, Toast.LENGTH_LONG).show();
+            }
+            tv.setText(Integer.toString(tvShowList.size())
+                    + context.getString(R.string._item_s_));
+        }
+        notifyDataSetChanged();
+        recyclerView.requestFocus();
+    }
+
+
+    public class TVShowViewHolder extends RecyclerView.ViewHolder {
+
+        public TVShowViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
 }

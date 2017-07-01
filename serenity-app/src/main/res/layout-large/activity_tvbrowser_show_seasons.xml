@@ -2,15 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <!-- The main content view -->
 
-    <RelativeLayout
-        xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
         android:id="@+id/tvshowSeasonBrowserLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/fanArt"
@@ -34,7 +33,7 @@
             android:visibility="gone"
             app:selectorVelocity="2000"
             app:smoothScrolling="true"
-            app:backgroundSelector="@drawable/main_menu_item_foreground_selector"/>
+            app:backgroundSelector="@drawable/main_menu_item_foreground_selector" />
 
         <LinearLayout
             android:id="@+id/tvShowSeasonTitleRow"
@@ -42,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/tvShowSeasonImageGalleryLayout"
             android:background="@color/card_background"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvShowSeasonsTitle"
@@ -51,8 +50,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="#F0F0F0"
-                tools:ignore="SelectableText" >
-            </TextView>
+                tools:ignore="SelectableText"></TextView>
         </LinearLayout>
 
         <LinearLayout
@@ -62,7 +60,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
             android:background="@color/card_background"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <net.ganin.darv.DpadAwareRecyclerView
                 android:id="@+id/tvShowSeasonImageGallery"

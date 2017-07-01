@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,18 +23,19 @@
 
 package us.nineworlds.serenity.core.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import us.nineworlds.plex.rest.model.impl.Directory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import us.nineworlds.plex.rest.model.impl.Directory;
+import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 
 /**
  * Retrieves the available secondary categories for filtering and returns them
@@ -44,59 +45,59 @@ import android.util.Log;
  *
  */
 public class SecondaryCategoryRetrievalIntentService extends
-		AbstractPlexRESTIntentService {
+        AbstractPlexRESTIntentService {
 
-	protected ArrayList<SecondaryCategoryInfo> secondaryCategories = new ArrayList<SecondaryCategoryInfo>();
-	private String key;
+    protected ArrayList<SecondaryCategoryInfo> secondaryCategories = new ArrayList<SecondaryCategoryInfo>();
+    private String key;
 
-	public SecondaryCategoryRetrievalIntentService() {
-		super("MovieSecondaryCategoryRetrievalIntentService");
-	}
+    public SecondaryCategoryRetrievalIntentService() {
+        super("MovieSecondaryCategoryRetrievalIntentService");
+    }
 
-	@Override
-	public void sendMessageResults(Intent intent) {
-		Bundle extras = intent.getExtras();
-		if (extras != null) {
-			Messenger messenger = (Messenger) extras.get("MESSENGER");
-			Message msg = Message.obtain();
-			msg.obj = secondaryCategories;
-			try {
-				messenger.send(msg);
-			} catch (RemoteException ex) {
-				Log.e(getClass().getName(), "Unable to send message", ex);
-			}
-		}
-	}
+    @Override
+    public void sendMessageResults(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            Messenger messenger = (Messenger) extras.get("MESSENGER");
+            Message msg = Message.obtain();
+            msg.obj = secondaryCategories;
+            try {
+                messenger.send(msg);
+            } catch (RemoteException ex) {
+                Log.e(getClass().getName(), "Unable to send message", ex);
+            }
+        }
+    }
 
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		Bundle bundle = intent.getExtras();
-		if (bundle == null) {
-			Log.e(getClass().getName(), "Missing intent extras.");
-			sendMessageResults(intent);
-			return;
-		}
-		key = intent.getExtras().getString("key");
-		String category = intent.getExtras().getString("category");
-		populateSecondaryCategories(category);
-		sendMessageResults(intent);
-	}
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        Bundle bundle = intent.getExtras();
+        if (bundle == null) {
+            Log.e(getClass().getName(), "Missing intent extras.");
+            sendMessageResults(intent);
+            return;
+        }
+        key = intent.getExtras().getString("key");
+        String category = intent.getExtras().getString("category");
+        populateSecondaryCategories(category);
+        sendMessageResults(intent);
+    }
 
-	protected void populateSecondaryCategories(String categoryKey) {
-		try {
-			MediaContainer mediaContainer = factory.retrieveSections(key,
-					categoryKey);
-			List<Directory> dirs = mediaContainer.getDirectories();
-			secondaryCategories = new ArrayList<SecondaryCategoryInfo>();
-			for (Directory dir : dirs) {
-				SecondaryCategoryInfo category = new SecondaryCategoryInfo();
-				category.setCategory(dir.getKey());
-				category.setCategoryDetail(dir.getTitle());
-				category.setParentCategory(categoryKey);
-				secondaryCategories.add(category);
-			}
-		} catch (Exception e) {
-			Log.e(getClass().getName(), e.getMessage(), e);
-		}
-	}
+    protected void populateSecondaryCategories(String categoryKey) {
+        try {
+            MediaContainer mediaContainer = factory.retrieveSections(key,
+                    categoryKey);
+            List<Directory> dirs = mediaContainer.getDirectories();
+            secondaryCategories = new ArrayList<SecondaryCategoryInfo>();
+            for (Directory dir : dirs) {
+                SecondaryCategoryInfo category = new SecondaryCategoryInfo();
+                category.setCategory(dir.getKey());
+                category.setCategoryDetail(dir.getTitle());
+                category.setParentCategory(categoryKey);
+                secondaryCategories.add(category);
+            }
+        } catch (Exception e) {
+            Log.e(getClass().getName(), e.getMessage(), e);
+        }
+    }
 }

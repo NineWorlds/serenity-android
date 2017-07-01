@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -34,34 +34,34 @@ package us.nineworlds.serenity.ui.activity;
  */
 public abstract class SerenityMultiViewVideoActivity extends SerenityVideoActivity {
 
-	protected boolean gridViewActive = false;
+    protected boolean gridViewActive = false;
 
-	@Override
-	public void finish() {
-		super.finish();
-	}
+    @Override
+    public void finish() {
+        super.finish();
+    }
 
-	protected boolean posterLayoutActive = false;
+    protected boolean posterLayoutActive = false;
 
-	public boolean isGridViewActive() {
-		return gridViewActive;
-	}
+    public boolean isGridViewActive() {
+        return gridViewActive;
+    }
 
-	/**
-	 * Used to indicate whether posters or banners are shown.
-	 *
-	 * @return
-	 */
-	public boolean isPosterLayoutActive() {
-		return posterLayoutActive;
-	}
+    /**
+     * Used to indicate whether posters or banners are shown.
+     *
+     * @return
+     */
+    public boolean isPosterLayoutActive() {
+        return posterLayoutActive;
+    }
 
-	public void setGridViewEnabled(boolean sw) {
-		gridViewActive = sw;
-	}
+    public void setGridViewEnabled(boolean sw) {
+        gridViewActive = sw;
+    }
 
-	public void setPosterLayoutActive(boolean sw) {
-		posterLayoutActive = sw;
-	}
+    public void setPosterLayoutActive(boolean sw) {
+        posterLayoutActive = sw;
+    }
 
 }

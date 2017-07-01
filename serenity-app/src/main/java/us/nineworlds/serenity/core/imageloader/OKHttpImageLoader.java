@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,6 +23,10 @@
 
 package us.nineworlds.serenity.core.imageloader;
 
+import android.content.Context;
+
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -33,38 +37,35 @@ import javax.inject.Inject;
 import okhttp3.OkHttpClient;
 import okhttp3.OkUrlFactory;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
-import android.content.Context;
-
-import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 /**
  * @author dcarver
  *
  */
 public class OKHttpImageLoader extends BaseImageDownloader {
-	@Inject
-	protected OkHttpClient client;
+    @Inject
+    protected OkHttpClient client;
 
-	public OKHttpImageLoader(Context context) {
-		super(context);
-		SerenityObjectGraph.getInstance().inject(this);
-	}
+    public OKHttpImageLoader(Context context) {
+        super(context);
+        SerenityObjectGraph.getInstance().inject(this);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.nostra13.universalimageloader.core.download.BaseImageDownloader#
-	 * getStreamFromNetwork(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	protected InputStream getStreamFromNetwork(String imageUri, Object extra)
-			throws IOException {
-		OkUrlFactory factory = new OkUrlFactory(client);
-		HttpURLConnection connection = factory.open(new URL(imageUri));
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.nostra13.universalimageloader.core.download.BaseImageDownloader#
+     * getStreamFromNetwork(java.lang.String, java.lang.Object)
+     */
+    @Override
+    protected InputStream getStreamFromNetwork(String imageUri, Object extra)
+            throws IOException {
+        OkUrlFactory factory = new OkUrlFactory(client);
+        HttpURLConnection connection = factory.open(new URL(imageUri));
 
-		InputStream in = null;
-		in = connection.getInputStream();
-		return in;
-	}
+        InputStream in = null;
+        in = connection.getInputStream();
+        return in;
+    }
 
 }
