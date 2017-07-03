@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,6 +33,9 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import net.ganin.darv.DpadAwareRecyclerView;
@@ -42,6 +46,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
@@ -76,18 +81,16 @@ public class EpisodePosterOnItemSelectedListener extends
             int height = ImageUtils.getDPI(330, context);
             posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width,
                     height));
-            serenityImageLoader.displayImage(videoInfo.getParentPosterURL(),
-                    posterImage);
+            Glide.with(context).load(videoInfo.getParentPosterURL()).into(posterImage);
+
         } else if (videoInfo.getGrandParentPosterURL() != null) {
             int width = ImageUtils.getDPI(240, context);
             int height = ImageUtils.getDPI(330, context);
             posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width,
                     height));
-            serenityImageLoader.displayImage(
-                    videoInfo.getGrandParentPosterURL(), posterImage);
+            Glide.with(context).load(videoInfo.getGrandParentPosterURL()).into(posterImage);
         } else {
-            serenityImageLoader.displayImage(videoInfo.getImageURL(),
-                    posterImage);
+            Glide.with(context).load(videoInfo.getImageURL()).into(posterImage);
         }
 
         TextView seriesTitle = (TextView) context
@@ -160,14 +163,19 @@ public class EpisodePosterOnItemSelectedListener extends
             return;
         }
 
-        View fanArt = context.findViewById(R.id.fanArt);
+        final View fanArt = context.findViewById(R.id.fanArt);
+
         String transcodingURL = plexFactory.getImageURL(
                 videoInfo.getBackgroundURL(), 1280, 720);
 
-        imageLoader
-                .loadImage(transcodingURL, new ImageSize(1280, 720),
-                        new SerenityBackgroundLoaderListener(fanArt,
-                                R.drawable.tvshows, context));
+        SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.tvshows,
+                        fanArt));
+            }
+        };
+
+        Glide.with(context).load(transcodingURL).asBitmap().into(target);
     }
 
     @Override

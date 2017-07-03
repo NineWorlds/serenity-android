@@ -39,7 +39,6 @@ import javax.inject.Inject;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
@@ -55,14 +54,10 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecyclerViewAdapter {
 
     @Inject
-    protected SerenityImageLoader serenityImageLoader;
-
-    @Inject
     protected PlexappFactory factory;
 
     protected static List<VideoContentInfo> posterList = null;
     protected AppCompatActivity context;
-    protected ImageLoader imageLoader;
     protected static final int SIZE_HEIGHT = 400;
     protected static final int SIZE_WIDTH = 200;
 
@@ -72,8 +67,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
 
     public AbstractPosterImageGalleryAdapter(Context c, String key) {
         context = (AppCompatActivity) c;
-        posterList = new ArrayList<VideoContentInfo>();
-        imageLoader = serenityImageLoader.getImageLoader();
+        posterList = new ArrayList<>();
         this.key = key;
         fetchDataFromService();
     }
@@ -83,9 +77,8 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
         context = (AppCompatActivity) c;
         this.key = key;
         this.category = category;
-        posterList = new ArrayList<VideoContentInfo>();
+        posterList = new ArrayList<>();
 
-        imageLoader = serenityImageLoader.getImageLoader();
         fetchDataFromService();
     }
 

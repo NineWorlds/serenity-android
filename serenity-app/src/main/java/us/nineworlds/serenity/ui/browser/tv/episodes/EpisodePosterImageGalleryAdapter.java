@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.birbit.android.jobqueue.JobManager;
+import com.bumptech.glide.Glide;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
@@ -102,7 +103,7 @@ public class EpisodePosterImageGalleryAdapter extends
         holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
                 height));
 
-        serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
+        Glide.with(context).load(pi.getImageURL()).into(mpiv);
 
         setWatchedStatus(holder.itemView, pi);
     }

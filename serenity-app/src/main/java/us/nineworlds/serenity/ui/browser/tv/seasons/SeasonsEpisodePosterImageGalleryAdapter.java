@@ -33,6 +33,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import net.ganin.darv.DpadAwareRecyclerView;
 
 import java.util.List;
@@ -77,7 +79,7 @@ public class SeasonsEpisodePosterImageGalleryAdapter
         holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(
                 width, height));
 
-        imageLoader.displayImage(pi.getImageURL(), mpiv);
+        Glide.with(context).load(pi.getImageURL()).into(mpiv);
 
         ImageView watchedView = (ImageView) holder.itemView
                 .findViewById(R.id.posterWatchedIndicator);

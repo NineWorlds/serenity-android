@@ -32,6 +32,7 @@
 
 package us.nineworlds.serenity.ui.video.player;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -54,6 +55,8 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -62,7 +65,6 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.core.util.TimeUtil;
@@ -120,9 +122,6 @@ public class MediaController extends FrameLayout {
     @Inject
     @ForVideoQueue
     protected LinkedList<VideoContentInfo> videoQueue;
-
-    @Inject
-    protected SerenityImageLoader serenityImageLoader;
 
     @Inject
     protected AndroidHelper androidHelper;
@@ -194,8 +193,7 @@ public class MediaController extends FrameLayout {
         posterView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
         if (mediaMetaData.getPosterURL() != null) {
-            serenityImageLoader.displayImage(mediaMetaData.getPosterURL(),
-                    posterView);
+            Glide.with(context).load(mediaMetaData.getPosterURL()).into(posterView);
         }
     }
 
@@ -403,6 +401,7 @@ public class MediaController extends FrameLayout {
         return View.inflate(context, R.layout.serenity_media_controller, this);
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onFinishInflate() {
         if (rootView != null) {
@@ -428,9 +427,6 @@ public class MediaController extends FrameLayout {
         return false;
     }
 
-    /**
-     *
-     */
     protected void positionPopupWindow() {
         int[] location = new int[2];
 
@@ -692,5 +688,4 @@ public class MediaController extends FrameLayout {
             }
         }
     }
-
 }

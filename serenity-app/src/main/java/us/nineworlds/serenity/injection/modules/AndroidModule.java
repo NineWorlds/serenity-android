@@ -55,7 +55,6 @@ import us.nineworlds.serenity.core.RecommendationBuilder;
 import us.nineworlds.serenity.core.SerenityRecommendationContentProvider;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.imageloader.OKHttpImageLoader;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.impl.CategoryMediaContainer;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
@@ -173,7 +172,7 @@ import us.nineworlds.serenity.volley.TVCategoryResponseListener;
         EpisodeBrowserOnLongClickListener.class,
 
         EpisodePosterOnItemSelectedListener.class,
-        MoviePosterOnItemSelectedListener.class, SerenityImageLoader.class,
+        MoviePosterOnItemSelectedListener.class,
         TVShowGalleryOnItemSelectedListener.class,
         TVShowGridOnItemSelectedListener.class, TVShowGridOnKeyListener.class,
         TVShowMenuDrawerOnItemClickedListener.class,
@@ -194,7 +193,7 @@ import us.nineworlds.serenity.volley.TVCategoryResponseListener;
         FindUnwatchedAsyncTask.class,
         UnWatchVideoAsyncTask.class, UpdateProgressRequest.class,
         WatchedVideoAsyncTask.class, GalleryOnItemSelectedListener.class,
-        SerenityImageLoader.class, SerenityPreferenceActivity.class,
+        SerenityPreferenceActivity.class,
         AndroidTV.class, RecommendAsyncTask.class, RecommendationBuilder.class,
         TVShowPosterImageGalleryAdapter.class, VideoPlayerKeyCodeHandler.class,
         SerenitySurfaceViewVideoActivity.class, OkHttpStack.class,

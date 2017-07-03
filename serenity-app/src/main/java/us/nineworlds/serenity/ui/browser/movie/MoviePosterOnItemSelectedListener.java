@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue.RequestFilter;
+import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.ganin.darv.DpadAwareRecyclerView;
@@ -73,9 +74,8 @@ public class MoviePosterOnItemSelectedListener extends
         posterImage.setScaleType(ScaleType.FIT_XY);
         posterImage.setMaxWidth(posterImage.getWidth());
         posterImage.setMaxHeight(posterImage.getHeight());
-        ImageLoader imageLoader = serenityImageLoader.getImageLoader();
-        imageLoader.cancelDisplayTask(posterImage);
-        serenityImageLoader.displayImage(videoInfo.getImageURL(), posterImage);
+
+        Glide.with(context).load(videoInfo.getImageURL()).fitCenter().into(posterImage);
 
         TextView summary = (TextView) context.findViewById(R.id.movieSummary);
         summary.setText(videoInfo.getSummary());

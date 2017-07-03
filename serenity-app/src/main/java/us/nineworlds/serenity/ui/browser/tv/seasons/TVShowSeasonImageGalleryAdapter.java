@@ -34,6 +34,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.birbit.android.jobqueue.JobManager;
+import com.bumptech.glide.Glide;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
@@ -47,13 +48,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
 import us.nineworlds.serenity.events.SeasonsRetrievalEvent;
-import us.nineworlds.serenity.events.SerenityEvent;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.jobs.SeasonsRetrievalJob;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
@@ -76,9 +74,6 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
 
     @Inject
     PlexappFactory plexFactory;
-
-    @Inject
-    SerenityImageLoader serenityImageLoader;
 
     @Inject
     JobManager jobManager;
@@ -126,7 +121,7 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
         int height = ImageUtils.getDPI(180, context);
         mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
-        serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
+        Glide.with(context).load(pi.getImageURL()).into(mpiv);
         holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
                 height));
 

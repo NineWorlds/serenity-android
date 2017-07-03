@@ -31,12 +31,9 @@ import android.support.v17.leanback.widget.Presenter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
-import javax.inject.Inject;
+import com.bumptech.glide.Glide;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -45,16 +42,10 @@ public class CardPresenter extends Presenter {
 
     static Context context;
 
-    @Inject
-    SerenityImageLoader serenityImageLoader;
-
-    static ImageLoader imageLoader;
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
         SerenityObjectGraph.getInstance().inject(this);
         context = parent.getContext();
-        imageLoader = serenityImageLoader.getImageLoader();
 
         ImageCardView imageView = new ImageCardView(context);
         imageView.setFocusable(true);
@@ -124,7 +115,7 @@ public class CardPresenter extends Presenter {
         }
 
         protected void updateCardViewImage(String url) {
-            serenityImageLoader.displayImage(url, mCardView.getMainImageView());
+            Glide.with(context).load(url).into(mCardView.getMainImageView());
         }
     }
 }

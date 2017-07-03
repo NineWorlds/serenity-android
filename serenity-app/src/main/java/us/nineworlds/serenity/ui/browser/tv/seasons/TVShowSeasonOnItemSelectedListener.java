@@ -24,12 +24,16 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
@@ -39,8 +43,7 @@ import javax.inject.Inject;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 
@@ -48,20 +51,13 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
         DpadAwareRecyclerView.OnItemSelectedListener {
 
     private final Activity context;
-    private final ImageLoader imageLoader;
-    private final ImageSize bgImageSize = new ImageSize(1280, 720);
     private SeriesContentInfo info;
-
-    @Inject
-    protected SerenityImageLoader serenityImageLoader;
 
     @Inject
     protected PlexappFactory plexFactory;
 
     public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity) {
         context = activity;
-
-        imageLoader = serenityImageLoader.getImageLoader();
     }
 
 
@@ -70,13 +66,18 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
         SeriesContentInfo mi = info;
 
         if (mi.getBackgroundURL() != null) {
-            View fanArt = context.findViewById(R.id.fanArt);
+            final View fanArt = context.findViewById(R.id.fanArt);
             String transcodingURL = plexFactory.getImageURL(
                     mi.getBackgroundURL(), 1280, 720);
 
-            imageLoader.loadImage(transcodingURL, bgImageSize,
-                    new SerenityBackgroundLoaderListener(fanArt,
-                            R.drawable.tvshows, context));
+            SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+                public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                    context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.tvshows,
+                            fanArt));
+                }
+            };
+
+            Glide.with(context).load(transcodingURL).asBitmap().into(target);
         }
     }
 

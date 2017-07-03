@@ -34,13 +34,12 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.bumptech.glide.Glide;
 
 import javax.inject.Inject;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -54,9 +53,6 @@ public class ImageInfographicUtils extends BaseInjector {
 
     private final int width;
     private final int height;
-
-    @Inject
-    SerenityImageLoader serenityImageLoader;
 
     @Inject
     PlexappFactory factory;
@@ -426,7 +422,6 @@ public class ImageInfographicUtils extends BaseInjector {
             return null;
         }
 
-        ImageLoader imageLoader = serenityImageLoader.getImageLoader();
         ImageView v = new ImageView(context);
         v.setScaleType(ScaleType.FIT_XY);
         int w = ImageUtils.getDPI(width, (Activity) v.getContext());
@@ -434,8 +429,7 @@ public class ImageInfographicUtils extends BaseInjector {
         v.setLayoutParams(new LayoutParams(w, h));
         String mediaTagUrl = factory.getMediaTagURL("studio", studio,
                 identifier);
-        imageLoader.cancelDisplayTask(v);
-        serenityImageLoader.displayImage(mediaTagUrl, v);
+        Glide.with(context).load(mediaTagUrl).into(v);
         return v;
     }
 

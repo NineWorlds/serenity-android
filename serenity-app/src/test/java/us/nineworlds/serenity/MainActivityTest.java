@@ -25,6 +25,9 @@ package us.nineworlds.serenity;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
+import com.birbit.android.jobqueue.JobManager;
+
 import dagger.Module;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,16 +35,24 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+
+import javax.inject.Singleton;
+
+import dagger.Provides;
 import us.nineworlds.serenity.fragments.MainMenuFragment;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.fest.assertions.api.ANDROID.assertThat;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -49,10 +60,15 @@ public class MainActivityTest extends InjectingTest {
 
 	MainActivity activity;
 
+	@Mock
+	JobManager mockJobManager;
+
 	@Override
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
+
+		initMocks(this);
 
 		Robolectric.getBackgroundThreadScheduler().pause();
 		Robolectric.getForegroundThreadScheduler().pause();
@@ -98,9 +114,17 @@ public class MainActivityTest extends InjectingTest {
 		return modules;
 	}
 
-	@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, injects = {
-		MainActivity.class, MainActivityTest.class })
+	@Module(addsTo = AndroidModule.class,
+			includes = SerenityModule.class,
+			overrides = true,
+			injects = {
+		MainActivity.class, MainActivityTest.class})
 	public class TestModule {
 
+		@Provides
+		@Singleton
+		JobManager providesJobManager() {
+			return mockJobManager;
+		}
 	}
 }

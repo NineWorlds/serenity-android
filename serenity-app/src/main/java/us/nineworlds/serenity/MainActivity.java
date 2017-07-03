@@ -38,6 +38,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
+import com.birbit.android.jobqueue.JobManager;
+import com.bumptech.glide.Glide;
 import com.castillo.dd.DownloadService;
 
 import java.util.ArrayList;
@@ -46,7 +48,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import us.nineworlds.serenity.core.ServerConfig;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.GDMService;
@@ -55,6 +56,7 @@ import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.handlers.DownloadHandler;
 import us.nineworlds.serenity.handlers.DownloadHandler.DownloadServiceConnection;
+import us.nineworlds.serenity.jobs.GlideClearCacheJob;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.SettingsMenuDrawerOnItemClickedListener;
@@ -63,10 +65,10 @@ import us.nineworlds.serenity.ui.util.DisplayUtils;
 public class MainActivity extends SerenityDrawerLayoutActivity {
 
     @Inject
-    SerenityImageLoader imageLoader;
+    AndroidHelper androidHelper;
 
     @Inject
-    AndroidHelper androidHelper;
+    JobManager jobManager;
 
     public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
 
@@ -194,8 +196,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
             boolean watchedStatusFirstTime = preferences.getBoolean(
                     "watched_status_firsttime", true);
             if (watchedStatusFirstTime) {
-                imageLoader.getImageLoader().clearDiscCache();
-                imageLoader.getImageLoader().clearMemoryCache();
+                jobManager.addJobInBackground(new GlideClearCacheJob(this));
+
                 Editor editor = preferences.edit();
                 editor.putBoolean("watched_status_firsttime", false);
                 editor.apply();

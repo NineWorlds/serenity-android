@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.birbit.android.jobqueue.JobManager;
+import com.bumptech.glide.Glide;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
@@ -77,65 +78,6 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
         eventBus.register(this);
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        if (position > posterList.size()) {
-            position = posterList.size() - 1;
-        }
-
-        if (position < 0) {
-            position = 0;
-        }
-
-        View galleryCellView = null;
-        if (convertView != null) {
-            galleryCellView = convertView;
-            galleryCellView.findViewById(R.id.posterInprogressIndicator)
-                    .setVisibility(View.INVISIBLE);
-            galleryCellView.findViewById(R.id.posterWatchedIndicator)
-                    .setVisibility(View.INVISIBLE);
-            galleryCellView.findViewById(R.id.infoGraphicMeta).setVisibility(
-                    View.GONE);
-        } else {
-            galleryCellView = context.getLayoutInflater().inflate(
-                    R.layout.poster_indicator_view, null);
-        }
-
-        VideoContentInfo pi = posterList.get(position);
-        gridViewMetaData(galleryCellView, pi);
-
-        RoundedImageView mpiv = (RoundedImageView) galleryCellView
-                .findViewById(R.id.posterImageView);
-
-        mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-        int width = 0;
-        int height = 0;
-
-        width = ImageUtils.getDPI(130, context);
-        height = ImageUtils.getDPI(200, context);
-        mpiv.setMaxHeight(height);
-        mpiv.setMaxWidth(width);
-        mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-        galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
-
-        serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
-
-        setWatchedStatus(galleryCellView, pi);
-
-        return galleryCellView;
-    }
-
-    protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
-        if (movieContext.isGridViewActive()) {
-            if (pi.getAvailableSubtitles() != null) {
-                View v = galleryCellView.findViewById(R.id.infoGraphicMeta);
-                v.setVisibility(View.VISIBLE);
-                v.findViewById(R.id.subtitleIndicator).setVisibility(
-                        View.VISIBLE);
-            }
-        }
-    }
-
     @Override
     protected void fetchDataFromService() {
         MovieRetrievalJob movieRetrievalJob = new MovieRetrievalJob(key, category);
@@ -144,7 +86,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
     @Override
     public int getItemCount() {
-        Log.i(this.getClass().getSimpleName(), "Item Count Called for Grid.");
+        Log.d(this.getClass().getSimpleName(), "Item Count Called for Grid.");
         return super.getItemCount();
     }
 
@@ -183,18 +125,9 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
         mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
         viewHolder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
 
-        serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
+        Glide.with(context).load(pi.getImageURL()).into(mpiv);
 
         setWatchedStatus(viewHolder.itemView, pi);
-    }
-
-    private class MoviePosterResponseErrorListener implements
-            Response.ErrorListener {
-
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            context.setSupportProgressBarIndeterminateVisibility(false);
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -230,7 +163,6 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-
     }
 
 }

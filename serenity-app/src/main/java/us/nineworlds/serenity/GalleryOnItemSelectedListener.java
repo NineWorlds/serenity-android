@@ -25,11 +25,14 @@ package us.nineworlds.serenity;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
@@ -37,15 +40,11 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.injection.BaseInjector;
 
 public class GalleryOnItemSelectedListener extends BaseInjector implements
         DpadAwareRecyclerView.OnItemSelectedListener {
-
-    @Inject
-    SerenityImageLoader imageLoader;
 
     @BindView(R.id.mainGalleryBackground)
     ImageView mainGalleryBackgroundView;
@@ -90,7 +89,6 @@ public class GalleryOnItemSelectedListener extends BaseInjector implements
         return R.drawable.serenity_bonsai_logo;
     }
 
-
     @Override
     public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
         MainMenuTextViewAdapter adapter = (MainMenuTextViewAdapter) dpadAwareRecyclerView.getAdapter();
@@ -102,9 +100,7 @@ public class GalleryOnItemSelectedListener extends BaseInjector implements
                 .findViewById(R.id.mainGalleryBackground);
         mainGalleryBackgroundView.clearAnimation();
 
-        String url = "drawable://" + getBackgroundImageId(menuItem);
-        imageLoader.displayImage(url, mainGalleryBackgroundView,
-                getBackgroundImageId(menuItem));
+        Glide.with(context).load(getBackgroundImageId(menuItem)).into(mainGalleryBackgroundView);
 
         if (shouldFadeIn()) {
             Animation fadeIn = AnimationUtils.loadAnimation(view.getContext(),

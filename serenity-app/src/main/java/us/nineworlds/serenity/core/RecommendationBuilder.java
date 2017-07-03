@@ -24,14 +24,10 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
-
+import com.bumptech.glide.Glide;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
-import javax.inject.Inject;
-
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.injection.BaseInjector;
 
 /*
@@ -39,9 +35,6 @@ import us.nineworlds.serenity.injection.BaseInjector;
  */
 @SuppressLint("InlinedApi")
 public class RecommendationBuilder extends BaseInjector {
-
-    @Inject
-    SerenityImageLoader serenityImageLoader;
 
     private static final String TAG = "RecommendationBuilder";
 
@@ -131,34 +124,37 @@ public class RecommendationBuilder extends BaseInjector {
             if (backgroundContentUri != null) {
                 extras.putString(Notification.EXTRA_BACKGROUND_IMAGE_URI,
                         backgroundContentUri);
-
             }
         }
-
-        ImageLoader imageLoader = serenityImageLoader.getImageLoader();
-        Bitmap image = imageLoader.loadImageSync(mImageUri, new ImageSize(176,
-                313), serenityImageLoader.getSycnOptions());
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 mContext);
 
-        builder = builder.setContentTitle(mTitle).setContentText(mDescription)
-                .setPriority(mPriority).setOngoing(true).setLocalOnly(true)
-                .setColor(cardColor)
-                .setCategory(Notification.CATEGORY_RECOMMENDATION)
-                .setLargeIcon(image).setSmallIcon(mSmallIcon)
-                .setContentIntent(mIntent).setExtras(extras);
+        try {
+            Bitmap image = Glide.with(mContext).load(mImageUri).asBitmap().into(176, 313).get();
+
+            builder = builder.setContentTitle(mTitle).setContentText(mDescription)
+                    .setPriority(mPriority).setOngoing(true).setLocalOnly(true)
+                    .setColor(cardColor)
+                    .setCategory(Notification.CATEGORY_RECOMMENDATION)
+                    .setLargeIcon(image).setSmallIcon(mSmallIcon)
+                    .setContentIntent(mIntent).setExtras(extras);
+
+        } catch (InterruptedException e) {
+        } catch (ExecutionException e) {
+        }
 
         Notification notification = new NotificationCompat.BigPictureStyle(
                 builder).build();
-
         try {
             mNotificationManager.notify(mId, notification);
         } catch (Exception ex) {
             Log.e(getClass().getName(), ex.getMessage(), ex);
         }
+
+
         mNotificationManager = null;
-        return notification;
+        return null;
     }
 
     @Override

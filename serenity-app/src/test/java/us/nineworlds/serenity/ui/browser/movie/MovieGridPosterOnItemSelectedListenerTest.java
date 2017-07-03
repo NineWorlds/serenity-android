@@ -46,7 +46,6 @@ import org.robolectric.shadows.ShadowApplication;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
@@ -69,9 +68,6 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 
 	@Mock
 	PlexappFactory mockPlexFactory;
-
-	@Mock
-	SerenityImageLoader mockSerenityImageLoader;
 
 	@Mock
 	VideoContentInfo mockVideoContentInfo;
@@ -106,8 +102,6 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 		super.setUp();
 		doReturn(true).when(mockPreferences).getBoolean("movie_layout_grid",
 				false);
-		doReturn(mockImageLoader).when(mockSerenityImageLoader)
-				.getImageLoader();
 
 		onItemSelectedListener = new MovieGridPosterOnItemSelectedListener();
 		movieBrowserActivity = Robolectric
@@ -144,7 +138,6 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 			String expectedTranscodingUrl) {
 		verify(mockVideoContentInfo, times(2)).getBackgroundURL();
 		verify(mockPlexFactory).getImageURL(expectedBackgroundUrl, 1280, 720);
-		verify(mockSerenityImageLoader, times(2)).getImageLoader();
 		verify(mockImageLoader).loadImage(eq(expectedTranscodingUrl),
 				any(ImageSize.class),
 				any(SerenityBackgroundLoaderListener.class));
@@ -168,12 +161,6 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 		@Singleton
 		PlexappFactory providesPlexappFactory() {
 			return mockPlexFactory;
-		}
-
-		@Provides
-		@Singleton
-		SerenityImageLoader providesSerenityImageLoader() {
-			return mockSerenityImageLoader;
 		}
 
 		@Provides

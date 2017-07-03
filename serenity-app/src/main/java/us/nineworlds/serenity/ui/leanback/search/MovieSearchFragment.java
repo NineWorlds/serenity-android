@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.leanback.search;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -45,8 +46,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.net.URLEncoder;
 import java.util.List;
@@ -56,8 +58,7 @@ import javax.inject.Inject;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MovieSearchIntentService;
@@ -83,9 +84,6 @@ public class MovieSearchFragment extends SearchFragment implements
 
     @Inject
     PlexappFactory plexFactory;
-
-    @Inject
-    SerenityImageLoader serenityImageLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -143,15 +141,19 @@ public class MovieSearchFragment extends SearchFragment implements
                     return;
                 }
 
-                View fanArt = getActivity().findViewById(R.id.fanArt);
+                final View fanArt = getActivity().findViewById(R.id.fanArt);
+
                 String transcodingURL = plexFactory.getImageURL(
                         video.getBackgroundURL(), 1280, 720);
 
-                ImageLoader imageLoader = serenityImageLoader.getImageLoader();
+                SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+                    public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                        getActivity().runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies,
+                                fanArt));
+                    }
+                };
 
-                imageLoader.loadImage(transcodingURL, new ImageSize(1280, 720),
-                        new SerenityBackgroundLoaderListener(fanArt,
-                                R.drawable.movies, getActivity()));
+                Glide.with(context).load(transcodingURL).asBitmap().into(target);
             }
 
         });

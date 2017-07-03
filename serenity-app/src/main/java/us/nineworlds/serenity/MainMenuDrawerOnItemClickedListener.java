@@ -32,13 +32,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.bumptech.glide.Glide;
 
 import java.util.LinkedList;
 
 import javax.inject.Inject;
 
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.injection.ForVideoQueue;
@@ -54,9 +53,6 @@ public class MainMenuDrawerOnItemClickedListener extends BaseInjector implements
     @Inject
     @ForVideoQueue
     LinkedList<VideoContentInfo> videoQueue;
-
-    @Inject
-    SerenityImageLoader serenityImageLoader;
 
     @Inject
     Resources resources;
@@ -109,7 +105,7 @@ public class MainMenuDrawerOnItemClickedListener extends BaseInjector implements
         return;
     }
 
-    protected void createClearCacheDialog(Context context) {
+    protected void createClearCacheDialog(final Context context) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context, android.R.style.Theme_Holo_Dialog);
 
@@ -124,10 +120,8 @@ public class MainMenuDrawerOnItemClickedListener extends BaseInjector implements
                             public void onClick(DialogInterface dialog,
                                                 int which) {
 
-                                ImageLoader imageLoader = serenityImageLoader
-                                        .getImageLoader();
-                                imageLoader.clearDiscCache();
-                                imageLoader.clearMemoryCache();
+                                Glide.get(context).clearDiskCache();
+                                Glide.get(context).clearMemory();
                             }
                         })
                 .setNegativeButton(R.string.cancel,

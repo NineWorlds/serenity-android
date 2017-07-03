@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.listeners;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -34,6 +35,9 @@ import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.birbit.android.jobqueue.JobManager;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
@@ -47,8 +51,7 @@ import javax.inject.Inject;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.events.SubtitleEvent;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -66,8 +69,6 @@ import us.nineworlds.serenity.volley.SubtitleResponseListener;
  */
 public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
         implements DpadAwareRecyclerView.OnItemSelectedListener {
-    @Inject
-    protected SerenityImageLoader serenityImageLoader;
 
     @Inject
     protected PlexappFactory plexFactory;
@@ -89,11 +90,9 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
     protected VideoContentInfo videoInfo;
     protected RequestQueue queue;
 
-    protected ImageLoader imageLoader;
 
     public AbstractVideoOnItemSelectedListener() {
         super();
-        imageLoader = serenityImageLoader.getImageLoader();
         eventBus.register(this);
     }
 
@@ -199,13 +198,17 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
             return;
         }
 
-        View fanArt = context.findViewById(R.id.fanArt);
+        final View fanArt = context.findViewById(R.id.fanArt);
         String transcodingURL = plexFactory.getImageURL(
                 videoInfo.getBackgroundURL(), 1280, 720);
 
-        imageLoader
-                .loadImage(transcodingURL, new ImageSize(1280, 720),
-                        new SerenityBackgroundLoaderListener(fanArt,
-                                R.drawable.movies, context));
+        SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies,
+                        fanArt));
+            }
+        };
+
+        Glide.with(context).load(transcodingURL).asBitmap().into(target);
     }
 }

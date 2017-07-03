@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.birbit.android.jobqueue.JobManager;
+import com.bumptech.glide.Glide;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
@@ -145,9 +146,9 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
         mpiv.setMaxWidth(width);
 
         if (isPoster) {
-            serenityImageLoader.displayImage(pi.getThumbNailURL(), mpiv);
+            Glide.with(context).load(pi.getThumbNailURL()).into(mpiv);
         } else {
-            serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
+            Glide.with(context).load(pi.getImageURL()).into(mpiv);
         }
     }
 

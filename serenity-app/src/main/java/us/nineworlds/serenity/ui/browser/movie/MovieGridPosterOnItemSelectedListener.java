@@ -24,12 +24,14 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
@@ -37,8 +39,7 @@ import javax.inject.Inject;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -56,19 +57,13 @@ public class MovieGridPosterOnItemSelectedListener extends BaseInjector
     private AbstractPosterImageGalleryAdapter adapter;
 
     @Inject
-    SerenityImageLoader serenityImageLoader;
-
-    @Inject
     PlexappFactory plexFactory;
 
     int lastPos = -1;
 
-    private final ImageLoader imageLoader;
-
     public MovieGridPosterOnItemSelectedListener() {
         super();
 
-        imageLoader = serenityImageLoader.getImageLoader();
     }
 
     private void changeBackgroundImage(VideoContentInfo videoInfo) {
@@ -76,14 +71,18 @@ public class MovieGridPosterOnItemSelectedListener extends BaseInjector
             return;
         }
 
-        View fanArt = context.findViewById(R.id.fanArt);
+        final View fanArt = context.findViewById(R.id.fanArt);
         String transcodingURL = plexFactory.getImageURL(
                 videoInfo.getBackgroundURL(), 1280, 720);
-        imageLoader
-                .loadImage(transcodingURL, new ImageSize(1280, 720),
-                        new SerenityBackgroundLoaderListener(fanArt,
-                                R.drawable.movies, context));
 
+        SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies,
+                        fanArt));
+            }
+        };
+
+        Glide.with(context).load(transcodingURL).asBitmap().into(target);
     }
 
     private void createMovieMetaData(VideoContentInfo videoContentInfo) {
