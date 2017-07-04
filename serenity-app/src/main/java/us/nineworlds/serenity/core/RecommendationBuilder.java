@@ -129,19 +129,20 @@ public class RecommendationBuilder extends BaseInjector {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 mContext);
+        builder = builder.setContentTitle(mTitle).setContentText(mDescription)
+                .setPriority(mPriority).setOngoing(true).setLocalOnly(true)
+                .setColor(cardColor)
+                .setSmallIcon(mSmallIcon)
+                .setCategory(Notification.CATEGORY_RECOMMENDATION)
+                .setContentIntent(mIntent).setExtras(extras);
 
         try {
             Bitmap image = Glide.with(mContext).load(mImageUri).asBitmap().into(176, 313).get();
 
-            builder = builder.setContentTitle(mTitle).setContentText(mDescription)
-                    .setPriority(mPriority).setOngoing(true).setLocalOnly(true)
-                    .setColor(cardColor)
-                    .setCategory(Notification.CATEGORY_RECOMMENDATION)
-                    .setLargeIcon(image).setSmallIcon(mSmallIcon)
-                    .setContentIntent(mIntent).setExtras(extras);
+            builder = builder
+                    .setLargeIcon(image);
 
-        } catch (InterruptedException e) {
-        } catch (ExecutionException e) {
+        } catch (Exception ex) {
         }
 
         Notification notification = new NotificationCompat.BigPictureStyle(
@@ -154,7 +155,7 @@ public class RecommendationBuilder extends BaseInjector {
 
 
         mNotificationManager = null;
-        return null;
+        return notification;
     }
 
     @Override

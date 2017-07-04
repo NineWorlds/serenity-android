@@ -38,9 +38,10 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowToast;
+
+import us.nineworlds.plex.server.GDMServer;
 import us.nineworlds.serenity.BuildConfig;
-import us.nineworlds.serenity.core.model.Server;
-import us.nineworlds.serenity.core.model.impl.GDMServer;
+import us.nineworlds.serenity.common.Server;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;

@@ -21,14 +21,10 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.model.impl;
+package us.nineworlds.plex.server;
 
-import us.nineworlds.serenity.core.model.Server;
+import us.nineworlds.serenity.common.Server;
 
-/**
- * @author dcarver
- *
- */
 public class GDMServer implements Server {
 
     private String serverName;

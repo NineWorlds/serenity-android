@@ -32,7 +32,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
-import us.nineworlds.serenity.core.model.Server;
+import us.nineworlds.serenity.common.Server;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.injection.ForMediaServers;

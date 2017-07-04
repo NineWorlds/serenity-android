@@ -43,7 +43,7 @@ import javax.inject.Inject;
 
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.Server;
+import us.nineworlds.serenity.common.Server;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.activity.OverscanSetupActivity;

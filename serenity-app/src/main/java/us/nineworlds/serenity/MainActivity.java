@@ -39,7 +39,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.birbit.android.jobqueue.JobManager;
-import com.bumptech.glide.Glide;
 import com.castillo.dd.DownloadService;
 
 import java.util.ArrayList;
@@ -50,13 +49,14 @@ import javax.inject.Inject;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
-import us.nineworlds.serenity.core.services.GDMService;
 import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.handlers.DownloadHandler;
 import us.nineworlds.serenity.handlers.DownloadHandler.DownloadServiceConnection;
+import us.nineworlds.serenity.jobs.GDMServerJob;
 import us.nineworlds.serenity.jobs.GlideClearCacheJob;
+import us.nineworlds.serenity.server.GDMReceiver;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.SettingsMenuDrawerOnItemClickedListener;
@@ -140,9 +140,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
                         drawerLayout));
     }
 
-    protected void discoverPlexServers() {
-        Intent GDMService = new Intent(this, GDMService.class);
-        startService(GDMService);
+    protected void discoverServers() {
+        jobManager.addJobInBackground(new GDMServerJob());
     }
 
     protected void initDownloadService() {
@@ -279,13 +278,13 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
         super.onResume();
         DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
         IntentFilter filters = new IntentFilter();
-        filters.addAction(GDMService.MSG_RECEIVED);
-        filters.addAction(GDMService.SOCKET_CLOSED);
+        filters.addAction(GDMReceiver.GDM_MSG_RECEIVED);
+        filters.addAction(GDMReceiver.GDM_SOCKET_CLOSED);
         LocalBroadcastManager.getInstance(this).registerReceiver(gdmReciver,
                 filters);
 
         // Start the auto-configuration service
-        discoverPlexServers();
+        discoverServers();
 
         Intent recommendationIntent = new Intent(getApplicationContext(),
                 OnDeckRecommendationIntentService.class);

@@ -1,4 +1,4 @@
-package us.nineworlds.serenity;
+package us.nineworlds.serenity.server;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,14 +8,16 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import us.nineworlds.serenity.core.model.Server;
-import us.nineworlds.serenity.core.model.impl.GDMServer;
-import us.nineworlds.serenity.core.services.GDMService;
+import us.nineworlds.serenity.common.Server;
+import us.nineworlds.plex.server.GDMServer;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.InjectingBroadcastReceiver;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 
 public class GDMReceiver extends InjectingBroadcastReceiver {
+
+    public static final String GDM_MSG_RECEIVED = ".GDMService.MESSAGE_RECEIVED";
+    public static final String GDM_SOCKET_CLOSED = ".GDMService.SOCKET_CLOSED";
 
     SerenityObjectGraph objectGraph;
 
@@ -30,7 +32,7 @@ public class GDMReceiver extends InjectingBroadcastReceiver {
             objectGraph.inject(this);
         }
 
-        if (intent.getAction().equals(GDMService.MSG_RECEIVED)) {
+        if (intent.getAction().equals(GDM_MSG_RECEIVED)) {
             String message = intent.getStringExtra("data").trim();
             String ipAddress = intent.getStringExtra("ipaddress").substring(1);
             Server server = new GDMServer();
@@ -48,7 +50,7 @@ public class GDMReceiver extends InjectingBroadcastReceiver {
             } else {
                 Log.d(getClass().getName(), serverName + " already added.");
             }
-        } else if (intent.getAction().equals(GDMService.SOCKET_CLOSED)) {
+        } else if (intent.getAction().equals(GDM_SOCKET_CLOSED)) {
             Log.i("GDMService", "Finished Searching");
         }
     }

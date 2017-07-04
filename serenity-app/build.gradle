@@ -92,6 +92,7 @@ junitJacoco {
 
 dependencies {
 
+
     compile 'com.github.bumptech.glide:glide:3.8.0'
     compile group: 'com.github.bumptech.glide', name: 'okhttp3-integration', version: '1.5.0'
 
@@ -106,6 +107,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile project(':plexapp-rest-library')
     compile project(':subtitle-converter')
+    compile project(':emby-lib')
     compile 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
     compile 'com.mcxiaoke.volley:library:1.0.6'
     compile('com.squareup.okhttp3:okhttp:3.6.0') {

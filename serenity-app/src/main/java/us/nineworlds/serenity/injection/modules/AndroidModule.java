@@ -42,7 +42,8 @@ import dagger.Provides;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.AndroidTV;
-import us.nineworlds.serenity.GDMReceiver;
+import us.nineworlds.serenity.jobs.GDMServerJob;
+import us.nineworlds.serenity.server.GDMReceiver;
 import us.nineworlds.serenity.GalleryOnItemSelectedListener;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.MainMenuDrawerOnItemClickedListener;
@@ -64,16 +65,11 @@ import us.nineworlds.serenity.core.model.impl.SecondaryCategoryMediaContainer;
 import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
 import us.nineworlds.serenity.core.model.impl.SubtitleMediaContainer;
 import us.nineworlds.serenity.core.model.impl.TVCategoryMediaContainer;
-import us.nineworlds.serenity.core.services.CategoryRetrievalIntentService;
 import us.nineworlds.serenity.core.services.CompletedVideoRequest;
 import us.nineworlds.serenity.core.services.MovieSearchIntentService;
 import us.nineworlds.serenity.core.services.MoviesRetrievalIntentService;
-import us.nineworlds.serenity.core.services.MusicAlbumRetrievalIntentService;
-import us.nineworlds.serenity.core.services.MusicRetrievalIntentService;
 import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
 import us.nineworlds.serenity.core.services.RecommendAsyncTask;
-import us.nineworlds.serenity.core.services.SecondaryCategoryRetrievalIntentService;
-import us.nineworlds.serenity.core.services.TVShowCategoryRetrievalIntentService;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
@@ -178,12 +174,8 @@ import us.nineworlds.serenity.volley.TVCategoryResponseListener;
         TVShowMenuDrawerOnItemClickedListener.class,
         TVShowSeasonMenuDrawerOnItemClickedListener.class,
         TVShowSeasonOnItemSelectedListener.class, VideoPlayerIntentUtils.class,
-        VideoPlayerPrepareListener.class, CategoryRetrievalIntentService.class,
-        TVShowCategoryRetrievalIntentService.class,
+        VideoPlayerPrepareListener.class,
         MoviesRetrievalIntentService.class, MovieSearchIntentService.class,
-        MusicAlbumRetrievalIntentService.class,
-        MusicRetrievalIntentService.class,
-        SecondaryCategoryRetrievalIntentService.class,
         MainMenuTextViewAdapter.class, EpisodePosterImageGalleryAdapter.class,
         SeasonsEpisodePosterImageGalleryAdapter.class,
         MoviePosterImageAdapter.class, SearchAdapter.class,
@@ -226,6 +218,7 @@ import us.nineworlds.serenity.volley.TVCategoryResponseListener;
         TVCategoryJob.class,
         TVCategorySecondaryJob.class,
         TVShowRetrievalJob.class,
+        GDMServerJob.class,
         ErrorMainMenuEvent.class}, library = true)
 public class AndroidModule {
 

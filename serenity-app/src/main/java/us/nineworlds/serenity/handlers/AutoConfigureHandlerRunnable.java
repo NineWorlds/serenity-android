@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.Server;
+import us.nineworlds.serenity.common.Server;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.injection.ForMediaServers;
 

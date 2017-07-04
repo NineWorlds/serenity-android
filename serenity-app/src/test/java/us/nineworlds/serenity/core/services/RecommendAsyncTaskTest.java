@@ -24,15 +24,21 @@
 package us.nineworlds.serenity.core.services;
 
 import android.app.Notification;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 
 import static org.fest.assertions.api.ANDROID.assertThat;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.robolectric.RuntimeEnvironment.application;

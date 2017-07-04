@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.model;
+package us.nineworlds.serenity.common;
 
 /**
  * @author dcarver
