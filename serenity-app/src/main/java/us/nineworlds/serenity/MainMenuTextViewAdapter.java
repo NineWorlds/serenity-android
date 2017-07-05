@@ -92,6 +92,10 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
         if (position > menuItems.size()) {
             return null;
         }
+
+        if (position < 0) {
+            position = 0;
+        }
         return menuItems.get(position);
     }
 

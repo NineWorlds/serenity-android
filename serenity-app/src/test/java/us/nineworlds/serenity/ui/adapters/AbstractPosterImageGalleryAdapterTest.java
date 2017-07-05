@@ -199,7 +199,8 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 		return modules;
 	}
 
-	@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, injects = {
+	@Module(addsTo = AndroidModule.class,
+			includes = SerenityModule.class, injects = {
 			AbstractPosterImageGalleryAdapterTest.class,
 			FakePosterImageGalleryAdapter.class,
 			AbstractPosterImageGalleryAdapter.class })
