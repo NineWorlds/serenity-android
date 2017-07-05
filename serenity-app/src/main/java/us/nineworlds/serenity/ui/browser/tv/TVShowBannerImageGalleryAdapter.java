@@ -96,6 +96,9 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 
     @Override
     public Object getItem(int position) {
+        if (position < 0) {
+            position = 0;
+        }
         return tvShowList.get(position);
     }
 
@@ -207,16 +210,15 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onTVShowResponse(TVShowRetrievalEvent event) {
+        if (context == null) {
+            return;
+        }
         tvShowList = new SeriesMediaContainer(event.getMediaContainer()).createSeries();
         DpadAwareRecyclerView recyclerView = (DpadAwareRecyclerView) (context
                 .findViewById(R.id.tvShowBannerGallery) != null ? context.findViewById(R.id.tvShowBannerGallery) : context.findViewById(R.id.tvShowGridView));
         if (tvShowList != null) {
             TextView tv = (TextView) context
                     .findViewById(R.id.tvShowItemCount);
-            if (tv == null) {
-                context.setSupportProgressBarIndeterminateVisibility(false);
-                return;
-            }
             if (tvShowList.isEmpty()) {
                 Toast.makeText(
                         context,

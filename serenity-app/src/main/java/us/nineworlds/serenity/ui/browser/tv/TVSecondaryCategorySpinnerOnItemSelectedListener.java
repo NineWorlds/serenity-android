@@ -111,7 +111,7 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
             }
 
             posterGallery
-                    .setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(activity));
+                    .setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener());
 //			posterGallery
 //					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
         }

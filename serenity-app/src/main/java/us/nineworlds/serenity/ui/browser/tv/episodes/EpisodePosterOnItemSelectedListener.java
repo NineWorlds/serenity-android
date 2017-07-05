@@ -199,6 +199,9 @@ public class EpisodePosterOnItemSelectedListener extends
     @Override
     public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
         context = (Activity) view.getContext();
+        if (context.isDestroyed()) {
+            return;
+        }
 
         EpisodePosterImageGalleryAdapter adapter = (EpisodePosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
         if (i > adapter.getItemCount()) {

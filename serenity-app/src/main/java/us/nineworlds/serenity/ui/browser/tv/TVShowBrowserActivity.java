@@ -209,7 +209,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             dpadAwareRecyclerView.setLayoutManager(linearLayoutManager);
             dpadAwareRecyclerView.addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
-            dpadAwareRecyclerView.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(this));
+            dpadAwareRecyclerView.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener());
         } else {
             SerenityMenuGridLayoutManager serenityMenuGridLayoutManager = new SerenityMenuGridLayoutManager(this, 3, SerenityMenuGridLayoutManager.HORIZONTAL, false);
             serenityMenuGridLayoutManager.setCircular(true);

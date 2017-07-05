@@ -62,16 +62,14 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 public class TVShowGalleryOnItemSelectedListener extends BaseInjector implements
         DpadAwareRecyclerView.OnItemSelectedListener {
 
-    private final SerenityMultiViewVideoActivity context;
+    private SerenityMultiViewVideoActivity context;
     private SeriesContentInfo info;
 
     @Inject
     protected PlexappFactory factory;
 
-    public TVShowGalleryOnItemSelectedListener(SerenityMultiViewVideoActivity activity) {
+    public TVShowGalleryOnItemSelectedListener() {
         super();
-        context = activity;
-
     }
 
     private void createTVShowDetail(ImageView v) {
@@ -198,6 +196,10 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector implements
 
     @Override
     public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+        context = (SerenityMultiViewVideoActivity) view.getContext();
+        if (context.isDestroyed()) {
+            return;
+        }
         AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
         info = (SeriesContentInfo) abstractPosterImageGalleryAdapter.getItem(i);
 

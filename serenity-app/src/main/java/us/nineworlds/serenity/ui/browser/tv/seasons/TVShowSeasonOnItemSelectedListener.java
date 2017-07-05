@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
@@ -83,6 +84,11 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
 
     @Override
     public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+        Activity context = (Activity) view.getContext();
+        if (context.isDestroyed()) {
+            return;
+        }
+
         TVShowSeasonImageGalleryAdapter adapter = (TVShowSeasonImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
         if (i < 0) {
             Log.e(TVShowSeasonOnItemSelectedListener.class.getCanonicalName(), "Season list size: " + adapter.getItemCount() + " position: " + i);
