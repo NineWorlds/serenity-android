@@ -105,8 +105,9 @@ import us.nineworlds.serenity.ui.browser.movie.SecondaryCategorySpinnerOnItemSel
 import us.nineworlds.serenity.ui.browser.tv.FindUnwatchedAsyncTask;
 import us.nineworlds.serenity.ui.browser.tv.TVCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.TVSecondaryCategorySpinnerOnItemSelectedListener;
-import us.nineworlds.serenity.ui.browser.tv.TVShowBannerImageGalleryAdapter;
+import us.nineworlds.serenity.ui.browser.tv.TVShowRecyclerAdapter;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
+import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserPresenter;
 import us.nineworlds.serenity.ui.browser.tv.TVShowGalleryOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.TVShowGridOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.TVShowGridOnKeyListener;
@@ -179,7 +180,7 @@ import us.nineworlds.serenity.volley.TVCategoryResponseListener;
         MainMenuTextViewAdapter.class, EpisodePosterImageGalleryAdapter.class,
         SeasonsEpisodePosterImageGalleryAdapter.class,
         MoviePosterImageAdapter.class, SearchAdapter.class,
-        TVShowBannerImageGalleryAdapter.class, MenuDrawerAdapter.class,
+        TVShowRecyclerAdapter.class, MenuDrawerAdapter.class,
         TVShowSeasonImageGalleryAdapter.class,
         OnDeckRecommendationIntentService.class, CompletedVideoRequest.class,
         FindUnwatchedAsyncTask.class,
@@ -219,6 +220,7 @@ import us.nineworlds.serenity.volley.TVCategoryResponseListener;
         TVCategorySecondaryJob.class,
         TVShowRetrievalJob.class,
         GDMServerJob.class,
+        TVShowBrowserPresenter.class,
         ErrorMainMenuEvent.class}, library = true)
 public class AndroidModule {
 

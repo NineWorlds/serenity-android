@@ -50,21 +50,11 @@ public class TVShowMenuDrawerOnItemClickedListener extends BaseInjector
     @Inject
     VideoPlayerIntentUtils vpUtils;
 
-    /**
-     *
-     */
     public TVShowMenuDrawerOnItemClickedListener(DrawerLayout drawer) {
         super();
         menuDrawer = drawer;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
-     * .AdapterView, android.view.View, int, long)
-     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
@@ -97,9 +87,6 @@ public class TVShowMenuDrawerOnItemClickedListener extends BaseInjector
         activity.recreate();
     }
 
-    /**
-     * @param activity
-     */
     protected void toggleView(SerenityMultiViewVideoActivity activity,
                               boolean enableGridView) {
         SharedPreferences prefs = PreferenceManager

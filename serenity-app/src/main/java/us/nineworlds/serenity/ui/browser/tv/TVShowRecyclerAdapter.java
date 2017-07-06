@@ -58,30 +58,24 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
-public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
+public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
 
     @Inject
     JobManager jobManager;
 
-    @Inject
-    EventBus eventBus;
-
     private static final int BANNER_PIXEL_HEIGHT = 140;
     private static final int BANNER_PIXEL_WIDTH = 758;
 
-    protected static List<SeriesContentInfo> tvShowList = null;
+    protected static List<SeriesContentInfo> tvShowList = new ArrayList<>();
 
     private final String key;
     protected SerenityMultiViewVideoActivity showActivity;
 
-    public TVShowBannerImageGalleryAdapter(Context c, String key,
-                                           String category) {
+    public TVShowRecyclerAdapter(Context c, String key,
+                                 String category) {
         super(c, key, category);
         showActivity = (SerenityMultiViewVideoActivity) c;
-        tvShowList = new ArrayList<SeriesContentInfo>();
         this.key = key;
-        eventBus.register(this);
-
         fetchData();
     }
 
@@ -208,28 +202,9 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onTVShowResponse(TVShowRetrievalEvent event) {
-        if (context == null) {
-            return;
-        }
-        tvShowList = new SeriesMediaContainer(event.getMediaContainer()).createSeries();
-        DpadAwareRecyclerView recyclerView = (DpadAwareRecyclerView) (context
-                .findViewById(R.id.tvShowBannerGallery) != null ? context.findViewById(R.id.tvShowBannerGallery) : context.findViewById(R.id.tvShowGridView));
-        if (tvShowList != null) {
-            TextView tv = (TextView) context
-                    .findViewById(R.id.tvShowItemCount);
-            if (tvShowList.isEmpty()) {
-                Toast.makeText(
-                        context,
-                        context.getString(R.string.no_shows_found_for_the_category_)
-                                + category, Toast.LENGTH_LONG).show();
-            }
-            tv.setText(Integer.toString(tvShowList.size())
-                    + context.getString(R.string._item_s_));
-        }
+    public void updateSeries(List<SeriesContentInfo> series) {
+        tvShowList = series;
         notifyDataSetChanged();
-        recyclerView.requestFocus();
     }
 
 

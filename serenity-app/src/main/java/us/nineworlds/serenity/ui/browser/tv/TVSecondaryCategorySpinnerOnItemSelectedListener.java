@@ -105,7 +105,7 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
                         key, item.getParentCategory() + "/"
                         + item.getCategory()));
             } else {
-                posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(activity,
+                posterGallery.setAdapter(new TVShowRecyclerAdapter(activity,
                         key, item.getParentCategory() + "/"
                         + item.getCategory()));
             }

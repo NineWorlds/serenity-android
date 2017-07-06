@@ -23,11 +23,12 @@
 
 package us.nineworlds.serenity.injection;
 
-import android.support.v7.app.AppCompatActivity;
+import com.arellomobile.mvp.MvpAppCompatActivity;
 
-public abstract class InjectingActivity extends AppCompatActivity {
+public abstract class InjectingActivity extends MvpAppCompatActivity {
 
     public InjectingActivity() {
+        super();
         SerenityObjectGraph.getInstance().inject(this);
     }
 

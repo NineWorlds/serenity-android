@@ -213,7 +213,7 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
             DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) context
                     .findViewById(R.id.tvShowBannerGallery);
             if (!context.isPosterLayoutActive()) {
-                posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
+                posterGallery.setAdapter(new TVShowRecyclerAdapter(
                         context, key, item.getCategory()));
             } else {
                 posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(

@@ -33,7 +33,7 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
 
-public class TVShowPosterImageGalleryAdapter extends TVShowBannerImageGalleryAdapter {
+public class TVShowPosterImageGalleryAdapter extends TVShowRecyclerAdapter {
 
     public TVShowPosterImageGalleryAdapter(Context c, String key,
                                            String category) {

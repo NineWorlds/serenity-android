@@ -30,27 +30,24 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.birbit.android.jobqueue.JobManager;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import net.ganin.darv.DpadAwareRecyclerView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import us.nineworlds.plex.rest.PlexappFactory;
+import butterknife.ButterKnife;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.events.TVCategoryEvent;
-import us.nineworlds.serenity.jobs.TVCategoryJob;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
@@ -60,11 +57,14 @@ import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.volley.TVCategoryResponseListener;
 import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
-public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
+public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implements TVShowBrowserView {
 
     private boolean restarted_state = false;
-    private static String key;
+    private String key;
     private RecyclerView.Adapter adapter;
+
+    @InjectPresenter
+    TVShowBrowserPresenter presenter;
 
     @Inject
     protected SharedPreferences preferences;
@@ -72,22 +72,13 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
     @Inject
     protected TVCategoryState categoryState;
 
-    @Inject
-    protected PlexappFactory factory;
-
-    @Inject
-    EventBus eventBus;
-
-    @Inject
-    JobManager jobManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
         actionBar.setCustomView(R.layout.tvshow_custom_actionbar);
         actionBar.setDisplayShowCustomEnabled(true);
-
-        key = getIntent().getExtras().getString("key");
+        key = presenter.getKey(getIntent());
 
         createSideMenu();
 
@@ -106,14 +97,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
         super.onResume();
         populateMenuDrawer();
         if (!restarted_state) {
-            jobManager.addJobInBackground(new TVCategoryJob(key));
+            presenter.fetchTVCategories(key);
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onTVCategoryResponse(TVCategoryEvent event) {
-        new TVCategoryResponseListener(
-                this, key).onResponse(event.getMediaContainer());
     }
 
     @Override
@@ -218,7 +203,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
         }
         dpadAwareRecyclerView.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));
 
-
         View fanArt = findViewById(R.id.fanArt);
         fanArt.setBackgroundResource(R.drawable.tvshows);
 
@@ -290,14 +274,23 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        eventBus.register(this);
+    public void updateCategories(TVCategoryEvent tvCategoryEvent) {
+        new TVCategoryResponseListener(
+                this, tvCategoryEvent.getKey()).onResponse(tvCategoryEvent.getMediaContainer());
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        eventBus.unregister(this);
+    public void displayShows(List<SeriesContentInfo> series, String category) {
+        DpadAwareRecyclerView recyclerView = (DpadAwareRecyclerView) (
+                findViewById(R.id.tvShowBannerGallery) != null ? findViewById(R.id.tvShowBannerGallery) : findViewById(R.id.tvShowGridView));
+        TextView tv = (TextView) findViewById(R.id.tvShowItemCount);
+        if (series.isEmpty()) {
+            Toast.makeText(this, getString(R.string.no_shows_found_for_the_category_)
+                    + category, Toast.LENGTH_LONG).show();
+        }
+        tv.setText(Integer.toString(series.size()) + getString(R.string._item_s_));
+        TVShowRecyclerAdapter adapter = (TVShowRecyclerAdapter) recyclerView.getAdapter();
+        adapter.updateSeries(series);
+        recyclerView.requestFocus();
     }
 }
