@@ -96,6 +96,7 @@ import us.nineworlds.serenity.jobs.TVCategorySecondaryJob;
 import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
+import us.nineworlds.serenity.ui.browser.movie.MovieBrowserPresenter;
 import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieMenuDrawerOnItemClickedListener;
@@ -220,6 +221,7 @@ import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
         TVShowRetrievalJob.class,
         GDMServerJob.class,
         TVShowBrowserPresenter.class,
+        MovieBrowserPresenter.class,
         ErrorMainMenuEvent.class}, library = true)
 public class AndroidModule {
 

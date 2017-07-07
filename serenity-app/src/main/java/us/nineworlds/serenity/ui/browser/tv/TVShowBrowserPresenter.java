@@ -22,10 +22,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.SecondaryCategoryMediaContainer;
 import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
+import us.nineworlds.serenity.core.model.impl.TVCategoryMediaContainer;
 import us.nineworlds.serenity.events.TVCategoryEvent;
 import us.nineworlds.serenity.events.TVCategorySecondaryEvent;
 import us.nineworlds.serenity.events.TVShowRetrievalEvent;
@@ -69,7 +71,9 @@ public class TVShowBrowserPresenter extends MvpPresenter<TVShowBrowserView> {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onTVCategoryResponse(TVCategoryEvent event) {
-        getViewState().updateCategories(event);
+        TVCategoryMediaContainer categoryMediaContainer = new TVCategoryMediaContainer(event.getMediaContainer());
+        List<CategoryInfo> categories = categoryMediaContainer.createCategories();
+        getViewState().updateCategories(categories);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -80,9 +80,6 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     protected MovieSelectedCategoryState categoryState;
 
     @Inject
-    EventBus eventBus;
-
-    @Inject
     JobManager jobManager;
 
     @Inject
@@ -90,9 +87,6 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
     @Inject
     Resources resources;
-
-    private List<CategoryInfo> categories;
-
 
     protected DpadAwareRecyclerView.OnItemSelectedListener onItemSelectedListener;
 
@@ -107,18 +101,15 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     @Override
     public void onStart() {
         super.onStart();
-        eventBus.register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        eventBus.unregister(this);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         onItemSelectedListener = new MoviePosterOnItemSelectedListener();
         View view = inflateView(inflater, container);
         bind(this, view);
@@ -147,7 +138,9 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
         videoGallery.setFocusableInTouchMode(false);
         videoGallery.setDrawingCacheEnabled(true);
 
-        String key = MovieBrowserActivity.getKey();
+        MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
+
+        String key = activity.getKey();
 
         MovieCategoryJob job = new MovieCategoryJob(key);
         jobManager.addJobInBackground(job);
@@ -158,40 +151,4 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         return linearLayoutManager;
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMainCategoryResponse(MainCategoryEvent event) {
-        CategoryMediaContainer categoryMediaContainer = new CategoryMediaContainer(
-                event.getMediaContainer());
-        categories = categoryMediaContainer.createCategories();
-        setupMovieBrowser(event.getKey());
-    }
-
-    /**
-     * Setup the Gallery and Category spinners
-     */
-    protected void setupMovieBrowser(String key) {
-        ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
-                getActivity(), R.layout.serenity_spinner_textview, categories);
-        spinnerArrayAdapter
-                .setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
-
-        Spinner categorySpinner = (Spinner) getActivity()
-                .findViewById(R.id.categoryFilter);
-        if (categorySpinner != null) {
-            categorySpinner.setVisibility(View.VISIBLE);
-            categorySpinner.setAdapter(spinnerArrayAdapter);
-            if (categoryState.getCategory() == null) {
-                categorySpinner
-                        .setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
-                                "all", key, (SerenityMultiViewVideoActivity) getActivity()));
-            } else {
-                categorySpinner
-                        .setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
-                                categoryState.getCategory(), key, false, (SerenityMultiViewVideoActivity) getActivity()));
-            }
-            categorySpinner.requestFocus();
-        }
-    }
-
 }

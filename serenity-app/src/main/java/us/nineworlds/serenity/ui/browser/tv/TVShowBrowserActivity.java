@@ -53,8 +53,6 @@ import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.impl.TVCategoryMediaContainer;
-import us.nineworlds.serenity.events.TVCategoryEvent;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
@@ -93,7 +91,29 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
 
         createSideMenu();
 
+        fanArt = findViewById(R.id.fanArt);
+        fanArt.setBackgroundResource(R.drawable.tvshows);
+
+        populateTVShowContent();
+
         DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
+    }
+
+    private void populateTVShowContent() {
+        DpadAwareRecyclerView dpadAwareRecyclerView = findGalleryView() != null ? findGalleryView() : findGridView();
+
+        if (!gridViewActive) {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            dpadAwareRecyclerView.setLayoutManager(linearLayoutManager);
+            dpadAwareRecyclerView.addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
+            dpadAwareRecyclerView.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener());
+        } else {
+            SerenityMenuGridLayoutManager serenityMenuGridLayoutManager = new SerenityMenuGridLayoutManager(this, 3, SerenityMenuGridLayoutManager.HORIZONTAL, false);
+            serenityMenuGridLayoutManager.setCircular(true);
+            dpadAwareRecyclerView.setLayoutManager(serenityMenuGridLayoutManager);
+            dpadAwareRecyclerView.addItemDecoration(new ItemOffsetDecoration(getResources().getDimensionPixelSize(R.dimen.grid_spacing_dimen)));
+        }
+        dpadAwareRecyclerView.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));
     }
 
     @Override
@@ -126,29 +146,9 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
 
         ButterKnife.bind(this);
 
-        DpadAwareRecyclerView dpadAwareRecyclerView = findGalleryView() != null ? findGalleryView() : findGridView();
-
-        if (!gridViewActive) {
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-            dpadAwareRecyclerView.setLayoutManager(linearLayoutManager);
-            dpadAwareRecyclerView.addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
-            dpadAwareRecyclerView.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener());
-        } else {
-            SerenityMenuGridLayoutManager serenityMenuGridLayoutManager = new SerenityMenuGridLayoutManager(this, 3, SerenityMenuGridLayoutManager.HORIZONTAL, false);
-            serenityMenuGridLayoutManager.setCircular(true);
-            dpadAwareRecyclerView.setLayoutManager(serenityMenuGridLayoutManager);
-            dpadAwareRecyclerView.addItemDecoration(new ItemOffsetDecoration(getResources().getDimensionPixelSize(R.dimen.grid_spacing_dimen)));
-        }
-        dpadAwareRecyclerView.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));
-
-        fanArt = findViewById(R.id.fanArt);
-        fanArt.setBackgroundResource(R.drawable.tvshows);
-
         initMenuDrawerViews();
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-                R.drawable.menudrawer_selector, R.string.drawer_open,
-                R.string.drawer_closed) {
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector, R.string.drawer_open, R.string.drawer_closed) {
             @Override
             public void onDrawerOpened(View drawerView) {
 
@@ -198,9 +198,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
     }
 
     @Override
-    public void updateCategories(TVCategoryEvent tvCategoryEvent) {
-        TVCategoryMediaContainer categoryMediaContainer = new TVCategoryMediaContainer(tvCategoryEvent.getMediaContainer());
-        List<CategoryInfo> categories = categoryMediaContainer.createCategories();
+    public void updateCategories(List<CategoryInfo> categories) {
         ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(this, R.layout.serenity_spinner_textview, categories);
 
         spinnerArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
@@ -214,7 +212,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
         } else {
             categorySpinner
                     .setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(categoryState.getCategory(), key, false));
-
         }
         categorySpinner.requestFocus();
     }
