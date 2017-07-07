@@ -25,11 +25,14 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,12 +45,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
+import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.events.TVCategoryEvent;
+import us.nineworlds.serenity.events.TVCategorySecondaryEvent;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
@@ -61,7 +67,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
 
     private boolean restarted_state = false;
     private String key;
-    private RecyclerView.Adapter adapter;
 
     @InjectPresenter
     TVShowBrowserPresenter presenter;
@@ -72,10 +77,16 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
     @Inject
     protected TVCategoryState categoryState;
 
+    @BindView(R.id.tvShowBannerGallery) @Nullable DpadAwareRecyclerView tvShowBannerGalleryView;
+    @BindView(R.id.tvShowGridView) @Nullable DpadAwareRecyclerView tvShowGridView;
+    @BindView(R.id.fanArt) View fanArt;
+    @BindView(R.id.tvShowItemCount) TextView tvShowItemCountView;
+    @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
         actionBar.setCustomView(R.layout.tvshow_custom_actionbar);
         actionBar.setDisplayShowCustomEnabled(true);
         key = presenter.getKey(getIntent());
@@ -102,84 +113,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        DpadAwareRecyclerView gallery = findGalleryView();
-
-        boolean menuKeySlidingMenu = preferences.getBoolean(
-                "remote_control_menu", true);
-        if (menuKeySlidingMenu) {
-            if (keyCode == KeyEvent.KEYCODE_MENU) {
-                if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-                    drawerLayout.closeDrawers();
-                } else {
-                    drawerLayout.openDrawer(linearDrawerLayout);
-                }
-                return true;
-            }
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_BACK
-                && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-            drawerLayout.closeDrawers();
-            if (gallery != null) {
-                gallery.requestFocusFromTouch();
-            }
-            return true;
-        }
-
-        if (gallery == null) {
-            return super.onKeyDown(keyCode, event);
-        }
-
-        AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery
-                .getAdapter();
-        if (adapter != null) {
-            int itemsCount = adapter.getItemCount();
-
-            if (contextMenuRequested(keyCode)) {
-                int pos = gallery.getSelectedItemPosition();
-                RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
-                View view = layoutManager.findViewByPosition(pos);
-                view.performLongClick();
-                return true;
-            }
-            if (isKeyCodeSkipBack(keyCode)) {
-                int selectedItem = gallery.getSelectedItemPosition();
-                int newPosition = selectedItem - 10;
-                if (newPosition < 0) {
-                    newPosition = 0;
-                }
-                gallery.setSelection(newPosition);
-                gallery.requestFocusFromTouch();
-                return true;
-            }
-            if (isKeyCodeSkipForward(keyCode)) {
-                int selectedItem = gallery.getSelectedItemPosition();
-                int newPosition = selectedItem + 10;
-                if (newPosition > itemsCount) {
-                    newPosition = itemsCount - 1;
-                }
-                gallery.setSelection(newPosition);
-                gallery.requestFocusFromTouch();
-                return true;
-            }
-            if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
-                    || keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
-                int selectedItem = gallery.getSelectedItemPosition();
-                SeriesContentInfo info = (SeriesContentInfo) ((AbstractPosterImageGalleryAdapter) gallery.getAdapter()).getItem(selectedItem);
-                new FindUnwatchedAsyncTask(this).execute(info);
-                return true;
-            }
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
     protected void createSideMenu() {
-
-        posterLayoutActive = preferences.getBoolean("series_layout_posters",
-                false);
+        posterLayoutActive = preferences.getBoolean("series_layout_posters", false);
         gridViewActive = preferences.getBoolean("series_layout_grid", false);
         if (isGridViewActive()) {
             setContentView(R.layout.activity_tvbrowser_show_gridview_posters);
@@ -189,7 +124,10 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
             setContentView(R.layout.activity_tvbrowser_show_banners);
         }
 
+        ButterKnife.bind(this);
+
         DpadAwareRecyclerView dpadAwareRecyclerView = findGalleryView() != null ? findGalleryView() : findGridView();
+
         if (!gridViewActive) {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             dpadAwareRecyclerView.setLayoutManager(linearLayoutManager);
@@ -203,7 +141,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
         }
         dpadAwareRecyclerView.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));
 
-        View fanArt = findViewById(R.id.fanArt);
+        fanArt = findViewById(R.id.fanArt);
         fanArt.setBackgroundResource(R.drawable.tvshows);
 
         initMenuDrawerViews();
@@ -235,62 +173,137 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
 
     protected void populateMenuDrawer() {
         List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-        drawerMenuItem.add(new MenuDrawerItemImpl("Grid View",
-                R.drawable.ic_action_collections_view_as_grid));
-        drawerMenuItem.add(new MenuDrawerItemImpl("Detail View",
-                R.drawable.ic_action_collections_view_detail));
-        drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue",
-                R.drawable.menu_play_all_queue));
+        drawerMenuItem.add(new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
+        drawerMenuItem.add(new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
+        drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
 
         drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-        drawerList
-                .setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(
-                        drawerLayout));
+        drawerList.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(drawerLayout));
     }
 
     @Override
+    @Deprecated
     public AbstractPosterImageGalleryAdapter getAdapter() {
         return null;
     }
 
     @Override
     protected DpadAwareRecyclerView findGalleryView() {
-        return (DpadAwareRecyclerView) findViewById(R.id.tvShowBannerGallery);
+        return tvShowBannerGalleryView;
     }
 
     @Override
     protected DpadAwareRecyclerView findGridView() {
-        return (DpadAwareRecyclerView) findViewById(R.id.tvShowGridView);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        DpadAwareRecyclerView galleryView = findGalleryView() != null ? findGalleryView() : findGridView();
-        if (galleryView != null) {
-            adapter = galleryView.getAdapter();
-        }
+        return tvShowGridView;
     }
 
     @Override
     public void updateCategories(TVCategoryEvent tvCategoryEvent) {
-        new TVCategoryResponseListener(
-                this, tvCategoryEvent.getKey()).onResponse(tvCategoryEvent.getMediaContainer());
+        new TVCategoryResponseListener(this, tvCategoryEvent.getKey()).onResponse(tvCategoryEvent.getMediaContainer());
     }
 
     @Override
     public void displayShows(List<SeriesContentInfo> series, String category) {
-        DpadAwareRecyclerView recyclerView = (DpadAwareRecyclerView) (
-                findViewById(R.id.tvShowBannerGallery) != null ? findViewById(R.id.tvShowBannerGallery) : findViewById(R.id.tvShowGridView));
-        TextView tv = (TextView) findViewById(R.id.tvShowItemCount);
+        DpadAwareRecyclerView recyclerView = findGalleryView() != null ? findGalleryView() : findGridView();
         if (series.isEmpty()) {
             Toast.makeText(this, getString(R.string.no_shows_found_for_the_category_)
                     + category, Toast.LENGTH_LONG).show();
         }
-        tv.setText(Integer.toString(series.size()) + getString(R.string._item_s_));
+        tvShowItemCountView.setText(Integer.toString(series.size()) + getString(R.string._item_s_));
         TVShowRecyclerAdapter adapter = (TVShowRecyclerAdapter) recyclerView.getAdapter();
         adapter.updateSeries(series);
         recyclerView.requestFocus();
     }
+
+    @Override
+    public void populateSecondaryCategories(List<SecondaryCategoryInfo> catagories, String category) {
+        if (catagories == null || catagories.isEmpty()) {
+            Toast.makeText(this, R.string.no_entries_available_for_category_, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        secondarySpinner.setVisibility(View.VISIBLE);
+
+        ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(this, R.layout.serenity_spinner_textview, catagories);
+        spinnerSecArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+        secondarySpinner.setAdapter(spinnerSecArrayAdapter);
+        secondarySpinner
+                .setOnItemSelectedListener(new TVSecondaryCategorySpinnerOnItemSelectedListener(category, key));
+
+
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        boolean menuKeySlidingMenu = preferences.getBoolean("remote_control_menu", true);
+        if (menuKeySlidingMenu) {
+            if (keyCode == KeyEvent.KEYCODE_MENU) {
+                if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
+                    drawerLayout.closeDrawers();
+                } else {
+                    drawerLayout.openDrawer(linearDrawerLayout);
+                }
+                return true;
+            }
+        }
+
+        DpadAwareRecyclerView gallery = findGalleryView();
+        if (gallery == null) {
+            return super.onKeyDown(keyCode, event);
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
+            drawerLayout.closeDrawers();
+            if (gallery != null) {
+                gallery.requestFocusFromTouch();
+            }
+            return true;
+        }
+
+        AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+        if (adapter != null) {
+            int itemsCount = adapter.getItemCount();
+
+            if (contextMenuRequested(keyCode)) {
+                int pos = gallery.getSelectedItemPosition();
+                RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
+                View view = layoutManager.findViewByPosition(pos);
+                view.performLongClick();
+                return true;
+            }
+            if (isKeyCodeSkipBack(keyCode)) {
+                int selectedItem = gallery.getSelectedItemPosition();
+                int newPosition = selectedItem - 10;
+                if (newPosition < 0) {
+                    newPosition = 0;
+                }
+                gallery.setSelection(newPosition);
+                gallery.requestFocusFromTouch();
+                return true;
+            }
+            if (isKeyCodeSkipForward(keyCode)) {
+                int selectedItem = gallery.getSelectedItemPosition();
+                int newPosition = selectedItem + 10;
+                if (newPosition > itemsCount) {
+                    newPosition = itemsCount - 1;
+                }
+                gallery.setSelection(newPosition);
+                gallery.requestFocusFromTouch();
+                return true;
+            }
+
+            if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
+                    || keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
+                int selectedItem = gallery.getSelectedItemPosition();
+                SeriesContentInfo info = (SeriesContentInfo) ((AbstractPosterImageGalleryAdapter) gallery.getAdapter()).getItem(selectedItem);
+                new FindUnwatchedAsyncTask(this).execute(info);
+                return true;
+            }
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

@@ -80,12 +80,10 @@ public class TVCategoryResponseListener extends BaseInjector implements
 
         if (categoryState.getCategory() == null) {
             categorySpinner
-                    .setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(
-                            "all", key, context));
+                    .setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener("all", key));
         } else {
             categorySpinner
-                    .setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(
-                            categoryState.getCategory(), key, false, context));
+                    .setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(categoryState.getCategory(), key, false));
 
         }
         categorySpinner.requestFocus();

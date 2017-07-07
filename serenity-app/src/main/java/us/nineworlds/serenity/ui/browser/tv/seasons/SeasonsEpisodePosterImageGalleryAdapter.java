@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -58,7 +59,7 @@ public class SeasonsEpisodePosterImageGalleryAdapter
     @Inject
     PlexappFactory plexFactory;
 
-    public SeasonsEpisodePosterImageGalleryAdapter(Context c, String key) {
+    public SeasonsEpisodePosterImageGalleryAdapter(Activity c, String key) {
         super(c, key);
         notifyAdapter = this;
     }
@@ -66,20 +67,19 @@ public class SeasonsEpisodePosterImageGalleryAdapter
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         VideoContentInfo pi = posterList.get(position);
-        gridViewMetaData(holder.itemView, pi);
         ImageView mpiv = (ImageView) holder.itemView
                 .findViewById(R.id.posterImageView);
         mpiv.setBackgroundResource(R.drawable.gallery_item_background);
         mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-        int width = ImageUtils.getDPI(270, context);
-        int height = ImageUtils.getDPI(147, context);
+        int width = ImageUtils.getDPI(270, (Activity) mpiv.getContext());
+        int height = ImageUtils.getDPI(147, (Activity) mpiv.getContext());
         mpiv.setMaxWidth(width);
         mpiv.setMaxHeight(height);
         mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
         holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(
                 width, height));
 
-        Glide.with(context).load(pi.getImageURL()).into(mpiv);
+        Glide.with(mpiv.getContext()).load(pi.getImageURL()).into(mpiv);
 
         ImageView watchedView = (ImageView) holder.itemView
                 .findViewById(R.id.posterWatchedIndicator);
@@ -123,10 +123,6 @@ public class SeasonsEpisodePosterImageGalleryAdapter
         retrieveEpisodes();
         notifyAdapter = this;
     }
-
-    protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
-    }
-
 
     private static class EpisodeHandler extends Handler {
 

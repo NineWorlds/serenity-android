@@ -40,6 +40,8 @@ import net.ganin.darv.DpadAwareRecyclerView;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
@@ -56,7 +58,6 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 public class TVShowGridOnItemSelectedListener extends BaseInjector implements
         DpadAwareRecyclerView.OnItemSelectedListener {
 
-    private final Activity context;
     private SeriesContentInfo videoInfo;
     private final Handler handler = new Handler();
     private Runnable runnable;
@@ -64,35 +65,12 @@ public class TVShowGridOnItemSelectedListener extends BaseInjector implements
     @Inject
     PlexappFactory factory;
 
-    public TVShowGridOnItemSelectedListener(View bgv, Activity activity) {
-        context = activity;
-    }
-
-    /**
-     * Change the background image of the activity.
-     *
-     * Should be a background activity
-     *
-     * @param v
-     */
-    private void changeBackgroundImage(View v) {
-
-        final View fanArt = context.findViewById(R.id.fanArt);
-        String transcodingURL = factory.getImageURL(
-                videoInfo.getBackgroundURL(), 1280, 720);
-
-        SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
-            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies,
-                        fanArt));
-            }
-        };
-
-        Glide.with(context).load(transcodingURL).asBitmap().into(target);
-    }
+    @BindView(R.id.tvShowGridTitle) TextView titleView;
+    @BindView(R.id.fanArt) View fanArt;
 
     @Override
     public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+        ButterKnife.bind(this, (Activity) dpadAwareRecyclerView.getContext());
         AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
         videoInfo = (SeriesContentInfo) adapter.getItem(i);
 
@@ -110,13 +88,33 @@ public class TVShowGridOnItemSelectedListener extends BaseInjector implements
         };
         handler.postDelayed(runnable, 500);
 
-        TextView titleView = (TextView) context
-                .findViewById(R.id.tvShowGridTitle);
         if (titleView != null) {
             titleView.setText(videoInfo.getTitle());
         }
 
     }
+
+    /**
+     * Change the background image of the activity.
+     *
+     * Should be a background activity
+     *
+     * @param v
+     */
+    private void changeBackgroundImage(View v) {
+        final Activity context = (Activity) v.getContext();
+
+        String transcodingURL = factory.getImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+
+        SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
+            }
+        };
+
+        Glide.with(context).load(transcodingURL).asBitmap().into(target);
+    }
+
 
     @Override
     public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {

@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
@@ -35,22 +36,18 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 
 public class TVShowPosterImageGalleryAdapter extends TVShowRecyclerAdapter {
 
-    public TVShowPosterImageGalleryAdapter(Context c, String key,
-                                           String category) {
-        super(c, key, category);
-        showActivity = (SerenityMultiViewVideoActivity) c;
-
+    public TVShowPosterImageGalleryAdapter(String key, String category) {
+        super(key, category);
     }
 
     @Override
     protected void createImage(View galleryCellView, SeriesContentInfo pi, int imageWidth, int imageHeight) {
-        int width = ImageUtils.getDPI(130, context);
-        int height = ImageUtils.getDPI(200, context);
+        int width = ImageUtils.getDPI(130, (Activity) galleryCellView.getContext());
+        int height = ImageUtils.getDPI(200, (Activity) galleryCellView.getContext());
 
         initPosterMetaData(galleryCellView, pi, width, height, true);
 
         galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
-
     }
 
     @Override

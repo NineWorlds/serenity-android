@@ -1,6 +1,9 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.content.Intent;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +22,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.impl.SecondaryCategoryMediaContainer;
 import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
 import us.nineworlds.serenity.events.TVCategoryEvent;
+import us.nineworlds.serenity.events.TVCategorySecondaryEvent;
 import us.nineworlds.serenity.events.TVShowRetrievalEvent;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.jobs.TVCategoryJob;
@@ -71,6 +77,16 @@ public class TVShowBrowserPresenter extends MvpPresenter<TVShowBrowserView> {
         List<SeriesContentInfo> tvShowList = new SeriesMediaContainer(event.getMediaContainer()).createSeries();
         getViewState().displayShows(tvShowList, event.getCategory());
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onTVCategorySecondaryResponse(TVCategorySecondaryEvent event) {
+        SecondaryCategoryMediaContainer scMediaContainer = new SecondaryCategoryMediaContainer(
+                event.getMediaContainer(), event.getCategory());
+
+        List<SecondaryCategoryInfo> secondaryCategories = scMediaContainer.createCategories();
+        getViewState().populateSecondaryCategories(secondaryCategories, event.getCategory());
+    }
+
 
 
 }

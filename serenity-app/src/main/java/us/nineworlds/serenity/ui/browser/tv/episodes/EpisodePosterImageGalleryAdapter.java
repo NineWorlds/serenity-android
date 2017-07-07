@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -57,8 +58,7 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
  *
  * @author dcarver
  */
-public class EpisodePosterImageGalleryAdapter extends
-        AbstractPosterImageGalleryAdapter {
+public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 
     @Inject
     JobManager jobManager;
@@ -66,8 +66,11 @@ public class EpisodePosterImageGalleryAdapter extends
     @Inject
     EventBus eventBus;
 
-    public EpisodePosterImageGalleryAdapter(Context c, String key) {
-        super(c, key);
+    Activity context;
+
+    public EpisodePosterImageGalleryAdapter(Activity c, String key) {
+        super(key);
+        context = c;
         eventBus.register(this);
     }
 
@@ -95,8 +98,8 @@ public class EpisodePosterImageGalleryAdapter extends
                 .findViewById(R.id.posterImageView);
         mpiv.setBackgroundResource(R.drawable.gallery_item_background);
         mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-        int width = ImageUtils.getDPI(300, context);
-        int height = ImageUtils.getDPI(187, context);
+        int width = ImageUtils.getDPI(300, (Activity) mpiv.getContext());
+        int height = ImageUtils.getDPI(187, (Activity) mpiv.getContext());
         mpiv.setMaxHeight(height);
         mpiv.setMaxWidth(width);
         mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
@@ -120,8 +123,7 @@ public class EpisodePosterImageGalleryAdapter extends
         EpisodeMediaContainer episodes = new EpisodeMediaContainer(event.getMediaContainer());
         posterList = episodes.createVideos();
         notifyDataSetChanged();
-        DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) context
-                .findViewById(R.id.moviePosterView);
+        DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) context.findViewById(R.id.moviePosterView);
         if (gallery != null) {
             gallery.requestFocus();
         }
