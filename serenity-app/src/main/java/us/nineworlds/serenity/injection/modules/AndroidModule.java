@@ -143,7 +143,6 @@ import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerKeyCodeHandler;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
 import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
-import us.nineworlds.serenity.volley.TVCategoryResponseListener;
 
 @Module(includes = SerenityModule.class, injects = {GDMReceiver.class,
         MainMenuFragment.class,
@@ -202,7 +201,7 @@ import us.nineworlds.serenity.volley.TVCategoryResponseListener;
         MovieSearchGalleryFragment.class, CardPresenter.class,
         MovieSearchFragment.class, MovieCategoryResponseListener.class,
         CategoryMediaContainer.class, SecondaryCategoryMediaContainer.class,
-        TVCategoryResponseListener.class, TVCategoryMediaContainer.class,
+        TVCategoryMediaContainer.class,
         ServerConfig.class,
         SubtitleSpinnerOnItemSelectedListener.class, VideoQueueHelper.class,
         us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener.class,

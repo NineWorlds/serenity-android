@@ -155,11 +155,9 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
         } else {
             populateSecondaryCategory();
         }
-
     }
 
-    protected void populatePrimaryCategory(CategoryInfo item,
-                                           Spinner secondarySpinner) {
+    protected void populatePrimaryCategory(CategoryInfo item, Spinner secondarySpinner) {
         if (item.getCategory().equals("newest")
                 || item.getCategory().equals("recentlyAdded")
                 || item.getCategory().equals("recentlyViewed")

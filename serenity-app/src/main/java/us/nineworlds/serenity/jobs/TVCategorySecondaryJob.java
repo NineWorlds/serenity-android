@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.events.TVCategoryEvent;
+import us.nineworlds.serenity.events.TVCategorySecondaryEvent;
 import us.nineworlds.serenity.injection.InjectingJob;
 
 public class TVCategorySecondaryJob extends InjectingJob {
@@ -38,7 +39,7 @@ public class TVCategorySecondaryJob extends InjectingJob {
     @Override
     public void onRun() throws Throwable {
         MediaContainer mediaContainer = client.retrieveSections(key, category);
-        eventBus.post(new TVCategoryEvent(mediaContainer, key));
+        eventBus.post(new TVCategorySecondaryEvent(mediaContainer, key, category));
     }
 
     @Override

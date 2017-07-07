@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -59,11 +60,8 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
     @Inject
     protected TVCategoryState categoryState;
 
-    @BindView(R.id.tvShowGridView)
-    DpadAwareRecyclerView tvGridRecyclerView;
-
-    @BindView(R.id.tvShowBannerGallery)
-    DpadAwareRecyclerView posterGallery;
+    @BindView(R.id.tvShowGridView) @Nullable DpadAwareRecyclerView tvGridRecyclerView;
+    @BindView(R.id.tvShowBannerGallery) @Nullable DpadAwareRecyclerView posterGallery;
 
 
     public TVSecondaryCategorySpinnerOnItemSelectedListener(String defaultSelection, String key) {
@@ -74,7 +72,7 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
 
     @Override
     public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
-        ButterKnife.bind(this, (Activity) viewAdapter.getContext());
+        ButterKnife.bind(this, getActivity(viewAdapter.getContext()));
 
         SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(position);
 

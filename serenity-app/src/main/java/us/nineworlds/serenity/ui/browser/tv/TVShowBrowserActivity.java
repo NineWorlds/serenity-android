@@ -50,17 +50,17 @@ import butterknife.ButterKnife;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
+import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.impl.TVCategoryMediaContainer;
 import us.nineworlds.serenity.events.TVCategoryEvent;
-import us.nineworlds.serenity.events.TVCategorySecondaryEvent;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.volley.TVCategoryResponseListener;
 import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implements TVShowBrowserView {
@@ -82,7 +82,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
     @BindView(R.id.fanArt) View fanArt;
     @BindView(R.id.tvShowItemCount) TextView tvShowItemCountView;
     @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
-
+    @BindView(R.id.categoryFilter) Spinner categorySpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +199,24 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
 
     @Override
     public void updateCategories(TVCategoryEvent tvCategoryEvent) {
-        new TVCategoryResponseListener(this, tvCategoryEvent.getKey()).onResponse(tvCategoryEvent.getMediaContainer());
+        TVCategoryMediaContainer categoryMediaContainer = new TVCategoryMediaContainer(tvCategoryEvent.getMediaContainer());
+        List<CategoryInfo> categories = categoryMediaContainer.createCategories();
+        ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(this, R.layout.serenity_spinner_textview, categories);
+
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+
+        categorySpinner.setVisibility(View.VISIBLE);
+        categorySpinner.setAdapter(spinnerArrayAdapter);
+
+        if (categoryState.getCategory() == null) {
+            categorySpinner
+                    .setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener("all", key));
+        } else {
+            categorySpinner
+                    .setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener(categoryState.getCategory(), key, false));
+
+        }
+        categorySpinner.requestFocus();
     }
 
     @Override
@@ -217,6 +234,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
 
     @Override
     public void populateSecondaryCategories(List<SecondaryCategoryInfo> catagories, String category) {
+        categorySpinner.setVisibility(View.VISIBLE);
         if (catagories == null || catagories.isEmpty()) {
             Toast.makeText(this, R.string.no_entries_available_for_category_, Toast.LENGTH_LONG).show();
             return;
@@ -229,8 +247,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
         secondarySpinner.setAdapter(spinnerSecArrayAdapter);
         secondarySpinner
                 .setOnItemSelectedListener(new TVSecondaryCategorySpinnerOnItemSelectedListener(category, key));
-
-
+        secondarySpinner.requestFocusFromTouch();
     }
 
 
