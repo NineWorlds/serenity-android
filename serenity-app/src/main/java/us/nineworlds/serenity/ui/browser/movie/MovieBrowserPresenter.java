@@ -1,7 +1,5 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
-import android.content.Intent;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.birbit.android.jobqueue.JobManager;
@@ -16,18 +14,11 @@ import javax.inject.Inject;
 
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.CategoryMediaContainer;
 import us.nineworlds.serenity.core.model.impl.SecondaryCategoryMediaContainer;
-import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
-import us.nineworlds.serenity.core.model.impl.TVCategoryMediaContainer;
 import us.nineworlds.serenity.events.MainCategoryEvent;
-import us.nineworlds.serenity.events.TVCategoryEvent;
-import us.nineworlds.serenity.events.TVCategorySecondaryEvent;
-import us.nineworlds.serenity.events.TVShowRetrievalEvent;
+import us.nineworlds.serenity.events.MovieSecondaryCategoryEvent;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
-import us.nineworlds.serenity.jobs.TVCategoryJob;
-import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserView;
 
 @InjectViewState
 public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserView> {
@@ -63,6 +54,17 @@ public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserView> {
         List<CategoryInfo> categories = categoryMediaContainer.createCategories();
         getViewState().populateCategory(categories, event.getKey());
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSecondaryCategoryEvent(MovieSecondaryCategoryEvent event) {
+        SecondaryCategoryMediaContainer scMediaContainer = new SecondaryCategoryMediaContainer(
+                event.getMediaContainer(), event.getCategory());
+
+        List<SecondaryCategoryInfo> secondaryCategories = scMediaContainer.createCategories();
+
+        getViewState().populateSecondaryCategory(secondaryCategories, event.getKey(), event.getCategory());
+    }
+
 
 
 }

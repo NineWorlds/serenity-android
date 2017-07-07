@@ -32,6 +32,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
@@ -46,6 +47,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
@@ -223,26 +225,48 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
 
     @Override
     public void populateCategory(List<CategoryInfo> categories, String key) {
-            ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
-                    this, R.layout.serenity_spinner_textview, categories);
-            spinnerArrayAdapter
-                    .setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+        ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
+                this, R.layout.serenity_spinner_textview, categories);
+        spinnerArrayAdapter
+                .setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
-            Spinner categorySpinner = (Spinner) findViewById(R.id.categoryFilter);
-            if (categorySpinner != null) {
-                categorySpinner.setVisibility(View.VISIBLE);
-                categorySpinner.setAdapter(spinnerArrayAdapter);
-                if (categoryState.getCategory() == null) {
-                    categorySpinner
-                            .setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
-                                    "all", key, this));
-                } else {
-                    categorySpinner
-                            .setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
-                                    categoryState.getCategory(), key, false, this));
-                }
-                categorySpinner.requestFocus();
-            }
+        Spinner categorySpinner = (Spinner) findViewById(R.id.categoryFilter);
+        if (categorySpinner == null) {
+            return;
         }
+        categorySpinner.setVisibility(View.VISIBLE);
+        categorySpinner.setAdapter(spinnerArrayAdapter);
+
+        if (categoryState.getCategory() == null) {
+            categorySpinner
+                    .setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
+                            "all", key, this));
+        } else {
+            categorySpinner
+                    .setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
+                            categoryState.getCategory(), key, false, this));
+        }
+        categorySpinner.requestFocus();
+    }
+
+    @Override
+    public void populateSecondaryCategory(List<SecondaryCategoryInfo> categories, String key, String category) {
+        if (categories == null || categories.isEmpty()) {
+            Toast.makeText(this, R.string.no_entries_available_for_category_, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Spinner secondarySpinner = (Spinner) findViewById(R.id.categoryFilter2);
+        secondarySpinner.setVisibility(View.VISIBLE);
+
+        ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(
+                this, R.layout.serenity_spinner_textview, categories);
+        spinnerSecArrayAdapter
+                .setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+        secondarySpinner.setAdapter(spinnerSecArrayAdapter);
+        secondarySpinner
+                .setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
+                        category, key, this));
+    }
 
 }

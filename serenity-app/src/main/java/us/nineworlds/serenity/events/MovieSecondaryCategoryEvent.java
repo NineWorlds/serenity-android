@@ -1,18 +1,11 @@
 package us.nineworlds.serenity.events;
 
-import org.greenrobot.eventbus.EventBus;
-
-import javax.inject.Inject;
-
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 
 public class MovieSecondaryCategoryEvent extends SerenityEvent {
 
-    @Inject
-    EventBus eventBus;
-
-    String key;
-    String category;
+    private String key;
+    private String category;
 
     public MovieSecondaryCategoryEvent(MediaContainer mediaContainer, String key, String category) {
         super(mediaContainer);
@@ -23,5 +16,9 @@ public class MovieSecondaryCategoryEvent extends SerenityEvent {
 
     public String getKey() {
         return key;
+    }
+
+    public String getCategory() {
+        return category;
     }
 }

@@ -5,9 +5,12 @@ import com.arellomobile.mvp.MvpView;
 import java.util.List;
 
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 
 
 public interface MovieBrowserView extends MvpView {
 
     void populateCategory(List<CategoryInfo> categories, String key);
+
+    void populateSecondaryCategory(List<SecondaryCategoryInfo> categories, String key, String category);
 }

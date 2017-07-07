@@ -34,10 +34,6 @@ import android.widget.Toast;
 
 import com.birbit.android.jobqueue.JobManager;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,20 +42,15 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
-import us.nineworlds.serenity.events.MovieSecondaryCategoryEvent;
 import us.nineworlds.serenity.jobs.MovieSecondaryCategoryJob;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.volley.MovieSecondaryCategoryResponseListener;
 
 public class MovieCategorySpinnerOnItemSelectedListener extends
         BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
     @Inject
     PlexappFactory factory;
-
-    @Inject
-    EventBus eventBus;
 
     @Inject
     JobManager jobManager;
@@ -163,12 +154,6 @@ public class MovieCategorySpinnerOnItemSelectedListener extends
         jobManager.addJobInBackground(new MovieSecondaryCategoryJob(key, category));
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSecondaryCategoryEvent(MovieSecondaryCategoryEvent event) {
-        MovieSecondaryCategoryResponseListener response = new MovieSecondaryCategoryResponseListener(
-                getMultiViewVideoActivity(), category, key);
-        response.onResponse(event.getMediaContainer());
-    }
 
 
     protected void createGallery(CategoryInfo item) {
