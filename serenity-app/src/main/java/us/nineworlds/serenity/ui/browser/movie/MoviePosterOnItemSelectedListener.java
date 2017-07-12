@@ -63,6 +63,7 @@ public class MoviePosterOnItemSelectedListener extends
 
     @Override
     protected void createVideoDetail(ImageView v) {
+        Activity context = getActivity(v.getContext());
         View cardView = context.findViewById(R.id.video_details_container);
         if (cardView != null) {
             cardView.setVisibility(View.VISIBLE);
@@ -108,6 +109,7 @@ public class MoviePosterOnItemSelectedListener extends
     @Override
     protected void createVideoMetaData(ImageView v) {
         super.createVideoMetaData(v);
+        Activity context = getActivity(v.getContext());
         TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
         if (subt != null) {
             subt.setVisibility(View.GONE);
@@ -137,7 +139,11 @@ public class MoviePosterOnItemSelectedListener extends
 
     @Override
     public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-        context = (Activity) view.getContext();
+        Activity context = getActivity(view.getContext());
+        if (context.isDestroyed()) {
+            return;
+        }
+
         if (lastPos != i) {
             lastPos = i;
         } else {
@@ -157,7 +163,7 @@ public class MoviePosterOnItemSelectedListener extends
             return;
         }
 
-        changeBackgroundImage();
+        changeBackgroundImage(context);
 
         view.setPadding(0, 0, 0, 0);
 

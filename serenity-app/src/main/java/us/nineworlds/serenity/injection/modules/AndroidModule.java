@@ -42,6 +42,7 @@ import dagger.Provides;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.AndroidTV;
+import us.nineworlds.serenity.MainPresenter;
 import us.nineworlds.serenity.jobs.GDMServerJob;
 import us.nineworlds.serenity.server.GDMReceiver;
 import us.nineworlds.serenity.GalleryOnItemSelectedListener;
@@ -226,6 +227,7 @@ import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
         MovieBrowserPresenter.class,
         EpisodeBrowserPresenter.class,
         TVShowSeasonBrowserPresenter.class,
+        MainPresenter.class,
         ErrorMainMenuEvent.class}, library = true)
 public class AndroidModule {
 

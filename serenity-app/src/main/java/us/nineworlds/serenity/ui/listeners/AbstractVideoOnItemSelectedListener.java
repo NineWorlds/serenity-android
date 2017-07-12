@@ -67,8 +67,7 @@ import us.nineworlds.serenity.volley.SubtitleResponseListener;
  * @author dcarver
  *
  */
-public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
-        implements DpadAwareRecyclerView.OnItemSelectedListener {
+public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector implements DpadAwareRecyclerView.OnItemSelectedListener {
 
     @Inject
     protected PlexappFactory plexFactory;
@@ -80,7 +79,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
     JobManager jobManager;
 
     public static final int WATCHED_VIEW_ID = 1000;
-    protected Activity context;
     protected View currentView;
     protected int position;
     protected BaseAdapter adapter;
@@ -100,9 +98,8 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
      *
      */
     protected void createInfographicDetails(ImageView v) {
-
-        LinearLayout infographicsView = (LinearLayout) context
-                .findViewById(R.id.movieInfoGraphicLayout);
+        Activity context = getActivity(v.getContext());
+        LinearLayout infographicsView = (LinearLayout) context.findViewById(R.id.movieInfoGraphicLayout);
         infographicsView.removeAllViews();
 
         ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(80,
@@ -184,7 +181,7 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 //        }
 //    }
 
-    public void changeBackgroundImage() {
+    public void changeBackgroundImage(final Activity context) {
 
         if (videoInfo.getBackgroundURL() == null) {
             return;

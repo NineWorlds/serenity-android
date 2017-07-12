@@ -38,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import us.nineworlds.serenity.core.menus.MenuItem;
+import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 
 import static butterknife.ButterKnife.bind;
 
@@ -66,7 +67,6 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
         MenuItem menuItem = menuItems.get(position);
 
         MainMenuViewHolder mainMenuViewHolder = (MainMenuViewHolder) holder;
-        //createView(mainMenuViewHolder.mainMenuTextView, menuItem);
         setDefaults(menuItem.getTitle(), mainMenuViewHolder.mainMenuTextView);
     }
 

@@ -68,6 +68,7 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
 
     @Override
     public void createVideoDetail(ImageView v) {
+        Activity context = getActivity(v.getContext());
         View cardView = context.findViewById(R.id.video_details_container);
         if (cardView != null) {
             cardView.setVisibility(View.VISIBLE);
@@ -150,9 +151,9 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
     }
 
     @Override
-    public void changeBackgroundImage() {
+    public void changeBackgroundImage(final Activity context) {
         if (fadeIn == true || fadeInCount == 0) {
-            super.changeBackgroundImage();
+            super.changeBackgroundImage(context);
             fadeIn = false;
             fadeInCount += 1;
             return;
@@ -181,6 +182,7 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
 
     @Override
     protected void createVideoMetaData(ImageView v) {
+        Activity context = getActivity(v.getContext());
         super.createVideoMetaData(v);
 
         View categoryFilter = context.findViewById(R.id.categoryFilter);
@@ -199,7 +201,10 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
 
     @Override
     public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-        context = getActivity(view.getContext());
+        Activity context = getActivity(view.getContext());
+        if (context.isDestroyed()) {
+            return;
+        }
 
         EpisodePosterImageGalleryAdapter adapter = (EpisodePosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
         if (i > adapter.getItemCount()) {
@@ -213,7 +218,7 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
             return;
         }
 
-        changeBackgroundImage();
+        changeBackgroundImage(context);
 
         ImageView posterImageView = (ImageView) view
                 .findViewById(R.id.posterImageView);

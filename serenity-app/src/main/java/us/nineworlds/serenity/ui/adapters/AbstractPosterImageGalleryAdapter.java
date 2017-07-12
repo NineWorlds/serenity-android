@@ -23,23 +23,16 @@
 
 package us.nineworlds.serenity.ui.adapters;
 
-import android.content.Context;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
 /**
