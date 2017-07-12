@@ -14,5 +14,5 @@ jdk:
    - oraclejdk8
 
 script:
-   - ./gradlew clean assembleDebug
+   - ./gradlew clean :serenity-android:jacocoTestDebug
    
