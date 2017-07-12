@@ -78,16 +78,12 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
     @Inject
     JobManager jobManager;
 
-    @Inject
-    EventBus eventBus;
-
     public TVShowSeasonImageGalleryAdapter(Context c, String key) {
         super();
         context = (SerenityDrawerLayoutActivity) c;
         this.key = key;
 
         seasonList = new ArrayList<SeriesContentInfo>();
-        eventBus.register(this);
         fetchData();
     }
 
@@ -181,30 +177,9 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
         watchedView.setVisibility(View.INVISIBLE);
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSeasonsRetrievalResponse(SeasonsRetrievalEvent event) {
-        seasonList = new SeasonsMediaContainer(event.getMediaContainer()).createSeries();
+    public void updateSeasonsList(List<SeriesContentInfo> seasonList) {
+        this.seasonList = seasonList;
         notifyDataSetChanged();
-
-        if (seasonList != null) {
-            if (!seasonList.isEmpty()) {
-                TextView titleView = (TextView) context
-                        .findViewById(R.id.tvShowSeasonsDetailText);
-                titleView.setText(seasonList.get(0).getParentTitle());
-                TextView textView = (TextView) context
-                        .findViewById(R.id.tvShowSeasonsItemCount);
-                textView.setText(Integer.toString(seasonList.size())
-                        + context.getString(R.string._item_s_));
-
-            }
-        }
-
-        DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) context
-                .findViewById(R.id.tvShowSeasonImageGallery);
-        if (gallery != null) {
-            gallery.requestFocusFromTouch();
-        }
     }
 
     public class SeasonViewHolder extends DpadAwareRecyclerView.ViewHolder {

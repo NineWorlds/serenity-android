@@ -30,6 +30,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.TextView;
+
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
@@ -39,6 +42,8 @@ import java.util.List;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -48,13 +53,16 @@ import us.nineworlds.serenity.ui.util.DisplayUtils;
 /**
  * @author dcarver
  */
-public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
+public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implements TVShowSeasonBrowserView {
 
     private DpadAwareRecyclerView tvShowSeasonsGallery;
     public AbstractPosterImageGalleryAdapter adapter;
     private View tvShowSeasonsMainView;
     private boolean restarted_state = false;
     private String key;
+
+    @InjectPresenter
+    TVShowSeasonBrowserPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,56 +184,12 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
             return true;
         }
 
-        View focusView = getCurrentFocus();
-
         DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) findViewById(R.id.tvShowSeasonImageGallery);
         DpadAwareRecyclerView gridView = (DpadAwareRecyclerView) findViewById(R.id.episodeGridView);
 
         if (gallery == null && gridView == null) {
             return super.onKeyDown(keyCode, event);
         }
-
-
-//        if (adapter != null) {
-//            int itemsCount = adapter.getCount();
-//
-//            if (contextMenuRequested(keyCode)) {
-//                View view = null;
-//                if (focusView instanceof TwoWayGridView) {
-//                    view = gridView.getSelectedView();
-//                } else if (gallery != null) {
-//                    view = gallery.getSelectedView();
-//                }
-//                if (view == null) {
-//                    return super.onKeyDown(keyCode, event);
-//                }
-//                view.performLongClick();
-//                return true;
-//            }
-//
-//            if (gallery != null) {
-//                if (isKeyCodeSkipBack(keyCode)) {
-//                    int selectedItem = gallery.getSelectedItemPosition();
-//                    int newPosition = selectedItem - 10;
-//                    if (newPosition < 0) {
-//                        newPosition = 0;
-//                    }
-//                    gallery.setSelection(newPosition);
-//                    gallery.requestFocusFromTouch();
-//                    return true;
-//                }
-//                if (isKeyCodeSkipForward(keyCode)) {
-//                    int selectedItem = gallery.getSelectedItemPosition();
-//                    int newPosition = selectedItem + 10;
-//                    if (newPosition > itemsCount) {
-//                        newPosition = itemsCount - 1;
-//                    }
-//                    gallery.setSelection(newPosition);
-//                    gallery.requestFocusFromTouch();
-//                    return true;
-//                }
-//            }
-//        }
 
         return super.onKeyDown(keyCode, event);
 
@@ -252,5 +216,30 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
     @Override
     protected DpadAwareRecyclerView findGridView() {
         return (DpadAwareRecyclerView) findViewById(R.id.episodeGridView);
+    }
+
+    @Override
+    public void updateEpisodes(List<VideoContentInfo> episodes) {
+        DpadAwareRecyclerView episodeGrid = (DpadAwareRecyclerView) findViewById(R.id.episodeGridView);
+        SeasonsEpisodePosterImageGalleryAdapter adapter = (SeasonsEpisodePosterImageGalleryAdapter) episodeGrid.getAdapter();
+        adapter.updateEpisodes(episodes);
+    }
+
+    @Override
+    public void populateSeasons(List<SeriesContentInfo> seasons) {
+        if (!seasons.isEmpty()) {
+            TextView titleView = (TextView) findViewById(R.id.tvShowSeasonsDetailText);
+            titleView.setText(seasons.get(0).getParentTitle());
+            TextView textView = (TextView) findViewById(R.id.tvShowSeasonsItemCount);
+            textView.setText(Integer.toString(seasons.size()) + getString(R.string._item_s_));
+        }
+
+        DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) findViewById(R.id.tvShowSeasonImageGallery);
+        TVShowSeasonImageGalleryAdapter adapter = (TVShowSeasonImageGalleryAdapter) gallery.getAdapter();
+        adapter.updateSeasonsList(seasons);
+        if (gallery != null) {
+            gallery.requestFocusFromTouch();
+        }
+
     }
 }

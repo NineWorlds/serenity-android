@@ -76,7 +76,6 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
 
     public void retrieveEpisodes() {
         EpisodesRetrievalJob episodesRetrievalJob = new EpisodesRetrievalJob(key);
-
         jobManager.addJobInBackground(episodesRetrievalJob);
     }
 

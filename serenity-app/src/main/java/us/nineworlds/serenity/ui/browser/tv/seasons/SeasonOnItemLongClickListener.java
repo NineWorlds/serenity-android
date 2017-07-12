@@ -67,36 +67,7 @@ public class SeasonOnItemLongClickListener extends BaseInjector implements View.
         this.context = context;
     }
 
-//	@Override
-//	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
-//			int position, long arg3) {
-//
-//		// Google TV is sending back different results than Nexus 7
-//		// So we try to handle the different results.
-//
-//		info = (SeriesContentInfo) av.getItemAtPosition(position);
-//
-//		if (v == null) {
-//			SerenityGallery g = (SerenityGallery) av;
-//			vciv = (ImageView) g.getSelectedView().findViewById(
-//					R.id.posterImageView);
-//		} else {
-//			if (v instanceof ImageView) {
-//				vciv = (ImageView) v;
-//			} else {
-//				vciv = (ImageView) av.getSelectedView().findViewById(
-//						R.id.posterImageView);
-//				;
-//			}
-//		}
-//
-//		return onItemLongClick();
-//
-//	}
 
-    /**
-     * @return
-     */
     protected boolean onItemLongClick() {
         dialog = new Dialog(context);
         AlertDialog.Builder builder = new AlertDialog.Builder(

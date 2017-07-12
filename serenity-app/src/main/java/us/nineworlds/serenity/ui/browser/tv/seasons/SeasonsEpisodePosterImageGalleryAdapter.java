@@ -45,11 +45,10 @@ import javax.inject.Inject;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
-public class SeasonsEpisodePosterImageGalleryAdapter
-        extends
-        us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
+public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageGalleryAdapter {
 
     private static SeasonsEpisodePosterImageGalleryAdapter notifyAdapter;
 
@@ -119,17 +118,8 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 
     @Override
     protected void fetchDataFromService() {
-        handler = new EpisodeHandler();
         retrieveEpisodes();
         notifyAdapter = this;
     }
 
-    private static class EpisodeHandler extends Handler {
-
-        @Override
-        public void handleMessage(Message msg) {
-            posterList = (List<VideoContentInfo>) msg.obj;
-            notifyAdapter.notifyDataSetChanged();
-        }
-    }
 }

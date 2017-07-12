@@ -123,6 +123,7 @@ import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelected
 import us.nineworlds.serenity.ui.browser.tv.seasons.SeasonOnItemLongClickListener;
 import us.nineworlds.serenity.ui.browser.tv.seasons.SeasonsEpisodePosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity;
+import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserPresenter;
 import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonMenuDrawerOnItemClickedListener;
 import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonOnItemSelectedListener;
@@ -224,6 +225,7 @@ import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
         TVShowBrowserPresenter.class,
         MovieBrowserPresenter.class,
         EpisodeBrowserPresenter.class,
+        TVShowSeasonBrowserPresenter.class,
         ErrorMainMenuEvent.class}, library = true)
 public class AndroidModule {
 
