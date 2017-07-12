@@ -30,6 +30,11 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
@@ -41,6 +46,8 @@ import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
+import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
@@ -48,19 +55,63 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
-public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
+public class MovieBrowserActivity extends SerenityMultiViewVideoActivity implements MovieBrowserView {
 
-    private static String key;
     @Inject
     protected SharedPreferences prefs;
 
     @Inject
     protected MovieSelectedCategoryState categoryState;
 
+    @InjectPresenter
+    MovieBrowserPresenter presenter;
+
+    private String key;
+
     VideoGridFragment videoGridFragment;
     MovieVideoGalleryFragment movieVideoGalleryFragment;
 
     DpadAwareRecyclerView.Adapter adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        actionBar.setCustomView(R.layout.move_custom_actionbar);
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        gridViewActive = prefs.getBoolean("movie_layout_grid", false);
+
+        Intent intent = getIntent();
+
+        if (intent != null) {
+            if (intent.getExtras() != null) {
+                key = intent.getExtras().getString("key");
+            }
+        }
+
+        createSideMenu();
+
+        DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    protected void onPause() {
+        DpadAwareRecyclerView galleryView = findGalleryView();
+        if (galleryView != null) {
+            adapter = galleryView.getAdapter();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        populateMenuDrawer();
+    }
 
     @Override
     protected void createSideMenu() {
@@ -153,47 +204,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        actionBar.setCustomView(R.layout.move_custom_actionbar);
-        actionBar.setDisplayShowCustomEnabled(true);
-
-        gridViewActive = prefs.getBoolean("movie_layout_grid", false);
-
-        Intent intent = getIntent();
-
-        if (intent != null) {
-            if (intent.getExtras() != null) {
-                key = intent.getExtras().getString("key");
-            }
-        }
-
-        createSideMenu();
-
-        DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    protected void onPause() {
-        DpadAwareRecyclerView galleryView = findGalleryView();
-        if (galleryView != null) {
-            adapter = galleryView.getAdapter();
-        }
-        super.onPause();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        populateMenuDrawer();
-    }
-
-    public static String getKey() {
+    public String getKey() {
         return key;
     }
 
@@ -211,4 +222,51 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
     public AbstractPosterImageGalleryAdapter getAdapter() {
         return (AbstractPosterImageGalleryAdapter) adapter;
     }
+
+    @Override
+    public void populateCategory(List<CategoryInfo> categories, String key) {
+        ArrayAdapter<CategoryInfo> spinnerArrayAdapter = new ArrayAdapter<CategoryInfo>(
+                this, R.layout.serenity_spinner_textview, categories);
+        spinnerArrayAdapter
+                .setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+
+        Spinner categorySpinner = (Spinner) findViewById(R.id.categoryFilter);
+        if (categorySpinner == null) {
+            return;
+        }
+        categorySpinner.setVisibility(View.VISIBLE);
+        categorySpinner.setAdapter(spinnerArrayAdapter);
+
+        if (categoryState.getCategory() == null) {
+            categorySpinner
+                    .setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
+                            "all", key, this));
+        } else {
+            categorySpinner
+                    .setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener(
+                            categoryState.getCategory(), key, false, this));
+        }
+        categorySpinner.requestFocus();
+    }
+
+    @Override
+    public void populateSecondaryCategory(List<SecondaryCategoryInfo> categories, String key, String category) {
+        if (categories == null || categories.isEmpty()) {
+            Toast.makeText(this, R.string.no_entries_available_for_category_, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Spinner secondarySpinner = (Spinner) findViewById(R.id.categoryFilter2);
+        secondarySpinner.setVisibility(View.VISIBLE);
+
+        ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(
+                this, R.layout.serenity_spinner_textview, categories);
+        spinnerSecArrayAdapter
+                .setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+        secondarySpinner.setAdapter(spinnerSecArrayAdapter);
+        secondarySpinner
+                .setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
+                        category, key, this));
+    }
+
 }

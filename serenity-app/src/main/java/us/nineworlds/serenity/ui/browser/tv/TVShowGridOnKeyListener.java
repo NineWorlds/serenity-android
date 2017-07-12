@@ -29,25 +29,13 @@ import android.view.View;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
-public class TVShowGridOnKeyListener extends BaseInjector implements
-        View.OnKeyListener {
+import static android.view.View.*;
 
-    @Inject
-    protected PlexappFactory factory;
-
-    private final Activity activity;
-
-    public TVShowGridOnKeyListener(Activity activity) {
-        super();
-        this.activity = activity;
-    }
+public class TVShowGridOnKeyListener extends BaseInjector implements OnKeyListener {
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -57,7 +45,7 @@ public class TVShowGridOnKeyListener extends BaseInjector implements
         }
 
         final SeriesContentInfo info = getSelectedSeries(v);
-        new FindUnwatchedAsyncTask(activity).execute(info);
+        new FindUnwatchedAsyncTask((Activity) v.getContext()).execute(info);
         return true;
     }
 

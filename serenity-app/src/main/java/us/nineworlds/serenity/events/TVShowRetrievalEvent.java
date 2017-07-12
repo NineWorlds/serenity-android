@@ -4,7 +4,20 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 
 public class TVShowRetrievalEvent extends SerenityEvent {
 
-    public TVShowRetrievalEvent(MediaContainer mediaContainer) {
+    private String key;
+    private String category;
+
+    public TVShowRetrievalEvent(MediaContainer mediaContainer, String key, String category) {
         super(mediaContainer);
+        this.key = key;
+        this.category = category;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getCategory() {
+        return category;
     }
 }

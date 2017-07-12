@@ -38,7 +38,7 @@ public class TVShowRetrievalJob extends InjectingJob {
     @Override
     public void onRun() throws Throwable {
         MediaContainer mediaContainer = client.retrieveSections(key, category);
-        TVShowRetrievalEvent event = new TVShowRetrievalEvent(mediaContainer);
+        TVShowRetrievalEvent event = new TVShowRetrievalEvent(mediaContainer, key, category);
         eventBus.post(event);
     }
 

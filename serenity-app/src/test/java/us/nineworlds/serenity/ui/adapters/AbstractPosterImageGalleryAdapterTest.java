@@ -23,7 +23,6 @@
 
 package us.nineworlds.serenity.ui.adapters;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -70,8 +69,7 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
 		activity = Robolectric
 				.buildActivity(MainActivity.class).create().get();
-		abstractPosterImageGalleryAdapter = new FakePosterImageGalleryAdapter(
-				activity, "12345");
+		abstractPosterImageGalleryAdapter = new FakePosterImageGalleryAdapter("12345");
 	}
 
 	@After
@@ -83,8 +81,7 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
 	@Test
 	public void watchedViewIsSetInvisible() {
-		View galleryCellView = View.inflate(application,
-																				R.layout.poster_indicator_view, null);
+		View galleryCellView = View.inflate(application, R.layout.poster_indicator_view, null);
 		VideoContentInfo videoContentInfo = mock(VideoContentInfo.class);
 		when(videoContentInfo.isPartiallyWatched()).thenReturn(false);
 		when(videoContentInfo.isWatched()).thenReturn(false);
@@ -160,11 +157,10 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 	AbstractPosterImageGalleryAdapter {
 
 		/**
-		 * @param c
 		 * @param key
 		 */
-		public FakePosterImageGalleryAdapter(Context c, String key) {
-			super(c, key);
+		public FakePosterImageGalleryAdapter(String key) {
+			super(key);
 
 			posterList = new ArrayList<VideoContentInfo>();
 			VideoContentInfo videoContentInfo = new MoviePosterInfo();

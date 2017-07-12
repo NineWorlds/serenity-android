@@ -23,6 +23,9 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -31,18 +34,18 @@ import net.ganin.darv.DpadAwareRecyclerView;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 
 /**
  * Populate the tv show banners based on the information from the Secondary
  * categories.
  *
  * @author dcarver
- *
  */
 public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
         BaseInjector implements OnItemSelectedListener {
@@ -50,25 +53,32 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
     private String selected;
     private final String key;
     private boolean firstTimesw = true;
-    private SerenityMultiViewVideoActivity activity;
+
+    @Inject
+    SharedPreferences prefs;
 
     @Inject
     protected TVCategoryState categoryState;
 
-    public TVSecondaryCategorySpinnerOnItemSelectedListener(
-            String defaultSelection, String key, SerenityMultiViewVideoActivity serenityMultiViewVideoActivity) {
+    @BindView(R.id.tvShowGridView) @Nullable DpadAwareRecyclerView tvGridRecyclerView;
+    @BindView(R.id.tvShowBannerGallery) @Nullable DpadAwareRecyclerView posterGallery;
+
+
+    public TVSecondaryCategorySpinnerOnItemSelectedListener(String defaultSelection, String key) {
         super();
         selected = defaultSelection;
         this.key = key;
-        activity = serenityMultiViewVideoActivity;
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> viewAdapter, View view,
-                               int position, long id) {
+    public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
+        ButterKnife.bind(this, getActivity(viewAdapter.getContext()));
 
-        SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter
-                .getItemAtPosition(position);
+        SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(position);
+
+        boolean isGridViewActive = prefs.getBoolean("series_layout_grid", false);
+        boolean posterLayoutActive = prefs.getBoolean("series_layout_posters", false);
+
 
         if (firstTimesw) {
             if (categoryState.getGenreCategory() != null) {
@@ -87,35 +97,23 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
         selected = item.getCategory();
         categoryState.setGenreCategory(item.getCategory());
 
+        if (isGridViewActive) {
+            tvGridRecyclerView.setAdapter(new TVShowPosterImageGalleryAdapter(key, item.getParentCategory() + "/" + item.getCategory()));
+            tvGridRecyclerView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener());
+            return;
+        }
 
-        View bgLayout = activity.findViewById(R.id.tvshowBrowserLayout);
-        DpadAwareRecyclerView dpadAwareRecyclerView;
-        if (activity.isGridViewActive()) {
-            dpadAwareRecyclerView = (DpadAwareRecyclerView) activity.findViewById(R.id.tvShowGridView);
-            dpadAwareRecyclerView.setAdapter(new TVShowPosterImageGalleryAdapter(activity, key,
-                    item.getParentCategory() + "/" + item.getCategory()));
-            dpadAwareRecyclerView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(
-                    bgLayout, activity));
+        if (posterLayoutActive) {
+            posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(key, item.getParentCategory() + "/" + item.getCategory()));
         } else {
-            DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) activity
-                    .findViewById(R.id.tvShowBannerGallery);
+            posterGallery.setAdapter(new TVShowRecyclerAdapter(key, item.getParentCategory() + "/" + item.getCategory()));
+        }
 
-            if (activity.isPosterLayoutActive()) {
-                posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(activity,
-                        key, item.getParentCategory() + "/"
-                        + item.getCategory()));
-            } else {
-                posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(activity,
-                        key, item.getParentCategory() + "/"
-                        + item.getCategory()));
-            }
-
-            posterGallery
-                    .setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener());
+        posterGallery.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener());
 //			posterGallery
 //					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
-        }
     }
+
 
     private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
         int count = viewAdapter.getCount();

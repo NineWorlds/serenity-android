@@ -72,7 +72,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
     private static SerenityMultiViewVideoActivity movieContext;
 
     public MoviePosterImageAdapter(Context c, String key, String category) {
-        super(c, key, category);
+        super(key, category);
         movieContext = (SerenityMultiViewVideoActivity) c;
         notifyAdapter = this;
         eventBus.register(this);
@@ -118,14 +118,14 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
         int width = 0;
         int height = 0;
 
-        width = ImageUtils.getDPI(130, context);
-        height = ImageUtils.getDPI(200, context);
+        width = ImageUtils.getDPI(130, movieContext);
+        height = ImageUtils.getDPI(200, movieContext);
         mpiv.setMaxHeight(height);
         mpiv.setMaxWidth(width);
         mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
         viewHolder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
 
-        Glide.with(context).load(pi.getImageURL()).into(mpiv);
+        Glide.with(movieContext).load(pi.getImageURL()).into(mpiv);
 
         setWatchedStatus(viewHolder.itemView, pi);
     }

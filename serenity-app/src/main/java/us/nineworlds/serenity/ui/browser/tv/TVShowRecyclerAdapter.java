@@ -23,7 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,56 +32,33 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.birbit.android.jobqueue.JobManager;
 import com.bumptech.glide.Glide;
-
 import net.ganin.darv.DpadAwareRecyclerView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer;
-import us.nineworlds.serenity.events.TVShowRetrievalEvent;
 import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
-public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
+public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
 
     @Inject
     JobManager jobManager;
 
-    @Inject
-    EventBus eventBus;
-
     private static final int BANNER_PIXEL_HEIGHT = 140;
     private static final int BANNER_PIXEL_WIDTH = 758;
 
-    protected static List<SeriesContentInfo> tvShowList = null;
+    protected List<SeriesContentInfo> tvShowList = new ArrayList<>();
 
     private final String key;
-    protected SerenityMultiViewVideoActivity showActivity;
 
-    public TVShowBannerImageGalleryAdapter(Context c, String key,
-                                           String category) {
-        super(c, key, category);
-        showActivity = (SerenityMultiViewVideoActivity) c;
-        tvShowList = new ArrayList<SeriesContentInfo>();
+    public TVShowRecyclerAdapter(String key, String category) {
+        super(key, category);
         this.key = key;
-        eventBus.register(this);
-
         fetchData();
     }
 
@@ -104,16 +81,14 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.poster_tvshow_indicator_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_tvshow_indicator_view, parent, false);
         return new TVShowViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         SeriesContentInfo pi = tvShowList.get(position);
-        createImage(holder.itemView, pi, BANNER_PIXEL_WIDTH,
-                BANNER_PIXEL_HEIGHT);
-
+        createImage(holder.itemView, pi, BANNER_PIXEL_WIDTH, BANNER_PIXEL_HEIGHT);
         toggleWatchedIndicator(holder.itemView, pi);
     }
 
@@ -122,10 +97,9 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
         return position;
     }
 
-    protected void createImage(View galleryCellView, SeriesContentInfo pi,
-                               int imageWidth, int imageHeight) {
-        int width = ImageUtils.getDPI(imageWidth, context);
-        int height = ImageUtils.getDPI(imageHeight, context);
+    protected void createImage(View galleryCellView, SeriesContentInfo pi, int imageWidth, int imageHeight) {
+        int width = ImageUtils.getDPI(imageWidth, (Activity) galleryCellView.getContext());
+        int height = ImageUtils.getDPI(imageHeight, (Activity) galleryCellView.getContext());
 
         initPosterMetaData(galleryCellView, pi, width, height, false);
 
@@ -133,15 +107,8 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
                 height));
     }
 
-    /**
-     * @param galleryCellView
-     * @param pi
-     * @param width
-     * @param height
-     */
     protected void initPosterMetaData(View galleryCellView, SeriesContentInfo pi, int width, int height, boolean isPoster) {
-        ImageView mpiv = (ImageView) galleryCellView
-                .findViewById(R.id.posterImageView);
+        ImageView mpiv = (ImageView) galleryCellView.findViewById(R.id.posterImageView);
         mpiv.setBackgroundResource(R.drawable.gallery_item_background);
         mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
         mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
@@ -149,25 +116,19 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
         mpiv.setMaxWidth(width);
 
         if (isPoster) {
-            Glide.with(context).load(pi.getThumbNailURL()).into(mpiv);
+            Glide.with(mpiv.getContext()).load(pi.getThumbNailURL()).into(mpiv);
         } else {
-            Glide.with(context).load(pi.getImageURL()).into(mpiv);
+            Glide.with(mpiv.getContext()).load(pi.getImageURL()).into(mpiv);
         }
     }
 
-    /**
-     * @param galleryCellView
-     * @param pi
-     */
-    protected void toggleWatchedIndicator(View galleryCellView,
-                                          SeriesContentInfo pi) {
-
+    protected void toggleWatchedIndicator(View galleryCellView, SeriesContentInfo pi) {
         int watched = 0;
         if (pi.getShowsWatched() != null) {
             watched = Integer.parseInt(pi.getShowsWatched());
         }
-        ImageView watchedView = (ImageView) galleryCellView
-                .findViewById(R.id.posterWatchedIndicator);
+
+        ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
         watchedView.setVisibility(View.INVISIBLE);
 
         if (pi.isPartiallyWatched()) {
@@ -187,10 +148,8 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
         }
     }
 
-    protected void toggleProgressIndicator(View galleryCellView, int dividend,
-                                           int divisor, ImageView watchedView) {
-        final float percentWatched = Float.valueOf(dividend)
-                / Float.valueOf(divisor);
+    protected void toggleProgressIndicator(View galleryCellView, int dividend, int divisor, ImageView watchedView) {
+        final float percentWatched = Float.valueOf(dividend) / Float.valueOf(divisor);
 
         final ProgressBar view = (ProgressBar) galleryCellView
                 .findViewById(R.id.posterInprogressIndicator);
@@ -208,28 +167,9 @@ public class TVShowBannerImageGalleryAdapter extends AbstractPosterImageGalleryA
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onTVShowResponse(TVShowRetrievalEvent event) {
-        if (context == null) {
-            return;
-        }
-        tvShowList = new SeriesMediaContainer(event.getMediaContainer()).createSeries();
-        DpadAwareRecyclerView recyclerView = (DpadAwareRecyclerView) (context
-                .findViewById(R.id.tvShowBannerGallery) != null ? context.findViewById(R.id.tvShowBannerGallery) : context.findViewById(R.id.tvShowGridView));
-        if (tvShowList != null) {
-            TextView tv = (TextView) context
-                    .findViewById(R.id.tvShowItemCount);
-            if (tvShowList.isEmpty()) {
-                Toast.makeText(
-                        context,
-                        context.getString(R.string.no_shows_found_for_the_category_)
-                                + category, Toast.LENGTH_LONG).show();
-            }
-            tv.setText(Integer.toString(tvShowList.size())
-                    + context.getString(R.string._item_s_));
-        }
+    public void updateSeries(List<SeriesContentInfo> series) {
+        tvShowList = series;
         notifyDataSetChanged();
-        recyclerView.requestFocus();
     }
 
 

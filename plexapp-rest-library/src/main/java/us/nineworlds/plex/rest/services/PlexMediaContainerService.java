@@ -24,12 +24,12 @@ public interface PlexMediaContainerService {
 
     @GET("library/sections/{key}/{category}")
     Call<MediaContainer> retrieveSections(@Path("key") String key,
-                                          @Path("category") String category);
+                                          @Path(value = "category", encoded = true) String category);
 
     @GET("library/sections/{key}/{category}/{secondaryCategory}")
     Call<MediaContainer> retrieveSections(@Path("key") String key,
-                                          @Path("category")  String category,
-                                          @Path("secondaryCategory") String secondaryCategory);
+                                          @Path(value = "category", encoded = true)  String category,
+                                          @Path(value = "secondaryCategory", encoded = true) String secondaryCategory);
 
     @GET("{urlPath}")
     Call<MediaContainer> retrieveItemByUrlPath(@Path(value = "urlPath", encoded = true) String key);

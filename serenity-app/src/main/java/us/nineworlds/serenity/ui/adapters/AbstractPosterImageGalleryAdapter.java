@@ -53,28 +53,18 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
  */
 public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecyclerViewAdapter {
 
-    @Inject
-    protected PlexappFactory factory;
-
     protected static List<VideoContentInfo> posterList = null;
-    protected AppCompatActivity context;
-    protected static final int SIZE_HEIGHT = 400;
-    protected static final int SIZE_WIDTH = 200;
-
     protected Handler handler;
     protected String key;
     protected String category;
 
-    public AbstractPosterImageGalleryAdapter(Context c, String key) {
-        context = (AppCompatActivity) c;
+    public AbstractPosterImageGalleryAdapter(String key) {
         posterList = new ArrayList<>();
         this.key = key;
         fetchDataFromService();
     }
 
-    public AbstractPosterImageGalleryAdapter(Context c, String key,
-                                             String category) {
-        context = (AppCompatActivity) c;
+    public AbstractPosterImageGalleryAdapter(String key, String category) {
         this.key = key;
         this.category = category;
         posterList = new ArrayList<>();

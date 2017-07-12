@@ -102,7 +102,7 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
 
         episodeGrid.setVisibility(View.VISIBLE);
         TVShowSeasonBrowserActivity seasonBrowserActivity = (TVShowSeasonBrowserActivity) context;
-        seasonBrowserActivity.adapter = new SeasonsEpisodePosterImageGalleryAdapter(context, info.getKey());
+        seasonBrowserActivity.adapter = new SeasonsEpisodePosterImageGalleryAdapter(info.getKey());
         episodeGrid.setAdapter(seasonBrowserActivity.adapter);
         episodeGrid.setLayoutManager(new GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false));
         episodeGrid.setOnItemClickListener(new EpisodePosterOnItemClickListener());

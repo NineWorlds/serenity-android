@@ -30,15 +30,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.TextView;
+
+import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -48,13 +55,19 @@ import us.nineworlds.serenity.ui.util.DisplayUtils;
 /**
  * @author dcarver
  */
-public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
+public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implements TVShowSeasonBrowserView {
 
-    private DpadAwareRecyclerView tvShowSeasonsGallery;
     public AbstractPosterImageGalleryAdapter adapter;
-    private View tvShowSeasonsMainView;
     private boolean restarted_state = false;
     private String key;
+
+    @InjectPresenter
+    TVShowSeasonBrowserPresenter presenter;
+
+    @BindView(R.id.fanArt) View fanArt;
+    @BindView(R.id.tvshowSeasonBrowserLayout) View tvShowSeasonsMainView;
+    @BindView(R.id.tvShowSeasonImageGallery) DpadAwareRecyclerView tvShowSeasonsGallery;
+    @BindView(R.id.episodeGridView) DpadAwareRecyclerView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +78,6 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
         key = getIntent().getExtras().getString("key");
 
         createSideMenu();
-
-        tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
-        tvShowSeasonsGallery = (DpadAwareRecyclerView) findViewById(R.id.tvShowSeasonImageGallery);
 
         DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
     }
@@ -110,14 +120,13 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
     protected void createSideMenu() {
         setContentView(R.layout.activity_tvbrowser_show_seasons);
 
-        View fanArt = findViewById(R.id.fanArt);
+        ButterKnife.bind(this);
+
         fanArt.setBackgroundResource(R.drawable.tvshows);
 
         initMenuDrawerViews();
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-                R.drawable.menudrawer_selector, R.string.drawer_open,
-                R.string.drawer_closed) {
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector, R.string.drawer_open, R.string.drawer_closed) {
             @Override
             public void onDrawerOpened(View drawerView) {
 
@@ -142,13 +151,10 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
 
     protected void populateMenuDrawer() {
         List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-        drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue",
-                R.drawable.menu_play_all_queue));
+        drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
 
         drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-        drawerList
-                .setOnItemClickListener(new TVShowSeasonMenuDrawerOnItemClickedListener(
-                        drawerLayout));
+        drawerList.setOnItemClickListener(new TVShowSeasonMenuDrawerOnItemClickedListener(drawerLayout));
     }
 
     @Override
@@ -167,65 +173,13 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
             }
         }
 
-        if (keyCode == KeyEvent.KEYCODE_BACK
-                && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
             drawerLayout.closeDrawers();
             if (tvShowSeasonsGallery != null) {
                 tvShowSeasonsGallery.requestFocusFromTouch();
             }
             return true;
         }
-
-        View focusView = getCurrentFocus();
-
-        DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) findViewById(R.id.tvShowSeasonImageGallery);
-        DpadAwareRecyclerView gridView = (DpadAwareRecyclerView) findViewById(R.id.episodeGridView);
-
-        if (gallery == null && gridView == null) {
-            return super.onKeyDown(keyCode, event);
-        }
-
-
-//        if (adapter != null) {
-//            int itemsCount = adapter.getCount();
-//
-//            if (contextMenuRequested(keyCode)) {
-//                View view = null;
-//                if (focusView instanceof TwoWayGridView) {
-//                    view = gridView.getSelectedView();
-//                } else if (gallery != null) {
-//                    view = gallery.getSelectedView();
-//                }
-//                if (view == null) {
-//                    return super.onKeyDown(keyCode, event);
-//                }
-//                view.performLongClick();
-//                return true;
-//            }
-//
-//            if (gallery != null) {
-//                if (isKeyCodeSkipBack(keyCode)) {
-//                    int selectedItem = gallery.getSelectedItemPosition();
-//                    int newPosition = selectedItem - 10;
-//                    if (newPosition < 0) {
-//                        newPosition = 0;
-//                    }
-//                    gallery.setSelection(newPosition);
-//                    gallery.requestFocusFromTouch();
-//                    return true;
-//                }
-//                if (isKeyCodeSkipForward(keyCode)) {
-//                    int selectedItem = gallery.getSelectedItemPosition();
-//                    int newPosition = selectedItem + 10;
-//                    if (newPosition > itemsCount) {
-//                        newPosition = itemsCount - 1;
-//                    }
-//                    gallery.setSelection(newPosition);
-//                    gallery.requestFocusFromTouch();
-//                    return true;
-//                }
-//            }
-//        }
 
         return super.onKeyDown(keyCode, event);
 
@@ -252,5 +206,29 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
     @Override
     protected DpadAwareRecyclerView findGridView() {
         return (DpadAwareRecyclerView) findViewById(R.id.episodeGridView);
+    }
+
+    @Override
+    public void updateEpisodes(List<VideoContentInfo> episodes) {
+        DpadAwareRecyclerView episodeGrid = (DpadAwareRecyclerView) findViewById(R.id.episodeGridView);
+        SeasonsEpisodePosterImageGalleryAdapter adapter = (SeasonsEpisodePosterImageGalleryAdapter) episodeGrid.getAdapter();
+        adapter.updateEpisodes(episodes);
+    }
+
+    @Override
+    public void populateSeasons(List<SeriesContentInfo> seasons) {
+        if (!seasons.isEmpty()) {
+            TextView titleView = (TextView) findViewById(R.id.tvShowSeasonsDetailText);
+            titleView.setText(seasons.get(0).getParentTitle());
+            TextView textView = (TextView) findViewById(R.id.tvShowSeasonsItemCount);
+            textView.setText(Integer.toString(seasons.size()) + getString(R.string._item_s_));
+        }
+
+        DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) findViewById(R.id.tvShowSeasonImageGallery);
+        TVShowSeasonImageGalleryAdapter adapter = (TVShowSeasonImageGalleryAdapter) gallery.getAdapter();
+        adapter.updateSeasonsList(seasons);
+        if (gallery != null) {
+            gallery.requestFocusFromTouch();
+        }
     }
 }

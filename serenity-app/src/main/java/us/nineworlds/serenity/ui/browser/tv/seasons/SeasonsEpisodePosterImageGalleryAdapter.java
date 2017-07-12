@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -44,11 +45,10 @@ import javax.inject.Inject;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
-public class SeasonsEpisodePosterImageGalleryAdapter
-        extends
-        us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter {
+public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageGalleryAdapter {
 
     private static SeasonsEpisodePosterImageGalleryAdapter notifyAdapter;
 
@@ -58,28 +58,27 @@ public class SeasonsEpisodePosterImageGalleryAdapter
     @Inject
     PlexappFactory plexFactory;
 
-    public SeasonsEpisodePosterImageGalleryAdapter(Context c, String key) {
-        super(c, key);
+    public SeasonsEpisodePosterImageGalleryAdapter(String key) {
+        super(key);
         notifyAdapter = this;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         VideoContentInfo pi = posterList.get(position);
-        gridViewMetaData(holder.itemView, pi);
         ImageView mpiv = (ImageView) holder.itemView
                 .findViewById(R.id.posterImageView);
         mpiv.setBackgroundResource(R.drawable.gallery_item_background);
         mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-        int width = ImageUtils.getDPI(270, context);
-        int height = ImageUtils.getDPI(147, context);
+        int width = ImageUtils.getDPI(270, (Activity) mpiv.getContext());
+        int height = ImageUtils.getDPI(147, (Activity) mpiv.getContext());
         mpiv.setMaxWidth(width);
         mpiv.setMaxHeight(height);
         mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
         holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(
                 width, height));
 
-        Glide.with(context).load(pi.getImageURL()).into(mpiv);
+        Glide.with(mpiv.getContext()).load(pi.getImageURL()).into(mpiv);
 
         ImageView watchedView = (ImageView) holder.itemView
                 .findViewById(R.id.posterWatchedIndicator);
@@ -119,21 +118,8 @@ public class SeasonsEpisodePosterImageGalleryAdapter
 
     @Override
     protected void fetchDataFromService() {
-        handler = new EpisodeHandler();
         retrieveEpisodes();
         notifyAdapter = this;
     }
 
-    protected void gridViewMetaData(View galleryCellView, VideoContentInfo pi) {
-    }
-
-
-    private static class EpisodeHandler extends Handler {
-
-        @Override
-        public void handleMessage(Message msg) {
-            posterList = (List<VideoContentInfo>) msg.obj;
-            notifyAdapter.notifyDataSetChanged();
-        }
-    }
 }
