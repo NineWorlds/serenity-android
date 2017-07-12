@@ -43,8 +43,7 @@ import butterknife.ButterKnife;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.injection.BaseInjector;
 
-public class GalleryOnItemSelectedListener extends BaseInjector implements
-        DpadAwareRecyclerView.OnItemSelectedListener {
+public class GalleryOnItemSelectedListener extends BaseInjector implements DpadAwareRecyclerView.OnItemSelectedListener {
 
     @BindView(R.id.mainGalleryBackground)
     ImageView mainGalleryBackgroundView;
@@ -94,6 +93,10 @@ public class GalleryOnItemSelectedListener extends BaseInjector implements
         MainMenuTextViewAdapter adapter = (MainMenuTextViewAdapter) dpadAwareRecyclerView.getAdapter();
         MenuItem menuItem = adapter.getItemAtPosition(i);
         Activity context = (Activity) view.getContext();
+        if (context.isDestroyed()) {
+            return;
+        }
+
         ButterKnife.bind(context);
 
         mainGalleryBackgroundView = (ImageView) context

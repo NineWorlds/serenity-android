@@ -38,6 +38,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.birbit.android.jobqueue.JobManager;
 import com.castillo.dd.DownloadService;
 
@@ -62,13 +63,13 @@ import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.SettingsMenuDrawerOnItemClickedListener;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
-public class MainActivity extends SerenityDrawerLayoutActivity {
+public class MainActivity extends SerenityDrawerLayoutActivity implements MainView {
 
     @Inject
     AndroidHelper androidHelper;
 
-    @Inject
-    JobManager jobManager;
+    @InjectPresenter
+    MainPresenter presenter;
 
     public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
 
@@ -140,10 +141,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
                         drawerLayout));
     }
 
-    protected void discoverServers() {
-        jobManager.addJobInBackground(new GDMServerJob());
-    }
-
     protected void initDownloadService() {
         downloadHandler = DownloadHandler.getInstance(this);
         downloadService = downloadHandler.getDownloadService();
@@ -195,7 +192,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
             boolean watchedStatusFirstTime = preferences.getBoolean(
                     "watched_status_firsttime", true);
             if (watchedStatusFirstTime) {
-                jobManager.addJobInBackground(new GlideClearCacheJob(this));
+                presenter.clearCache(this);
 
                 Editor editor = preferences.edit();
                 editor.putBoolean("watched_status_firsttime", false);
@@ -284,7 +281,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity {
                 filters);
 
         // Start the auto-configuration service
-        discoverServers();
+        presenter.discoverServers();
 
         Intent recommendationIntent = new Intent(getApplicationContext(),
                 OnDeckRecommendationIntentService.class);
