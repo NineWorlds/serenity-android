@@ -24,6 +24,8 @@
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
@@ -52,8 +54,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
-public class EpisodePosterOnItemSelectedListener extends
-        AbstractVideoOnItemSelectedListener {
+public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
     private static final String DISPLAY_DATE_FORMAT = "MMMM d, yyyy";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -198,10 +199,7 @@ public class EpisodePosterOnItemSelectedListener extends
 
     @Override
     public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-        context = (Activity) view.getContext();
-        if (context.isDestroyed()) {
-            return;
-        }
+        context = getActivity(view.getContext());
 
         EpisodePosterImageGalleryAdapter adapter = (EpisodePosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
         if (i > adapter.getItemCount()) {

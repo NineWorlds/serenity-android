@@ -30,6 +30,8 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import net.ganin.darv.DpadAwareRecyclerView;
 
 import java.util.ArrayList;
@@ -40,21 +42,42 @@ import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
-public class EpisodeBrowserActivity extends SerenityVideoActivity {
+public class EpisodeBrowserActivity extends SerenityVideoActivity implements EpisodeBrowserView {
 
     @Inject
     protected SharedPreferences prefs;
+
+    @InjectPresenter
+    EpisodeBrowserPresenter presenter;
 
     public AbstractPosterImageGalleryAdapter seasonEpisodeAdapter;
 
     private static String key;
     private View bgLayout;
     private View metaData;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        actionBar.setCustomView(R.layout.move_custom_actionbar);
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        key = getIntent().getExtras().getString("key");
+
+        createSideMenu();
+
+        bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
+        metaData = findViewById(R.id.metaDataRow);
+        metaData.setVisibility(View.VISIBLE);
+
+        DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
+    }
 
     @Override
     protected void createSideMenu() {
@@ -98,23 +121,6 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
                         drawerLayout));
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        actionBar.setCustomView(R.layout.move_custom_actionbar);
-        actionBar.setDisplayShowCustomEnabled(true);
-
-        key = getIntent().getExtras().getString("key");
-
-        createSideMenu();
-
-        bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
-        metaData = findViewById(R.id.metaDataRow);
-        metaData.setVisibility(View.VISIBLE);
-
-        DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
-
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -178,5 +184,13 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity {
     @Override
     protected DpadAwareRecyclerView findGridView() {
         return null;
+    }
+
+    @Override
+    public void updateGallery(List<VideoContentInfo> episodes) {
+        DpadAwareRecyclerView gallery = findGalleryView();
+        EpisodePosterImageGalleryAdapter adapter = (EpisodePosterImageGalleryAdapter) gallery.getAdapter();
+        adapter.updateEpisodes(episodes);
+        gallery.requestFocus();
     }
 }

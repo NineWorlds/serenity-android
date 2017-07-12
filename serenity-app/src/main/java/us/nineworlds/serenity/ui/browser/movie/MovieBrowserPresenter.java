@@ -26,14 +26,10 @@ public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserView> {
     @Inject
     EventBus eventBus;
 
-    @Inject
-    JobManager jobManager;
-
     public MovieBrowserPresenter() {
         super();
         SerenityObjectGraph.getInstance().inject(this);
     }
-
 
     @Override
     public void attachView(MovieBrowserView view) {
@@ -64,7 +60,5 @@ public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserView> {
 
         getViewState().populateSecondaryCategory(secondaryCategories, event.getKey(), event.getCategory());
     }
-
-
 
 }

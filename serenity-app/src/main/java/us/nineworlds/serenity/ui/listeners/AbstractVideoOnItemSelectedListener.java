@@ -79,9 +79,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
     @Inject
     JobManager jobManager;
 
-    @Inject
-    EventBus eventBus;
-
     public static final int WATCHED_VIEW_ID = 1000;
     protected Activity context;
     protected View currentView;
@@ -90,11 +87,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
     protected VideoContentInfo videoInfo;
     protected RequestQueue queue;
 
-
-    public AbstractVideoOnItemSelectedListener() {
-        super();
-        eventBus.register(this);
-    }
 
     protected abstract void createVideoDetail(ImageView v);
 
@@ -185,12 +177,12 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
         jobManager.addJobInBackground(new SubtitleJob("/library/metadata/" + mpi.id()));
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSubtitleEvent(SubtitleEvent event) {
-        if (event.getVideoContentInfo() != null) {
-            new SubtitleResponseListener(event.getVideoContentInfo(), context).onResponse(event.getMediaContainer());
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onSubtitleEvent(SubtitleEvent event) {
+//        if (event.getVideoContentInfo() != null) {
+//            new SubtitleResponseListener(event.getVideoContentInfo(), context).onResponse(event.getMediaContainer());
+//        }
+//    }
 
     public void changeBackgroundImage() {
 

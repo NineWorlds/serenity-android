@@ -37,12 +37,7 @@ import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 
-/**
- * @author dcarver
- *
- */
-public class EpisodeMenuDrawerOnItemClickedListener extends BaseInjector
-        implements OnItemClickListener {
+public class EpisodeMenuDrawerOnItemClickedListener extends BaseInjector implements OnItemClickListener {
     private static final int PLAY_ALL_QUEUE = 0;
     private final DrawerLayout menuDrawer;
 
@@ -52,17 +47,6 @@ public class EpisodeMenuDrawerOnItemClickedListener extends BaseInjector
     public EpisodeMenuDrawerOnItemClickedListener(DrawerLayout drawer) {
         super();
         menuDrawer = drawer;
-    }
-
-    protected Activity getActivity(Context contextWrapper) {
-        Context context = contextWrapper;
-        while (context instanceof ContextWrapper) {
-            if (context instanceof Activity) {
-                return (Activity) context;
-            }
-            context = ((ContextWrapper) context).getBaseContext();
-        }
-        return null;
     }
 
     @Override

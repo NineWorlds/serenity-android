@@ -86,10 +86,7 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
             String key = ((EpisodeBrowserActivity) getActivity()).getKey();
 
-            EpisodeBrowserActivity browserActivity = (EpisodeBrowserActivity) getActivity();
-            browserActivity.seasonEpisodeAdapter = new EpisodePosterImageGalleryAdapter(getActivity(), key);
-
-            videoGallery.setAdapter(browserActivity.seasonEpisodeAdapter);
+            videoGallery.setAdapter(new EpisodePosterImageGalleryAdapter(key));
             videoGallery.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
             videoGallery.addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
             videoGallery

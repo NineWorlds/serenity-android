@@ -41,6 +41,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
@@ -63,15 +65,8 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
     @Inject
     JobManager jobManager;
 
-    @Inject
-    EventBus eventBus;
-
-    Activity context;
-
-    public EpisodePosterImageGalleryAdapter(Activity c, String key) {
+    public EpisodePosterImageGalleryAdapter(String key) {
         super(key);
-        context = c;
-        eventBus.register(this);
     }
 
     @Override
@@ -106,26 +101,20 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
         holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
                 height));
 
-        Glide.with(context).load(pi.getImageURL()).into(mpiv);
+        Glide.with(mpiv.getContext()).load(pi.getImageURL()).into(mpiv);
 
         setWatchedStatus(holder.itemView, pi);
+    }
+
+    public void updateEpisodes(List<VideoContentInfo> episodes) {
+        posterList = episodes;
+        notifyDataSetChanged();
     }
 
     public class EpisodeViewHolder extends DpadAwareRecyclerView.ViewHolder {
 
         public EpisodeViewHolder(View itemView) {
             super(itemView);
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEpisodeResponse(EpisodesRetrievalEvent event) {
-        EpisodeMediaContainer episodes = new EpisodeMediaContainer(event.getMediaContainer());
-        posterList = episodes.createVideos();
-        notifyDataSetChanged();
-        DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) context.findViewById(R.id.moviePosterView);
-        if (gallery != null) {
-            gallery.requestFocus();
         }
     }
 

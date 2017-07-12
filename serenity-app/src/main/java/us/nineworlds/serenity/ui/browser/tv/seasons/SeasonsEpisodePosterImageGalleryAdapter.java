@@ -59,8 +59,8 @@ public class SeasonsEpisodePosterImageGalleryAdapter
     @Inject
     PlexappFactory plexFactory;
 
-    public SeasonsEpisodePosterImageGalleryAdapter(Activity c, String key) {
-        super(c, key);
+    public SeasonsEpisodePosterImageGalleryAdapter(String key) {
+        super(key);
         notifyAdapter = this;
     }
 
