@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -78,7 +79,8 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
     TVCategoryState categoryState;
 
     @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
-    @BindView(R.id.tvShowBannerGallery) DpadAwareRecyclerView posterGallery;
+    @BindView(R.id.tvShowBannerGallery) @Nullable DpadAwareRecyclerView posterGallery;
+    @BindView(R.id.tvShowGridView) @Nullable DpadAwareRecyclerView tvGridView;
 
     public TVCategorySpinnerOnItemSelectedListener(String defaultSelection, String ckey) {
         selected = defaultSelection;
@@ -95,6 +97,9 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
     @Override
     public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
         Activity context = getActivity(viewAdapter.getContext());
+        if (context.isDestroyed()) {
+            return;
+        }
         ButterKnife.bind(this, context);
         isGridViewActive = prefs.getBoolean("series_layout_grid", false);
         posterLayoutActive = prefs.getBoolean("series_layout_posters", false);
@@ -190,12 +195,9 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
     }
 
     protected void setupImageGallery(CategoryInfo item) {
-        DpadAwareRecyclerView recyclerView;
-
         if (isGridViewActive) {
-            recyclerView = (DpadAwareRecyclerView) context.findViewById(R.id.tvShowGridView);
-            recyclerView.setAdapter(new TVShowPosterImageGalleryAdapter(key, item.getCategory()));
-            recyclerView.setOnKeyListener(new TVShowGridOnKeyListener());
+            tvGridView.setAdapter(new TVShowPosterImageGalleryAdapter(key, item.getCategory()));
+            tvGridView.setOnKeyListener(new TVShowGridOnKeyListener());
             return;
         }
 

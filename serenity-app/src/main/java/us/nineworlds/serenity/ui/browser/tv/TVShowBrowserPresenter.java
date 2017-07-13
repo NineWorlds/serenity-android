@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.birbit.android.jobqueue.JobManager;
 
 import net.ganin.darv.DpadAwareRecyclerView;
@@ -35,6 +37,7 @@ import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.jobs.TVCategoryJob;
 
 @InjectViewState
+@StateStrategyType(SkipStrategy.class)
 public class TVShowBrowserPresenter extends MvpPresenter<TVShowBrowserView> {
 
     @Inject
