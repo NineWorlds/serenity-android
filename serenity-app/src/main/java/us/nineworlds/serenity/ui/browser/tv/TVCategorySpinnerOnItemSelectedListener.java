@@ -112,7 +112,7 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
             viewAdapter.setSelection(savedInstancePosition);
             savedInstanceCategory = null;
             if (item.getLevel() == 0) {
-                populatePrimaryCategory(item, secondarySpinner);
+                populatePrimaryCategory(context, item, secondarySpinner);
             } else {
                 populateSecondaryCategory();
             }
@@ -156,13 +156,13 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
         categoryState.setCategory(selected);
 
         if (item.getLevel() == 0) {
-            populatePrimaryCategory(item, secondarySpinner);
+            populatePrimaryCategory(context, item, secondarySpinner);
         } else {
             populateSecondaryCategory();
         }
     }
 
-    protected void populatePrimaryCategory(CategoryInfo item, Spinner secondarySpinner) {
+    protected void populatePrimaryCategory(Activity context, CategoryInfo item, Spinner secondarySpinner) {
         if (item.getCategory().equals("newest")
                 || item.getCategory().equals("recentlyAdded")
                 || item.getCategory().equals("recentlyViewed")
