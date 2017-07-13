@@ -94,6 +94,4 @@ public class TVShowBrowserPresenter extends MvpPresenter<TVShowBrowserView> {
         getViewState().populateSecondaryCategories(secondaryCategories, event.getCategory());
     }
 
-
-
 }
