@@ -14,5 +14,5 @@ jdk:
    - oraclejdk8
 
 script:
-   - ./gradlew clean jacocoTestReportDebug -d
+   - ./gradlew clean assembleDebug
    
