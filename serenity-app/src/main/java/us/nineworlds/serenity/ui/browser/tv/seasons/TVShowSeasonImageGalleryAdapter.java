@@ -23,7 +23,9 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,29 +70,15 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapter {
 
     private List<SeriesContentInfo> seasonList = null;
-    private final SerenityDrawerLayoutActivity context;
-
-    private final String key;
 
     @Inject
     PlexappFactory plexFactory;
 
-    @Inject
-    JobManager jobManager;
-
-    public TVShowSeasonImageGalleryAdapter(Context c, String key) {
+    public TVShowSeasonImageGalleryAdapter() {
         super();
-        context = (SerenityDrawerLayoutActivity) c;
-        this.key = key;
-
-        seasonList = new ArrayList<SeriesContentInfo>();
-        fetchData();
+        seasonList = new ArrayList<>();
     }
 
-    protected void fetchData() {
-        SeasonsRetrievalJob seasonsRetrievalJob = new SeasonsRetrievalJob(key);
-        jobManager.addJobInBackground(seasonsRetrievalJob);
-    }
 
     public Object getItem(int position) {
         if (seasonList.isEmpty()) {
@@ -106,8 +94,22 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
         return seasonViewHolder;
     }
 
+    protected Activity getActivity(Context contextWrapper) {
+        Context context = contextWrapper;
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity) context;
+            }
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+        return null;
+    }
+
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Activity context = getActivity(holder.itemView.getContext());
+
         SeriesContentInfo pi = seasonList.get(position);
         ImageView mpiv = (ImageView) holder.itemView
                 .findViewById(R.id.posterImageView);

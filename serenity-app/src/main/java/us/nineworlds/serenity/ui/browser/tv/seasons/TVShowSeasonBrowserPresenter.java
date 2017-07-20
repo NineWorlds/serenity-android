@@ -22,6 +22,7 @@ import us.nineworlds.serenity.events.EpisodesRetrievalEvent;
 import us.nineworlds.serenity.events.SeasonsRetrievalEvent;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
+import us.nineworlds.serenity.jobs.SeasonsRetrievalJob;
 
 @InjectViewState
 public class TVShowSeasonBrowserPresenter extends MvpPresenter<TVShowSeasonBrowserView> {
@@ -48,6 +49,12 @@ public class TVShowSeasonBrowserPresenter extends MvpPresenter<TVShowSeasonBrows
         super.detachView(view);
         eventBus.unregister(this);
     }
+
+    protected void retrieveSeasons(String key) {
+        SeasonsRetrievalJob seasonsRetrievalJob = new SeasonsRetrievalJob(key);
+        jobManager.addJobInBackground(seasonsRetrievalJob);
+    }
+
 
     public void retrieveEpisodes(String key) {
         EpisodesRetrievalJob episodesRetrievalJob = new EpisodesRetrievalJob(key);

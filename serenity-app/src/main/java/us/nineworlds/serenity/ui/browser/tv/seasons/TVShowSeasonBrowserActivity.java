@@ -92,9 +92,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     }
 
     protected void setupSeasons() {
-
-        tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(
-                this, key));
+        tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter());
         tvShowSeasonsGallery.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         tvShowSeasonsGallery.addItemDecoration(createItemDecorator());
         tvShowSeasonsGallery
@@ -102,6 +100,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
         tvShowSeasonsGallery.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this));
         tvShowSeasonsGallery.setFocusable(true);
         tvShowSeasonsGallery.requestFocusFromTouch();
+        presenter.retrieveSeasons(key);
     }
 
     protected RecyclerView.ItemDecoration createItemDecorator() {
