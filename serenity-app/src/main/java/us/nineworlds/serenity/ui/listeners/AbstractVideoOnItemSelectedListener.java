@@ -38,14 +38,8 @@ import com.birbit.android.jobqueue.JobManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import net.ganin.darv.DpadAwareRecyclerView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -53,11 +47,9 @@ import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.events.SubtitleEvent;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.jobs.SubtitleJob;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
-import us.nineworlds.serenity.volley.SubtitleResponseListener;
 
 /**
  * Abstract class for handling video selection information. This can either be a

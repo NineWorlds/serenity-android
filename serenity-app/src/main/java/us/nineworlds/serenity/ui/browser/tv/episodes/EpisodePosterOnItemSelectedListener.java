@@ -24,8 +24,6 @@
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
@@ -38,7 +36,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
@@ -49,7 +46,6 @@ import java.util.Locale;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageUtils;

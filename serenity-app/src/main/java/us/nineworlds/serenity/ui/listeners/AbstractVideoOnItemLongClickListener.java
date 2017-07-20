@@ -38,8 +38,6 @@ import android.widget.Toast;
 
 import com.castillo.dd.DSInterface;
 import com.castillo.dd.PendingDownload;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
-import com.google.android.youtube.player.YouTubeInitializationResult;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -58,7 +56,6 @@ import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.VideoQueueHelper;
-import us.nineworlds.serenity.ui.util.YouTubeUtils;
 
 /**
  * A listener that handles long press for video content. Includes displaying a
@@ -84,9 +81,6 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 
     @Inject
     protected SharedPreferences prefs;
-
-    @Inject
-    protected YouTubeUtils youTubeUtils;
 
     @Inject
     protected VideoQueueHelper videoQueueHelper;
@@ -131,13 +125,6 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
         options.add(createMenuItemToggleWatchStatus());
         options.add(createMenuItemDownload());
         options.add(createMenuItemAddToQueue());
-
-        if (info.hasTrailer()
-                && YouTubeInitializationResult.SUCCESS
-                .equals(YouTubeApiServiceUtil
-                        .isYouTubeApiServiceAvailable(context))) {
-            options.add(createMenuItemPlayTrailer());
-        }
 
         if (!androidHelper.isGoogleTV() && androidHelper.hasSupportedCaster()) {
             options.add(createMenuItemFling());
@@ -224,9 +211,6 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
                     videoQueueHelper.performAddToQueue(info);
                     break;
                 case 3:
-                    youTubeUtils.performPlayTrailer(info, context);
-                    break;
-                case 4:
                     androidHelper.performGoogleTVSecondScreen(info, dialog);
             }
             v.requestFocusFromTouch();

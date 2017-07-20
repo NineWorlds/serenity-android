@@ -36,7 +36,6 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue.RequestFilter;
 import com.bumptech.glide.Glide;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 

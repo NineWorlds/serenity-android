@@ -113,10 +113,7 @@ public class EpisodeBrowserOnLongClickListener extends
                     performListAllEpisodesForSeason();
 
                 case 3:
-                    youTubeUtils
-                            .performPlayTrailer(info, (Activity) v.getContext());
                     break;
-
                 default:
                     androidHelper.performGoogleTVSecondScreen(info, dialog);
             }

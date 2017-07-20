@@ -56,7 +56,6 @@ import us.nineworlds.serenity.core.OnDeckRecommendations;
 import us.nineworlds.serenity.core.RecommendationBuilder;
 import us.nineworlds.serenity.core.SerenityRecommendationContentProvider;
 import us.nineworlds.serenity.core.ServerConfig;
-import us.nineworlds.serenity.core.imageloader.OKHttpImageLoader;
 import us.nineworlds.serenity.core.model.impl.CategoryMediaContainer;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
@@ -192,7 +191,7 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
         AndroidTV.class, RecommendAsyncTask.class, RecommendationBuilder.class,
         TVShowPosterImageGalleryAdapter.class, VideoPlayerKeyCodeHandler.class,
         SerenitySurfaceViewVideoActivity.class, OkHttpStack.class,
-        SerenityRecommendationContentProvider.class, OKHttpImageLoader.class,
+        SerenityRecommendationContentProvider.class,
         AndroidHelper.class,
         SecondaryCategorySpinnerOnItemSelectedListener.class,
         MovieCategorySpinnerOnItemSelectedListener.class,

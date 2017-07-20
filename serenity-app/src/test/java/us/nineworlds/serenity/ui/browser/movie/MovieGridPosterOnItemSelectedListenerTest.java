@@ -25,8 +25,6 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import android.content.SharedPreferences;
 import android.view.View;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
 import dagger.Module;
 import dagger.Provides;
 import java.util.ArrayList;
@@ -45,7 +43,6 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.BuildConfig;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
@@ -74,9 +71,6 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 
 	@Mock
 	SharedPreferences mockPreferences;
-
-	@Mock
-	ImageLoader mockImageLoader;
 
 	@Mock
 	View mockView;

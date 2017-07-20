@@ -43,7 +43,6 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.ui.util.VideoQueueHelper;
-import us.nineworlds.serenity.ui.util.YouTubeUtils;
 
 @Module(library = true)
 public class SerenityModule {
@@ -52,12 +51,6 @@ public class SerenityModule {
     @Singleton
     TimeUtil providesTimeUtil() {
         return new TimeUtil();
-    }
-
-    @Provides
-    @Singleton
-    YouTubeUtils providesYouTubeUtils() {
-        return new YouTubeUtils();
     }
 
     @Provides
