@@ -63,20 +63,13 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
     @Inject
     JobManager jobManager;
 
-    public MoviePosterImageAdapter(Context c, String key, String category) {
+    public MoviePosterImageAdapter(String key, String category) {
         super(key, category);
     }
 
     @Override
     protected void fetchDataFromService() {
-        MovieRetrievalJob movieRetrievalJob = new MovieRetrievalJob(key, category);
-        jobManager.addJobInBackground(movieRetrievalJob);
-    }
 
-    @Override
-    public int getItemCount() {
-        Log.d(this.getClass().getSimpleName(), "Item Count Called for Grid.");
-        return super.getItemCount();
     }
 
     @Override

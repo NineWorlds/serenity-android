@@ -279,4 +279,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
         recyclerView.requestFocusFromTouch();
     }
 
+    public void requestUpdatedVideos(String key, String category) {
+        presenter.fetchVideos(key, category);
+    }
+
 }

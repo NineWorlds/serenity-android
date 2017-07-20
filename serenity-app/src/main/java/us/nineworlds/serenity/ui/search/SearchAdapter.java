@@ -37,7 +37,7 @@ import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 public class SearchAdapter extends MoviePosterImageAdapter {
 
     public SearchAdapter(Context c, List<VideoContentInfo> videos) {
-        super(c, null, null);
+        super(null, null);
         posterList = videos;
     }
 

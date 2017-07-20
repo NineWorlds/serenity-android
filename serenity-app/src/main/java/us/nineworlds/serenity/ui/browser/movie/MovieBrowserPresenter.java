@@ -22,12 +22,16 @@ import us.nineworlds.serenity.events.MainCategoryEvent;
 import us.nineworlds.serenity.events.MovieRetrievalEvent;
 import us.nineworlds.serenity.events.MovieSecondaryCategoryEvent;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.jobs.MovieRetrievalJob;
 
 @InjectViewState
 public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserView> {
 
     @Inject
     EventBus eventBus;
+
+    @Inject
+    JobManager jobManager;
 
     public MovieBrowserPresenter() {
         super();
@@ -69,6 +73,11 @@ public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserView> {
         MovieMediaContainer movies = new MovieMediaContainer(event.getMediaContainer());
         List<VideoContentInfo> posterList = movies.createVideos();
         getViewState().displayPosters(posterList);
+    }
+
+    public void fetchVideos(String key, String category) {
+        MovieRetrievalJob movieRetrievalJob = new MovieRetrievalJob(key, category);
+        jobManager.addJobInBackground(movieRetrievalJob);
     }
 
 

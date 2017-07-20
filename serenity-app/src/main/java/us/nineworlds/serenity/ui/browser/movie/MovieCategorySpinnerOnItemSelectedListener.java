@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -154,8 +155,6 @@ public class MovieCategorySpinnerOnItemSelectedListener extends
         jobManager.addJobInBackground(new MovieSecondaryCategoryJob(key, category));
     }
 
-
-
     protected void createGallery(CategoryInfo item) {
         AbstractPosterImageGalleryAdapter adapter = getPosterImageAdapter(item);
         refreshGallery(adapter);
@@ -167,8 +166,12 @@ public class MovieCategorySpinnerOnItemSelectedListener extends
      */
     protected AbstractPosterImageGalleryAdapter getPosterImageAdapter(
             CategoryInfo item) {
-        AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(
-                getMultiViewVideoActivity(), key, item.getCategory());
+        AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(key, item.getCategory());
+        Activity activity = getActivity(getMultiViewVideoActivity());
+        if (activity instanceof MovieBrowserActivity) {
+            MovieBrowserActivity movieBrowserActivity = (MovieBrowserActivity) activity;
+            movieBrowserActivity.requestUpdatedVideos(key, item.getCategory());
+        }
         return adapter;
     }
 
