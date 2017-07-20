@@ -59,8 +59,7 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
  * @author dcarver
  *
  */
-public class TVShowGalleryOnItemSelectedListener extends BaseInjector implements
-        DpadAwareRecyclerView.OnItemSelectedListener {
+public class TVShowGalleryOnItemSelectedListener extends BaseInjector implements DpadAwareRecyclerView.OnItemSelectedListener {
 
     private SerenityMultiViewVideoActivity context;
     private SeriesContentInfo info;

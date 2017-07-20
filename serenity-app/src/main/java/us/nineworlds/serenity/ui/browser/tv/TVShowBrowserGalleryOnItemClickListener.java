@@ -40,8 +40,7 @@ import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity;
  * @author dcarver
  *
  */
-public class TVShowBrowserGalleryOnItemClickListener implements
-        DpadAwareRecyclerView.OnItemClickListener {
+public class TVShowBrowserGalleryOnItemClickListener implements DpadAwareRecyclerView.OnItemClickListener {
 
     private final Activity context;
 
