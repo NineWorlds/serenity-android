@@ -14,9 +14,12 @@ import javax.inject.Inject;
 
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.CategoryMediaContainer;
+import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
 import us.nineworlds.serenity.core.model.impl.SecondaryCategoryMediaContainer;
 import us.nineworlds.serenity.events.MainCategoryEvent;
+import us.nineworlds.serenity.events.MovieRetrievalEvent;
 import us.nineworlds.serenity.events.MovieSecondaryCategoryEvent;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 
@@ -60,5 +63,13 @@ public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserView> {
 
         getViewState().populateSecondaryCategory(secondaryCategories, event.getKey(), event.getCategory());
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMoviePosterResponse(MovieRetrievalEvent event) {
+        MovieMediaContainer movies = new MovieMediaContainer(event.getMediaContainer());
+        List<VideoContentInfo> posterList = movies.createVideos();
+        getViewState().displayPosters(posterList);
+    }
+
 
 }

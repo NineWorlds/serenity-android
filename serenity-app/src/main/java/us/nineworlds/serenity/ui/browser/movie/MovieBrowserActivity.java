@@ -28,6 +28,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -48,6 +49,7 @@ import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
@@ -267,6 +269,14 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
         secondarySpinner
                 .setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
                         category, key, this));
+    }
+
+    @Override
+    public void displayPosters(List<VideoContentInfo> videos) {
+        DpadAwareRecyclerView recyclerView = findGalleryView();
+        MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) recyclerView.getAdapter();
+        adapter.populatePosters(videos);
+        recyclerView.requestFocusFromTouch();
     }
 
 }

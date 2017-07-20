@@ -23,7 +23,9 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,8 +36,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.birbit.android.jobqueue.JobManager;
 import com.bumptech.glide.Glide;
 
@@ -45,17 +45,15 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
-import us.nineworlds.serenity.events.MovieRetrievalEvent;
 import us.nineworlds.serenity.jobs.MovieRetrievalJob;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.widgets.RoundedImageView;
@@ -65,17 +63,8 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
     @Inject
     JobManager jobManager;
 
-    @Inject
-    EventBus eventBus;
-
-    protected static AbstractPosterImageGalleryAdapter notifyAdapter;
-    private static SerenityMultiViewVideoActivity movieContext;
-
     public MoviePosterImageAdapter(Context c, String key, String category) {
         super(key, category);
-        movieContext = (SerenityMultiViewVideoActivity) c;
-        notifyAdapter = this;
-        eventBus.register(this);
     }
 
     @Override
@@ -92,13 +81,14 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(movieContext).inflate(R.layout.poster_indicator_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_indicator_view, parent, false);
         return new MoviePosterViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         MoviePosterViewHolder viewHolder = (MoviePosterViewHolder) holder;
+        Activity activity = getActivity(viewHolder.itemView.getContext());
         if (position > posterList.size()) {
             position = posterList.size() - 1;
         }
@@ -118,31 +108,32 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
         int width = 0;
         int height = 0;
 
-        width = ImageUtils.getDPI(130, movieContext);
-        height = ImageUtils.getDPI(200, movieContext);
+        width = ImageUtils.getDPI(130, activity);
+        height = ImageUtils.getDPI(200, activity);
         mpiv.setMaxHeight(height);
         mpiv.setMaxWidth(width);
         mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
         viewHolder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
 
-        Glide.with(movieContext).load(pi.getImageURL()).into(mpiv);
+        Glide.with(activity).load(pi.getImageURL()).into(mpiv);
 
         setWatchedStatus(viewHolder.itemView, pi);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMoviePosterResponse(MovieRetrievalEvent event) {
-        populatePosters(event.getMediaContainer());
-
+    protected Activity getActivity(Context contextWrapper) {
+        Context context = contextWrapper;
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity) context;
+            }
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+        return null;
     }
 
-    protected void populatePosters(MediaContainer mc) {
-        MovieMediaContainer movies = new MovieMediaContainer(mc);
-        posterList = movies.createVideos();
-        notifyAdapter.notifyDataSetChanged();
-        DpadAwareRecyclerView posterGallery = (DpadAwareRecyclerView) movieContext
-                .findViewById(R.id.moviePosterView);
-        posterGallery.requestFocusFromTouch();
+    protected void populatePosters(List<VideoContentInfo> videos) {
+        posterList = videos;
+        notifyDataSetChanged();
     }
 
     protected class MoviePosterViewHolder extends RecyclerView.ViewHolder {
