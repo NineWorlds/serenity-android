@@ -19,4 +19,7 @@ public interface TVShowBrowserView extends MvpView {
     void displayShows(List<SeriesContentInfo> series, String category);
 
     void populateSecondaryCategories(List<SecondaryCategoryInfo> catagories, String category);
+
+    @StateStrategyType(SkipStrategy.class)
+    void requestUpdatedVideos(String key, String category);
 }

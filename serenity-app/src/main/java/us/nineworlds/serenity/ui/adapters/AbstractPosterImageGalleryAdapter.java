@@ -48,24 +48,10 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
 
     protected static List<VideoContentInfo> posterList = null;
     protected Handler handler;
-    protected String key;
-    protected String category;
 
-    public AbstractPosterImageGalleryAdapter(String key) {
+    public AbstractPosterImageGalleryAdapter() {
         posterList = new ArrayList<>();
-        this.key = key;
-        fetchDataFromService();
     }
-
-    public AbstractPosterImageGalleryAdapter(String key, String category) {
-        this.key = key;
-        this.category = category;
-        posterList = new ArrayList<>();
-
-        fetchDataFromService();
-    }
-
-    protected abstract void fetchDataFromService();
 
     @Override
     public int getItemCount() {

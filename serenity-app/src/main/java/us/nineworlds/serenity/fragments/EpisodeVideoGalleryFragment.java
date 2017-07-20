@@ -25,6 +25,7 @@ package us.nineworlds.serenity.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,13 +87,15 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
             String key = ((EpisodeBrowserActivity) getActivity()).getKey();
 
-            videoGallery.setAdapter(new EpisodePosterImageGalleryAdapter(key));
+            videoGallery.setAdapter(new EpisodePosterImageGalleryAdapter());
             videoGallery.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
             videoGallery.addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
             videoGallery
                     .setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
             videoGallery.setOnItemClickListener(new EpisodePosterOnItemClickListener());
             videoGallery.setSelectorVelocity(0);
+            EpisodeBrowserActivity activity = (EpisodeBrowserActivity) getActivity();
+            activity.fetchEpisodes(key);
         }
     }
 

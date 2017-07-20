@@ -247,6 +247,10 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
         secondarySpinner.requestFocusFromTouch();
     }
 
+    @Override
+    public void requestUpdatedVideos(String key, String category) {
+        presenter.fetchTVShows(key, category);
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

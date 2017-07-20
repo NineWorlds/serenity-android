@@ -84,8 +84,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListener extends
 
     protected AbstractPosterImageGalleryAdapter getPosterImageAdapter(
             SecondaryCategoryInfo item) {
-        AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(key, item.getParentCategory()
-                + "/" + item.getCategory());
+        AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter();
 
         Activity activity = getActivity(getMultiViewVideoActivity());
         if (activity instanceof MovieBrowserActivity) {

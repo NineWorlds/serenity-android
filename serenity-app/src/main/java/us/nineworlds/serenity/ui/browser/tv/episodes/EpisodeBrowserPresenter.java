@@ -2,6 +2,7 @@ package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.birbit.android.jobqueue.JobManager;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
@@ -17,12 +18,16 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.events.EpisodesRetrievalEvent;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
 
 @InjectViewState
 public class EpisodeBrowserPresenter extends MvpPresenter<EpisodeBrowserView> {
 
     @Inject
     EventBus eventBus;
+
+    @Inject
+    JobManager jobManager;
 
     public EpisodeBrowserPresenter() {
         super();
@@ -39,6 +44,11 @@ public class EpisodeBrowserPresenter extends MvpPresenter<EpisodeBrowserView> {
     public void detachView(EpisodeBrowserView view) {
         super.detachView(view);
         eventBus.unregister(this);
+    }
+
+    public void retrieveEpisodes(String key) {
+        EpisodesRetrievalJob episodesRetrievalJob = new EpisodesRetrievalJob(key);
+        jobManager.addJobInBackground(episodesRetrievalJob);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

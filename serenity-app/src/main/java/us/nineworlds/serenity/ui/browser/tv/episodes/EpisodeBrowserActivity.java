@@ -193,4 +193,9 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
         adapter.updateEpisodes(episodes);
         gallery.requestFocus();
     }
+
+    @Override
+    public void fetchEpisodes(String key) {
+        presenter.retrieveEpisodes(key);
+    }
 }

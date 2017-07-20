@@ -30,6 +30,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
+import com.bumptech.glide.request.animation.GlideAnimation;
+
 import net.ganin.darv.DpadAwareRecyclerView;
 
 import javax.inject.Inject;
@@ -63,6 +65,8 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
     @BindView(R.id.tvShowGridView) @Nullable DpadAwareRecyclerView tvGridRecyclerView;
     @BindView(R.id.tvShowBannerGallery) @Nullable DpadAwareRecyclerView posterGallery;
 
+    AdapterView<?> viewAdapter;
+
 
     public TVSecondaryCategorySpinnerOnItemSelectedListener(String defaultSelection, String key) {
         super();
@@ -72,6 +76,7 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
 
     @Override
     public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
+        this.viewAdapter = viewAdapter;
         ButterKnife.bind(this, getActivity(viewAdapter.getContext()));
 
         SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(position);
@@ -98,20 +103,31 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
         categoryState.setGenreCategory(item.getCategory());
 
         if (isGridViewActive) {
-            tvGridRecyclerView.setAdapter(new TVShowPosterImageGalleryAdapter(key, item.getParentCategory() + "/" + item.getCategory()));
+            tvGridRecyclerView.setAdapter(new TVShowPosterImageGalleryAdapter());
             tvGridRecyclerView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener());
+            refreshShows(key, item.getParentCategory() + "/" + item.getCategory());
             return;
         }
 
         if (posterLayoutActive) {
-            posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(key, item.getParentCategory() + "/" + item.getCategory()));
+            posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter());
         } else {
-            posterGallery.setAdapter(new TVShowRecyclerAdapter(key, item.getParentCategory() + "/" + item.getCategory()));
+            posterGallery.setAdapter(new TVShowRecyclerAdapter());
         }
+
+        refreshShows(key, item.getParentCategory() + "/" + item.getCategory());
 
         posterGallery.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener());
 //			posterGallery
 //					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
+    }
+
+    private void refreshShows(String key, String category) {
+        Activity activity = getActivity(viewAdapter.getContext());
+        if (activity instanceof TVShowBrowserActivity) {
+            TVShowBrowserActivity a = (TVShowBrowserActivity) activity;
+            a.requestUpdatedVideos(key, category);
+        }
     }
 
 

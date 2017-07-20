@@ -40,7 +40,6 @@ import java.util.List;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
@@ -53,19 +52,6 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
     private static final int BANNER_PIXEL_WIDTH = 758;
 
     protected List<SeriesContentInfo> tvShowList = new ArrayList<>();
-
-    private final String key;
-
-    public TVShowRecyclerAdapter(String key, String category) {
-        super(key, category);
-        this.key = key;
-        fetchData();
-    }
-
-    protected void fetchData() {
-        TVShowRetrievalJob tvShowRetrievalJob = new TVShowRetrievalJob(key, category);
-        jobManager.addJobInBackground(tvShowRetrievalJob);
-    }
 
     public int getItemCount() {
         return tvShowList.size();
@@ -162,16 +148,10 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
         watchedView.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    protected void fetchDataFromService() {
-
-    }
-
     public void updateSeries(List<SeriesContentInfo> series) {
         tvShowList = series;
         notifyDataSetChanged();
     }
-
 
     public class TVShowViewHolder extends RecyclerView.ViewHolder {
 

@@ -62,23 +62,6 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
  */
 public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 
-    @Inject
-    JobManager jobManager;
-
-    public EpisodePosterImageGalleryAdapter(String key) {
-        super(key);
-    }
-
-    @Override
-    protected void fetchDataFromService() {
-        retrieveEpisodes();
-    }
-
-    public void retrieveEpisodes() {
-        EpisodesRetrievalJob episodesRetrievalJob = new EpisodesRetrievalJob(key);
-        jobManager.addJobInBackground(episodesRetrievalJob);
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_indicator_view, null);

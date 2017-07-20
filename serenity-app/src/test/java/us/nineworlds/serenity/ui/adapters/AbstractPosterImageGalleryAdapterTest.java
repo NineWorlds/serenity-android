@@ -69,7 +69,7 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
 		activity = Robolectric
 				.buildActivity(MainActivity.class).create().get();
-		abstractPosterImageGalleryAdapter = new FakePosterImageGalleryAdapter("12345");
+		abstractPosterImageGalleryAdapter = new FakePosterImageGalleryAdapter();
 	}
 
 	@After
@@ -156,11 +156,8 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 	public class FakePosterImageGalleryAdapter extends
 	AbstractPosterImageGalleryAdapter {
 
-		/**
-		 * @param key
-		 */
-		public FakePosterImageGalleryAdapter(String key) {
-			super(key);
+		public FakePosterImageGalleryAdapter() {
+			super();
 
 			posterList = new ArrayList<VideoContentInfo>();
 			VideoContentInfo videoContentInfo = new MoviePosterInfo();
@@ -169,11 +166,6 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			return null;
-		}
-
-		@Override
-		protected void fetchDataFromService() {
-
 		}
 
 		@Override

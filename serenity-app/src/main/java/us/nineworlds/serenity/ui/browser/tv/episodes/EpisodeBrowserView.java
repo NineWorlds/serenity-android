@@ -9,5 +9,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 public interface EpisodeBrowserView extends MvpView {
 
+    void fetchEpisodes(String key);
+
     void updateGallery(List<VideoContentInfo> episodes);
 }

@@ -30,21 +30,10 @@ import java.util.List;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 
-/**
- * @author dcarver
- *
- */
 public class SearchAdapter extends MoviePosterImageAdapter {
 
     public SearchAdapter(Context c, List<VideoContentInfo> videos) {
-        super(null, null);
         posterList = videos;
-    }
-
-
-    @Override
-    protected void fetchDataFromService() {
-
     }
 
 }

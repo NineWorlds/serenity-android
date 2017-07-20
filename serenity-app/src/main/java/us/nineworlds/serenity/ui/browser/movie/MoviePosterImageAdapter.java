@@ -53,24 +53,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.jobs.MovieRetrievalJob;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.widgets.RoundedImageView;
 
 public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
-
-    @Inject
-    JobManager jobManager;
-
-    public MoviePosterImageAdapter(String key, String category) {
-        super(key, category);
-    }
-
-    @Override
-    protected void fetchDataFromService() {
-
-    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

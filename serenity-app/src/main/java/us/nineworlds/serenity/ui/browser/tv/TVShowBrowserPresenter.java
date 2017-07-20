@@ -35,6 +35,7 @@ import us.nineworlds.serenity.events.TVCategorySecondaryEvent;
 import us.nineworlds.serenity.events.TVShowRetrievalEvent;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.jobs.TVCategoryJob;
+import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
 
 @InjectViewState
 @StateStrategyType(SkipStrategy.class)
@@ -66,6 +67,11 @@ public class TVShowBrowserPresenter extends MvpPresenter<TVShowBrowserView> {
 
     public void fetchTVCategories(String key) {
         jobManager.addJobInBackground(new TVCategoryJob(key));
+    }
+
+    public void fetchTVShows(String key, String category) {
+        TVShowRetrievalJob tvShowRetrievalJob = new TVShowRetrievalJob(key, category);
+        jobManager.addJobInBackground(tvShowRetrievalJob);
     }
 
     public String getKey(Intent intent) {

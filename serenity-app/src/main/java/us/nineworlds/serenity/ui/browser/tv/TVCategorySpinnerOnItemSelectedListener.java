@@ -196,19 +196,29 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
 
     protected void setupImageGallery(CategoryInfo item) {
         if (isGridViewActive) {
-            tvGridView.setAdapter(new TVShowPosterImageGalleryAdapter(key, item.getCategory()));
+            tvGridView.setAdapter(new TVShowPosterImageGalleryAdapter());
             tvGridView.setOnKeyListener(new TVShowGridOnKeyListener());
+            refreshData(item);
             return;
         }
 
-
         if (!posterLayoutActive) {
-            posterGallery.setAdapter(new TVShowRecyclerAdapter(key, item.getCategory()));
+            posterGallery.setAdapter(new TVShowRecyclerAdapter());
         } else {
-            posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(key, item.getCategory()));
+            posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter());
         }
+
+        refreshData(item);
 //			posterGallery
 //			.setOnItemLongClickListener(new ShowOnItemLongClickListener());
+    }
+
+    private void refreshData(CategoryInfo item) {
+        Activity activity = getActivity(secondarySpinner.getContext());
+        if (activity instanceof TVShowBrowserActivity) {
+            TVShowBrowserActivity a = (TVShowBrowserActivity) activity;
+            a.requestUpdatedVideos(key, item.getCategory());
+        }
     }
 
 

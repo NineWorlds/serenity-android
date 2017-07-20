@@ -166,7 +166,7 @@ public class MovieCategorySpinnerOnItemSelectedListener extends
      */
     protected AbstractPosterImageGalleryAdapter getPosterImageAdapter(
             CategoryInfo item) {
-        AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(key, item.getCategory());
+        AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter();
         Activity activity = getActivity(getMultiViewVideoActivity());
         if (activity instanceof MovieBrowserActivity) {
             MovieBrowserActivity movieBrowserActivity = (MovieBrowserActivity) activity;

@@ -3,6 +3,8 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.birbit.android.jobqueue.Job;
+import com.birbit.android.jobqueue.JobManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -19,12 +21,16 @@ import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
 import us.nineworlds.serenity.events.EpisodesRetrievalEvent;
 import us.nineworlds.serenity.events.SeasonsRetrievalEvent;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
 
 @InjectViewState
 public class TVShowSeasonBrowserPresenter extends MvpPresenter<TVShowSeasonBrowserView> {
 
     @Inject
     EventBus eventBus;
+
+    @Inject
+    JobManager jobManager;
 
     public TVShowSeasonBrowserPresenter() {
         super();
@@ -41,6 +47,11 @@ public class TVShowSeasonBrowserPresenter extends MvpPresenter<TVShowSeasonBrows
     public void detachView(TVShowSeasonBrowserView view) {
         super.detachView(view);
         eventBus.unregister(this);
+    }
+
+    public void retrieveEpisodes(String key) {
+        EpisodesRetrievalJob episodesRetrievalJob = new EpisodesRetrievalJob(key);
+        jobManager.addJobInBackground(episodesRetrievalJob);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

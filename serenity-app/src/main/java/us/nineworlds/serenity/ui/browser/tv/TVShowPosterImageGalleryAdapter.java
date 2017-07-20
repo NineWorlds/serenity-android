@@ -36,10 +36,6 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 
 public class TVShowPosterImageGalleryAdapter extends TVShowRecyclerAdapter {
 
-    public TVShowPosterImageGalleryAdapter(String key, String category) {
-        super(key, category);
-    }
-
     @Override
     protected void createImage(View galleryCellView, SeriesContentInfo pi, int imageWidth, int imageHeight) {
         int width = ImageUtils.getDPI(130, (Activity) galleryCellView.getContext());
@@ -48,11 +44,6 @@ public class TVShowPosterImageGalleryAdapter extends TVShowRecyclerAdapter {
         initPosterMetaData(galleryCellView, pi, width, height, true);
 
         galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
-    }
-
-    @Override
-    protected void fetchDataFromService() {
-
     }
 
 }

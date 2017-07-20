@@ -50,18 +50,11 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 
 public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageGalleryAdapter {
 
-    private static SeasonsEpisodePosterImageGalleryAdapter notifyAdapter;
-
     @Inject
     protected SharedPreferences prefs;
 
     @Inject
     PlexappFactory plexFactory;
-
-    public SeasonsEpisodePosterImageGalleryAdapter(String key) {
-        super(key);
-        notifyAdapter = this;
-    }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -115,11 +108,4 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageG
         title.setVisibility(View.VISIBLE);
 
     }
-
-    @Override
-    protected void fetchDataFromService() {
-        retrieveEpisodes();
-        notifyAdapter = this;
-    }
-
 }

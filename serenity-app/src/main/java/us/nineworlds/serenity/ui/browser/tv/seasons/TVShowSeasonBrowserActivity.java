@@ -231,4 +231,10 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
             gallery.requestFocusFromTouch();
         }
     }
+
+    @Override
+    public void fetchEpisodes(String key) {
+        presenter.retrieveEpisodes(key);
+    }
+
 }
