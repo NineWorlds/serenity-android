@@ -38,7 +38,6 @@ import java.util.ArrayList;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.widgets.BadgeView;
 
 /**
  * @author dcarver
@@ -107,25 +106,25 @@ public abstract class AbstractTVShowOnItemLongClick {
                     if (videoInfo.isWatched()) {
                         watchedView.setVisibility(View.INVISIBLE);
                     } else {
-                        BadgeView badgeView = (BadgeView) view
-                                .findViewWithTag("badge");
-                        if (badgeView != null) {
-                            badgeView.hide(true);
-                            badgeView.setVisibility(View.INVISIBLE);
-                        }
+//                        BadgeView badgeView = (BadgeView) view
+//                                .findViewWithTag("badge");
+//                        if (badgeView != null) {
+//                            badgeView.hide(true);
+//                            badgeView.setVisibility(View.INVISIBLE);
+//                        }
                         watchedView.setImageResource(R.drawable.overlaywatched);
                         watchedView.setVisibility(View.VISIBLE);
                     }
                     videoInfo.toggleWatchedStatus();
 
                     if (videoInfo.isUnwatched()) {
-                        BadgeView badgeView = (BadgeView) view
-                                .findViewWithTag("badge");
-                        if (badgeView != null) {
-                            badgeView.setText(videoInfo.getShowsUnwatched());
-                            badgeView.setVisibility(View.VISIBLE);
-                            badgeView.show(true);
-                        }
+//                        BadgeView badgeView = (BadgeView) view
+//                                .findViewWithTag("badge");
+//                        if (badgeView != null) {
+//                            badgeView.setText(videoInfo.getShowsUnwatched());
+//                            badgeView.setVisibility(View.VISIBLE);
+//                            badgeView.show(true);
+//                        }
                     }
 
                     break;
