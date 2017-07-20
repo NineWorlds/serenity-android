@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
@@ -66,8 +67,6 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
     private String savedInstanceCategory;
     private boolean isGridViewActive;
     private boolean posterLayoutActive;
-
-    AppCompatActivity context;
 
     @Inject
     JobManager jobManager;
@@ -167,6 +166,7 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
                 || item.getCategory().equals("recentlyAdded")
                 || item.getCategory().equals("recentlyViewed")
                 || item.getCategory().equals("onDeck")) {
+            Activity context = getActivity(secondarySpinner.getContext());
             Intent i = new Intent(context, EpisodeBrowserActivity.class);
             i.putExtra("key", "/library/sections/" + key + "/" + item.getCategory());
             context.startActivityForResult(i, 0);
