@@ -163,7 +163,7 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector i
     }
 
     public void fetchSubtitle(VideoContentInfo mpi) {
-        jobManager.addJobInBackground(new SubtitleJob("/library/metadata/" + mpi.id()));
+//        jobManager.addJobInBackground(new SubtitleJob("/library/metadata/" + mpi.id()));
     }
 
 //    @Subscribe(threadMode = ThreadMode.MAIN)
