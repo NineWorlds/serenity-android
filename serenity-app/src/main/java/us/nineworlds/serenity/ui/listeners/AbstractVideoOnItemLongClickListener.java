@@ -36,16 +36,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.castillo.dd.PendingDownload;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.AndroidHelper;
@@ -223,15 +219,6 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 
     protected void startDownload(String destination) {
 
-        List<PendingDownload> pendingDownloads = SerenityApplication
-                .getPendingDownloads();
-        PendingDownload pendingDownload = new PendingDownload();
-        String filename = info.getTitle() + "." + info.getContainer();
-        pendingDownload.setFilename(filename);
-        pendingDownload.setUrl(info.getDirectPlayUrl());
-
-        pendingDownloads.add(pendingDownload);
-        int pos = pendingDownloads.size() - 1;
     }
 
     protected void directoryChooser() {

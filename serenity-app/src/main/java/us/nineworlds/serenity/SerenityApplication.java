@@ -28,7 +28,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.birbit.android.jobqueue.JobManager;
-import com.castillo.dd.PendingDownload;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -62,7 +61,6 @@ public class SerenityApplication extends Application {
     JobManager jobManager;
 
     private static boolean enableTracking = true;
-    private static List<PendingDownload> pendingDownloads;
 
     public static final int PROGRESS = 0xDEADBEEF;
 
@@ -90,16 +88,11 @@ public class SerenityApplication extends Application {
         return mTrackers.get(TrackerName.GLOBAL_TRACKER);
     }
 
-    public static List<PendingDownload> getPendingDownloads() {
-        return pendingDownloads;
-    }
-
     public static boolean isTrackingEnabled() {
         return enableTracking;
     }
 
     public SerenityApplication() {
-        pendingDownloads = new ArrayList<PendingDownload>();
 
     }
 
