@@ -71,7 +71,7 @@
             android:label="@string/title_activity_movie_browser"
             android:name="us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme"></activity>
+            android:theme="@style/CustomActionBarTheme"/>
         <activity
             android:hardwareAccelerated="true"
             android:label="@string/title_activity_main"
@@ -111,17 +111,17 @@
             android:label="@string/title_activity_tvbrowser_show"
             android:name="us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme"></activity>
+            android:theme="@style/CustomActionBarTheme"/>
         <activity
             android:label="@string/title_activity_tvbrowser_show_season"
             android:name="us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme"></activity>
+            android:theme="@style/CustomActionBarTheme"/>
         <activity
             android:label="@string/title_activity_tvbrowser_show_episodes"
             android:name="us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/CustomActionBarTheme"></activity>
+            android:theme="@style/CustomActionBarTheme"/>
         <activity
             android:name="us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity"
             android:screenOrientation="sensorLandscape"
@@ -148,7 +148,7 @@
         </activity>
         <activity
             android:name=".ui.preferences.SerenityPreferenceActivity"
-            android:screenOrientation="sensorLandscape"></activity>
+            android:screenOrientation="sensorLandscape"/>
         <activity
             android:name="us.nineworlds.serenity.ui.search.SearchableActivity"
             android:screenOrientation="sensorLandscape"
@@ -167,20 +167,17 @@
 
         <service android:name=".core.services.MovieSearchIntentService" />
         <service
-            android:name="com.castillo.dd.DownloadService"
-            tools:ignore="MissingRegistered" />
-        <service
             android:enabled="true"
             android:exported="true"
             android:name="us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService" />
 
         <provider
             android:authorities="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"
-            android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"></provider>
+            android:name="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"/>
         <provider
             android:authorities="us.nineworlds.serenity.core.SerenityRecommendationContentProvider"
             android:exported="true"
-            android:name="us.nineworlds.serenity.core.SerenityRecommendationContentProvider"></provider>
+            android:name="us.nineworlds.serenity.core.SerenityRecommendationContentProvider"/>
 
         <receiver android:name="us.nineworlds.serenity.StartupBroadcastReceiver">
             <intent-filter>

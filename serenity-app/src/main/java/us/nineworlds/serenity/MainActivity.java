@@ -24,7 +24,6 @@
 package us.nineworlds.serenity;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -39,8 +38,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.birbit.android.jobqueue.JobManager;
-import com.castillo.dd.DownloadService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +50,6 @@ import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
-import us.nineworlds.serenity.handlers.DownloadHandler;
-import us.nineworlds.serenity.handlers.DownloadHandler.DownloadServiceConnection;
-import us.nineworlds.serenity.jobs.GDMServerJob;
-import us.nineworlds.serenity.jobs.GlideClearCacheJob;
 import us.nineworlds.serenity.server.GDMReceiver;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
@@ -75,8 +68,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
 
     protected Handler autoConfigureHandler = new Handler();
 
-    protected DownloadHandler downloadHandler;
-    private DownloadServiceConnection downloadService;
     private final BroadcastReceiver gdmReciver = new GDMReceiver();
 
     private SharedPreferences preferences;
@@ -141,17 +132,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
                         drawerLayout));
     }
 
-    protected void initDownloadService() {
-        downloadHandler = DownloadHandler.getInstance(this);
-        downloadService = downloadHandler.getDownloadService();
-        getApplicationContext().bindService(
-                new Intent(this, DownloadService.class), downloadService,
-                Context.BIND_AUTO_CREATE);
-
-        downloadHandler.sendMessage(downloadHandler
-                .obtainMessage(SerenityApplication.PROGRESS));
-    }
-
     protected void initPreferences() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (preferences != null) {
@@ -199,8 +179,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
                 editor.apply();
             }
         }
-
-        initDownloadService();
     }
 
     /**
@@ -223,10 +201,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        downloadHandler.removeMessages(SerenityApplication.PROGRESS);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(gdmReciver);
-
-        getApplicationContext().unbindService(downloadService);
     }
 
     @Override

@@ -36,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.castillo.dd.DSInterface;
 import com.castillo.dd.PendingDownload;
 
 import java.util.ArrayList;
@@ -50,7 +49,6 @@ import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.AndroidHelper;
-import us.nineworlds.serenity.handlers.DownloadHandler;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
@@ -234,20 +232,6 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
 
         pendingDownloads.add(pendingDownload);
         int pos = pendingDownloads.size() - 1;
-
-        try {
-            DSInterface downloadService = DownloadHandler.getInstance(context)
-                    .getDownloadServiceInterface();
-            downloadService.addFileDownloadlist(info.getDirectPlayUrl(),
-                    destination, filename, pos);
-            Toast.makeText(
-                    context,
-                    context.getString(R.string.starting_download_of_)
-                            + info.getTitle(), Toast.LENGTH_LONG).show();
-        } catch (Exception ex) {
-            Log.e(getClass().getName(), "Unable to download " + info.getTitle()
-                    + "." + info.getContainer());
-        }
     }
 
     protected void directoryChooser() {
