@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
@@ -44,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,11 +65,15 @@ import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implements TVShowBrowserView {
 
-    private boolean restarted_state = false;
-    private String key;
+    public static final String SERIES_LAYOUT_GRID = "series_layout_grid";
+    protected boolean restarted_state = false;
+    protected String key;
 
     @InjectPresenter
     TVShowBrowserPresenter presenter;
+
+    @Inject
+    Provider<TVShowBrowserPresenter> tvShowBrowserPresenterProvider;
 
     @Inject
     protected SharedPreferences preferences;
@@ -82,6 +88,12 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
     @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
     @BindView(R.id.categoryFilter) Spinner categorySpinner;
 
+    @ProvidePresenter
+    TVShowBrowserPresenter providesTVShowBrowserPresenter() {
+        return tvShowBrowserPresenterProvider.get();
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +103,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
 
         createSideMenu();
 
-        fanArt = findViewById(R.id.fanArt);
         fanArt.setBackgroundResource(R.drawable.tvshows);
 
         populateTVShowContent();
@@ -141,7 +152,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
     @Override
     protected void createSideMenu() {
         posterLayoutActive = preferences.getBoolean("series_layout_posters", false);
-        gridViewActive = preferences.getBoolean("series_layout_grid", false);
+        gridViewActive = preferences.getBoolean(SERIES_LAYOUT_GRID, false);
         if (isGridViewActive()) {
             setContentView(R.layout.activity_tvbrowser_show_gridview_posters);
         } else if (posterLayoutActive) {

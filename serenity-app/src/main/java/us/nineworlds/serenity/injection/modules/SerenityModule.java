@@ -39,6 +39,7 @@ import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.browser.tv.TVCategoryState;
+import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserPresenter;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
@@ -105,6 +106,11 @@ public class SerenityModule {
     @Singleton
     TVCategoryState providesTVCategoryState() {
         return new TVCategoryState();
+    }
+
+    @Provides
+    TVShowBrowserPresenter providesTVShowBrowserPresenter() {
+        return new TVShowBrowserPresenter();
     }
 
 }

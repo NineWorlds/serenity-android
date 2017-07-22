@@ -29,6 +29,8 @@ import dagger.Module;
 import dagger.Provides;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.ganin.darv.DpadAwareRecyclerView;
 import org.junit.After;
@@ -64,7 +66,7 @@ import static org.robolectric.Shadows.shadowOf;
 @Config(constants = BuildConfig.class)
 public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 
-	@Mock
+	@Inject
 	PlexappFactory mockPlexFactory;
 
 	@Mock
@@ -149,12 +151,6 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 			MovieGridPosterOnItemSelectedListener.class,
 			MovieGridPosterOnItemSelectedListenerTest.class })
 	public class TestModule {
-
-		@Provides
-		@Singleton
-		PlexappFactory providesPlexappFactory() {
-			return mockPlexFactory;
-		}
 
 		@Provides
 		@Singleton

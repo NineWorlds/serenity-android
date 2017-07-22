@@ -31,10 +31,13 @@ import org.mockito.MockitoAnnotations;
 import javax.inject.Singleton;
 
 import dagger.Provides;
+import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import dagger.Module;
+import us.nineworlds.serenity.injection.modules.SerenityModule;
 
 @Module(addsTo = AndroidModule.class,
+        includes = SerenityModule.class,
         library = true,
         overrides = true,
         injects = { TestSerenityApplication.class })
@@ -42,6 +45,9 @@ public class TestingModule {
 
     @Mock
     JobManager mockJobManager;
+
+    @Mock
+    PlexappFactory mockPlexAppFactory;
 
     public TestingModule() {
         MockitoAnnotations.initMocks(this);
@@ -52,5 +58,12 @@ public class TestingModule {
     JobManager providesJobManager() {
         return mockJobManager;
     }
+
+    @Provides
+    @Singleton
+    PlexappFactory providesPlexAppFactory() {
+        return mockPlexAppFactory;
+    }
+
 
 }
