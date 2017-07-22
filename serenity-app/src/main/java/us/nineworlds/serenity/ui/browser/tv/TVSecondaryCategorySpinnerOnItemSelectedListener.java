@@ -82,7 +82,6 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
         SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(position);
 
         boolean isGridViewActive = prefs.getBoolean("series_layout_grid", false);
-        boolean posterLayoutActive = prefs.getBoolean("series_layout_posters", false);
 
 
         if (firstTimesw) {
@@ -103,21 +102,13 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
         categoryState.setGenreCategory(item.getCategory());
 
         if (isGridViewActive) {
-            tvGridRecyclerView.setAdapter(new TVShowPosterImageGalleryAdapter());
             tvGridRecyclerView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener());
             refreshShows(key, item.getParentCategory() + "/" + item.getCategory());
             return;
         }
 
-        if (posterLayoutActive) {
-            posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter());
-        } else {
-            posterGallery.setAdapter(new TVShowRecyclerAdapter());
-        }
-
         refreshShows(key, item.getParentCategory() + "/" + item.getCategory());
 
-        posterGallery.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener());
 //			posterGallery
 //					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
     }
@@ -142,6 +133,7 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
         }
         return 0;
     }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> va) {

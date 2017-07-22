@@ -107,11 +107,17 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
             dpadAwareRecyclerView.setLayoutManager(linearLayoutManager);
             dpadAwareRecyclerView.addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
             dpadAwareRecyclerView.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener());
+            if (!posterLayoutActive) {
+                dpadAwareRecyclerView.setAdapter(new TVShowRecyclerAdapter());
+            } else {
+                dpadAwareRecyclerView.setAdapter(new TVShowPosterImageGalleryAdapter());
+            }
         } else {
             SerenityMenuGridLayoutManager serenityMenuGridLayoutManager = new SerenityMenuGridLayoutManager(this, 3, SerenityMenuGridLayoutManager.HORIZONTAL, false);
             serenityMenuGridLayoutManager.setCircular(true);
             dpadAwareRecyclerView.setLayoutManager(serenityMenuGridLayoutManager);
             dpadAwareRecyclerView.addItemDecoration(new ItemOffsetDecoration(getResources().getDimensionPixelSize(R.dimen.grid_spacing_dimen)));
+            dpadAwareRecyclerView.setAdapter(new TVShowPosterImageGalleryAdapter());
         }
         dpadAwareRecyclerView.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));
     }
@@ -245,6 +251,17 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
         secondarySpinner
                 .setOnItemSelectedListener(new TVSecondaryCategorySpinnerOnItemSelectedListener(category, key));
         secondarySpinner.requestFocusFromTouch();
+    }
+
+    @Override
+    public void recreate() {
+        super.recreate();
+
+        if (categoryState.getGenreCategory() != null) {
+            requestUpdatedVideos(key, categoryState.getGenreCategory());
+        } else {
+            presenter.fetchTVCategories(categoryState.getCategory());
+        }
     }
 
     @Override

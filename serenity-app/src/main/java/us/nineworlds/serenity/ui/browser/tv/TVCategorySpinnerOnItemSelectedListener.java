@@ -202,12 +202,6 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector implem
             return;
         }
 
-        if (!posterLayoutActive) {
-            posterGallery.setAdapter(new TVShowRecyclerAdapter());
-        } else {
-            posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter());
-        }
-
         refreshData(item);
 //			posterGallery
 //			.setOnItemLongClickListener(new ShowOnItemLongClickListener());
