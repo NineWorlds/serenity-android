@@ -87,11 +87,9 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
         RoundedImageView mpiv = viewHolder.posterImageView;
 
-        int width = 0;
-        int height = 0;
+        int width = ImageUtils.getDPI(130, activity);
+        int height = ImageUtils.getDPI(200, activity);
 
-        width = ImageUtils.getDPI(130, activity);
-        height = ImageUtils.getDPI(200, activity);
         mpiv.setMaxHeight(height);
         mpiv.setMaxWidth(width);
         mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));

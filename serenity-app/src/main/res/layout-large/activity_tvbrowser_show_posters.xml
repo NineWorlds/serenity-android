@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="4"
-                    android:stepSize="0.1"></RatingBar>
+                    android:stepSize="0.1"/>
 
                 <ImageView
                     android:id="@+id/tvShowStudio"
@@ -121,7 +121,7 @@
                 android:nextFocusUp="@+id/categoryFilter"
                 app:selectorVelocity="1000"
                 app:smoothScrolling="true"
-                app:backgroundSelector="@drawable/main_menu_item_foreground_selector">
+                app:foregroundSelector="@drawable/main_menu_item_foreground_selector">
 
                 <requestFocus />
             </net.ganin.darv.DpadAwareRecyclerView>

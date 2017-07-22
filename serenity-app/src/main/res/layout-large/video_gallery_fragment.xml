@@ -83,7 +83,7 @@
             android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/video_poster"
             android:gravity="bottom"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -107,7 +107,7 @@
             android:nextFocusUp="@+id/categoryFilter"
             app:selectorVelocity="1000"
             app:smoothScrolling="true"
-            app:backgroundSelector="@drawable/main_menu_item_foreground_selector">
+            app:foregroundSelector="@drawable/main_menu_item_foreground_selector">
 
             <requestFocus />
         </net.ganin.darv.DpadAwareRecyclerView>

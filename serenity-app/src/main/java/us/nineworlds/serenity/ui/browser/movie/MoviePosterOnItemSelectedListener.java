@@ -164,8 +164,6 @@ public class MoviePosterOnItemSelectedListener extends
 
         changeBackgroundImage(context);
 
-        view.setPadding(0, 0, 0, 0);
-
         ImageView posterImageView = (ImageView) view
                 .findViewById(R.id.posterImageView);
         currentView = posterImageView;
