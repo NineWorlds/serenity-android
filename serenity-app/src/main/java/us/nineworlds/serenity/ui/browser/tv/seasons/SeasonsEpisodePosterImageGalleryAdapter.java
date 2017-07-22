@@ -71,7 +71,7 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageG
         holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(
                 width, height));
 
-        Glide.with(mpiv.getContext()).load(pi.getImageURL()).into(mpiv);
+        Glide.with(mpiv.getContext()).load(pi.getImageURL()).dontAnimate().into(mpiv);
 
         ImageView watchedView = (ImageView) holder.itemView
                 .findViewById(R.id.posterWatchedIndicator);

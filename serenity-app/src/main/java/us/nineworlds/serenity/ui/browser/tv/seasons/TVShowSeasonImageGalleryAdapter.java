@@ -26,6 +26,8 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,7 +121,8 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
         int height = ImageUtils.getDPI(180, context);
         mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
-        Glide.with(context).load(pi.getImageURL()).into(mpiv);
+        ColorDrawable colorDrawable = new ColorDrawable(ContextCompat.getColor(mpiv.getContext(), android.R.color.black));
+        Glide.with(context).load(pi.getImageURL()).placeholder(colorDrawable).dontAnimate().into(mpiv);
         holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
                 height));
 

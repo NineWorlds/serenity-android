@@ -18,7 +18,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             app:corner_radius="5dp"
-            app:mutate_background="true"
             android:scaleType="fitXY" />
 
         <ImageView

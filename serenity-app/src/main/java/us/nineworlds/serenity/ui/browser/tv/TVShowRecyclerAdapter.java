@@ -24,6 +24,8 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,10 +103,11 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
         mpiv.setMaxHeight(height);
         mpiv.setMaxWidth(width);
 
+        ColorDrawable colorDrawable = new ColorDrawable(ContextCompat.getColor(mpiv.getContext(), android.R.color.black));
         if (isPoster) {
-            Glide.with(mpiv.getContext()).load(pi.getThumbNailURL()).into(mpiv);
+            Glide.with(mpiv.getContext()).load(pi.getThumbNailURL()).placeholder(colorDrawable).dontAnimate().into(mpiv);
         } else {
-            Glide.with(mpiv.getContext()).load(pi.getImageURL()).into(mpiv);
+            Glide.with(mpiv.getContext()).load(pi.getImageURL()).placeholder(colorDrawable).dontAnimate().into(mpiv);
         }
     }
 

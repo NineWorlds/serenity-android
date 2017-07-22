@@ -17,7 +17,6 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             app:corner_radius="5dp"
-            app:mutate_background="true"
             android:scaleType="fitXY" />
 
         <TextView

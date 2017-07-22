@@ -26,6 +26,8 @@ package us.nineworlds.serenity.ui.browser.movie;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -95,7 +97,8 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
         mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
         viewHolder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
 
-        Glide.with(activity).load(pi.getImageURL()).into(mpiv);
+        ColorDrawable colorDrawable = new ColorDrawable(ContextCompat.getColor(mpiv.getContext(), android.R.color.black));
+        Glide.with(activity).load(pi.getImageURL()).placeholder(colorDrawable).dontAnimate().into(mpiv);
 
         setWatchedStatus(viewHolder.itemView, pi);
     }
