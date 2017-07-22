@@ -25,6 +25,8 @@ package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import android.app.Activity;
 import android.content.Context;
+import android.provider.MediaStore;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,8 +91,38 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
     }
 
     public void updateEpisodes(List<VideoContentInfo> episodes) {
+        final List<VideoContentInfo> oldList = posterList;
+        final List<VideoContentInfo> newList = episodes;
+
         posterList = episodes;
-        notifyDataSetChanged();
+
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return oldList.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newList.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                String oldId = oldList.get(oldItemPosition).id();
+                String newId = newList.get(newItemPosition).id();
+                return oldId.equals(newId);
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                VideoContentInfo old = oldList.get(oldItemPosition);
+                VideoContentInfo newContent = newList.get(newItemPosition);
+                return old.equals(newContent);
+            }
+        });
+
+        diffResult.dispatchUpdatesTo(this);
     }
 
     public class EpisodeViewHolder extends DpadAwareRecyclerView.ViewHolder {

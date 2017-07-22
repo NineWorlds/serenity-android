@@ -46,8 +46,7 @@ import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 
-public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
-        DpadAwareRecyclerView.OnItemSelectedListener {
+public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements DpadAwareRecyclerView.OnItemSelectedListener {
 
     private final Activity context;
     private SeriesContentInfo info;
@@ -100,8 +99,10 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
 
         episodeGrid.setVisibility(View.VISIBLE);
         TVShowSeasonBrowserActivity seasonBrowserActivity = (TVShowSeasonBrowserActivity) context;
-        seasonBrowserActivity.adapter = new SeasonsEpisodePosterImageGalleryAdapter();
-        episodeGrid.setAdapter(seasonBrowserActivity.adapter);
+        if (seasonBrowserActivity.adapter == null) {
+            seasonBrowserActivity.adapter = new SeasonsEpisodePosterImageGalleryAdapter();
+            episodeGrid.setAdapter(seasonBrowserActivity.adapter);
+        }
         episodeGrid.setLayoutManager(new GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false));
         episodeGrid.setOnItemClickListener(new EpisodePosterOnItemClickListener());
         seasonBrowserActivity.fetchEpisodes(info.getKey());

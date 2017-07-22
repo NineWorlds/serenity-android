@@ -80,11 +80,6 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 
     }
 
-    protected void refreshGallery(AbstractPosterImageGalleryAdapter adapter) {
-        posterGallery.setAdapter(adapter);
-
-    }
-
     protected SerenityMultiViewVideoActivity getMultiViewVideoActivity() {
         return multiViewVideoActivity;
     }

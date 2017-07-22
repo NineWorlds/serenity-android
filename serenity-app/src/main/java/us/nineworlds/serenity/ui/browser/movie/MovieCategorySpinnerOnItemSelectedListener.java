@@ -35,6 +35,8 @@ import android.widget.Toast;
 
 import com.birbit.android.jobqueue.JobManager;
 
+import net.ganin.darv.DpadAwareRecyclerView;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -73,7 +75,7 @@ public class MovieCategorySpinnerOnItemSelectedListener extends
 
     public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection,
                                                       String ckey, boolean firstSelection, SerenityMultiViewVideoActivity activity) {
-        this(defaultSelection, key, activity);
+        this(defaultSelection, ckey, activity);
         savedInstanceCategory = defaultSelection;
         this.setFirstSelection(firstSelection);
     }
@@ -156,23 +158,11 @@ public class MovieCategorySpinnerOnItemSelectedListener extends
     }
 
     protected void createGallery(CategoryInfo item) {
-        AbstractPosterImageGalleryAdapter adapter = getPosterImageAdapter(item);
-        refreshGallery(adapter);
-    }
-
-    /**
-     * @param item
-     * @return
-     */
-    protected AbstractPosterImageGalleryAdapter getPosterImageAdapter(
-            CategoryInfo item) {
-        AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter();
         Activity activity = getActivity(getMultiViewVideoActivity());
         if (activity instanceof MovieBrowserActivity) {
             MovieBrowserActivity movieBrowserActivity = (MovieBrowserActivity) activity;
             movieBrowserActivity.requestUpdatedVideos(key, item.getCategory());
         }
-        return adapter;
     }
 
     private class SecondaryCategoryHandler extends Handler {

@@ -44,8 +44,7 @@ public class VideoGridFragment extends MovieVideoGalleryFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         onItemSelectedListener = new MovieGridPosterOnItemSelectedListener();
         View view = inflateView(inflater, container);
         bind(this, view);
