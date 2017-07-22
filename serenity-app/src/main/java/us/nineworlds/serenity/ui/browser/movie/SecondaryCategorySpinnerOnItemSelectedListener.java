@@ -30,7 +30,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 /**
  * Populate the movie posters based on the information from the Secondary
@@ -76,23 +75,11 @@ public class SecondaryCategorySpinnerOnItemSelectedListener extends
 
         categoryState.setGenreCategory(item.getCategory());
 
-        AbstractPosterImageGalleryAdapter adapter = getPosterImageAdapter(item);
-
-        refreshGallery(adapter);
-
-    }
-
-    protected AbstractPosterImageGalleryAdapter getPosterImageAdapter(
-            SecondaryCategoryInfo item) {
-        AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter();
-
         Activity activity = getActivity(getMultiViewVideoActivity());
         if (activity instanceof MovieBrowserActivity) {
             MovieBrowserActivity movieBrowserActivity = (MovieBrowserActivity) activity;
             movieBrowserActivity.requestUpdatedVideos(key, item.getParentCategory() + "/" + item.getCategory());
         }
-
-        return adapter;
     }
 
     @Override

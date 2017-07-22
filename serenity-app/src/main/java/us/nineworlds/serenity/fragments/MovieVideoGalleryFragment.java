@@ -58,6 +58,7 @@ import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieCategorySpinnerOnItemSelectedListener;
+import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
@@ -129,6 +130,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
         RecyclerView.LayoutManager linearLayoutManager = createLayoutManager();
 
         videoGallery.addItemDecoration(createItemDecorator());
+        videoGallery.setAdapter(new MoviePosterImageAdapter());
         videoGallery.setLayoutManager(linearLayoutManager);
 
         videoGallery.setOnItemSelectedListener(onItemSelectedListener);

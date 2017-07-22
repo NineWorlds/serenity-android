@@ -129,12 +129,6 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		doReturn("All").when(mockCategoryInfo).getCategory();
 
 		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
 
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
 				0);
@@ -151,62 +145,11 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		doReturn("All").when(mockCategoryInfo).getCategory();
 
 		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
 
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
 				0);
 
 		verify(mockCategoryState).setGenreCategory("All");
-	}
-
-	@Test
-	public void verifyRefreshGridViewAdapterIsCalledWhenGridViewIsActive() {
-		spyOnItemSelectedListener.setFirstSelection(false);
-		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
-				anyInt());
-		doReturn("All").when(mockCategoryInfo).getCategory();
-
-		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-		doReturn(true).when(mockMultiViewVideoActivity).isGridViewActive();
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-				.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-
-		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
-				0);
-
-		verify(spyOnItemSelectedListener).refreshGallery(
-				mockPosterImageAdapter);
-	}
-
-	@Test
-	public void verifyGetPosterAdapterIsNotCalledWhenSelectedAndItemCategoryAreTheSame() {
-		spyOnItemSelectedListener.setFirstSelection(false);
-		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
-				anyInt());
-		doReturn("Action").when(mockCategoryInfo).getCategory();
-
-		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-
-		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
-				0);
-
-		verify(spyOnItemSelectedListener, times(0)).getPosterImageAdapter(
-				any(SecondaryCategoryInfo.class));
 	}
 
 	@Test
@@ -219,15 +162,8 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 				any(AdapterView.class));
 
 		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
 
-		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
-				0);
+		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0, 0);
 
 		assertThat(spyOnItemSelectedListener.isFirstSelection()).isFalse();
 	}
@@ -242,10 +178,6 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 				any(AdapterView.class));
 
 		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
 
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
 				0);

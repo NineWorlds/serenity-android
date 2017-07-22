@@ -66,8 +66,7 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class MovieCategorySpinnerOnItemSelectedListenerTest extends
-InjectingTest {
+public class MovieCategorySpinnerOnItemSelectedListenerTest extends InjectingTest {
 
 	@Mock
 	protected SharedPreferences mockSharedPreferences;
@@ -117,28 +116,6 @@ InjectingTest {
 	}
 
 	@Test
-	public void verifyViewAdapterSetSelectionIsNotCalledWhenFirstTimeSwitchIsFalse() {
-		spyOnItemSelectedListener.setFirstSelection(false);
-		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
-				anyInt());
-		doReturn("All").when(mockCategoryInfo).getCategory();
-
-		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-
-		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
-				0);
-
-		verify(mockAdapterView, times(0)).setSelection(anyInt());
-		verify(mockCategoryState, times(0)).getGenreCategory();
-	}
-
-	@Test
 	public void verifyCategoryStateSetsGCategoryWhenGenresDoNotMatch() {
 		spyOnItemSelectedListener.setFirstSelection(false);
 		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
@@ -149,64 +126,12 @@ InjectingTest {
 		doReturn(mockSecondarySpinner).when(mockMultiViewVideoActivity)
 				.findViewById(R.id.categoryFilter2);
 
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
 				0);
 
 		verify(mockCategoryState).setCategory("action");
 	}
 
-	@Test
-	public void verifyRefreshGridViewAdapterIsCalledWhenGridViewIsActive() {
-		spyOnItemSelectedListener.setFirstSelection(true);
-		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
-				anyInt());
-		doReturn("All").when(mockCategoryInfo).getCategory();
-
-		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-		doReturn(true).when(mockMultiViewVideoActivity).isGridViewActive();
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-
-		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
-				0);
-
-		verify(spyOnItemSelectedListener).refreshGallery(
-				mockPosterImageAdapter);
-	}
-
-	@Test
-	public void verifyGetPosterAdapterIsNotCalledWhenSelectedAndItemCategoryAreTheSame() {
-		spyOnItemSelectedListener.setFirstSelection(false);
-		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
-				anyInt());
-		doReturn("Action").when(mockCategoryInfo).getCategory();
-
-		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-		doReturn(mockSecondarySpinner).when(mockMultiViewVideoActivity)
-		.findViewById(R.id.categoryFilter2);
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).createGallery(
-				any(CategoryInfo.class));
-
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
-
-		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
-				0);
-
-		verify(spyOnItemSelectedListener, times(0)).getPosterImageAdapter(
-				any(SecondaryCategoryInfo.class));
-	}
 
 	@Test
 	public void verifyThatFirstTimeSwitchIsSetToFalseAfterRetrievingSavedPosition() {
@@ -218,10 +143,6 @@ InjectingTest {
 				any(AdapterView.class));
 
 		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(SecondaryCategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
 
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
 				0);
@@ -243,8 +164,6 @@ InjectingTest {
 				any(AdapterView.class));
 
 		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-
-		demandAdapters();
 
 		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
 				0);
@@ -300,13 +219,6 @@ InjectingTest {
 
 		assertThat(result).isEqualTo(0);
 
-	}
-
-	protected void demandAdapters() {
-		doReturn(mockPosterImageAdapter).when(spyOnItemSelectedListener)
-		.getPosterImageAdapter(any(CategoryInfo.class));
-		doNothing().when(spyOnItemSelectedListener).refreshGallery(
-				any(AbstractPosterImageGalleryAdapter.class));
 	}
 
 	private void demandMockCategory(String value, CategoryInfo mockCategoryInfo) {
