@@ -2,6 +2,7 @@ package us.nineworlds.serenity.jobs;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 
 import com.birbit.android.jobqueue.RetryConstraint;
 
@@ -50,5 +51,16 @@ public class TVShowRetrievalJob extends InjectingJob {
     @Override
     protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
         return null;
+    }
+
+    @VisibleForTesting
+    public String getKey() {
+        return key;
+    }
+
+
+    @VisibleForTesting
+    public String getCategory() {
+        return category;
     }
 }

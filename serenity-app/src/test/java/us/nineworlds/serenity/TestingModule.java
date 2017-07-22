@@ -23,10 +23,34 @@
 
 package us.nineworlds.serenity;
 
+import com.birbit.android.jobqueue.JobManager;
+
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import javax.inject.Singleton;
+
+import dagger.Provides;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import dagger.Module;
 
-@Module(addsTo = AndroidModule.class, injects = { TestSerenityApplication.class })
+@Module(addsTo = AndroidModule.class,
+        library = true,
+        overrides = true,
+        injects = { TestSerenityApplication.class })
 public class TestingModule {
+
+    @Mock
+    JobManager mockJobManager;
+
+    public TestingModule() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Provides
+    @Singleton
+    JobManager providesJobManager() {
+        return mockJobManager;
+    }
 
 }

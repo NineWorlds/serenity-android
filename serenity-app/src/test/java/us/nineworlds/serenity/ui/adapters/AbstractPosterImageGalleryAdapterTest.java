@@ -41,6 +41,7 @@ import org.robolectric.annotation.Config;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
@@ -183,6 +184,7 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
 		modules.add(new AndroidModule(application));
+		modules.add(new TestingModule());
 		modules.add(new TestModule());
 		return modules;
 	}

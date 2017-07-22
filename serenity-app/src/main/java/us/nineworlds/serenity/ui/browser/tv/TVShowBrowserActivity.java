@@ -87,7 +87,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
         super.onCreate(savedInstanceState);
         actionBar.setCustomView(R.layout.tvshow_custom_actionbar);
         actionBar.setDisplayShowCustomEnabled(true);
-        key = presenter.getKey(getIntent());
+        key = getIntent().getExtras().getString("key");
 
         createSideMenu();
 

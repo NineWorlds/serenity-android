@@ -50,6 +50,10 @@ public class SecondaryCategoryMediaContainer extends AbstractMediaContainer {
     protected void populateSecondaryCategories() {
         List<Directory> dirs = mc.getDirectories();
         categories = new ArrayList<SecondaryCategoryInfo>();
+        if (dirs == null) {
+            return;
+        }
+
         for (Directory dir : dirs) {
             SecondaryCategoryInfo category = new SecondaryCategoryInfo();
             category.setCategory(dir.getKey());

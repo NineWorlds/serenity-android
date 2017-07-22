@@ -52,6 +52,9 @@ public class TVCategoryMediaContainer extends AbstractMediaContainer {
     protected void populateCategories() {
         List<Directory> dirs = mc.getDirectories();
         categories = new ArrayList<CategoryInfo>();
+        if (dirs == null) {
+            return;
+        }
         for (Directory dir : dirs) {
             if (!excludeCategories.contains(dir.getKey())) {
                 CategoryInfo category = new CategoryInfo();

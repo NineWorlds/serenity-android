@@ -43,6 +43,7 @@ import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
@@ -241,6 +242,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
 		modules.add(new AndroidModule(application));
+		modules.add(new TestingModule());
 		modules.add(new TestModule());
 		return modules;
 	}

@@ -34,8 +34,7 @@ import us.nineworlds.serenity.injection.modules.AndroidModule;
  * @author dcarver
  *
  */
-public class TestSerenityApplication extends SerenityApplication implements
-TestLifecycleApplication {
+public class TestSerenityApplication extends SerenityApplication implements TestLifecycleApplication {
 
 	public TestSerenityApplication() {
 		super();

@@ -1,6 +1,7 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -65,17 +66,13 @@ public class TVShowBrowserPresenter extends MvpPresenter<TVShowBrowserView> {
         eventBus.unregister(this);
     }
 
-    public void fetchTVCategories(String key) {
+    public void fetchTVCategories(@NonNull String key) {
         jobManager.addJobInBackground(new TVCategoryJob(key));
     }
 
-    public void fetchTVShows(String key, String category) {
+    public void fetchTVShows(@NonNull String key, @NonNull String category) {
         TVShowRetrievalJob tvShowRetrievalJob = new TVShowRetrievalJob(key, category);
         jobManager.addJobInBackground(tvShowRetrievalJob);
-    }
-
-    public String getKey(Intent intent) {
-        return intent.getExtras().getString("key");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
