@@ -49,6 +49,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.fest.assertions.api.ANDROID.assertThat;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -194,6 +195,18 @@ public class TVShowBrowserActivityTest  extends InjectingTest {
         spy.onResume();
 
         verify(mockTVShowBrowserPresenter).fetchTVCategories(expectedKey);
+    }
+
+    @Test
+    public void requestUpdatedVideosCallsFetchTVCategoriesPreseneter() {
+        String expectedKey = RandomStringUtils.randomAlphanumeric(10);
+        String expectedCategory = RandomStringUtils.randomAlphanumeric(5);
+        doNothing().when(mockTVShowBrowserPresenter).fetchTVShows(anyString(), anyString());
+        demandActivityOnCreate();
+
+        activity.requestUpdatedVideos(expectedKey, expectedCategory);
+
+        verify(mockTVShowBrowserPresenter).fetchTVShows(expectedKey, expectedCategory);
     }
 
     private void demandActivityOnCreate() {
