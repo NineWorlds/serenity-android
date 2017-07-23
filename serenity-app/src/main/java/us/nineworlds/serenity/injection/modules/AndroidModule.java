@@ -104,6 +104,7 @@ import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.SecondaryCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.FindUnwatchedAsyncTask;
+import us.nineworlds.serenity.ui.browser.tv.OnKeyDownDelegate;
 import us.nineworlds.serenity.ui.browser.tv.TVCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.TVSecondaryCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.TVShowRecyclerAdapter;
@@ -226,6 +227,7 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
         EpisodeBrowserPresenter.class,
         TVShowSeasonBrowserPresenter.class,
         MainPresenter.class,
+        OnKeyDownDelegate.class,
         ErrorMainMenuEvent.class}, library = true)
 public class AndroidModule {
 

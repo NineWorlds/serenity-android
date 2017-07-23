@@ -1,9 +1,11 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -42,6 +44,7 @@ import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
@@ -237,6 +240,105 @@ public class TVShowBrowserActivityTest  extends InjectingTest {
 
         assertThat(activity.categorySpinner).isVisible();
     }
+
+    @Test
+    public void onCreateSetsOnKeyDownDelegate() {
+        demandActivityOnCreate();
+
+        assertThat(activity.onKeyDownDelegate).isNotNull().isInstanceOf(OnKeyDownDelegate.class);
+    }
+
+    @Test
+    public void populateSecondaryCategoriesSetsSecondarySpinnerVisible() {
+        demandActivityOnCreate();
+        activity.categorySpinner.setVisibility(View.GONE);
+        activity.secondarySpinner.setVisibility(View.GONE);
+
+        String selectedCategory = RandomStringUtils.randomAlphabetic(10);
+
+        List<SecondaryCategoryInfo> expectedCategories = Collections.singletonList(new SecondaryCategoryInfo());
+        activity.populateSecondaryCategories(expectedCategories, selectedCategory);
+
+        assertThat(activity.secondarySpinner).isVisible();
+        assertThat(activity.categorySpinner).isVisible();
+    }
+
+    @Test
+    public void populateSecondaryCategoriesSetsSecondarySetsDropDownViewResourceId() {
+        demandActivityOnCreate();
+        activity.categorySpinner.setVisibility(View.GONE);
+        activity.secondarySpinner.setVisibility(View.GONE);
+
+        String selectedCategory = RandomStringUtils.randomAlphabetic(10);
+
+        List<SecondaryCategoryInfo> expectedCategories = Collections.singletonList(new SecondaryCategoryInfo());
+        activity.populateSecondaryCategories(expectedCategories, selectedCategory);
+
+        ArrayAdapter<SecondaryCategoryInfo> adapter = (ArrayAdapter<SecondaryCategoryInfo>) activity.secondarySpinner.getAdapter();
+        ShadowArrayAdapter shadowArrayAdapter = Shadow.extract(adapter);
+
+        assertThat(shadowArrayAdapter.getDropDownViewResourceId()).isEqualTo(R.layout.serenity_spinner_textview_dropdown);
+    }
+
+    @Test
+    public void populateSecondaryCategoriesSetsSecondaryExpectedOnItemSelectedListener() {
+        demandActivityOnCreate();
+        activity.categorySpinner.setVisibility(View.GONE);
+        activity.secondarySpinner.setVisibility(View.GONE);
+
+        String selectedCategory = RandomStringUtils.randomAlphabetic(10);
+
+        List<SecondaryCategoryInfo> expectedCategories = Collections.singletonList(new SecondaryCategoryInfo());
+        activity.populateSecondaryCategories(expectedCategories, selectedCategory);
+
+        assertThat(activity.secondarySpinner.getOnItemSelectedListener()).isInstanceOf(TVSecondaryCategorySpinnerOnItemSelectedListener.class);
+    }
+
+    @Test
+    public void populateSecondaryCategoriesDisplaysToastWhenCategoriesIsNull() {
+        demandActivityOnCreate();
+        activity.categorySpinner.setVisibility(View.GONE);
+        activity.secondarySpinner.setVisibility(View.GONE);
+
+        String selectedCategory = RandomStringUtils.randomAlphabetic(10);
+
+        activity.populateSecondaryCategories(null, selectedCategory);
+
+        assertThat(ShadowToast.getLatestToast()).isNotNull();
+        assertThat(ShadowToast.getTextOfLatestToast()).contains("No Entries available for category");
+    }
+
+    @Test
+    public void populateSecondaryCategoriesDisplaysToastWhenCategoriesIsEmpty() {
+        demandActivityOnCreate();
+        activity.categorySpinner.setVisibility(View.GONE);
+        activity.secondarySpinner.setVisibility(View.GONE);
+
+        String selectedCategory = RandomStringUtils.randomAlphabetic(10);
+
+        activity.populateSecondaryCategories(Collections.<SecondaryCategoryInfo>emptyList(), selectedCategory);
+
+        assertThat(ShadowToast.getLatestToast()).isNotNull();
+        assertThat(ShadowToast.getTextOfLatestToast()).contains("No Entries available for category");
+    }
+
+    @Test
+    public void onKeyDownCallsDelegate() {
+        demandActivityOnCreate();
+        int expectedKeyCode = 10;
+        KeyEvent expectedKeyEvent = Mockito.mock(KeyEvent.class);
+
+        OnKeyDownDelegate mockOnKeyDownDelegate = Mockito.mock(OnKeyDownDelegate.class);
+        activity.onKeyDownDelegate = mockOnKeyDownDelegate;
+
+        activity.onKeyDown(expectedKeyCode, expectedKeyEvent);
+
+        verify(mockOnKeyDownDelegate).onKeyDown(expectedKeyCode, expectedKeyEvent);
+    }
+
+
+
+
 
     private void demandActivityOnCreate() {
         Intent intent = new Intent();

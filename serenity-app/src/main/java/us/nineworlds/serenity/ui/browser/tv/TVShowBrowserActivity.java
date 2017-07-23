@@ -81,6 +81,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
     @Inject
     protected TVCategoryState categoryState;
 
+    protected OnKeyDownDelegate onKeyDownDelegate;
+
     @BindView(R.id.tvShowBannerGallery) @Nullable DpadAwareRecyclerView tvShowBannerGalleryView;
     @BindView(R.id.tvShowGridView) @Nullable DpadAwareRecyclerView tvShowGridView;
     @BindView(R.id.fanArt) View fanArt;
@@ -97,11 +99,13 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         actionBar.setCustomView(R.layout.tvshow_custom_actionbar);
         actionBar.setDisplayShowCustomEnabled(true);
         key = getIntent().getExtras().getString("key");
 
         createSideMenu();
+        onKeyDownDelegate = new OnKeyDownDelegate(this);
 
         fanArt.setBackgroundResource(R.drawable.tvshows);
 
@@ -247,20 +251,20 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
     }
 
     @Override
-    public void populateSecondaryCategories(List<SecondaryCategoryInfo> catagories, String category) {
+    public void populateSecondaryCategories(List<SecondaryCategoryInfo> categories, String selectedSecondaryCategory) {
         categorySpinner.setVisibility(View.VISIBLE);
-        if (catagories == null || catagories.isEmpty()) {
+        if (categories == null || categories.isEmpty()) {
             Toast.makeText(this, R.string.no_entries_available_for_category_, Toast.LENGTH_LONG).show();
             return;
         }
 
         secondarySpinner.setVisibility(View.VISIBLE);
 
-        ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(this, R.layout.serenity_spinner_textview, catagories);
+        ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(this, R.layout.serenity_spinner_textview, categories);
         spinnerSecArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
         secondarySpinner.setAdapter(spinnerSecArrayAdapter);
         secondarySpinner
-                .setOnItemSelectedListener(new TVSecondaryCategorySpinnerOnItemSelectedListener(category, key));
+                .setOnItemSelectedListener(new TVSecondaryCategorySpinnerOnItemSelectedListener(selectedSecondaryCategory, key));
         secondarySpinner.requestFocusFromTouch();
     }
 
@@ -282,71 +286,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        boolean menuKeySlidingMenu = preferences.getBoolean("remote_control_menu", true);
-        if (menuKeySlidingMenu) {
-            if (keyCode == KeyEvent.KEYCODE_MENU) {
-                if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-                    drawerLayout.closeDrawers();
-                } else {
-                    drawerLayout.openDrawer(linearDrawerLayout);
-                }
-                return true;
-            }
-        }
-
-        DpadAwareRecyclerView gallery = findGalleryView();
-        if (gallery == null) {
-            return super.onKeyDown(keyCode, event);
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_BACK
-                && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-            drawerLayout.closeDrawers();
-            if (gallery != null) {
-                gallery.requestFocusFromTouch();
-            }
+        if (onKeyDownDelegate.onKeyDown(keyCode, event)) {
             return true;
-        }
-
-        AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
-        if (adapter != null) {
-            int itemsCount = adapter.getItemCount();
-
-            if (contextMenuRequested(keyCode)) {
-                int pos = gallery.getSelectedItemPosition();
-                RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
-                View view = layoutManager.findViewByPosition(pos);
-                view.performLongClick();
-                return true;
-            }
-            if (isKeyCodeSkipBack(keyCode)) {
-                int selectedItem = gallery.getSelectedItemPosition();
-                int newPosition = selectedItem - 10;
-                if (newPosition < 0) {
-                    newPosition = 0;
-                }
-                gallery.setSelection(newPosition);
-                gallery.requestFocusFromTouch();
-                return true;
-            }
-            if (isKeyCodeSkipForward(keyCode)) {
-                int selectedItem = gallery.getSelectedItemPosition();
-                int newPosition = selectedItem + 10;
-                if (newPosition > itemsCount) {
-                    newPosition = itemsCount - 1;
-                }
-                gallery.setSelection(newPosition);
-                gallery.requestFocusFromTouch();
-                return true;
-            }
-
-            if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
-                    || keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
-                int selectedItem = gallery.getSelectedItemPosition();
-                SeriesContentInfo info = (SeriesContentInfo) ((AbstractPosterImageGalleryAdapter) gallery.getAdapter()).getItem(selectedItem);
-                new FindUnwatchedAsyncTask(this).execute(info);
-                return true;
-            }
         }
 
         return super.onKeyDown(keyCode, event);
