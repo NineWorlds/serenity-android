@@ -4,6 +4,8 @@ package us.nineworlds.serenity.ui.browser.tv;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,9 +24,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowDrawable;
 import org.robolectric.shadows.ShadowToast;
 
@@ -39,13 +41,14 @@ import dagger.Provides;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
+import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.test.ShadowArrayAdapter;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.fest.assertions.api.ANDROID.assertThat;
 import static org.mockito.Matchers.anyBoolean;
@@ -60,7 +63,7 @@ import static org.robolectric.RuntimeEnvironment.*;
 import static us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity.SERIES_LAYOUT_GRID;
 
 @RunWith(RobolectricTestRunner.class)
-@Config( constants = BuildConfig.class)
+@Config( constants = BuildConfig.class, shadows = ShadowArrayAdapter.class)
 public class TVShowBrowserActivityTest  extends InjectingTest {
 
     @Mock
@@ -207,6 +210,32 @@ public class TVShowBrowserActivityTest  extends InjectingTest {
         activity.requestUpdatedVideos(expectedKey, expectedCategory);
 
         verify(mockTVShowBrowserPresenter).fetchTVShows(expectedKey, expectedCategory);
+    }
+
+    @Test
+    public void updateCategoriesSetsDropDownViewResourceOnSpinner() throws Exception {
+        demandActivityOnCreate();
+
+        List<CategoryInfo> expectedCategories = Collections.singletonList(new CategoryInfo());
+        activity.updateCategories(expectedCategories);
+
+        assertThat(activity.categorySpinner.getAdapter()).isNotNull();
+        ArrayAdapter<CategoryInfo> actualAdapter = (ArrayAdapter<CategoryInfo>) activity.categorySpinner.getAdapter();
+        ShadowArrayAdapter shadowArrayAdapter = Shadow.extract(actualAdapter);
+        assertThat(shadowArrayAdapter.getResourceId()).isEqualTo(R.layout.serenity_spinner_textview);
+        assertThat(shadowArrayAdapter.getDropDownViewResourceId()).isEqualTo(R.layout.serenity_spinner_textview_dropdown);
+    }
+
+    @Test
+    public void updateCategoriesMakesCategorySpinnerVisible() {
+        demandActivityOnCreate();
+
+        activity.categorySpinner.setVisibility(View.GONE);
+
+        List<CategoryInfo> expectedCategories = Collections.singletonList(new CategoryInfo());
+        activity.updateCategories(expectedCategories);
+
+        assertThat(activity.categorySpinner).isVisible();
     }
 
     private void demandActivityOnCreate() {
