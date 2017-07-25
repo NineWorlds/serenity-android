@@ -1,7 +1,7 @@
 Serenity for Android
 =======================
 
-[![Build Status](https://travis-ci.org/NineWorlds/serenity-android.svg?branch=develop)](https://travis-ci.org/NineWorlds/serenity-android)
+[![Build Status](https://travis-ci.org/NineWorlds/serenity-android.svg?branch=develop)](https://travis-ci.org/NineWorlds/serenity-android) [![codecov](https://codecov.io/gh/NineWorlds/serenity-android/branch/develop/graph/badge.svg)](https://codecov.io/gh/NineWorlds/serenity-android)
 
 
 Serenity for Android is a client for the Plex Media Server developed by Plex.  
