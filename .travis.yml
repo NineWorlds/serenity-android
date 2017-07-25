@@ -14,7 +14,7 @@ jdk:
    - oraclejdk8
 
 script:
-   - ./gradlew clean assembleDebug
+   - ./gradlew clean jacocoTestReportDebug
    
 after_success:
   bash <(curl -s https://codecov.io/bash) -t 24a7fae8-56e1-4047-9939-29205fbbfa42
