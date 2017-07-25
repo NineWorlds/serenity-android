@@ -23,32 +23,18 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import android.app.Activity;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import com.birbit.android.jobqueue.JobManager;
-import com.bumptech.glide.Glide;
-import net.ganin.darv.DpadAwareRecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
 
 public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
-
-    @Inject
-    JobManager jobManager;
 
     private static final int BANNER_PIXEL_HEIGHT = 140;
     private static final int BANNER_PIXEL_WIDTH = 758;
@@ -76,8 +62,11 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         SeriesContentInfo pi = tvShowList.get(position);
-        createImage(holder.itemView, pi, BANNER_PIXEL_WIDTH, BANNER_PIXEL_HEIGHT);
-        toggleWatchedIndicator(holder.itemView, pi);
+        TVShowViewHolder tvShowViewHolder = (TVShowViewHolder) holder;
+
+        tvShowViewHolder.reset();
+        tvShowViewHolder.createImage(pi, BANNER_PIXEL_WIDTH, BANNER_PIXEL_HEIGHT);
+        tvShowViewHolder.toggleWatchedIndicator(pi);
     }
 
     @Override
@@ -85,81 +74,9 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
         return position;
     }
 
-    protected void createImage(View galleryCellView, SeriesContentInfo pi, int imageWidth, int imageHeight) {
-        int width = ImageUtils.getDPI(imageWidth, (Activity) galleryCellView.getContext());
-        int height = ImageUtils.getDPI(imageHeight, (Activity) galleryCellView.getContext());
-
-        initPosterMetaData(galleryCellView, pi, width, height, false);
-
-        galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
-                height));
-    }
-
-    protected void initPosterMetaData(View galleryCellView, SeriesContentInfo pi, int width, int height, boolean isPoster) {
-        ImageView mpiv = (ImageView) galleryCellView.findViewById(R.id.posterImageView);
-        mpiv.setBackgroundResource(R.drawable.gallery_item_background);
-        mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-        mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-        mpiv.setMaxHeight(height);
-        mpiv.setMaxWidth(width);
-
-        ColorDrawable colorDrawable = new ColorDrawable(ContextCompat.getColor(mpiv.getContext(), android.R.color.black));
-        if (isPoster) {
-            Glide.with(mpiv.getContext()).load(pi.getThumbNailURL()).placeholder(colorDrawable).dontAnimate().into(mpiv);
-        } else {
-            Glide.with(mpiv.getContext()).load(pi.getImageURL()).placeholder(colorDrawable).dontAnimate().into(mpiv);
-        }
-    }
-
-    protected void toggleWatchedIndicator(View galleryCellView, SeriesContentInfo pi) {
-        int watched = 0;
-        if (pi.getShowsWatched() != null) {
-            watched = Integer.parseInt(pi.getShowsWatched());
-        }
-
-        ImageView watchedView = (ImageView) galleryCellView.findViewById(R.id.posterWatchedIndicator);
-        watchedView.setVisibility(View.INVISIBLE);
-
-        if (pi.isPartiallyWatched()) {
-            toggleProgressIndicator(galleryCellView, watched, pi.totalShows(),
-                    watchedView);
-        }
-
-        TextView badgeCount = (TextView) galleryCellView.findViewById(R.id.badge_count);
-        badgeCount.setText(pi.getShowsUnwatched());
-
-        if (pi.isWatched()) {
-            watchedView.setImageResource(R.drawable.overlaywatched);
-            watchedView.setVisibility(View.VISIBLE);
-            badgeCount.setVisibility(View.GONE);
-        } else {
-            badgeCount.setVisibility(View.VISIBLE);
-        }
-    }
-
-    protected void toggleProgressIndicator(View galleryCellView, int dividend, int divisor, ImageView watchedView) {
-        final float percentWatched = Float.valueOf(dividend) / Float.valueOf(divisor);
-
-        final ProgressBar view = (ProgressBar) galleryCellView
-                .findViewById(R.id.posterInprogressIndicator);
-        int progress = Float.valueOf(percentWatched * 100).intValue();
-        if (progress < 10) {
-            progress = 10;
-        }
-        view.setProgress(progress);
-        view.setVisibility(View.VISIBLE);
-        watchedView.setVisibility(View.INVISIBLE);
-    }
-
     public void updateSeries(List<SeriesContentInfo> series) {
         tvShowList = series;
         notifyDataSetChanged();
     }
 
-    public class TVShowViewHolder extends RecyclerView.ViewHolder {
-
-        public TVShowViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
 }

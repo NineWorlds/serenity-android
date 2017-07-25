@@ -23,27 +23,18 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import android.app.Activity;
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-import net.ganin.darv.DpadAwareRecyclerView;
-
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-
+import us.nineworlds.serenity.R;
 
 public class TVShowPosterImageGalleryAdapter extends TVShowRecyclerAdapter {
 
     @Override
-    protected void createImage(View galleryCellView, SeriesContentInfo pi, int imageWidth, int imageHeight) {
-        int width = ImageUtils.getDPI(130, (Activity) galleryCellView.getContext());
-        int height = ImageUtils.getDPI(200, (Activity) galleryCellView.getContext());
-
-        initPosterMetaData(galleryCellView, pi, width, height, true);
-
-        galleryCellView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_tvshow_indicator_view, parent, false);
+        return new TVShowPosterViewHolder(view);
     }
-
 }
