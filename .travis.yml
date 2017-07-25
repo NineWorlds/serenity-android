@@ -13,8 +13,13 @@ android:
 jdk:
    - oraclejdk8
 
+before_install:
+   - pip install --user codecov
+
 script:
    - ./gradlew clean jacocoTestReportDebug
    
 after_success:
-  bash <(curl -s https://codecov.io/bash) -t 24a7fae8-56e1-4047-9939-29205fbbfa42
+  - codecov
+
+sudo: false
