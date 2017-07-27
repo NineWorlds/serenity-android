@@ -23,42 +23,20 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.birbit.android.jobqueue.JobManager;
-import com.bumptech.glide.Glide;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import butterknife.BindView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
-import us.nineworlds.serenity.events.EpisodesRetrievalEvent;
-import us.nineworlds.serenity.events.TVShowRetrievalEvent;
-import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.widgets.RoundedDrawable;
 
 /**
  * Implementation of the Poster Image Gallery class for TV Shows.
@@ -76,33 +54,17 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         VideoContentInfo pi = posterList.get(position);
-        ImageView mpiv = (ImageView) holder.itemView
-                .findViewById(R.id.posterImageView);
-        mpiv.setBackgroundResource(R.drawable.gallery_item_background);
-        mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-        int width = ImageUtils.getDPI(300, (Activity) mpiv.getContext());
-        int height = ImageUtils.getDPI(187, (Activity) mpiv.getContext());
-        mpiv.setMaxHeight(height);
-        mpiv.setMaxWidth(width);
-        mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-        holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
-                height));
 
-        Glide.with(mpiv.getContext()).load(pi.getImageURL()).dontAnimate().into(mpiv);
+        EpisodeViewHolder viewHolder = (EpisodeViewHolder) holder;
 
-        setWatchedStatus(holder.itemView, pi);
+        viewHolder.reset();
+        viewHolder.createImage(pi, 300, 187);
+        viewHolder.toggleWatchedIndicator(pi);
     }
 
     public void updateEpisodes(List<VideoContentInfo> episodes) {
         posterList = episodes;
         notifyDataSetChanged();
-    }
-
-    public class EpisodeViewHolder extends DpadAwareRecyclerView.ViewHolder {
-
-        public EpisodeViewHolder(View itemView) {
-            super(itemView);
-        }
     }
 
 }

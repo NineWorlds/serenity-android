@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -40,7 +39,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.MainActivity;
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
@@ -48,10 +46,7 @@ import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
-import static org.fest.assertions.api.ANDROID.assertThat;
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
@@ -81,63 +76,6 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 	}
 
 	@Test
-	public void watchedViewIsSetInvisible() {
-		View galleryCellView = View.inflate(application, R.layout.poster_indicator_view, null);
-		VideoContentInfo videoContentInfo = mock(VideoContentInfo.class);
-		when(videoContentInfo.isPartiallyWatched()).thenReturn(false);
-		when(videoContentInfo.isWatched()).thenReturn(false);
-
-		abstractPosterImageGalleryAdapter.setWatchedStatus(galleryCellView,
-				videoContentInfo);
-
-		View watchedStatus = galleryCellView
-				.findViewById(R.id.posterWatchedIndicator);
-
-		assertThat(watchedStatus).isInvisible();
-
-	}
-
-	@Test
-	public void progressIndicatorIsVisible() {
-		View galleryCellView = View.inflate(application,
-				R.layout.poster_indicator_view, null);
-		VideoContentInfo videoContentInfo = mock(VideoContentInfo.class);
-		when(videoContentInfo.isPartiallyWatched()).thenReturn(true);
-		when(videoContentInfo.getResumeOffset()).thenReturn(10);
-		when(videoContentInfo.getDuration()).thenReturn(100);
-
-		abstractPosterImageGalleryAdapter.setWatchedStatus(galleryCellView,
-				videoContentInfo);
-
-		View progressIndicator = galleryCellView
-				.findViewById(R.id.posterInprogressIndicator);
-
-		assertThat(progressIndicator).isVisible();
-	}
-
-	@Test
-	public void setViewToWatched() {
-		View galleryCellView = View.inflate(application,
-				R.layout.poster_indicator_view, null);
-		VideoContentInfo videoContentInfo = mock(VideoContentInfo.class);
-		when(videoContentInfo.isPartiallyWatched()).thenReturn(false);
-		when(videoContentInfo.isWatched()).thenReturn(true);
-
-		abstractPosterImageGalleryAdapter.setWatchedStatus(galleryCellView,
-				videoContentInfo);
-
-		View watchedStatus = galleryCellView
-				.findViewById(R.id.posterWatchedIndicator);
-
-		assertThat(watchedStatus).isVisible();
-	}
-
-	@Test @Ignore
-	public void posterListSizeIsGreaterThanZero() {
-		//assertThat(abstractPosterImageGalleryAdapter).hasCount(1);
-	}
-
-	@Test
 	public void getItemReturnsExpectedInstance() {
 		assertThat(abstractPosterImageGalleryAdapter.getItem(0)).isInstanceOf(
 				MoviePosterInfo.class);
@@ -150,7 +88,6 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
 	@Test
 	public void getItemsReturnsANonEmptyListOfItems() {
-		//assertThat(abstractPosterImageGalleryAdapter).isNotEmpty();
 		assertThat(abstractPosterImageGalleryAdapter.getItems()).isNotEmpty();
 	}
 
@@ -160,7 +97,7 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 		public FakePosterImageGalleryAdapter() {
 			super();
 
-			posterList = new ArrayList<VideoContentInfo>();
+			posterList = new ArrayList<>();
 			VideoContentInfo videoContentInfo = new MoviePosterInfo();
 			posterList.add(videoContentInfo);
 		}

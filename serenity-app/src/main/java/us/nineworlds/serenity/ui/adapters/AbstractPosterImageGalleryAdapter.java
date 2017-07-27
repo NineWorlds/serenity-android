@@ -60,15 +60,7 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
     }
 
     public Object getItem(int position) {
-        if (position > posterList.size()) {
-            return null;
-        }
-        try {
             return posterList.get(position);
-        } catch (IndexOutOfBoundsException ex) {
-            ex.printStackTrace();
-            return null;
-        }
     }
 
     @Override
@@ -78,21 +70,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
 
     public List<VideoContentInfo> getItems() {
         return posterList;
-    }
-
-    public void setWatchedStatus(View galleryCellView, VideoContentInfo pi) {
-        ImageView watchedView = (ImageView) galleryCellView
-                .findViewById(R.id.posterWatchedIndicator);
-
-        if (pi.isPartiallyWatched()) {
-            ImageUtils.toggleProgressIndicator(galleryCellView,
-                    pi.getResumeOffset(), pi.getDuration());
-        } else if (pi.isWatched()) {
-            watchedView.setImageResource(R.drawable.overlaywatched);
-            watchedView.setVisibility(View.VISIBLE);
-        } else {
-            watchedView.setVisibility(View.INVISIBLE);
-        }
     }
 
 }

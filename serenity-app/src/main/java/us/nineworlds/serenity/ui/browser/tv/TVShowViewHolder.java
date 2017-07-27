@@ -1,48 +1,37 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 
 import net.ganin.darv.DpadAwareRecyclerView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.ui.views.viewholders.AbstractPosterImageViewHolder;
 
-public class TVShowViewHolder extends RecyclerView.ViewHolder {
+import static butterknife.ButterKnife.bind;
 
-    @BindView(R.id.posterImageView)
-    protected ImageView posterImageView;
+public class TVShowViewHolder extends AbstractPosterImageViewHolder {
 
-    @BindView(R.id.posterWatchedIndicator)
-    protected ImageView watchedView;
+    @BindView(R.id.badge_count) @Nullable
+    public TextView badgeCount;
 
-    @BindView(R.id.badge_count)
-    protected TextView badgeCount;
-
-    @BindView(R.id.posterInprogressIndicator)
-    protected ProgressBar inprogressIndicatorView;
 
     public TVShowViewHolder(View itemView) {
         super(itemView);
-        ButterKnife.bind(this, itemView);
+        bind(this, itemView);
     }
 
     public void reset() {
         watchedView.setVisibility(View.INVISIBLE);
         badgeCount.setVisibility(View.GONE);
-        inprogressIndicatorView.setVisibility(View.INVISIBLE);
+        posterInprogressIndicator.setVisibility(View.INVISIBLE);
     }
 
     public void createImage(SeriesContentInfo pi, int imageWidth, int imageHeight) {
@@ -68,11 +57,6 @@ public class TVShowViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    protected void loadImage(String url) {
-        ColorDrawable colorDrawable = new ColorDrawable(ContextCompat.getColor(posterImageView.getContext(), android.R.color.black));
-        Glide.with(posterImageView.getContext()).load(url).placeholder(colorDrawable).dontAnimate().into(posterImageView);
-    }
-
     public void toggleWatchedIndicator(SeriesContentInfo pi) {
         int watched = 0;
         if (pi.getShowsWatched() != null) {
@@ -82,7 +66,7 @@ public class TVShowViewHolder extends RecyclerView.ViewHolder {
         watchedView.setVisibility(View.INVISIBLE);
 
         if (pi.isPartiallyWatched()) {
-            toggleProgressIndicator(watched, pi.totalShows(), watchedView);
+            toggleProgressIndicator(watched, pi.totalShows());
         }
 
         badgeCount.setText(pi.getShowsUnwatched());
@@ -94,18 +78,6 @@ public class TVShowViewHolder extends RecyclerView.ViewHolder {
         } else {
             badgeCount.setVisibility(View.VISIBLE);
         }
-    }
-
-    protected void toggleProgressIndicator(int dividend, int divisor, ImageView watchedView) {
-        final float percentWatched = Float.valueOf(dividend) / Float.valueOf(divisor);
-
-        int progress = Float.valueOf(percentWatched * 100).intValue();
-        if (progress < 10) {
-            progress = 10;
-        }
-        inprogressIndicatorView.setProgress(progress);
-        inprogressIndicatorView.setVisibility(View.VISIBLE);
-        watchedView.setVisibility(View.INVISIBLE);
     }
 
 }

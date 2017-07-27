@@ -81,7 +81,6 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
         seasonList = new ArrayList<>();
     }
 
-
     public Object getItem(int position) {
         if (seasonList.isEmpty()) {
             return null;
@@ -96,64 +95,15 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
         return seasonViewHolder;
     }
 
-    protected Activity getActivity(Context contextWrapper) {
-        Context context = contextWrapper;
-        while (context instanceof ContextWrapper) {
-            if (context instanceof Activity) {
-                return (Activity) context;
-            }
-            context = ((ContextWrapper) context).getBaseContext();
-        }
-        return null;
-    }
-
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Activity context = getActivity(holder.itemView.getContext());
+        SeasonViewHolder viewHolder = (SeasonViewHolder) holder;
 
         SeriesContentInfo pi = seasonList.get(position);
-        ImageView mpiv = (ImageView) holder.itemView
-                .findViewById(R.id.posterImageView);
-        mpiv.setBackgroundResource(R.drawable.gallery_item_background);
-        mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-        int width = ImageUtils.getDPI(120, context);
-        int height = ImageUtils.getDPI(180, context);
-        mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
 
-        ColorDrawable colorDrawable = new ColorDrawable(ContextCompat.getColor(mpiv.getContext(), android.R.color.black));
-        Glide.with(context).load(pi.getImageURL()).placeholder(colorDrawable).dontAnimate().into(mpiv);
-        holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width,
-                height));
-
-        int unwatched = 0;
-
-        if (pi.getShowsUnwatched() != null) {
-            unwatched = Integer.parseInt(pi.getShowsUnwatched());
-        }
-
-        ImageView watchedView = (ImageView) holder.itemView
-                .findViewById(R.id.posterWatchedIndicator);
-
-        TextView badgeCount = (TextView) holder.itemView.findViewById(R.id.badge_count);
-        badgeCount.setText(pi.getShowsUnwatched());
-        badgeCount.setVisibility(View.VISIBLE);
-
-        if (pi.isWatched()) {
-            watchedView.setImageResource(R.drawable.overlaywatched);
-            watchedView.setVisibility(View.VISIBLE);
-            badgeCount.setVisibility(View.INVISIBLE);
-        }
-
-        int watched = 0;
-        if (pi.getShowsWatched() != null) {
-            watched = Integer.parseInt(pi.getShowsWatched());
-        }
-
-        if (pi.isPartiallyWatched()) {
-            toggleProgressIndicator(holder.itemView, watched, pi.totalShows(),
-                    watchedView);
-        }
+        viewHolder.reset();
+        viewHolder.createImage(pi, 120, 180);
+        viewHolder.toggleWatchedIndicator(pi);
     }
 
     @Override
@@ -166,32 +116,9 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
         return seasonList.size();
     }
 
-    protected void toggleProgressIndicator(View galleryCellView, int dividend,
-                                           int divisor, ImageView watchedView) {
-        final float percentWatched = Float.valueOf(dividend)
-                / Float.valueOf(divisor);
-
-        final ProgressBar view = (ProgressBar) galleryCellView
-                .findViewById(R.id.posterInprogressIndicator);
-        int progress = Float.valueOf(percentWatched * 100).intValue();
-        if (progress < 10) {
-            progress = 10;
-        }
-        view.setProgress(progress);
-        view.setVisibility(View.VISIBLE);
-        watchedView.setVisibility(View.INVISIBLE);
-    }
-
     public void updateSeasonsList(List<SeriesContentInfo> seasonList) {
         this.seasonList = seasonList;
         notifyDataSetChanged();
     }
 
-    public class SeasonViewHolder extends DpadAwareRecyclerView.ViewHolder {
-
-        public SeasonViewHolder(View itemView) {
-            super(itemView);
-        }
-
-    }
 }

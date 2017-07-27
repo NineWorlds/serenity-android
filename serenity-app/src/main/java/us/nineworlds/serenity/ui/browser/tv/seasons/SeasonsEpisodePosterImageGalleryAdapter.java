@@ -23,89 +23,23 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeViewHolder;
 
 public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageGalleryAdapter {
 
-    @Inject
-    protected SharedPreferences prefs;
-
-    @Inject
-    PlexappFactory plexFactory;
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        EpisodeViewHolder episodeViewHolder = (EpisodeViewHolder) holder;
+
         VideoContentInfo pi = posterList.get(position);
-        ImageView mpiv = (ImageView) holder.itemView
-                .findViewById(R.id.posterImageView);
-        mpiv.setBackgroundResource(R.drawable.gallery_item_background);
-        mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-        int width = ImageUtils.getDPI(270, (Activity) mpiv.getContext());
-        int height = ImageUtils.getDPI(147, (Activity) mpiv.getContext());
-        mpiv.setMaxWidth(width);
-        mpiv.setMaxHeight(height);
-        mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-        holder.itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(
-                width, height));
 
-        Glide.with(mpiv.getContext()).load(pi.getImageURL()).dontAnimate().into(mpiv);
-
-        ImageView watchedView = (ImageView) holder.itemView
-                .findViewById(R.id.posterWatchedIndicator);
-
-        if (pi.isPartiallyWatched()) {
-            ImageUtils.toggleProgressIndicator(holder.itemView,
-                    pi.getResumeOffset(), pi.getDuration());
-        } else if (pi.isWatched()) {
-            watchedView.setImageResource(R.drawable.overlaywatched);
-            watchedView.setVisibility(View.VISIBLE);
-        } else {
-            watchedView.setVisibility(View.INVISIBLE);
-        }
-
-        TextView metaData = (TextView) holder.itemView
-                .findViewById(R.id.metaOverlay);
-        String metaText = "";
-        if (pi.getSeason() != null) {
-            metaText = pi.getSeason() + " ";
-        }
-
-        if (pi.getEpisode() != null) {
-            metaText = metaText + pi.getEpisode();
-        }
-
-        if (metaText.length() > 0) {
-            metaData.setText(metaText);
-            metaData.setVisibility(View.VISIBLE);
-        }
-
-        TextView title = (TextView) holder.itemView
-                .findViewById(R.id.posterOverlayTitle);
-        title.setText(pi.getTitle());
-        title.setVisibility(View.VISIBLE);
-
+        episodeViewHolder.reset();
+        episodeViewHolder.createImage(pi, 270, 147);
+        episodeViewHolder.toggleWatchedIndicator(pi);
+        episodeViewHolder.updateSeasonsTitle(pi);
     }
 }

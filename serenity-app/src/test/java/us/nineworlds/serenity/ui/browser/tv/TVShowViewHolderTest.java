@@ -1,7 +1,6 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -11,8 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
@@ -60,13 +57,13 @@ public class TVShowViewHolderTest {
     @Test
     public void resetSetsViewsToDefaultValues() {
         tvShowViewHolder.watchedView.setVisibility(View.VISIBLE);
-        tvShowViewHolder.inprogressIndicatorView.setVisibility(View.VISIBLE);
+        tvShowViewHolder.posterInprogressIndicator.setVisibility(View.VISIBLE);
         tvShowViewHolder.badgeCount.setVisibility(View.VISIBLE);
 
         tvShowViewHolder.reset();
 
         assertThat(tvShowViewHolder.watchedView).isInvisible();
-        assertThat(tvShowViewHolder.inprogressIndicatorView).isInvisible();
+        assertThat(tvShowViewHolder.posterInprogressIndicator).isInvisible();
         assertThat(tvShowViewHolder.badgeCount).isGone();
     }
 
@@ -121,7 +118,7 @@ public class TVShowViewHolderTest {
     @Test
     public void toggleWatchedIndicatorShowsPartiallyWatchedView() {
         tvShowViewHolder.watchedView.setVisibility(View.GONE);
-        tvShowViewHolder.inprogressIndicatorView.setVisibility(View.INVISIBLE);
+        tvShowViewHolder.posterInprogressIndicator.setVisibility(View.INVISIBLE);
 
         doReturn("1").when(mockSeriesInfo).getShowsWatched();
         doReturn(10).when(mockSeriesInfo).totalShows();
@@ -131,7 +128,7 @@ public class TVShowViewHolderTest {
         tvShowViewHolder.toggleWatchedIndicator(mockSeriesInfo);
 
         assertThat(tvShowViewHolder.watchedView).isInvisible();
-        assertThat(tvShowViewHolder.inprogressIndicatorView).isVisible();
+        assertThat(tvShowViewHolder.posterInprogressIndicator).isVisible();
 
         verify(mockSeriesInfo, atLeastOnce()).getShowsWatched();
         verify(mockSeriesInfo).totalShows();
