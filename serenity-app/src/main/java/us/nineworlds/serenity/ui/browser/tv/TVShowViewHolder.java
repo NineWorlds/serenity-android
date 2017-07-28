@@ -15,17 +15,13 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.viewholders.AbstractPosterImageViewHolder;
 
-import static butterknife.ButterKnife.bind;
-
-public class TVShowViewHolder extends AbstractPosterImageViewHolder {
+public class TVShowViewHolder extends AbstractPosterImageViewHolder<SeriesContentInfo> {
 
     @BindView(R.id.badge_count) @Nullable
     public TextView badgeCount;
 
-
     public TVShowViewHolder(View itemView) {
         super(itemView);
-        bind(this, itemView);
     }
 
     public void reset() {
@@ -59,11 +55,13 @@ public class TVShowViewHolder extends AbstractPosterImageViewHolder {
 
     public void toggleWatchedIndicator(SeriesContentInfo pi) {
         int watched = 0;
+        watchedView.setVisibility(View.INVISIBLE);
+        badgeCount.setVisibility(View.VISIBLE);
+
         if (pi.getShowsWatched() != null) {
             watched = Integer.parseInt(pi.getShowsWatched());
         }
 
-        watchedView.setVisibility(View.INVISIBLE);
 
         if (pi.isPartiallyWatched()) {
             toggleProgressIndicator(watched, pi.totalShows());
@@ -75,8 +73,6 @@ public class TVShowViewHolder extends AbstractPosterImageViewHolder {
             watchedView.setImageResource(R.drawable.overlaywatched);
             watchedView.setVisibility(View.VISIBLE);
             badgeCount.setVisibility(View.GONE);
-        } else {
-            badgeCount.setVisibility(View.VISIBLE);
         }
     }
 

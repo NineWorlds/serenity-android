@@ -14,9 +14,10 @@ import com.bumptech.glide.Glide;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.widgets.RoundedImageView;
 
-public abstract class AbstractPosterImageViewHolder extends RecyclerView.ViewHolder {
+public abstract class AbstractPosterImageViewHolder<T extends ContentInfo> extends RecyclerView.ViewHolder {
 
     @BindView(R.id.posterInprogressIndicator)
     public ProgressBar posterInprogressIndicator;
@@ -40,6 +41,10 @@ public abstract class AbstractPosterImageViewHolder extends RecyclerView.ViewHol
      * Resets the view back to the initial state
      */
     public abstract void reset();
+
+    public abstract void createImage(T contentInfo, int width, int height);
+
+    public abstract void toggleWatchedIndicator(T contentInfo);
 
     public void loadImage(String url) {
         ColorDrawable colorDrawable = new ColorDrawable(ContextCompat.getColor(posterImageView.getContext(), android.R.color.black));

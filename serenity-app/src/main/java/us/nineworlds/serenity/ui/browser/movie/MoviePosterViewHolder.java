@@ -12,7 +12,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.viewholders.AbstractPosterImageViewHolder;
 
-public class MoviePosterViewHolder extends AbstractPosterImageViewHolder {
+public class MoviePosterViewHolder extends AbstractPosterImageViewHolder<VideoContentInfo> {
 
         public MoviePosterViewHolder(View itemView) {
             super(itemView);

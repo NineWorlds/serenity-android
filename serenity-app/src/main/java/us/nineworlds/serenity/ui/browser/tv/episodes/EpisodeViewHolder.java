@@ -14,7 +14,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.viewholders.AbstractPosterImageViewHolder;
 
-public class EpisodeViewHolder extends AbstractPosterImageViewHolder {
+public class EpisodeViewHolder extends AbstractPosterImageViewHolder<VideoContentInfo> {
 
     @BindView(R.id.metaOverlay)
     TextView metaData;
@@ -30,6 +30,8 @@ public class EpisodeViewHolder extends AbstractPosterImageViewHolder {
     public void reset() {
         posterInprogressIndicator.setVisibility(View.INVISIBLE);
         watchedView.setVisibility(View.INVISIBLE);
+        metaData.setVisibility(View.INVISIBLE);
+        title.setVisibility(View.INVISIBLE);
     }
 
     public void createImage(VideoContentInfo pi, int imageWidth, int imageHeight) {
@@ -56,7 +58,10 @@ public class EpisodeViewHolder extends AbstractPosterImageViewHolder {
 
         if (pi.isPartiallyWatched()) {
             ImageUtils.toggleProgressIndicator(itemView, pi.getResumeOffset(), pi.getDuration());
-        } else if (pi.isWatched()) {
+            return;
+        }
+
+        if (pi.isWatched()) {
             watchedView.setImageResource(R.drawable.overlaywatched);
             watchedView.setVisibility(View.VISIBLE);
         }
@@ -80,6 +85,5 @@ public class EpisodeViewHolder extends AbstractPosterImageViewHolder {
         title.setText(pi.getTitle());
         title.setVisibility(View.VISIBLE);
     }
-
 
 }
