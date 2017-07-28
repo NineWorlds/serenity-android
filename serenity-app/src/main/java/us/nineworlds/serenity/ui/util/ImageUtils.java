@@ -153,11 +153,6 @@ public class ImageUtils {
         return dpi;
     }
 
-    /**
-     * @param galleryCellView
-     * @param pi
-     * @param watchedView
-     */
     public static void toggleProgressIndicator(View galleryCellView,
                                                int dividend, int divisor) {
         ProgressBar view = (ProgressBar) galleryCellView

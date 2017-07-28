@@ -33,7 +33,6 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
-import butterknife.BindView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
