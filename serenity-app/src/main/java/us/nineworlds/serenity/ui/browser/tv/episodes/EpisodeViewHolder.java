@@ -53,6 +53,11 @@ public class EpisodeViewHolder extends AbstractPosterImageViewHolder<VideoConten
         loadImage(pi.getImageURL());
     }
 
+    @Override
+    public void loadImage(String url) {
+        super.loadImage(url);
+    }
+
     public void toggleWatchedIndicator(VideoContentInfo pi) {
         watchedView.setVisibility(View.INVISIBLE);
 

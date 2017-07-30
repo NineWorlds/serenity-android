@@ -81,7 +81,7 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector i
     protected abstract void createVideoDetail(ImageView v);
 
     protected void createVideoMetaData(ImageView v) {
-        fetchSubtitle(videoInfo);
+//        fetchSubtitle(videoInfo);
     }
 
     /**

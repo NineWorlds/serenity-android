@@ -73,7 +73,12 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
         }
 
         RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
-        video = (VideoContentInfo) adapter.getItem(gallery.getSelectedItemPosition());
+        int itemPosition = gallery.getSelectedItemPosition();
+        if (itemPosition < 0) {
+            gallery.requestFocusFromTouch();
+            return;
+        }
+        video = (VideoContentInfo) adapter.getItem(itemPosition);
         selectedView = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
 
         if (data != null) {

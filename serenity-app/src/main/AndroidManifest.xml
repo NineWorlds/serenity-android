@@ -62,6 +62,11 @@
         android:largeHeap="true"
         android:name="us.nineworlds.serenity.SerenityApplication"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="us.nineworlds.serenity.SerenityGlideModule"
+            android:value="GlideModule" />
+
         <meta-data
             android:name="android.app.default_searchable"
             android:value="us.nineworlds.serenity.ui.search.SearchableActivity" />

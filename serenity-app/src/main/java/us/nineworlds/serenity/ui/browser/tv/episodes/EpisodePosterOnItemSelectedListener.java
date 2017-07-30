@@ -34,6 +34,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
@@ -44,13 +45,32 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
+import static butterknife.ButterKnife.findById;
+
 public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
+
+    @BindView(R.id.video_poster) ImageView posterImage;
+    @BindView(R.id.video_details_container) View cardView;
+    @BindView(R.id.movieActionBarPosterTitle) TextView seriesTitle;
+    @BindView(R.id.movieSummary) TextView episodeSummary;
+    @BindView(R.id.movieBrowserPosterTitle) TextView title;
+    @BindView(R.id.videoTextExtra) TextView videoTextExtra;
+    @BindView(R.id.fanArt) View fanArt;
+    @BindView(R.id.categoryFilter) View categoryFilter;
+    @BindView(R.id.categoryFilter2) View categoryFilter2;
+    @BindView(R.id.movieCategoryName) View categoryName;
+    @BindView(R.id.subtitleFilter) TextView subtFilter;
+    @BindView(R.id.videoSubtitle) Spinner subtitleSpinner;
+
+    ImageView posterImageView;
 
     private static final String DISPLAY_DATE_FORMAT = "MMMM d, yyyy";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -65,34 +85,27 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
     @Override
     public void createVideoDetail(ImageView v) {
         Activity context = getActivity(v.getContext());
-        View cardView = context.findViewById(R.id.video_details_container);
         if (cardView != null) {
             cardView.setVisibility(View.VISIBLE);
         }
 
-        ImageView posterImage = (ImageView) context
-                .findViewById(R.id.video_poster);
         posterImage.setVisibility(View.VISIBLE);
         posterImage.setScaleType(ScaleType.FIT_XY);
         if (videoInfo.getParentPosterURL() != null) {
             int width = ImageUtils.getDPI(240, context);
             int height = ImageUtils.getDPI(330, context);
-            posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width,
-                    height));
-            Glide.with(context).load(videoInfo.getParentPosterURL()).into(posterImage);
+            posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+            Glide.with(context).load(videoInfo.getParentPosterURL()).diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate().into(posterImage);
 
         } else if (videoInfo.getGrandParentPosterURL() != null) {
             int width = ImageUtils.getDPI(240, context);
             int height = ImageUtils.getDPI(330, context);
-            posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width,
-                    height));
-            Glide.with(context).load(videoInfo.getGrandParentPosterURL()).into(posterImage);
+            posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+            Glide.with(context).load(videoInfo.getGrandParentPosterURL()).diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate().into(posterImage);
         } else {
-            Glide.with(context).load(videoInfo.getImageURL()).into(posterImage);
+            Glide.with(context).load(videoInfo.getImageURL()).diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate().into(posterImage);
         }
 
-        TextView seriesTitle = (TextView) context
-                .findViewById(R.id.movieActionBarPosterTitle);
         if (videoInfo.getSeriesTitle() != null) {
             if (!videoInfo.getSeriesTitle().equals(prevTitle)) {
                 fadeIn = true;
@@ -107,11 +120,8 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
             seriesTitle.setVisibility(View.GONE);
         }
 
-        TextView summary = (TextView) context.findViewById(R.id.movieSummary);
-        summary.setText(videoInfo.getSummary());
+        episodeSummary.setText(videoInfo.getSummary());
 
-        TextView title = (TextView) context
-                .findViewById(R.id.movieBrowserPosterTitle);
         String epTitle = videoInfo.getTitle();
         String season = videoInfo.getSeason();
         String episode = videoInfo.getEpisode();
@@ -129,8 +139,7 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
         }
 
         title.setText(epTitle);
-        TextView vte = (TextView) context.findViewById(R.id.videoTextExtra);
-        vte.setVisibility(View.INVISIBLE);
+        videoTextExtra.setVisibility(View.INVISIBLE);
         if (videoInfo.getOriginalAirDate() != null) {
             try {
                 Date airDate = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
@@ -138,8 +147,8 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
                 SimpleDateFormat format = new SimpleDateFormat(
                         DISPLAY_DATE_FORMAT, Locale.getDefault());
                 String formatedDate = format.format(airDate);
-                vte.setVisibility(View.VISIBLE);
-                vte.setText("Aired " + formatedDate);
+                videoTextExtra.setVisibility(View.VISIBLE);
+                videoTextExtra.setText("Aired " + formatedDate);
             } catch (ParseException ex) {
                 Log.i(getClass().getName(), "Unable to parse date");
             }
@@ -161,8 +170,6 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
             return;
         }
 
-        final View fanArt = context.findViewById(R.id.fanArt);
-
         String transcodingURL = plexFactory.getImageURL(
                 videoInfo.getBackgroundURL(), 1280, 720);
 
@@ -181,25 +188,26 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
         Activity context = getActivity(v.getContext());
         super.createVideoMetaData(v);
 
-        View categoryFilter = context.findViewById(R.id.categoryFilter);
         categoryFilter.setVisibility(View.GONE);
-        View categoryFilter2 = context.findViewById(R.id.categoryFilter2);
         categoryFilter2.setVisibility(View.GONE);
-        View categoryName = context.findViewById(R.id.movieCategoryName);
         categoryName.setVisibility(View.GONE);
-
-        TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
-        subt.setVisibility(View.GONE);
-        Spinner subtitleSpinner = (Spinner) context
-                .findViewById(R.id.videoSubtitle);
+        subtFilter = (TextView) context.findViewById(R.id.subtitleFilter);
+        subtFilter.setVisibility(View.GONE);
         subtitleSpinner.setVisibility(View.GONE);
     }
 
     @Override
     public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
         Activity context = getActivity(view.getContext());
+
         if (context.isDestroyed()) {
             return;
+        }
+
+        ButterKnife.bind(this, context);
+
+        if (i < 0) {
+            i = 0;
         }
 
         EpisodePosterImageGalleryAdapter adapter = (EpisodePosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
@@ -216,8 +224,7 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
 
         changeBackgroundImage(context);
 
-        ImageView posterImageView = (ImageView) view
-                .findViewById(R.id.posterImageView);
+        posterImageView = findById(view, R.id.posterImageView);
         currentView = posterImageView;
 
         createVideoDetail(posterImageView);
