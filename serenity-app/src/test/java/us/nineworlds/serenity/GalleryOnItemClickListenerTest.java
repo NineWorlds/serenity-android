@@ -1,0 +1,122 @@
+package us.nineworlds.serenity;
+
+import android.app.Activity;
+
+import net.ganin.darv.DpadAwareRecyclerView;
+
+import org.assertj.core.api.Java6Assertions;
+import org.fest.assertions.api.ANDROID;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
+import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowToast;
+
+import us.nineworlds.serenity.core.menus.MenuItem;
+import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
+import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
+import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.MockitoAnnotations.initMocks;
+
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
+public class GalleryOnItemClickListenerTest {
+
+    @Mock
+    MainMenuTextViewAdapter mockAdapter;
+
+    MainMenuTestActivity context;
+    GalleryOnItemClickListener onItemClickListener;
+
+    @Before
+    public void setUp() throws Exception {
+        initMocks(this);
+
+        context = Robolectric.buildActivity(MainMenuTestActivity.class).get();
+        onItemClickListener = new GalleryOnItemClickListener();
+    }
+
+    @After
+    public void tearDown() {
+        context.finish();
+    }
+
+    @Test
+    public void onClickMenuSearchLaunchesExpectedActivity() {
+        DpadAwareRecyclerView recyclerView = new DpadAwareRecyclerView(context);
+        recyclerView.setAdapter(mockAdapter);
+        MenuItem searchMenuItem = new MenuItem();
+        searchMenuItem.setType("search");
+        doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
+
+        onItemClickListener.onItemClick(recyclerView, null, 0, 0);
+
+        assertThat(context.onSearchActivtyCalled).isTrue();
+    }
+
+    @Test
+    public void onClickOpensOptionsMenu() {
+        DpadAwareRecyclerView recyclerView = new DpadAwareRecyclerView(context);
+        recyclerView.setAdapter(mockAdapter);
+        MenuItem searchMenuItem = new MenuItem();
+        searchMenuItem.setType("options");
+        doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
+
+        onItemClickListener.onItemClick(recyclerView, null, 0, 0);
+
+        assertThat(context.openOptionsMenu).isTrue();
+    }
+
+    @Test
+    public void onClickLaunchesMovieBrowserActivity() {
+        DpadAwareRecyclerView recyclerView = new DpadAwareRecyclerView(context);
+        recyclerView.setAdapter(mockAdapter);
+        MenuItem searchMenuItem = new MenuItem();
+        searchMenuItem.setType("movie");
+        doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
+
+        onItemClickListener.onItemClick(recyclerView, null, 0, 0);
+
+        ShadowActivity shadowActivity = Shadows.shadowOf(context);
+        ANDROID.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, MovieBrowserActivity.class);
+    }
+
+    @Test
+    public void onClickLaunchesTVShowBrowserActivity() {
+        DpadAwareRecyclerView recyclerView = new DpadAwareRecyclerView(context);
+        recyclerView.setAdapter(mockAdapter);
+        MenuItem searchMenuItem = new MenuItem();
+        searchMenuItem.setType("show");
+        doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
+
+        onItemClickListener.onItemClick(recyclerView, null, 0, 0);
+
+        ShadowActivity shadowActivity = Shadows.shadowOf(context);
+        ANDROID.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, TVShowBrowserActivity.class);
+    }
+
+    @Test
+    public void onClickUnknownRequestLaunchesPreferences() {
+        DpadAwareRecyclerView recyclerView = new DpadAwareRecyclerView(context);
+        recyclerView.setAdapter(mockAdapter);
+        MenuItem searchMenuItem = new MenuItem();
+        searchMenuItem.setType("unknown");
+        doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
+
+        onItemClickListener.onItemClick(recyclerView, null, 0, 0);
+
+        ShadowActivity shadowActivity = Shadows.shadowOf(context);
+        ANDROID.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, SerenityPreferenceActivity.class);
+    }
+}

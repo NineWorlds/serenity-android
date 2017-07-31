@@ -56,7 +56,7 @@ public class GalleryOnItemSelectedListener extends BaseInjector implements DpadA
         return shouldFadein;
     }
 
-    public int getBackgroundImageId(MenuItem menuItem) {
+    int getBackgroundImageId(MenuItem menuItem) {
         if ("movie".equals(menuItem.getType())) {
             return R.drawable.movies;
         }

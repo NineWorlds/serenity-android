@@ -26,6 +26,7 @@ package us.nineworlds.serenity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Toast;
 
@@ -36,22 +37,20 @@ import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 
-public class GalleryOnItemClickListener implements DpadAwareRecyclerView.OnItemClickListener {
+import static net.ganin.darv.DpadAwareRecyclerView.*;
+
+public class GalleryOnItemClickListener implements OnItemClickListener {
 
     private static final String MENU_TYPE_SEARCH = "search";
     private static final String MENU_TYPE_SHOW = "show";
     private static final String MENU_TYPE_MOVIE = "movie";
     private static final String MENU_TYPE_MUSIC = "artist";
     private static final String MENU_TYPE_OPTIONS = "options";
-    private Activity context;
-
-    public GalleryOnItemClickListener(Context c) {
-        context = (Activity) c;
-    }
 
     @Override
     public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
         MainMenuTextViewAdapter mainMenuTextViewAdapter = (MainMenuTextViewAdapter) dpadAwareRecyclerView.getAdapter();
+        Activity context = (Activity) dpadAwareRecyclerView.getContext();
         MenuItem menuItem = mainMenuTextViewAdapter.getItemAtPosition(i);
         String librarySection = menuItem.getSection();
         String activityType = menuItem.getType();

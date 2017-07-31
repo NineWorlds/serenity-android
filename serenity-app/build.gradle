@@ -37,6 +37,10 @@ android {
         targetSdkVersion 25
     }
 
+    aaptOptions {
+        cruncherEnabled false
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -61,15 +65,16 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled false
-
+            minifyEnabled true
+            useProguard false
         }
         release {
             if (project.hasProperty("keystore")) {
                 signingConfig signingConfigs.release
             }
             zipAlignEnabled true
-            minifyEnabled false
+            minifyEnabled true
+            useProguard false
         }
     }
 
@@ -150,16 +155,4 @@ dependencies {
     testCompile 'com.squareup.okhttp3:mockwebserver:3.8.1'
     testCompile 'commons-io:commons-io:2.4'
     kaptTest 'com.squareup.dagger:dagger-compiler:1.2.2'
-}
-
-/*
- * Gets the version name from the latest Git tag
- */
-def getVersionName = { ->
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        commandLine 'git', 'describe', '--tags'
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
 }

@@ -106,7 +106,6 @@ public class MainMenuFragment extends InjectingFragment {
     }
 
     private void setupGallery() {
-//		SerenityMenuGridLayoutManager layoutManager = new SerenityMenuGridLayoutManager.Builder(getActivity()).circular(true).orientation(ExtGridLayoutManager.HORIZONTAL).spanCount(1).build();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mainGallery.setLayoutManager(linearLayoutManager);
 
@@ -115,8 +114,7 @@ public class MainMenuFragment extends InjectingFragment {
         mainGallery.setAdapter(adapter);
         mainGallery
                 .setOnItemSelectedListener(new GalleryOnItemSelectedListener());
-        mainGallery.setOnItemClickListener(new GalleryOnItemClickListener(
-                getActivity()));
+        mainGallery.setOnItemClickListener(new GalleryOnItemClickListener());
         mainGallery.setVisibility(View.VISIBLE);
         adapter.notifyDataSetChanged();
     }
