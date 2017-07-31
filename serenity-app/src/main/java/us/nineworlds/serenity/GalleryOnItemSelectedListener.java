@@ -45,18 +45,14 @@ import us.nineworlds.serenity.injection.BaseInjector;
 
 public class GalleryOnItemSelectedListener extends BaseInjector implements DpadAwareRecyclerView.OnItemSelectedListener {
 
+    @Inject
+    SharedPreferences preferences;
+
     @BindView(R.id.mainGalleryBackground)
     ImageView mainGalleryBackgroundView;
 
-    public GalleryOnItemSelectedListener() {
-    }
-
     protected boolean shouldFadeIn() {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(mainGalleryBackgroundView
-                        .getContext());
-        boolean shouldFadein = preferences.getBoolean(
-                "animation_background_mainmenu_fadein", true);
+        boolean shouldFadein = preferences.getBoolean("animation_background_mainmenu_fadein", true);
         return shouldFadein;
     }
 

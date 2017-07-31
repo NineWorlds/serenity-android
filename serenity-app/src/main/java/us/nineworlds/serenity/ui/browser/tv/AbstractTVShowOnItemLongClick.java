@@ -121,7 +121,7 @@ public abstract class AbstractTVShowOnItemLongClick {
 //                        BadgeView badgeView = (BadgeView) view
 //                                .findViewWithTag("badge");
 //                        if (badgeView != null) {
-//                            badgeView.setText(videoInfo.getShowsUnwatched());
+//                            badgeView.sText(videoInfo.getShowsUnwatched());
 //                            badgeView.setVisibility(View.VISIBLE);
 //                            badgeView.show(true);
 //                        }

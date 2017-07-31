@@ -29,11 +29,11 @@ package us.nineworlds.serenity.core.menus;
  */
 public interface MenuDrawerItem {
 
-    public String getText();
+    String getText();
 
-    public int getImageResourceID();
+    int getImageResourceID();
 
-    public void setText(String text);
+    void setText(String text);
 
-    public void setImageResourceID(int resourceId);
+    void setImageResourceID(int resourceId);
 }

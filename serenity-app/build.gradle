@@ -97,7 +97,8 @@ junitJacoco {
     excludes = [ "**/*_ViewBinding.class", "**/*InjectAdapter.class", "android/support/**/*.class",
                  "com/google/**/*.class", "com/birbit/**/*.class", "butterknife/**/*.class",
                  "com/arellomobile/**/*.class", "net/ganin/darv/**/*.class", "**/*ViewStateProvider.class",
-                 "**/*PresentersBinder.class"]
+                 "**/*PresentersBinder.class",
+                 "us/nineworlds/serenity/R.*.class"]
 }
 
 dependencies {

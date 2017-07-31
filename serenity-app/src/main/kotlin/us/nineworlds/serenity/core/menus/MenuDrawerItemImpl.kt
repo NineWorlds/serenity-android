@@ -8,10 +8,12 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * <p>
+ *
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * <p>
+ *
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -21,41 +23,35 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.menus;
+package us.nineworlds.serenity.core.menus
 
-public class MenuDrawerItemImpl implements MenuDrawerItem {
+class MenuDrawerItemImpl : MenuDrawerItem {
 
-    private String text;
-    private int resourceID;
+    private var text: String? = null
+    private var imageResourceID: Int = 0
 
-    public MenuDrawerItemImpl(String text) {
-        this.text = text;
+    constructor(text: String) {
+        this.text = text
     }
 
-    public MenuDrawerItemImpl(String text, int resourceID) {
-        this.text = text;
-        this.resourceID = resourceID;
+    constructor(text: String, resourceID: Int) {
+        this.text = text
+        this.imageResourceID = resourceID
     }
 
-    @Override
-    public String getText() {
-        return text;
+    override fun getText(): String? {
+        return  text
     }
 
-    @Override
-    public int getImageResourceID() {
-        return resourceID;
+    override fun getImageResourceID(): Int {
+        return imageResourceID
     }
 
-    @Override
-    public void setText(String text) {
-        this.text = text;
-
+    override fun setText(text: String?) {
+        this.text = text
     }
 
-    @Override
-    public void setImageResourceID(int resourceId) {
-        resourceID = resourceId;
+    override fun setImageResourceID(resourceId: Int) {
+        this.imageResourceID = resourceId
     }
-
 }

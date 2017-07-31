@@ -58,7 +58,7 @@ public class MenuItemTest {
 
 	@Test
 	public void toStringReturnsNullWhenNoTitleHasBeenSet() {
-		assertThat(menuItem.toString()).isNull();
+		assertThat(menuItem.toString()).isEmpty();
 	}
 
 	@Test
