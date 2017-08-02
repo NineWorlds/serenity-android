@@ -96,10 +96,6 @@ android {
     }
 }
 
-kapt {
-    generateStubs = true
-}
-
 junitJacoco {
     jacocoVersion = '0.7.2.201409121644' // type String
     excludes = [ "**/*_ViewBinding.class", "**/*InjectAdapter.class", "android/support/**/*.class",

@@ -3,6 +3,7 @@ package us.nineworlds.serenity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,8 @@ import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.android.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.RuntimeEnvironment.application;
@@ -54,6 +57,37 @@ public class StartupBroadcastReceiverTest extends InjectingTest {
         Intent nextStartedActivity = ShadowApplication.getInstance().getNextStartedActivity();
         assertThat(nextStartedActivity).isNull();
     }
+
+    @Test
+    public void onReceiveDoesNothingWhenIntentActionIsIsNotBootCompleted() {
+        Intent intent = new Intent();
+        String action = RandomStringUtils.randomAlphanumeric(10);
+        intent.setAction(action);
+
+        receiver.onReceive(application.getApplicationContext(), intent);
+
+        verifyZeroInteractions(mockSharedPrefences);
+        Intent nextStartedActivity = ShadowApplication.getInstance().getNextStartedActivity();
+        assertThat(nextStartedActivity).isNull();
+    }
+
+    @Test
+    public void onReceiveHandlesBootCompleted() {
+        Intent intent = new Intent();
+        String action = "android.intent.action.BOOT_COMPLETED";
+        intent.setAction(action);
+
+        doReturn(true).when(mockSharedPrefences).getBoolean("serenity_boot_startup", false);
+
+        receiver.onReceive(application.getApplicationContext(), intent);
+
+        Intent nextStartedActivity = ShadowApplication.getInstance().peekNextStartedActivity();
+        assertThat(nextStartedActivity).isNotNull();
+
+        verify(mockSharedPrefences).getBoolean("serenity_boot_startup", false);
+    }
+
+
 
     @Override
     public List<Object> getModules() {
