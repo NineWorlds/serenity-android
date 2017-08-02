@@ -30,7 +30,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
@@ -39,11 +38,14 @@ import android.widget.Button;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
+import net.ganin.darv.DpadAwareRecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -56,7 +58,11 @@ import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.SettingsMenuDrawerOnItemClickedListener;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
+import static butterknife.ButterKnife.bind;
+
 public class MainActivity extends SerenityDrawerLayoutActivity implements MainView {
+
+    public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
 
     @Inject
     AndroidHelper androidHelper;
@@ -64,36 +70,107 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
     @InjectPresenter
     MainPresenter presenter;
 
-    public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
+    @Inject
+    SharedPreferences preferences;
+
+    @BindView(R.id.mainGalleryMenu)
+    DpadAwareRecyclerView mainMenuContainer;
 
     protected Handler autoConfigureHandler = new Handler();
 
-    private final BroadcastReceiver gdmReciver = new GDMReceiver();
+    private final BroadcastReceiver gdmReceiver = new GDMReceiver();
 
-    private SharedPreferences preferences;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        actionBar.setCustomView(R.layout.clock_layout);
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        setContentView(R.layout.activity_plex_app_main);
+        initMenuDrawerViews();
+        bind(this);
+        createSideMenu();
+
+        initPreferences();
+
+        initializeDefaultPlayer();
+        boolean watchedStatusFirstTime = preferences.getBoolean("watched_status_firsttime", true);
+        if (watchedStatusFirstTime) {
+            presenter.clearCache(this);
+
+            Editor editor = preferences.edit();
+            editor.putBoolean("watched_status_firsttime", false);
+            editor.apply();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        autoConfigureHandler.postDelayed(new AutoConfigureHandlerRunnable(this), 2500);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(gdmReceiver);
+    }
+
+    @Override
+    protected void onRestart() {
+        populateMenuOptions();
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
+        IntentFilter filters = new IntentFilter();
+        filters.addAction(GDMReceiver.GDM_MSG_RECEIVED);
+        filters.addAction(GDMReceiver.GDM_SOCKET_CLOSED);
+        LocalBroadcastManager.getInstance(this).registerReceiver(gdmReceiver, filters);
+
+        // Start the auto-configuration service
+        presenter.discoverServers();
+
+        Intent recommendationIntent = new Intent(getApplicationContext(), OnDeckRecommendationIntentService.class);
+        startService(recommendationIntent);
+
+        mainMenuContainer.setFocusable(true);
+        mainMenuContainer.requestFocusFromTouch();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == MAIN_MENU_PREFERENCE_RESULT_CODE) {
+            recreate();
+        }
+    }
 
     @Override
     protected void createSideMenu() {
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-                R.drawable.menudrawer_selector, R.string.drawer_open,
-                R.string.drawer_closed) {
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector, R.string.drawer_open, R.string.drawer_closed) {
             @Override
             public void onDrawerOpened(View drawerView) {
 
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle(R.string.app_name);
                 drawerList.requestFocusFromTouch();
-
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 getSupportActionBar().setTitle(R.string.app_name);
-                View menu = findViewById(R.id.mainGalleryMenu);
-                if (menu != null) {
-                    menu.requestFocusFromTouch();
-                }
+                mainMenuContainer.requestFocusFromTouch();
             }
         };
 
@@ -102,22 +179,17 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
         actionBar.setHomeButtonEnabled(true);
 
         Button settingsButton = (Button) findViewById(R.id.drawer_settings);
-        settingsButton
-                .setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(
-                        drawerLayout));
+        settingsButton.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(drawerLayout));
 
         populateMenuOptions();
     }
 
     protected void populateMenuOptions() {
         List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-        drawerMenuItem
-                .add(new MenuDrawerItemImpl(getResources().getString(
-                        R.string.options_main_about),
-                        R.drawable.ic_action_action_about));
         drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
-                R.string.options_main_clear_image_cache),
-                R.drawable.ic_action_content_remove));
+                R.string.options_main_about), R.drawable.ic_action_action_about));
+        drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
+                R.string.options_main_clear_image_cache), R.drawable.ic_action_content_remove));
         drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(
                 R.string.clear_queue), R.drawable.ic_action_content_remove));
 
@@ -127,63 +199,17 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
             menu.requestFocusFromTouch();
         }
 
-        drawerList
-                .setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(
-                        drawerLayout));
+        drawerList.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(drawerLayout));
     }
 
     protected void initPreferences() {
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (preferences != null) {
-            ServerConfig config = (ServerConfig) ServerConfig.getInstance();
-            if (config != null) {
-                preferences
-                        .registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
-                                .getInstance()).getServerConfigChangeListener());
-            }
+        ServerConfig config = (ServerConfig) ServerConfig.getInstance();
+        if (config != null) {
+            preferences.registerOnSharedPreferenceChangeListener(((ServerConfig) ServerConfig
+                    .getInstance()).getServerConfigChangeListener());
         }
     }
 
-    /**
-     * Refresh the screen after coming back from the preferences screen.
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == MAIN_MENU_PREFERENCE_RESULT_CODE) {
-            recreate();
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        actionBar.setCustomView(R.layout.clock_layout);
-        actionBar.setDisplayShowCustomEnabled(true);
-
-        setContentView(R.layout.activity_plex_app_main);
-
-        initMenuDrawerViews();
-
-        createSideMenu();
-        initPreferences();
-
-        initializeDefaultPlayer();
-        if (preferences != null) {
-            boolean watchedStatusFirstTime = preferences.getBoolean(
-                    "watched_status_firsttime", true);
-            if (watchedStatusFirstTime) {
-                presenter.clearCache(this);
-
-                Editor editor = preferences.edit();
-                editor.putBoolean("watched_status_firsttime", false);
-                editor.apply();
-            }
-        }
-    }
-
-    /**
-     *
-     */
     protected void initializeDefaultPlayer() {
         boolean initialRun = preferences.getBoolean("serenity_first_run", true);
         if (initialRun) {
@@ -194,28 +220,20 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
                 editor.putBoolean("external_player", true);
             }
             editor.putBoolean("serenity_first_run", false);
-            editor.commit();
+            editor.apply();
         }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(gdmReciver);
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        boolean menuKeySlidingMenu = preferences.getBoolean(
-                "remote_control_menu", true);
+        boolean menuKeySlidingMenu = preferences.getBoolean("remote_control_menu", true);
 
         if (menuKeySlidingMenu) {
             if (keyCode == KeyEvent.KEYCODE_MENU) {
                 if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
                     drawerLayout.closeDrawers();
-                    View menu = findViewById(R.id.mainGalleryMenu);
-                    if (menu != null) {
-                        menu.requestFocusFromTouch();
+                    if (mainMenuContainer != null) {
+                        mainMenuContainer.requestFocusFromTouch();
                     }
                 } else {
                     drawerLayout.openDrawer(linearDrawerLayout);
@@ -225,13 +243,9 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
             }
         }
 
-        if (drawerLayout.isDrawerOpen(linearDrawerLayout)
-                && keyCode == KeyEvent.KEYCODE_BACK) {
+        if (drawerLayout.isDrawerOpen(linearDrawerLayout) && keyCode == KeyEvent.KEYCODE_BACK) {
             drawerLayout.closeDrawer(linearDrawerLayout);
-            View menu = findViewById(R.id.mainGalleryMenu);
-            if (menu != null) {
-                menu.requestFocusFromTouch();
-            }
+            mainMenuContainer.requestFocusFromTouch();
             return true;
         }
 
@@ -239,53 +253,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
     }
 
     @Override
-    protected void onRestart() {
-        populateMenuOptions();
-        super.onRestart();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
-        IntentFilter filters = new IntentFilter();
-        filters.addAction(GDMReceiver.GDM_MSG_RECEIVED);
-        filters.addAction(GDMReceiver.GDM_SOCKET_CLOSED);
-        LocalBroadcastManager.getInstance(this).registerReceiver(gdmReciver,
-                filters);
-
-        // Start the auto-configuration service
-        presenter.discoverServers();
-
-        Intent recommendationIntent = new Intent(getApplicationContext(),
-                OnDeckRecommendationIntentService.class);
-        startService(recommendationIntent);
-
-        View menu = findViewById(R.id.mainGalleryMenu);
-        menu.setFocusable(true);
-        if (menu != null) {
-            menu.requestFocusFromTouch();
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        autoConfigureHandler.postDelayed(
-                new AutoConfigureHandlerRunnable(this), 2500);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public void openOptionsMenu() {
         drawerLayout.openDrawer(linearDrawerLayout);
         drawerList.requestFocusFromTouch();
     }
-
 }

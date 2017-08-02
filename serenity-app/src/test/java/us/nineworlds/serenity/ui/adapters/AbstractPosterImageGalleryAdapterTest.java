@@ -50,7 +50,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, qualifiers = "large")
 public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
 	AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter;
@@ -63,8 +63,7 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 		Robolectric.getBackgroundThreadScheduler().pause();
 		Robolectric.getForegroundThreadScheduler().pause();
 
-		activity = Robolectric
-				.buildActivity(MainActivity.class).create().get();
+		activity = Robolectric.buildActivity(MainActivity.class).create().get();
 		abstractPosterImageGalleryAdapter = new FakePosterImageGalleryAdapter();
 	}
 

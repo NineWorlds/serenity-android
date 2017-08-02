@@ -55,7 +55,7 @@ import static org.fest.assertions.api.ANDROID.assertThat;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, qualifiers = "large")
 public class MainActivityTest extends InjectingTest {
 
 	MainActivity activity;
@@ -75,10 +75,10 @@ public class MainActivityTest extends InjectingTest {
 
 		try {
 			activity = Robolectric.buildActivity(MainActivity.class).attach()
-					.create().start().resume().get();
+					.create().start().resume().visible().get();
 		} catch (NullPointerException ex) {
 			activity = Robolectric.buildActivity(MainActivity.class).create()
-					.start().get();
+					.start().visible().get();
 		}
 
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
@@ -102,8 +102,7 @@ public class MainActivityTest extends InjectingTest {
 
 	@Test
 	public void testCreatesMenu() throws Exception {
-		assertThat(activity.findViewById(R.id.mainGalleryBackground))
-		.isVisible();
+		assertThat(activity.findViewById(R.id.mainGalleryBackground)).isVisible();
 	}
 
 	@Override
