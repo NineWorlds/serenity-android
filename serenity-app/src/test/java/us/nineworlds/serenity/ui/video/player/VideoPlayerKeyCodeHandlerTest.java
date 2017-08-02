@@ -29,12 +29,8 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
-import dagger.Module;
-import dagger.Provides;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Singleton;
-import org.fest.assertions.api.ANDROID;
+
+import org.assertj.android.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,12 +42,20 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
@@ -335,7 +339,7 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_T, null,
 				true);
 		assertThat(result).isTrue();
-		ANDROID.assertThat(timeOfDay).isGone();
+		Assertions.assertThat(timeOfDay).isGone();
 	}
 
 	@Test
@@ -350,7 +354,7 @@ public class VideoPlayerKeyCodeHandlerTest extends InjectingTest {
 		boolean result = keyCodeHandler.onKeyDown(KeyEvent.KEYCODE_T, null,
 				true);
 		assertThat(result).isTrue();
-		ANDROID.assertThat(timeOfDay).isVisible();
+		Assertions.assertThat(timeOfDay).isVisible();
 	}
 
 	@Test

@@ -27,17 +27,21 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import dagger.Module;
-import dagger.Provides;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Singleton;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;

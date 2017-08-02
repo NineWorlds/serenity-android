@@ -1,23 +1,18 @@
 package us.nineworlds.serenity;
 
-import android.app.Activity;
-
 import net.ganin.darv.DpadAwareRecyclerView;
 
-import org.assertj.core.api.Java6Assertions;
-import org.fest.assertions.api.ANDROID;
+import org.assertj.android.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowToast;
 
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
@@ -89,7 +84,7 @@ public class GalleryOnItemClickListenerTest {
         onItemClickListener.onItemClick(recyclerView, null, 0, 0);
 
         ShadowActivity shadowActivity = Shadows.shadowOf(context);
-        ANDROID.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, MovieBrowserActivity.class);
+        Assertions.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, MovieBrowserActivity.class);
     }
 
     @Test
@@ -103,7 +98,7 @@ public class GalleryOnItemClickListenerTest {
         onItemClickListener.onItemClick(recyclerView, null, 0, 0);
 
         ShadowActivity shadowActivity = Shadows.shadowOf(context);
-        ANDROID.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, TVShowBrowserActivity.class);
+        Assertions.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, TVShowBrowserActivity.class);
     }
 
     @Test
@@ -117,6 +112,6 @@ public class GalleryOnItemClickListenerTest {
         onItemClickListener.onItemClick(recyclerView, null, 0, 0);
 
         ShadowActivity shadowActivity = Shadows.shadowOf(context);
-        ANDROID.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, SerenityPreferenceActivity.class);
+        Assertions.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, SerenityPreferenceActivity.class);
     }
 }

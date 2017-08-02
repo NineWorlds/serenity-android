@@ -25,6 +25,7 @@ package us.nineworlds.serenity.volley;
 
 import android.view.LayoutInflater;
 import android.view.View;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -35,6 +36,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
@@ -42,7 +44,7 @@ import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 /**
  * @author dcarver

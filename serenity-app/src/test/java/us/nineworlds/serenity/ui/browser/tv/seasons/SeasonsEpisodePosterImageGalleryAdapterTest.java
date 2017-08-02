@@ -16,13 +16,10 @@ import dagger.Module;
 import edu.emory.mathcs.backport.java.util.Collections;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.TestingModule;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
-import us.nineworlds.serenity.ui.browser.tv.TVShowRecyclerAdapterTest;
-import us.nineworlds.serenity.ui.browser.tv.TVShowViewHolder;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeViewHolder;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;

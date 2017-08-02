@@ -30,10 +30,10 @@ import org.mockito.MockitoAnnotations;
 
 import javax.inject.Singleton;
 
+import dagger.Module;
 import dagger.Provides;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
-import dagger.Module;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 
 @Module(addsTo = AndroidModule.class,

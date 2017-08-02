@@ -23,12 +23,6 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-import dagger.Module;
-import dagger.Provides;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Singleton;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +33,15 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Video;
@@ -49,7 +52,7 @@ import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.robolectric.RuntimeEnvironment.application;
 

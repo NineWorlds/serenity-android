@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;

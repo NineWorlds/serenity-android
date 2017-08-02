@@ -23,15 +23,15 @@
 
 package us.nineworlds.serenity.core.util;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 /**
  * @author davidcarver
@@ -71,8 +71,7 @@ public class TimeUtilsTest {
 	@Test
 	public void formatDuartionInHoursMinutes() throws Exception {
 		long duration = demandDuration("01:53:10");
-		assertThat(timeUtil.formatDurationHoursMinutes(duration)).isEqualTo(
-				" 1H 53M");
+		assertThat(timeUtil.formatDurationHoursMinutes(duration)).isEqualTo(" 1H 53M");
 	}
 
 	@Test

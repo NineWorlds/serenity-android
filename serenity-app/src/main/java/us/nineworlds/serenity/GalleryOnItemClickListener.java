@@ -24,9 +24,7 @@
 package us.nineworlds.serenity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Toast;
 
@@ -37,7 +35,7 @@ import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 
-import static net.ganin.darv.DpadAwareRecyclerView.*;
+import static net.ganin.darv.DpadAwareRecyclerView.OnItemClickListener;
 
 public class GalleryOnItemClickListener implements OnItemClickListener {
 

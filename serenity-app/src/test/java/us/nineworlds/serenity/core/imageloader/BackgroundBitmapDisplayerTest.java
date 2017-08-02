@@ -30,6 +30,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.Animation;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,10 +39,11 @@ import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowView;
+
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
 
-import static org.fest.assertions.api.ANDROID.assertThat;
+import static org.assertj.android.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.RuntimeEnvironment.application;

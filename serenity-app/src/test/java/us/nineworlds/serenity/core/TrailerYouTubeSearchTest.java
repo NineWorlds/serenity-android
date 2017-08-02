@@ -25,9 +25,10 @@ package us.nineworlds.serenity.core;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

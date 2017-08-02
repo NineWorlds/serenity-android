@@ -1,10 +1,10 @@
 package us.nineworlds.serenity.core.externalplayer;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 /**
  * The MIT License (MIT)

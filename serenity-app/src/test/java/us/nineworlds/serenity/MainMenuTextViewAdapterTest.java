@@ -1,12 +1,8 @@
 package us.nineworlds.serenity;
 
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.Java6Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
@@ -19,14 +15,13 @@ import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
-import static org.assertj.core.api.Java6Assertions.*;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
 public class MainMenuTextViewAdapterTest  extends InjectingTest {
 
     MainMenuTextViewAdapter adapter;
-
 
     @Before
     public void setUp() throws Exception  {
@@ -41,9 +36,7 @@ public class MainMenuTextViewAdapterTest  extends InjectingTest {
         MenuItem result = adapter.getItemAtPosition(-1);
 
         assertThat(result).isNotNull();
-
     }
-
 
     @Override
     public List<Object> getModules() {

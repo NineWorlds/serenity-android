@@ -33,7 +33,7 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
-import static android.view.View.*;
+import static android.view.View.OnKeyListener;
 
 public class TVShowGridOnKeyListener extends BaseInjector implements OnKeyListener {
 

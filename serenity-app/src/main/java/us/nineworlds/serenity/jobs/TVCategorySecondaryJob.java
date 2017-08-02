@@ -11,7 +11,6 @@ import javax.inject.Inject;
 
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.events.TVCategoryEvent;
 import us.nineworlds.serenity.events.TVCategorySecondaryEvent;
 import us.nineworlds.serenity.injection.InjectingJob;
 

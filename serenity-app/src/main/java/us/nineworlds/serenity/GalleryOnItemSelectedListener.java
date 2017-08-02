@@ -25,8 +25,6 @@ package us.nineworlds.serenity;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;

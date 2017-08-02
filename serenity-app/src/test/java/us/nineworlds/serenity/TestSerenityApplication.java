@@ -24,16 +24,15 @@
 package us.nineworlds.serenity;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
+
+import org.robolectric.TestLifecycleApplication;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import org.robolectric.TestLifecycleApplication;
+
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 
-/**
- * @author dcarver
- *
- */
 public class TestSerenityApplication extends SerenityApplication implements TestLifecycleApplication {
 
 	public TestSerenityApplication() {

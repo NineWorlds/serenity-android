@@ -25,8 +25,8 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
+
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 import us.nineworlds.serenity.injection.BaseInjector;
 

@@ -23,9 +23,9 @@
 
 package us.nineworlds.serenity.test;
 
-import java.util.List;
-
 import org.junit.Before;
+
+import java.util.List;
 
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 

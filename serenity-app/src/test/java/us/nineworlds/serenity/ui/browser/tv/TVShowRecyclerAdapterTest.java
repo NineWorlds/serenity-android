@@ -1,14 +1,10 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
-import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
 
-import org.assertj.core.api.Java6Assertions;
-import org.fest.assertions.api.ANDROID;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -28,7 +24,7 @@ import us.nineworlds.serenity.test.InjectingTest;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.robolectric.RuntimeEnvironment.*;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)

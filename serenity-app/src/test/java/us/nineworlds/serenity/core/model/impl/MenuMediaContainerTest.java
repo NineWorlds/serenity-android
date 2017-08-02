@@ -23,9 +23,6 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-import dagger.Module;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +30,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dagger.Module;
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.BuildConfig;
@@ -41,7 +43,7 @@ import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doReturn;
 import static org.robolectric.RuntimeEnvironment.application;
@@ -84,8 +86,7 @@ public class MenuMediaContainerTest extends InjectingTest {
 		mockDirectories.add(mockDirectory);
 
 		List<MenuItem> menuItems = menuMediaContainer.createMenuItems();
-		assertThat(menuItems).isNotEmpty();
-		assertThat(menuItems.size()).isEqualTo(4);
+		assertThat(menuItems).isNotEmpty().hasSize(4);
 	}
 
 	@Test

@@ -24,7 +24,6 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;

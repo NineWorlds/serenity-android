@@ -23,11 +23,11 @@
 
 package us.nineworlds.serenity.core.menus;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
 import org.junit.Test;
 
 import us.nineworlds.serenity.R;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class MenuDrawerItemImplTest {
 

@@ -48,7 +48,6 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.jobs.SubtitleJob;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 
 /**

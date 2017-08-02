@@ -9,8 +9,6 @@ import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
 import com.bumptech.glide.Glide;
 
-import us.nineworlds.serenity.injection.InjectingJob;
-
 /**
  * Created by dcarver on 7/2/17.
  */

@@ -3,7 +3,6 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.JobManager;
 
 import org.greenrobot.eventbus.EventBus;

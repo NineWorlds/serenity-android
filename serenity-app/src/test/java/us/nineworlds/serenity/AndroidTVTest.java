@@ -2,8 +2,7 @@ package us.nineworlds.serenity;
 
 import android.content.Intent;
 
-import org.assertj.core.api.Java6Assertions;
-import org.fest.assertions.api.ANDROID;
+import org.assertj.android.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +34,7 @@ public class AndroidTVTest {
         Intent nextStartedActivity = shadowActivity.getNextStartedActivity();
 
         assertThat(result).isTrue();
-        ANDROID.assertThat(nextStartedActivity).hasComponent(activity, SearchActivity.class);
+        Assertions.assertThat(nextStartedActivity).hasComponent(activity, SearchActivity.class);
     }
 
 

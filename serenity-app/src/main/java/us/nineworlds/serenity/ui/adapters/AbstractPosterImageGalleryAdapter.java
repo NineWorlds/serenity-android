@@ -24,17 +24,12 @@
 package us.nineworlds.serenity.ui.adapters;
 
 import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
 
 /**
  * An abstract class for handling the creation of video content for use during

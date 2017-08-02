@@ -30,8 +30,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-import com.bumptech.glide.request.animation.GlideAnimation;
-
 import net.ganin.darv.DpadAwareRecyclerView;
 
 import javax.inject.Inject;

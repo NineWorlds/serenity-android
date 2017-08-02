@@ -31,14 +31,8 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import dagger.Module;
-import dagger.Provides;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import javax.inject.Singleton;
-import org.fest.assertions.api.ANDROID;
+
+import org.assertj.android.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +48,16 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowSurfaceView;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -64,7 +68,7 @@ import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity.VideoPlayerOnCompletionListener;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
@@ -205,7 +209,7 @@ public class SerenitySurfaceViewVideoPlayerTest extends InjectingTest {
 	public void surfaceViewKeepScreenOnIsSetToTrueFromOnCreate() {
 		SurfaceView surfaceView = (SurfaceView) activity
 				.findViewById(R.id.surfaceView);
-		ANDROID.assertThat(surfaceView).isKeepingScreenOn();
+		Assertions.assertThat(surfaceView).isKeepingScreenOn();
 	}
 
 	@Test

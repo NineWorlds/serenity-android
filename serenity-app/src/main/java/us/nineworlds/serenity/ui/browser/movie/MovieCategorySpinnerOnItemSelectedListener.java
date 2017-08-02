@@ -35,8 +35,6 @@ import android.widget.Toast;
 
 import com.birbit.android.jobqueue.JobManager;
 
-import net.ganin.darv.DpadAwareRecyclerView;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,7 +45,6 @@ import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.jobs.MovieSecondaryCategoryJob;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 public class MovieCategorySpinnerOnItemSelectedListener extends
         BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {

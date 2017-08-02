@@ -23,28 +23,10 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.birbit.android.jobqueue.JobManager;
-import com.bumptech.glide.Glide;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,12 +36,7 @@ import javax.inject.Inject;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer;
-import us.nineworlds.serenity.events.SeasonsRetrievalEvent;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
-import us.nineworlds.serenity.jobs.SeasonsRetrievalJob;
-import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
-import us.nineworlds.serenity.ui.util.ImageUtils;
 
 /**
  * An adapter that handles the population of views for TV Show Seasons.
