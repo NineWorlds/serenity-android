@@ -65,7 +65,7 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled true
+            minifyEnabled false
             useProguard false
         }
         release {
@@ -73,7 +73,7 @@ android {
                 signingConfig signingConfigs.release
             }
             zipAlignEnabled true
-            minifyEnabled true
+            minifyEnabled false
             useProguard false
         }
     }
@@ -96,6 +96,9 @@ android {
     }
 }
 
+kapt {
+    generateStubs = true
+}
 
 junitJacoco {
     jacocoVersion = '0.7.2.201409121644' // type String
