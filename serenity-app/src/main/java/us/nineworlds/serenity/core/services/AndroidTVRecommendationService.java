@@ -28,18 +28,15 @@ import android.content.Intent;
 
 /**
  * @author dcarver
- *
  */
 public class AndroidTVRecommendationService extends IntentService {
 
-    public AndroidTVRecommendationService(String name) {
-        super(name);
-    }
+  public AndroidTVRecommendationService(String name) {
+    super(name);
+  }
 
-    @Override
-    protected void onHandleIntent(Intent arg0) {
-        // TODO Auto-generated method stub
+  @Override protected void onHandleIntent(Intent arg0) {
+    // TODO Auto-generated method stub
 
-    }
-
+  }
 }

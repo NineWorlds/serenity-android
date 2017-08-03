@@ -32,11 +32,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
+import butterknife.BindView;
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 
@@ -44,69 +42,63 @@ import static butterknife.ButterKnife.bind;
 
 public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
-    public static List<MenuItem> menuItems = new ArrayList<MenuItem>();
+  public static List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
-    public MainMenuTextViewAdapter() {
-        super();
+  public MainMenuTextViewAdapter() {
+    super();
+  }
+
+  @Override public int getItemCount() {
+    return menuItems.size();
+  }
+
+  @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    FrameLayout mainMenuTextView = (FrameLayout) LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.item_mainmenu, parent, false);
+    return new MainMenuViewHolder(mainMenuTextView);
+  }
+
+  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    MenuItem menuItem = menuItems.get(position);
+
+    MainMenuViewHolder mainMenuViewHolder = (MainMenuViewHolder) holder;
+    setDefaults(menuItem.getTitle(), mainMenuViewHolder.mainMenuTextView);
+  }
+
+  @Override public long getItemId(int position) {
+    return position;
+  }
+
+  void setDefaults(String title, TextView v) {
+    v.setText(title);
+    v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
+    v.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+    v.setGravity(Gravity.CENTER_VERTICAL);
+    v.setLines(1);
+    v.setHorizontallyScrolling(true);
+    v.setEllipsize(TruncateAt.MARQUEE);
+    v.setLayoutParams(new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+        android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+  }
+
+  public MenuItem getItemAtPosition(int position) {
+    if (position > menuItems.size()) {
+      return null;
     }
 
-
-    @Override
-    public int getItemCount() {
-        return menuItems.size();
+    if (position < 0) {
+      position = 0;
     }
+    return menuItems.get(position);
+  }
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        FrameLayout mainMenuTextView = (FrameLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mainmenu, parent, false);
-        return new MainMenuViewHolder(mainMenuTextView);
+  public class MainMenuViewHolder extends RecyclerView.ViewHolder {
+
+    @BindView(R.id.main_menu_item) public TextView mainMenuTextView;
+
+    public MainMenuViewHolder(View itemView) {
+      super(itemView);
+      bind(this, itemView);
     }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        MenuItem menuItem = menuItems.get(position);
-
-        MainMenuViewHolder mainMenuViewHolder = (MainMenuViewHolder) holder;
-        setDefaults(menuItem.getTitle(), mainMenuViewHolder.mainMenuTextView);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    void setDefaults(String title, TextView v) {
-        v.setText(title);
-        v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
-        v.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        v.setGravity(Gravity.CENTER_VERTICAL);
-        v.setLines(1);
-        v.setHorizontallyScrolling(true);
-        v.setEllipsize(TruncateAt.MARQUEE);
-        v.setLayoutParams(new FrameLayout.LayoutParams(
-                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-                android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-    }
-
-    public MenuItem getItemAtPosition(int position) {
-        if (position > menuItems.size()) {
-            return null;
-        }
-
-        if (position < 0) {
-            position = 0;
-        }
-        return menuItems.get(position);
-    }
-
-    public class MainMenuViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.main_menu_item)
-        public TextView mainMenuTextView;
-
-        public MainMenuViewHolder(View itemView) {
-            super(itemView);
-            bind(this, itemView);
-        }
-    }
+  }
 }

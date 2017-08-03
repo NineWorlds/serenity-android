@@ -25,9 +25,7 @@ package us.nineworlds.serenity.ui.util;
 
 import android.content.Intent;
 import android.view.View;
-
 import net.ganin.darv.DpadAwareRecyclerView;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
@@ -36,68 +34,62 @@ import us.nineworlds.serenity.injection.BaseInjector;
 
 public class PlayerResultHandler extends BaseInjector {
 
-    protected DpadAwareRecyclerView.Adapter adapter;
-    protected Intent data;
+  protected DpadAwareRecyclerView.Adapter adapter;
+  protected Intent data;
 
-    public PlayerResultHandler(Intent data, DpadAwareRecyclerView.Adapter adapter) {
-        super();
-        this.adapter = adapter;
-        this.data = data;
+  public PlayerResultHandler(Intent data, DpadAwareRecyclerView.Adapter adapter) {
+    super();
+    this.adapter = adapter;
+    this.data = data;
+  }
+
+  public void updateVideoPlaybackPosition(VideoContentInfo video, View selectedView) {
+    if (selectedView == null || video == null) {
+      return;
     }
 
-    public void updateVideoPlaybackPosition(VideoContentInfo video,
-                                            View selectedView) {
-        if (selectedView == null || video == null) {
-            return;
-        }
+    View watchedView = selectedView.findViewById(R.id.posterWatchedIndicator);
 
-        View watchedView = selectedView
-                .findViewById(R.id.posterWatchedIndicator);
-
-        updateProgress(data, video);
-        if (video.isWatched()) {
-            watchedView.setVisibility(View.VISIBLE);
-            toggleWatched(video);
-        } else if (video.isPartiallyWatched()) {
-            if (watchedView.isShown()) {
-                watchedView.setVisibility(View.INVISIBLE);
-            }
-            ImageUtils.toggleProgressIndicator(selectedView,
-                    video.getResumeOffset(), video.getDuration());
-        }
-        adapter.notifyDataSetChanged();
+    updateProgress(data, video);
+    if (video.isWatched()) {
+      watchedView.setVisibility(View.VISIBLE);
+      toggleWatched(video);
+    } else if (video.isPartiallyWatched()) {
+      if (watchedView.isShown()) {
+        watchedView.setVisibility(View.INVISIBLE);
+      }
+      ImageUtils.toggleProgressIndicator(selectedView, video.getResumeOffset(),
+          video.getDuration());
     }
+    adapter.notifyDataSetChanged();
+  }
 
-    public void updateVideoPlaybackPosition(VideoContentInfo video) {
-        updateProgress(data, video);
-        if (video.isWatched()) {
-            toggleWatched(video);
-        }
+  public void updateVideoPlaybackPosition(VideoContentInfo video) {
+    updateProgress(data, video);
+    if (video.isWatched()) {
+      toggleWatched(video);
     }
+  }
 
-    protected void toggleWatched(VideoContentInfo video) {
-        if (video.isWatched()) {
-            new WatchedVideoAsyncTask().execute(video.id());
-            video.setResumeOffset(0);
-            video.setViewCount(video.getViewCount() + 1);
-        }
+  protected void toggleWatched(VideoContentInfo video) {
+    if (video.isWatched()) {
+      new WatchedVideoAsyncTask().execute(video.id());
+      video.setResumeOffset(0);
+      video.setViewCount(video.getViewCount() + 1);
     }
+  }
 
-    /**
-     * @param data
-     * @param video
-     */
-    protected void updateProgress(Intent data, VideoContentInfo video) {
-        long position = 0;
-        position = data.getIntExtra("position", 0);
+  /**
+   * @param data
+   * @param video
+   */
+  protected void updateProgress(Intent data, VideoContentInfo video) {
+    long position = 0;
+    position = data.getIntExtra("position", 0);
 
-        UpdateProgressRequest request = new UpdateProgressRequest(position,
-                video);
-        video.setResumeOffset(Long.valueOf(position).intValue());
+    UpdateProgressRequest request = new UpdateProgressRequest(position, video);
+    video.setResumeOffset(Long.valueOf(position).intValue());
 
-        request.execute();
-
-
-    }
-
+    request.execute();
+  }
 }

@@ -45,16 +45,12 @@ import android.support.v17.leanback.widget.Row;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-
 import java.net.URLEncoder;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
@@ -66,163 +62,137 @@ import us.nineworlds.serenity.injection.ApplicationContext;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
-public class MovieSearchFragment extends SearchFragment implements
-        SearchResultProvider {
+public class MovieSearchFragment extends SearchFragment implements SearchResultProvider {
 
-    private ArrayObjectAdapter rowsAdapter;
-    private List<MenuItem> menuItems;
-    private String key;
+  private ArrayObjectAdapter rowsAdapter;
+  private List<MenuItem> menuItems;
+  private String key;
 
-    private Handler searchHandler;
+  private Handler searchHandler;
 
-    @Inject
-    @ApplicationContext
-    Context context;
+  @Inject @ApplicationContext Context context;
 
-    @Inject
-    VideoPlayerIntentUtils vpUtils;
+  @Inject VideoPlayerIntentUtils vpUtils;
 
-    @Inject
-    PlexappFactory plexFactory;
+  @Inject PlexappFactory plexFactory;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        SerenityObjectGraph.getInstance().inject(this);
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    SerenityObjectGraph.getInstance().inject(this);
 
-        menuItems = MainMenuTextViewAdapter.menuItems;
+    menuItems = MainMenuTextViewAdapter.menuItems;
 
-        if (menuItems != null) {
+    if (menuItems != null) {
 
-            for (MenuItem menuItem : menuItems) {
-                if ("movie".equals(menuItem.getType())) {
-                    key = menuItem.getSection();
-                }
-            }
+      for (MenuItem menuItem : menuItems) {
+        if ("movie".equals(menuItem.getType())) {
+          key = menuItem.getSection();
+        }
+      }
+    }
+
+    rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
+    setSearchResultProvider(this);
+    setOnItemViewClickedListener(new OnItemViewClickedListener() {
+
+      @Override public void onItemClicked(ViewHolder itemViewHolder, Object item,
+          android.support.v17.leanback.widget.RowPresenter.ViewHolder rowViewHolder, Row row) {
+        Activity activity = getActivity();
+        VideoContentInfo video = (VideoContentInfo) item;
+        vpUtils.playVideo(activity, video, false);
+      }
+    });
+
+    setOnItemViewSelectedListener(new OnItemViewSelectedListener() {
+
+      private VideoContentInfo video;
+
+      @Override public void onItemSelected(ViewHolder arg0, Object item,
+          android.support.v17.leanback.widget.RowPresenter.ViewHolder arg2, Row arg3) {
+        if (item == null) {
+          return;
         }
 
-        rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
-        setSearchResultProvider(this);
-        setOnItemViewClickedListener(new OnItemViewClickedListener() {
+        video = (VideoContentInfo) item;
+        changeBackgroundImage();
+      }
 
-            @Override
-            public void onItemClicked(
-                    ViewHolder itemViewHolder,
-                    Object item,
-                    android.support.v17.leanback.widget.RowPresenter.ViewHolder rowViewHolder,
-                    Row row) {
-                Activity activity = getActivity();
-                VideoContentInfo video = (VideoContentInfo) item;
-                vpUtils.playVideo(activity, video, false);
-            }
-        });
+      public void changeBackgroundImage() {
 
-        setOnItemViewSelectedListener(new OnItemViewSelectedListener() {
-
-            private VideoContentInfo video;
-
-            @Override
-            public void onItemSelected(
-                    ViewHolder arg0,
-                    Object item,
-                    android.support.v17.leanback.widget.RowPresenter.ViewHolder arg2,
-                    Row arg3) {
-                if (item == null) {
-                    return;
-                }
-
-                video = (VideoContentInfo) item;
-                changeBackgroundImage();
-            }
-
-            public void changeBackgroundImage() {
-
-                if (video.getBackgroundURL() == null) {
-                    return;
-                }
-
-                final View fanArt = getActivity().findViewById(R.id.fanArt);
-
-                String transcodingURL = plexFactory.getImageURL(
-                        video.getBackgroundURL(), 1280, 720);
-
-                SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
-                    public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                        getActivity().runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies,
-                                fanArt));
-                    }
-                };
-
-                Glide.with(context).load(transcodingURL).asBitmap().into(target);
-            }
-
-        });
-
-        setBadgeDrawable(context.getResources().getDrawable(
-                R.drawable.androidtv_icon_mono));
-    }
-
-    private void queryByWords(String words) {
-        rowsAdapter.clear();
-        if (!TextUtils.isEmpty(words)) {
-
-            searchHandler = new MovieSearchHandler();
-            Messenger messenger = new Messenger(searchHandler);
-
-            Intent searchIntent = new Intent(getActivity(),
-                    MovieSearchIntentService.class);
-
-            searchIntent.putExtra("key", key);
-            searchIntent.putExtra("query", URLEncoder.encode(words));
-            searchIntent.putExtra("MESSENGER", messenger);
-            getActivity().startService(searchIntent);
-
-        }
-    }
-
-    @Override
-    public ObjectAdapter getResultsAdapter() {
-        return rowsAdapter;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newQuery) {
-        queryByWords(newQuery);
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        queryByWords(query);
-        return true;
-    }
-
-    protected void loadRows(List<VideoContentInfo> videos) {
-        ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(
-                new CardPresenter());
-        for (VideoContentInfo video : videos) {
-            listRowAdapter.add(video);
+        if (video.getBackgroundURL() == null) {
+          return;
         }
 
-        HeaderItem header = new HeaderItem(0, "Search Results");
-        rowsAdapter.add(new ListRow(header, listRowAdapter));
+        final View fanArt = getActivity().findViewById(R.id.fanArt);
+
+        String transcodingURL = plexFactory.getImageURL(video.getBackgroundURL(), 1280, 720);
+
+        SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+          public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+            getActivity().runOnUiThread(
+                new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
+          }
+        };
+
+        Glide.with(context).load(transcodingURL).asBitmap().into(target);
+      }
+    });
+
+    setBadgeDrawable(context.getResources().getDrawable(R.drawable.androidtv_icon_mono));
+  }
+
+  private void queryByWords(String words) {
+    rowsAdapter.clear();
+    if (!TextUtils.isEmpty(words)) {
+
+      searchHandler = new MovieSearchHandler();
+      Messenger messenger = new Messenger(searchHandler);
+
+      Intent searchIntent = new Intent(getActivity(), MovieSearchIntentService.class);
+
+      searchIntent.putExtra("key", key);
+      searchIntent.putExtra("query", URLEncoder.encode(words));
+      searchIntent.putExtra("MESSENGER", messenger);
+      getActivity().startService(searchIntent);
+    }
+  }
+
+  @Override public ObjectAdapter getResultsAdapter() {
+    return rowsAdapter;
+  }
+
+  @Override public boolean onQueryTextChange(String newQuery) {
+    queryByWords(newQuery);
+    return true;
+  }
+
+  @Override public boolean onQueryTextSubmit(String query) {
+    queryByWords(query);
+    return true;
+  }
+
+  protected void loadRows(List<VideoContentInfo> videos) {
+    ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+    for (VideoContentInfo video : videos) {
+      listRowAdapter.add(video);
     }
 
-    protected class MovieSearchHandler extends Handler {
+    HeaderItem header = new HeaderItem(0, "Search Results");
+    rowsAdapter.add(new ListRow(header, listRowAdapter));
+  }
 
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.obj != null) {
-                List<VideoContentInfo> videos = (List<VideoContentInfo>) msg.obj;
-                if (videos != null && videos.isEmpty()) {
-                    Toast.makeText(
-                            getActivity(),
-                            R.string.no_videos_found_that_match_the_search_criteria,
-                            Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                }
-                loadRows(videos);
-            }
+  protected class MovieSearchHandler extends Handler {
+
+    @Override public void handleMessage(Message msg) {
+      if (msg.obj != null) {
+        List<VideoContentInfo> videos = (List<VideoContentInfo>) msg.obj;
+        if (videos != null && videos.isEmpty()) {
+          Toast.makeText(getActivity(), R.string.no_videos_found_that_match_the_search_criteria,
+              Toast.LENGTH_LONG).show();
+          getActivity().finish();
         }
+        loadRows(videos);
+      }
     }
+  }
 }

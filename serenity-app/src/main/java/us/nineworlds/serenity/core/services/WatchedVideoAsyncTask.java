@@ -24,26 +24,21 @@
 package us.nineworlds.serenity.core.services;
 
 import android.os.AsyncTask;
-
 import javax.inject.Inject;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
 
 public class WatchedVideoAsyncTask extends AsyncTask<String, Void, Void> {
 
-    @Inject
-    PlexappFactory factory;
+  @Inject PlexappFactory factory;
 
-    public WatchedVideoAsyncTask() {
-        SerenityObjectGraph.getInstance().inject(this);
-    }
+  public WatchedVideoAsyncTask() {
+    SerenityObjectGraph.getInstance().inject(this);
+  }
 
-    @Override
-    protected Void doInBackground(String... params) {
-        String id = params[0];
-        factory.setWatched(id);
-        return null;
-    }
-
+  @Override protected Void doInBackground(String... params) {
+    String id = params[0];
+    factory.setWatched(id);
+    return null;
+  }
 }

@@ -31,16 +31,14 @@ import android.view.View;
  * on the TV.
  *
  * @author dcarver
- *
  */
 public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick {
 
-    public boolean onItemLongClick(View v, int position, long arg3) {
-        init();
+  public boolean onItemLongClick(View v, int position, long arg3) {
+    init();
 
-        createAndShowDialog();
+    createAndShowDialog();
 
-        return true;
-    }
-
+    return true;
+  }
 }

@@ -26,7 +26,6 @@ package us.nineworlds.serenity.core.model.impl;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
 import us.nineworlds.plex.rest.model.impl.Director;
 import us.nineworlds.plex.rest.model.impl.Genre;
 import us.nineworlds.plex.rest.model.impl.Media;
@@ -38,140 +37,129 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 /**
  * @author dcarver
- *
  */
 public class MovieMediaContainer extends AbstractMediaContainer {
 
-    public MovieMediaContainer(MediaContainer mc) {
-        super(mc);
+  public MovieMediaContainer(MediaContainer mc) {
+    super(mc);
+  }
+
+  public List<VideoContentInfo> createVideos() {
+    videoList = new LinkedList<VideoContentInfo>();
+    createVideoContent(mc);
+    return videoList;
+  }
+
+  protected void createVideoContent(MediaContainer mc) {
+    String baseUrl = factory.baseURL();
+    List<Video> videos = mc.getVideos();
+    if (videos == null) {
+      return;
     }
 
-    public List<VideoContentInfo> createVideos() {
-        videoList = new LinkedList<VideoContentInfo>();
-        createVideoContent(mc);
-        return videoList;
+    String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
+    StringBuilder sbuild = new StringBuilder();
+    sbuild.append(baseUrl);
+    sbuild.append(":/resources/movie-fanart.jpg");
+    String baseImageResource = sbuild.toString();
+    for (Video movie : videos) {
+      VideoContentInfo mpi = new MoviePosterInfo();
+      mpi.setMediaTagIdentifier(mediaTagId);
+      mpi.setId(movie.getRatingKey());
+      mpi.setStudio(movie.getStudio());
+      mpi.setSummary(movie.getSummary());
+
+      mpi.setResumeOffset(Long.valueOf(movie.getViewOffset()).intValue());
+      mpi.setDuration(Long.valueOf(movie.getDuration()).intValue());
+
+      mpi.setViewCount(movie.getViewCount());
+      mpi.setRating(movie.getRating());
+
+      if (movie.getTagLine() != null) {
+        mpi.setTagLine(movie.getTagLine());
+      }
+
+      String burl = baseImageResource;
+      if (movie.getBackgroundImageKey() != null) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(baseUrl);
+        builder.append(movie.getBackgroundImageKey().replaceFirst("/", ""));
+        burl = builder.toString();
+      }
+      mpi.setBackgroundURL(burl);
+
+      String turl = "";
+      if (movie.getThumbNailImageKey() != null) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(baseUrl);
+        builder.append(movie.getThumbNailImageKey().replaceFirst("/", ""));
+        turl = builder.toString();
+      }
+
+      mpi.setImageURL(turl);
+      mpi.setTitle(movie.getTitle());
+
+      mpi.setContentRating(movie.getContentRating());
+
+      List<Media> mediacont = movie.getMedias();
+      if (mediacont != null && !mediacont.isEmpty()) {
+        // We grab the first media container until we know more about
+        // why there can be multiples.
+        Media media = mediacont.get(0);
+        mpi.setContainer(media.getContainer());
+        List<Part> parts = media.getVideoPart();
+        Part part = parts.get(0);
+        mpi.setAudioCodec(media.getAudioCodec());
+        mpi.setVideoCodec(media.getVideoCodec());
+        mpi.setVideoResolution(media.getVideoResolution());
+        mpi.setAspectRatio(media.getAspectRatio());
+        mpi.setAudioChannels(media.getAudioChannels());
+        StringBuilder builder = new StringBuilder();
+        builder.append(factory.baseURL());
+        builder.append(part.getKey().replaceFirst("/", ""));
+
+        String directPlayUrl = builder.toString();
+        mpi.setDirectPlayUrl(directPlayUrl);
+      }
+
+      createVideoDetails(movie, mpi);
+
+      videoList.add(mpi);
+    }
+  }
+
+  /**
+   * Create the video meta data around cast, direct, year produced, etc.
+   */
+  protected void createVideoDetails(Video video, VideoContentInfo videoContentInfo) {
+
+    if (video.getYear() != null) {
+      videoContentInfo.setYear(video.getYear());
     }
 
-    protected void createVideoContent(MediaContainer mc) {
-        String baseUrl = factory.baseURL();
-        List<Video> videos = mc.getVideos();
-        if (videos == null) {
-            return;
-        }
+    if (video.getGenres() != null && video.getGenres().size() > 0) {
+      ArrayList<String> g = new ArrayList<String>();
 
-        String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
-        StringBuilder sbuild = new StringBuilder();
-        sbuild.append(baseUrl);
-        sbuild.append(":/resources/movie-fanart.jpg");
-        String baseImageResource = sbuild.toString();
-        for (Video movie : videos) {
-            VideoContentInfo mpi = new MoviePosterInfo();
-            mpi.setMediaTagIdentifier(mediaTagId);
-            mpi.setId(movie.getRatingKey());
-            mpi.setStudio(movie.getStudio());
-            mpi.setSummary(movie.getSummary());
-
-            mpi.setResumeOffset(Long.valueOf(movie.getViewOffset()).intValue());
-            mpi.setDuration(Long.valueOf(movie.getDuration()).intValue());
-
-            mpi.setViewCount(movie.getViewCount());
-            mpi.setRating(movie.getRating());
-
-            if (movie.getTagLine() != null) {
-                mpi.setTagLine(movie.getTagLine());
-            }
-
-            String burl = baseImageResource;
-            if (movie.getBackgroundImageKey() != null) {
-                StringBuilder builder = new StringBuilder();
-                builder.append(baseUrl);
-                builder.append(movie.getBackgroundImageKey().replaceFirst("/",
-                        ""));
-                burl = builder.toString();
-            }
-            mpi.setBackgroundURL(burl);
-
-            String turl = "";
-            if (movie.getThumbNailImageKey() != null) {
-                StringBuilder builder = new StringBuilder();
-                builder.append(baseUrl);
-                builder.append(movie.getThumbNailImageKey().replaceFirst("/",
-                        ""));
-                turl = builder.toString();
-            }
-
-            mpi.setImageURL(turl);
-            mpi.setTitle(movie.getTitle());
-
-            mpi.setContentRating(movie.getContentRating());
-
-            List<Media> mediacont = movie.getMedias();
-            if (mediacont != null && !mediacont.isEmpty()) {
-                // We grab the first media container until we know more about
-                // why there can be multiples.
-                Media media = mediacont.get(0);
-                mpi.setContainer(media.getContainer());
-                List<Part> parts = media.getVideoPart();
-                Part part = parts.get(0);
-                mpi.setAudioCodec(media.getAudioCodec());
-                mpi.setVideoCodec(media.getVideoCodec());
-                mpi.setVideoResolution(media.getVideoResolution());
-                mpi.setAspectRatio(media.getAspectRatio());
-                mpi.setAudioChannels(media.getAudioChannels());
-                StringBuilder builder = new StringBuilder();
-                builder.append(factory.baseURL());
-                builder.append(part.getKey().replaceFirst("/", ""));
-
-                String directPlayUrl = builder.toString();
-                mpi.setDirectPlayUrl(directPlayUrl);
-
-            }
-
-            createVideoDetails(movie, mpi);
-
-            videoList.add(mpi);
-        }
-
+      for (Genre genre : video.getGenres()) {
+        g.add(genre.getTag());
+      }
+      videoContentInfo.setGenres(g);
     }
 
-    /**
-     * Create the video meta data around cast, direct, year produced, etc.
-     *
-     * @param video
-     * @param videoContentInfo
-     * @return
-     */
-    protected void createVideoDetails(Video video,
-                                      VideoContentInfo videoContentInfo) {
-
-        if (video.getYear() != null) {
-            videoContentInfo.setYear(video.getYear());
-        }
-
-        if (video.getGenres() != null && video.getGenres().size() > 0) {
-            ArrayList<String> g = new ArrayList<String>();
-
-            for (Genre genre : video.getGenres()) {
-                g.add(genre.getTag());
-            }
-            videoContentInfo.setGenres(g);
-        }
-
-        if (video.getWriters() != null && video.getWriters().size() > 0) {
-            ArrayList<String> w = new ArrayList<String>();
-            for (Writer writer : video.getWriters()) {
-                w.add(writer.getTag());
-            }
-            videoContentInfo.setWriters(w);
-        }
-
-        if (video.getDirectors() != null && video.getDirectors().size() > 0) {
-            ArrayList<String> d = new ArrayList<String>();
-            for (Director director : video.getDirectors()) {
-                d.add(director.getTag());
-            }
-            videoContentInfo.setDirectors(d);
-        }
+    if (video.getWriters() != null && video.getWriters().size() > 0) {
+      ArrayList<String> w = new ArrayList<String>();
+      for (Writer writer : video.getWriters()) {
+        w.add(writer.getTag());
+      }
+      videoContentInfo.setWriters(w);
     }
 
+    if (video.getDirectors() != null && video.getDirectors().size() > 0) {
+      ArrayList<String> d = new ArrayList<String>();
+      for (Director director : video.getDirectors()) {
+        d.add(director.getTag());
+      }
+      videoContentInfo.setDirectors(d);
+    }
+  }
 }

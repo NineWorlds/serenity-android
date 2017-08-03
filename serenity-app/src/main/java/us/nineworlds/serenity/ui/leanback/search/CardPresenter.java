@@ -30,9 +30,7 @@ import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.Presenter;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.bumptech.glide.Glide;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.SerenityObjectGraph;
@@ -40,82 +38,76 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 
 public class CardPresenter extends Presenter {
 
-    static Context context;
+  static Context context;
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent) {
-        SerenityObjectGraph.getInstance().inject(this);
-        context = parent.getContext();
+  @Override public ViewHolder onCreateViewHolder(ViewGroup parent) {
+    SerenityObjectGraph.getInstance().inject(this);
+    context = parent.getContext();
 
-        ImageCardView imageView = new ImageCardView(context);
-        imageView.setFocusable(true);
-        imageView.setFocusableInTouchMode(true);
-        imageView.setBackgroundColor(context.getResources().getColor(
-                R.color.holo_color));
-        return new CardPresenterViewHolder(imageView);
+    ImageCardView imageView = new ImageCardView(context);
+    imageView.setFocusable(true);
+    imageView.setFocusableInTouchMode(true);
+    imageView.setBackgroundColor(context.getResources().getColor(R.color.holo_color));
+    return new CardPresenterViewHolder(imageView);
+  }
+
+  @Override public void onBindViewHolder(ViewHolder viewHolder, Object item) {
+    VideoContentInfo video = (VideoContentInfo) item;
+
+    CardPresenterViewHolder cardHolder = (CardPresenterViewHolder) viewHolder;
+    ImageCardView imageCardView = cardHolder.getCardView();
+    cardHolder.setMovie(video);
+
+    if (video.getImageURL() != null) {
+      imageCardView.setTitleText(video.getTitle());
+      imageCardView.setContentText(video.getStudio());
+      Activity activity = getActivity(context);
+      imageCardView.setMainImageDimensions(ImageUtils.getDPI(240, activity),
+          ImageUtils.getDPI(360, activity));
+      cardHolder.updateCardViewImage(video.getImageURL());
+    }
+  }
+
+  private Activity getActivity(Context contextWrapper) {
+    Context context = contextWrapper;
+    while (context instanceof ContextWrapper) {
+      if (context instanceof Activity) {
+        return (Activity) context;
+      }
+      context = ((ContextWrapper) context).getBaseContext();
+    }
+    return null;
+  }
+
+  @Override public void onUnbindViewHolder(ViewHolder viewHolder) {
+    CardPresenterViewHolder vh = (CardPresenterViewHolder) viewHolder;
+    vh.mCardView.setBadgeImage(null);
+    vh.mCardView.setMainImage(null);
+  }
+
+  class CardPresenterViewHolder extends Presenter.ViewHolder {
+    private VideoContentInfo video;
+    private final ImageCardView mCardView;
+
+    public CardPresenterViewHolder(View view) {
+      super(view);
+      mCardView = (ImageCardView) view;
     }
 
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, Object item) {
-        VideoContentInfo video = (VideoContentInfo) item;
-
-        CardPresenterViewHolder cardHolder = (CardPresenterViewHolder) viewHolder;
-        ImageCardView imageCardView = cardHolder.getCardView();
-        cardHolder.setMovie(video);
-
-        if (video.getImageURL() != null) {
-            imageCardView.setTitleText(video.getTitle());
-            imageCardView.setContentText(video.getStudio());
-            Activity activity = getActivity(context);
-            imageCardView.setMainImageDimensions(
-                    ImageUtils.getDPI(240, activity),
-                    ImageUtils.getDPI(360, activity));
-            cardHolder.updateCardViewImage(video.getImageURL());
-        }
+    public VideoContentInfo getMovie() {
+      return video;
     }
 
-    private Activity getActivity(Context contextWrapper) {
-        Context context = contextWrapper;
-        while (context instanceof ContextWrapper) {
-            if (context instanceof Activity) {
-                return (Activity) context;
-            }
-            context = ((ContextWrapper) context).getBaseContext();
-        }
-        return null;
+    public void setMovie(VideoContentInfo m) {
+      video = m;
     }
 
-
-    @Override
-    public void onUnbindViewHolder(ViewHolder viewHolder) {
-        CardPresenterViewHolder vh = (CardPresenterViewHolder) viewHolder;
-        vh.mCardView.setBadgeImage(null);
-        vh.mCardView.setMainImage(null);
+    public ImageCardView getCardView() {
+      return mCardView;
     }
 
-    class CardPresenterViewHolder extends Presenter.ViewHolder {
-        private VideoContentInfo video;
-        private final ImageCardView mCardView;
-
-        public CardPresenterViewHolder(View view) {
-            super(view);
-            mCardView = (ImageCardView) view;
-        }
-
-        public VideoContentInfo getMovie() {
-            return video;
-        }
-
-        public void setMovie(VideoContentInfo m) {
-            video = m;
-        }
-
-        public ImageCardView getCardView() {
-            return mCardView;
-        }
-
-        protected void updateCardViewImage(String url) {
-            Glide.with(context).load(url).into(mCardView.getMainImageView());
-        }
+    protected void updateCardViewImage(String url) {
+      Glide.with(context).load(url).into(mCardView.getMainImageView());
     }
+  }
 }

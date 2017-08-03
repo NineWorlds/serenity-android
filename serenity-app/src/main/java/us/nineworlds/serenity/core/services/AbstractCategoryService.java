@@ -29,45 +29,39 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
-
 import java.util.ArrayList;
-
 import us.nineworlds.serenity.core.model.CategoryInfo;
 
 /**
  * @author dcarver
- *
  */
-public abstract class AbstractCategoryService extends
-        AbstractPlexRESTIntentService {
+public abstract class AbstractCategoryService extends AbstractPlexRESTIntentService {
 
-    protected ArrayList<CategoryInfo> categories = new ArrayList<CategoryInfo>();
+  protected ArrayList<CategoryInfo> categories = new ArrayList<CategoryInfo>();
 
-    /**
-     * @param name
-     */
-    public AbstractCategoryService(String name) {
-        super(name);
+  /**
+   * @param name
+   */
+  public AbstractCategoryService(String name) {
+    super(name);
+  }
+
+  /**
+   * Populate the categories available.
+   */
+  protected abstract void populateCategories();
+
+  @Override public void sendMessageResults(Intent intent) {
+    Bundle extras = intent.getExtras();
+    if (extras != null) {
+      Messenger messenger = (Messenger) extras.get("MESSENGER");
+      Message msg = Message.obtain();
+      msg.obj = categories;
+      try {
+        messenger.send(msg);
+      } catch (RemoteException ex) {
+        Log.e(getClass().getName(), "Unable to send message", ex);
+      }
     }
-
-    /**
-     * Populate the categories available.
-     */
-    protected abstract void populateCategories();
-
-    @Override
-    public void sendMessageResults(Intent intent) {
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            Messenger messenger = (Messenger) extras.get("MESSENGER");
-            Message msg = Message.obtain();
-            msg.obj = categories;
-            try {
-                messenger.send(msg);
-            } catch (RemoteException ex) {
-                Log.e(getClass().getName(), "Unable to send message", ex);
-            }
-        }
-    }
-
+  }
 }

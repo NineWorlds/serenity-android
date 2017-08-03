@@ -4,108 +4,118 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="@drawable/music"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
-    <LinearLayout
-        android:id="@+id/metaDataRow"
+  <LinearLayout
+      android:id="@+id/metaDataRow"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_centerHorizontal="true"
+      android:layout_marginRight="10dp"
+      android:background="#A0000000"
+      android:orientation="horizontal"
+      >
+
+    <TextView
+        android:id="@+id/musicCategoryName"
+        style="@android:style/TextAppearance.Holo.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:focusable="false"
+        android:text="@string/category"
+        />
+
+    <Spinner
+        android:id="@+id/musicCategoryFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/spinner_background"
+        android:focusable="true"
+        android:gravity="left"
+        android:prompt="@string/movie_category_prompt"
+        android:spinnerMode="dropdown"
+        />
+
+    <Spinner
+        android:id="@+id/musicCategoryFilter2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/spinner_background"
+        android:focusable="true"
+        android:gravity="left"
+        android:prompt="@string/movie_category_prompt2"
+        android:spinnerMode="dropdown"
+        android:visibility="invisible"
+        />
+
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/metaDataRow"
+      android:layout_marginLeft="20dp"
+      android:layout_marginRight="20dp"
+      android:layout_marginTop="5dp"
+      android:background="@drawable/content_panel_dark"
+      android:orientation="vertical"
+      >
+
+    <TextView
+        android:id="@+id/musicTitle"
+        style="@android:style/TextAppearance.Holo.Large"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginRight="10dp"
-        android:background="#A0000000"
-        android:orientation="horizontal">
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:gravity="left"
+        android:textColor="#F0F0F0"
+        android:textStyle="bold"
+        tools:ignore="SelectableText"
+        ></TextView>
 
-        <TextView
-            android:id="@+id/musicCategoryName"
-            style="@android:style/TextAppearance.Holo.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:focusable="false"
-            android:text="@string/category" />
+    <TextView
+        android:id="@+id/musicArtistSummary"
+        style="@android:style/TextAppearance.Holo.Medium"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="2dp"
+        android:gravity="top"
+        android:maxLines="7"
+        android:textColor="#F0F0F0"
+        tools:ignore="SelectableText"
+        ></TextView>
 
-        <Spinner
-            android:id="@+id/musicCategoryFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/spinner_background"
-            android:focusable="true"
-            android:gravity="left"
-            android:prompt="@string/movie_category_prompt"
-            android:spinnerMode="dropdown" />
+  </LinearLayout>
 
-        <Spinner
-            android:id="@+id/musicCategoryFilter2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/spinner_background"
-            android:focusable="true"
-            android:gravity="left"
-            android:prompt="@string/movie_category_prompt2"
-            android:spinnerMode="dropdown"
-            android:visibility="invisible" />
+  <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_marginBottom="10dp"
+      android:background="#A0000000"
+      android:orientation="vertical"
+      >
 
-
-    </LinearLayout>
-
-    <LinearLayout
+    <Gallery
+        android:id="@+id/musicArtistGallery"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/metaDataRow"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/content_panel_dark"
-        android:orientation="vertical">
+        android:animationDuration="1"
+        android:padding="5dp"
+        android:spacing="10dp"
+        >
 
-        <TextView
-            android:id="@+id/musicTitle"
-            style="@android:style/TextAppearance.Holo.Large"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:gravity="left"
-            android:textColor="#F0F0F0"
-            android:textStyle="bold"
-            tools:ignore="SelectableText"></TextView>
-
-        <TextView
-            android:id="@+id/musicArtistSummary"
-            style="@android:style/TextAppearance.Holo.Medium"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:layout_marginTop="2dp"
-            android:gravity="top"
-            android:maxLines="7"
-            android:textColor="#F0F0F0"
-            tools:ignore="SelectableText"></TextView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:background="#A0000000"
-        android:orientation="vertical">
-
-        <Gallery
-            android:id="@+id/musicArtistGallery"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:animationDuration="1"
-            android:padding="5dp"
-            android:spacing="10dp">
-
-            <requestFocus />
-        </Gallery>
-    </LinearLayout>
+      <requestFocus/>
+    </Gallery>
+  </LinearLayout>
 
 </RelativeLayout>

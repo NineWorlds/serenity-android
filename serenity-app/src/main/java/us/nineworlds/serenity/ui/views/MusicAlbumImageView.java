@@ -25,34 +25,31 @@ package us.nineworlds.serenity.ui.views;
 
 import android.content.Context;
 import android.widget.ImageView;
-
 import us.nineworlds.serenity.core.model.impl.MusicAlbumContentInfo;
 
 /**
  * @author dcarver
- *
  */
 public class MusicAlbumImageView extends ImageView {
 
-    private MusicAlbumContentInfo posterInfo;
+  private MusicAlbumContentInfo posterInfo;
 
-    /**
-     *
-     */
-    public MusicAlbumImageView(Context c) {
-        super(c);
-    }
+  /**
+   *
+   */
+  public MusicAlbumImageView(Context c) {
+    super(c);
+  }
 
-    /**
-     *
-     */
-    public MusicAlbumImageView(Context context, MusicAlbumContentInfo posterInfo) {
-        super(context);
-        this.posterInfo = posterInfo;
-    }
+  /**
+   *
+   */
+  public MusicAlbumImageView(Context context, MusicAlbumContentInfo posterInfo) {
+    super(context);
+    this.posterInfo = posterInfo;
+  }
 
-    public MusicAlbumContentInfo getPosterInfo() {
-        return posterInfo;
-    }
-
+  public MusicAlbumContentInfo getPosterInfo() {
+    return posterInfo;
+  }
 }

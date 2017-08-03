@@ -25,64 +25,51 @@ package us.nineworlds.serenity.core.externalplayer;
 
 import android.content.Context;
 import android.content.Intent;
-
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 /**
  * @author dcarver
- *
  */
-public class SystemDefaultPlayer extends AbstractExternalPlayer implements
-        ExternalPlayer {
+public class SystemDefaultPlayer extends AbstractExternalPlayer implements ExternalPlayer {
 
-    public SystemDefaultPlayer(VideoContentInfo vc, Context ac) {
-        super(vc, ac);
-    }
+  public SystemDefaultPlayer(VideoContentInfo vc, Context ac) {
+    super(vc, ac);
+  }
 
-    @Override
-    public void launch() {
-        Intent vpIntent = createIntent();
-        launchActivity(vpIntent);
-    }
+  @Override public void launch() {
+    Intent vpIntent = createIntent();
+    launchActivity(vpIntent);
+  }
 
-    @Override
-    public boolean supportsResume() {
-        return false;
-    }
+  @Override public boolean supportsResume() {
+    return false;
+  }
 
-    @Override
-    public boolean supportsPlaybackPosition() {
-        return false;
-    }
+  @Override public boolean supportsPlaybackPosition() {
+    return false;
+  }
 
-    @Override
-    public boolean supportsSubtitleUrls() {
-        return false;
-    }
+  @Override public boolean supportsSubtitleUrls() {
+    return false;
+  }
 
-    @Override
-    public boolean hasTitleSupport() {
-        return false;
-    }
+  @Override public boolean hasTitleSupport() {
+    return false;
+  }
 
-    @Override
-    public boolean hasHardwareDecodingSupport() {
-        return false;
-    }
+  @Override public boolean hasHardwareDecodingSupport() {
+    return false;
+  }
 
-    @Override
-    public void enableHardwareDecodinging() {
+  @Override public void enableHardwareDecodinging() {
 
-    }
+  }
 
-    @Override
-    public void disableHadwareDecoding() {
+  @Override public void disableHadwareDecoding() {
 
-    }
+  }
 
-    @Override
-    protected void setClassAndPackagename(Intent vpIntent) {
+  @Override protected void setClassAndPackagename(Intent vpIntent) {
 
-    }
-
+  }
 }

@@ -27,6 +27,5 @@ import java.io.Serializable;
 
 public class TVShowSeriesInfo extends AbstractSeriesContentInfo implements Serializable {
 
-    private static final long serialVersionUID = -6323753538973394171L;
-
+  private static final long serialVersionUID = -6323753538973394171L;
 }

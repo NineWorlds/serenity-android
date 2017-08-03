@@ -24,13 +24,10 @@
 package us.nineworlds.serenity.injection;
 
 import java.lang.annotation.Retention;
-
 import javax.inject.Qualifier;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Qualifier
-@Retention(RUNTIME)
-public @interface ForVideoQueue {
+@Qualifier @Retention(RUNTIME) public @interface ForVideoQueue {
 
 }

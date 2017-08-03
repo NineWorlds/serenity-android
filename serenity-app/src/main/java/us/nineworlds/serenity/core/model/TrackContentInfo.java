@@ -25,36 +25,34 @@ package us.nineworlds.serenity.core.model;
 
 /**
  * @author dcarver
- *
  */
 public interface TrackContentInfo extends ContentInfo {
 
-    public String getAudioChannels();
+  public String getAudioChannels();
 
-    public void setAudioChannels(String audioChannels);
+  public void setAudioChannels(String audioChannels);
 
-    public void setOriginalAirDate(String airDate);
+  public void setOriginalAirDate(String airDate);
 
-    public String getOriginalAirDate();
+  public String getOriginalAirDate();
 
-    public void setDuration(long duration);
+  public void setDuration(long duration);
 
-    public long getDuration();
+  public long getDuration();
 
-    public void setYear(String year);
+  public void setYear(String year);
 
-    public String getYear();
+  public String getYear();
 
-    public void setParentPosterURL(String parentPosterURL);
+  public void setParentPosterURL(String parentPosterURL);
 
-    public String getParentPosterURL();
+  public String getParentPosterURL();
 
-    public void setGrandParentPosterURL(String grandparentPosterURL);
+  public void setGrandParentPosterURL(String grandparentPosterURL);
 
-    public String getGrandParentPosterURL();
+  public String getGrandParentPosterURL();
 
-    public String getDirectPlayUrl();
+  public String getDirectPlayUrl();
 
-    public void setDirectPlayUrl(String directPlayUrl);
-
+  public void setDirectPlayUrl(String directPlayUrl);
 }

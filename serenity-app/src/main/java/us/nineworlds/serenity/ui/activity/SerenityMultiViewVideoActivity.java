@@ -23,45 +23,39 @@
 
 package us.nineworlds.serenity.ui.activity;
 
-
 /**
  * A activity that handles the indicator of whether toggling between Grid and
  * Detail view should occur. Views that need to support Detail and Grid view
  * should extend this view.
  *
  * @author dcarver
- *
  */
 public abstract class SerenityMultiViewVideoActivity extends SerenityVideoActivity {
 
-    protected boolean gridViewActive = false;
+  protected boolean gridViewActive = false;
 
-    @Override
-    public void finish() {
-        super.finish();
-    }
+  @Override public void finish() {
+    super.finish();
+  }
 
-    protected boolean posterLayoutActive = false;
+  protected boolean posterLayoutActive = false;
 
-    public boolean isGridViewActive() {
-        return gridViewActive;
-    }
+  public boolean isGridViewActive() {
+    return gridViewActive;
+  }
 
-    /**
-     * Used to indicate whether posters or banners are shown.
-     *
-     * @return
-     */
-    public boolean isPosterLayoutActive() {
-        return posterLayoutActive;
-    }
+  /**
+   * Used to indicate whether posters or banners are shown.
+   */
+  public boolean isPosterLayoutActive() {
+    return posterLayoutActive;
+  }
 
-    public void setGridViewEnabled(boolean sw) {
-        gridViewActive = sw;
-    }
+  public void setGridViewEnabled(boolean sw) {
+    gridViewActive = sw;
+  }
 
-    public void setPosterLayoutActive(boolean sw) {
-        posterLayoutActive = sw;
-    }
-
+  public void setPosterLayoutActive(boolean sw) {
+    posterLayoutActive = sw;
+  }
 }

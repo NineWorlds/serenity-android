@@ -27,31 +27,31 @@ package us.nineworlds.serenity.core.menus
 
 class MenuDrawerItemImpl : MenuDrawerItem {
 
-    private var text: String? = null
-    private var imageResourceID: Int = 0
+  private var text: String? = null
+  private var imageResourceID: Int = 0
 
-    constructor(text: String) {
-        this.text = text
-    }
+  constructor(text: String) {
+    this.text = text
+  }
 
-    constructor(text: String, resourceID: Int) {
-        this.text = text
-        this.imageResourceID = resourceID
-    }
+  constructor(text: String, resourceID: Int) {
+    this.text = text
+    this.imageResourceID = resourceID
+  }
 
-    override fun getText(): String? {
-        return  text
-    }
+  override fun getText(): String? {
+    return text
+  }
 
-    override fun getImageResourceID(): Int {
-        return imageResourceID
-    }
+  override fun getImageResourceID(): Int {
+    return imageResourceID
+  }
 
-    override fun setText(text: String?) {
-        this.text = text
-    }
+  override fun setText(text: String?) {
+    this.text = text
+  }
 
-    override fun setImageResourceID(resourceId: Int) {
-        this.imageResourceID = resourceId
-    }
+  override fun setImageResourceID(resourceId: Int) {
+    this.imageResourceID = resourceId
+  }
 }

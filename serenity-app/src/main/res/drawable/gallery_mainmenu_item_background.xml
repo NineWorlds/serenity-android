@@ -13,9 +13,9 @@
      limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_activated="true" android:drawable="@android:color/transparent" />
-    <item style="@style/selected_main_menu_text" android:drawable="@android:color/transparent" android:state_selected="true" android:state_pressed="false" />
-    <item style="@style/selected_main_menu_text" android:state_selected="true" android:drawable="@color/holo_color" android:state_pressed="true" />
-    <item style="@style/normal_main_menu_text" android:drawable="@android:color/transparent" />
+  <item android:state_activated="true" android:drawable="@android:color/transparent"/>
+  <item style="@style/selected_main_menu_text" android:drawable="@android:color/transparent" android:state_selected="true" android:state_pressed="false"/>
+  <item style="@style/selected_main_menu_text" android:state_selected="true" android:drawable="@color/holo_color" android:state_pressed="true"/>
+  <item style="@style/normal_main_menu_text" android:drawable="@android:color/transparent"/>
 </selector>
 

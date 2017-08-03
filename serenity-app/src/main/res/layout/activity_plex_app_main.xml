@@ -1,39 +1,44 @@
 <us.nineworlds.serenity.widgets.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
-    <!-- The main content view -->
+  <!-- The main content view -->
 
-    <RelativeLayout
-        android:id="@+id/mainLayout"
+  <RelativeLayout
+      android:id="@+id/mainLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+
+    <ImageView
+        android:id="@+id/mainGalleryBackground"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/serenity_androidtv_banner"
+        />
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/card_background"
+        >
 
-        <ImageView
-            android:id="@+id/mainGalleryBackground"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_centerInParent="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/serenity_androidtv_banner" />
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="10dp"
+          android:text="Serenity only works on Tablets or devices designed for a Television such as Google TV, OUYA, Android TV, or Amazon Fire TV. It may work on other tv connected devices but is currently not designed for phones.  Amazon App store still may let you install it, but the description states it won't work on a phone. Please use a Tablet, TV connected device, or supported Amazon device."
+          android:textColor="@android:color/white"
+          />
+    </FrameLayout>
+  </RelativeLayout>
+  <!-- The navigation drawer -->
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@color/card_background">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Serenity only works on Tablets or devices designed for a Television such as Google TV, OUYA, Android TV, or Amazon Fire TV. It may work on other tv connected devices but is currently not designed for phones.  Amazon App store still may let you install it, but the description states it won't work on a phone. Please use a Tablet, TV connected device, or supported Amazon device."
-                android:textColor="@android:color/white" />
-        </FrameLayout>
-    </RelativeLayout>
-    <!-- The navigation drawer -->
-
-    <include layout="@layout/menu_drawer_with_navigation" />
+  <include layout="@layout/menu_drawer_with_navigation"/>
 
 </us.nineworlds.serenity.widgets.DrawerLayout>

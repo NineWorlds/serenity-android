@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
-    <net.ganin.darv.DpadAwareRecyclerView android:id="@+id/moviePosterView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:nextFocusUp="@+id/categoryFilter"
-        app:selectorVelocity="1000"
-        app:smoothScrolling="true"
-        android:background="@color/card_background"
-        android:visibility="visible"
-        android:layout_marginBottom="5dp"
-        app:foregroundSelector="@drawable/main_menu_item_foreground_selector"
-        xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+  <net.ganin.darv.DpadAwareRecyclerView android:id="@+id/moviePosterView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:nextFocusUp="@+id/categoryFilter"
+      app:selectorVelocity="1000"
+      app:smoothScrolling="true"
+      android:background="@color/card_background"
+      android:visibility="visible"
+      android:layout_marginBottom="5dp"
+      app:foregroundSelector="@drawable/main_menu_item_foreground_selector"
+      xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      >
 
-        <requestFocus />
-    </net.ganin.darv.DpadAwareRecyclerView>
+    <requestFocus/>
+  </net.ganin.darv.DpadAwareRecyclerView>
 </FrameLayout>

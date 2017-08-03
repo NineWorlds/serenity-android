@@ -26,7 +26,6 @@ package us.nineworlds.serenity.core.model.impl;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.Genre;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
@@ -34,103 +33,98 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 
 /**
  * @author dcarver
- *
  */
 public class SeriesMediaContainer extends AbstractMediaContainer {
 
-    protected List<SeriesContentInfo> videoList;
+  protected List<SeriesContentInfo> videoList;
 
-    /**
-     * @param mc
-     */
-    public SeriesMediaContainer(MediaContainer mc) {
-        super(mc);
-    }
+  /**
+   * @param mc
+   */
+  public SeriesMediaContainer(MediaContainer mc) {
+    super(mc);
+  }
 
-    public List<SeriesContentInfo> createSeries() {
-        videoList = new LinkedList<SeriesContentInfo>();
-        createSeriesInfo();
-        return videoList;
-    }
+  public List<SeriesContentInfo> createSeries() {
+    videoList = new LinkedList<SeriesContentInfo>();
+    createSeriesInfo();
+    return videoList;
+  }
 
-    protected void createSeriesInfo() {
-        String baseUrl = factory.baseURL();
+  protected void createSeriesInfo() {
+    String baseUrl = factory.baseURL();
 
-        if (mc != null && mc.getSize() > 0) {
-            String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
-            List<Directory> shows = mc.getDirectories();
-            if (shows != null) {
-                for (Directory show : shows) {
-                    TVShowSeriesInfo mpi = new TVShowSeriesInfo();
-                    mpi.setId(show.getRatingKey());
-                    mpi.setMediaTagIdentifier(mediaTagId);
-                    if (show.getSummary() != null) {
-                        mpi.setSummary(show.getSummary());
-                    }
+    if (mc != null && mc.getSize() > 0) {
+      String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
+      List<Directory> shows = mc.getDirectories();
+      if (shows != null) {
+        for (Directory show : shows) {
+          TVShowSeriesInfo mpi = new TVShowSeriesInfo();
+          mpi.setId(show.getRatingKey());
+          mpi.setMediaTagIdentifier(mediaTagId);
+          if (show.getSummary() != null) {
+            mpi.setSummary(show.getSummary());
+          }
 
-                    mpi.setStudio(show.getStudio());
-                    if (show.getRating() != null) {
-                        mpi.setRating(Double.parseDouble(show.getRating()));
-                    } else {
-                        mpi.setRating(0d);
-                    }
+          mpi.setStudio(show.getStudio());
+          if (show.getRating() != null) {
+            mpi.setRating(Double.parseDouble(show.getRating()));
+          } else {
+            mpi.setRating(0d);
+          }
 
-                    String burl = factory.baseURL()
-                            + ":/resources/show-fanart.jpg";
-                    if (show.getArt() != null) {
-                        burl = baseUrl + show.getArt().replaceFirst("/", "");
-                    }
-                    mpi.setBackgroundURL(burl);
+          String burl = factory.baseURL() + ":/resources/show-fanart.jpg";
+          if (show.getArt() != null) {
+            burl = baseUrl + show.getArt().replaceFirst("/", "");
+          }
+          mpi.setBackgroundURL(burl);
 
-                    String turl = "";
-                    if (show.getBanner() != null) {
-                        turl = baseUrl + show.getBanner().replaceFirst("/", "");
-                    }
-                    mpi.setImageURL(turl);
+          String turl = "";
+          if (show.getBanner() != null) {
+            turl = baseUrl + show.getBanner().replaceFirst("/", "");
+          }
+          mpi.setImageURL(turl);
 
-                    String thumbURL = "";
-                    if (show.getThumb() != null) {
-                        thumbURL = baseUrl
-                                + show.getThumb().replaceFirst("/", "");
-                    }
-                    mpi.setThumbNailURL(thumbURL);
+          String thumbURL = "";
+          if (show.getThumb() != null) {
+            thumbURL = baseUrl + show.getThumb().replaceFirst("/", "");
+          }
+          mpi.setThumbNailURL(thumbURL);
 
-                    mpi.setTitle(show.getTitle());
+          mpi.setTitle(show.getTitle());
 
-                    mpi.setContentRating(show.getContentRating());
+          mpi.setContentRating(show.getContentRating());
 
-                    List<String> genres = processGeneres(show);
-                    mpi.setGeneres(genres);
+          List<String> genres = processGeneres(show);
+          mpi.setGeneres(genres);
 
-                    int totalEpisodes = 0;
-                    int viewedEpisodes = 0;
-                    if (show.getLeafCount() != null) {
-                        totalEpisodes = Integer.parseInt(show.getLeafCount());
-                    }
-                    if (show.getViewedLeafCount() != null) {
-                        viewedEpisodes = Integer.parseInt(show.getViewedLeafCount());
-                    }
-                    int unwatched = totalEpisodes - viewedEpisodes;
-                    mpi.setShowsUnwatched(Integer.toString(unwatched));
-                    mpi.setShowsWatched(Integer.toString(viewedEpisodes));
+          int totalEpisodes = 0;
+          int viewedEpisodes = 0;
+          if (show.getLeafCount() != null) {
+            totalEpisodes = Integer.parseInt(show.getLeafCount());
+          }
+          if (show.getViewedLeafCount() != null) {
+            viewedEpisodes = Integer.parseInt(show.getViewedLeafCount());
+          }
+          int unwatched = totalEpisodes - viewedEpisodes;
+          mpi.setShowsUnwatched(Integer.toString(unwatched));
+          mpi.setShowsWatched(Integer.toString(viewedEpisodes));
 
-                    mpi.setKey(show.getKey());
+          mpi.setKey(show.getKey());
 
-                    videoList.add(mpi);
-                }
-            }
+          videoList.add(mpi);
         }
+      }
     }
+  }
 
-    protected List<String> processGeneres(Directory show) {
-        ArrayList<String> genres = new ArrayList<String>();
-        if (show.getGenres() != null) {
-            for (Genre genre : show.getGenres()) {
-                genres.add(genre.getTag());
-            }
-        }
-        return genres;
+  protected List<String> processGeneres(Directory show) {
+    ArrayList<String> genres = new ArrayList<String>();
+    if (show.getGenres() != null) {
+      for (Genre genre : show.getGenres()) {
+        genres.add(genre.getTag());
+      }
     }
-
-
+    return genres;
+  }
 }

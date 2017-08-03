@@ -29,11 +29,9 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
@@ -42,77 +40,68 @@ import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
  * A service that retrieves movies information from the Plex Media Server.
  *
  * @author dcarver
- *
  */
 public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService {
 
-    private static final String MOVIES_RETRIEVAL_INTENT_SERVICE = "MoviesRetrievalIntentService";
+  private static final String MOVIES_RETRIEVAL_INTENT_SERVICE = "MoviesRetrievalIntentService";
 
-    private static final String DEFAULT_CATEGORY = "all";
+  private static final String DEFAULT_CATEGORY = "all";
 
-    protected List<VideoContentInfo> videoContentList = null;
-    protected String key;
-    protected String category;
+  protected List<VideoContentInfo> videoContentList = null;
+  protected String key;
+  protected String category;
 
-    @Deprecated
-    public MoviesRetrievalIntentService() {
-        super(MOVIES_RETRIEVAL_INTENT_SERVICE);
-        videoContentList = new ArrayList<VideoContentInfo>();
+  @Deprecated public MoviesRetrievalIntentService() {
+    super(MOVIES_RETRIEVAL_INTENT_SERVICE);
+    videoContentList = new ArrayList<VideoContentInfo>();
+  }
 
+  @Override public void sendMessageResults(Intent intent) {
+    Bundle extras = intent.getExtras();
+    if (extras != null) {
+      Messenger messenger = (Messenger) extras.get("MESSENGER");
+      Message msg = Message.obtain();
+      msg.obj = videoContentList;
+      try {
+        messenger.send(msg);
+      } catch (RemoteException ex) {
+        Log.e(getClass().getName(), "Unable to send message", ex);
+      }
+    }
+  }
+
+  @Override protected void onHandleIntent(Intent intent) {
+    Bundle bundle = intent.getExtras();
+    if (bundle == null) {
+      Log.e(getClass().getName(), "Missing bundle extras.");
+      return;
+    }
+    key = bundle.getString("key", "");
+    category = intent.getExtras().getString("category", DEFAULT_CATEGORY);
+    createPosters();
+    sendMessageResults(intent);
+  }
+
+  protected void createPosters() {
+    MediaContainer mc = null;
+    try {
+      mc = retrieveVideos();
+    } catch (IOException ex) {
+      Log.e("AbstractPosterImageGalleryAdapter", "Unable to talk to server: ", ex);
+    } catch (Exception e) {
+      Log.e("AbstractPosterImageGalleryAdapter", "Oops.", e);
     }
 
-    @Override
-    public void sendMessageResults(Intent intent) {
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            Messenger messenger = (Messenger) extras.get("MESSENGER");
-            Message msg = Message.obtain();
-            msg.obj = videoContentList;
-            try {
-                messenger.send(msg);
-            } catch (RemoteException ex) {
-                Log.e(getClass().getName(), "Unable to send message", ex);
-            }
-        }
+    if (mc != null && mc.getSize() > 0) {
+      videoContentList = new MovieMediaContainer(mc).createVideos();
+    }
+  }
 
+  protected MediaContainer retrieveVideos() throws Exception {
+    if (category == null) {
+      category = DEFAULT_CATEGORY;
     }
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        Bundle bundle = intent.getExtras();
-        if (bundle == null) {
-            Log.e(getClass().getName(), "Missing bundle extras.");
-            return;
-        }
-        key = bundle.getString("key", "");
-        category = intent.getExtras().getString("category", DEFAULT_CATEGORY);
-        createPosters();
-        sendMessageResults(intent);
-    }
-
-    protected void createPosters() {
-        MediaContainer mc = null;
-        try {
-            mc = retrieveVideos();
-        } catch (IOException ex) {
-            Log.e("AbstractPosterImageGalleryAdapter",
-                    "Unable to talk to server: ", ex);
-        } catch (Exception e) {
-            Log.e("AbstractPosterImageGalleryAdapter", "Oops.", e);
-        }
-
-        if (mc != null && mc.getSize() > 0) {
-            videoContentList = new MovieMediaContainer(mc).createVideos();
-        }
-
-    }
-
-    protected MediaContainer retrieveVideos() throws Exception {
-        if (category == null) {
-            category = DEFAULT_CATEGORY;
-        }
-
-        return factory.retrieveSections(key, category);
-    }
-
+    return factory.retrieveSections(key, category);
+  }
 }

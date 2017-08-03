@@ -24,22 +24,20 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import android.support.v7.widget.RecyclerView;
-
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeViewHolder;
 
 public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageGalleryAdapter {
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        EpisodeViewHolder episodeViewHolder = (EpisodeViewHolder) holder;
+  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    EpisodeViewHolder episodeViewHolder = (EpisodeViewHolder) holder;
 
-        VideoContentInfo pi = posterList.get(position);
+    VideoContentInfo pi = posterList.get(position);
 
-        episodeViewHolder.reset();
-        episodeViewHolder.createImage(pi, 270, 147);
-        episodeViewHolder.toggleWatchedIndicator(pi);
-        episodeViewHolder.updateSeasonsTitle(pi);
-    }
+    episodeViewHolder.reset();
+    episodeViewHolder.createImage(pi, 270, 147);
+    episodeViewHolder.toggleWatchedIndicator(pi);
+    episodeViewHolder.updateSeasonsTitle(pi);
+  }
 }

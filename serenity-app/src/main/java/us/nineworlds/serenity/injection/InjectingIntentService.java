@@ -27,9 +27,8 @@ import android.app.IntentService;
 
 public abstract class InjectingIntentService extends IntentService {
 
-    public InjectingIntentService(String name) {
-        super(name);
-        SerenityObjectGraph.getInstance().inject(this);
-    }
-
+  public InjectingIntentService(String name) {
+    super(name);
+    SerenityObjectGraph.getInstance().inject(this);
+  }
 }

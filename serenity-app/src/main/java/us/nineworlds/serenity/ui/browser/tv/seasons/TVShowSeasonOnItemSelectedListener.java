@@ -30,91 +30,88 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-
 import javax.inject.Inject;
-
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 
-public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements DpadAwareRecyclerView.OnItemSelectedListener {
+public class TVShowSeasonOnItemSelectedListener extends BaseInjector
+    implements DpadAwareRecyclerView.OnItemSelectedListener {
 
-    private final Activity context;
-    private SeriesContentInfo info;
+  private final Activity context;
+  private SeriesContentInfo info;
 
-    @Inject
-    protected PlexappFactory plexFactory;
+  @Inject protected PlexappFactory plexFactory;
 
-    public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity) {
-        context = activity;
+  public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity) {
+    context = activity;
+  }
+
+  private void changeBackgroundImage(View v) {
+
+    SeriesContentInfo mi = info;
+
+    if (mi.getBackgroundURL() != null) {
+      final View fanArt = context.findViewById(R.id.fanArt);
+      String transcodingURL = plexFactory.getImageURL(mi.getBackgroundURL(), 1280, 720);
+
+      SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+          context.runOnUiThread(
+              new BackgroundBitmapDisplayer(resource, R.drawable.tvshows, fanArt));
+        }
+      };
+
+      Glide.with(context).load(transcodingURL).asBitmap().into(target);
+    }
+  }
+
+  @Override
+  public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i,
+      long l) {
+    Activity context = (Activity) view.getContext();
+    if (context.isDestroyed()) {
+      return;
     }
 
-
-    private void changeBackgroundImage(View v) {
-
-        SeriesContentInfo mi = info;
-
-        if (mi.getBackgroundURL() != null) {
-            final View fanArt = context.findViewById(R.id.fanArt);
-            String transcodingURL = plexFactory.getImageURL(
-                    mi.getBackgroundURL(), 1280, 720);
-
-            SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
-                public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                    context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.tvshows,
-                            fanArt));
-                }
-            };
-
-            Glide.with(context).load(transcodingURL).asBitmap().into(target);
-        }
+    TVShowSeasonImageGalleryAdapter adapter =
+        (TVShowSeasonImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+    if (i < 0) {
+      Log.e(TVShowSeasonOnItemSelectedListener.class.getCanonicalName(),
+          "Season list size: " + adapter.getItemCount() + " position: " + i);
+      i = 0;
     }
 
-    @Override
-    public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-        Activity context = (Activity) view.getContext();
-        if (context.isDestroyed()) {
-            return;
-        }
+    info = (SeriesContentInfo) adapter.getItem(i);
+    ImageView mpiv = (ImageView) view.findViewById(R.id.posterImageView);
+    DpadAwareRecyclerView episodeGrid =
+        (DpadAwareRecyclerView) context.findViewById(R.id.episodeGridView);
 
-        TVShowSeasonImageGalleryAdapter adapter = (TVShowSeasonImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
-        if (i < 0) {
-            Log.e(TVShowSeasonOnItemSelectedListener.class.getCanonicalName(), "Season list size: " + adapter.getItemCount() + " position: " + i);
-            i = 0;
-        }
-
-        info = (SeriesContentInfo) adapter.getItem(i);
-        ImageView mpiv = (ImageView) view.findViewById(R.id.posterImageView);
-        DpadAwareRecyclerView episodeGrid = (DpadAwareRecyclerView) context
-                .findViewById(R.id.episodeGridView);
-
-        episodeGrid.setVisibility(View.VISIBLE);
-        TVShowSeasonBrowserActivity seasonBrowserActivity = (TVShowSeasonBrowserActivity) context;
-        if (seasonBrowserActivity.adapter == null) {
-            seasonBrowserActivity.adapter = new SeasonsEpisodePosterImageGalleryAdapter();
-            episodeGrid.setAdapter(seasonBrowserActivity.adapter);
-        }
-        episodeGrid.setLayoutManager(new GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false));
-        episodeGrid.setOnItemClickListener(new EpisodePosterOnItemClickListener());
-        seasonBrowserActivity.fetchEpisodes(info.getKey());
-
-        TextView seasonsTitle = (TextView) context
-                .findViewById(R.id.tvShowSeasonsTitle);
-        seasonsTitle.setText(info.getTitle());
-
-        changeBackgroundImage(mpiv);
+    episodeGrid.setVisibility(View.VISIBLE);
+    TVShowSeasonBrowserActivity seasonBrowserActivity = (TVShowSeasonBrowserActivity) context;
+    if (seasonBrowserActivity.adapter == null) {
+      seasonBrowserActivity.adapter = new SeasonsEpisodePosterImageGalleryAdapter();
+      episodeGrid.setAdapter(seasonBrowserActivity.adapter);
     }
+    episodeGrid.setLayoutManager(
+        new GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false));
+    episodeGrid.setOnItemClickListener(new EpisodePosterOnItemClickListener());
+    seasonBrowserActivity.fetchEpisodes(info.getKey());
 
-    @Override
-    public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+    TextView seasonsTitle = (TextView) context.findViewById(R.id.tvShowSeasonsTitle);
+    seasonsTitle.setText(info.getTitle());
 
-    }
+    changeBackgroundImage(mpiv);
+  }
+
+  @Override
+  public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+
+  }
 }

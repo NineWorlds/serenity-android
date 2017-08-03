@@ -27,12 +27,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
@@ -48,54 +45,49 @@ import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
  */
 public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapter {
 
-    private List<SeriesContentInfo> seasonList = null;
+  private List<SeriesContentInfo> seasonList = null;
 
-    @Inject
-    PlexappFactory plexFactory;
+  @Inject PlexappFactory plexFactory;
 
-    public TVShowSeasonImageGalleryAdapter() {
-        super();
-        seasonList = new ArrayList<>();
+  public TVShowSeasonImageGalleryAdapter() {
+    super();
+    seasonList = new ArrayList<>();
+  }
+
+  public Object getItem(int position) {
+    if (seasonList.isEmpty()) {
+      return null;
     }
+    return seasonList.get(position);
+  }
 
-    public Object getItem(int position) {
-        if (seasonList.isEmpty()) {
-            return null;
-        }
-        return seasonList.get(position);
-    }
+  @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    View view = LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.poster_tvshow_indicator_view, null);
+    SeasonViewHolder seasonViewHolder = new SeasonViewHolder(view);
+    return seasonViewHolder;
+  }
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_tvshow_indicator_view, null);
-        SeasonViewHolder seasonViewHolder = new SeasonViewHolder(view);
-        return seasonViewHolder;
-    }
+  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    SeasonViewHolder viewHolder = (SeasonViewHolder) holder;
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        SeasonViewHolder viewHolder = (SeasonViewHolder) holder;
+    SeriesContentInfo pi = seasonList.get(position);
 
-        SeriesContentInfo pi = seasonList.get(position);
+    viewHolder.reset();
+    viewHolder.createImage(pi, 120, 180);
+    viewHolder.toggleWatchedIndicator(pi);
+  }
 
-        viewHolder.reset();
-        viewHolder.createImage(pi, 120, 180);
-        viewHolder.toggleWatchedIndicator(pi);
-    }
+  @Override public long getItemId(int position) {
+    return position;
+  }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+  @Override public int getItemCount() {
+    return seasonList.size();
+  }
 
-    @Override
-    public int getItemCount() {
-        return seasonList.size();
-    }
-
-    public void updateSeasonsList(List<SeriesContentInfo> seasonList) {
-        this.seasonList = seasonList;
-        notifyDataSetChanged();
-    }
-
+  public void updateSeasonsList(List<SeriesContentInfo> seasonList) {
+    this.seasonList = seasonList;
+    notifyDataSetChanged();
+  }
 }

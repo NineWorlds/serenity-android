@@ -5,19 +5,18 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 public class SubtitleEvent extends SerenityEvent {
 
-    VideoContentInfo videoContentInfo;
+  VideoContentInfo videoContentInfo;
 
-    public SubtitleEvent(MediaContainer mediaContainer) {
-        super(mediaContainer);
-    }
+  public SubtitleEvent(MediaContainer mediaContainer) {
+    super(mediaContainer);
+  }
 
-    public SubtitleEvent(MediaContainer mediaContainer, VideoContentInfo videoContentInfo) {
-        super(mediaContainer);
-        this.videoContentInfo = videoContentInfo;
-    }
+  public SubtitleEvent(MediaContainer mediaContainer, VideoContentInfo videoContentInfo) {
+    super(mediaContainer);
+    this.videoContentInfo = videoContentInfo;
+  }
 
-    public VideoContentInfo getVideoContentInfo() {
-        return videoContentInfo;
-    }
-
+  public VideoContentInfo getVideoContentInfo() {
+    return videoContentInfo;
+  }
 }

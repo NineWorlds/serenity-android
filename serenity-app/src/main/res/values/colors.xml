@@ -14,16 +14,16 @@
 -->
 <resources>
 
-    <color name="custom_normal">#3300FF00</color>
-    <color name="custom_activated">#33FF0000</color>
+  <color name="custom_normal">#3300FF00</color>
+  <color name="custom_activated">#33FF0000</color>
 
-    <color name="list_normal">#80000000</color>
-    <color name="list_activated">#F0F0F0</color>
-    <color name="orange">#FF6600</color>
-    <color name="holo_color">#ff0099cc</color>
-    <color name="fity_percent_transparent">#80000000</color>
-    <color name="card_background">#A0000000</color>
+  <color name="list_normal">#80000000</color>
+  <color name="list_activated">#F0F0F0</color>
+  <color name="orange">#FF6600</color>
+  <color name="holo_color">#ff0099cc</color>
+  <color name="fity_percent_transparent">#80000000</color>
+  <color name="card_background">#A0000000</color>
 
-    <color name="white">#F0F0F0</color>
-    <color name="grey">#414141</color>
+  <color name="white">#F0F0F0</color>
+  <color name="grey">#414141</color>
 </resources>

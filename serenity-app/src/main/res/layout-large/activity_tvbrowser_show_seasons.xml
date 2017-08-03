@@ -2,81 +2,89 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
-    <!-- The main content view -->
+  <!-- The main content view -->
 
-    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
-        android:id="@+id/tvshowSeasonBrowserLayout"
+  <RelativeLayout xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
+      android:id="@+id/tvshowSeasonBrowserLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+
+    <ImageView
+        android:id="@+id/fanArt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        />
 
-        <ImageView
-            android:id="@+id/fanArt"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <net.ganin.darv.DpadAwareRecyclerView
+        android:id="@+id/episodeGridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tvShowSeasonTitleRow"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="@dimen/actionbarMargin"
+        android:background="@color/card_background"
+        android:focusable="true"
+        android:nextFocusDown="@+id/tvShowSeasonImageGalleryLayout"
+        android:nextFocusLeft="@+id/tvShowSeasonImageGalleryLayout"
+        android:nextFocusRight="@+id/tvShowSeasonImageGalleryLayout"
+        android:visibility="gone"
+        app:selectorVelocity="2000"
+        app:smoothScrolling="true"
+        app:foregroundSelector="@drawable/main_menu_item_foreground_selector"
+        />
 
-        <net.ganin.darv.DpadAwareRecyclerView
-            android:id="@+id/episodeGridView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/tvShowSeasonTitleRow"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="4dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="@dimen/actionbarMargin"
-            android:background="@color/card_background"
-            android:focusable="true"
-            android:nextFocusDown="@+id/tvShowSeasonImageGalleryLayout"
-            android:nextFocusLeft="@+id/tvShowSeasonImageGalleryLayout"
-            android:nextFocusRight="@+id/tvShowSeasonImageGalleryLayout"
-            android:visibility="gone"
-            app:selectorVelocity="2000"
-            app:smoothScrolling="true"
-            app:foregroundSelector="@drawable/main_menu_item_foreground_selector" />
+    <LinearLayout
+        android:id="@+id/tvShowSeasonTitleRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvShowSeasonImageGalleryLayout"
+        android:background="@color/card_background"
+        android:orientation="horizontal"
+        >
 
-        <LinearLayout
-            android:id="@+id/tvShowSeasonTitleRow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/tvShowSeasonImageGalleryLayout"
-            android:background="@color/card_background"
-            android:orientation="horizontal">
+      <TextView
+          android:id="@+id/tvShowSeasonsTitle"
+          style="@android:style/TextAppearance.Holo.Medium"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:textColor="#F0F0F0"
+          tools:ignore="SelectableText"
+          />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvShowSeasonsTitle"
-                style="@android:style/TextAppearance.Holo.Medium"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="#F0F0F0"
-                tools:ignore="SelectableText"/>
-        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/tvShowSeasonImageGalleryLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:background="@color/card_background"
+        android:orientation="vertical"
+        >
 
-        <LinearLayout
-            android:id="@+id/tvShowSeasonImageGalleryLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:background="@color/card_background"
-            android:orientation="vertical">
+      <net.ganin.darv.DpadAwareRecyclerView
+          android:id="@+id/tvShowSeasonImageGallery"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center|center_vertical"
+          android:padding="5dp"
+          app:selectorVelocity="2000"
+          app:smoothScrolling="true"
+          app:foregroundSelector="@drawable/main_menu_item_foreground_selector"
+          >
 
-            <net.ganin.darv.DpadAwareRecyclerView
-                android:id="@+id/tvShowSeasonImageGallery"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|center_vertical"
-                android:padding="5dp"
-                app:selectorVelocity="2000"
-                app:smoothScrolling="true"
-                app:foregroundSelector="@drawable/main_menu_item_foreground_selector">
+        <requestFocus/>
+      </net.ganin.darv.DpadAwareRecyclerView>
+    </LinearLayout>
+  </RelativeLayout>
 
-                <requestFocus />
-            </net.ganin.darv.DpadAwareRecyclerView>
-        </LinearLayout>
-    </RelativeLayout>
-
-    <include layout="@layout/menu_drawer_with_navigation" />
+  <include layout="@layout/menu_drawer_with_navigation"/>
 
 </us.nineworlds.serenity.widgets.DrawerLayout>

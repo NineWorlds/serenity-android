@@ -35,11 +35,8 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Handler;
 import android.view.SurfaceView;
 import android.widget.RelativeLayout;
-
 import java.util.LinkedList;
-
 import javax.inject.Inject;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
@@ -55,167 +52,144 @@ import us.nineworlds.serenity.injection.ForVideoQueue;
  * the Watched status update task and the progress update handler.
  *
  * @author dcarver
- *
  */
-public class VideoPlayerPrepareListener extends BaseInjector implements
-        OnPreparedListener {
+public class VideoPlayerPrepareListener extends BaseInjector implements OnPreparedListener {
 
-    private final Context context;
-    private final SurfaceView surfaceView;
-    private final MediaController mediaController;
-    private final int resumeOffset;
-    private final String plexAspectRatio;
-    private final boolean autoResume;
-    private final Handler progressReportingHandler;
-    private final Runnable progressRunnable;
+  private final Context context;
+  private final SurfaceView surfaceView;
+  private final MediaController mediaController;
+  private final int resumeOffset;
+  private final String plexAspectRatio;
+  private final boolean autoResume;
+  private final Handler progressReportingHandler;
+  private final Runnable progressRunnable;
 
-    private MediaPlayer mediaPlayer;
+  private MediaPlayer mediaPlayer;
 
-    @Inject
-    protected Resources resources;
+  @Inject protected Resources resources;
 
-    @Inject
-    protected SharedPreferences preferences;
+  @Inject protected SharedPreferences preferences;
 
-    @Inject
-    @ForVideoQueue
-    protected LinkedList<VideoContentInfo> videoQueue;
+  @Inject @ForVideoQueue protected LinkedList<VideoContentInfo> videoQueue;
 
-    @Inject
-    protected TimeUtil timeUtil;
+  @Inject protected TimeUtil timeUtil;
 
-    public VideoPlayerPrepareListener(MediaController con, SurfaceView v,
-                                      int resumeOffset, boolean autoResume, String aspectRatio,
-                                      Handler progress, Runnable progresrun) {
-        mediaController = con;
-        surfaceView = v;
-        context = v.getContext();
-        this.autoResume = autoResume;
-        progressReportingHandler = progress;
-        progressRunnable = progresrun;
-        plexAspectRatio = aspectRatio;
-        this.resumeOffset = resumeOffset;
+  public VideoPlayerPrepareListener(MediaController con, SurfaceView v, int resumeOffset,
+      boolean autoResume, String aspectRatio, Handler progress, Runnable progresrun) {
+    mediaController = con;
+    surfaceView = v;
+    context = v.getContext();
+    this.autoResume = autoResume;
+    progressReportingHandler = progress;
+    progressRunnable = progresrun;
+    plexAspectRatio = aspectRatio;
+    this.resumeOffset = resumeOffset;
+  }
+
+  @Override public void onPrepared(MediaPlayer mp) {
+    mediaPlayer = mp;
+
+    android.view.ViewGroup.LayoutParams lp = setupAspectRatio(surfaceView, plexAspectRatio);
+    surfaceView.setLayoutParams(lp);
+    mediaController.setEnabled(true);
+
+    if (!videoQueue.isEmpty() || resumeOffset == 0) {
+      mediaPlayer.start();
+      setMetaData();
+      return;
     }
 
-    @Override
-    public void onPrepared(MediaPlayer mp) {
-        mediaPlayer = mp;
+    if (autoResume) {
+      if (!mediaPlayer.isPlaying()) {
+        mediaPlayer.start();
+      }
+      mediaPlayer.seekTo(resumeOffset);
+      setMetaData();
+      return;
+    }
 
-        android.view.ViewGroup.LayoutParams lp = setupAspectRatio(surfaceView,
-                plexAspectRatio);
-        surfaceView.setLayoutParams(lp);
-        mediaController.setEnabled(true);
+    AlertDialog.Builder alertDialogBuilder =
+        new AlertDialog.Builder(context, android.R.style.Theme_Holo_Dialog);
 
-        if (!videoQueue.isEmpty() || resumeOffset == 0) {
-            mediaPlayer.start();
-            setMetaData();
-            return;
-        }
+    alertDialogBuilder.setTitle(R.string.resume_video);
+    alertDialogBuilder.setMessage(resources.getText(R.string.resume_the_video_from_)
+        + timeUtil.formatDuration(resumeOffset)
+        + resources.getText(R.string._or_restart_))
+        .setCancelable(false)
+        .setPositiveButton(R.string.resume, new DialogInterface.OnClickListener() {
 
-        if (autoResume) {
+          @Override public void onClick(DialogInterface dialog, int which) {
             if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.start();
+              mediaPlayer.start();
             }
             mediaPlayer.seekTo(resumeOffset);
             setMetaData();
-            return;
-        }
+          }
+        })
+        .setNegativeButton(R.string.restart, new DialogInterface.OnClickListener() {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                context, android.R.style.Theme_Holo_Dialog);
+          @Override public void onClick(DialogInterface dialog, int which) {
+            mediaPlayer.start();
+            setMetaData();
+          }
+        });
 
-        alertDialogBuilder.setTitle(R.string.resume_video);
-        alertDialogBuilder
-                .setMessage(
-                        resources.getText(R.string.resume_the_video_from_)
-                                + timeUtil.formatDuration(resumeOffset)
-                                + resources.getText(R.string._or_restart_))
-                .setCancelable(false)
-                .setPositiveButton(R.string.resume,
-                        new DialogInterface.OnClickListener() {
+    alertDialogBuilder.create();
+    AlertDialog dialog = alertDialogBuilder.show();
+    dialog.getButton(DialogInterface.BUTTON_POSITIVE).requestFocusFromTouch();
+  }
 
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                if (!mediaPlayer.isPlaying()) {
-                                    mediaPlayer.start();
-                                }
-                                mediaPlayer.seekTo(resumeOffset);
-                                setMetaData();
-                            }
-                        })
-                .setNegativeButton(R.string.restart,
-                        new DialogInterface.OnClickListener() {
+  protected void setMetaData() {
+    boolean showOSD = preferences.getBoolean("internal_player_osd", true);
+    int osdDelayTime = Integer.parseInt(preferences.getString("osd_display_time", "5000"));
+    if (showOSD) {
+      mediaController.show(osdDelayTime);
+    }
+    if (progressReportingHandler != null) {
+      progressReportingHandler.postDelayed(progressRunnable, 5000);
+    }
+  }
 
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                mediaPlayer.start();
-                                setMetaData();
-                            }
-                        });
+  protected android.view.ViewGroup.LayoutParams setupAspectRatio(SurfaceView surfaceView,
+      String plexAspectRatio) {
+    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
 
-        alertDialogBuilder.create();
-        AlertDialog dialog = alertDialogBuilder.show();
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-                .requestFocusFromTouch();
+    boolean preferPlexAspectRatio = preferences.getBoolean("plex_aspect_ratio", false);
+
+    int surfaceViewHeight = surfaceView.getHeight();
+    int surfaceViewWidth = surfaceView.getWidth();
+
+    float videoWidth = mediaPlayer.getVideoWidth();
+    float videoHeight = mediaPlayer.getVideoHeight();
+
+    float ratioWidth = surfaceViewWidth / videoWidth;
+    float ratioHeight = surfaceViewHeight / videoHeight;
+    float aspectRatio = videoWidth / videoHeight;
+
+    if (videoHeight == 480 && videoWidth == 720) {
+      aspectRatio = (float) 1.78;
     }
 
-    protected void setMetaData() {
-        boolean showOSD = preferences.getBoolean("internal_player_osd", true);
-        int osdDelayTime = Integer.parseInt(preferences.getString(
-                "osd_display_time", "5000"));
-        if (showOSD) {
-            mediaController.show(osdDelayTime);
-        }
-        if (progressReportingHandler != null) {
-            progressReportingHandler.postDelayed(progressRunnable, 5000);
-        }
+    if (preferPlexAspectRatio && plexAspectRatio != null) {
+      aspectRatio = Float.parseFloat(plexAspectRatio);
     }
 
-    protected android.view.ViewGroup.LayoutParams setupAspectRatio(
-            SurfaceView surfaceView, String plexAspectRatio) {
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) surfaceView
-                .getLayoutParams();
-
-        boolean preferPlexAspectRatio = preferences.getBoolean(
-                "plex_aspect_ratio", false);
-
-        int surfaceViewHeight = surfaceView.getHeight();
-        int surfaceViewWidth = surfaceView.getWidth();
-
-        float videoWidth = mediaPlayer.getVideoWidth();
-        float videoHeight = mediaPlayer.getVideoHeight();
-
-        float ratioWidth = surfaceViewWidth / videoWidth;
-        float ratioHeight = surfaceViewHeight / videoHeight;
-        float aspectRatio = videoWidth / videoHeight;
-
-        if (videoHeight == 480 && videoWidth == 720) {
-            aspectRatio = (float) 1.78;
-        }
-
-        if (preferPlexAspectRatio && plexAspectRatio != null) {
-            aspectRatio = Float.parseFloat(plexAspectRatio);
-        }
-
-        if (ratioWidth > ratioHeight) {
-            lp.width = (int) (surfaceViewHeight * aspectRatio);
-            lp.height = surfaceViewHeight;
-        } else {
-            lp.width = surfaceViewWidth;
-            lp.height = (int) (surfaceViewWidth / aspectRatio);
-        }
-
-        if (lp.width > surfaceViewWidth) {
-            lp.width = surfaceViewWidth;
-        }
-
-        if (lp.height > surfaceViewHeight) {
-            lp.height = surfaceViewHeight;
-        }
-
-        return lp;
+    if (ratioWidth > ratioHeight) {
+      lp.width = (int) (surfaceViewHeight * aspectRatio);
+      lp.height = surfaceViewHeight;
+    } else {
+      lp.width = surfaceViewWidth;
+      lp.height = (int) (surfaceViewWidth / aspectRatio);
     }
 
+    if (lp.width > surfaceViewWidth) {
+      lp.width = surfaceViewWidth;
+    }
+
+    if (lp.height > surfaceViewHeight) {
+      lp.height = surfaceViewHeight;
+    }
+
+    return lp;
+  }
 }

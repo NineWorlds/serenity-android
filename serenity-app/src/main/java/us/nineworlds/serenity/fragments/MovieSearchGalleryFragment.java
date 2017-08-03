@@ -25,9 +25,7 @@ package us.nineworlds.serenity.fragments;
 
 public class MovieSearchGalleryFragment extends MovieVideoGalleryFragment {
 
-    public MovieSearchGalleryFragment() {
-        super();
-
-    }
-
+  public MovieSearchGalleryFragment() {
+    super();
+  }
 }

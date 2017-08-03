@@ -27,9 +27,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.List;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -41,26 +39,24 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
  */
 public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_indicator_view, null);
-        return new EpisodeViewHolder(view);
-    }
+  @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    View view =
+        LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_indicator_view, null);
+    return new EpisodeViewHolder(view);
+  }
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        VideoContentInfo pi = posterList.get(position);
+  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    VideoContentInfo pi = posterList.get(position);
 
-        EpisodeViewHolder viewHolder = (EpisodeViewHolder) holder;
+    EpisodeViewHolder viewHolder = (EpisodeViewHolder) holder;
 
-        viewHolder.reset();
-        viewHolder.createImage(pi, 300, 187);
-        viewHolder.toggleWatchedIndicator(pi);
-    }
+    viewHolder.reset();
+    viewHolder.createImage(pi, 300, 187);
+    viewHolder.toggleWatchedIndicator(pi);
+  }
 
-    public void updateEpisodes(List<VideoContentInfo> episodes) {
-        posterList = episodes;
-        notifyDataSetChanged();
-    }
-
+  public void updateEpisodes(List<VideoContentInfo> episodes) {
+    posterList = episodes;
+    notifyDataSetChanged();
+  }
 }

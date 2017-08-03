@@ -24,41 +24,39 @@
 package us.nineworlds.serenity.core.externalplayer;
 
 import android.content.Context;
-
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 /**
  * A factory that handles returning the selected video player.
  *
  * @author dcarver
- *
  */
 public class ExternalPlayerFactory {
 
-    private final VideoContentInfo videoContent;
-    private final Context activity;
+  private final VideoContentInfo videoContent;
+  private final Context activity;
 
-    /**
-     *
-     */
-    public ExternalPlayerFactory(VideoContentInfo vc, Context ac) {
-        videoContent = vc;
-        activity = ac;
+  /**
+   *
+   */
+  public ExternalPlayerFactory(VideoContentInfo vc, Context ac) {
+    videoContent = vc;
+    activity = ac;
+  }
+
+  public ExternalPlayer createExternalPlayer(String identifier) {
+    if ("mxplayer".equals(identifier)) {
+      return new MXPlayer(videoContent, activity);
     }
 
-    public ExternalPlayer createExternalPlayer(String identifier) {
-        if ("mxplayer".equals(identifier)) {
-            return new MXPlayer(videoContent, activity);
-        }
-
-        if ("mxplayerpro".equals(identifier)) {
-            return new MXPlayerPro(videoContent, activity);
-        }
-
-        if ("vimu".equals(identifier)) {
-            return new ViMuPlayer(videoContent, activity);
-        }
-
-        return new SystemDefaultPlayer(videoContent, activity);
+    if ("mxplayerpro".equals(identifier)) {
+      return new MXPlayerPro(videoContent, activity);
     }
+
+    if ("vimu".equals(identifier)) {
+      return new ViMuPlayer(videoContent, activity);
+    }
+
+    return new SystemDefaultPlayer(videoContent, activity);
+  }
 }

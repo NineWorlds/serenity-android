@@ -7,60 +7,65 @@
     android:layout_marginLeft="10dp"
     android:background="#AA000000"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="10dp"
+    >
 
-    <ImageView
-        android:id="@+id/video_poster"
-        android:layout_width="200dp"
-        android:layout_height="250dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="5dp" />
+  <ImageView
+      android:id="@+id/video_poster"
+      android:layout_width="200dp"
+      android:layout_height="250dp"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentTop="true"
+      android:layout_margin="5dp"
+      />
 
-    <TextView
-        android:id="@+id/movieBrowserPosterTitle"
-        style="@android:style/TextAppearance.Holo.Large"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_toRightOf="@+id/video_poster"
-        android:gravity="left|center_vertical"
-        android:paddingLeft="10dp"
-        android:textColor="#F0F0F0"
-        android:textStyle="bold"
-        tools:ignore="SelectableText" />
+  <TextView
+      android:id="@+id/movieBrowserPosterTitle"
+      style="@android:style/TextAppearance.Holo.Large"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="15dp"
+      android:layout_marginRight="15dp"
+      android:layout_toRightOf="@+id/video_poster"
+      android:gravity="left|center_vertical"
+      android:paddingLeft="10dp"
+      android:textColor="#F0F0F0"
+      android:textStyle="bold"
+      tools:ignore="SelectableText"
+      />
 
-    <TextView
-        android:id="@+id/movieSummary"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/movieBrowserPosterTitle"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_toRightOf="@+id/video_poster"
-        android:ellipsize="marquee"
-        android:maxLines="12"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textColor="#F0F0F0"
-        android:textSize="17.5sp"
-        tools:ignore="SelectableText" />
+  <TextView
+      android:id="@+id/movieSummary"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/movieBrowserPosterTitle"
+      android:layout_marginLeft="15dp"
+      android:layout_marginRight="15dp"
+      android:layout_toRightOf="@+id/video_poster"
+      android:ellipsize="marquee"
+      android:maxLines="12"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:textColor="#F0F0F0"
+      android:textSize="17.5sp"
+      tools:ignore="SelectableText"
+      />
 
-    <TextView
-        android:id="@+id/videoTextExtra"
-        style="@android:style/TextAppearance.Holo.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/movieInfoGraphicLayout"
-        android:layout_gravity="left"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_toRightOf="@+id/video_poster"
-        android:gravity="left"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textStyle="bold"
-        android:visibility="invisible" />
+  <TextView
+      android:id="@+id/videoTextExtra"
+      style="@android:style/TextAppearance.Holo.Medium"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_above="@+id/movieInfoGraphicLayout"
+      android:layout_gravity="left"
+      android:layout_marginLeft="15dp"
+      android:layout_marginRight="15dp"
+      android:layout_toRightOf="@+id/video_poster"
+      android:gravity="left"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:textStyle="bold"
+      android:visibility="invisible"
+      />
 
 </RelativeLayout>

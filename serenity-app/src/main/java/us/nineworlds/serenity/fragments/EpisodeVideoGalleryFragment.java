@@ -29,11 +29,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-
 import javax.inject.Inject;
-
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
@@ -48,59 +45,51 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 
 public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
-    @Inject
-    SharedPreferences preferences;
+  @Inject SharedPreferences preferences;
 
-    @Inject
-    GalleryVideoOnItemClickListener onItemClickListener;
+  @Inject GalleryVideoOnItemClickListener onItemClickListener;
 
-    @Inject
-    GalleryVideoOnItemLongClickListener onItemLongClickListener;
+  @Inject GalleryVideoOnItemLongClickListener onItemLongClickListener;
 
-    @Inject
-    protected MovieSelectedCategoryState categoryState;
+  @Inject protected MovieSelectedCategoryState categoryState;
 
-    MoviePosterOnItemSelectedListener onItemSelectedListener;
+  MoviePosterOnItemSelectedListener onItemSelectedListener;
 
-    private DpadAwareRecyclerView videoGallery;
+  private DpadAwareRecyclerView videoGallery;
 
-    public EpisodeVideoGalleryFragment() {
-        super();
+  public EpisodeVideoGalleryFragment() {
+    super();
+  }
+
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    onItemSelectedListener = new MoviePosterOnItemSelectedListener();
+    return inflater.inflate(R.layout.video_gallery_fragment, container);
+  }
+
+  @Override public void onStart() {
+    super.onStart();
+
+    if (videoGallery == null) {
+
+      videoGallery = (DpadAwareRecyclerView) getActivity().findViewById(R.id.moviePosterView);
+
+      String key = ((EpisodeBrowserActivity) getActivity()).getKey();
+
+      videoGallery.setAdapter(new EpisodePosterImageGalleryAdapter());
+      videoGallery.setLayoutManager(
+          new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+      videoGallery.addItemDecoration(new SpaceItemDecoration(
+          getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
+      videoGallery.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
+      videoGallery.setOnItemClickListener(new EpisodePosterOnItemClickListener());
+      videoGallery.setSelectorVelocity(0);
+      EpisodeBrowserActivity activity = (EpisodeBrowserActivity) getActivity();
+      activity.fetchEpisodes(key);
     }
+  }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        onItemSelectedListener = new MoviePosterOnItemSelectedListener();
-        return inflater.inflate(R.layout.video_gallery_fragment, container);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (videoGallery == null) {
-
-            videoGallery = (DpadAwareRecyclerView) getActivity().findViewById(
-                    R.id.moviePosterView);
-
-            String key = ((EpisodeBrowserActivity) getActivity()).getKey();
-
-            videoGallery.setAdapter(new EpisodePosterImageGalleryAdapter());
-            videoGallery.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-            videoGallery.addItemDecoration(new SpaceItemDecoration(getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
-            videoGallery
-                    .setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
-            videoGallery.setOnItemClickListener(new EpisodePosterOnItemClickListener());
-            videoGallery.setSelectorVelocity(0);
-            EpisodeBrowserActivity activity = (EpisodeBrowserActivity) getActivity();
-            activity.fetchEpisodes(key);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
+  @Override public void onResume() {
+    super.onResume();
+  }
 }

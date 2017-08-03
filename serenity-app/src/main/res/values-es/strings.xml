@@ -1,215 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">Serenidad para Android</string>
-    <string name="app_label">Serenidad para Android</string>
-    <string name="search_hint">Introduzca una palabra o frase en una película, programa de televisión, o episodio.</string>
-    <string name="menu_settings">Configuración</string>
-    <string name="menu_search">Buscar</string>
-    <string name="title_activity_movie_browser">Cine</string>
-    <string name="title_activity_main">Serenidad para Android</string>
-    <string name="title_activity_tvbrowser_show">Series</string>
-    <string name="title_activity_tvbrowser_show_season">Series Seasons</string>
-    <string name="title_activity_tvbrowser_show_episodes">Series Episodios</string>
-    <string name="video_title">Reproductor de Vídeo</string>
-    <string name="movie_category_prompt">Escoja una categoría</string>
-    <string name="movie_category_prompt2">Género / Colección</string>
+  <string name="app_name">Serenidad para Android</string>
+  <string name="app_label">Serenidad para Android</string>
+  <string name="search_hint">Introduzca una palabra o frase en una película, programa de televisión, o episodio.</string>
+  <string name="menu_settings">Configuración</string>
+  <string name="menu_search">Buscar</string>
+  <string name="title_activity_movie_browser">Cine</string>
+  <string name="title_activity_main">Serenidad para Android</string>
+  <string name="title_activity_tvbrowser_show">Series</string>
+  <string name="title_activity_tvbrowser_show_season">Series Seasons</string>
+  <string name="title_activity_tvbrowser_show_episodes">Series Episodios</string>
+  <string name="video_title">Reproductor de Vídeo</string>
+  <string name="movie_category_prompt">Escoja una categoría</string>
+  <string name="movie_category_prompt2">Género / Colección</string>
 
-    <string name="category">Categoría:</string>
-    <string name="year">Año</string>
-    <string name="genre">Género</string>
-    <string name="writers">Escritores</string>
-    <string name="directors">Directores</string>
-    <string name="tvshows">Series:</string>
-    <string name="about_title_serenity_for_google_tv">Serenidad para Android</string>
-    <string name="options_main_about">Acerca de</string>
-    <string name="options_main_clear_image_cache">Borrar la caché de imagen</string>
-    <string name="option_clear_the_image_cache_">Borrar la caché de imágenes?</string>
-    <string name="clear">Borrar</string>
-    <string name="cancel">Cancelar</string>
-    <string name="download_manager_download_complete_for_">Descarga completar para </string>
-    <string name="no_libraries_found">No hay películas o series Mostrar Bibliotecas encontrados. Utilice la aplicación web de Plex para añadir algo.</string>
-    <string name="unknown">Desconocido</string>
-    <string name="season_">"Temporada "</string>
-    <string name="episode_">"Episodio "</string>
-    <string name="settings">Configuración</string>
-    <string name="search">Buscar</string>
-    <string name="options">Opciones</string>
-    <string name="no_entries_available_for_category_">No hay entradas disponibles para la categoría.</string>
-    <string name="retrieving_movies">Películas Recuperación</string>
-    <string name="no_shows_found_for_the_category_">"No hay resultados para la categoría Espectáculos: "</string>
-    <string name="_item_s_">" Artículo (s)"</string>
-    <string name="watched_">Miró:</string>
-    <string name="unwatched_">No se ha visto:</string>
-    <string name="retrieving_episodes">Episodios Recuperación</string>
-    <string name="new_folder">Nueva carpeta</string>
-    <string name="new_folder_name">Nuevo nombre de carpeta</string>
-    <string name="toggle_watched_status">Toggle Estado Miró</string>
-    <string name="download_video_to_device">Descargar Video to Device</string>
-    <string name="play_on_tv">Reproducir en la TV</string>
-    <string name="starting_download_of_">"Iniciar descarga de "</string>
-    <string name="chosen_directory_">"Directorio elegido: "</string>
-    <string name="no_videos_found_that_match_the_search_criteria">No se encontraron videos que coinciden con los criterios de búsqueda</string>
-    <string name="video_options">Opciones de vídeo</string>
-    <string name="view_all_episodes">Ver todos los Episodios</string>
+  <string name="category">Categoría:</string>
+  <string name="year">Año</string>
+  <string name="genre">Género</string>
+  <string name="writers">Escritores</string>
+  <string name="directors">Directores</string>
+  <string name="tvshows">Series:</string>
+  <string name="about_title_serenity_for_google_tv">Serenidad para Android</string>
+  <string name="options_main_about">Acerca de</string>
+  <string name="options_main_clear_image_cache">Borrar la caché de imagen</string>
+  <string name="option_clear_the_image_cache_">Borrar la caché de imágenes?</string>
+  <string name="clear">Borrar</string>
+  <string name="cancel">Cancelar</string>
+  <string name="download_manager_download_complete_for_">Descarga completar para </string>
+  <string name="no_libraries_found">No hay películas o series Mostrar Bibliotecas encontrados. Utilice la aplicación web de Plex para añadir algo.</string>
+  <string name="unknown">Desconocido</string>
+  <string name="season_">"Temporada "</string>
+  <string name="episode_">"Episodio "</string>
+  <string name="settings">Configuración</string>
+  <string name="search">Buscar</string>
+  <string name="options">Opciones</string>
+  <string name="no_entries_available_for_category_">No hay entradas disponibles para la categoría.</string>
+  <string name="retrieving_movies">Películas Recuperación</string>
+  <string name="no_shows_found_for_the_category_">"No hay resultados para la categoría Espectáculos: "</string>
+  <string name="_item_s_">" Artículo (s)"</string>
+  <string name="watched_">Miró:</string>
+  <string name="unwatched_">No se ha visto:</string>
+  <string name="retrieving_episodes">Episodios Recuperación</string>
+  <string name="new_folder">Nueva carpeta</string>
+  <string name="new_folder_name">Nuevo nombre de carpeta</string>
+  <string name="toggle_watched_status">Toggle Estado Miró</string>
+  <string name="download_video_to_device">Descargar Video to Device</string>
+  <string name="play_on_tv">Reproducir en la TV</string>
+  <string name="starting_download_of_">"Iniciar descarga de "</string>
+  <string name="chosen_directory_">"Directorio elegido: "</string>
+  <string name="no_videos_found_that_match_the_search_criteria">No se encontraron videos que coinciden con los criterios de búsqueda</string>
+  <string name="video_options">Opciones de vídeo</string>
+  <string name="view_all_episodes">Ver todos los Episodios</string>
 
-    <string-array name="categoryListNames">
-        <item>Todo</item>
-        <item>El más nuevo</item>
-        <item>On Deck</item>
-        <item>Recientemente se agregó</item>
-        <item>Visto recientemente</item>
-        <item>Desatendido</item>
-    </string-array>
+  <string-array name="categoryListNames">
+    <item>Todo</item>
+    <item>El más nuevo</item>
+    <item>On Deck</item>
+    <item>Recientemente se agregó</item>
+    <item>Visto recientemente</item>
+    <item>Desatendido</item>
+  </string-array>
 
-    <string name="select_the_starting_category_filter_">Seleccione el filtro de categoría básica.</string>
-    <string name="categories_summary_preference_description">Las categorías se utilizan para seleccionar el filtro de partida al navegar por las películas y programas de televisión. El valor predeterminado es Todo.</string>
-    <string name="preferred_filter">Filtrar preferente</string>
-    <string name="server_settings">Configuración del servidor</string>
-    <string name="server_settings_summary">Una lista de los servidores de medios disponibles complejas en la red. Un servidor preferido tiene prioridad.</string>
-    <string name="preferred_ipaddress_summary">El nombre de dominio o dirección IP del servidor principal de los medios de comunicación compleja. Esto toma preferencia sobre cualquier servidores detectados seleccionados.</string>
-    <string name="preferred_server_address">Dirección del servidor preferente</string>
-    <string name="default_port_summary">El número de puerto del servidor (normalmente 32400).</string>
-    <string name="server_port">Puerto del servidor</string>
-    <string name="discovered_servers_">Servidores detectados.</string>
-    <string name="music_library">Biblioteca de música</string>
-    <string name="music_library_preference_summary">Plex Experimental Music Library Support. Esto proporciona soporte para reproducción muy básico para las bibliotecas de música y está todavía en desarrollo.</string>
-    <string name="enable_plex_music_library_support">Habilitar Plex Music Library Support</string>
-    <string name="music_layout_grid_summary">Poster disposición de la rejilla para la música. Sólo tiene efecto si el apoyo biblioteca de música se activa.</string>
-    <string name="music_grid_poster_layout">Rejilla Music Poster Layout</string>
-    <string name="video_library">Videoteca</string>
-    <string name="subtitle_automatic_selection_summary">Trate de seleccionar los subtítulos automáticamente basándose en el idioma preferido.</string>
-    <string name="automatically_select_subtitles_">Seleccionar automáticamente subtítulos.</string>
-    <string name="subtitle_language_selection_summary">Seleccione el idioma de los subtítulos que se elegido al elegir subtítulos automáticamente.</string>
-    <string name="subtitle_language_preference">Subtítulo Preferencias de idioma</string>
-    <string name="prefer_poster_layout_for_series_">Prefiero Poster Diseño de la serie.</string>
-    <string name="series_poster_layout">Poster Layout Series</string>
-    <string name="poster_grid_layout_for_movies_">Poster diseño de cuadrícula para películas.</string>
-    <string name="movie_grid_poster_layout">Rejilla Movie Poster Layout</string>
-    <string name="animations">Animaciones</string>
-    <string name="fade_in_the_main_menu_background_art_">Fundido en el menú principal fondo de arte.</string>
-    <string name="fade_in_main_menu_backround">Fundido de entrada principal fondo de menú</string>
-    <string name="movie_fadein_animation_summary">Fundido en fan art de fondo para películas y episodios de televisión.</string>
-    <string name="fade_in_background_fan_art">Fundido de entrada Fan Art</string>
-    <string name="emphasize_poster_summary">Hacer hincapié en el elemento seleccionado cuando se navega a través de la vista de detalle. Dispositivos de Google TV solamente.</string>
-    <string name="poster_selected_emphasis">Poster énfasis Selected</string>
-    <string name="media_player">Media Player</string>
-    <string name="use_external_media_player_">Utilice el reproductor de medios externos.</string>
-    <string name="external_player">Reproductor externo</string>
-    <string name="internal_player_osd_summary">Mostrar reproductor multimedia interno sobre la información pantalla durante el inicio de la reproducción de vídeo.</string>
-    <string name="on_screen_display">On Screen Display</string>
-    <string name="mx_player_resume_summary">Fuerzas MX Reproductor de usar Plex último cargo desempeñado en lugar de que\'s propio. Esto siempre fuerzas reproducir a partir de la posición registrada Plex\'s.</string>
-    <string name="force_mx_player_resume_position_">Fuerza MX Reproductor Reanudar Position.</string>
-    <string name="prefer_plex_media_server_s_aspect_ratio_">Prefiero relación de aspecto de Plex Media Server\'s.</string>
-    <string name="plex_aspect_ratio">Plex Relación de aspecto</string>
+  <string name="select_the_starting_category_filter_">Seleccione el filtro de categoría básica.</string>
+  <string name="categories_summary_preference_description">Las categorías se utilizan para seleccionar el filtro de partida al navegar por las películas y programas de televisión. El valor predeterminado es Todo.</string>
+  <string name="preferred_filter">Filtrar preferente</string>
+  <string name="server_settings">Configuración del servidor</string>
+  <string name="server_settings_summary">Una lista de los servidores de medios disponibles complejas en la red. Un servidor preferido tiene prioridad.</string>
+  <string name="preferred_ipaddress_summary">El nombre de dominio o dirección IP del servidor principal de los medios de comunicación compleja. Esto toma preferencia sobre cualquier servidores detectados seleccionados.</string>
+  <string name="preferred_server_address">Dirección del servidor preferente</string>
+  <string name="default_port_summary">El número de puerto del servidor (normalmente 32400).</string>
+  <string name="server_port">Puerto del servidor</string>
+  <string name="discovered_servers_">Servidores detectados.</string>
+  <string name="music_library">Biblioteca de música</string>
+  <string name="music_library_preference_summary">Plex Experimental Music Library Support. Esto proporciona soporte para reproducción muy básico para las bibliotecas de música y está todavía en desarrollo.</string>
+  <string name="enable_plex_music_library_support">Habilitar Plex Music Library Support</string>
+  <string name="music_layout_grid_summary">Poster disposición de la rejilla para la música. Sólo tiene efecto si el apoyo biblioteca de música se activa.</string>
+  <string name="music_grid_poster_layout">Rejilla Music Poster Layout</string>
+  <string name="video_library">Videoteca</string>
+  <string name="subtitle_automatic_selection_summary">Trate de seleccionar los subtítulos automáticamente basándose en el idioma preferido.</string>
+  <string name="automatically_select_subtitles_">Seleccionar automáticamente subtítulos.</string>
+  <string name="subtitle_language_selection_summary">Seleccione el idioma de los subtítulos que se elegido al elegir subtítulos automáticamente.</string>
+  <string name="subtitle_language_preference">Subtítulo Preferencias de idioma</string>
+  <string name="prefer_poster_layout_for_series_">Prefiero Poster Diseño de la serie.</string>
+  <string name="series_poster_layout">Poster Layout Series</string>
+  <string name="poster_grid_layout_for_movies_">Poster diseño de cuadrícula para películas.</string>
+  <string name="movie_grid_poster_layout">Rejilla Movie Poster Layout</string>
+  <string name="animations">Animaciones</string>
+  <string name="fade_in_the_main_menu_background_art_">Fundido en el menú principal fondo de arte.</string>
+  <string name="fade_in_main_menu_backround">Fundido de entrada principal fondo de menú</string>
+  <string name="movie_fadein_animation_summary">Fundido en fan art de fondo para películas y episodios de televisión.</string>
+  <string name="fade_in_background_fan_art">Fundido de entrada Fan Art</string>
+  <string name="emphasize_poster_summary">Hacer hincapié en el elemento seleccionado cuando se navega a través de la vista de detalle. Dispositivos de Google TV solamente.</string>
+  <string name="poster_selected_emphasis">Poster énfasis Selected</string>
+  <string name="media_player">Media Player</string>
+  <string name="use_external_media_player_">Utilice el reproductor de medios externos.</string>
+  <string name="external_player">Reproductor externo</string>
+  <string name="internal_player_osd_summary">Mostrar reproductor multimedia interno sobre la información pantalla durante el inicio de la reproducción de vídeo.</string>
+  <string name="on_screen_display">On Screen Display</string>
+  <string name="mx_player_resume_summary">Fuerzas MX Reproductor de usar Plex último cargo desempeñado en lugar de que\'s propio. Esto siempre fuerzas reproducir a partir de la posición registrada Plex\'s.</string>
+  <string name="force_mx_player_resume_position_">Fuerza MX Reproductor Reanudar Position.</string>
+  <string name="prefer_plex_media_server_s_aspect_ratio_">Prefiero relación de aspecto de Plex Media Server\'s.</string>
+  <string name="plex_aspect_ratio">Plex Relación de aspecto</string>
 
-    <string name="auto_configuring_server_using_">"Servidor de configuración automática utilizando "</string>
+  <string name="auto_configuring_server_using_">"Servidor de configuración automática utilizando "</string>
 
-    <string name="changelog_full_title">Serenidad para Android Listado de cambios</string>
-    <string name="changelog_title">¿Qué hay de nuevo</string>
-    <string name="changelog_ok_button">Bueno</string>
-    <string name="changelog_show_full">Más…</string>
+  <string name="changelog_full_title">Serenidad para Android Listado de cambios</string>
+  <string name="changelog_title">¿Qué hay de nuevo</string>
+  <string name="changelog_ok_button">Bueno</string>
+  <string name="changelog_show_full">Más…</string>
 
-    <string name="changelog_version_format">Versión <xliff:g id="version_name">%s</xliff:g></string>
-    <string name="clear_queue">Borrar cola</string>
-    <string name="queue_has_been_cleared_">Cola ha sido borrada.</string>
-    <string name="play_all_from_queue">Reproducir todo de la cola</string>
-    <string name="external_player_video_queue_support_has_not_been_enabled_">La ayuda del jugador de colas de vídeo externa no se ha habilitado.</string>
-    <string name="queue_is_empty_">Cola está vacía.</string>
-    <string name="media_player_internal">Media Player - Interno</string>
-    <string name="media_player_external">Media Player - Externo</string>
+  <string name="changelog_version_format">Versión <xliff:g id="version_name">%s</xliff:g></string>
+  <string name="clear_queue">Borrar cola</string>
+  <string name="queue_has_been_cleared_">Cola ha sido borrada.</string>
+  <string name="play_all_from_queue">Reproducir todo de la cola</string>
+  <string name="external_player_video_queue_support_has_not_been_enabled_">La ayuda del jugador de colas de vídeo externa no se ha habilitado.</string>
+  <string name="queue_is_empty_">Cola está vacía.</string>
+  <string name="media_player_internal">Media Player - Interno</string>
+  <string name="media_player_external">Media Player - Externo</string>
 
-    <string name="no_play_store_installed_on_device">No Play Store instalado en el dispositivo</string>
-    <string name="rate_it_">De su nota!</string>
-    <string name="remind_me_later">Recuérdame más tarde</string>
-    <string name="no_thanks">No, gracias</string>
-    <string name="if_you_enjoy_using_">"Si te gusta usar "</string>
-    <string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, Por favor, tome un momento para evaluarlo. Gracias por su apoyo!</string>
-    <string name="rate_">"Rate "</string>
-    <string name="cast_fling_with_">Cast / aventura con ...</string>
-    <string name="add_video_to_queue">Añadir vídeo a cola</string>
-    <string name="there_are_still_videos_int_the_queue_">Todavía hay vídeos int la cola.</string>
+  <string name="no_play_store_installed_on_device">No Play Store instalado en el dispositivo</string>
+  <string name="rate_it_">De su nota!</string>
+  <string name="remind_me_later">Recuérdame más tarde</string>
+  <string name="no_thanks">No, gracias</string>
+  <string name="if_you_enjoy_using_">"Si te gusta usar "</string>
+  <string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, Por favor, tome un momento para evaluarlo. Gracias por su apoyo!</string>
+  <string name="rate_">"Rate "</string>
+  <string name="cast_fling_with_">Cast / aventura con ...</string>
+  <string name="add_video_to_queue">Añadir vídeo a cola</string>
+  <string name="there_are_still_videos_int_the_queue_">Todavía hay vídeos int la cola.</string>
 
-    <string name="remote_control_menu_summary">Cuando se activa la tecla de menú se abre el menú de la diapositiva, de lo contrario, se activará el menú contextual de un elemento, si está disponible.</string>
-    <string name="enable_sliding_menu">Habilitar Sliding Menu</string>
-    <string name="preference_remote_control">Control Remoto</string>
+  <string name="remote_control_menu_summary">Cuando se activa la tecla de menú se abre el menú de la diapositiva, de lo contrario, se activará el menú contextual de un elemento, si está disponible.</string>
+  <string name="enable_sliding_menu">Habilitar Sliding Menu</string>
+  <string name="preference_remote_control">Control Remoto</string>
 
-    <string name="overscan_adjustement_summary">Ajusta la pantalla para que los artículos no se cortan. Puede ser necesaria cuando se ejecuta en Ouya u otros dispositivos de TV Android.</string>
-    <string name="overscan_compensation">Overscan Compensación</string>
-    <string name="display_adjustements">Mostrar Ajustes</string>
+  <string name="overscan_adjustement_summary">Ajusta la pantalla para que los artículos no se cortan. Puede ser necesaria cuando se ejecuta en Ouya u otros dispositivos de TV Android.</string>
+  <string name="overscan_compensation">Overscan Compensación</string>
+  <string name="display_adjustements">Mostrar Ajustes</string>
 
-    <string name="add_season_to_queue">Añadir a la cola de la temporada</string>
-    <string name="season_options">Opciones Temporada</string>
+  <string name="add_season_to_queue">Añadir a la cola de la temporada</string>
+  <string name="season_options">Opciones Temporada</string>
 
-    <string name="series_select_the_starting_category_filter_">Seleccione el filtro de categorías de partida para programas de televisión.</string>
-    <string name="categories_series_summary_preference_description">Las categorías se utilizan para seleccionar el filtro de partida cuando se navega por programas de televisión. El valor predeterminado es Todo.</string>
+  <string name="series_select_the_starting_category_filter_">Seleccione el filtro de categorías de partida para programas de televisión.</string>
+  <string name="categories_series_summary_preference_description">Las categorías se utilizan para seleccionar el filtro de partida cuando se navega por programas de televisión. El valor predeterminado es Todo.</string>
 
-    <string-array name="categoryListNamesSeries">
-        <item>Todo</item>
-        <item>El más nuevo</item>
-        <item>On Deck</item>
-        <item>Recientemente se agregó</item>
-        <item>Visto recientemente Episodios</item>
-        <item>Espectáculos vistos recientemente</item>
-        <item>Desatendido</item>
-    </string-array>
+  <string-array name="categoryListNamesSeries">
+    <item>Todo</item>
+    <item>El más nuevo</item>
+    <item>On Deck</item>
+    <item>Recientemente se agregó</item>
+    <item>Visto recientemente Episodios</item>
+    <item>Espectáculos vistos recientemente</item>
+    <item>Desatendido</item>
+  </string-array>
 
-    <string name="resume_video">Reanudar vídeo</string>
-    <string name="resume_the_video_from_">"Reanudar el vídeo de "</string>
-    <string name="_or_restart_">" o reiniciar?"</string>
-    <string name="resume">Reanudar</string>
-    <string name="restart">Comenzar de Nuevo</string>
-    <string name="tv_shows_will_be_displayed_in_a_grid_view_">Programas de TV se muestran en una vista de cuadrícula.</string>
-    <string name="prefer_grid_view_for_series">Prefiero cuadricula para la Serie</string>
-    <string name="enables_video_queue_support_for_external_players_">Activa el soporte de cola de vídeo para los jugadores exteriores.</string>
-    <string name="enable_video_queue_for_external_players">Habilitar cola vídeo para los jugadores externos</string>
+  <string name="resume_video">Reanudar vídeo</string>
+  <string name="resume_the_video_from_">"Reanudar el vídeo de "</string>
+  <string name="_or_restart_">" o reiniciar?"</string>
+  <string name="resume">Reanudar</string>
+  <string name="restart">Comenzar de Nuevo</string>
+  <string name="tv_shows_will_be_displayed_in_a_grid_view_">Programas de TV se muestran en una vista de cuadrícula.</string>
+  <string name="prefer_grid_view_for_series">Prefiero cuadricula para la Serie</string>
+  <string name="enables_video_queue_support_for_external_players_">Activa el soporte de cola de vídeo para los jugadores exteriores.</string>
+  <string name="enable_video_queue_for_external_players">Habilitar cola vídeo para los jugadores externos</string>
 
-    <string name="prefs_advanced_options">Opciones avanzadas</string>
-    <string name="prefs_startup_boot_sum">Controla si la serenidad para Android lanza inmediatamente después de que el dispositivo haya terminado la secuencia de arranque. Útil para aquellos que quieren ofrecer una más de cine en casa como experiencia.</string>
-    <string name="prefs_auto_start_after_boot">Inicio automático después de Boot</string>
+  <string name="prefs_advanced_options">Opciones avanzadas</string>
+  <string name="prefs_startup_boot_sum">Controla si la serenidad para Android lanza inmediatamente después de que el dispositivo haya terminado la secuencia de arranque. Útil para aquellos que quieren ofrecer una más de cine en casa como experiencia.</string>
+  <string name="prefs_auto_start_after_boot">Inicio automático después de Boot</string>
 
-    <string name="playing_episode_toast">Jugar %1$s %2$s: %3$s</string>
-    <string name="no_unwatched_episode_toast">No hay episodios no vistos encontrado</string>
+  <string name="playing_episode_toast">Jugar %1$s %2$s: %3$s</string>
+  <string name="no_unwatched_episode_toast">No hay episodios no vistos encontrado</string>
 
-    <string name="Controls">Controles</string>
-    <string name="skip_forward_time_title">FF Skip Tiempo</string>
-    <string name="skip_forward_time_summary">Es hora de saltar hacia adelante cuando se presiona el botón FF</string>
-    <string name="skip_backward_time_title">REW Skip Tiempo</string>
-    <string name="skip_backward_time_summary">Tiempo para saltar hacia atrás cuando se pulsa el botón REW</string>
-    <string name="next_prev_behavior_title">Comportamiento de los botones Siguiente / Anterior</string>
-    <string name="next_prev_behavior_summary"><![CDATA[¿Qué deben hacer los botones Siguiente y Anterior]]></string>
-    <string name="overscan_swap">lados de swap</string>
-    <string name="overscan_instructions">Utilice D-Pad para ajustar la parte superior izquierda e inferior derecha hasta que no azul es visible. uso 
+  <string name="Controls">Controles</string>
+  <string name="skip_forward_time_title">FF Skip Tiempo</string>
+  <string name="skip_forward_time_summary">Es hora de saltar hacia adelante cuando se presiona el botón FF</string>
+  <string name="skip_backward_time_title">REW Skip Tiempo</string>
+  <string name="skip_backward_time_summary">Tiempo para saltar hacia atrás cuando se pulsa el botón REW</string>
+  <string name="next_prev_behavior_title">Comportamiento de los botones Siguiente / Anterior</string>
+  <string name="next_prev_behavior_summary"><![CDATA[¿Qué deben hacer los botones Siguiente y Anterior]]></string>
+  <string name="overscan_swap">lados de swap</string>
+  <string name="overscan_instructions">Utilice D-Pad para ajustar la parte superior izquierda e inferior derecha hasta que no azul es visible. uso
          botón para cambiar de lado. Cuando termine, pulse Atrás para guardar los cambios. Usted puede usar esto en vez de su 
          dispositivos construidos en compensación de overscan. Los dispositivos construidos en compensación tiene prioridad.
     </string>
 
-    <string-array name="skipListNames">
-        <item>10 Segundos</item>
-        <item>30 Segundos</item>
-        <item>1 Minuto</item>
-        <item>3 Acta</item>
-    </string-array>
-    <string-array name="skipListValues">
-        <item>10000</item>
-        <item>30000</item>
-        <item>60000</item>
-        <item>180000</item>
-    </string-array>
+  <string-array name="skipListNames">
+    <item>10 Segundos</item>
+    <item>30 Segundos</item>
+    <item>1 Minuto</item>
+    <item>3 Acta</item>
+  </string-array>
+  <string-array name="skipListValues">
+    <item>10000</item>
+    <item>30000</item>
+    <item>60000</item>
+    <item>180000</item>
+  </string-array>
 
-    <string-array name="nextPrevNames">
-        <item>Siguiente artículo en cola</item>
-        <item>Saltarse 5%</item>
-        <item>Saltarse 10%</item>
-        <item>Saltarse 5 minutes</item>
-        <item>Saltarse 10 minutes</item>
-    </string-array>
-    <string-array name="nextPrevValues">
-        <item>Cola</item>
-        <item>5%</item>
-        <item>10%</item>
-        <item>3000000</item>
-        <item>6000000</item>
-    </string-array>
+  <string-array name="nextPrevNames">
+    <item>Siguiente artículo en cola</item>
+    <item>Saltarse 5%</item>
+    <item>Saltarse 10%</item>
+    <item>Saltarse 5 minutes</item>
+    <item>Saltarse 10 minutes</item>
+  </string-array>
+  <string-array name="nextPrevValues">
+    <item>Cola</item>
+    <item>5%</item>
+    <item>10%</item>
+    <item>3000000</item>
+    <item>6000000</item>
+  </string-array>
 
 </resources>

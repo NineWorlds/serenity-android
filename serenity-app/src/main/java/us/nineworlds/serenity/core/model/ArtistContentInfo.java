@@ -25,7 +25,6 @@ package us.nineworlds.serenity.core.model;
 
 /**
  * @author dcarver
- *
  */
 public interface ArtistContentInfo extends ContentInfo {
 

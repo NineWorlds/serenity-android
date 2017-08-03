@@ -1,6 +1,5 @@
 package us.nineworlds.serenity.events;
 
-
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 
 /**
@@ -9,7 +8,7 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 
 public class MainMenuEvent extends SerenityEvent {
 
-    public MainMenuEvent(MediaContainer mediaContainer) {
-        super(mediaContainer);
-    }
+  public MainMenuEvent(MediaContainer mediaContainer) {
+    super(mediaContainer);
+  }
 }

@@ -8,4 +8,5 @@
     android:layout_height="wrap_content"
     android:textColor="@android:color/white"
     android:background="@drawable/menu_item_selector"
-    tools:ignore="SelectableText" />
+    tools:ignore="SelectableText"
+    />

@@ -27,57 +27,51 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
 
-    private static final int BANNER_PIXEL_HEIGHT = 140;
-    private static final int BANNER_PIXEL_WIDTH = 758;
+  private static final int BANNER_PIXEL_HEIGHT = 140;
+  private static final int BANNER_PIXEL_WIDTH = 758;
 
-    protected List<SeriesContentInfo> tvShowList = new ArrayList<>();
+  protected List<SeriesContentInfo> tvShowList = new ArrayList<>();
 
-    public int getItemCount() {
-        return tvShowList.size();
+  public int getItemCount() {
+    return tvShowList.size();
+  }
+
+  @Override public Object getItem(int position) {
+    if (position < 0) {
+      position = 0;
     }
+    return tvShowList.get(position);
+  }
 
-    @Override
-    public Object getItem(int position) {
-        if (position < 0) {
-            position = 0;
-        }
-        return tvShowList.get(position);
-    }
+  @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    View view = LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.poster_tvshow_indicator_view, parent, false);
+    return new TVShowViewHolder(view);
+  }
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_tvshow_indicator_view, parent, false);
-        return new TVShowViewHolder(view);
-    }
+  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    SeriesContentInfo pi = tvShowList.get(position);
+    TVShowViewHolder tvShowViewHolder = (TVShowViewHolder) holder;
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        SeriesContentInfo pi = tvShowList.get(position);
-        TVShowViewHolder tvShowViewHolder = (TVShowViewHolder) holder;
+    tvShowViewHolder.reset();
+    tvShowViewHolder.createImage(pi, BANNER_PIXEL_WIDTH, BANNER_PIXEL_HEIGHT);
+    tvShowViewHolder.toggleWatchedIndicator(pi);
+  }
 
-        tvShowViewHolder.reset();
-        tvShowViewHolder.createImage(pi, BANNER_PIXEL_WIDTH, BANNER_PIXEL_HEIGHT);
-        tvShowViewHolder.toggleWatchedIndicator(pi);
-    }
+  @Override public long getItemId(int position) {
+    return position;
+  }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    public void updateSeries(List<SeriesContentInfo> series) {
-        tvShowList = series;
-        notifyDataSetChanged();
-    }
-
+  public void updateSeries(List<SeriesContentInfo> series) {
+    tvShowList = series;
+    notifyDataSetChanged();
+  }
 }

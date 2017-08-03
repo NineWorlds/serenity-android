@@ -31,24 +31,21 @@ import android.util.Log;
 
 public class SerenityOnErrorListener implements OnErrorListener {
 
-    @Override
-    public boolean onError(MediaPlayer mp, int what, int extra) {
-        String error_msg = "What: " + what + "Extra: " + extra;
-        if (what == MediaPlayer.MEDIA_ERROR_UNKNOWN) {
-            error_msg = "Unknown Media Player Error. Extra Code: " + extra;
-        }
-
-        if (what == MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK) {
-            error_msg = "Media not valid for progessive playback. Extra Code: "
-                    + extra;
-        }
-
-        if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
-            error_msg = "Server croaked. Extra Code: " + extra;
-        }
-
-        Log.e(getClass().getName(), error_msg);
-        return true;
+  @Override public boolean onError(MediaPlayer mp, int what, int extra) {
+    String error_msg = "What: " + what + "Extra: " + extra;
+    if (what == MediaPlayer.MEDIA_ERROR_UNKNOWN) {
+      error_msg = "Unknown Media Player Error. Extra Code: " + extra;
     }
 
+    if (what == MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK) {
+      error_msg = "Media not valid for progessive playback. Extra Code: " + extra;
+    }
+
+    if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
+      error_msg = "Server croaked. Extra Code: " + extra;
+    }
+
+    Log.e(getClass().getName(), error_msg);
+    return true;
+  }
 }

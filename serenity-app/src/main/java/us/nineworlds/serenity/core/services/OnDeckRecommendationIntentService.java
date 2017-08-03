@@ -25,25 +25,21 @@ package us.nineworlds.serenity.core.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-
 import us.nineworlds.serenity.core.OnDeckRecommendations;
 
 //AndroidTVCodeMash2015-Recommendations
 public class OnDeckRecommendationIntentService extends IntentService {
 
-    /**
-     * @param name
-     */
-    public OnDeckRecommendationIntentService() {
-        super("OnDeckRecommendationIntentService");
-    }
+  /**
+   * @param name
+   */
+  public OnDeckRecommendationIntentService() {
+    super("OnDeckRecommendationIntentService");
+  }
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
+  @Override protected void onHandleIntent(Intent intent) {
 
-        OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(
-                this);
-        onDeckRecommendations.recommended();
-    }
-
+    OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(this);
+    onDeckRecommendations.recommended();
+  }
 }

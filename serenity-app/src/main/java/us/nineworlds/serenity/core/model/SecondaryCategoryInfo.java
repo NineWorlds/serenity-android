@@ -27,18 +27,16 @@ package us.nineworlds.serenity.core.model;
  * Represents a set of Secondary Categories
  *
  * @author dcarver
- *
  */
 public class SecondaryCategoryInfo extends CategoryInfo {
 
-    private String parentCategory;
+  private String parentCategory;
 
-    public String getParentCategory() {
-        return parentCategory;
-    }
+  public String getParentCategory() {
+    return parentCategory;
+  }
 
-    public void setParentCategory(String parentCategory) {
-        this.parentCategory = parentCategory;
-    }
-
+  public void setParentCategory(String parentCategory) {
+    this.parentCategory = parentCategory;
+  }
 }

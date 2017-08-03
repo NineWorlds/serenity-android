@@ -27,43 +27,40 @@ package us.nineworlds.serenity.core.model;
  * Represents a set of Categories
  *
  * @author dcarver
- *
  */
 public class CategoryInfo {
 
-    private int level;
+  private int level;
 
-    private String category;
+  private String category;
 
-    private String categoryDetail;
+  private String categoryDetail;
 
-    public int getLevel() {
-        return level;
-    }
+  public int getLevel() {
+    return level;
+  }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
+  public void setLevel(int level) {
+    this.level = level;
+  }
 
-    public String getCategory() {
-        return category;
-    }
+  public String getCategory() {
+    return category;
+  }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+  public void setCategory(String category) {
+    this.category = category;
+  }
 
-    public String getCategoryDetail() {
-        return categoryDetail;
-    }
+  public String getCategoryDetail() {
+    return categoryDetail;
+  }
 
-    public void setCategoryDetail(String categoryDetail) {
-        this.categoryDetail = categoryDetail;
-    }
+  public void setCategoryDetail(String categoryDetail) {
+    this.categoryDetail = categoryDetail;
+  }
 
-    @Override
-    public String toString() {
-        return categoryDetail;
-    }
-
+  @Override public String toString() {
+    return categoryDetail;
+  }
 }

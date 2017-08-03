@@ -23,14 +23,12 @@
 
 package us.nineworlds.serenity.injection.modules;
 
+import dagger.Module;
+import dagger.Provides;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
 import okhttp3.OkHttpClient;
 import us.nineworlds.serenity.common.Server;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -45,72 +43,49 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.ui.util.VideoQueueHelper;
 
-@Module(library = true)
-public class SerenityModule {
+@Module(library = true) public class SerenityModule {
 
-    @Provides
-    @Singleton
-    TimeUtil providesTimeUtil() {
-        return new TimeUtil();
-    }
+  @Provides @Singleton TimeUtil providesTimeUtil() {
+    return new TimeUtil();
+  }
 
-    @Provides
-    @Singleton
-    VideoQueueHelper providesVideoQueueHelper() {
-        return new VideoQueueHelper();
-    }
+  @Provides @Singleton VideoQueueHelper providesVideoQueueHelper() {
+    return new VideoQueueHelper();
+  }
 
-    @Provides
-    @Singleton
-    @ForMediaServers
-    Map<String, Server> providesMediaServers() {
-        return new ConcurrentHashMap<String, Server>();
-    }
+  @Provides @Singleton @ForMediaServers Map<String, Server> providesMediaServers() {
+    return new ConcurrentHashMap<String, Server>();
+  }
 
-    @Provides
-    @Singleton
-    @ForVideoQueue
-    LinkedList<VideoContentInfo> providesVideoQueue() {
-        return new LinkedList<VideoContentInfo>();
-    }
+  @Provides @Singleton @ForVideoQueue LinkedList<VideoContentInfo> providesVideoQueue() {
+    return new LinkedList<VideoContentInfo>();
+  }
 
-    @Provides
-    @Singleton
-    VideoPlayerIntentUtils providesVideoPlayerUtils() {
-        return new VideoPlayerIntentUtils();
-    }
+  @Provides @Singleton VideoPlayerIntentUtils providesVideoPlayerUtils() {
+    return new VideoPlayerIntentUtils();
+  }
 
-    @Provides
-    @Singleton
-    OkHttpClient providesOkHttpClient() {
-        return new OkHttpClient();
-    }
+  @Provides @Singleton OkHttpClient providesOkHttpClient() {
+    return new OkHttpClient();
+  }
 
-    @Provides
-    GalleryVideoOnItemClickListener providesGalleryVideoOnItemClickListener() {
-        return new GalleryVideoOnItemClickListener();
-    }
+  @Provides GalleryVideoOnItemClickListener providesGalleryVideoOnItemClickListener() {
+    return new GalleryVideoOnItemClickListener();
+  }
 
-    @Provides
-    GalleryVideoOnItemLongClickListener providesGalleryVideoOnItemLongClickListener() {
-        return new GalleryVideoOnItemLongClickListener();
-    }
+  @Provides GalleryVideoOnItemLongClickListener providesGalleryVideoOnItemLongClickListener() {
+    return new GalleryVideoOnItemLongClickListener();
+  }
 
-    @Provides
-    @Singleton
-    MovieSelectedCategoryState providesMovieSelectedCategoryState() {
-        return new MovieSelectedCategoryState();
-    }
+  @Provides @Singleton MovieSelectedCategoryState providesMovieSelectedCategoryState() {
+    return new MovieSelectedCategoryState();
+  }
 
-    @Provides
-    @Singleton
-    TVCategoryState providesTVCategoryState() {
-        return new TVCategoryState();
-    }
+  @Provides @Singleton TVCategoryState providesTVCategoryState() {
+    return new TVCategoryState();
+  }
 
-    @Provides
-    TVShowBrowserPresenter providesTVShowBrowserPresenter() {
-        return new TVShowBrowserPresenter();
-    }
-
+  @Provides TVShowBrowserPresenter providesTVShowBrowserPresenter() {
+    return new TVShowBrowserPresenter();
+  }
 }

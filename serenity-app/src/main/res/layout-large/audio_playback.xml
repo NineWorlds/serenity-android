@@ -5,22 +5,25 @@
     android:orientation="vertical"
     android:id="@+id/video_playeback"
     android:background="#000000"
-    android:keepScreenOn="true">
+    android:keepScreenOn="true"
+    >
 
-    <SurfaceView
-        android:id="@+id/surfaceView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+  <SurfaceView
+      android:id="@+id/surfaceView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      />
 
-    <TextView
-        android:id="@+id/txtSubtitles"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:visibility="invisible"
-        style="@android:style/TextAppearance.Holo.Large" />
+  <TextView
+      android:id="@+id/txtSubtitles"
+      android:layout_alignParentBottom="true"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:gravity="center"
+      android:layout_centerHorizontal="true"
+      android:visibility="invisible"
+      style="@android:style/TextAppearance.Holo.Large"
+      />
 
 </RelativeLayout>

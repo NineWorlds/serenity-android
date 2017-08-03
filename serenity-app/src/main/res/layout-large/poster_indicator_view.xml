@@ -2,103 +2,113 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:focusable="true">
+    android:focusable="true"
+    >
 
-    <RelativeLayout android:id="@+id/posterIndicatorView"
+  <RelativeLayout android:id="@+id/posterIndicatorView"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:duplicateParentState="true"
+      android:padding="3dp"
+      xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
+      >
+
+    <us.nineworlds.serenity.widgets.RoundedImageView
+        android:id="@+id/posterImageView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:duplicateParentState="true"
-        android:padding="3dp"
-        xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity">
+        android:layout_alignParentTop="true"
+        app:corner_radius="5dp"
+        android:scaleType="fitXY"
+        />
 
-        <us.nineworlds.serenity.widgets.RoundedImageView
-            android:id="@+id/posterImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            app:corner_radius="5dp"
-            android:scaleType="fitXY" />
+    <TextView
+        android:id="@+id/posterOverlayTitle"
+        style="@android:style/TextAppearance.Holo.Small"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#80000000"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#F0F0F0"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        />
 
-        <TextView
-            android:id="@+id/posterOverlayTitle"
-            style="@android:style/TextAppearance.Holo.Small"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:background="#80000000"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="#F0F0F0"
-            android:textStyle="bold"
-            android:visibility="invisible" />
+    <TextView
+        android:id="@+id/metaOverlay"
+        style="@android:style/TextAppearance.Holo.Small"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/posterOverlayTitle"
+        android:background="#80000000"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#F0F0F0"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        />
 
-        <TextView
-            android:id="@+id/metaOverlay"
-            style="@android:style/TextAppearance.Holo.Small"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/posterOverlayTitle"
-            android:background="#80000000"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="#F0F0F0"
-            android:textStyle="bold"
-            android:visibility="invisible" />
+    <ImageView
+        android:id="@+id/posterWatchedIndicator"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitXY"
+        />
 
-        <ImageView
-            android:id="@+id/posterWatchedIndicator"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:scaleType="fitXY" />
+    <LinearLayout
+        android:id="@+id/infoGraphicMeta"
+        android:layout_above="@+id/posterInprogressIndicator"
+        android:background="@color/fity_percent_transparent"
+        android:layout_marginRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
 
-        <LinearLayout
-            android:id="@+id/infoGraphicMeta"
-            android:layout_above="@+id/posterInprogressIndicator"
-            android:background="@color/fity_percent_transparent"
-            android:layout_marginRight="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone">
+      <ImageView
+          android:id="@+id/subtitleIndicator"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:src="@drawable/subtitles"
+          android:visibility="gone"
+          android:scaleType="fitXY"
+          />
 
-            <ImageView
-                android:id="@+id/subtitleIndicator"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/subtitles"
-                android:visibility="gone"
-                android:scaleType="fitXY" />
+      <ImageView
+          android:id="@+id/trailerIndicator"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:src="@drawable/yt_social_icon_red_128px"
+          android:visibility="gone"
+          android:scaleType="fitXY"
+          />
 
-            <ImageView
-                android:id="@+id/trailerIndicator"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/yt_social_icon_red_128px"
-                android:visibility="gone"
-                android:scaleType="fitXY" />
+    </LinearLayout>
 
-        </LinearLayout>
+    <ProgressBar
+        android:id="@+id/posterInprogressIndicator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:paddingTop="0dp"
+        android:background="#A0000000"
+        android:clickable="false"
+        android:indeterminate="false"
+        android:indeterminateOnly="false"
+        android:max="100"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/scrubber_progress_holo"
+        android:visibility="invisible"
+        />
 
-        <ProgressBar
-            android:id="@+id/posterInprogressIndicator"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="0dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
-            android:paddingTop="0dp"
-            android:background="#A0000000"
-            android:clickable="false"
-            android:indeterminate="false"
-            android:indeterminateOnly="false"
-            android:max="100"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:progressDrawable="@drawable/scrubber_progress_holo"
-            android:visibility="invisible" />
-
-    </RelativeLayout>
+  </RelativeLayout>
 
 </FrameLayout>
 

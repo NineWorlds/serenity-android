@@ -27,9 +27,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-
 import javax.inject.Inject;
-
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.injection.BaseInjector;
 
@@ -38,122 +36,107 @@ import us.nineworlds.serenity.injection.BaseInjector;
  * information contains necessary info for connecting to the plex media server.
  *
  * @author dcarver
- *
  */
 public class ServerConfig extends BaseInjector implements IConfiguration {
 
-    private String serveraddress;
-    private String serverport;
-    private String discoveredServers;
+  private String serveraddress;
+  private String serverport;
+  private String discoveredServers;
 
-    @Inject
-    protected SharedPreferences preferences;
+  @Inject protected SharedPreferences preferences;
 
-    private static ServerConfig config;
-    private OnSharedPreferenceChangeListener listener;
+  private static ServerConfig config;
+  private OnSharedPreferenceChangeListener listener;
+
+  /**
+   * Sets up the configuration based on the context of the activity that
+   * called it.
+   */
+  private ServerConfig(Context context) {
+    super();
+    serveraddress = preferences.getString("server", "");
+    discoveredServers = preferences.getString("discoveredServer", "");
+    serverport = preferences.getString("serverport", "32400");
+  }
+
+  @Override public String getHost() {
+    if (serveraddress.length() == 0) {
+      return discoveredServers;
+    }
+    return serveraddress;
+  }
+
+  @Override public String getPort() {
+    return serverport;
+  }
+
+  @Override public void setHost(String hostip) {
+    serveraddress = hostip;
+  }
+
+  @Override public void setPort(String port) {
+    serverport = port;
+  }
+
+  public static IConfiguration getInstance(Context context) {
+    if (config == null) {
+      config = new ServerConfig(context);
+    }
+
+    return config;
+  }
+
+  /**
+   * This should only be called after a context has been set.
+   */
+  public static IConfiguration getInstance() {
+    return config;
+  }
+
+  public OnSharedPreferenceChangeListener getServerConfigChangeListener() {
+    if (listener == null) {
+      listener = new ServerConfigChangeListener();
+    }
+    return listener;
+  }
+
+  /**
+   * Listen for Server Configuration Changes from the SharedPreferences.
+   *
+   * This handles updating the variables for accesing a plex media server.
+   *
+   * @author dcarver
+   */
+  public class ServerConfigChangeListener implements OnSharedPreferenceChangeListener {
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+      if ("serverport".equals(key)) {
+        serverport = sharedPreferences.getString(key, "32400");
+        return;
+      }
+
+      if ("server".equals(key)) {
+        serveraddress = sharedPreferences.getString(key, "");
+        return;
+      }
+
+      if ("discoveredServer".equals(key)) {
+        discoveredServers = sharedPreferences.getString(key, "");
+        serveraddress = discoveredServers;
+        storeServerAddress();
+        return;
+      }
+    }
 
     /**
-     * Sets up the configuration based on the context of the activity that
-     * called it.
-     *
+     * Store the server address if the discoveredServers has been set. Users
+     * can override this in the preference setting.
      */
-    private ServerConfig(Context context) {
-        super();
-        serveraddress = preferences.getString("server", "");
-        discoveredServers = preferences.getString("discoveredServer", "");
-        serverport = preferences.getString("serverport", "32400");
+    protected void storeServerAddress() {
+      Editor edit = preferences.edit();
+      edit.putString("server", discoveredServers);
+      edit.commit();
     }
-
-    @Override
-    public String getHost() {
-        if (serveraddress.length() == 0) {
-            return discoveredServers;
-        }
-        return serveraddress;
-    }
-
-    @Override
-    public String getPort() {
-        return serverport;
-    }
-
-    @Override
-    public void setHost(String hostip) {
-        serveraddress = hostip;
-
-    }
-
-    @Override
-    public void setPort(String port) {
-        serverport = port;
-    }
-
-    public static IConfiguration getInstance(Context context) {
-        if (config == null) {
-            config = new ServerConfig(context);
-        }
-
-        return config;
-    }
-
-    /**
-     * This should only be called after a context has been set.
-     *
-     * @return
-     */
-    public static IConfiguration getInstance() {
-        return config;
-    }
-
-    public OnSharedPreferenceChangeListener getServerConfigChangeListener() {
-        if (listener == null) {
-            listener = new ServerConfigChangeListener();
-        }
-        return listener;
-    }
-
-    /**
-     * Listen for Server Configuration Changes from the SharedPreferences.
-     *
-     * This handles updating the variables for accesing a plex media server.
-     *
-     * @author dcarver
-     *
-     */
-    public class ServerConfigChangeListener implements
-            OnSharedPreferenceChangeListener {
-
-        @Override
-        public void onSharedPreferenceChanged(
-                SharedPreferences sharedPreferences, String key) {
-            if ("serverport".equals(key)) {
-                serverport = sharedPreferences.getString(key, "32400");
-                return;
-            }
-
-            if ("server".equals(key)) {
-                serveraddress = sharedPreferences.getString(key, "");
-                return;
-            }
-
-            if ("discoveredServer".equals(key)) {
-                discoveredServers = sharedPreferences.getString(key, "");
-                serveraddress = discoveredServers;
-                storeServerAddress();
-                return;
-            }
-        }
-
-        /**
-         * Store the server address if the discoveredServers has been set. Users
-         * can override this in the preference setting.
-         */
-        protected void storeServerAddress() {
-            Editor edit = preferences.edit();
-            edit.putString("server", discoveredServers);
-            edit.commit();
-        }
-
-    }
-
+  }
 }

@@ -24,23 +24,22 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import android.view.View;
-
 import net.ganin.darv.DpadAwareRecyclerView;
-
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
 
 /**
  * @author dcarver
- *
  */
-public class EpisodePosterOnItemClickListener extends AbstractVideoOnItemClickListener implements DpadAwareRecyclerView.OnItemClickListener {
+public class EpisodePosterOnItemClickListener extends AbstractVideoOnItemClickListener
+    implements DpadAwareRecyclerView.OnItemClickListener {
 
-    @Override
-    public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-        EpisodePosterImageGalleryAdapter adapter = (EpisodePosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
-        videoInfo = (VideoContentInfo) adapter.getItem(i);
-        onItemClick(view);
-    }
+  @Override
+  public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+    EpisodePosterImageGalleryAdapter adapter =
+        (EpisodePosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+    videoInfo = (VideoContentInfo) adapter.getItem(i);
+    onItemClick(view);
+  }
 }

@@ -1,239 +1,239 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Serenity for Android</string>
-    <string name="app_label">Serenity for Android</string>
-    <string name="search_hint">Enter a word or phrase in a Movie, TV Show, or Episode.</string>
-    <string name="menu_settings">Settings</string>
-    <string name="menu_search">Search</string>
-    <string name="title_activity_movie_browser">Movies</string>
-    <string name="title_activity_main">Serenity for Android</string>
-    <string name="title_activity_tvbrowser_show">TV Shows</string>
-    <string name="title_activity_tvbrowser_show_season">TV Shows Seasons</string>
-    <string name="title_activity_tvbrowser_show_episodes">TV Shows Episodes</string>
-    <string name="video_title">Video Player</string>
-    <string name="movie_category_prompt">Choose a Category</string>
-    <string name="movie_category_prompt2">Genre/Collection</string>
-    <string name="category">Category:</string>
-    <string name="year">Year</string>
-    <string name="genre">Genre</string>
-    <string name="writers">Writers</string>
-    <string name="directors">Directors</string>
-    <string name="tvshows">TV Shows:</string>
-    <string name="about_title_serenity_for_google_tv">Serenity for Android</string>
-    <string name="options_main_about">About</string>
-    <string name="options_main_clear_image_cache">Clear Image Cache</string>
-    <string name="option_clear_the_image_cache_">Clear the Image Cache?</string>
-    <string name="clear">Clear</string>
-    <string name="cancel">Cancel</string>
-    <string name="download_manager_download_complete_for_">"Download complete for "</string>
-    <string name="no_libraries_found">No Movies or TV Show Libraries found. Use the Plex Web App to add some.</string>
-    <string name="unknown">Unknown</string>
-    <!-- Probably no need to translate. S##E## notation is common in most languages anyway -->
-    <string name="long_title">"<xliff:g id="series">%s</xliff:g> S<xliff:g id="season">%02d</xliff:g>E<xliff:g id="episode">%02d</xliff:g>: <xliff:g id="title">%s</xliff:g>"</string>
-    <string name="season_">"Season "</string>
-    <string name="episode_">"Episode "</string>
-    <string name="settings">Settings</string>
-    <string name="search">Search</string>
-    <string name="options">Options</string>
-    <string name="no_entries_available_for_category_">No Entries available for category.</string>
-    <string name="retrieving_movies">Retrieving Movies</string>
-    <string name="no_shows_found_for_the_category_">"No Shows found for the category: "</string>
-    <string name="_item_s_">" Item(s)"</string>
-    <string name="watched_">Watched:</string>
-    <string name="unwatched_">Unwatched:</string>
-    <string name="retrieving_episodes">Retrieving Episodes</string>
-    <string name="button_ok">OK</string>
-    <string name="new_folder">New folder</string>
-    <string name="new_folder_name">New folder name</string>
-    <string name="toggle_watched_status">Toggle Watched Status</string>
-    <string name="download_video_to_device">Download Video to Device</string>
-    <string name="play_on_tv">Play on TV</string>
-    <string name="starting_download_of_">"Starting download of "</string>
-    <string name="chosen_directory_">"Chosen directory: "</string>
-    <string name="no_videos_found_that_match_the_search_criteria">No videos found that match the search criteria</string>
-    <string name="video_options">Video Options</string>
-    <string name="view_all_episodes">View All Episodes</string>
-    <string-array name="categoryListNames">
-        <item>All</item>
-        <item>Newest</item>
-        <item>On Deck</item>
-        <item>Recently Added</item>
-        <item>Recently Viewed</item>
-        <item>Unwatched</item>
-    </string-array>
-    <string-array name="categoryListValues">
-        <item>all</item>
-        <item>newest</item>
-        <item>onDeck</item>
-        <item>recentlyAdded</item>
-        <item>recentlyViewed</item>
-        <item>unwatched</item>
-    </string-array>
-    <string name="select_the_starting_category_filter_">Select the starting category filter for movies.</string>
-    <string name="categories_summary_preference_description">Categories are used to select the starting filter when browsing movies. The default is All.</string>
-    <string name="preferred_filter">Preferred Filter</string>
-    <string name="server_settings">Server Settings</string>
-    <string name="server_settings_summary">A list of available plex media servers on the network. A preferred server takes priority.</string>
-    <string name="preferred_ipaddress_summary">The domain name or IP Address for your main plex media server. This takes preference over any Discovered Servers selected.</string>
-    <string name="preferred_server_address">Preferred Server Address</string>
-    <string name="default_port_summary">The port number for the server (usually 32400).</string>
-    <string name="server_port">Server Port</string>
-    <string name="discovered_servers_">Discovered Servers.</string>
-    <string name="music_library">Music Library</string>
-    <string name="music_library_preference_summary">Experimental Plex Music Library Support.  This provides very basic playback support for music libraries and is still under development.</string>
-    <string name="enable_plex_music_library_support">Enable Plex Music Library Support</string>
-    <string name="music_layout_grid_summary">Poster grid layout for music. Only takes affect if music library support is enabled.</string>
-    <string name="music_grid_poster_layout">Music Grid Poster Layout</string>
-    <string name="video_library">Video Library</string>
-    <string name="subtitle_automatic_selection_summary">Try and select the subtitles automatically based on preferred language.</string>
-    <string name="automatically_select_subtitles_">Automatically select subtitles.</string>
-    <string name="subtitle_language_selection_summary">Select the subtitle language to be choosen when choosing subtitles automatically.</string>
-    <string name="subtitle_language_preference">Subtitle Language Preference</string>
-    <string name="prefer_poster_layout_for_series_">Prefer Poster Layout for Series.</string>
-    <string name="series_poster_layout">Series Poster Layout</string>
-    <string name="poster_grid_layout_for_movies_">Poster grid layout for movies.</string>
-    <string name="movie_grid_poster_layout">Movie Grid Poster Layout</string>
-    <string name="animations">Animations</string>
-    <string name="fade_in_the_main_menu_background_art_">Fade-in the main menu background art.</string>
-    <string name="fade_in_main_menu_backround">Fade-In Main Menu Backround</string>
-    <string name="movie_fadein_animation_summary">Fade-in background fan art for movies and tv episodes.</string>
-    <string name="fade_in_background_fan_art">Fade-In Background Fan Art</string>
-    <string name="emphasize_poster_summary">Emphasize the selected item when browsing through the detail view. Google TV devices only.</string>
-    <string name="poster_selected_emphasis">Poster Selected Emphasis</string>
-    <string name="media_player">Media Player - External</string>
-    <string name="use_external_media_player_">Use external media player.</string>
-    <string name="external_player">External Player</string>
-    <string name="internal_player_osd_summary">Display internal media player on screen display information on startup of video playback.</string>
-    <string name="on_screen_display">On Screen Display</string>
-    <string name="mx_player_resume_summary">Forces MX Player to  use Plex last played position instead of it\'s own.  This will always forces play back to start from Plex\'s recorded position.</string>
-    <string name="force_mx_player_resume_position_">Force MX Player Resume Position.</string>
-    <string name="prefer_plex_media_server_s_aspect_ratio_">Prefer plex media server\'s aspect ratio.</string>
-    <string name="plex_aspect_ratio">Plex Aspect Ratio</string>
-    <string name="enable_gallery_scrolling">Enables whether scrolling animation occurs in gallery views for movies and episodes.</string>
-    <string name="enable_gallery_scrolling_animation">Enable Gallery Scrolling Animation</string>
-    <string name="tutorial">Tutorial</string>
-    <string name="auto_configuring_server_using_">"Auto configuring server using "</string>
-    <string name="changelog_full_title">Serenity for Android Change Log</string>
-    <string name="changelog_title">What\'s New</string>
-    <string name="changelog_ok_button">OK</string>
-    <string name="changelog_show_full">More…</string>
-    <string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>
-    <string name="clear_queue">Clear Queue</string>
-    <string name="queue_has_been_cleared_">Queue has been cleared.</string>
-    <string name="play_all_from_queue">Play All from Queue</string>
-    <string name="external_player_video_queue_support_has_not_been_enabled_">External player video queue support has not been enabled.</string>
-    <string name="queue_is_empty_">Queue is empty.</string>
-    <string name="media_player_internal">Media Player - Internal</string>
-    <string name="media_player_external">Media Player - External</string>
-    <string name="no_play_store_installed_on_device">No Play Store installed on device</string>
-    <string name="rate_it_">Rate it!</string>
-    <string name="remind_me_later">Remind me later</string>
-    <string name="no_thanks">No thanks</string>
-    <string name="if_you_enjoy_using_">"If you enjoy using "</string>
-    <string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, please take a moment to rate it. Thanks for your support!</string>
-    <string name="rate_">"Rate "</string>
-    <string name="cast_fling_with_">Cast/Fling with...</string>
-    <string name="add_video_to_queue">Add video to queue</string>
-    <string name="there_are_still_videos_int_the_queue_">There are still videos int the queue.</string>
-    <string name="remote_control_menu_summary">When enabled the menu key will bring up the slide out menu, otherwise it will activate the context menu for an item if available.</string>
-    <string name="enable_sliding_menu">Enable Sliding Menu</string>
-    <string name="preference_remote_control">Remote Control</string>
-    <string name="overscan_adjustement_summary">Adjusts the screen so that items are not cut off.  May be necessary when running on OUYA or other Android TV devices.</string>
-    <string name="overscan_compensation">Overscan Compensation</string>
-    <string name="overscan_setup_title">Overscan Compensation Setup</string>
-    <string name="display_adjustements">Display Adjustements</string>
-    <string name="add_season_to_queue">Add season to queue</string>
-    <string name="season_options">Season Options</string>
-    <string name="preferred_external_player_summary">This selection allows the choosing of what external player will be used to play back video content. Not all players support all functionality.  MX Player and MX Player pro support the ability to update the Plex playback position.  The System Default will just launch what ever the system default player is, and has limited functionality.  If you need specific functionality make sure to select a particular player.</string>
-    <string name="preferred_external_player">Preferred External Player</string>
-    <string name="series_select_the_starting_category_filter_">Select the starting category filter for tv shows.</string>
-    <string name="categories_series_summary_preference_description">Categories are used to select the starting filter when browsing tv shows. The default is All.</string>
-    <string-array name="categoryListNamesSeries">
-        <item>All</item>
-        <item>Newest</item>
-        <item>On Deck</item>
-        <item>Recently Added</item>
-        <item>Recently Viewed Episodes</item>
-        <item>Recently Viewed Shows</item>
-        <item>Unwatched</item>
-    </string-array>
-    <string-array name="categoryListValuesSeries">
-        <item>all</item>
-        <item>newest</item>
-        <item>onDeck</item>
-        <item>recentlyAdded</item>
-        <item>recentlyViewed</item>
-        <item>recentlyViewedShows</item>
-        <item>unwatched</item>
-    </string-array>
-    <string name="resume_video">Resume Video</string>
-    <string name="resume_the_video_from_">"Resume the video from "</string>
-    <string name="_or_restart_">" or restart?"</string>
-    <string name="resume">Resume</string>
-    <string name="restart">Restart</string>
-    <string name="tv_shows_will_be_displayed_in_a_grid_view_">TV Shows will be displayed in a grid view.</string>
-    <string name="prefer_grid_view_for_series">Prefer Grid View for Series</string>
-    <string name="enables_video_queue_support_for_external_players_">Enables video queue support for external players.</string>
-    <string name="enable_video_queue_for_external_players">Enable Video Queue for External Players</string>
-    <string name="prefs_advanced_options">Advanced Options</string>
-    <string name="prefs_startup_boot_sum">Controls whether Serenity for Android launches immediately after the device has completed the boot up sequence.  Useful for those that want to provide a more home theater like experience.</string>
-    <string name="prefs_auto_start_after_boot">Auto Start after Boot</string>
-    <string name="playing_episode_toast">Playing %1$s %2$s: %3$s</string>
-    <string name="no_unwatched_episode_toast">No unwatched episodes found</string>
-    <string name="Controls">Controls</string>
-    <string name="skip_forward_time_title">FF Skip Time</string>
-    <string name="skip_forward_time_summary">Time to skip forward when FF button is pressed</string>
-    <string name="skip_backward_time_title">REW Skip Time</string>
-    <string name="skip_backward_time_summary">Time to skip backward when REW button is pressed</string>
-    <string name="next_prev_behavior_title">Next/Prev button behavior</string>
-    <string name="next_prev_behavior_summary">What should the Next &amp; Prev buttons do</string>
-    <string name="overscan_swap">Swap sides</string>
-    <string name="overscan_instructions">Use D-Pad to adjust top-left, and bottom-right until no blue is visible. Use
+  <string name="app_name">Serenity for Android</string>
+  <string name="app_label">Serenity for Android</string>
+  <string name="search_hint">Enter a word or phrase in a Movie, TV Show, or Episode.</string>
+  <string name="menu_settings">Settings</string>
+  <string name="menu_search">Search</string>
+  <string name="title_activity_movie_browser">Movies</string>
+  <string name="title_activity_main">Serenity for Android</string>
+  <string name="title_activity_tvbrowser_show">TV Shows</string>
+  <string name="title_activity_tvbrowser_show_season">TV Shows Seasons</string>
+  <string name="title_activity_tvbrowser_show_episodes">TV Shows Episodes</string>
+  <string name="video_title">Video Player</string>
+  <string name="movie_category_prompt">Choose a Category</string>
+  <string name="movie_category_prompt2">Genre/Collection</string>
+  <string name="category">Category:</string>
+  <string name="year">Year</string>
+  <string name="genre">Genre</string>
+  <string name="writers">Writers</string>
+  <string name="directors">Directors</string>
+  <string name="tvshows">TV Shows:</string>
+  <string name="about_title_serenity_for_google_tv">Serenity for Android</string>
+  <string name="options_main_about">About</string>
+  <string name="options_main_clear_image_cache">Clear Image Cache</string>
+  <string name="option_clear_the_image_cache_">Clear the Image Cache?</string>
+  <string name="clear">Clear</string>
+  <string name="cancel">Cancel</string>
+  <string name="download_manager_download_complete_for_">"Download complete for "</string>
+  <string name="no_libraries_found">No Movies or TV Show Libraries found. Use the Plex Web App to add some.</string>
+  <string name="unknown">Unknown</string>
+  <!-- Probably no need to translate. S##E## notation is common in most languages anyway -->
+  <string name="long_title">"<xliff:g id="series">%s</xliff:g> S<xliff:g id="season">%02d</xliff:g>E<xliff:g id="episode">%02d</xliff:g>: <xliff:g id="title">%s</xliff:g>"</string>
+  <string name="season_">"Season "</string>
+  <string name="episode_">"Episode "</string>
+  <string name="settings">Settings</string>
+  <string name="search">Search</string>
+  <string name="options">Options</string>
+  <string name="no_entries_available_for_category_">No Entries available for category.</string>
+  <string name="retrieving_movies">Retrieving Movies</string>
+  <string name="no_shows_found_for_the_category_">"No Shows found for the category: "</string>
+  <string name="_item_s_">" Item(s)"</string>
+  <string name="watched_">Watched:</string>
+  <string name="unwatched_">Unwatched:</string>
+  <string name="retrieving_episodes">Retrieving Episodes</string>
+  <string name="button_ok">OK</string>
+  <string name="new_folder">New folder</string>
+  <string name="new_folder_name">New folder name</string>
+  <string name="toggle_watched_status">Toggle Watched Status</string>
+  <string name="download_video_to_device">Download Video to Device</string>
+  <string name="play_on_tv">Play on TV</string>
+  <string name="starting_download_of_">"Starting download of "</string>
+  <string name="chosen_directory_">"Chosen directory: "</string>
+  <string name="no_videos_found_that_match_the_search_criteria">No videos found that match the search criteria</string>
+  <string name="video_options">Video Options</string>
+  <string name="view_all_episodes">View All Episodes</string>
+  <string-array name="categoryListNames">
+    <item>All</item>
+    <item>Newest</item>
+    <item>On Deck</item>
+    <item>Recently Added</item>
+    <item>Recently Viewed</item>
+    <item>Unwatched</item>
+  </string-array>
+  <string-array name="categoryListValues">
+    <item>all</item>
+    <item>newest</item>
+    <item>onDeck</item>
+    <item>recentlyAdded</item>
+    <item>recentlyViewed</item>
+    <item>unwatched</item>
+  </string-array>
+  <string name="select_the_starting_category_filter_">Select the starting category filter for movies.</string>
+  <string name="categories_summary_preference_description">Categories are used to select the starting filter when browsing movies. The default is All.</string>
+  <string name="preferred_filter">Preferred Filter</string>
+  <string name="server_settings">Server Settings</string>
+  <string name="server_settings_summary">A list of available plex media servers on the network. A preferred server takes priority.</string>
+  <string name="preferred_ipaddress_summary">The domain name or IP Address for your main plex media server. This takes preference over any Discovered Servers selected.</string>
+  <string name="preferred_server_address">Preferred Server Address</string>
+  <string name="default_port_summary">The port number for the server (usually 32400).</string>
+  <string name="server_port">Server Port</string>
+  <string name="discovered_servers_">Discovered Servers.</string>
+  <string name="music_library">Music Library</string>
+  <string name="music_library_preference_summary">Experimental Plex Music Library Support.  This provides very basic playback support for music libraries and is still under development.</string>
+  <string name="enable_plex_music_library_support">Enable Plex Music Library Support</string>
+  <string name="music_layout_grid_summary">Poster grid layout for music. Only takes affect if music library support is enabled.</string>
+  <string name="music_grid_poster_layout">Music Grid Poster Layout</string>
+  <string name="video_library">Video Library</string>
+  <string name="subtitle_automatic_selection_summary">Try and select the subtitles automatically based on preferred language.</string>
+  <string name="automatically_select_subtitles_">Automatically select subtitles.</string>
+  <string name="subtitle_language_selection_summary">Select the subtitle language to be choosen when choosing subtitles automatically.</string>
+  <string name="subtitle_language_preference">Subtitle Language Preference</string>
+  <string name="prefer_poster_layout_for_series_">Prefer Poster Layout for Series.</string>
+  <string name="series_poster_layout">Series Poster Layout</string>
+  <string name="poster_grid_layout_for_movies_">Poster grid layout for movies.</string>
+  <string name="movie_grid_poster_layout">Movie Grid Poster Layout</string>
+  <string name="animations">Animations</string>
+  <string name="fade_in_the_main_menu_background_art_">Fade-in the main menu background art.</string>
+  <string name="fade_in_main_menu_backround">Fade-In Main Menu Backround</string>
+  <string name="movie_fadein_animation_summary">Fade-in background fan art for movies and tv episodes.</string>
+  <string name="fade_in_background_fan_art">Fade-In Background Fan Art</string>
+  <string name="emphasize_poster_summary">Emphasize the selected item when browsing through the detail view. Google TV devices only.</string>
+  <string name="poster_selected_emphasis">Poster Selected Emphasis</string>
+  <string name="media_player">Media Player - External</string>
+  <string name="use_external_media_player_">Use external media player.</string>
+  <string name="external_player">External Player</string>
+  <string name="internal_player_osd_summary">Display internal media player on screen display information on startup of video playback.</string>
+  <string name="on_screen_display">On Screen Display</string>
+  <string name="mx_player_resume_summary">Forces MX Player to  use Plex last played position instead of it\'s own.  This will always forces play back to start from Plex\'s recorded position.</string>
+  <string name="force_mx_player_resume_position_">Force MX Player Resume Position.</string>
+  <string name="prefer_plex_media_server_s_aspect_ratio_">Prefer plex media server\'s aspect ratio.</string>
+  <string name="plex_aspect_ratio">Plex Aspect Ratio</string>
+  <string name="enable_gallery_scrolling">Enables whether scrolling animation occurs in gallery views for movies and episodes.</string>
+  <string name="enable_gallery_scrolling_animation">Enable Gallery Scrolling Animation</string>
+  <string name="tutorial">Tutorial</string>
+  <string name="auto_configuring_server_using_">"Auto configuring server using "</string>
+  <string name="changelog_full_title">Serenity for Android Change Log</string>
+  <string name="changelog_title">What\'s New</string>
+  <string name="changelog_ok_button">OK</string>
+  <string name="changelog_show_full">More…</string>
+  <string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>
+  <string name="clear_queue">Clear Queue</string>
+  <string name="queue_has_been_cleared_">Queue has been cleared.</string>
+  <string name="play_all_from_queue">Play All from Queue</string>
+  <string name="external_player_video_queue_support_has_not_been_enabled_">External player video queue support has not been enabled.</string>
+  <string name="queue_is_empty_">Queue is empty.</string>
+  <string name="media_player_internal">Media Player - Internal</string>
+  <string name="media_player_external">Media Player - External</string>
+  <string name="no_play_store_installed_on_device">No Play Store installed on device</string>
+  <string name="rate_it_">Rate it!</string>
+  <string name="remind_me_later">Remind me later</string>
+  <string name="no_thanks">No thanks</string>
+  <string name="if_you_enjoy_using_">"If you enjoy using "</string>
+  <string name="_please_take_a_moment_to_rate_it_thanks_for_your_support_">, please take a moment to rate it. Thanks for your support!</string>
+  <string name="rate_">"Rate "</string>
+  <string name="cast_fling_with_">Cast/Fling with...</string>
+  <string name="add_video_to_queue">Add video to queue</string>
+  <string name="there_are_still_videos_int_the_queue_">There are still videos int the queue.</string>
+  <string name="remote_control_menu_summary">When enabled the menu key will bring up the slide out menu, otherwise it will activate the context menu for an item if available.</string>
+  <string name="enable_sliding_menu">Enable Sliding Menu</string>
+  <string name="preference_remote_control">Remote Control</string>
+  <string name="overscan_adjustement_summary">Adjusts the screen so that items are not cut off.  May be necessary when running on OUYA or other Android TV devices.</string>
+  <string name="overscan_compensation">Overscan Compensation</string>
+  <string name="overscan_setup_title">Overscan Compensation Setup</string>
+  <string name="display_adjustements">Display Adjustements</string>
+  <string name="add_season_to_queue">Add season to queue</string>
+  <string name="season_options">Season Options</string>
+  <string name="preferred_external_player_summary">This selection allows the choosing of what external player will be used to play back video content. Not all players support all functionality.  MX Player and MX Player pro support the ability to update the Plex playback position.  The System Default will just launch what ever the system default player is, and has limited functionality.  If you need specific functionality make sure to select a particular player.</string>
+  <string name="preferred_external_player">Preferred External Player</string>
+  <string name="series_select_the_starting_category_filter_">Select the starting category filter for tv shows.</string>
+  <string name="categories_series_summary_preference_description">Categories are used to select the starting filter when browsing tv shows. The default is All.</string>
+  <string-array name="categoryListNamesSeries">
+    <item>All</item>
+    <item>Newest</item>
+    <item>On Deck</item>
+    <item>Recently Added</item>
+    <item>Recently Viewed Episodes</item>
+    <item>Recently Viewed Shows</item>
+    <item>Unwatched</item>
+  </string-array>
+  <string-array name="categoryListValuesSeries">
+    <item>all</item>
+    <item>newest</item>
+    <item>onDeck</item>
+    <item>recentlyAdded</item>
+    <item>recentlyViewed</item>
+    <item>recentlyViewedShows</item>
+    <item>unwatched</item>
+  </string-array>
+  <string name="resume_video">Resume Video</string>
+  <string name="resume_the_video_from_">"Resume the video from "</string>
+  <string name="_or_restart_">" or restart?"</string>
+  <string name="resume">Resume</string>
+  <string name="restart">Restart</string>
+  <string name="tv_shows_will_be_displayed_in_a_grid_view_">TV Shows will be displayed in a grid view.</string>
+  <string name="prefer_grid_view_for_series">Prefer Grid View for Series</string>
+  <string name="enables_video_queue_support_for_external_players_">Enables video queue support for external players.</string>
+  <string name="enable_video_queue_for_external_players">Enable Video Queue for External Players</string>
+  <string name="prefs_advanced_options">Advanced Options</string>
+  <string name="prefs_startup_boot_sum">Controls whether Serenity for Android launches immediately after the device has completed the boot up sequence.  Useful for those that want to provide a more home theater like experience.</string>
+  <string name="prefs_auto_start_after_boot">Auto Start after Boot</string>
+  <string name="playing_episode_toast">Playing %1$s %2$s: %3$s</string>
+  <string name="no_unwatched_episode_toast">No unwatched episodes found</string>
+  <string name="Controls">Controls</string>
+  <string name="skip_forward_time_title">FF Skip Time</string>
+  <string name="skip_forward_time_summary">Time to skip forward when FF button is pressed</string>
+  <string name="skip_backward_time_title">REW Skip Time</string>
+  <string name="skip_backward_time_summary">Time to skip backward when REW button is pressed</string>
+  <string name="next_prev_behavior_title">Next/Prev button behavior</string>
+  <string name="next_prev_behavior_summary">What should the Next &amp; Prev buttons do</string>
+  <string name="overscan_swap">Swap sides</string>
+  <string name="overscan_instructions">Use D-Pad to adjust top-left, and bottom-right until no blue is visible. Use
         button to swap sides.  When finished press Back to save the changes.  You may use this instead of your
         devices built in overscan compensation.  The devices built in compensation takes precedence.
     </string>
-    <string-array name="skipListNames">
-        <item>10 Seconds</item>
-        <item>30 Seconds</item>
-        <item>1 Minute</item>
-        <item>3 Minutes</item>
-    </string-array>
-    <string-array name="skipListValues">
-        <item>10000</item>
-        <item>30000</item>
-        <item>60000</item>
-        <item>180000</item>
-    </string-array>
-    <string-array name="nextPrevNames">
-        <item>Next item in queue</item>
-        <item>Skip 5%</item>
-        <item>Skip 10%</item>
-        <item>Skip 5 minutes</item>
-        <item>Skip 10 minutes</item>
-    </string-array>
-    <string-array name="nextPrevValues">
-        <item>queue</item>
-        <item>5%</item>
-        <item>10%</item>
-        <item>3000000</item>
-        <item>6000000</item>
-    </string-array>
-    <string name="mediacontroller_on_deck">"On Deck: "</string>
-    <string name="drawer_open">Opened"</string>
-    <string name="drawer_closed">Closed</string>
-    <string-array name="osd_display_time">
-        <item>3 seconds</item>
-        <item>5 seconds</item>
-        <item>10 seconds</item>
-        <item>15 seconds</item>
-    </string-array>
-    <string-array name="osd_display_time_values">
-        <item>3000</item>
-        <item>5000</item>
-        <item>10000</item>
-        <item>15000</item>
-    </string-array>
-    <string name="android_tv_recommendations">Android TV Recommendations</string>
-    <string name="contribute_ondeck_movies_and_episodes">Contribute OnDeck Movies and Episodes</string>
-    <string name="androidtv_ondeck_recommendations">OnDeck Recommendations</string>
+  <string-array name="skipListNames">
+    <item>10 Seconds</item>
+    <item>30 Seconds</item>
+    <item>1 Minute</item>
+    <item>3 Minutes</item>
+  </string-array>
+  <string-array name="skipListValues">
+    <item>10000</item>
+    <item>30000</item>
+    <item>60000</item>
+    <item>180000</item>
+  </string-array>
+  <string-array name="nextPrevNames">
+    <item>Next item in queue</item>
+    <item>Skip 5%</item>
+    <item>Skip 10%</item>
+    <item>Skip 5 minutes</item>
+    <item>Skip 10 minutes</item>
+  </string-array>
+  <string-array name="nextPrevValues">
+    <item>queue</item>
+    <item>5%</item>
+    <item>10%</item>
+    <item>3000000</item>
+    <item>6000000</item>
+  </string-array>
+  <string name="mediacontroller_on_deck">"On Deck: "</string>
+  <string name="drawer_open">Opened"</string>
+  <string name="drawer_closed">Closed</string>
+  <string-array name="osd_display_time">
+    <item>3 seconds</item>
+    <item>5 seconds</item>
+    <item>10 seconds</item>
+    <item>15 seconds</item>
+  </string-array>
+  <string-array name="osd_display_time_values">
+    <item>3000</item>
+    <item>5000</item>
+    <item>10000</item>
+    <item>15000</item>
+  </string-array>
+  <string name="android_tv_recommendations">Android TV Recommendations</string>
+  <string name="contribute_ondeck_movies_and_episodes">Contribute OnDeck Movies and Episodes</string>
+  <string name="androidtv_ondeck_recommendations">OnDeck Recommendations</string>
 </resources>

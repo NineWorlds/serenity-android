@@ -1,26 +1,25 @@
 buildscript {
 
-    repositories {
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.3-2'
-        classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.5.0'
-    }
-
+  repositories {
+    jcenter()
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.3.3'
+    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.3-2'
+    classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.7.0'
+  }
 }
 
 evaluationDependsOn(':plexapp-rest-library')
 evaluationDependsOn(':subtitle-converter')
 
 repositories {
-    jcenter()
-    mavenCentral()
-    maven {
-        url "http://kingargyle.github.io/repo"
-    }
+  jcenter()
+  mavenCentral()
+  maven {
+    url "http://kingargyle.github.io/repo"
+  }
 }
 
 apply plugin: 'com.android.application'
@@ -29,129 +28,129 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 android {
-    defaultConfig {
-        versionCode 2000001
-        versionName "2.0.0-M3"
+  defaultConfig {
+    versionCode 2000001
+    versionName "2.0.0-M3"
 
-        minSdkVersion 17
-        targetSdkVersion 25
+    minSdkVersion 17
+    targetSdkVersion 25
+  }
+
+  aaptOptions {
+    cruncherEnabled false
+  }
+
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+  }
+
+
+  compileSdkVersion 25
+  buildToolsVersion "25.0.2"
+
+  if (project.hasProperty("keystore")) {
+    signingConfigs {
+      release {
+        storeFile file(project.property("keystore"))
+        storePassword project.property("storepass")
+        keyAlias project.property("keyalias")
+        keyPassword project.property("keypass")
+      }
     }
+  }
 
-    aaptOptions {
-        cruncherEnabled false
+  targetCompatibility = '1.7'
+  sourceCompatibility = '1.7'
+
+  buildTypes {
+    debug {
+      minifyEnabled false
+      useProguard false
     }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+    release {
+      if (project.hasProperty("keystore")) {
+        signingConfig signingConfigs.release
+      }
+      zipAlignEnabled true
+      minifyEnabled false
+      useProguard false
     }
+  }
 
+  lintOptions {
+    checkReleaseBuilds false
+    // Or, if you prefer, you can continue to check for errors in release builds,
+    // but continue the build even when errors are found:
+    abortOnError false
+  }
 
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
-
-    if (project.hasProperty("keystore")) {
-        signingConfigs {
-            release {
-                storeFile file(project.property("keystore"))
-                storePassword project.property("storepass")
-                keyAlias project.property("keyalias")
-                keyPassword project.property("keypass")
-            }
-        }
+  testOptions {
+    unitTests.returnDefaultValues = true
+    unitTests.all {
+      maxParallelForks = 2
+      forkEvery = 50
+      minHeapSize = "512m"
+      maxHeapSize = "1024m"
     }
-
-    targetCompatibility = '1.7'
-    sourceCompatibility = '1.7'
-
-    buildTypes {
-        debug {
-            minifyEnabled false
-            useProguard false
-        }
-        release {
-            if (project.hasProperty("keystore")) {
-                signingConfig signingConfigs.release
-            }
-            zipAlignEnabled true
-            minifyEnabled false
-            useProguard false
-        }
-    }
-
-    lintOptions {
-        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        abortOnError false
-    }
-
-    testOptions {
-        unitTests.returnDefaultValues = true
-        unitTests.all {
-            maxParallelForks = 2
-            forkEvery = 50
-            minHeapSize = "512m"
-            maxHeapSize = "1024m"
-        }
-    }
+  }
 }
 
 junitJacoco {
-    jacocoVersion = '0.7.2.201409121644' // type String
-    excludes = [ "**/*_ViewBinding.class", "**/*InjectAdapter.class", "android/support/**/*.class",
-                 "com/google/**/*.class", "com/birbit/**/*.class", "butterknife/**/*.class",
-                 "com/arellomobile/**/*.class", "net/ganin/darv/**/*.class", "**/*ViewStateProvider.class",
-                 "**/*PresentersBinder.class",
-                 "us/nineworlds/serenity/R.*.class"]
+  jacocoVersion = '0.7.2.201409121644' // type String
+  excludes = ["**/*_ViewBinding.class", "**/*InjectAdapter.class", "android/support/**/*.class",
+              "com/google/**/*.class", "com/birbit/**/*.class", "butterknife/**/*.class",
+              "com/arellomobile/**/*.class", "net/ganin/darv/**/*.class", "**/*ViewStateProvider.class",
+              "**/*PresentersBinder.class",
+              "us/nineworlds/serenity/R.*.class"]
 }
 
 dependencies {
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.3-2"
-    compile 'com.arello-mobile:moxy:1.5.3'
-    kapt 'com.arello-mobile:moxy-compiler:1.5.3'
-    compile 'com.arello-mobile:moxy-app-compat:1.5.3'
+  compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.3-2"
+  compile 'com.arello-mobile:moxy:1.5.3'
+  kapt 'com.arello-mobile:moxy-compiler:1.5.3'
+  compile 'com.arello-mobile:moxy-app-compat:1.5.3'
 
-    compile 'com.github.bumptech.glide:glide:3.8.0'
-    compile group: 'com.github.bumptech.glide', name: 'okhttp3-integration', version: '1.5.0'
+  compile 'com.github.bumptech.glide:glide:3.8.0'
+  compile group: 'com.github.bumptech.glide', name: 'okhttp3-integration', version: '1.5.0'
 
-    compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.birbit:android-priority-jobqueue:2.0.1'
-    compile 'com.google.android.gms:play-services-analytics-impl:10.2.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:leanback-v17:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile project(':plexapp-rest-library')
-    compile project(':subtitle-converter')
-    compile project(':emby-lib')
-    compile 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
-    compile 'com.mcxiaoke.volley:library:1.0.6'
-    compile('com.squareup.okhttp3:okhttp:3.6.0') {
-        exclude group: 'com.android.support'
-    }
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.6.0'
-    compile 'com.squareup.dagger:dagger:1.2.2'
-    kapt 'com.squareup.dagger:dagger-compiler:1.2.2'
-    compile 'com.github.vganin:dpadaware-recyclerview:1.0.1'
-    compile 'com.jakewharton:butterknife:8.4.0'
-    kapt 'com.jakewharton:butterknife-compiler:8.4.0'
+  compile 'org.apache.commons:commons-lang3:3.3.2'
+  compile 'org.greenrobot:eventbus:3.0.0'
+  compile 'com.birbit:android-priority-jobqueue:2.0.1'
+  compile 'com.google.android.gms:play-services-analytics-impl:10.2.1'
+  compile 'com.android.support:appcompat-v7:25.3.1'
+  compile 'com.android.support:leanback-v17:25.3.1'
+  compile 'com.android.support:support-v4:25.3.1'
+  compile project(':plexapp-rest-library')
+  compile project(':subtitle-converter')
+  compile project(':emby-lib')
+  compile 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
+  compile 'com.mcxiaoke.volley:library:1.0.6'
+  compile('com.squareup.okhttp3:okhttp:3.6.0') {
+    exclude group: 'com.android.support'
+  }
+  compile 'com.squareup.okhttp3:okhttp-urlconnection:3.6.0'
+  compile 'com.squareup.dagger:dagger:1.2.2'
+  kapt 'com.squareup.dagger:dagger-compiler:1.2.2'
+  compile 'com.github.vganin:dpadaware-recyclerview:1.0.1'
+  compile 'com.jakewharton:butterknife:8.4.0'
+  kapt 'com.jakewharton:butterknife-compiler:8.4.0'
 
-    testCompile 'junit:junit:4.11'
-    testCompile('org.robolectric:robolectric:3.3.2') {
-        exclude module: 'support-v4'
-    }
-    testCompile 'org.robolectric:shadows-core:3.3.2'
-    testCompile 'org.robolectric:shadows-httpclient:3.3.2'
-    testCompile 'org.robolectric:shadows-support-v4:3.3.2'
-    testCompile 'org.robolectric:shadows-play-services:3.3.2'
-    testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
-    testCompile('com.squareup.assertj:assertj-android:1.1.1') {
-        exclude module: 'support-v4'
-        exclude module: 'support-annotations'
-    }
-    testCompile 'org.mockito:mockito-all:1.9.5'
-    testCompile 'com.squareup.okhttp3:mockwebserver:3.8.1'
-    testCompile 'commons-io:commons-io:2.4'
-    kaptTest 'com.squareup.dagger:dagger-compiler:1.2.2'
+  testCompile 'junit:junit:4.11'
+  testCompile('org.robolectric:robolectric:3.3.2') {
+    exclude module: 'support-v4'
+  }
+  testCompile 'org.robolectric:shadows-core:3.3.2'
+  testCompile 'org.robolectric:shadows-httpclient:3.3.2'
+  testCompile 'org.robolectric:shadows-support-v4:3.3.2'
+  testCompile 'org.robolectric:shadows-play-services:3.3.2'
+  testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
+  testCompile('com.squareup.assertj:assertj-android:1.1.1') {
+    exclude module: 'support-v4'
+    exclude module: 'support-annotations'
+  }
+  testCompile 'org.mockito:mockito-all:1.9.5'
+  testCompile 'com.squareup.okhttp3:mockwebserver:3.8.1'
+  testCompile 'commons-io:commons-io:2.4'
+  kaptTest 'com.squareup.dagger:dagger-compiler:1.2.2'
 }

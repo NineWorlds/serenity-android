@@ -2,13 +2,9 @@ package us.nineworlds.serenity.jobs;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
 import com.birbit.android.jobqueue.RetryConstraint;
-
-import org.greenrobot.eventbus.EventBus;
-
 import javax.inject.Inject;
-
+import org.greenrobot.eventbus.EventBus;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.events.MovieRetrievalEvent;
@@ -16,39 +12,35 @@ import us.nineworlds.serenity.injection.InjectingJob;
 
 public class MovieRetrievalJob extends InjectingJob {
 
-    @Inject
-    PlexappFactory client;
+  @Inject PlexappFactory client;
 
-    @Inject
-    EventBus eventBus;
+  @Inject EventBus eventBus;
 
-    String key;
-    String category;
+  String key;
+  String category;
 
-    public MovieRetrievalJob(@NonNull String key, String category) {
-        this.key = key;
-        this.category = category;
-    }
+  public MovieRetrievalJob(@NonNull String key, String category) {
+    this.key = key;
+    this.category = category;
+  }
 
-    @Override
-    public void onAdded() {
+  @Override public void onAdded() {
 
-    }
+  }
 
-    @Override
-    public void onRun() throws Throwable {
-        MediaContainer mediaContainer = client.retrieveSections(key, category);
-        MovieRetrievalEvent event = new MovieRetrievalEvent(mediaContainer);
-        eventBus.post(event);
-    }
+  @Override public void onRun() throws Throwable {
+    MediaContainer mediaContainer = client.retrieveSections(key, category);
+    MovieRetrievalEvent event = new MovieRetrievalEvent(mediaContainer);
+    eventBus.post(event);
+  }
 
-    @Override
-    protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
+  @Override protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
 
-    }
+  }
 
-    @Override
-    protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
-        return null;
-    }
+  @Override
+  protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount,
+      int maxRunCount) {
+    return null;
+  }
 }

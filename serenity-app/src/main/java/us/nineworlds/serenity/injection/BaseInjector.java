@@ -29,20 +29,18 @@ import android.content.ContextWrapper;
 
 public abstract class BaseInjector {
 
-    public BaseInjector() {
-        SerenityObjectGraph.getInstance().inject(this);
+  public BaseInjector() {
+    SerenityObjectGraph.getInstance().inject(this);
+  }
+
+  protected Activity getActivity(Context contextWrapper) {
+    Context context = contextWrapper;
+    while (context instanceof ContextWrapper) {
+      if (context instanceof Activity) {
+        return (Activity) context;
+      }
+      context = ((ContextWrapper) context).getBaseContext();
     }
-
-    protected Activity getActivity(Context contextWrapper) {
-        Context context = contextWrapper;
-        while (context instanceof ContextWrapper) {
-            if (context instanceof Activity) {
-                return (Activity) context;
-            }
-            context = ((ContextWrapper) context).getBaseContext();
-        }
-        return null;
-    }
-
-
+    return null;
+  }
 }

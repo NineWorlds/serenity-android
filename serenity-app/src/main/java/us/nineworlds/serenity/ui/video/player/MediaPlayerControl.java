@@ -26,23 +26,23 @@
 package us.nineworlds.serenity.ui.video.player;
 
 public interface MediaPlayerControl {
-    void start();
+  void start();
 
-    void pause();
+  void pause();
 
-    long getDuration();
+  long getDuration();
 
-    long getCurrentPosition();
+  long getCurrentPosition();
 
-    void seekTo(long pos);
+  void seekTo(long pos);
 
-    boolean isPlaying();
+  boolean isPlaying();
 
-    int getBufferPercentage();
+  int getBufferPercentage();
 
-    boolean canPause();
+  boolean canPause();
 
-    boolean canSeekBackward();
+  boolean canSeekBackward();
 
-    boolean canSeekForward();
+  boolean canSeekForward();
 }

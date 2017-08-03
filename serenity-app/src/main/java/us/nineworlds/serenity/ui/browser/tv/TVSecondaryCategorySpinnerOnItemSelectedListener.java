@@ -29,13 +29,10 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import javax.inject.Inject;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
@@ -47,95 +44,85 @@ import us.nineworlds.serenity.injection.BaseInjector;
  *
  * @author dcarver
  */
-public class TVSecondaryCategorySpinnerOnItemSelectedListener extends
-        BaseInjector implements OnItemSelectedListener {
+public class TVSecondaryCategorySpinnerOnItemSelectedListener extends BaseInjector
+    implements OnItemSelectedListener {
 
-    private String selected;
-    private final String key;
-    private boolean firstTimesw = true;
+  private String selected;
+  private final String key;
+  private boolean firstTimesw = true;
 
-    @Inject
-    SharedPreferences prefs;
+  @Inject SharedPreferences prefs;
 
-    @Inject
-    protected TVCategoryState categoryState;
+  @Inject protected TVCategoryState categoryState;
 
-    @BindView(R.id.tvShowGridView) @Nullable DpadAwareRecyclerView tvGridRecyclerView;
-    @BindView(R.id.tvShowBannerGallery) @Nullable DpadAwareRecyclerView posterGallery;
+  @BindView(R.id.tvShowGridView) @Nullable DpadAwareRecyclerView tvGridRecyclerView;
+  @BindView(R.id.tvShowBannerGallery) @Nullable DpadAwareRecyclerView posterGallery;
 
-    AdapterView<?> viewAdapter;
+  AdapterView<?> viewAdapter;
 
+  public TVSecondaryCategorySpinnerOnItemSelectedListener(String defaultSelection, String key) {
+    super();
+    selected = defaultSelection;
+    this.key = key;
+  }
 
-    public TVSecondaryCategorySpinnerOnItemSelectedListener(String defaultSelection, String key) {
-        super();
-        selected = defaultSelection;
-        this.key = key;
+  @Override
+  public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
+    this.viewAdapter = viewAdapter;
+    ButterKnife.bind(this, getActivity(viewAdapter.getContext()));
+
+    SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(position);
+
+    boolean isGridViewActive = prefs.getBoolean("series_layout_grid", false);
+
+    if (firstTimesw) {
+      if (categoryState.getGenreCategory() != null) {
+        int savedInstancePosition = getSavedInstancePosition(viewAdapter);
+        item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
+        viewAdapter.setSelection(savedInstancePosition);
+      }
+      firstTimesw = false;
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
-        this.viewAdapter = viewAdapter;
-        ButterKnife.bind(this, getActivity(viewAdapter.getContext()));
-
-        SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(position);
-
-        boolean isGridViewActive = prefs.getBoolean("series_layout_grid", false);
-
-
-        if (firstTimesw) {
-            if (categoryState.getGenreCategory() != null) {
-                int savedInstancePosition = getSavedInstancePosition(viewAdapter);
-                item = (SecondaryCategoryInfo) viewAdapter
-                        .getItemAtPosition(savedInstancePosition);
-                viewAdapter.setSelection(savedInstancePosition);
-            }
-            firstTimesw = false;
-        }
-
-        if (selected.equalsIgnoreCase(item.getCategory())) {
-            return;
-        }
-
-        selected = item.getCategory();
-        categoryState.setGenreCategory(item.getCategory());
-
-        if (isGridViewActive) {
-            tvGridRecyclerView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener());
-            refreshShows(key, item.getParentCategory() + "/" + item.getCategory());
-            return;
-        }
-
-        refreshShows(key, item.getParentCategory() + "/" + item.getCategory());
-
-//			posterGallery
-//					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
+    if (selected.equalsIgnoreCase(item.getCategory())) {
+      return;
     }
 
-    private void refreshShows(String key, String category) {
-        Activity activity = getActivity(viewAdapter.getContext());
-        if (activity instanceof TVShowBrowserActivity) {
-            TVShowBrowserActivity a = (TVShowBrowserActivity) activity;
-            a.requestUpdatedVideos(key, category);
-        }
+    selected = item.getCategory();
+    categoryState.setGenreCategory(item.getCategory());
+
+    if (isGridViewActive) {
+      tvGridRecyclerView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener());
+      refreshShows(key, item.getParentCategory() + "/" + item.getCategory());
+      return;
     }
 
+    refreshShows(key, item.getParentCategory() + "/" + item.getCategory());
 
-    private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
-        int count = viewAdapter.getCount();
-        for (int i = 0; i < count; i++) {
-            CategoryInfo citem = (CategoryInfo) viewAdapter
-                    .getItemAtPosition(i);
-            if (citem.getCategory().equals(categoryState.getGenreCategory())) {
-                return i;
-            }
-        }
-        return 0;
+    //			posterGallery
+    //					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
+  }
+
+  private void refreshShows(String key, String category) {
+    Activity activity = getActivity(viewAdapter.getContext());
+    if (activity instanceof TVShowBrowserActivity) {
+      TVShowBrowserActivity a = (TVShowBrowserActivity) activity;
+      a.requestUpdatedVideos(key, category);
     }
+  }
 
-
-    @Override
-    public void onNothingSelected(AdapterView<?> va) {
-
+  private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
+    int count = viewAdapter.getCount();
+    for (int i = 0; i < count; i++) {
+      CategoryInfo citem = (CategoryInfo) viewAdapter.getItemAtPosition(i);
+      if (citem.getCategory().equals(categoryState.getGenreCategory())) {
+        return i;
+      }
     }
+    return 0;
+  }
 
+  @Override public void onNothingSelected(AdapterView<?> va) {
+
+  }
 }

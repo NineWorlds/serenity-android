@@ -27,54 +27,52 @@ import java.io.Serializable;
 
 /**
  * @author dcarver
- *
  */
 public class Subtitle implements Serializable {
 
-    private static final long serialVersionUID = -8913477697639140949L;
+  private static final long serialVersionUID = -8913477697639140949L;
 
-    private String key;
-    private String format;
-    private String description;
-    private String languageCode;
+  private String key;
+  private String format;
+  private String description;
+  private String languageCode;
 
-    public String getKey() {
-        return key;
-    }
+  public String getKey() {
+    return key;
+  }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
+  public void setKey(String key) {
+    this.key = key;
+  }
 
-    public String getDescription() {
-        return this.description;
-    }
+  public String getDescription() {
+    return this.description;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return description;
-    }
+  /* (non-Javadoc)
+   * @see java.lang.Object#toString()
+   */
+  @Override public String toString() {
+    return description;
+  }
 
-    public String getFormat() {
-        return format;
-    }
+  public String getFormat() {
+    return format;
+  }
 
-    public void setFormat(String format) {
-        this.format = format;
-    }
+  public void setFormat(String format) {
+    this.format = format;
+  }
 
-    public String getLanguageCode() {
-        return languageCode;
-    }
+  public String getLanguageCode() {
+    return languageCode;
+  }
 
-    public void setLanguageCode(String languageCode) {
-        this.languageCode = languageCode;
-    }
+  public void setLanguageCode(String languageCode) {
+    this.languageCode = languageCode;
+  }
 }

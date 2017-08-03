@@ -3,36 +3,40 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#AA000000">
+    android:background="#AA000000"
+    >
 
-    <ImageView
-        android:id="@+id/trackPlayed"
-        android:layout_alignParentLeft="true"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp" />
+  <ImageView
+      android:id="@+id/trackPlayed"
+      android:layout_alignParentLeft="true"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:layout_marginRight="5dp"
+      android:layout_marginLeft="5dp"
+      />
 
-    <TextView
-        android:id="@+id/trackTitle"
-        android:layout_toRightOf="@+id/trackPlayed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@android:style/TextAppearance.Holo.Large"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:textColor="#F0F0F0" />
+  <TextView
+      android:id="@+id/trackTitle"
+      android:layout_toRightOf="@+id/trackPlayed"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@android:style/TextAppearance.Holo.Large"
+      android:layout_marginRight="5dp"
+      android:layout_marginLeft="5dp"
+      android:textColor="#F0F0F0"
+      />
 
-    <TextView
-        android:id="@+id/trackDuration"
-        android:layout_toRightOf="@+id/trackTitle"
-        android:layout_alignParentRight="true"
-        android:gravity="right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@android:style/TextAppearance.Holo.Large"
-        android:textColor="#F0F0F0"
-        android:layout_marginRight="5dp" />
+  <TextView
+      android:id="@+id/trackDuration"
+      android:layout_toRightOf="@+id/trackTitle"
+      android:layout_alignParentRight="true"
+      android:gravity="right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@android:style/TextAppearance.Holo.Large"
+      android:textColor="#F0F0F0"
+      android:layout_marginRight="5dp"
+      />
 
 
 </RelativeLayout>

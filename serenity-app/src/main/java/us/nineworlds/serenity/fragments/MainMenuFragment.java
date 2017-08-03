@@ -29,23 +29,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import com.birbit.android.jobqueue.JobManager;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import com.birbit.android.jobqueue.JobManager;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Inject;
+import net.ganin.darv.DpadAwareRecyclerView;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.GalleryOnItemClickListener;
 import us.nineworlds.serenity.GalleryOnItemSelectedListener;
@@ -60,94 +54,83 @@ import us.nineworlds.serenity.jobs.MainMenuRetrievalJob;
 
 public class MainMenuFragment extends InjectingFragment {
 
-    @Inject
-    PlexappFactory plexFactory;
+  @Inject PlexappFactory plexFactory;
 
-    @Inject
-    EventBus eventBus;
+  @Inject EventBus eventBus;
 
-    @Inject
-    JobManager jobManager;
+  @Inject JobManager jobManager;
 
-    private Unbinder unbinder;
+  private Unbinder unbinder;
 
-    List<MenuItem> menuItems = new ArrayList<>();
+  List<MenuItem> menuItems = new ArrayList<>();
 
-    public MainMenuFragment() {
-        setRetainInstance(false);
-    }
+  public MainMenuFragment() {
+    setRetainInstance(false);
+  }
 
-    @BindView(R.id.mainGalleryMenu)
-    DpadAwareRecyclerView mainGallery;
+  @BindView(R.id.mainGalleryMenu) DpadAwareRecyclerView mainGallery;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.main_menu_view, container);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.main_menu_view, container);
+    unbinder = ButterKnife.bind(this, view);
+    return view;
+  }
 
-    protected void fetchData() {
-        jobManager.addJobInBackground(new MainMenuRetrievalJob());
-    }
+  protected void fetchData() {
+    jobManager.addJobInBackground(new MainMenuRetrievalJob());
+  }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        fetchData();
-        eventBus.register(this);
-    }
+  @Override public void onStart() {
+    super.onStart();
+    fetchData();
+    eventBus.register(this);
+  }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        eventBus.unregister(this);
-    }
+  @Override public void onStop() {
+    super.onStop();
+    eventBus.unregister(this);
+  }
 
-    private void setupGallery() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mainGallery.setLayoutManager(linearLayoutManager);
+  private void setupGallery() {
+    LinearLayoutManager linearLayoutManager =
+        new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+    mainGallery.setLayoutManager(linearLayoutManager);
 
-        MainMenuTextViewAdapter adapter = new MainMenuTextViewAdapter();
-        adapter.menuItems = this.menuItems;
-        mainGallery.setAdapter(adapter);
-        mainGallery
-                .setOnItemSelectedListener(new GalleryOnItemSelectedListener());
-        mainGallery.setOnItemClickListener(new GalleryOnItemClickListener());
-        mainGallery.setVisibility(View.VISIBLE);
-        adapter.notifyDataSetChanged();
-    }
+    MainMenuTextViewAdapter adapter = new MainMenuTextViewAdapter();
+    adapter.menuItems = this.menuItems;
+    mainGallery.setAdapter(adapter);
+    mainGallery.setOnItemSelectedListener(new GalleryOnItemSelectedListener());
+    mainGallery.setOnItemClickListener(new GalleryOnItemClickListener());
+    mainGallery.setVisibility(View.VISIBLE);
+    adapter.notifyDataSetChanged();
+  }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    unbinder.unbind();
+  }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMainMenuRetrievalResponse(MainMenuEvent event) {
-        menuItems = new MenuMediaContainer(event.getMediaContainer()).createMenuItems();
-        setupGallery();
-        mainGallery.setVisibility(View.VISIBLE);
-        mainGallery.requestFocus();
-    }
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onMainMenuRetrievalResponse(MainMenuEvent event) {
+    menuItems = new MenuMediaContainer(event.getMediaContainer()).createMenuItems();
+    setupGallery();
+    mainGallery.setVisibility(View.VISIBLE);
+    mainGallery.requestFocus();
+  }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMainMenuErrorResponse(ErrorMainMenuEvent event) {
-        MenuMediaContainer mc = new MenuMediaContainer(null);
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onMainMenuErrorResponse(ErrorMainMenuEvent event) {
+    MenuMediaContainer mc = new MenuMediaContainer(null);
 
-        menuItems.add(mc.createSettingsMenu());
-        menuItems.add(mc.createOptionsMenu());
+    menuItems.add(mc.createSettingsMenu());
+    menuItems.add(mc.createOptionsMenu());
 
-        setupGallery();
+    setupGallery();
 
-        Toast.makeText(
-                getActivity(),
-                "Unable to connect to Plex Library at "
-                        + plexFactory.baseURL(), Toast.LENGTH_LONG)
-                .show();
+    Toast.makeText(getActivity(), "Unable to connect to Plex Library at " + plexFactory.baseURL(),
+        Toast.LENGTH_LONG).show();
 
-        mainGallery.requestFocus();
-    }
+    mainGallery.requestFocus();
+  }
 }

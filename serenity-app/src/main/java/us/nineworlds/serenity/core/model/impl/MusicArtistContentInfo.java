@@ -24,80 +24,65 @@
 package us.nineworlds.serenity.core.model.impl;
 
 import java.io.Serializable;
-
 import us.nineworlds.serenity.core.model.ArtistContentInfo;
 
 /**
  * @author dcarver
- *
  */
 public class MusicArtistContentInfo implements ArtistContentInfo, Serializable {
 
-    private static final long serialVersionUID = -3671771266686596176L;
-    private String id;
-    private String summary;
-    private String backgroundImageURL;
-    private String imageURL;
-    private String title;
+  private static final long serialVersionUID = -3671771266686596176L;
+  private String id;
+  private String summary;
+  private String backgroundImageURL;
+  private String imageURL;
+  private String title;
 
-    @Override
-    public String id() {
-        return id;
-    }
+  @Override public String id() {
+    return id;
+  }
 
-    @Override
-    public String getSummary() {
-        return summary;
-    }
+  @Override public String getSummary() {
+    return summary;
+  }
 
-    @Override
-    public String getBackgroundURL() {
-        return backgroundImageURL;
-    }
+  @Override public String getBackgroundURL() {
+    return backgroundImageURL;
+  }
 
-    @Override
-    public String getImageURL() {
-        return imageURL;
-    }
+  @Override public String getImageURL() {
+    return imageURL;
+  }
 
-    @Override
-    public String getTitle() {
-        return title;
-    }
+  @Override public String getTitle() {
+    return title;
+  }
 
-    @Override
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  @Override public void setTitle(String title) {
+    this.title = title;
+  }
 
-    @Override
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
+  @Override public void setImageURL(String imageURL) {
+    this.imageURL = imageURL;
+  }
 
-    @Override
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
+  @Override public void setSummary(String summary) {
+    this.summary = summary;
+  }
 
-    @Override
-    public void setBackgroundURL(String backgroundURL) {
-        this.backgroundImageURL = backgroundURL;
-    }
+  @Override public void setBackgroundURL(String backgroundURL) {
+    this.backgroundImageURL = backgroundURL;
+  }
 
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
+  @Override public void setId(String id) {
+    this.id = id;
+  }
 
-    @Override
-    public String getMediaTagIdentifier() {
-        return null;
-    }
+  @Override public String getMediaTagIdentifier() {
+    return null;
+  }
 
-    @Override
-    public void setMediaTagIdentifier(String mediaTagIdentifier) {
+  @Override public void setMediaTagIdentifier(String mediaTagIdentifier) {
 
-    }
-
+  }
 }

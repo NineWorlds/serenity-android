@@ -6,18 +6,20 @@
     android:layout_height="90dp"
     android:padding="5dp"
     android:layout_centerInParent="true"
-    android:background="@drawable/content_panel_dark">
+    android:background="@drawable/content_panel_dark"
+    >
 
-    <net.ganin.darv.DpadAwareRecyclerView
-        android:id="@+id/mainGalleryMenu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:paddingLeft="5dp"
-        app:selectorVelocity="1000"
-        app:smoothScrolling="true"
-        app:backgroundSelector="@drawable/main_menu_item_foreground_selector"
-        android:nextFocusUp="@+id/menu_button" />
+  <net.ganin.darv.DpadAwareRecyclerView
+      android:id="@+id/mainGalleryMenu"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginRight="5dp"
+      android:layout_marginLeft="5dp"
+      android:paddingLeft="5dp"
+      app:selectorVelocity="1000"
+      app:smoothScrolling="true"
+      app:backgroundSelector="@drawable/main_menu_item_foreground_selector"
+      android:nextFocusUp="@+id/menu_button"
+      />
 
 </us.nineworlds.serenity.widgets.ReflectingLayout>

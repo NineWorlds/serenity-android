@@ -15,9 +15,9 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/ic_navigation_drawer" android:state_activated="true" />
-    <item android:drawable="@drawable/ic_navigation_drawer_selected" android:state_focused="true" />
-    <item android:drawable="@drawable/ic_navigation_drawer_selected" android:state_pressed="true" />
-    <item android:drawable="@drawable/ic_navigation_drawer" />
+  <item android:drawable="@drawable/ic_navigation_drawer" android:state_activated="true"/>
+  <item android:drawable="@drawable/ic_navigation_drawer_selected" android:state_focused="true"/>
+  <item android:drawable="@drawable/ic_navigation_drawer_selected" android:state_pressed="true"/>
+  <item android:drawable="@drawable/ic_navigation_drawer"/>
 
 </selector>

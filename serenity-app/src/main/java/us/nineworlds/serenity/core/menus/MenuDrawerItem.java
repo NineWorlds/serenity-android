@@ -25,15 +25,14 @@ package us.nineworlds.serenity.core.menus;
 
 /**
  * @author dcarver
- *
  */
 public interface MenuDrawerItem {
 
-    String getText();
+  String getText();
 
-    int getImageResourceID();
+  int getImageResourceID();
 
-    void setText(String text);
+  void setText(String text);
 
-    void setImageResourceID(int resourceId);
+  void setImageResourceID(int resourceId);
 }

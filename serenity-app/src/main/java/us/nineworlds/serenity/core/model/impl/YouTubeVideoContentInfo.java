@@ -27,10 +27,8 @@ package us.nineworlds.serenity.core.model.impl;
  * Represents video content returned from YouTube.
  *
  * @author dcarver
- *
  */
 public class YouTubeVideoContentInfo extends AbstractVideoContentInfo {
 
-    private static final long serialVersionUID = 9189040577105931318L;
-
+  private static final long serialVersionUID = 9189040577105931318L;
 }

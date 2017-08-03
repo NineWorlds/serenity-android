@@ -30,76 +30,68 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import java.util.List;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.injection.InjectingBaseAdapter;
 
 /**
- *
  * @author dcarver
- *
  */
 public class MenuDrawerAdapter extends InjectingBaseAdapter {
 
-    private final List<MenuDrawerItem> menuOptions;
-    private final Activity context;
+  private final List<MenuDrawerItem> menuOptions;
+  private final Activity context;
 
-    public MenuDrawerAdapter(Activity context, List<MenuDrawerItem> menuOptions) {
-        this.menuOptions = menuOptions;
-        this.context = context;
-        notifyDataSetChanged();
+  public MenuDrawerAdapter(Activity context, List<MenuDrawerItem> menuOptions) {
+    this.menuOptions = menuOptions;
+    this.context = context;
+    notifyDataSetChanged();
+  }
+
+  @Override public int getCount() {
+    return menuOptions.size();
+  }
+
+  @Override public Object getItem(int position) {
+    return menuOptions.get(position);
+  }
+
+  @Override public View getView(int position, View convertView, ViewGroup parent) {
+    TextView rowView = null;
+
+    if (reUseExistingView(convertView)) {
+      rowView = (TextView) convertView;
+    } else {
+      rowView = inflateNewView(parent);
     }
 
-    @Override
-    public int getCount() {
-        return menuOptions.size();
-    }
+    populateTextView(position, rowView);
+    return rowView;
+  }
 
-    @Override
-    public Object getItem(int position) {
-        return menuOptions.get(position);
-    }
+  private void populateTextView(int position, TextView rowView) {
+    rowView.setBackgroundResource(R.drawable.album_list_view_selector);
+    rowView.setText(menuOptions.get(position).getText());
+    rowView.setGravity(Gravity.CENTER_VERTICAL);
+    rowView.setCompoundDrawablesWithIntrinsicBounds(menuOptions.get(position).getImageResourceID(),
+        0, 0, 0);
+  }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView rowView = null;
+  private TextView inflateNewView(ViewGroup parent) {
+    TextView rowView;
+    LayoutInflater inflater =
+        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    rowView =
+        (TextView) inflater.inflate(R.layout.serenity_menudrawer_listview_textview, parent, false);
+    return rowView;
+  }
 
-        if (reUseExistingView(convertView)) {
-            rowView = (TextView) convertView;
-        } else {
-            rowView = inflateNewView(parent);
-        }
+  private boolean reUseExistingView(View convertView) {
+    return convertView != null && convertView instanceof TextView;
+  }
 
-        populateTextView(position, rowView);
-        return rowView;
-    }
-
-    private void populateTextView(int position, TextView rowView) {
-        rowView.setBackgroundResource(R.drawable.album_list_view_selector);
-        rowView.setText(menuOptions.get(position).getText());
-        rowView.setGravity(Gravity.CENTER_VERTICAL);
-        rowView.setCompoundDrawablesWithIntrinsicBounds(
-                menuOptions.get(position).getImageResourceID(), 0, 0, 0);
-    }
-
-    private TextView inflateNewView(ViewGroup parent) {
-        TextView rowView;
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        rowView = (TextView) inflater.inflate(
-                R.layout.serenity_menudrawer_listview_textview, parent, false);
-        return rowView;
-    }
-
-    private boolean reUseExistingView(View convertView) {
-        return convertView != null && convertView instanceof TextView;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+  @Override public long getItemId(int position) {
+    return position;
+  }
 }

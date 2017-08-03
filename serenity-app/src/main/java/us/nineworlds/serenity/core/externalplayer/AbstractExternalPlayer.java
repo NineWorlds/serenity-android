@@ -27,48 +27,42 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 /**
  * @author dcarver
- *
  */
 public abstract class AbstractExternalPlayer {
 
-    protected VideoContentInfo videoContent;
-    protected Context activity;
+  protected VideoContentInfo videoContent;
+  protected Context activity;
 
-    /**
-     *
-     */
-    public AbstractExternalPlayer(VideoContentInfo vc, Context ac) {
-        videoContent = vc;
-        activity = ac;
-    }
+  /**
+   *
+   */
+  public AbstractExternalPlayer(VideoContentInfo vc, Context ac) {
+    videoContent = vc;
+    activity = ac;
+  }
 
-    /**
-     * Sets the class and package name for the activity to be launched.
-     *
-     * @param vpIntent
-     */
-    protected abstract void setClassAndPackagename(Intent vpIntent);
+  /**
+   * Sets the class and package name for the activity to be launched.
+   */
+  protected abstract void setClassAndPackagename(Intent vpIntent);
 
-    protected void launchActivity(Intent vpIntent) {
-        Activity activity = (Activity) this.activity;
-        activity.startActivityForResult(vpIntent,
-                SerenityConstants.BROWSER_RESULT_CODE);
-    }
+  protected void launchActivity(Intent vpIntent) {
+    Activity activity = (Activity) this.activity;
+    activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
+  }
 
-    /**
-     * @return
-     */
-    public Intent createIntent() {
-        Intent vpIntent = new Intent(Intent.ACTION_VIEW);
-        vpIntent.setDataAndType(Uri.parse(videoContent.getDirectPlayUrl()),
-                "video/*");
+  /**
+   * @return
+   */
+  public Intent createIntent() {
+    Intent vpIntent = new Intent(Intent.ACTION_VIEW);
+    vpIntent.setDataAndType(Uri.parse(videoContent.getDirectPlayUrl()), "video/*");
 
-        return vpIntent;
-    }
+    return vpIntent;
+  }
 }

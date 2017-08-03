@@ -27,159 +27,149 @@ import android.content.Context;
 
 /**
  * @author davidcarver
- *
  */
 public class MediaControllerDataObject {
 
-    String audioChannels;
-    String audioFormat;
+  String audioChannels;
+  String audioFormat;
 
-    Context context;
+  Context context;
 
-    String mediaTagId;
+  String mediaTagId;
 
-    String posterURL;
+  String posterURL;
 
-    String resolution;
+  String resolution;
 
-    String summary;
+  String summary;
 
-    String title;
+  String title;
 
-    String videoFormat;
+  String videoFormat;
 
-    /**
-     * @return the audioChannels
-     */
-    public String getAudioChannels() {
-        return audioChannels;
-    }
+  /**
+   * @return the audioChannels
+   */
+  public String getAudioChannels() {
+    return audioChannels;
+  }
 
-    /**
-     * @return the audioFormat
-     */
-    public String getAudioFormat() {
-        return audioFormat;
-    }
+  /**
+   * @return the audioFormat
+   */
+  public String getAudioFormat() {
+    return audioFormat;
+  }
 
-    /**
-     * @return the context
-     */
-    public Context getContext() {
-        return context;
-    }
+  /**
+   * @return the context
+   */
+  public Context getContext() {
+    return context;
+  }
 
-    /**
-     * @return the mediaTagId
-     */
-    public String getMediaTagId() {
-        return mediaTagId;
-    }
+  /**
+   * @return the mediaTagId
+   */
+  public String getMediaTagId() {
+    return mediaTagId;
+  }
 
-    /**
-     * @return the posterURL
-     */
-    public String getPosterURL() {
-        return posterURL;
-    }
+  /**
+   * @return the posterURL
+   */
+  public String getPosterURL() {
+    return posterURL;
+  }
 
-    /**
-     * @return the resolution
-     */
-    public String getResolution() {
-        return resolution;
-    }
+  /**
+   * @return the resolution
+   */
+  public String getResolution() {
+    return resolution;
+  }
 
-    /**
-     * @return the summary
-     */
-    public String getSummary() {
-        return summary;
-    }
+  /**
+   * @return the summary
+   */
+  public String getSummary() {
+    return summary;
+  }
 
-    /**
-     * @return the title
-     */
-    public String getTitle() {
-        return title;
-    }
+  /**
+   * @return the title
+   */
+  public String getTitle() {
+    return title;
+  }
 
-    /**
-     * @return the videoFormat
-     */
-    public String getVideoFormat() {
-        return videoFormat;
-    }
+  /**
+   * @return the videoFormat
+   */
+  public String getVideoFormat() {
+    return videoFormat;
+  }
 
-    /**
-     * @param audioChannels
-     *            the audioChannels to set
-     */
-    public void setAudioChannels(String audioChannels) {
-        this.audioChannels = audioChannels;
-    }
+  /**
+   * @param audioChannels the audioChannels to set
+   */
+  public void setAudioChannels(String audioChannels) {
+    this.audioChannels = audioChannels;
+  }
 
-    /**
-     * @param audioFormat
-     *            the audioFormat to set
-     */
-    public void setAudioFormat(String audioFormat) {
-        this.audioFormat = audioFormat;
-    }
+  /**
+   * @param audioFormat the audioFormat to set
+   */
+  public void setAudioFormat(String audioFormat) {
+    this.audioFormat = audioFormat;
+  }
 
-    /**
-     * @param context
-     *            the context to set
-     */
-    public void setContext(Context context) {
-        this.context = context;
-    }
+  /**
+   * @param context the context to set
+   */
+  public void setContext(Context context) {
+    this.context = context;
+  }
 
-    /**
-     * @param mediaTagId
-     *            the mediaTagId to set
-     */
-    public void setMediaTagId(String mediaTagId) {
-        this.mediaTagId = mediaTagId;
-    }
+  /**
+   * @param mediaTagId the mediaTagId to set
+   */
+  public void setMediaTagId(String mediaTagId) {
+    this.mediaTagId = mediaTagId;
+  }
 
-    /**
-     * @param posterURL
-     *            the posterURL to set
-     */
-    public void setPosterURL(String posterURL) {
-        this.posterURL = posterURL;
-    }
+  /**
+   * @param posterURL the posterURL to set
+   */
+  public void setPosterURL(String posterURL) {
+    this.posterURL = posterURL;
+  }
 
-    /**
-     * @param resolution
-     *            the resolution to set
-     */
-    public void setResolution(String resolution) {
-        this.resolution = resolution;
-    }
+  /**
+   * @param resolution the resolution to set
+   */
+  public void setResolution(String resolution) {
+    this.resolution = resolution;
+  }
 
-    /**
-     * @param summary
-     *            the summary to set
-     */
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
+  /**
+   * @param summary the summary to set
+   */
+  public void setSummary(String summary) {
+    this.summary = summary;
+  }
 
-    /**
-     * @param title
-     *            the title to set
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  /**
+   * @param title the title to set
+   */
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    /**
-     * @param videoFormat
-     *            the videoFormat to set
-     */
-    public void setVideoFormat(String videoFormat) {
-        this.videoFormat = videoFormat;
-    }
+  /**
+   * @param videoFormat the videoFormat to set
+   */
+  public void setVideoFormat(String videoFormat) {
+    this.videoFormat = videoFormat;
+  }
 }

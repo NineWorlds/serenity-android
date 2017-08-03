@@ -27,8 +27,7 @@ import android.support.v4.app.Fragment;
 
 public abstract class InjectingFragment extends Fragment {
 
-    public InjectingFragment() {
-        SerenityObjectGraph.getInstance().inject(this);
-    }
-
+  public InjectingFragment() {
+    SerenityObjectGraph.getInstance().inject(this);
+  }
 }

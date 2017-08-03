@@ -23,25 +23,20 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-
 /**
  * A listener that handles long press for video content in Poster Gallery classes.
  *
  * @author dcarver
- *
  */
 public class GalleryVideoOnItemLongClickListener extends AbstractVideoOnItemLongClickListener {
 
+  @Override public boolean onItemLongClick() {
 
-    @Override
-    public boolean onItemLongClick() {
+    // Google TV is sending back different results than Nexus 7
 
-        // Google TV is sending back different results than Nexus 7
+    // So we try to handle the different results.
+    //		info = (VideoContentInfo) av.getSelectedItem();
 
-        // So we try to handle the different results.
-//		info = (VideoContentInfo) av.getSelectedItem();
-
-        return onItemLongClick();
-
-    }
+    return onItemLongClick();
+  }
 }

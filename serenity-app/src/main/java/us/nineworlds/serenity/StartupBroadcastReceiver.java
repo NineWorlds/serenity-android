@@ -29,9 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
-
 import javax.inject.Inject;
-
 import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.InjectingBroadcastReceiver;
@@ -44,64 +42,61 @@ import us.nineworlds.serenity.injection.SerenityObjectGraph;
  * <p>
  * Recommendations are always run if on an Android TV device or a device that
  * supports the leanback feature.
- *
  */
 public class StartupBroadcastReceiver extends InjectingBroadcastReceiver {
 
-    @Inject
-    AndroidHelper androidHelper;
+  @Inject AndroidHelper androidHelper;
 
-    @Inject
-    SharedPreferences preferences;
+  @Inject SharedPreferences preferences;
 
-    private static final int INITIAL_DELAY = 5000;
+  private static final int INITIAL_DELAY = 5000;
 
-    private Context context;
+  private Context context;
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        SerenityObjectGraph.getInstance().inject(this);
-        this.context = context;
+  @Override public void onReceive(Context context, Intent intent) {
+    SerenityObjectGraph.getInstance().inject(this);
+    this.context = context;
 
-        if (intent.getAction() == null) {
-            return;
-        }
-
-        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            createRecomendations();
-            launchSerenityOnStartup();
-        }
+    if (intent.getAction() == null) {
+      return;
     }
 
-    protected void launchSerenityOnStartup() {
-        boolean startupAfterBoot = preferences.getBoolean("serenity_boot_startup", false);
-        if (startupAfterBoot) {
-            Intent i = new Intent(context, MainActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(i);
-        }
+    if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+      createRecomendations();
+      launchSerenityOnStartup();
+    }
+  }
+
+  protected void launchSerenityOnStartup() {
+    boolean startupAfterBoot = preferences.getBoolean("serenity_boot_startup", false);
+    if (startupAfterBoot) {
+      Intent i = new Intent(context, MainActivity.class);
+      i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      context.startActivity(i);
+    }
+  }
+
+  protected void createRecomendations() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+      return;
     }
 
-    protected void createRecomendations() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            return;
-        }
-
-        if (!androidHelper.isLeanbackSupported()) {
-            return;
-        }
-
-        boolean onDeckRecommendations = preferences.getBoolean("androidtv_recommendation_ondeck", false);
-
-        if (!onDeckRecommendations) {
-            return;
-        }
-
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent recommendationIntent = new Intent(context, OnDeckRecommendationIntentService.class);
-        PendingIntent alarmIntent = PendingIntent.getService(context, 0, recommendationIntent, 0);
-
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                INITIAL_DELAY, AlarmManager.INTERVAL_HALF_HOUR, alarmIntent);
+    if (!androidHelper.isLeanbackSupported()) {
+      return;
     }
+
+    boolean onDeckRecommendations =
+        preferences.getBoolean("androidtv_recommendation_ondeck", false);
+
+    if (!onDeckRecommendations) {
+      return;
+    }
+
+    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    Intent recommendationIntent = new Intent(context, OnDeckRecommendationIntentService.class);
+    PendingIntent alarmIntent = PendingIntent.getService(context, 0, recommendationIntent, 0);
+
+    alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, INITIAL_DELAY,
+        AlarmManager.INTERVAL_HALF_HOUR, alarmIntent);
+  }
 }

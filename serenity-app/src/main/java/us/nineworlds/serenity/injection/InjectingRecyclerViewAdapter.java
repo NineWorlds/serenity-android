@@ -27,7 +27,7 @@ import net.ganin.darv.DpadAwareRecyclerView;
 
 public abstract class InjectingRecyclerViewAdapter extends DpadAwareRecyclerView.Adapter {
 
-    public InjectingRecyclerViewAdapter() {
-        SerenityObjectGraph.getInstance().inject(this);
-    }
+  public InjectingRecyclerViewAdapter() {
+    SerenityObjectGraph.getInstance().inject(this);
+  }
 }

@@ -24,10 +24,8 @@
 package us.nineworlds.serenity.ui.adapters;
 
 import android.os.Handler;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 
@@ -38,33 +36,29 @@ import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
  * episodes.
  *
  * @author dcarver
- *
  */
 public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecyclerViewAdapter {
 
-    protected static List<VideoContentInfo> posterList = null;
-    protected Handler handler;
+  protected static List<VideoContentInfo> posterList = null;
+  protected Handler handler;
 
-    public AbstractPosterImageGalleryAdapter() {
-        posterList = new ArrayList<>();
-    }
+  public AbstractPosterImageGalleryAdapter() {
+    posterList = new ArrayList<>();
+  }
 
-    @Override
-    public int getItemCount() {
-        return posterList.size();
-    }
+  @Override public int getItemCount() {
+    return posterList.size();
+  }
 
-    public Object getItem(int position) {
-            return posterList.get(position);
-    }
+  public Object getItem(int position) {
+    return posterList.get(position);
+  }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+  @Override public long getItemId(int position) {
+    return position;
+  }
 
-    public List<VideoContentInfo> getItems() {
-        return posterList;
-    }
-
+  public List<VideoContentInfo> getItems() {
+    return posterList;
+  }
 }

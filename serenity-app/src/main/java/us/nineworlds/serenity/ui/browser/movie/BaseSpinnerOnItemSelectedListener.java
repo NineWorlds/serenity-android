@@ -25,11 +25,8 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import android.content.SharedPreferences;
 import android.widget.AdapterView;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-
 import javax.inject.Inject;
-
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -37,63 +34,58 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 
 public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 
-    @Inject
-    protected MovieSelectedCategoryState categoryState;
+  @Inject protected MovieSelectedCategoryState categoryState;
 
-    @Inject
-    protected SharedPreferences prefs;
+  @Inject protected SharedPreferences prefs;
 
-    protected DpadAwareRecyclerView posterGallery;
+  protected DpadAwareRecyclerView posterGallery;
 
-    protected SerenityMultiViewVideoActivity multiViewVideoActivity;
+  protected SerenityMultiViewVideoActivity multiViewVideoActivity;
 
-    protected String selected;
-    protected static String key;
-    protected boolean firstSelection = true;
+  protected String selected;
+  protected static String key;
+  protected boolean firstSelection = true;
 
-    public BaseSpinnerOnItemSelectedListener(String defaultSelection, String key) {
-        selected = defaultSelection;
-        this.key = key;
+  public BaseSpinnerOnItemSelectedListener(String defaultSelection, String key) {
+    selected = defaultSelection;
+    this.key = key;
+  }
+
+  protected void findViews() {
+    posterGallery =
+        (DpadAwareRecyclerView) getMultiViewVideoActivity().findViewById(R.id.moviePosterView);
+  }
+
+  protected int getSavedInstancePosition(AdapterView<?> viewAdapter) {
+    int count = viewAdapter.getCount();
+    for (int i = 0; i < count; i++) {
+      CategoryInfo citem = (CategoryInfo) viewAdapter.getItemAtPosition(i);
+      if (citem.getCategory().equals(getSavedCategory())) {
+        return i;
+      }
     }
+    return 0;
+  }
 
-    protected void findViews() {
-        posterGallery = (DpadAwareRecyclerView) getMultiViewVideoActivity()
-                .findViewById(R.id.moviePosterView);
-    }
+  protected abstract String getSavedCategory();
 
-    protected int getSavedInstancePosition(AdapterView<?> viewAdapter) {
-        int count = viewAdapter.getCount();
-        for (int i = 0; i < count; i++) {
-            CategoryInfo citem = (CategoryInfo) viewAdapter
-                    .getItemAtPosition(i);
-            if (citem.getCategory().equals(getSavedCategory())) {
-                return i;
-            }
-        }
-        return 0;
-    }
+  public void onNothingSelected(AdapterView<?> va) {
 
-    protected abstract String getSavedCategory();
+  }
 
-    public void onNothingSelected(AdapterView<?> va) {
+  protected SerenityMultiViewVideoActivity getMultiViewVideoActivity() {
+    return multiViewVideoActivity;
+  }
 
-    }
+  protected void setMultiViewVideoActivity(SerenityMultiViewVideoActivity multiViewVideoActivity) {
+    this.multiViewVideoActivity = multiViewVideoActivity;
+  }
 
-    protected SerenityMultiViewVideoActivity getMultiViewVideoActivity() {
-        return multiViewVideoActivity;
-    }
+  public boolean isFirstSelection() {
+    return firstSelection;
+  }
 
-    protected void setMultiViewVideoActivity(
-            SerenityMultiViewVideoActivity multiViewVideoActivity) {
-        this.multiViewVideoActivity = multiViewVideoActivity;
-    }
-
-    public boolean isFirstSelection() {
-        return firstSelection;
-    }
-
-    public void setFirstSelection(boolean firstSelection) {
-        this.firstSelection = firstSelection;
-    }
-
+  public void setFirstSelection(boolean firstSelection) {
+    this.firstSelection = firstSelection;
+  }
 }

@@ -26,20 +26,17 @@ package us.nineworlds.serenity.ui.leanback.search;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
 import us.nineworlds.serenity.R;
 
 public class SearchActivity extends Activity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.movie_search_leanback);
-    }
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.movie_search_leanback);
+  }
 
-    @Override
-    public boolean onSearchRequested() {
-        startActivity(new Intent(this, SearchActivity.class));
-        return true;
-    }
+  @Override public boolean onSearchRequested() {
+    startActivity(new Intent(this, SearchActivity.class));
+    return true;
+  }
 }

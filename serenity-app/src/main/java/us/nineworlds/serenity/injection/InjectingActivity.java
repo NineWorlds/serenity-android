@@ -27,9 +27,8 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 
 public abstract class InjectingActivity extends MvpAppCompatActivity {
 
-    public InjectingActivity() {
-        super();
-        SerenityObjectGraph.getInstance().inject(this);
-    }
-
+  public InjectingActivity() {
+    super();
+    SerenityObjectGraph.getInstance().inject(this);
+  }
 }

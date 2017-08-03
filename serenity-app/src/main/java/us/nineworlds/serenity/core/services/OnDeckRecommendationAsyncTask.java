@@ -25,28 +25,23 @@ package us.nineworlds.serenity.core.services;
 
 import android.content.Context;
 import android.os.AsyncTask;
-
 import us.nineworlds.serenity.core.OnDeckRecommendations;
 
 /**
  * @author dcarver
- *
  */
 public class OnDeckRecommendationAsyncTask extends AsyncTask {
 
-    Context context;
+  Context context;
 
-    public OnDeckRecommendationAsyncTask(Context context) {
-        this.context = context;
-    }
+  public OnDeckRecommendationAsyncTask(Context context) {
+    this.context = context;
+  }
 
-    @Override
-    protected Object doInBackground(Object... params) {
+  @Override protected Object doInBackground(Object... params) {
 
-        OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(
-                context);
-        onDeckRecommendations.recommended();
-        return null;
-    }
-
+    OnDeckRecommendations onDeckRecommendations = new OnDeckRecommendations(context);
+    onDeckRecommendations.recommended();
+    return null;
+  }
 }

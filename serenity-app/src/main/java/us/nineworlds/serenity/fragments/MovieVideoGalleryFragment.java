@@ -31,14 +31,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.birbit.android.jobqueue.JobManager;
-
-import net.ganin.darv.DpadAwareRecyclerView;
-
-import javax.inject.Inject;
-
 import butterknife.BindView;
+import com.birbit.android.jobqueue.JobManager;
+import javax.inject.Inject;
+import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
@@ -55,89 +51,79 @@ import static butterknife.ButterKnife.bind;
 
 public class MovieVideoGalleryFragment extends InjectingFragment {
 
-    @Inject
-    SharedPreferences preferences;
+  @Inject SharedPreferences preferences;
 
-    @Inject
-    GalleryVideoOnItemClickListener onItemClickListener;
+  @Inject GalleryVideoOnItemClickListener onItemClickListener;
 
-    @Inject
-    GalleryVideoOnItemLongClickListener onItemLongClickListener;
+  @Inject GalleryVideoOnItemLongClickListener onItemLongClickListener;
 
-    @Inject
-    protected MovieSelectedCategoryState categoryState;
+  @Inject protected MovieSelectedCategoryState categoryState;
 
-    @Inject
-    JobManager jobManager;
+  @Inject JobManager jobManager;
 
-    @Inject
-    PlexappFactory factory;
+  @Inject PlexappFactory factory;
 
-    @Inject
-    Resources resources;
+  @Inject Resources resources;
 
-    protected DpadAwareRecyclerView.OnItemSelectedListener onItemSelectedListener;
+  protected DpadAwareRecyclerView.OnItemSelectedListener onItemSelectedListener;
 
-    @BindView(R.id.moviePosterView)
-    protected DpadAwareRecyclerView videoGallery;
+  @BindView(R.id.moviePosterView) protected DpadAwareRecyclerView videoGallery;
 
-    public MovieVideoGalleryFragment() {
-        super();
-        setRetainInstance(true);
-    }
+  public MovieVideoGalleryFragment() {
+    super();
+    setRetainInstance(true);
+  }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
+  @Override public void onStart() {
+    super.onStart();
+  }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
+  @Override public void onStop() {
+    super.onStop();
+  }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        onItemSelectedListener = new MoviePosterOnItemSelectedListener();
-        View view = inflateView(inflater, container);
-        bind(this, view);
-        setupRecyclerView();
-        return view;
-    }
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    onItemSelectedListener = new MoviePosterOnItemSelectedListener();
+    View view = inflateView(inflater, container);
+    bind(this, view);
+    setupRecyclerView();
+    return view;
+  }
 
-    protected View inflateView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.video_gallery_fragment, null);
-    }
+  protected View inflateView(LayoutInflater inflater, ViewGroup container) {
+    return inflater.inflate(R.layout.video_gallery_fragment, null);
+  }
 
-    protected RecyclerView.ItemDecoration createItemDecorator() {
-        return new SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing));
-    }
+  protected RecyclerView.ItemDecoration createItemDecorator() {
+    return new SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing));
+  }
 
-    protected void setupRecyclerView() {
-        RecyclerView.LayoutManager linearLayoutManager = createLayoutManager();
+  protected void setupRecyclerView() {
+    RecyclerView.LayoutManager linearLayoutManager = createLayoutManager();
 
-        videoGallery.addItemDecoration(createItemDecorator());
-        videoGallery.setAdapter(new MoviePosterImageAdapter());
-        videoGallery.setLayoutManager(linearLayoutManager);
+    videoGallery.addItemDecoration(createItemDecorator());
+    videoGallery.setAdapter(new MoviePosterImageAdapter());
+    videoGallery.setLayoutManager(linearLayoutManager);
 
-        videoGallery.setOnItemSelectedListener(onItemSelectedListener);
-        videoGallery.setOnItemClickListener(onItemClickListener);
+    videoGallery.setOnItemSelectedListener(onItemSelectedListener);
+    videoGallery.setOnItemClickListener(onItemClickListener);
 
-        videoGallery.setHorizontalFadingEdgeEnabled(true);
-        videoGallery.setFocusableInTouchMode(false);
-        videoGallery.setDrawingCacheEnabled(true);
+    videoGallery.setHorizontalFadingEdgeEnabled(true);
+    videoGallery.setFocusableInTouchMode(false);
+    videoGallery.setDrawingCacheEnabled(true);
 
-        MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
+    MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
 
-        String key = activity.getKey();
+    String key = activity.getKey();
 
-        MovieCategoryJob job = new MovieCategoryJob(key);
-        jobManager.addJobInBackground(job);
-    }
+    MovieCategoryJob job = new MovieCategoryJob(key);
+    jobManager.addJobInBackground(job);
+  }
 
-    protected LinearLayoutManager createLayoutManager() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        return linearLayoutManager;
-    }
+  protected LinearLayoutManager createLayoutManager() {
+    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+    return linearLayoutManager;
+  }
 }

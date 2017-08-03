@@ -24,15 +24,13 @@
 package us.nineworlds.serenity;
 
 import android.content.Intent;
-
 import us.nineworlds.serenity.ui.leanback.search.SearchActivity;
 
 public class AndroidTV extends MainActivity {
 
-    @Override
-    public boolean onSearchRequested() {
-        Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
-        return true;
-    }
+  @Override public boolean onSearchRequested() {
+    Intent intent = new Intent(this, SearchActivity.class);
+    startActivity(intent);
+    return true;
+  }
 }

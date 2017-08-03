@@ -6,4 +6,5 @@
     android:textColor="@android:color/white"
     android:background="@drawable/spinner_item_background"
     android:padding="5dp"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    />

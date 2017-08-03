@@ -4,21 +4,21 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 
 public class MovieSecondaryCategoryEvent extends SerenityEvent {
 
-    private String key;
-    private String category;
+  private String key;
+  private String category;
 
-    public MovieSecondaryCategoryEvent(MediaContainer mediaContainer, String key, String category) {
-        super(mediaContainer);
+  public MovieSecondaryCategoryEvent(MediaContainer mediaContainer, String key, String category) {
+    super(mediaContainer);
 
-        this.key = key;
-        this.category = category;
-    }
+    this.key = key;
+    this.category = category;
+  }
 
-    public String getKey() {
-        return key;
-    }
+  public String getKey() {
+    return key;
+  }
 
-    public String getCategory() {
-        return category;
-    }
+  public String getCategory() {
+    return category;
+  }
 }

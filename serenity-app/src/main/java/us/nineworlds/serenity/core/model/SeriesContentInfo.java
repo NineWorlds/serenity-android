@@ -27,83 +27,77 @@ import java.util.List;
 
 /**
  * @author dcarver
- *
  */
 public interface SeriesContentInfo extends ContentInfo {
 
-    public void setKey(String key);
+  public void setKey(String key);
 
-    public String getKey();
+  public String getKey();
 
-    public List<String> getGeneres();
+  public List<String> getGeneres();
 
-    public void setGeneres(List<String> generes);
+  public void setGeneres(List<String> generes);
 
-    public String getShowsWatched();
+  public String getShowsWatched();
 
-    public void setShowsWatched(String showsWatched);
+  public void setShowsWatched(String showsWatched);
 
-    public String getShowsUnwatched();
+  public String getShowsUnwatched();
 
-    public void setShowsUnwatched(String showsUnwatched);
+  public void setShowsUnwatched(String showsUnwatched);
 
-    public String getShowMetaDataURL();
+  public String getShowMetaDataURL();
 
-    public void setShowMetaDataURL(String showMetaDataURL);
+  public void setShowMetaDataURL(String showMetaDataURL);
 
-    public String getThumbNailURL();
+  public String getThumbNailURL();
 
-    public void setThumbNailURL(String thumbNailURL);
+  public void setThumbNailURL(String thumbNailURL);
 
-    public String getContentRating();
+  public String getContentRating();
 
-    public String getYear();
+  public String getYear();
 
-    public void setContentRating(String contentRating);
+  public void setContentRating(String contentRating);
 
-    public void setYear(String year);
+  public void setYear(String year);
 
-    public String getParentTitle();
+  public String getParentTitle();
 
-    public void setParentTitle(String title);
+  public void setParentTitle(String title);
 
-    public String getStudio();
+  public String getStudio();
 
-    public void setStudio(String studio);
+  public void setStudio(String studio);
 
-    public void setRating(double ratings);
+  public void setRating(double ratings);
 
-    public double getRating();
+  public double getRating();
 
-    /**
-     * Indicates if a show has been partially watched
-     * @return true if it has been watched
-     */
-    public boolean isPartiallyWatched();
+  /**
+   * Indicates if a show has been partially watched
+   *
+   * @return true if it has been watched
+   */
+  public boolean isPartiallyWatched();
 
-    /**
-     * Indicates that the show has been watched
-     *
-     * Use getShowsWatched to get the actual count
-     *
-     */
-    public boolean isWatched();
+  /**
+   * Indicates that the show has been watched
+   *
+   * Use getShowsWatched to get the actual count
+   */
+  public boolean isWatched();
 
+  /**
+   * Indicates that the show has not been watched.
+   *
+   * Use getShowsUnwatched to get the actual count.
+   */
+  public boolean isUnwatched();
 
-    /**
-     * Indicates that the show has not been watched.
-     *
-     * Use getShowsUnwatched to get the actual count.
-     *
-     */
-    public boolean isUnwatched();
+  public float viewedPercentage();
 
+  public void toggleWatchedStatus();
 
-    public float viewedPercentage();
-
-
-    public void toggleWatchedStatus();
-
-    public int totalShows();
-
+  public int totalShows();
 }

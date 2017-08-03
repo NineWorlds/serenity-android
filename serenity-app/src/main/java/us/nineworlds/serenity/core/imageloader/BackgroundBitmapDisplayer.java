@@ -28,65 +28,59 @@ import android.view.View;
 
 public class BackgroundBitmapDisplayer implements Runnable {
 
-    protected Bitmap bitmap;
-    protected int defaultImageId;
-    protected View backgroundView;
+  protected Bitmap bitmap;
+  protected int defaultImageId;
+  protected View backgroundView;
 
-    public BackgroundBitmapDisplayer(Bitmap bitmap, int defaultImage, View view) {
-        this.bitmap = bitmap;
-        this.defaultImageId = defaultImage;
-        this.backgroundView = view;
+  public BackgroundBitmapDisplayer(Bitmap bitmap, int defaultImage, View view) {
+    this.bitmap = bitmap;
+    this.defaultImageId = defaultImage;
+    this.backgroundView = view;
+  }
+
+  @Override public void run() {
+    if (bitmap == null) {
+      backgroundView.setBackgroundResource(defaultImageId);
+      return;
     }
 
-    @Override
-    public void run() {
-        if (bitmap == null) {
-            backgroundView.setBackgroundResource(defaultImageId);
-            return;
-        }
+    SharedPreferences preferences =
+        PreferenceManager.getDefaultSharedPreferences(backgroundView.getContext());
+    boolean shouldFadeIn = preferences.getBoolean("animation_background_fadein", false);
 
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(backgroundView.getContext());
-        boolean shouldFadeIn = preferences.getBoolean(
-                "animation_background_fadein", false);
+    BitmapDrawable bitmapdrawable =
+        new BitmapDrawable(backgroundView.getContext().getResources(), bitmap);
 
-        BitmapDrawable bitmapdrawable = new BitmapDrawable(backgroundView
-                .getContext().getResources(), bitmap);
-
-        if (!shouldFadeIn) {
-            backgroundView.setBackgroundDrawable(bitmapdrawable);
-            return;
-        }
-
-        crossfadeImages(bitmapdrawable);
+    if (!shouldFadeIn) {
+      backgroundView.setBackgroundDrawable(bitmapdrawable);
+      return;
     }
 
-    private void crossfadeImages(BitmapDrawable newBitmapDrawable) {
-        Drawable currentDrawable = backgroundView.getBackground();
-        if (currentDrawable instanceof TransitionDrawable) {
-            currentDrawable = ((TransitionDrawable) currentDrawable)
-                    .getDrawable(1);
-        }
+    crossfadeImages(bitmapdrawable);
+  }
 
-        if (currentDrawable == null) {
-            currentDrawable = backgroundView.getContext().getResources()
-                    .getDrawable(defaultImageId);
-        }
-
-        Drawable[] drawables = {currentDrawable, newBitmapDrawable};
-        TransitionDrawable transitionDrawable = new TransitionDrawable(
-                drawables);
-        backgroundView.setBackgroundDrawable(transitionDrawable);
-        transitionDrawable.setCrossFadeEnabled(true);
-        int crossfadeduration = 200;
-        if (currentDrawable instanceof BitmapDrawable) {
-            BitmapDrawable currentBitmapDrawable = (BitmapDrawable) currentDrawable;
-            if (currentBitmapDrawable.getBitmap().sameAs(
-                    newBitmapDrawable.getBitmap())) {
-                transitionDrawable.setCrossFadeEnabled(false);
-                crossfadeduration = 0;
-            }
-        }
-        transitionDrawable.startTransition(crossfadeduration);
+  private void crossfadeImages(BitmapDrawable newBitmapDrawable) {
+    Drawable currentDrawable = backgroundView.getBackground();
+    if (currentDrawable instanceof TransitionDrawable) {
+      currentDrawable = ((TransitionDrawable) currentDrawable).getDrawable(1);
     }
+
+    if (currentDrawable == null) {
+      currentDrawable = backgroundView.getContext().getResources().getDrawable(defaultImageId);
+    }
+
+    Drawable[] drawables = { currentDrawable, newBitmapDrawable };
+    TransitionDrawable transitionDrawable = new TransitionDrawable(drawables);
+    backgroundView.setBackgroundDrawable(transitionDrawable);
+    transitionDrawable.setCrossFadeEnabled(true);
+    int crossfadeduration = 200;
+    if (currentDrawable instanceof BitmapDrawable) {
+      BitmapDrawable currentBitmapDrawable = (BitmapDrawable) currentDrawable;
+      if (currentBitmapDrawable.getBitmap().sameAs(newBitmapDrawable.getBitmap())) {
+        transitionDrawable.setCrossFadeEnabled(false);
+        crossfadeduration = 0;
+      }
+    }
+    transitionDrawable.startTransition(crossfadeduration);
+  }
 }

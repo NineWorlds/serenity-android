@@ -25,27 +25,25 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import javax.inject.Singleton;
 
-@Singleton
-public class MovieSelectedCategoryState {
+@Singleton public class MovieSelectedCategoryState {
 
-    private String category;
+  private String category;
 
-    private String genreCategory;
+  private String genreCategory;
 
-    public String getCategory() {
-        return category;
-    }
+  public String getCategory() {
+    return category;
+  }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+  public void setCategory(String category) {
+    this.category = category;
+  }
 
-    public String getGenreCategory() {
-        return genreCategory;
-    }
+  public String getGenreCategory() {
+    return genreCategory;
+  }
 
-    public void setGenreCategory(String genreCategory) {
-        this.genreCategory = genreCategory;
-    }
-
+  public void setGenreCategory(String genreCategory) {
+    this.genreCategory = genreCategory;
+  }
 }

@@ -25,9 +25,7 @@ package us.nineworlds.serenity.ui.listeners;
 
 import android.app.Activity;
 import android.view.View;
-
 import javax.inject.Inject;
-
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
@@ -37,20 +35,18 @@ import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
  * View. It launches video play back when a poster is selected.
  *
  * @author dcarver
- *
  */
 public class AbstractVideoOnItemClickListener extends BaseInjector {
 
-    protected VideoContentInfo videoInfo;
+  protected VideoContentInfo videoInfo;
 
-    @Inject
-    protected VideoPlayerIntentUtils vpUtils;
+  @Inject protected VideoPlayerIntentUtils vpUtils;
 
-    /**
-     * @param v
-     */
-    protected void onItemClick(View v) {
-        Activity activity = (Activity) v.getContext();
-        vpUtils.playVideo(activity, videoInfo, false);
-    }
+  /**
+   * @param v
+   */
+  protected void onItemClick(View v) {
+    Activity activity = (Activity) v.getContext();
+    vpUtils.playVideo(activity, videoInfo, false);
+  }
 }

@@ -24,9 +24,7 @@
 package us.nineworlds.serenity.core.model.impl;
 
 import java.util.List;
-
 import javax.inject.Inject;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -34,18 +32,16 @@ import us.nineworlds.serenity.injection.BaseInjector;
 
 public abstract class AbstractMediaContainer extends BaseInjector {
 
-    protected MediaContainer mc;
-    protected List<VideoContentInfo> videoList;
+  protected MediaContainer mc;
+  protected List<VideoContentInfo> videoList;
 
-    @Inject
-    protected PlexappFactory factory;
+  @Inject protected PlexappFactory factory;
 
-    /**
-     *
-     */
-    public AbstractMediaContainer(MediaContainer mc) {
-        super();
-        this.mc = mc;
-    }
-
+  /**
+   *
+   */
+  public AbstractMediaContainer(MediaContainer mc) {
+    super();
+    this.mc = mc;
+  }
 }

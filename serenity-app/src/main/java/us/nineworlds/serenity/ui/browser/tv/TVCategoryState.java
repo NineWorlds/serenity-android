@@ -24,10 +24,8 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import javax.inject.Singleton;
-
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 
-@Singleton
-public class TVCategoryState extends MovieSelectedCategoryState {
+@Singleton public class TVCategoryState extends MovieSelectedCategoryState {
 
 }

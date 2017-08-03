@@ -25,40 +25,36 @@ package us.nineworlds.serenity.core.model;
 
 /**
  * Data Object that represents the DB Meta Data Table
- * @author dcarver
  *
+ * @author dcarver
  */
 public class DBMetaData {
 
-    private long id;
-    private String plexId;
-    private String youTubeID;
+  private long id;
+  private String plexId;
+  private String youTubeID;
 
-    public long getId() {
-        return id;
-    }
+  public long getId() {
+    return id;
+  }
 
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  public String getYouTubeID() {
+    return youTubeID;
+  }
 
-    public String getYouTubeID() {
-        return youTubeID;
-    }
+  public void setYouTubeID(String youTubeID) {
+    this.youTubeID = youTubeID;
+  }
 
-    public void setYouTubeID(String youTubeID) {
-        this.youTubeID = youTubeID;
-    }
+  public String getPlexId() {
+    return plexId;
+  }
 
-
-    public String getPlexId() {
-        return plexId;
-    }
-
-
-    public void setPlexId(String plexId) {
-        this.plexId = plexId;
-    }
-
+  public void setPlexId(String plexId) {
+    this.plexId = plexId;
+  }
 }

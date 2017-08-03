@@ -27,6 +27,6 @@ import android.content.BroadcastReceiver;
 
 public abstract class InjectingBroadcastReceiver extends BroadcastReceiver {
 
-    public InjectingBroadcastReceiver() {
-    }
+  public InjectingBroadcastReceiver() {
+  }
 }

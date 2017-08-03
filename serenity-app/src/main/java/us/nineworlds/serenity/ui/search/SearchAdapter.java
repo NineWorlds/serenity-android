@@ -24,16 +24,13 @@
 package us.nineworlds.serenity.ui.search;
 
 import android.content.Context;
-
 import java.util.List;
-
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 
 public class SearchAdapter extends MoviePosterImageAdapter {
 
-    public SearchAdapter(Context c, List<VideoContentInfo> videos) {
-        posterList = videos;
-    }
-
+  public SearchAdapter(Context c, List<VideoContentInfo> videos) {
+    posterList = videos;
+  }
 }

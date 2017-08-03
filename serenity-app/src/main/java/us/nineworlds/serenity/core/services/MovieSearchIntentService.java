@@ -26,35 +26,29 @@ package us.nineworlds.serenity.core.services;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 
 /**
  * @author dcarver
- *
  * @deprecated Need to migrate this to Volley for searching for movies.
  */
-@Deprecated
-public class MovieSearchIntentService extends MoviesRetrievalIntentService {
+@Deprecated public class MovieSearchIntentService extends MoviesRetrievalIntentService {
 
-    protected String query;
+  protected String query;
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        Bundle bundle = intent.getExtras();
-        if (bundle == null) {
-            Log.e(getClass().getName(), "Missing intent extras");
-            return;
-        }
-        key = intent.getExtras().getString("key", "");
-        query = intent.getExtras().getString("query");
-        createPosters();
-        sendMessageResults(intent);
+  @Override protected void onHandleIntent(Intent intent) {
+    Bundle bundle = intent.getExtras();
+    if (bundle == null) {
+      Log.e(getClass().getName(), "Missing intent extras");
+      return;
     }
+    key = intent.getExtras().getString("key", "");
+    query = intent.getExtras().getString("query");
+    createPosters();
+    sendMessageResults(intent);
+  }
 
-    @Override
-    protected MediaContainer retrieveVideos() throws Exception {
-        return factory.searchMovies(key, query);
-    }
-
+  @Override protected MediaContainer retrieveVideos() throws Exception {
+    return factory.searchMovies(key, query);
+  }
 }

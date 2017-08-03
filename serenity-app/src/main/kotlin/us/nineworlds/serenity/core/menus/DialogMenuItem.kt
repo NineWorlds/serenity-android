@@ -35,12 +35,12 @@ package us.nineworlds.serenity.core.menus
  */
 class DialogMenuItem : MenuItem() {
 
-    var menuDialogAction: Int = 0
+  var menuDialogAction: Int = 0
 
-    companion object {
+  companion object {
 
-        private val serialVersionUID = -3235438497012856737L
-    }
+    private val serialVersionUID = -3235438497012856737L
+  }
 
 
 }

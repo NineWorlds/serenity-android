@@ -25,24 +25,21 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import android.view.View;
 
-
 /**
  * A listener that handles long press for video content. Includes displaying a
  * dialog for toggling watched and unwatched status as well for possibly playing
  * on the TV.
  *
  * @author dcarver
- *
  */
-public class TVShowGridOnItemLongClickListener extends AbstractTVShowOnItemLongClick implements View.OnLongClickListener {
+public class TVShowGridOnItemLongClickListener extends AbstractTVShowOnItemLongClick
+    implements View.OnLongClickListener {
 
+  @Override public boolean onLongClick(View v) {
+    init();
 
-    @Override
-    public boolean onLongClick(View v) {
-        init();
+    createAndShowDialog();
 
-        createAndShowDialog();
-
-        return true;
-    }
+    return true;
+  }
 }

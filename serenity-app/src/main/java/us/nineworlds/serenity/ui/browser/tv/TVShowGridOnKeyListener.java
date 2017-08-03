@@ -26,9 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.View;
-
 import net.ganin.darv.DpadAwareRecyclerView;
-
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -37,24 +35,23 @@ import static android.view.View.OnKeyListener;
 
 public class TVShowGridOnKeyListener extends BaseInjector implements OnKeyListener {
 
-    @Override
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if ((keyCode != KeyEvent.KEYCODE_MEDIA_PLAY && keyCode != KeyEvent.KEYCODE_BUTTON_R1)
-                || event.getAction() == KeyEvent.ACTION_DOWN) {
-            return false;
-        }
-
-        final SeriesContentInfo info = getSelectedSeries(v);
-        new FindUnwatchedAsyncTask((Activity) v.getContext()).execute(info);
-        return true;
+  @Override public boolean onKey(View v, int keyCode, KeyEvent event) {
+    if ((keyCode != KeyEvent.KEYCODE_MEDIA_PLAY && keyCode != KeyEvent.KEYCODE_BUTTON_R1)
+        || event.getAction() == KeyEvent.ACTION_DOWN) {
+      return false;
     }
 
-    protected SeriesContentInfo getSelectedSeries(View v) {
-        final DpadAwareRecyclerView gridView = (DpadAwareRecyclerView) v;
-        AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
-        int pos = gridView.getSelectedItemPosition();
-        final SeriesContentInfo info = (SeriesContentInfo) adapter.getItem(pos);
-        return info;
-    }
+    final SeriesContentInfo info = getSelectedSeries(v);
+    new FindUnwatchedAsyncTask((Activity) v.getContext()).execute(info);
+    return true;
+  }
 
+  protected SeriesContentInfo getSelectedSeries(View v) {
+    final DpadAwareRecyclerView gridView = (DpadAwareRecyclerView) v;
+    AbstractPosterImageGalleryAdapter adapter =
+        (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
+    int pos = gridView.getSelectedItemPosition();
+    final SeriesContentInfo info = (SeriesContentInfo) adapter.getItem(pos);
+    return info;
+  }
 }

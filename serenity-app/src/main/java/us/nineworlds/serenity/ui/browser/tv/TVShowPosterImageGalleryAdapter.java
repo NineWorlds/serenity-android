@@ -27,14 +27,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import us.nineworlds.serenity.R;
 
 public class TVShowPosterImageGalleryAdapter extends TVShowRecyclerAdapter {
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_tvshow_indicator_view, parent, false);
-        return new TVShowPosterViewHolder(view);
-    }
+  @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    View view = LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.poster_tvshow_indicator_view, parent, false);
+    return new TVShowPosterViewHolder(view);
+  }
 }

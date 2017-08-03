@@ -32,111 +32,99 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
-
 import javax.inject.Inject;
-
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 
-
 /**
  * A listener that handles long press for video content in Poster Gallery
  * classes.
  *
  * @author dcarver
- *
  */
-public class SeasonOnItemLongClickListener extends BaseInjector implements View.OnLongClickListener {
+public class SeasonOnItemLongClickListener extends BaseInjector
+    implements View.OnLongClickListener {
 
-    protected Dialog dialog;
-    protected Activity context;
-    protected ImageView vciv;
-    protected SeriesContentInfo info;
+  protected Dialog dialog;
+  protected Activity context;
+  protected ImageView vciv;
+  protected SeriesContentInfo info;
 
-    @Inject
-    @ForVideoQueue
-    protected LinkedList<VideoContentInfo> videoQueue;
+  @Inject @ForVideoQueue protected LinkedList<VideoContentInfo> videoQueue;
 
-    public SeasonOnItemLongClickListener(Activity context) {
-        this.context = context;
+  public SeasonOnItemLongClickListener(Activity context) {
+    this.context = context;
+  }
+
+  protected boolean onItemLongClick() {
+    dialog = new Dialog(context);
+    AlertDialog.Builder builder =
+        new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Holo));
+    builder.setTitle(context.getString(R.string.season_options));
+
+    ListView modeList = new ListView(context);
+    modeList.setSelector(R.drawable.menu_item_selector);
+    ArrayList<String> options = new ArrayList<String>();
+    options.add(context.getString(R.string.add_season_to_queue));
+
+    ArrayAdapter<String> modeAdapter =
+        new ArrayAdapter<String>(context, R.layout.simple_list_item, R.id.list_item_text, options);
+
+    modeList.setAdapter(modeAdapter);
+    modeList.setOnItemClickListener(new DialogOnItemSelected());
+
+    builder.setView(modeList);
+    dialog = builder.create();
+    dialog.show();
+
+    return true;
+  }
+
+  protected void performAddToQueue() {
+    //			SeasonsEpisodePosterImageGalleryAdapter adapter = (SeasonsEpisodePosterImageGalleryAdapter) gridView
+    //					.getAdapter();
+    //			List<VideoContentInfo> episodes = adapter.getItems();
+    //			videoQueue.addAll(episodes);
+    //			Toast.makeText(
+    //					context,
+    //					adapter.getItemCount()
+    //					+ " videos have been added to the queue.",
+    //					Toast.LENGTH_LONG).show();
+    //			View v = context.findViewById(R.id.tvShowSeasonImageGallery);
+    //			if (v != null) {
+    //				v.requestFocusFromTouch();
+    //			}
+    //		}
+  }
+
+  @Override public boolean onLongClick(View v) {
+    return false;
+  }
+
+  protected class DialogOnItemSelected implements OnItemClickListener {
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.widget.AdapterView.OnItemClickListener#onItemClick(android
+     * .widget.AdapterView, android.view.View, int, long)
+     */
+    @Override public void onItemClick(android.widget.AdapterView<?> arg0, View v, int position,
+        long arg3) {
+
+      switch (position) {
+        case 0:
+          performAddToQueue();
+          break;
+        default:
+      }
+      dialog.dismiss();
     }
-
-
-    protected boolean onItemLongClick() {
-        dialog = new Dialog(context);
-        AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(context, android.R.style.Theme_Holo));
-        builder.setTitle(context.getString(R.string.season_options));
-
-        ListView modeList = new ListView(context);
-        modeList.setSelector(R.drawable.menu_item_selector);
-        ArrayList<String> options = new ArrayList<String>();
-        options.add(context.getString(R.string.add_season_to_queue));
-
-        ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(context,
-                R.layout.simple_list_item, R.id.list_item_text, options);
-
-        modeList.setAdapter(modeAdapter);
-        modeList.setOnItemClickListener(new DialogOnItemSelected());
-
-        builder.setView(modeList);
-        dialog = builder.create();
-        dialog.show();
-
-        return true;
-    }
-
-    protected void performAddToQueue() {
-//			SeasonsEpisodePosterImageGalleryAdapter adapter = (SeasonsEpisodePosterImageGalleryAdapter) gridView
-//					.getAdapter();
-//			List<VideoContentInfo> episodes = adapter.getItems();
-//			videoQueue.addAll(episodes);
-//			Toast.makeText(
-//					context,
-//					adapter.getItemCount()
-//					+ " videos have been added to the queue.",
-//					Toast.LENGTH_LONG).show();
-//			View v = context.findViewById(R.id.tvShowSeasonImageGallery);
-//			if (v != null) {
-//				v.requestFocusFromTouch();
-//			}
-//		}
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        return false;
-    }
-
-    protected class DialogOnItemSelected implements OnItemClickListener {
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see
-         * android.widget.AdapterView.OnItemClickListener#onItemClick(android
-         * .widget.AdapterView, android.view.View, int, long)
-         */
-        @Override
-        public void onItemClick(android.widget.AdapterView<?> arg0, View v,
-                                int position, long arg3) {
-
-            switch (position) {
-                case 0:
-                    performAddToQueue();
-                    break;
-                default:
-
-            }
-            dialog.dismiss();
-        }
-
-    }
-
+  }
 }

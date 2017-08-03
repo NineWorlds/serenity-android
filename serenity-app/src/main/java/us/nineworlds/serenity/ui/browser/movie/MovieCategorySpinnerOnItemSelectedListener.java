@@ -32,13 +32,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.birbit.android.jobqueue.JobManager;
-
 import java.util.List;
-
 import javax.inject.Inject;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
@@ -46,155 +42,140 @@ import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.jobs.MovieSecondaryCategoryJob;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 
-public class MovieCategorySpinnerOnItemSelectedListener extends
-        BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
+public class MovieCategorySpinnerOnItemSelectedListener extends BaseSpinnerOnItemSelectedListener
+    implements OnItemSelectedListener {
 
-    @Inject
-    PlexappFactory factory;
+  @Inject PlexappFactory factory;
 
-    @Inject
-    JobManager jobManager;
+  @Inject JobManager jobManager;
 
-    private SerenityMultiViewVideoActivity activity;
+  private SerenityMultiViewVideoActivity activity;
 
-    protected Spinner secondarySpinner;
+  protected Spinner secondarySpinner;
 
-    private static String category;
-    private String savedInstanceCategory; // From a restarted activity
-    private final Handler secondaryCategoryHandler;
+  private static String category;
+  private String savedInstanceCategory; // From a restarted activity
+  private final Handler secondaryCategoryHandler;
 
-    public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection,
-                                                      String ckey, SerenityMultiViewVideoActivity activity) {
-        super(defaultSelection, ckey);
-        secondaryCategoryHandler = new SecondaryCategoryHandler();
-        this.activity = activity;
+  public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection, String ckey,
+      SerenityMultiViewVideoActivity activity) {
+    super(defaultSelection, ckey);
+    secondaryCategoryHandler = new SecondaryCategoryHandler();
+    this.activity = activity;
+  }
+
+  public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection, String ckey,
+      boolean firstSelection, SerenityMultiViewVideoActivity activity) {
+    this(defaultSelection, ckey, activity);
+    savedInstanceCategory = defaultSelection;
+    this.setFirstSelection(firstSelection);
+  }
+
+  @Override
+  public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
+    if (view == null) {
+      return;
     }
 
-    public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection,
-                                                      String ckey, boolean firstSelection, SerenityMultiViewVideoActivity activity) {
-        this(defaultSelection, ckey, activity);
-        savedInstanceCategory = defaultSelection;
-        this.setFirstSelection(firstSelection);
+    setMultiViewVideoActivity(activity);
+
+    findViews();
+
+    CategoryInfo item = (CategoryInfo) viewAdapter.getItemAtPosition(position);
+
+    if (savedInstanceCategory != null) {
+      int savedInstancePosition = getSavedInstancePosition(viewAdapter);
+      item = (CategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
+      viewAdapter.setSelection(savedInstancePosition);
+      savedInstanceCategory = null;
+      if (item.getLevel() == 0) {
+        createGallery(item);
+      } else {
+        populateSecondaryCategory();
+        return;
+      }
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> viewAdapter, View view,
-                               int position, long id) {
-        if (view == null) {
-            return;
+    if (isFirstSelection()) {
+
+      String filter = prefs.getString("serenity_category_filter", "all");
+
+      int count = viewAdapter.getCount();
+      for (int i = 0; i < count; i++) {
+        CategoryInfo citem = (CategoryInfo) viewAdapter.getItemAtPosition(i);
+        if (citem.getCategory().equals(filter)) {
+          item = citem;
+          selected = citem.getCategory();
+          viewAdapter.setSelection(i);
+          continue;
         }
+      }
 
-        setMultiViewVideoActivity(activity);
+      createGallery(item);
 
-        findViews();
-
-        CategoryInfo item = (CategoryInfo) viewAdapter
-                .getItemAtPosition(position);
-
-        if (savedInstanceCategory != null) {
-            int savedInstancePosition = getSavedInstancePosition(viewAdapter);
-            item = (CategoryInfo) viewAdapter
-                    .getItemAtPosition(savedInstancePosition);
-            viewAdapter.setSelection(savedInstancePosition);
-            savedInstanceCategory = null;
-            if (item.getLevel() == 0) {
-                createGallery(item);
-            } else {
-                populateSecondaryCategory();
-                return;
-            }
-        }
-
-        if (isFirstSelection()) {
-
-            String filter = prefs.getString("serenity_category_filter", "all");
-
-            int count = viewAdapter.getCount();
-            for (int i = 0; i < count; i++) {
-                CategoryInfo citem = (CategoryInfo) viewAdapter
-                        .getItemAtPosition(i);
-                if (citem.getCategory().equals(filter)) {
-                    item = citem;
-                    selected = citem.getCategory();
-                    viewAdapter.setSelection(i);
-                    continue;
-                }
-            }
-
-            createGallery(item);
-
-            setFirstSelection(false);
-            return;
-        }
-
-        if (selected.equalsIgnoreCase(item.getCategory())) {
-            return;
-        }
-
-        selected = item.getCategory();
-        category = item.getCategory();
-        categoryState.setCategory(selected);
-
-        if (item.getLevel() == 0) {
-            secondarySpinner.setVisibility(View.INVISIBLE);
-            createGallery(item);
-        } else {
-            populateSecondaryCategory();
-        }
+      setFirstSelection(false);
+      return;
     }
 
-    @Override
-    protected void findViews() {
-        super.findViews();
-        secondarySpinner = (Spinner) getMultiViewVideoActivity().findViewById(
-                R.id.categoryFilter2);
+    if (selected.equalsIgnoreCase(item.getCategory())) {
+      return;
     }
 
-    protected void populateSecondaryCategory() {
-        jobManager.addJobInBackground(new MovieSecondaryCategoryJob(key, category));
+    selected = item.getCategory();
+    category = item.getCategory();
+    categoryState.setCategory(selected);
+
+    if (item.getLevel() == 0) {
+      secondarySpinner.setVisibility(View.INVISIBLE);
+      createGallery(item);
+    } else {
+      populateSecondaryCategory();
     }
+  }
 
-    protected void createGallery(CategoryInfo item) {
-        Activity activity = getActivity(getMultiViewVideoActivity());
-        if (activity instanceof MovieBrowserActivity) {
-            MovieBrowserActivity movieBrowserActivity = (MovieBrowserActivity) activity;
-            movieBrowserActivity.requestUpdatedVideos(key, item.getCategory());
-        }
+  @Override protected void findViews() {
+    super.findViews();
+    secondarySpinner = (Spinner) getMultiViewVideoActivity().findViewById(R.id.categoryFilter2);
+  }
+
+  protected void populateSecondaryCategory() {
+    jobManager.addJobInBackground(new MovieSecondaryCategoryJob(key, category));
+  }
+
+  protected void createGallery(CategoryInfo item) {
+    Activity activity = getActivity(getMultiViewVideoActivity());
+    if (activity instanceof MovieBrowserActivity) {
+      MovieBrowserActivity movieBrowserActivity = (MovieBrowserActivity) activity;
+      movieBrowserActivity.requestUpdatedVideos(key, item.getCategory());
     }
+  }
 
-    private class SecondaryCategoryHandler extends Handler {
+  private class SecondaryCategoryHandler extends Handler {
 
-        @Override
-        public void handleMessage(Message msg) {
-            List<SecondaryCategoryInfo> secondaryCategories = (List<SecondaryCategoryInfo>) msg.obj;
+    @Override public void handleMessage(Message msg) {
+      List<SecondaryCategoryInfo> secondaryCategories = (List<SecondaryCategoryInfo>) msg.obj;
 
-            if (secondaryCategories == null || secondaryCategories.isEmpty()) {
-                Toast.makeText(getMultiViewVideoActivity(),
-                        R.string.no_entries_available_for_category_,
-                        Toast.LENGTH_LONG).show();
-                return;
-            }
+      if (secondaryCategories == null || secondaryCategories.isEmpty()) {
+        Toast.makeText(getMultiViewVideoActivity(), R.string.no_entries_available_for_category_,
+            Toast.LENGTH_LONG).show();
+        return;
+      }
 
-            Spinner secondarySpinner = (Spinner) getMultiViewVideoActivity()
-                    .findViewById(R.id.categoryFilter2);
-            secondarySpinner.setVisibility(View.VISIBLE);
+      Spinner secondarySpinner =
+          (Spinner) getMultiViewVideoActivity().findViewById(R.id.categoryFilter2);
+      secondarySpinner.setVisibility(View.VISIBLE);
 
-            ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter = new ArrayAdapter<SecondaryCategoryInfo>(
-                    getMultiViewVideoActivity(),
-                    R.layout.serenity_spinner_textview, secondaryCategories);
-            spinnerSecArrayAdapter
-                    .setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
-            secondarySpinner.setAdapter(spinnerSecArrayAdapter);
-            secondarySpinner
-                    .setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(
-                            category, key, activity));
-        }
-
+      ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter =
+          new ArrayAdapter<SecondaryCategoryInfo>(getMultiViewVideoActivity(),
+              R.layout.serenity_spinner_textview, secondaryCategories);
+      spinnerSecArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+      secondarySpinner.setAdapter(spinnerSecArrayAdapter);
+      secondarySpinner.setOnItemSelectedListener(
+          new SecondaryCategorySpinnerOnItemSelectedListener(category, key, activity));
     }
+  }
 
-    @Override
-    protected String getSavedCategory() {
-        return categoryState.getCategory();
-    }
-
+  @Override protected String getSavedCategory() {
+    return categoryState.getCategory();
+  }
 }

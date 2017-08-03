@@ -26,55 +26,46 @@ package us.nineworlds.serenity.core;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-
 import com.birbit.android.jobqueue.JobManager;
-
 import javax.inject.Inject;
-
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.jobs.OnDeckRecommendationsJob;
 
 public class OnDeckRecommendations extends BaseInjector {
 
-    @Inject
-    AndroidHelper androidHelper;
+  @Inject AndroidHelper androidHelper;
 
-    @Inject
-    SharedPreferences preferences;
+  @Inject SharedPreferences preferences;
 
-    @Inject
-    JobManager jobManager;
+  @Inject JobManager jobManager;
 
-    private final Context context;
+  private final Context context;
 
-    public OnDeckRecommendations(Context context) {
-        super();
-        this.context = context;
+  public OnDeckRecommendations(Context context) {
+    super();
+    this.context = context;
+  }
+
+  public boolean recommended() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+      return false;
     }
 
-    public boolean recommended() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            return false;
-        }
-
-        if (!androidHelper.isLeanbackSupported()) {
-            return false;
-        }
-
-        boolean onDeckRecommendations = preferences.getBoolean(
-                SerenityConstants.PREFERENCE_ONDECK_RECOMMENDATIONS, false);
-        boolean isAndroidTV = preferences.getBoolean(
-                SerenityConstants.PREFERENCE_TV_MODE, false);
-
-        if (!onDeckRecommendations || !isAndroidTV) {
-            return false;
-        }
-
-        jobManager.addJobInBackground(new OnDeckRecommendationsJob());
-
-        return true;
+    if (!androidHelper.isLeanbackSupported()) {
+      return false;
     }
 
+    boolean onDeckRecommendations =
+        preferences.getBoolean(SerenityConstants.PREFERENCE_ONDECK_RECOMMENDATIONS, false);
+    boolean isAndroidTV = preferences.getBoolean(SerenityConstants.PREFERENCE_TV_MODE, false);
 
+    if (!onDeckRecommendations || !isAndroidTV) {
+      return false;
+    }
+
+    jobManager.addJobInBackground(new OnDeckRecommendationsJob());
+
+    return true;
+  }
 }

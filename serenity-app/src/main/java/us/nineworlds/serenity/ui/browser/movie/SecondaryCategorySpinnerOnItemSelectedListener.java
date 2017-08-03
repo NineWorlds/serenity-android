@@ -27,7 +27,6 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 
@@ -35,56 +34,52 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
  * Populate the movie posters based on the information from the Secondary
  * categories.
  */
-public class SecondaryCategorySpinnerOnItemSelectedListener extends
-        BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
+public class SecondaryCategorySpinnerOnItemSelectedListener
+    extends BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
-    SerenityMultiViewVideoActivity activity;
+  SerenityMultiViewVideoActivity activity;
 
-    public SecondaryCategorySpinnerOnItemSelectedListener(
-            String defaultSelection, String key, SerenityMultiViewVideoActivity activity) {
-        super(defaultSelection, key);
-        this.activity = activity;
+  public SecondaryCategorySpinnerOnItemSelectedListener(String defaultSelection, String key,
+      SerenityMultiViewVideoActivity activity) {
+    super(defaultSelection, key);
+    this.activity = activity;
+  }
+
+  @Override
+  public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
+
+    setMultiViewVideoActivity(activity);
+
+    findViews();
+
+    SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(position);
+
+    if (isFirstSelection()) {
+      if (categoryState.getGenreCategory() != null) {
+        int savedInstancePosition = getSavedInstancePosition(viewAdapter);
+        item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
+        viewAdapter.setSelection(savedInstancePosition);
+      }
+      setFirstSelection(false);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> viewAdapter, View view,
-                               int position, long id) {
-
-        setMultiViewVideoActivity(activity);
-
-        findViews();
-
-        SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter
-                .getItemAtPosition(position);
-
-        if (isFirstSelection()) {
-            if (categoryState.getGenreCategory() != null) {
-                int savedInstancePosition = getSavedInstancePosition(viewAdapter);
-                item = (SecondaryCategoryInfo) viewAdapter
-                        .getItemAtPosition(savedInstancePosition);
-                viewAdapter.setSelection(savedInstancePosition);
-            }
-            setFirstSelection(false);
-        }
-
-        if (selected.equalsIgnoreCase(item.getCategory())) {
-            return;
-        }
-
-        selected = item.getCategory();
-
-        categoryState.setGenreCategory(item.getCategory());
-
-        Activity activity = getActivity(getMultiViewVideoActivity());
-        if (activity instanceof MovieBrowserActivity) {
-            MovieBrowserActivity movieBrowserActivity = (MovieBrowserActivity) activity;
-            movieBrowserActivity.requestUpdatedVideos(key, item.getParentCategory() + "/" + item.getCategory());
-        }
+    if (selected.equalsIgnoreCase(item.getCategory())) {
+      return;
     }
 
-    @Override
-    protected String getSavedCategory() {
-        return categoryState.getGenreCategory();
-    }
+    selected = item.getCategory();
 
+    categoryState.setGenreCategory(item.getCategory());
+
+    Activity activity = getActivity(getMultiViewVideoActivity());
+    if (activity instanceof MovieBrowserActivity) {
+      MovieBrowserActivity movieBrowserActivity = (MovieBrowserActivity) activity;
+      movieBrowserActivity.requestUpdatedVideos(key,
+          item.getParentCategory() + "/" + item.getCategory());
+    }
+  }
+
+  @Override protected String getSavedCategory() {
+    return categoryState.getGenreCategory();
+  }
 }

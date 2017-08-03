@@ -2,4 +2,4 @@
 The master change log is kept in res/xml/changelog_master.xml.
 Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
 -->
-<changelog />
+<changelog/>

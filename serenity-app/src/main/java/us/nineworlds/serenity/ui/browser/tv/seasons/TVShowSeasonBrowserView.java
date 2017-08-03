@@ -1,17 +1,15 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import com.arellomobile.mvp.MvpView;
-
 import java.util.List;
-
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 public interface TVShowSeasonBrowserView extends MvpView {
 
-    void fetchEpisodes(String key);
+  void fetchEpisodes(String key);
 
-    void updateEpisodes(List<VideoContentInfo> episodes);
+  void updateEpisodes(List<VideoContentInfo> episodes);
 
-    void populateSeasons(List<SeriesContentInfo> seasons);
+  void populateSeasons(List<SeriesContentInfo> seasons);
 }

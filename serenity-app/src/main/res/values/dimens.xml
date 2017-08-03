@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="small_image">100dp</dimen>
-    <dimen name="actionbarMargin">60dp</dimen>
-    <dimen name="horizontal_spacing">15dp</dimen>
-    <dimen name="grid_spacing_dimen">5dp</dimen>
+  <dimen name="small_image">100dp</dimen>
+  <dimen name="actionbarMargin">60dp</dimen>
+  <dimen name="horizontal_spacing">15dp</dimen>
+  <dimen name="grid_spacing_dimen">5dp</dimen>
 </resources>
