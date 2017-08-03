@@ -19,6 +19,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
@@ -36,6 +37,9 @@ public class StartupBroadcastReceiverTest extends InjectingTest {
 
     @Mock
     SharedPreferences mockSharedPrefences;
+
+    @Mock
+    AndroidHelper mockAndroidHelper;
 
     StartupBroadcastReceiver receiver;
 
@@ -87,7 +91,25 @@ public class StartupBroadcastReceiverTest extends InjectingTest {
         verify(mockSharedPrefences).getBoolean("serenity_boot_startup", false);
     }
 
+    @Test
+    public void onReceiveHandelsLeanBackSupport() {
+        Intent intent = new Intent();
+        String action = "android.intent.action.BOOT_COMPLETED";
+        intent.setAction(action);
 
+        doReturn(true).when(mockSharedPrefences).getBoolean("serenity_boot_startup", false);
+        doReturn(true).when(mockSharedPrefences).getBoolean("androidtv_recommendation_ondeck", false);
+        doReturn(true).when(mockAndroidHelper).isLeanbackSupported();
+
+        receiver.onReceive(application.getApplicationContext(), intent);
+
+        Intent nextStartedActivity = ShadowApplication.getInstance().peekNextStartedActivity();
+        assertThat(nextStartedActivity).isNotNull();
+
+        verify(mockSharedPrefences).getBoolean("serenity_boot_startup", false);
+        verify(mockSharedPrefences).getBoolean("androidtv_recommendation_ondeck", false);
+        verify(mockAndroidHelper).isLeanbackSupported();
+    }
 
     @Override
     public List<Object> getModules() {
@@ -112,5 +134,10 @@ public class StartupBroadcastReceiverTest extends InjectingTest {
             return mockSharedPrefences;
         }
 
+        @Provides
+        @Singleton
+        AndroidHelper providesAndroidHelper() {
+            return mockAndroidHelper;
+        }
     }
 }
