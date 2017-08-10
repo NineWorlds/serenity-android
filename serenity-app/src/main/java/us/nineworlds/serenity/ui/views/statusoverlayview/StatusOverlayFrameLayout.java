@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.os.Parcelable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +12,6 @@ import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -21,7 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.arellomobile.mvp.MvpDelegate;
+import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -29,13 +27,12 @@ import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
+import us.nineworlds.serenity.ui.views.mvp.MvpFrameLayout;
 import us.nineworlds.serenity.widgets.RoundedImageView;
 
-public class StatusOverlayFrameLayout extends FrameLayout implements StatusOverlayView {
+public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOverlayView {
 
   @InjectPresenter StatusOverlayPresenter presenter;
-
-  MvpDelegate mvpDelegate;
 
   @BindView(R.id.posterImageView) RoundedImageView roundedImageView;
   @BindView(R.id.posterOverlayTitle) TextView posterOverlayTitle;
@@ -71,31 +68,10 @@ public class StatusOverlayFrameLayout extends FrameLayout implements StatusOverl
   protected void init() {
     inflate(getContext(), R.layout.status_overlay_view, this);
     ButterKnife.bind(this, this);
-    initMvp();
   }
 
-  @Override protected void onAttachedToWindow() {
-    super.onAttachedToWindow();
-    getMvpDelegate().onCreate();
-    getMvpDelegate().onAttach();
-  }
-
-  @Override protected Parcelable onSaveInstanceState() {
-    getMvpDelegate().onSaveInstanceState();
-    return super.onSaveInstanceState();
-  }
-
-  @Override protected void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
-    getMvpDelegate().onDetach();
-    getMvpDelegate().onDestroyView();
-  }
-
-  protected MvpDelegate getMvpDelegate() {
-    if (mvpDelegate == null) {
-      mvpDelegate = new MvpDelegate<>(this);
-    }
-    return mvpDelegate;
+  @Override protected MvpPresenter getPresenter() {
+    return presenter;
   }
 
   @Override public void setTag(Object tag) {
