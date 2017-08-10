@@ -20,11 +20,8 @@ public abstract class AbstractPosterImageViewHolder<T extends ContentInfo>
     extends RecyclerView.ViewHolder {
 
   @BindView(R.id.posterInprogressIndicator) public ProgressBar posterInprogressIndicator;
-
   @BindView(R.id.posterWatchedIndicator) public ImageView watchedView;
-
   @BindView(R.id.infoGraphicMeta) @Nullable public LinearLayout infoGraphicMetaContainer;
-
   @BindView(R.id.posterImageView) public RoundedImageView posterImageView;
 
   public AbstractPosterImageViewHolder(View itemView) {
@@ -32,9 +29,6 @@ public abstract class AbstractPosterImageViewHolder<T extends ContentInfo>
     ButterKnife.bind(this, itemView);
   }
 
-  /**
-   * Resets the view back to the initial state
-   */
   public abstract void reset();
 
   public abstract void createImage(T contentInfo, int width, int height);

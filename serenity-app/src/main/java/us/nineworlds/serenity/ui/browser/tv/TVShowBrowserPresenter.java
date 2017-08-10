@@ -24,8 +24,9 @@ import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.jobs.TVCategoryJob;
 import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
 
-@InjectViewState @StateStrategyType(SkipStrategy.class) public class TVShowBrowserPresenter
-    extends MvpPresenter<TVShowBrowserView> {
+@InjectViewState
+@StateStrategyType(SkipStrategy.class)
+public class TVShowBrowserPresenter extends MvpPresenter<TVShowBrowserView> {
 
   @Inject EventBus eventBus;
 
@@ -56,21 +57,17 @@ import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN) public void onTVCategoryResponse(TVCategoryEvent event) {
-    TVCategoryMediaContainer categoryMediaContainer =
-        new TVCategoryMediaContainer(event.getMediaContainer());
+    TVCategoryMediaContainer categoryMediaContainer = new TVCategoryMediaContainer(event.getMediaContainer());
     List<CategoryInfo> categories = categoryMediaContainer.createCategories();
     getViewState().updateCategories(categories);
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onTVShowResponse(TVShowRetrievalEvent event) {
-    List<SeriesContentInfo> tvShowList =
-        new SeriesMediaContainer(event.getMediaContainer()).createSeries();
+  @Subscribe(threadMode = ThreadMode.MAIN) public void onTVShowResponse(TVShowRetrievalEvent event) {
+    List<SeriesContentInfo> tvShowList = new SeriesMediaContainer(event.getMediaContainer()).createSeries();
     getViewState().displayShows(tvShowList, event.getCategory());
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onTVCategorySecondaryResponse(TVCategorySecondaryEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN) public void onTVCategorySecondaryResponse(TVCategorySecondaryEvent event) {
     SecondaryCategoryMediaContainer scMediaContainer =
         new SecondaryCategoryMediaContainer(event.getMediaContainer(), event.getCategory());
 

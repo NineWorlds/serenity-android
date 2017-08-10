@@ -25,28 +25,30 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import java.util.List;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.views.statusoverlayview.StatusOverlayFrameLayout;
 
 public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View view = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.poster_indicator_view, parent, false);
+    StatusOverlayFrameLayout view = (StatusOverlayFrameLayout) LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.movie_status_overlay, parent, false);
+    //view.initMvp();
     return new MoviePosterViewHolder(view);
   }
 
   @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-    MoviePosterViewHolder viewHolder = (MoviePosterViewHolder) holder;
+    StatusOverlayFrameLayout overlayView = (StatusOverlayFrameLayout) holder.itemView;
 
     VideoContentInfo pi = posterList.get(position);
-    viewHolder.reset();
-    viewHolder.createImage(pi, 130, 200);
-    viewHolder.toggleWatchedIndicator(pi);
+    overlayView.setTag(pi);
+    overlayView.reset();
+    overlayView.createImage(pi, 130, 200);
+    overlayView.toggleWatchedIndicator(pi);
   }
 
   protected void populatePosters(List<VideoContentInfo> videos) {
