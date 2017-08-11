@@ -17,7 +17,7 @@ before_install:
    - pip install --user codecov
 
 script:
-   - ./gradlew clean jacocoTestReportDebug
+   - ./gradlew clean jacocoTestReportDebug sonarqube
    
 after_success:
   - codecov

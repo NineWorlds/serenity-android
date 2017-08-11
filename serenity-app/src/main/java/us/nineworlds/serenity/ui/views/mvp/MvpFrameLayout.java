@@ -13,10 +13,6 @@ import android.widget.FrameLayout;
 import com.arellomobile.mvp.MvpDelegate;
 import com.arellomobile.mvp.MvpPresenter;
 
-/**
- * Created by dcarver on 8/9/17.
- */
-
 public abstract class MvpFrameLayout extends FrameLayout {
 
   protected MvpDelegate mvpDelegate;
