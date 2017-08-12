@@ -35,6 +35,10 @@ sonarqube {
     property "sonar.organization", "kingargyle-github"
     property "sonar.login", "cb7af08f0b0e86306ac5365074326dc27aba503e"
     property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/testDebugUnitTest.exec"
+    property "sonar.coverage.exclusions", "**/*_ViewBinding.class, **/*InjectAdapter.class, android/support/**/*.class,\
+              com/google/**/*.class, com/birbit/**/*.class, butterknife/**/*.class, \
+              com/arellomobile/**/*.class, net/ganin/darv/**/*.class, **/*ViewStateProvider.class,\
+              **/*PresentersBinder.class, us/nineworlds/serenity/R.*.class"
   }
 }
 
