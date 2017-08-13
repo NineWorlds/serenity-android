@@ -32,7 +32,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBar;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -42,6 +41,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -74,8 +75,7 @@ import us.nineworlds.serenity.ui.util.DisplayUtils;
  *
  * @author dcarver
  */
-public class SerenitySurfaceViewVideoActivity extends SerenityActivity
-    implements SurfaceHolder.Callback {
+public class SerenitySurfaceViewVideoActivity extends SerenityActivity implements SurfaceHolder.Callback {
 
   @Inject @ForVideoQueue protected LinkedList<VideoContentInfo> videoQueue;
 
@@ -100,10 +100,13 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
   private VideoPlayerKeyCodeHandler videoPlayerKeyCodeHandler;
 
   private String videoURL;
-  private SurfaceView surfaceView;
-  private View videoActivityView;
+
+  @BindView(R.id.surfaceView) SurfaceView surfaceView;
+  @BindView(R.id.video_playeback) View videoActivityView;
   private MediaController mediaController;
-  private View timeOfDayView;
+
+  @BindView(R.id.time_of_day) View timeOfDayView;
+
   private String aspectRatio;
   private VideoContentInfo video;
   private String videoId;
@@ -135,8 +138,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
       mediaPlayer.setDisplay(holder);
       mediaPlayer.setDataSource(videoURL);
       mediaPlayer.setOnPreparedListener(
-          new VideoPlayerPrepareListener(mediaController, surfaceView, resumeOffset, autoResume,
-              aspectRatio, progressReportinghandler, progressRunnable));
+          new VideoPlayerPrepareListener(mediaController, surfaceView, resumeOffset, autoResume, aspectRatio,
+              progressReportinghandler, progressRunnable));
       mediaPlayer.setOnCompletionListener(new VideoPlayerOnCompletionListener());
       mediaPlayer.prepareAsync();
     } catch (Exception ex) {
@@ -155,12 +158,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.video_playback);
     DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-      ActionBar supportActionBar = getSupportActionBar();
-      if (supportActionBar != null) {
-        supportActionBar.hide();
-      }
-    }
     init();
   }
 
@@ -168,14 +165,11 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
    * Initialize the mediaplayer and mediacontroller.
    */
   protected void init() {
+    ButterKnife.bind(this);
     osdDelayTime = Integer.parseInt(prefs.getString("osd_display_time", "5000"));
-
     mediaPlayer.setOnErrorListener(new SerenityOnErrorListener());
-    surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
-    videoActivityView = findViewById(R.id.video_playeback);
-    timeOfDayView = findViewById(R.id.time_of_day);
-
     surfaceView.setKeepScreenOn(true);
+
     SurfaceHolder holder = surfaceView.getHolder();
     holder.addCallback(this);
     holder.setSizeFromLayout();
@@ -188,8 +182,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
   }
 
   protected VideoPlayerKeyCodeHandler createVideoPlayerKeyCodeHandler() {
-    return new VideoPlayerKeyCodeHandler(mediaPlayer, mediaController, osdDelayTime,
-        progressReportinghandler, progressRunnable, timeOfDayView, this);
+    return new VideoPlayerKeyCodeHandler(mediaPlayer, mediaController, osdDelayTime, progressReportinghandler,
+        progressRunnable, timeOfDayView, this);
   }
 
   protected void retrieveIntentExtras() {
@@ -231,8 +225,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
     subtitleType = extras.getString("subtitleFormat");
     mediaTagIdentifier = extras.getString("mediaTagId");
     MediaControllerDataObject mediaMetaData =
-        initMetaData(summary, title, posterURL, videoFormat, videoResolution, audioFormat,
-            audioChannels);
+        initMetaData(summary, title, posterURL, videoFormat, videoResolution, audioFormat, audioChannels);
     initMediaController(mediaMetaData);
   }
 
@@ -247,7 +240,6 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
     String summary = video.getSummary();
     String title = video.getLongTitle();
     String posterURL = video.getImageURL();
-    ;
     if (video instanceof EpisodePosterInfo) {
       if (video.getParentPosterURL() != null) {
         posterURL = video.getParentPosterURL();
@@ -265,8 +257,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
     }
     mediaTagIdentifier = video.getMediaTagIdentifier();
     MediaControllerDataObject mediaMetaData =
-        initMetaData(summary, title, posterURL, videoFormat, videoResolution, audioFormat,
-            audioChannels);
+        initMetaData(summary, title, posterURL, videoFormat, videoResolution, audioFormat, audioChannels);
 
     initMediaController(mediaMetaData);
   }
@@ -278,8 +269,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
     mediaController.setOSDDelayTime(osdDelayTime);
   }
 
-  private MediaControllerDataObject initMetaData(String summary, String title, String posterURL,
-      String videoFormat, String videoResolution, String audioFormat, String audioChannels) {
+  private MediaControllerDataObject initMetaData(String summary, String title, String posterURL, String videoFormat,
+      String videoResolution, String audioFormat, String audioChannels) {
     MediaControllerDataObject mediaMetaData = new MediaControllerDataObject();
     mediaMetaData.setContext(this);
     mediaMetaData.setSummary(summary);
@@ -411,7 +402,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
   }
 
   public void onTimedText(Caption text) {
-    TextView subtitles = (TextView) findViewById(R.id.txtSubtitles);
+    TextView subtitles = ButterKnife.findById(this, R.id.txtSubtitles);
     if (text == null) {
       subtitles.setVisibility(View.INVISIBLE);
       return;
@@ -428,8 +419,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
     }
     Charset charsetOutput = Charset.forName(outputEncoding);
     Charset charsetInput = Charset.forName(subtitleInputEncoding);
-    CharBuffer inputEncoded = charsetInput.decode(
-        ByteBuffer.wrap(textToConvert.getBytes(Charset.forName(subtitleInputEncoding))));
+    CharBuffer inputEncoded =
+        charsetInput.decode(ByteBuffer.wrap(textToConvert.getBytes(Charset.forName(subtitleInputEncoding))));
     byte[] utfEncoded = charsetOutput.encode(inputEncoded).array();
     return new String(utfEncoded, Charset.forName("UTF-8"));
   }
@@ -495,8 +486,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
           int currentPos = mediaPlayer.getCurrentPosition();
           Collection<Caption> subtitles = subtitleTimedText.captions.values();
           for (Caption caption : subtitles) {
-            if (currentPos >= caption.start.getMilliseconds()
-                && currentPos <= caption.end.getMilliseconds()) {
+            if (currentPos >= caption.start.getMilliseconds() && currentPos <= caption.end.getMilliseconds()) {
               onTimedText(caption);
               break;
             } else if (currentPos > caption.end.getMilliseconds()) {
@@ -505,8 +495,8 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
           }
         } else {
           subtitlesPlaybackEnabled = false;
-          Toast.makeText(getApplicationContext(),
-              "Invalid or Missing Subtitle. Subtitle playback disabled.", Toast.LENGTH_LONG).show();
+          Toast.makeText(getApplicationContext(), "Invalid or Missing Subtitle. Subtitle playback disabled.",
+              Toast.LENGTH_LONG).show();
         }
       }
       if (subtitlesPlaybackEnabled) {
@@ -524,13 +514,11 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
     @Override public void run() {
       try {
         if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
-          float percentage = Float.valueOf(mediaPlayer.getCurrentPosition()) / Float.valueOf(
-              mediaPlayer.getDuration());
+          float percentage = Float.valueOf(mediaPlayer.getCurrentPosition()) / Float.valueOf(mediaPlayer.getDuration());
           playbackPos = mediaPlayer.getCurrentPosition();
           if (percentage <= 90.f) {
             new UpdateProgressRequest().execute();
-            progressReportinghandler.postDelayed(this,
-                PROGRESS_UPDATE_DELAY); // Update progress every
+            progressReportinghandler.postDelayed(this, PROGRESS_UPDATE_DELAY); // Update progress every
             // 5
             // seconds
           } else {
@@ -539,8 +527,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity
         }
       } catch (IllegalStateException ex) {
         Log.w(getClass().getName(),
-            "Illegalstate exception occurred durring progress update. No further updates will occur.",
-            ex);
+            "Illegalstate exception occurred durring progress update. No further updates will occur.", ex);
       }
     }
   }

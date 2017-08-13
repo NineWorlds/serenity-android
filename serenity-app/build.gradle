@@ -151,14 +151,15 @@ dependencies {
   compile 'com.jakewharton:butterknife:8.4.0'
   kapt 'com.jakewharton:butterknife-compiler:8.4.0'
 
-  testCompile 'junit:junit:4.11'
-  testCompile('org.robolectric:robolectric:3.3.2') {
+  testCompile 'org.assertj:assertj-core:3.8.0'
+  testCompile 'junit:junit:4.12'
+  testCompile('org.robolectric:robolectric:3.4.2') {
     exclude module: 'support-v4'
   }
-  testCompile 'org.robolectric:shadows-core:3.3.2'
-  testCompile 'org.robolectric:shadows-httpclient:3.3.2'
-  testCompile 'org.robolectric:shadows-support-v4:3.3.2'
-  testCompile 'org.robolectric:shadows-play-services:3.3.2'
+  testCompile 'org.robolectric:framework:3.4.2'
+  testCompile 'org.robolectric:httpclient:3.4.2'
+  testCompile 'org.robolectric:supportv4:3.4.2'
+  testCompile 'org.robolectric:playservices:3.4.2'
   testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
   testCompile('com.squareup.assertj:assertj-android:1.1.1') {
     exclude module: 'support-v4'

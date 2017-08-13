@@ -73,11 +73,9 @@ public class MainActivityTest extends InjectingTest {
 		Robolectric.getForegroundThreadScheduler().pause();
 
 		try {
-			activity = Robolectric.buildActivity(MainActivity.class).attach()
-					.create().start().resume().visible().get();
+			activity = Robolectric.buildActivity(MainActivity.class).create().start().resume().visible().get();
 		} catch (NullPointerException ex) {
-			activity = Robolectric.buildActivity(MainActivity.class).create()
-					.start().visible().get();
+			activity = Robolectric.buildActivity(MainActivity.class).create().start().visible().get();
 		}
 
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
