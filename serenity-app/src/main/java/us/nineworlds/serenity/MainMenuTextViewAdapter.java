@@ -42,7 +42,7 @@ import static butterknife.ButterKnife.bind;
 
 public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
-  protected final static List<MenuItem> menuItems = new ArrayList<>();
+  public static List<MenuItem> menuItems = new ArrayList<>();
 
   public MainMenuTextViewAdapter() {
     super();
@@ -90,6 +90,11 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
       position = 0;
     }
     return menuItems.get(position);
+  }
+
+  public void updateMenuItems(List<MenuItem> menuItems) {
+    this.menuItems = menuItems;
+    notifyDataSetChanged();
   }
 
   public class MainMenuViewHolder extends RecyclerView.ViewHolder {

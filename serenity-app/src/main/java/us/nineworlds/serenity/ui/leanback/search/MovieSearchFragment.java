@@ -52,7 +52,6 @@ import java.net.URLEncoder;
 import java.util.List;
 import javax.inject.Inject;
 import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.menus.MenuItem;
@@ -79,17 +78,6 @@ public class MovieSearchFragment extends SearchFragment implements SearchResultP
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     SerenityObjectGraph.getInstance().inject(this);
-
-    menuItems = MainMenuTextViewAdapter.menuItems;
-
-    if (menuItems != null) {
-
-      for (MenuItem menuItem : menuItems) {
-        if ("movie".equals(menuItem.getType())) {
-          key = menuItem.getSection();
-        }
-      }
-    }
 
     rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
     setSearchResultProvider(this);
@@ -128,9 +116,8 @@ public class MovieSearchFragment extends SearchFragment implements SearchResultP
         String transcodingURL = plexFactory.getImageURL(video.getBackgroundURL(), 1280, 720);
 
         SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
-          public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-            getActivity().runOnUiThread(
-                new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
+          @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+            getActivity().runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
           }
         };
 
@@ -187,8 +174,8 @@ public class MovieSearchFragment extends SearchFragment implements SearchResultP
       if (msg.obj != null) {
         List<VideoContentInfo> videos = (List<VideoContentInfo>) msg.obj;
         if (videos != null && videos.isEmpty()) {
-          Toast.makeText(getActivity(), R.string.no_videos_found_that_match_the_search_criteria,
-              Toast.LENGTH_LONG).show();
+          Toast.makeText(getActivity(), R.string.no_videos_found_that_match_the_search_criteria, Toast.LENGTH_LONG)
+              .show();
           getActivity().finish();
         }
         loadRows(videos);

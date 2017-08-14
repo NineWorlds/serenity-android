@@ -70,8 +70,7 @@ public class MainMenuFragment extends InjectingFragment {
 
   @BindView(R.id.mainGalleryMenu) DpadAwareRecyclerView mainGallery;
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.main_menu_view, container);
     unbinder = ButterKnife.bind(this, view);
     return view;
@@ -98,12 +97,11 @@ public class MainMenuFragment extends InjectingFragment {
     mainGallery.setLayoutManager(linearLayoutManager);
 
     MainMenuTextViewAdapter adapter = new MainMenuTextViewAdapter();
-    adapter.menuItems = this.menuItems;
     mainGallery.setAdapter(adapter);
     mainGallery.setOnItemSelectedListener(new GalleryOnItemSelectedListener());
     mainGallery.setOnItemClickListener(new GalleryOnItemClickListener());
     mainGallery.setVisibility(View.VISIBLE);
-    adapter.notifyDataSetChanged();
+    adapter.updateMenuItems(menuItems);
   }
 
   @Override public void onDestroyView() {
@@ -111,16 +109,14 @@ public class MainMenuFragment extends InjectingFragment {
     unbinder.unbind();
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onMainMenuRetrievalResponse(MainMenuEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN) public void onMainMenuRetrievalResponse(MainMenuEvent event) {
     menuItems = new MenuMediaContainer(event.getMediaContainer()).createMenuItems();
     setupGallery();
     mainGallery.setVisibility(View.VISIBLE);
     mainGallery.requestFocus();
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onMainMenuErrorResponse(ErrorMainMenuEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN) public void onMainMenuErrorResponse(ErrorMainMenuEvent event) {
     MenuMediaContainer mc = new MenuMediaContainer(null);
 
     menuItems.add(mc.createSettingsMenu());
@@ -128,8 +124,8 @@ public class MainMenuFragment extends InjectingFragment {
 
     setupGallery();
 
-    Toast.makeText(getActivity(), "Unable to connect to Plex Library at " + plexFactory.baseURL(),
-        Toast.LENGTH_LONG).show();
+    Toast.makeText(getActivity(), "Unable to connect to Plex Library at " + plexFactory.baseURL(), Toast.LENGTH_LONG)
+        .show();
 
     mainGallery.requestFocus();
   }
