@@ -23,47 +23,39 @@
 
 package us.nineworlds.serenity;
 
+import android.support.v4.content.LocalBroadcastManager;
 import com.birbit.android.jobqueue.JobManager;
-
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+import javax.inject.Singleton;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 
-@Module(addsTo = AndroidModule.class,
-        includes = SerenityModule.class,
-        library = true,
-        overrides = true,
-        injects = { TestSerenityApplication.class })
+@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, library = true, overrides = true, injects = {
+    TestSerenityApplication.class
+})
 public class TestingModule {
 
-    @Mock
-    JobManager mockJobManager;
+  @Mock JobManager mockJobManager;
+  @Mock PlexappFactory mockPlexAppFactory;
+  @Mock LocalBroadcastManager mockLocalBroadcastManager;
 
-    @Mock
-    PlexappFactory mockPlexAppFactory;
+  public TestingModule() {
+    MockitoAnnotations.initMocks(this);
+  }
 
-    public TestingModule() {
-        MockitoAnnotations.initMocks(this);
-    }
+  @Provides @Singleton JobManager providesJobManager() {
+    return mockJobManager;
+  }
 
-    @Provides
-    @Singleton
-    JobManager providesJobManager() {
-        return mockJobManager;
-    }
+  @Provides @Singleton PlexappFactory providesPlexAppFactory() {
+    return mockPlexAppFactory;
+  }
 
-    @Provides
-    @Singleton
-    PlexappFactory providesPlexAppFactory() {
-        return mockPlexAppFactory;
-    }
-
-
+  @Provides @Singleton LocalBroadcastManager providesLocalBroadcastManager() {
+    return mockLocalBroadcastManager;
+  }
 }

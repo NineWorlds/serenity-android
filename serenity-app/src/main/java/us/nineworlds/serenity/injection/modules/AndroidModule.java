@@ -29,6 +29,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import com.birbit.android.jobqueue.JobManager;
 import com.birbit.android.jobqueue.config.Configuration;
 import dagger.Module;
@@ -144,53 +145,45 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerKeyCodeHandler;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
 
 @Module(includes = SerenityModule.class, injects = {
-    GDMReceiver.class, MainMenuFragment.class, OnDeckRecommendations.class,
-    GalleryVideoOnItemLongClickListener.class, MediaController.class, MainActivity.class,
-    SerenityApplication.class, StartupBroadcastReceiver.class, RecommendationPlayerActivity.class,
-    EpisodeBrowserActivity.class, SearchableActivity.class, MovieBrowserActivity.class,
-    TVShowBrowserActivity.class, TVShowSeasonBrowserActivity.class,
-    AutoConfigureHandlerRunnable.class, EpisodeMenuDrawerOnItemClickedListener.class,
-    ImageInfographicUtils.class, MainMenuDrawerOnItemClickedListener.class,
-    MovieGridPosterOnItemSelectedListener.class, MovieMenuDrawerOnItemClickedListener.class,
-    PlayerResultHandler.class, ExternalPlayerResultHandler.class,
+    GDMReceiver.class, MainMenuFragment.class, OnDeckRecommendations.class, GalleryVideoOnItemLongClickListener.class,
+    MediaController.class, MainActivity.class, SerenityApplication.class, StartupBroadcastReceiver.class,
+    RecommendationPlayerActivity.class, EpisodeBrowserActivity.class, SearchableActivity.class,
+    MovieBrowserActivity.class, TVShowBrowserActivity.class, TVShowSeasonBrowserActivity.class,
+    AutoConfigureHandlerRunnable.class, EpisodeMenuDrawerOnItemClickedListener.class, ImageInfographicUtils.class,
+    MainMenuDrawerOnItemClickedListener.class, MovieGridPosterOnItemSelectedListener.class,
+    MovieMenuDrawerOnItemClickedListener.class, PlayerResultHandler.class, ExternalPlayerResultHandler.class,
     SeasonOnItemLongClickListener.class, MenuMediaContainer.class, MovieMediaContainer.class,
-    SeriesMediaContainer.class, SubtitleMediaContainer.class, EpisodeMediaContainer.class,
-    SeasonsMediaContainer.class, GalleryVideoOnItemClickListener.class,
-    GalleryVideoOnItemLongClickListener.class, EpisodeBrowserOnLongClickListener.class,
+    SeriesMediaContainer.class, SubtitleMediaContainer.class, EpisodeMediaContainer.class, SeasonsMediaContainer.class,
+    GalleryVideoOnItemClickListener.class, GalleryVideoOnItemLongClickListener.class,
+    EpisodeBrowserOnLongClickListener.class,
 
     EpisodePosterOnItemSelectedListener.class, MoviePosterOnItemSelectedListener.class,
-    TVShowGalleryOnItemSelectedListener.class, TVShowGridOnItemSelectedListener.class,
-    TVShowGridOnKeyListener.class, TVShowMenuDrawerOnItemClickedListener.class,
-    TVShowSeasonMenuDrawerOnItemClickedListener.class, TVShowSeasonOnItemSelectedListener.class,
-    VideoPlayerIntentUtils.class, VideoPlayerPrepareListener.class,
-    MoviesRetrievalIntentService.class, MovieSearchIntentService.class,
-    MainMenuTextViewAdapter.class, EpisodePosterImageGalleryAdapter.class,
-    SeasonsEpisodePosterImageGalleryAdapter.class, MoviePosterImageAdapter.class,
-    SearchAdapter.class, TVShowRecyclerAdapter.class, MenuDrawerAdapter.class,
-    TVShowSeasonImageGalleryAdapter.class, OnDeckRecommendationIntentService.class,
-    CompletedVideoRequest.class, FindUnwatchedAsyncTask.class, UnWatchVideoAsyncTask.class,
-    UpdateProgressRequest.class, WatchedVideoAsyncTask.class, GalleryOnItemSelectedListener.class,
-    SerenityPreferenceActivity.class, AndroidTV.class, RecommendAsyncTask.class,
-    RecommendationBuilder.class, TVShowPosterImageGalleryAdapter.class,
-    VideoPlayerKeyCodeHandler.class, SerenitySurfaceViewVideoActivity.class, OkHttpStack.class,
-    SerenityRecommendationContentProvider.class, AndroidHelper.class,
-    SecondaryCategorySpinnerOnItemSelectedListener.class,
+    TVShowGalleryOnItemSelectedListener.class, TVShowGridOnItemSelectedListener.class, TVShowGridOnKeyListener.class,
+    TVShowMenuDrawerOnItemClickedListener.class, TVShowSeasonMenuDrawerOnItemClickedListener.class,
+    TVShowSeasonOnItemSelectedListener.class, VideoPlayerIntentUtils.class, VideoPlayerPrepareListener.class,
+    MoviesRetrievalIntentService.class, MovieSearchIntentService.class, MainMenuTextViewAdapter.class,
+    EpisodePosterImageGalleryAdapter.class, SeasonsEpisodePosterImageGalleryAdapter.class,
+    MoviePosterImageAdapter.class, SearchAdapter.class, TVShowRecyclerAdapter.class, MenuDrawerAdapter.class,
+    TVShowSeasonImageGalleryAdapter.class, OnDeckRecommendationIntentService.class, CompletedVideoRequest.class,
+    FindUnwatchedAsyncTask.class, UnWatchVideoAsyncTask.class, UpdateProgressRequest.class, WatchedVideoAsyncTask.class,
+    GalleryOnItemSelectedListener.class, SerenityPreferenceActivity.class, AndroidTV.class, RecommendAsyncTask.class,
+    RecommendationBuilder.class, TVShowPosterImageGalleryAdapter.class, VideoPlayerKeyCodeHandler.class,
+    SerenitySurfaceViewVideoActivity.class, OkHttpStack.class, SerenityRecommendationContentProvider.class,
+    AndroidHelper.class, SecondaryCategorySpinnerOnItemSelectedListener.class,
     MovieCategorySpinnerOnItemSelectedListener.class, TVCategorySpinnerOnItemSelectedListener.class,
-    TVSecondaryCategorySpinnerOnItemSelectedListener.class, MovieVideoGalleryFragment.class,
-    VideoGridFragment.class, EpisodeBrowserActivity.class, EpisodeVideoGalleryFragment.class,
-    MenuMediaContainer.class, MovieSearchGalleryFragment.class, CardPresenter.class,
-    MovieSearchFragment.class, CategoryMediaContainer.class, SecondaryCategoryMediaContainer.class,
-    TVCategoryMediaContainer.class, ServerConfig.class, SubtitleSpinnerOnItemSelectedListener.class,
-    VideoQueueHelper.class,
-    us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener.class,
-    MainMenuRetrievalJob.class, MainMenuEvent.class, OnDeckRecommendationsJob.class,
-    EpisodesRetrievalJob.class, MainMenuRetrievalJob.class, MovieCategoryJob.class,
-    MovieRetrievalJob.class, MovieSecondaryCategoryJob.class, SeasonsRetrievalJob.class,
-    SubtitleJob.class, TVCategoryJob.class, TVCategorySecondaryJob.class, TVShowRetrievalJob.class,
-    GDMServerJob.class, TVShowBrowserPresenter.class, MovieBrowserPresenter.class,
-    EpisodeBrowserPresenter.class, TVShowSeasonBrowserPresenter.class, MainPresenter.class,
-    OnKeyDownDelegate.class, ErrorMainMenuEvent.class
-}, library = true) public class AndroidModule {
+    TVSecondaryCategorySpinnerOnItemSelectedListener.class, MovieVideoGalleryFragment.class, VideoGridFragment.class,
+    EpisodeBrowserActivity.class, EpisodeVideoGalleryFragment.class, MenuMediaContainer.class,
+    MovieSearchGalleryFragment.class, CardPresenter.class, MovieSearchFragment.class, CategoryMediaContainer.class,
+    SecondaryCategoryMediaContainer.class, TVCategoryMediaContainer.class, ServerConfig.class,
+    SubtitleSpinnerOnItemSelectedListener.class, VideoQueueHelper.class,
+    us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener.class, MainMenuRetrievalJob.class,
+    MainMenuEvent.class, OnDeckRecommendationsJob.class, EpisodesRetrievalJob.class, MainMenuRetrievalJob.class,
+    MovieCategoryJob.class, MovieRetrievalJob.class, MovieSecondaryCategoryJob.class, SeasonsRetrievalJob.class,
+    SubtitleJob.class, TVCategoryJob.class, TVCategorySecondaryJob.class, TVShowRetrievalJob.class, GDMServerJob.class,
+    TVShowBrowserPresenter.class, MovieBrowserPresenter.class, EpisodeBrowserPresenter.class,
+    TVShowSeasonBrowserPresenter.class, MainPresenter.class, OnKeyDownDelegate.class, ErrorMainMenuEvent.class
+}, library = true)
+public class AndroidModule {
 
   private final Context applicationContext;
 
@@ -235,5 +228,9 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
 
   @Provides @Singleton EventBus providesEventBus() {
     return EventBus.getDefault();
+  }
+
+  @Provides @Singleton LocalBroadcastManager providesLocalBroadcastManager() {
+    return LocalBroadcastManager.getInstance(applicationContext);
   }
 }

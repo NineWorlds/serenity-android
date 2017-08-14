@@ -26,15 +26,16 @@ package us.nineworlds.serenity;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import butterknife.ButterKnife;
-import com.birbit.android.jobqueue.JobManager;
 import dagger.Module;
 import dagger.Provides;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.ganin.darv.DpadAwareRecyclerView;
 import org.junit.After;
@@ -46,16 +47,20 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.fragments.MainMenuFragment;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
+import us.nineworlds.serenity.server.GDMReceiver;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 
 import static org.assertj.android.api.Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -63,31 +68,23 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @Config(constants = BuildConfig.class, qualifiers = "large")
 public class MainActivityTest extends InjectingTest {
 
-  MainActivity activity;
-
-  @Mock JobManager mockJobManager;
-
   @Mock KeyEvent mockKeyEvent;
-
   @Mock SharedPreferences mockSharedPreferences;
 
-  @Mock PlexappFactory mockPlexAppFactory;
+  @Inject LocalBroadcastManager mockLocalBroadcastManager;
 
-  MainMenuFragment fragment;
+  MainActivity activity;
 
   @Override @Before public void setUp() throws Exception {
-    super.setUp();
-
     initMocks(this);
+    super.setUp();
 
     Robolectric.getBackgroundThreadScheduler().pause();
     Robolectric.getForegroundThreadScheduler().pause();
 
-    try {
-      activity = Robolectric.buildActivity(MainActivity.class).create().start().resume().visible().get();
-    } catch (NullPointerException ex) {
-      activity = Robolectric.buildActivity(MainActivity.class).create().start().visible().get();
-    }
+    activity =
+        Robolectric.buildActivity(MainActivity.class).create().start().resume().visible().pause().restart().get();
+    //     activity = Robolectric.buildActivity(MainActivity.class).create().start().visible().get();
 
     FragmentManager fragmentManager = activity.getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -99,6 +96,11 @@ public class MainActivityTest extends InjectingTest {
     if (activity != null) {
       activity.finish();
     }
+  }
+
+  @Test public void onDestroyUnregistersGDMReceiver() {
+    activity.onDestroy();
+    verify(mockLocalBroadcastManager).unregisterReceiver(any(GDMReceiver.class));
   }
 
   @Test public void testAssertThatMainActivityIsCreated() throws Exception {
@@ -151,28 +153,51 @@ public class MainActivityTest extends InjectingTest {
     verify(mockSharedPreferences).getBoolean("remote_control_menu", true);
   }
 
+  @Test public void onOptionsMenuOpensDrawerAndSetsFocus() {
+    DrawerLayout drawerLayout = ButterKnife.findById(activity, R.id.drawer_layout);
+    LinearLayout leftDrawer = ButterKnife.findById(activity, R.id.left_drawer);
+    ListView listView = ButterKnife.findById(activity, R.id.left_drawer_list);
+    drawerLayout.closeDrawers();
+
+    activity.openOptionsMenu();
+
+    assertThat(listView).hasFocus();
+    assertThat(drawerLayout.isDrawerOpen(leftDrawer)).isTrue();
+  }
+
+  @Test public void onActivityResultCallsRecreateWhenResultCodeIsMainMenuPreferenceResultCode() {
+    MainActivity spy = spy(activity);
+    doNothing().when(spy).recreate();
+
+    spy.onActivityResult(0, 100, null);
+
+    verify(spy).recreate();
+  }
+
+  @Test public void onActivityResultNeverCallsRecreateWhenResultCodeIsNotMainMenuPreferenceResultCode() {
+    MainActivity spy = spy(activity);
+    doNothing().when(spy).recreate();
+
+    spy.onActivityResult(0, 101, null);
+
+    verify(spy, never()).recreate();
+  }
+
   @Override public List<Object> getModules() {
     List<Object> modules = new ArrayList<Object>();
     modules.add(new AndroidModule(RuntimeEnvironment.application));
+    modules.add(new TestingModule());
     modules.add(new TestModule());
     return modules;
   }
 
-  @Module(addsTo = AndroidModule.class, includes = SerenityModule.class, overrides = true, injects = {
+  @Module(addsTo = AndroidModule.class, includes = { SerenityModule.class }, overrides = true, injects = {
       MainActivity.class, MainActivityTest.class
   })
   public class TestModule {
 
-    @Provides @Singleton JobManager providesJobManager() {
-      return mockJobManager;
-    }
-
     @Provides @Singleton SharedPreferences providesPreferences() {
       return mockSharedPreferences;
-    }
-
-    @Provides @Singleton PlexappFactory providesPlexappFactory() {
-      return mockPlexAppFactory;
     }
   }
 }

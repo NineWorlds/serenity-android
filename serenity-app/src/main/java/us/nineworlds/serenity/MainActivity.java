@@ -60,12 +60,12 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
   public static final int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
 
   @Inject AndroidHelper androidHelper;
-
   @InjectPresenter MainPresenter presenter;
-
   @Inject SharedPreferences preferences;
+  @Inject LocalBroadcastManager localBroadcastManager;
 
   @BindView(R.id.mainGalleryMenu) DpadAwareRecyclerView mainMenuContainer;
+  @BindView(R.id.drawer_settings) Button settingsButton;
 
   protected Handler autoConfigureHandler = new Handler();
 
@@ -101,8 +101,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
   }
 
   @Override protected void onDestroy() {
+    localBroadcastManager.unregisterReceiver(gdmReceiver);
     super.onDestroy();
-    LocalBroadcastManager.getInstance(this).unregisterReceiver(gdmReceiver);
   }
 
   @Override protected void onRestart() {
@@ -113,10 +113,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
   @Override protected void onResume() {
     super.onResume();
     DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
-    IntentFilter filters = new IntentFilter();
-    filters.addAction(GDMReceiver.GDM_MSG_RECEIVED);
-    filters.addAction(GDMReceiver.GDM_SOCKET_CLOSED);
-    LocalBroadcastManager.getInstance(this).registerReceiver(gdmReceiver, filters);
+    registerGDMReceiver();
 
     // Start the auto-configuration service
     presenter.discoverServers();
@@ -126,6 +123,13 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
 
     mainMenuContainer.setFocusable(true);
     mainMenuContainer.requestFocusFromTouch();
+  }
+
+  protected void registerGDMReceiver() {
+    IntentFilter filters = new IntentFilter();
+    filters.addAction(GDMReceiver.GDM_MSG_RECEIVED);
+    filters.addAction(GDMReceiver.GDM_SOCKET_CLOSED);
+    localBroadcastManager.registerReceiver(gdmReceiver, filters);
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -155,7 +159,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
     actionBar.setDisplayHomeAsUpEnabled(true);
     actionBar.setHomeButtonEnabled(true);
 
-    Button settingsButton = (Button) findViewById(R.id.drawer_settings);
+    settingsButton = (Button) findViewById(R.id.drawer_settings);
     settingsButton.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(drawerLayout));
 
     populateMenuOptions();
@@ -163,18 +167,12 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
 
   protected void populateMenuOptions() {
     List<MenuDrawerItem> drawerMenuItem = new ArrayList<>();
-    drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_about),
-        R.drawable.ic_action_action_about));
-    drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_clear_image_cache),
-        R.drawable.ic_action_content_remove));
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl(getResources().getString(R.string.clear_queue), R.drawable.ic_action_content_remove));
+    drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_about), R.drawable.ic_action_action_about));
+    drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_clear_image_cache), R.drawable.ic_action_content_remove));
+    drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.clear_queue), R.drawable.ic_action_content_remove));
 
     drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-    View menu = findViewById(R.id.mainGalleryMenu);
-    if (menu != null) {
-      menu.requestFocusFromTouch();
-    }
+    mainMenuContainer.requestFocusFromTouch();
 
     drawerList.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(drawerLayout));
   }
