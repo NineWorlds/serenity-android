@@ -57,7 +57,7 @@ import static butterknife.ButterKnife.bind;
 
 public class MainActivity extends SerenityDrawerLayoutActivity implements MainView {
 
-  public static int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
+  public static final int MAIN_MENU_PREFERENCE_RESULT_CODE = 100;
 
   @Inject AndroidHelper androidHelper;
 
@@ -100,10 +100,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
     autoConfigureHandler.postDelayed(new AutoConfigureHandlerRunnable(this), 2500);
   }
 
-  @Override protected void onStop() {
-    super.onStop();
-  }
-
   @Override protected void onDestroy() {
     super.onDestroy();
     LocalBroadcastManager.getInstance(this).unregisterReceiver(gdmReceiver);
@@ -125,8 +121,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
     // Start the auto-configuration service
     presenter.discoverServers();
 
-    Intent recommendationIntent =
-        new Intent(getApplicationContext(), OnDeckRecommendationIntentService.class);
+    Intent recommendationIntent = new Intent(getApplicationContext(), OnDeckRecommendationIntentService.class);
     startService(recommendationIntent);
 
     mainMenuContainer.setFocusable(true);
@@ -140,8 +135,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
   }
 
   @Override protected void createSideMenu() {
-    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector,
-        R.string.drawer_open, R.string.drawer_closed) {
+    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector, R.string.drawer_open,
+        R.string.drawer_closed) {
       @Override public void onDrawerOpened(View drawerView) {
 
         super.onDrawerOpened(drawerView);
@@ -167,14 +162,13 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
   }
 
   protected void populateMenuOptions() {
-    List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
+    List<MenuDrawerItem> drawerMenuItem = new ArrayList<>();
     drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_about),
         R.drawable.ic_action_action_about));
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl(getResources().getString(R.string.options_main_clear_image_cache),
-            R.drawable.ic_action_content_remove));
-    drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.clear_queue),
+    drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_clear_image_cache),
         R.drawable.ic_action_content_remove));
+    drawerMenuItem.add(
+        new MenuDrawerItemImpl(getResources().getString(R.string.clear_queue), R.drawable.ic_action_content_remove));
 
     drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
     View menu = findViewById(R.id.mainGalleryMenu);
@@ -211,19 +205,17 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
   @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
     boolean menuKeySlidingMenu = preferences.getBoolean("remote_control_menu", true);
 
-    if (menuKeySlidingMenu) {
-      if (keyCode == KeyEvent.KEYCODE_MENU) {
-        if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-          drawerLayout.closeDrawers();
-          if (mainMenuContainer != null) {
-            mainMenuContainer.requestFocusFromTouch();
-          }
-        } else {
-          drawerLayout.openDrawer(linearDrawerLayout);
-          drawerList.requestFocusFromTouch();
+    if (menuKeySlidingMenu && keyCode == KeyEvent.KEYCODE_MENU) {
+      if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
+        drawerLayout.closeDrawers();
+        if (mainMenuContainer != null) {
+          mainMenuContainer.requestFocusFromTouch();
         }
-        return true;
+      } else {
+        drawerLayout.openDrawer(linearDrawerLayout);
+        drawerList.requestFocusFromTouch();
       }
+      return true;
     }
 
     if (drawerLayout.isDrawerOpen(linearDrawerLayout) && keyCode == KeyEvent.KEYCODE_BACK) {
