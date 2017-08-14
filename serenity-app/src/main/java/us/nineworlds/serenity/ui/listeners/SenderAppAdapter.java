@@ -37,10 +37,9 @@ import us.nineworlds.serenity.R;
  */
 public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
 
-  public static final Set<String> FILTER_SET = new HashSet<String>(
+  protected static final Set<String> FILTER_SET = new HashSet<>(
       Arrays.asList("com.entertailion.android.remote.StartupActivity",
-          "com.google.android.apps.tvremote.StartupActivity",
-          "com.koushikdutta.cast.CastActivity"));
+          "com.google.android.apps.tvremote.StartupActivity", "com.koushikdutta.cast.CastActivity"));
 
   private Context mContext;
 
@@ -69,8 +68,7 @@ public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
 
   private List<ResolveInfo> createItems() {
 
-    List<ResolveInfo> items =
-        mContext.getPackageManager().queryIntentActivities(createSendIntent("", ""), 0);
+    List<ResolveInfo> items = mContext.getPackageManager().queryIntentActivities(createSendIntent("", ""), 0);
 
     filter(items);
     Collections.sort(items, new ResolveInfo.DisplayNameComparator(mContext.getPackageManager()));
@@ -89,8 +87,7 @@ public class SenderAppAdapter extends ArrayAdapter<ResolveInfo> {
   }
 
   private View newView(ViewGroup parent) {
-    LayoutInflater inflater =
-        (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     return inflater.inflate(R.layout.chooser_row, parent, false);
   }
 

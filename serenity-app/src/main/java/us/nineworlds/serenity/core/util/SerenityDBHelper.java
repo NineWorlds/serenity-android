@@ -28,14 +28,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-/**
- * @author dcarver
- */
 public class SerenityDBHelper extends SQLiteOpenHelper {
 
   public static final String TABLE_EXTERNAL_METADATA = "METADATA";
   public static final String DATABASE_NAME = "serenityDatabase.db";
-  public static int VERSION = 1;
+  public static final int VERSION = 1;
   public static final String KEY_ID = "_id";
   public static final String KEY_PLEX_ID = "PLEX_ID";
   public static final String KEY_YOUTUBE_ID = "YOUTUBE_ID";
@@ -56,27 +53,12 @@ public class SerenityDBHelper extends SQLiteOpenHelper {
     super(context, DATABASE_NAME, null, VERSION);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see
-   * android.database.sqlite.SQLiteOpenHelper#onCreate(android.database.sqlite
-   * .SQLiteDatabase)
-   */
   @Override public void onCreate(SQLiteDatabase db) {
     db.execSQL(DATABASE_CREATE);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see
-   * android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite
-   * .SQLiteDatabase, int, int)
-   */
   @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    Log.w(getClass().getName(),
-        "Upgrading database from version " + oldVersion + " to version " + newVersion);
+    Log.w(getClass().getName(), "Upgrading database from version " + oldVersion + " to version " + newVersion);
     db.execSQL("DROP TABLE IF IT EXISTS " + TABLE_EXTERNAL_METADATA);
   }
 }

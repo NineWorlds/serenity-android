@@ -19,7 +19,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.util.Log;
 import android.widget.ImageView.ScaleType;
 
-@SuppressWarnings("UnusedDeclaration") public class RoundedDrawable extends Drawable {
+public class RoundedDrawable extends Drawable {
 
   public static final String TAG = "RoundedDrawable";
   public static final int DEFAULT_BORDER_COLOR = Color.BLACK;
@@ -113,7 +113,7 @@ import android.widget.ImageView.ScaleType;
       drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
       drawable.draw(canvas);
     } catch (Exception e) {
-      e.printStackTrace();
+      Log.d(TAG, "Failed to convert bitmap", e);
       bitmap = null;
     }
 
@@ -167,8 +167,7 @@ import android.widget.ImageView.ScaleType;
         }
 
         mShaderMatrix.setScale(scale, scale);
-        mShaderMatrix.postTranslate((int) (dx + 0.5f) + mBorderWidth,
-            (int) (dy + 0.5f) + mBorderWidth);
+        mShaderMatrix.postTranslate((int) (dx + 0.5f) + mBorderWidth, (int) (dy + 0.5f) + mBorderWidth);
         break;
 
       case CENTER_INSIDE:
@@ -248,8 +247,7 @@ import android.widget.ImageView.ScaleType;
       }
     } else {
       if (mBorderWidth > 0) {
-        canvas.drawRoundRect(mDrawableRect, Math.max(mCornerRadius, 0), Math.max(mCornerRadius, 0),
-            mBitmapPaint);
+        canvas.drawRoundRect(mDrawableRect, Math.max(mCornerRadius, 0), Math.max(mCornerRadius, 0), mBitmapPaint);
         canvas.drawRoundRect(mBorderRect, mCornerRadius, mCornerRadius, mBorderPaint);
       } else {
         canvas.drawRoundRect(mDrawableRect, mCornerRadius, mCornerRadius, mBitmapPaint);

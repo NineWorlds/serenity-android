@@ -60,9 +60,8 @@ import okhttp3.OkUrlFactory;
  */
 public class SerenityRecommendationContentProvider extends ContentProvider {
 
-  public static String AUTHORITY =
-      "us.nineworlds.serenity.core.SerenityRecommendationContentProvider";
-  public static String CONTENT_URI = "content://" + AUTHORITY + "/";
+  public static final String AUTHORITY = "us.nineworlds.serenity.core.SerenityRecommendationContentProvider";
+  public static final String CONTENT_URI = "content://" + AUTHORITY + "/";
 
   OkHttpClient httpClient = new OkHttpClient();
 
@@ -74,8 +73,7 @@ public class SerenityRecommendationContentProvider extends ContentProvider {
     return true;
   }
 
-  @Override public ParcelFileDescriptor openFile(Uri uri, String mode)
-      throws FileNotFoundException {
+  @Override public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
 
     ParcelFileDescriptor[] pipe = null;
 
@@ -89,8 +87,7 @@ public class SerenityRecommendationContentProvider extends ContentProvider {
 
       HttpURLConnection connection = factory.open(new URL(decodedUrl));
 
-      new TransferThread(connection.getInputStream(),
-          new ParcelFileDescriptor.AutoCloseOutputStream(pipe[1])).start();
+      new TransferThread(connection.getInputStream(), new ParcelFileDescriptor.AutoCloseOutputStream(pipe[1])).start();
     } catch (IOException e) {
       Log.e(getClass().getSimpleName(), "Exception opening pipe", e);
       throw new FileNotFoundException("Could not open pipe for: " + uri.toString());
@@ -100,8 +97,7 @@ public class SerenityRecommendationContentProvider extends ContentProvider {
   }
 
   @Override
-  public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-      String sortOrder) {
+  public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
     return null;
   }
 
@@ -117,8 +113,7 @@ public class SerenityRecommendationContentProvider extends ContentProvider {
     return 0;
   }
 
-  @Override
-  public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+  @Override public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
     return 0;
   }
 

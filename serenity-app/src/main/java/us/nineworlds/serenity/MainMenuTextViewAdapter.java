@@ -42,7 +42,7 @@ import static butterknife.ButterKnife.bind;
 
 public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
-  public static List<MenuItem> menuItems = new ArrayList<MenuItem>();
+  protected final static List<MenuItem> menuItems = new ArrayList<>();
 
   public MainMenuTextViewAdapter() {
     super();
@@ -53,8 +53,8 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    FrameLayout mainMenuTextView = (FrameLayout) LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.item_mainmenu, parent, false);
+    FrameLayout mainMenuTextView =
+        (FrameLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mainmenu, parent, false);
     return new MainMenuViewHolder(mainMenuTextView);
   }
 
