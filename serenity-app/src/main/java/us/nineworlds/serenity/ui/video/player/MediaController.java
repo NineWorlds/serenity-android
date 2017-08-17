@@ -378,6 +378,10 @@ public class MediaController extends FrameLayout {
 
   @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
     Activity c = getActivity();
+    if (c == null) {
+      return super.onKeyDown(keyCode, event);
+    }
+    
     return c.onKeyDown(keyCode, event);
   }
 
