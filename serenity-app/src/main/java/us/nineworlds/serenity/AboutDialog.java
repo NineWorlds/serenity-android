@@ -21,10 +21,6 @@ public class AboutDialog extends Dialog {
     mContext = context;
   }
 
-  /**
-   * Standard Android on create method that gets called when the activity
-   * initialized.
-   */
   @Override public void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.about);
     TextView tv = (TextView) findViewById(R.id.legal_text);
@@ -36,8 +32,7 @@ public class AboutDialog extends Dialog {
     tv.setLinkTextColor(Color.WHITE);
     String versionName;
     try {
-      versionName =
-          mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+      versionName = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
     } catch (NameNotFoundException e) {
       versionName = "";
     }
@@ -56,6 +51,13 @@ public class AboutDialog extends Dialog {
       }
     } catch (IOException e) {
       return null;
+    } finally {
+      try {
+        buf.close();
+        in.close();
+        inputStream.close();
+      } catch (IOException e) {
+      }
     }
     return text.toString();
   }

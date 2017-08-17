@@ -79,7 +79,7 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
  * DAC - 2014-05-20 - Fix issue on Android 4.3 or higher were mediacontroller
  * window position was not being calculated correctly.
  */
-@SuppressWarnings("MagicConstant") public class MediaController extends FrameLayout {
+public class MediaController extends FrameLayout {
 
   private static final int FADE_OUT = 1;
   private static final int SHOW_PROGRESS = 2;
@@ -158,8 +158,7 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
     }
 
     VideoContentInfo nextVideo = videoQueue.peek();
-    txtNextVideo.setText(
-        getResources().getString(R.string.mediacontroller_on_deck) + nextVideo.getTitle());
+    txtNextVideo.setText(getResources().getString(R.string.mediacontroller_on_deck) + nextVideo.getTitle());
     txtNextVideo.setVisibility(View.VISIBLE);
   }
 
@@ -229,6 +228,10 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
   @Override public boolean dispatchKeyEvent(KeyEvent event) {
     int keyCode = event.getKeyCode();
     Activity c = getActivity();
+    if (c == null) {
+      return super.dispatchKeyEvent(event);
+    }
+
     if (keyCode == KeyEvent.KEYCODE_BACK) {
       c.onKeyDown(keyCode, event);
       return true;
@@ -318,8 +321,7 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
    * @param v
    */
   protected void initVideoMetaData(View v) {
-    LinearLayout infoGraphic =
-        (LinearLayout) v.findViewById(R.id.mediacontroller_infographic_layout);
+    LinearLayout infoGraphic = (LinearLayout) v.findViewById(R.id.mediacontroller_infographic_layout);
     ImageInfographicUtils iiu = new ImageInfographicUtils(75, 70);
     if (mediaMetaData.getResolution() != null) {
       ImageView rv = iiu.createVideoResolutionImage(mediaMetaData.getResolution(), v.getContext());
@@ -547,8 +549,7 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 
     if (timeout != 0) {
       showfadeMessgeHandler.removeMessages(FADE_OUT);
-      showfadeMessgeHandler.sendMessageDelayed(showfadeMessgeHandler.obtainMessage(FADE_OUT),
-          timeout);
+      showfadeMessgeHandler.sendMessageDelayed(showfadeMessgeHandler.obtainMessage(FADE_OUT), timeout);
     }
   }
 
@@ -568,8 +569,7 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
         }
 
         long newposition = (playbackDuration * progress) / 1000;
-        String time =
-            new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(newposition));
+        String time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(newposition));
         if (instantSeeking) {
           mediaPlayerControl.seekTo(newposition);
         }
