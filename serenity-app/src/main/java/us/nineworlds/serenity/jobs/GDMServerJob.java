@@ -35,8 +35,9 @@ public class GDMServerJob extends InjectingJob {
   }
 
   @Override public void onRun() throws Throwable {
+    DatagramSocket socket = null;
     try {
-      DatagramSocket socket = new DatagramSocket(32414);
+      socket = new DatagramSocket(32414);
       socket.setBroadcast(true);
       String data = "M-SEARCH * HTTP/1.1\r\n\r\n";
       DatagramPacket packet = new DatagramPacket(data.getBytes(), data.length(), useMultiCastAddress(), 32414);
@@ -73,6 +74,14 @@ public class GDMServerJob extends InjectingJob {
       }
     } catch (IOException e) {
       Log.e("GDMService", e.toString());
+    } finally {
+      try {
+        if (socket != null) {
+          socket.close();
+        }
+      } catch (Exception ex) {
+         
+      }
     }
   }
 
