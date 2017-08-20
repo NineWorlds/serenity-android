@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('memorizing-trust-manager-0.9.aar'))

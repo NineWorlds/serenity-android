@@ -16,8 +16,8 @@ buildscript {
 repositories {
     jcenter()
     mavenCentral()
-    maven {
-        url 'https://dl.bintray.com/mamohr/maven/'
+    flatDir {
+      dirs 'embylib'
     }
 }
 
@@ -46,10 +46,10 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.3-2"
 
     compile project(':serenity-common')
+    compile project(':memorizing-trust-manager')
 
     compile 'com.google.code.gson:gson:2.7'
     compile 'org.java-websocket:Java-WebSocket:1.3.0'
-    compile 'de.duenndns:memorizing-trust-manager:0.9'
     compile 'com.mcxiaoke.volley:library:1.0.16'
     compile 'com.birbit:android-priority-jobqueue:2.0.1'
     compile 'com.squareup.dagger:dagger:1.2.2'

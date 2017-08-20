@@ -1,4 +1,4 @@
-include ':serenity-app', ':emby-lib', ':serenity-common', ':serenity-android-common'
+include ':serenity-app', ':emby-lib', ':serenity-common', ':serenity-android-common', ':memorizing-trust-manager'
 include ':subtitle-converter'
 include ':plexapp-rest-library'
 
