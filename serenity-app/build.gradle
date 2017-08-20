@@ -139,6 +139,7 @@ dependencies {
   compile project(':plexapp-rest-library')
   compile project(':subtitle-converter')
   compile project(':emby-lib')
+  compile project(':serenity-android-common')
   compile 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
   compile 'com.mcxiaoke.volley:library:1.0.6'
   compile('com.squareup.okhttp3:okhttp:3.6.0') {

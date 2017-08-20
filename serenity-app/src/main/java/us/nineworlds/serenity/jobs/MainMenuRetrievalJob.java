@@ -7,8 +7,8 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.android.injection.InjectingJob;
 import us.nineworlds.serenity.events.MainMenuEvent;
-import us.nineworlds.serenity.injection.InjectingJob;
 
 public class MainMenuRetrievalJob extends InjectingJob {
 
@@ -31,8 +31,7 @@ public class MainMenuRetrievalJob extends InjectingJob {
   }
 
   @Override
-  protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount,
-      int maxRunCount) {
+  protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
     return null;
   }
 }

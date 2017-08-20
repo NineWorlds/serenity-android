@@ -14,8 +14,8 @@ import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
+import us.nineworlds.serenity.common.android.injection.InjectingJob;
 import us.nineworlds.serenity.injection.ApplicationContext;
-import us.nineworlds.serenity.injection.InjectingJob;
 import us.nineworlds.serenity.server.GDMReceiver;
 
 public class GDMServerJob extends InjectingJob {
@@ -80,7 +80,7 @@ public class GDMServerJob extends InjectingJob {
           socket.close();
         }
       } catch (Exception ex) {
-         
+
       }
     }
   }

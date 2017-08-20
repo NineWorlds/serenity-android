@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.android.injection.InjectingJob;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
@@ -17,7 +18,6 @@ import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
 import us.nineworlds.serenity.core.services.RecommendAsyncTask;
 import us.nineworlds.serenity.injection.ApplicationContext;
-import us.nineworlds.serenity.injection.InjectingJob;
 
 public class OnDeckRecommendationsJob extends InjectingJob {
 
@@ -81,8 +81,7 @@ public class OnDeckRecommendationsJob extends InjectingJob {
   }
 
   @Override
-  protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount,
-      int maxRunCount) {
+  protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
     return null;
   }
 }
