@@ -30,24 +30,23 @@ public class SerenityObjectGraph {
 
   private ObjectGraph objectGraph;
 
-  private static SerenityObjectGraph fusionObjectGraph;
+  private static SerenityObjectGraph serenityObjectGraph;
 
   private SerenityObjectGraph() {
   }
 
   public static SerenityObjectGraph getInstance() {
-    if (fusionObjectGraph == null) {
+    if (serenityObjectGraph == null) {
       synchronized (SerenityObjectGraph.class) {
-        fusionObjectGraph = new SerenityObjectGraph();
+        serenityObjectGraph = new SerenityObjectGraph();
       }
     }
-    return fusionObjectGraph;
+    return serenityObjectGraph;
   }
 
   public void inject(Object injectionPoint) {
     if (objectGraph == null) {
-      throw new RuntimeException(
-          "ObjectGraph has not yet been created. Create a ObjectGraph with Modules.");
+      throw new RuntimeException("ObjectGraph has not yet been created. Create a ObjectGraph with Modules.");
     }
     objectGraph.inject(injectionPoint);
   }
