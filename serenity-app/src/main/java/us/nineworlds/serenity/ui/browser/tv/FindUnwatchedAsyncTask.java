@@ -34,10 +34,10 @@ import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 /**
@@ -56,7 +56,7 @@ public class FindUnwatchedAsyncTask extends AsyncTask<SeriesContentInfo, Void, E
    */
   public FindUnwatchedAsyncTask(Activity context) {
     this.activity = context;
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
   }
 
   @Override protected EpisodePosterInfo doInBackground(SeriesContentInfo... infos) {
@@ -76,8 +76,7 @@ public class FindUnwatchedAsyncTask extends AsyncTask<SeriesContentInfo, Void, E
 
         String baseUrl = factory.baseURL();
         String parentPosterURL = null;
-        if (episodeContainer.getParentPosterURL() != null && !episodeContainer.getParentPosterURL()
-            .contains("show")) {
+        if (episodeContainer.getParentPosterURL() != null && !episodeContainer.getParentPosterURL().contains("show")) {
           parentPosterURL = baseUrl + episodeContainer.getParentPosterURL().substring(1);
         }
         for (Video episode : episodes) {
@@ -101,9 +100,7 @@ public class FindUnwatchedAsyncTask extends AsyncTask<SeriesContentInfo, Void, E
     if (info == null) {
       toast = activity.getString(R.string.no_unwatched_episode_toast);
     } else {
-      toast =
-          activity.getString(R.string.playing_episode_toast, info.getSeason(), info.getEpisode(),
-              info.getTitle());
+      toast = activity.getString(R.string.playing_episode_toast, info.getSeason(), info.getEpisode(), info.getTitle());
       vpUtils.playVideo(activity, info, true);
     }
     Toast.makeText(activity, toast, Toast.LENGTH_LONG).show();

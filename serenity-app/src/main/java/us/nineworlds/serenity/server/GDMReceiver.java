@@ -7,9 +7,9 @@ import java.util.Map;
 import javax.inject.Inject;
 import us.nineworlds.plex.server.GDMServer;
 import us.nineworlds.serenity.common.Server;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.InjectingBroadcastReceiver;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
 
 public class GDMReceiver extends InjectingBroadcastReceiver {
 
@@ -22,7 +22,7 @@ public class GDMReceiver extends InjectingBroadcastReceiver {
 
   @Override public void onReceive(Context context, Intent intent) {
     if (objectGraph == null) {
-      objectGraph = SerenityObjectGraph.getInstance();
+      objectGraph = SerenityObjectGraph.Companion.getInstance();
       objectGraph.inject(this);
     }
 

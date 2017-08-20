@@ -8,13 +8,14 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.events.EpisodesRetrievalEvent;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
 
-@InjectViewState public class EpisodeBrowserPresenter extends MvpPresenter<EpisodeBrowserView> {
+@InjectViewState
+public class EpisodeBrowserPresenter extends MvpPresenter<EpisodeBrowserView> {
 
   @Inject EventBus eventBus;
 
@@ -22,7 +23,7 @@ import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
 
   public EpisodeBrowserPresenter() {
     super();
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
   }
 
   @Override public void attachView(EpisodeBrowserView view) {
@@ -40,8 +41,7 @@ import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
     jobManager.addJobInBackground(episodesRetrievalJob);
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onEpisodeResponse(EpisodesRetrievalEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN) public void onEpisodeResponse(EpisodesRetrievalEvent event) {
     EpisodeMediaContainer episodes = new EpisodeMediaContainer(event.getMediaContainer());
     List<VideoContentInfo> videos = episodes.createVideos();
     getViewState().updateGallery(videos);

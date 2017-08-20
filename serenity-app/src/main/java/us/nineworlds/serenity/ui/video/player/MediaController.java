@@ -61,11 +61,11 @@ import java.util.LinkedList;
 import java.util.Locale;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.injection.ForVideoQueue;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 
 /**
@@ -121,7 +121,7 @@ public class MediaController extends FrameLayout {
 
   @Deprecated public MediaController(Context context, AttributeSet attrs) {
     super(context, attrs);
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
 
     rootView = this;
     fromLayoutXML = true;
@@ -134,7 +134,7 @@ public class MediaController extends FrameLayout {
 
   public MediaController(MediaControllerDataObject mediaMetaData) {
     super(mediaMetaData.getContext());
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
     this.mediaMetaData = mediaMetaData;
     if (!fromLayoutXML && initController(mediaMetaData.getContext())) {
       initFloatingWindow();
@@ -381,7 +381,7 @@ public class MediaController extends FrameLayout {
     if (c == null) {
       return super.onKeyDown(keyCode, event);
     }
-    
+
     return c.onKeyDown(keyCode, event);
   }
 

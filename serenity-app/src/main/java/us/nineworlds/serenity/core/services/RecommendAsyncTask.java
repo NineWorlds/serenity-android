@@ -14,17 +14,18 @@ import java.net.URLEncoder;
 import javax.inject.Inject;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.core.RecommendationBuilder;
 import us.nineworlds.serenity.core.SerenityRecommendationContentProvider;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
 
 //AndroidTVCodeMash2015-Recommendations
 
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN) public class RecommendAsyncTask extends AsyncTask {
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+public class RecommendAsyncTask extends AsyncTask {
   private final VideoContentInfo video;
   private final Context context;
 
@@ -33,7 +34,7 @@ import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
   public RecommendAsyncTask(VideoContentInfo video, Context context) {
     this.video = video;
     this.context = context;
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
   }
 
   @Override public Object doInBackground(Object... params) {
@@ -67,8 +68,7 @@ import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
 
     Notification notification = builder.setContext(context)
         .setBackgroundContentUri(
-            SerenityRecommendationContentProvider.CONTENT_URI + URLEncoder.encode(
-                video.getBackgroundURL(), "UTF-8"))
+            SerenityRecommendationContentProvider.CONTENT_URI + URLEncoder.encode(video.getBackgroundURL(), "UTF-8"))
         .setBackground(backgroundURL)
         .setTitle(video.getTitle())
         .setImage(video.getImageURL())
@@ -112,8 +112,7 @@ import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
     Notification notification = builder.setContext(context)
         .setBackground(backgroundURL)
         .setBackgroundContentUri(
-            SerenityRecommendationContentProvider.CONTENT_URI + URLEncoder.encode(
-                video.getBackgroundURL(), "UTF-8"))
+            SerenityRecommendationContentProvider.CONTENT_URI + URLEncoder.encode(video.getBackgroundURL(), "UTF-8"))
         .setTitle(title)
         .setImage(video.getImageURL())
         .setId(Integer.parseInt(video.id()))

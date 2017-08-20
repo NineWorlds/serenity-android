@@ -32,8 +32,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
 public class CardPresenter extends Presenter {
@@ -41,7 +41,7 @@ public class CardPresenter extends Presenter {
   static Context context;
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent) {
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
     context = parent.getContext();
 
     ImageCardView imageView = new ImageCardView(context);
@@ -62,8 +62,7 @@ public class CardPresenter extends Presenter {
       imageCardView.setTitleText(video.getTitle());
       imageCardView.setContentText(video.getStudio());
       Activity activity = getActivity(context);
-      imageCardView.setMainImageDimensions(ImageUtils.getDPI(240, activity),
-          ImageUtils.getDPI(360, activity));
+      imageCardView.setMainImageDimensions(ImageUtils.getDPI(240, activity), ImageUtils.getDPI(360, activity));
       cardHolder.updateCardViewImage(video.getImageURL());
     }
   }

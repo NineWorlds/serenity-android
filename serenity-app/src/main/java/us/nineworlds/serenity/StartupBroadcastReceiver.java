@@ -30,10 +30,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import javax.inject.Inject;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.InjectingBroadcastReceiver;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
 
 /**
  * Used to automatically launch Serenity for Android after boot is completed on
@@ -54,7 +54,7 @@ public class StartupBroadcastReceiver extends InjectingBroadcastReceiver {
   private Context context;
 
   @Override public void onReceive(Context context, Intent intent) {
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
     this.context = context;
 
     if (intent.getAction() == null) {
@@ -85,8 +85,7 @@ public class StartupBroadcastReceiver extends InjectingBroadcastReceiver {
       return;
     }
 
-    boolean onDeckRecommendations =
-        preferences.getBoolean("androidtv_recommendation_ondeck", false);
+    boolean onDeckRecommendations = preferences.getBoolean("androidtv_recommendation_ondeck", false);
 
     if (!onDeckRecommendations) {
       return;

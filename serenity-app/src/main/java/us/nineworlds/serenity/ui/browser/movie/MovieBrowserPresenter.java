@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -17,10 +18,10 @@ import us.nineworlds.serenity.core.model.impl.SecondaryCategoryMediaContainer;
 import us.nineworlds.serenity.events.MainCategoryEvent;
 import us.nineworlds.serenity.events.MovieRetrievalEvent;
 import us.nineworlds.serenity.events.MovieSecondaryCategoryEvent;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.jobs.MovieRetrievalJob;
 
-@InjectViewState public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserView> {
+@InjectViewState
+public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserView> {
 
   @Inject EventBus eventBus;
 
@@ -28,7 +29,7 @@ import us.nineworlds.serenity.jobs.MovieRetrievalJob;
 
   public MovieBrowserPresenter() {
     super();
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
   }
 
   @Override public void attachView(MovieBrowserView view) {
@@ -41,27 +42,22 @@ import us.nineworlds.serenity.jobs.MovieRetrievalJob;
     eventBus.unregister(this);
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onMainCategoryResponse(MainCategoryEvent event) {
-    CategoryMediaContainer categoryMediaContainer =
-        new CategoryMediaContainer(event.getMediaContainer());
+  @Subscribe(threadMode = ThreadMode.MAIN) public void onMainCategoryResponse(MainCategoryEvent event) {
+    CategoryMediaContainer categoryMediaContainer = new CategoryMediaContainer(event.getMediaContainer());
     List<CategoryInfo> categories = categoryMediaContainer.createCategories();
     getViewState().populateCategory(categories, event.getKey());
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onSecondaryCategoryEvent(MovieSecondaryCategoryEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN) public void onSecondaryCategoryEvent(MovieSecondaryCategoryEvent event) {
     SecondaryCategoryMediaContainer scMediaContainer =
         new SecondaryCategoryMediaContainer(event.getMediaContainer(), event.getCategory());
 
     List<SecondaryCategoryInfo> secondaryCategories = scMediaContainer.createCategories();
 
-    getViewState().populateSecondaryCategory(secondaryCategories, event.getKey(),
-        event.getCategory());
+    getViewState().populateSecondaryCategory(secondaryCategories, event.getKey(), event.getCategory());
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onMoviePosterResponse(MovieRetrievalEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN) public void onMoviePosterResponse(MovieRetrievalEvent event) {
     MovieMediaContainer movies = new MovieMediaContainer(event.getMediaContainer());
     List<VideoContentInfo> posterList = movies.createVideos();
     getViewState().displayPosters(posterList);

@@ -24,11 +24,12 @@
 package us.nineworlds.serenity.injection;
 
 import android.app.IntentService;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 
 public abstract class InjectingIntentService extends IntentService {
 
   public InjectingIntentService(String name) {
     super(name);
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
   }
 }

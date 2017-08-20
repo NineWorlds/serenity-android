@@ -24,10 +24,11 @@
 package us.nineworlds.serenity.injection;
 
 import net.ganin.darv.DpadAwareRecyclerView;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 
 public abstract class InjectingRecyclerViewAdapter extends DpadAwareRecyclerView.Adapter {
 
   public InjectingRecyclerViewAdapter() {
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
   }
 }

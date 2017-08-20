@@ -35,8 +35,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.inject.Inject;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.core.util.AndroidHelper;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 
 /**
@@ -98,7 +98,7 @@ public class SerenityApplication extends Application {
   }
 
   protected void inject() {
-    SerenityObjectGraph objectGraph = SerenityObjectGraph.getInstance();
+    SerenityObjectGraph objectGraph = SerenityObjectGraph.Companion.getInstance();
     objectGraph.createObjectGraph(createModules());
     objectGraph.inject(this);
   }
@@ -111,8 +111,7 @@ public class SerenityApplication extends Application {
 
   protected void installAnalytics() {
     Tracker tracker = getTracker();
-    Thread.UncaughtExceptionHandler uncaughtExceptionHandler =
-        Thread.getDefaultUncaughtExceptionHandler();
+    Thread.UncaughtExceptionHandler uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
     if (uncaughtExceptionHandler instanceof ExceptionReporter) {
       ExceptionReporter exceptionReporter = (ExceptionReporter) uncaughtExceptionHandler;
       exceptionReporter.setExceptionParser(new AnalyticsExceptionParser());

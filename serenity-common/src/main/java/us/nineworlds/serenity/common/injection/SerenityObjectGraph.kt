@@ -8,10 +8,12 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * <p>
+ *
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * <p>
+ *
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -21,52 +23,44 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.injection;
+package us.nineworlds.serenity.common.injection
 
-import dagger.ObjectGraph;
-import java.util.List;
+import dagger.ObjectGraph
 
-public class SerenityObjectGraph {
+class SerenityObjectGraph private constructor() {
 
-  private ObjectGraph objectGraph;
+  var objectGraph: ObjectGraph? = null
 
-  private static SerenityObjectGraph serenityObjectGraph;
-
-  private SerenityObjectGraph() {
-  }
-
-  public static SerenityObjectGraph getInstance() {
-    if (serenityObjectGraph == null) {
-      synchronized (SerenityObjectGraph.class) {
-        serenityObjectGraph = new SerenityObjectGraph();
-      }
-    }
-    return serenityObjectGraph;
-  }
-
-  public void inject(Object injectionPoint) {
+  fun inject(injectionPoint: Any) {
     if (objectGraph == null) {
-      throw new RuntimeException("ObjectGraph has not yet been created. Create a ObjectGraph with Modules.");
+      throw RuntimeException("ObjectGraph has not yet been created. Create a ObjectGraph with Modules.")
     }
-    objectGraph.inject(injectionPoint);
-  }
-
-  public void setObjectGraph(ObjectGraph objectGraph) {
-    this.objectGraph = objectGraph;
+    objectGraph!!.inject(injectionPoint)
   }
 
   /**
    * Creates an entirely new ObjectGraph for the application based on the
    * provides list of modules.
-   *
+
    * @param modules List of Dagger Modules to use to construct the new object
-   * graph.
+   * * graph.
    */
-  public void createObjectGraph(List<Object> modules) {
-    objectGraph = ObjectGraph.create(modules.toArray());
+  fun createObjectGraph(modules: List<Any>) {
+    objectGraph = ObjectGraph.create(*modules.toTypedArray())
   }
 
-  public ObjectGraph getObjectGraph() {
-    return objectGraph;
+  companion object {
+
+    private var serenityObjectGraph: SerenityObjectGraph? = null
+
+    val instance: SerenityObjectGraph
+      get() {
+        if (serenityObjectGraph == null) {
+          synchronized(SerenityObjectGraph::class.java) {
+            serenityObjectGraph = SerenityObjectGraph()
+          }
+        }
+        return serenityObjectGraph!!
+      }
   }
 }

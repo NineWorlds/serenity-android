@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
@@ -20,7 +21,6 @@ import us.nineworlds.serenity.core.model.impl.TVCategoryMediaContainer;
 import us.nineworlds.serenity.events.TVCategoryEvent;
 import us.nineworlds.serenity.events.TVCategorySecondaryEvent;
 import us.nineworlds.serenity.events.TVShowRetrievalEvent;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.jobs.TVCategoryJob;
 import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
 
@@ -34,7 +34,7 @@ public class TVShowBrowserPresenter extends MvpPresenter<TVShowBrowserView> {
 
   public TVShowBrowserPresenter() {
     super();
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
   }
 
   @Override public void attachView(TVShowBrowserView view) {

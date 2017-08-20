@@ -53,12 +53,12 @@ import java.util.List;
 import javax.inject.Inject;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MovieSearchIntentService;
 import us.nineworlds.serenity.injection.ApplicationContext;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 public class MovieSearchFragment extends SearchFragment implements SearchResultProvider {
@@ -77,7 +77,7 @@ public class MovieSearchFragment extends SearchFragment implements SearchResultP
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
 
     rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
     setSearchResultProvider(this);

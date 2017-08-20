@@ -26,11 +26,12 @@ package us.nineworlds.serenity.injection;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 
 public abstract class BaseInjector {
 
   public BaseInjector() {
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
   }
 
   protected Activity getActivity(Context contextWrapper) {

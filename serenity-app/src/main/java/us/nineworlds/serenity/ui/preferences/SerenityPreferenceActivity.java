@@ -41,8 +41,8 @@ import javax.inject.Inject;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.Server;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.injection.ForMediaServers;
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.ui.activity.OverscanSetupActivity;
 
 /**
@@ -50,14 +50,13 @@ import us.nineworlds.serenity.ui.activity.OverscanSetupActivity;
  *
  * @author dcarver
  */
-public class SerenityPreferenceActivity extends PreferenceActivity
-    implements Preference.OnPreferenceClickListener {
+public class SerenityPreferenceActivity extends PreferenceActivity implements Preference.OnPreferenceClickListener {
 
   @Inject @ForMediaServers Map<String, Server> mediaServers;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
     addPreferencesFromResource(R.xml.preferences);
     findPreference("overscan_setup").setOnPreferenceClickListener(this);
   }
@@ -119,8 +118,7 @@ public class SerenityPreferenceActivity extends PreferenceActivity
 
   protected void populateAvailableLocales() {
     Locale[] locales = Locale.getAvailableLocales();
-    ListPreference preferenceLocales =
-        (ListPreference) findPreference("preferred_subtitle_language");
+    ListPreference preferenceLocales = (ListPreference) findPreference("preferred_subtitle_language");
     ArrayList<String> localNames = new ArrayList<String>();
     ArrayList<String> localCodes = new ArrayList<String>();
     for (Locale local : locales) {
@@ -138,8 +136,7 @@ public class SerenityPreferenceActivity extends PreferenceActivity
   }
 
   protected void populateSupportedPlayers() {
-    ListPreference supportedPlayers =
-        (ListPreference) findPreference("serenity_external_player_filter");
+    ListPreference supportedPlayers = (ListPreference) findPreference("serenity_external_player_filter");
     Map<String, String> availablePlayers = new HashMap<String, String>();
     if (hasPlayerByName(this, "com.mxtech.videoplayer.ad")) {
       availablePlayers.put("mxplayer", "MX Player");
@@ -176,8 +173,7 @@ public class SerenityPreferenceActivity extends PreferenceActivity
 
     final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
     mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-    final List<ResolveInfo> pkgAppsList =
-        context.getPackageManager().queryIntentActivities(mainIntent, 0);
+    final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities(mainIntent, 0);
 
     for (ResolveInfo resolveInfo : pkgAppsList) {
       String packageName = resolveInfo.activityInfo.packageName;

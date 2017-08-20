@@ -24,10 +24,11 @@
 package us.nineworlds.serenity.injection;
 
 import android.support.v4.app.Fragment;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 
 public abstract class InjectingFragment extends Fragment {
 
   public InjectingFragment() {
-    SerenityObjectGraph.getInstance().inject(this);
+    SerenityObjectGraph.Companion.getInstance().inject(this);
   }
 }
