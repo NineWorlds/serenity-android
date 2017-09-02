@@ -41,8 +41,6 @@ public class GDMServerJob extends InjectingJob {
       socket.setBroadcast(true);
       String data = "M-SEARCH * HTTP/1.1\r\n\r\n";
       DatagramPacket packet = new DatagramPacket(data.getBytes(), data.length(), useMultiCastAddress(), 32414);
-      //			DatagramPacket packet = new DatagramPacket(data.getBytes(),
-      //					data.length(), getBroadcastAddress(), 32414);
 
       socket.send(packet);
       Log.d("GDMService", "Search Packet Broadcasted");
