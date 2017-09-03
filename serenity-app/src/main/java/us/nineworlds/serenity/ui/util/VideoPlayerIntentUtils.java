@@ -40,6 +40,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.injection.ForVideoQueue;
+import us.nineworlds.serenity.ui.video.player.ExoplayerVideoActivity;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 
 public class VideoPlayerIntentUtils extends BaseInjector {
@@ -55,8 +56,7 @@ public class VideoPlayerIntentUtils extends BaseInjector {
    *
    * Launches an external player based on the information provided.
    */
-  public void launchExternalPlayer(VideoContentInfo videoContent, Activity activity,
-      boolean autoResume) {
+  public void launchExternalPlayer(VideoContentInfo videoContent, Activity activity, boolean autoResume) {
 
     String externalPlayerValue = prefs.getString("serenity_external_player_filter", "default");
 
@@ -100,8 +100,8 @@ public class VideoPlayerIntentUtils extends BaseInjector {
           VideoContentInfo videoContent = videoQueue.poll();
           launchExternalPlayer(videoContent, context, false);
         } else {
-          Toast.makeText(context, context.getResources()
-                  .getString(R.string.external_player_video_queue_support_has_not_been_enabled_),
+          Toast.makeText(context,
+              context.getResources().getString(R.string.external_player_video_queue_support_has_not_been_enabled_),
               Toast.LENGTH_LONG).show();
         }
       } else {
@@ -109,16 +109,14 @@ public class VideoPlayerIntentUtils extends BaseInjector {
         context.startActivityForResult(vpIntent, SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
       }
     } else {
-      Toast.makeText(context, context.getResources().getString(R.string.queue_is_empty_),
-          Toast.LENGTH_LONG).show();
+      Toast.makeText(context, context.getResources().getString(R.string.queue_is_empty_), Toast.LENGTH_LONG).show();
     }
   }
 
   protected void showResumeDialogQueue(Activity context, VideoContentInfo videoContent) {
     final VideoContentInfo video = videoContent;
     final Activity c = context;
-    AlertDialog.Builder alertDialogBuilder =
-        new AlertDialog.Builder(context, android.R.style.Theme_Holo_Dialog);
+    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, android.R.style.Theme_Holo_Dialog);
 
     alertDialogBuilder.setTitle(R.string.resume_video);
     alertDialogBuilder.setMessage(
@@ -166,12 +164,12 @@ public class VideoPlayerIntentUtils extends BaseInjector {
    * @return
    * @param autoResume
    */
-  private void launchInternalPlayer(VideoContentInfo videoInfo, Activity activity,
-      boolean autoResume) {
+  private void launchInternalPlayer(VideoContentInfo videoInfo, Activity activity, boolean autoResume) {
 
     videoQueue.add(videoInfo);
 
-    Intent vpIntent = new Intent(activity, SerenitySurfaceViewVideoActivity.class);
+    //Intent vpIntent = new Intent(activity, SerenitySurfaceViewVideoActivity.class);
+    Intent vpIntent = new Intent(activity, ExoplayerVideoActivity.class);
     vpIntent.putExtra("autoResume", autoResume);
 
     activity.startActivityForResult(vpIntent, SerenityConstants.BROWSER_RESULT_CODE);
