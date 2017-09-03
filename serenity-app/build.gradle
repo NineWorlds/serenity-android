@@ -135,6 +135,10 @@ dependencies {
     exclude module: 'support-annotations'
   }
 
+  compile ('com.google.android.exoplayer:extension-okhttp:r2.5.1') {
+    exclude module: 'support-annotations'
+  }
+
   compile('com.squareup.okhttp3:okhttp:3.6.0') {
     exclude group: 'com.android.support'
   }

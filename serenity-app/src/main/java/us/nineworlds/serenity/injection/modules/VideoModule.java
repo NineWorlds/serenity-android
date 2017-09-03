@@ -1,17 +1,18 @@
 package us.nineworlds.serenity.injection.modules;
 
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
+import okhttp3.OkHttpClient;
 import us.nineworlds.serenity.ui.video.player.EventLogger;
 
-@Module(library = true)
+@Module(library = true, includes = SerenityModule.class)
 public class VideoModule {
 
   private static final String userAgent = "SerenityAndroid";
@@ -20,8 +21,8 @@ public class VideoModule {
     return new DefaultBandwidthMeter();
   }
 
-  @Provides HttpDataSource.Factory buildHttpDataSourceFactory(DefaultBandwidthMeter bandwidthMeter) {
-    return new DefaultHttpDataSourceFactory(userAgent, bandwidthMeter);
+  @Provides HttpDataSource.Factory buildHttpDataSourceFactory(OkHttpClient okHttpClient) {
+    return new OkHttpDataSourceFactory(okHttpClient, userAgent, null, null);
   }
 
   @Provides AdaptiveTrackSelection.Factory proidesAdapativeTrackSelectionFactory(DefaultBandwidthMeter bandwidthMeter) {

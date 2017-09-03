@@ -107,9 +107,10 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   private fun releasePlayer() {
     if (player != null) {
-      player?.release();
-      player = null;
+      player?.release()
+      player = null
     }
   }
+
 }
 
