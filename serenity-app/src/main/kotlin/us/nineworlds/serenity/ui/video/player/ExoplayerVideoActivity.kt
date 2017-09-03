@@ -9,7 +9,6 @@ import android.os.Handler
 import butterknife.BindView
 import butterknife.ButterKnife.bind
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
@@ -88,9 +87,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   }
 
   override fun initializePlayer(video: VideoContentInfo) {
-    val renderersFactory = DefaultRenderersFactory(this,
-        null, DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF)
-    player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector)
+    player = ExoPlayerFactory.newSimpleInstance(this, trackSelector)
     player?.addListener(eventLogger)
     player?.setAudioDebugListener(eventLogger)
     player?.setVideoDebugListener(eventLogger)
