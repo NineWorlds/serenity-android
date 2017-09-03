@@ -28,10 +28,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import com.birbit.android.jobqueue.JobManager;
 import com.birbit.android.jobqueue.config.Configuration;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -78,6 +83,7 @@ import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
 import us.nineworlds.serenity.injection.ApplicationContext;
+import us.nineworlds.serenity.injection.VideoPlayerHandler;
 import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
 import us.nineworlds.serenity.jobs.GDMServerJob;
 import us.nineworlds.serenity.jobs.MainMenuRetrievalJob;
@@ -234,5 +240,14 @@ public class AndroidModule {
 
   @Provides @Singleton LocalBroadcastManager providesLocalBroadcastManager() {
     return LocalBroadcastManager.getInstance(applicationContext);
+  }
+
+  @Provides DataSource.Factory providesMediaDataSource(@ApplicationContext Context context,
+      DefaultBandwidthMeter bandwidthMeter, HttpDataSource.Factory httpDataSourceFactory) {
+    return new DefaultDataSourceFactory(context, bandwidthMeter, httpDataSourceFactory);
+  }
+
+  @Provides @VideoPlayerHandler Handler providesVideoPlayerHandler() {
+    return new Handler();
   }
 }

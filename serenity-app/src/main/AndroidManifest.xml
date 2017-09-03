@@ -127,6 +127,13 @@
         android:label="@string/title_activity_tvbrowser_show_episodes"
         android:screenOrientation="sensorLandscape"
         android:theme="@style/CustomActionBarTheme"/>
+
+    <activity
+        android:name=".ui.video.player.ExoplayerVideoActivity"
+        android:label="Exo Video Player"
+        android:screenOrientation="landscape"
+        android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
     <activity
         android:name=".ui.video.player.SerenitySurfaceViewVideoActivity"
         android:screenOrientation="sensorLandscape"
@@ -192,8 +199,6 @@
       </intent-filter>
     </receiver>
 
-    <activity android:name=".ui.video.player.ExoplayerVideoActivity">
-    </activity>
   </application>
 
 </manifest>

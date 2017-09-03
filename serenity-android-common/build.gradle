@@ -56,6 +56,8 @@ dependencies {
   compile project(':serenity-common')
   compile 'com.squareup.dagger:dagger:1.2.2'
   compile 'org.greenrobot:eventbus:3.0.0'
+  compile 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.4-3'
+
 
   compile 'com.birbit:android-priority-jobqueue:2.0.1'
   kapt 'com.squareup.dagger:dagger-compiler:1.2.2'
