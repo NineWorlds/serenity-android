@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import butterknife.BindView
 import butterknife.ButterKnife.bind
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -18,7 +19,6 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import us.nineworlds.serenity.R
-import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.injection.VideoPlayerHandler
 import us.nineworlds.serenity.ui.activity.SerenityActivity
 import us.nineworlds.serenity.ui.util.DisplayUtils.overscanCompensation
@@ -86,7 +86,8 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     setIntent(intent)
   }
 
-  override fun initializePlayer(video: VideoContentInfo) {
+  override fun initializePlayer(videoUrl: String) {
+    Log.d("ExoPlayerVideoActivity", "Plex Direct Play URL: " + videoUrl)
     player = ExoPlayerFactory.newSimpleInstance(this, trackSelector)
     player?.addListener(eventLogger)
     player?.setAudioDebugListener(eventLogger)
@@ -96,7 +97,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     playerView.player = player
     player?.playWhenReady = true
 
-    val mediaSource: MediaSource = buildMediaSource(Uri.parse(video.directPlayUrl))
+    val mediaSource: MediaSource = buildMediaSource(Uri.parse(videoUrl))
     player?.prepare(mediaSource)
   }
 
@@ -111,6 +112,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
       player = null
     }
   }
+
 
 }
 

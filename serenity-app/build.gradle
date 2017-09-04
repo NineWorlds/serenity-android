@@ -49,6 +49,8 @@ android {
 
     minSdkVersion 17
     targetSdkVersion 25
+    multiDexEnabled true
+
   }
 
   aaptOptions {
@@ -80,7 +82,6 @@ android {
   buildTypes {
     debug {
       minifyEnabled false
-      useProguard false
     }
     release {
       if (project.hasProperty("keystore")) {
@@ -88,7 +89,6 @@ android {
       }
       zipAlignEnabled true
       minifyEnabled false
-      useProguard false
     }
   }
 
@@ -142,7 +142,8 @@ dependencies {
   compile('com.squareup.okhttp3:okhttp:3.6.0') {
     exclude group: 'com.android.support'
   }
-  
+
+  compile 'com.android.support:multidex:1.0.1'
   compile 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.4-3'
   compile 'com.arello-mobile:moxy:1.5.3'
   compile 'com.arello-mobile:moxy-app-compat:1.5.3'

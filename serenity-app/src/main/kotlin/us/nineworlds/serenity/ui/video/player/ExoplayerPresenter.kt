@@ -34,9 +34,9 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>() {
     if (videoQueue.isEmpty()) {
       return
     }
-    val video: VideoContentInfo = videoQueue.poll()
+
+    this.video = videoQueue.poll()
     videoURL = video.directPlayUrl
-    this.video = video
     if (video is EpisodePosterInfo) {
       if (video.getParentPosterURL() != null) {
         posterURL = video.getParentPosterURL()
@@ -47,7 +47,26 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>() {
       subtitleType = video.subtitle.format
     }
 
-    viewState.initializePlayer(video)
+    val videoUrl: String = transcoderUrl()
+
+    //val videoUrl = "http://192.168.86.27:32400/video/:/transcode/universal/start.mkv?path=http%3A%2F%2F127.0.0.1%3A32400%2Flibrary%2Fmetadata%2F1&mediaIndex=0&partIndex=0&protocol=http&offset=0&fastSeek=1&copyts=1&directPlay=0&directStream=1&subtitleSize=100&audioBoost=100&maxVideoBitrate=20000&videoQuality=100&videoResolution=1280x720&session=069a0dc3-25ed-4a89-85f3-e6bda28dba42&subtitles=burn&Accept-Language=en&X-Plex-Product=Plex+Web&X-Plex-Version=2.4.9&X-Plex-Client-Identifier=tll8dnyyw0f&X-Plex-Platform=Opera&X-Plex-Platform-Version=47.0&X-Plex-Device=Linux&X-Plex-Device-Name=Plex+Web+(Opera)"
+
+    viewState.initializePlayer(videoUrl)
+  }
+
+  fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {
+    if (video.container.equals("avi")) {
+      return false
+    }
+    return true
+  }
+
+  fun transcoderUrl(): String {
+    if (isDirectPlaySupportedForContainer(video)) {
+      return video.directPlayUrl
+    }
+
+    return plexFactory.getTranscodeUrl(video.id(), video.resumeOffset)
   }
 
 }

@@ -132,12 +132,12 @@
         android:name=".ui.video.player.ExoplayerVideoActivity"
         android:label="Exo Video Player"
         android:screenOrientation="landscape"
-        android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen"/>
 
     <activity
         android:name=".ui.video.player.SerenitySurfaceViewVideoActivity"
         android:screenOrientation="sensorLandscape"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen">
       <intent-filter>
         <action android:name="android.intent.action.VIEW"/>
 
