@@ -11,6 +11,7 @@ import dagger.Provides;
 import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
 import us.nineworlds.serenity.ui.video.player.EventLogger;
+import us.nineworlds.serenity.ui.video.player.ExoplayerPresenter;
 
 @Module(library = true, includes = SerenityModule.class)
 public class VideoModule {
@@ -35,5 +36,9 @@ public class VideoModule {
 
   @Provides EventLogger providesEventLogger(MappingTrackSelector trackSelector) {
     return new EventLogger(trackSelector);
+  }
+
+  @Provides ExoplayerPresenter providesExoPlayerPresenter() {
+    return new ExoplayerPresenter();
   }
 }

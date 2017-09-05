@@ -1,8 +1,11 @@
 package us.nineworlds.serenity.ui.video.player
 
+import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import com.google.android.exoplayer2.mediacodec.MediaCodecUtil
 import us.nineworlds.plex.rest.PlexappFactory
+import us.nineworlds.serenity.OpenForTesting
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
@@ -10,6 +13,7 @@ import us.nineworlds.serenity.injection.ForVideoQueue
 import java.util.LinkedList
 import javax.inject.Inject
 
+@OpenForTesting
 @InjectViewState
 class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>() {
 
@@ -17,7 +21,6 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>() {
   lateinit var videoQueue: LinkedList<VideoContentInfo>
 
   @Inject lateinit var plexFactory: PlexappFactory
-
 
   lateinit var videoURL: String
   lateinit var video: VideoContentInfo
@@ -49,13 +52,16 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>() {
 
     val videoUrl: String = transcoderUrl()
 
-    //val videoUrl = "http://192.168.86.27:32400/video/:/transcode/universal/start.mkv?path=http%3A%2F%2F127.0.0.1%3A32400%2Flibrary%2Fmetadata%2F1&mediaIndex=0&partIndex=0&protocol=http&offset=0&fastSeek=1&copyts=1&directPlay=0&directStream=1&subtitleSize=100&audioBoost=100&maxVideoBitrate=20000&videoQuality=100&videoResolution=1280x720&session=069a0dc3-25ed-4a89-85f3-e6bda28dba42&subtitles=burn&Accept-Language=en&X-Plex-Product=Plex+Web&X-Plex-Version=2.4.9&X-Plex-Client-Identifier=tll8dnyyw0f&X-Plex-Platform=Opera&X-Plex-Platform-Version=47.0&X-Plex-Device=Linux&X-Plex-Device-Name=Plex+Web+(Opera)"
-
     viewState.initializePlayer(videoUrl)
   }
 
   fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {
-    if (video.container.equals("avi")) {
+
+    val isAudioCodecSupported = selectCodec("audio/" + video.audioCodec)
+
+    Log.d("ExoPlayerPresenter", "Audio Codec:  " + video.audioCodec + " support returned " + isAudioCodecSupported)
+
+    if (video.container.equals("avi") || !isAudioCodecSupported) {
       return false
     }
     return true
@@ -69,4 +75,12 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>() {
     return plexFactory.getTranscodeUrl(video.id(), video.resumeOffset)
   }
 
+  fun selectCodec(mimeType: String): Boolean {
+    var actualCode = mimeType;
+    if (actualCode.contains("h264")) {
+      actualCode = "video/H264"
+    }
+    val codec = MediaCodecUtil.getDecoderInfo(actualCode, false) ?: return false
+    return codec.isCodecSupported(mimeType)
+  }
 }
