@@ -73,28 +73,28 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     }
   }
 
-  override fun onPause() {
+  public override fun onPause() {
     super.onPause()
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
       releasePlayer()
     }
   }
 
-  override fun onStop() {
+  public override fun onStop() {
     super.onStop()
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
       releasePlayer()
     }
   }
 
-  override fun onNewIntent(intent: Intent?) {
+  public override fun onNewIntent(intent: Intent?) {
     releasePlayer()
     setIntent(intent)
   }
 
   override fun initializePlayer(videoUrl: String) {
     Log.d("ExoPlayerVideoActivity", "Plex Direct Play URL: " + videoUrl)
-    player = ExoPlayerFactory.newSimpleInstance(this, trackSelector)
+    player = createSimpleExoplayer()
     player?.addListener(eventLogger)
     player?.setAudioDebugListener(eventLogger)
     player?.setVideoDebugListener(eventLogger)
@@ -107,12 +107,14 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     player?.prepare(mediaSource)
   }
 
-  fun buildMediaSource(uri: Uri): MediaSource {
+  internal fun createSimpleExoplayer() = ExoPlayerFactory.newSimpleInstance(this, trackSelector)
+
+  internal fun buildMediaSource(uri: Uri): MediaSource {
     return ExtractorMediaSource(uri, mediaDataSourceFactory, DefaultExtractorsFactory(),
         videoPlayerHandler, eventLogger)
   }
 
-  private fun releasePlayer() {
+  internal fun releasePlayer() {
     if (player != null) {
       player?.release()
       player = null

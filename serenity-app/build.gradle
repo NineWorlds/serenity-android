@@ -114,6 +114,11 @@ android {
       maxHeapSize = "1024m"
     }
   }
+
+  compileOptions {
+    incremental = false
+  }
+
 }
 
 junitJacoco {

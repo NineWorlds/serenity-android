@@ -1,16 +1,25 @@
 package us.nineworlds.serenity.ui.video.player
 
 import android.annotation.TargetApi
+import android.content.Intent
+import android.net.Uri
 import android.os.Build.VERSION_CODES
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import dagger.Module
 import dagger.Provides
 import org.assertj.android.api.Assertions
+import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.any
+import org.mockito.Mockito.doNothing
+import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.never
+import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations.initMocks
 import org.mockito.junit.MockitoJUnit
@@ -82,6 +91,93 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     activity.onResume()
 
     verify(mockExoPlayerPresenter, never()).playBackFromVideoQueue()
+  }
+
+  @Test
+  fun onPauseCallsReleasePlayser() {
+    val spy = spy(activity)
+    doNothing().`when`(spy).releasePlayer()
+    spy.onPause()
+
+    verify(spy).releasePlayer()
+  }
+
+  @Test
+  @Config(sdk = intArrayOf(24))
+  fun onPauseDoesNotCallsReleasePlayser() {
+    val spy = spy(activity)
+    doNothing().`when`(spy).releasePlayer()
+    spy.onPause()
+
+    verify(spy, never()).releasePlayer()
+  }
+
+  @Test
+  @Config(sdk = intArrayOf(24))
+  fun onStopDCallsReleasePlayser() {
+    val spy = spy(activity)
+    doNothing().`when`(spy).releasePlayer()
+    spy.onStop()
+
+    verify(spy).releasePlayer()
+  }
+
+  @Test
+  fun onStopDoesNotCallsReleasePlayser() {
+    val spy = spy(activity)
+    doNothing().`when`(spy).releasePlayer()
+    spy.onStop()
+
+    verify(spy, never()).releasePlayer()
+  }
+
+  @Test
+  fun onNewIntentCallsRelease() {
+    val spy = spy(activity)
+    doNothing().`when`(spy).releasePlayer()
+    spy.onNewIntent(Intent())
+
+    verify(spy).releasePlayer()
+  }
+
+  @Test
+  fun buildMediaSourceReturnsNonNullSource() {
+    assertThat(activity.buildMediaSource(Uri.parse("http://www.example.com/start.mkv"))).isNotNull()
+  }
+
+  @Test
+  fun initializePlayerSetABunchOfRequiredItems() {
+    val spy = spy(activity)
+    doReturn(mockPlayer).`when`(spy).createSimpleExoplayer()
+    doReturn(TrackSelectionArray()).`when`(mockPlayer).currentTrackSelections
+
+    spy.initializePlayer("http://www.example.com/start.mkv")
+
+    assertThat(spy.player).isInstanceOf(SimpleExoPlayer::class.java)
+
+    verify(spy).createSimpleExoplayer()
+    verify(mockPlayer).addListener(any(EventLogger::class.java))
+    verify(mockPlayer).setAudioDebugListener(any(EventLogger::class.java))
+    verify(mockPlayer).setVideoDebugListener(any(EventLogger::class.java))
+    verify(mockPlayer).setMetadataOutput(any(EventLogger::class.java))
+    verify(mockPlayer).prepare(any(MediaSource::class.java))
+  }
+
+  @Test
+  fun releasePlayerReleasesWhenPlayerIsNotNull() {
+    activity.player = mockPlayer
+
+    activity.releasePlayer()
+
+    assertThat(activity.player).isNull()
+
+    verify(mockPlayer).release()
+
+  }
+
+  @Test
+  fun createSimpleExoplayer() {
+    assertThat(activity.createSimpleExoplayer()).isNotNull()
   }
 
   override fun getModules(): MutableList<Any> =
