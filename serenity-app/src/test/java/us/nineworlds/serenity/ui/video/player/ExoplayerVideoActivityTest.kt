@@ -169,10 +169,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
 
     activity.releasePlayer()
 
-    assertThat(activity.player).isNull()
-
     verify(mockPlayer).release()
-
   }
 
   @Test

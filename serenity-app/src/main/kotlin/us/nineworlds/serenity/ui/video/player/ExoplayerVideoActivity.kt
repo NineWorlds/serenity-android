@@ -29,20 +29,28 @@ import javax.inject.Provider
 @OpenForTesting
 class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerView {
 
-  @Inject internal lateinit var mediaDataSourceFactory: DataSource.Factory
-  @field:[Inject VideoPlayerHandler] internal lateinit var videoPlayerHandler: Handler
-  @Inject internal lateinit var trackSelector: MappingTrackSelector
-  @Inject internal lateinit var eventLogger: EventLogger
+  @Inject
+  lateinit var mediaDataSourceFactory: DataSource.Factory
+
+  @field:[Inject VideoPlayerHandler]
+  lateinit var videoPlayerHandler: Handler
+
+  @Inject
+  lateinit var trackSelector: MappingTrackSelector
+
+  @Inject
+  lateinit var eventLogger: EventLogger
 
   @InjectPresenter
-  internal lateinit var presenter: ExoplayerPresenter
+  lateinit var presenter: ExoplayerPresenter
 
-  @Inject protected lateinit var presenterProvider: Provider<ExoplayerPresenter>
+  @Inject
+  lateinit var presenterProvider: Provider<ExoplayerPresenter>
 
   @BindView(R.id.player_view)
   internal lateinit var playerView: SimpleExoPlayerView
 
-  internal var player: SimpleExoPlayer? = null
+  lateinit var player: SimpleExoPlayer
 
   @ProvidePresenter
   fun providePresenter(): ExoplayerPresenter = presenterProvider.get()
@@ -94,16 +102,16 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   override fun initializePlayer(videoUrl: String) {
     Log.d("ExoPlayerVideoActivity", "Plex Direct Play URL: " + videoUrl)
     player = createSimpleExoplayer()
-    player?.addListener(eventLogger)
-    player?.setAudioDebugListener(eventLogger)
-    player?.setVideoDebugListener(eventLogger)
-    player?.setMetadataOutput(eventLogger)
+    player.addListener(eventLogger)
+    player.setAudioDebugListener(eventLogger)
+    player.setVideoDebugListener(eventLogger)
+    player.setMetadataOutput(eventLogger)
 
     playerView.player = player
-    player?.playWhenReady = true
+    player.playWhenReady = true
 
     val mediaSource: MediaSource = buildMediaSource(Uri.parse(videoUrl))
-    player?.prepare(mediaSource)
+    player.prepare(mediaSource)
   }
 
   internal fun createSimpleExoplayer() = ExoPlayerFactory.newSimpleInstance(this, trackSelector)
@@ -116,7 +124,6 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   internal fun releasePlayer() {
     if (player != null) {
       player?.release()
-      player = null
     }
   }
 }
