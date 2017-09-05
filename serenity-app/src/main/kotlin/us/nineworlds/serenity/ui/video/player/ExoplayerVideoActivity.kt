@@ -29,24 +29,23 @@ import javax.inject.Provider
 @OpenForTesting
 class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerView {
 
-  @Inject lateinit var mediaDataSourceFactory: DataSource.Factory
-  @field:[Inject VideoPlayerHandler] lateinit var videoPlayerHandler: Handler
-  @Inject lateinit var trackSelector: MappingTrackSelector
-  @Inject lateinit var eventLogger: EventLogger
+  @Inject internal lateinit var mediaDataSourceFactory: DataSource.Factory
+  @field:[Inject VideoPlayerHandler] internal lateinit var videoPlayerHandler: Handler
+  @Inject internal lateinit var trackSelector: MappingTrackSelector
+  @Inject internal lateinit var eventLogger: EventLogger
 
   @InjectPresenter
-  lateinit var presenter: ExoplayerPresenter
+  internal lateinit var presenter: ExoplayerPresenter
 
-  @Inject lateinit var presenterProvider: Provider<ExoplayerPresenter>
+  @Inject protected lateinit var presenterProvider: Provider<ExoplayerPresenter>
 
   @BindView(R.id.player_view)
-  lateinit var playerView: SimpleExoPlayerView
+  internal lateinit var playerView: SimpleExoPlayerView
 
-  var player: SimpleExoPlayer? = null
+  internal var player: SimpleExoPlayer? = null
 
   @ProvidePresenter
   fun providePresenter(): ExoplayerPresenter = presenterProvider.get()
-
 
   override fun createSideMenu() {
     // Do Nothing as a side menu isn't needed in this activity
