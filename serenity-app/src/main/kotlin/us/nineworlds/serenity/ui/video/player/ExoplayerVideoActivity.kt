@@ -18,8 +18,8 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView
 import com.google.android.exoplayer2.upstream.DataSource
-import us.nineworlds.serenity.OpenForTesting
 import us.nineworlds.serenity.R
+import us.nineworlds.serenity.common.annotations.OpenForTesting
 import us.nineworlds.serenity.injection.VideoPlayerHandler
 import us.nineworlds.serenity.ui.activity.SerenityActivity
 import us.nineworlds.serenity.ui.util.DisplayUtils.overscanCompensation

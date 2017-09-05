@@ -11,6 +11,7 @@ import dagger.Module
 import dagger.Provides
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Java6Assertions.assertThat
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -51,6 +52,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   lateinit var activity: ExoplayerVideoActivity
 
   @TargetApi(VERSION_CODES.KITKAT)
+  @Before
   override fun setUp() {
     initMocks(this)
     super.setUp()

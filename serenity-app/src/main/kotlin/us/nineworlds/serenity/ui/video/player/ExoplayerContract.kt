@@ -9,4 +9,9 @@ interface ExoplayerContract {
     fun initializePlayer(videoUrl: String)
   }
 
+  interface ExoplayerPresenter {
+
+    fun playBackFromVideoQueue()
+  }
+
 }

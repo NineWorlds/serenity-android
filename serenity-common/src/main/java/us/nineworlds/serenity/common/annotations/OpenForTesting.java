@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity;
+package us.nineworlds.serenity.common.annotations;
 
 import java.lang.annotation.Retention;
 

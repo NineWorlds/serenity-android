@@ -45,7 +45,7 @@ sonarqube {
 }
 
 allOpen {
-  annotation("us.nineworlds.serenity.OpenForTesting")
+  annotation("us.nineworlds.serenity.common.annotations.OpenForTesting")
 }
 
 android {
@@ -65,6 +65,7 @@ android {
 
   sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
   }
 
 

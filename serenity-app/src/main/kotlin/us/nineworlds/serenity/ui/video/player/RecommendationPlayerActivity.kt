@@ -26,7 +26,6 @@
 package us.nineworlds.serenity.ui.video.player
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -41,10 +40,9 @@ import javax.inject.Inject
 
 class RecommendationPlayerActivity : SerenityActivity() {
 
-  @Inject lateinit var prefs: SharedPreferences
-  @Inject lateinit var vpUtils: VideoPlayerIntentUtils
+  @Inject internal lateinit var vpUtils: VideoPlayerIntentUtils
 
-  lateinit internal var video: VideoContentInfo
+  private lateinit var video: VideoContentInfo
 
   override fun createSideMenu() {}
 
@@ -62,7 +60,7 @@ class RecommendationPlayerActivity : SerenityActivity() {
       val objVideo = intent.extras.getSerializable("serenity_video")
       if (objVideo != null) {
         video = objVideo as VideoContentInfo
-        vpUtils!!.playVideo(this, video, true)
+        vpUtils.playVideo(this, video, true)
       }
     }
   }
