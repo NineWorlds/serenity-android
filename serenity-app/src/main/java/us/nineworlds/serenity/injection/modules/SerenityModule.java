@@ -31,6 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
 import us.nineworlds.serenity.common.Server;
+import us.nineworlds.serenity.core.logger.Logger;
+import us.nineworlds.serenity.core.logger.TimberLogger;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.injection.ForMediaServers;
@@ -43,7 +45,8 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.ui.util.VideoQueueHelper;
 
-@Module(library = true) public class SerenityModule {
+@Module(library = true)
+public class SerenityModule {
 
   @Provides @Singleton TimeUtil providesTimeUtil() {
     return new TimeUtil();
@@ -87,5 +90,9 @@ import us.nineworlds.serenity.ui.util.VideoQueueHelper;
 
   @Provides TVShowBrowserPresenter providesTVShowBrowserPresenter() {
     return new TVShowBrowserPresenter();
+  }
+
+  @Provides @Singleton Logger providesLogger() {
+    return new TimberLogger();
   }
 }

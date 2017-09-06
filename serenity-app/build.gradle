@@ -173,6 +173,7 @@ dependencies {
   compile 'com.squareup.dagger:dagger:1.2.2'
   compile 'com.github.vganin:dpadaware-recyclerview:1.0.1'
   compile 'com.jakewharton:butterknife:8.4.0'
+  compile 'com.jakewharton.timber:timber:4.5.1'
 
   testCompile('org.robolectric:robolectric:3.4.2') {
     exclude module: 'support-v4'

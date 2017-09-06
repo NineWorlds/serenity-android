@@ -79,8 +79,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 
     ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100, 58);
 
-    ImageView crv =
-        imageUtilsNormal.createContentRatingImage(videoInfo.getContentRating(), context);
+    ImageView crv = imageUtilsNormal.createContentRatingImage(videoInfo.getContentRating(), context);
     Drawable drawable = crv.getDrawable();
     BitmapDrawable bmd = (BitmapDrawable) drawable;
 
@@ -120,9 +119,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
     super.fetchSubtitle(mpi);
   }
 
-  @Override
-  public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i,
-      long l) {
+  @Override public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
     Activity context = getActivity(view.getContext());
     if (context.isDestroyed()) {
       return;
@@ -140,6 +137,9 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
     }
 
     position = i;
+    if (position < 0) {
+      position = 0;
+    }
     //		fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
 
     videoInfo = (VideoContentInfo) adapter.getItem(position);
@@ -157,8 +157,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
     createInfographicDetails(posterImageView);
   }
 
-  @Override
-  public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+  @Override public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
 
   }
 }

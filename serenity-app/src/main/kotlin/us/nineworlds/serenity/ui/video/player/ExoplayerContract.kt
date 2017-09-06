@@ -6,12 +6,30 @@ interface ExoplayerContract {
 
   interface ExoplayerView : MvpView {
 
-    fun initializePlayer(videoUrl: String)
+    fun initializePlayer(videoUrl: String, offset: Int)
+
+    fun hideController()
+
+    fun showController()
+
+    fun pause()
+
+    fun play()
+
   }
 
   interface ExoplayerPresenter {
 
     fun playBackFromVideoQueue()
+
+    fun isHudShowing(): Boolean
+
+    fun updateServerPlaybackPosition(currentPostion: Long)
+
+    fun updateWatchedStatus()
+
+    fun videoId(): String
+
   }
 
 }

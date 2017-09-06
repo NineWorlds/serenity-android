@@ -31,6 +31,7 @@ import javax.inject.Singleton;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 
@@ -42,6 +43,7 @@ public class TestingModule {
   @Mock JobManager mockJobManager;
   @Mock PlexappFactory mockPlexAppFactory;
   @Mock LocalBroadcastManager mockLocalBroadcastManager;
+  @Mock Logger mockLogger;
 
   public TestingModule() {
     MockitoAnnotations.initMocks(this);
@@ -57,5 +59,9 @@ public class TestingModule {
 
   @Provides @Singleton LocalBroadcastManager providesLocalBroadcastManager() {
     return mockLocalBroadcastManager;
+  }
+
+  @Provides @Singleton Logger providesLogger() {
+    return mockLogger;
   }
 }

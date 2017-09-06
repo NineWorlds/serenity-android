@@ -53,6 +53,7 @@ import us.nineworlds.serenity.injection.ForVideoQueue;
  *
  * @author dcarver
  */
+@Deprecated
 public class VideoPlayerPrepareListener extends BaseInjector implements OnPreparedListener {
 
   private final Context context;
@@ -74,8 +75,8 @@ public class VideoPlayerPrepareListener extends BaseInjector implements OnPrepar
 
   @Inject protected TimeUtil timeUtil;
 
-  public VideoPlayerPrepareListener(MediaController con, SurfaceView v, int resumeOffset,
-      boolean autoResume, String aspectRatio, Handler progress, Runnable progresrun) {
+  public VideoPlayerPrepareListener(MediaController con, SurfaceView v, int resumeOffset, boolean autoResume,
+      String aspectRatio, Handler progress, Runnable progresrun) {
     mediaController = con;
     surfaceView = v;
     context = v.getContext();
@@ -108,13 +109,12 @@ public class VideoPlayerPrepareListener extends BaseInjector implements OnPrepar
       return;
     }
 
-    AlertDialog.Builder alertDialogBuilder =
-        new AlertDialog.Builder(context, android.R.style.Theme_Holo_Dialog);
+    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, android.R.style.Theme_Holo_Dialog);
 
     alertDialogBuilder.setTitle(R.string.resume_video);
-    alertDialogBuilder.setMessage(resources.getText(R.string.resume_the_video_from_)
-        + timeUtil.formatDuration(resumeOffset)
-        + resources.getText(R.string._or_restart_))
+    alertDialogBuilder.setMessage(
+        resources.getText(R.string.resume_the_video_from_) + timeUtil.formatDuration(resumeOffset) + resources.getText(
+            R.string._or_restart_))
         .setCancelable(false)
         .setPositiveButton(R.string.resume, new DialogInterface.OnClickListener() {
 
@@ -150,8 +150,7 @@ public class VideoPlayerPrepareListener extends BaseInjector implements OnPrepar
     }
   }
 
-  protected android.view.ViewGroup.LayoutParams setupAspectRatio(SurfaceView surfaceView,
-      String plexAspectRatio) {
+  protected android.view.ViewGroup.LayoutParams setupAspectRatio(SurfaceView surfaceView, String plexAspectRatio) {
     RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
 
     boolean preferPlexAspectRatio = preferences.getBoolean("plex_aspect_ratio", false);

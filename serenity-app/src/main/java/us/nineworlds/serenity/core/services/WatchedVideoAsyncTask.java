@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 
+@Deprecated
 public class WatchedVideoAsyncTask extends AsyncTask<String, Void, Void> {
 
   @Inject PlexappFactory factory;

@@ -1,32 +1,132 @@
 package us.nineworlds.serenity.ui.video.player
 
 import android.util.Log
+import android.view.View
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import com.birbit.android.jobqueue.JobManager
+import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.PlaybackParameters
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Timeline
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil
+import com.google.android.exoplayer2.source.TrackGroupArray
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray
+import com.google.android.exoplayer2.ui.PlaybackControlView
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode.MAIN
 import us.nineworlds.plex.rest.PlexappFactory
 import us.nineworlds.serenity.common.annotations.OpenForTesting
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph
+import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.core.model.VideoContentInfo
+import us.nineworlds.serenity.events.video.OnScreenDisplayEvent
 import us.nineworlds.serenity.injection.ForVideoQueue
+import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
+import us.nineworlds.serenity.jobs.video.WatchedStatusJob
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerPresenter
+import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerView
 import java.util.LinkedList
 import javax.inject.Inject
 
 @OpenForTesting
 @InjectViewState
-class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), ExoplayerPresenter {
+class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), ExoplayerPresenter, PlaybackControlView.VisibilityListener, Player.EventListener {
 
+  @Inject lateinit var logger: Logger
   @field:[Inject ForVideoQueue]
   internal lateinit var videoQueue: LinkedList<VideoContentInfo>
 
   @Inject
   internal lateinit var plexFactory: PlexappFactory
 
+  @Inject
+  internal lateinit var eventBus: EventBus
+
+  @Inject
+  internal lateinit var jobManager: JobManager
+
   internal lateinit var video: VideoContentInfo
+
+  private var onScreenControllerShowing: Boolean = false
 
   init {
     SerenityObjectGraph.instance.inject(this)
+  }
+
+  override fun attachView(view: ExoplayerView?) {
+    super.attachView(view)
+    eventBus.register(this)
+  }
+
+  override fun detachView(view: ExoplayerView?) {
+    super.detachView(view)
+    eventBus.unregister(this)
+  }
+
+  override fun updateWatchedStatus() {
+    jobManager.addJobInBackground(WatchedStatusJob(video.id()))
+  }
+
+  override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
+  }
+
+  override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {
+  }
+
+  override fun onPlayerError(error: ExoPlaybackException?) {
+    logger.error("Play back error", Exception(error))
+  }
+
+  override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+    if (playWhenReady) {
+      viewState.play()
+    } else {
+      viewState.pause()
+    }
+  }
+
+  override fun onLoadingChanged(isLoading: Boolean) {
+  }
+
+  override fun onPositionDiscontinuity() {
+  }
+
+  override fun onRepeatModeChanged(repeatMode: Int) {
+  }
+
+  override fun onTimelineChanged(timeline: Timeline?, manifest: Any?) {
+  }
+
+  override fun videoId(): String = video.id()
+
+  override fun onVisibilityChange(visibility: Int) {
+    if (visibility == View.GONE) {
+      logger.debug("Controller View was hidden")
+      onScreenControllerShowing = false
+    }
+
+    if (visibility == View.VISIBLE) {
+      logger.debug("Controller View was shown")
+      onScreenControllerShowing = true
+    }
+  }
+
+  override fun isHudShowing(): Boolean = onScreenControllerShowing
+
+  @Subscribe(threadMode = MAIN)
+  fun onOnScreenDisplayEvent(event: OnScreenDisplayEvent) {
+    if (event.isShowing) {
+      viewState.hideController()
+    } else {
+      viewState.showController()
+    }
+  }
+
+  override fun updateServerPlaybackPosition(currentPostion: Long) {
+    video.resumeOffset = currentPostion.toInt()
+    jobManager.addJobInBackground(UpdatePlaybackPostionJob(video))
   }
 
   override fun playBackFromVideoQueue() {
@@ -38,7 +138,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
 
     val videoUrl: String = transcoderUrl()
 
-    viewState.initializePlayer(videoUrl)
+    viewState.initializePlayer(videoUrl, video.resumeOffset)
   }
 
   internal fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {

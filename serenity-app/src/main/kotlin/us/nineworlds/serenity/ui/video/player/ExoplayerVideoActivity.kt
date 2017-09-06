@@ -1,11 +1,12 @@
 package us.nineworlds.serenity.ui.video.player
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
+import android.view.KeyEvent
 import butterknife.BindView
 import butterknife.ButterKnife.bind
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -20,6 +21,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.annotations.OpenForTesting
+import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.injection.VideoPlayerHandler
 import us.nineworlds.serenity.ui.activity.SerenityActivity
 import us.nineworlds.serenity.ui.util.DisplayUtils.overscanCompensation
@@ -47,10 +49,19 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   @Inject
   lateinit var presenterProvider: Provider<ExoplayerPresenter>
 
+  @Inject
+  lateinit var log: Logger
+
   @BindView(R.id.player_view)
   internal lateinit var playerView: SimpleExoPlayerView
 
   lateinit var player: SimpleExoPlayer
+
+  private val progressReportinghandler = Handler()
+  private val progressRunnable = ProgressRunnable()
+  private var videoKeyHandler: VideoKeyCodeHandlerDelegate? = null
+
+  internal val PROGRESS_UPDATE_DELAY = 5000
 
   @ProvidePresenter
   fun providePresenter(): ExoplayerPresenter = presenterProvider.get()
@@ -75,7 +86,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   public override fun onResume() {
     super.onResume()
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M || player == null) {
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
       presenter.playBackFromVideoQueue()
     }
   }
@@ -84,6 +95,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     super.onPause()
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
       releasePlayer()
+      progressReportinghandler.removeCallbacks(progressRunnable)
     }
   }
 
@@ -91,7 +103,14 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     super.onStop()
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
       releasePlayer()
+      progressReportinghandler.removeCallbacks(progressRunnable)
     }
+  }
+
+  override fun finish() {
+    setExitResultCodeFinished()
+    progressReportinghandler.removeCallbacks(progressRunnable)
+    super.finish()
   }
 
   public override fun onNewIntent(intent: Intent?) {
@@ -99,19 +118,47 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     setIntent(intent)
   }
 
-  override fun initializePlayer(videoUrl: String) {
-    Log.d("ExoPlayerVideoActivity", "Plex Direct Play URL: " + videoUrl)
+  override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+    if (videoKeyHandler!!.onKeyDown(keyCode, event)) {
+      return true
+    }
+    return super.onKeyDown(keyCode, event)
+  }
+
+  override fun play() {
+    player.playWhenReady = true
+    progressReportinghandler.postDelayed(progressRunnable, PROGRESS_UPDATE_DELAY.toLong())
+  }
+
+  override fun pause() {
+    player.playWhenReady = false
+    progressReportinghandler.removeCallbacks(progressRunnable)
+  }
+
+  override fun initializePlayer(videoUrl: String, offset: Int) {
+    log.debug("Plex Direct Play URL: " + videoUrl)
     player = createSimpleExoplayer()
     player.addListener(eventLogger)
+    player.addListener(presenter)
     player.setAudioDebugListener(eventLogger)
     player.setVideoDebugListener(eventLogger)
     player.setMetadataOutput(eventLogger)
+    if (offset > 0) {
+      player.seekTo(offset.toLong())
+    }
 
     playerView.player = player
-    player.playWhenReady = true
+    playerView.setControllerVisibilityListener(presenter)
+
+    playerView.
+        player.playWhenReady = true
 
     val mediaSource: MediaSource = buildMediaSource(Uri.parse(videoUrl))
     player.prepare(mediaSource)
+
+
+    videoKeyHandler = VideoKeyCodeHandlerDelegate(player, playerView, this, presenter)
+    progressReportinghandler.postDelayed(progressRunnable, PROGRESS_UPDATE_DELAY.toLong())
   }
 
   internal fun createSimpleExoplayer() = ExoPlayerFactory.newSimpleInstance(this, trackSelector)
@@ -122,8 +169,44 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   }
 
   internal fun releasePlayer() {
-    if (player != null) {
-      player?.release()
+    player.release()
+  }
+
+  override fun hideController() {
+    playerView.hideController()
+  }
+
+  override fun showController() {
+    playerView.showController()
+  }
+
+  protected fun setExitResultCodeFinished() {
+    val returnIntent = Intent()
+    returnIntent.putExtra("position", player.currentPosition.toInt())
+    if (parent == null) {
+      setResult(Activity.RESULT_OK, returnIntent)
+    } else {
+      parent.setResult(Activity.RESULT_OK, returnIntent)
+    }
+  }
+
+  protected inner class ProgressRunnable : Runnable {
+
+    override fun run() {
+      try {
+        if (player.playWhenReady) {
+          val percentage = player.currentPosition.toFloat() / player.getDuration().toFloat()
+          if (percentage <= 90f) {
+            presenter.updateServerPlaybackPosition(player.currentPosition)
+            // Update progress every 5 seconds
+            progressReportinghandler.postDelayed(this, PROGRESS_UPDATE_DELAY.toLong())
+          } else {
+            presenter.updateWatchedStatus()
+          }
+        }
+      } catch (ex: IllegalStateException) {
+        log.error("Illegalstate exception occurred durring progress update. No further updates will occur.", ex)
+      }
     }
   }
 }

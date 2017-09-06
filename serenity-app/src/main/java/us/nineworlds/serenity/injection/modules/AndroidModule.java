@@ -96,6 +96,8 @@ import us.nineworlds.serenity.jobs.SubtitleJob;
 import us.nineworlds.serenity.jobs.TVCategoryJob;
 import us.nineworlds.serenity.jobs.TVCategorySecondaryJob;
 import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
+import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob;
+import us.nineworlds.serenity.jobs.video.WatchedStatusJob;
 import us.nineworlds.serenity.server.GDMReceiver;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
@@ -144,11 +146,13 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.ui.util.VideoQueueHelper;
+import us.nineworlds.serenity.ui.video.player.EventLogger;
 import us.nineworlds.serenity.ui.video.player.ExoplayerPresenter;
 import us.nineworlds.serenity.ui.video.player.ExoplayerVideoActivity;
 import us.nineworlds.serenity.ui.video.player.MediaController;
 import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
+import us.nineworlds.serenity.ui.video.player.VideoKeyCodeHandlerDelegate;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerKeyCodeHandler;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
 
@@ -189,7 +193,8 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
     SubtitleJob.class, TVCategoryJob.class, TVCategorySecondaryJob.class, TVShowRetrievalJob.class, GDMServerJob.class,
     TVShowBrowserPresenter.class, MovieBrowserPresenter.class, EpisodeBrowserPresenter.class,
     TVShowSeasonBrowserPresenter.class, MainPresenter.class, OnKeyDownDelegate.class, ErrorMainMenuEvent.class,
-    ExoplayerVideoActivity.class, ExoplayerPresenter.class
+    ExoplayerVideoActivity.class, ExoplayerPresenter.class, EventLogger.class, VideoKeyCodeHandlerDelegate.class,
+    UpdatePlaybackPostionJob.class, WatchedStatusJob.class
 }, library = true)
 public class AndroidModule {
 

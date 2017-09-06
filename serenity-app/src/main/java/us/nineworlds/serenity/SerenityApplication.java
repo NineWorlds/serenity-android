@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import javax.inject.Inject;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 
@@ -47,14 +48,11 @@ import us.nineworlds.serenity.injection.modules.AndroidModule;
 public class SerenityApplication extends MultiDexApplication {
 
   @Inject AndroidHelper androidHelper;
-
   @Inject SharedPreferences preferences;
-
   @Inject JobManager jobManager;
+  @Inject Logger logger;
 
   private static boolean enableTracking = true;
-
-  public static final int PROGRESS = 0xDEADBEEF;
 
   public enum TrackerName {
     APP_TRACKER, // Tracker used only in this app.
@@ -80,14 +78,6 @@ public class SerenityApplication extends MultiDexApplication {
     return mTrackers.get(TrackerName.GLOBAL_TRACKER);
   }
 
-  public static boolean isTrackingEnabled() {
-    return enableTracking;
-  }
-
-  public SerenityApplication() {
-
-  }
-
   private void init() {
     inject();
     if (enableTracking) {
@@ -95,6 +85,7 @@ public class SerenityApplication extends MultiDexApplication {
     }
     sendStartedApplicationEvent();
     jobManager.start();
+    logger.initialize();
   }
 
   protected void inject() {
