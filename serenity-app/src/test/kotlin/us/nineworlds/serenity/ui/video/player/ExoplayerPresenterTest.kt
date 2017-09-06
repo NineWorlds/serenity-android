@@ -10,6 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mock
 import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.never
@@ -62,7 +63,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
     verify(mockVideoQueue, never()).poll()
     verify(mockVideoQueue).isEmpty()
-    verify(mockView, never()).initializePlayer(anyString())
+    verify(mockView, never()).initializePlayer(anyString(), eq(0))
   }
 
   @Test
@@ -84,9 +85,9 @@ class ExoplayerPresenterTest : InjectingTest() {
     verify(mockVideoQueue).isEmpty()
     verify(mockVideoContentInfo).id()
     verify(mockPlexFactory).getTranscodeUrl(expectedId, 0)
-    verify(mockView).initializePlayer(expectedUrl)
+    verify(mockView).initializePlayer(expectedUrl, 0)
   }
-  
+
   override fun getModules(): MutableList<Any> =
       mutableListOf(AndroidModule(RuntimeEnvironment.application),
           TestModule(), TestingModule())

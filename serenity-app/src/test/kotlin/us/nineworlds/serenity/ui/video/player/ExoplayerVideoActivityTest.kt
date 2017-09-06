@@ -153,7 +153,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     doReturn(mockPlayer).`when`(spy).createSimpleExoplayer()
     doReturn(TrackSelectionArray()).`when`(mockPlayer).currentTrackSelections
 
-    spy.initializePlayer("http://www.example.com/start.mkv")
+    spy.initializePlayer("http://www.example.com/start.mkv", 0)
 
     assertThat(spy.player).isInstanceOf(SimpleExoPlayer::class.java)
 
