@@ -160,7 +160,6 @@ dependencies {
   compile 'com.arello-mobile:moxy:1.5.3'
   compile 'com.arello-mobile:moxy-app-compat:1.5.3'
   compile 'com.github.bumptech.glide:glide:3.8.0'
-  compile 'org.apache.commons:commons-lang3:3.3.2'
   compile 'org.greenrobot:eventbus:3.0.0'
   compile 'com.birbit:android-priority-jobqueue:2.0.1'
   compile 'com.google.android.gms:play-services-analytics-impl:10.2.1'
@@ -175,6 +174,7 @@ dependencies {
   compile 'com.jakewharton:butterknife:8.4.0'
   compile 'com.jakewharton.timber:timber:4.5.1'
 
+  testCompile 'org.apache.commons:commons-lang3:3.3.2'
   testCompile('org.robolectric:robolectric:3.4.2') {
     exclude module: 'support-v4'
   }
