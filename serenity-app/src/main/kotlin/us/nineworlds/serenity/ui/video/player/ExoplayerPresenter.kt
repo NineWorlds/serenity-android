@@ -27,6 +27,7 @@ import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
 import us.nineworlds.serenity.jobs.video.WatchedStatusJob
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerPresenter
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerView
+import java.lang.Exception
 import java.util.LinkedList
 import javax.inject.Inject
 
@@ -35,6 +36,7 @@ import javax.inject.Inject
 class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), ExoplayerPresenter, PlaybackControlView.VisibilityListener, Player.EventListener {
 
   @Inject lateinit var logger: Logger
+
   @field:[Inject ForVideoQueue]
   internal lateinit var videoQueue: LinkedList<VideoContentInfo>
 
@@ -75,7 +77,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
   override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {
   }
 
-  override fun onPlayerError(error: ExoPlaybackException?) {
+  override fun onPlayerError(error: ExoPlaybackException) {
     logger.error("Play back error", Exception(error))
   }
 
