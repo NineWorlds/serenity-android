@@ -2,7 +2,6 @@ package us.nineworlds.serenity.ui.video.player
 
 import android.view.View
 import com.birbit.android.jobqueue.JobManager
-import com.google.android.exoplayer2.ExoPlaybackException
 import dagger.Module
 import dagger.Provides
 import org.apache.commons.lang3.RandomStringUtils
@@ -39,8 +38,6 @@ import us.nineworlds.serenity.injection.modules.AndroidModule
 import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
 import us.nineworlds.serenity.jobs.video.WatchedStatusJob
 import us.nineworlds.serenity.test.InjectingTest
-import java.io.IOException
-import java.lang.Exception
 import java.util.LinkedList
 import java.util.Random
 import javax.inject.Inject

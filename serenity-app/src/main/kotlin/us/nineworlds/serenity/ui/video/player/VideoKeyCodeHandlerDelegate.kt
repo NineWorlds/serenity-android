@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.util.Log
 import android.view.KeyEvent
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView
 import org.greenrobot.eventbus.EventBus
 import us.nineworlds.serenity.common.annotations.OpenForTesting
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph
@@ -15,8 +14,8 @@ import us.nineworlds.serenity.events.video.StopPlaybackEvent
 import javax.inject.Inject
 
 @OpenForTesting
-class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val playerView: SimpleExoPlayerView,
-    val activity: Activity, val presenter: ExoplayerContract.ExoplayerPresenter) {
+class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val activity: Activity,
+    val presenter: ExoplayerContract.ExoplayerPresenter) {
 
   @Inject lateinit var preferences: SharedPreferences
   @Inject lateinit var eventBus: EventBus
@@ -26,10 +25,6 @@ class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val playerView: S
   }
 
   fun isPlaying(): Boolean = player.playWhenReady
-
-  fun stopPlaying() {
-    player.stop()
-  }
 
   fun pause() {
     player.playWhenReady = false
@@ -60,7 +55,6 @@ class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val playerView: S
         }
       } else {
         play()
-        playerView.hideController()
         eventBus.post(StartPlaybackEvent())
       }
       return true
@@ -69,11 +63,9 @@ class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val playerView: S
     if (isKeyCodePauseResume(keyCode)) {
       if (player.playWhenReady) {
         pause()
-        playerView.showController()
         eventBus.post(StopPlaybackEvent())
       } else {
         play()
-        playerView.hideController()
         eventBus.post(StartPlaybackEvent())
       }
       return true
@@ -81,7 +73,6 @@ class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val playerView: S
 
     if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
       if (nextPrevBehavior == "queue") {
-        playerView.hideController()
         if (isPlaying()) {
           player.stop()
         }
@@ -132,9 +123,7 @@ class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val playerView: S
       if (isKeyCodeStop(keyCode)) {
         if (isPlaying()) {
           pause()
-          if (!isHudShowing()) {
-            playerView.showController()
-          }
+          eventBus.post(StopPlaybackEvent())
         }
         return true
       }
@@ -240,9 +229,6 @@ class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val playerView: S
 
   internal fun skipToPercentage(newPos: Long) {
     player.seekTo(newPos)
-    if (!isHudShowing()) {
-      playerView.showController()
-    }
   }
 
   internal fun skipToOffset(skipOffset: Long) {
@@ -252,9 +238,6 @@ class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val playerView: S
       skipOffset = duration - 1
     } else if (skipOffset < 0) {
       skipOffset = 0
-    }
-    if (!isHudShowing()) {
-      playerView.showController()
     }
     player.seekTo(skipOffset)
   }

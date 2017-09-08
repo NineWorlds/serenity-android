@@ -157,7 +157,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     player.prepare(mediaSource)
 
 
-    videoKeyHandler = VideoKeyCodeHandlerDelegate(player, playerView, this, presenter)
+    videoKeyHandler = VideoKeyCodeHandlerDelegate(player, this, presenter)
     progressReportinghandler.postDelayed(progressRunnable, PROGRESS_UPDATE_DELAY.toLong())
   }
 
