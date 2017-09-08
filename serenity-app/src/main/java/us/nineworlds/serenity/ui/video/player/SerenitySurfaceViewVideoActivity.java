@@ -74,7 +74,9 @@ import us.nineworlds.serenity.ui.util.DisplayUtils;
  * or tv show.
  *
  * @author dcarver
+ * @deprecated Use ExoplayerVideoActivity instead
  */
+@Deprecated
 public class SerenitySurfaceViewVideoActivity extends SerenityActivity implements SurfaceHolder.Callback {
 
   @Inject @ForVideoQueue protected LinkedList<VideoContentInfo> videoQueue;

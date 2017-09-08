@@ -78,7 +78,10 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
  *
  * DAC - 2014-05-20 - Fix issue on Android 4.3 or higher were mediacontroller
  * window position was not being calculated correctly.
+ *
+ * @deprecated replaced by SimpleExoPlayerView
  */
+@Deprecated
 public class MediaController extends FrameLayout {
 
   private static final int FADE_OUT = 1;
