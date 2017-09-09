@@ -23,10 +23,12 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 
@@ -38,10 +40,24 @@ public class SettingsMenuDrawerOnItemClickedListener implements OnClickListener 
   }
 
   @Override public void onClick(View view) {
-    SerenityDrawerLayoutActivity activity = (SerenityDrawerLayoutActivity) view.getContext();
+    Activity activity = getActivity(view.getContext());
+    if (activity == null) {
+      return;
+    }
 
     Intent i = new Intent(activity, SerenityPreferenceActivity.class);
     activity.startActivity(i);
     menuDrawer.closeDrawers();
+  }
+
+  protected Activity getActivity(Context contextWrapper) {
+    Context context = contextWrapper;
+    while (context instanceof ContextWrapper) {
+      if (context instanceof Activity) {
+        return (Activity) context;
+      }
+      context = ((ContextWrapper) context).getBaseContext();
+    }
+    return null;
   }
 }

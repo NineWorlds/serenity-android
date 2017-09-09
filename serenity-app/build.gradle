@@ -110,7 +110,7 @@ android {
     unitTests.returnDefaultValues = true
     unitTests.all {
       maxParallelForks = 2
-      forkEvery = 50
+      forkEvery = 75
       minHeapSize = "512m"
       maxHeapSize = "1024m"
     }
