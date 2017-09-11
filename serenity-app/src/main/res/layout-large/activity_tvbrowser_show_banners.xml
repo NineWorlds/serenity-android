@@ -135,6 +135,7 @@
           app:selectorVelocity="2000"
           app:smoothScrolling="true"
           app:foregroundSelector="@drawable/main_menu_item_foreground_selector"
+          android:descendantFocusability="afterDescendants"
           >
 
         <requestFocus/>

@@ -20,6 +20,9 @@
       app:smoothScrolling="true"
       app:backgroundSelector="@drawable/main_menu_item_foreground_selector"
       android:nextFocusUp="@+id/menu_button"
-      />
+      android:descendantFocusability="afterDescendants"
+      >
+    <requestFocus/>
+  </net.ganin.darv.DpadAwareRecyclerView>
 
 </us.nineworlds.serenity.widgets.ReflectingLayout>

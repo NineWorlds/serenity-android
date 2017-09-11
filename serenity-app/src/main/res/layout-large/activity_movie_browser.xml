@@ -25,7 +25,7 @@
         android:layout_marginTop="@dimen/actionbarMargin"
         android:layout_alignParentBottom="true"
         android:layout_height="match_parent"
-        ></FrameLayout>
+        />
 
   </RelativeLayout>
 

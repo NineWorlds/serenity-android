@@ -19,5 +19,5 @@ gen
 .gradle
 local.properties
 build
-
+keystore.properties
 
