@@ -77,8 +77,9 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
     actionBar.setDisplayShowCustomEnabled(true);
 
     setContentView(R.layout.activity_plex_app_main);
-    initMenuDrawerViews();
+    DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
     bind(this);
+    initMenuDrawerViews();
     createSideMenu();
 
     initPreferences();
@@ -112,7 +113,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
 
   @Override protected void onResume() {
     super.onResume();
-    DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
     registerGDMReceiver();
 
     // Start the auto-configuration service
@@ -120,6 +120,8 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
 
     Intent recommendationIntent = new Intent(getApplicationContext(), OnDeckRecommendationIntentService.class);
     startService(recommendationIntent);
+
+    drawerList.setVisibility(View.GONE);
 
     mainMenuContainer.setFocusable(true);
     mainMenuContainer.requestFocusFromTouch();
@@ -139,6 +141,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
   }
 
   @Override protected void createSideMenu() {
+    mainMenuContainer.setVisibility(View.VISIBLE);
     drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector, R.string.drawer_open,
         R.string.drawer_closed) {
       @Override public void onDrawerOpened(View drawerView) {
@@ -166,15 +169,18 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
   }
 
   protected void populateMenuOptions() {
+    drawerList.setVisibility(View.GONE);
     List<MenuDrawerItem> drawerMenuItem = new ArrayList<>();
-    drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_about), R.drawable.ic_action_action_about));
-    drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_clear_image_cache), R.drawable.ic_action_content_remove));
-    drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.clear_queue), R.drawable.ic_action_content_remove));
+    drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_about),
+        R.drawable.ic_action_action_about));
+    drawerMenuItem.add(new MenuDrawerItemImpl(getResources().getString(R.string.options_main_clear_image_cache),
+        R.drawable.ic_action_content_remove));
+    drawerMenuItem.add(
+        new MenuDrawerItemImpl(getResources().getString(R.string.clear_queue), R.drawable.ic_action_content_remove));
 
     drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-    mainMenuContainer.requestFocusFromTouch();
-
     drawerList.setOnItemClickListener(new MainMenuDrawerOnItemClickedListener(drawerLayout));
+    mainMenuContainer.requestFocusFromTouch();
   }
 
   protected void initPreferences() {

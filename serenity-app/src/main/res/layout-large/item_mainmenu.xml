@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:focusable="true"
     android:clickable="true"
+
+    android:descendantFocusability="afterDescendants"
     >
 
   <TextView

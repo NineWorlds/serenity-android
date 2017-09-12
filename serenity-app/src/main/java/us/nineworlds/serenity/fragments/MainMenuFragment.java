@@ -109,11 +109,16 @@ public class MainMenuFragment extends InjectingFragment {
     unbinder.unbind();
   }
 
+  @Override public void onResume() {
+    super.onResume();
+    mainGallery.requestFocusFromTouch();
+  }
+
   @Subscribe(threadMode = ThreadMode.MAIN) public void onMainMenuRetrievalResponse(MainMenuEvent event) {
     menuItems = new MenuMediaContainer(event.getMediaContainer()).createMenuItems();
     setupGallery();
     mainGallery.setVisibility(View.VISIBLE);
-    mainGallery.requestFocus();
+    mainGallery.requestFocusFromTouch();
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN) public void onMainMenuErrorResponse(ErrorMainMenuEvent event) {
@@ -127,6 +132,6 @@ public class MainMenuFragment extends InjectingFragment {
     Toast.makeText(getActivity(), "Unable to connect to Plex Library at " + plexFactory.baseURL(), Toast.LENGTH_LONG)
         .show();
 
-    mainGallery.requestFocus();
+    mainGallery.requestFocusFromTouch();
   }
 }
