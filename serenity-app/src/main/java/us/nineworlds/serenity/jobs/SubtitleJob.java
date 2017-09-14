@@ -5,16 +5,16 @@ import android.support.annotation.Nullable;
 import com.birbit.android.jobqueue.RetryConstraint;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.common.android.injection.InjectingJob;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.events.SubtitleEvent;
 
 public class SubtitleJob extends InjectingJob {
 
   @Inject EventBus eventBus;
 
-  @Inject PlexappFactory client;
+  @Inject SerenityClient client;
 
   String metaDataKey;
 
@@ -27,7 +27,7 @@ public class SubtitleJob extends InjectingJob {
   }
 
   @Override public void onRun() throws Throwable {
-    MediaContainer mediaContainer = client.retrieveMovieMetaData(metaDataKey);
+    IMediaContainer mediaContainer = client.retrieveMovieMetaData(metaDataKey);
     eventBus.post(new SubtitleEvent(mediaContainer));
   }
 

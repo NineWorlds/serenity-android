@@ -25,13 +25,13 @@ package us.nineworlds.serenity.core.services;
 
 import android.os.AsyncTask;
 import javax.inject.Inject;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 
 @Deprecated
 public class WatchedVideoAsyncTask extends AsyncTask<String, Void, Void> {
 
-  @Inject PlexappFactory factory;
+  @Inject SerenityClient factory;
 
   public WatchedVideoAsyncTask() {
     SerenityObjectGraph.Companion.getInstance().inject(this);

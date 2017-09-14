@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -24,25 +24,23 @@
 package us.nineworlds.plex.rest.model.impl;
 
 import org.simpleframework.xml.Attribute;
+import us.nineworlds.serenity.common.media.model.ICrew;
 
 /**
  * An abstract class that represents Crew information for a movie or
  * tv show.
- * 
- * @author dcarver
  *
+ * @author dcarver
  */
-public class AbstractCrew {
-	
-	@Attribute(name="tag")
-	private String tag;
+public class AbstractCrew implements ICrew {
 
-	public String getTag() {
-		return tag;
-	}
+  @Attribute(name = "tag") private String tag;
 
-	public void setTag(String tag) {
-		this.tag = tag;
-	}
+  @Override public String getTag() {
+    return tag;
+  }
 
+  @Override public void setTag(String tag) {
+    this.tag = tag;
+  }
 }

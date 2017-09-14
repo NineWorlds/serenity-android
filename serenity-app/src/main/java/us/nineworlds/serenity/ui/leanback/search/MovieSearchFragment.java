@@ -51,9 +51,9 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import java.net.URLEncoder;
 import java.util.List;
 import javax.inject.Inject;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -73,7 +73,7 @@ public class MovieSearchFragment extends SearchFragment implements SearchResultP
 
   @Inject VideoPlayerIntentUtils vpUtils;
 
-  @Inject PlexappFactory plexFactory;
+  @Inject SerenityClient plexFactory;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

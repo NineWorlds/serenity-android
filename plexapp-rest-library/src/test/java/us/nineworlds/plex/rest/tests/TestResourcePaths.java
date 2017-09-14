@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -26,122 +26,92 @@ package us.nineworlds.plex.rest.tests;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import us.nineworlds.plex.rest.ResourcePaths;
 import us.nineworlds.plex.rest.config.IConfiguration;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author dcarver
- *
  */
 public class TestResourcePaths {
 
-	private IConfiguration config;
-	private ResourcePaths path;
-	@Before
-	public void setUp() throws Exception {
-		
-		config = new MockConfiguration();
-		path = new ResourcePaths(config);
-	}
-	
-	@After
-	public void tearDown() throws Exception {
-		config = null;
-		path = null;
-		
-	}
-	
-	@Test
-	public void testLibraryPath() throws Exception {
-		String result = path.getLibraryURL();
-		
-		assertEquals("http://localhost:32400/library/", result);
-	}
-	
-	@Test
-	public void testSectionsPath() throws Exception {
-		String result = path.getSectionsURL();
-		
-		assertEquals("http://localhost:32400/library/sections/", result);
-	}
-	
-	@Test
-	public void testSectionPathWithKey() throws Exception {
-		String result = path.getSectionsURL("4");
-		
-		assertEquals("http://localhost:32400/library/sections/4/", result);
-	}
-	
-	@Test
-	public void testSectionPathWithKeyTVShows() throws Exception {
-		String result = path.getSectionsURL("6");
-		
-		assertEquals("http://localhost:32400/library/sections/6/", result);
-	}
-	
-	@Test
-	public void testSectionPathWithKeyMusic() throws Exception {
-		String result = path.getSectionsURL("3");
-		
-		assertEquals("http://localhost:32400/library/sections/3/", result);
-	}
-	
-	@Test
-	public void testWatched() throws Exception {
-		String result = path.getWatchedUrl("131");
-		assertEquals("http://localhost:32400/:/scrobble?key=131&identifier=com.plexapp.plugins.library", result);
-	}
+  private IConfiguration config;
+  private ResourcePaths path;
 
-	@Test
-	public void testUnwatched() throws Exception {
-		String result = path.getUnwatchedUrl("131");
-		assertEquals("http://localhost:32400/:/unscrobble?key=131&identifier=com.plexapp.plugins.library", result);
-	}
-	
-	@Test
-	public void testSearchMovies() throws Exception {
-		String result = path.getMovieSearchURL("4", "Blackhawk");
-		assertEquals("http://localhost:32400/library/sections/4/search?type=1&query=Blackhawk", result);
-	}
+  @Before public void setUp() throws Exception {
 
+    config = new MockConfiguration();
+    path = new ResourcePaths(config);
+  }
 
-	
-	private class MockConfiguration implements IConfiguration {
+  @After public void tearDown() throws Exception {
+    config = null;
+    path = null;
+  }
 
-		/* (non-Javadoc)
-		 * @see com.github.kingargyle.plexapp.config.IConfiguration#getHost()
-		 */
-		public String getHost() {
-			
-			return "localhost";
-		}
+  @Test public void testLibraryPath() throws Exception {
+    String result = path.getLibraryURL();
 
-		/* (non-Javadoc)
-		 * @see com.github.kingargyle.plexapp.config.IConfiguration#setHost(java.lang.String)
-		 */
-		public void setHost(String host) {
-			
-		}
+    assertEquals("http://localhost:32400/library/", result);
+  }
 
-		/* (non-Javadoc)
-		 * @see com.github.kingargyle.plexapp.config.IConfiguration#getPort()
-		 */
-		public String getPort() {
-			return "32400";
-		}
+  @Test public void testSectionsPath() throws Exception {
+    String result = path.getSectionsURL();
 
-		/* (non-Javadoc)
-		 * @see com.github.kingargyle.plexapp.config.IConfiguration#setPort(java.lang.String)
-		 */
-		public void setPort(String port) {
-			
-		}
-		
-	}
-	
-	
+    assertEquals("http://localhost:32400/library/sections/", result);
+  }
+
+  @Test public void testSectionPathWithKey() throws Exception {
+    String result = path.getSectionsURL("4");
+
+    assertEquals("http://localhost:32400/library/sections/4/", result);
+  }
+
+  @Test public void testSectionPathWithKeyTVShows() throws Exception {
+    String result = path.getSectionsURL("6");
+
+    assertEquals("http://localhost:32400/library/sections/6/", result);
+  }
+
+  @Test public void testSectionPathWithKeyMusic() throws Exception {
+    String result = path.getSectionsURL("3");
+
+    assertEquals("http://localhost:32400/library/sections/3/", result);
+  }
+
+  @Test public void testWatched() throws Exception {
+    String result = path.getWatchedUrl("131");
+    assertEquals("http://localhost:32400/:/scrobble?key=131&identifier=com.plexapp.plugins.library", result);
+  }
+
+  @Test public void testUnwatched() throws Exception {
+    String result = path.getUnwatchedUrl("131");
+    assertEquals("http://localhost:32400/:/unscrobble?key=131&identifier=com.plexapp.plugins.library", result);
+  }
+
+  @Test public void testSearchMovies() throws Exception {
+    String result = path.getMovieSearchURL("4", "Blackhawk");
+    assertEquals("http://localhost:32400/library/sections/4/search?type=1&query=Blackhawk", result);
+  }
+
+  private class MockConfiguration implements IConfiguration {
+
+    @Override public String getHost() {
+
+      return "localhost";
+    }
+
+    @Override public void setHost(String host) {
+
+    }
+
+    @Override public String getPort() {
+      return "32400";
+    }
+
+    @Override public void setPort(String port) {
+
+    }
+  }
 }

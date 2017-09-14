@@ -26,8 +26,8 @@ package us.nineworlds.serenity.core.model.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.plex.rest.model.impl.Stream;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.media.model.IStream;
 
 /**
  * @author dcarver
@@ -37,22 +37,20 @@ public class SubtitleMediaContainer extends AbstractMediaContainer {
   /**
    * @param mc
    */
-  public SubtitleMediaContainer(MediaContainer mc) {
+  public SubtitleMediaContainer(IMediaContainer mc) {
     super(mc);
   }
 
   public List<Subtitle> createSubtitle() {
-    List<Stream> streams =
-        mc.getVideos().get(0).getMedias().get(0).getVideoPart().get(0).getStreams();
+    List<IStream> streams = mc.getVideos().get(0).getMedias().get(0).getVideoPart().get(0).getStreams();
     List<Subtitle> subtitles = new ArrayList<Subtitle>();
     if (streams == null) {
       return Collections.emptyList();
     }
-    for (Stream stream : streams) {
+    for (IStream stream : streams) {
       if ("srt".equals(stream.getFormat()) || "ass".equals(stream.getFormat())) {
 
         Subtitle subtitle = new Subtitle();
-        subtitle = new Subtitle();
         subtitle.setFormat(stream.getFormat());
         subtitle.setLanguageCode(stream.getLanguageCode());
         if (stream.getKey() == null) {

@@ -1,17 +1,17 @@
 package us.nineworlds.serenity.events;
 
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 public class SubtitleEvent extends SerenityEvent {
 
   VideoContentInfo videoContentInfo;
 
-  public SubtitleEvent(MediaContainer mediaContainer) {
+  public SubtitleEvent(IMediaContainer mediaContainer) {
     super(mediaContainer);
   }
 
-  public SubtitleEvent(MediaContainer mediaContainer, VideoContentInfo videoContentInfo) {
+  public SubtitleEvent(IMediaContainer mediaContainer, VideoContentInfo videoContentInfo) {
     super(mediaContainer);
     this.videoContentInfo = videoContentInfo;
   }

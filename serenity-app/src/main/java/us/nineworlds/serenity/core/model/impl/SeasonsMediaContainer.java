@@ -24,8 +24,8 @@
 package us.nineworlds.serenity.core.model.impl;
 
 import java.util.List;
-import us.nineworlds.plex.rest.model.impl.Directory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.media.model.IDirectory;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 
 /**
@@ -36,17 +36,17 @@ public class SeasonsMediaContainer extends SeriesMediaContainer {
   /**
    * @param mc
    */
-  public SeasonsMediaContainer(MediaContainer mc) {
+  public SeasonsMediaContainer(IMediaContainer mc) {
     super(mc);
   }
 
   @Override protected void createSeriesInfo() {
     String baseUrl = factory.baseURL();
-    List<Directory> shows = mc.getDirectories();
+    List<IDirectory> shows = mc.getDirectories();
     if (shows == null) {
       return;
     }
-    for (Directory show : shows) {
+    for (IDirectory show : shows) {
       SeriesContentInfo mpi = new TVShowSeriesInfo();
       mpi.setId(show.getRatingKey());
       if (mc.getTitle2() != null) {

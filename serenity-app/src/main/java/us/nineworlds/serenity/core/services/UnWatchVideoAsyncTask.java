@@ -25,12 +25,12 @@ package us.nineworlds.serenity.core.services;
 
 import android.os.AsyncTask;
 import javax.inject.Inject;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 
 public class UnWatchVideoAsyncTask extends AsyncTask<String, Void, Void> {
 
-  @Inject PlexappFactory factory;
+  @Inject SerenityClient factory;
 
   public UnWatchVideoAsyncTask() {
     SerenityObjectGraph.Companion.getInstance().inject(this);

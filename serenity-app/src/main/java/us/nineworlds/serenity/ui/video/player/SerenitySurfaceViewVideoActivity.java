@@ -54,8 +54,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import javax.inject.Inject;
 import org.mozilla.universalchardet.UniversalDetector;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
@@ -81,7 +81,7 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
 
   @Inject @ForVideoQueue protected LinkedList<VideoContentInfo> videoQueue;
 
-  @Inject protected PlexappFactory plexFactory;
+  @Inject protected SerenityClient plexFactory;
 
   @Inject protected SharedPreferences prefs;
 

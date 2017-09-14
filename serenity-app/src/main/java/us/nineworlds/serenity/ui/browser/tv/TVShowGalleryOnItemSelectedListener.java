@@ -37,8 +37,8 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import javax.inject.Inject;
 import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -58,7 +58,7 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector
   private SerenityMultiViewVideoActivity context;
   private SeriesContentInfo info;
 
-  @Inject protected PlexappFactory factory;
+  @Inject protected SerenityClient factory;
 
   public TVShowGalleryOnItemSelectedListener() {
     super();
@@ -155,7 +155,7 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector
     String transcodingURL = factory.getImageURL(mi.getBackgroundURL(), 1280, 720);
 
     SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
-      public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+      @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
         context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
       }
     };
@@ -173,9 +173,7 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector
     Glide.with(context).load(mi.getThumbNailURL()).into(showImage);
   }
 
-  @Override
-  public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i,
-      long l) {
+  @Override public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
     context = (SerenityMultiViewVideoActivity) view.getContext();
     if (context.isDestroyed()) {
       return;
@@ -190,8 +188,7 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector
     changeBackgroundImage(imageView);
   }
 
-  @Override
-  public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+  @Override public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
 
   }
 }

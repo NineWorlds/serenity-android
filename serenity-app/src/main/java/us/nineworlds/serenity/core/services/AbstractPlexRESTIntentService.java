@@ -25,12 +25,12 @@ package us.nineworlds.serenity.core.services;
 
 import android.content.Intent;
 import javax.inject.Inject;
-import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.injection.InjectingIntentService;
 
 public abstract class AbstractPlexRESTIntentService extends InjectingIntentService {
 
-  @Inject protected PlexappFactory factory;
+  @Inject protected SerenityClient factory;
 
   /**
    * @param name

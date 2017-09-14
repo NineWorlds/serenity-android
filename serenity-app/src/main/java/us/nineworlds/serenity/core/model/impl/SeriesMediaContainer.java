@@ -26,9 +26,9 @@ package us.nineworlds.serenity.core.model.impl;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import us.nineworlds.plex.rest.model.impl.Directory;
-import us.nineworlds.plex.rest.model.impl.Genre;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.media.model.IDirectory;
+import us.nineworlds.serenity.common.media.model.IGenre;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 
 /**
@@ -41,7 +41,7 @@ public class SeriesMediaContainer extends AbstractMediaContainer {
   /**
    * @param mc
    */
-  public SeriesMediaContainer(MediaContainer mc) {
+  public SeriesMediaContainer(IMediaContainer mc) {
     super(mc);
   }
 
@@ -56,9 +56,9 @@ public class SeriesMediaContainer extends AbstractMediaContainer {
 
     if (mc != null && mc.getSize() > 0) {
       String mediaTagId = Long.valueOf(mc.getMediaTagVersion()).toString();
-      List<Directory> shows = mc.getDirectories();
+      List<IDirectory> shows = mc.getDirectories();
       if (shows != null) {
-        for (Directory show : shows) {
+        for (IDirectory show : shows) {
           TVShowSeriesInfo mpi = new TVShowSeriesInfo();
           mpi.setId(show.getRatingKey());
           mpi.setMediaTagIdentifier(mediaTagId);
@@ -118,10 +118,10 @@ public class SeriesMediaContainer extends AbstractMediaContainer {
     }
   }
 
-  protected List<String> processGeneres(Directory show) {
+  protected List<String> processGeneres(IDirectory show) {
     ArrayList<String> genres = new ArrayList<String>();
     if (show.getGenres() != null) {
-      for (Genre genre : show.getGenres()) {
+      for (IGenre genre : show.getGenres()) {
         genres.add(genre.getTag());
       }
     }

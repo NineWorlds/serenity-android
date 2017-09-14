@@ -40,11 +40,11 @@ import net.ganin.darv.DpadAwareRecyclerView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.GalleryOnItemClickListener;
 import us.nineworlds.serenity.GalleryOnItemSelectedListener;
 import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
 import us.nineworlds.serenity.events.ErrorMainMenuEvent;
@@ -54,7 +54,7 @@ import us.nineworlds.serenity.jobs.MainMenuRetrievalJob;
 
 public class MainMenuFragment extends InjectingFragment {
 
-  @Inject PlexappFactory plexFactory;
+  @Inject SerenityClient plexFactory;
 
   @Inject EventBus eventBus;
 

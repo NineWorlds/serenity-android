@@ -33,8 +33,8 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import javax.inject.Inject;
 import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -51,7 +51,7 @@ public class MovieGridPosterOnItemSelectedListener extends BaseInjector
   private static Activity context;
   private AbstractPosterImageGalleryAdapter adapter;
 
-  @Inject PlexappFactory plexFactory;
+  @Inject SerenityClient plexFactory;
 
   int lastPos = -1;
 
@@ -68,7 +68,7 @@ public class MovieGridPosterOnItemSelectedListener extends BaseInjector
     String transcodingURL = plexFactory.getImageURL(videoInfo.getBackgroundURL(), 1280, 720);
 
     SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
-      public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+      @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
         context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
       }
     };
@@ -87,9 +87,7 @@ public class MovieGridPosterOnItemSelectedListener extends BaseInjector
     posterTitle.setText(mi.getTitle());
   }
 
-  @Override
-  public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i,
-      long l) {
+  @Override public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
     context = (Activity) view.getContext();
 
     if (lastPos != i) {
@@ -113,8 +111,7 @@ public class MovieGridPosterOnItemSelectedListener extends BaseInjector
     createMovieMetaData(videoContentInfo);
   }
 
-  @Override
-  public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+  @Override public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
 
   }
 }

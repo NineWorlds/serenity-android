@@ -39,8 +39,8 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import javax.inject.Inject;
 import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -56,7 +56,7 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
     implements DpadAwareRecyclerView.OnItemSelectedListener {
 
-  @Inject protected PlexappFactory plexFactory;
+  @Inject protected SerenityClient plexFactory;
 
   @Inject protected SharedPreferences preferences;
 
@@ -81,8 +81,7 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
    */
   protected void createInfographicDetails(ImageView v) {
     Activity context = getActivity(v.getContext());
-    LinearLayout infographicsView =
-        (LinearLayout) context.findViewById(R.id.movieInfoGraphicLayout);
+    LinearLayout infographicsView = (LinearLayout) context.findViewById(R.id.movieInfoGraphicLayout);
     infographicsView.removeAllViews();
 
     ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(80, 48);
@@ -98,14 +97,12 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
       infographicsView.addView(resv);
     }
 
-    ImageView resolution =
-        imageUtilsNormal.createVideoResolutionImage(videoInfo.getVideoResolution(), v.getContext());
+    ImageView resolution = imageUtilsNormal.createVideoResolutionImage(videoInfo.getVideoResolution(), v.getContext());
     if (resolution != null) {
       infographicsView.addView(resolution);
     }
 
-    ImageView aspectv =
-        imageUtilsNormal.createAspectRatioImage(videoInfo.getAspectRatio(), context);
+    ImageView aspectv = imageUtilsNormal.createAspectRatioImage(videoInfo.getAspectRatio(), context);
     if (aspectv != null) {
       infographicsView.addView(aspectv);
     }
@@ -116,8 +113,7 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
     }
 
     ImageView achannelsv =
-        imageUtilsAudioChannel.createAudioChannlesImage(videoInfo.getAudioChannels(),
-            v.getContext());
+        imageUtilsAudioChannel.createAudioChannlesImage(videoInfo.getAudioChannels(), v.getContext());
     if (achannelsv != null) {
       infographicsView.addView(achannelsv);
     }
@@ -129,9 +125,8 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
       ratingBar.setStepSize(0.1f);
       ratingBar.setNumStars(4);
       ratingBar.setPadding(0, 0, 0, 0);
-      LinearLayout.LayoutParams params =
-          new LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-              android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+      LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+          android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
       params.rightMargin = 15;
       ratingBar.setLayoutParams(params);
 
@@ -140,8 +135,8 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
       infographicsView.addView(ratingBar);
     }
 
-    ImageView studiov = imageUtilsNormal.createStudioImage(videoInfo.getStudio(), context,
-        videoInfo.getMediaTagIdentifier());
+    ImageView studiov =
+        imageUtilsNormal.createStudioImage(videoInfo.getStudio(), context, videoInfo.getMediaTagIdentifier());
     if (studiov != null) {
       infographicsView.addView(studiov);
     }
@@ -168,7 +163,7 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
     String transcodingURL = plexFactory.getImageURL(videoInfo.getBackgroundURL(), 1280, 720);
 
     SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
-      public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+      @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
         context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
       }
     };

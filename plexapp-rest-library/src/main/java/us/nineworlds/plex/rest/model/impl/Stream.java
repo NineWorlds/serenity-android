@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -25,168 +25,148 @@ package us.nineworlds.plex.rest.model.impl;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
+import us.nineworlds.serenity.common.media.model.IStream;
 
-/**
- * @author dcarver
- *
- */
-@Root(name="Stream")
-public class Stream {
-	
-	@Attribute(name="id",required=false)
-	private int id;
-	
-	@Attribute(name="streamType",required=false)
-	private int streamType;
-	
-	@Attribute(name="codec",required=false)
-	private String codec;
-	
-	@Attribute(name="index",required=false)
-	private String index;
-	
-	@Attribute(name="channels",required=false)
-	private String channels;
+@Root(name = "Stream")
+public class Stream implements IStream {
 
-	@Attribute(name="duration",required=false)
-	private String duration;
-	
-	@Attribute(name="bitrate",required=false)
-	private String bitrate;
-	
-	@Attribute(name="bitrateMode",required=false)
-	private String bitrateMode;
-	
-	@Attribute(name="profile",required=false)
-	private String profile;
-	
-	@Attribute(name="optimizedForStreaming",required=false)
-	private String optimizedForStreaming;
-	
-	@Attribute(name="format",required=false)
-	private String format;
-	
-	@Attribute(name="key",required=false)
-	private String key;
-	
-	@Attribute(name="language",required=false)
-	private String language;
+  @Attribute(name = "id", required = false) private int id;
 
-	@Attribute(name="languageCode",required=false)
-	private String languageCode;
-	
-	
-	public String getLanguage() {
-		return language;
-	}
+  @Attribute(name = "streamType", required = false) private int streamType;
 
-	public void setLanguage(String language) {
-		this.language = language;
-	}
+  @Attribute(name = "codec", required = false) private String codec;
 
-	public String getLanguageCode() {
-		return languageCode;
-	}
+  @Attribute(name = "index", required = false) private String index;
 
-	public void setLanguageCode(String languageCode) {
-		this.languageCode = languageCode;
-	}
+  @Attribute(name = "channels", required = false) private String channels;
 
-	public int getId() {
-		return id;
-	}
+  @Attribute(name = "duration", required = false) private String duration;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+  @Attribute(name = "bitrate", required = false) private String bitrate;
 
-	public int getStreamType() {
-		return streamType;
-	}
+  @Attribute(name = "bitrateMode", required = false) private String bitrateMode;
 
-	public void setStreamType(int streamType) {
-		this.streamType = streamType;
-	}
+  @Attribute(name = "profile", required = false) private String profile;
 
-	public String getCodec() {
-		return codec;
-	}
+  @Attribute(name = "optimizedForStreaming", required = false) private String optimizedForStreaming;
 
-	public void setCodec(String codec) {
-		this.codec = codec;
-	}
+  @Attribute(name = "format", required = false) private String format;
 
-	public String getIndex() {
-		return index;
-	}
+  @Attribute(name = "key", required = false) private String key;
 
-	public void setIndex(String index) {
-		this.index = index;
-	}
+  @Attribute(name = "language", required = false) private String language;
 
-	public String getChannels() {
-		return channels;
-	}
+  @Attribute(name = "languageCode", required = false) private String languageCode;
 
-	public void setChannels(String channels) {
-		this.channels = channels;
-	}
+  @Override public String getLanguage() {
+    return language;
+  }
 
-	public String getDuration() {
-		return duration;
-	}
+  @Override public void setLanguage(String language) {
+    this.language = language;
+  }
 
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
+  @Override public String getLanguageCode() {
+    return languageCode;
+  }
 
-	public String getBitrate() {
-		return bitrate;
-	}
+  @Override public void setLanguageCode(String languageCode) {
+    this.languageCode = languageCode;
+  }
 
-	public void setBitrate(String bitrate) {
-		this.bitrate = bitrate;
-	}
+  @Override public int getId() {
+    return id;
+  }
 
-	public String getBitrateMode() {
-		return bitrateMode;
-	}
+  @Override public void setId(int id) {
+    this.id = id;
+  }
 
-	public void setBitrateMode(String bitrateMode) {
-		this.bitrateMode = bitrateMode;
-	}
+  @Override public int getStreamType() {
+    return streamType;
+  }
 
-	public String getProfile() {
-		return profile;
-	}
+  @Override public void setStreamType(int streamType) {
+    this.streamType = streamType;
+  }
 
-	public void setProfile(String profile) {
-		this.profile = profile;
-	}
+  @Override public String getCodec() {
+    return codec;
+  }
 
-	public String getOptimizedForStreaming() {
-		return optimizedForStreaming;
-	}
+  @Override public void setCodec(String codec) {
+    this.codec = codec;
+  }
 
-	public void setOptimizedForStreaming(String optimizedForStreaming) {
-		this.optimizedForStreaming = optimizedForStreaming;
-	}
+  @Override public String getIndex() {
+    return index;
+  }
 
-	public String getFormat() {
-		return format;
-	}
+  @Override public void setIndex(String index) {
+    this.index = index;
+  }
 
-	public void setFormat(String format) {
-		this.format = format;
-	}
+  @Override public String getChannels() {
+    return channels;
+  }
 
-	public String getKey() {
-		return key;
-	}
+  @Override public void setChannels(String channels) {
+    this.channels = channels;
+  }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+  @Override public String getDuration() {
+    return duration;
+  }
 
-	
+  @Override public void setDuration(String duration) {
+    this.duration = duration;
+  }
+
+  @Override public String getBitrate() {
+    return bitrate;
+  }
+
+  @Override public void setBitrate(String bitrate) {
+    this.bitrate = bitrate;
+  }
+
+  @Override public String getBitrateMode() {
+    return bitrateMode;
+  }
+
+  @Override public void setBitrateMode(String bitrateMode) {
+    this.bitrateMode = bitrateMode;
+  }
+
+  @Override public String getProfile() {
+    return profile;
+  }
+
+  @Override public void setProfile(String profile) {
+    this.profile = profile;
+  }
+
+  @Override public String getOptimizedForStreaming() {
+    return optimizedForStreaming;
+  }
+
+  @Override public void setOptimizedForStreaming(String optimizedForStreaming) {
+    this.optimizedForStreaming = optimizedForStreaming;
+  }
+
+  @Override public String getFormat() {
+    return format;
+  }
+
+  @Override public void setFormat(String format) {
+    this.format = format;
+  }
+
+  @Override public String getKey() {
+    return key;
+  }
+
+  @Override public void setKey(String key) {
+    this.key = key;
+  }
 }

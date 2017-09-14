@@ -16,9 +16,9 @@ import com.google.android.exoplayer2.ui.PlaybackControlView
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode.MAIN
-import us.nineworlds.plex.rest.PlexappFactory
 import us.nineworlds.serenity.common.annotations.OpenForTesting
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph
+import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.events.video.OnScreenDisplayEvent
@@ -41,7 +41,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
   internal lateinit var videoQueue: LinkedList<VideoContentInfo>
 
   @Inject
-  internal lateinit var plexFactory: PlexappFactory
+  internal lateinit var factory: SerenityClient
 
   @Inject
   internal lateinit var eventBus: EventBus
@@ -160,7 +160,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
       return video.directPlayUrl
     }
 
-    return plexFactory.getTranscodeUrl(video.id(), video.resumeOffset)
+    return factory.getTranscodeUrl(video.id(), video.resumeOffset)
   }
 
   private fun selectCodec(mimeType: String): Boolean {

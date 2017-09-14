@@ -26,9 +26,9 @@ import org.mockito.quality.Strictness.LENIENT
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
-import us.nineworlds.plex.rest.PlexappFactory
 import us.nineworlds.serenity.BuildConfig
 import us.nineworlds.serenity.TestingModule
+import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
@@ -51,7 +51,7 @@ class ExoplayerPresenterTest : InjectingTest() {
   @JvmField
   var mockitoRule: MockitoRule = MockitoJUnit.rule().strictness(LENIENT)
 
-  @Inject lateinit var mockPlexFactory: PlexappFactory
+  @Inject lateinit var mockPlexFactory: SerenityClient
   @Inject lateinit var mockJobManager: JobManager
   @Inject lateinit var mockLogger: Logger
 

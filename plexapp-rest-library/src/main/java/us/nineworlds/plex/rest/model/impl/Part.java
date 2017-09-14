@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -24,62 +24,52 @@
 package us.nineworlds.plex.rest.model.impl;
 
 import java.util.List;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+import us.nineworlds.serenity.common.media.model.IPart;
+import us.nineworlds.serenity.common.media.model.IStream;
 
-/**
- * @author dcarver
- *
- */
-@Root(name="Part")
-public class Part {
+@Root(name = "Part")
+public class Part implements IPart {
 
-	@Attribute(name="key", required=true)
-	private String key;
-	
-	@Attribute(name="file", required=false)
-	private String filename;
-	
-	@Attribute(name="container", required=false)
-	private String container;
-	
-	@ElementList(inline=true,required=false)
-	private List<Stream> streams;
-	
+  @Attribute(name = "key", required = true) private String key;
 
-	public List<Stream> getStreams() {
-		return streams;
-	}
+  @Attribute(name = "file", required = false) private String filename;
 
-	public void setStreams(List<Stream> streams) {
-		this.streams = streams;
-	}
+  @Attribute(name = "container", required = false) private String container;
 
-	public String getContainer() {
-		return container;
-	}
+  @ElementList(inline = true, required = false, type = Stream.class) private List<IStream> streams;
 
-	public void setContainer(String container) {
-		this.container = container;
-	}
+  @Override public List<IStream> getStreams() {
+    return streams;
+  }
 
-	public String getKey() {
-		return key;
-	}
+  @Override public void setStreams(List<IStream> streams) {
+    this.streams = streams;
+  }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
-	
-	public String getFilename() {
-		return filename;
-	}
-	
-	
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
-	
+  @Override public String getContainer() {
+    return container;
+  }
+
+  @Override public void setContainer(String container) {
+    this.container = container;
+  }
+
+  @Override public String getKey() {
+    return key;
+  }
+
+  @Override public void setKey(String key) {
+    this.key = key;
+  }
+
+  @Override public String getFilename() {
+    return filename;
+  }
+
+  @Override public void setFilename(String filename) {
+    this.filename = filename;
+  }
 }

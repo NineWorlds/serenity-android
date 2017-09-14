@@ -6,16 +6,16 @@ import android.support.annotation.VisibleForTesting;
 import com.birbit.android.jobqueue.RetryConstraint;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.common.android.injection.InjectingJob;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.events.TVCategoryEvent;
 
 public class TVCategoryJob extends InjectingJob {
 
   @Inject EventBus eventBus;
 
-  @Inject PlexappFactory client;
+  @Inject SerenityClient client;
 
   String key;
 
@@ -32,7 +32,7 @@ public class TVCategoryJob extends InjectingJob {
   }
 
   @Override public void onRun() throws Throwable {
-    MediaContainer mediaContainer = client.retrieveSections(key);
+    IMediaContainer mediaContainer = client.retrieveSections(key);
     eventBus.post(new TVCategoryEvent(mediaContainer, key));
   }
 

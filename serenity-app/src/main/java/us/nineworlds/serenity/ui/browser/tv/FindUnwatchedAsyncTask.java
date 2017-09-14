@@ -29,12 +29,12 @@ import android.util.Log;
 import android.widget.Toast;
 import java.util.List;
 import javax.inject.Inject;
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.model.impl.Directory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.common.media.model.IDirectory;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.media.model.IVideo;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
@@ -45,7 +45,7 @@ import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
  */
 public class FindUnwatchedAsyncTask extends AsyncTask<SeriesContentInfo, Void, EpisodePosterInfo> {
 
-  @Inject protected PlexappFactory factory;
+  @Inject protected SerenityClient factory;
 
   @Inject VideoPlayerIntentUtils vpUtils;
 
@@ -68,18 +68,18 @@ public class FindUnwatchedAsyncTask extends AsyncTask<SeriesContentInfo, Void, E
       return null;
     }
     try {
-      final MediaContainer seasonContainer = factory.retrieveSeasons(info.getKey());
-      final List<Directory> seasons = seasonContainer.getDirectories();
-      for (Directory season : seasons) {
-        final MediaContainer episodeContainer = factory.retrieveEpisodes(season.getKey());
-        final List<Video> episodes = episodeContainer.getVideos();
+      final IMediaContainer seasonContainer = factory.retrieveSeasons(info.getKey());
+      final List<IDirectory> seasons = seasonContainer.getDirectories();
+      for (IDirectory season : seasons) {
+        final IMediaContainer episodeContainer = factory.retrieveEpisodes(season.getKey());
+        final List<IVideo> episodes = episodeContainer.getVideos();
 
         String baseUrl = factory.baseURL();
         String parentPosterURL = null;
         if (episodeContainer.getParentPosterURL() != null && !episodeContainer.getParentPosterURL().contains("show")) {
           parentPosterURL = baseUrl + episodeContainer.getParentPosterURL().substring(1);
         }
-        for (Video episode : episodes) {
+        for (IVideo episode : episodes) {
           EpisodeMediaContainer emc = new EpisodeMediaContainer(episodeContainer);
           final EpisodePosterInfo videoInfo =
               emc.createEpisodeContentInfo(episodeContainer, baseUrl, parentPosterURL, episode);

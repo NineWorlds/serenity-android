@@ -30,8 +30,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 
@@ -47,7 +47,7 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
 
   private List<SeriesContentInfo> seasonList = null;
 
-  @Inject PlexappFactory plexFactory;
+  @Inject SerenityClient plexFactory;
 
   public TVShowSeasonImageGalleryAdapter() {
     super();
@@ -62,8 +62,7 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View view = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.poster_tvshow_indicator_view, null);
+    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_tvshow_indicator_view, null);
     SeasonViewHolder seasonViewHolder = new SeasonViewHolder(view);
     return seasonViewHolder;
   }

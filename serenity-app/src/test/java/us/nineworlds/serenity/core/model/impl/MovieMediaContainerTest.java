@@ -23,6 +23,12 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
+import dagger.Module;
+import dagger.Provides;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Singleton;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,19 +39,10 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Video;
 import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
@@ -59,88 +56,73 @@ import static org.robolectric.RuntimeEnvironment.application;
 @Config(constants = BuildConfig.class)
 public class MovieMediaContainerTest extends InjectingTest {
 
-	@Mock
-	MediaContainer mockMediaContainer;
+  @Mock MediaContainer mockMediaContainer;
 
-	@Mock
-	PlexappFactory mockFactory;
+  @Mock SerenityClient mockFactory;
 
-	MovieMediaContainer movieMediaContainer;
+  MovieMediaContainer movieMediaContainer;
 
-	List<VideoContentInfo> videos;
+  List<VideoContentInfo> videos;
 
-	@Override
-	@Before
-	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
-		super.setUp();
+  @Override @Before public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+    super.setUp();
 
-		videos = new ArrayList<VideoContentInfo>();
+    videos = new ArrayList<VideoContentInfo>();
 
-		doReturn("http://1.1.1.1:32400/").when(mockFactory).baseURL();
+    doReturn("http://1.1.1.1:32400/").when(mockFactory).baseURL();
 
-		movieMediaContainer = new MovieMediaContainer(createTestVideos());
-	}
+    movieMediaContainer = new MovieMediaContainer(createTestVideos());
+  }
 
-	@Test
-	public void createMoviesReturnsAnEmptyListWhenNoItems() {
-		movieMediaContainer = new MovieMediaContainer(mockMediaContainer);
-		doReturn(new ArrayList<Video>()).when(mockMediaContainer).getVideos();
-		List<VideoContentInfo> result = movieMediaContainer.createVideos();
-		assertThat(result).isEmpty();
-	}
+  @Test public void createMoviesReturnsAnEmptyListWhenNoItems() {
+    movieMediaContainer = new MovieMediaContainer(mockMediaContainer);
+    doReturn(new ArrayList<Video>()).when(mockMediaContainer).getVideos();
+    List<VideoContentInfo> result = movieMediaContainer.createVideos();
+    assertThat(result).isEmpty();
+  }
 
-	@Test
-	public void createMovieReturnsAnEmptyListWhenNoVideos() {
-		movieMediaContainer = new MovieMediaContainer(mockMediaContainer);
-		doReturn(null).when(mockMediaContainer).getVideos();
-		List<VideoContentInfo> result = movieMediaContainer.createVideos();
-		assertThat(result).isEmpty();
-	}
+  @Test public void createMovieReturnsAnEmptyListWhenNoVideos() {
+    movieMediaContainer = new MovieMediaContainer(mockMediaContainer);
+    doReturn(null).when(mockMediaContainer).getVideos();
+    List<VideoContentInfo> result = movieMediaContainer.createVideos();
+    assertThat(result).isEmpty();
+  }
 
-	@Test
-	public void createMoviesReturnsANonEmptyListWhenThereAreVideos() {
-		List<VideoContentInfo> result = movieMediaContainer.createVideos();
-		assertThat(result).isNotEmpty();
-	}
+  @Test public void createMoviesReturnsANonEmptyListWhenThereAreVideos() {
+    List<VideoContentInfo> result = movieMediaContainer.createVideos();
+    assertThat(result).isNotEmpty();
+  }
 
-	@Test
-	public void directPlayUrlIsNotNullForAVideo() {
-		List<VideoContentInfo> result = movieMediaContainer.createVideos();
-		VideoContentInfo videoContentInfo = result.get(0);
-		assertThat(videoContentInfo.getDirectPlayUrl()).isNotNull()
-				.isNotEmpty();
-	}
+  @Test public void directPlayUrlIsNotNullForAVideo() {
+    List<VideoContentInfo> result = movieMediaContainer.createVideos();
+    VideoContentInfo videoContentInfo = result.get(0);
+    assertThat(videoContentInfo.getDirectPlayUrl()).isNotNull().isNotEmpty();
+  }
 
-	@Override
-	public List<Object> getModules() {
-		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(application));
-		modules.add(new TestModule());
-		return modules;
-	}
+  @Override public List<Object> getModules() {
+    List<Object> modules = new ArrayList<Object>();
+    modules.add(new AndroidModule(application));
+    modules.add(new TestModule());
+    return modules;
+  }
 
-	protected MediaContainer createTestVideos() throws Exception {
-		InputStream inputstream = this.getClass().getResourceAsStream(
-				"/resources/samples/allmovies.xml");
-		Serializer serializer = new Persister();
+  protected MediaContainer createTestVideos() throws Exception {
+    InputStream inputstream = this.getClass().getResourceAsStream("/resources/samples/allmovies.xml");
+    Serializer serializer = new Persister();
 
-		MediaContainer mediaContainer = serializer.read(MediaContainer.class,
-				inputstream, false);
-		IOUtils.closeQuietly(inputstream);
-		return mediaContainer;
-	}
+    MediaContainer mediaContainer = serializer.read(MediaContainer.class, inputstream, false);
+    IOUtils.closeQuietly(inputstream);
+    return mediaContainer;
+  }
 
-	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-			MovieMediaContainerTest.class, MovieMediaContainer.class })
-	public class TestModule {
+  @Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
+      MovieMediaContainerTest.class, MovieMediaContainer.class
+  })
+  public class TestModule {
 
-		@Provides
-		@Singleton
-		PlexappFactory providesPlexFactory() {
-			return mockFactory;
-		}
-
-	}
-
+    @Provides @Singleton SerenityClient providesPlexFactory() {
+      return mockFactory;
+    }
+  }
 }

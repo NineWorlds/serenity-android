@@ -27,13 +27,13 @@ import android.content.res.Resources;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import us.nineworlds.plex.rest.model.impl.Director;
-import us.nineworlds.plex.rest.model.impl.Genre;
-import us.nineworlds.plex.rest.model.impl.Media;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.plex.rest.model.impl.Part;
-import us.nineworlds.plex.rest.model.impl.Video;
-import us.nineworlds.plex.rest.model.impl.Writer;
+import us.nineworlds.serenity.common.media.model.IDirector;
+import us.nineworlds.serenity.common.media.model.IGenre;
+import us.nineworlds.serenity.common.media.model.IMedia;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.media.model.IPart;
+import us.nineworlds.serenity.common.media.model.IVideo;
+import us.nineworlds.serenity.common.media.model.IWriter;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 /**
@@ -43,26 +43,26 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 
   @Inject Resources resources;
 
-  public EpisodeMediaContainer(MediaContainer mc) {
+  public EpisodeMediaContainer(IMediaContainer mc) {
     super(mc);
   }
 
-  @Override protected void createVideoContent(MediaContainer mc) {
+  @Override protected void createVideoContent(IMediaContainer mc) {
     String baseUrl = factory.baseURL();
     String parentPosterURL = null;
     if (mc.getParentPosterURL() != null && !mc.getParentPosterURL().contains("show")) {
       parentPosterURL = baseUrl + mc.getParentPosterURL().substring(1);
     }
-    List<Video> videos = mc.getVideos();
+    List<IVideo> videos = mc.getVideos();
     if (videos != null) {
-      for (Video episode : videos) {
+      for (IVideo episode : videos) {
         videoList.add(createEpisodeContentInfo(mc, baseUrl, parentPosterURL, episode));
       }
     }
   }
 
-  public EpisodePosterInfo createEpisodeContentInfo(MediaContainer mc, String baseUrl,
-      String parentPosterURL, Video episode) {
+  public EpisodePosterInfo createEpisodeContentInfo(IMediaContainer mc, String baseUrl, String parentPosterURL,
+      IVideo episode) {
     EpisodePosterInfo epi = new EpisodePosterInfo(resources);
     if (parentPosterURL != null) {
       epi.setParentPosterURL(parentPosterURL);
@@ -111,14 +111,14 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 
     epi.setContentRating(episode.getContentRating());
 
-    List<Media> mediacont = episode.getMedias();
+    List<IMedia> mediacont = episode.getMedias();
     if (mediacont != null && !mediacont.isEmpty()) {
       // We grab the first media container until we know more about
       // why there can be multiples.
-      Media media = mediacont.get(0);
+      IMedia media = mediacont.get(0);
       epi.setContainer(media.getContainer());
-      List<Part> parts = media.getVideoPart();
-      Part part = parts.get(0);
+      List<IPart> parts = media.getVideoPart();
+      IPart part = parts.get(0);
 
       final int seasonNumber;
       if (episode.getSeason() != null) {
@@ -163,19 +163,19 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
    * @param videoContentInfo
    * @return
    */
-  @Override protected void createVideoDetails(Video video, VideoContentInfo videoContentInfo) {
+  @Override protected void createVideoDetails(IVideo video, VideoContentInfo videoContentInfo) {
 
     createVideoDetailsStatic(video, videoContentInfo);
   }
 
-  private void createVideoDetailsStatic(Video video, VideoContentInfo videoContentInfo) {
+  private void createVideoDetailsStatic(IVideo video, VideoContentInfo videoContentInfo) {
     if (video.getYear() != null) {
       videoContentInfo.setYear(video.getYear());
     }
 
     if (video.getGenres() != null && video.getGenres().size() > 0) {
       ArrayList<String> g = new ArrayList<String>();
-      for (Genre genre : video.getGenres()) {
+      for (IGenre genre : video.getGenres()) {
         g.add(genre.getTag());
       }
       videoContentInfo.setGenres(g);
@@ -183,7 +183,7 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 
     if (video.getWriters() != null && video.getWriters().size() > 0) {
       ArrayList<String> w = new ArrayList<String>();
-      for (Writer writer : video.getWriters()) {
+      for (IWriter writer : video.getWriters()) {
         w.add(writer.getTag());
       }
       videoContentInfo.setWriters(w);
@@ -191,7 +191,7 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
 
     if (video.getDirectors() != null && video.getDirectors().size() > 0) {
       ArrayList<String> d = new ArrayList<String>();
-      for (Director director : video.getDirectors()) {
+      for (IDirector director : video.getDirectors()) {
         d.add(director.getTag());
       }
       videoContentInfo.setDirectors(d);

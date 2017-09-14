@@ -35,8 +35,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import javax.inject.Inject;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -50,7 +50,7 @@ public class ImageInfographicUtils extends BaseInjector {
   private final int width;
   private final int height;
 
-  @Inject PlexappFactory factory;
+  @Inject SerenityClient factory;
 
   @Inject protected TimeUtil timeUtil;
 
@@ -387,16 +387,14 @@ public class ImageInfographicUtils extends BaseInjector {
   }
 
   public static void setWatchedCount(ImageView epiv, Activity a, VideoContentInfo info) {
-    ImageView watchedView =
-        (ImageView) a.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
+    ImageView watchedView = (ImageView) a.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
     if (watchedView != null) {
       watchedView.setImageResource(R.drawable.watched_small);
     }
   }
 
   public static void setUnwatched(ImageView epiv, Activity a, VideoContentInfo info) {
-    ImageView watchedView =
-        (ImageView) a.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
+    ImageView watchedView = (ImageView) a.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
     if (watchedView != null) {
       watchedView.setImageResource(R.drawable.unwatched_small);
     }

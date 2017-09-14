@@ -1,16 +1,16 @@
 package us.nineworlds.serenity.events;
 
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
 
 public class SerenityEvent {
 
-  MediaContainer mediaContainer;
+  IMediaContainer mediaContainer;
 
-  public SerenityEvent(MediaContainer mediaContainer) {
+  public SerenityEvent(IMediaContainer mediaContainer) {
     this.mediaContainer = mediaContainer;
   }
 
-  public MediaContainer getMediaContainer() {
+  public IMediaContainer getMediaContainer() {
     return mediaContainer;
   }
 }

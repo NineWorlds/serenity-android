@@ -25,8 +25,8 @@ package us.nineworlds.serenity.core.model.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import us.nineworlds.plex.rest.model.impl.Directory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.media.model.IDirectory;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 
 public class CategoryMediaContainer extends AbstractMediaContainer {
@@ -34,7 +34,7 @@ public class CategoryMediaContainer extends AbstractMediaContainer {
   protected ArrayList<CategoryInfo> categories = new ArrayList<CategoryInfo>();
   protected boolean filterAlbums;
 
-  public CategoryMediaContainer(MediaContainer mc) {
+  public CategoryMediaContainer(IMediaContainer mc) {
     super(mc);
   }
 
@@ -51,9 +51,9 @@ public class CategoryMediaContainer extends AbstractMediaContainer {
   }
 
   protected void populateCategories() {
-    List<Directory> dirs = mc.getDirectories();
+    List<IDirectory> dirs = mc.getDirectories();
     categories = new ArrayList<CategoryInfo>();
-    for (Directory dir : dirs) {
+    for (IDirectory dir : dirs) {
       if (resultsNotFiltered(dir)) {
         CategoryInfo category = new CategoryInfo();
         category.setCategory(dir.getKey());
@@ -66,16 +66,13 @@ public class CategoryMediaContainer extends AbstractMediaContainer {
     }
   }
 
-  protected boolean resultsNotFiltered(Directory dir) {
+  protected boolean resultsNotFiltered(IDirectory dir) {
     if (filterAlbums) {
       if (dir.getKey().equals("year") || dir.getKey().equals("decade")) {
         return false;
       }
     }
-    return !"folder".equals(dir.getKey())
-        && !"Search...".equals(dir.getTitle())
-        && !"Search Artists...".equals(dir.getTitle())
-        && !"Search Albums...".equals(dir.getTitle())
-        && !"Search Tracks...".equals(dir.getTitle());
+    return !"folder".equals(dir.getKey()) && !"Search...".equals(dir.getTitle()) && !"Search Artists...".equals(
+        dir.getTitle()) && !"Search Albums...".equals(dir.getTitle()) && !"Search Tracks...".equals(dir.getTitle());
   }
 }

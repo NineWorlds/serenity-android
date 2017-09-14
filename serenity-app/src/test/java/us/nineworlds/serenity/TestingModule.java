@@ -30,7 +30,7 @@ import dagger.Provides;
 import javax.inject.Singleton;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import us.nineworlds.plex.rest.PlexappFactory;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
@@ -41,7 +41,7 @@ import us.nineworlds.serenity.injection.modules.SerenityModule;
 public class TestingModule {
 
   @Mock JobManager mockJobManager;
-  @Mock PlexappFactory mockPlexAppFactory;
+  @Mock SerenityClient mockPlexAppFactory;
   @Mock LocalBroadcastManager mockLocalBroadcastManager;
   @Mock Logger mockLogger;
 
@@ -53,7 +53,7 @@ public class TestingModule {
     return mockJobManager;
   }
 
-  @Provides @Singleton PlexappFactory providesPlexAppFactory() {
+  @Provides @Singleton SerenityClient providesPlexAppFactory() {
     return mockPlexAppFactory;
   }
 

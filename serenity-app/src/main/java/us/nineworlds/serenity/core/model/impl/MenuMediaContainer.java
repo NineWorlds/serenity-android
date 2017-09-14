@@ -28,9 +28,9 @@ import android.content.res.Resources;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import us.nineworlds.plex.rest.model.impl.Directory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.media.model.IDirectory;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 
@@ -54,15 +54,15 @@ public class MenuMediaContainer extends AbstractMediaContainer {
   private static final String OPTIONS_TYPE = "options";
   protected ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
 
-  public MenuMediaContainer(MediaContainer mc) {
+  public MenuMediaContainer(IMediaContainer mc) {
     super(mc);
   }
 
   public List<MenuItem> createMenuItems() {
-    List<Directory> dirs = mc.getDirectories();
+    List<IDirectory> dirs = mc.getDirectories();
 
     if (dirs != null) {
-      for (Directory item : dirs) {
+      for (IDirectory item : dirs) {
         if (isImplemented(item)) {
           boolean musicEnabled = preferences.getBoolean("plex_music_library", false);
           if (musicEnabled == false && "artist".equals(item.getType())) {
@@ -89,7 +89,7 @@ public class MenuMediaContainer extends AbstractMediaContainer {
     return menuItems;
   }
 
-  protected boolean isImplemented(Directory item) {
+  protected boolean isImplemented(IDirectory item) {
     if ("photos".equals(item.getType()) || "photo".equals(item.getType())) {
       return false;
     }

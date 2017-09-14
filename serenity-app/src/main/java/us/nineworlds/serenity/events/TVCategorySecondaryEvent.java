@@ -1,12 +1,12 @@
 package us.nineworlds.serenity.events;
 
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
 
 public class TVCategorySecondaryEvent extends MainCategoryEvent {
 
   private String category;
 
-  public TVCategorySecondaryEvent(MediaContainer mediaContainer, String key, String category) {
+  public TVCategorySecondaryEvent(IMediaContainer mediaContainer, String key, String category) {
     super(mediaContainer, key);
     this.category = category;
   }

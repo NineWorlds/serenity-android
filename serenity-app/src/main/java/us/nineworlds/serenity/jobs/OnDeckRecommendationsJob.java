@@ -8,9 +8,9 @@ import com.birbit.android.jobqueue.RetryConstraint;
 import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.common.android.injection.InjectingJob;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
@@ -23,7 +23,7 @@ public class OnDeckRecommendationsJob extends InjectingJob {
 
   @Inject @ApplicationContext Context context;
 
-  @Inject PlexappFactory client;
+  @Inject SerenityClient client;
 
   @Inject EventBus eventBus;
 
@@ -34,11 +34,11 @@ public class OnDeckRecommendationsJob extends InjectingJob {
   }
 
   @Override public void onRun() throws Throwable {
-    MediaContainer mediaContainer = client.retrieveSections();
+    IMediaContainer mediaContainer = client.retrieveSections();
     onResponse(mediaContainer);
   }
 
-  protected void onResponse(MediaContainer mc) throws Throwable {
+  protected void onResponse(IMediaContainer mc) throws Throwable {
     List<MenuItem> menuItems = new MenuMediaContainer(mc).createMenuItems();
     if (menuItems.isEmpty()) {
       return;
@@ -48,19 +48,19 @@ public class OnDeckRecommendationsJob extends InjectingJob {
       if ("movie".equals(library.getType())) {
         String section = library.getSection();
 
-        MediaContainer mediaContainer = client.retrieveSections(section, "onDeck");
+        IMediaContainer mediaContainer = client.retrieveSections(section, "onDeck");
         onMovieResponse(mediaContainer);
       }
 
       if ("show".equals(library.getType())) {
         String section = library.getSection();
-        MediaContainer mediaContainer = client.retrieveSections(section, "onDeck");
+        IMediaContainer mediaContainer = client.retrieveSections(section, "onDeck");
         onShowResponse(mediaContainer);
       }
     }
   }
 
-  protected void onMovieResponse(MediaContainer mediaContainer) {
+  protected void onMovieResponse(IMediaContainer mediaContainer) {
     MovieMediaContainer movieContainer = new MovieMediaContainer(mediaContainer);
     List<VideoContentInfo> movies = movieContainer.createVideos();
     for (VideoContentInfo movie : movies) {
@@ -68,7 +68,7 @@ public class OnDeckRecommendationsJob extends InjectingJob {
     }
   }
 
-  protected void onShowResponse(MediaContainer mediaContainer) {
+  protected void onShowResponse(IMediaContainer mediaContainer) {
     EpisodeMediaContainer episodeContainer = new EpisodeMediaContainer(mediaContainer);
     List<VideoContentInfo> episodes = episodeContainer.createVideos();
     for (VideoContentInfo episode : episodes) {

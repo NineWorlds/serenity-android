@@ -35,8 +35,8 @@ import butterknife.BindView;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
 import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.jobs.MovieCategoryJob;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
@@ -61,7 +61,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
   @Inject JobManager jobManager;
 
-  @Inject PlexappFactory factory;
+  @Inject SerenityClient factory;
 
   @Inject Resources resources;
 
@@ -82,8 +82,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     super.onStop();
   }
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     onItemSelectedListener = new MoviePosterOnItemSelectedListener();
     View view = inflateView(inflater, container);
     bind(this, view);

@@ -12,9 +12,9 @@ import android.util.Log;
 import java.io.IOException;
 import java.net.URLEncoder;
 import javax.inject.Inject;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.RecommendationBuilder;
 import us.nineworlds.serenity.core.SerenityRecommendationContentProvider;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -29,7 +29,7 @@ public class RecommendAsyncTask extends AsyncTask {
   private final VideoContentInfo video;
   private final Context context;
 
-  @Inject protected PlexappFactory factory;
+  @Inject protected SerenityClient factory;
 
   public RecommendAsyncTask(VideoContentInfo video, Context context) {
     this.video = video;

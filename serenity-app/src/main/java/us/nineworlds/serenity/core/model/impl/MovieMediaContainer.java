@@ -26,13 +26,13 @@ package us.nineworlds.serenity.core.model.impl;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import us.nineworlds.plex.rest.model.impl.Director;
-import us.nineworlds.plex.rest.model.impl.Genre;
-import us.nineworlds.plex.rest.model.impl.Media;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.plex.rest.model.impl.Part;
-import us.nineworlds.plex.rest.model.impl.Video;
-import us.nineworlds.plex.rest.model.impl.Writer;
+import us.nineworlds.serenity.common.media.model.IDirector;
+import us.nineworlds.serenity.common.media.model.IGenre;
+import us.nineworlds.serenity.common.media.model.IMedia;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.media.model.IPart;
+import us.nineworlds.serenity.common.media.model.IVideo;
+import us.nineworlds.serenity.common.media.model.IWriter;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 /**
@@ -40,7 +40,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
  */
 public class MovieMediaContainer extends AbstractMediaContainer {
 
-  public MovieMediaContainer(MediaContainer mc) {
+  public MovieMediaContainer(IMediaContainer mc) {
     super(mc);
   }
 
@@ -50,9 +50,9 @@ public class MovieMediaContainer extends AbstractMediaContainer {
     return videoList;
   }
 
-  protected void createVideoContent(MediaContainer mc) {
+  protected void createVideoContent(IMediaContainer mc) {
     String baseUrl = factory.baseURL();
-    List<Video> videos = mc.getVideos();
+    List<IVideo> videos = mc.getVideos();
     if (videos == null) {
       return;
     }
@@ -62,7 +62,7 @@ public class MovieMediaContainer extends AbstractMediaContainer {
     sbuild.append(baseUrl);
     sbuild.append(":/resources/movie-fanart.jpg");
     String baseImageResource = sbuild.toString();
-    for (Video movie : videos) {
+    for (IVideo movie : videos) {
       VideoContentInfo mpi = new MoviePosterInfo();
       mpi.setMediaTagIdentifier(mediaTagId);
       mpi.setId(movie.getRatingKey());
@@ -101,14 +101,14 @@ public class MovieMediaContainer extends AbstractMediaContainer {
 
       mpi.setContentRating(movie.getContentRating());
 
-      List<Media> mediacont = movie.getMedias();
+      List<IMedia> mediacont = movie.getMedias();
       if (mediacont != null && !mediacont.isEmpty()) {
         // We grab the first media container until we know more about
         // why there can be multiples.
-        Media media = mediacont.get(0);
+        IMedia media = mediacont.get(0);
         mpi.setContainer(media.getContainer());
-        List<Part> parts = media.getVideoPart();
-        Part part = parts.get(0);
+        List<IPart> parts = media.getVideoPart();
+        IPart part = parts.get(0);
         mpi.setAudioCodec(media.getAudioCodec());
         mpi.setVideoCodec(media.getVideoCodec());
         mpi.setVideoResolution(media.getVideoResolution());
@@ -131,7 +131,7 @@ public class MovieMediaContainer extends AbstractMediaContainer {
   /**
    * Create the video meta data around cast, direct, year produced, etc.
    */
-  protected void createVideoDetails(Video video, VideoContentInfo videoContentInfo) {
+  protected void createVideoDetails(IVideo video, VideoContentInfo videoContentInfo) {
 
     if (video.getYear() != null) {
       videoContentInfo.setYear(video.getYear());
@@ -140,7 +140,7 @@ public class MovieMediaContainer extends AbstractMediaContainer {
     if (video.getGenres() != null && video.getGenres().size() > 0) {
       ArrayList<String> g = new ArrayList<String>();
 
-      for (Genre genre : video.getGenres()) {
+      for (IGenre genre : video.getGenres()) {
         g.add(genre.getTag());
       }
       videoContentInfo.setGenres(g);
@@ -148,7 +148,7 @@ public class MovieMediaContainer extends AbstractMediaContainer {
 
     if (video.getWriters() != null && video.getWriters().size() > 0) {
       ArrayList<String> w = new ArrayList<String>();
-      for (Writer writer : video.getWriters()) {
+      for (IWriter writer : video.getWriters()) {
         w.add(writer.getTag());
       }
       videoContentInfo.setWriters(w);
@@ -156,7 +156,7 @@ public class MovieMediaContainer extends AbstractMediaContainer {
 
     if (video.getDirectors() != null && video.getDirectors().size() > 0) {
       ArrayList<String> d = new ArrayList<String>();
-      for (Director director : video.getDirectors()) {
+      for (IDirector director : video.getDirectors()) {
         d.add(director.getTag());
       }
       videoContentInfo.setDirectors(d);

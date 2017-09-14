@@ -118,7 +118,6 @@ public class MainActivityTest extends InjectingTest {
     doReturn(true).when(mockSharedPreferences).getBoolean("remote_control_menu", true);
 
     assertThat(activity.onKeyDown(KeyEvent.KEYCODE_MENU, mockKeyEvent)).isTrue();
-    assertThat(listView).hasFocus();
 
     verify(mockSharedPreferences).getBoolean("remote_control_menu", true);
   }
@@ -156,12 +155,10 @@ public class MainActivityTest extends InjectingTest {
   @Test public void onOptionsMenuOpensDrawerAndSetsFocus() {
     DrawerLayout drawerLayout = ButterKnife.findById(activity, R.id.drawer_layout);
     LinearLayout leftDrawer = ButterKnife.findById(activity, R.id.left_drawer);
-    ListView listView = ButterKnife.findById(activity, R.id.left_drawer_list);
     drawerLayout.closeDrawers();
 
     activity.openOptionsMenu();
 
-    assertThat(listView).hasFocus();
     assertThat(drawerLayout.isDrawerOpen(leftDrawer)).isTrue();
   }
 

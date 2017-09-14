@@ -32,7 +32,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
 
@@ -83,7 +83,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
   }
 
   protected void createPosters() {
-    MediaContainer mc = null;
+    IMediaContainer mc = null;
     try {
       mc = retrieveVideos();
     } catch (IOException ex) {
@@ -97,7 +97,7 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
     }
   }
 
-  protected MediaContainer retrieveVideos() throws Exception {
+  protected IMediaContainer retrieveVideos() throws Exception {
     if (category == null) {
       category = DEFAULT_CATEGORY;
     }

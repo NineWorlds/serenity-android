@@ -4,13 +4,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.birbit.android.jobqueue.RetryConstraint;
 import javax.inject.Inject;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.common.android.injection.InjectingJob;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 public class UpdatePlaybackPostionJob extends InjectingJob {
 
-  @Inject PlexappFactory factory;
+  @Inject SerenityClient factory;
 
   private VideoContentInfo video;
 

@@ -26,13 +26,13 @@ package us.nineworlds.serenity.core.services;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
 
 /**
- * @author dcarver
  * @deprecated Need to migrate this to Volley for searching for movies.
  */
-@Deprecated public class MovieSearchIntentService extends MoviesRetrievalIntentService {
+@Deprecated
+public class MovieSearchIntentService extends MoviesRetrievalIntentService {
 
   protected String query;
 
@@ -48,7 +48,7 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
     sendMessageResults(intent);
   }
 
-  @Override protected MediaContainer retrieveVideos() throws Exception {
+  @Override protected IMediaContainer retrieveVideos() throws Exception {
     return factory.searchMovies(key, query);
   }
 }

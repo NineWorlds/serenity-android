@@ -35,8 +35,8 @@ import android.widget.Toast;
 import com.birbit.android.jobqueue.JobManager;
 import java.util.List;
 import javax.inject.Inject;
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.jobs.MovieSecondaryCategoryJob;
@@ -45,7 +45,7 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 public class MovieCategorySpinnerOnItemSelectedListener extends BaseSpinnerOnItemSelectedListener
     implements OnItemSelectedListener {
 
-  @Inject PlexappFactory factory;
+  @Inject SerenityClient factory;
 
   @Inject JobManager jobManager;
 
@@ -64,15 +64,14 @@ public class MovieCategorySpinnerOnItemSelectedListener extends BaseSpinnerOnIte
     this.activity = activity;
   }
 
-  public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection, String ckey,
-      boolean firstSelection, SerenityMultiViewVideoActivity activity) {
+  public MovieCategorySpinnerOnItemSelectedListener(String defaultSelection, String ckey, boolean firstSelection,
+      SerenityMultiViewVideoActivity activity) {
     this(defaultSelection, ckey, activity);
     savedInstanceCategory = defaultSelection;
     this.setFirstSelection(firstSelection);
   }
 
-  @Override
-  public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
+  @Override public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
     if (view == null) {
       return;
     }
@@ -156,18 +155,17 @@ public class MovieCategorySpinnerOnItemSelectedListener extends BaseSpinnerOnIte
       List<SecondaryCategoryInfo> secondaryCategories = (List<SecondaryCategoryInfo>) msg.obj;
 
       if (secondaryCategories == null || secondaryCategories.isEmpty()) {
-        Toast.makeText(getMultiViewVideoActivity(), R.string.no_entries_available_for_category_,
-            Toast.LENGTH_LONG).show();
+        Toast.makeText(getMultiViewVideoActivity(), R.string.no_entries_available_for_category_, Toast.LENGTH_LONG)
+            .show();
         return;
       }
 
-      Spinner secondarySpinner =
-          (Spinner) getMultiViewVideoActivity().findViewById(R.id.categoryFilter2);
+      Spinner secondarySpinner = (Spinner) getMultiViewVideoActivity().findViewById(R.id.categoryFilter2);
       secondarySpinner.setVisibility(View.VISIBLE);
 
       ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter =
-          new ArrayAdapter<SecondaryCategoryInfo>(getMultiViewVideoActivity(),
-              R.layout.serenity_spinner_textview, secondaryCategories);
+          new ArrayAdapter<SecondaryCategoryInfo>(getMultiViewVideoActivity(), R.layout.serenity_spinner_textview,
+              secondaryCategories);
       spinnerSecArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
       secondarySpinner.setAdapter(spinnerSecArrayAdapter);
       secondarySpinner.setOnItemSelectedListener(

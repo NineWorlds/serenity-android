@@ -25,8 +25,8 @@ package us.nineworlds.serenity.core.model.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import us.nineworlds.plex.rest.model.impl.Directory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.media.model.IDirectory;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 
 public class SecondaryCategoryMediaContainer extends AbstractMediaContainer {
@@ -35,7 +35,7 @@ public class SecondaryCategoryMediaContainer extends AbstractMediaContainer {
 
   protected String parentCategoryKey;
 
-  public SecondaryCategoryMediaContainer(MediaContainer mc, String parentCategoryKey) {
+  public SecondaryCategoryMediaContainer(IMediaContainer mc, String parentCategoryKey) {
     super(mc);
     this.parentCategoryKey = parentCategoryKey;
   }
@@ -46,13 +46,13 @@ public class SecondaryCategoryMediaContainer extends AbstractMediaContainer {
   }
 
   protected void populateSecondaryCategories() {
-    List<Directory> dirs = mc.getDirectories();
+    List<IDirectory> dirs = mc.getDirectories();
     categories = new ArrayList<SecondaryCategoryInfo>();
     if (dirs == null) {
       return;
     }
 
-    for (Directory dir : dirs) {
+    for (IDirectory dir : dirs) {
       SecondaryCategoryInfo category = new SecondaryCategoryInfo();
       category.setCategory(dir.getKey());
       category.setCategoryDetail(dir.getTitle());

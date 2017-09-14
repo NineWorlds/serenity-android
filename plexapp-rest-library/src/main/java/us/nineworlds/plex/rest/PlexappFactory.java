@@ -25,7 +25,8 @@ package us.nineworlds.plex.rest;
 
 import java.io.IOException;
 import us.nineworlds.plex.rest.config.IConfiguration;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 
 /**
  * This class acts as a factory for retrieving items from Plex.
@@ -34,9 +35,9 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
  *
  * @author dcarver
  */
-public class PlexappFactory {
+public class PlexappFactory implements SerenityClient {
 
-  private static PlexappFactory instance = null;
+  private static SerenityClient instance = null;
 
   private PlexappClient client;
 
@@ -46,7 +47,7 @@ public class PlexappFactory {
     client = PlexappClient.getInstance(config);
   }
 
-  public static PlexappFactory getInstance(IConfiguration config) {
+  public static SerenityClient getInstance(IConfiguration config) {
     if (instance == null) {
       instance = new PlexappFactory(config);
     }
@@ -59,7 +60,7 @@ public class PlexappFactory {
    *
    * @throws Exception
    */
-  public MediaContainer retrieveRootData() throws Exception {
+  @Override public IMediaContainer retrieveRootData() throws Exception {
     return client.retrieveRootData();
   }
 
@@ -70,7 +71,7 @@ public class PlexappFactory {
    * @return MediaContainer the media container for the library
    * @throws Exception
    */
-  public MediaContainer retrieveLibrary() throws Exception {
+  @Override public IMediaContainer retrieveLibrary() throws Exception {
     return client.retrieveLibrary();
   }
 
@@ -81,7 +82,7 @@ public class PlexappFactory {
    * @return MediaContainer the media container for the library
    * @throws Exception
    */
-  public MediaContainer retrieveSections() throws Exception {
+  @Override public IMediaContainer retrieveSections() throws Exception {
     return client.retrieveSections();
   }
 
@@ -93,7 +94,7 @@ public class PlexappFactory {
    * @return MediaContainer the media container for the library
    * @throws Exception
    */
-  public MediaContainer retrieveSections(String key) throws Exception {
+  @Override public IMediaContainer retrieveSections(String key) throws Exception {
     return client.retrieveSections(key);
   }
 
@@ -104,46 +105,47 @@ public class PlexappFactory {
    * @return MediaContainer
    * @throws Exception
    */
-  public MediaContainer retrieveSections(String key, String category) throws Exception {
+  @Override public IMediaContainer retrieveSections(String key, String category) throws Exception {
     return client.retrieveSections(key, category);
   }
 
-  public MediaContainer retrieveSections(String key, String category, String secondaryCategory) throws Exception {
+  @Override public IMediaContainer retrieveSections(String key, String category, String secondaryCategory)
+      throws Exception {
     return client.retrieveSections(key, category, secondaryCategory);
   }
 
-  public MediaContainer retrieveSeasons(String key) throws Exception {
+  @Override public IMediaContainer retrieveSeasons(String key) throws Exception {
     return client.retrieveSeasons(key);
   }
 
-  public MediaContainer retrieveMusicMetaData(String key) throws Exception {
+  @Override public IMediaContainer retrieveMusicMetaData(String key) throws Exception {
     return client.retrieveMusicMetaData(key);
   }
 
-  public MediaContainer retrieveEpisodes(String key) throws Exception {
+  @Override public IMediaContainer retrieveEpisodes(String key) throws Exception {
     return client.retrieveEpisodes(key);
   }
 
-  public MediaContainer retrieveMovieMetaData(String key) throws Exception {
+  @Override public IMediaContainer retrieveMovieMetaData(String key) throws Exception {
     return client.retrieveMovieMetaData(key);
   }
 
-  public MediaContainer searchMovies(String key, String query) throws Exception {
+  @Override public IMediaContainer searchMovies(String key, String query) throws Exception {
     return client.searchMovies(key, query);
   }
 
-  public MediaContainer searchEpisodes(String key, String query) throws Exception {
+  @Override public IMediaContainer searchEpisodes(String key, String query) throws Exception {
     return client.searchEpisodes(key, query);
   }
 
-  public String baseURL() {
+  @Override public String baseURL() {
     return client.baseURL();
   }
 
   /**
    * Sets a video as watched. viewCount will be 1.
    */
-  public boolean setWatched(String key) {
+  @Override public boolean setWatched(String key) {
     try {
       return client.setWatched(key);
     } catch (IOException e) {
@@ -154,7 +156,7 @@ public class PlexappFactory {
   /**
    * Sets a vide as unwatched. viewCount will not be present.
    */
-  public boolean setUnWatched(String key) {
+  @Override public boolean setUnWatched(String key) {
     try {
       return client.setUnWatched(key);
     } catch (IOException e) {
@@ -162,7 +164,7 @@ public class PlexappFactory {
     return false;
   }
 
-  public boolean setProgress(String key, String offset) {
+  @Override public boolean setProgress(String key, String offset) {
     try {
       return client.setProgress(key, offset);
     } catch (IOException e) {
@@ -170,39 +172,39 @@ public class PlexappFactory {
     return false;
   }
 
-  public String getMediaTagURL(String resourceType, String resourceName, String identifier) {
+  @Override public String getMediaTagURL(String resourceType, String resourceName, String identifier) {
     return client.getMediaTagURL(resourceType, resourceName, identifier);
   }
 
-  public String getSectionsURL(String key, String category) {
+  @Override public String getSectionsURL(String key, String category) {
     return client.getSeasonsURL(key);
   }
 
-  public String getSectionsURL() {
+  @Override public String getSectionsURL() {
     return resourcePath.getSectionsURL();
   }
 
-  public String getSectionsUrl(String key) {
+  @Override public String getSectionsUrl(String key) {
     return resourcePath.getSectionsURL(key);
   }
 
-  public String getMovieMetadataURL(String key) {
+  @Override public String getMovieMetadataURL(String key) {
     return resourcePath.getMovieMetaDataURL(key);
   }
 
-  public String getEpisodesURL(String key) {
+  @Override public String getEpisodesURL(String key) {
     return resourcePath.getEpisodesURL(key);
   }
 
-  public String getSeasonsURL(String key) {
+  @Override public String getSeasonsURL(String key) {
     return resourcePath.getSeasonsURL(key);
   }
 
-  public String getImageURL(String url, int width, int height) {
+  @Override public String getImageURL(String url, int width, int height) {
     return client.getImageURL(url, width, height);
   }
 
-  public String getTranscodeUrl(String id, int offset) {
+  @Override public String getTranscodeUrl(String id, int offset) {
     return resourcePath.getTranscoderVideoUrl(id, offset);
   }
 }

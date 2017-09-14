@@ -51,6 +51,7 @@ import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.MainPresenter;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.StartupBroadcastReceiver;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.OkHttpStack;
 import us.nineworlds.serenity.core.OnDeckRecommendations;
 import us.nineworlds.serenity.core.RecommendationBuilder;
@@ -204,7 +205,7 @@ public class AndroidModule {
     this.applicationContext = application;
   }
 
-  @Provides @Singleton PlexappFactory providesPlexFactory() {
+  @Provides @Singleton SerenityClient providesPlexFactory() {
     IConfiguration serverConfig = ServerConfig.getInstance(applicationContext);
 
     return PlexappFactory.getInstance(serverConfig);

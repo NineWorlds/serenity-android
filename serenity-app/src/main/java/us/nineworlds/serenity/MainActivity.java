@@ -217,7 +217,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
         }
       } else {
         drawerLayout.openDrawer(linearDrawerLayout);
-        drawerList.requestFocusFromTouch();
+        drawerList.requestFocus();
       }
       return true;
     }

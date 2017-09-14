@@ -1,10 +1,10 @@
 package us.nineworlds.serenity.events;
 
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
 
 public class MovieRetrievalEvent extends SerenityEvent {
 
-  public MovieRetrievalEvent(MediaContainer mediaContainer) {
+  public MovieRetrievalEvent(IMediaContainer mediaContainer) {
     super(mediaContainer);
   }
 }
