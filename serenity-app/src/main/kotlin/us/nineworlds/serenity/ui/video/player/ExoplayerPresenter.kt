@@ -33,7 +33,8 @@ import javax.inject.Inject
 
 @OpenForTesting
 @InjectViewState
-class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), ExoplayerPresenter, PlaybackControlView.VisibilityListener, Player.EventListener {
+class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), ExoplayerPresenter,
+    PlaybackControlView.VisibilityListener, Player.EventListener {
 
   @Inject lateinit var logger: Logger
 
@@ -166,7 +167,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
   private fun selectCodec(mimeType: String): Boolean {
     var actualCode = mimeType;
     if (actualCode.contains("h264")) {
-      actualCode = "video/H264"
+      actualCode = "video/avc"
     }
     val codec = MediaCodecUtil.getDecoderInfo(actualCode, false) ?: return false
     return codec.isCodecSupported(mimeType)

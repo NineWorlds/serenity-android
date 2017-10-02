@@ -61,7 +61,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   private val progressRunnable = ProgressRunnable()
   private var videoKeyHandler: VideoKeyCodeHandlerDelegate? = null
 
-  internal val PROGRESS_UPDATE_DELAY = 5000
+  internal val PROGRESS_UPDATE_DELAY = 5000L
 
   @ProvidePresenter
   fun providePresenter(): ExoplayerPresenter = presenterProvider.get()
@@ -150,12 +150,10 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     playerView.player = player
     playerView.setControllerVisibilityListener(presenter)
 
-    playerView.
-        player.playWhenReady = true
+    playerView.player.playWhenReady = true
 
     val mediaSource: MediaSource = buildMediaSource(Uri.parse(videoUrl))
     player.prepare(mediaSource)
-
 
     videoKeyHandler = VideoKeyCodeHandlerDelegate(player, this, presenter)
     progressReportinghandler.postDelayed(progressRunnable, PROGRESS_UPDATE_DELAY.toLong())
@@ -163,10 +161,9 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   internal fun createSimpleExoplayer() = ExoPlayerFactory.newSimpleInstance(this, trackSelector)
 
-  internal fun buildMediaSource(uri: Uri): MediaSource {
-    return ExtractorMediaSource(uri, mediaDataSourceFactory, DefaultExtractorsFactory(),
-        videoPlayerHandler, eventLogger)
-  }
+  internal fun buildMediaSource(uri: Uri): MediaSource = ExtractorMediaSource(uri, mediaDataSourceFactory,
+      DefaultExtractorsFactory(),
+      videoPlayerHandler, eventLogger)
 
   internal fun releasePlayer() {
     player.release()
@@ -194,16 +191,17 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
     override fun run() {
       try {
-        if (player.playWhenReady) {
-          val percentage = player.currentPosition.toFloat() / player.getDuration().toFloat()
-          if (percentage <= 90f) {
-            presenter.updateServerPlaybackPosition(player.currentPosition)
-            // Update progress every 5 seconds
-            progressReportinghandler.postDelayed(this, PROGRESS_UPDATE_DELAY.toLong())
-          } else {
-            presenter.updateWatchedStatus()
-          }
+        if (!player.playWhenReady) {
+          return
         }
+
+        val percentage = player.currentPosition.toFloat() / player.getDuration().toFloat()
+        if (percentage <= 90f) {
+          presenter.updateServerPlaybackPosition(player.currentPosition)
+          progressReportinghandler.postDelayed(this, PROGRESS_UPDATE_DELAY)
+          return
+        }
+        presenter.updateWatchedStatus()
       } catch (ex: IllegalStateException) {
         log.error("Illegalstate exception occurred durring progress update. No further updates will occur.", ex)
       }

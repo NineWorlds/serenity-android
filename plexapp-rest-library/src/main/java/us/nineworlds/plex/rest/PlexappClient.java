@@ -77,6 +77,7 @@ public class PlexappClient {
     OkHttpClient.Builder okClient = new OkHttpClient.Builder();
     logger.setLevel(HttpLoggingInterceptor.Level.HEADERS);
     okClient.addInterceptor(logger);
+    okClient.cache(null);
 
     Retrofit.Builder builder = new Retrofit.Builder();
     Retrofit mediaContainerAdapter = builder.baseUrl(resourcePath.getRoot())
