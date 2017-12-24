@@ -29,7 +29,11 @@ import android.view.KeyEvent;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-
+import dagger.Module;
+import dagger.Provides;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Singleton;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,16 +41,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
-import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
@@ -71,146 +65,119 @@ import static org.robolectric.Robolectric.getForegroundThreadScheduler;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class MovieBrowserActivityTest extends InjectingTest {
 
-	@Mock
-	SharedPreferences mockSharedPreferences;
+  @Mock SharedPreferences mockSharedPreferences;
 
-	MovieBrowserActivity movieBrowserActivity;
+  MovieBrowserActivity movieBrowserActivity;
 
-	@Override
-	@Before
-	public void setUp() throws Exception {
-		getBackgroundThreadScheduler().pause();
-		getForegroundThreadScheduler().pause();
+  @Override @Before public void setUp() throws Exception {
+    getBackgroundThreadScheduler().pause();
+    getForegroundThreadScheduler().pause();
 
-		initMocks(this);
-		super.setUp();
-	}
+    initMocks(this);
+    super.setUp();
+  }
 
-	@After
-	public void tearDown() {
-		if (movieBrowserActivity != null) {
-			movieBrowserActivity.finish();
-		}
-	}
+  @After public void tearDown() {
+    if (movieBrowserActivity != null) {
+      movieBrowserActivity.finish();
+    }
+  }
 
-	@Test
-	public void menuOptionsHasGridView() {
-		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
-		ListView drawerList = (ListView) movieBrowserActivity
-				.findViewById(R.id.left_drawer_list);
+  @Test public void menuOptionsHasGridView() {
+    movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
+    ListView drawerList = (ListView) movieBrowserActivity.findViewById(R.id.left_drawer_list);
 
-		assertThat(drawerList).isNotNull();
-		ListAdapter adapter = drawerList.getAdapter();
-		MenuDrawerItem item = (MenuDrawerItem) adapter.getItem(0);
-		assertThat(item.getText()).isEqualTo("Grid View");
-	}
+    assertThat(drawerList).isNotNull();
+    ListAdapter adapter = drawerList.getAdapter();
+    MenuDrawerItem item = (MenuDrawerItem) adapter.getItem(0);
+    assertThat(item.getText()).isEqualTo("Grid View");
+  }
 
-	@Test
-	public void menuOptionsHasDetailView() {
-		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
-		ListView drawerList = (ListView) movieBrowserActivity
-				.findViewById(R.id.left_drawer_list);
+  @Test public void menuOptionsHasDetailView() {
+    movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
+    ListView drawerList = (ListView) movieBrowserActivity.findViewById(R.id.left_drawer_list);
 
-		assertThat(drawerList).isNotNull();
-		ListAdapter adapter = drawerList.getAdapter();
-		MenuDrawerItem item = (MenuDrawerItem) adapter.getItem(1);
-		assertThat(item.getText()).isEqualTo("Detail View");
-	}
+    assertThat(drawerList).isNotNull();
+    ListAdapter adapter = drawerList.getAdapter();
+    MenuDrawerItem item = (MenuDrawerItem) adapter.getItem(1);
+    assertThat(item.getText()).isEqualTo("Detail View");
+  }
 
-	@Test
-	public void menuOptionsHasPlayAllFromQueue() {
-		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
-		ListView drawerList = (ListView) movieBrowserActivity
-				.findViewById(R.id.left_drawer_list);
+  @Test public void menuOptionsHasPlayAllFromQueue() {
+    movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
+    ListView drawerList = (ListView) movieBrowserActivity.findViewById(R.id.left_drawer_list);
 
-		assertThat(drawerList).isNotNull();
-		ListAdapter adapter = drawerList.getAdapter();
-		MenuDrawerItem item = (MenuDrawerItem) adapter.getItem(2);
-		assertThat(item.getText()).isEqualTo("Play All from Queue");
-	}
+    assertThat(drawerList).isNotNull();
+    ListAdapter adapter = drawerList.getAdapter();
+    MenuDrawerItem item = (MenuDrawerItem) adapter.getItem(2);
+    assertThat(item.getText()).isEqualTo("Play All from Queue");
+  }
 
-	@Test
-	public void restartCallsPopulateMenuDrawer() {
-		doReturn(true).when(mockSharedPreferences).getBoolean(anyString(),
-				anyBoolean());
-		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
-		MovieBrowserActivity spyActivity = Mockito.spy(movieBrowserActivity);
-		doNothing().when(spyActivity).populateMenuDrawer();
+  @Test public void restartCallsPopulateMenuDrawer() {
+    doReturn(true).when(mockSharedPreferences).getBoolean(anyString(), anyBoolean());
+    movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
+    MovieBrowserActivity spyActivity = Mockito.spy(movieBrowserActivity);
+    doNothing().when(spyActivity).populateMenuDrawer();
 
-		spyActivity.onRestart();
+    spyActivity.onRestart();
 
-		verify(spyActivity).populateMenuDrawer();
-	}
+    verify(spyActivity).populateMenuDrawer();
+  }
 
-	@Test
-	public void onKeyDownClosesMenuDrawerWhenMenuKeyIsPressed() {
-		doReturn(true).when(mockSharedPreferences).getBoolean(
-				"remote_control_menu", true);
+  @Test public void onKeyDownClosesMenuDrawerWhenMenuKeyIsPressed() {
+    doReturn(true).when(mockSharedPreferences).getBoolean("remote_control_menu", true);
 
-		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
-		DrawerLayout drawerLayout = (DrawerLayout) movieBrowserActivity
-				.findViewById(R.id.drawer_layout);
-		LinearLayout linearLayout = (LinearLayout) movieBrowserActivity
-				.findViewById(R.id.left_drawer);
+    movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
+    DrawerLayout drawerLayout = (DrawerLayout) movieBrowserActivity.findViewById(R.id.drawer_layout);
+    LinearLayout linearLayout = (LinearLayout) movieBrowserActivity.findViewById(R.id.left_drawer);
 
-		drawerLayout.openDrawer(linearLayout);
-		movieBrowserActivity.onKeyDown(KeyEvent.KEYCODE_MENU, null);
+    drawerLayout.openDrawer(linearLayout);
+    movieBrowserActivity.onKeyDown(KeyEvent.KEYCODE_MENU, null);
 
-		assumeFalse(drawerLayout.isDrawerOpen(linearLayout));
-	}
+    assumeFalse(drawerLayout.isDrawerOpen(linearLayout));
+  }
 
-	@Test
-	public void onKeyDownOpensMenuDrawerWhenMenuKeyIsPressed() {
-		doReturn(true).when(mockSharedPreferences).getBoolean(
-				"remote_control_menu", true);
+  @Test public void onKeyDownOpensMenuDrawerWhenMenuKeyIsPressed() {
+    doReturn(true).when(mockSharedPreferences).getBoolean("remote_control_menu", true);
 
-		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
+    movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
 
-		DrawerLayout drawerLayout = (DrawerLayout) movieBrowserActivity
-				.findViewById(R.id.drawer_layout);
-		LinearLayout linearLayout = (LinearLayout) movieBrowserActivity
-				.findViewById(R.id.left_drawer);
-		drawerLayout.openDrawer(linearLayout);
-		movieBrowserActivity.onKeyDown(KeyEvent.KEYCODE_BACK, null);
+    DrawerLayout drawerLayout = (DrawerLayout) movieBrowserActivity.findViewById(R.id.drawer_layout);
+    LinearLayout linearLayout = (LinearLayout) movieBrowserActivity.findViewById(R.id.left_drawer);
+    drawerLayout.openDrawer(linearLayout);
+    movieBrowserActivity.onKeyDown(KeyEvent.KEYCODE_BACK, null);
 
-		assertThat(drawerLayout.isDrawerOpen(linearLayout)).isTrue();
-	}
+    assertThat(drawerLayout.isDrawerOpen(linearLayout)).isTrue();
+  }
 
-	@Test
-	public void onKeyDownBackClosesDrawerWhenDrawerIsOpen() {
-		doReturn(false).when(mockSharedPreferences).getBoolean(
-				"remote_control_menu", true);
+  @Test public void onKeyDownBackClosesDrawerWhenDrawerIsOpen() {
+    doReturn(false).when(mockSharedPreferences).getBoolean("remote_control_menu", true);
 
-		movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
+    movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
 
-		movieBrowserActivity.onKeyDown(KeyEvent.KEYCODE_MENU, null);
+    movieBrowserActivity.onKeyDown(KeyEvent.KEYCODE_MENU, null);
 
-		DrawerLayout drawerLayout = (DrawerLayout) movieBrowserActivity
-				.findViewById(R.id.drawer_layout);
-		assumeTrue(drawerLayout.isDrawerOpen(Gravity.LEFT));
-	}
+    DrawerLayout drawerLayout = (DrawerLayout) movieBrowserActivity.findViewById(R.id.drawer_layout);
+    assumeTrue(drawerLayout.isDrawerOpen(Gravity.LEFT));
+  }
 
-	@Override
-	public List<Object> getModules() {
-		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(application));
-		modules.add(new TestingModule());
-		modules.add(new TestModule());
-		return modules;
-	}
+  @Override public List<Object> getModules() {
+    List<Object> modules = new ArrayList<Object>();
+    modules.add(new AndroidModule(application));
+    modules.add(new TestingModule());
+    modules.add(new TestModule());
+    return modules;
+  }
 
-	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-		MovieBrowserActivity.class, MovieBrowserActivityTest.class })
-	public class TestModule {
+  @Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
+      MovieBrowserActivity.class, MovieBrowserActivityTest.class
+  })
+  public class TestModule {
 
-		@Provides
-		@Singleton
-		SharedPreferences providesSharedPreferences() {
-			return mockSharedPreferences;
-		}
-	}
-
+    @Provides @Singleton SharedPreferences providesSharedPreferences() {
+      return mockSharedPreferences;
+    }
+  }
 }
