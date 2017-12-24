@@ -29,6 +29,9 @@ targetCompatibility = '1.7'
 sourceCompatibility = '1.7'
 
 repositories {
+  maven {
+    url "maven.google.com"
+  }
   jcenter()
   mavenCentral()
   maven {

@@ -21,7 +21,8 @@ import us.nineworlds.serenity.events.MovieSecondaryCategoryEvent;
 import us.nineworlds.serenity.jobs.MovieRetrievalJob;
 
 @InjectViewState
-public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserView> {
+public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserContract.MovieBrowserView>
+    implements MovieBrowserContract.MoviewBrowserPresenter {
 
   @Inject EventBus eventBus;
 
@@ -32,23 +33,24 @@ public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserView> {
     SerenityObjectGraph.Companion.getInstance().inject(this);
   }
 
-  @Override public void attachView(MovieBrowserView view) {
+  @Override public void attachView(MovieBrowserContract.MovieBrowserView view) {
     super.attachView(view);
     eventBus.register(this);
   }
 
-  @Override public void detachView(MovieBrowserView view) {
+  @Override public void detachView(MovieBrowserContract.MovieBrowserView view) {
     super.detachView(view);
     eventBus.unregister(this);
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN) public void onMainCategoryResponse(MainCategoryEvent event) {
+  @Override @Subscribe(threadMode = ThreadMode.MAIN) public void onMainCategoryResponse(MainCategoryEvent event) {
     CategoryMediaContainer categoryMediaContainer = new CategoryMediaContainer(event.getMediaContainer());
     List<CategoryInfo> categories = categoryMediaContainer.createCategories();
     getViewState().populateCategory(categories, event.getKey());
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN) public void onSecondaryCategoryEvent(MovieSecondaryCategoryEvent event) {
+  @Override @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onSecondaryCategoryEvent(MovieSecondaryCategoryEvent event) {
     SecondaryCategoryMediaContainer scMediaContainer =
         new SecondaryCategoryMediaContainer(event.getMediaContainer(), event.getCategory());
 
@@ -57,13 +59,13 @@ public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserView> {
     getViewState().populateSecondaryCategory(secondaryCategories, event.getKey(), event.getCategory());
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN) public void onMoviePosterResponse(MovieRetrievalEvent event) {
+  @Override @Subscribe(threadMode = ThreadMode.MAIN) public void onMoviePosterResponse(MovieRetrievalEvent event) {
     MovieMediaContainer movies = new MovieMediaContainer(event.getMediaContainer());
     List<VideoContentInfo> posterList = movies.createVideos();
     getViewState().displayPosters(posterList);
   }
 
-  public void fetchVideos(String key, String category) {
+  @Override public void fetchVideos(String key, String category) {
     MovieRetrievalJob movieRetrievalJob = new MovieRetrievalJob(key, category);
     jobManager.addJobInBackground(movieRetrievalJob);
   }

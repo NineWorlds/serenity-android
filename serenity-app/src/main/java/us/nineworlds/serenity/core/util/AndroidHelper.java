@@ -36,12 +36,13 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.ApplicationContext;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.listeners.SenderAppAdapter;
 
-@Singleton public class AndroidHelper extends BaseInjector {
+@Singleton
+public class AndroidHelper extends BaseInjector {
 
   private static final String COM_GOOGLE_ANDROID_TV = "com.google.android.tv";
 
@@ -120,8 +121,7 @@ import us.nineworlds.serenity.ui.listeners.SenderAppAdapter;
 
     final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
     mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-    final List<ResolveInfo> pkgAppsList =
-        context.getPackageManager().queryIntentActivities(mainIntent, 0);
+    final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities(mainIntent, 0);
 
     for (ResolveInfo resolveInfo : pkgAppsList) {
       String packageName = resolveInfo.activityInfo.packageName;

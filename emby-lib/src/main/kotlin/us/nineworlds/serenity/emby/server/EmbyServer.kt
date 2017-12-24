@@ -7,7 +7,7 @@ class EmbyServer : Server {
   private var serverName: String? = null
   private var ipAddress: String? = ""
   private var hostName: String? = null
-  private var discoveryProtocol: String? = null
+  private var discoveryProtocol: String? = "Emby"
 
   override fun setServerName(serverName: String?) {
     this.serverName = serverName

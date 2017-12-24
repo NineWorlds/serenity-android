@@ -8,7 +8,6 @@ import mediabrowser.apiinteraction.android.AndroidConnectionManager
 import mediabrowser.apiinteraction.android.AndroidCredentialProvider
 import mediabrowser.apiinteraction.connect.ConnectService
 import mediabrowser.apiinteraction.connectionmanager.FindServersResponse
-import mediabrowser.apiinteraction.connectionmanager.GetConnectServersResponse
 import mediabrowser.apiinteraction.device.IDevice
 import mediabrowser.apiinteraction.http.IAsyncHttpClient
 import mediabrowser.model.apiclient.ServerCredentials
@@ -49,9 +48,9 @@ class SerenityAndroidConnectionManager(context: Context?, jsonSerializer: IJsonS
         numTasksCompleted, 2, response)
     this.logger.Debug("Scanning network for local servers", *arrayOfNulls<Any>(0))
     this.FindServers(findServersResponse)
-    val connectServersResponse = GetConnectServersResponse(this.logger, connectionService, tempCredentials,
-        foundServers, connectServers, 2, numTasksCompleted, response, this)
-
+    Thread.sleep(2000)
+//    val connectServersResponse = GetConnectServersResponse(this.logger, connectionService, tempCredentials,
+//        foundServers, connectServers, 2, numTasksCompleted, response, this)
     return foundServers
 
   }

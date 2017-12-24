@@ -8,6 +8,7 @@ import com.birbit.android.jobqueue.RetryConstraint;
 import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
+import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.common.android.injection.InjectingJob;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.common.rest.SerenityClient;
@@ -17,7 +18,6 @@ import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
 import us.nineworlds.serenity.core.services.RecommendAsyncTask;
-import us.nineworlds.serenity.injection.ApplicationContext;
 
 public class OnDeckRecommendationsJob extends InjectingJob {
 

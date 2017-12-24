@@ -52,4 +52,6 @@ public interface SerenityClient {
   String getImageURL(String url, int width, int height);
 
   String getTranscodeUrl(String id, int offset);
+
+  void reinitialize();
 }

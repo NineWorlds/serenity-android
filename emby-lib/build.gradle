@@ -7,13 +7,15 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.4-3'
     }
 
 }
 
 repositories {
+    maven {
+        url "maven.google.com"
+    }
     jcenter()
     mavenCentral()
     flatDir {
@@ -32,7 +34,7 @@ android {
     }
 
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'

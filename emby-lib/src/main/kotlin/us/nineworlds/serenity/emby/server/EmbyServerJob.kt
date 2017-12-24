@@ -15,6 +15,7 @@ import mediabrowser.model.logging.NullLogger
 import mediabrowser.model.serialization.IJsonSerializer
 import mediabrowser.model.session.ClientCapabilities
 import org.greenrobot.eventbus.EventBus
+import us.nineworlds.serenity.common.android.injection.ApplicationContext
 import us.nineworlds.serenity.common.android.injection.InjectingJob
 import javax.inject.Inject
 
@@ -23,7 +24,8 @@ class EmbyServerJob : InjectingJob() {
 
   @Inject lateinit var eventBus: EventBus
 
-  @Inject lateinit var context: Context
+  @field:[Inject ApplicationContext]
+  lateinit var context: Context
 
 
   override fun shouldReRunOnThrowable(throwable: Throwable, runCount: Int, maxRunCount: Int): RetryConstraint? {
@@ -64,7 +66,7 @@ class EmbyServerJob : InjectingJob() {
     if (findAvailableServers.isNotEmpty()) {
       findAvailableServers.forEach { serverInfo: ServerInfo ->
         val embyServer: EmbyServer = EmbyServer()
-        embyServer.serverName = serverInfo.name
+        embyServer.serverName = serverInfo.name + " - Emby"
         embyServer.ipAddress = serverInfo.localAddress
 
         eventBus.post(embyServer)

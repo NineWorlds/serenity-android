@@ -30,12 +30,13 @@ import java.util.LinkedList;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.ApplicationContext;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 
-@Singleton public class VideoQueueHelper extends BaseInjector {
+@Singleton
+public class VideoQueueHelper extends BaseInjector {
 
   @Inject @ApplicationContext protected Context context;
 
@@ -45,11 +46,10 @@ import us.nineworlds.serenity.injection.ForVideoQueue;
 
   public void performAddToQueue(VideoContentInfo videoInfo) {
     boolean extplayer = sharedPreferences.getBoolean("external_player", false);
-    boolean extplayerVideoQueue =
-        sharedPreferences.getBoolean("external_player_continuous_playback", false);
+    boolean extplayerVideoQueue = sharedPreferences.getBoolean("external_player_continuous_playback", false);
     if (extplayer && !extplayerVideoQueue) {
-      Toast.makeText(context, R.string.external_player_video_queue_support_has_not_been_enabled_,
-          Toast.LENGTH_LONG).show();
+      Toast.makeText(context, R.string.external_player_video_queue_support_has_not_been_enabled_, Toast.LENGTH_LONG)
+          .show();
       return;
     }
 

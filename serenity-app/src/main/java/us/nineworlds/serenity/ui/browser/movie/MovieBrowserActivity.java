@@ -52,7 +52,7 @@ import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
-    implements MovieBrowserView {
+    implements MovieBrowserContract.MovieBrowserView {
 
   @Inject protected SharedPreferences prefs;
 
@@ -91,7 +91,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
     super.onResume();
   }
 
-  protected void onPause() {
+  @Override protected void onPause() {
     DpadAwareRecyclerView galleryView = findGalleryView();
     if (galleryView != null) {
       adapter = galleryView.getAdapter();
@@ -109,8 +109,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
 
     initMenuDrawerViews();
 
-    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector,
-        R.string.drawer_open, R.string.drawer_closed) {
+    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector, R.string.drawer_open,
+        R.string.drawer_closed) {
       @Override public void onDrawerOpened(View drawerView) {
 
         super.onDrawerOpened(drawerView);
@@ -152,12 +152,9 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
 
   protected void populateMenuDrawer() {
     List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
+    drawerMenuItem.add(new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
+    drawerMenuItem.add(new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
+    drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
 
     drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
     drawerList.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(drawerLayout));
@@ -213,19 +210,15 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
     categorySpinner.setAdapter(spinnerArrayAdapter);
 
     if (categoryState.getCategory() == null) {
-      categorySpinner.setOnItemSelectedListener(
-          new MovieCategorySpinnerOnItemSelectedListener("all", key, this));
+      categorySpinner.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener("all", key, this));
     } else {
       categorySpinner.setOnItemSelectedListener(
-          new MovieCategorySpinnerOnItemSelectedListener(categoryState.getCategory(), key, false,
-              this));
+          new MovieCategorySpinnerOnItemSelectedListener(categoryState.getCategory(), key, false, this));
     }
     categorySpinner.requestFocus();
   }
 
-  @Override
-  public void populateSecondaryCategory(List<SecondaryCategoryInfo> categories, String key,
-      String category) {
+  @Override public void populateSecondaryCategory(List<SecondaryCategoryInfo> categories, String key, String category) {
     if (categories == null || categories.isEmpty()) {
       Toast.makeText(this, R.string.no_entries_available_for_category_, Toast.LENGTH_LONG).show();
       return;
@@ -235,12 +228,10 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
     secondarySpinner.setVisibility(View.VISIBLE);
 
     ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter =
-        new ArrayAdapter<SecondaryCategoryInfo>(this, R.layout.serenity_spinner_textview,
-            categories);
+        new ArrayAdapter<SecondaryCategoryInfo>(this, R.layout.serenity_spinner_textview, categories);
     spinnerSecArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
     secondarySpinner.setAdapter(spinnerSecArrayAdapter);
-    secondarySpinner.setOnItemSelectedListener(
-        new SecondaryCategorySpinnerOnItemSelectedListener(category, key, this));
+    secondarySpinner.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(category, key, this));
   }
 
   @Override public void displayPosters(List<VideoContentInfo> videos) {

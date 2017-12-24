@@ -207,4 +207,8 @@ public class PlexappFactory implements SerenityClient {
   @Override public String getTranscodeUrl(String id, int offset) {
     return resourcePath.getTranscoderVideoUrl(id, offset);
   }
+
+  @Override public void reinitialize() {
+
+  }
 }

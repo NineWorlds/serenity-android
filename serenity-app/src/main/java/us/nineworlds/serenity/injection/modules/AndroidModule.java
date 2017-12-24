@@ -51,6 +51,7 @@ import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.MainPresenter;
 import us.nineworlds.serenity.SerenityApplication;
 import us.nineworlds.serenity.StartupBroadcastReceiver;
+import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.OkHttpStack;
 import us.nineworlds.serenity.core.OnDeckRecommendations;
@@ -75,6 +76,7 @@ import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.core.util.AndroidHelper;
+import us.nineworlds.serenity.emby.server.EmbyServerJob;
 import us.nineworlds.serenity.events.ErrorMainMenuEvent;
 import us.nineworlds.serenity.events.MainMenuEvent;
 import us.nineworlds.serenity.fragments.EpisodeVideoGalleryFragment;
@@ -83,7 +85,6 @@ import us.nineworlds.serenity.fragments.MovieSearchGalleryFragment;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
-import us.nineworlds.serenity.injection.ApplicationContext;
 import us.nineworlds.serenity.injection.VideoPlayerHandler;
 import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
 import us.nineworlds.serenity.jobs.GDMServerJob;
@@ -195,7 +196,7 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
     TVShowBrowserPresenter.class, MovieBrowserPresenter.class, EpisodeBrowserPresenter.class,
     TVShowSeasonBrowserPresenter.class, MainPresenter.class, OnKeyDownDelegate.class, ErrorMainMenuEvent.class,
     ExoplayerVideoActivity.class, ExoplayerPresenter.class, EventLogger.class, VideoKeyCodeHandlerDelegate.class,
-    UpdatePlaybackPostionJob.class, WatchedStatusJob.class
+    UpdatePlaybackPostionJob.class, WatchedStatusJob.class, EmbyServerJob.class
 }, library = true)
 public class AndroidModule {
 

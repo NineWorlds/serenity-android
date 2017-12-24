@@ -30,7 +30,7 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.mvp.MvpFrameLayout;
 import us.nineworlds.serenity.widgets.RoundedImageView;
 
-public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOverlayView {
+public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOverlayContract.StatusOverlayView {
 
   @InjectPresenter StatusOverlayPresenter presenter;
 
@@ -148,5 +148,9 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     initPosterMetaData(pi, width, height);
 
     setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
+  }
+
+  @Override public void refresh() {
+    presenter.refresh();
   }
 }

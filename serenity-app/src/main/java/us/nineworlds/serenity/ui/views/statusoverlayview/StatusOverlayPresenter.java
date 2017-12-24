@@ -8,11 +8,18 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 @InjectViewState
 @StateStrategyType(SkipStrategy.class)
-public class StatusOverlayPresenter extends MvpPresenter<StatusOverlayView> {
+public class StatusOverlayPresenter extends MvpPresenter<StatusOverlayContract.StatusOverlayView>
+    implements StatusOverlayContract.StatusOverlayPresenter {
 
   VideoContentInfo videoContentInfo;
 
-  public void setVideoContentInfo(VideoContentInfo videoContentInfo) {
+  @Override public void setVideoContentInfo(VideoContentInfo videoContentInfo) {
     this.videoContentInfo = videoContentInfo;
+  }
+
+  @Override public void refresh() {
+    getViewState().reset();
+    getViewState().toggleWatchedIndicator(videoContentInfo);
+    getViewState().populatePosterImage(videoContentInfo.getImageURL());
   }
 }

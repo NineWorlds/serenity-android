@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations.initMocks
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import us.nineworlds.serenity.common.android.injection.ApplicationContext
 import us.nineworlds.serenity.emby.BuildConfig
 import us.nineworlds.serenity.emby.test.InjectingTest
 
@@ -32,7 +33,8 @@ class EmbyServerJobTest : InjectingTest() {
     job = EmbyServerJob()
   }
 
-  @Test fun locateEmbyServers() {
+  @Test
+  fun locateEmbyServers() {
     job.onRun()
   }
 
@@ -41,11 +43,14 @@ class EmbyServerJobTest : InjectingTest() {
       injects = arrayOf(EmbyServerJobTest::class, EmbyServerJob::class))
   inner class TestModule {
 
-    @Provides fun providesEventBus(): EventBus {
+    @Provides
+    fun providesEventBus(): EventBus {
       return mockEventBus
     }
 
-    @Provides fun providesContext(): Context {
+    @Provides
+    @ApplicationContext
+    fun providesContext(): Context {
       return RuntimeEnvironment.application
     }
 
