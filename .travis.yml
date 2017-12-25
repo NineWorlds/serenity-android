@@ -17,7 +17,7 @@ before_install:
    - pip install --user codecov
 
 script:
-   - ./gradlew clean plex-rest-library:jacocoTestReport jacocoTestReportDebug sonarqube
+   - travis_wait ./gradlew clean plex-rest-library:jacocoTestReport jacocoTestReportDebug sonarqube
    
 after_success:
   - codecov
