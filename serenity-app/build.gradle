@@ -112,8 +112,6 @@ android {
     unitTests.returnDefaultValues = true
     unitTests.includeAndroidResources = true
     unitTests.all {
-      maxParallelForks = 2
-      forkEvery = 75
       minHeapSize = "512m"
       maxHeapSize = "1024m"
     }
