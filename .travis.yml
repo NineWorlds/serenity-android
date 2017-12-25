@@ -13,11 +13,21 @@ android:
 jdk:
    - oraclejdk8
 
+before_cache:
+ - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+cache:
+ directories:
+ - $HOME/.gradle/caches/
+ - $HOME/.gradle/wrapper/
+ - $HOME/.gradle/nodejs/
+ - node_modules
+
 before_install:
    - pip install --user codecov
 
 script:
-   - travis_wait ./gradlew clean plex-rest-library:jacocoTestReport jacocoTestReportDebug sonarqube
+   - travis_wait ./gradlew clean plex-rest-library:jacocoTestReport jacocoTestReportDebug
    
 after_success:
   - codecov
