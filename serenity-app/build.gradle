@@ -10,7 +10,6 @@ buildscript {
     classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.4-3'
     classpath 'org.jetbrains.kotlin:kotlin-allopen:1.1.4-3'
     classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.11.0'
-    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5"
   }
 }
 
