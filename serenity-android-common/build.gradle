@@ -1,18 +1,20 @@
 buildscript {
-  ext.kotlin_version = '1.1.4-3'
+  ext.kotlin_version = '1.2.70'
 
   repositories {
+    google()
     jcenter()
     mavenCentral()
   }
 
   dependencies {
-    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.4-3'
+    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.70'
   }
 
 }
 
 repositories {
+  google()
   jcenter()
   mavenCentral()
 }
@@ -21,9 +23,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+kapt {
+  generateStubs = true
+}
+
 android {
   compileSdkVersion 27
-  buildToolsVersion '27.0.1'
+  buildToolsVersion '28.0.2'
 
   defaultConfig {
     minSdkVersion 17
@@ -51,15 +57,15 @@ android {
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
-  compile project(':serenity-common')
-  compile 'com.squareup.dagger:dagger:1.2.2'
-  compile 'org.greenrobot:eventbus:3.0.0'
-  compile 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.4-3'
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation project(':serenity-common')
+  implementation 'com.squareup.dagger:dagger:1.2.2'
+  implementation 'org.greenrobot:eventbus:3.0.0'
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.50'
 
 
-  compile 'com.birbit:android-priority-jobqueue:2.0.1'
+  implementation 'com.birbit:android-priority-jobqueue:2.0.1'
   kapt 'com.squareup.dagger:dagger-compiler:1.2.2'
 
-  testCompile 'junit:junit:4.12'
+  testImplementation 'junit:junit:4.12'
 }

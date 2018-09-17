@@ -4,6 +4,7 @@ targetCompatibility = '1.7'
 sourceCompatibility = '1.7'
 
 repositories {
+  google()
   jcenter()
   mavenCentral()
   maven {
@@ -12,5 +13,5 @@ repositories {
 }
 
 dependencies {
-  testCompile 'junit:junit:4.8.2'
+  testImplementation 'junit:junit:4.12'
 }
