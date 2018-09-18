@@ -2,8 +2,6 @@ package us.nineworlds.serenity.emby.server
 
 import android.content.Context
 import com.birbit.android.jobqueue.RetryConstraint
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
@@ -59,6 +57,13 @@ class EmbyServerJob : InjectingJob() {
         Timber.d(">>> Request packet sent to: 255.255.255.255 (DEFAULT)")
       } catch (e: Exception) {
         Timber.e(e, "Error sending DatagramPacket")
+      }
+
+      try {
+        val sendPacket = DatagramPacket(sendData, sendData.size, useMultiCastAddress(), port)
+        c.send(sendPacket)
+      } catch (e: Exception) {
+        Timber.e(e, "error sending to multicast address")
       }
 
       // Broadcast the message over all the network interfaces
@@ -143,4 +148,14 @@ class EmbyServerJob : InjectingJob() {
 
     Timber.d("Found %d servers" + servers.size)
   }
+
+  @Throws(IOException::class)
+  fun useMultiCastAddress(): InetAddress {
+    return InetAddress.getByName(MULTICAST_ADDRESS)
+  }
+
+  companion object {
+    const val MULTICAST_ADDRESS = "239.255.255.250"
+  }
+
 }
