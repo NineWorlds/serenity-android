@@ -2,31 +2,34 @@ package us.nineworlds.serenity.emby.server
 
 import android.content.Context
 import com.birbit.android.jobqueue.RetryConstraint
-import mediabrowser.apiinteraction.ApiEventListener
-import mediabrowser.apiinteraction.Response
-import mediabrowser.apiinteraction.android.AndroidDevice
-import mediabrowser.apiinteraction.android.GsonJsonSerializer
-import mediabrowser.apiinteraction.android.VolleyHttpClient
-import mediabrowser.apiinteraction.device.IDevice
-import mediabrowser.apiinteraction.http.IAsyncHttpClient
-import mediabrowser.model.apiclient.ServerInfo
-import mediabrowser.model.logging.ILogger
-import mediabrowser.model.logging.NullLogger
-import mediabrowser.model.serialization.IJsonSerializer
-import mediabrowser.model.session.ClientCapabilities
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.greenrobot.eventbus.EventBus
 import us.nineworlds.serenity.common.android.injection.ApplicationContext
 import us.nineworlds.serenity.common.android.injection.InjectingJob
 import javax.inject.Inject
+import timber.log.Timber
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.net.InetAddress
+import java.net.NetworkInterface
+import us.nineworlds.serenity.common.Server
+import java.io.IOException
+import java.net.SocketTimeoutException
+import java.net.URI
 
 
 class EmbyServerJob : InjectingJob() {
 
   @Inject lateinit var eventBus: EventBus
 
+  val objectMapper = ObjectMapper().registerKotlinModule()
+
   @field:[Inject ApplicationContext]
   lateinit var context: Context
-
 
   override fun shouldReRunOnThrowable(throwable: Throwable, runCount: Int, maxRunCount: Int): RetryConstraint? {
     return null
@@ -39,41 +42,105 @@ class EmbyServerJob : InjectingJob() {
   }
 
   override fun onRun() {
-    val logger: ILogger = NullLogger()
-    val jsonSerializer: IJsonSerializer = GsonJsonSerializer()
-    val device: IDevice = AndroidDevice(context)
-    val capabilities: ClientCapabilities = ClientCapabilities()
-    val apiListener: ApiEventListener = ApiEventListener()
-    val httpClient: IAsyncHttpClient = VolleyHttpClient(logger, context)
 
-    val connectionManager: SerenityAndroidConnectionManager = SerenityAndroidConnectionManager(context, jsonSerializer,
-        logger, httpClient, "Serenity for Android", "2.x", device, capabilities, apiListener)
+    try {
+      //Open a random port to send the package
+      val c = DatagramSocket()
+      c.setBroadcast(true)
 
-    val findAvailableServers = connectionManager.findAvailableServers(context,
-        object : Response<ArrayList<ServerInfo>>() {
+      val sendData = "who is EmbyServer?".toByteArray()
 
-          override fun onResponse(response: ArrayList<ServerInfo>) {
-            response.forEach { serverInfo: ServerInfo ->
-              val embyServer: EmbyServer = EmbyServer()
-              embyServer.serverName = serverInfo.name
-              embyServer.ipAddress = serverInfo.remoteAddress
+      val port = 7359
 
-              eventBus.post(embyServer)
-            }
-          }
-        })
-
-    if (findAvailableServers.isNotEmpty()) {
-      findAvailableServers.forEach { serverInfo: ServerInfo ->
-        val embyServer: EmbyServer = EmbyServer()
-        embyServer.serverName = serverInfo.name + " - Emby"
-        embyServer.ipAddress = serverInfo.localAddress
-
-        eventBus.post(embyServer)
+      //Try the 255.255.255.255 first
+      try {
+        val sendPacket = DatagramPacket(sendData, sendData.size, InetAddress.getByName("255.255.255.255"), port)
+        c.send(sendPacket)
+        Timber.d(">>> Request packet sent to: 255.255.255.255 (DEFAULT)")
+      } catch (e: Exception) {
+        Timber.e(e, "Error sending DatagramPacket")
       }
-    }
 
+      // Broadcast the message over all the network interfaces
+      val interfaces = NetworkInterface.getNetworkInterfaces()
+      while (interfaces.hasMoreElements()) {
+        val networkInterface = interfaces.nextElement() as NetworkInterface
+
+        if (networkInterface.isLoopback() || !networkInterface.isUp()) {
+          continue // Don't want to broadcast to the loopback interface
+        }
+
+        for (interfaceAddress in networkInterface.getInterfaceAddresses()) {
+          val broadcast = interfaceAddress.getBroadcast() ?: continue
+
+          // Send the broadcast package!
+          try {
+            val sendPacket = DatagramPacket(sendData, sendData.size, broadcast, port)
+            c.send(sendPacket)
+          } catch (e: Exception) {
+            Timber.e(e,"Error sending DatagramPacket")
+          }
+
+          Timber.d(">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName())
+        }
+      }
+
+      Timber.d(">>> Done looping over all network interfaces. Now waiting for a reply!")
+
+      receive(c, 3000L)
+
+      //Close the port!
+      c.close()
+
+    } catch (ex: Exception) {
+      Timber.e(ex, "Error finding servers")
+    }
   }
 
+  @Throws(IOException::class)
+  private fun receive(c: DatagramSocket, timeoutMs: Long) {
 
+    var timeout = timeoutMs
+
+    val servers = ArrayList<Server>()
+
+    while (timeoutMs > 0) {
+
+      val startTime = System.currentTimeMillis()
+
+      // Wait for a response
+      val recvBuf = ByteArray(15000)
+      val receivePacket = DatagramPacket(recvBuf, recvBuf.size)
+      c.soTimeout = timeoutMs.toInt()
+
+      try {
+        c.receive(receivePacket)
+      } catch (e: SocketTimeoutException) {
+        Timber.d("Server discovery timed out waiting for response.")
+        break
+      }
+
+      // We have a response
+      Timber.d(">>> Broadcast response from server: " + receivePacket.address.hostAddress)
+
+      // Check if the message is correct
+      val message = String(receivePacket.data).trim { it <= ' ' }
+
+      Timber.d(javaClass.name + ">>> Broadcast response from server: " + message)
+
+      val embyServerInfo = objectMapper.readValue<EmbyServerInfo>(message)
+
+      val server = EmbyServer()
+      val uri = URI.create(embyServerInfo.remoteAddres)
+      server.ipAddress = uri.host
+      server.serverName = "Emby - " + embyServerInfo.name
+
+      eventBus.post(server)
+
+      val endTime = System.currentTimeMillis()
+      timeout -= (endTime - startTime)
+    }
+
+    Timber.d("Found %d servers" + servers.size)
+  }
 }

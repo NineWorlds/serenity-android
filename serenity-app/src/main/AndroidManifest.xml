@@ -6,8 +6,8 @@
     package="us.nineworlds.serenity">
 
   <uses-sdk
-      android:minSdkVersion="17"
-      android:targetSdkVersion="25"
+      android:minSdkVersion="21"
+      android:targetSdkVersion="27"
       tools:overrideLibrary="android.support.v17.leanback"/>
 
   <!-- try to exclude phone devices from the list. Currently only support Tablets and TVs -->
@@ -95,6 +95,7 @@
         android:icon="@drawable/serenity_androidtv_banner"
         android:label="@string/title_activity_main"
         android:logo="@drawable/serenity_androidtv_banner"
+        android:banner="@drawable/serenity_androidtv_banner"
         android:screenOrientation="sensorLandscape"
         android:theme="@style/CustomActionBarTheme">
       <intent-filter>
