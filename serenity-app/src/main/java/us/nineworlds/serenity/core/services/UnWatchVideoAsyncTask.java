@@ -38,7 +38,7 @@ public class UnWatchVideoAsyncTask extends AsyncTask<String, Void, Void> {
 
   @Override protected Void doInBackground(String... params) {
     String id = params[0];
-    factory.setUnWatched(id);
+    factory.unwatched(id);
     return null;
   }
 }

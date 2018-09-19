@@ -22,10 +22,10 @@ public class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
   @Override protected Void doInBackground(Void... params) {
     final String id = video.id();
     if (video.isWatched()) {
-      factory.setWatched(id);
-      factory.setProgress("0", id);
+      factory.watched(id);
+      factory.progress("0", id);
     } else {
-      factory.setProgress(id, Long.valueOf(position).toString());
+      factory.progress(id, Long.valueOf(position).toString());
     }
     return null;
   }

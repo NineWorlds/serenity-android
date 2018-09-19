@@ -91,7 +91,7 @@ public class TVShowGridOnItemSelectedListener extends BaseInjector
   private void changeBackgroundImage(View v) {
     final Activity context = (Activity) v.getContext();
 
-    String transcodingURL = factory.getImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+    String transcodingURL = factory.createImageURL(videoInfo.getBackgroundURL(), 1280, 720);
 
     SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
       @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {

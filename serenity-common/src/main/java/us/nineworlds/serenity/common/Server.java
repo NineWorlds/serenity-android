@@ -29,19 +29,19 @@ package us.nineworlds.serenity.common;
  */
 public interface Server {
 
-    public String getServerName();
+    String getServerName();
 
-    public void setServerName(String serverName);
+    void setServerName(String serverName);
 
-    public String getIPAddress();
+    String getIPAddress();
 
-    public void setIPAddress(String ipaddress);
+    void setIPAddress(String ipaddress);
 
-    public String getHostName();
+    String getHostName();
 
-    public void setHostName(String hostName);
+    void setHostName(String hostName);
 
-    public String discoveryProtocol();
+    String discoveryProtocol();
 
-    public void setDiscoveryProtocol(String protocol);
+    void setDiscoveryProtocol(String protocol);
 }

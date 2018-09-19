@@ -38,6 +38,7 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.services.PlexMediaContainerService;
 import us.nineworlds.plex.rest.services.PlexTextService;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 
 /**
  * This class acts as a factory for retrieving items from Plex.
@@ -46,7 +47,7 @@ import us.nineworlds.serenity.common.media.model.IMediaContainer;
  *
  * @author dcarver
  */
-public class PlexappClient {
+public class PlexappClient implements SerenityClient {
 
   private static PlexappClient instance = null;
 
@@ -218,7 +219,7 @@ public class PlexappClient {
   /**
    * Sets a video as watched. viewCount will be 1.
    */
-  public boolean setWatched(String key) throws IOException {
+  public boolean watched(String key) throws IOException {
     reinitIfNecessary();
     Call<String> call = textClient.watched(key);
     Response<String> response = call.execute();
@@ -229,21 +230,21 @@ public class PlexappClient {
   /**
    * Sets a video as unwatched. viewCount will not be present.
    */
-  public boolean setUnWatched(String key) throws IOException {
+  public boolean unwatched(String key) throws IOException {
     reinitIfNecessary();
     Call<String> call = textClient.unwatched(key);
     Response<String> response = call.execute();
     return requestSuccessful(response);
   }
 
-  public boolean setProgress(String key, String offset) throws IOException {
+  public boolean progress(String key, String offset) throws IOException {
     reinitIfNecessary();
     Call<String> call = textClient.progress(key, offset);
     Response<String> response = call.execute();
     return requestSuccessful(response);
   }
 
-  protected boolean requestSuccessful(Response<String> response) {
+  private boolean requestSuccessful(Response<String> response) {
     int responseCode = response.code();
     if (responseCode == 200) {
       return true;
@@ -251,15 +252,11 @@ public class PlexappClient {
     return false;
   }
 
-  public String getMediaTagURL(String resourceType, String resourceName, String identifier) {
+  public String createMediaTagURL(String resourceType, String resourceName, String identifier) {
     return resourcePath.getMediaTagURL(resourceType, resourceName, identifier);
   }
 
-  public String getSeasonsURL(String key) {
-    return resourcePath.getSeasonsURL(key);
-  }
+  @Override public void reinitialize() {
 
-  public String getImageURL(String url, int width, int height) {
-    return resourcePath.getImageURL(url, width, height);
   }
 }

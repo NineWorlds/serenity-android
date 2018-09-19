@@ -161,7 +161,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
       return video.directPlayUrl
     }
 
-    return factory.getTranscodeUrl(video.id(), video.resumeOffset)
+    return factory.createTranscodeUrl(video.id(), video.resumeOffset)
   }
 
   private fun selectCodec(mimeType: String): Boolean {

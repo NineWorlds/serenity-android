@@ -102,7 +102,7 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
     String expectedBackgroundUrl = "http://www.example.com/some/image";
     doReturn(expectedBackgroundUrl).when(mockVideoContentInfo).getBackgroundURL();
     String expectedTranscodingUrl = "http://www.example.com/transcodingUrl";
-    doReturn(expectedTranscodingUrl).when(mockPlexFactory).getImageURL(anyString(), anyInt(), anyInt());
+    doReturn(expectedTranscodingUrl).when(mockPlexFactory).createImageURL(anyString(), anyInt(), anyInt());
     doReturn(mockAdapater).when(mockRecyclerView).getAdapter();
     doReturn(2).when(mockAdapater).getItemCount();
     doReturn(mockVideoContentInfo).when(mockAdapater).getItem(anyInt());
@@ -114,7 +114,7 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 
   protected void verifyExpectedFanArtCalls(String expectedBackgroundUrl, String expectedTranscodingUrl) {
     verify(mockVideoContentInfo, times(2)).getBackgroundURL();
-    verify(mockPlexFactory).getImageURL(expectedBackgroundUrl, 1280, 720);
+    verify(mockPlexFactory).createImageURL(expectedBackgroundUrl, 1280, 720);
   }
 
   @Override public List<Object> getModules() {

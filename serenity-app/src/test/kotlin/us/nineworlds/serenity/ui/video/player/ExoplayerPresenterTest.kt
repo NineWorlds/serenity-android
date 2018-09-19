@@ -182,7 +182,7 @@ class ExoplayerPresenterTest : InjectingTest() {
     doReturn(false).`when`(mockVideoQueue).isEmpty()
     doReturn("avi").`when`(mockVideoContentInfo).container
     doReturn(expectedId).`when`(mockVideoContentInfo).id()
-    doReturn(expectedUrl).`when`(mockPlexFactory).getTranscodeUrl(anyString(), anyInt())
+    doReturn(expectedUrl).`when`(mockPlexFactory).createTranscodeUrl(anyString(), anyInt())
 
     presenter.playBackFromVideoQueue()
 
@@ -191,7 +191,7 @@ class ExoplayerPresenterTest : InjectingTest() {
     verify(mockVideoContentInfo).container
     verify(mockVideoQueue).isEmpty()
     verify(mockVideoContentInfo).id()
-    verify(mockPlexFactory).getTranscodeUrl(expectedId, 0)
+    verify(mockPlexFactory).createTranscodeUrl(expectedId, 0)
     verify(mockView).initializePlayer(expectedUrl, 0)
   }
 

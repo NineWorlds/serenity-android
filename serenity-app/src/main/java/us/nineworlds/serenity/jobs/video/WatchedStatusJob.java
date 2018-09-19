@@ -23,7 +23,7 @@ public class WatchedStatusJob extends InjectingJob {
   }
 
   @Override public void onRun() throws Throwable {
-    factory.setWatched(videoId);
+    factory.watched(videoId);
   }
 
   @Override protected void onCancel(int cancelReason, @Nullable Throwable throwable) {

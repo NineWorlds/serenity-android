@@ -26,10 +26,10 @@ public class UpdatePlaybackPostionJob extends InjectingJob {
   @Override public void onRun() throws Throwable {
     String videoId = video.id();
     if (video.isWatched()) {
-      factory.setWatched(videoId);
-      factory.setProgress(videoId, "0");
+      factory.watched(videoId);
+      factory.progress(videoId, "0");
     } else {
-      factory.setProgress(videoId, Long.valueOf(video.getResumeOffset()).toString());
+      factory.progress(videoId, Long.valueOf(video.getResumeOffset()).toString());
     }
   }
 

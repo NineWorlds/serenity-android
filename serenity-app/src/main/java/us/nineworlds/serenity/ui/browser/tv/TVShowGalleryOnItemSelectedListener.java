@@ -96,7 +96,7 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector
       studiov.setLayoutParams(sparams);
       String studio = info.getStudio();
       studio = fixStudio(studio);
-      String studioUrl = factory.getMediaTagURL("studio", studio, info.getMediaTagIdentifier());
+      String studioUrl = factory.createMediaTagURL("studio", studio, info.getMediaTagIdentifier());
       Glide.with(context).load(studioUrl).into(studiov);
     } else {
       studiov.setVisibility(View.GONE);
@@ -152,7 +152,7 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector
 
     final View fanArt = context.findViewById(R.id.fanArt);
 
-    String transcodingURL = factory.getImageURL(mi.getBackgroundURL(), 1280, 720);
+    String transcodingURL = factory.createImageURL(mi.getBackgroundURL(), 1280, 720);
 
     SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
       @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {

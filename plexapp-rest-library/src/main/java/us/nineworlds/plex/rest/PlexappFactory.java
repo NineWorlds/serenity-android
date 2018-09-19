@@ -145,9 +145,9 @@ public class PlexappFactory implements SerenityClient {
   /**
    * Sets a video as watched. viewCount will be 1.
    */
-  @Override public boolean setWatched(String key) {
+  @Override public boolean watched(String key) {
     try {
-      return client.setWatched(key);
+      return client.watched(key);
     } catch (IOException e) {
     }
     return false;
@@ -156,55 +156,55 @@ public class PlexappFactory implements SerenityClient {
   /**
    * Sets a vide as unwatched. viewCount will not be present.
    */
-  @Override public boolean setUnWatched(String key) {
+  @Override public boolean unwatched(String key) {
     try {
-      return client.setUnWatched(key);
+      return client.unwatched(key);
     } catch (IOException e) {
     }
     return false;
   }
 
-  @Override public boolean setProgress(String key, String offset) {
+  @Override public boolean progress(String key, String offset) {
     try {
-      return client.setProgress(key, offset);
+      return client.progress(key, offset);
     } catch (IOException e) {
     }
     return false;
   }
 
-  @Override public String getMediaTagURL(String resourceType, String resourceName, String identifier) {
-    return client.getMediaTagURL(resourceType, resourceName, identifier);
+  @Override public String createMediaTagURL(String resourceType, String resourceName, String identifier) {
+    return client.createMediaTagURL(resourceType, resourceName, identifier);
   }
 
-  @Override public String getSectionsURL(String key, String category) {
-    return client.getSeasonsURL(key);
+  @Override public String createSectionsURL(String key, String category) {
+    return client.createSeasonsURL(key);
   }
 
-  @Override public String getSectionsURL() {
+  @Override public String createSectionsURL() {
     return resourcePath.getSectionsURL();
   }
 
-  @Override public String getSectionsUrl(String key) {
+  @Override public String createSectionsUrl(String key) {
     return resourcePath.getSectionsURL(key);
   }
 
-  @Override public String getMovieMetadataURL(String key) {
+  @Override public String createMovieMetadataURL(String key) {
     return resourcePath.getMovieMetaDataURL(key);
   }
 
-  @Override public String getEpisodesURL(String key) {
+  @Override public String createEpisodesURL(String key) {
     return resourcePath.getEpisodesURL(key);
   }
 
-  @Override public String getSeasonsURL(String key) {
+  @Override public String createSeasonsURL(String key) {
     return resourcePath.getSeasonsURL(key);
   }
 
-  @Override public String getImageURL(String url, int width, int height) {
-    return client.getImageURL(url, width, height);
+  @Override public String createImageURL(String url, int width, int height) {
+    return client.createImageURL(url, width, height);
   }
 
-  @Override public String getTranscodeUrl(String id, int offset) {
+  @Override public String createTranscodeUrl(String id, int offset) {
     return resourcePath.getTranscoderVideoUrl(id, offset);
   }
 

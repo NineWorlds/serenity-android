@@ -160,7 +160,7 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
     }
 
     final View fanArt = context.findViewById(R.id.fanArt);
-    String transcodingURL = plexFactory.getImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+    String transcodingURL = plexFactory.createImageURL(videoInfo.getBackgroundURL(), 1280, 720);
 
     SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
       @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {

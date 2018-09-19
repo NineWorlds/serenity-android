@@ -17,8 +17,8 @@ public class CompletedVideoRequest extends AsyncTask<Void, Void, Void> {
   }
 
   @Override protected Void doInBackground(Void... params) {
-    factory.setProgress(uvideoId, "0");
-    factory.setWatched(uvideoId);
+    factory.progress(uvideoId, "0");
+    factory.watched(uvideoId);
     return null;
   }
 }

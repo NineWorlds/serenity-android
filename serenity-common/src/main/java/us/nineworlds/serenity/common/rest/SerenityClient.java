@@ -1,8 +1,10 @@
 package us.nineworlds.serenity.common.rest;
 
+import java.io.IOException;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
 
 public interface SerenityClient {
+
   IMediaContainer retrieveRootData() throws Exception;
 
   IMediaContainer retrieveLibrary() throws Exception;
@@ -29,29 +31,29 @@ public interface SerenityClient {
 
   String baseURL();
 
-  boolean setWatched(String key);
+  boolean watched(String key) throws IOException;
 
-  boolean setUnWatched(String key);
+  boolean unwatched(String key) throws IOException;
 
-  boolean setProgress(String key, String offset);
+  boolean progress(String key, String offset) throws IOException;
 
-  String getMediaTagURL(String resourceType, String resourceName, String identifier);
+  String createMediaTagURL(String resourceType, String resourceName, String identifier);
 
-  String getSectionsURL(String key, String category);
+  String createSectionsURL(String key, String category);
 
-  String getSectionsURL();
+  String createSectionsURL();
 
-  String getSectionsUrl(String key);
+  String createSectionsUrl(String key);
 
-  String getMovieMetadataURL(String key);
+  String createMovieMetadataURL(String key);
 
-  String getEpisodesURL(String key);
+  String createEpisodesURL(String key);
 
-  String getSeasonsURL(String key);
+  String createSeasonsURL(String key);
 
-  String getImageURL(String url, int width, int height);
+  String createImageURL(String url, int width, int height);
 
-  String getTranscodeUrl(String id, int offset);
+  String createTranscodeUrl(String id, int offset);
 
   void reinitialize();
 }

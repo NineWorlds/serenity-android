@@ -56,7 +56,7 @@ public class RecommendAsyncTask extends AsyncTask {
   private Notification buildMovieRecommendation() throws IOException {
     RecommendationBuilder builder = new RecommendationBuilder();
     PendingIntent intent = buildPendingIntent(video);
-    String backgroundURL = factory.getImageURL(video.getBackgroundURL(), 1920, 1080);
+    String backgroundURL = factory.createImageURL(video.getBackgroundURL(), 1920, 1080);
 
     float viewedPercentage = video.viewedPercentage();
     int priority = videoPriority(viewedPercentage);
@@ -85,7 +85,7 @@ public class RecommendAsyncTask extends AsyncTask {
   private Notification buildSeriesRecommendation() throws IOException {
     RecommendationBuilder builder = new RecommendationBuilder();
     PendingIntent intent = buildPendingIntent(video);
-    String backgroundURL = factory.getImageURL(video.getBackgroundURL(), 1920, 1080);
+    String backgroundURL = factory.createImageURL(video.getBackgroundURL(), 1920, 1080);
 
     float viewedPercentage = video.viewedPercentage();
     int priority = videoPriority(viewedPercentage);

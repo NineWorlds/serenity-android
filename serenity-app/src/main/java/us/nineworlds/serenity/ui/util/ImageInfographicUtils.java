@@ -410,7 +410,7 @@ public class ImageInfographicUtils extends BaseInjector {
     int w = ImageUtils.getDPI(width, (Activity) v.getContext());
     int h = ImageUtils.getDPI(height, (Activity) v.getContext());
     v.setLayoutParams(new LayoutParams(w, h));
-    String mediaTagUrl = factory.getMediaTagURL("studio", studio, identifier);
+    String mediaTagUrl = factory.createMediaTagURL("studio", studio, identifier);
     Glide.with(context).load(mediaTagUrl).into(v);
     return v;
   }

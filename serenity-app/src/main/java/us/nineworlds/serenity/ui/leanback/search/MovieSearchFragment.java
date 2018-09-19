@@ -113,7 +113,7 @@ public class MovieSearchFragment extends SearchFragment implements SearchResultP
 
         final View fanArt = getActivity().findViewById(R.id.fanArt);
 
-        String transcodingURL = plexFactory.getImageURL(video.getBackgroundURL(), 1280, 720);
+        String transcodingURL = plexFactory.createImageURL(video.getBackgroundURL(), 1280, 720);
 
         SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
           @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {

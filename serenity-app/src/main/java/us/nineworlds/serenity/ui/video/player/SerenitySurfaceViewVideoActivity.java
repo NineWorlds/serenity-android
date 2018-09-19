@@ -547,14 +547,14 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
         String offset = Integer.valueOf(mediaPlayer.getCurrentPosition()).toString();
         if (video != null) {
           if (video.isWatched()) {
-            plexFactory.setWatched(videoId);
-            plexFactory.setProgress(videoId, "0");
+            plexFactory.watched(videoId);
+            plexFactory.progress(videoId, "0");
           } else {
-            plexFactory.setProgress(videoId, offset);
+            plexFactory.progress(videoId, offset);
           }
           video.setResumeOffset(Integer.valueOf(offset));
         } else {
-          plexFactory.setProgress(videoId, offset);
+          plexFactory.progress(videoId, offset);
         }
       }
       return null;
