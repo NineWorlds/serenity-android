@@ -57,6 +57,7 @@ android {
 
     minSdkVersion 21
     targetSdkVersion 27
+	multiDexEnabled true
   }
 
   aaptOptions {
