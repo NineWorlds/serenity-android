@@ -11,13 +11,17 @@ import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
 import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 import us.nineworlds.serenity.emby.server.model.PublicUserInfo
+import us.nineworlds.serenity.emby.server.model.QueryFilters
+import us.nineworlds.serenity.emby.server.model.QueryResult
 import java.lang.IllegalStateException
 
 class EmbyAPIClient(baseUrl: String): SerenityClient {
 
   val usersService: UsersService
+  val filterService: FilterService
+
   val baseUrl: String
-  lateinit var accessToken: String
+  var accessToken: String? = null
   lateinit var serverId: String
   lateinit var userId: String
 
@@ -25,7 +29,7 @@ class EmbyAPIClient(baseUrl: String): SerenityClient {
     this.baseUrl = baseUrl
     val logger = HttpLoggingInterceptor()
     val okClient = OkHttpClient.Builder()
-    logger.level = HttpLoggingInterceptor.Level.HEADERS
+    logger.level = HttpLoggingInterceptor.Level.BODY
     okClient.addInterceptor(logger)
     okClient.cache(null)
 
@@ -39,6 +43,7 @@ class EmbyAPIClient(baseUrl: String): SerenityClient {
         .build()
 
     usersService = embyRetrofit.create(UsersService::class.java)
+    filterService = embyRetrofit.create(FilterService::class.java)
   }
 
   fun fetchAllPublicUsers() : List<PublicUserInfo> {
@@ -64,10 +69,23 @@ class EmbyAPIClient(baseUrl: String): SerenityClient {
     throw IllegalStateException("error logging user in to Emby Server")
   }
 
+  fun currentUserViews(): QueryResult {
+    val call = usersService.usersViews(headerMap(), userId)
+    return call.execute().body()!!
+  }
+
+  fun filters(itemId: String? = null, tags: List<String>? = null): QueryFilters {
+    val call = filterService.availableFilters(headerMap(), userId)
+    return call.execute().body()!!
+  }
+
   private fun headerMap(): Map<String, String> {
     val headers = HashMap<String, String>()
     val authorizationValue = "MediaBrowser Client=\"Android\", Device=\"Samsung Galaxy SIII\", DeviceId=\"xxx\", Version=\"1.0.0.0\""
-    headers.put("X-Emby-Authorization", authorizationValue)
+    headers["X-Emby-Authorization"] = authorizationValue
+    if (accessToken != null) {
+      headers["X-Emby-Token"] = accessToken!!
+    }
     return headers
   }
   override fun retrieveRootData(): IMediaContainer {

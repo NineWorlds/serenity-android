@@ -5,6 +5,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 
 @RunWith(JUnit4::class)
 class EmbyAPIClientTest {
@@ -23,15 +24,36 @@ class EmbyAPIClientTest {
   }
 
   @Test fun loginAdminUser() {
-    val users = client.fetchAllPublicUsers()
-    val user = users[0]
-
-    val authenticateResult = client.authenticate(user.name!!, "")
+    val authenticateResult = authenticate()
 
     assertThat(authenticateResult).isNotNull()
     assertThat(authenticateResult.accesToken).isNotBlank()
     assertThat(client.serverId).isNotBlank()
     assertThat(client.accessToken).isNotBlank()
     assertThat(client.userId).isNotBlank()
+  }
+
+  @Test fun testCurrentUsersViews() {
+    val authenticate = authenticate()
+
+    val result = client.currentUserViews()
+    assertThat(result.items).isNotEmpty
+  }
+
+  @Test fun availableFiltersForCurrentUser() {
+    authenticate()
+
+    val currentViews = client.currentUserViews()
+    val id = currentViews.items[2].id
+    val result = client.filters(itemId = id)
+    assertThat(result).isNotNull()
+  }
+
+  fun authenticate(): AuthenticationResult {
+    val users = client.fetchAllPublicUsers()
+    val user = users[0]
+
+    val authenticateResult = client.authenticate(user.name!!, "")
+    return authenticateResult
   }
 }
