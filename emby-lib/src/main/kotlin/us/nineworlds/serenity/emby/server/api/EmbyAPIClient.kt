@@ -1,32 +1,75 @@
 package us.nineworlds.serenity.emby.server.api
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
+import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
+import us.nineworlds.serenity.emby.server.model.AuthenticationResult
+import us.nineworlds.serenity.emby.server.model.PublicUserInfo
+import java.lang.IllegalStateException
 
 class EmbyAPIClient(baseUrl: String): SerenityClient {
 
   val usersService: UsersService
+  val baseUrl: String
+  lateinit var accessToken: String
+  lateinit var serverId: String
+  lateinit var userId: String
 
   init {
+    this.baseUrl = baseUrl
     val logger = HttpLoggingInterceptor()
     val okClient = OkHttpClient.Builder()
     logger.level = HttpLoggingInterceptor.Level.HEADERS
     okClient.addInterceptor(logger)
     okClient.cache(null)
 
+    val objectMapper = ObjectMapper();
+    objectMapper.registerModule(JavaTimeModule())
+
     val builder = Retrofit.Builder()
     val embyRetrofit = builder.baseUrl(baseUrl)
-        .addConverterFactory(JacksonConverterFactory.create())
+        .addConverterFactory(JacksonConverterFactory.create(objectMapper))
         .client(okClient.build())
         .build()
 
     usersService = embyRetrofit.create(UsersService::class.java)
   }
 
+  fun fetchAllPublicUsers() : List<PublicUserInfo> {
+    val allPublicUsers = usersService.allPublicUsers()
+    return allPublicUsers.execute().body()!!
+  }
+
+  fun userImageUrl(userId: String): String {
+    return "$baseUrl/Users/$userId/Images/Primary"
+  }
+
+  fun authenticate(userName: String, password: String?): AuthenticationResult {
+    val authenticationResul = AuthenticateUserByName(userName, "", "", "")
+    val call = usersService.authenticate(authenticationResul, headerMap())
+    val response = call.execute()
+    if (response.isSuccessful) {
+      val body = response.body()
+      accessToken = body!!.accesToken
+      serverId = body.serverId
+      userId = body.userInfo.id!!
+      return response.body()!!
+    }
+    throw IllegalStateException("error logging user in to Emby Server")
+  }
+
+  private fun headerMap(): Map<String, String> {
+    val headers = HashMap<String, String>()
+    val authorizationValue = "MediaBrowser Client=\"Android\", Device=\"Samsung Galaxy SIII\", DeviceId=\"xxx\", Version=\"1.0.0.0\""
+    headers.put("X-Emby-Authorization", authorizationValue)
+    return headers
+  }
   override fun retrieveRootData(): IMediaContainer {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }

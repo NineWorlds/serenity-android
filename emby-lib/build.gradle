@@ -53,6 +53,7 @@ dependencies {
   kapt 'com.squareup.dagger:dagger-compiler:1.2.2'
   implementation 'org.greenrobot:eventbus:3.0.0'
   implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6'
+  implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.6'
   implementation 'com.squareup.retrofit2:retrofit:2.3.0'
   implementation 'com.squareup.retrofit2:converter-jackson:2.3.0'
   implementation 'com.squareup.okhttp3:okhttp:3.8.1'
