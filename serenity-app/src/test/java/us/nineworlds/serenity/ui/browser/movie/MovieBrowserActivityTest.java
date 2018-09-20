@@ -172,7 +172,7 @@ public class MovieBrowserActivityTest extends InjectingTest {
   }
 
   @Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-      MovieBrowserActivity.class, MovieBrowserActivityTest.class
+      MovieBrowserActivity.class, MovieBrowserActivityTest.class,
   })
   public class TestModule {
 

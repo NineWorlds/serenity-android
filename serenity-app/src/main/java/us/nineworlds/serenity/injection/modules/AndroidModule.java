@@ -159,14 +159,14 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerKeyCodeHandler;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
 
 @Module(includes = { SerenityModule.class, VideoModule.class }, injects = {
-    GDMReceiver.class, MainMenuFragment.class, OnDeckRecommendations.class, GalleryVideoOnItemLongClickListener.class,
+    GDMReceiver.class, MainMenuFragment.class, OnDeckRecommendations.class,
     MediaController.class, MainActivity.class, SerenityApplication.class, StartupBroadcastReceiver.class,
-    RecommendationPlayerActivity.class, EpisodeBrowserActivity.class, SearchableActivity.class,
+    RecommendationPlayerActivity.class, SearchableActivity.class,
     MovieBrowserActivity.class, TVShowBrowserActivity.class, TVShowSeasonBrowserActivity.class,
     AutoConfigureHandlerRunnable.class, EpisodeMenuDrawerOnItemClickedListener.class, ImageInfographicUtils.class,
     MainMenuDrawerOnItemClickedListener.class, MovieGridPosterOnItemSelectedListener.class,
     MovieMenuDrawerOnItemClickedListener.class, PlayerResultHandler.class, ExternalPlayerResultHandler.class,
-    SeasonOnItemLongClickListener.class, MenuMediaContainer.class, MovieMediaContainer.class,
+    SeasonOnItemLongClickListener.class, MovieMediaContainer.class,
     SeriesMediaContainer.class, SubtitleMediaContainer.class, EpisodeMediaContainer.class, SeasonsMediaContainer.class,
     GalleryVideoOnItemClickListener.class, GalleryVideoOnItemLongClickListener.class,
     EpisodeBrowserOnLongClickListener.class, EpisodePosterOnItemSelectedListener.class,
@@ -189,7 +189,7 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
     MovieSearchGalleryFragment.class, CardPresenter.class, MovieSearchFragment.class, CategoryMediaContainer.class,
     SecondaryCategoryMediaContainer.class, TVCategoryMediaContainer.class, ServerConfig.class,
     SubtitleSpinnerOnItemSelectedListener.class, VideoQueueHelper.class,
-    us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener.class, MainMenuRetrievalJob.class,
+    us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener.class,
     MainMenuEvent.class, OnDeckRecommendationsJob.class, EpisodesRetrievalJob.class, MainMenuRetrievalJob.class,
     MovieCategoryJob.class, MovieRetrievalJob.class, MovieSecondaryCategoryJob.class, SeasonsRetrievalJob.class,
     SubtitleJob.class, TVCategoryJob.class, TVCategorySecondaryJob.class, TVShowRetrievalJob.class, GDMServerJob.class,
