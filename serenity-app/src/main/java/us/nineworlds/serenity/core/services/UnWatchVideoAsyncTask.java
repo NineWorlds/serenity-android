@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.core.services;
 
 import android.os.AsyncTask;
+import java.io.IOException;
 import javax.inject.Inject;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.common.rest.SerenityClient;
@@ -38,7 +39,11 @@ public class UnWatchVideoAsyncTask extends AsyncTask<String, Void, Void> {
 
   @Override protected Void doInBackground(String... params) {
     String id = params[0];
-    factory.unwatched(id);
+    try {
+      factory.unwatched(id);
+    } catch (IOException e) {
+      // DO NOTHING
+    }
     return null;
   }
 }

@@ -1,32 +1,23 @@
 package us.nineworlds.serenity.emby.server.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
-import java.time.LocalDateTime
+import com.squareup.moshi.Json
+import org.joda.time.LocalDateTime
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class PublicUserInfo(@JsonProperty("Name") val name: String?,
-    @JsonProperty("ServerId") val serverId: String?,
-    @JsonProperty("Id") val id: String?,
-    @JsonProperty("HasPassword") val hasPassword: Boolean,
-    @JsonProperty("HasConfiguredPassword") val hasConfiguredPassword: Boolean,
-    @JsonProperty("HasConfiguredEasyPassword") val hasConfiguredEasyPassword: Boolean,
-    @JsonProperty("LastLoginDate")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'")
-    val lastLoginDate: LocalDateTime?,
-    @JsonProperty("LastActivityDate")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'")
-    val lastActivityDate: LocalDateTime?)
+data class PublicUserInfo(@Json(name = "Name") val name: String?,
+                          @Json(name = "ServerId") val serverId: String?,
+                          @Json(name = "Id") val id: String?,
+                          @Json(name = "HasPassword") val hasPassword: Boolean,
+                          @Json(name = "HasConfiguredPassword") val hasConfiguredPassword: Boolean,
+                          @Json(name = "HasConfiguredEasyPassword") val hasConfiguredEasyPassword: Boolean,
+                          @Json(name = "LastLoginDate") val lastLoginDate: LocalDateTime?,
+                          @Json(name = "LastActivityDate") val lastActivityDate: LocalDateTime?)
 
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class AuthenticateUserByName(@JsonProperty("Username") val username: String,
-    @JsonProperty("PassowrdMd5") val passwordMD5: String,
-    @JsonProperty("Password") val password: String,
-    @JsonProperty("Pw") val pw: String)
+data class AuthenticateUserByName(@Json(name = "Username") val username: String,
+                                  @Json(name = "PassowrdMd5") val passwordMD5: String,
+                                  @Json(name = "Password") val password: String,
+                                  @Json(name = "Pw") val pw: String)
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class AuthenticationResult(@JsonProperty("User") val userInfo: PublicUserInfo,
-    @JsonProperty("AccessToken") val accesToken: String,
-    @JsonProperty("ServerId") val serverId: String)
+data class AuthenticationResult(@Json(name = "User") val userInfo: PublicUserInfo,
+                                @Json(name = "AccessToken") val accesToken: String,
+                                @Json(name = "ServerId") val serverId: String)

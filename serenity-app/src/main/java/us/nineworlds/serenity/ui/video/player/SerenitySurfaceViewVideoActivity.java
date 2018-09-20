@@ -545,16 +545,20 @@ public class SerenitySurfaceViewVideoActivity extends SerenityActivity implement
     @Override protected Void doInBackground(Void... params) {
       if (isMediaPlayerStateValid() && mediaPlayer.isPlaying()) {
         String offset = Integer.valueOf(mediaPlayer.getCurrentPosition()).toString();
-        if (video != null) {
-          if (video.isWatched()) {
-            plexFactory.watched(videoId);
-            plexFactory.progress(videoId, "0");
+        try {
+          if (video != null) {
+            if (video.isWatched()) {
+              plexFactory.watched(videoId);
+              plexFactory.progress(videoId, "0");
+            } else {
+              plexFactory.progress(videoId, offset);
+            }
+            video.setResumeOffset(Integer.valueOf(offset));
           } else {
             plexFactory.progress(videoId, offset);
           }
-          video.setResumeOffset(Integer.valueOf(offset));
-        } else {
-          plexFactory.progress(videoId, offset);
+        } catch (IOException ex) {
+          // DO NOTHING
         }
       }
       return null;

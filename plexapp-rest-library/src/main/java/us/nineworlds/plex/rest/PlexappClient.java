@@ -38,7 +38,6 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.services.PlexMediaContainerService;
 import us.nineworlds.plex.rest.services.PlexTextService;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
-import us.nineworlds.serenity.common.rest.SerenityClient;
 
 /**
  * This class acts as a factory for retrieving items from Plex.
@@ -47,7 +46,7 @@ import us.nineworlds.serenity.common.rest.SerenityClient;
  *
  * @author dcarver
  */
-public class PlexappClient implements SerenityClient {
+public class PlexappClient {
 
   private static PlexappClient instance = null;
 
@@ -256,7 +255,4 @@ public class PlexappClient implements SerenityClient {
     return resourcePath.getMediaTagURL(resourceType, resourceName, identifier);
   }
 
-  @Override public void reinitialize() {
-
-  }
 }

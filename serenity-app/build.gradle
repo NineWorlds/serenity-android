@@ -57,7 +57,6 @@ android {
 
     minSdkVersion 21
     targetSdkVersion 27
-    multiDexEnabled true
   }
 
   aaptOptions {
@@ -83,8 +82,8 @@ android {
     }
   }
 
-  targetCompatibility = '1.7'
-  sourceCompatibility = '1.7'
+  targetCompatibility = '1.8'
+  sourceCompatibility = '1.8'
 
   buildTypes {
     debug {
@@ -155,14 +154,13 @@ dependencies {
     exclude group: 'com.android.support'
   }
 
-  implementation 'com.android.support:multidex:1.0.3'
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.50'
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.70'
   implementation 'com.arello-mobile:moxy:1.5.3'
   implementation 'com.arello-mobile:moxy-app-compat:1.5.3'
   implementation 'com.github.bumptech.glide:glide:3.8.0'
   implementation 'org.greenrobot:eventbus:3.0.0'
   implementation 'com.birbit:android-priority-jobqueue:2.0.1'
-  implementation 'com.google.android.gms:play-services-analytics-impl:11.8.0'
+  implementation 'com.google.android.gms:play-services-analytics-impl:16.0.3'
   implementation 'com.android.support:appcompat-v7:27.1.1'
   implementation 'com.android.support:leanback-v17:27.1.1'
   implementation 'com.android.support:support-v4:27.1.1'
@@ -194,7 +192,6 @@ dependencies {
   testImplementation 'org.robolectric:shadows-httpclient:3.5.1'
   testImplementation 'org.robolectric:shadows-supportv4:3.5.1'
   testImplementation 'org.robolectric:shadows-playservices:3.5.1'
-  testImplementation 'org.robolectric:shadows-multidex:3.5.1'
   testImplementation 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
   testImplementation 'org.mockito:mockito-core:2.12.0'
 

@@ -1,18 +1,16 @@
 package us.nineworlds.serenity.emby.server.api
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.joda.time.LocalDateTime
 import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
-import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
-import us.nineworlds.serenity.emby.server.model.AuthenticationResult
-import us.nineworlds.serenity.emby.server.model.PublicUserInfo
-import us.nineworlds.serenity.emby.server.model.QueryFilters
-import us.nineworlds.serenity.emby.server.model.QueryResult
+import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
+import us.nineworlds.serenity.emby.server.model.*
 import java.lang.IllegalStateException
 
 class EmbyAPIClient(baseUrl: String): SerenityClient {
@@ -33,12 +31,13 @@ class EmbyAPIClient(baseUrl: String): SerenityClient {
     okClient.addInterceptor(logger)
     okClient.cache(null)
 
-    val objectMapper = ObjectMapper();
-    objectMapper.registerModule(JavaTimeModule())
+    val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .add(LocalDateTime::class.java, LocalDateJsonAdapter()).build()
 
     val builder = Retrofit.Builder()
     val embyRetrofit = builder.baseUrl(baseUrl)
-        .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .client(okClient.build())
         .build()
 

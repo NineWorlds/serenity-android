@@ -23,9 +23,9 @@
 
 package us.nineworlds.serenity;
 
+import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.multidex.MultiDexApplication;
 import com.birbit.android.jobqueue.JobManager;
 import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -45,7 +45,7 @@ import us.nineworlds.serenity.injection.modules.AndroidModule;
  *
  * @author dcarver
  */
-public class SerenityApplication extends MultiDexApplication {
+public class SerenityApplication extends Application {
 
   @Inject AndroidHelper androidHelper;
   @Inject SharedPreferences preferences;

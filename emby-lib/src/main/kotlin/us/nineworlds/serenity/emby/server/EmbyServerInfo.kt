@@ -1,10 +1,9 @@
 package us.nineworlds.serenity.emby.server
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import java.net.URI
+import com.squareup.moshi.Json
 
 
 data class EmbyServerInfo(
-    @JsonProperty("Address") val remoteAddres: String,
-    @JsonProperty("Id") val id: String,
-    @JsonProperty("Name") val name: String)
+    @Json(name ="Address") val remoteAddres: String,
+    @Json(name = "Id") val id: String,
+    @Json(name ="Name") val name: String)

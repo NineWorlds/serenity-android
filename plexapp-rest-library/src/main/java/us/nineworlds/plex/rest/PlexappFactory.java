@@ -177,7 +177,7 @@ public class PlexappFactory implements SerenityClient {
   }
 
   @Override public String createSectionsURL(String key, String category) {
-    return client.createSeasonsURL(key);
+    return resourcePath.getSeasonsURL(key);
   }
 
   @Override public String createSectionsURL() {
@@ -201,7 +201,7 @@ public class PlexappFactory implements SerenityClient {
   }
 
   @Override public String createImageURL(String url, int width, int height) {
-    return client.createImageURL(url, width, height);
+    return resourcePath.getImageURL(url, width, height);
   }
 
   @Override public String createTranscodeUrl(String id, int offset) {

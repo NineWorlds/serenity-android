@@ -1,12 +1,9 @@
 package us.nineworlds.serenity.emby.server.model
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.squareup.moshi.Json
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class QueryFilters(@JsonProperty("Genres") val genres: List<NameGuidPair>?,
-    @JsonProperty("Tags") val tags: List<String>?)
+data class QueryFilters(@Json(name = "Genres") val genres: List<NameGuidPair>?,
+    @Json(name = "Tags") val tags: List<String>?)
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class NameGuidPair(@JsonProperty("Name") val name: String,
-    @JsonProperty("Id") val id: String)
+data class NameGuidPair(@Json(name = "Name") val name: String,
+                        @Json(name = "Id") val id: String)

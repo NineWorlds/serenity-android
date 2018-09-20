@@ -2,9 +2,8 @@ package us.nineworlds.serenity.emby.server
 
 import android.content.Context
 import com.birbit.android.jobqueue.RetryConstraint
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.greenrobot.eventbus.EventBus
 import us.nineworlds.serenity.common.android.injection.ApplicationContext
 import us.nineworlds.serenity.common.android.injection.InjectingJob
@@ -24,10 +23,10 @@ class EmbyServerJob : InjectingJob() {
 
   @Inject lateinit var eventBus: EventBus
 
-  val objectMapper = ObjectMapper().registerKotlinModule()
-
   @field:[Inject ApplicationContext]
   lateinit var context: Context
+
+  val moshiBuilder =     Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
   override fun shouldReRunOnThrowable(throwable: Throwable, runCount: Int, maxRunCount: Int): RetryConstraint? {
     return null
@@ -133,10 +132,10 @@ class EmbyServerJob : InjectingJob() {
 
       Timber.d(javaClass.name + ">>> Broadcast response from server: " + message)
 
-      val embyServerInfo = objectMapper.readValue<EmbyServerInfo>(message)
+      val embyServerInfo = moshiBuilder.adapter(EmbyServerInfo::class.java).fromJson(message)
 
       val server = EmbyServer()
-      val uri = URI.create(embyServerInfo.remoteAddres)
+      val uri = URI.create(embyServerInfo!!.remoteAddres)
       server.ipAddress = uri.host
       server.serverName = "Emby - " + embyServerInfo.name
 
@@ -146,7 +145,7 @@ class EmbyServerJob : InjectingJob() {
       timeout -= (endTime - startTime)
     }
 
-    Timber.d("Found %d servers" + servers.size)
+    Timber.d("Found %d servers", servers.size)
   }
 
   @Throws(IOException::class)

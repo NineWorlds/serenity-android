@@ -61,7 +61,7 @@ dependencies {
   implementation project(':serenity-common')
   implementation 'com.squareup.dagger:dagger:1.2.2'
   implementation 'org.greenrobot:eventbus:3.0.0'
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.50'
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.70'
 
 
   implementation 'com.birbit:android-priority-jobqueue:2.0.1'

@@ -1,6 +1,7 @@
 package us.nineworlds.serenity.core.services;
 
 import android.os.AsyncTask;
+import java.io.IOException;
 import javax.inject.Inject;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.common.rest.SerenityClient;
@@ -17,8 +18,12 @@ public class CompletedVideoRequest extends AsyncTask<Void, Void, Void> {
   }
 
   @Override protected Void doInBackground(Void... params) {
-    factory.progress(uvideoId, "0");
-    factory.watched(uvideoId);
+    try {
+      factory.progress(uvideoId, "0");
+      factory.watched(uvideoId);
+    } catch (IOException e) {
+      // DO NOTHING
+    }
     return null;
   }
 }
