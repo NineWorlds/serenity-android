@@ -29,7 +29,6 @@ import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
 public class TVShowBrowserPresenter extends MvpPresenter<TVShowBrowserView> {
 
   @Inject EventBus eventBus;
-
   @Inject JobManager jobManager;
 
   public TVShowBrowserPresenter() {
