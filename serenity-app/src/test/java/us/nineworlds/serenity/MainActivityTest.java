@@ -98,11 +98,6 @@ public class MainActivityTest extends InjectingTest {
     }
   }
 
-  @Test public void onDestroyUnregistersGDMReceiver() {
-    activity.onDestroy();
-    verify(mockLocalBroadcastManager).unregisterReceiver(any(GDMReceiver.class));
-  }
-
   @Test public void testAssertThatMainActivityIsCreated() throws Exception {
     assertThat(activity).isNotNull().isNotFinishing();
   }

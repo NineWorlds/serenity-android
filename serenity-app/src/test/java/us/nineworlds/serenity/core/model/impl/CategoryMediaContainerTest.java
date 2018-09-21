@@ -38,6 +38,7 @@ import dagger.Module;
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
@@ -121,7 +122,7 @@ public class CategoryMediaContainerTest extends InjectingTest {
 		return modules;
 	}
 
-	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, injects = {
+	@Module(includes = {SerenityModule.class, TestingModule.class}, addsTo = AndroidModule.class, injects = {
 		CategoryMediaContainer.class, CategoryMediaContainerTest.class })
 	public class TestModule {
 

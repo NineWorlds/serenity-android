@@ -31,6 +31,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
@@ -51,6 +52,8 @@ public class ServerConfigTest {
 
 	@Before
 	public void setUp() {
+		Robolectric.getForegroundThreadScheduler().pause();
+		Robolectric.getBackgroundThreadScheduler().pause();
 		serverConfig = (ServerConfig) ServerConfig
 				.getInstance(application);
 		serverConfigChangeListener = serverConfig

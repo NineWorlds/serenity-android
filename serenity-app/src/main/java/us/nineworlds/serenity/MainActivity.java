@@ -62,14 +62,11 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
   @Inject AndroidHelper androidHelper;
   @InjectPresenter MainPresenter presenter;
   @Inject SharedPreferences preferences;
-  @Inject LocalBroadcastManager localBroadcastManager;
 
   @BindView(R.id.mainGalleryMenu) DpadAwareRecyclerView mainMenuContainer;
   @BindView(R.id.drawer_settings) Button settingsButton;
 
   protected Handler autoConfigureHandler = new Handler();
-
-  private final BroadcastReceiver gdmReceiver = new GDMReceiver();
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -101,11 +98,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
     autoConfigureHandler.postDelayed(new AutoConfigureHandlerRunnable(this), 2500);
   }
 
-  @Override protected void onDestroy() {
-    localBroadcastManager.unregisterReceiver(gdmReceiver);
-    super.onDestroy();
-  }
-
   @Override protected void onRestart() {
     populateMenuOptions();
     super.onRestart();
@@ -113,10 +105,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
 
   @Override protected void onResume() {
     super.onResume();
-    registerGDMReceiver();
-
-    // Start the auto-configuration service
-    presenter.discoverServers();
 
     Intent recommendationIntent = new Intent(getApplicationContext(), OnDeckRecommendationIntentService.class);
     startService(recommendationIntent);
@@ -125,13 +113,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
 
     mainMenuContainer.setFocusable(true);
     mainMenuContainer.requestFocusFromTouch();
-  }
-
-  protected void registerGDMReceiver() {
-    IntentFilter filters = new IntentFilter();
-    filters.addAction(GDMReceiver.GDM_MSG_RECEIVED);
-    filters.addAction(GDMReceiver.GDM_SOCKET_CLOSED);
-    localBroadcastManager.registerReceiver(gdmReceiver, filters);
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

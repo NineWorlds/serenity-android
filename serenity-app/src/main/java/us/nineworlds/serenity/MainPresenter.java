@@ -20,36 +20,14 @@ import us.nineworlds.serenity.jobs.GlideClearCacheJob;
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
 
-  @Inject @ForMediaServers Map<String, Server> servers;
-
   @Inject JobManager jobManager;
-
-  @Inject EventBus eventBus;
 
   public MainPresenter() {
     SerenityObjectGraph.Companion.getInstance().inject(this);
-  }
-
-  @Override public void attachView(MainView view) {
-    super.attachView(view);
-    eventBus.register(this);
-  }
-
-  @Override public void detachView(MainView view) {
-    super.detachView(view);
-    eventBus.unregister(this);
-  }
-
-  public void discoverServers() {
-    jobManager.addJobInBackground(new GDMServerJob());
-    jobManager.addJobInBackground(new EmbyServerJob());
   }
 
   public void clearCache(Context context) {
     jobManager.addJobInBackground(new GlideClearCacheJob(context));
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN) public void onEmbyServerDiscovery(EmbyServer serverEvent) {
-    servers.put(serverEvent.getServerName(), serverEvent);
-  }
 }

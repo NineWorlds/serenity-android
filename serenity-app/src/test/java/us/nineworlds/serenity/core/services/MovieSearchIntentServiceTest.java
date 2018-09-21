@@ -37,6 +37,7 @@ import java.util.List;
 
 import dagger.Module;
 import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
@@ -86,7 +87,7 @@ public class MovieSearchIntentServiceTest extends InjectingTest {
 		return modules;
 	}
 
-	@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, injects = {
+	@Module(addsTo = AndroidModule.class, includes = {SerenityModule.class, TestingModule.class}, injects = {
 		MovieSearchIntentService.class, MovieSearchIntentServiceTest.class,
 		MockMovieSearchIntentService.class })
 	public class TestModule {
