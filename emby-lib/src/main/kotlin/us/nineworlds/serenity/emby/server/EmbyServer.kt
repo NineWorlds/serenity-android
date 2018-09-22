@@ -1,6 +1,8 @@
 package us.nineworlds.serenity.emby.server
 
 import us.nineworlds.serenity.common.Server
+import us.nineworlds.serenity.common.ServerTypes
+import us.nineworlds.serenity.common.ServerTypes.EMBY
 
 class EmbyServer : Server {
 
@@ -41,4 +43,5 @@ class EmbyServer : Server {
     return serverName
   }
 
+  override fun hasMultipleAccounts(): Boolean = true
 }

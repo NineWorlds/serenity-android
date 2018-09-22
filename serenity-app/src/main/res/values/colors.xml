@@ -26,4 +26,6 @@
 
   <color name="white">#F0F0F0</color>
   <color name="grey">#414141</color>
+  <color name="emby_green">#007800</color>
+  <color name="plex_orange">#E5A00D</color>
 </resources>

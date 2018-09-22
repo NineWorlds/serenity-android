@@ -83,12 +83,8 @@
         android:label="@string/title_activity_main"
         android:screenOrientation="sensorLandscape"
         android:theme="@style/CustomActionBarTheme">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
     </activity>
+
     <activity
         android:name=".AndroidTV"
         android:hardwareAccelerated="true"
@@ -98,12 +94,19 @@
         android:banner="@drawable/serenity_androidtv_banner"
         android:screenOrientation="sensorLandscape"
         android:theme="@style/CustomActionBarTheme">
+    </activity>
+
+    <activity android:name=".ui.activity.ServerSelectionActivity"
+        android:banner="@drawable/serenity_androidtv_banner"
+        android:theme="@style/Theme.Leanback">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
         <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
       </intent-filter>
+
     </activity>
+
     <activity
         android:name=".ui.leanback.search.SearchActivity"
         android:hardwareAccelerated="true"

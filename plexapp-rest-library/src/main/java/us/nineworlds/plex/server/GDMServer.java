@@ -96,4 +96,7 @@ public class GDMServer implements Server {
         discoveryProtocol = protocol;
     }
 
+    @Override public boolean hasMultipleAccounts() {
+        return false;
+    }
 }

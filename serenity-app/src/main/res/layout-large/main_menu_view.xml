@@ -19,7 +19,7 @@
       app:selectorVelocity="1000"
       android:focusableInTouchMode="true"
       app:smoothScrolling="true"
-      app:backgroundSelector="@drawable/main_menu_item_foreground_selector"
+      app:backgroundSelector="@drawable/item_foreground_selector"
       android:nextFocusUp="@+id/menu_button"
       android:descendantFocusability="afterDescendants"
       >

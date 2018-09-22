@@ -30,7 +30,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.injection.InjectingActivity;
+import us.nineworlds.serenity.injection.InjectingMvpActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 import static android.support.v7.widget.RecyclerView.LayoutManager;
@@ -38,7 +38,7 @@ import static android.support.v7.widget.RecyclerView.LayoutManager;
 /**
  * @author dcarver
  */
-public abstract class SerenityActivity extends InjectingActivity {
+public abstract class SerenityActivity extends InjectingMvpActivity {
 
   protected abstract void createSideMenu();
 

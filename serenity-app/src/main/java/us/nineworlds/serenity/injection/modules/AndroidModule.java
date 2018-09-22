@@ -101,6 +101,7 @@ import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
 import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob;
 import us.nineworlds.serenity.jobs.video.WatchedStatusJob;
 import us.nineworlds.serenity.server.GDMReceiver;
+import us.nineworlds.serenity.ui.activity.ServerSelectionActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserPresenter;
@@ -196,7 +197,7 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
     TVShowBrowserPresenter.class, MovieBrowserPresenter.class, EpisodeBrowserPresenter.class,
     TVShowSeasonBrowserPresenter.class, MainPresenter.class, OnKeyDownDelegate.class, ErrorMainMenuEvent.class,
     ExoplayerVideoActivity.class, ExoplayerPresenter.class, EventLogger.class, VideoKeyCodeHandlerDelegate.class,
-    UpdatePlaybackPostionJob.class, WatchedStatusJob.class, EmbyServerJob.class
+    UpdatePlaybackPostionJob.class, WatchedStatusJob.class, EmbyServerJob.class, ServerSelectionActivity.class
 }, library = true)
 public class AndroidModule {
 

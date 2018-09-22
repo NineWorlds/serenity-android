@@ -21,30 +21,15 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.common;
+package us.nineworlds.serenity.injection;
 
-/**
- * @author dcarver
- *
- */
-public interface Server {
+import com.arellomobile.mvp.MvpAppCompatActivity;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 
-    String getServerName();
+public abstract class InjectingMvpActivity extends MvpAppCompatActivity {
 
-    void setServerName(String serverName);
-
-    String getIPAddress();
-
-    void setIPAddress(String ipaddress);
-
-    String getHostName();
-
-    void setHostName(String hostName);
-
-    String discoveryProtocol();
-
-    void setDiscoveryProtocol(String protocol);
-
-    boolean hasMultipleAccounts();
-
+  public InjectingMvpActivity() {
+    super();
+    SerenityObjectGraph.Companion.getInstance().inject(this);
+  }
 }

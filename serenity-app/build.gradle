@@ -171,6 +171,7 @@ dependencies {
   implementation "com.github.vganin:dpadaware-recyclerview:$dpadAwareVersion"
   implementation "com.jakewharton:butterknife:$butterKnifeVersion"
   implementation "com.jakewharton.timber:timber:$timberVersion"
+  implementation "com.android.support:cardview-v7:$androidSupportLibVersion"
   // https://mvnrepository.com/artifact/org.simpleframework/simple-xml
   implementation("org.simpleframework:simple-xml:$simpleXmlVersion") {
     exclude group: 'stax'

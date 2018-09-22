@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import us.nineworlds.serenity.common.Server;
@@ -67,6 +68,7 @@ public class SerenityApplication extends Application {
   @Inject Logger logger;
   @Inject LocalBroadcastManager localBroadcastManager;
   private BroadcastReceiver gdmReceiver;
+  @Inject EventBus eventBus;
 
   private static boolean enableTracking = true;
 
@@ -100,6 +102,7 @@ public class SerenityApplication extends Application {
       installAnalytics();
     }
     sendStartedApplicationEvent();
+    eventBus.register(this);
     jobManager.start();
     logger.initialize();
   }
@@ -160,6 +163,7 @@ public class SerenityApplication extends Application {
   }
 
   @Override public void onTerminate() {
+    eventBus.unregister(this);
     jobManager.stop();
     localBroadcastManager.unregisterReceiver(gdmReceiver);
     super.onTerminate();
