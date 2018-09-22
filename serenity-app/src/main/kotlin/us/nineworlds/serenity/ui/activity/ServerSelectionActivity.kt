@@ -4,14 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
-import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.ButterKnife.*
 import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.Server
@@ -21,34 +22,42 @@ import javax.inject.Inject
 
 class ServerSelectionActivity : InjectingActivity() {
 
+  companion object {
+    const val SERVER_DISPLAY_DELAY = 4000L
+  }
+
   @field:[Inject ForMediaServers]
   lateinit var servers: MutableMap<String, Server>
 
   @BindView(R.id.server_container)
-  lateinit var serverContainer: LinearLayout
+  internal lateinit var serverContainer: LinearLayout
 
   @BindView(R.id.server_loading_progress)
-  lateinit var serverLoadingProgressBar: ProgressBar
+  internal lateinit var serverLoadingProgressBar: ProgressBar
 
-  lateinit var serverDisplayHandler: Handler
+  internal lateinit var serverDisplayHandler: Handler
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_server_selection)
-    ButterKnife.bind(this)
+    bind(this)
 
     serverDisplayHandler = Handler()
     serverDisplayHandler.postDelayed({
-      serverLoadingProgressBar.visibility = GONE
-      servers.forEach { key, serverInfo -> displayServers(key, serverInfo) }
-      if (serverContainer.childCount > 0) {
-        serverContainer.getChildAt(0).requestFocus()
-      }
-      serverContainer.visibility = VISIBLE
-    }, 4000L)
+      createServerList()
+    }, SERVER_DISPLAY_DELAY)
   }
 
-  fun displayServers(key: String, serverInfo: Server) {
+  private fun createServerList() {
+    serverLoadingProgressBar.visibility = GONE
+    servers.forEach { key, serverInfo -> displayServers(key, serverInfo) }
+    if (serverContainer.childCount > 0) {
+      serverContainer.getChildAt(0).requestFocus()
+    }
+    serverContainer.visibility = VISIBLE
+  }
+
+  private fun displayServers(key: String, serverInfo: Server) {
     if (serverInfo.discoveryProtocol() == "Emby") {
       createServerView(R.layout.item_server_select_emby, serverInfo)
     } else {
@@ -56,7 +65,7 @@ class ServerSelectionActivity : InjectingActivity() {
     }
   }
 
-  fun createServerView(layoutId: Int, serverInfo: Server) {
+  private fun createServerView(layoutId: Int, serverInfo: Server) {
     val serverView = LayoutInflater.from(this).inflate(layoutId, serverContainer, false) as FrameLayout?
     val serverNameText = serverView!!.findViewById<TextView>(R.id.server_name)
     serverNameText?.text = serverInfo.serverName
@@ -64,7 +73,7 @@ class ServerSelectionActivity : InjectingActivity() {
     serverView.setOnClickListener { view -> startNextActivity(serverInfo) }
   }
 
-  fun startNextActivity(serverInfo: Server) {
+  private fun startNextActivity(serverInfo: Server) {
     val intent = Intent(this, AndroidTV::class.java)
     startActivity(intent)
     finish()

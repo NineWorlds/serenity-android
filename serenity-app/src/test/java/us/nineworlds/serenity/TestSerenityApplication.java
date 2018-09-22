@@ -47,6 +47,10 @@ public class TestSerenityApplication extends SerenityApplication implements Test
 		return modules;
 	}
 
+	@Override protected void discoverServers() {
+
+	}
+
 	@Override protected void setDefaultPreferences() {
 
 	}

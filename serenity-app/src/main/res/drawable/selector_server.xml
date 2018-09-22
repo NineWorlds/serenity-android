@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
     android:enterFadeDuration="@android:integer/config_shortAnimTime"
-    android:exitFadeDuration="@android:integer/config_shortAnimTime">
+    android:exitFadeDuration="@android:integer/config_mediumAnimTime">
 
-  <item android:state_focused="true" android:drawable="@drawable/rounded_white_corners" />
+  <item android:state_focused="true" android:drawable="@drawable/rounded_transparent_border" />
 
   <item android:drawable="@drawable/rounded_corners"/>
 

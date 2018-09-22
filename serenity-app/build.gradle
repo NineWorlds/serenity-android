@@ -178,6 +178,7 @@ dependencies {
     exclude group: 'xpp3'
   }
 
+  testImplementation "com.nhaarman:mockito-kotlin:1.6.0"
   testImplementation "org.apache.commons:commons-lang3:$commonsLangVersion"
   testImplementation("org.robolectric:robolectric:$robolectricVersion") {
     exclude module: 'support-v4'

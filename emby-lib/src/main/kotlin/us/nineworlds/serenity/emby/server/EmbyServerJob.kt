@@ -5,28 +5,29 @@ import com.birbit.android.jobqueue.RetryConstraint
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
+import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.android.injection.ApplicationContext
 import us.nineworlds.serenity.common.android.injection.InjectingJob
-import javax.inject.Inject
-import timber.log.Timber
+import java.io.IOException
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.NetworkInterface
-import us.nineworlds.serenity.common.Server
-import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.URI
+import javax.inject.Inject
 
 
 class EmbyServerJob : InjectingJob() {
 
-  @Inject lateinit var eventBus: EventBus
+  @Inject
+  lateinit var eventBus: EventBus
 
   @field:[Inject ApplicationContext]
   lateinit var context: Context
 
-  val moshiBuilder =     Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+  val moshiBuilder = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
   override fun shouldReRunOnThrowable(throwable: Throwable, runCount: Int, maxRunCount: Int): RetryConstraint? {
     return null
@@ -82,10 +83,11 @@ class EmbyServerJob : InjectingJob() {
             val sendPacket = DatagramPacket(sendData, sendData.size, broadcast, port)
             c.send(sendPacket)
           } catch (e: Exception) {
-            Timber.e(e,"Error sending DatagramPacket")
+            Timber.e(e, "Error sending DatagramPacket")
           }
 
-          Timber.d(">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName())
+          Timber.d(
+              ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName())
         }
       }
 

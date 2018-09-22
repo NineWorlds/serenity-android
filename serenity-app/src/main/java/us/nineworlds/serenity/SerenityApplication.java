@@ -176,7 +176,7 @@ public class SerenityApplication extends Application {
     localBroadcastManager.registerReceiver(gdmReceiver, filters);
   }
 
-  private void discoverServers() {
+  protected void discoverServers() {
     jobManager.addJobInBackground(new GDMServerJob());
     jobManager.addJobInBackground(new EmbyServerJob());
   }
