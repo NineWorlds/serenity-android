@@ -51,18 +51,18 @@ sourceSets {
 dependencies {
 
   implementation project(':serenity-common')
-  implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-  implementation 'com.squareup.okhttp3:okhttp:3.8.1'
-  implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-  implementation('com.squareup.retrofit2:converter-simplexml:2.3.0') {
+  implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+  implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+  implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+  implementation("com.squareup.retrofit2:converter-simplexml:$retrofitVersion") {
     exclude group: 'stax'
     exclude group: 'xpp3'
   }
-  implementation 'com.squareup.retrofit2:converter-scalars:2.2.0'
+  implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
 
 
-  testImplementation 'junit:junit:4.12'
-  testImplementation 'xmlunit:xmlunit:1.3'
+  testImplementation "junit:junit:$junitVersion"
+  testImplementation "xmlunit:xmlunit:$xmlUnitVersion"
 }
 
 jar {

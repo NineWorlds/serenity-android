@@ -1,5 +1,4 @@
 buildscript {
-  ext.kotlin_version = '1.2.70'
 
   repositories {
     google()
@@ -8,7 +7,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.70'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
   }
 
 }
@@ -62,13 +61,13 @@ android {
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
   implementation project(':serenity-common')
-  implementation 'com.squareup.dagger:dagger:1.2.5'
-  implementation 'org.greenrobot:eventbus:3.0.0'
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.70'
+  implementation "com.squareup.dagger:dagger:$daggerVersion"
+  implementation "org.greenrobot:eventbus:$eventBus"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
 
-  implementation 'com.birbit:android-priority-jobqueue:2.0.1'
-  kapt 'com.squareup.dagger:dagger-compiler:1.2.5'
+  implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
+  kapt "com.squareup.dagger:dagger-compiler:$daggerVersion"
 
-  testImplementation 'junit:junit:4.12'
+  testImplementation "junit:junit:$junitVersion"
 }

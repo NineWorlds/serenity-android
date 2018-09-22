@@ -1,14 +1,12 @@
 buildscript {
 
-  ext.kotlin_version = '1.2.70'
-
   repositories {
     google()
     jcenter()
     mavenCentral()
   }
   dependencies {
-    classpath 'org.jetbrains.kotlin:kotlin-allopen:1.2.70'
+    classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
     classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.11.0'
   }
 }
@@ -134,76 +132,74 @@ junitJacoco {
 
 dependencies {
 
-  implementation group: 'com.github.bumptech.glide', name: 'okhttp3-integration', version: '1.5.0'
   implementation project(':plexapp-rest-library')
   implementation project(':subtitle-converter')
   implementation project(':emby-lib')
   implementation project(':serenity-android-common')
   implementation project(':serenity-common')
 
-  implementation('com.google.android.exoplayer:exoplayer-core:r2.5.1') {
+  implementation group: 'com.github.bumptech.glide', name: 'okhttp3-integration', version: "$glideOkHttpVersion"
+  implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion") {
     exclude module: 'support-annotations'
   }
-  implementation('com.google.android.exoplayer:exoplayer-ui:r2.5.1') {
-    exclude module: 'support-annotations'
-  }
-
-  implementation('com.google.android.exoplayer:extension-okhttp:r2.5.1') {
+  implementation("com.google.android.exoplayer:exoplayer-ui:$exoplayerVersion") {
     exclude module: 'support-annotations'
   }
 
-  implementation('com.squareup.okhttp3:okhttp:3.6.0') {
+  implementation("com.google.android.exoplayer:extension-okhttp:$exoplayerVersion") {
+    exclude module: 'support-annotations'
+  }
+
+  implementation("com.squareup.okhttp3:okhttp:$okhttpVersion") {
     exclude group: 'com.android.support'
   }
 
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.70'
-  implementation 'com.arello-mobile:moxy:1.5.3'
-  implementation 'com.arello-mobile:moxy-app-compat:1.5.3'
-  implementation 'com.github.bumptech.glide:glide:3.8.0'
-  implementation 'org.greenrobot:eventbus:3.0.0'
-  implementation 'com.birbit:android-priority-jobqueue:2.0.1'
-  implementation 'com.google.android.gms:play-services-analytics-impl:16.0.3'
-  implementation 'com.android.support:appcompat-v7:27.1.1'
-  implementation 'com.android.support:leanback-v17:27.1.1'
-  implementation 'com.android.support:support-v4:27.1.1'
-  implementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
-  implementation 'com.mcxiaoke.volley:library:1.0.16'
-  implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.8.1'
-  implementation 'com.squareup.dagger:dagger:1.2.2'
-  implementation 'com.github.vganin:dpadaware-recyclerview:1.0.1'
-  implementation 'com.jakewharton:butterknife:8.8.1'
-  implementation 'com.jakewharton.timber:timber:4.6.1'
-  implementation 'com.squareup.moshi:moshi-kotlin:1.6.0'
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+  implementation "com.arello-mobile:moxy:$moxyVersion"
+  implementation "com.arello-mobile:moxy-app-compat:$moxyVersion"
+  implementation "com.github.bumptech.glide:glide:$glideVersion"
+  implementation "org.greenrobot:eventbus:$eventBus"
+  implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
+  implementation "com.google.android.gms:play-services-analytics-impl:16.0.3"
+  implementation "com.android.support:appcompat-v7:$androidSupportLibVersion"
+  implementation "com.android.support:leanback-v17:$androidSupportLibVersion"
+  implementation "com.android.support:support-v4:$androidSupportLibVersion"
+  implementation "com.googlecode.juniversalchardet:juniversalchardet:$universalCharDetVersion"
+  implementation "com.mcxiaoke.volley:library:$volleyVersion"
+  implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
+  implementation "com.squareup.dagger:dagger:$daggerVersion"
+  implementation "com.github.vganin:dpadaware-recyclerview:$dpadAwareVersion"
+  implementation "com.jakewharton:butterknife:$butterKnifeVersion"
+  implementation "com.jakewharton.timber:timber:$timberVersion"
   // https://mvnrepository.com/artifact/org.simpleframework/simple-xml
-  implementation("org.simpleframework:simple-xml:2.7.1") {
+  implementation("org.simpleframework:simple-xml:$simpleXmlVersion") {
     exclude group: 'stax'
     exclude group: 'xpp3'
   }
 
-  testImplementation 'org.apache.commons:commons-lang3:3.7'
-  testImplementation('org.robolectric:robolectric:3.8') {
+  testImplementation "org.apache.commons:commons-lang3:$commonsLangVersion"
+  testImplementation("org.robolectric:robolectric:$robolectricVersion") {
     exclude module: 'support-v4'
   }
-  testImplementation('com.squareup.assertj:assertj-android:1.1.1') {
+  testImplementation("com.squareup.assertj:assertj-android:$assertJAndroidVersion") {
     exclude module: 'support-v4'
     exclude module: 'support-annotations'
   }
 
-  testImplementation 'org.assertj:assertj-core:3.8.0'
-  testImplementation 'junit:junit:4.12'
-  testImplementation 'org.robolectric:shadows-supportv4:3.8'
-  testImplementation 'org.robolectric:shadows-framework:3.8'
-  testImplementation 'org.robolectric:shadowapi:3.8'
-  testImplementation 'org.robolectric:shadows-playservices:3.8'
-  testImplementation 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
-  testImplementation 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
-  testImplementation 'org.mockito:mockito-core:2.22.0'
+  testImplementation "org.assertj:assertj-core:$assertjVersion"
+  testImplementation "junit:junit:$junitVersion"
+  testImplementation "org.robolectric:shadows-supportv4:$robolectricVersion"
+  testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
+  testImplementation "org.robolectric:shadowapi:$robolectricVersion"
+  testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
+  testImplementation "org.khronos:opengl-api:$openglApiVersion"
+  testImplementation "org.mockito:mockito-core:$mockitoVersion"
 
-  testImplementation 'com.squareup.okhttp3:mockwebserver:3.8.1'
-  testImplementation 'commons-io:commons-io:2.6'
+  testImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
+  testImplementation "commons-io:commons-io:$commonsioVersion"
 
-  kapt 'com.arello-mobile:moxy-compiler:1.5.3'
-  kapt 'com.squareup.dagger:dagger-compiler:1.2.5'
-  kapt 'com.jakewharton:butterknife-compiler:8.8.1'
-  kaptTest 'com.squareup.dagger:dagger-compiler:1.2.5'
+  kapt "com.arello-mobile:moxy-compiler:$moxyVersion"
+  kapt "com.squareup.dagger:dagger-compiler:$daggerVersion"
+  kapt "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+  kaptTest "com.squareup.dagger:dagger-compiler:$daggerVersion"
 }

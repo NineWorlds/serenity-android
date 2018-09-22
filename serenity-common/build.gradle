@@ -1,21 +1,18 @@
 buildscript {
-    ext.kotlin_version = '1.2.70'
 
     repositories {
         jcenter()
         mavenCentral()
+        google()
     }
 
     dependencies {
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.70'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
 repositories {
     google()
-    maven {
-        url "maven.google.com"
-    }
     jcenter()
     mavenCentral()
 }
@@ -25,12 +22,12 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.70'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
-    compile 'com.squareup.dagger:dagger:1.2.2'
-    kapt 'com.squareup.dagger:dagger-compiler:1.2.2'
+    implementation "com.squareup.dagger:dagger:$daggerVersion"
+    kapt "com.squareup.dagger:dagger-compiler:$daggerVersion"
 }
 
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
 
