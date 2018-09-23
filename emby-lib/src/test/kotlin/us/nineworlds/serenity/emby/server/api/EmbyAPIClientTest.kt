@@ -5,16 +5,20 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 
-@RunWith(JUnit4::class)
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = intArrayOf(27))
 class EmbyAPIClientTest {
 
   lateinit var client: EmbyAPIClient
 
   @Before
   fun setUp() {
-    client = EmbyAPIClient("http://plexserver:8096/")
+    client = EmbyAPIClient()
+    client.updateBaseUrl("http://plexserver:8096")
   }
 
   @Test

@@ -155,6 +155,7 @@ dependencies {
   }
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+  implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
   implementation "com.arello-mobile:moxy:$moxyVersion"
   implementation "com.arello-mobile:moxy-app-compat:$moxyVersion"
   implementation "com.github.bumptech.glide:glide:$glideVersion"
@@ -166,12 +167,22 @@ dependencies {
   implementation "com.android.support:support-v4:$androidSupportLibVersion"
   implementation "com.googlecode.juniversalchardet:juniversalchardet:$universalCharDetVersion"
   implementation "com.mcxiaoke.volley:library:$volleyVersion"
+  implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+  implementation "me.jessyan:retrofit-url-manager:$urlManager"
   implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
   implementation "com.squareup.dagger:dagger:$daggerVersion"
   implementation "com.github.vganin:dpadaware-recyclerview:$dpadAwareVersion"
   implementation "com.jakewharton:butterknife:$butterKnifeVersion"
   implementation "com.jakewharton.timber:timber:$timberVersion"
   implementation "com.android.support:cardview-v7:$androidSupportLibVersion"
+  implementation "com.android.support:support-annotations:$androidSupportLibVersion"
+
+  implementation "com.squareup.moshi:moshi-kotlin:$moshiKotlinVersion"
+  implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+  implementation "net.danlew:android.joda:$jodaTimeVersion"
+  implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+
+
   // https://mvnrepository.com/artifact/org.simpleframework/simple-xml
   implementation("org.simpleframework:simple-xml:$simpleXmlVersion") {
     exclude group: 'stax'

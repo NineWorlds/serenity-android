@@ -43,6 +43,7 @@ android {
 
 dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+  implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
   implementation project(':serenity-common')
   implementation project(':serenity-android-common')
@@ -57,6 +58,7 @@ dependencies {
   implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
   implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
   implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+  implementation "me.jessyan:retrofit-url-manager:$urlManager"
   implementation "com.jakewharton.timber:timber:$timberVersion"
 
   testImplementation "junit:junit:$junitVersion"

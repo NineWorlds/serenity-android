@@ -2,6 +2,7 @@ package us.nineworlds.serenity.emby.server.api
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.joda.time.LocalDateTime
@@ -9,16 +10,18 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
+import us.nineworlds.serenity.common.rest.SerenityUser
+import us.nineworlds.serenity.common.rest.impl.SerenityUser.Builder
 import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
 import us.nineworlds.serenity.emby.server.model.*
 import java.lang.IllegalStateException
 
-class EmbyAPIClient(baseUrl: String): SerenityClient {
+class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
 
   val usersService: UsersService
   val filterService: FilterService
 
-  val baseUrl: String
+  var baseUrl: String
   var accessToken: String? = null
   lateinit var serverId: String
   lateinit var userId: String
@@ -26,7 +29,8 @@ class EmbyAPIClient(baseUrl: String): SerenityClient {
   init {
     this.baseUrl = baseUrl
     val logger = HttpLoggingInterceptor()
-    val okClient = OkHttpClient.Builder()
+
+    val okClient = RetrofitUrlManager.getInstance().with(OkHttpClient.Builder())
     logger.level = HttpLoggingInterceptor.Level.BODY
     okClient.addInterceptor(logger)
     okClient.cache(null)
@@ -54,8 +58,8 @@ class EmbyAPIClient(baseUrl: String): SerenityClient {
     return "$baseUrl/Users/$userId/Images/Primary"
   }
 
-  fun authenticate(userName: String, password: String?): AuthenticationResult {
-    val authenticationResul = AuthenticateUserByName(userName, "", "", "")
+  fun authenticate(userName: String, password: String = ""): AuthenticationResult {
+    val authenticationResul = AuthenticateUserByName(userName, "", password, password)
     val call = usersService.authenticate(authenticationResul, headerMap())
     val response = call.execute()
     if (response.isSuccessful) {
@@ -87,6 +91,37 @@ class EmbyAPIClient(baseUrl: String): SerenityClient {
     }
     return headers
   }
+
+  override fun userInfo(userId: String?): SerenityUser {
+    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  }
+
+  override fun allAvailableUsers(): MutableList<SerenityUser> {
+    val allPublicUsers = fetchAllPublicUsers()
+    val allUsers = ArrayList<SerenityUser>()
+    for (user in allPublicUsers) {
+      val builder = us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
+      val sernityUser = builder.userName(user.name)
+          .userId(user.id)
+          .hasPassword(user.hasPassword)
+          .build()
+      allUsers.add(sernityUser)
+    }
+    return allUsers
+  }
+
+  override fun authenticateUser(user: SerenityUser): SerenityUser {
+    val authenticatedUser = authenticate(user.userName)
+
+    return us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
+        .accessToken(authenticatedUser.accesToken)
+        .userName(user.userName)
+        .userId(user.userId)
+        .hasPassword(user.hasPassword())
+        .build()
+  }
+
+
   override fun retrieveRootData(): IMediaContainer {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
@@ -135,9 +170,12 @@ class EmbyAPIClient(baseUrl: String): SerenityClient {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
-  override fun baseURL(): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun updateBaseUrl(baseUrl: String) {
+    this.baseUrl = baseUrl
+    RetrofitUrlManager.getInstance().setGlobalDomain(baseUrl)
   }
+
+  override fun baseURL(): String = baseUrl
 
   override fun watched(key: String?): Boolean {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

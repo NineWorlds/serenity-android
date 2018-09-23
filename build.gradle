@@ -53,6 +53,7 @@ project.ext {
   dpadAwareVersion = "1.0.1"
   butterKnifeVersion = "8.8.1"
   simpleXmlVersion = "2.7.1"
+  urlManager = "1.4.0"
 
   commonsLangVersion = "3.7"
   junitVersion = "4.12"

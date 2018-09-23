@@ -76,7 +76,9 @@ import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.UpdateProgressRequest;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
 import us.nineworlds.serenity.core.util.AndroidHelper;
+import us.nineworlds.serenity.core.util.StringPreference;
 import us.nineworlds.serenity.emby.server.EmbyServerJob;
+import us.nineworlds.serenity.emby.server.api.EmbyAPIClient;
 import us.nineworlds.serenity.events.ErrorMainMenuEvent;
 import us.nineworlds.serenity.events.MainMenuEvent;
 import us.nineworlds.serenity.fragments.EpisodeVideoGalleryFragment;
@@ -85,6 +87,7 @@ import us.nineworlds.serenity.fragments.MovieSearchGalleryFragment;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
+import us.nineworlds.serenity.injection.ServerClientPreference;
 import us.nineworlds.serenity.injection.VideoPlayerHandler;
 import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
 import us.nineworlds.serenity.jobs.GDMServerJob;
@@ -202,15 +205,23 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
 public class AndroidModule {
 
   private final Context applicationContext;
+  private SerenityClient embyAPIClient;
+  private SerenityClient plexClient;
 
   public AndroidModule(Application application) {
     this.applicationContext = application;
   }
 
-  @Provides @Singleton SerenityClient providesPlexFactory() {
-    IConfiguration serverConfig = ServerConfig.getInstance(applicationContext);
+  @Provides @Singleton SerenityClient providesSerenityClient() {
+    if (plexClient == null) {
+      IConfiguration serverConfig = ServerConfig.getInstance(applicationContext);
+      plexClient = PlexappFactory.getInstance(serverConfig);
+    }
+    if (embyAPIClient == null) {
+      embyAPIClient = new EmbyAPIClient();
+    }
 
-    return PlexappFactory.getInstance(serverConfig);
+    return plexClient;
   }
 
   @Provides @ApplicationContext Context providesApplicationContext() {
@@ -257,5 +268,9 @@ public class AndroidModule {
 
   @Provides @VideoPlayerHandler Handler providesVideoPlayerHandler() {
     return new Handler();
+  }
+
+  @Provides @Singleton @ServerClientPreference StringPreference providesServerClientPrefence(SharedPreferences sharedPreferences) {
+    return new StringPreference(sharedPreferences, "server_client", "");
   }
 }

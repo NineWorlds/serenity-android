@@ -69,7 +69,7 @@ public class SerenityModule {
   }
 
   @Provides @Singleton OkHttpClient providesOkHttpClient() {
-    return new OkHttpClient();
+    return new OkHttpClient.Builder().build();
   }
 
   @Provides GalleryVideoOnItemClickListener providesGalleryVideoOnItemClickListener() {

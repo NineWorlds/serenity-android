@@ -1,6 +1,7 @@
 package us.nineworlds.serenity.ui.activity
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -16,8 +17,10 @@ import butterknife.ButterKnife.*
 import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.Server
+import us.nineworlds.serenity.core.util.StringPreference
 import us.nineworlds.serenity.injection.ForMediaServers
 import us.nineworlds.serenity.injection.InjectingActivity
+import us.nineworlds.serenity.injection.ServerClientPreference
 import javax.inject.Inject
 
 class ServerSelectionActivity : InjectingActivity() {
@@ -74,6 +77,8 @@ class ServerSelectionActivity : InjectingActivity() {
   }
 
   private fun startNextActivity(serverInfo: Server) {
+  //  serverPreference.set(serverInfo.discoveryProtocol())
+
     val intent = Intent(this, AndroidTV::class.java)
     startActivity(intent)
     finish()

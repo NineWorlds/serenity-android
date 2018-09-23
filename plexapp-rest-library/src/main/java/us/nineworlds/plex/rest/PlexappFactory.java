@@ -24,9 +24,11 @@
 package us.nineworlds.plex.rest;
 
 import java.io.IOException;
+import java.util.List;
 import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.common.rest.SerenityClient;
+import us.nineworlds.serenity.common.rest.SerenityUser;
 
 /**
  * This class acts as a factory for retrieving items from Plex.
@@ -138,6 +140,10 @@ public class PlexappFactory implements SerenityClient {
     return client.searchEpisodes(key, query);
   }
 
+  @Override public void updateBaseUrl(String baseUrl) {
+    throw new UnsupportedOperationException("Multiple User Support is not available for Plex Servers");
+  }
+
   @Override public String baseURL() {
     return client.baseURL();
   }
@@ -210,5 +216,17 @@ public class PlexappFactory implements SerenityClient {
 
   @Override public void reinitialize() {
 
+  }
+
+  @Override public SerenityUser userInfo(String userId) {
+    throw new UnsupportedOperationException("Multiple User Support is not available for Plex Servers");
+  }
+
+  @Override public List<SerenityUser> allAvailableUsers() {
+    throw new UnsupportedOperationException("Multiple User Support is not available for Plex Servers");
+  }
+
+  @Override public SerenityUser authenticateUser(SerenityUser user) {
+    throw new UnsupportedOperationException("Multiple User Support is not available for Plex Servers");
   }
 }

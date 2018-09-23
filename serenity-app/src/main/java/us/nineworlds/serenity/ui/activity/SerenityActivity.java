@@ -35,9 +35,6 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 import static android.support.v7.widget.RecyclerView.LayoutManager;
 
-/**
- * @author dcarver
- */
 public abstract class SerenityActivity extends InjectingMvpActivity {
 
   protected abstract void createSideMenu();

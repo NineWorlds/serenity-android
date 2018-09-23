@@ -74,6 +74,7 @@ public class PlexappClient {
     Serializer serializer = new Persister();
 
     HttpLoggingInterceptor logger = new HttpLoggingInterceptor();
+
     OkHttpClient.Builder okClient = new OkHttpClient.Builder();
     logger.setLevel(HttpLoggingInterceptor.Level.HEADERS);
     okClient.addInterceptor(logger);

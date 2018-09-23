@@ -59,7 +59,7 @@ dependencies {
     exclude group: 'xpp3'
   }
   implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
-
+  implementation "me.jessyan:retrofit-url-manager:$urlManager"
 
   testImplementation "junit:junit:$junitVersion"
   testImplementation "xmlunit:xmlunit:$xmlUnitVersion"

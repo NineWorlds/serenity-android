@@ -21,4 +21,5 @@ import javax.inject.Qualifier
 import java.lang.annotation.RetentionPolicy.RUNTIME
 
 @Qualifier
-@Retention(RUNTIME) annotation class ApplicationContext
+@Retention(RUNTIME)
+annotation class ApplicationContext

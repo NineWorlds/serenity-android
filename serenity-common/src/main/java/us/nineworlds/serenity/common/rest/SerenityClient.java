@@ -1,6 +1,7 @@
 package us.nineworlds.serenity.common.rest;
 
 import java.io.IOException;
+import java.util.List;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
 
 public interface SerenityClient {
@@ -29,6 +30,8 @@ public interface SerenityClient {
 
   IMediaContainer searchEpisodes(String key, String query) throws Exception;
 
+  void updateBaseUrl(String baseUrl);
+
   String baseURL();
 
   boolean watched(String key) throws IOException;
@@ -56,4 +59,11 @@ public interface SerenityClient {
   String createTranscodeUrl(String id, int offset);
 
   void reinitialize();
+
+  SerenityUser userInfo(String userId);
+
+  List<SerenityUser> allAvailableUsers();
+
+  SerenityUser authenticateUser(SerenityUser user);
+
 }
