@@ -24,6 +24,7 @@ import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.injection.modules.AndroidModule
 import us.nineworlds.serenity.injection.modules.SerenityModule
 import us.nineworlds.serenity.test.InjectingTest
+import us.nineworlds.serenity.ui.activity.login.LoginUserActivity
 import java.util.UUID
 
 @RunWith(RobolectricTestRunner::class)
@@ -105,7 +106,7 @@ class ServerSelectionActivityTest : InjectingTest() {
     view.performClick()
 
     val shadowActivity = shadowOf(activity)
-    Assertions.assertThat(shadowActivity.nextStartedActivity).hasComponent(activity, AndroidTV::class.java)
+    Assertions.assertThat(shadowActivity.nextStartedActivity).hasComponent(activity, LoginUserActivity::class.java)
   }
 
   override fun getModules(): MutableList<Any> = mutableListOf(AndroidModule(RuntimeEnvironment.application),
