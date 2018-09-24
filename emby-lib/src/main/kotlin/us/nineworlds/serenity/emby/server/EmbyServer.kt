@@ -1,10 +1,9 @@
 package us.nineworlds.serenity.emby.server
 
 import us.nineworlds.serenity.common.Server
-import us.nineworlds.serenity.common.ServerTypes
-import us.nineworlds.serenity.common.ServerTypes.EMBY
+import java.io.Serializable
 
-class EmbyServer : Server {
+class EmbyServer : Server, Serializable {
 
   private var serverName: String? = null
   private var ipAddress: String? = ""

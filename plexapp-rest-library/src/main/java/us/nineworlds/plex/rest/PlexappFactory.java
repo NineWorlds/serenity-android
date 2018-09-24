@@ -229,4 +229,8 @@ public class PlexappFactory implements SerenityClient {
   @Override public SerenityUser authenticateUser(SerenityUser user) {
     throw new UnsupportedOperationException("Multiple User Support is not available for Plex Servers");
   }
+
+  @Override public String createUserImageUrl(SerenityUser user, int width, int height) {
+    throw new UnsupportedOperationException("Multiple User Support is not available for Plex Servers.");
+  }
 }

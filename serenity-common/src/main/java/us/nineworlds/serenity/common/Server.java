@@ -23,11 +23,13 @@
 
 package us.nineworlds.serenity.common;
 
+import java.io.Serializable;
+
 /**
  * @author dcarver
  *
  */
-public interface Server {
+public interface Server extends Serializable {
 
     String getServerName();
 

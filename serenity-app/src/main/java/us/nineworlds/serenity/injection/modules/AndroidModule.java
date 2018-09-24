@@ -96,6 +96,7 @@ import us.nineworlds.serenity.jobs.MovieCategoryJob;
 import us.nineworlds.serenity.jobs.MovieRetrievalJob;
 import us.nineworlds.serenity.jobs.MovieSecondaryCategoryJob;
 import us.nineworlds.serenity.jobs.OnDeckRecommendationsJob;
+import us.nineworlds.serenity.jobs.RetrieveAllUsersJob;
 import us.nineworlds.serenity.jobs.SeasonsRetrievalJob;
 import us.nineworlds.serenity.jobs.SubtitleJob;
 import us.nineworlds.serenity.jobs.TVCategoryJob;
@@ -105,6 +106,9 @@ import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob;
 import us.nineworlds.serenity.jobs.video.WatchedStatusJob;
 import us.nineworlds.serenity.server.GDMReceiver;
 import us.nineworlds.serenity.ui.activity.ServerSelectionActivity;
+import us.nineworlds.serenity.ui.activity.login.LoginUserActivity;
+import us.nineworlds.serenity.ui.activity.login.LoginUserPresenter;
+import us.nineworlds.serenity.ui.activity.login.LoginUserViewHolder;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserPresenter;
@@ -200,7 +204,8 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
     TVShowBrowserPresenter.class, MovieBrowserPresenter.class, EpisodeBrowserPresenter.class,
     TVShowSeasonBrowserPresenter.class, MainPresenter.class, OnKeyDownDelegate.class, ErrorMainMenuEvent.class,
     ExoplayerVideoActivity.class, ExoplayerPresenter.class, EventLogger.class, VideoKeyCodeHandlerDelegate.class,
-    UpdatePlaybackPostionJob.class, WatchedStatusJob.class, EmbyServerJob.class, ServerSelectionActivity.class
+    UpdatePlaybackPostionJob.class, WatchedStatusJob.class, EmbyServerJob.class, ServerSelectionActivity.class,
+    LoginUserActivity.class, LoginUserPresenter.class, LoginUserViewHolder.class, RetrieveAllUsersJob.class
 }, library = true)
 public class AndroidModule {
 
@@ -212,13 +217,17 @@ public class AndroidModule {
     this.applicationContext = application;
   }
 
-  @Provides @Singleton SerenityClient providesSerenityClient() {
+  @Provides SerenityClient providesSerenityClient(@ServerClientPreference StringPreference serverClientPreference) {
     if (plexClient == null) {
       IConfiguration serverConfig = ServerConfig.getInstance(applicationContext);
       plexClient = PlexappFactory.getInstance(serverConfig);
     }
     if (embyAPIClient == null) {
       embyAPIClient = new EmbyAPIClient();
+    }
+
+    if ("Emby".equals(serverClientPreference.get())) {
+      return embyAPIClient;
     }
 
     return plexClient;

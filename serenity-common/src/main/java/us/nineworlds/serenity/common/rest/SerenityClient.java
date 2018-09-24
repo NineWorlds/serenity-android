@@ -45,7 +45,6 @@ public interface SerenityClient {
   String createSectionsURL(String key, String category);
 
   String createSectionsURL();
-
   String createSectionsUrl(String key);
 
   String createMovieMetadataURL(String key);
@@ -66,4 +65,5 @@ public interface SerenityClient {
 
   SerenityUser authenticateUser(SerenityUser user);
 
+  String createUserImageUrl(SerenityUser user, int width, int height);
 }

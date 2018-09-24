@@ -119,6 +119,7 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
   @Override public void populatePosterImage(String url) {
     ColorDrawable colorDrawable =
         new ColorDrawable(ContextCompat.getColor(roundedImageView.getContext(), android.R.color.black));
+
     Glide.with(getContext())
         .load(url)
         .diskCacheStrategy(DiskCacheStrategy.ALL)

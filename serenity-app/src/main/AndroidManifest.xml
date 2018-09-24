@@ -87,16 +87,17 @@
 
     <activity
         android:name=".AndroidTV"
+        android:banner="@drawable/serenity_androidtv_banner"
         android:hardwareAccelerated="true"
         android:icon="@drawable/serenity_androidtv_banner"
         android:label="@string/title_activity_main"
         android:logo="@drawable/serenity_androidtv_banner"
-        android:banner="@drawable/serenity_androidtv_banner"
         android:screenOrientation="sensorLandscape"
         android:theme="@style/CustomActionBarTheme">
     </activity>
 
-    <activity android:name=".ui.activity.ServerSelectionActivity"
+    <activity
+        android:name=".ui.activity.ServerSelectionActivity"
         android:banner="@drawable/serenity_androidtv_banner"
         android:theme="@style/Theme.Leanback">
       <intent-filter>
@@ -107,15 +108,17 @@
 
     </activity>
 
+    <activity android:name=".ui.activity.login.LoginUserActivity"
+        android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen"/>
+
     <activity
         android:name=".ui.leanback.search.SearchActivity"
         android:hardwareAccelerated="true"
         android:icon="@drawable/serenity_androidtv_banner"
         android:label="Search"
         android:screenOrientation="sensorLandscape"
-        android:theme="@style/Theme.Leanback">
-      >
-    </activity>
+        android:theme="@style/Theme.Leanback"/>
+
     <activity
         android:name=".ui.browser.tv.TVShowBrowserActivity"
         android:label="@string/title_activity_tvbrowser_show"

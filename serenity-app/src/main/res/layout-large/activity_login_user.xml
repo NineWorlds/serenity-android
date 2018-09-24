@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/background_dark"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/select_a_user_profile"
+      android:textSize="24sp"
+      android:layout_alignParentTop="true"
+      android:gravity="center_horizontal"
+      android:layout_margin="20dp"
+      android:focusable="false"
+      />
+
+
+  <net.ganin.darv.DpadAwareRecyclerView
+      android:id="@+id/login_user_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      app:selectorVelocity="2000"
+      app:smoothScrolling="true"
+      app:foregroundSelector="@drawable/item_foreground_selector"
+      tools:orientation="horizontal"
+      tools:itemCount="3"
+      tools:listItem="@layout/item_user_profile"
+      tools:layout_height="160dp"
+      tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
+      android:descendantFocusability="afterDescendants"
+      >
+      <requestFocus/>
+  </net.ganin.darv.DpadAwareRecyclerView>
+
+</RelativeLayout>

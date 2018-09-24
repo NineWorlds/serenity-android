@@ -39,10 +39,6 @@ public abstract class SerenityActivity extends InjectingMvpActivity {
 
   protected abstract void createSideMenu();
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-  }
-
   @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
     DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
 

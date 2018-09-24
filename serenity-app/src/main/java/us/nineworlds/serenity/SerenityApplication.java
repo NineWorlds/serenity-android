@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import net.danlew.android.joda.JodaTimeAndroid;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -98,6 +99,8 @@ public class SerenityApplication extends Application {
 
   private void init() {
     inject();
+
+    JodaTimeAndroid.init(this);
     if (enableTracking) {
       installAnalytics();
     }

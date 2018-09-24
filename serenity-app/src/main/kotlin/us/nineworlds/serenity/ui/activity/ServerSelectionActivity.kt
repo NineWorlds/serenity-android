@@ -1,7 +1,6 @@
 package us.nineworlds.serenity.ui.activity
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -12,8 +11,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.ButterKnife.*
+import butterknife.ButterKnife.bind
 import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.Server
@@ -21,16 +19,20 @@ import us.nineworlds.serenity.core.util.StringPreference
 import us.nineworlds.serenity.injection.ForMediaServers
 import us.nineworlds.serenity.injection.InjectingActivity
 import us.nineworlds.serenity.injection.ServerClientPreference
+import us.nineworlds.serenity.ui.activity.login.LoginUserActivity
 import javax.inject.Inject
 
 class ServerSelectionActivity : InjectingActivity() {
 
   companion object {
-    const val SERVER_DISPLAY_DELAY = 4000L
+    const val SERVER_DISPLAY_DELAY = 5000L
   }
 
   @field:[Inject ForMediaServers]
   lateinit var servers: MutableMap<String, Server>
+
+  @field:[Inject ServerClientPreference]
+  lateinit var serverClientPreference: StringPreference
 
   @BindView(R.id.server_container)
   internal lateinit var serverContainer: LinearLayout
@@ -77,7 +79,15 @@ class ServerSelectionActivity : InjectingActivity() {
   }
 
   private fun startNextActivity(serverInfo: Server) {
-  //  serverPreference.set(serverInfo.discoveryProtocol())
+    serverClientPreference.set(serverInfo.discoveryProtocol())
+
+    if (serverInfo.discoveryProtocol() == "Emby") {
+      val intent = Intent(this, LoginUserActivity::class.java)
+      intent.putExtra("server", serverInfo)
+      startActivity(intent)
+      finish()
+      return
+    }
 
     val intent = Intent(this, AndroidTV::class.java)
     startActivity(intent)

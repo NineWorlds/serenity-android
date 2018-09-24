@@ -93,7 +93,7 @@ class EmbyServerJob : InjectingJob() {
 
       Timber.d(">>> Done looping over all network interfaces. Now waiting for a reply!")
 
-      receive(c, 3000L)
+      receive(c, 4000L)
 
       //Close the port!
       c.close()

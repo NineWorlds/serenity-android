@@ -121,7 +121,6 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
         .build()
   }
 
-
   override fun retrieveRootData(): IMediaContainer {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
@@ -229,4 +228,7 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
+  override fun createUserImageUrl(user: SerenityUser, width: Int, height: Int): String {
+    return "$baseUrl/Emby/Users/${user.userId}/Images/Primary?Width=$width&Height=$height"
+  }
 }

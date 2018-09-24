@@ -23,74 +23,51 @@
 
 package us.nineworlds.plex.server;
 
+import java.io.Serializable;
 import us.nineworlds.serenity.common.Server;
 
-public class GDMServer implements Server {
+public class GDMServer implements Server, Serializable {
 
     private String serverName;
     private String ipAddress;
     private String hostName;
     private String discoveryProtocol = "GDM";
 
-    /* (non-Javadoc)
-     * @see us.nineworlds.serenity.core.model.Server#getServerName()
-     */
     @Override
     public String getServerName() {
         return serverName;
     }
 
-    /* (non-Javadoc)
-     * @see us.nineworlds.serenity.core.model.Server#setServerName(java.lang.String)
-     */
     @Override
     public void setServerName(String serverName) {
         this.serverName = serverName;
     }
 
-    /* (non-Javadoc)
-     * @see us.nineworlds.serenity.core.model.Server#getIPAddress()
-     */
     @Override
     public String getIPAddress() {
         return ipAddress;
     }
 
-    /* (non-Javadoc)
-     * @see us.nineworlds.serenity.core.model.Server#setIPAddress(java.lang.String)
-     */
     @Override
     public void setIPAddress(String ipaddress) {
         this.ipAddress = ipaddress;
     }
 
-    /* (non-Javadoc)
-     * @see us.nineworlds.serenity.core.model.Server#getHostName()
-     */
     @Override
     public String getHostName() {
         return hostName;
     }
 
-    /* (non-Javadoc)
-     * @see us.nineworlds.serenity.core.model.Server#setHostName(java.lang.String)
-     */
     @Override
     public void setHostName(String hostName) {
         this.hostName = hostName;
     }
 
-    /* (non-Javadoc)
-     * @see us.nineworlds.serenity.core.model.Server#discoveryProtocol()
-     */
     @Override
     public String discoveryProtocol() {
         return discoveryProtocol;
     }
 
-    /* (non-Javadoc)
-     * @see us.nineworlds.serenity.core.model.Server#setDiscoveryProtocol(java.lang.String)
-     */
     @Override
     public void setDiscoveryProtocol(String protocol) {
         discoveryProtocol = protocol;
