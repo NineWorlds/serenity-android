@@ -64,4 +64,5 @@ project.ext {
   xmlUnitVersion = "1.3"
   assertJAndroidVersion = "1.1.1"
   commonsioVersion = "2.6"
+  jacocoVersion = "0.8.2"
 }

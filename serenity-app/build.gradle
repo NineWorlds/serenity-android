@@ -7,7 +7,7 @@ buildscript {
   }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
-    classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.11.0'
+    classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.12.0'
   }
 }
 
@@ -122,7 +122,7 @@ android {
 }
 
 junitJacoco {
-  jacocoVersion = '0.7.2.201409121644' // type String
+  jacocoVersion = "0.7.2.201409121644" // type String
   excludes = ["**/*_ViewBinding.class", "**/*InjectAdapter.class", "android/support/**/*.class",
               "com/google/**/*.class", "com/birbit/**/*.class", "butterknife/**/*.class",
               "com/arellomobile/**/*.class", "net/ganin/darv/**/*.class", "**/*ViewStateProvider.class",
