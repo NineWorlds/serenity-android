@@ -35,24 +35,19 @@ import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 
 /**
- * Represents the meta data returned for the various libraries in Plex. Used to
+ * Represents the meta data returned for the various libraries in media servers. Used to
  * construct the main menu items for Serenity.
- *
- * @author davidcarver
  */
 public class MenuMediaContainer extends AbstractMediaContainer {
 
-  @Inject protected AndroidHelper androidHelper;
-
   @Inject protected SharedPreferences preferences;
-
   @Inject protected Resources resources;
 
   private static final String SETTINGS_SECTION_KEY = "0";
   private static final String SETTINGS_TYPE = "settings";
   private static final String SEARCH_TYPE = "search";
   private static final String OPTIONS_TYPE = "options";
-  protected ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
+  private ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
 
   public MenuMediaContainer(IMediaContainer mc) {
     super(mc);
@@ -90,16 +85,9 @@ public class MenuMediaContainer extends AbstractMediaContainer {
   }
 
   protected boolean isImplemented(IDirectory item) {
-    if ("photos".equals(item.getType()) || "photo".equals(item.getType())) {
-      return false;
-    }
-    return true;
+    return !"photos".equals(item.getType()) && !"photo".equals(item.getType()) && !"folders".equals(item.getType());
   }
 
-  /**
-   * Create the settings MenuItem since there is no option to retrieve this
-   * from Plex itself.
-   */
   public MenuItem createSettingsMenu() {
     MenuItem settingsMenuItem = new MenuItem();
     settingsMenuItem.setTitle(resources.getString(R.string.settings));
@@ -108,10 +96,6 @@ public class MenuMediaContainer extends AbstractMediaContainer {
     return settingsMenuItem;
   }
 
-  /**
-   * Create the settings MenuItem since there is no option to retrieve this
-   * from Plex itself.
-   */
   public MenuItem createSearchMenu() {
     MenuItem searchMenuItem = new MenuItem();
     searchMenuItem.setTitle(resources.getString(R.string.search));

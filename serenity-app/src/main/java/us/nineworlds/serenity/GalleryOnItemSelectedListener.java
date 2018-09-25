@@ -50,15 +50,15 @@ public class GalleryOnItemSelectedListener extends BaseInjector
   }
 
   int getBackgroundImageId(MenuItem menuItem) {
-    if ("movie".equals(menuItem.getType())) {
+    if ("movie".equals(menuItem.getType()) || "movies".equals(menuItem.getType())) {
       return R.drawable.movies;
     }
 
-    if ("show".equals(menuItem.getType())) {
+    if ("show".equals(menuItem.getType()) || "tvshows".equals(menuItem.getType())) {
       return R.drawable.tvshows;
     }
 
-    if ("artist".equals(menuItem.getType())) {
+    if ("artist".equals(menuItem.getType()) || "music".equals(menuItem.getType())) {
       return R.drawable.music;
     }
 

@@ -11,6 +11,6 @@ class LoginUserOnItemClickListner(val presenter: LoginUserPresenter) : OnItemCli
     val adapter: LoginUserAdapter = recyclerView?.adapter as LoginUserAdapter
     val user = adapter.getItemAt(position)
 
-    Toast.makeText(view?.context, "Authenticating user ${user?.userName}", Toast.LENGTH_LONG ).show()
+    presenter.loadUser(user!!)
   }
 }

@@ -10,4 +10,5 @@ data class Item(@Json(name = "Name") val name: String,
     @Json(name = "ServerId") val serverId: String,
     @Json(name = "Id") val id: String,
     @Json(name = "Etag") val etag: String,
-    @Json(name = "DateCreated") val dateCreated: LocalDateTime)
+    @Json(name = "DateCreated") val dateCreated: LocalDateTime,
+    @Json(name = "CollectionType") val collectionType: String)

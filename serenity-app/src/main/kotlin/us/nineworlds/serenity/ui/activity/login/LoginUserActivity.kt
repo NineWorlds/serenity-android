@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.ui.activity.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
@@ -14,6 +15,7 @@ import com.google.android.flexbox.FlexboxItemDecoration
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import net.ganin.darv.DpadAwareRecyclerView
+import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.rest.SerenityUser
@@ -70,6 +72,8 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
   }
 
   override fun launchNextScreen() {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    val intent = Intent(this, AndroidTV::class.java)
+    startActivity(intent)
+    finish()
   }
 }

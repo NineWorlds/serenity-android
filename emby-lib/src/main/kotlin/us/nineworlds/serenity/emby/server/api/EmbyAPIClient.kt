@@ -12,6 +12,8 @@ import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.common.rest.impl.SerenityUser.Builder
+import us.nineworlds.serenity.emby.adapters.MediaContainerAdaptor
+import us.nineworlds.serenity.emby.model.MediaContainer
 import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
 import us.nineworlds.serenity.emby.server.model.*
 import java.lang.IllegalStateException
@@ -126,8 +128,7 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
 
     val queryResult = call.execute().body()
 
-    var mainMenu : IMediaContainer = null;
-
+    return MediaContainerAdaptor().createMainMenu(queryResult!!.items)
   }
 
   override fun retrieveLibrary(): IMediaContainer {
@@ -135,7 +136,11 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
   }
 
   override fun retrieveSections(): IMediaContainer {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    val call = usersService.usersViews(headerMap(), userId)
+
+    val queryResult = call.execute().body()
+
+    return MediaContainerAdaptor().createMainMenu(queryResult!!.items)
   }
 
   override fun retrieveSections(key: String?): IMediaContainer {

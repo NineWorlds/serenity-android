@@ -53,6 +53,14 @@ class EmbyAPIClientTest {
     assertThat(result).isNotNull()
   }
 
+  @Test fun generateMainMenuForCurrentUser() {
+    authenticate()
+
+    val result = client.retrieveRootData()
+    assertThat(result).isNotNull
+    assertThat(result!!.directories).isNotEmpty
+  }
+
   fun authenticate(): AuthenticationResult {
     val users = client.fetchAllPublicUsers()
     val user = users[0]
