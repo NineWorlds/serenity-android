@@ -122,7 +122,12 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
   }
 
   override fun retrieveRootData(): IMediaContainer {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    val call = usersService.usersViews(headerMap(), userId)
+
+    val queryResult = call.execute().body()
+
+    var mainMenu : IMediaContainer = null;
+
   }
 
   override fun retrieveLibrary(): IMediaContainer {
