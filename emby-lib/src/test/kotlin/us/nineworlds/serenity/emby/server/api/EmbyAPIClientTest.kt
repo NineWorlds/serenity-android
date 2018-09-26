@@ -7,6 +7,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowLog
 import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 
 @RunWith(RobolectricTestRunner::class)
@@ -17,6 +18,8 @@ class EmbyAPIClientTest {
 
   @Before
   fun setUp() {
+    ShadowLog.stream = System.out
+
     client = EmbyAPIClient()
     client.updateBaseUrl("http://plexserver:8096")
   }
@@ -59,6 +62,20 @@ class EmbyAPIClientTest {
     val result = client.retrieveRootData()
     assertThat(result).isNotNull
     assertThat(result!!.directories).isNotEmpty
+  }
+
+  @Test fun fetchItemsForMoviesForUser() {
+    authenticate()
+
+    val result = client.retrieveRootData()
+
+    val key = result.directories[1].key
+
+    val itemResult = client.fetchItemQuery(key)
+
+   // val itemResult = client.fetchItem("d385ceb98f6a84e4c9c8f3301a5c6207")
+
+   // assertThat(itemResult.items).isNotEmpty
   }
 
   fun authenticate(): AuthenticationResult {

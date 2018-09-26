@@ -6,6 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
 import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 import us.nineworlds.serenity.emby.server.model.PublicUserInfo
@@ -29,5 +30,19 @@ interface UsersService {
    */
   @GET("/emby/Users/{userId}/Views")
   fun usersViews(@HeaderMap headerMap: Map<String, String>, @Path("userId") userId: String): Call<QueryResult>
+
+  @GET("/emby/Users/{userId}/Items")
+  fun fetchItemQuery(@HeaderMap headerMap: Map<String, String>,
+      @Path("userId") userId: String,
+      @Query( "ParentId") parentId: String,
+      @Query("Recursive") recursive: Boolean = true,
+      @Query("SortBy") sortOptions: String = "SortName",
+      @Query("SortOrder") sortOrder: String = "Ascending",
+      @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres"): Call<QueryResult>
+
+  @GET("/emby/Users/{userId}/Items/{itemId}")
+  fun fetchItem(@HeaderMap headerMap: Map<String, String>,
+      @Path("userId") userId: String,
+      @Path("itemId") itemId: String): Call<QueryResult>
 
 }

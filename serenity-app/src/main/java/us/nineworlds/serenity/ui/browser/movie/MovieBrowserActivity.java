@@ -51,8 +51,7 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
-public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
-    implements MovieBrowserContract.MovieBrowserView {
+public class MovieBrowserActivity extends SerenityMultiViewVideoActivity implements MovieBrowserContract.MovieBrowserView {
 
   @Inject protected SharedPreferences prefs;
 

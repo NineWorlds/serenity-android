@@ -84,6 +84,18 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
     return call.execute().body()!!
   }
 
+  fun fetchItem(id: String): QueryResult {
+    val call = usersService.fetchItem(headerMap(), userId, id)
+
+    return call.execute().body()!!
+  }
+
+  fun fetchItemQuery(id: String): QueryResult {
+    val call = usersService.fetchItemQuery(headerMap(), userId, id)
+
+    return call.execute().body()!!
+  }
+
   private fun headerMap(): Map<String, String> {
     val headers = HashMap<String, String>()
     val authorizationValue = "MediaBrowser Client=\"Android\", Device=\"Samsung Galaxy SIII\", DeviceId=\"xxx\", Version=\"1.0.0.0\""
@@ -123,6 +135,7 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
         .build()
   }
 
+
   override fun retrieveRootData(): IMediaContainer {
     val call = usersService.usersViews(headerMap(), userId)
 
@@ -148,7 +161,7 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
   }
 
   override fun retrieveSections(key: String?, category: String?): IMediaContainer {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    TODO("not implemented")
   }
 
   override fun retrieveSections(key: String?, category: String?, secondaryCategory: String?): IMediaContainer {
