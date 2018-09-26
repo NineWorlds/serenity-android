@@ -10,13 +10,13 @@ public interface SerenityClient {
 
   IMediaContainer retrieveLibrary() throws Exception;
 
-  IMediaContainer retrieveSections() throws Exception;
+  IMediaContainer retrieveItemByCategories() throws Exception;
 
-  IMediaContainer retrieveSections(String key) throws Exception;
+  IMediaContainer retrieveItemByIdCategory(String key) throws Exception;
 
-  IMediaContainer retrieveSections(String key, String category) throws Exception;
+  IMediaContainer retrieveItemByIdCategory(String key, String category) throws Exception;
 
-  IMediaContainer retrieveSections(String key, String category, String secondaryCategory) throws Exception;
+  IMediaContainer retrieveItemByCategories(String key, String category, String secondaryCategory) throws Exception;
 
   IMediaContainer retrieveSeasons(String key) throws Exception;
 

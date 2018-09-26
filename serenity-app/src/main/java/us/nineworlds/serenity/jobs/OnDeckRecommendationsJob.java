@@ -34,7 +34,7 @@ public class OnDeckRecommendationsJob extends InjectingJob {
   }
 
   @Override public void onRun() throws Throwable {
-    IMediaContainer mediaContainer = client.retrieveSections();
+    IMediaContainer mediaContainer = client.retrieveItemByCategories();
     onResponse(mediaContainer);
   }
 
@@ -48,13 +48,13 @@ public class OnDeckRecommendationsJob extends InjectingJob {
       if ("movie".equals(library.getType())) {
         String section = library.getSection();
 
-        IMediaContainer mediaContainer = client.retrieveSections(section, "onDeck");
+        IMediaContainer mediaContainer = client.retrieveItemByIdCategory(section, "onDeck");
         onMovieResponse(mediaContainer);
       }
 
       if ("show".equals(library.getType())) {
         String section = library.getSection();
-        IMediaContainer mediaContainer = client.retrieveSections(section, "onDeck");
+        IMediaContainer mediaContainer = client.retrieveItemByIdCategory(section, "onDeck");
         onShowResponse(mediaContainer);
       }
     }

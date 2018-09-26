@@ -102,6 +102,6 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
       category = DEFAULT_CATEGORY;
     }
 
-    return factory.retrieveSections(key, category);
+    return factory.retrieveItemByIdCategory(key, category);
   }
 }

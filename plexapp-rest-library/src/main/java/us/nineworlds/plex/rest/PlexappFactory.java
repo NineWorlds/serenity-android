@@ -84,7 +84,7 @@ public class PlexappFactory implements SerenityClient {
    * @return MediaContainer the media container for the library
    * @throws Exception
    */
-  @Override public IMediaContainer retrieveSections() throws Exception {
+  @Override public IMediaContainer retrieveItemByCategories() throws Exception {
     return client.retrieveSections();
   }
 
@@ -96,7 +96,7 @@ public class PlexappFactory implements SerenityClient {
    * @return MediaContainer the media container for the library
    * @throws Exception
    */
-  @Override public IMediaContainer retrieveSections(String key) throws Exception {
+  @Override public IMediaContainer retrieveItemByIdCategory(String key) throws Exception {
     return client.retrieveSections(key);
   }
 
@@ -107,11 +107,11 @@ public class PlexappFactory implements SerenityClient {
    * @return MediaContainer
    * @throws Exception
    */
-  @Override public IMediaContainer retrieveSections(String key, String category) throws Exception {
+  @Override public IMediaContainer retrieveItemByIdCategory(String key, String category) throws Exception {
     return client.retrieveSections(key, category);
   }
 
-  @Override public IMediaContainer retrieveSections(String key, String category, String secondaryCategory)
+  @Override public IMediaContainer retrieveItemByCategories(String key, String category, String secondaryCategory)
       throws Exception {
     return client.retrieveSections(key, category, secondaryCategory);
   }

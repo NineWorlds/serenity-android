@@ -148,7 +148,7 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
-  override fun retrieveSections(): IMediaContainer {
+  override fun retrieveItemByCategories(): IMediaContainer {
     val call = usersService.usersViews(headerMap(), userId)
 
     val queryResult = call.execute().body()
@@ -156,15 +156,15 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
     return MediaContainerAdaptor().createMainMenu(queryResult!!.items)
   }
 
-  override fun retrieveSections(key: String?): IMediaContainer {
+  override fun retrieveItemByIdCategory(key: String?): IMediaContainer {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
-  override fun retrieveSections(key: String?, category: String?): IMediaContainer {
+  override fun retrieveItemByIdCategory(key: String?, category: String?): IMediaContainer {
     TODO("not implemented")
   }
 
-  override fun retrieveSections(key: String?, category: String?, secondaryCategory: String?): IMediaContainer {
+  override fun retrieveItemByCategories(key: String?, category: String?, secondaryCategory: String?): IMediaContainer {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 

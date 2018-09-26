@@ -21,7 +21,7 @@ public class MainMenuRetrievalJob extends InjectingJob {
   }
 
   @Override public void onRun() throws Throwable {
-    IMediaContainer mediaContainer = client.retrieveSections();
+    IMediaContainer mediaContainer = client.retrieveItemByCategories();
     MainMenuEvent event = new MainMenuEvent(mediaContainer);
     eventBus.post(event);
   }

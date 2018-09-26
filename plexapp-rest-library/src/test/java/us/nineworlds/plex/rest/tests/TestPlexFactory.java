@@ -76,42 +76,42 @@ public class TestPlexFactory {
 
   @Test public void testRetrieveSections() throws Exception {
     SerenityClient factory = PlexappFactory.getInstance(config);
-    IMediaContainer mediaContainer = factory.retrieveSections();
+    IMediaContainer mediaContainer = factory.retrieveItemByCategories();
     assertNotNull(mediaContainer);
     assertEquals(2, mediaContainer.getSize());
   }
 
   @Test public void testRetrieveSectionByKeyMovies() throws Exception {
     SerenityClient factory = PlexappFactory.getInstance(config);
-    IMediaContainer mediaContainer = factory.retrieveSections("4");
+    IMediaContainer mediaContainer = factory.retrieveItemByIdCategory("4");
     assertNotNull(mediaContainer);
     assertEquals(19, mediaContainer.getSize());
   }
 
   @Test public void testRetrieveSectionByKeyTVShows() throws Exception {
     SerenityClient factory = PlexappFactory.getInstance(config);
-    IMediaContainer mediaContainer = factory.retrieveSections("6");
+    IMediaContainer mediaContainer = factory.retrieveItemByIdCategory("6");
     assertNotNull(mediaContainer);
     assertEquals(15, mediaContainer.getSize());
   }
 
   @Test public void testRetrieveSectionByKeyMusic() throws Exception {
     SerenityClient factory = PlexappFactory.getInstance(config);
-    IMediaContainer mediaContainer = factory.retrieveSections("3");
+    IMediaContainer mediaContainer = factory.retrieveItemByIdCategory("3");
     assertNotNull(mediaContainer);
     assertEquals(11, mediaContainer.getSize());
   }
 
   @Test public void testRetrieveAllTVShows() throws Exception {
     SerenityClient factory = PlexappFactory.getInstance(config);
-    IMediaContainer mediaContainer = factory.retrieveSections("6", "all");
+    IMediaContainer mediaContainer = factory.retrieveItemByIdCategory("6", "all");
     List<IDirectory> directories = mediaContainer.getDirectories();
     assertEquals(6, directories.size());
   }
 
   @Test public void testRetrieveAllMusic() throws Exception {
     SerenityClient factory = PlexappFactory.getInstance(config);
-    IMediaContainer mediaContainer = factory.retrieveSections("3", "all");
+    IMediaContainer mediaContainer = factory.retrieveItemByIdCategory("3", "all");
     List<IDirectory> directories = mediaContainer.getDirectories();
     assertEquals(4, directories.size());
   }
