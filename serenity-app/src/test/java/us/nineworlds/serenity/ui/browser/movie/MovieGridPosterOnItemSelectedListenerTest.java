@@ -53,6 +53,7 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -113,7 +114,7 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
   }
 
   protected void verifyExpectedFanArtCalls(String expectedBackgroundUrl, String expectedTranscodingUrl) {
-    verify(mockVideoContentInfo, times(2)).getBackgroundURL();
+    verify(mockVideoContentInfo, atLeast(2)).getBackgroundURL();
     verify(mockPlexFactory).createImageURL(expectedBackgroundUrl, 1280, 720);
   }
 

@@ -12,5 +12,6 @@ interface FilterService {
   fun availableFilters(@HeaderMap headerMap: Map<String,String>,
       @Query("UserId") userId: String,
       @Query("ParentId") itemId: String? = null,
-      @Query("MediaTypes") mediaTypes: String? = null): Call<QueryFilters>
+      @Query("MediaTypes") mediaTypes: String? = null,
+      @Query("Recursive") recursive: Boolean = true): Call<QueryFilters>
 }

@@ -80,7 +80,7 @@ class LoginUserPresenterTest : InjectingTest() {
 
     presenter.initPresenter(mockServer)
 
-    verify(mockSerenityClient).updateBaseUrl("http://192.168.0.1:8096")
+    verify(mockSerenityClient).updateBaseUrl("http://192.168.0.1:8096/")
     verify(mockServer).ipAddress
   }
 

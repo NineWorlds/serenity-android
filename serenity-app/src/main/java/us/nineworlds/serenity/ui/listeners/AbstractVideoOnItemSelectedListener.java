@@ -42,6 +42,7 @@ import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
+import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
@@ -56,11 +57,12 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
     implements DpadAwareRecyclerView.OnItemSelectedListener {
 
-  @Inject protected SerenityClient plexFactory;
+  @Inject protected SerenityClient serenityClient;
 
   @Inject protected SharedPreferences preferences;
 
   @Inject JobManager jobManager;
+  @Inject Logger logger;
 
   public static final int WATCHED_VIEW_ID = 1000;
   protected View currentView;
@@ -160,7 +162,9 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
     }
 
     final View fanArt = context.findViewById(R.id.fanArt);
-    String transcodingURL = plexFactory.createImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+    logger.debug("Background ImageUrl: " + videoInfo.getBackgroundURL() );
+    String transcodingURL = serenityClient.createImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+    logger.debug("Generated Image Url: " + transcodingURL);
 
     SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
       @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {

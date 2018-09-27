@@ -91,7 +91,7 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
   }
 
   fun fetchItemQuery(id: String): QueryResult {
-    val call = usersService.fetchItemQuery(headerMap(), userId, id)
+    val call = usersService.fetchItemQuery(headerMap(), userId, id, genre = null)
 
     return call.execute().body()!!
   }
@@ -157,11 +157,23 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
   }
 
   override fun retrieveItemByIdCategory(key: String?): IMediaContainer {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    val call = filterService.availableFilters(headerMap(), userId, key)
+
+    val queryResult = call.execute().body()
+
+    return MediaContainerAdaptor().createCategory(queryResult!!.genres!!)
   }
 
-  override fun retrieveItemByIdCategory(key: String?, category: String?): IMediaContainer {
-    TODO("not implemented")
+  override fun retrieveItemByIdCategory(key: String, category: String): IMediaContainer {
+    var genre: String? = null
+    if (category != "all") {
+      genre = category
+    }
+
+    val call = usersService.fetchItemQuery(headerMap(), userId = userId, parentId = key, genre = genre)
+
+    val results = call.execute().body()
+    return MediaContainerAdaptor().createVideoList(results!!.items)
   }
 
   override fun retrieveItemByCategories(key: String?, category: String?, secondaryCategory: String?): IMediaContainer {
@@ -240,7 +252,7 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
   }
 
   override fun createImageURL(url: String?, width: Int, height: Int): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return url!!
   }
 
   override fun createTranscodeUrl(id: String?, offset: Int): String {

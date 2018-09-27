@@ -38,6 +38,7 @@ interface UsersService {
       @Query("Recursive") recursive: Boolean = true,
       @Query("SortBy") sortOptions: String = "SortName",
       @Query("SortOrder") sortOrder: String = "Ascending",
+      @Query( "Genres") genre:String?,
       @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres"): Call<QueryResult>
 
   @GET("/emby/Users/{userId}/Items/{itemId}")

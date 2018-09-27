@@ -64,6 +64,28 @@ class EmbyAPIClientTest {
     assertThat(result!!.directories).isNotEmpty
   }
 
+  @Test fun createCategoriesForParentId() {
+    authenticate()
+
+    val result = client.retrieveItemByCategories()
+    val parentId = result.directories[1].key
+
+    val categories = client.retrieveItemByIdCategory(parentId)
+
+    assertThat(categories.directories).isNotEmpty
+  }
+
+  @Test fun fetchAllMovies() {
+    authenticate()
+
+    val result = client.retrieveItemByCategories()
+    val parentId = result.directories[1].key
+
+    val movies = client.retrieveItemByIdCategory(parentId, "all")
+
+    assertThat(movies.videos).isNotEmpty
+  }
+
   @Test fun fetchItemsForMoviesForUser() {
     authenticate()
 

@@ -42,6 +42,8 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
   private static final String MENU_TYPE_MOVIE = "movie";
   private static final String MENU_TYPE_MUSIC = "artist";
   private static final String MENU_TYPE_OPTIONS = "options";
+  private static final String MENU_TYPE_MOVIES = "movies";
+  private static final String MENU_TYPE_TVSHOWS = "tvshows";
 
   @Override
   public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
@@ -64,14 +66,14 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
 
     Intent intent;
 
-    if (MENU_TYPE_MOVIE.equalsIgnoreCase(activityType)) {
+    if (MENU_TYPE_MOVIE.equalsIgnoreCase(activityType) || MENU_TYPE_MOVIES.equalsIgnoreCase(activityType)) {
       intent = new Intent(context, MovieBrowserActivity.class);
       intent.putExtra("key", librarySection);
       context.startActivityForResult(intent, 0);
       return;
     }
 
-    if (MENU_TYPE_SHOW.equalsIgnoreCase(activityType)) {
+    if (MENU_TYPE_SHOW.equalsIgnoreCase(activityType) || MENU_TYPE_TVSHOWS.equalsIgnoreCase(activityType)) {
       intent = new Intent(context, TVShowBrowserActivity.class);
       intent.putExtra("key", librarySection);
       context.startActivityForResult(intent, 0);
