@@ -63,7 +63,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
       cardView.setVisibility(View.VISIBLE);
     }
 
-    ImageView posterImage = (ImageView) context.findViewById(R.id.video_poster);
+    ImageView posterImage = context.findViewById(R.id.video_poster);
     posterImage.setVisibility(View.VISIBLE);
     posterImage.setScaleType(ScaleType.FIT_XY);
     posterImage.setMaxWidth(posterImage.getWidth());
@@ -71,10 +71,10 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 
     Glide.with(context).load(videoInfo.getImageURL()).fitCenter().into(posterImage);
 
-    TextView summary = (TextView) context.findViewById(R.id.movieSummary);
+    TextView summary = context.findViewById(R.id.movieSummary);
     summary.setText(videoInfo.getSummary());
 
-    TextView title = (TextView) context.findViewById(R.id.movieBrowserPosterTitle);
+    TextView title = context.findViewById(R.id.movieBrowserPosterTitle);
     title.setText(videoInfo.getTitle());
 
     ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100, 58);

@@ -107,19 +107,20 @@ public class MovieMediaContainer extends AbstractMediaContainer {
         // why there can be multiples.
         IMedia media = mediacont.get(0);
         mpi.setContainer(media.getContainer());
-        List<IPart> parts = media.getVideoPart();
-        IPart part = parts.get(0);
+        if (media.getVideoPart() != null) {
+          List<IPart> parts = media.getVideoPart();
+          IPart part = parts.get(0);
+          StringBuilder builder = new StringBuilder();
+          builder.append(factory.baseURL());
+          builder.append(part.getKey().replaceFirst("/", ""));
+          String directPlayUrl = builder.toString();
+          mpi.setDirectPlayUrl(directPlayUrl);
+        }
         mpi.setAudioCodec(media.getAudioCodec());
         mpi.setVideoCodec(media.getVideoCodec());
         mpi.setVideoResolution(media.getVideoResolution());
         mpi.setAspectRatio(media.getAspectRatio());
         mpi.setAudioChannels(media.getAudioChannels());
-        StringBuilder builder = new StringBuilder();
-        builder.append(factory.baseURL());
-        builder.append(part.getKey().replaceFirst("/", ""));
-
-        String directPlayUrl = builder.toString();
-        mpi.setDirectPlayUrl(directPlayUrl);
       }
 
       createVideoDetails(movie, mpi);

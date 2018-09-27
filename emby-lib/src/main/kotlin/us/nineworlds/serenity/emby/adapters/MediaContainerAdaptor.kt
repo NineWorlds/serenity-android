@@ -1,13 +1,21 @@
 package us.nineworlds.serenity.emby.adapters
 
+import org.joda.time.Duration
+import org.joda.time.Interval
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.emby.model.Directory
+import us.nineworlds.serenity.emby.model.Media
 import us.nineworlds.serenity.emby.model.MediaContainer
 import us.nineworlds.serenity.emby.model.Video
 import us.nineworlds.serenity.emby.server.model.Item
 import us.nineworlds.serenity.emby.server.model.NameGuidPair
+import java.util.concurrent.TimeUnit
 
 class MediaContainerAdaptor {
+
+  companion object {
+    const val TICKS_PER_MILLISECOND: Long = 10000
+  }
 
   fun createMainMenu(items: List<Item>): IMediaContainer {
     val mediaContainer = MediaContainer()
@@ -105,10 +113,34 @@ class MediaContainerAdaptor {
       video.backgroundImageKey = "/emby/Items/${item.id}/Images/Backdrop"
       video.thumbNailImageKey = "/emby/Items/${item.id}/Images/Primary"
 
+      if (item.runTimeTicks != null) {
+        val milliseconds = convertTicksToMilliseconds(item.runTimeTicks)
+        video.duration = milliseconds
+      }
+
+      if (item.mediaStreams != null) {
+        val medias = ArrayList<Media>()
+        val media = Media()
+        media.container = item.container
+        for (mediaStream in item.mediaStreams) {
+          if (mediaStream.type == "Video") {
+            media.aspectRatio = mediaStream.aspectRatio
+            media.videoCodec = mediaStream.codec
+          } else {
+            media.audioCodec = mediaStream.codec
+            media.audioChannels = mediaStream.channels
+          }
+          medias.add(media)
+        }
+        video.medias = medias.toList()
+      }
+
       serenityVideos.add(video)
     }
     mediaContainer.videos = serenityVideos.toList()
     return mediaContainer
   }
+
+  fun convertTicksToMilliseconds(ticks: Long): Long = ticks.div(TICKS_PER_MILLISECOND)
 
 }
