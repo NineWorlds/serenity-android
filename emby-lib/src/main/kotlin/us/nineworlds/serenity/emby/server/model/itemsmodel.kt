@@ -22,13 +22,15 @@ data class Item(@Json(name = "Name") val name: String,
     @Json(name = "CommunityRating") val communityRating: Double?,
     @Json(name = "RunTimeTicks") val runTimeTicks: Long?,
     @Json(name = "UserData") val userData: UserData?,
-    @Json(name = "MediaStreams") val mediaStreams: List<MediaStream>?)
+    @Json(name = "MediaStreams") val mediaStreams: List<MediaStream>?,
+    @Json(name = "MediaSources") val mediaSources: List<MediaSource>?)
 
-data class UserData(@Json(name = "PlaybackPositionTicks") val playbackPostionTicks: Long?,
+data class UserData(@Json(name = "PlaybackPositionTicks") val playbackPositionTicks: Long?,
     @Json(name = "PlayCount") val playCount: Long?,
     @Json(name = "IsFavorite") val isFavorite: Boolean?,
     @Json(name = "Played") val played: Boolean?,
-    @Json(name = "Key") val key: String?)
+    @Json(name = "Key") val key: String?,
+    @Json(name = "PlaybackPercentage") val playbackPercentage: Double?)
 
 data class MediaStream(@Json(name = "Codec") val codec: String?,
     @Json(name = "DisplayTitle") val displayTitle: String?,
@@ -36,3 +38,8 @@ data class MediaStream(@Json(name = "Codec") val codec: String?,
     @Json(name = "Type") val type: String?,
     @Json(name = "ChannelType") val channelType: String?,
     @Json(name = "Channels") val channels: String?)
+
+data class MediaSource(@Json(name = "Id") val id: String?,
+    @Json(name = "Container") val container: String?,
+    @Json(name = "SupportsDirectStream") val directStream: Boolean?,
+    @Json(name = "SupportsTranscoding") val transcoding: Boolean? )

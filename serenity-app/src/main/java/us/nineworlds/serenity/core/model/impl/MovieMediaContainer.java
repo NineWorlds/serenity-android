@@ -65,7 +65,7 @@ public class MovieMediaContainer extends AbstractMediaContainer {
     for (IVideo movie : videos) {
       VideoContentInfo mpi = new MoviePosterInfo();
       mpi.setMediaTagIdentifier(mediaTagId);
-      mpi.setId(movie.getRatingKey());
+      mpi.setId(movie.getKey());
       mpi.setStudio(movie.getStudio());
       mpi.setSummary(movie.getSummary());
 
@@ -100,6 +100,7 @@ public class MovieMediaContainer extends AbstractMediaContainer {
       mpi.setTitle(movie.getTitle());
 
       mpi.setContentRating(movie.getContentRating());
+      mpi.setDirectPlayUrl(movie.getDirectPlayUrl());
 
       List<IMedia> mediacont = movie.getMedias();
       if (mediacont != null && !mediacont.isEmpty()) {
@@ -116,6 +117,7 @@ public class MovieMediaContainer extends AbstractMediaContainer {
           String directPlayUrl = builder.toString();
           mpi.setDirectPlayUrl(directPlayUrl);
         }
+
         mpi.setAudioCodec(media.getAudioCodec());
         mpi.setVideoCodec(media.getVideoCodec());
         mpi.setVideoResolution(media.getVideoResolution());

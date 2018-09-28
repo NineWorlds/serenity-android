@@ -39,7 +39,7 @@ interface UsersService {
       @Query("SortBy") sortOptions: String = "SortName",
       @Query("SortOrder") sortOrder: String = "Ascending",
       @Query( "Genres") genre:String?,
-      @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres"): Call<QueryResult>
+      @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources"): Call<QueryResult>
 
   @GET("/emby/Users/{userId}/Items/{itemId}")
   fun fetchItem(@HeaderMap headerMap: Map<String, String>,

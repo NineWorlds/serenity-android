@@ -118,4 +118,9 @@ public interface IVideo extends ClientObject {
   String getSeason();
 
   void setSeason(String season);
+
+  void setDirectPlayUrl(String url);
+
+  String getDirectPlayUrl();
+
 }

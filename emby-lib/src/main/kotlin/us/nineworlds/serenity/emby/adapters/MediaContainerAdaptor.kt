@@ -1,7 +1,5 @@
 package us.nineworlds.serenity.emby.adapters
 
-import org.joda.time.Duration
-import org.joda.time.Interval
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.emby.model.Directory
 import us.nineworlds.serenity.emby.model.Media
@@ -9,7 +7,6 @@ import us.nineworlds.serenity.emby.model.MediaContainer
 import us.nineworlds.serenity.emby.model.Video
 import us.nineworlds.serenity.emby.server.model.Item
 import us.nineworlds.serenity.emby.server.model.NameGuidPair
-import java.util.concurrent.TimeUnit
 
 class MediaContainerAdaptor {
 
@@ -112,6 +109,10 @@ class MediaContainerAdaptor {
       video.rating = item.communityRating ?: 0.00
       video.backgroundImageKey = "/emby/Items/${item.id}/Images/Backdrop"
       video.thumbNailImageKey = "/emby/Items/${item.id}/Images/Primary"
+      video.viewCount = item.userData?.playCount?.toInt() ?: 0
+      video.viewOffset = convertTicksToMilliseconds(item.userData?.playbackPositionTicks ?: 0)
+
+      video.directPlayUrl = "emby/Videos/${item.mediaSources?.get(0)?.id ?: ""}/stream.${item.container}?static=true"
 
       if (item.runTimeTicks != null) {
         val milliseconds = convertTicksToMilliseconds(item.runTimeTicks)

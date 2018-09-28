@@ -212,15 +212,15 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
   override fun baseURL(): String = baseUrl
 
   override fun watched(key: String?): Boolean {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return true
   }
 
   override fun unwatched(key: String?): Boolean {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return true
   }
 
   override fun progress(key: String?, offset: String?): Boolean {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return true
   }
 
   override fun createMediaTagURL(resourceType: String?, resourceName: String?, identifier: String?): String {
@@ -255,8 +255,13 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
     return url!!
   }
 
-  override fun createTranscodeUrl(id: String?, offset: Int): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun createTranscodeUrl(id: String, offset: Int): String {
+    var startOffset: Long = 0
+    if (offset > 0) {
+      startOffset = offset.toLong().times(1000)
+    }
+
+    return "${baseUrl}emby/Videos/$id/stream.mkv?AudioCodec=aac&VideoCodec=h264&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset"
   }
 
   override fun reinitialize() {

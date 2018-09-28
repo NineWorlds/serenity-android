@@ -335,4 +335,12 @@ public class Video extends AbstractPlexObject implements IVideo {
   @Override public void setSeason(String season) {
     this.season = season;
   }
+
+  @Override public void setDirectPlayUrl(String url) {
+
+  }
+
+  @Override public String getDirectPlayUrl() {
+    return null;
+  }
 }

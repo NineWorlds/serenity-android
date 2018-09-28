@@ -44,6 +44,7 @@ public class Video extends AbstractEmbyObject implements IVideo {
   private List<IWriter> writers;
   private List<IGenre> genres;
   private List<IMedia> medias;
+  private String directPlayUrl;
 
   @Override public String getGrandParentTitle() {
     return grandParentTitle;
@@ -280,5 +281,13 @@ public class Video extends AbstractEmbyObject implements IVideo {
 
   @Override public void setSeason(String season) {
     this.season = season;
+  }
+
+  @Override public String getDirectPlayUrl() {
+    return directPlayUrl;
+  }
+
+  @Override public void setDirectPlayUrl(String directPlayUrl) {
+    this.directPlayUrl = directPlayUrl;
   }
 }
