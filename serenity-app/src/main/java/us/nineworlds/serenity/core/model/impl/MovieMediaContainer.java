@@ -100,7 +100,7 @@ public class MovieMediaContainer extends AbstractMediaContainer {
       mpi.setTitle(movie.getTitle());
 
       mpi.setContentRating(movie.getContentRating());
-      mpi.setDirectPlayUrl(movie.getDirectPlayUrl());
+      mpi.setDirectPlayUrl(factory.baseURL() + movie.getDirectPlayUrl());
 
       List<IMedia> mediacont = movie.getMedias();
       if (mediacont != null && !mediacont.isEmpty()) {

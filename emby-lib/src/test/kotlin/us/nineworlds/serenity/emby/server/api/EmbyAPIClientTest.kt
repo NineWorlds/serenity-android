@@ -6,6 +6,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowLog
 import us.nineworlds.serenity.emby.server.model.AuthenticationResult
@@ -20,7 +21,7 @@ class EmbyAPIClientTest {
   fun setUp() {
     ShadowLog.stream = System.out
 
-    client = EmbyAPIClient()
+    client = EmbyAPIClient(context = RuntimeEnvironment.application)
     client.updateBaseUrl("http://plexserver:8096")
   }
 

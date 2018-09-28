@@ -1,7 +1,11 @@
 package us.nineworlds.serenity.emby.server.api
 
+import android.content.Context
+import android.util.Log
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import github.nisrulz.easydeviceinfo.base.EasyConfigMod
+import github.nisrulz.easydeviceinfo.base.EasyDeviceMod
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,7 +22,7 @@ import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
 import us.nineworlds.serenity.emby.server.model.*
 import java.lang.IllegalStateException
 
-class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
+class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096"): SerenityClient {
 
   val usersService: UsersService
   val filterService: FilterService
@@ -27,6 +31,8 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
   var accessToken: String? = null
   lateinit var serverId: String
   lateinit var userId: String
+  lateinit var deviceId: String
+  lateinit var deviceName: String
 
   init {
     this.baseUrl = baseUrl
@@ -49,6 +55,13 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
 
     usersService = embyRetrofit.create(UsersService::class.java)
     filterService = embyRetrofit.create(FilterService::class.java)
+
+    val easyDeviceMod = EasyDeviceMod(context)
+
+    deviceId = easyDeviceMod.serial
+    deviceName = "${easyDeviceMod.manufacturer} ${easyDeviceMod.model}"
+    Log.d(this::class.java.simpleName, "Device Id: $deviceId")
+    Log.d(this::class.java.simpleName, "Device Name : $deviceName")
   }
 
   fun fetchAllPublicUsers() : List<PublicUserInfo> {
@@ -98,7 +111,7 @@ class EmbyAPIClient(baseUrl: String = "http://localhost:8096"): SerenityClient {
 
   private fun headerMap(): Map<String, String> {
     val headers = HashMap<String, String>()
-    val authorizationValue = "MediaBrowser Client=\"Android\", Device=\"Samsung Galaxy SIII\", DeviceId=\"xxx\", Version=\"1.0.0.0\""
+    val authorizationValue = "MediaBrowser Client=\"Android\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"1.0.0.0\""
     headers["X-Emby-Authorization"] = authorizationValue
     if (accessToken != null) {
       headers["X-Emby-Token"] = accessToken!!

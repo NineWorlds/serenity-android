@@ -225,7 +225,7 @@ public class AndroidModule {
       plexClient = PlexappFactory.getInstance(serverConfig);
     }
     if (embyAPIClient == null) {
-      embyAPIClient = new EmbyAPIClient();
+      embyAPIClient = new EmbyAPIClient(applicationContext, "http://localhost:8096/");
     }
 
     if ("Emby".equals(serverClientPreference.get())) {
