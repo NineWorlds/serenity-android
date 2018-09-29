@@ -1,4 +1,4 @@
-package us.us.nineworlds.serenity.jobs.videos
+package us.nineworlds.serenity.jobs
 
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.verify
@@ -17,20 +17,19 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
-import us.nineworlds.serenity.common.rest.SerenityUser
-import us.nineworlds.serenity.events.users.AuthenticatedUserEvent
+import us.nineworlds.serenity.events.EpisodesRetrievalEvent
+import us.nineworlds.serenity.events.MainCategoryEvent
+import us.nineworlds.serenity.events.SeasonsRetrievalEvent
+import us.nineworlds.serenity.events.TVCategoryEvent
 import us.nineworlds.serenity.injection.modules.AndroidModule
 import us.nineworlds.serenity.injection.modules.SerenityModule
-import us.nineworlds.serenity.jobs.AuthenticateUserJob
 import us.nineworlds.serenity.test.InjectingTest
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
-class AuthenticateUserJobTest : InjectingTest() {
+class EpisodesRetrievalJobTest : InjectingTest() {
 
   @Rule @JvmField public val rule = MockitoJUnit.rule().strictness(STRICT_STUBS)
-
-  @Mock lateinit var mockUser: SerenityUser
 
   @Inject
   lateinit var mockClient: SerenityClient
@@ -38,40 +37,40 @@ class AuthenticateUserJobTest : InjectingTest() {
   @Mock
   lateinit var mockEventBus: EventBus
 
-  lateinit var job: AuthenticateUserJob
+  lateinit var job: EpisodesRetrievalJob
 
-  val expectedVideoId = RandomStringUtils.randomAlphanumeric(5)
+  private val expectedId: String = RandomStringUtils.randomAlphanumeric(5)
 
   @Before
   override fun setUp() {
     super.setUp()
-    job = AuthenticateUserJob(mockUser)
+    job = EpisodesRetrievalJob(expectedId)
   }
 
   @Test
-  fun onRunAuthenticatesUser() {
-
+  fun onRunFetchesEpisodesForTheSpecifiedId() {
     job.onRun()
 
-    verify(mockClient).authenticateUser(mockUser)
+    verify(mockClient).retrieveEpisodes(expectedId)
   }
 
   @Test
-  fun onRunPostsAuthenticationEvent() {
+  fun onRunFetchesEpisodesAndPostsEpisodesEvent() {
     job.onRun()
 
-    verify(mockEventBus).post(any<AuthenticatedUserEvent>())
+    verify(mockClient).retrieveEpisodes(expectedId)
+    verify(mockEventBus).post(any<EpisodesRetrievalEvent>())
   }
 
   override fun getModules(): MutableList<Any> = mutableListOf(AndroidModule(RuntimeEnvironment.application),
       TestModule())
 
-  @Module(injects = arrayOf(AuthenticateUserJobTest::class),
+  @Module(injects = arrayOf(EpisodesRetrievalJobTest::class),
       includes = arrayOf(SerenityModule::class, TestingModule::class),
       library = true,
       overrides = true)
   inner class TestModule {
-
-    @Provides fun providesEventBus(): EventBus = mockEventBus
+    @Provides
+    fun providesEventBus(): EventBus = mockEventBus
   }
 }
