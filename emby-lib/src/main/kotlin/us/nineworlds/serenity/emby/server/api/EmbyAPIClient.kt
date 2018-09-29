@@ -299,7 +299,7 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
       startOffset = offset.toLong().times(10000)
     }
 
-    return "${baseUrl}emby/Videos/$id/stream.mkv?AudioCodec=aac&VideoCodec=h264&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset"
+    return "${baseUrl}emby/Videos/$id/stream.mkv?DeviceId=$deviceId&AudioCodec=aac&VideoCodec=h264&CopyTimeStamps=true&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset"
   }
 
   override fun reinitialize() {
