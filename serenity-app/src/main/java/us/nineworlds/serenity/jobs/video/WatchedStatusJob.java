@@ -9,7 +9,7 @@ import us.nineworlds.serenity.common.rest.SerenityClient;
 
 public class WatchedStatusJob extends InjectingJob {
 
-  @Inject SerenityClient factory;
+  @Inject SerenityClient serenityClient;
 
   private String videoId;
 
@@ -23,7 +23,7 @@ public class WatchedStatusJob extends InjectingJob {
   }
 
   @Override public void onRun() throws Throwable {
-    factory.watched(videoId);
+    serenityClient.watched(videoId);
   }
 
   @Override protected void onCancel(int cancelReason, @Nullable Throwable throwable) {

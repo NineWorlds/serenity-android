@@ -32,8 +32,8 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
   var accessToken: String? = null
   lateinit var serverId: String
   lateinit var userId: String
-  lateinit var deviceId: String
-  lateinit var deviceName: String
+  var deviceId: String
+  var deviceName: String
 
   init {
     this.baseUrl = baseUrl
