@@ -236,16 +236,29 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
 
   override fun baseURL(): String = baseUrl
 
-  override fun watched(key: String?): Boolean {
-    return true
+  override fun watched(key: String): Boolean {
+    val call = usersService.played(headerMap(), userId, key)
+
+    val result = call.execute()
+    return result.isSuccessful
   }
 
-  override fun unwatched(key: String?): Boolean {
-    return true
+  override fun unwatched(key: String): Boolean {
+    val call = usersService.unplayed(headerMap(), userId, key)
+
+    val result = call.execute()
+    return result.isSuccessful
   }
 
-  override fun progress(key: String?, offset: String?): Boolean {
-    return true
+  override fun progress(key: String, offset: String): Boolean {
+    var position = offset.toLong()
+
+    position = position.times(10000)
+
+    val call = usersService.progress(headerMap(), userId, key, null, position)
+    val result = call.execute();
+
+    return result.isSuccessful
   }
 
   override fun createMediaTagURL(resourceType: String?, resourceName: String?, identifier: String?): String {
@@ -283,7 +296,7 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
   override fun createTranscodeUrl(id: String, offset: Int): String {
     var startOffset: Long = 0
     if (offset > 0) {
-      startOffset = offset.toLong().times(1000)
+      startOffset = offset.toLong().times(10000)
     }
 
     return "${baseUrl}emby/Videos/$id/stream.mkv?AudioCodec=aac&VideoCodec=h264&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset"
@@ -295,5 +308,16 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
 
   override fun createUserImageUrl(user: SerenityUser, width: Int, height: Int): String {
     return "$baseUrl/Emby/Users/${user.userId}/Images/Primary?Width=$width&Height=$height"
+  }
+
+  override fun startPlaying(itemId: String) {
+    val call = usersService.startPlaying(headerMap(), userId, itemId)
+
+    call.execute()
+  }
+
+  override fun stopPlaying(itemId: String) {
+    val call = usersService.stopPlaying(headerMap(), userId, itemId)
+    call.execute()
   }
 }

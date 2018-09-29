@@ -66,4 +66,8 @@ public interface SerenityClient {
   SerenityUser authenticateUser(SerenityUser user);
 
   String createUserImageUrl(SerenityUser user, int width, int height);
+
+  void startPlaying(String key);
+
+  void stopPlaying(String key);
 }

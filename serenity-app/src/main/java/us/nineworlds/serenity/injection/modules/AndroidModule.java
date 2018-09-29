@@ -103,6 +103,8 @@ import us.nineworlds.serenity.jobs.SubtitleJob;
 import us.nineworlds.serenity.jobs.TVCategoryJob;
 import us.nineworlds.serenity.jobs.TVCategorySecondaryJob;
 import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
+import us.nineworlds.serenity.jobs.video.StartPlaybackJob;
+import us.nineworlds.serenity.jobs.video.StopPlaybackJob;
 import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob;
 import us.nineworlds.serenity.jobs.video.WatchedStatusJob;
 import us.nineworlds.serenity.server.GDMReceiver;
@@ -207,7 +209,7 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
     ExoplayerVideoActivity.class, ExoplayerPresenter.class, EventLogger.class, VideoKeyCodeHandlerDelegate.class,
     UpdatePlaybackPostionJob.class, WatchedStatusJob.class, EmbyServerJob.class, ServerSelectionActivity.class,
     LoginUserActivity.class, LoginUserPresenter.class, LoginUserViewHolder.class, RetrieveAllUsersJob.class,
-    AuthenticateUserJob.class
+    AuthenticateUserJob.class, StartPlaybackJob.class, StopPlaybackJob.class
 }, library = true)
 public class AndroidModule {
 

@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import org.joda.time.LocalDateTime
 
 data class QueryResult(@Json(name = "Items") val items: List<Item>,
-                       @Json(name = "TotalRecordCount") val totalRecordCount: Int)
+    @Json(name = "TotalRecordCount") val totalRecordCount: Int)
 
 data class Item(@Json(name = "Name") val name: String,
     @Json(name = "ServerId") val serverId: String,
@@ -42,4 +42,16 @@ data class MediaStream(@Json(name = "Codec") val codec: String?,
 data class MediaSource(@Json(name = "Id") val id: String?,
     @Json(name = "Container") val container: String?,
     @Json(name = "SupportsDirectStream") val directStream: Boolean?,
-    @Json(name = "SupportsTranscoding") val transcoding: Boolean? )
+    @Json(name = "SupportsTranscoding") val transcoding: Boolean?)
+
+data class UserItemData(@Json(name = "Rating") val rating: Double?,
+    @Json(name = "PlayedPercentage") val playedPrecentage: Double?,
+    @Json(name = "UnplayedItemCount") val unplayedItemCount: Int?,
+    @Json(name = "PlaybackPositionTicks") val playbackPositionTicks: Long?,
+    @Json(name = "PlayCount") val playCount: Int?,
+    @Json(name = "IsFavorite") val isFavorite: Boolean?,
+    @Json(name = "Likes") val likes: Boolean?,
+    @Json(name = "LastPlayedDate") val lastPlayedDate: String?,
+    @Json(name = "Played") val played: Boolean?,
+    @Json(name = "Key") val key: String?,
+    @Json(name = "ItemId") val itemId: String?)

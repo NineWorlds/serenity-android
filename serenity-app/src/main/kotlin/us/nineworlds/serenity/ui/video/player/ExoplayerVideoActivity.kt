@@ -61,7 +61,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   private val progressRunnable = ProgressRunnable()
   private var videoKeyHandler: VideoKeyCodeHandlerDelegate? = null
 
-  internal val PROGRESS_UPDATE_DELAY = 5000L
+  internal val PROGRESS_UPDATE_DELAY = 10000L
 
   @ProvidePresenter
   fun providePresenter(): ExoplayerPresenter = presenterProvider.get()
@@ -127,11 +127,13 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   override fun play() {
     player.playWhenReady = true
+    presenter.startPlaying()
     progressReportinghandler.postDelayed(progressRunnable, PROGRESS_UPDATE_DELAY.toLong())
   }
 
   override fun pause() {
     player.playWhenReady = false
+    presenter.stopPlaying()
     progressReportinghandler.removeCallbacks(progressRunnable)
   }
 

@@ -2,6 +2,7 @@ package us.nineworlds.serenity.emby.server.api
 
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST
@@ -11,6 +12,7 @@ import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
 import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 import us.nineworlds.serenity.emby.server.model.PublicUserInfo
 import us.nineworlds.serenity.emby.server.model.QueryResult
+import us.nineworlds.serenity.emby.server.model.UserItemData
 
 interface UsersService {
 
@@ -76,4 +78,32 @@ interface UsersService {
       @Path("userId") userId: String,
       @Path("itemId") itemId: String): Call<QueryResult>
 
+  @POST("/emby/Users/{userId}/PlayedItems/{itemId}")
+  fun played(@HeaderMap headerMap: Map<String, String>,
+      @Path("userId") userId: String,
+      @Path("itemId") itemId: String): Call<UserItemData>
+
+  @DELETE("/emby/Users/{userId}/PlayedItems/{itemId}")
+  fun unplayed(@HeaderMap headerMap: Map<String, String>,
+      @Path("userId") userId: String,
+      @Path("itemId") itemId: String): Call<UserItemData>
+
+  @POST("/emby/Users/{userId}/PlayingItems/{itemId}/Progress")
+  fun progress(@HeaderMap headerMap: Map<String, String>,
+      @Path("userId") userId: String,
+      @Path( "itemId") itemId: String,
+      @Query("MediaSourceId") mediaSourceId: String? = null,
+      @Query("PositionTicks") positionTicks: Long): Call<Void>
+
+  @POST("/emby/Users/{userId}/PlayingItems/{itemId}")
+  fun startPlaying(@HeaderMap headerMap: Map<String, String>,
+      @Path("userId") userId: String,
+      @Path( "itemId") itemId: String,
+      @Query("MediaSourceId") mediaSourceId: String? = null): Call<Void>
+
+  @DELETE("/emby/Users/{userId}/PlayingItems/{itemId}")
+  fun stopPlaying(@HeaderMap headerMap: Map<String, String>,
+      @Path("userId") userId: String,
+      @Path( "itemId") itemId: String,
+      @Query("MediaSourceId") mediaSourceId: String? = null): Call<Void>
 }

@@ -23,6 +23,8 @@ import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.events.video.OnScreenDisplayEvent
 import us.nineworlds.serenity.injection.ForVideoQueue
+import us.nineworlds.serenity.jobs.video.StartPlaybackJob
+import us.nineworlds.serenity.jobs.video.StopPlaybackJob
 import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
 import us.nineworlds.serenity.jobs.video.WatchedStatusJob
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerPresenter
@@ -42,7 +44,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
   internal lateinit var videoQueue: LinkedList<VideoContentInfo>
 
   @Inject
-  internal lateinit var factory: SerenityClient
+  internal lateinit var serenityClient: SerenityClient
 
   @Inject
   internal lateinit var eventBus: EventBus
@@ -104,6 +106,14 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
 
   override fun videoId(): String = video.id()
 
+  override fun stopPlaying() {
+    jobManager.addJobInBackground(StopPlaybackJob(video.id()))
+  }
+
+  override fun startPlaying() {
+    jobManager.addJobInBackground(StartPlaybackJob(video.id()))
+  }
+
   override fun onVisibilityChange(visibility: Int) {
     if (visibility == View.GONE) {
       logger.debug("Controller View was hidden")
@@ -161,7 +171,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
       return video.directPlayUrl
     }
 
-    return factory.createTranscodeUrl(video.id(), video.resumeOffset)
+    return serenityClient.createTranscodeUrl(video.id(), video.resumeOffset)
   }
 
   private fun selectCodec(mimeType: String): Boolean {
