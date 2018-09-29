@@ -31,7 +31,7 @@ class LoginUserViewHolder(view: View) : ViewHolder(view) {
     Glide.with(profileImage.context)
         .load(serenityClient.createUserImageUrl(user, 150, 150))
         .placeholder(VectorDrawableCompat.create(profileImage.resources, R.drawable.ic_generic_user, null))
-        .fitCenter()
+        .centerCrop()
         .into(profileImage)
 
     profileName.text = user.userName

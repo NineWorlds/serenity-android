@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.Log
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import github.nisrulz.easydeviceinfo.base.EasyConfigMod
 import github.nisrulz.easydeviceinfo.base.EasyDeviceMod
+import github.nisrulz.easydeviceinfo.base.EasyIdMod
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,14 +15,15 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
-import us.nineworlds.serenity.common.rest.impl.SerenityUser.Builder
 import us.nineworlds.serenity.emby.adapters.MediaContainerAdaptor
-import us.nineworlds.serenity.emby.model.MediaContainer
 import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
-import us.nineworlds.serenity.emby.server.model.*
-import java.lang.IllegalStateException
+import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
+import us.nineworlds.serenity.emby.server.model.AuthenticationResult
+import us.nineworlds.serenity.emby.server.model.PublicUserInfo
+import us.nineworlds.serenity.emby.server.model.QueryFilters
+import us.nineworlds.serenity.emby.server.model.QueryResult
 
-class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096"): SerenityClient {
+class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
 
   val usersService: UsersService
   val filterService: FilterService
@@ -58,13 +59,13 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
 
     val easyDeviceMod = EasyDeviceMod(context)
 
-    deviceId = easyDeviceMod.serial
+    deviceId = EasyIdMod(context).pseudoUniqueID
     deviceName = "${easyDeviceMod.manufacturer} ${easyDeviceMod.model}"
     Log.d(this::class.java.simpleName, "Device Id: $deviceId")
     Log.d(this::class.java.simpleName, "Device Name : $deviceName")
   }
 
-  fun fetchAllPublicUsers() : List<PublicUserInfo> {
+  fun fetchAllPublicUsers(): List<PublicUserInfo> {
     val allPublicUsers = usersService.allPublicUsers()
     return allPublicUsers.execute().body()!!
   }
@@ -179,11 +180,22 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
 
   override fun retrieveItemByIdCategory(key: String, category: String): IMediaContainer {
     var genre: String? = null
-    if (category != "all") {
-      genre = category
+    var isPlayed: Boolean? = null
+
+    genre = when (category) {
+      "all", "unwatched" -> null
+      else -> category
     }
 
-    val call = usersService.fetchItemQuery(headerMap(), userId = userId, parentId = key, genre = genre)
+    val call = if (category == "ondeck") {
+      usersService.resumableItems(headerMap(), userId = userId, parentId = key)
+    } else if (category == "recentlyAdded") {
+      usersService.latestItems(headerMap(), userId = userId, parentId = key)
+    } else if (category == "unwatched") {
+      usersService.unwatchedItems(headerMap(), userId = userId, parentId = key)
+    } else {
+      usersService.fetchItemQuery(headerMap(), userId = userId, parentId = key, genre = genre, isPlayed = isPlayed)
+    }
 
     val results = call.execute().body()
     return MediaContainerAdaptor().createVideoList(results!!.items)

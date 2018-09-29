@@ -35,9 +35,7 @@ class MediaContainerAdaptor {
 
     directories.add(createAllCatagory())
     directories.add(createUnwatched())
-    directories.add(createRecentlyReleasedCategory())
     directories.add(createRecentlyAddedCategory())
-    directories.add(createRecentlyViewedCategory())
     directories.add(createOnDeck())
 
     for (genre in genres) {
@@ -67,24 +65,10 @@ class MediaContainerAdaptor {
     return allCategory
   }
 
-  fun createRecentlyReleasedCategory(): Directory {
-    val allCategory = Directory()
-    allCategory.title = "Recently Released"
-    allCategory.key = "newest"
-    return allCategory
-  }
-
   fun createRecentlyAddedCategory(): Directory {
     val allCategory = Directory()
     allCategory.title = "Recently Added"
     allCategory.key = "recentlyAdded"
-    return allCategory
-  }
-
-  fun createRecentlyViewedCategory(): Directory {
-    val allCategory = Directory()
-    allCategory.title = "Recently Viewed"
-    allCategory.key = "recentlyViewed"
     return allCategory
   }
 

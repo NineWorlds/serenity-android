@@ -57,7 +57,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    actionBar.setCustomView(R.layout.move_custom_actionbar);
+    actionBar.setCustomView(R.layout.movie_custom_actionbar);
     actionBar.setDisplayShowCustomEnabled(true);
 
     key = getIntent().getExtras().getString("key");

@@ -39,6 +39,36 @@ interface UsersService {
       @Query("SortBy") sortOptions: String = "SortName",
       @Query("SortOrder") sortOrder: String = "Ascending",
       @Query( "Genres") genre:String?,
+      @Query( "IsPlayed") isPlayed: Boolean? = null,
+      @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources"): Call<QueryResult>
+
+  @GET("/emby/Users/{userId}/Items")
+  fun resumableItems(@HeaderMap headerMap: Map<String, String>,
+      @Path("userId") userId: String,
+      @Query( "ParentId") parentId: String,
+      @Query("Recursive") recursive: Boolean = true,
+      @Query("SortBy") sortOptions: String = "DatePlayed",
+      @Query("SortOrder") sortOrder: String = "Descending",
+      @Query("Filters") filters: String = "IsResumable",
+      @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources"): Call<QueryResult>
+
+  @GET("/emby/Users/{userId}/Items")
+  fun unwatchedItems(@HeaderMap headerMap: Map<String, String>,
+      @Path("userId") userId: String,
+      @Query( "ParentId") parentId: String,
+      @Query("Recursive") recursive: Boolean = true,
+      @Query("SortBy") sortOptions: String = "DatePlayed",
+      @Query("SortOrder") sortOrder: String = "Descending",
+      @Query("Filters") filters: String = "IsUnplayed",
+      @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources"): Call<QueryResult>
+
+
+  @GET("/emby/Users/{userId}/Items/Latest")
+  fun latestItems(@HeaderMap headerMap: Map<String, String>,
+      @Path("userId") userId: String,
+      @Query( "ParentId") parentId: String,
+      @Query("Recursive") recursive: Boolean = true,
+      @Query("IsPlayed") isPlayed: Boolean = false,
       @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources"): Call<QueryResult>
 
   @GET("/emby/Users/{userId}/Items/{itemId}")

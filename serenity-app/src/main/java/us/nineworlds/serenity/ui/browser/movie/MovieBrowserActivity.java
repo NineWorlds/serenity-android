@@ -54,21 +54,18 @@ import us.nineworlds.serenity.ui.util.DisplayUtils;
 public class MovieBrowserActivity extends SerenityMultiViewVideoActivity implements MovieBrowserContract.MovieBrowserView {
 
   @Inject protected SharedPreferences prefs;
-
   @Inject protected MovieSelectedCategoryState categoryState;
-
   @InjectPresenter MovieBrowserPresenter presenter;
 
   private String key;
 
   VideoGridFragment videoGridFragment;
   MovieVideoGalleryFragment movieVideoGalleryFragment;
-
   DpadAwareRecyclerView.Adapter adapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    actionBar.setCustomView(R.layout.move_custom_actionbar);
+    actionBar.setCustomView(R.layout.movie_custom_actionbar);
     actionBar.setDisplayShowCustomEnabled(true);
 
     gridViewActive = prefs.getBoolean("movie_layout_grid", false);
