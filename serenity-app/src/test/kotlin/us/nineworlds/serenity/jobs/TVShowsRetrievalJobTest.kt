@@ -18,6 +18,7 @@ import org.robolectric.RuntimeEnvironment
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.events.MovieRetrievalEvent
+import us.nineworlds.serenity.events.TVShowRetrievalEvent
 import us.nineworlds.serenity.injection.modules.AndroidModule
 import us.nineworlds.serenity.injection.modules.SerenityModule
 import us.nineworlds.serenity.test.InjectingTest
@@ -46,18 +47,18 @@ class TVShowsRetrievalJobTest : InjectingTest() {
   }
 
   @Test
-  fun onRunFetchesCategoriesForTheSpecifiedId() {
+  fun onRunFetchesTVShowsFromServer() {
     job.onRun()
 
     verify(mockClient).retrieveItemByIdCategory(expectedVideoId, expectedCategory)
   }
 
   @Test
-  fun onRunFetchesCategoriesAndPostsMainCategoryEvent() {
+  fun onRunFetchesTVShowsByCategoryAndPostsTVShowRetrievalEvent() {
     job.onRun()
 
     verify(mockClient).retrieveItemByIdCategory(expectedVideoId, expectedCategory)
-    verify(mockEventBus).post(any<MovieRetrievalEvent>())
+    verify(mockEventBus).post(any<TVShowRetrievalEvent>())
   }
 
   override fun getModules(): MutableList<Any> = mutableListOf(AndroidModule(RuntimeEnvironment.application),
