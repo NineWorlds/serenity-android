@@ -24,9 +24,7 @@ public class OnDeckRecommendationsJob extends InjectingJob {
   @Inject @ApplicationContext Context context;
 
   @Inject SerenityClient client;
-
   @Inject EventBus eventBus;
-
   @Inject JobManager jobManager;
 
   @Override public void onAdded() {
@@ -45,14 +43,14 @@ public class OnDeckRecommendationsJob extends InjectingJob {
     }
 
     for (MenuItem library : menuItems) {
-      if ("movie".equals(library.getType())) {
+      if ("movie".equals(library.getType()) || "movies".equalsIgnoreCase(library.getType())) {
         String section = library.getSection();
 
         IMediaContainer mediaContainer = client.retrieveItemByIdCategory(section, "onDeck");
         onMovieResponse(mediaContainer);
       }
 
-      if ("show".equals(library.getType())) {
+      if ("show".equals(library.getType()) || "tvshows".equalsIgnoreCase(library.getType())) {
         String section = library.getSection();
         IMediaContainer mediaContainer = client.retrieveItemByIdCategory(section, "onDeck");
         onShowResponse(mediaContainer);

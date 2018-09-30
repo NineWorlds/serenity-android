@@ -26,6 +26,7 @@ package us.nineworlds.serenity.core.model.impl;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;
@@ -54,6 +55,9 @@ public class MenuMediaContainer extends AbstractMediaContainer {
   }
 
   public List<MenuItem> createMenuItems() {
+    if (mc.getDirectories() == null) {
+      return Collections.emptyList();
+    }
     List<IDirectory> dirs = mc.getDirectories();
 
     if (dirs != null) {
