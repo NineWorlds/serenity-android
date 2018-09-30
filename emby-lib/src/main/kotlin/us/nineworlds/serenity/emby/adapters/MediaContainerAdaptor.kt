@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.emby.adapters
 
+import us.nineworlds.serenity.common.media.model.IDirectory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.emby.model.Directory
 import us.nineworlds.serenity.emby.model.Media
@@ -79,6 +80,47 @@ class MediaContainerAdaptor {
     return allCategory
   }
 
+  fun createSeriesList(series: List<Item>): IMediaContainer {
+    val mediaContainer = MediaContainer()
+    val seriesVideos = ArrayList<IDirectory>()
+
+    for(item in series) {
+      val seriesEntry = Directory()
+
+      seriesEntry.title = item.name
+      seriesEntry.summary = item.oveview
+      seriesEntry.key = item.id
+      seriesEntry.contentRating = item.officialRating
+
+      var totalItemCount = 0L
+      var viewdItemsCount = 0L
+      if (item.userData != null) {
+        if (item.userData.unplayedItemCount != null) {
+          totalItemCount += item.userData.unplayedItemCount
+        }
+
+        if (item.userData.playCount != null) {
+          viewdItemsCount = item.userData.playCount
+          totalItemCount += viewdItemsCount
+        }
+
+      }
+
+      seriesEntry.leafCount = totalItemCount.toString()
+      seriesEntry.viewedLeafCount = viewdItemsCount.toString()
+
+      seriesEntry.art = "/emby/Items/${item.id}/Images/Thumb"
+      seriesEntry.thumb = "/emby/Items/${item.id}/Images/Primary"
+      seriesEntry.banner = "/emby/Items/${item.id}/Images/Banner"
+
+      seriesVideos.add(seriesEntry)
+    }
+    mediaContainer.directories = seriesVideos
+    mediaContainer.size = series.size
+
+    return mediaContainer
+  }
+
   fun createVideoList(videos: List<Item>): IMediaContainer {
     val mediaContainer = MediaContainer()
     val serenityVideos = ArrayList<Video>()
@@ -86,6 +128,7 @@ class MediaContainerAdaptor {
     for (item in videos) {
       val video = Video()
 
+      video.title = item.name
       video.key = item.id
       video.parentKey = item.parentId
       video.contentRating = item.officialRating

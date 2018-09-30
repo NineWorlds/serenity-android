@@ -241,4 +241,12 @@ public class PlexappFactory implements SerenityClient {
   @Override public void stopPlaying(String key) {
     // DO NOTHING as plex doesn't care when you start or stop
   }
+
+  @Override public IMediaContainer retrieveSeriesById(String key, String categoryId) {
+    try {
+      return retrieveItemByIdCategory(key, categoryId);
+    } catch (Exception ex) {
+    }
+    return null;
+  }
 }

@@ -38,11 +38,13 @@ interface UsersService {
       @Path("userId") userId: String,
       @Query( "ParentId") parentId: String,
       @Query("Recursive") recursive: Boolean = true,
+      @Query("IncludeItemTypes") includeItemType: String? = null,
       @Query("SortBy") sortOptions: String = "SortName",
       @Query("SortOrder") sortOrder: String = "Ascending",
       @Query( "Genres") genre:String?,
       @Query( "IsPlayed") isPlayed: Boolean? = null,
-      @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources"): Call<QueryResult>
+      @Query("LimitCount") limitCount: Int? = null,
+      @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,SeasonCount,EpisodeCount"): Call<QueryResult>
 
   @GET("/emby/Users/{userId}/Items")
   fun resumableItems(@HeaderMap headerMap: Map<String, String>,

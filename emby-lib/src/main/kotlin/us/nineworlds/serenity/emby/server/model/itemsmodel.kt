@@ -23,9 +23,11 @@ data class Item(@Json(name = "Name") val name: String,
     @Json(name = "RunTimeTicks") val runTimeTicks: Long?,
     @Json(name = "UserData") val userData: UserData?,
     @Json(name = "MediaStreams") val mediaStreams: List<MediaStream>?,
-    @Json(name = "MediaSources") val mediaSources: List<MediaSource>?)
+    @Json(name = "MediaSources") val mediaSources: List<MediaSource>?,
+    @Json(name = "EpisodeCount") val episodeCount: Long?)
 
 data class UserData(@Json(name = "PlaybackPositionTicks") val playbackPositionTicks: Long?,
+    @Json(name = "UnplayedItemCount") val unplayedItemCount: Long?,
     @Json(name = "PlayCount") val playCount: Long?,
     @Json(name = "IsFavorite") val isFavorite: Boolean?,
     @Json(name = "Played") val played: Boolean?,

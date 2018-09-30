@@ -50,14 +50,14 @@ class TVShowsRetrievalJobTest : InjectingTest() {
   fun onRunFetchesTVShowsFromServer() {
     job.onRun()
 
-    verify(mockClient).retrieveItemByIdCategory(expectedVideoId, expectedCategory)
+    verify(mockClient).retrieveSeriesById(expectedVideoId, expectedCategory)
   }
 
   @Test
   fun onRunFetchesTVShowsByCategoryAndPostsTVShowRetrievalEvent() {
     job.onRun()
 
-    verify(mockClient).retrieveItemByIdCategory(expectedVideoId, expectedCategory)
+    verify(mockClient).retrieveSeriesById(expectedVideoId, expectedCategory)
     verify(mockEventBus).post(any<TVShowRetrievalEvent>())
   }
 

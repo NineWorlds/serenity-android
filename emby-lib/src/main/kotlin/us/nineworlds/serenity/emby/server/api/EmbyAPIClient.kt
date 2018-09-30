@@ -320,4 +320,20 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
     val call = usersService.stopPlaying(headerMap(), userId, itemId)
     call.execute()
   }
+
+  override fun retrieveSeriesById(key: String, categoryId: String): IMediaContainer {
+    var genre: String? = null
+    val isPlayed: Boolean? = null
+    val itemType = "Series"
+
+    genre = when (categoryId) {
+      "all", "unwatched" -> null
+      else -> categoryId
+    }
+
+    val call = usersService.fetchItemQuery(headerMap(), userId = userId, parentId = key, genre = genre, isPlayed = isPlayed, includeItemType = itemType, limitCount = 5)
+
+    val results = call.execute().body()
+    return MediaContainerAdaptor().createSeriesList(results!!.items)
+  }
 }
