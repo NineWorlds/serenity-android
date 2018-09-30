@@ -8,6 +8,7 @@ import us.nineworlds.serenity.emby.model.MediaContainer
 import us.nineworlds.serenity.emby.model.Video
 import us.nineworlds.serenity.emby.server.model.Item
 import us.nineworlds.serenity.emby.server.model.NameGuidPair
+import java.util.Collections
 
 class MediaContainerAdaptor {
 
@@ -121,6 +122,10 @@ class MediaContainerAdaptor {
     mediaContainer.size = series.size
 
     return mediaContainer
+  }
+
+  fun createSeaonsList(seaons: List<Item>): IMediaContainer {
+    return MediaContainer()
   }
 
   fun createVideoList(videos: List<Item>): IMediaContainer {

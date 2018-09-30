@@ -205,8 +205,12 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
-  override fun retrieveSeasons(key: String?): IMediaContainer {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun retrieveSeasons(key: String): IMediaContainer {
+    val call = usersService.fetchItemQuery(headerMap(), userId = userId, parentId = key, includeItemType = "Season", genre = null)
+
+    val results = call.execute().body()
+
+    return MediaContainerAdaptor().createSeriesList(results!!.items)
   }
 
   override fun retrieveMusicMetaData(key: String?): IMediaContainer {
