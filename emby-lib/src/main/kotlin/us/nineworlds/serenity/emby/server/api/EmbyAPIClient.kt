@@ -336,4 +336,12 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
     val results = call.execute().body()
     return MediaContainerAdaptor().createSeriesList(results!!.items)
   }
+
+  override fun retrieveSeriesCategoryById(key: String?): IMediaContainer {
+    val call = filterService.availableFilters(headerMap(), userId, key)
+
+    val queryResult = call.execute().body()
+
+    return MediaContainerAdaptor().createCategory(queryResult!!.genres!!, true)
+  }
 }

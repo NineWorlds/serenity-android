@@ -49,14 +49,14 @@ class TVCategoryJobTest : InjectingTest() {
   fun onRunFetchesCategoriesForTheSpecifiedId() {
     job.onRun()
 
-    verify(mockClient).retrieveItemByIdCategory(expectedId)
+    verify(mockClient).retrieveSeriesCategoryById(expectedId)
   }
 
   @Test
   fun onRunFetchesCategoriesAndPostsMainCategoryEvent() {
     job.onRun()
 
-    verify(mockClient).retrieveItemByIdCategory(expectedId)
+    verify(mockClient).retrieveSeriesCategoryById(expectedId)
     verify(mockEventBus).post(any<TVCategoryEvent>())
   }
 

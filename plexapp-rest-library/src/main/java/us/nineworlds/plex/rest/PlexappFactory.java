@@ -249,4 +249,12 @@ public class PlexappFactory implements SerenityClient {
     }
     return null;
   }
+
+  @Override public IMediaContainer retrieveSeriesCategoryById(String key) {
+    try {
+      return retrieveItemByIdCategory(key);
+    } catch (Exception e) {
+    }
+    return null;
+  }
 }

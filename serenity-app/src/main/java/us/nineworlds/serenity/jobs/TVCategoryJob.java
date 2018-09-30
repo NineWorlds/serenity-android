@@ -32,7 +32,7 @@ public class TVCategoryJob extends InjectingJob {
   }
 
   @Override public void onRun() throws Throwable {
-    IMediaContainer mediaContainer = client.retrieveItemByIdCategory(key);
+    IMediaContainer mediaContainer = client.retrieveSeriesCategoryById(key);
     eventBus.post(new TVCategoryEvent(mediaContainer, key));
   }
 

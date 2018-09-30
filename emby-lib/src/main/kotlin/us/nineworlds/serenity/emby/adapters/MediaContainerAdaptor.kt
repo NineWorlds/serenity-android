@@ -30,14 +30,16 @@ class MediaContainerAdaptor {
     return mediaContainer
   }
 
-  fun createCategory(genres: List<NameGuidPair>): IMediaContainer {
+  fun createCategory(genres: List<NameGuidPair>, series: Boolean? = false): IMediaContainer {
     val mediaContainer = MediaContainer()
     val directories = ArrayList<Directory>()
 
     directories.add(createAllCatagory())
-    directories.add(createUnwatched())
-    directories.add(createRecentlyAddedCategory())
-    directories.add(createOnDeck())
+    if (series == false) {
+      directories.add(createUnwatched())
+      directories.add(createRecentlyAddedCategory())
+      directories.add(createOnDeck())
+    }
 
     for (genre in genres) {
       val entry = Directory()
