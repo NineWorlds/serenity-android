@@ -28,7 +28,8 @@ data class Item(@Json(name = "Name") val name: String,
     @Json(name = "IndexNumber") val episodeNumber: String?,
     @Json(name = "Type") val type: String?,
     @Json(name = "ParentLogoItemId") val parentLogoItemId: String?,
-    @Json(name = "SeriesId") val seriesId: String?)
+    @Json(name = "SeriesId") val seriesId: String?,
+    @Json(name = "ParentIndexNumber") val parentIndexNumber: String?)
 
 data class UserData(@Json(name = "PlaybackPositionTicks") val playbackPositionTicks: Long?,
     @Json(name = "UnplayedItemCount") val unplayedItemCount: Long?,

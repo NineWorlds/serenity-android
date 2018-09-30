@@ -141,6 +141,7 @@ class MediaContainerAdaptor {
       video.contentRating = item.officialRating
       video.summary = item.oveview
       video.rating = item.communityRating ?: 0.00
+      video.season = item.parentIndexNumber
       if (item.type != null && item.type == "Episode") {
         video.backgroundImageKey = "/emby/Items/${item.parentLogoItemId}/Images/Logo"
         video.parentThumbNailImageKey = "/emby/Items/${item.parentId}/Images/Primary"
