@@ -16,19 +16,22 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.common.android.injection.InjectingJob;
+import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.server.GDMReceiver;
 
 public class GDMServerJob extends InjectingJob {
 
-  @Inject EventBus eventBus;
-
+  public static final int PLEX_BROADCAST_PORT = 32414;
+  public static final String PLEX_SEARCH_SERVER_MESSAGE = "M-SEARCH * HTTP/1.1\r\n\r\n";
+  public static final String PLEX_SERVER_ACKNOWLEDGEMENT_MESSAGE = "HTTP/1.0 200 OK";
+  public static final String PLEX_DATA_EXTRA = "data";
+  public static final String PLEX_IPADDRESS_EXTRA = "ipaddress";
   @Inject LocalBroadcastManager localBroadcastManager;
-
   @Inject @ApplicationContext Context context;
+  @Inject Logger logger;
 
-  public static final String MSG_RECEIVED = ".GDMService.MESSAGE_RECEIVED";
-  public static final String SOCKET_CLOSED = ".GDMService.SOCKET_CLOSED";
   private static final String multicast = "239.0.0.250";
+  protected boolean listening;
 
   @Override public void onAdded() {
 
@@ -39,39 +42,22 @@ public class GDMServerJob extends InjectingJob {
     try {
       socket = new DatagramSocket(32414);
       socket.setBroadcast(true);
-      String data = "M-SEARCH * HTTP/1.1\r\n\r\n";
-      DatagramPacket packet = new DatagramPacket(data.getBytes(), data.length(), useMultiCastAddress(), 32414);
+      String data = PLEX_SEARCH_SERVER_MESSAGE;
+      DatagramPacket packet = new DatagramPacket(data.getBytes(), data.length(), useMultiCastAddress(),
+          PLEX_BROADCAST_PORT);
 
       socket.send(packet);
-      Log.d("GDMService", "Search Packet Broadcasted");
+      logger.debug("Search Packet Broadcasted");
 
       byte[] buf = new byte[256];
       packet = new DatagramPacket(buf, buf.length);
       socket.setSoTimeout(2000);
-      boolean listening = true;
+      listening = true;
       while (listening) {
-        try {
-          socket.receive(packet);
-          String packetData = new String(packet.getData());
-          if (packetData.contains("HTTP/1.0 200 OK")) {
-            Log.d("GDMService", "PMS Packet Received");
-            // Broadcast Received Packet
-            Intent packetBroadcast = new Intent(GDMReceiver.GDM_MSG_RECEIVED);
-            packetBroadcast.putExtra("data", packetData);
-            packetBroadcast.putExtra("ipaddress", packet.getAddress().toString());
-
-            localBroadcastManager.sendBroadcast(packetBroadcast);
-          }
-        } catch (SocketTimeoutException e) {
-          Log.d("GDMService", "Socket Timeout");
-          socket.close();
-          listening = false;
-          Intent socketBroadcast = new Intent(GDMReceiver.GDM_SOCKET_CLOSED);
-          localBroadcastManager.sendBroadcast(socketBroadcast);
-        }
+        listening = isReceivingPackets(socket, packet);
       }
     } catch (IOException e) {
-      Log.e("GDMService", e.toString());
+      logger.error(e.toString(), e);
     } finally {
       try {
         if (socket != null) {
@@ -81,6 +67,30 @@ public class GDMServerJob extends InjectingJob {
 
       }
     }
+  }
+
+  protected boolean isReceivingPackets(DatagramSocket socket, DatagramPacket packet)
+      throws IOException {
+    try {
+      socket.receive(packet);
+      String packetData = new String(packet.getData());
+      if (packetData.contains(PLEX_SERVER_ACKNOWLEDGEMENT_MESSAGE)) {
+        logger.debug("PMS Packet Received");
+        // Broadcast Received Packet
+        Intent packetBroadcast = new Intent(GDMReceiver.GDM_MSG_RECEIVED);
+        packetBroadcast.putExtra(PLEX_DATA_EXTRA, packetData);
+        packetBroadcast.putExtra(PLEX_IPADDRESS_EXTRA, packet.getAddress().toString());
+
+        localBroadcastManager.sendBroadcast(packetBroadcast);
+      }
+    } catch (SocketTimeoutException e) {
+      logger.error("Socket Timeout", e);
+      socket.close();
+      listening = false;
+      Intent socketBroadcast = new Intent(GDMReceiver.GDM_SOCKET_CLOSED);
+      localBroadcastManager.sendBroadcast(socketBroadcast);
+    }
+    return listening;
   }
 
   protected InetAddress useMultiCastAddress() throws IOException {
