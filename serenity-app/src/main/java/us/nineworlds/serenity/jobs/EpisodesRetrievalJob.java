@@ -8,6 +8,7 @@ import org.greenrobot.eventbus.EventBus;
 import us.nineworlds.serenity.common.android.injection.InjectingJob;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.common.rest.SerenityClient;
+import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.events.EpisodesRetrievalEvent;
 
 public class EpisodesRetrievalJob extends InjectingJob {
@@ -15,6 +16,8 @@ public class EpisodesRetrievalJob extends InjectingJob {
   @Inject SerenityClient client;
 
   @Inject EventBus eventBus;
+
+  @Inject Logger logger;
 
   String key;
 
@@ -38,6 +41,7 @@ public class EpisodesRetrievalJob extends InjectingJob {
 
   @Override
   protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
+    logger.error("Episode Retrieval Error: ", throwable);
     return null;
   }
 }

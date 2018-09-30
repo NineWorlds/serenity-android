@@ -24,7 +24,8 @@ data class Item(@Json(name = "Name") val name: String,
     @Json(name = "UserData") val userData: UserData?,
     @Json(name = "MediaStreams") val mediaStreams: List<MediaStream>?,
     @Json(name = "MediaSources") val mediaSources: List<MediaSource>?,
-    @Json(name = "EpisodeCount") val episodeCount: Long?)
+    @Json(name = "EpisodeCount") val episodeCount: Long?,
+    @Json(name = "IndexNumber") val episodeNumber: String?)
 
 data class UserData(@Json(name = "PlaybackPositionTicks") val playbackPositionTicks: Long?,
     @Json(name = "UnplayedItemCount") val unplayedItemCount: Long?,

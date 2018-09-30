@@ -67,7 +67,7 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
     if (parentPosterURL != null) {
       epi.setParentPosterURL(parentPosterURL);
     }
-    epi.setId(episode.getRatingKey());
+    epi.setId(episode.getKey());
     epi.setParentKey(episode.getParentKey());
     epi.setSummary(episode.getSummary());
     epi.setViewCount(episode.getViewCount());
@@ -118,7 +118,13 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
       IMedia media = mediacont.get(0);
       epi.setContainer(media.getContainer());
       List<IPart> parts = media.getVideoPart();
-      IPart part = parts.get(0);
+      if (parts != null) {
+        IPart part = parts.get(0);
+        String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
+        epi.setDirectPlayUrl(directPlayUrl);
+      } else {
+        epi.setDirectPlayUrl(factory.baseURL() + episode.getDirectPlayUrl());
+      }
 
       final int seasonNumber;
       if (episode.getSeason() != null) {
@@ -137,8 +143,6 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
       epi.setAspectRatio(media.getAspectRatio());
       epi.setAudioChannels(media.getAudioChannels());
 
-      String directPlayUrl = factory.baseURL() + part.getKey().replaceFirst("/", "");
-      epi.setDirectPlayUrl(directPlayUrl);
     }
 
     createVideoDetailsStatic(episode, epi);

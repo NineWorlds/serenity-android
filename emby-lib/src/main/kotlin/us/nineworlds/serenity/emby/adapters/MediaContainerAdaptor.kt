@@ -145,6 +145,7 @@ class MediaContainerAdaptor {
       video.thumbNailImageKey = "/emby/Items/${item.id}/Images/Primary"
       video.viewCount = item.userData?.playCount?.toInt() ?: 0
       video.viewOffset = convertTicksToMilliseconds(item.userData?.playbackPositionTicks ?: 0)
+      video.episode = item.episodeNumber
 
       video.directPlayUrl = "emby/Videos/${item.mediaSources?.get(0)?.id ?: ""}/stream.${item.container}?static=true"
 

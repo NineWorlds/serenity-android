@@ -48,6 +48,7 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector
   private SeriesContentInfo info;
 
   @Inject protected SerenityClient plexFactory;
+  boolean firstTimeSw = true;
 
   public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity) {
     context = activity;
@@ -77,6 +78,11 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector
       return;
     }
 
+    if (firstTimeSw) {
+      firstTimeSw = false;
+      return;
+    }
+
     TVShowSeasonImageGalleryAdapter adapter = (TVShowSeasonImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
     if (i < 0) {
       Log.e(TVShowSeasonOnItemSelectedListener.class.getCanonicalName(),
@@ -89,6 +95,12 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector
     DpadAwareRecyclerView episodeGrid = (DpadAwareRecyclerView) context.findViewById(R.id.episodeGridView);
 
     episodeGrid.setVisibility(View.VISIBLE);
+
+    TextView seasonsTitle = (TextView) context.findViewById(R.id.tvShowSeasonsTitle);
+    seasonsTitle.setText(info.getTitle());
+
+    changeBackgroundImage(mpiv);
+
     TVShowSeasonBrowserActivity seasonBrowserActivity = (TVShowSeasonBrowserActivity) context;
     if (seasonBrowserActivity.adapter == null) {
       seasonBrowserActivity.adapter = new SeasonsEpisodePosterImageGalleryAdapter();
@@ -97,14 +109,8 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector
     episodeGrid.setLayoutManager(new GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false));
     episodeGrid.setOnItemClickListener(new EpisodePosterOnItemClickListener());
     seasonBrowserActivity.fetchEpisodes(info.getKey());
-
-    TextView seasonsTitle = (TextView) context.findViewById(R.id.tvShowSeasonsTitle);
-    seasonsTitle.setText(info.getTitle());
-
-    changeBackgroundImage(mpiv);
   }
 
   @Override public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-
   }
 }
