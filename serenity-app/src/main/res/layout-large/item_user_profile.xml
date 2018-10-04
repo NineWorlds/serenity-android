@@ -4,31 +4,38 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="5dp"
-    android:clickable="true"
     android:focusable="true"
+    android:background="@android:color/black"
     android:layout_marginStart="10dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-  <ImageView
-      android:id="@+id/profile_image"
-      android:layout_width="150dp"
-      android:layout_height="150dp"
-      android:src="@drawable/ic_generic_user"
-      android:tint="@color/white"
-      android:layout_gravity="top"
-      android:layout_marginBottom="15dp"
-      />
-
-  <TextView
-      android:id="@+id/profile_name"
+  <LinearLayout
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="@color/lb_tv_white"
-      android:textSize="18sp"
-      android:layout_marginTop="5dp"
-      android:layout_marginBottom="5dp"
-      android:layout_gravity="bottom|center_horizontal"
-      tools:text="Login User"/>
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/profile_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_generic_user"
+        android:tint="@color/white"
+        android:layout_gravity="top"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/lb_tv_white"
+        android:textSize="18sp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@android:color/black"
+        tools:text="Login User"/>
+
+  </LinearLayout>
 
 </FrameLayout>

@@ -17,15 +17,14 @@
       android:textSize="24sp"
       />
 
-  <net.ganin.darv.DpadAwareRecyclerView
+  <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
       android:id="@+id/login_user_container"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
-      android:descendantFocusability="afterDescendants"
-      app:foregroundSelector="@drawable/item_foreground_selector"
-      app:selectorVelocity="2000"
-      app:smoothScrolling="true"
+      app:isAutoProcessFocus="true"
+      app:focusDrawable="@drawable/rounded_transparent_border"
+      app:focusScale="1.15"
       tools:itemCount="3"
       tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
       tools:layout_height="160dp"
@@ -33,6 +32,6 @@
       tools:orientation="horizontal"
       >
     <requestFocus/>
-  </net.ganin.darv.DpadAwareRecyclerView>
+  </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>
 
 </RelativeLayout>

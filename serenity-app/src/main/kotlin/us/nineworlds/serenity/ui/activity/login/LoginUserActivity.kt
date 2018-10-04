@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
 import android.view.Window
+import app.com.tvrecyclerview.TvRecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -35,7 +36,7 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
   fun providePresenter(): LoginUserPresenter = presenterProvider.get()
 
   @BindView(R.id.login_user_container)
-  lateinit var profileContainer: DpadAwareRecyclerView
+  lateinit var profileContainer: TvRecyclerView
 
   lateinit var adapter: LoginUserAdapter
 
@@ -57,13 +58,15 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
 
   private fun setupProfileContainer() {
     profileContainer.visibility = View.GONE
-    adapter = LoginUserAdapter()
+    adapter = LoginUserAdapter(presenter)
     profileContainer.adapter = adapter
     val layoutManager = FlexboxLayoutManager(this, FlexDirection.ROW)
     layoutManager.justifyContent = JustifyContent.CENTER
     profileContainer.layoutManager = layoutManager
     profileContainer.addItemDecoration(FlexboxItemDecoration(this))
-    profileContainer.onItemClickListener = LoginUserOnItemClickListner(presenter)
+    profileContainer.setOnItemStateListener(adapter)
+    profileContainer.setSelectPadding(5, 5, 5, 5)
+
   }
 
   override fun displayUsers(serenityUser: List<SerenityUser>) {
