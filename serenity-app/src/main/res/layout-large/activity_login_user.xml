@@ -24,7 +24,6 @@
       android:layout_centerInParent="true"
       app:isAutoProcessFocus="true"
       app:focusDrawable="@drawable/rounded_transparent_border"
-      app:focusScale="1.15"
       tools:itemCount="3"
       tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
       tools:layout_height="160dp"

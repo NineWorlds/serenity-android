@@ -20,7 +20,9 @@ import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.rest.SerenityUser
+import us.nineworlds.serenity.decorators.SpacesItemDecoration
 import us.nineworlds.serenity.injection.InjectingMvpActivity
+import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -65,8 +67,6 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
     profileContainer.layoutManager = layoutManager
     profileContainer.addItemDecoration(FlexboxItemDecoration(this))
     profileContainer.setOnItemStateListener(adapter)
-    profileContainer.setSelectPadding(5, 5, 5, 5)
-
   }
 
   override fun displayUsers(serenityUser: List<SerenityUser>) {
