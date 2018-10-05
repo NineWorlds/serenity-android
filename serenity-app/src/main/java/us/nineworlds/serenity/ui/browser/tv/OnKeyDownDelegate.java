@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import javax.inject.Inject;
@@ -25,7 +26,7 @@ public class OnKeyDownDelegate extends BaseInjector {
 
   @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
 
-  @BindView(R.id.tvShowBannerGallery) @Nullable DpadAwareRecyclerView galleryView;
+  @BindView(R.id.tvShowBannerGallery) @Nullable TvRecyclerView galleryView;
 
   Activity activity;
 
@@ -60,35 +61,35 @@ public class OnKeyDownDelegate extends BaseInjector {
       int itemsCount = adapter.getItemCount();
 
       if (contextMenuRequested(keyCode)) {
-        int pos = galleryView.getSelectedItemPosition();
+        int pos = galleryView.getSelectedPosition();
         RecyclerView.LayoutManager layoutManager = galleryView.getLayoutManager();
         View view = layoutManager.findViewByPosition(pos);
         view.performLongClick();
         return true;
       }
       if (isKeyCodeSkipBack(keyCode)) {
-        int selectedItem = galleryView.getSelectedItemPosition();
+        int selectedItem = galleryView.getSelectedPosition();
         int newPosition = selectedItem - 10;
         if (newPosition < 0) {
           newPosition = 0;
         }
-        galleryView.setSelection(newPosition);
+        galleryView.setItemSelected(newPosition);
         galleryView.requestFocusFromTouch();
         return true;
       }
       if (isKeyCodeSkipForward(keyCode)) {
-        int selectedItem = galleryView.getSelectedItemPosition();
+        int selectedItem = galleryView.getSelectedPosition();
         int newPosition = selectedItem + 10;
         if (newPosition > itemsCount) {
           newPosition = itemsCount - 1;
         }
-        galleryView.setSelection(newPosition);
+        galleryView.setItemSelected(newPosition);
         galleryView.requestFocusFromTouch();
         return true;
       }
 
       if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY || keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
-        int selectedItem = galleryView.getSelectedItemPosition();
+        int selectedItem = galleryView.getSelectedPosition();
         SeriesContentInfo info =
             (SeriesContentInfo) ((AbstractPosterImageGalleryAdapter) galleryView.getAdapter()).getItem(
                 selectedItem);

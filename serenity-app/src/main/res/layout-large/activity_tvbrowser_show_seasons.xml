@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         />
 
-    <net.ganin.darv.DpadAwareRecyclerView
+    <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
         android:id="@+id/episodeGridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,11 +35,8 @@
         android:nextFocusLeft="@+id/tvShowSeasonImageGalleryLayout"
         android:nextFocusRight="@+id/tvShowSeasonImageGalleryLayout"
         android:visibility="gone"
-        app:selectorVelocity="2000"
-        app:smoothScrolling="true"
-        app:foregroundSelector="@drawable/item_foreground_selector"
-        android:descendantFocusability="afterDescendants"
-
+        app:isAutoProcessFocus="true"
+        app:focusDrawable="@drawable/rounded_transparent_border"
         />
 
     <LinearLayout

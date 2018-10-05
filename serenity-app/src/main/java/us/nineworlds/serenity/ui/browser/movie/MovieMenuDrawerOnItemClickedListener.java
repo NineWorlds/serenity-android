@@ -32,8 +32,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import app.com.tvrecyclerview.TvRecyclerView;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
@@ -74,8 +74,7 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
     SerenityMultiViewVideoActivity activity = getActivity(view.getContext());
     FragmentManager fragmentManager = activity.getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    DpadAwareRecyclerView gallery =
-        (DpadAwareRecyclerView) activity.findViewById(R.id.moviePosterView);
+    TvRecyclerView gallery = activity.findViewById(R.id.moviePosterView);
     AbstractPosterImageGalleryAdapter adapter =
         (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
     View titleActionBar = activity.findViewById(R.id.movieActionBarPosterTitle);

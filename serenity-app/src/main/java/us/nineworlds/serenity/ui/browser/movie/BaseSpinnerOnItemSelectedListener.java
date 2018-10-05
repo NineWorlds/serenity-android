@@ -25,8 +25,8 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import android.content.SharedPreferences;
 import android.widget.AdapterView;
+import app.com.tvrecyclerview.TvRecyclerView;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -38,7 +38,7 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
 
   @Inject protected SharedPreferences prefs;
 
-  protected DpadAwareRecyclerView posterGallery;
+  protected TvRecyclerView posterGallery;
 
   protected SerenityMultiViewVideoActivity multiViewVideoActivity;
 
@@ -52,8 +52,7 @@ public abstract class BaseSpinnerOnItemSelectedListener extends BaseInjector {
   }
 
   protected void findViews() {
-    posterGallery =
-        (DpadAwareRecyclerView) getMultiViewVideoActivity().findViewById(R.id.moviePosterView);
+    posterGallery = (TvRecyclerView) getMultiViewVideoActivity().findViewById(R.id.moviePosterView);
   }
 
   protected int getSavedInstancePosition(AdapterView<?> viewAdapter) {

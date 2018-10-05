@@ -49,6 +49,7 @@ import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
+import us.nineworlds.serenity.widgets.SerenityTVRecylcerView;
 
 import static butterknife.ButterKnife.bind;
 
@@ -66,7 +67,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
   @Inject Resources resources;
 
-  @BindView(R.id.moviePosterView) protected TvRecyclerView recyclerView;
+  @BindView(R.id.moviePosterView) protected SerenityTVRecylcerView recyclerView;
 
   public MovieVideoGalleryFragment() {
     super();
@@ -108,8 +109,9 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     recyclerView.setOnItemStateListener(adapter);
 
     recyclerView.setHorizontalFadingEdgeEnabled(true);
-    recyclerView.setFocusableInTouchMode(false);
-    recyclerView.setDrawingCacheEnabled(true);
+    recyclerView.setFocusableInTouchMode(true);
+    recyclerView.requestFocus();
+    recyclerView.setSelectPadding(0,0, 0, 0);
 
     MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
 

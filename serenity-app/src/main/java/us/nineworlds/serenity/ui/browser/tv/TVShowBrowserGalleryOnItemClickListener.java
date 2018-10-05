@@ -38,8 +38,6 @@ import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
 
 public class TVShowBrowserGalleryOnItemClickListener extends AbstractVideoOnItemClickListener {
 
-  private AbstractPosterImageGalleryAdapter adapter;
-
   public TVShowBrowserGalleryOnItemClickListener(AbstractPosterImageGalleryAdapter adapter) {
     super(adapter);
   }

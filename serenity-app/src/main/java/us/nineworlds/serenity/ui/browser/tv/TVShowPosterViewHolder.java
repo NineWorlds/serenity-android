@@ -2,7 +2,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
 import android.view.View;
-import net.ganin.darv.DpadAwareRecyclerView;
+import app.com.tvrecyclerview.TvRecyclerView;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
@@ -18,6 +18,6 @@ public class TVShowPosterViewHolder extends TVShowViewHolder {
 
     initPosterMetaData(pi, width, height, true);
 
-    itemView.setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
+    itemView.setLayoutParams(new TvRecyclerView.LayoutParams(width, height));
   }
 }

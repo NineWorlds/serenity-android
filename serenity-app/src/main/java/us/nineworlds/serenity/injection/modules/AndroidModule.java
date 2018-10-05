@@ -126,6 +126,7 @@ import us.nineworlds.serenity.ui.browser.tv.OnKeyDownDelegate;
 import us.nineworlds.serenity.ui.browser.tv.TVCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.TVSecondaryCategorySpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
+import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserGalleryOnItemClickListener;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserPresenter;
 import us.nineworlds.serenity.ui.browser.tv.TVShowGalleryOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.TVShowGridOnItemSelectedListener;
@@ -145,6 +146,7 @@ import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity;
 import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserPresenter;
 import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonMenuDrawerOnItemClickedListener;
+import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonOnItemClickListener;
 import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonOnItemSelectedListener;
 import us.nineworlds.serenity.ui.leanback.search.CardPresenter;
 import us.nineworlds.serenity.ui.leanback.search.MovieSearchFragment;
@@ -209,7 +211,8 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
     ExoplayerVideoActivity.class, ExoplayerPresenter.class, EventLogger.class, VideoKeyCodeHandlerDelegate.class,
     UpdatePlaybackPostionJob.class, WatchedStatusJob.class, EmbyServerJob.class, ServerSelectionActivity.class,
     LoginUserActivity.class, LoginUserPresenter.class, LoginUserViewHolder.class, RetrieveAllUsersJob.class,
-    AuthenticateUserJob.class, StartPlaybackJob.class, StopPlaybackJob.class
+    AuthenticateUserJob.class, StartPlaybackJob.class, StopPlaybackJob.class, TVShowBrowserGalleryOnItemClickListener.class,
+    TVShowSeasonOnItemClickListener.class
 }, library = true)
 public class AndroidModule {
 

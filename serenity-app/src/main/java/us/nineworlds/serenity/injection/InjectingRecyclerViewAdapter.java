@@ -23,10 +23,11 @@
 
 package us.nineworlds.serenity.injection;
 
+import android.support.v7.widget.RecyclerView;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 
-public abstract class InjectingRecyclerViewAdapter extends DpadAwareRecyclerView.Adapter {
+public abstract class InjectingRecyclerViewAdapter extends RecyclerView.Adapter {
 
   public InjectingRecyclerViewAdapter() {
     SerenityObjectGraph.Companion.getInstance().inject(this);

@@ -14,10 +14,6 @@
       android:visibility="visible"
       android:layout_marginBottom="5dp"
       app:isAutoProcessFocus="true"
-      app:focusDrawable="@drawable/rounded_transparent_border"
-      >
-
-    <requestFocus/>
-  </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>
+      app:focusDrawable="@drawable/rounded_transparent_border"/>
 
 </FrameLayout>

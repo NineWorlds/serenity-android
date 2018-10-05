@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
+import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.birbit.android.jobqueue.JobManager;
@@ -60,8 +61,8 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector
   @Inject TVCategoryState categoryState;
 
   @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
-  @BindView(R.id.tvShowBannerGallery) @Nullable DpadAwareRecyclerView posterGallery;
-  @BindView(R.id.tvShowGridView) @Nullable DpadAwareRecyclerView tvGridView;
+  @BindView(R.id.tvShowBannerGallery) @Nullable TvRecyclerView posterGallery;
+  @BindView(R.id.tvShowGridView) @Nullable TvRecyclerView tvGridView;
 
   public TVCategorySpinnerOnItemSelectedListener(String defaultSelection, String ckey) {
     selected = defaultSelection;

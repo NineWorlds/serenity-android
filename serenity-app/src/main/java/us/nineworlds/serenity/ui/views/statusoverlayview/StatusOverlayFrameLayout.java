@@ -17,13 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -148,7 +148,7 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
 
     initPosterMetaData(pi, width, height);
 
-    setLayoutParams(new DpadAwareRecyclerView.LayoutParams(width, height));
+    setLayoutParams(new TvRecyclerView.LayoutParams(width, height));
   }
 
   @Override public void refresh() {

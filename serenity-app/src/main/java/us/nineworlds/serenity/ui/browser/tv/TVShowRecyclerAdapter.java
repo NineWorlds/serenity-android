@@ -80,7 +80,7 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
   }
 
   @Override public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {
-    if (hasFocus) {
+    if (hasFocus && view != null) {
       onItemSelectedListener.onItemSelected(view, i);
     }
   }

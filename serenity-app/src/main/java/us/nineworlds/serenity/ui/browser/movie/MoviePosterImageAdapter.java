@@ -64,7 +64,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
   }
 
   @Override public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {
-    if (hasFocus) {
+    if (hasFocus && view != null) {
       getOnItemSelectedListener().onItemSelected(view, i);
     }
   }

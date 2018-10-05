@@ -9,13 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import app.com.tvrecyclerview.TvRecyclerView;
 import dagger.Module;
 import dagger.Provides;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Singleton;
-import net.ganin.darv.DpadAwareRecyclerView;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -102,7 +102,7 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   @Test public void assertThatTVShowBannerGalleryIsNotNull() {
     demandActivityOnCreate();
 
-    assertThat(activity.tvShowBannerGalleryView).isNotNull().isInstanceOf(DpadAwareRecyclerView.class);
+    assertThat(activity.tvShowBannerGalleryView).isNotNull().isInstanceOf(TvRecyclerView.class);
   }
 
   @Test public void assertThatSecondaryCategoryFilterIsNotNull() {
@@ -116,7 +116,7 @@ public class TVShowBrowserActivityTest extends InjectingTest {
 
     demandActivityOnCreate();
 
-    assertThat(activity.tvShowGridView).isNotNull().isInstanceOf(DpadAwareRecyclerView.class);
+    assertThat(activity.tvShowGridView).isNotNull().isInstanceOf(TvRecyclerView.class);
     assertThat(activity.tvShowBannerGalleryView).isNull();
   }
 

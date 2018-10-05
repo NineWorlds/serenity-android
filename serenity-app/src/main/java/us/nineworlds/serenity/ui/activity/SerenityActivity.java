@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
+import app.com.tvrecyclerview.TvRecyclerView;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingMvpActivity;
@@ -40,7 +41,7 @@ public abstract class SerenityActivity extends InjectingMvpActivity {
   protected abstract void createSideMenu();
 
   @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
-    DpadAwareRecyclerView gallery = (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
+    TvRecyclerView gallery = findViewById(R.id.moviePosterView);
 
     if (gallery == null) {
       return super.onKeyDown(keyCode, event);
@@ -56,7 +57,7 @@ public abstract class SerenityActivity extends InjectingMvpActivity {
         View view = null;
         if (gallery != null) {
           LayoutManager layoutManager = gallery.getLayoutManager();
-          view = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
+          view = layoutManager.findViewByPosition(gallery.getSelectedPosition());
         }
         view.performLongClick();
         return true;
@@ -64,21 +65,21 @@ public abstract class SerenityActivity extends InjectingMvpActivity {
 
       if (gallery != null) {
         if (isKeyCodeSkipBack(keyCode)) {
-          int selectedItem = gallery.getSelectedItemPosition();
+          int selectedItem = gallery.getSelectedPosition();
           int newPosition = selectedItem - 10;
           if (newPosition < 0) {
             newPosition = 0;
           }
-          gallery.setSelection(newPosition);
+          gallery.setItemSelected(newPosition);
           return true;
         }
         if (isKeyCodeSkipForward(keyCode)) {
-          int selectedItem = gallery.getSelectedItemPosition();
+          int selectedItem = gallery.getSelectedPosition();
           int newPosition = selectedItem + 10;
           if (newPosition > itemsCount) {
             newPosition = itemsCount - 1;
           }
-          gallery.setSelection(newPosition);
+          gallery.setItemSelected(newPosition);
           return true;
         }
       }

@@ -98,6 +98,8 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
     tvShowSeasonsGallery.addItemDecoration(createItemDecorator());
     tvShowSeasonsGallery.setFocusable(true);
     tvShowSeasonsGallery.requestFocusFromTouch();
+    tvShowSeasonsGallery.setOnItemStateListener(adapter);
+    tvShowSeasonsGallery.setSelectPadding(0,0,0, 0);
     presenter.retrieveSeasons(key);
   }
 
@@ -185,7 +187,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
   /**
    * Nothing really to update here now, so will return null.
    */
-  @Override protected DpadAwareRecyclerView findGalleryView() {
+  @Override protected RecyclerView findGalleryView() {
     return null;
   }
 
@@ -194,12 +196,13 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
    * <p>
    * So pass back the appropriate grid view in this case.
    */
-  @Override protected DpadAwareRecyclerView findGridView() {
-    return (DpadAwareRecyclerView) findViewById(R.id.episodeGridView);
+  @Override protected RecyclerView findGridView() {
+    return (TvRecyclerView) findViewById(R.id.episodeGridView);
   }
 
   @Override public void updateEpisodes(List<VideoContentInfo> episodes) {
-    DpadAwareRecyclerView episodeGrid = (DpadAwareRecyclerView) findViewById(R.id.episodeGridView);
+    TvRecyclerView episodeGrid = (TvRecyclerView) findViewById(R.id.episodeGridView);
+    episodeGrid.setSelectPadding(0, 0, 0, 0);
     SeasonsEpisodePosterImageGalleryAdapter adapter =
         (SeasonsEpisodePosterImageGalleryAdapter) episodeGrid.getAdapter();
     adapter.updateEpisodes(episodes);
@@ -213,8 +216,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
       textView.setText(Integer.toString(seasons.size()) + getString(R.string._item_s_));
     }
 
-    DpadAwareRecyclerView gallery =
-        (DpadAwareRecyclerView) findViewById(R.id.tvShowSeasonImageGallery);
+    TvRecyclerView gallery = findViewById(R.id.tvShowSeasonImageGallery);
     TVShowSeasonImageGalleryAdapter adapter =
         (TVShowSeasonImageGalleryAdapter) gallery.getAdapter();
     adapter.updateSeasonsList(seasons);

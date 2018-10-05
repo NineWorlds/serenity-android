@@ -1,6 +1,8 @@
 package us.nineworlds.serenity.widgets;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
 import app.com.tvrecyclerview.TvRecyclerView;
 import com.google.android.flexbox.FlexboxLayoutManager;
@@ -21,6 +23,10 @@ public class SerenityTVRecylcerView extends TvRecyclerView {
 
   @Override public int getFirstVisiblePosition() {
     LayoutManager layoutManager = this.getLayoutManager();
+    if (layoutManager instanceof LinearLayoutManager) {
+      return ((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
+    }
+
     if (layoutManager instanceof FlexboxLayoutManager) {
       return ((FlexboxLayoutManager) layoutManager).findFirstVisibleItemPosition();
     }

@@ -59,6 +59,7 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
+import us.nineworlds.serenity.widgets.SerenityTVRecylcerView;
 
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     implements TVShowBrowserView {
@@ -77,8 +78,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
 
   protected OnKeyDownDelegate onKeyDownDelegate;
 
-  @BindView(R.id.tvShowBannerGallery) @Nullable TvRecyclerView tvShowBannerGalleryView;
-  @BindView(R.id.tvShowGridView) @Nullable TvRecyclerView tvShowGridView;
+  @BindView(R.id.tvShowBannerGallery) @Nullable SerenityTVRecylcerView tvShowBannerGalleryView;
+  @BindView(R.id.tvShowGridView) @Nullable SerenityTVRecylcerView tvShowGridView;
   @BindView(R.id.fanArt) View fanArt;
   @BindView(R.id.tvShowItemCount) TextView tvShowItemCountView;
   @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
@@ -120,12 +121,14 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
         TVShowRecyclerAdapter adapter = new TVShowRecyclerAdapter();
         adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
         adapter.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(adapter));
-        recyclerView.setAdapter(new TVShowRecyclerAdapter());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setOnItemStateListener(adapter);
       } else {
         TVShowPosterImageGalleryAdapter adapter = new TVShowPosterImageGalleryAdapter();
         adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
         adapter.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(adapter));
         recyclerView.setAdapter(adapter);
+        recyclerView.setOnItemStateListener(adapter);
       }
     } else {
       GridLayoutManager serenityMenuGridLayoutManager =
@@ -138,7 +141,9 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
       adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
       adapter.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(adapter));
       recyclerView.setAdapter(adapter);
+      recyclerView.setOnItemStateListener(adapter);
     }
+    recyclerView.setSelectPadding(0,0,0,0);
   }
 
   @Override protected void onRestart() {
