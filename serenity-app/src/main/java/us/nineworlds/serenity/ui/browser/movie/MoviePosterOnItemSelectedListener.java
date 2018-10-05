@@ -38,6 +38,7 @@ import com.bumptech.glide.Glide;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -47,13 +48,13 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
  *
  * @author dcarver
  */
-public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelectedListener
-    implements DpadAwareRecyclerView.OnItemSelectedListener {
+public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
-  int lastPos = -1;
+  private AbstractPosterImageGalleryAdapter adapter;
 
-  public MoviePosterOnItemSelectedListener() {
+  public MoviePosterOnItemSelectedListener(AbstractPosterImageGalleryAdapter adapter) {
     super();
+    this.adapter = adapter;
   }
 
   @Override protected void createVideoDetail(ImageView v) {
@@ -119,19 +120,12 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
     super.fetchSubtitle(mpi);
   }
 
-  @Override public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+  @Override public void onItemSelected(View view, int i) {
     Activity context = getActivity(view.getContext());
     if (context.isDestroyed()) {
       return;
     }
 
-    if (lastPos != i) {
-      lastPos = i;
-    } else {
-      return;
-    }
-
-    MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) dpadAwareRecyclerView.getAdapter();
     if (i > adapter.getItemCount()) {
       return;
     }
@@ -155,9 +149,5 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
     createVideoDetail(posterImageView);
     createVideoMetaData(posterImageView);
     createInfographicDetails(posterImageView);
-  }
-
-  @Override public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-
   }
 }

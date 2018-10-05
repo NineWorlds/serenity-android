@@ -26,15 +26,16 @@ package us.nineworlds.serenity.fragments;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.injection.InjectingFragment;
@@ -44,6 +45,8 @@ import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 
@@ -52,8 +55,6 @@ import static butterknife.ButterKnife.bind;
 public class MovieVideoGalleryFragment extends InjectingFragment {
 
   @Inject SharedPreferences preferences;
-
-  @Inject GalleryVideoOnItemClickListener onItemClickListener;
 
   @Inject GalleryVideoOnItemLongClickListener onItemLongClickListener;
 
@@ -65,9 +66,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
   @Inject Resources resources;
 
-  protected DpadAwareRecyclerView.OnItemSelectedListener onItemSelectedListener;
-
-  @BindView(R.id.moviePosterView) protected DpadAwareRecyclerView videoGallery;
+  @BindView(R.id.moviePosterView) protected TvRecyclerView recyclerView;
 
   public MovieVideoGalleryFragment() {
     super();
@@ -83,7 +82,6 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    onItemSelectedListener = new MoviePosterOnItemSelectedListener();
     View view = inflateView(inflater, container);
     bind(this, view);
     setupRecyclerView();
@@ -100,17 +98,18 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
   protected void setupRecyclerView() {
     RecyclerView.LayoutManager linearLayoutManager = createLayoutManager();
+    MoviePosterImageAdapter adapter = new MoviePosterImageAdapter();
+    adapter.setOnItemSelectedListener(createOnItemSelectedListener(adapter));
+    adapter.setOnItemClickListener(createOnItemClickListener(adapter));
 
-    videoGallery.addItemDecoration(createItemDecorator());
-    videoGallery.setAdapter(new MoviePosterImageAdapter());
-    videoGallery.setLayoutManager(linearLayoutManager);
+    recyclerView.addItemDecoration(createItemDecorator());
+    recyclerView.setAdapter(adapter);
+    recyclerView.setLayoutManager(linearLayoutManager);
+    recyclerView.setOnItemStateListener(adapter);
 
-    videoGallery.setOnItemSelectedListener(onItemSelectedListener);
-    videoGallery.setOnItemClickListener(onItemClickListener);
-
-    videoGallery.setHorizontalFadingEdgeEnabled(true);
-    videoGallery.setFocusableInTouchMode(false);
-    videoGallery.setDrawingCacheEnabled(true);
+    recyclerView.setHorizontalFadingEdgeEnabled(true);
+    recyclerView.setFocusableInTouchMode(false);
+    recyclerView.setDrawingCacheEnabled(true);
 
     MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
 
@@ -118,6 +117,14 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
     MovieCategoryJob job = new MovieCategoryJob(key);
     jobManager.addJobInBackground(job);
+  }
+
+  @NonNull protected AbstractVideoOnItemClickListener createOnItemClickListener(MoviePosterImageAdapter adapter) {
+    return new GalleryVideoOnItemClickListener(adapter);
+  }
+
+  @NonNull protected AbstractVideoOnItemSelectedListener createOnItemSelectedListener(MoviePosterImageAdapter adapter) {
+    return new MoviePosterOnItemSelectedListener(adapter);
   }
 
   protected LinearLayoutManager createLayoutManager() {

@@ -72,10 +72,6 @@ public class SerenityModule {
     return new OkHttpClient.Builder().build();
   }
 
-  @Provides GalleryVideoOnItemClickListener providesGalleryVideoOnItemClickListener() {
-    return new GalleryVideoOnItemClickListener();
-  }
-
   @Provides GalleryVideoOnItemLongClickListener providesGalleryVideoOnItemLongClickListener() {
     return new GalleryVideoOnItemLongClickListener();
   }

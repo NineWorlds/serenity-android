@@ -24,29 +24,37 @@
 package us.nineworlds.serenity.ui.listeners;
 
 import android.app.Activity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import javax.inject.Inject;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 /**
  * Common class used by both the Poster Gallery view for itemClicks and the Grid
  * View. It launches video play back when a poster is selected.
- *
- * @author dcarver
  */
-public class AbstractVideoOnItemClickListener extends BaseInjector {
+public abstract class AbstractVideoOnItemClickListener extends BaseInjector {
 
   protected VideoContentInfo videoInfo;
 
   @Inject protected VideoPlayerIntentUtils vpUtils;
 
-  /**
-   * @param v
-   */
+  protected AbstractPosterImageGalleryAdapter adapter;
+
+  public AbstractVideoOnItemClickListener(AbstractPosterImageGalleryAdapter adapter) {
+    super();
+    this.adapter = adapter;
+  }
+
   protected void onItemClick(View v) {
     Activity activity = (Activity) v.getContext();
     vpUtils.playVideo(activity, videoInfo, false);
   }
+
+  protected abstract VideoContentInfo getVideoInfo(int position);
+
+  public abstract void onItemClick(View v, int position);
 }

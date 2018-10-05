@@ -29,6 +29,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import javax.inject.Inject;
@@ -55,8 +56,8 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends BaseInject
 
   @Inject protected TVCategoryState categoryState;
 
-  @BindView(R.id.tvShowGridView) @Nullable DpadAwareRecyclerView tvGridRecyclerView;
-  @BindView(R.id.tvShowBannerGallery) @Nullable DpadAwareRecyclerView posterGallery;
+  @BindView(R.id.tvShowGridView) @Nullable TvRecyclerView tvGridRecyclerView;
+  @BindView(R.id.tvShowBannerGallery) @Nullable TvRecyclerView posterGallery;
 
   AdapterView<?> viewAdapter;
 
@@ -92,7 +93,6 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends BaseInject
     categoryState.setGenreCategory(item.getCategory());
 
     if (isGridViewActive) {
-      tvGridRecyclerView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener());
       refreshShows(key, item.getParentCategory() + "/" + item.getCategory());
       return;
     }

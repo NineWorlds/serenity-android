@@ -46,6 +46,7 @@ import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
@@ -75,7 +76,12 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
   private boolean fadeIn = true;
   private int fadeInCount = 0;
 
-  public EpisodePosterOnItemSelectedListener() {
+  AbstractPosterImageGalleryAdapter adapter;
+
+
+  public EpisodePosterOnItemSelectedListener(AbstractPosterImageGalleryAdapter adapter) {
+    super();
+    this.adapter = adapter;
   }
 
   @Override public void createVideoDetail(ImageView v) {
@@ -198,8 +204,7 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
   }
 
   @Override
-  public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i,
-      long l) {
+  public void onItemSelected(View view, int i) {
     Activity context = getActivity(view.getContext());
 
     if (context.isDestroyed()) {
@@ -212,8 +217,6 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
       i = 0;
     }
 
-    EpisodePosterImageGalleryAdapter adapter =
-        (EpisodePosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
     if (i > adapter.getItemCount()) {
       return;
     }
@@ -233,10 +236,5 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
     createVideoDetail(posterImageView);
     createVideoMetaData(posterImageView);
     createInfographicDetails(posterImageView);
-  }
-
-  @Override
-  public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-
   }
 }

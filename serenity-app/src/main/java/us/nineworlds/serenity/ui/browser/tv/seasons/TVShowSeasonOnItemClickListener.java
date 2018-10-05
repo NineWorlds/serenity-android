@@ -29,20 +29,28 @@ import android.content.Intent;
 import android.view.View;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
-public class TVShowSeasonOnItemClickListener implements DpadAwareRecyclerView.OnItemClickListener {
+public class TVShowSeasonOnItemClickListener extends AbstractVideoOnItemClickListener {
 
   private final Activity context;
 
-  public TVShowSeasonOnItemClickListener(Context c) {
+  public TVShowSeasonOnItemClickListener(Context c, AbstractPosterImageGalleryAdapter adapter) {
+    super(adapter);
     context = (Activity) c;
+    this.adapter = adapter;
+  }
+
+  @Override protected VideoContentInfo getVideoInfo(int position) {
+    return null;
   }
 
   @Override
-  public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-    TVShowSeasonImageGalleryAdapter adapter =
-        (TVShowSeasonImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+  public void onItemClick(View view, int i) {
     SeriesContentInfo info = (SeriesContentInfo) adapter.getItem(i);
 
     Intent intent = new Intent(context, EpisodeBrowserActivity.class);

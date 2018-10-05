@@ -31,6 +31,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
+import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -62,8 +63,8 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
 
   @BindView(R.id.fanArt) View fanArt;
   @BindView(R.id.tvshowSeasonBrowserLayout) View tvShowSeasonsMainView;
-  @BindView(R.id.tvShowSeasonImageGallery) DpadAwareRecyclerView tvShowSeasonsGallery;
-  @BindView(R.id.episodeGridView) DpadAwareRecyclerView gridView;
+  @BindView(R.id.tvShowSeasonImageGallery) TvRecyclerView tvShowSeasonsGallery;
+  @BindView(R.id.episodeGridView) TvRecyclerView gridView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -86,13 +87,15 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
   }
 
   protected void setupSeasons() {
-    tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter());
+    TVShowSeasonImageGalleryAdapter adapter = new TVShowSeasonImageGalleryAdapter();
+    adapter.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this, adapter));
+    adapter.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this, adapter));
+
+    tvShowSeasonsGallery.setAdapter(adapter);
     tvShowSeasonsGallery.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
     tvShowSeasonsGallery.addItemDecoration(createItemDecorator());
-    tvShowSeasonsGallery.setOnItemSelectedListener(
-        new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this));
-    tvShowSeasonsGallery.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this));
     tvShowSeasonsGallery.setFocusable(true);
     tvShowSeasonsGallery.requestFocusFromTouch();
     presenter.retrieveSeasons(key);

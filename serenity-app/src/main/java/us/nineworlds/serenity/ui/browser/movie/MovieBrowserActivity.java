@@ -28,6 +28,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -61,7 +62,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
 
   VideoGridFragment videoGridFragment;
   MovieVideoGalleryFragment movieVideoGalleryFragment;
-  DpadAwareRecyclerView.Adapter adapter;
+  RecyclerView.Adapter adapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -88,7 +89,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
   }
 
   @Override protected void onPause() {
-    DpadAwareRecyclerView galleryView = findGalleryView();
+    RecyclerView galleryView = findGalleryView();
     if (galleryView != null) {
       adapter = galleryView.getAdapter();
     }
@@ -181,11 +182,11 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
     return key;
   }
 
-  @Override protected DpadAwareRecyclerView findGalleryView() {
-    return (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
+  @Override protected RecyclerView findGalleryView() {
+    return findViewById(R.id.moviePosterView);
   }
 
-  @Override protected DpadAwareRecyclerView findGridView() {
+  @Override protected RecyclerView findGridView() {
     return findGalleryView();
   }
 
@@ -231,7 +232,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
   }
 
   @Override public void displayPosters(List<VideoContentInfo> videos) {
-    DpadAwareRecyclerView recyclerView = findGalleryView();
+    RecyclerView recyclerView = findGalleryView();
     MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) recyclerView.getAdapter();
     adapter.populatePosters(videos);
     recyclerView.requestFocusFromTouch();

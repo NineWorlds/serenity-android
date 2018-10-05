@@ -44,6 +44,7 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
@@ -52,16 +53,18 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
  *
  * @author dcarver
  */
-public class TVShowGalleryOnItemSelectedListener extends BaseInjector
-    implements DpadAwareRecyclerView.OnItemSelectedListener {
+public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
   private SerenityMultiViewVideoActivity context;
   private SeriesContentInfo info;
 
   @Inject protected SerenityClient factory;
 
-  public TVShowGalleryOnItemSelectedListener() {
+  AbstractPosterImageGalleryAdapter adapter;
+
+  public TVShowGalleryOnItemSelectedListener(AbstractPosterImageGalleryAdapter adapter) {
     super();
+    this.adapter = adapter;
   }
 
   private void createTVShowDetail(ImageView v) {
@@ -85,7 +88,7 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector
     imageView.setImageDrawable(content.getDrawable());
     imageView.setScaleType(ScaleType.FIT_XY);
 
-    ImageView studiov = (ImageView) context.findViewById(R.id.tvShowStudio);
+    ImageView studiov = context.findViewById(R.id.tvShowStudio);
     if (info.getStudio() != null) {
       studiov.setVisibility(View.VISIBLE);
       LinearLayout.LayoutParams sparams = new LinearLayout.LayoutParams(w, h);
@@ -116,12 +119,12 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector
   }
 
   protected void createTitle() {
-    TextView title = (TextView) context.findViewById(R.id.tvBrowserTitle);
+    TextView title = context.findViewById(R.id.tvBrowserTitle);
     title.setText(info.getTitle());
   }
 
   protected void createSummary() {
-    TextView summary = (TextView) context.findViewById(R.id.tvShowSeriesSummary);
+    TextView summary = context.findViewById(R.id.tvShowSeriesSummary);
     String plotSummary = info.getSummary();
     if (plotSummary == null) {
       summary.setText("");
@@ -131,7 +134,7 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector
   }
 
   protected void createRatings() {
-    RatingBar ratingBar = (RatingBar) context.findViewById(R.id.tvRatingbar);
+    RatingBar ratingBar = context.findViewById(R.id.tvRatingbar);
     ratingBar.setMax(4);
     ratingBar.setIsIndicator(true);
     ratingBar.setStepSize(0.1f);
@@ -162,7 +165,7 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector
 
     Glide.with(context).load(transcodingURL).asBitmap().into(target);
 
-    ImageView showImage = (ImageView) context.findViewById(R.id.tvShowImage);
+    ImageView showImage = context.findViewById(R.id.tvShowImage);
     showImage.setVisibility(View.VISIBLE);
     showImage.setScaleType(ScaleType.FIT_XY);
     int width = ImageUtils.getDPI(250, context);
@@ -173,14 +176,12 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector
     Glide.with(context).load(mi.getThumbNailURL()).into(showImage);
   }
 
-  @Override public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+  @Override public void onItemSelected(View view, int i) {
     context = (SerenityMultiViewVideoActivity) view.getContext();
     if (context.isDestroyed()) {
       return;
     }
-    AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter =
-        (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
-    info = (SeriesContentInfo) abstractPosterImageGalleryAdapter.getItem(i);
+    info = (SeriesContentInfo) adapter.getItem(i);
 
     ImageView imageView = (ImageView) view.findViewById(R.id.posterImageView);
 
@@ -188,7 +189,9 @@ public class TVShowGalleryOnItemSelectedListener extends BaseInjector
     changeBackgroundImage(imageView);
   }
 
-  @Override public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
 
+  @Override protected void createVideoDetail(ImageView v) {
+    // DO Nothing
   }
+
 }

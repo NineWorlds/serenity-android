@@ -27,13 +27,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -74,8 +77,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
 
   protected OnKeyDownDelegate onKeyDownDelegate;
 
-  @BindView(R.id.tvShowBannerGallery) @Nullable DpadAwareRecyclerView tvShowBannerGalleryView;
-  @BindView(R.id.tvShowGridView) @Nullable DpadAwareRecyclerView tvShowGridView;
+  @BindView(R.id.tvShowBannerGallery) @Nullable TvRecyclerView tvShowBannerGalleryView;
+  @BindView(R.id.tvShowGridView) @Nullable TvRecyclerView tvShowGridView;
   @BindView(R.id.fanArt) View fanArt;
   @BindView(R.id.tvShowItemCount) TextView tvShowItemCountView;
   @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
@@ -103,32 +106,39 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   }
 
   private void populateTVShowContent() {
-    DpadAwareRecyclerView dpadAwareRecyclerView =
+    TvRecyclerView recyclerView =
         findGalleryView() != null ? findGalleryView() : findGridView();
 
     if (!gridViewActive) {
       LinearLayoutManager linearLayoutManager =
           new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-      dpadAwareRecyclerView.setLayoutManager(linearLayoutManager);
-      dpadAwareRecyclerView.addItemDecoration(new SpaceItemDecoration(
+      recyclerView.setLayoutManager(linearLayoutManager);
+      recyclerView.addItemDecoration(new SpaceItemDecoration(
           getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
-      dpadAwareRecyclerView.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener());
+
       if (!posterLayoutActive) {
-        dpadAwareRecyclerView.setAdapter(new TVShowRecyclerAdapter());
+        TVShowRecyclerAdapter adapter = new TVShowRecyclerAdapter();
+        adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
+        adapter.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(adapter));
+        recyclerView.setAdapter(new TVShowRecyclerAdapter());
       } else {
-        dpadAwareRecyclerView.setAdapter(new TVShowPosterImageGalleryAdapter());
+        TVShowPosterImageGalleryAdapter adapter = new TVShowPosterImageGalleryAdapter();
+        adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
+        adapter.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(adapter));
+        recyclerView.setAdapter(adapter);
       }
     } else {
-      SerenityMenuGridLayoutManager serenityMenuGridLayoutManager =
-          new SerenityMenuGridLayoutManager(this, 3, SerenityMenuGridLayoutManager.HORIZONTAL,
+      GridLayoutManager serenityMenuGridLayoutManager =
+          new GridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL,
               false);
-      serenityMenuGridLayoutManager.setCircular(true);
-      dpadAwareRecyclerView.setLayoutManager(serenityMenuGridLayoutManager);
-      dpadAwareRecyclerView.addItemDecoration(new ItemOffsetDecoration(
+      recyclerView.setLayoutManager(serenityMenuGridLayoutManager);
+      recyclerView.addItemDecoration(new ItemOffsetDecoration(
           getResources().getDimensionPixelSize(R.dimen.grid_spacing_dimen)));
-      dpadAwareRecyclerView.setAdapter(new TVShowPosterImageGalleryAdapter());
+      TVShowPosterImageGalleryAdapter adapter = new TVShowPosterImageGalleryAdapter();
+      adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
+      adapter.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(adapter));
+      recyclerView.setAdapter(adapter);
     }
-    dpadAwareRecyclerView.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(this));
   }
 
   @Override protected void onRestart() {
@@ -199,11 +209,11 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     return null;
   }
 
-  @Override protected DpadAwareRecyclerView findGalleryView() {
+  @Override protected TvRecyclerView findGalleryView() {
     return tvShowBannerGalleryView;
   }
 
-  @Override protected DpadAwareRecyclerView findGridView() {
+  @Override protected TvRecyclerView findGridView() {
     return tvShowGridView;
   }
 
@@ -227,7 +237,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   }
 
   @Override public void displayShows(List<SeriesContentInfo> series, String category) {
-    DpadAwareRecyclerView recyclerView =
+    RecyclerView recyclerView =
         findGalleryView() != null ? findGalleryView() : findGridView();
     if (series.isEmpty()) {
       Toast.makeText(this, getString(R.string.no_shows_found_for_the_category_) + category,

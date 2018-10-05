@@ -24,10 +24,13 @@
 package us.nineworlds.serenity.ui.adapters;
 
 import android.os.Handler;
+import app.com.tvrecyclerview.TvRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
 /**
  * An abstract class for handling the creation of video content for use during
@@ -37,10 +40,12 @@ import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
  *
  * @author dcarver
  */
-public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecyclerViewAdapter {
+public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecyclerViewAdapter implements TvRecyclerView.OnItemStateListener {
 
   protected static List<VideoContentInfo> posterList = null;
   protected Handler handler;
+  protected AbstractVideoOnItemClickListener onItemClickListener;
+  protected AbstractVideoOnItemSelectedListener onItemSelectedListener;
 
   public AbstractPosterImageGalleryAdapter() {
     posterList = new ArrayList<>();
@@ -60,5 +65,21 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
 
   public List<VideoContentInfo> getItems() {
     return posterList;
+  }
+
+  public AbstractVideoOnItemClickListener getOnItemClickListener() {
+    return onItemClickListener;
+  }
+
+  public void setOnItemClickListener(AbstractVideoOnItemClickListener onItemClickListener) {
+    this.onItemClickListener = onItemClickListener;
+  }
+
+  public AbstractVideoOnItemSelectedListener getOnItemSelectedListener() {
+    return onItemSelectedListener;
+  }
+
+  public void setOnItemSelectedListener(AbstractVideoOnItemSelectedListener onItemSelectedListener) {
+    this.onItemSelectedListener = onItemSelectedListener;
   }
 }

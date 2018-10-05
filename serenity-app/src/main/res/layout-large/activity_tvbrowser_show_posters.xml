@@ -1,4 +1,6 @@
-<us.nineworlds.serenity.widgets.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<us.nineworlds.serenity.widgets.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -62,11 +64,11 @@
 
         <RatingBar
             android:id="@+id/tvRatingbar"
-            style="?android:attr/ratingBarStyleIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="4"
             android:stepSize="0.1"
+            style="?android:attr/ratingBarStyleIndicator"
             />
 
         <ImageView
@@ -81,7 +83,6 @@
 
       <TextView
           android:id="@+id/tvBrowserTitle"
-          style="@android:style/TextAppearance.Holo.Large"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginLeft="15dp"
@@ -92,6 +93,7 @@
           android:textColor="#F0F0F0"
           android:textStyle="bold"
           tools:ignore="SelectableText"
+          style="@android:style/TextAppearance.Holo.Large"
           />
 
       <TextView
@@ -125,20 +127,18 @@
         android:orientation="vertical"
         >
 
-      <net.ganin.darv.DpadAwareRecyclerView
+      <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
           android:id="@+id/tvShowBannerGallery"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_gravity="center|center_vertical"
           android:nextFocusUp="@+id/categoryFilter"
-          app:selectorVelocity="1000"
-          app:smoothScrolling="true"
-          app:foregroundSelector="@drawable/item_foreground_selector"
-          android:descendantFocusability="afterDescendants"
+          app:isAutoProcessFocus="true"
+          app:focusDrawable="@drawable/rounded_transparent_border"
           >
 
         <requestFocus/>
-      </net.ganin.darv.DpadAwareRecyclerView>
+      </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>
 
     </LinearLayout>
   </RelativeLayout>

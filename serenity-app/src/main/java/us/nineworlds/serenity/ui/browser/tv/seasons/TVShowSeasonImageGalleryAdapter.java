@@ -34,6 +34,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 /**
  * An adapter that handles the population of views for TV Show Seasons.
@@ -43,7 +44,7 @@ import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
  *
  * @author dcarver
  */
-public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapter {
+public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 
   private List<SeriesContentInfo> seasonList = null;
 
@@ -88,5 +89,15 @@ public class TVShowSeasonImageGalleryAdapter extends InjectingRecyclerViewAdapte
   public void updateSeasonsList(List<SeriesContentInfo> seasonList) {
     this.seasonList = seasonList;
     notifyDataSetChanged();
+  }
+
+  @Override public void onItemViewClick(View view, int i) {
+    onItemSelectedListener.onItemSelected(view, i);
+  }
+
+  @Override public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {
+    if (hasFocus) {
+      onItemSelectedListener.onItemSelected(view, i);
+    }
   }
 }

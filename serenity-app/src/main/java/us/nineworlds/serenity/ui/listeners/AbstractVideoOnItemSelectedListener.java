@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import app.com.tvrecyclerview.TvRecyclerView;
 import com.android.volley.RequestQueue;
 import com.birbit.android.jobqueue.JobManager;
 import com.bumptech.glide.Glide;
@@ -54,11 +55,9 @@ import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
  *
  * @author dcarver
  */
-public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
-    implements DpadAwareRecyclerView.OnItemSelectedListener {
+public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector {
 
   @Inject protected SerenityClient serenityClient;
-
   @Inject protected SharedPreferences preferences;
 
   @Inject JobManager jobManager;
@@ -67,7 +66,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
   public static final int WATCHED_VIEW_ID = 1000;
   protected View currentView;
   protected int position;
-  protected BaseAdapter adapter;
   protected VideoContentInfo videoInfo;
   protected RequestQueue queue;
 
@@ -83,7 +81,7 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
    */
   protected void createInfographicDetails(ImageView v) {
     Activity context = getActivity(v.getContext());
-    LinearLayout infographicsView = (LinearLayout) context.findViewById(R.id.movieInfoGraphicLayout);
+    LinearLayout infographicsView = context.findViewById(R.id.movieInfoGraphicLayout);
     infographicsView.removeAllViews();
 
     ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(80, 48);
@@ -174,4 +172,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
 
     Glide.with(context).load(transcodingURL).asBitmap().into(target);
   }
+
+  public abstract void onItemSelected(View view, int i);
 }

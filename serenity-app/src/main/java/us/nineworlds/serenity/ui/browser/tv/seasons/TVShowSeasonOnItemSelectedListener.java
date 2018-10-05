@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import app.com.tvrecyclerview.TvRecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -40,9 +41,10 @@ import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
-public class TVShowSeasonOnItemSelectedListener extends BaseInjector
-    implements DpadAwareRecyclerView.OnItemSelectedListener {
+public class TVShowSeasonOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
   private final Activity context;
   private SeriesContentInfo info;
@@ -50,8 +52,12 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector
   @Inject protected SerenityClient plexFactory;
   boolean firstTimeSw = true;
 
-  public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity) {
+  AbstractPosterImageGalleryAdapter adapter;
+
+  public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity, AbstractPosterImageGalleryAdapter adapter) {
+    super();
     context = activity;
+    this.adapter = adapter;
   }
 
   private void changeBackgroundImage(View v) {
@@ -72,7 +78,11 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector
     }
   }
 
-  @Override public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+  @Override protected void createVideoDetail(ImageView v) {
+    // DO NOTHING
+  }
+
+  @Override public void onItemSelected(View view, int i) {
     Activity context = (Activity) view.getContext();
     if (context.isDestroyed()) {
       return;
@@ -83,7 +93,6 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector
       return;
     }
 
-    TVShowSeasonImageGalleryAdapter adapter = (TVShowSeasonImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
     if (i < 0) {
       Log.e(TVShowSeasonOnItemSelectedListener.class.getCanonicalName(),
           "Season list size: " + adapter.getItemCount() + " position: " + i);
@@ -91,12 +100,12 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector
     }
 
     info = (SeriesContentInfo) adapter.getItem(i);
-    ImageView mpiv = (ImageView) view.findViewById(R.id.posterImageView);
-    DpadAwareRecyclerView episodeGrid = (DpadAwareRecyclerView) context.findViewById(R.id.episodeGridView);
+    ImageView mpiv = view.findViewById(R.id.posterImageView);
+    TvRecyclerView episodeGrid = context.findViewById(R.id.episodeGridView);
 
     episodeGrid.setVisibility(View.VISIBLE);
 
-    TextView seasonsTitle = (TextView) context.findViewById(R.id.tvShowSeasonsTitle);
+    TextView seasonsTitle = context.findViewById(R.id.tvShowSeasonsTitle);
     seasonsTitle.setText(info.getTitle());
 
     changeBackgroundImage(mpiv);
@@ -104,13 +113,12 @@ public class TVShowSeasonOnItemSelectedListener extends BaseInjector
     TVShowSeasonBrowserActivity seasonBrowserActivity = (TVShowSeasonBrowserActivity) context;
     if (seasonBrowserActivity.adapter == null) {
       seasonBrowserActivity.adapter = new SeasonsEpisodePosterImageGalleryAdapter();
+      seasonBrowserActivity.adapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(seasonBrowserActivity.adapter));
       episodeGrid.setAdapter(seasonBrowserActivity.adapter);
     }
     episodeGrid.setLayoutManager(new GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false));
-    episodeGrid.setOnItemClickListener(new EpisodePosterOnItemClickListener());
+
     seasonBrowserActivity.fetchEpisodes(info.getKey());
   }
 
-  @Override public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-  }
 }

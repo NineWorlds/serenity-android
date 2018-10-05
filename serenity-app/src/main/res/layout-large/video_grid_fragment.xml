@@ -2,23 +2,22 @@
 <FrameLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-  <net.ganin.darv.DpadAwareRecyclerView android:id="@+id/moviePosterView"
+  <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
+      android:id="@+id/moviePosterView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:nextFocusUp="@+id/categoryFilter"
-      app:selectorVelocity="1000"
-      app:smoothScrolling="true"
       android:background="@color/card_background"
       android:visibility="visible"
       android:layout_marginBottom="5dp"
-      app:foregroundSelector="@drawable/item_foreground_selector"
-      xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      android:descendantFocusability="afterDescendants"
+      app:isAutoProcessFocus="true"
+      app:focusDrawable="@drawable/rounded_transparent_border"
       >
 
     <requestFocus/>
-  </net.ganin.darv.DpadAwareRecyclerView>
+  </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>
+
 </FrameLayout>

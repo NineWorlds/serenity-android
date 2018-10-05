@@ -59,4 +59,14 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
     posterList = episodes;
     notifyDataSetChanged();
   }
+
+  @Override public void onItemViewClick(View view, int i) {
+    onItemClickListener.onItemClick(view, i);
+  }
+
+  @Override public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {
+    if (hasFocus) {
+      onItemSelectedListener.onItemSelected(view, i);
+    }
+  }
 }

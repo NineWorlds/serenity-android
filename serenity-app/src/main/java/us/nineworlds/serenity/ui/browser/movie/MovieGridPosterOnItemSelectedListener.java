@@ -25,7 +25,9 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
@@ -40,14 +42,14 @@ import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
 /**
  * When a poster is selected, update the information displayed in the browser.
  *
  * @author dcarver
  */
-public class MovieGridPosterOnItemSelectedListener extends BaseInjector
-    implements DpadAwareRecyclerView.OnItemSelectedListener {
+public class MovieGridPosterOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
   private static Activity context;
   private AbstractPosterImageGalleryAdapter adapter;
@@ -55,10 +57,9 @@ public class MovieGridPosterOnItemSelectedListener extends BaseInjector
   @Inject SerenityClient serenityClient;
   @Inject Logger logger;
 
-  int lastPos = -1;
-
-  public MovieGridPosterOnItemSelectedListener() {
+  public MovieGridPosterOnItemSelectedListener(@NonNull AbstractPosterImageGalleryAdapter adapter) {
     super();
+    this.adapter = adapter;
   }
 
   private void changeBackgroundImage(VideoContentInfo videoInfo) {
@@ -92,16 +93,16 @@ public class MovieGridPosterOnItemSelectedListener extends BaseInjector
     posterTitle.setText(mi.getTitle());
   }
 
-  @Override public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+  @Override protected void createVideoDetail(ImageView v) {
+    // DO Nothing
+  }
+
+  /**
+   * Call when item has Focus
+   */
+  public void onItemSelected(View view, int i) {
     context = (Activity) view.getContext();
 
-    if (lastPos != i) {
-      lastPos = i;
-    } else {
-      return;
-    }
-
-    adapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
     if (i > adapter.getItemCount()) {
       return;
     }
@@ -116,7 +117,4 @@ public class MovieGridPosterOnItemSelectedListener extends BaseInjector
     createMovieMetaData(videoContentInfo);
   }
 
-  @Override public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-
-  }
 }

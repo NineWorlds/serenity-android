@@ -29,33 +29,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import app.com.tvrecyclerview.TvRecyclerView;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
-import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 
 public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
   @Inject SharedPreferences preferences;
-
-  @Inject GalleryVideoOnItemClickListener onItemClickListener;
-
   @Inject GalleryVideoOnItemLongClickListener onItemLongClickListener;
-
   @Inject protected MovieSelectedCategoryState categoryState;
 
-  MoviePosterOnItemSelectedListener onItemSelectedListener;
-
-  private DpadAwareRecyclerView videoGallery;
+  private TvRecyclerView videoGallery;
 
   public EpisodeVideoGalleryFragment() {
     super();
@@ -63,7 +55,6 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    onItemSelectedListener = new MoviePosterOnItemSelectedListener();
     return inflater.inflate(R.layout.video_gallery_fragment, container);
   }
 
@@ -72,24 +63,20 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
     if (videoGallery == null) {
 
-      videoGallery = (DpadAwareRecyclerView) getActivity().findViewById(R.id.moviePosterView);
+      videoGallery = getActivity().findViewById(R.id.moviePosterView);
 
       String key = ((EpisodeBrowserActivity) getActivity()).getKey();
 
-      videoGallery.setAdapter(new EpisodePosterImageGalleryAdapter());
+      EpisodePosterImageGalleryAdapter adapter = new EpisodePosterImageGalleryAdapter();
+      adapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(adapter));
+      adapter.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(adapter));
+      videoGallery.setAdapter(adapter);
       videoGallery.setLayoutManager(
           new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
       videoGallery.addItemDecoration(new SpaceItemDecoration(
           getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
-      videoGallery.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
-      videoGallery.setOnItemClickListener(new EpisodePosterOnItemClickListener());
-      videoGallery.setSelectorVelocity(0);
       EpisodeBrowserActivity activity = (EpisodeBrowserActivity) getActivity();
       activity.fetchEpisodes(key);
     }
-  }
-
-  @Override public void onResume() {
-    super.onResume();
   }
 }

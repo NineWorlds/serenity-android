@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeViewHolder;
@@ -39,5 +40,9 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageG
     episodeViewHolder.createImage(pi, 270, 147);
     episodeViewHolder.toggleWatchedIndicator(pi);
     episodeViewHolder.updateSeasonsTitle(pi);
+  }
+
+  @Override public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {
+    // DO NOTHING HERE on the Seasons
   }
 }

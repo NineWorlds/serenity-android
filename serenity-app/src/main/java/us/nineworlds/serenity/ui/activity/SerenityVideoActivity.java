@@ -29,6 +29,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
+import app.com.tvrecyclerview.TvRecyclerView;
 import java.util.LinkedList;
 import javax.inject.Inject;
 import net.ganin.darv.DpadAwareRecyclerView;
@@ -42,9 +43,6 @@ import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
 import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 
-/**
- * @author dcarver
- */
 public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity {
 
   @Inject @ForVideoQueue LinkedList<VideoContentInfo> videoQueue;
@@ -54,7 +52,13 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     boolean externalPlayer = prefs.getBoolean("external_player", false);
-    DpadAwareRecyclerView gallery = findGalleryView() != null ? findGalleryView() : findGridView();
+    RecyclerView gallery = findGalleryView() != null ? findGalleryView() : findGridView();
+    if (!(gallery instanceof TvRecyclerView)) {
+      return;
+    }
+
+    RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
+
     View selectedView;
     VideoContentInfo video;
     AbstractPosterImageGalleryAdapter adapter = getAdapter();
@@ -62,14 +66,13 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
       return;
     }
 
-    RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
-    int itemPosition = gallery.getSelectedItemPosition();
+    int itemPosition = ((TvRecyclerView)gallery).getSelectedPosition();
     if (itemPosition < 0) {
       gallery.requestFocusFromTouch();
       return;
     }
     video = (VideoContentInfo) adapter.getItem(itemPosition);
-    selectedView = layoutManager.findViewByPosition(gallery.getSelectedItemPosition());
+    selectedView = layoutManager.findViewByPosition(((TvRecyclerView)gallery).getSelectedPosition());
 
     if (data != null) {
       if (externalPlayer) {
@@ -109,9 +112,9 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
     onDeckRecomendations.execute();
   }
 
-  protected abstract DpadAwareRecyclerView findGalleryView();
+  protected abstract RecyclerView findGalleryView();
 
-  protected abstract DpadAwareRecyclerView findGridView();
+  protected abstract RecyclerView findGridView();
 
   protected void showQueueNotEmptyMessage() {
     Toast.makeText(this, R.string.there_are_still_videos_int_the_queue_, Toast.LENGTH_LONG).show();

@@ -126,20 +126,18 @@
         android:orientation="vertical"
         >
 
-      <net.ganin.darv.DpadAwareRecyclerView
+      <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
           android:id="@+id/tvShowBannerGallery"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_gravity="center|center_vertical"
           android:nextFocusUp="@+id/categoryFilter"
-          app:selectorVelocity="2000"
-          app:smoothScrolling="true"
-          app:foregroundSelector="@drawable/item_foreground_selector"
-          android:descendantFocusability="afterDescendants"
+          app:isAutoProcessFocus="true"
+          app:focusDrawable="@drawable/rounded_transparent_border"
           >
 
         <requestFocus/>
-      </net.ganin.darv.DpadAwareRecyclerView>
+      </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>
 
     </LinearLayout>
   </RelativeLayout>

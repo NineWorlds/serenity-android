@@ -25,11 +25,15 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import java.util.List;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.views.statusoverlayview.StatusOverlayFrameLayout;
 
 public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
@@ -37,7 +41,6 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     StatusOverlayFrameLayout view = (StatusOverlayFrameLayout) LayoutInflater.from(parent.getContext())
         .inflate(R.layout.movie_status_overlay, parent, false);
-    //view.initMvp();
     return new MoviePosterViewHolder(view);
   }
 
@@ -54,5 +57,15 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
   protected void populatePosters(List<VideoContentInfo> videos) {
     posterList = videos;
     notifyDataSetChanged();
+  }
+
+  @Override public void onItemViewClick(View view, int i) {
+    getOnItemClickListener().onItemClick(view, i);
+  }
+
+  @Override public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {
+    if (hasFocus) {
+      getOnItemSelectedListener().onItemSelected(view, i);
+    }
   }
 }

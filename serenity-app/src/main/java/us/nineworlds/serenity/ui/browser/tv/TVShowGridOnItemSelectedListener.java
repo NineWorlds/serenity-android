@@ -42,14 +42,14 @@ import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
 /**
  * Display selected TV Show Information.
  *
  * @author dcarver
  */
-public class TVShowGridOnItemSelectedListener extends BaseInjector
-    implements DpadAwareRecyclerView.OnItemSelectedListener {
+public class TVShowGridOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
   private SeriesContentInfo videoInfo;
   private final Handler handler = new Handler();
@@ -60,12 +60,21 @@ public class TVShowGridOnItemSelectedListener extends BaseInjector
   @BindView(R.id.tvShowGridTitle) TextView titleView;
   @BindView(R.id.fanArt) View fanArt;
 
-  @Override public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-    ButterKnife.bind(this, (Activity) dpadAwareRecyclerView.getContext());
-    AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
+  AbstractPosterImageGalleryAdapter adapter;
+
+  public TVShowGridOnItemSelectedListener(AbstractPosterImageGalleryAdapter adapter) {
+    this.adapter = adapter;
+  }
+
+  @Override protected void createVideoDetail(ImageView v) {
+    // DO NOTHING
+  }
+
+  @Override public void onItemSelected(View view, int i) {
+    ButterKnife.bind(this, (Activity) view.getContext());
     videoInfo = (SeriesContentInfo) adapter.getItem(i);
 
-    final ImageView imageView = (ImageView) view.findViewById(R.id.posterImageView);
+    final ImageView imageView = view.findViewById(R.id.posterImageView);
 
     if (runnable != null) {
       handler.removeCallbacks(runnable);
@@ -100,9 +109,5 @@ public class TVShowGridOnItemSelectedListener extends BaseInjector
     };
 
     Glide.with(context).load(transcodingURL).asBitmap().into(target);
-  }
-
-  @Override public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-
   }
 }

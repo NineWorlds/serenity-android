@@ -31,34 +31,29 @@ import android.widget.ImageView;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.seasons.TVShowSeasonBrowserActivity;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
 
-/**
- * @author dcarver
- */
-public class TVShowBrowserGalleryOnItemClickListener
-    implements DpadAwareRecyclerView.OnItemClickListener {
+public class TVShowBrowserGalleryOnItemClickListener extends AbstractVideoOnItemClickListener {
 
-  private final Activity context;
+  private AbstractPosterImageGalleryAdapter adapter;
 
-  /**
-   *
-   */
-  public TVShowBrowserGalleryOnItemClickListener(Context c) {
-    context = (Activity) c;
+  public TVShowBrowserGalleryOnItemClickListener(AbstractPosterImageGalleryAdapter adapter) {
+    super(adapter);
   }
 
-  @Override
-  public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-    AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter =
-        (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
-    SeriesContentInfo videoInfo = (SeriesContentInfo) abstractPosterImageGalleryAdapter.getItem(i);
+  @Override protected VideoContentInfo getVideoInfo(int position) {
+    // DO Nothing;
+    return null;
+  }
 
-    ImageView tsi = (ImageView) view.findViewById(R.id.posterImageView);
+  public void onItemClick(View view, int i) {
+    SeriesContentInfo videoInfo = (SeriesContentInfo) adapter.getItem(i);
 
-    Intent intent = new Intent(context, TVShowSeasonBrowserActivity.class);
+    Intent intent = new Intent(view.getContext(), TVShowSeasonBrowserActivity.class);
     intent.putExtra("key", videoInfo.getKey());
-    context.startActivityForResult(intent, 0);
+    ((Activity)view.getContext()).startActivityForResult(intent, 0);
   }
 }

@@ -24,6 +24,8 @@
 package us.nineworlds.serenity.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,6 +34,9 @@ import android.view.ViewGroup;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
+import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
+import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
 import static butterknife.ButterKnife.bind;
@@ -44,11 +49,15 @@ public class VideoGridFragment extends MovieVideoGalleryFragment {
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    onItemSelectedListener = new MovieGridPosterOnItemSelectedListener();
     View view = inflateView(inflater, container);
     bind(this, view);
     setupRecyclerView();
     return view;
+  }
+
+  @Override protected void setupRecyclerView() {
+    super.setupRecyclerView();
+
   }
 
   @Override protected View inflateView(LayoutInflater inflater, ViewGroup container) {
@@ -56,14 +65,18 @@ public class VideoGridFragment extends MovieVideoGalleryFragment {
   }
 
   protected LinearLayoutManager createLayoutManager() {
-    SerenityMenuGridLayoutManager layoutManager =
-        new SerenityMenuGridLayoutManager(getActivity(), 3,
-            SerenityMenuGridLayoutManager.HORIZONTAL, false);
-    layoutManager.setCircular(true);
+    GridLayoutManager layoutManager =
+        new GridLayoutManager(getActivity(), 3,
+            GridLayoutManager.HORIZONTAL, false);
     return layoutManager;
   }
 
   @Override protected RecyclerView.ItemDecoration createItemDecorator() {
     return new ItemOffsetDecoration(resources.getDimensionPixelSize(R.dimen.grid_spacing_dimen));
   }
+
+  @NonNull protected AbstractVideoOnItemSelectedListener createOnItemSelectedListener(MoviePosterImageAdapter adapter) {
+    return new MovieGridPosterOnItemSelectedListener(adapter);
+  }
+
 }
