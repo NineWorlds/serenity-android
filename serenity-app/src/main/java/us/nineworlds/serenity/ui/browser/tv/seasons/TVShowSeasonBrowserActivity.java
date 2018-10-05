@@ -206,6 +206,9 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
     SeasonsEpisodePosterImageGalleryAdapter adapter =
         (SeasonsEpisodePosterImageGalleryAdapter) episodeGrid.getAdapter();
     adapter.updateEpisodes(episodes);
+    if (adapter.getItemCount() > 0) {
+      episodeGrid.setItemSelected(0);
+    }
   }
 
   @Override public void populateSeasons(List<SeriesContentInfo> seasons) {
@@ -220,8 +223,9 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
     TVShowSeasonImageGalleryAdapter adapter =
         (TVShowSeasonImageGalleryAdapter) gallery.getAdapter();
     adapter.updateSeasonsList(seasons);
-    if (gallery != null) {
-      gallery.requestFocusFromTouch();
+    if (adapter.getItemCount() > 0) {
+      gallery.setItemSelected(0);
+      gallery.getChildAt(0).requestFocus();
     }
   }
 

@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -58,11 +57,9 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 import us.nineworlds.serenity.widgets.SerenityTVRecylcerView;
 
-public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
-    implements TVShowBrowserView {
+public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implements TVShowBrowserView {
 
   public static final String SERIES_LAYOUT_GRID = "series_layout_grid";
   protected boolean restarted_state = false;
@@ -107,15 +104,13 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   }
 
   private void populateTVShowContent() {
-    TvRecyclerView recyclerView =
-        findGalleryView() != null ? findGalleryView() : findGridView();
+    TvRecyclerView recyclerView = findGalleryView() != null ? findGalleryView() : findGridView();
 
     if (!gridViewActive) {
-      LinearLayoutManager linearLayoutManager =
-          new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+      LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
       recyclerView.setLayoutManager(linearLayoutManager);
-      recyclerView.addItemDecoration(new SpaceItemDecoration(
-          getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
+      recyclerView.addItemDecoration(
+          new SpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
 
       if (!posterLayoutActive) {
         TVShowRecyclerAdapter adapter = new TVShowRecyclerAdapter();
@@ -132,18 +127,17 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
       }
     } else {
       GridLayoutManager serenityMenuGridLayoutManager =
-          new GridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL,
-              false);
+          new GridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false);
       recyclerView.setLayoutManager(serenityMenuGridLayoutManager);
-      recyclerView.addItemDecoration(new ItemOffsetDecoration(
-          getResources().getDimensionPixelSize(R.dimen.grid_spacing_dimen)));
+      recyclerView.addItemDecoration(
+          new ItemOffsetDecoration(getResources().getDimensionPixelSize(R.dimen.grid_spacing_dimen)));
       TVShowPosterImageGalleryAdapter adapter = new TVShowPosterImageGalleryAdapter();
       adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
       adapter.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(adapter));
       recyclerView.setAdapter(adapter);
       recyclerView.setOnItemStateListener(adapter);
     }
-    recyclerView.setSelectPadding(0,0,0,0);
+    recyclerView.setSelectPadding(0, 0, 0, 0);
   }
 
   @Override protected void onRestart() {
@@ -175,8 +169,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
 
     initMenuDrawerViews();
 
-    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector,
-        R.string.drawer_open, R.string.drawer_closed) {
+    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector, R.string.drawer_open,
+        R.string.drawer_closed) {
       @Override public void onDrawerOpened(View drawerView) {
 
         super.onDrawerOpened(drawerView);
@@ -199,12 +193,9 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
 
   protected void populateMenuDrawer() {
     List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
+    drawerMenuItem.add(new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
+    drawerMenuItem.add(new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
+    drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
 
     drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
     drawerList.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(drawerLayout));
@@ -232,8 +223,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     categorySpinner.setAdapter(spinnerArrayAdapter);
 
     if (categoryState.getCategory() == null) {
-      categorySpinner.setOnItemSelectedListener(
-          new TVCategorySpinnerOnItemSelectedListener("all", key));
+      categorySpinner.setOnItemSelectedListener(new TVCategorySpinnerOnItemSelectedListener("all", key));
     } else {
       categorySpinner.setOnItemSelectedListener(
           new TVCategorySpinnerOnItemSelectedListener(categoryState.getCategory(), key, false));
@@ -242,20 +232,22 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   }
 
   @Override public void displayShows(List<SeriesContentInfo> series, String category) {
-    RecyclerView recyclerView =
-        findGalleryView() != null ? findGalleryView() : findGridView();
+    TvRecyclerView recyclerView = findGalleryView() != null ? findGalleryView() : findGridView();
     if (series.isEmpty()) {
-      Toast.makeText(this, getString(R.string.no_shows_found_for_the_category_) + category,
-          Toast.LENGTH_LONG).show();
+      Toast.makeText(this, getString(R.string.no_shows_found_for_the_category_) + category, Toast.LENGTH_LONG).show();
     }
     tvShowItemCountView.setText(Integer.toString(series.size()) + getString(R.string._item_s_));
     TVShowRecyclerAdapter adapter = (TVShowRecyclerAdapter) recyclerView.getAdapter();
     adapter.updateSeries(series);
     recyclerView.requestFocus();
+    if (adapter.getItemCount() > 0) {
+      recyclerView.setItemSelected(0);
+      recyclerView.getChildAt(0).requestFocus();
+    }
   }
 
-  @Override public void populateSecondaryCategories(List<SecondaryCategoryInfo> categories,
-      String selectedSecondaryCategory) {
+  @Override
+  public void populateSecondaryCategories(List<SecondaryCategoryInfo> categories, String selectedSecondaryCategory) {
     categorySpinner.setVisibility(View.VISIBLE);
     if (categories == null || categories.isEmpty()) {
       Toast.makeText(this, R.string.no_entries_available_for_category_, Toast.LENGTH_LONG).show();
@@ -265,8 +257,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     secondarySpinner.setVisibility(View.VISIBLE);
 
     ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter =
-        new ArrayAdapter<SecondaryCategoryInfo>(this, R.layout.serenity_spinner_textview,
-            categories);
+        new ArrayAdapter<SecondaryCategoryInfo>(this, R.layout.serenity_spinner_textview, categories);
     spinnerSecArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
     secondarySpinner.setAdapter(spinnerSecArrayAdapter);
     secondarySpinner.setOnItemSelectedListener(

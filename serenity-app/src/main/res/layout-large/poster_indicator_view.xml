@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:padding="3dp"
     android:focusable="true"
     >
 
   <RelativeLayout android:id="@+id/posterIndicatorView"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
+      android:duplicateParentState="true"
       xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
       >
 
@@ -23,7 +25,7 @@
     <TextView
         android:id="@+id/posterOverlayTitle"
         style="@android:style/TextAppearance.Holo.Small"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="#80000000"
@@ -37,7 +39,7 @@
     <TextView
         android:id="@+id/metaOverlay"
         style="@android:style/TextAppearance.Holo.Small"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/posterOverlayTitle"
         android:background="#80000000"
@@ -89,7 +91,7 @@
 
     <ProgressBar
         android:id="@+id/posterInprogressIndicator"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
