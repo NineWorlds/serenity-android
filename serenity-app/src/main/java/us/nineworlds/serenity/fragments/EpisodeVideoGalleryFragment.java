@@ -25,6 +25,7 @@ package us.nineworlds.serenity.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,9 +59,8 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
     return inflater.inflate(R.layout.video_gallery_fragment, container);
   }
 
-  @Override public void onStart() {
-    super.onStart();
-
+  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
     if (videoGallery == null) {
 
       videoGallery = getActivity().findViewById(R.id.moviePosterView);
@@ -75,6 +75,8 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
           new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
       videoGallery.addItemDecoration(new SpaceItemDecoration(
           getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
+      videoGallery.setOnItemStateListener(adapter);
+
       EpisodeBrowserActivity activity = (EpisodeBrowserActivity) getActivity();
       activity.fetchEpisodes(key);
     }

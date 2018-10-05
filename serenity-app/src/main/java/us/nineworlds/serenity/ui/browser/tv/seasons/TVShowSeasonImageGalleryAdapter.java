@@ -33,22 +33,13 @@ import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
-/**
- * An adapter that handles the population of views for TV Show Seasons.
- * <p>
- * The fetching of the data is handled by a RESTFul Volley call to plex and then
- * the data is parsed and returned.
- *
- * @author dcarver
- */
 public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 
   private List<SeriesContentInfo> seasonList = null;
 
-  @Inject SerenityClient plexFactory;
+  @Inject SerenityClient serenityClient;
 
   public TVShowSeasonImageGalleryAdapter() {
     super();
@@ -92,7 +83,7 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
   }
 
   @Override public void onItemViewClick(View view, int i) {
-    onItemSelectedListener.onItemSelected(view, i);
+    onItemClickListener.onItemClick(view, i);
   }
 
   @Override public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {

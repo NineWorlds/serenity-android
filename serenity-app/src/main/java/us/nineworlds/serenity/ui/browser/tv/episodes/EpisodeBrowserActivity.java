@@ -27,13 +27,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import app.com.tvrecyclerview.TvRecyclerView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -156,20 +157,29 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
     return key;
   }
 
-  @Override protected DpadAwareRecyclerView findGalleryView() {
-    return (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
+  @Override protected RecyclerView findGalleryView() {
+    return (TvRecyclerView) findViewById(R.id.moviePosterView);
   }
 
-  @Override protected DpadAwareRecyclerView findGridView() {
+  @Override protected RecyclerView findGridView() {
     return null;
   }
 
   @Override public void updateGallery(List<VideoContentInfo> episodes) {
-    DpadAwareRecyclerView gallery = findGalleryView();
+    TvRecyclerView gallery = (TvRecyclerView) findGalleryView();
     EpisodePosterImageGalleryAdapter adapter =
         (EpisodePosterImageGalleryAdapter) gallery.getAdapter();
+
+    gallery.setSelectPadding(0, 0, 0, 0);
+
     adapter.updateEpisodes(episodes);
-    gallery.requestFocus();
+    if (adapter.getItemCount() > 0) {
+      gallery.setItemSelected(0);
+      View view = gallery.getChildAt(0);
+      if (view != null) {
+        view.requestFocus();
+      }
+    }
   }
 
   @Override public void fetchEpisodes(String key) {
