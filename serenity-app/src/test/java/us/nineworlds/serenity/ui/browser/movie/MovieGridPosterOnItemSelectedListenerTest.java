@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import android.content.SharedPreferences;
 import android.view.View;
+import app.com.tvrecyclerview.TvRecyclerView;
 import dagger.Module;
 import dagger.Provides;
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 
   @Mock View mockView;
 
-  @Mock DpadAwareRecyclerView mockRecyclerView;
+  @Mock TvRecyclerView mockRecyclerView;
 
   @Mock AbstractPosterImageGalleryAdapter mockAdapater;
 
@@ -88,7 +89,7 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
     super.setUp();
     doReturn(true).when(mockPreferences).getBoolean("movie_layout_grid", false);
 
-    onItemSelectedListener = new MovieGridPosterOnItemSelectedListener();
+    onItemSelectedListener = new MovieGridPosterOnItemSelectedListener(mockAdapater);
     movieBrowserActivity = Robolectric.buildActivity(MovieBrowserActivity.class).create().start().get();
     doReturn(movieBrowserActivity).when(mockView).getContext();
   }
@@ -108,7 +109,7 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
     doReturn(2).when(mockAdapater).getItemCount();
     doReturn(mockVideoContentInfo).when(mockAdapater).getItem(anyInt());
 
-    onItemSelectedListener.onItemSelected(mockRecyclerView, mockView, 0, 0);
+    onItemSelectedListener.onItemSelected(mockView, 0);
 
     verifyExpectedFanArtCalls(expectedBackgroundUrl, expectedTranscodingUrl);
   }

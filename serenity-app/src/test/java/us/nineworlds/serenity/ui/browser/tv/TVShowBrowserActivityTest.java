@@ -25,6 +25,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadow.api.Shadow;
@@ -60,9 +61,7 @@ import static us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity.SERIES_
 public class TVShowBrowserActivityTest extends InjectingTest {
 
   @Mock TVCategoryState mockTVCategoryState;
-
   @Mock SharedPreferences mockSharedPreferences;
-
   @Mock TVShowBrowserPresenter mockTVShowBrowserPresenter;
 
   TVShowBrowserActivity activity;

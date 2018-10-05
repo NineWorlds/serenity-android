@@ -117,6 +117,14 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 		public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
 		}
+
+		@Override public void onItemViewClick(View view, int i) {
+
+		}
+
+		@Override public void onItemViewFocusChanged(boolean b, View view, int i) {
+
+		}
 	}
 
 	@Override

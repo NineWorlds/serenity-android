@@ -242,7 +242,10 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity implem
     recyclerView.requestFocus();
     if (adapter.getItemCount() > 0) {
       recyclerView.setItemSelected(0);
-      recyclerView.getChildAt(0).requestFocus();
+      View view = recyclerView.getChildAt(0);
+      if (view != null) {
+        view.requestFocus();
+      }
     }
   }
 
