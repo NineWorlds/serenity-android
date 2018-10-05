@@ -34,6 +34,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
+import app.com.tvrecyclerview.TvRecyclerView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import java.util.ArrayList;
 import java.util.List;
@@ -232,10 +233,14 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
   }
 
   @Override public void displayPosters(List<VideoContentInfo> videos) {
-    RecyclerView recyclerView = findGalleryView();
+    TvRecyclerView recyclerView = (TvRecyclerView) findGalleryView();
     MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) recyclerView.getAdapter();
     adapter.populatePosters(videos);
     recyclerView.requestFocusFromTouch();
+    if (adapter.getItemCount() > 0) {
+      recyclerView.setItemSelected(0);
+      recyclerView.getChildAt(0).requestFocus();
+    }
   }
 
   public void requestUpdatedVideos(String key, String category) {
