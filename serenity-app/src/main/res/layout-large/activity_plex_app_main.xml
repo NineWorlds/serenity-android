@@ -1,8 +1,8 @@
 <us.nineworlds.serenity.widgets.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
+    android:background="@android:color/background_dark"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
   <!-- The main content view -->
 
@@ -21,14 +21,21 @@
         android:src="@drawable/serenity_bonsai_splash"
         />
 
-
-    <fragment
-        android:id="@+id/mainMenuFragment"
-        android:name="us.nineworlds.serenity.fragments.MainMenuFragment"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_centerInParent="true"
-        />
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/overscan_start_padding"
+        android:paddingEnd="@dimen/overscan_end_padding">
+
+      <fragment
+          android:id="@+id/mainMenuFragment"
+          android:name="us.nineworlds.serenity.fragments.MainMenuFragment"
+          android:layout_width="match_parent"
+          android:layout_height="80dp"
+          android:layout_centerInParent="true"
+          />
+
+    </RelativeLayout>
 
   </RelativeLayout>
   <!-- The navigation drawer -->

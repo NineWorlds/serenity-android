@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingEnd="@dimen/overscan_end_padding"
+    android:paddingStart="@dimen/overscan_start_padding"
     >
 
   <us.nineworlds.serenity.ui.views.TextClock
