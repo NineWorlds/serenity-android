@@ -101,22 +101,13 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   @Test public void assertThatTVShowBannerGalleryIsNotNull() {
     demandActivityOnCreate();
 
-    assertThat(activity.tvShowBannerGalleryView).isNotNull().isInstanceOf(TvRecyclerView.class);
+    assertThat(activity.tvShowRecyclerView).isNotNull().isInstanceOf(TvRecyclerView.class);
   }
 
   @Test public void assertThatSecondaryCategoryFilterIsNotNull() {
     demandActivityOnCreate();
 
     assertThat(activity.secondarySpinner).isNotNull().isInstanceOf(Spinner.class);
-  }
-
-  @Test public void assertThatGridViewIsNotNull() {
-    doReturn(true).when(mockSharedPreferences).getBoolean(eq(SERIES_LAYOUT_GRID), anyBoolean());
-
-    demandActivityOnCreate();
-
-    assertThat(activity.tvShowGridView).isNotNull().isInstanceOf(TvRecyclerView.class);
-    assertThat(activity.tvShowBannerGalleryView).isNull();
   }
 
   @Test public void displayShowsShowsToastWhenSeriesIsEmpty() {

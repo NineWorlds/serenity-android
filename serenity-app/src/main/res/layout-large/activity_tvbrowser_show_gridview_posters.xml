@@ -19,9 +19,10 @@
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="@dimen/actionbarMargin">
+        android:paddingBottom="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="@dimen/actionbarMargin"
+        android:background="@color/card_background">
 
       <include layout="@layout/include_tvshow_recyclerview"/>
 
