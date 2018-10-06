@@ -26,17 +26,14 @@ package us.nineworlds.serenity.ui.browser.tv;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
-import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -51,18 +48,12 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector
   private boolean firstSelection = true;
   private String category;
   private String savedInstanceCategory;
-  private boolean isGridViewActive;
-  private boolean posterLayoutActive;
 
   @Inject JobManager jobManager;
-
   @Inject SharedPreferences prefs;
-
   @Inject TVCategoryState categoryState;
 
   @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
-  @BindView(R.id.tvShowBannerGallery) @Nullable TvRecyclerView posterGallery;
-  @BindView(R.id.tvShowGridView) @Nullable TvRecyclerView tvGridView;
 
   public TVCategorySpinnerOnItemSelectedListener(String defaultSelection, String ckey) {
     selected = defaultSelection;
@@ -83,8 +74,6 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector
       return;
     }
     ButterKnife.bind(this, context);
-    isGridViewActive = prefs.getBoolean("series_layout_grid", false);
-    posterLayoutActive = prefs.getBoolean("series_layout_posters", false);
 
     CategoryInfo item = (CategoryInfo) viewAdapter.getItemAtPosition(position);
 
@@ -176,16 +165,7 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector
   }
 
   protected void setupImageGallery(CategoryInfo item) {
-    if (isGridViewActive) {
-      tvGridView.setAdapter(new TVShowPosterImageGalleryAdapter());
-      tvGridView.setOnKeyListener(new TVShowGridOnKeyListener());
-      refreshData(item);
-      return;
-    }
-
     refreshData(item);
-    //			posterGallery
-    //			.setOnItemLongClickListener(new ShowOnItemLongClickListener());
   }
 
   private void refreshData(CategoryInfo item) {

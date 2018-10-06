@@ -1,8 +1,7 @@
 <us.nineworlds.serenity.widgets.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
   <!-- The main content view -->
 
@@ -10,37 +9,22 @@
       android:id="@+id/tvshowBrowserLayout"
       android:layout_width="fill_parent"
       android:layout_height="match_parent"
-      android:background="@drawable/tvshows"
-      >
+      android:background="@drawable/tvshows">
 
     <ImageView
         android:id="@+id/fanArt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent"/>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="@dimen/actionbarMargin"
-        >
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/actionbarMargin">
 
-      <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
-          android:id="@+id/tvShowGridView"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_marginBottom="5dp"
-          android:background="@color/card_background"
-          android:visibility="visible"
-          app:focusDrawable="@drawable/rounded_transparent_border"
-          app:isAutoProcessFocus="true"
-          >
+      <include layout="@layout/include_tvshow_recyclerview"/>
 
-        <requestFocus/>
-      </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>
     </FrameLayout>
   </RelativeLayout>
 

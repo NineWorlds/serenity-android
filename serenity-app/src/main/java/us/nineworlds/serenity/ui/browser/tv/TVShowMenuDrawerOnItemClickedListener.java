@@ -31,6 +31,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import app.com.tvrecyclerview.TvRecyclerView;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -81,6 +82,8 @@ public class TVShowMenuDrawerOnItemClickedListener extends BaseInjector
   }
 
   protected void toggleView(SerenityMultiViewVideoActivity activity, boolean enableGridView) {
+    TvRecyclerView recyclerView = activity.findViewById(R.id.tvShowRecyclerView);
+    recyclerView.setVisibility(View.GONE);
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
     Editor e = prefs.edit();
     activity.setGridViewEnabled(enableGridView);

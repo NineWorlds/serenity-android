@@ -25,16 +25,11 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import app.com.tvrecyclerview.TvRecyclerView;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -42,22 +37,15 @@ import us.nineworlds.serenity.injection.BaseInjector;
 /**
  * Populate the tv show banners based on the information from the Secondary
  * categories.
- *
- * @author dcarver
  */
-public class TVSecondaryCategorySpinnerOnItemSelectedListener extends BaseInjector
-    implements OnItemSelectedListener {
-
-  private String selected;
-  private final String key;
-  private boolean firstTimesw = true;
+public class TVSecondaryCategorySpinnerOnItemSelectedListener extends BaseInjector implements OnItemSelectedListener {
 
   @Inject SharedPreferences prefs;
 
   @Inject protected TVCategoryState categoryState;
-
-  @BindView(R.id.tvShowGridView) @Nullable TvRecyclerView tvGridRecyclerView;
-  @BindView(R.id.tvShowBannerGallery) @Nullable TvRecyclerView posterGallery;
+  private String selected;
+  private final String key;
+  private boolean firstTimesw = true;
 
   AdapterView<?> viewAdapter;
 
@@ -73,8 +61,6 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends BaseInject
     ButterKnife.bind(this, getActivity(viewAdapter.getContext()));
 
     SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(position);
-
-    boolean isGridViewActive = prefs.getBoolean("series_layout_grid", false);
 
     if (firstTimesw) {
       if (categoryState.getGenreCategory() != null) {
@@ -92,15 +78,7 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends BaseInject
     selected = item.getCategory();
     categoryState.setGenreCategory(item.getCategory());
 
-    if (isGridViewActive) {
-      refreshShows(key, item.getParentCategory() + "/" + item.getCategory());
-      return;
-    }
-
     refreshShows(key, item.getParentCategory() + "/" + item.getCategory());
-
-    //			posterGallery
-    //					.setOnItemLongClickListener(new ShowOnItemLongClickListener());
   }
 
   private void refreshShows(String key, String category) {

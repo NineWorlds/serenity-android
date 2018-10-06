@@ -11,7 +11,6 @@ import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -23,10 +22,8 @@ public class OnKeyDownDelegate extends BaseInjector {
   @Inject SharedPreferences preferences;
 
   @BindView(R.id.left_drawer) LinearLayout linearDrawerLayout;
-
   @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
-
-  @BindView(R.id.tvShowBannerGallery) @Nullable TvRecyclerView galleryView;
+  @BindView(R.id.tvShowRecyclerView) @Nullable TvRecyclerView tvRecyclerView;
 
   Activity activity;
 
@@ -51,47 +48,47 @@ public class OnKeyDownDelegate extends BaseInjector {
 
     if (keyCode == KeyEvent.KEYCODE_BACK && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
       drawerLayout.closeDrawers();
-      galleryView.requestFocusFromTouch();
+      tvRecyclerView.requestFocusFromTouch();
       return true;
     }
 
     AbstractPosterImageGalleryAdapter adapter =
-        (AbstractPosterImageGalleryAdapter) galleryView.getAdapter();
+        (AbstractPosterImageGalleryAdapter) tvRecyclerView.getAdapter();
     if (adapter != null) {
       int itemsCount = adapter.getItemCount();
 
       if (contextMenuRequested(keyCode)) {
-        int pos = galleryView.getSelectedPosition();
-        RecyclerView.LayoutManager layoutManager = galleryView.getLayoutManager();
+        int pos = tvRecyclerView.getSelectedPosition();
+        RecyclerView.LayoutManager layoutManager = tvRecyclerView.getLayoutManager();
         View view = layoutManager.findViewByPosition(pos);
         view.performLongClick();
         return true;
       }
       if (isKeyCodeSkipBack(keyCode)) {
-        int selectedItem = galleryView.getSelectedPosition();
+        int selectedItem = tvRecyclerView.getSelectedPosition();
         int newPosition = selectedItem - 10;
         if (newPosition < 0) {
           newPosition = 0;
         }
-        galleryView.setItemSelected(newPosition);
-        galleryView.requestFocusFromTouch();
+        tvRecyclerView.setItemSelected(newPosition);
+        tvRecyclerView.requestFocusFromTouch();
         return true;
       }
       if (isKeyCodeSkipForward(keyCode)) {
-        int selectedItem = galleryView.getSelectedPosition();
+        int selectedItem = tvRecyclerView.getSelectedPosition();
         int newPosition = selectedItem + 10;
         if (newPosition > itemsCount) {
           newPosition = itemsCount - 1;
         }
-        galleryView.setItemSelected(newPosition);
-        galleryView.requestFocusFromTouch();
+        tvRecyclerView.setItemSelected(newPosition);
+        tvRecyclerView.requestFocusFromTouch();
         return true;
       }
 
       if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY || keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
-        int selectedItem = galleryView.getSelectedPosition();
+        int selectedItem = tvRecyclerView.getSelectedPosition();
         SeriesContentInfo info =
-            (SeriesContentInfo) ((AbstractPosterImageGalleryAdapter) galleryView.getAdapter()).getItem(
+            (SeriesContentInfo) ((AbstractPosterImageGalleryAdapter) tvRecyclerView.getAdapter()).getItem(
                 selectedItem);
         new FindUnwatchedAsyncTask(activity).execute(info);
         return true;
