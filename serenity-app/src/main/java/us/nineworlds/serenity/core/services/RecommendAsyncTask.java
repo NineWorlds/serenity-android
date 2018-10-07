@@ -12,6 +12,8 @@ import android.util.Log;
 import java.io.IOException;
 import java.net.URLEncoder;
 import javax.inject.Inject;
+import timber.log.Timber;
+import us.nineworlds.serenity.AndroidTV;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.common.rest.SerenityClient;
@@ -20,6 +22,7 @@ import us.nineworlds.serenity.core.SerenityRecommendationContentProvider;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
 
 //AndroidTVCodeMash2015-Recommendations
@@ -39,16 +42,18 @@ public class RecommendAsyncTask extends AsyncTask {
 
   @Override public Object doInBackground(Object... params) {
     RecommendationBuilder builder = new RecommendationBuilder();
-    try {
-      Notification notification = null;
-      if (video.getSeriesTitle() == null) {
-        notification = buildMovieRecommendation();
-      } else {
-        notification = buildSeriesRecommendation();
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1) {
+      try {
+        Notification notification = null;
+        if (video.getSeriesTitle() == null) {
+          notification = buildMovieRecommendation();
+        } else {
+          notification = buildSeriesRecommendation();
+        }
+        return notification;
+      } catch (NumberFormatException | IOException ex) {
+        Timber.e(ex, "Error building recommendation: " + builder.toString());
       }
-      return notification;
-    } catch (IOException ex) {
-      Log.e("OnDeckRecommendation", "Error building recommendation: " + builder.toString(), ex);
     }
     return null;
   }

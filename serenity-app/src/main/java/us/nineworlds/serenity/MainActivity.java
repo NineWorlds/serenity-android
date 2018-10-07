@@ -23,15 +23,11 @@
 
 package us.nineworlds.serenity;
 
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -46,8 +42,6 @@ import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
 import us.nineworlds.serenity.core.util.AndroidHelper;
-import us.nineworlds.serenity.handlers.AutoConfigureHandlerRunnable;
-import us.nineworlds.serenity.server.GDMReceiver;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.listeners.SettingsMenuDrawerOnItemClickedListener;
@@ -65,8 +59,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
 
   @BindView(R.id.mainGalleryMenu) DpadAwareRecyclerView mainMenuContainer;
   @BindView(R.id.drawer_settings) Button settingsButton;
-
-  protected Handler autoConfigureHandler = new Handler();
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -90,12 +82,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
       editor.putBoolean("watched_status_firsttime", false);
       editor.apply();
     }
-  }
-
-  @Override protected void onStart() {
-    super.onStart();
-
-    autoConfigureHandler.postDelayed(new AutoConfigureHandlerRunnable(this), 2500);
   }
 
   @Override protected void onRestart() {
