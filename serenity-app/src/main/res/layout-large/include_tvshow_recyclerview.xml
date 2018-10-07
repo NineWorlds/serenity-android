@@ -11,6 +11,7 @@
     android:nextFocusUp="@+id/categoryFilter"
     android:visibility="gone"
     app:focusDrawable="@drawable/rounded_transparent_border"
+    app:focusScale="@dimen/focus_size_value"
     app:isAutoProcessFocus="true">
 
   <requestFocus/>

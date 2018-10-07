@@ -11,4 +11,5 @@
   <dimen name="overscan_start_padding">30dp</dimen>
   <dimen name="overscan_end_padding">30dp</dimen>
   <dimen name="overscan_bottom_padding">15dp</dimen>
+
 </resources>

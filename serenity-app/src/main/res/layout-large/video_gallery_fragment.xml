@@ -114,7 +114,7 @@
         android:layout_gravity="center|center_vertical"
         android:nextFocusUp="@+id/categoryFilter"
         app:isAutoProcessFocus="true"
-        app:focusScale="1.10"
+        app:focusScale="@dimen/focus_size_value"
         app:focusDrawable="@drawable/rounded_transparent_border">
       <requestFocus/>
     </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>

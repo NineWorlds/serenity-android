@@ -41,6 +41,7 @@
           android:nextFocusRight="@+id/tvShowSeasonImageGalleryLayout"
           android:visibility="gone"
           app:isAutoProcessFocus="true"
+          app:focusScale="@dimen/focus_size_value"
           app:focusDrawable="@drawable/rounded_transparent_border"/>
 
       <LinearLayout
@@ -79,6 +80,7 @@
             android:layout_gravity="center|center_vertical"
             android:padding="5dp"
             app:isAutoProcessFocus="true"
+            app:focusScale="@dimen/focus_size_value"
             app:focusDrawable="@drawable/rounded_transparent_border"/>
       </LinearLayout>
 
