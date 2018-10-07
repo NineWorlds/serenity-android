@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -77,6 +78,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   @Inject protected TVCategoryState categoryState;
 
   protected OnKeyDownDelegate onKeyDownDelegate;
+  Handler postDelayed = new Handler();
 
   @ProvidePresenter TVShowBrowserPresenter providesTVShowBrowserPresenter() {
     return tvShowBrowserPresenterProvider.get();
@@ -240,15 +242,13 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     TVShowRecyclerAdapter adapter = (TVShowRecyclerAdapter) tvShowRecyclerView.getAdapter();
     adapter.updateSeries(series);
     tvShowRecyclerView.setVisibility(View.VISIBLE);
-    tvShowRecyclerView.requestFocus();
 
-    if (adapter.getItemCount() > 0) {
-      tvShowRecyclerView.setItemSelected(0);
-      View view = tvShowRecyclerView.getChildAt(0);
-      if (view != null) {
-        view.requestFocus();
+    postDelayed.postDelayed(new Runnable() {
+      @Override public void run() {
+        tvShowRecyclerView.setItemSelected(0);
+        tvShowRecyclerView.getChildAt(0).requestFocus();
       }
-    }
+    }, 500);
   }
 
   @Override

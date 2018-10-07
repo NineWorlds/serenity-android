@@ -238,4 +238,5 @@
   <string name="androidtv_ondeck_recommendations">OnDeck Recommendations</string>
   <string name="select_a_media_server_to_connect">Select a Media Server To Connect</string>
   <string name="select_a_user_profile">Select a User Profile</string>
+  <string name="refresh_servers">Refresh Servers</string>
 </resources>

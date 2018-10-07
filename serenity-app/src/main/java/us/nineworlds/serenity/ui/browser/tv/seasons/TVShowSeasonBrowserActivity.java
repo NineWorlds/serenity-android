@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.widget.GridLayoutManager;
@@ -66,6 +67,8 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
   @BindView(R.id.tvshowSeasonBrowserLayout) View tvShowSeasonsMainView;
   @BindView(R.id.tvShowSeasonImageGallery) TvRecyclerView tvShowSeasonsGallery;
   @BindView(R.id.episodeGridView) TvRecyclerView gridView;
+
+  Handler postDelayed = new Handler();
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -217,13 +220,13 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
     TVShowSeasonImageGalleryAdapter adapter =
         (TVShowSeasonImageGalleryAdapter) tvShowSeasonsGallery.getAdapter();
     adapter.updateSeasonsList(seasons);
-    if (adapter.getItemCount() > 0) {
-      tvShowSeasonsGallery.setItemSelected(0);
-      tvShowSeasonsGallery.requestFocusFromTouch();
-      if (tvShowSeasonsGallery.getChildCount() > 0) {
+
+    postDelayed.postDelayed(new Runnable() {
+      @Override public void run() {
+        tvShowSeasonsGallery.setItemSelected(0);
         tvShowSeasonsGallery.getChildAt(0).requestFocus();
       }
-    }
+    }, 500);
   }
 
   @Override public void fetchEpisodes(String key) {

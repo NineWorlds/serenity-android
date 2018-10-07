@@ -71,7 +71,16 @@ class ServerSelectionActivityTest : InjectingTest() {
     Robolectric.flushBackgroundThreadScheduler()
     Robolectric.flushForegroundThreadScheduler()
 
-    Assertions.assertThat(activity.serverContainer).hasChildCount(1)
+    Assertions.assertThat(activity.serverContainer).hasChildCount(2)
+  }
+
+  @Test
+  fun refreshButtonIsOnlyItemWhenServerListIsEmpty() {
+    Robolectric.flushForegroundThreadScheduler()
+    Robolectric.flushForegroundThreadScheduler()
+
+    assertThat(activity.servers).isEmpty()
+    Assertions.assertThat(activity.serverContainer).hasChildCount(1);
   }
 
   @Test
@@ -108,6 +117,7 @@ class ServerSelectionActivityTest : InjectingTest() {
     val shadowActivity = shadowOf(activity)
     Assertions.assertThat(shadowActivity.nextStartedActivity).hasComponent(activity, LoginUserActivity::class.java)
   }
+
 
   override fun getModules(): MutableList<Any> = mutableListOf(AndroidModule(RuntimeEnvironment.application),
       TestModule())

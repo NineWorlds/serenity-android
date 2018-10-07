@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv.episodes;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -55,6 +56,8 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
   private static String key;
   private View bgLayout;
   private View metaData;
+
+  Handler postLoadHandler = new Handler();
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -162,21 +165,22 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
   }
 
   @Override public void updateGallery(List<VideoContentInfo> episodes) {
-    TvRecyclerView gallery = (TvRecyclerView) findVideoRecyclerView();
+    final TvRecyclerView gallery = (TvRecyclerView) findVideoRecyclerView();
     EpisodePosterImageGalleryAdapter adapter =
         (EpisodePosterImageGalleryAdapter) gallery.getAdapter();
 
     gallery.setSelectPadding(0, 0, 0, 0);
-    gallery.requestFocus();
 
     adapter.updateEpisodes(episodes);
-    if (adapter.getItemCount() > 0) {
-      gallery.setItemSelected(0);
-      View view = gallery.getChildAt(0);
-      if (view != null) {
-        view.requestFocus();
+
+    postLoadHandler.postDelayed(new Runnable() {
+      @Override public void run() {
+        gallery.setItemSelected(0);
+        gallery.requestFocus();
+        gallery.getChildAt(0).requestFocus();
       }
-    }
+    }, 1000);
+
   }
 
   @Override public void fetchEpisodes(String key) {

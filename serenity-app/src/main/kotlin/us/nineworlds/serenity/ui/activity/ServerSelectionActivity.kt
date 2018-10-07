@@ -12,13 +12,16 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife.bind
+import com.birbit.android.jobqueue.JobManager
 import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.core.util.StringPreference
+import us.nineworlds.serenity.emby.server.EmbyServerJob
 import us.nineworlds.serenity.injection.ForMediaServers
 import us.nineworlds.serenity.injection.InjectingActivity
 import us.nineworlds.serenity.injection.ServerClientPreference
+import us.nineworlds.serenity.jobs.GDMServerJob
 import us.nineworlds.serenity.ui.activity.login.LoginUserActivity
 import javax.inject.Inject
 
@@ -34,11 +37,16 @@ class ServerSelectionActivity : InjectingActivity() {
   @field:[Inject ServerClientPreference]
   lateinit var serverClientPreference: StringPreference
 
+  @Inject
+  lateinit var jobManager: JobManager;
+
   @BindView(R.id.server_container)
   internal lateinit var serverContainer: LinearLayout
 
   @BindView(R.id.server_loading_progress)
   internal lateinit var serverLoadingProgressBar: ProgressBar
+
+  internal lateinit var refreshButton: FrameLayout
 
   internal lateinit var serverDisplayHandler: Handler
 
@@ -56,6 +64,14 @@ class ServerSelectionActivity : InjectingActivity() {
   private fun createServerList() {
     serverLoadingProgressBar.visibility = GONE
     servers.forEach { key, serverInfo -> displayServers(key, serverInfo) }
+    refreshButton = LayoutInflater.from(this).inflate(R.layout.button_server_refresh, serverContainer, false) as FrameLayout
+    refreshButton.setOnClickListener {
+      jobManager.addJobInBackground(GDMServerJob())
+      jobManager.addJobInBackground(EmbyServerJob())
+      recreate()
+    }
+    serverContainer.addView(refreshButton)
+
     if (serverContainer.childCount > 0) {
       serverContainer.getChildAt(0).requestFocus()
     }
