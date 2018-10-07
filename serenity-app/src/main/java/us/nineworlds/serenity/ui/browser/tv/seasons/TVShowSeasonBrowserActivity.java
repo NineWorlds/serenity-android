@@ -26,6 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -97,9 +98,16 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
 
     tvShowSeasonsGallery.addItemDecoration(createItemDecorator());
     tvShowSeasonsGallery.setFocusable(true);
-    tvShowSeasonsGallery.requestFocusFromTouch();
     tvShowSeasonsGallery.setOnItemStateListener(adapter);
     tvShowSeasonsGallery.setSelectPadding(0,0,0, 0);
+
+    SeasonsEpisodePosterImageGalleryAdapter episodeAdapter = new SeasonsEpisodePosterImageGalleryAdapter();
+    adapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(episodeAdapter));
+    gridView.setAdapter(episodeAdapter);
+    gridView.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false));
+    gridView.setOnItemStateListener(episodeAdapter);
+    gridView.setSelectPadding(0, 0, 0, 0);
+
     presenter.retrieveSeasons(key);
   }
 
@@ -146,7 +154,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
   }
 
   protected void populateMenuDrawer() {
-    List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
+    List<MenuDrawerItem> drawerMenuItem = new ArrayList<>();
     drawerMenuItem.add(
         new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
 
@@ -201,13 +209,12 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
   }
 
   @Override public void updateEpisodes(List<VideoContentInfo> episodes) {
-    TvRecyclerView episodeGrid = (TvRecyclerView) findViewById(R.id.episodeGridView);
-    episodeGrid.setSelectPadding(0, 0, 0, 0);
     SeasonsEpisodePosterImageGalleryAdapter adapter =
-        (SeasonsEpisodePosterImageGalleryAdapter) episodeGrid.getAdapter();
+        (SeasonsEpisodePosterImageGalleryAdapter) gridView.getAdapter();
     adapter.updateEpisodes(episodes);
+    gridView.setVisibility(View.VISIBLE);
     if (adapter.getItemCount() > 0) {
-      episodeGrid.setItemSelected(0);
+      gridView.setItemSelected(0);
     }
   }
 
@@ -219,13 +226,15 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
       textView.setText(Integer.toString(seasons.size()) + getString(R.string._item_s_));
     }
 
-    TvRecyclerView gallery = findViewById(R.id.tvShowSeasonImageGallery);
     TVShowSeasonImageGalleryAdapter adapter =
-        (TVShowSeasonImageGalleryAdapter) gallery.getAdapter();
+        (TVShowSeasonImageGalleryAdapter) tvShowSeasonsGallery.getAdapter();
     adapter.updateSeasonsList(seasons);
     if (adapter.getItemCount() > 0) {
-      gallery.setItemSelected(0);
-      gallery.getChildAt(0).requestFocus();
+      tvShowSeasonsGallery.setItemSelected(0);
+      tvShowSeasonsGallery.requestFocusFromTouch();
+      if (tvShowSeasonsGallery.getChildCount() > 0) {
+        tvShowSeasonsGallery.getChildAt(0).requestFocus();
+      }
     }
   }
 

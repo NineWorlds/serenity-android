@@ -36,6 +36,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import javax.inject.Inject;
 import net.ganin.darv.DpadAwareRecyclerView;
+import timber.log.Timber;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
@@ -67,6 +68,7 @@ public class TVShowSeasonOnItemSelectedListener extends AbstractVideoOnItemSelec
     if (mi.getBackgroundURL() != null) {
       final View fanArt = context.findViewById(R.id.fanArt);
       String transcodingURL = plexFactory.createImageURL(mi.getBackgroundURL(), 1280, 720);
+      Timber.d("Season Background Image url: " + transcodingURL);
 
       SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
         @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
@@ -101,24 +103,14 @@ public class TVShowSeasonOnItemSelectedListener extends AbstractVideoOnItemSelec
 
     info = (SeriesContentInfo) adapter.getItem(i);
     ImageView mpiv = view.findViewById(R.id.posterImageView);
-    TvRecyclerView episodeGrid = context.findViewById(R.id.episodeGridView);
-
-    episodeGrid.setVisibility(View.VISIBLE);
 
     TextView seasonsTitle = context.findViewById(R.id.tvShowSeasonsTitle);
     seasonsTitle.setText(info.getTitle());
 
     changeBackgroundImage(mpiv);
 
-    TVShowSeasonBrowserActivity seasonBrowserActivity = (TVShowSeasonBrowserActivity) context;
-    if (seasonBrowserActivity.adapter == null) {
-      seasonBrowserActivity.adapter = new SeasonsEpisodePosterImageGalleryAdapter();
-      seasonBrowserActivity.adapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(seasonBrowserActivity.adapter));
-      episodeGrid.setAdapter(seasonBrowserActivity.adapter);
-    }
-    episodeGrid.setLayoutManager(new GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false));
-
-    seasonBrowserActivity.fetchEpisodes(info.getKey());
+    TVShowSeasonBrowserActivity activity = (TVShowSeasonBrowserActivity) getActivity(context);
+    activity.fetchEpisodes(info.getKey());
   }
 
 }

@@ -6,9 +6,18 @@
     android:background="@android:color/black"
     android:keepScreenOn="true">
 
-  <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-      android:id="@+id/player_view"
+  <FrameLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+      android:layout_height="match_parent"
+      android:paddingStart="@dimen/overscan_start_padding"
+      android:paddingEnd="@dimen/overscan_end_padding"
+      android:paddingBottom="@dimen/overscan_bottom_padding">
+
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+  </FrameLayout>
 
 </FrameLayout>

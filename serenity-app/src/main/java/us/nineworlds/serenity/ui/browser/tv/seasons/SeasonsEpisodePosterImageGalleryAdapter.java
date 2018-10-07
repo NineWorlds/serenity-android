@@ -42,6 +42,14 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageG
     episodeViewHolder.updateSeasonsTitle(pi);
   }
 
+  @Override public void onItemViewClick(View view, int i) {
+    if (onItemClickListener == null) {
+      onItemClickListener = new EpisodePosterOnItemClickListener(this);
+    }
+    onItemClickListener.onItemClick(view, i);
+  }
+
+
   @Override public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {
     // DO NOTHING HERE on the Seasons
   }
