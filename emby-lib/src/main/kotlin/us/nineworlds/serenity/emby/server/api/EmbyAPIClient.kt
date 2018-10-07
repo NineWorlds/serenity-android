@@ -7,6 +7,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import github.nisrulz.easydeviceinfo.base.EasyDeviceMod
 import github.nisrulz.easydeviceinfo.base.EasyIdMod
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.joda.time.LocalDateTime
@@ -22,6 +23,7 @@ import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 import us.nineworlds.serenity.emby.server.model.PublicUserInfo
 import us.nineworlds.serenity.emby.server.model.QueryFilters
 import us.nineworlds.serenity.emby.server.model.QueryResult
+import java.io.File
 
 class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
 
@@ -38,11 +40,16 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
   init {
     this.baseUrl = baseUrl
     val logger = HttpLoggingInterceptor()
+    val cacheDir = File(context.cacheDir, "EmbyClient")
+
+    val cacheSize = 10 * 1024 * 1024 // 10 MiB
+    val cache = Cache(cacheDir, cacheSize.toLong())
+
 
     val okClient = RetrofitUrlManager.getInstance().with(OkHttpClient.Builder())
     logger.level = HttpLoggingInterceptor.Level.BODY
     okClient.addInterceptor(logger)
-    okClient.cache(null)
+    okClient.cache(cache)
 
     val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
