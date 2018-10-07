@@ -83,6 +83,7 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
   }
 
   @Override public void onItemViewClick(View view, int i) {
+    onItemClickListener = new TVShowSeasonOnItemClickListener(view.getContext(),this);
     onItemClickListener.onItemClick(view, i);
   }
 

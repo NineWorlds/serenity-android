@@ -52,27 +52,32 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     boolean externalPlayer = prefs.getBoolean("external_player", false);
-    RecyclerView gallery = findGalleryView() != null ? findGalleryView() : findGridView();
-    if (!(gallery instanceof TvRecyclerView)) {
+    RecyclerView videoRecyclerView = findVideoRecyclerView();
+
+    if (requestCode != SerenityConstants.BROWSER_RESULT_CODE) {
       return;
     }
 
-    RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
+    if (!(videoRecyclerView instanceof TvRecyclerView)) {
+      return;
+    }
+
+    RecyclerView.LayoutManager layoutManager = videoRecyclerView.getLayoutManager();
 
     View selectedView;
     VideoContentInfo video;
-    AbstractPosterImageGalleryAdapter adapter = getAdapter();
+    AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) videoRecyclerView.getAdapter();
     if (adapter == null) {
       return;
     }
 
-    int itemPosition = ((TvRecyclerView)gallery).getSelectedPosition();
+    int itemPosition = ((TvRecyclerView)videoRecyclerView).getSelectedPosition();
     if (itemPosition < 0) {
-      gallery.requestFocusFromTouch();
+      videoRecyclerView.requestFocusFromTouch();
       return;
     }
     video = (VideoContentInfo) adapter.getItem(itemPosition);
-    selectedView = layoutManager.findViewByPosition(((TvRecyclerView)gallery).getSelectedPosition());
+    selectedView = layoutManager.findViewByPosition(((TvRecyclerView)videoRecyclerView).getSelectedPosition());
 
     if (data != null) {
       if (externalPlayer) {
@@ -87,7 +92,7 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
       }
     }
 
-    gallery.requestFocus();
+    videoRecyclerView.requestFocus();
 
     if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
 
@@ -107,14 +112,13 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
       }
     }
 
+
     OnDeckRecommendationAsyncTask onDeckRecomendations =
         new OnDeckRecommendationAsyncTask(getApplicationContext());
     onDeckRecomendations.execute();
   }
 
-  protected abstract RecyclerView findGalleryView();
-
-  protected abstract RecyclerView findGridView();
+  protected abstract RecyclerView findVideoRecyclerView();
 
   protected void showQueueNotEmptyMessage() {
     Toast.makeText(this, R.string.there_are_still_videos_int_the_queue_, Toast.LENGTH_LONG).show();

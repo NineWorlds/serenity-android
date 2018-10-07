@@ -31,6 +31,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.provider.SearchRecentSuggestions;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 import java.net.URLEncoder;
 import java.util.List;
@@ -136,11 +137,7 @@ public class SearchableActivity extends SerenityMultiViewVideoActivity {
     return (AbstractPosterImageGalleryAdapter) dpadAwareRecyclerView.getAdapter();
   }
 
-  @Override protected DpadAwareRecyclerView findGalleryView() {
+  @Override protected RecyclerView findVideoRecyclerView() {
     return (DpadAwareRecyclerView) findViewById(R.id.moviePosterView);
-  }
-
-  @Override protected DpadAwareRecyclerView findGridView() {
-    return null;
   }
 }

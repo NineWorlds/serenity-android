@@ -157,16 +157,12 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
     return key;
   }
 
-  @Override protected RecyclerView findGalleryView() {
+  @Override protected RecyclerView findVideoRecyclerView() {
     return (TvRecyclerView) findViewById(R.id.moviePosterView);
   }
 
-  @Override protected RecyclerView findGridView() {
-    return null;
-  }
-
   @Override public void updateGallery(List<VideoContentInfo> episodes) {
-    TvRecyclerView gallery = (TvRecyclerView) findGalleryView();
+    TvRecyclerView gallery = (TvRecyclerView) findVideoRecyclerView();
     EpisodePosterImageGalleryAdapter adapter =
         (EpisodePosterImageGalleryAdapter) gallery.getAdapter();
 

@@ -90,7 +90,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
   }
 
   @Override protected void onPause() {
-    RecyclerView galleryView = findGalleryView();
+    RecyclerView galleryView = findVideoRecyclerView();
     if (galleryView != null) {
       adapter = galleryView.getAdapter();
     }
@@ -183,12 +183,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
     return key;
   }
 
-  @Override protected RecyclerView findGalleryView() {
+  @Override protected RecyclerView findVideoRecyclerView() {
     return findViewById(R.id.moviePosterView);
-  }
-
-  @Override protected RecyclerView findGridView() {
-    return findGalleryView();
   }
 
   @Override public AbstractPosterImageGalleryAdapter getAdapter() {
@@ -233,7 +229,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
   }
 
   @Override public void displayPosters(List<VideoContentInfo> videos) {
-    TvRecyclerView recyclerView = (TvRecyclerView) findGalleryView();
+    TvRecyclerView recyclerView = (TvRecyclerView) findVideoRecyclerView();
     MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) recyclerView.getAdapter();
     adapter.populatePosters(videos);
     recyclerView.requestFocusFromTouch();

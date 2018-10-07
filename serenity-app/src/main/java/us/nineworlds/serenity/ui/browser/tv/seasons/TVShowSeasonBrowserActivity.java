@@ -192,20 +192,8 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
     return adapter;
   }
 
-  /**
-   * Nothing really to update here now, so will return null.
-   */
-  @Override protected RecyclerView findGalleryView() {
-    return null;
-  }
-
-  /**
-   * We want to update playback position and onscreen info when completing.
-   * <p>
-   * So pass back the appropriate grid view in this case.
-   */
-  @Override protected RecyclerView findGridView() {
-    return (TvRecyclerView) findViewById(R.id.episodeGridView);
+  @Override protected RecyclerView findVideoRecyclerView() {
+    return gridView;
   }
 
   @Override public void updateEpisodes(List<VideoContentInfo> episodes) {
