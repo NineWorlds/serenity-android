@@ -153,7 +153,8 @@ import us.nineworlds.serenity.ui.leanback.search.MovieSearchFragment;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.SubtitleSpinnerOnItemSelectedListener;
-import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
+import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity;
+import us.nineworlds.serenity.ui.preferences.SettingsFragment;
 import us.nineworlds.serenity.ui.search.SearchAdapter;
 import us.nineworlds.serenity.ui.search.SearchableActivity;
 import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
@@ -171,7 +172,7 @@ import us.nineworlds.serenity.ui.video.player.VideoKeyCodeHandlerDelegate;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerKeyCodeHandler;
 import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
 
-@Module(includes = { SerenityModule.class, VideoModule.class }, injects = {
+@Module(includes = {SerenityModule.class, VideoModule.class}, injects = {
     GDMReceiver.class, MainMenuFragment.class, OnDeckRecommendations.class,
     MediaController.class, MainActivity.class, SerenityApplication.class, StartupBroadcastReceiver.class,
     RecommendationPlayerActivity.class, SearchableActivity.class,
@@ -192,7 +193,7 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
     TVShowRecyclerAdapter.class, MenuDrawerAdapter.class, TVShowSeasonImageGalleryAdapter.class,
     OnDeckRecommendationIntentService.class, CompletedVideoRequest.class, FindUnwatchedAsyncTask.class,
     UnWatchVideoAsyncTask.class, UpdateProgressRequest.class, WatchedVideoAsyncTask.class,
-    GalleryOnItemSelectedListener.class, SerenityPreferenceActivity.class, AndroidTV.class, RecommendAsyncTask.class,
+    GalleryOnItemSelectedListener.class, AndroidTV.class, RecommendAsyncTask.class,
     RecommendationBuilder.class, TVShowPosterImageGalleryAdapter.class, VideoPlayerKeyCodeHandler.class,
     SerenitySurfaceViewVideoActivity.class, OkHttpStack.class, SerenityRecommendationContentProvider.class,
     AndroidHelper.class, SecondaryCategorySpinnerOnItemSelectedListener.class,
@@ -211,8 +212,9 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
     ExoplayerVideoActivity.class, ExoplayerPresenter.class, EventLogger.class, VideoKeyCodeHandlerDelegate.class,
     UpdatePlaybackPostionJob.class, WatchedStatusJob.class, EmbyServerJob.class, ServerSelectionActivity.class,
     LoginUserActivity.class, LoginUserPresenter.class, LoginUserViewHolder.class, RetrieveAllUsersJob.class,
-    AuthenticateUserJob.class, StartPlaybackJob.class, StopPlaybackJob.class, TVShowBrowserGalleryOnItemClickListener.class,
-    TVShowSeasonOnItemClickListener.class
+    AuthenticateUserJob.class, StartPlaybackJob.class, StopPlaybackJob.class,
+    TVShowBrowserGalleryOnItemClickListener.class,
+    TVShowSeasonOnItemClickListener.class, LeanbackSettingsActivity.class, SettingsFragment.PrefsFragment.class
 }, library = true)
 public class AndroidModule {
 
@@ -286,7 +288,8 @@ public class AndroidModule {
     return new Handler();
   }
 
-  @Provides @Singleton @ServerClientPreference StringPreference providesServerClientPrefence(SharedPreferences sharedPreferences) {
+  @Provides @Singleton @ServerClientPreference StringPreference providesServerClientPrefence(
+      SharedPreferences sharedPreferences) {
     return new StringPreference(sharedPreferences, "server_client", "");
   }
 }

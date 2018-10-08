@@ -164,6 +164,7 @@ dependencies {
   implementation "com.google.android.gms:play-services-analytics-impl:16.0.3"
   implementation "com.android.support:appcompat-v7:$androidSupportLibVersion"
   implementation "com.android.support:leanback-v17:$androidSupportLibVersion"
+  implementation "com.android.support:preference-leanback-v17:$androidSupportLibVersion"
   implementation "com.android.support:support-v4:$androidSupportLibVersion"
   implementation "com.googlecode.juniversalchardet:juniversalchardet:$universalCharDetVersion"
   implementation "com.mcxiaoke.volley:library:$volleyVersion"

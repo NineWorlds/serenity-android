@@ -31,7 +31,7 @@ import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
-import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
+import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity;
 
 import static net.ganin.darv.DpadAwareRecyclerView.OnItemClickListener;
 
@@ -85,7 +85,7 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
       return;
     }
 
-    intent = new Intent(context, SerenityPreferenceActivity.class);
+    intent = new Intent(context, LeanbackSettingsActivity.class);
     intent.putExtra("key", librarySection);
     context.startActivityForResult(intent, 0);
   }

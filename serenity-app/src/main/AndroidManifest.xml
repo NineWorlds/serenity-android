@@ -153,6 +153,7 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
+
     <activity
         android:name=".ui.video.player.RecommendationPlayerActivity"
         android:screenOrientation="sensorLandscape"
@@ -165,9 +166,10 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity
-        android:name=".ui.preferences.SerenityPreferenceActivity"
-        android:screenOrientation="sensorLandscape"/>
+
+    <activity android:name=".ui.preferences.LeanbackSettingsActivity"
+      android:theme="@style/LeanbackPreferences"/>
+
     <activity
         android:name=".ui.search.SearchableActivity"
         android:screenOrientation="sensorLandscape"

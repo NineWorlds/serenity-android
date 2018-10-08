@@ -68,4 +68,11 @@
     <item name="android:windowFullscreen">true</item>
     <item name="android:windowContentOverlay">@null</item>
   </style>
+
+  <style name="LeanbackPreferences" parent="Theme.Leanback">
+    <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Leanback</item>
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:backgroundDimEnabled">true</item>
+  </style>
 </resources>

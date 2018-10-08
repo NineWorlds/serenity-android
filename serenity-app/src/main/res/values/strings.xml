@@ -107,8 +107,8 @@
   <string name="on_screen_display">On Screen Display</string>
   <string name="mx_player_resume_summary">Forces MX Player to  use Plex last played position instead of it\'s own.  This will always forces play back to start from Plex\'s recorded position.</string>
   <string name="force_mx_player_resume_position_">Force MX Player Resume Position.</string>
-  <string name="prefer_plex_media_server_s_aspect_ratio_">Prefer plex media server\'s aspect ratio.</string>
-  <string name="plex_aspect_ratio">Plex Aspect Ratio</string>
+  <string name="prefer_plex_media_server_s_aspect_ratio_">Prefer media server\'s aspect ratio.</string>
+  <string name="plex_aspect_ratio">Media Server\'s Aspect Ratio</string>
   <string name="enable_gallery_scrolling">Enables whether scrolling animation occurs in gallery views for movies and episodes.</string>
   <string name="enable_gallery_scrolling_animation">Enable Gallery Scrolling Animation</string>
   <string name="tutorial">Tutorial</string>

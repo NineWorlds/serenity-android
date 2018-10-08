@@ -235,7 +235,9 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
     recyclerView.requestFocusFromTouch();
     if (adapter.getItemCount() > 0) {
       recyclerView.setItemSelected(0);
-      recyclerView.getChildAt(0).requestFocus();
+      if (recyclerView.getChildCount() > 0) {
+        recyclerView.getChildAt(0).requestFocus();
+      }
     }
   }
 

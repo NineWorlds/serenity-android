@@ -29,7 +29,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
+import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 
 public class SettingsMenuDrawerOnItemClickedListener implements OnClickListener {
@@ -45,7 +45,7 @@ public class SettingsMenuDrawerOnItemClickedListener implements OnClickListener 
       return;
     }
 
-    Intent i = new Intent(activity, SerenityPreferenceActivity.class);
+    Intent i = new Intent(activity, LeanbackSettingsActivity.class);
     activity.startActivity(i);
     menuDrawer.closeDrawers();
   }
