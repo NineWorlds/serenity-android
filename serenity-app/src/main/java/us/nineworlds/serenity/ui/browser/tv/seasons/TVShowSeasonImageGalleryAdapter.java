@@ -33,7 +33,9 @@ import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.adapters.RecyclerViewDiffUtil;
 
 public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 
@@ -78,8 +80,11 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
   }
 
   public void updateSeasonsList(List<SeriesContentInfo> seasonList) {
-    this.seasonList = seasonList;
-    notifyDataSetChanged();
+    List<SeriesContentInfo> oldList = new ArrayList<>(seasonList);
+    this.seasonList.clear();
+    this.seasonList.addAll(seasonList);
+
+    new RecyclerViewDiffUtil(oldList, seasonList).dispatchUpdatesTo(this);
   }
 
   @Override public void onItemViewClick(View view, int i) {
