@@ -39,6 +39,7 @@ import butterknife.ButterKnife;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import java.util.ArrayList;
 import java.util.List;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
@@ -100,6 +101,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
     tvShowSeasonsGallery.addItemDecoration(createItemDecorator());
+    tvShowSeasonsGallery.setItemAnimator(new FadeInAnimator());
     tvShowSeasonsGallery.setFocusable(true);
     tvShowSeasonsGallery.setOnItemStateListener(adapter);
     tvShowSeasonsGallery.setSelectPadding(0,0,0, 0);
@@ -107,6 +109,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
     SeasonsEpisodePosterImageGalleryAdapter episodeAdapter = new SeasonsEpisodePosterImageGalleryAdapter();
     adapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(episodeAdapter));
     gridView.setAdapter(episodeAdapter);
+    gridView.setItemAnimator(new FadeInAnimator());
     gridView.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false));
     gridView.setOnItemStateListener(episodeAdapter);
     gridView.setSelectPadding(0, 0, 0, 0);

@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -107,9 +108,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
       GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false);
       tvShowRecyclerView.setLayoutManager(gridLayoutManager);
 
-      tvShowRecyclerView.addItemDecoration(
-          new ItemOffsetDecoration(
-              getResources().getDimensionPixelSize(R.dimen.grid_spacing_dimen)));
+      tvShowRecyclerView.addItemDecoration(new ItemOffsetDecoration(getResources().getDimensionPixelSize(R.dimen.grid_spacing_dimen)));
+      tvShowRecyclerView.setItemAnimator(new FadeInAnimator());
       TVShowPosterImageGalleryAdapter adapter = new TVShowPosterImageGalleryAdapter();
       adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
       adapter.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(adapter));

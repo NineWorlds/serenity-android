@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import app.com.tvrecyclerview.TvRecyclerView;
 import javax.inject.Inject;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
@@ -70,6 +71,7 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
       EpisodePosterImageGalleryAdapter adapter = new EpisodePosterImageGalleryAdapter();
       adapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(adapter));
       adapter.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(adapter));
+      videoGallery.setItemAnimator(new FadeInAnimator());
       videoGallery.setAdapter(adapter);
       videoGallery.setLayoutManager(
           new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
