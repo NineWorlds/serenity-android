@@ -8,6 +8,7 @@ import us.nineworlds.serenity.emby.model.MediaContainer
 import us.nineworlds.serenity.emby.model.Video
 import us.nineworlds.serenity.emby.server.model.Item
 import us.nineworlds.serenity.emby.server.model.NameGuidPair
+import us.nineworlds.serenity.emby.server.model.SearchHint
 import java.util.Collections
 
 class MediaContainerAdaptor {
@@ -131,6 +132,7 @@ class MediaContainerAdaptor {
   fun createVideoList(videos: List<Item>): IMediaContainer {
     val mediaContainer = MediaContainer()
     val serenityVideos = ArrayList<Video>()
+    mediaContainer.size = videos.size
 
     for (item in videos) {
       val video = Video()

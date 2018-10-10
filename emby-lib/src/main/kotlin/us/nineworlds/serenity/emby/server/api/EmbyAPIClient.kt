@@ -18,11 +18,7 @@ import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.emby.adapters.MediaContainerAdaptor
 import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
-import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
-import us.nineworlds.serenity.emby.server.model.AuthenticationResult
-import us.nineworlds.serenity.emby.server.model.PublicUserInfo
-import us.nineworlds.serenity.emby.server.model.QueryFilters
-import us.nineworlds.serenity.emby.server.model.QueryResult
+import us.nineworlds.serenity.emby.server.model.*
 import java.io.File
 
 class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
@@ -236,12 +232,24 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
-  override fun searchMovies(key: String?, query: String?): IMediaContainer {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun searchMovies(key: String?, query: String): IMediaContainer {
+    val call = usersService.search(headerMap(), userId, query)
+    val results = call.execute().body()
+    val itemIds = mutableListOf<String>()
+
+    for(searchHint in results!!.searchHints!!) {
+      itemIds.add(searchHint.id!!)
+    }
+
+    val itemCall = usersService.fetchItemQuery(headerMap(), userId = userId, ids = itemIds.joinToString(separator = ","), genre = null, parentId = null)
+
+    val itemResults = itemCall.execute().body()
+
+    return MediaContainerAdaptor().createVideoList(itemResults!!.items)
   }
 
-  override fun searchEpisodes(key: String?, query: String?): IMediaContainer {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun searchEpisodes(key: String?, query: String?): IMediaContainer? {
+    return null
   }
 
   override fun updateBaseUrl(baseUrl: String) {

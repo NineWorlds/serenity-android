@@ -8,11 +8,7 @@ import retrofit2.http.HeaderMap
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
-import us.nineworlds.serenity.emby.server.model.AuthenticationResult
-import us.nineworlds.serenity.emby.server.model.PublicUserInfo
-import us.nineworlds.serenity.emby.server.model.QueryResult
-import us.nineworlds.serenity.emby.server.model.UserItemData
+import us.nineworlds.serenity.emby.server.model.*
 
 interface UsersService {
 
@@ -36,7 +32,7 @@ interface UsersService {
   @GET("/emby/Users/{userId}/Items")
   fun fetchItemQuery(@HeaderMap headerMap: Map<String, String>,
       @Path("userId") userId: String,
-      @Query( "ParentId") parentId: String,
+      @Query( "ParentId") parentId: String? = null,
       @Query("Recursive") recursive: Boolean = true,
       @Query("IncludeItemTypes") includeItemType: String? = null,
       @Query("SortBy") sortOptions: String = "SortName",
@@ -44,7 +40,8 @@ interface UsersService {
       @Query( "Genres") genre:String?,
       @Query( "IsPlayed") isPlayed: Boolean? = null,
       @Query("LimitCount") limitCount: Int? = null,
-      @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,SeasonCount,EpisodeCount"): Call<QueryResult>
+      @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,SeasonCount,EpisodeCount",
+      @Query("Ids") ids: String? = null): Call<QueryResult>
 
   @GET("/emby/Users/{userId}/Items")
   fun resumableItems(@HeaderMap headerMap: Map<String, String>,
@@ -108,4 +105,12 @@ interface UsersService {
       @Path("userId") userId: String,
       @Path( "itemId") itemId: String,
       @Query("MediaSourceId") mediaSourceId: String? = null): Call<Void>
+
+  @GET("/emby/Search/Hints")
+  fun search(@HeaderMap headerMap: Map<String, String>,
+             @Query("UserId") userId: String,
+             @Query("SearchTerm") searchTerm: String,
+             @Query("IsMovie") isMovie: Boolean = true,
+             @Query("IncludeItemTypes") includeItemTypes: String? = "Movie",
+             @Query("Limit") limit: Int? = 25): Call<Search>
 }
