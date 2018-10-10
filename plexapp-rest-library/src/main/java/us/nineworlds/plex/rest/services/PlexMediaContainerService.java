@@ -35,15 +35,12 @@ public interface PlexMediaContainerService {
     Call<MediaContainer> retrieveItemByUrlPath(@Path(value = "urlPath", encoded = true) String key);
 
 
-    @GET("library/sections/{key}/search?type=1")
-    Call<MediaContainer> movieSearch(@Path("key") String key,
-                                    @Query("query") String query);
+    @GET("search?type=1")
+    Call<MediaContainer> movieSearch(@Query("query") String query);
 
-    @GET("library/sections/{key}/search?type=2")
-    Call<MediaContainer> tvShowsSearch(@Path("key") String key,
-                              @Query("query") String query);
+    @GET("search?type=2")
+    Call<MediaContainer> tvShowsSearch(@Query("query") String query);
 
-    @GET("library/sections/{key}/search?type=4")
-    Call<MediaContainer> episodeSearch(@Path("key") String key,
-                                       @Query("query") String query);
+    @GET("search?type=4")
+    Call<MediaContainer> episodeSearch(@Query("query") String query);
 }
