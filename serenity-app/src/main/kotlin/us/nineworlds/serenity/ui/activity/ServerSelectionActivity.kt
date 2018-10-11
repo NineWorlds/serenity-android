@@ -63,7 +63,10 @@ class ServerSelectionActivity : InjectingActivity() {
 
   private fun createServerList() {
     serverLoadingProgressBar.visibility = GONE
-    servers.forEach { key, serverInfo -> displayServers(key, serverInfo) }
+
+    for((key, serverInfo) in servers) {
+      displayServers(key, serverInfo)
+    }
     refreshButton = LayoutInflater.from(this).inflate(R.layout.button_server_refresh, serverContainer, false) as FrameLayout
     refreshButton.setOnClickListener {
       jobManager.addJobInBackground(GDMServerJob())

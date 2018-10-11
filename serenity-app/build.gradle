@@ -81,7 +81,7 @@ android {
     }
   }
 
-  targetCompatibility = '1.8'
+  targetCompatibility = '1.7'
   sourceCompatibility = '1.8'
 
   buildTypes {
@@ -119,6 +119,22 @@ android {
   compileOptions {
     incremental = false
   }
+
+  dexOptions {
+    preDexLibraries = false
+  }
+}
+
+afterEvaluate {
+  tasks.matching {
+    it.name.startsWith('dex')
+  }.each { dx ->
+    if (dx.additionalParameters == null) {
+      dx.additionalParameters = ['--multi-dex']
+    } else {
+      dx.additionalParameters += '--multi-dex'
+    }
+  }
 }
 
 junitJacoco {
@@ -154,7 +170,7 @@ dependencies {
     exclude group: 'com.android.support'
   }
 
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
   implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
   implementation "com.arello-mobile:moxy:$moxyVersion"
   implementation "com.arello-mobile:moxy-app-compat:$moxyVersion"
