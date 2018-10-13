@@ -105,6 +105,9 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     recyclerView.addItemDecoration(createItemDecorator());
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(linearLayoutManager);
+    recyclerView.setClipToPadding(false);
+    recyclerView.setClipChildren(false);
+
    // recyclerView.setOnItemStateListener(adapter);
 
     recyclerView.setHorizontalFadingEdgeEnabled(true);

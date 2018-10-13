@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:clipChildren="false">
 
   <!-- The main content view -->
 
@@ -11,7 +13,8 @@
       android:id="@+id/tvshowSeasonBrowserLayout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      >
+      android:clipChildren="false"
+      android:clipToPadding="false">
 
     <ImageView
         android:id="@+id/fanArt"
@@ -23,7 +26,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="@dimen/overscan_start_padding"
-        android:paddingEnd="@dimen/overscan_end_padding">
+        android:paddingEnd="@dimen/overscan_end_padding"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
       <android.support.v7.widget.RecyclerView
           android:id="@+id/episodeGridView"
@@ -69,7 +74,9 @@
           android:layout_marginBottom="5dp"
           android:padding="5dp"
           android:background="@color/card_background"
-          android:orientation="vertical">
+          android:orientation="vertical"
+          android:clipChildren="false"
+          android:clipToPadding="false">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/tvShowSeasonImageGallery"

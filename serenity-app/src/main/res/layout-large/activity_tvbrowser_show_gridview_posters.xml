@@ -10,7 +10,10 @@
       android:id="@+id/tvshowBrowserLayout"
       android:layout_width="fill_parent"
       android:layout_height="match_parent"
-      android:background="@drawable/tvshows">
+      android:background="@drawable/tvshows"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      >
 
     <ImageView
         android:id="@+id/fanArt"
@@ -24,7 +27,9 @@
         android:paddingStart="@dimen/overscan_start_padding"
         android:paddingEnd="@dimen/overscan_end_padding"
         android:paddingTop="@dimen/actionbarMargin"
-        android:background="@color/card_background">
+        android:background="@color/card_background"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
       <include layout="@layout/include_tvshow_recyclerview"/>
 

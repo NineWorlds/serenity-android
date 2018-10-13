@@ -11,7 +11,9 @@
       android:id="@+id/tvshowBrowserLayout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      tools:context=".ui.browser.tv.TVShowBrowserActivity">
+      tools:context=".ui.browser.tv.TVShowBrowserActivity"
+      android:clipChildren="false"
+      android:clipToPadding="false">
 
     <ImageView
         android:id="@+id/fanArt"
@@ -23,7 +25,9 @@
         android:layout_height="match_parent"
         android:paddingStart="@dimen/overscan_start_padding"
         android:paddingEnd="@dimen/overscan_end_padding"
-        android:paddingBottom="@dimen/overscan_bottom_padding">
+        android:paddingBottom="@dimen/overscan_bottom_padding"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
       <include layout="@layout/include_tvshow_detail"/>
 
@@ -38,7 +42,9 @@
           android:layout_marginTop="5dp"
           android:padding="5dp"
           android:background="@color/card_background"
-          android:gravity="bottom">
+          android:gravity="bottom"
+          android:clipChildren="false"
+          android:clipToPadding="false">
 
         <include layout="@layout/include_tvshow_recyclerview"/>
 

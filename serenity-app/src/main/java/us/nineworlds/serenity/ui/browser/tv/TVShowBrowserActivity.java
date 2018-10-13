@@ -236,6 +236,9 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
       Toast.makeText(this, getString(R.string.no_shows_found_for_the_category_) + category,
           Toast.LENGTH_LONG).show();
     }
+    tvShowRecyclerView.setClipChildren(false);
+    tvShowRecyclerView.setClipToPadding(false);
+    tvShowRecyclerView.setClipToOutline(false);
     tvShowItemCountView.setText(Integer.toString(series.size()) + getString(R.string._item_s_));
     TVShowRecyclerAdapter adapter = (TVShowRecyclerAdapter) tvShowRecyclerView.getAdapter();
     adapter.updateSeries(series);

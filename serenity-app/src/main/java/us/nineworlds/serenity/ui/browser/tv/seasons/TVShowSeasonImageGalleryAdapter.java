@@ -91,13 +91,16 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
   }
 
   public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {
+    view.clearAnimation();
+    view.setBackground(null);
+
     if (hasFocus && view != null) {
+      view.clearAnimation();
       view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
-      view.setPadding(5, 5, 5, 5);
+      zoomOut(view);
       getOnItemSelectedListener().onItemSelected(view, i);
-    } else {
-      view.setBackground(null);
-      view.setPadding(0, 0, 0 , 0);
+      return;
     }
+
   }
 }

@@ -10,7 +10,9 @@
     android:focusable="true"
     android:descendantFocusability="afterDescendants"
     android:nextFocusUp="@+id/categoryFilter"
-    android:visibility="gone">
+    android:visibility="gone"
+    android:clipToPadding="false"
+    android:clipChildren="false">
 
   <requestFocus/>
 </android.support.v7.widget.RecyclerView>

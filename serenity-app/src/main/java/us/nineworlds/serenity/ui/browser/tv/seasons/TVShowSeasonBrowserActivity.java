@@ -93,6 +93,8 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
     adapter.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this, adapter));
     adapter.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this, adapter));
 
+    tvShowSeasonsGallery.setClipChildren(false);
+    tvShowSeasonsGallery.setClipToPadding(false);
     tvShowSeasonsGallery.setAdapter(adapter);
     tvShowSeasonsGallery.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -102,7 +104,11 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
 
     SeasonsEpisodePosterImageGalleryAdapter episodeAdapter = new SeasonsEpisodePosterImageGalleryAdapter();
     adapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(episodeAdapter));
+    gridView.setClipToPadding(false);
+    gridView.setClipChildren(false);
+    gridView.setClipToOutline(false);
     gridView.setAdapter(episodeAdapter);
+    gridView.addItemDecoration(createItemDecorator());
     gridView.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false));
 
     presenter.retrieveSeasons(key);

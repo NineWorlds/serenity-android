@@ -24,6 +24,16 @@ public abstract class AbstractPosterImageViewHolder<T extends ContentInfo>
   @BindView(R.id.infoGraphicMeta) @Nullable public LinearLayout infoGraphicMetaContainer;
   @BindView(R.id.posterImageView) public RoundedImageView posterImageView;
 
+  boolean isZoomedOut = false;
+
+  public boolean isZoomedOut() {
+    return this.isZoomedOut;
+  }
+
+  public void setZoomedOut(boolean isZoomedOut) {
+    this.isZoomedOut = isZoomedOut;
+  }
+
   public AbstractPosterImageViewHolder(View itemView) {
     super(itemView);
     ButterKnife.bind(this, itemView);

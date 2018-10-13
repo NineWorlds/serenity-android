@@ -24,7 +24,9 @@
         android:paddingStart="@dimen/overscan_start_padding"
         android:paddingEnd="@dimen/overscan_end_padding"
         android:paddingBottom="@dimen/overscan_bottom_padding"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:clipToPadding="false"
+        android:clipChildren="false">
 
       <fragment
           android:id="@+id/galleryFragmentContainer"

@@ -75,7 +75,9 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
           new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
       videoGallery.addItemDecoration(new SpaceItemDecoration(
           getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
-     // videoGallery.setOnItemStateListener(adapter);
+      videoGallery.setClipToPadding(false);
+      videoGallery.setClipChildren(false);
+
 
       EpisodeBrowserActivity activity = (EpisodeBrowserActivity) getActivity();
       activity.fetchEpisodes(key);

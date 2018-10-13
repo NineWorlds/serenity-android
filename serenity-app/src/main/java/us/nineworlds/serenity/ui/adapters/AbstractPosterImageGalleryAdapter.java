@@ -24,8 +24,12 @@
 package us.nineworlds.serenity.ui.adapters;
 
 import android.os.Handler;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import java.util.ArrayList;
 import java.util.List;
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
@@ -45,6 +49,9 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
   protected Handler handler;
   protected AbstractVideoOnItemClickListener onItemClickListener;
   protected AbstractVideoOnItemSelectedListener onItemSelectedListener;
+
+  private Animation scaleSmallAnimation;
+  private Animation scaleBigAnimation;
 
   public AbstractPosterImageGalleryAdapter() {
     posterList = new ArrayList<>();
@@ -80,5 +87,21 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
 
   public void setOnItemSelectedListener(AbstractVideoOnItemSelectedListener onItemSelectedListener) {
     this.onItemSelectedListener = onItemSelectedListener;
+  }
+
+  protected void zoomIn(View view) {
+    view.clearAnimation();
+    if (scaleSmallAnimation == null) {
+      scaleSmallAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.anim_scale_small);
+    }
+    view.startAnimation(scaleSmallAnimation);
+  }
+
+  protected void zoomOut(View view) {
+    view.clearAnimation();
+    if (scaleBigAnimation == null) {
+      scaleBigAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.anim_scale_big);
+    }
+    view.startAnimation(scaleBigAnimation);
   }
 }

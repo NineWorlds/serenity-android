@@ -5,6 +5,8 @@
     android:layout_alignParentTop="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     >
 
   <RelativeLayout
@@ -16,6 +18,8 @@
       android:background="@color/card_background"
       android:padding="5dp"
       android:visibility="invisible"
+      android:clipChildren="false"
+      android:clipToPadding="false"
       >
 
     <us.nineworlds.serenity.widgets.RoundedImageView
@@ -105,6 +109,8 @@
       android:background="#A0000000"
       android:gravity="bottom"
       android:padding="5dp"
+      android:clipChildren="false"
+      android:clipToPadding="false"
       >
 
     <android.support.v7.widget.RecyclerView
@@ -113,7 +119,9 @@
         android:layout_height="match_parent"
         android:focusable="true"
         android:layout_gravity="center|center_vertical"
-        android:nextFocusUp="@+id/categoryFilter">
+        android:nextFocusUp="@+id/categoryFilter"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
     <requestFocus/>
   </android.support.v7.widget.RecyclerView>

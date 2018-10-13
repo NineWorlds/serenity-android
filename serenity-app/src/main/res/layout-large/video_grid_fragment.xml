@@ -3,6 +3,8 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     >
 
   <android.support.v7.widget.RecyclerView
@@ -14,7 +16,9 @@
       android:layout_marginBottom="5dp"
       android:layout_gravity="center|center_vertical"
       android:descendantFocusability="afterDescendants"
-      android:nextFocusUp="@+id/categoryFilter">
+      android:nextFocusUp="@+id/categoryFilter"
+      android:clipChildren="false"
+      android:clipToPadding="false">
 
     <requestFocus/>
   </android.support.v7.widget.RecyclerView>
