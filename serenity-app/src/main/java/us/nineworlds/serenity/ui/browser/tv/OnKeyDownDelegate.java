@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import javax.inject.Inject;
@@ -23,7 +22,7 @@ public class OnKeyDownDelegate extends BaseInjector {
 
   @BindView(R.id.left_drawer) LinearLayout linearDrawerLayout;
   @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
-  @BindView(R.id.tvShowRecyclerView) @Nullable TvRecyclerView tvRecyclerView;
+  @BindView(R.id.tvShowRecyclerView) @Nullable RecyclerView tvRecyclerView;
 
   Activity activity;
 
@@ -46,54 +45,54 @@ public class OnKeyDownDelegate extends BaseInjector {
       }
     }
 
-    if (keyCode == KeyEvent.KEYCODE_BACK && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-      drawerLayout.closeDrawers();
-      tvRecyclerView.requestFocusFromTouch();
-      return true;
-    }
-
-    AbstractPosterImageGalleryAdapter adapter =
-        (AbstractPosterImageGalleryAdapter) tvRecyclerView.getAdapter();
-    if (adapter != null) {
-      int itemsCount = adapter.getItemCount();
-
-      if (contextMenuRequested(keyCode)) {
-        int pos = tvRecyclerView.getSelectedPosition();
-        RecyclerView.LayoutManager layoutManager = tvRecyclerView.getLayoutManager();
-        View view = layoutManager.findViewByPosition(pos);
-        view.performLongClick();
-        return true;
-      }
-      if (isKeyCodeSkipBack(keyCode)) {
-        int selectedItem = tvRecyclerView.getSelectedPosition();
-        int newPosition = selectedItem - 10;
-        if (newPosition < 0) {
-          newPosition = 0;
-        }
-        tvRecyclerView.setItemSelected(newPosition);
-        tvRecyclerView.requestFocusFromTouch();
-        return true;
-      }
-      if (isKeyCodeSkipForward(keyCode)) {
-        int selectedItem = tvRecyclerView.getSelectedPosition();
-        int newPosition = selectedItem + 10;
-        if (newPosition > itemsCount) {
-          newPosition = itemsCount - 1;
-        }
-        tvRecyclerView.setItemSelected(newPosition);
-        tvRecyclerView.requestFocusFromTouch();
-        return true;
-      }
-
-      if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY || keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
-        int selectedItem = tvRecyclerView.getSelectedPosition();
-        SeriesContentInfo info =
-            (SeriesContentInfo) ((AbstractPosterImageGalleryAdapter) tvRecyclerView.getAdapter()).getItem(
-                selectedItem);
-        new FindUnwatchedAsyncTask(activity).execute(info);
-        return true;
-      }
-    }
+    //if (keyCode == KeyEvent.KEYCODE_BACK && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
+    //  drawerLayout.closeDrawers();
+    //  tvRecyclerView.requestFocusFromTouch();
+    //  return true;
+    //}
+    //
+    //AbstractPosterImageGalleryAdapter adapter =
+    //    (AbstractPosterImageGalleryAdapter) tvRecyclerView.getAdapter();
+    //if (adapter != null) {
+    //  int itemsCount = adapter.getItemCount();
+    //
+    //  if (contextMenuRequested(keyCode)) {
+    //    int pos = tvRecyclerView.getSelectedPosition();
+    //    RecyclerView.LayoutManager layoutManager = tvRecyclerView.getLayoutManager();
+    //    View view = layoutManager.findViewByPosition(pos);
+    //    view.performLongClick();
+    //    return true;
+    //  }
+    //  if (isKeyCodeSkipBack(keyCode)) {
+    //    int selectedItem = tvRecyclerView.getSelectedPosition();
+    //    int newPosition = selectedItem - 10;
+    //    if (newPosition < 0) {
+    //      newPosition = 0;
+    //    }
+    //    tvRecyclerView.setItemSelected(newPosition);
+    //    tvRecyclerView.requestFocusFromTouch();
+    //    return true;
+    //  }
+    //  if (isKeyCodeSkipForward(keyCode)) {
+    //    int selectedItem = tvRecyclerView.getSelectedPosition();
+    //    int newPosition = selectedItem + 10;
+    //    if (newPosition > itemsCount) {
+    //      newPosition = itemsCount - 1;
+    //    }
+    //    tvRecyclerView.setItemSelected(newPosition);
+    //    tvRecyclerView.requestFocusFromTouch();
+    //    return true;
+    //  }
+    //
+    //  if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY || keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
+    //    int selectedItem = tvRecyclerView.getSelectedPosition();
+    //    SeriesContentInfo info =
+    //        (SeriesContentInfo) ((AbstractPosterImageGalleryAdapter) tvRecyclerView.getAdapter()).getItem(
+    //            selectedItem);
+    //    new FindUnwatchedAsyncTask(activity).execute(info);
+    //    return true;
+    //  }
+    //}
 
     return false;
   }

@@ -1,7 +1,6 @@
 package us.nineworlds.serenity.widgets;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
 import app.com.tvrecyclerview.TvRecyclerView;

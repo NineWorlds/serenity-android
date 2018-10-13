@@ -31,7 +31,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
-import app.com.tvrecyclerview.TvRecyclerView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import java.util.ArrayList;
 import java.util.List;
@@ -161,21 +160,21 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
   }
 
   @Override protected RecyclerView findVideoRecyclerView() {
-    return (TvRecyclerView) findViewById(R.id.moviePosterView);
+    return findViewById(R.id.moviePosterView);
   }
 
   @Override public void updateGallery(List<VideoContentInfo> episodes) {
-    final TvRecyclerView gallery = (TvRecyclerView) findVideoRecyclerView();
+    final RecyclerView gallery = findVideoRecyclerView();
     EpisodePosterImageGalleryAdapter adapter =
         (EpisodePosterImageGalleryAdapter) gallery.getAdapter();
 
-    gallery.setSelectPadding(0, 0, 0, 0);
+   // gallery.setSelectPadding(0, 0, 0, 0);
 
     adapter.updateEpisodes(episodes);
 
     postLoadHandler.postDelayed(new Runnable() {
       @Override public void run() {
-        gallery.setItemSelected(0);
+     //   gallery.setItemSelected(0);
         gallery.requestFocus();
         gallery.getChildAt(0).requestFocus();
       }

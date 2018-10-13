@@ -29,10 +29,8 @@ import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
-import app.com.tvrecyclerview.TvRecyclerView;
 import java.util.LinkedList;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -58,11 +56,9 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
       return;
     }
 
-    if (!(videoRecyclerView instanceof TvRecyclerView)) {
+    if (!(videoRecyclerView instanceof RecyclerView)) {
       return;
     }
-
-    RecyclerView.LayoutManager layoutManager = videoRecyclerView.getLayoutManager();
 
     View selectedView;
     VideoContentInfo video;
@@ -71,13 +67,8 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
       return;
     }
 
-    int itemPosition = ((TvRecyclerView)videoRecyclerView).getSelectedPosition();
-    if (itemPosition < 0) {
-      videoRecyclerView.requestFocusFromTouch();
-      return;
-    }
-    video = (VideoContentInfo) adapter.getItem(itemPosition);
-    selectedView = layoutManager.findViewByPosition(((TvRecyclerView)videoRecyclerView).getSelectedPosition());
+    selectedView = videoRecyclerView.getFocusedChild();
+    video = (VideoContentInfo) adapter.getItem(videoRecyclerView.getChildAdapterPosition(selectedView));
 
     if (data != null) {
       if (externalPlayer) {

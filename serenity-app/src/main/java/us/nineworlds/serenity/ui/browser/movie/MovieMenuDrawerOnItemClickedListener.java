@@ -29,10 +29,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import app.com.tvrecyclerview.TvRecyclerView;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
@@ -74,7 +74,7 @@ public class MovieMenuDrawerOnItemClickedListener extends BaseInjector
     SerenityMultiViewVideoActivity activity = getActivity(view.getContext());
     FragmentManager fragmentManager = activity.getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    TvRecyclerView gallery = activity.findViewById(R.id.moviePosterView);
+    RecyclerView gallery = activity.findViewById(R.id.moviePosterView);
     AbstractPosterImageGalleryAdapter adapter =
         (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
     View titleActionBar = activity.findViewById(R.id.movieActionBarPosterTitle);

@@ -36,7 +36,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -57,7 +56,6 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.widgets.SerenityTVRecylcerView;
 
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     implements TVShowBrowserView {
@@ -66,7 +64,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   protected boolean restarted_state = false;
   protected String key;
 
-  @BindView(R.id.tvShowRecyclerView) SerenityTVRecylcerView tvShowRecyclerView;
+  @BindView(R.id.tvShowRecyclerView) RecyclerView tvShowRecyclerView;
   @BindView(R.id.fanArt) View fanArt;
   @BindView(R.id.tvShowItemCount) TextView tvShowItemCountView;
   @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
@@ -102,7 +100,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   }
 
   private void populateTVShowContent() {
-    tvShowRecyclerView.setSelectPadding(0, 0, 0, 0);
+    //tvShowRecyclerView.setSelectPadding(0, 0, 0, 0);
     if (gridViewActive) {
       GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false);
       tvShowRecyclerView.setLayoutManager(gridLayoutManager);
@@ -114,7 +112,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
       adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
       adapter.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(adapter));
       tvShowRecyclerView.setAdapter(adapter);
-      tvShowRecyclerView.setOnItemStateListener(adapter);
+//      tvShowRecyclerView.setOnItemStateListener(adapter);
       return;
     }
 
@@ -130,7 +128,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
       adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
       adapter.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(adapter));
       tvShowRecyclerView.setAdapter(adapter);
-      tvShowRecyclerView.setOnItemStateListener(adapter);
+     // tvShowRecyclerView.setOnItemStateListener(adapter);
       return;
     }
 
@@ -138,7 +136,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
     adapter.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(adapter));
     tvShowRecyclerView.setAdapter(adapter);
-    tvShowRecyclerView.setOnItemStateListener(adapter);
+    //tvShowRecyclerView.setOnItemStateListener(adapter);
   }
 
   @Override protected void onRestart() {
@@ -245,7 +243,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
 
     postDelayed.postDelayed(new Runnable() {
       @Override public void run() {
-        tvShowRecyclerView.setItemSelected(0);
+        //tvShowRecyclerView.setItemSelected(0);
         tvShowRecyclerView.getChildAt(0).requestFocus();
       }
     }, 500);

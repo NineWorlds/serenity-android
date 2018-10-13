@@ -34,12 +34,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-import app.com.tvrecyclerview.TvRecyclerView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -53,7 +51,8 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
-public class MovieBrowserActivity extends SerenityMultiViewVideoActivity implements MovieBrowserContract.MovieBrowserView {
+public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
+    implements MovieBrowserContract.MovieBrowserView {
 
   @Inject protected SharedPreferences prefs;
   @Inject protected MovieSelectedCategoryState categoryState;
@@ -229,12 +228,12 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity impleme
   }
 
   @Override public void displayPosters(List<VideoContentInfo> videos) {
-    TvRecyclerView recyclerView = (TvRecyclerView) findVideoRecyclerView();
+    RecyclerView recyclerView = findVideoRecyclerView();
     MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) recyclerView.getAdapter();
     adapter.populatePosters(videos);
     recyclerView.requestFocusFromTouch();
     if (adapter.getItemCount() > 0) {
-      recyclerView.setItemSelected(0);
+      //      recyclerView.setItemSelected(0);
       if (recyclerView.getChildCount() > 0) {
         recyclerView.getChildAt(0).requestFocus();
       }

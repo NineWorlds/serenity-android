@@ -107,18 +107,30 @@
       android:padding="5dp"
       >
 
-    <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/moviePosterView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
         android:layout_gravity="center|center_vertical"
-        android:nextFocusUp="@+id/categoryFilter"
-        app:isAutoProcessFocus="true"
-        app:focusScale="@dimen/focus_size_value"
-        app:focusDrawable="@drawable/rounded_transparent_border">
-      <requestFocus/>
-    </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>
+        android:nextFocusUp="@+id/categoryFilter">
 
-  </LinearLayout>
+    <requestFocus/>
+  </android.support.v7.widget.RecyclerView>
 
-</RelativeLayout>
+  <!--
+      <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
+          android:id="@+id/moviePosterView"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_gravity="center|center_vertical"
+          android:nextFocusUp="@+id/categoryFilter"
+          app:isAutoProcessFocus="true"
+          app:focusScale="@dimen/focus_size_value"
+          app:focusDrawable="@drawable/rounded_transparent_border">
+        <requestFocus/>
+      </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>
+  -->
+</LinearLayout>
+
+    </RelativeLayout>

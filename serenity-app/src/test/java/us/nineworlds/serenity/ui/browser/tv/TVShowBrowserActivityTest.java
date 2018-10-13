@@ -3,13 +3,13 @@ package us.nineworlds.serenity.ui.browser.tv;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import app.com.tvrecyclerview.TvRecyclerView;
 import dagger.Module;
 import dagger.Provides;
 import java.util.ArrayList;
@@ -101,7 +101,7 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   @Test public void assertThatTVShowBannerGalleryIsNotNull() {
     demandActivityOnCreate();
 
-    assertThat(activity.tvShowRecyclerView).isNotNull().isInstanceOf(TvRecyclerView.class);
+    assertThat(activity.tvShowRecyclerView).isNotNull().isInstanceOf(RecyclerView.class);
   }
 
   @Test public void assertThatSecondaryCategoryFilterIsNotNull() {

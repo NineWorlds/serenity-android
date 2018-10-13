@@ -27,10 +27,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import app.com.tvrecyclerview.TvRecyclerView;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
@@ -48,7 +48,7 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
   @Inject GalleryVideoOnItemLongClickListener onItemLongClickListener;
   @Inject protected MovieSelectedCategoryState categoryState;
 
-  private TvRecyclerView videoGallery;
+  private RecyclerView videoGallery;
 
   public EpisodeVideoGalleryFragment() {
     super();
@@ -75,7 +75,7 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
           new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
       videoGallery.addItemDecoration(new SpaceItemDecoration(
           getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
-      videoGallery.setOnItemStateListener(adapter);
+     // videoGallery.setOnItemStateListener(adapter);
 
       EpisodeBrowserActivity activity = (EpisodeBrowserActivity) getActivity();
       activity.fetchEpisodes(key);

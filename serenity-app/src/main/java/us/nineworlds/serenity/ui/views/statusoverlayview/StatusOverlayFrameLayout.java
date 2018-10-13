@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.arellomobile.mvp.MvpPresenter;
@@ -148,7 +148,7 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
 
     initPosterMetaData(pi, width, height);
 
-    setLayoutParams(new TvRecyclerView.LayoutParams(width, height));
+    setLayoutParams(new RecyclerView.LayoutParams(width, height));
   }
 
   @Override public void refresh() {

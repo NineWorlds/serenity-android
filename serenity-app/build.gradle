@@ -81,7 +81,7 @@ android {
     }
   }
 
-  targetCompatibility = '1.7'
+  targetCompatibility = '1.8'
   sourceCompatibility = '1.8'
 
   buildTypes {
@@ -118,6 +118,8 @@ android {
 
   compileOptions {
     incremental = false
+    targetCompatibility 1.8
+    sourceCompatibility 1.8
   }
 
   dexOptions {
@@ -199,7 +201,7 @@ dependencies {
   implementation "net.danlew:android.joda:$jodaTimeVersion"
   implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
   implementation 'com.google.android:flexbox:1.0.0'
-  implementation 'com.henryblue.library:tvrecyclerview:1.1.3'
+  implementation 'com.henryblue.library:tvrecyclerview:1.1.4'
 
 
   // https://mvnrepository.com/artifact/org.simpleframework/simple-xml

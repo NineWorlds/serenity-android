@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +60,7 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
     return seasonViewHolder;
   }
 
-  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
     SeasonViewHolder viewHolder = (SeasonViewHolder) holder;
 
     SeriesContentInfo pi = seasonList.get(position);
@@ -67,6 +68,8 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
     viewHolder.reset();
     viewHolder.createImage(pi, 120, 180);
     viewHolder.toggleWatchedIndicator(pi);
+    viewHolder.itemView.setOnClickListener((view)-> onItemViewClick(view, position));
+    viewHolder.itemView.setOnFocusChangeListener((view, focus)-> onItemViewFocusChanged(focus, view, position));
   }
 
   @Override public long getItemId(int position) {
@@ -82,14 +85,19 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
     notifyDataSetChanged();
   }
 
-  @Override public void onItemViewClick(View view, int i) {
+  public void onItemViewClick(View view, int i) {
     onItemClickListener = new TVShowSeasonOnItemClickListener(view.getContext(),this);
     onItemClickListener.onItemClick(view, i);
   }
 
-  @Override public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {
+  public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {
     if (hasFocus && view != null) {
-      onItemSelectedListener.onItemSelected(view, i);
+      view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
+      view.setPadding(5, 5, 5, 5);
+      getOnItemSelectedListener().onItemSelected(view, i);
+    } else {
+      view.setBackground(null);
+      view.setPadding(0, 0, 0 , 0);
     }
   }
 }

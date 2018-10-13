@@ -32,7 +32,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import app.com.tvrecyclerview.TvRecyclerView;
 import butterknife.BindView;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
@@ -67,7 +66,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
   @Inject Resources resources;
 
-  @BindView(R.id.moviePosterView) protected SerenityTVRecylcerView recyclerView;
+  @BindView(R.id.moviePosterView) protected RecyclerView recyclerView;
 
   public MovieVideoGalleryFragment() {
     super();
@@ -106,12 +105,12 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     recyclerView.addItemDecoration(createItemDecorator());
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(linearLayoutManager);
-    recyclerView.setOnItemStateListener(adapter);
+   // recyclerView.setOnItemStateListener(adapter);
 
     recyclerView.setHorizontalFadingEdgeEnabled(true);
     recyclerView.setFocusableInTouchMode(true);
     recyclerView.requestFocus();
-    recyclerView.setSelectPadding(0,0, 0, 0);
+    //recyclerView.setSelectPadding(0,0, 0, 0);
 
     MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
 

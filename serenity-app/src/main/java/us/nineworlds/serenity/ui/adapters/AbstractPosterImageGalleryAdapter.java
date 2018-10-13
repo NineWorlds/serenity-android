@@ -24,7 +24,6 @@
 package us.nineworlds.serenity.ui.adapters;
 
 import android.os.Handler;
-import app.com.tvrecyclerview.TvRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -40,7 +39,7 @@ import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
  *
  * @author dcarver
  */
-public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecyclerViewAdapter implements TvRecyclerView.OnItemStateListener {
+public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecyclerViewAdapter {
 
   protected static List<VideoContentInfo> posterList = null;
   protected Handler handler;

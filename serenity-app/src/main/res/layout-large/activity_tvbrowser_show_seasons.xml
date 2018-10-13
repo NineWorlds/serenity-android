@@ -25,7 +25,7 @@
         android:paddingStart="@dimen/overscan_start_padding"
         android:paddingEnd="@dimen/overscan_end_padding">
 
-      <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
+      <android.support.v7.widget.RecyclerView
           android:id="@+id/episodeGridView"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
@@ -39,10 +39,8 @@
           android:nextFocusDown="@+id/tvShowSeasonImageGalleryLayout"
           android:nextFocusLeft="@+id/tvShowSeasonImageGalleryLayout"
           android:nextFocusRight="@+id/tvShowSeasonImageGalleryLayout"
-          android:visibility="gone"
-          app:isAutoProcessFocus="true"
-          app:focusScale="@dimen/focus_size_value"
-          app:focusDrawable="@drawable/rounded_transparent_border"/>
+          android:descendantFocusability="afterDescendants"
+          android:visibility="gone"/>
 
       <LinearLayout
           android:id="@+id/tvShowSeasonTitleRow"
@@ -73,15 +71,13 @@
           android:background="@color/card_background"
           android:orientation="vertical">
 
-        <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/tvShowSeasonImageGallery"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_vertical"
             android:padding="5dp"
-            app:isAutoProcessFocus="true"
-            app:focusScale="@dimen/focus_size_value"
-            app:focusDrawable="@drawable/rounded_transparent_border"/>
+            android:descendantFocusability="afterDescendants"/>
       </LinearLayout>
 
     </RelativeLayout>

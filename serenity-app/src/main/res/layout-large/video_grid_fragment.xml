@@ -5,6 +5,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/moviePosterView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/card_background"
+      android:visibility="visible"
+      android:layout_marginBottom="5dp"
+      android:layout_gravity="center|center_vertical"
+      android:descendantFocusability="afterDescendants"
+      android:nextFocusUp="@+id/categoryFilter">
+
+    <requestFocus/>
+  </android.support.v7.widget.RecyclerView>
+
+<!--
   <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
       android:id="@+id/moviePosterView"
       android:layout_width="match_parent"
@@ -16,5 +31,6 @@
       app:isAutoProcessFocus="true"
       app:focusScale="@dimen/focus_size_value"
       app:focusDrawable="@drawable/rounded_transparent_border"/>
+-->
 
 </FrameLayout>
