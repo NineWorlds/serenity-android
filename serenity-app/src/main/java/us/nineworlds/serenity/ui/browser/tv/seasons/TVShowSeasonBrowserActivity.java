@@ -38,6 +38,7 @@ import butterknife.ButterKnife;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import java.util.ArrayList;
 import java.util.List;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -96,6 +97,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
     tvShowSeasonsGallery.setClipChildren(false);
     tvShowSeasonsGallery.setClipToPadding(false);
     tvShowSeasonsGallery.setAdapter(adapter);
+    tvShowSeasonsGallery.setItemAnimator(new FadeInAnimator());
     tvShowSeasonsGallery.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
@@ -109,6 +111,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
     gridView.setClipToOutline(false);
     gridView.setAdapter(episodeAdapter);
     gridView.addItemDecoration(createItemDecorator());
+    gridView.setItemAnimator(new FadeInAnimator());
     gridView.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false));
 
     presenter.retrieveSeasons(key);

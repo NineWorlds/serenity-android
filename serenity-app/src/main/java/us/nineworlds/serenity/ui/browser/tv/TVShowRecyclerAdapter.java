@@ -32,7 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.adapters.RecyclerViewDiffUtil;
 
 public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
 
@@ -74,8 +76,10 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
   }
 
   public void updateSeries(List<SeriesContentInfo> series) {
-    tvShowList = series;
-    notifyDataSetChanged();
+    List<SeriesContentInfo> oldList = new ArrayList(tvShowList);
+    tvShowList.clear();
+    tvShowList.addAll(series);
+    new RecyclerViewDiffUtil(oldList, tvShowList).dispatchUpdatesTo(this);
   }
 
   public void onItemViewClick(View view, int i) {

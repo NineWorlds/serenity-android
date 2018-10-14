@@ -35,6 +35,7 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.injection.InjectingFragment;
@@ -105,6 +106,8 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     recyclerView.addItemDecoration(createItemDecorator());
     recyclerView.setAdapter(adapter);
     recyclerView.setLayoutManager(linearLayoutManager);
+    recyclerView.setHorizontalFadingEdgeEnabled(false);
+    recyclerView.setItemAnimator(new FadeInAnimator());
     recyclerView.setClipToPadding(false);
     recyclerView.setClipChildren(false);
 

@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -239,6 +240,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     tvShowRecyclerView.setClipChildren(false);
     tvShowRecyclerView.setClipToPadding(false);
     tvShowRecyclerView.setClipToOutline(false);
+    tvShowRecyclerView.setItemAnimator(new FadeInAnimator());
     tvShowItemCountView.setText(Integer.toString(series.size()) + getString(R.string._item_s_));
     TVShowRecyclerAdapter adapter = (TVShowRecyclerAdapter) tvShowRecyclerView.getAdapter();
     adapter.updateSeries(series);
