@@ -70,8 +70,8 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
     viewHolder.reset();
     viewHolder.createImage(pi, 120, 180);
     viewHolder.toggleWatchedIndicator(pi);
-    viewHolder.itemView.setOnClickListener((view)-> onItemViewClick(view, position));
-    viewHolder.itemView.setOnFocusChangeListener((view, focus)-> onItemViewFocusChanged(focus, view, position));
+    viewHolder.getItemView().setOnClickListener((view)-> onItemViewClick(view, position));
+    viewHolder.getItemView().setOnFocusChangeListener((view, focus)-> onItemViewFocusChanged(focus, view, position));
   }
 
   @Override public long getItemId(int position) {

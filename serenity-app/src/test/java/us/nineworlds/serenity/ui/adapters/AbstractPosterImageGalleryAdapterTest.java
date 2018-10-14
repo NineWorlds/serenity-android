@@ -118,11 +118,11 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
 		}
 
-		@Override public void onItemViewClick(View view, int i) {
+		public void onItemViewClick(View view, int i) {
 
 		}
 
-		@Override public void onItemViewFocusChanged(boolean b, View view, int i) {
+		public void onItemViewFocusChanged(boolean b, View view, int i) {
 
 		}
 	}

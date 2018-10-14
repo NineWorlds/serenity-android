@@ -56,8 +56,8 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
     viewHolder.reset();
     viewHolder.createImage(pi, 300, 187);
     viewHolder.toggleWatchedIndicator(pi);
-    viewHolder.itemView.setOnClickListener((view)-> onItemViewClick(view, position));
-    viewHolder.itemView.setOnFocusChangeListener((view, focus)-> onItemViewFocusChanged(focus, view, position));
+    viewHolder.getItemView().setOnClickListener((view)-> onItemViewClick(view, position));
+    viewHolder.getItemView().setOnFocusChangeListener((view, focus)-> onItemViewFocusChanged(focus, view, position));
   }
 
   public void updateEpisodes(List<VideoContentInfo> episodes) {

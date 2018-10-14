@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
+import android.view.View;
 import android.widget.LinearLayout;
 
 import org.junit.Before;
@@ -23,6 +24,7 @@ import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeViewHolder;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.robolectric.RuntimeEnvironment.application;
@@ -49,6 +51,7 @@ public class SeasonsEpisodePosterImageGalleryAdapterTest extends InjectingTest {
     public void onBindViewHolder()  {
         EpisodeViewHolder mockedViewHolder = mock(EpisodeViewHolder.class);
         VideoContentInfo mockEpisodesContent = mock(VideoContentInfo.class);
+        doReturn(new View(RuntimeEnvironment.application)).when(mockedViewHolder).getItemView();
 
         adapter.updateEpisodes(Collections.singletonList(mockEpisodesContent));
         adapter.onBindViewHolder(mockedViewHolder, 0);

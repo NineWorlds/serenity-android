@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
+import android.view.View;
 import android.widget.LinearLayout;
 
 import org.junit.Before;
@@ -22,6 +23,7 @@ import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.robolectric.RuntimeEnvironment.application;
@@ -48,6 +50,7 @@ public class TVShowSeasonImageGalleryAdapterTest extends InjectingTest{
     public void onBindViewHolder()  {
         SeasonViewHolder mockedViewHolder = mock(SeasonViewHolder.class);
         SeriesContentInfo seriesContentInfo = mock(SeriesContentInfo.class);
+        doReturn(new View(RuntimeEnvironment.application)).when(mockedViewHolder).getItemView();
 
         adapter.updateSeasonsList(Collections.singletonList(seriesContentInfo));
         adapter.onBindViewHolder(mockedViewHolder, 0);

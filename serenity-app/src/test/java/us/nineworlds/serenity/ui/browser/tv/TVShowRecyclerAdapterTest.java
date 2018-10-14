@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.junit.Before;
@@ -22,6 +23,7 @@ import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.robolectric.RuntimeEnvironment.application;
@@ -63,6 +65,7 @@ public class TVShowRecyclerAdapterTest extends InjectingTest {
     public void onBindViewHolder()  {
         TVShowViewHolder mockTVShowViewHolder = mock(TVShowViewHolder.class);
         SeriesContentInfo mockSeriesContent = mock(SeriesContentInfo.class);
+        doReturn(new ImageView(RuntimeEnvironment.application)).when(mockTVShowViewHolder).getItemView();
 
         adapter.updateSeries(Collections.singletonList(mockSeriesContent));
         adapter.onBindViewHolder(mockTVShowViewHolder, 0);

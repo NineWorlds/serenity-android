@@ -28,6 +28,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import butterknife.ButterKnife;
@@ -38,6 +39,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.ganin.darv.DpadAwareRecyclerView;
+import org.assertj.android.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -103,7 +105,7 @@ public class MainActivityTest extends InjectingTest {
   }
 
   @Test public void testCreatesMenu() throws Exception {
-    assertThat(activity.findViewById(R.id.mainGalleryBackground)).isVisible();
+    assertThat((ImageView)activity.findViewById(R.id.mainGalleryBackground)).isVisible();
   }
 
   @Test public void onKeyDownOpensMenuDrawerWhenKeycodeMenu() {

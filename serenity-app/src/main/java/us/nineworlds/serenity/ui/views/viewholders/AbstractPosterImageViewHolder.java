@@ -39,6 +39,10 @@ public abstract class AbstractPosterImageViewHolder<T extends ContentInfo>
     ButterKnife.bind(this, itemView);
   }
 
+  public View getItemView() {
+    return itemView;
+  }
+
   public abstract void reset();
 
   public abstract void createImage(T contentInfo, int width, int height);

@@ -42,8 +42,8 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageG
     episodeViewHolder.createImage(pi, 270, 147);
     episodeViewHolder.toggleWatchedIndicator(pi);
     episodeViewHolder.updateSeasonsTitle(pi);
-    episodeViewHolder.itemView.setOnClickListener((view -> onItemViewClick(view, position)));
-    episodeViewHolder.itemView.setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));
+    episodeViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));
+    episodeViewHolder.getItemView().setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));
   }
 
   @Override public void onItemViewClick(View view, int i) {

@@ -67,8 +67,8 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
     tvShowViewHolder.reset();
     tvShowViewHolder.createImage(pi, BANNER_PIXEL_WIDTH, BANNER_PIXEL_HEIGHT);
     tvShowViewHolder.toggleWatchedIndicator(pi);
-    tvShowViewHolder.itemView.setOnClickListener((view -> onItemViewClick(view, position)));
-    tvShowViewHolder.itemView.setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));
+    tvShowViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));
+    tvShowViewHolder.getItemView().setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));
   }
 
   @Override public long getItemId(int position) {
