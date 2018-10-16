@@ -167,11 +167,16 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
   }
 
   private fun transcoderUrl(): String {
+    logger.debug("Exoplayer Activity: Container: ${video.container} Audio: ${video.audioCodec}")
     if (isDirectPlaySupportedForContainer(video)) {
+      logger.debug("Exoplayer Activity: Direct playing ${video.directPlayUrl}")
       return video.directPlayUrl
     }
 
-    return serenityClient.createTranscodeUrl(video.id(), video.resumeOffset)
+    val transcodingUrl = serenityClient.createTranscodeUrl(video.id(), video.resumeOffset);
+
+    logger.debug("Exoplayer Activity: Transcoding Url: $transcodingUrl")
+    return transcodingUrl
   }
 
   private fun selectCodec(mimeType: String): Boolean {
