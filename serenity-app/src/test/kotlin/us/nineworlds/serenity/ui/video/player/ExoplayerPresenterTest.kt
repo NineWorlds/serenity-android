@@ -2,6 +2,7 @@ package us.nineworlds.serenity.ui.video.player
 
 import android.view.View
 import com.birbit.android.jobqueue.JobManager
+import com.nhaarman.mockito_kotlin.atLeastOnce
 import dagger.Module
 import dagger.Provides
 import org.apache.commons.lang3.RandomStringUtils
@@ -188,7 +189,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
     assertThat(presenter.video).isNotNull().isEqualTo(mockVideoContentInfo)
     verify(mockVideoQueue).poll()
-    verify(mockVideoContentInfo).container
+    verify(mockVideoContentInfo, atLeastOnce()).container
     verify(mockVideoQueue).isEmpty()
     verify(mockVideoContentInfo).id()
     verify(mockPlexFactory).createTranscodeUrl(expectedId, 0)
