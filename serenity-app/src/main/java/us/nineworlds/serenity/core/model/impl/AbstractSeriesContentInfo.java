@@ -25,6 +25,7 @@ package us.nineworlds.serenity.core.model.impl;
 
 import java.io.Serializable;
 import java.util.List;
+import timber.log.Timber;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
@@ -269,14 +270,20 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo, Se
   }
 
   @Override public void toggleWatchedStatus() {
+    Timber.d("Name: " + title);
+    Timber.d("Key: " + key);
+    Timber.d("Id: " + id);
+
+    String id = id() != null ? id() : getKey();
+
     if (isPartiallyWatched() || isUnwatched()) {
-      new WatchedVideoAsyncTask().execute(id());
+      new WatchedVideoAsyncTask().execute(id);
       setShowsWatched(Integer.toString(totalShows()));
       setShowsUnwatched("0");
       return;
     }
 
-    new UnWatchVideoAsyncTask().execute(id());
+    new UnWatchVideoAsyncTask().execute(id);
     setShowsUnwatched(Integer.toString(totalShows()));
     setShowsWatched("0");
   }

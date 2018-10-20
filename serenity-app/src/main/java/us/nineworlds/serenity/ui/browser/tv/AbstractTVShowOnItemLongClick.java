@@ -46,17 +46,21 @@ public abstract class AbstractTVShowOnItemLongClick {
   protected Activity context;
   protected SeriesContentInfo videoInfo;
   protected View view;
+  protected TVShowRecyclerAdapter adapter;
+  protected int position;
 
-  /**
-   *
-   */
+  public AbstractTVShowOnItemLongClick(TVShowRecyclerAdapter adapter) {
+    this.adapter = adapter;
+  }
+
+  public void setPosition(int position) {
+    this.position = position;
+  }
+
   public void init() {
     context = (Activity) view.getContext();
   }
 
-  /**
-   *
-   */
   public void createAndShowDialog() {
     dialog = new Dialog(context);
     AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -81,43 +85,20 @@ public abstract class AbstractTVShowOnItemLongClick {
 
   protected class DialogOnItemSelected implements OnItemClickListener {
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.widget.AdapterView.OnItemClickListener#onItemClick(android
-     * .widget.AdapterView, android.view.View, int, long)
-     */
     @Override public void onItemClick(AdapterView<?> av, View v, int position, long arg3) {
 
       switch (position) {
         case 0:
-          ImageView watchedView = (ImageView) view.findViewById(R.id.posterWatchedIndicator);
+          ImageView watchedView = view.findViewById(R.id.posterWatchedIndicator);
           View progressView = view.findViewById(R.id.posterInprogressIndicator);
           progressView.setVisibility(View.INVISIBLE);
           if (videoInfo.isWatched()) {
             watchedView.setVisibility(View.INVISIBLE);
           } else {
-            //                        BadgeView badgeView = (BadgeView) view
-            //                                .findViewWithTag("badge");
-            //                        if (badgeView != null) {
-            //                            badgeView.hide(true);
-            //                            badgeView.setVisibility(View.INVISIBLE);
-            //                        }
             watchedView.setImageResource(R.drawable.overlaywatched);
             watchedView.setVisibility(View.VISIBLE);
           }
           videoInfo.toggleWatchedStatus();
-
-          if (videoInfo.isUnwatched()) {
-            //                        BadgeView badgeView = (BadgeView) view
-            //                                .findViewWithTag("badge");
-            //                        if (badgeView != null) {
-            //                            badgeView.sText(videoInfo.getShowsUnwatched());
-            //                            badgeView.setVisibility(View.VISIBLE);
-            //                            badgeView.show(true);
-            //                        }
-          }
 
           break;
       }

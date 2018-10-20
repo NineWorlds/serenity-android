@@ -40,9 +40,6 @@ import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
-/**
- * @author dcarver
- */
 public class FindUnwatchedAsyncTask extends AsyncTask<SeriesContentInfo, Void, EpisodePosterInfo> {
 
   @Inject protected SerenityClient factory;
@@ -51,9 +48,6 @@ public class FindUnwatchedAsyncTask extends AsyncTask<SeriesContentInfo, Void, E
 
   protected Activity activity;
 
-  /**
-   *
-   */
   public FindUnwatchedAsyncTask(Activity context) {
     this.activity = context;
     SerenityObjectGraph.Companion.getInstance().inject(this);

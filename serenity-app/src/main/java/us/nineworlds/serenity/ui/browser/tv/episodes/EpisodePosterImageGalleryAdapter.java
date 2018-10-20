@@ -86,7 +86,7 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
     }
   }
 
-  private boolean onItemViewLongClick(View view, int position) {
+  protected boolean onItemViewLongClick(View view, int position) {
     GalleryVideoOnItemLongClickListener onItemLongClickListener = new GalleryVideoOnItemLongClickListener(this);
     onItemLongClickListener.setPosition(position);
     return onItemLongClickListener.onLongClick(view);

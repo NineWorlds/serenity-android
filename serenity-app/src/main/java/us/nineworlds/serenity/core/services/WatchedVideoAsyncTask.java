@@ -26,6 +26,7 @@ package us.nineworlds.serenity.core.services;
 import android.os.AsyncTask;
 import java.io.IOException;
 import javax.inject.Inject;
+import timber.log.Timber;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 
@@ -40,6 +41,7 @@ public class WatchedVideoAsyncTask extends AsyncTask<String, Void, Void> {
 
   @Override protected Void doInBackground(String... params) {
     String id = params[0];
+    Timber.d("Id: " + id);
     try {
       factory.watched(id);
     } catch (IOException e) {

@@ -24,6 +24,9 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.view.View;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+
+import static android.view.View.*;
 
 /**
  * A listener that handles long press for video content. Includes displaying a
@@ -32,10 +35,18 @@ import android.view.View;
  *
  * @author dcarver
  */
-public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick {
+public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick implements OnLongClickListener {
 
-  public boolean onItemLongClick(View v, int position, long arg3) {
+  public ShowOnItemLongClickListener(TVShowRecyclerAdapter adapter) {
+    super(adapter);
+  }
+
+  @Override public boolean onLongClick(View v) {
+    this.view = v;
+
     init();
+
+    videoInfo = (SeriesContentInfo) adapter.getItem(position);
 
     createAndShowDialog();
 

@@ -60,7 +60,8 @@ public class SeriesMediaContainer extends AbstractMediaContainer {
       if (shows != null) {
         for (IDirectory show : shows) {
           TVShowSeriesInfo mpi = new TVShowSeriesInfo();
-          mpi.setId(show.getRatingKey());
+          mpi.setId(mpi.getKey());
+          mpi.setKey(mpi.getKey());
           mpi.setMediaTagIdentifier(mediaTagId);
           if (show.getSummary() != null) {
             mpi.setSummary(show.getSummary());

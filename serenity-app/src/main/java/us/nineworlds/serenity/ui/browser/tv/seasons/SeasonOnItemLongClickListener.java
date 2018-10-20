@@ -26,14 +26,17 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
@@ -44,24 +47,33 @@ import us.nineworlds.serenity.injection.ForVideoQueue;
 /**
  * A listener that handles long press for video content in Poster Gallery
  * classes.
- *
- * @author dcarver
  */
-public class SeasonOnItemLongClickListener extends BaseInjector
-    implements View.OnLongClickListener {
-
-  protected Dialog dialog;
-  protected Activity context;
-  protected ImageView vciv;
-  protected SeriesContentInfo info;
+public class SeasonOnItemLongClickListener extends BaseInjector implements View.OnLongClickListener {
 
   @Inject @ForVideoQueue protected LinkedList<VideoContentInfo> videoQueue;
 
-  public SeasonOnItemLongClickListener(Activity context) {
-    this.context = context;
+  protected Dialog dialog;
+  protected Activity context;
+  protected View vciv;
+  protected SeriesContentInfo info;
+  protected TVShowSeasonImageGalleryAdapter adapter;
+  private int position;
+
+  public SeasonOnItemLongClickListener(TVShowSeasonImageGalleryAdapter adapter) {
+    super();
+    this.adapter = adapter;
+  }
+
+  public void setView(View view) {
+    vciv = view;
+  }
+
+  public void setPosition(int position) {
+    this.position = position;
   }
 
   protected boolean onItemLongClick() {
+    context = (Activity) vciv.getContext();
     dialog = new Dialog(context);
     AlertDialog.Builder builder =
         new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Holo));
@@ -86,24 +98,24 @@ public class SeasonOnItemLongClickListener extends BaseInjector
   }
 
   protected void performAddToQueue() {
-    //			SeasonsEpisodePosterImageGalleryAdapter adapter = (SeasonsEpisodePosterImageGalleryAdapter) gridView
-    //					.getAdapter();
-    //			List<VideoContentInfo> episodes = adapter.getItems();
-    //			videoQueue.addAll(episodes);
-    //			Toast.makeText(
-    //					context,
-    //					adapter.getItemCount()
-    //					+ " videos have been added to the queue.",
-    //					Toast.LENGTH_LONG).show();
-    //			View v = context.findViewById(R.id.tvShowSeasonImageGallery);
-    //			if (v != null) {
-    //				v.requestFocusFromTouch();
-    //			}
-    //		}
+    RecyclerView recyclerView = context.findViewById(R.id.episodeGridView);
+    SeasonsEpisodePosterImageGalleryAdapter adapter = (SeasonsEpisodePosterImageGalleryAdapter) recyclerView.getAdapter();
+    List<VideoContentInfo> episodes = adapter.getItems();
+    videoQueue.addAll(episodes);
+    Toast.makeText(
+        context,
+        adapter.getItemCount()
+            + " videos have been added to the queue.",
+        Toast.LENGTH_LONG).show();
+    View v = context.findViewById(R.id.tvShowSeasonImageGallery);
+    if (v != null) {
+      v.requestFocusFromTouch();
+    }
   }
 
   @Override public boolean onLongClick(View v) {
-    return false;
+    vciv = v;
+    return onItemLongClick();
   }
 
   protected class DialogOnItemSelected implements OnItemClickListener {

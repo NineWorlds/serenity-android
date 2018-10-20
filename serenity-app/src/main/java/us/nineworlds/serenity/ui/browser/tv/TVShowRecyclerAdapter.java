@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.RecyclerViewDiffUtil;
 
@@ -69,6 +68,13 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
     tvShowViewHolder.toggleWatchedIndicator(pi);
     tvShowViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));
     tvShowViewHolder.getItemView().setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));
+    tvShowViewHolder.getItemView().setOnLongClickListener((view) -> onItemViewLongClick(view, position));
+  }
+
+  private boolean onItemViewLongClick(View view, int position) {
+    ShowOnItemLongClickListener onItemLongClickListener = new ShowOnItemLongClickListener(this);
+    onItemLongClickListener.setPosition(position);
+    return onItemLongClickListener.onLongClick(view);
   }
 
   @Override public long getItemId(int position) {

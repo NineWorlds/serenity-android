@@ -30,6 +30,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeViewHolder;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 
 public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageGalleryAdapter {
 
@@ -44,6 +45,7 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageG
     episodeViewHolder.updateSeasonsTitle(pi);
     episodeViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));
     episodeViewHolder.getItemView().setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));
+    episodeViewHolder.getItemView().setOnLongClickListener((view) -> onItemViewLongClick(view, position));
   }
 
   @Override public void onItemViewClick(View view, int i) {
