@@ -34,6 +34,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.RecyclerViewDiffUtil;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.views.statusoverlayview.StatusOverlayFrameLayout;
 import us.nineworlds.serenity.ui.views.viewholders.AbstractPosterImageViewHolder;
 
@@ -57,9 +58,14 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
     overlayView.toggleWatchedIndicator(pi);
     overlayView.setClickable(true);
     overlayView.setOnClickListener((view) -> onItemViewClick(view, position));
-    overlayView.setOnFocusChangeListener((view, b) -> {
-      onItemViewFocusChanged(b, view, position);
-    });
+    overlayView.setOnLongClickListener((view -> onItemViewLongClick(view, position)));
+    overlayView.setOnFocusChangeListener((view, hasFocus) -> onItemViewFocusChanged(hasFocus, view, position));
+  }
+
+  private boolean onItemViewLongClick(View view, int position) {
+    GalleryVideoOnItemLongClickListener onItemLongClickListener = new GalleryVideoOnItemLongClickListener(this);
+    onItemLongClickListener.setPosition(position);
+    return onItemLongClickListener.onLongClick(view);
   }
 
   protected void populatePosters(List<VideoContentInfo> videos) {

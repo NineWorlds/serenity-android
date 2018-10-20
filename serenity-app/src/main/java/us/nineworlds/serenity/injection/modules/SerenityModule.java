@@ -72,10 +72,6 @@ public class SerenityModule {
     return new OkHttpClient.Builder().build();
   }
 
-  @Provides GalleryVideoOnItemLongClickListener providesGalleryVideoOnItemLongClickListener() {
-    return new GalleryVideoOnItemLongClickListener();
-  }
-
   @Provides @Singleton MovieSelectedCategoryState providesMovieSelectedCategoryState() {
     return new MovieSelectedCategoryState();
   }

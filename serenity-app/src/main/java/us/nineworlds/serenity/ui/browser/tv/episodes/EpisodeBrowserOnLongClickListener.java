@@ -35,16 +35,21 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.DialogMenuItem;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 
 public class EpisodeBrowserOnLongClickListener extends GalleryVideoOnItemLongClickListener {
+
+  public EpisodeBrowserOnLongClickListener(AbstractPosterImageGalleryAdapter adapter) {
+    super(adapter);
+  }
 
   @Override public boolean onItemLongClick() {
     context = (Activity) vciv.getContext();
 
     dialog = new Dialog(context);
     AlertDialog.Builder builder =
-        new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Holo));
+        new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AppTheme));
     builder.setTitle(context.getString(R.string.video_options));
 
     ListView modeList = new ListView(context);
@@ -99,16 +104,10 @@ public class EpisodeBrowserOnLongClickListener extends GalleryVideoOnItemLongCli
         case 0:
           performWatchedToggle();
           break;
-        case 1:
-          startDownload();
-          break;
         case 2:
           performListAllEpisodesForSeason();
-
         case 3:
           break;
-        default:
-          androidHelper.performGoogleTVSecondScreen(info, dialog);
       }
       dialog.dismiss();
     }

@@ -46,6 +46,7 @@ import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
@@ -56,15 +57,9 @@ import static butterknife.ButterKnife.bind;
 public class MovieVideoGalleryFragment extends InjectingFragment {
 
   @Inject SharedPreferences preferences;
-
-  @Inject GalleryVideoOnItemLongClickListener onItemLongClickListener;
-
-  @Inject protected MovieSelectedCategoryState categoryState;
-
+  @Inject MovieSelectedCategoryState categoryState;
   @Inject JobManager jobManager;
-
   @Inject SerenityClient factory;
-
   @Inject Resources resources;
 
   @BindView(R.id.moviePosterView) protected RecyclerView recyclerView;
@@ -124,6 +119,10 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
     MovieCategoryJob job = new MovieCategoryJob(key);
     jobManager.addJobInBackground(job);
+  }
+
+  private AbstractVideoOnItemLongClickListener createOnItemLongClickListener(MoviePosterImageAdapter adapter) {
+    return new GalleryVideoOnItemLongClickListener(adapter);
   }
 
   @NonNull protected AbstractVideoOnItemClickListener createOnItemClickListener(MoviePosterImageAdapter adapter) {

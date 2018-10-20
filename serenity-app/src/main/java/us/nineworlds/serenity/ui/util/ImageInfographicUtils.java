@@ -28,6 +28,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -386,15 +387,15 @@ public class ImageInfographicUtils extends BaseInjector {
     return null;
   }
 
-  public static void setWatchedCount(ImageView epiv, Activity a, VideoContentInfo info) {
-    ImageView watchedView = (ImageView) a.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
+  public static void setWatchedCount(View epiv, Activity a, VideoContentInfo info) {
+    ImageView watchedView = a.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
     if (watchedView != null) {
       watchedView.setImageResource(R.drawable.watched_small);
     }
   }
 
-  public static void setUnwatched(ImageView epiv, Activity a, VideoContentInfo info) {
-    ImageView watchedView = (ImageView) a.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
+  public static void setUnwatched(View epiv, Activity a, VideoContentInfo info) {
+    ImageView watchedView = a.findViewById(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID);
     if (watchedView != null) {
       watchedView.setImageResource(R.drawable.unwatched_small);
     }

@@ -27,6 +27,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
@@ -37,12 +38,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.inject.Inject;
+import timber.log.Timber;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.DialogMenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.injection.ForVideoQueue;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.VideoQueueHelper;
@@ -54,23 +57,35 @@ import us.nineworlds.serenity.ui.util.VideoQueueHelper;
  *
  * @author dcarver
  */
-public class AbstractVideoOnItemLongClickListener extends BaseInjector {
+public abstract class AbstractVideoOnItemLongClickListener extends BaseInjector implements View.OnLongClickListener {
+
+  @Inject protected AndroidHelper androidHelper;
+  @Inject @ForVideoQueue protected LinkedList<VideoContentInfo> videoQueue;
+  @Inject protected SharedPreferences prefs;
+  @Inject protected VideoQueueHelper videoQueueHelper;
 
   protected Dialog dialog;
   protected Activity context;
   protected VideoContentInfo info;
-  protected ImageView vciv;
+  protected View vciv;
+  protected int position;
+  protected AbstractPosterImageGalleryAdapter adapter;
 
-  @Inject protected AndroidHelper androidHelper;
 
-  @Inject @ForVideoQueue protected LinkedList<VideoContentInfo> videoQueue;
+  public AbstractVideoOnItemLongClickListener(AbstractPosterImageGalleryAdapter adapter) {
+    this.adapter = adapter;
+  }
 
-  @Inject protected SharedPreferences prefs;
-
-  @Inject protected VideoQueueHelper videoQueueHelper;
+  public void setPosition(int position) {
+    this.position = position;
+    Timber.d("Position after setting: " + position);
+  }
 
   protected boolean onItemLongClick() {
     context = (Activity) vciv.getContext();
+
+    Timber.d("Position in OnItemLongClick: " + position);
+    info = (VideoContentInfo) adapter.getItem(position);
 
     dialog = new Dialog(context);
     AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -105,12 +120,8 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
   protected ArrayList<DialogMenuItem> addMenuOptions() {
     ArrayList<DialogMenuItem> options = new ArrayList<DialogMenuItem>();
     options.add(createMenuItemToggleWatchStatus());
-    options.add(createMenuItemDownload());
     options.add(createMenuItemAddToQueue());
 
-    if (!androidHelper.isGoogleTV() && androidHelper.hasSupportedCaster()) {
-      options.add(createMenuItemFling());
-    }
     return options;
   }
 
@@ -118,20 +129,8 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
     return createMenuItem(context.getString(R.string.toggle_watched_status), 0);
   }
 
-  private DialogMenuItem createMenuItemDownload() {
-    return createMenuItem(context.getString(R.string.download_video_to_device), 1);
-  }
-
   private DialogMenuItem createMenuItemAddToQueue() {
     return createMenuItem(context.getString(R.string.add_video_to_queue), 2);
-  }
-
-  private DialogMenuItem createMenuItemPlayTrailer() {
-    return createMenuItem("Play Trailer", 3);
-  }
-
-  private DialogMenuItem createMenuItemFling() {
-    return createMenuItem(context.getString(R.string.cast_fling_with_), 4);
   }
 
   protected DialogMenuItem createMenuItem(String title, int action) {
@@ -142,22 +141,19 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
   }
 
   protected void performWatchedToggle() {
-    View posterLayout = (View) vciv.getParent();
+    View posterLayout = vciv;
     posterLayout.findViewById(R.id.posterInprogressIndicator).setVisibility(View.INVISIBLE);
 
     toggleGraphicIndicators(posterLayout);
     info.toggleWatchStatus();
   }
 
-  /**
-   * @param posterLayout
-   */
   protected void toggleGraphicIndicators(View posterLayout) {
     if (info.isPartiallyWatched() || info.isUnwatched()) {
       final float percentWatched = info.viewedPercentage();
       if (percentWatched <= 0.90f) {
         ImageInfographicUtils.setWatchedCount(vciv, context, info);
-        ImageView view = (ImageView) posterLayout.findViewById(R.id.posterWatchedIndicator);
+        ImageView view = posterLayout.findViewById(R.id.posterWatchedIndicator);
         view.setImageResource(R.drawable.overlaywatched);
         view.setVisibility(View.VISIBLE);
         return;
@@ -179,39 +175,12 @@ public class AbstractVideoOnItemLongClickListener extends BaseInjector {
         case 0:
           performWatchedToggle();
           break;
-        case 1:
-          startDownload();
-          break;
         case 2:
           videoQueueHelper.performAddToQueue(info);
           break;
-        case 3:
-          androidHelper.performGoogleTVSecondScreen(info, dialog);
       }
       v.requestFocusFromTouch();
       dialog.dismiss();
     }
-  }
-
-  protected void startDownload() {
-    directoryChooser();
-  }
-
-  protected void startDownload(String destination) {
-
-  }
-
-  protected void directoryChooser() {
-    // Create DirectoryChooserDialog and register a callback
-    DirectoryChooserDialog directoryChooserDialog =
-        new DirectoryChooserDialog(context, new DirectoryChooserDialog.ChosenDirectoryListener() {
-          @Override public void onChosenDir(String chosenDir) {
-            Toast.makeText(context, context.getString(R.string.chosen_directory_) + chosenDir,
-                Toast.LENGTH_LONG).show();
-            startDownload(chosenDir);
-          }
-        });
-    directoryChooserDialog.setNewFolderEnabled(true);
-    directoryChooserDialog.chooseDirectory("");
   }
 }

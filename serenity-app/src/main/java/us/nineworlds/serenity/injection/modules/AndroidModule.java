@@ -214,7 +214,7 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
     LoginUserActivity.class, LoginUserPresenter.class, LoginUserViewHolder.class, RetrieveAllUsersJob.class,
     AuthenticateUserJob.class, StartPlaybackJob.class, StopPlaybackJob.class,
     TVShowBrowserGalleryOnItemClickListener.class,
-    TVShowSeasonOnItemClickListener.class, LeanbackSettingsActivity.class, SettingsFragment.PrefsFragment.class
+    TVShowSeasonOnItemClickListener.class, LeanbackSettingsActivity.class, SettingsFragment.PrefsFragment.class,
 }, library = true)
 public class AndroidModule {
 

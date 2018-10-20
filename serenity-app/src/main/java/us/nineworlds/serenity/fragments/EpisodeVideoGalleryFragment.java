@@ -38,6 +38,7 @@ import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserOnLongClickListener;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener;
@@ -46,7 +47,6 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
   @Inject SharedPreferences preferences;
-  @Inject GalleryVideoOnItemLongClickListener onItemLongClickListener;
   @Inject protected MovieSelectedCategoryState categoryState;
 
   private RecyclerView videoGallery;

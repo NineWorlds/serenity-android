@@ -33,6 +33,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
 /**

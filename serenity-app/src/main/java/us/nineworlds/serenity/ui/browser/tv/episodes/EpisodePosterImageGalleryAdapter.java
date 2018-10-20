@@ -34,6 +34,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.RecyclerViewDiffUtil;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 
 /**
  * Implementation of the Poster Image Gallery class for TV Shows.
@@ -57,6 +58,7 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
     viewHolder.createImage(pi, 300, 187);
     viewHolder.toggleWatchedIndicator(pi);
     viewHolder.getItemView().setOnClickListener((view)-> onItemViewClick(view, position));
+    viewHolder.getItemView().setOnLongClickListener((view) -> onItemViewLongClick(view, position));
     viewHolder.getItemView().setOnFocusChangeListener((view, focus)-> onItemViewFocusChanged(focus, view, position));
   }
 
@@ -83,4 +85,11 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
       return;
     }
   }
+
+  private boolean onItemViewLongClick(View view, int position) {
+    GalleryVideoOnItemLongClickListener onItemLongClickListener = new GalleryVideoOnItemLongClickListener(this);
+    onItemLongClickListener.setPosition(position);
+    return onItemLongClickListener.onLongClick(view);
+  }
+
 }
