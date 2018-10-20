@@ -49,12 +49,9 @@ import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
+import us.nineworlds.serenity.widgets.DrawerLayout;
 
-/**
- * @author dcarver
- */
-public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
-    implements TVShowSeasonBrowserView {
+public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implements TVShowSeasonBrowserView {
 
   public AbstractPosterImageGalleryAdapter adapter;
   private boolean restarted_state = false;
@@ -66,6 +63,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
   @BindView(R.id.tvshowSeasonBrowserLayout) View tvShowSeasonsMainView;
   @BindView(R.id.tvShowSeasonImageGallery) RecyclerView tvShowSeasonsGallery;
   @BindView(R.id.episodeGridView) RecyclerView gridView;
+  @BindView(R.id.drawer_layout) DrawerLayout navdrawer;
 
   Handler postDelayed = new Handler();
 
@@ -207,16 +205,13 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
         (SeasonsEpisodePosterImageGalleryAdapter) gridView.getAdapter();
     adapter.updateEpisodes(episodes);
     gridView.setVisibility(View.VISIBLE);
-    //if (adapter.getItemCount() > 0) {
-    //  gridView.setItemSelected(0);
-    //}
   }
 
   @Override public void populateSeasons(List<SeriesContentInfo> seasons) {
     if (!seasons.isEmpty()) {
-      TextView titleView = (TextView) findViewById(R.id.tvShowSeasonsDetailText);
+      TextView titleView = findViewById(R.id.tvShowSeasonsDetailText);
       titleView.setText(seasons.get(0).getParentTitle());
-      TextView textView = (TextView) findViewById(R.id.tvShowSeasonsItemCount);
+      TextView textView = findViewById(R.id.tvShowSeasonsItemCount);
       textView.setText(Integer.toString(seasons.size()) + getString(R.string._item_s_));
     }
 
@@ -225,8 +220,8 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity
     adapter.updateSeasonsList(seasons);
 
     postDelayed.postDelayed(() -> {
-//        tvShowSeasonsGallery.setItemSelected(0);
       tvShowSeasonsGallery.getChildAt(0).requestFocus();
+      adapter.getOnItemSelectedListener().onItemSelected(tvShowSeasonsGallery.getChildAt(0), 0);
     }, 500);
   }
 

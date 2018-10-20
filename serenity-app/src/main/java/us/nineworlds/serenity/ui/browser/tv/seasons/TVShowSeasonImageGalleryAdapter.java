@@ -106,11 +106,11 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
     view.clearAnimation();
     view.setBackground(null);
 
-    if (hasFocus && view != null) {
+    if (hasFocus) {
       view.clearAnimation();
       view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
-      zoomOut(view);
       getOnItemSelectedListener().onItemSelected(view, i);
+      zoomOut(view);
       return;
     }
 
