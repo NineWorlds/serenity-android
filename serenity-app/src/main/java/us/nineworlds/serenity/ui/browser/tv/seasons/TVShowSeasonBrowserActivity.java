@@ -110,7 +110,12 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     gridView.setAdapter(episodeAdapter);
     gridView.addItemDecoration(createItemDecorator());
     gridView.setItemAnimator(new FadeInAnimator());
-    gridView.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false));
+    GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false) {
+      @Override public boolean supportsPredictiveItemAnimations() {
+        return false;
+      }
+    };
+    gridView.setLayoutManager(gridLayoutManager);
 
     presenter.retrieveSeasons(key);
   }
