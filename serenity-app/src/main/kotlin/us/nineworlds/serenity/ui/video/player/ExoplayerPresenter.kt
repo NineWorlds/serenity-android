@@ -74,6 +74,18 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
     jobManager.addJobInBackground(WatchedStatusJob(video.id()))
   }
 
+  override fun onSeekProcessed() {
+  }
+
+  override fun onPositionDiscontinuity(reason: Int) {
+  }
+
+  override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
+  }
+
+  override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+  }
+
   override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
   }
 
@@ -95,13 +107,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
   override fun onLoadingChanged(isLoading: Boolean) {
   }
 
-  override fun onPositionDiscontinuity() {
-  }
-
   override fun onRepeatModeChanged(repeatMode: Int) {
-  }
-
-  override fun onTimelineChanged(timeline: Timeline?, manifest: Any?) {
   }
 
   override fun videoId(): String = video.id()

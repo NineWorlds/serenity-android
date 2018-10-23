@@ -16,6 +16,7 @@
 package us.nineworlds.serenity.ui.video.player;
 
 import android.os.SystemClock;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Surface;
 import com.google.android.exoplayer2.C;
@@ -40,6 +41,8 @@ import com.google.android.exoplayer2.metadata.id3.TextInformationFrame;
 import com.google.android.exoplayer2.metadata.id3.UrlLinkFrame;
 import com.google.android.exoplayer2.source.AdaptiveMediaSourceEventListener;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
@@ -101,7 +104,11 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
     logger.debug("repeatMode [" + getRepeatModeString(repeatMode) + "]");
   }
 
-  @Override public void onPositionDiscontinuity() {
+  @Override public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
+  }
+
+  public void onPositionDiscontinuity() {
     logger.debug("positionDiscontinuity");
   }
 
@@ -110,7 +117,11 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
         playbackParameters.pitch));
   }
 
-  @Override public void onTimelineChanged(Timeline timeline, Object manifest) {
+  @Override public void onSeekProcessed() {
+
+  }
+
+  public void onTimelineChanged(Timeline timeline, Object manifest) {
     int periodCount = timeline.getPeriodCount();
     int windowCount = timeline.getWindowCount();
     logger.debug("sourceInfo [periodCount=" + periodCount + ", windowCount=" + windowCount);
@@ -140,6 +151,14 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
 
   @Override public void onPlayerError(ExoPlaybackException e) {
     logger.error("playerFailed [" + getSessionTimeString() + "]", e);
+  }
+
+  @Override public void onPositionDiscontinuity(int reason) {
+
+  }
+
+  @Override public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+
   }
 
   @Override public void onTracksChanged(TrackGroupArray ignored, TrackSelectionArray trackSelections) {
@@ -243,14 +262,14 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
     logger.debug("audioFormatChanged [" + getSessionTimeString() + ", " + Format.toLogString(format) + "]");
   }
 
+  @Override public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
+
+  }
+
   @Override public void onAudioDisabled(DecoderCounters counters) {
     logger.debug("audioDisabled [" + getSessionTimeString() + "]");
   }
 
-  @Override public void onAudioTrackUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-    printInternalError("audioTrackUnderrun [" + bufferSize + ", " + bufferSizeMs + ", " + elapsedSinceLastFeedMs + "]",
-        null);
-  }
 
   // VideoRendererEventListener
 
@@ -306,42 +325,6 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
 
   @Override public void onLoadError(IOException error) {
     printInternalError("loadError", error);
-  }
-
-  // AdaptiveMediaSourceEventListener
-
-  @Override public void onLoadStarted(DataSpec dataSpec, int dataType, int trackType, Format trackFormat,
-      int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs,
-      long elapsedRealtimeMs) {
-    // Do nothing.
-  }
-
-  @Override
-  public void onLoadError(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason,
-      Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs,
-      long loadDurationMs, long bytesLoaded, IOException error, boolean wasCanceled) {
-    printInternalError("loadError", error);
-  }
-
-  @Override public void onLoadCanceled(DataSpec dataSpec, int dataType, int trackType, Format trackFormat,
-      int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs,
-      long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded) {
-    // Do nothing.
-  }
-
-  @Override public void onLoadCompleted(DataSpec dataSpec, int dataType, int trackType, Format trackFormat,
-      int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs,
-      long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded) {
-    // Do nothing.
-  }
-
-  @Override public void onUpstreamDiscarded(int trackType, long mediaStartTimeMs, long mediaEndTimeMs) {
-    // Do nothing.
-  }
-
-  @Override public void onDownstreamFormatChanged(int trackType, Format trackFormat, int trackSelectionReason,
-      Object trackSelectionData, long mediaTimeMs) {
-    // Do nothing.
   }
 
   // Internal methods
@@ -461,5 +444,49 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
       default:
         return "?";
     }
+  }
+
+  @Override public void onMediaPeriodCreated(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
+
+  }
+
+  @Override public void onMediaPeriodReleased(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
+
+  }
+
+  @Override public void onLoadStarted(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId,
+      LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
+
+  }
+
+  @Override public void onLoadCompleted(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId,
+      LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
+
+  }
+
+  @Override public void onLoadCanceled(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId,
+      LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
+
+  }
+
+  @Override public void onLoadError(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId,
+      LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData,
+      IOException error, boolean wasCanceled) {
+    printInternalError("loadError", error);
+
+  }
+
+  @Override public void onReadingStarted(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
+
+  }
+
+  @Override public void onUpstreamDiscarded(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId,
+      MediaLoadData mediaLoadData) {
+
+  }
+
+  @Override public void onDownstreamFormatChanged(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId,
+      MediaLoadData mediaLoadData) {
+
   }
 }
