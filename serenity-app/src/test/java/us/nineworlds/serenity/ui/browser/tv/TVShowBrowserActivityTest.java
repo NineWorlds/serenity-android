@@ -57,7 +57,7 @@ import static org.robolectric.RuntimeEnvironment.application;
 import static us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity.SERIES_LAYOUT_GRID;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, shadows = ShadowArrayAdapter.class)
+@Config(shadows = ShadowArrayAdapter.class)
 public class TVShowBrowserActivityTest extends InjectingTest {
 
   @Mock TVCategoryState mockTVCategoryState;

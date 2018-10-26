@@ -71,7 +71,6 @@ import static org.robolectric.RuntimeEnvironment.application;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class VideoPlayerPrepareListenerTest extends InjectingTest {
 
 	protected VideoPlayerPrepareListener videoPlayerPrepareListener;

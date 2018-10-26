@@ -17,7 +17,6 @@ import us.nineworlds.serenity.emby.BuildConfig
 import us.nineworlds.serenity.emby.test.InjectingTest
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class EmbyServerJobTest : InjectingTest() {
 
   @Mock lateinit var mockEventBus: EventBus

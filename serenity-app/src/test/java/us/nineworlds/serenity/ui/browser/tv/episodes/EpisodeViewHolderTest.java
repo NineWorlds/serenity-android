@@ -28,7 +28,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class EpisodeViewHolderTest {
 
     EpisodeViewHolder viewHolder;

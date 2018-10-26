@@ -29,7 +29,6 @@ import static org.mockito.Mockito.verify;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class TVShowRecyclerAdapterTest extends InjectingTest {
 
     TVShowRecyclerAdapter adapter;

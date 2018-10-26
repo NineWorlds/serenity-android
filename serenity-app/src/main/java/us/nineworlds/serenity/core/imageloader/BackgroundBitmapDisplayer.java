@@ -52,7 +52,7 @@ public class BackgroundBitmapDisplayer implements Runnable {
         new BitmapDrawable(backgroundView.getContext().getResources(), bitmap);
 
     if (!shouldFadeIn) {
-      backgroundView.setBackgroundDrawable(bitmapdrawable);
+      backgroundView.setBackground(bitmapdrawable);
       return;
     }
 
@@ -71,12 +71,12 @@ public class BackgroundBitmapDisplayer implements Runnable {
 
     Drawable[] drawables = { currentDrawable, newBitmapDrawable };
     TransitionDrawable transitionDrawable = new TransitionDrawable(drawables);
-    backgroundView.setBackgroundDrawable(transitionDrawable);
+    backgroundView.setBackground(transitionDrawable);
     transitionDrawable.setCrossFadeEnabled(true);
     int crossfadeduration = 200;
     if (currentDrawable instanceof BitmapDrawable) {
       BitmapDrawable currentBitmapDrawable = (BitmapDrawable) currentDrawable;
-      if (currentBitmapDrawable.getBitmap().sameAs(newBitmapDrawable.getBitmap())) {
+      if (currentBitmapDrawable.getBitmap().equals(newBitmapDrawable.getBitmap())) {
         transitionDrawable.setCrossFadeEnabled(false);
         crossfadeduration = 0;
       }

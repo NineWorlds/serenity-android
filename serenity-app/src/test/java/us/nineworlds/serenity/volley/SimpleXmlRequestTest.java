@@ -53,7 +53,6 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class SimpleXmlRequestTest {
 
 	MockWebServer webserver;

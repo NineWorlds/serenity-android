@@ -44,7 +44,6 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class ServerConfigTest {
 
 	SharedPreferences.OnSharedPreferenceChangeListener serverConfigChangeListener;

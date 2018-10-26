@@ -17,7 +17,6 @@ import us.nineworlds.serenity.ui.leanback.search.SearchActivity;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class AndroidTVTest {
 
     AndroidTV activity;

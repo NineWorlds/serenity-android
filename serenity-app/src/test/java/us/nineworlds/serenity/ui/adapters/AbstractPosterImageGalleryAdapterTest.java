@@ -53,7 +53,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, qualifiers = "large")
+@Config(qualifiers = "large")
 public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
 	AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter;

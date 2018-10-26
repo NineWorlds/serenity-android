@@ -67,7 +67,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, qualifiers = "large")
+@Config(qualifiers = "large")
 public class MainActivityTest extends InjectingTest {
 
   @Mock KeyEvent mockKeyEvent;

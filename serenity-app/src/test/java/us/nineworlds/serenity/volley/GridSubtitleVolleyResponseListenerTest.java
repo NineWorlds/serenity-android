@@ -51,7 +51,6 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
  * 
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class GridSubtitleVolleyResponseListenerTest {
 
 	Serializer serializer;

@@ -30,7 +30,6 @@ import us.nineworlds.serenity.test.InjectingTest
 import javax.inject.Singleton
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class VideoKeyCodeHandlerDelegateTest : InjectingTest() {
 
   override fun getModules(): MutableList<Any> = mutableListOf(AndroidModule(application), TestingModule(),

@@ -61,7 +61,6 @@ import static org.robolectric.RuntimeEnvironment.application;
 // UnitTestCodeMash2015
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class SubtitleSpinnerOnItemSelectedListenerTest extends InjectingTest {
 
 	@Mock

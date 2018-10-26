@@ -45,7 +45,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class)
 class ExoplayerPresenterTest : InjectingTest() {
 
   @Rule

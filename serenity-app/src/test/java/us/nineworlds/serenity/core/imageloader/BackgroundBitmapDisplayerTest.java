@@ -26,11 +26,14 @@ package us.nineworlds.serenity.core.imageloader;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.preference.PreferenceManager;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.view.animation.Animation;
 
+import androidx.test.core.app.ApplicationProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +41,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowView;
 
@@ -51,7 +55,6 @@ import static org.robolectric.RuntimeEnvironment.application;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class BackgroundBitmapDisplayerTest {
 
 	View backgroundView;
@@ -87,7 +90,7 @@ public class BackgroundBitmapDisplayerTest {
 	@Test
 	public void backgroundViewHasTransitionDrawableSet() throws Exception {
 		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(application);
+				.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
 		Editor editor = prefs.edit();
 		editor.putBoolean("animation_background_fadein", true);
 		editor.commit();
@@ -104,7 +107,7 @@ public class BackgroundBitmapDisplayerTest {
 	public void backgroundViewHasTransitionDrawableWithCrossfade()
 			throws Exception {
 		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(application);
+				.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
 		Editor editor = prefs.edit();
 		editor.putBoolean("animation_background_fadein", true);
 		editor.commit();
@@ -118,14 +121,4 @@ public class BackgroundBitmapDisplayerTest {
 		assertThat(transitionDrawable).isCrossFadeEnabled();
 	}
 
-	@Test
-	public void defaultResourceImageIdIsSetWhenBitmapIsNull() {
-		backgroundBitmapDisplayer = new BackgroundBitmapDisplayer(null,
-				R.drawable.movies, backgroundView);
-		backgroundBitmapDisplayer.run();
-
-		ShadowView shadowView = shadowOf(backgroundView);
-		assertEquals("Resource Ids did not match.",
-				shadowView.getBackgroundResourceId(), R.drawable.movies);
-	}
 }

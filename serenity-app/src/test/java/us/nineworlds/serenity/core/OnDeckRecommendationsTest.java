@@ -25,8 +25,10 @@ package us.nineworlds.serenity.core;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 
+import androidx.test.core.app.ApplicationProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,9 +42,9 @@ import us.nineworlds.serenity.BuildConfig;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.RuntimeEnvironment.application;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class OnDeckRecommendationsTest {
 
 	private static final String ANDROID_SOFTWARE_LEANBACK = "android.software.leanback";
@@ -60,10 +62,9 @@ public class OnDeckRecommendationsTest {
 	}
 
 	@Test
-	@Config(sdk = 17)
+	@Config(sdk = 21)
 	public void recommendationsOccurForJellyBeanOrHigher() {
-		ShadowPackageManager shadowPackageManager = Shadows.shadowOf(application
-				.getPackageManager());
+		ShadowPackageManager shadowPackageManager = shadowOf(ApplicationProvider.getApplicationContext().getPackageManager());
 		shadowPackageManager.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
 		shadowPackageManager.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, true);
 
@@ -80,10 +81,9 @@ public class OnDeckRecommendationsTest {
 	}
 
 	@Test
-	@Config(sdk = 17)
+	@Config(sdk = 21)
 	public void recommendationsOccurForJellyBeanOrHigherFailOnGoogleTV4DevicesWithOutLeanback() {
-		ShadowPackageManager shadowPackageManager = Shadows.shadowOf(application
-				.getPackageManager());
+		ShadowPackageManager shadowPackageManager = shadowOf(ApplicationProvider.getApplicationContext().getPackageManager());
 		shadowPackageManager.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
 		shadowPackageManager.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, false);
 
@@ -100,10 +100,9 @@ public class OnDeckRecommendationsTest {
 	}
 
 	@Test
-	@Config(sdk = 17)
+	@Config(sdk = 21)
 	public void recommendationsOccurForJellyBeanOrHigherFailWhenAndroidTVModeIsFalse() {
-		ShadowPackageManager shadowPackageManager = Shadows.shadowOf(application
-				.getPackageManager());
+		ShadowPackageManager shadowPackageManager = shadowOf(ApplicationProvider.getApplicationContext().getPackageManager());
 		shadowPackageManager.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
 		shadowPackageManager.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, true);
 

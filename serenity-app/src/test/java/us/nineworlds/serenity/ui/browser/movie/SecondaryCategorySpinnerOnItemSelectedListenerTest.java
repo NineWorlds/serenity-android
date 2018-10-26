@@ -68,7 +68,6 @@ import static org.robolectric.Robolectric.getForegroundThreadScheduler;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends
 		InjectingTest {
 

@@ -53,7 +53,7 @@ android {
     versionName "2.0.0-M7"
 
     minSdkVersion 21
-    targetSdkVersion 27
+    targetSdkVersion 28
     multiDexEnabled true
 
   }
@@ -67,7 +67,7 @@ android {
     test.java.srcDirs += 'src/test/kotlin'
   }
 
-  compileSdkVersion 27
+  compileSdkVersion 28
   buildToolsVersion '28.0.2'
 
   if (project.hasProperty("keystore")) {
@@ -227,6 +227,7 @@ dependencies {
   testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
   testImplementation "org.robolectric:shadowapi:$robolectricVersion"
   testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
+  testImplementation "androidx.test:core:1.0.0"
   testImplementation "org.khronos:opengl-api:$openglApiVersion"
   testImplementation "org.mockito:mockito-core:$mockitoVersion"
 

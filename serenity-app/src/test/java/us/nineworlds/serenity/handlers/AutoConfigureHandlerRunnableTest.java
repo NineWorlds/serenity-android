@@ -50,7 +50,6 @@ import us.nineworlds.serenity.test.InjectingTest;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 @Ignore
 public class AutoConfigureHandlerRunnableTest extends InjectingTest {
 

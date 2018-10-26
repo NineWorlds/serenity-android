@@ -62,7 +62,6 @@ import static org.robolectric.RuntimeEnvironment.application;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 
   @Inject SerenityClient mockPlexFactory;

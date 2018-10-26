@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 25)
+@Config(sdk = 25)
 public class RecommendAsyncTaskTest {
 
 	RecommendAsyncTask recommendTask;

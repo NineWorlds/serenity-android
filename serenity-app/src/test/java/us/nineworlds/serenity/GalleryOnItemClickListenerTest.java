@@ -23,7 +23,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class GalleryOnItemClickListenerTest {
 
   @Mock

@@ -14,7 +14,6 @@ import us.nineworlds.serenity.BuildConfig;
 import static org.assertj.android.api.Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class StatusOverlayFrameLayoutTest {
 
   Activity activity;

@@ -37,7 +37,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class TVShowBrowserPresenterTest extends InjectingTest {
 
   @Mock JobManager mockJobManager;

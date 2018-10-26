@@ -68,7 +68,6 @@ import static org.robolectric.RuntimeEnvironment.application;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class MovieCategorySpinnerOnItemSelectedListenerTest extends InjectingTest {
 
 	@Mock

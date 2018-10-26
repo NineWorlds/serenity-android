@@ -54,7 +54,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 public class SeasonsMediaContainerTest extends InjectingTest {
 
   @Mock MediaContainer mockMediaContainer;
