@@ -20,11 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <include layout="@layout/include_loading_progress"
-      android:layout_width="150dp"
-      android:layout_height="150dp"
-      android:layout_centerInParent="true"/>
-
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,6 +34,12 @@
       <include layout="@layout/include_tvshow_recyclerview"/>
 
     </FrameLayout>
+
+    <include layout="@layout/include_loading_progress"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"/>
+
   </RelativeLayout>
 
   <include layout="@layout/menu_drawer_with_navigation"/>

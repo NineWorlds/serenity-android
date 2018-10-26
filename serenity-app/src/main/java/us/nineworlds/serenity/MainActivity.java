@@ -59,13 +59,14 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
 
   @BindView(R.id.mainGalleryMenu) DpadAwareRecyclerView mainMenuContainer;
   @BindView(R.id.drawer_settings) Button settingsButton;
+  @BindView(R.id.data_loading_container) View dataLoadingContainer;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     actionBar.setCustomView(R.layout.clock_layout);
     actionBar.setDisplayShowCustomEnabled(true);
 
-    setContentView(R.layout.activity_plex_app_main);
+    setContentView(R.layout.activity_main);
     DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
     bind(this);
     initMenuDrawerViews();
@@ -82,6 +83,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
       editor.putBoolean("watched_status_firsttime", false);
       editor.apply();
     }
+
   }
 
   @Override protected void onRestart() {
@@ -166,7 +168,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
           && !androidHelper.isAndroidTV()
           && !androidHelper.isAmazonFireTV()
           && !androidHelper.isLeanbackSupported()) {
-        editor.putBoolean("external_player", true);
+        editor.putBoolean("external_player", false);
       }
       editor.putBoolean("serenity_first_run", false);
       editor.apply();

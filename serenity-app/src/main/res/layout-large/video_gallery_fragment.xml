@@ -7,13 +7,7 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:background="@android:color/background_dark"
     >
-
-  <include layout="@layout/include_loading_progress"
-    android:layout_width="150dp"
-    android:layout_height="150dp"
-    android:layout_centerInParent="true"/>
 
   <RelativeLayout
       android:id="@+id/video_details_container"
@@ -129,22 +123,28 @@
         android:clipChildren="false"
         android:clipToPadding="false">
 
-    <requestFocus/>
-  </android.support.v7.widget.RecyclerView>
+      <requestFocus/>
+    </android.support.v7.widget.RecyclerView>
 
-  <!--
-      <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
-          android:id="@+id/moviePosterView"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_gravity="center|center_vertical"
-          android:nextFocusUp="@+id/categoryFilter"
-          app:isAutoProcessFocus="true"
-          app:focusScale="@dimen/focus_size_value"
-          app:focusDrawable="@drawable/rounded_transparent_border">
-        <requestFocus/>
-      </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>
-  -->
-</LinearLayout>
+    <!--
+        <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
+            android:id="@+id/moviePosterView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|center_vertical"
+            android:nextFocusUp="@+id/categoryFilter"
+            app:isAutoProcessFocus="true"
+            app:focusScale="@dimen/focus_size_value"
+            app:focusDrawable="@drawable/rounded_transparent_border">
+          <requestFocus/>
+        </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>
+    -->
+  </LinearLayout>
 
-    </RelativeLayout>
+  <include
+      layout="@layout/include_loading_progress"
+      android:layout_width="150dp"
+      android:layout_height="150dp"
+      android:layout_centerInParent="true"/>
+
+</RelativeLayout>

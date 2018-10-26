@@ -23,11 +23,13 @@
 
 package us.nineworlds.serenity.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,6 +79,14 @@ public class MainMenuFragment extends InjectingFragment {
   }
 
   protected void fetchData() {
+    Activity activity = getActivity();
+    if (activity != null) {
+      FrameLayout dataLoadingContainer = activity.findViewById(R.id.data_loading_container);
+      if (dataLoadingContainer != null) {
+        dataLoadingContainer.setVisibility(View.VISIBLE);
+      }
+    }
+
     jobManager.addJobInBackground(new MainMenuRetrievalJob());
   }
 
@@ -102,6 +112,13 @@ public class MainMenuFragment extends InjectingFragment {
     mainGallery.setOnItemClickListener(new GalleryOnItemClickListener());
     mainGallery.setVisibility(View.VISIBLE);
     adapter.updateMenuItems(menuItems);
+    Activity activity = getActivity();
+    if (activity != null) {
+      FrameLayout dataLoadingContainer = activity.findViewById(R.id.data_loading_container);
+      if (dataLoadingContainer != null) {
+        dataLoadingContainer.setVisibility(View.GONE);
+      }
+    }
   }
 
   @Override public void onDestroyView() {

@@ -37,6 +37,11 @@
 
     </RelativeLayout>
 
+    <include layout="@layout/include_loading_progress"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"/>
+
   </RelativeLayout>
   <!-- The navigation drawer -->
 
