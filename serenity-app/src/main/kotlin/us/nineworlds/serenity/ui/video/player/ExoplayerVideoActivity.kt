@@ -7,6 +7,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
+import android.view.View
+import android.widget.FrameLayout
 import butterknife.BindView
 import butterknife.ButterKnife.bind
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -54,6 +56,9 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   @BindView(R.id.player_view)
   internal lateinit var playerView: SimpleExoPlayerView
+
+  @BindView(R.id.data_loading_container)
+  internal lateinit var dataLoadingContainer: FrameLayout
 
   lateinit var player: SimpleExoPlayer
 
@@ -187,6 +192,14 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     } else {
       parent.setResult(Activity.RESULT_OK, returnIntent)
     }
+  }
+
+  override fun hideLoadingProgress() {
+    dataLoadingContainer.visibility = View.GONE
+  }
+
+  override fun showLoadingProgress() {
+    dataLoadingContainer.visibility = View.VISIBLE
   }
 
   protected inner class ProgressRunnable : Runnable {

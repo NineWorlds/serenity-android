@@ -105,6 +105,11 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
   }
 
   override fun onLoadingChanged(isLoading: Boolean) {
+    if (isLoading) {
+      viewState.showLoadingProgress()
+    } else {
+      viewState.hideLoadingProgress()
+    }
   }
 
   override fun onRepeatModeChanged(repeatMode: Int) {
