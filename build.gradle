@@ -46,7 +46,7 @@ project.ext {
   glideOkHttpVersion = "1.5.0"
   moxyVersion = "1.5.3"
   glideVersion = "3.8.0"
-  googleAnalyticsVersion = "16.0.3"
+  googleAnalyticsVersion = "16.0.4"
   androidSupportLibVersion = "27.1.1"
   universalCharDetVersion = "1.0.3"
   volleyVersion = "1.0.16"

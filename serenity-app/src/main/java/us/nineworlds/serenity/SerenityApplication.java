@@ -45,7 +45,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import us.nineworlds.serenity.common.Server;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
-import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.emby.server.EmbyServer;
@@ -124,6 +123,7 @@ public class SerenityApplication extends Application {
 
   protected void installAnalytics() {
     Tracker tracker = getTracker();
+    tracker.enableAdvertisingIdCollection(true);
     Thread.UncaughtExceptionHandler uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
     if (uncaughtExceptionHandler instanceof ExceptionReporter) {
       ExceptionReporter exceptionReporter = (ExceptionReporter) uncaughtExceptionHandler;
