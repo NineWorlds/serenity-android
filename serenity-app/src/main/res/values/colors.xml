@@ -13,7 +13,7 @@
      limitations under the License.
 -->
 <resources>
-
+  <color name="primary">@color/holo_color</color>
   <color name="custom_normal">#3300FF00</color>
   <color name="custom_activated">#33FF0000</color>
 

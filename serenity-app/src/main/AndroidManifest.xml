@@ -53,6 +53,12 @@
   <uses-feature
       android:name="android.software.leanback"
       android:required="false"/>
+  <uses-feature
+      android:name="android.hardware.type.television"
+      android:required="true"/>
+  <uses-feature
+      android:name="android.software.leanback_only"
+      android:required="false"/>
 
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
@@ -108,7 +114,8 @@
 
     </activity>
 
-    <activity android:name=".ui.activity.login.LoginUserActivity"
+    <activity
+        android:name=".ui.activity.login.LoginUserActivity"
         android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen"/>
 
     <activity
@@ -167,8 +174,9 @@
       </intent-filter>
     </activity>
 
-    <activity android:name=".ui.preferences.LeanbackSettingsActivity"
-      android:theme="@style/LeanbackPreferences"/>
+    <activity
+        android:name=".ui.preferences.LeanbackSettingsActivity"
+        android:theme="@style/LeanbackPreferences"/>
 
     <activity
         android:name=".ui.search.SearchableActivity"

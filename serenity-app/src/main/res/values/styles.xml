@@ -5,6 +5,9 @@
       by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
   -->
   <style name="AppBaseTheme" parent="android:Theme.NoTitleBar">
+    <item name="android:colorPrimary">@color/primary</item>
+    <item name="android:windowAllowReturnTransitionOverlap">true</item>
+    <item name="android:windowAllowEnterTransitionOverlap">true</item>
     <!--
         Theme customizations available in newer API levels can go in
         res/values-vXX/styles.xml, while customizations related to
