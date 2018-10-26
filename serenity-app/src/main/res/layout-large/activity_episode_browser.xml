@@ -18,6 +18,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <include layout="@layout/include_loading_progress"
+      android:layout_width="150dp"
+      android:layout_height="150dp"
+      android:layout_centerInParent="true"/>
+
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

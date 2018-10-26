@@ -32,6 +32,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,6 +65,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
   @BindView(R.id.tvShowSeasonImageGallery) RecyclerView tvShowSeasonsGallery;
   @BindView(R.id.episodeGridView) RecyclerView gridView;
   @BindView(R.id.drawer_layout) DrawerLayout navdrawer;
+  @BindView(R.id.data_loading_container) FrameLayout dataLoadingContainer;
 
   Handler postDelayed = new Handler();
 
@@ -117,6 +119,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     };
     gridView.setLayoutManager(gridLayoutManager);
 
+    dataLoadingContainer.setVisibility(View.VISIBLE);
     presenter.retrieveSeasons(key);
   }
 
@@ -225,6 +228,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     adapter.updateSeasonsList(seasons);
 
     postDelayed.postDelayed(() -> {
+      dataLoadingContainer.setVisibility(View.GONE);
       tvShowSeasonsGallery.getChildAt(0).requestFocus();
       adapter.getOnItemSelectedListener().onItemSelected(tvShowSeasonsGallery.getChildAt(0), 0);
     }, 500);

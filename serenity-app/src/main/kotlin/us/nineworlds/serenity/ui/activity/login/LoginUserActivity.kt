@@ -2,27 +2,24 @@ package us.nineworlds.serenity.ui.activity.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.Window
+import android.widget.FrameLayout
 import app.com.tvrecyclerview.TvRecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxItemDecoration
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import net.ganin.darv.DpadAwareRecyclerView
 import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.rest.SerenityUser
-import us.nineworlds.serenity.decorators.SpacesItemDecoration
 import us.nineworlds.serenity.injection.InjectingMvpActivity
-import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -40,6 +37,9 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
   @BindView(R.id.login_user_container)
   lateinit var profileContainer: TvRecyclerView
 
+  @BindView(R.id.data_loading_container)
+  lateinit var dataLoadingContainer : FrameLayout
+
   lateinit var adapter: LoginUserAdapter
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,12 +54,14 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
 
     setupProfileContainer()
 
+    dataLoadingContainer.visibility = VISIBLE
+
     presenter.initPresenter(server)
     presenter.retrieveAllUsers()
   }
 
   private fun setupProfileContainer() {
-    profileContainer.visibility = View.GONE
+    profileContainer.visibility = GONE
     adapter = LoginUserAdapter(presenter)
     profileContainer.adapter = adapter
     val layoutManager = FlexboxLayoutManager(this, FlexDirection.ROW)
@@ -70,7 +72,8 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
   }
 
   override fun displayUsers(serenityUser: List<SerenityUser>) {
-    profileContainer.visibility = View.VISIBLE
+    dataLoadingContainer.visibility = GONE
+    profileContainer.visibility = VISIBLE
     adapter.loadUsers(serenityUser)
   }
 

@@ -32,6 +32,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -50,6 +51,8 @@ import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
+
+import static android.view.View.*;
 
 public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
     implements MovieBrowserContract.MovieBrowserView {
@@ -199,7 +202,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
     if (categorySpinner == null) {
       return;
     }
-    categorySpinner.setVisibility(View.VISIBLE);
+    categorySpinner.setVisibility(VISIBLE);
     categorySpinner.setAdapter(spinnerArrayAdapter);
 
     if (categoryState.getCategory() == null) {
@@ -218,7 +221,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
     }
 
     Spinner secondarySpinner = (Spinner) findViewById(R.id.categoryFilter2);
-    secondarySpinner.setVisibility(View.VISIBLE);
+    secondarySpinner.setVisibility(VISIBLE);
 
     ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter =
         new ArrayAdapter<SecondaryCategoryInfo>(this, R.layout.serenity_spinner_textview, categories);
@@ -228,12 +231,16 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
   }
 
   @Override public void displayPosters(List<VideoContentInfo> videos) {
+    FrameLayout dataLoadingContainer = findViewById(R.id.data_loading_container);
+    if (dataLoadingContainer != null) {
+      dataLoadingContainer.setVisibility(GONE);
+    }
+
     RecyclerView recyclerView = findVideoRecyclerView();
     MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) recyclerView.getAdapter();
     adapter.populatePosters(videos);
     recyclerView.requestFocusFromTouch();
     if (adapter.getItemCount() > 0) {
-      //      recyclerView.setItemSelected(0);
       if (recyclerView.getChildCount() > 0) {
         recyclerView.getChildAt(0).requestFocus();
       }
@@ -241,6 +248,11 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
   }
 
   public void requestUpdatedVideos(String key, String category) {
+    FrameLayout dataLoadingContainer = findViewById(R.id.data_loading_container);
+    if (dataLoadingContainer != null) {
+      dataLoadingContainer.setVisibility(View.VISIBLE);
+    }
+
     presenter.fetchVideos(key, category);
   }
 }

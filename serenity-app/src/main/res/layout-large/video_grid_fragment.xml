@@ -7,6 +7,11 @@
     android:clipToPadding="false"
     >
 
+  <include layout="@layout/include_loading_progress"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:layout_gravity="center"/>
+
   <android.support.v7.widget.RecyclerView
       android:id="@+id/moviePosterView"
       android:layout_width="match_parent"
@@ -22,19 +27,5 @@
 
     <requestFocus/>
   </android.support.v7.widget.RecyclerView>
-
-<!--
-  <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
-      android:id="@+id/moviePosterView"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:nextFocusUp="@+id/categoryFilter"
-      android:background="@color/card_background"
-      android:visibility="visible"
-      android:layout_marginBottom="5dp"
-      app:isAutoProcessFocus="true"
-      app:focusScale="@dimen/focus_size_value"
-      app:focusDrawable="@drawable/rounded_transparent_border"/>
--->
 
 </FrameLayout>

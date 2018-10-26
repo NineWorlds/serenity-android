@@ -17,7 +17,6 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
-import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.Server
@@ -25,7 +24,7 @@ import us.nineworlds.serenity.injection.modules.AndroidModule
 import us.nineworlds.serenity.injection.modules.SerenityModule
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.ui.activity.login.LoginUserActivity
-import java.util.UUID
+import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
 class ServerSelectionActivityTest : InjectingTest() {
@@ -56,7 +55,7 @@ class ServerSelectionActivityTest : InjectingTest() {
     Robolectric.flushForegroundThreadScheduler()
     Robolectric.flushBackgroundThreadScheduler()
 
-    Assertions.assertThat(activity.serverLoadingProgressBar).isGone
+    Assertions.assertThat(activity.serverLoadingContainer).isGone
     Assertions.assertThat(activity.serverContainer).isVisible
   }
 

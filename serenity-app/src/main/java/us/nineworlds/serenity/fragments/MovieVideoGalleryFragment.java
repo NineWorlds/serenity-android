@@ -32,6 +32,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import butterknife.BindView;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
@@ -50,8 +51,8 @@ import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityTVRecylcerView;
 
+import static android.view.View.*;
 import static butterknife.ButterKnife.bind;
 
 public class MovieVideoGalleryFragment extends InjectingFragment {
@@ -63,6 +64,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
   @Inject Resources resources;
 
   @BindView(R.id.moviePosterView) protected RecyclerView recyclerView;
+  @BindView(R.id.data_loading_container) protected FrameLayout dataLoadingContainer;
 
   public MovieVideoGalleryFragment() {
     super();
@@ -106,18 +108,17 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     recyclerView.setClipToPadding(false);
     recyclerView.setClipChildren(false);
 
-   // recyclerView.setOnItemStateListener(adapter);
-
     recyclerView.setHorizontalFadingEdgeEnabled(true);
     recyclerView.setFocusableInTouchMode(true);
     recyclerView.requestFocus();
-    //recyclerView.setSelectPadding(0,0, 0, 0);
 
     MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
 
     String key = activity.getKey();
 
     MovieCategoryJob job = new MovieCategoryJob(key);
+
+    dataLoadingContainer.setVisibility(VISIBLE);
     jobManager.addJobInBackground(job);
   }
 

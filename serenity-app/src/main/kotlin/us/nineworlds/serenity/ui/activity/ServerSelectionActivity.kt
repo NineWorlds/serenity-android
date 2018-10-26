@@ -43,8 +43,11 @@ class ServerSelectionActivity : InjectingActivity() {
   @BindView(R.id.server_container)
   internal lateinit var serverContainer: LinearLayout
 
-  @BindView(R.id.server_loading_progress)
+  @BindView(R.id.data_loading_progress)
   internal lateinit var serverLoadingProgressBar: ProgressBar
+
+  @BindView(R.id.data_loading_container)
+  internal lateinit var serverLoadingContainer: FrameLayout
 
   internal lateinit var refreshButton: FrameLayout
 
@@ -56,13 +59,14 @@ class ServerSelectionActivity : InjectingActivity() {
     bind(this)
 
     serverDisplayHandler = Handler()
+    serverLoadingContainer.visibility = VISIBLE
     serverDisplayHandler.postDelayed({
       createServerList()
     }, SERVER_DISPLAY_DELAY)
   }
 
   private fun createServerList() {
-    serverLoadingProgressBar.visibility = GONE
+    serverLoadingContainer.visibility = GONE
 
     for((key, serverInfo) in servers) {
       displayServers(key, serverInfo)

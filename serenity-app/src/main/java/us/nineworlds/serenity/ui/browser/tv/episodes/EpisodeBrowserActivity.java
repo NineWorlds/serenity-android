@@ -31,6 +31,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,8 @@ import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
+
+import static android.view.View.*;
 
 public class EpisodeBrowserActivity extends SerenityVideoActivity implements EpisodeBrowserView {
 
@@ -69,9 +72,13 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
 
     bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
     metaData = findViewById(R.id.metaDataRow);
-    metaData.setVisibility(View.VISIBLE);
+    metaData.setVisibility(VISIBLE);
 
     DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
+    FrameLayout dataLoadingContainer = findViewById(R.id.data_loading_container);
+    if (dataLoadingContainer != null) {
+      dataLoadingContainer.setVisibility(View.VISIBLE);
+    }
   }
 
   @Override protected void createSideMenu() {
@@ -168,13 +175,14 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
     EpisodePosterImageGalleryAdapter adapter =
         (EpisodePosterImageGalleryAdapter) gallery.getAdapter();
 
-   // gallery.setSelectPadding(0, 0, 0, 0);
-
     adapter.updateEpisodes(episodes);
 
     postLoadHandler.postDelayed(new Runnable() {
       @Override public void run() {
-     //   gallery.setItemSelected(0);
+        FrameLayout dataLoadingContainer = findViewById(R.id.data_loading_container);
+        if (dataLoadingContainer != null) {
+          dataLoadingContainer.setVisibility(GONE);
+        }
         gallery.requestFocus();
         gallery.getChildAt(0).requestFocus();
       }
