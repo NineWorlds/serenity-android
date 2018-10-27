@@ -5,10 +5,7 @@ import android.view.View
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.birbit.android.jobqueue.JobManager
-import com.google.android.exoplayer2.ExoPlaybackException
-import com.google.android.exoplayer2.PlaybackParameters
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.Timeline
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
@@ -97,6 +94,12 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
   }
 
   override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+    if (Player.STATE_BUFFERING == playbackState) {
+      viewState.showLoadingProgress()
+    } else {
+      viewState.hideLoadingProgress()
+    }
+
     if (playWhenReady) {
       viewState.play()
     } else {
