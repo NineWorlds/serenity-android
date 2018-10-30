@@ -34,39 +34,35 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.ui.listeners.SettingsMenuDrawerOnItemClickedListener;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 
 public abstract class SerenityDrawerLayoutActivity extends SerenityActivity {
 
-  protected DrawerLayout drawerLayout;
-  protected ListView drawerList;
+  @BindView(R.id.drawer_layout) protected DrawerLayout drawerLayout;
+  @BindView(R.id.left_drawer_list) protected ListView drawerList;
   protected ActionBarDrawerToggle drawerToggle;
   protected ActionBar actionBar;
-  protected LinearLayout linearDrawerLayout;
+  @BindView(R.id.left_drawer) protected LinearLayout linearDrawerLayout;
+  @BindView(R.id.drawer_settings) Button settingsButton;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR2) {
-      supportRequestWindowFeature(Window.FEATURE_PROGRESS);
-    }
     actionBar = getSupportActionBar();
     actionBar.setDisplayUseLogoEnabled(true);
     actionBar.setHomeButtonEnabled(true);
     actionBar.setDisplayHomeAsUpEnabled(true);
     actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-    actionBar.setBackgroundDrawable(new ColorDrawable(R.color.card_background));
+    actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.card_background)));
   }
 
   @Override protected void onPostCreate(Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
     if (drawerToggle != null) {
       drawerToggle.syncState();
-    }
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-      setSupportProgressBarIndeterminate(true);
     }
   }
 
@@ -87,12 +83,6 @@ public abstract class SerenityDrawerLayoutActivity extends SerenityActivity {
   }
 
   protected void initMenuDrawerViews() {
-    drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-    linearDrawerLayout = (LinearLayout) findViewById(R.id.left_drawer);
-
-    Button settingsButton = (Button) findViewById(R.id.drawer_settings);
     settingsButton.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(drawerLayout));
-
-    drawerList = (ListView) drawerLayout.findViewById(R.id.left_drawer_list);
   }
 }

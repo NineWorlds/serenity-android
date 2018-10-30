@@ -33,6 +33,7 @@ import android.os.Messenger;
 import android.provider.SearchRecentSuggestions;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
+import butterknife.ButterKnife;
 import java.net.URLEncoder;
 import java.util.List;
 import net.ganin.darv.DpadAwareRecyclerView;
@@ -64,6 +65,7 @@ public class SearchableActivity extends SerenityMultiViewVideoActivity {
     context = this;
     actionBar.setCustomView(R.layout.movie_custom_actionbar);
     setContentView(R.layout.activity_movie_search_browser);
+    ButterKnife.bind(this);
 
     handleIntent(getIntent());
     DisplayUtils.overscanCompensation(this, getWindow().getDecorView());

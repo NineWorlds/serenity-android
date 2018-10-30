@@ -24,62 +24,85 @@
 package us.nineworlds.serenity.ui.activity;
 
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.LinearLayout;
+import timber.log.Timber;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingMvpActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 public abstract class SerenityActivity extends InjectingMvpActivity {
+
+  protected Handler scrollingHandler = new Handler();
 
   protected abstract void createSideMenu();
 
   @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
     RecyclerView gallery = findViewById(R.id.moviePosterView);
+    if (gallery == null) {
+      return super.onKeyDown(keyCode, event);
+    }
+
+    AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+    if (adapter != null) {
+      int itemsCount = adapter.getItemCount();
+
+      if (contextMenuRequested(keyCode)) {
+        View view = gallery.getFocusedChild();
+        view.performLongClick();
+        return true;
+      }
+
+      if (gallery.getFocusedChild() != null) {
+        int selectedItem = gallery.getLayoutManager().getPosition(gallery.getFocusedChild());
+        Timber.d("SelectedItemPosition: " + selectedItem);
+        if (isKeyCodeSkipBack(keyCode)) {
+          int newPosition = selectedItem - 10;
+          if (newPosition < 0) {
+            newPosition = 0;
+          }
+          gallery.smoothScrollToPosition(newPosition);
+          Timber.d("New ItemPosition: " + newPosition);
+
+          scrollingHandler.postDelayed(() -> {
+            LinearLayoutManager linearLayout = (LinearLayoutManager) gallery.getLayoutManager();
+            View viewByPosition = linearLayout.findViewByPosition(linearLayout.findFirstVisibleItemPosition());
+            viewByPosition.requestFocusFromTouch();
+          }, 200);
+          return true;
+        }
+
+        if (isKeyCodeSkipForward(keyCode)) {
+          int newPosition = selectedItem + 10;
+          if (newPosition > itemsCount) {
+            newPosition = itemsCount - 1;
+          }
+          gallery.smoothScrollToPosition(newPosition);
+          Timber.d("New ItemPosition: " + newPosition);
+          scrollingHandler.postDelayed(() -> {
+            LinearLayoutManager linearLayout = (LinearLayoutManager) gallery.getLayoutManager();
+            View viewByPosition = linearLayout.findViewByPosition(linearLayout.findLastCompletelyVisibleItemPosition());
+            viewByPosition.requestFocusFromTouch();
+          }, 200);
+
+          return true;
+        }
+      }
+    }
     return super.onKeyDown(keyCode, event);
+  }
 
-    //    if (gallery == null) {
-    //      return super.onKeyDown(keyCode, event);
-    //    }
-
-    //    AbstractPosterImageGalleryAdapter adapter = null;
-    //    adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
-
-    //if (adapter != null) {
-    //  int itemsCount = adapter.getItemCount();
-    //
-    //  if (contextMenuRequested(keyCode)) {
-    //    View view = null;
-    //    if (gallery != null) {
-    //      LayoutManager layoutManager = gallery.getLayoutManager();
-    //      view = gallery.getFocusedChild();
-    //    }
-    //    view.performLongClick();
-    //    return true;
-    //  }
-    //
-    //  if (gallery != null) {
-    //    if (isKeyCodeSkipBack(keyCode)) {
-    //      //int selectedItem = gallery.getSelectedPosition();
-    //      int newPosition = selectedItem - 10;
-    //      if (newPosition < 0) {
-    //        newPosition = 0;
-    //      }
-    //      gallery.setItemSelected(newPosition);
-    //      return true;
-    //    }
-    //    if (isKeyCodeSkipForward(keyCode)) {
-    //      int selectedItem = gallery.getSelectedPosition();
-    //      int newPosition = selectedItem + 10;
-    //      if (newPosition > itemsCount) {
-    //        newPosition = itemsCount - 1;
-    //      }
-    //      gallery.setItemSelected(newPosition);
-    //      return true;
-    //    }
-    //  }
-    //  }
-
+  private void resetFocus(int newPosition, RecyclerView gallery) {
+    RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
+    View childAt = layoutManager.getChildAt(newPosition);
+    if (childAt != null) {
+      gallery.requestChildFocus(childAt, null);
+    }
   }
 
   protected boolean contextMenuRequested(int keyCode) {
@@ -92,10 +115,6 @@ public abstract class SerenityActivity extends InjectingMvpActivity {
         || (keyCode == KeyEvent.KEYCODE_MENU && menuKeySlidingMenu == false);
   }
 
-  /**
-   * @param keyCode
-   * @return
-   */
   protected boolean isKeyCodeSkipForward(int keyCode) {
     return keyCode == KeyEvent.KEYCODE_F
         || keyCode == KeyEvent.KEYCODE_PAGE_UP
@@ -105,10 +124,6 @@ public abstract class SerenityActivity extends InjectingMvpActivity {
         || keyCode == KeyEvent.KEYCODE_BUTTON_R1;
   }
 
-  /**
-   * @param keyCode
-   * @return
-   */
   protected boolean isKeyCodeSkipBack(int keyCode) {
     return keyCode == KeyEvent.KEYCODE_R
         || keyCode == KeyEvent.KEYCODE_PAGE_DOWN

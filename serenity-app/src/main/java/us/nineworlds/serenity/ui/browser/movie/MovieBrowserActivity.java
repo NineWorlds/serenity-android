@@ -35,6 +35,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+import butterknife.ButterKnife;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,6 +136,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
 
   protected void createContentView() {
     setContentView(R.layout.activity_movie_browser);
+    ButterKnife.bind(this);
     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
     if (gridViewActive) {

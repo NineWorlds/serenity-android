@@ -32,6 +32,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import butterknife.ButterKnife;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +84,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
 
   @Override protected void createSideMenu() {
     setContentView(R.layout.activity_episode_browser);
+    ButterKnife.bind(this);
 
     initMenuDrawerViews();
 

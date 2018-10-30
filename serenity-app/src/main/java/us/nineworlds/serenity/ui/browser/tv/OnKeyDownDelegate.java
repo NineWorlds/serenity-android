@@ -2,7 +2,9 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.LinearLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import javax.inject.Inject;
+import timber.log.Timber;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
@@ -25,6 +28,8 @@ public class OnKeyDownDelegate extends BaseInjector {
   @BindView(R.id.tvShowRecyclerView) @Nullable RecyclerView tvRecyclerView;
 
   Activity activity;
+
+  Handler scrollingHandler = new Handler();
 
   public OnKeyDownDelegate(Activity activity) {
     super();
@@ -45,68 +50,87 @@ public class OnKeyDownDelegate extends BaseInjector {
       }
     }
 
-    //if (keyCode == KeyEvent.KEYCODE_BACK && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-    //  drawerLayout.closeDrawers();
-    //  tvRecyclerView.requestFocusFromTouch();
-    //  return true;
-    //}
-    //
-    //AbstractPosterImageGalleryAdapter adapter =
-    //    (AbstractPosterImageGalleryAdapter) tvRecyclerView.getAdapter();
-    //if (adapter != null) {
-    //  int itemsCount = adapter.getItemCount();
-    //
-    //  if (contextMenuRequested(keyCode)) {
-    //    int pos = tvRecyclerView.getSelectedPosition();
-    //    RecyclerView.LayoutManager layoutManager = tvRecyclerView.getLayoutManager();
-    //    View view = layoutManager.findViewByPosition(pos);
-    //    view.performLongClick();
-    //    return true;
-    //  }
-    //  if (isKeyCodeSkipBack(keyCode)) {
-    //    int selectedItem = tvRecyclerView.getSelectedPosition();
-    //    int newPosition = selectedItem - 10;
-    //    if (newPosition < 0) {
-    //      newPosition = 0;
-    //    }
-    //    tvRecyclerView.setItemSelected(newPosition);
-    //    tvRecyclerView.requestFocusFromTouch();
-    //    return true;
-    //  }
-    //  if (isKeyCodeSkipForward(keyCode)) {
-    //    int selectedItem = tvRecyclerView.getSelectedPosition();
-    //    int newPosition = selectedItem + 10;
-    //    if (newPosition > itemsCount) {
-    //      newPosition = itemsCount - 1;
-    //    }
-    //    tvRecyclerView.setItemSelected(newPosition);
-    //    tvRecyclerView.requestFocusFromTouch();
-    //    return true;
-    //  }
-    //
-    //  if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY || keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
-    //    int selectedItem = tvRecyclerView.getSelectedPosition();
-    //    SeriesContentInfo info =
-    //        (SeriesContentInfo) ((AbstractPosterImageGalleryAdapter) tvRecyclerView.getAdapter()).getItem(
-    //            selectedItem);
-    //    new FindUnwatchedAsyncTask(activity).execute(info);
-    //    return true;
-    //  }
-    //}
+    if (keyCode == KeyEvent.KEYCODE_BACK && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
+      drawerLayout.closeDrawers();
+      tvRecyclerView.requestFocusFromTouch();
+      return true;
+    }
+
+    AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) tvRecyclerView.getAdapter();
+    if (adapter != null) {
+      int itemsCount = adapter.getItemCount();
+
+      if (contextMenuRequested(keyCode)) {
+        View view = tvRecyclerView.getFocusedChild();
+        view.performLongClick();
+        return true;
+      }
+
+      if (tvRecyclerView.getFocusedChild() != null) {
+        int selectedItem = tvRecyclerView.getLayoutManager().getPosition(tvRecyclerView.getFocusedChild());
+        Timber.d("SelectedItemPosition: " + selectedItem);
+        if (isKeyCodeSkipBack(keyCode)) {
+          int newPosition = selectedItem - 10;
+          if (newPosition < 0) {
+            newPosition = 0;
+          }
+          tvRecyclerView.scrollToPosition(newPosition);
+          Timber.d("New ItemPosition: " + newPosition);
+
+          scrollingHandler.postDelayed(() -> {
+            LinearLayoutManager linearLayout = (LinearLayoutManager) tvRecyclerView.getLayoutManager();
+            View viewByPosition = linearLayout.findViewByPosition(linearLayout.findFirstCompletelyVisibleItemPosition());
+            viewByPosition.requestFocusFromTouch();
+          }, 700);
+          return true;
+        }
+
+        if (isKeyCodeSkipForward(keyCode)) {
+          int newPosition = selectedItem + 10;
+          if (newPosition > itemsCount) {
+            newPosition = itemsCount - 1;
+          }
+          tvRecyclerView.scrollToPosition(newPosition);
+          Timber.d("New ItemPosition: " + newPosition);
+          scrollingHandler.postDelayed(() -> {
+            LinearLayoutManager linearLayout = (LinearLayoutManager) tvRecyclerView.getLayoutManager();
+            linearLayout.findViewByPosition(linearLayout.findLastCompletelyVisibleItemPosition()).requestFocusFromTouch();
+          }, 700);
+
+          return true;
+        }
+      }
+    }
+
+    if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY || keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
+      int selectedItem = tvRecyclerView.getChildAdapterPosition(tvRecyclerView.getFocusedChild());
+      SeriesContentInfo info =
+          (SeriesContentInfo) ((AbstractPosterImageGalleryAdapter) tvRecyclerView.getAdapter()).getItem(selectedItem);
+      new FindUnwatchedAsyncTask(activity).execute(info);
+      return true;
+    }
 
     return false;
   }
 
-  protected boolean contextMenuRequested(int keyCode) {
+  private void resetFocus(int newPosition) {
+    RecyclerView.LayoutManager layoutManager = tvRecyclerView.getLayoutManager();
+    View childAt = layoutManager.getChildAt(newPosition);
+    if (childAt != null) {
+      childAt.requestFocus();
+    }
+  }
+
+  private boolean contextMenuRequested(int keyCode) {
     boolean menuKeySlidingMenu = preferences.getBoolean("remote_control_menu", true);
     return keyCode == KeyEvent.KEYCODE_C
         || keyCode == KeyEvent.KEYCODE_BUTTON_Y
         || keyCode == KeyEvent.KEYCODE_BUTTON_R2
         || keyCode == KeyEvent.KEYCODE_PROG_RED
-        || (keyCode == KeyEvent.KEYCODE_MENU && menuKeySlidingMenu == false);
+        || (keyCode == KeyEvent.KEYCODE_MENU && !menuKeySlidingMenu);
   }
 
-  protected boolean isKeyCodeSkipForward(int keyCode) {
+  private boolean isKeyCodeSkipForward(int keyCode) {
     return keyCode == KeyEvent.KEYCODE_F
         || keyCode == KeyEvent.KEYCODE_PAGE_UP
         || keyCode == KeyEvent.KEYCODE_CHANNEL_UP
@@ -115,7 +139,7 @@ public class OnKeyDownDelegate extends BaseInjector {
         || keyCode == KeyEvent.KEYCODE_BUTTON_R1;
   }
 
-  protected boolean isKeyCodeSkipBack(int keyCode) {
+  private boolean isKeyCodeSkipBack(int keyCode) {
     return keyCode == KeyEvent.KEYCODE_R
         || keyCode == KeyEvent.KEYCODE_PAGE_DOWN
         || keyCode == KeyEvent.KEYCODE_CHANNEL_DOWN

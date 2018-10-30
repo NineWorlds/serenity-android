@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.test.core.app.ApplicationProvider;
 import dagger.Module;
 import dagger.Provides;
 import java.util.ArrayList;
@@ -19,10 +20,14 @@ import javax.inject.Singleton;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.mockito.quality.Strictness;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -60,6 +65,8 @@ import static us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity.SERIES_
 @Config(shadows = ShadowArrayAdapter.class)
 public class TVShowBrowserActivityTest extends InjectingTest {
 
+  @Rule public MockitoRule mockitoRule = MockitoJUnit.rule().strictness(Strictness.STRICT_STUBS);
+
   @Mock TVCategoryState mockTVCategoryState;
   @Mock SharedPreferences mockSharedPreferences;
   @Mock TVShowBrowserPresenter mockTVShowBrowserPresenter;
@@ -68,16 +75,14 @@ public class TVShowBrowserActivityTest extends InjectingTest {
 
   @Override @Before public void setUp() throws Exception {
     super.setUp();
-    initMocks(this);
+    demandActivityOnCreate();
   }
 
   @After public void tearDown() {
     activity.finish();
-    activity = null;
   }
 
   @Test public void assertThatFanArtHasExpectedDrawable() {
-    demandActivityOnCreate();
 
     assertThat(activity.fanArt).isNotNull();
 
@@ -87,32 +92,22 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   }
 
   @Test public void assertThatTVShowItemCountIsNotNull() {
-    demandActivityOnCreate();
-
     assertThat(activity.tvShowItemCountView).isNotNull().isInstanceOf(TextView.class);
   }
 
   @Test public void assertThatCategoryFilterIsNotNull() {
-    demandActivityOnCreate();
-
     assertThat(activity.categorySpinner).isNotNull().isInstanceOf(Spinner.class);
   }
 
   @Test public void assertThatTVShowBannerGalleryIsNotNull() {
-    demandActivityOnCreate();
-
     assertThat(activity.tvShowRecyclerView).isNotNull().isInstanceOf(RecyclerView.class);
   }
 
   @Test public void assertThatSecondaryCategoryFilterIsNotNull() {
-    demandActivityOnCreate();
-
     assertThat(activity.secondarySpinner).isNotNull().isInstanceOf(Spinner.class);
   }
 
   @Test public void displayShowsShowsToastWhenSeriesIsEmpty() {
-    demandActivityOnCreate();
-
     activity.displayShows(Collections.<SeriesContentInfo>emptyList(), null);
 
     Toast latestToast = ShadowToast.getLatestToast();
@@ -123,16 +118,12 @@ public class TVShowBrowserActivityTest extends InjectingTest {
     List<SeriesContentInfo> expectedSeries = new ArrayList<>();
     expectedSeries.add(new TVShowSeriesInfo());
 
-    demandActivityOnCreate();
-
     activity.displayShows(expectedSeries, null);
 
     assertThat(activity.tvShowItemCountView).hasText("1 Item(s)");
   }
 
   @Test public void restartCallsPopulateMenuDrawer() {
-    demandActivityOnCreate();
-
     TVShowBrowserActivity spy = spy(activity);
     doNothing().when(spy).populateMenuDrawer();
 
@@ -142,8 +133,6 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   }
 
   @Test public void resumeCallsPopulateDrawer() {
-    demandActivityOnCreate();
-
     TVShowBrowserActivity spy = spy(activity);
     doNothing().when(spy).populateMenuDrawer();
 
@@ -155,7 +144,6 @@ public class TVShowBrowserActivityTest extends InjectingTest {
 
   @Test public void resumeRequestsUpdatedTVCategoriesFromPresenter() {
     String expectedKey = RandomStringUtils.randomAlphanumeric(5);
-    demandActivityOnCreate();
 
     TVShowBrowserActivity spy = spy(activity);
     doNothing().when(spy).populateMenuDrawer();
@@ -179,8 +167,6 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   }
 
   @Test public void updateCategoriesSetsDropDownViewResourceOnSpinner() throws Exception {
-    demandActivityOnCreate();
-
     List<CategoryInfo> expectedCategories = Collections.singletonList(new CategoryInfo());
     activity.updateCategories(expectedCategories);
 
@@ -192,8 +178,6 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   }
 
   @Test public void updateCategoriesMakesCategorySpinnerVisible() {
-    demandActivityOnCreate();
-
     activity.categorySpinner.setVisibility(View.GONE);
 
     List<CategoryInfo> expectedCategories = Collections.singletonList(new CategoryInfo());
@@ -203,13 +187,10 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   }
 
   @Test public void onCreateSetsOnKeyDownDelegate() {
-    demandActivityOnCreate();
-
     assertThat(activity.onKeyDownDelegate).isNotNull().isInstanceOf(OnKeyDownDelegate.class);
   }
 
   @Test public void populateSecondaryCategoriesSetsSecondarySpinnerVisible() {
-    demandActivityOnCreate();
     activity.categorySpinner.setVisibility(View.GONE);
     activity.secondarySpinner.setVisibility(View.GONE);
 
@@ -223,7 +204,6 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   }
 
   @Test public void populateSecondaryCategoriesSetsSecondarySetsDropDownViewResourceId() {
-    demandActivityOnCreate();
     activity.categorySpinner.setVisibility(View.GONE);
     activity.secondarySpinner.setVisibility(View.GONE);
 
@@ -240,7 +220,6 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   }
 
   @Test public void populateSecondaryCategoriesSetsSecondaryExpectedOnItemSelectedListener() {
-    demandActivityOnCreate();
     activity.categorySpinner.setVisibility(View.GONE);
     activity.secondarySpinner.setVisibility(View.GONE);
 
@@ -254,7 +233,6 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   }
 
   @Test public void populateSecondaryCategoriesDisplaysToastWhenCategoriesIsNull() {
-    demandActivityOnCreate();
     activity.categorySpinner.setVisibility(View.GONE);
     activity.secondarySpinner.setVisibility(View.GONE);
 
@@ -267,7 +245,6 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   }
 
   @Test public void populateSecondaryCategoriesDisplaysToastWhenCategoriesIsEmpty() {
-    demandActivityOnCreate();
     activity.categorySpinner.setVisibility(View.GONE);
     activity.secondarySpinner.setVisibility(View.GONE);
 
@@ -280,7 +257,6 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   }
 
   @Test public void onKeyDownCallsDelegate() {
-    demandActivityOnCreate();
     int expectedKeyCode = 10;
     KeyEvent expectedKeyEvent = Mockito.mock(KeyEvent.class);
 
@@ -302,7 +278,7 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   @Override public List<Object> getModules() {
     List<Object> modules = new ArrayList<>();
 
-    modules.add(new AndroidModule(application));
+    modules.add(new AndroidModule(ApplicationProvider.getApplicationContext()));
     modules.add(new TestingModule());
     modules.add(new TestModule());
     return modules;
