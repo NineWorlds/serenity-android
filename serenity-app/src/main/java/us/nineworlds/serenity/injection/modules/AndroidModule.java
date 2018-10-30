@@ -165,16 +165,12 @@ import us.nineworlds.serenity.ui.util.VideoQueueHelper;
 import us.nineworlds.serenity.ui.video.player.EventLogger;
 import us.nineworlds.serenity.ui.video.player.ExoplayerPresenter;
 import us.nineworlds.serenity.ui.video.player.ExoplayerVideoActivity;
-import us.nineworlds.serenity.ui.video.player.MediaController;
 import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
-import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 import us.nineworlds.serenity.ui.video.player.VideoKeyCodeHandlerDelegate;
-import us.nineworlds.serenity.ui.video.player.VideoPlayerKeyCodeHandler;
-import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
 
 @Module(includes = {SerenityModule.class, VideoModule.class}, injects = {
     GDMReceiver.class, MainMenuFragment.class, OnDeckRecommendations.class,
-    MediaController.class, MainActivity.class, SerenityApplication.class, StartupBroadcastReceiver.class,
+    MainActivity.class, SerenityApplication.class, StartupBroadcastReceiver.class,
     RecommendationPlayerActivity.class, SearchableActivity.class,
     MovieBrowserActivity.class, TVShowBrowserActivity.class, TVShowSeasonBrowserActivity.class,
     AutoConfigureHandlerRunnable.class, EpisodeMenuDrawerOnItemClickedListener.class, ImageInfographicUtils.class,
@@ -187,15 +183,15 @@ import us.nineworlds.serenity.ui.video.player.VideoPlayerPrepareListener;
     MoviePosterOnItemSelectedListener.class, TVShowGalleryOnItemSelectedListener.class,
     TVShowGridOnItemSelectedListener.class, TVShowGridOnKeyListener.class, TVShowMenuDrawerOnItemClickedListener.class,
     TVShowSeasonMenuDrawerOnItemClickedListener.class, TVShowSeasonOnItemSelectedListener.class,
-    VideoPlayerIntentUtils.class, VideoPlayerPrepareListener.class, MoviesRetrievalIntentService.class,
+    VideoPlayerIntentUtils.class, MoviesRetrievalIntentService.class,
     MovieSearchIntentService.class, MainMenuTextViewAdapter.class, EpisodePosterImageGalleryAdapter.class,
     SeasonsEpisodePosterImageGalleryAdapter.class, MoviePosterImageAdapter.class, SearchAdapter.class,
     TVShowRecyclerAdapter.class, MenuDrawerAdapter.class, TVShowSeasonImageGalleryAdapter.class,
     OnDeckRecommendationIntentService.class, CompletedVideoRequest.class, FindUnwatchedAsyncTask.class,
     UnWatchVideoAsyncTask.class, UpdateProgressRequest.class, WatchedVideoAsyncTask.class,
     GalleryOnItemSelectedListener.class, AndroidTV.class, RecommendAsyncTask.class,
-    RecommendationBuilder.class, TVShowPosterImageGalleryAdapter.class, VideoPlayerKeyCodeHandler.class,
-    SerenitySurfaceViewVideoActivity.class, OkHttpStack.class, SerenityRecommendationContentProvider.class,
+    RecommendationBuilder.class, TVShowPosterImageGalleryAdapter.class,
+    OkHttpStack.class, SerenityRecommendationContentProvider.class,
     AndroidHelper.class, SecondaryCategorySpinnerOnItemSelectedListener.class,
     MovieCategorySpinnerOnItemSelectedListener.class, TVCategorySpinnerOnItemSelectedListener.class,
     TVSecondaryCategorySpinnerOnItemSelectedListener.class, MovieVideoGalleryFragment.class, VideoGridFragment.class,

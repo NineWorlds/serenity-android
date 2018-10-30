@@ -41,7 +41,6 @@ import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.video.player.ExoplayerVideoActivity;
-import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
 
 public class VideoPlayerIntentUtils extends BaseInjector {
 
@@ -105,7 +104,7 @@ public class VideoPlayerIntentUtils extends BaseInjector {
               Toast.LENGTH_LONG).show();
         }
       } else {
-        Intent vpIntent = new Intent(context, SerenitySurfaceViewVideoActivity.class);
+        Intent vpIntent = new Intent(context, ExoplayerVideoActivity.class);
         context.startActivityForResult(vpIntent, SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
       }
     } else {
@@ -123,18 +122,10 @@ public class VideoPlayerIntentUtils extends BaseInjector {
         context.getResources().getText(R.string.resume_the_video_from_) + timeUtil.formatDuration(
             video.getResumeOffset()) + context.getResources().getText(R.string._or_restart_))
         .setCancelable(false)
-        .setPositiveButton(R.string.resume, new DialogInterface.OnClickListener() {
-
-          @Override public void onClick(DialogInterface dialog, int which) {
-            launchPlayer(video, c);
-          }
-        })
-        .setNegativeButton(R.string.restart, new DialogInterface.OnClickListener() {
-
-          @Override public void onClick(DialogInterface dialog, int which) {
-            video.setResumeOffset(0);
-            launchPlayer(video, c);
-          }
+        .setPositiveButton(R.string.resume, (dialog, which) -> launchPlayer(video, c))
+        .setNegativeButton(R.string.restart, (dialog, which) -> {
+          video.setResumeOffset(0);
+          launchPlayer(video, c);
         });
 
     alertDialogBuilder.create();

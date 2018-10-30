@@ -39,7 +39,7 @@ import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
-import us.nineworlds.serenity.ui.video.player.SerenitySurfaceViewVideoActivity;
+import us.nineworlds.serenity.ui.video.player.ExoplayerVideoActivity;
 
 public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity {
 
@@ -96,13 +96,12 @@ public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity
 
       if (!externalPlayer) {
         if (!videoQueue.isEmpty()) {
-          Intent vpIntent = new Intent(this, SerenitySurfaceViewVideoActivity.class);
+          Intent vpIntent = new Intent(this, ExoplayerVideoActivity.class);
           startActivityForResult(vpIntent, SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
           return;
         }
       }
     }
-
 
     OnDeckRecommendationAsyncTask onDeckRecomendations =
         new OnDeckRecommendationAsyncTask(getApplicationContext());
