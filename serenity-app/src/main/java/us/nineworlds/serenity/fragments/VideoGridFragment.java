@@ -37,6 +37,7 @@ import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedList
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
+import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
 import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
 import static butterknife.ButterKnife.bind;
@@ -66,7 +67,7 @@ public class VideoGridFragment extends MovieVideoGalleryFragment {
 
   protected LinearLayoutManager createLayoutManager() {
     GridLayoutManager layoutManager =
-        new GridLayoutManager(getActivity(), 3,
+        new FocusableGridLayoutManager(getActivity(), 3,
             GridLayoutManager.HORIZONTAL, false);
     return layoutManager;
   }

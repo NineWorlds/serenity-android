@@ -74,14 +74,8 @@ public class OnKeyDownDelegate extends BaseInjector {
           if (newPosition < 0) {
             newPosition = 0;
           }
-          tvRecyclerView.scrollToPosition(newPosition);
+          tvRecyclerView.smoothScrollToPosition(newPosition);
           Timber.d("New ItemPosition: " + newPosition);
-
-          scrollingHandler.postDelayed(() -> {
-            LinearLayoutManager linearLayout = (LinearLayoutManager) tvRecyclerView.getLayoutManager();
-            View viewByPosition = linearLayout.findViewByPosition(linearLayout.findFirstCompletelyVisibleItemPosition());
-            viewByPosition.requestFocusFromTouch();
-          }, 700);
           return true;
         }
 
@@ -90,13 +84,8 @@ public class OnKeyDownDelegate extends BaseInjector {
           if (newPosition > itemsCount) {
             newPosition = itemsCount - 1;
           }
-          tvRecyclerView.scrollToPosition(newPosition);
+          tvRecyclerView.smoothScrollToPosition(newPosition);
           Timber.d("New ItemPosition: " + newPosition);
-          scrollingHandler.postDelayed(() -> {
-            LinearLayoutManager linearLayout = (LinearLayoutManager) tvRecyclerView.getLayoutManager();
-            linearLayout.findViewByPosition(linearLayout.findLastCompletelyVisibleItemPosition()).requestFocusFromTouch();
-          }, 700);
-
           return true;
         }
       }

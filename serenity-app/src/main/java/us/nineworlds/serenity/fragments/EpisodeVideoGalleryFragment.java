@@ -43,6 +43,7 @@ import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAd
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 
 public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
@@ -74,8 +75,11 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
       videoGallery.setAdapter(adapter);
       videoGallery.setItemAnimator(new FadeInAnimator());
       videoGallery.setHorizontalFadingEdgeEnabled(false);
-      videoGallery.setLayoutManager(
-          new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
+      FocusableLinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(getActivity());
+      linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+      videoGallery.setLayoutManager(linearLayoutManager);
+
       videoGallery.addItemDecoration(new SpaceItemDecoration(
           getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
       videoGallery.setClipToPadding(false);

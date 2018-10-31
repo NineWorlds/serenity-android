@@ -51,6 +51,7 @@ import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 
 import static android.view.View.*;
 import static butterknife.ButterKnife.bind;
@@ -135,7 +136,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
   }
 
   protected LinearLayoutManager createLayoutManager() {
-    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+    LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(getActivity());
     linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
     return linearLayoutManager;
   }

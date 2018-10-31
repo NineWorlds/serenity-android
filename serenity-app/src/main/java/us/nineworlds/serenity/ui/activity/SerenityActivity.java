@@ -68,12 +68,6 @@ public abstract class SerenityActivity extends InjectingMvpActivity {
           }
           gallery.smoothScrollToPosition(newPosition);
           Timber.d("New ItemPosition: " + newPosition);
-
-          scrollingHandler.postDelayed(() -> {
-            LinearLayoutManager linearLayout = (LinearLayoutManager) gallery.getLayoutManager();
-            View viewByPosition = linearLayout.findViewByPosition(linearLayout.findFirstVisibleItemPosition());
-            viewByPosition.requestFocusFromTouch();
-          }, 200);
           return true;
         }
 
@@ -84,12 +78,6 @@ public abstract class SerenityActivity extends InjectingMvpActivity {
           }
           gallery.smoothScrollToPosition(newPosition);
           Timber.d("New ItemPosition: " + newPosition);
-          scrollingHandler.postDelayed(() -> {
-            LinearLayoutManager linearLayout = (LinearLayoutManager) gallery.getLayoutManager();
-            View viewByPosition = linearLayout.findViewByPosition(linearLayout.findLastCompletelyVisibleItemPosition());
-            viewByPosition.requestFocusFromTouch();
-          }, 200);
-
           return true;
         }
       }

@@ -49,6 +49,8 @@ import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
+import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 
@@ -98,8 +100,9 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     tvShowSeasonsGallery.setClipToPadding(false);
     tvShowSeasonsGallery.setAdapter(adapter);
     tvShowSeasonsGallery.setItemAnimator(new FadeInAnimator());
-    tvShowSeasonsGallery.setLayoutManager(
-        new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(this);
+    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+    tvShowSeasonsGallery.setLayoutManager(linearLayoutManager);
 
     tvShowSeasonsGallery.addItemDecoration(createItemDecorator());
     tvShowSeasonsGallery.setFocusable(true);
@@ -112,7 +115,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     gridView.setAdapter(episodeAdapter);
     gridView.addItemDecoration(createItemDecorator());
     gridView.setItemAnimator(new FadeInAnimator());
-    GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false) {
+    GridLayoutManager gridLayoutManager = new FocusableGridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false) {
       @Override public boolean supportsPredictiveItemAnimations() {
         return false;
       }

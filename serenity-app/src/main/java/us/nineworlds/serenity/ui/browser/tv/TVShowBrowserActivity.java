@@ -57,6 +57,8 @@ import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
+import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 import static android.view.View.*;
@@ -111,7 +113,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
 
   private void populateTVShowContent() {
     if (gridViewActive) {
-      GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false);
+      GridLayoutManager gridLayoutManager = new FocusableGridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false);
       tvShowRecyclerView.setLayoutManager(gridLayoutManager);
 
       tvShowRecyclerView.addItemDecoration(
@@ -124,8 +126,8 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
       return;
     }
 
-    LinearLayoutManager linearLayoutManager =
-        new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+    LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(this);
+    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
     tvShowRecyclerView.setLayoutManager(linearLayoutManager);
     tvShowRecyclerView.addItemDecoration(
         new SpaceItemDecoration(
