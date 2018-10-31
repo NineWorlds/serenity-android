@@ -202,6 +202,10 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     dataLoadingContainer.visibility = View.VISIBLE
   }
 
+  override fun playbackEnded() {
+    finish()
+  }
+
   protected inner class ProgressRunnable : Runnable {
 
     override fun run() {

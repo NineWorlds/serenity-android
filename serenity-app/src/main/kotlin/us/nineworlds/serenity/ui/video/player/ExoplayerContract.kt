@@ -19,6 +19,8 @@ interface ExoplayerContract {
     fun hideLoadingProgress()
 
     fun showLoadingProgress()
+
+    fun playbackEnded()
   }
 
   interface ExoplayerPresenter {

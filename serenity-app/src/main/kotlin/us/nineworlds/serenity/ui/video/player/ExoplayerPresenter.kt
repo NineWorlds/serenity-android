@@ -94,6 +94,12 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
   }
 
   override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+    if (Player.STATE_ENDED == playbackState) {
+      stopPlaying()
+      viewState.playbackEnded()
+      return
+    }
+
     if (Player.STATE_BUFFERING == playbackState) {
       viewState.showLoadingProgress()
     } else {
@@ -108,11 +114,6 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
   }
 
   override fun onLoadingChanged(isLoading: Boolean) {
-    if (isLoading) {
-      viewState.showLoadingProgress()
-    } else {
-      viewState.hideLoadingProgress()
-    }
   }
 
   override fun onRepeatModeChanged(repeatMode: Int) {
