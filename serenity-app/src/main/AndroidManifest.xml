@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="1009004"
-    android:versionName="1.9.4.20150220-1911"
     package="us.nineworlds.serenity">
 
   <uses-sdk
@@ -10,7 +8,7 @@
       android:targetSdkVersion="27"
       tools:overrideLibrary="android.support.v17.leanback"/>
 
-  <!-- try to exclude phone devices from the list. Currently only support Tablets and TVs -->
+  <!-- try to exclude phone devices from the list. Currently only support TVs -->
   <supports-screens
       android:largeScreens="true"
       android:normalScreens="false"
@@ -149,19 +147,6 @@
         android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen"/>
 
     <activity
-        android:name=".ui.video.player.SerenitySurfaceViewVideoActivity"
-        android:screenOrientation="sensorLandscape"
-        android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
-    </activity>
-
-    <activity
         android:name=".ui.video.player.RecommendationPlayerActivity"
         android:screenOrientation="sensorLandscape"
         android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -186,9 +171,6 @@
         android:enabled="true"
         android:exported="true"/>
 
-    <provider
-        android:name=".ui.search.SerenitySuggestionProvider"
-        android:authorities="us.nineworlds.serenity.ui.search.SerenitySuggestionProvider"/>
     <provider
         android:name=".core.SerenityRecommendationContentProvider"
         android:authorities="us.nineworlds.serenity.core.SerenityRecommendationContentProvider"

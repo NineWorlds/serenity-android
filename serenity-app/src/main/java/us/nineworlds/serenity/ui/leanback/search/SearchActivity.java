@@ -23,12 +23,12 @@
 
 package us.nineworlds.serenity.ui.leanback.search;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import us.nineworlds.serenity.R;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends FragmentActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
