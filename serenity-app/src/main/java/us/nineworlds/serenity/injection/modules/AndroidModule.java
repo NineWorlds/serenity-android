@@ -155,8 +155,6 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.SubtitleSpinnerOnItemSelectedListener;
 import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity;
 import us.nineworlds.serenity.ui.preferences.SettingsFragment;
-import us.nineworlds.serenity.ui.search.SearchAdapter;
-import us.nineworlds.serenity.ui.search.SearchableActivity;
 import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
@@ -171,7 +169,7 @@ import us.nineworlds.serenity.ui.video.player.VideoKeyCodeHandlerDelegate;
 @Module(includes = {SerenityModule.class, VideoModule.class}, injects = {
     GDMReceiver.class, MainMenuFragment.class, OnDeckRecommendations.class,
     MainActivity.class, SerenityApplication.class, StartupBroadcastReceiver.class,
-    RecommendationPlayerActivity.class, SearchableActivity.class,
+    RecommendationPlayerActivity.class,
     MovieBrowserActivity.class, TVShowBrowserActivity.class, TVShowSeasonBrowserActivity.class,
     AutoConfigureHandlerRunnable.class, EpisodeMenuDrawerOnItemClickedListener.class, ImageInfographicUtils.class,
     MainMenuDrawerOnItemClickedListener.class, MovieGridPosterOnItemSelectedListener.class,
@@ -185,7 +183,7 @@ import us.nineworlds.serenity.ui.video.player.VideoKeyCodeHandlerDelegate;
     TVShowSeasonMenuDrawerOnItemClickedListener.class, TVShowSeasonOnItemSelectedListener.class,
     VideoPlayerIntentUtils.class, MoviesRetrievalIntentService.class,
     MovieSearchIntentService.class, MainMenuTextViewAdapter.class, EpisodePosterImageGalleryAdapter.class,
-    SeasonsEpisodePosterImageGalleryAdapter.class, MoviePosterImageAdapter.class, SearchAdapter.class,
+    SeasonsEpisodePosterImageGalleryAdapter.class, MoviePosterImageAdapter.class,
     TVShowRecyclerAdapter.class, MenuDrawerAdapter.class, TVShowSeasonImageGalleryAdapter.class,
     OnDeckRecommendationIntentService.class, CompletedVideoRequest.class, FindUnwatchedAsyncTask.class,
     UnWatchVideoAsyncTask.class, UpdateProgressRequest.class, WatchedVideoAsyncTask.class,

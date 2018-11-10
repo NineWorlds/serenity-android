@@ -143,8 +143,7 @@ public class SerenityApplication extends Application {
   protected void setDefaultPreferences() {
     PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
     SharedPreferences.Editor editor = preferences.edit();
-    if (androidHelper.isGoogleTV()
-        || androidHelper.isAndroidTV()
+    if (androidHelper.isAndroidTV()
         || androidHelper.isAmazonFireTV()
         || androidHelper.isLeanbackSupported()) {
       editor.putBoolean("serenity_tv_mode", true);

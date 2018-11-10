@@ -178,20 +178,6 @@
         android:name=".ui.preferences.LeanbackSettingsActivity"
         android:theme="@style/LeanbackPreferences"/>
 
-    <activity
-        android:name=".ui.search.SearchableActivity"
-        android:screenOrientation="sensorLandscape"
-        android:theme="@style/CustomActionBarTheme">
-      <intent-filter>
-        <action android:name="android.intent.action.SEARCH"/>
-
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-
-      <meta-data
-          android:name="android.app.searchable"
-          android:resource="@xml/searchable"/>
-    </activity>
     <activity android:name=".ui.activity.OverscanSetupActivity"/>
 
     <service android:name=".core.services.MovieSearchIntentService"/>

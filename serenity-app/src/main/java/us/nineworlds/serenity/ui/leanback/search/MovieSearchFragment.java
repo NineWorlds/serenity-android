@@ -24,21 +24,19 @@
 package us.nineworlds.serenity.ui.leanback.search;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.v17.leanback.app.SearchFragment;
-import android.support.v17.leanback.app.SearchFragment.SearchResultProvider;
+import android.support.v17.leanback.app.SearchSupportFragment.SearchResultProvider;
+import android.support.v17.leanback.app.SearchSupportFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.ObjectAdapter;
-import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.OnItemViewSelectedListener;
 import android.support.v17.leanback.widget.Presenter.ViewHolder;
 import android.support.v17.leanback.widget.Row;
@@ -52,16 +50,16 @@ import java.net.URLEncoder;
 import java.util.List;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MovieSearchIntentService;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
-public class MovieSearchFragment extends SearchFragment implements SearchResultProvider {
+public class MovieSearchFragment extends SearchSupportFragment implements SearchResultProvider {
 
   private ArrayObjectAdapter rowsAdapter;
   private List<MenuItem> menuItems;
@@ -69,26 +67,26 @@ public class MovieSearchFragment extends SearchFragment implements SearchResultP
 
   private Handler searchHandler;
 
-  @Inject @ApplicationContext Context context;
-
   @Inject VideoPlayerIntentUtils vpUtils;
-
   @Inject SerenityClient plexFactory;
+  @Inject AndroidHelper androidHelper;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     SerenityObjectGraph.Companion.getInstance().inject(this);
 
+    if (androidHelper.isAmazonFireTV()) {
+      setSpeechRecognitionCallback(() -> {
+        // DO NOTHING;
+      });
+    }
+
     rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
     setSearchResultProvider(this);
-    setOnItemViewClickedListener(new OnItemViewClickedListener() {
-
-      @Override public void onItemClicked(ViewHolder itemViewHolder, Object item,
-          android.support.v17.leanback.widget.RowPresenter.ViewHolder rowViewHolder, Row row) {
-        Activity activity = getActivity();
-        VideoContentInfo video = (VideoContentInfo) item;
-        vpUtils.playVideo(activity, video, false);
-      }
+    setOnItemViewClickedListener((itemViewHolder, item, rowViewHolder, row) -> {
+      Activity activity = getActivity();
+      VideoContentInfo video = (VideoContentInfo) item;
+      vpUtils.playVideo(activity, video, false);
     });
 
     setOnItemViewSelectedListener(new OnItemViewSelectedListener() {
@@ -121,11 +119,11 @@ public class MovieSearchFragment extends SearchFragment implements SearchResultP
           }
         };
 
-        Glide.with(context).load(transcodingURL).asBitmap().into(target);
+        Glide.with(getContext()).load(transcodingURL).asBitmap().into(target);
       }
     });
 
-    setBadgeDrawable(context.getResources().getDrawable(R.drawable.androidtv_icon_mono));
+    setBadgeDrawable(getResources().getDrawable(R.drawable.androidtv_icon_mono));
   }
 
   private void queryByWords(String words) {

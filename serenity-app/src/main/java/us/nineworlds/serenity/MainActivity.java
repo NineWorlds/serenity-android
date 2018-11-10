@@ -164,8 +164,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
     boolean initialRun = preferences.getBoolean("serenity_first_run", true);
     if (initialRun) {
       SharedPreferences.Editor editor = preferences.edit();
-      if (!androidHelper.isGoogleTV()
-          && !androidHelper.isAndroidTV()
+      if (!androidHelper.isAndroidTV()
           && !androidHelper.isAmazonFireTV()
           && !androidHelper.isLeanbackSupported()) {
         editor.putBoolean("external_player", false);
