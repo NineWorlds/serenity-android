@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,112 +23,91 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.injection.BaseInjector;
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.jess.ui.TwoWayAdapterView;
-import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import javax.inject.Inject;
+import net.ganin.darv.DpadAwareRecyclerView;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
+import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
 /**
  * Display selected TV Show Information.
  *
  * @author dcarver
- *
  */
-public class TVShowGridOnItemSelectedListener extends BaseInjector implements
-		OnItemSelectedListener {
+public class TVShowGridOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
-	private final Activity context;
-	private final ImageLoader imageLoader;
-	private View previous;
-	private final ImageSize bgImageSize = new ImageSize(1280, 720);
-	private SeriesContentInfo videoInfo;
-	private final Handler handler = new Handler();
-	private Runnable runnable;
+  private SeriesContentInfo videoInfo;
+  private final Handler handler = new Handler();
+  private Runnable runnable;
 
-	@Inject
-	SerenityImageLoader serenityImageLoader;
+  @Inject SerenityClient factory;
 
-	@Inject
-	PlexappFactory factory;
+  @BindView(R.id.tvShowGridTitle) TextView titleView;
+  @BindView(R.id.fanArt) View fanArt;
 
-	public TVShowGridOnItemSelectedListener(View bgv, Activity activity) {
-		context = activity;
+  AbstractPosterImageGalleryAdapter adapter;
 
-		imageLoader = serenityImageLoader.getImageLoader();
+  public TVShowGridOnItemSelectedListener(AbstractPosterImageGalleryAdapter adapter) {
+    this.adapter = adapter;
+  }
 
-	}
+  @Override protected void createVideoDetail(ImageView v) {
+    // DO NOTHING
+  }
 
-	@Override
-	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position,
-			long id) {
+  @Override public void onItemSelected(View view, int i) {
+    ButterKnife.bind(this, (Activity) view.getContext());
+    videoInfo = (SeriesContentInfo) adapter.getItem(i);
 
-		videoInfo = (SeriesContentInfo) av.getItemAtPosition(position);
-		if (previous != null) {
-			previous.setPadding(0, 0, 0, 0);
-		}
+    final ImageView imageView = view.findViewById(R.id.posterImageView);
 
-		previous = v;
+    if (runnable != null) {
+      handler.removeCallbacks(runnable);
+    }
+    runnable = new Runnable() {
+      @Override public void run() {
+        changeBackgroundImage(imageView);
+        runnable = null;
+      }
+    };
+    handler.postDelayed(runnable, 500);
 
-		v.setPadding(5, 5, 5, 5);
+    if (titleView != null) {
+      titleView.setText(videoInfo.getTitle());
+    }
+  }
 
-		final ImageView imageView = (ImageView) v
-				.findViewById(R.id.posterImageView);
+  /**
+   * Change the background image of the activity.
+   *
+   * Should be a background activity
+   */
+  private void changeBackgroundImage(View v) {
+    final Activity context = (Activity) v.getContext();
 
-		if (runnable != null) {
-			handler.removeCallbacks(runnable);
-		}
-		runnable = new Runnable() {
-			@Override
-			public void run() {
-				changeBackgroundImage(imageView);
-				runnable = null;
-			}
-		};
-		handler.postDelayed(runnable, 500);
+    String transcodingURL = factory.createImageURL(videoInfo.getBackgroundURL(), 1280, 720);
 
-		TextView titleView = (TextView) context
-				.findViewById(R.id.tvShowGridTitle);
-		if (titleView != null) {
-			titleView.setText(videoInfo.getTitle());
-		}
-	}
+    SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+      @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+        context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
+      }
+    };
 
-	/**
-	 * Change the background image of the activity.
-	 *
-	 * Should be a background activity
-	 *
-	 * @param v
-	 */
-	private void changeBackgroundImage(View v) {
-
-		View fanArt = context.findViewById(R.id.fanArt);
-		String transcodingURL = factory.getImageURL(
-				videoInfo.getBackgroundURL(), 1280, 720);
-
-		imageLoader
-		.loadImage(transcodingURL, bgImageSize,
-				new SerenityBackgroundLoaderListener(fanArt,
-						R.drawable.tvshows));
-	}
-
-	@Override
-	public void onNothingSelected(TwoWayAdapterView<?> arg0) {
-
-	}
-
+    Glide.with(context).load(transcodingURL).asBitmap().into(target);
+  }
 }

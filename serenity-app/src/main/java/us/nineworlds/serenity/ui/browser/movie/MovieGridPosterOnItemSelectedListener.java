@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,112 +23,98 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.BaseInjector;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.jess.ui.TwoWayAdapterView;
-import com.jess.ui.TwoWayAdapterView.OnItemSelectedListener;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import javax.inject.Inject;
+import net.ganin.darv.DpadAwareRecyclerView;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
+import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
+import us.nineworlds.serenity.core.logger.Logger;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
 /**
  * When a poster is selected, update the information displayed in the browser.
  *
  * @author dcarver
- *
  */
-public class MovieGridPosterOnItemSelectedListener extends BaseInjector
-implements OnItemSelectedListener {
+public class MovieGridPosterOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
-	private static Activity context;
-	private View previous;
-	private TwoWayAdapterView<?> adapter;
+  private static Activity context;
+  private AbstractPosterImageGalleryAdapter adapter;
 
-	@Inject
-	SerenityImageLoader serenityImageLoader;
+  @Inject SerenityClient serenityClient;
+  @Inject Logger logger;
 
-	@Inject
-	PlexappFactory plexFactory;
+  public MovieGridPosterOnItemSelectedListener(@NonNull AbstractPosterImageGalleryAdapter adapter) {
+    super();
+    this.adapter = adapter;
+  }
 
-	private final ImageLoader imageLoader;
+  private void changeBackgroundImage(VideoContentInfo videoInfo) {
+    if (videoInfo.getBackgroundURL() == null) {
+      return;
+    }
 
-	public MovieGridPosterOnItemSelectedListener() {
-		super();
+    final View fanArt = context.findViewById(R.id.fanArt);
 
-		imageLoader = serenityImageLoader.getImageLoader();
-	}
+    logger.debug(("Background url = " + videoInfo.getBackgroundURL()));
+    String transcodingURL = serenityClient.createImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+    logger.debug("Movie Selected Background Url: " + transcodingURL);
 
-	@Override
-	public void onItemSelected(TwoWayAdapterView<?> av, View v, int position,
-			long id) {
-		if (v == null) {
-			return;
-		}
+    SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+      @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+        context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
+      }
+    };
 
-		context = (Activity) v.getContext();
+    Glide.with(context).load(transcodingURL).asBitmap().into(target);
+  }
 
-		adapter = av;
-		changeBackgroundImage();
+  private void createMovieMetaData(VideoContentInfo videoContentInfo) {
+    VideoContentInfo mi = videoContentInfo;
+    TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
+    subt.setVisibility(View.GONE);
+    Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);
+    subtitleSpinner.setVisibility(View.GONE);
 
-		if (previous != null) {
-			previous.setPadding(0, 0, 0, 0);
-		}
+    TextView posterTitle = (TextView) context.findViewById(R.id.movieActionBarPosterTitle);
+    posterTitle.setText(mi.getTitle());
+  }
 
-		previous = v;
+  @Override protected void createVideoDetail(ImageView v) {
+    // DO Nothing
+  }
 
-		v.setPadding(5, 5, 5, 5);
+  /**
+   * Call when item has Focus
+   */
+  public void onItemSelected(View view, int i) {
+    context = (Activity) view.getContext();
 
-		createMovieMetaData();
-	}
+    if (i > adapter.getItemCount()) {
+      return;
+    }
 
-	private void changeBackgroundImage() {
-		VideoContentInfo videoInfo = (VideoContentInfo) adapter
-				.getSelectedItem();
+    VideoContentInfo videoContentInfo = (VideoContentInfo) adapter.getItem(i);
+    if (videoContentInfo == null) {
+      return;
+    }
 
-		if (videoInfo.getBackgroundURL() == null) {
-			return;
-		}
+    changeBackgroundImage(videoContentInfo);
 
-		View fanArt = context.findViewById(R.id.fanArt);
-		String transcodingURL = plexFactory.getImageURL(
-				videoInfo.getBackgroundURL(), 1280, 720);
-		imageLoader
-		.loadImage(transcodingURL, new ImageSize(1280, 720),
-				new SerenityBackgroundLoaderListener(fanArt,
-						R.drawable.movies));
+    createMovieMetaData(videoContentInfo);
+  }
 
-	}
-
-	private void createMovieMetaData() {
-
-		VideoContentInfo mi = (VideoContentInfo) adapter.getSelectedItem();
-		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
-		subt.setVisibility(View.GONE);
-		Spinner subtitleSpinner = (Spinner) context
-				.findViewById(R.id.videoSubtitle);
-		subtitleSpinner.setVisibility(View.GONE);
-
-		TextView posterTitle = (TextView) context
-				.findViewById(R.id.movieActionBarPosterTitle);
-		posterTitle.setText(mi.getTitle());
-	}
-
-	@Override
-	public void onNothingSelected(TwoWayAdapterView<?> av) {
-		if (previous != null) {
-			previous.setPadding(0, 0, 0, 0);
-			previous.refreshDrawableState();
-		}
-
-	}
 }

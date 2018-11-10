@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -24,28 +24,24 @@
 package us.nineworlds.serenity.core.model.impl;
 
 import java.util.List;
-
 import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 
 public abstract class AbstractMediaContainer extends BaseInjector {
 
-	protected MediaContainer mc;
-	protected List<VideoContentInfo> videoList;
+  protected IMediaContainer mc;
+  protected List<VideoContentInfo> videoList;
 
-	@Inject
-	protected PlexappFactory factory;
+  @Inject protected SerenityClient factory;
 
-	/**
-	 *
-	 */
-	public AbstractMediaContainer(MediaContainer mc) {
-		super();
-		this.mc = mc;
-	}
-
+  /**
+   *
+   */
+  public AbstractMediaContainer(IMediaContainer mc) {
+    super();
+    this.mc = mc;
+  }
 }

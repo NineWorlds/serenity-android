@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,256 +23,221 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import java.util.ArrayList;
 import java.util.List;
-
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
+import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.BaseAdapter;
+import us.nineworlds.serenity.widgets.DrawerLayout;
 
-import com.jess.ui.TwoWayGridView;
+public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implements TVShowSeasonBrowserView {
 
-/**
- * @author dcarver
- *
- */
-public class TVShowSeasonBrowserActivity extends SerenityVideoActivity {
+  public AbstractPosterImageGalleryAdapter adapter;
+  private boolean restarted_state = false;
+  private String key;
 
-	private SerenityGallery tvShowSeasonsGallery;
-	private View tvShowSeasonsMainView;
-	private boolean restarted_state = false;
-	private String key;
+  @InjectPresenter TVShowSeasonBrowserPresenter presenter;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		actionBar.setCustomView(R.layout.season_custom_actionbar);
-		actionBar.setDisplayShowCustomEnabled(true);
+  @BindView(R.id.fanArt) View fanArt;
+  @BindView(R.id.tvshowSeasonBrowserLayout) View tvShowSeasonsMainView;
+  @BindView(R.id.tvShowSeasonImageGallery) RecyclerView tvShowSeasonsGallery;
+  @BindView(R.id.episodeGridView) RecyclerView gridView;
+  @BindView(R.id.drawer_layout) DrawerLayout navdrawer;
+  @BindView(R.id.data_loading_container) FrameLayout dataLoadingContainer;
 
-		key = getIntent().getExtras().getString("key");
+  Handler postDelayed = new Handler();
 
-		createSideMenu();
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    actionBar.setCustomView(R.layout.season_custom_actionbar);
+    actionBar.setDisplayShowCustomEnabled(true);
 
-		tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
-		tvShowSeasonsGallery = (SerenityGallery) findViewById(R.id.tvShowSeasonImageGallery);
+    key = getIntent().getExtras().getString("key");
 
-		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
-	}
+    createSideMenu();
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-		if (restarted_state == false) {
-			setupSeasons();
-		}
-		restarted_state = false;
-	}
+    DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
+  }
 
-	protected void setupSeasons() {
+  @Override protected void onStart() {
+    super.onStart();
+    if (restarted_state == false) {
+      setupSeasons();
+    }
+    restarted_state = false;
+  }
 
-		tvShowSeasonsGallery.setAdapter(new TVShowSeasonImageGalleryAdapter(
-				this, key));
-		tvShowSeasonsGallery
-				.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(
-						tvShowSeasonsMainView, this));
-		tvShowSeasonsGallery
-				.setOnItemClickListener(new TVShowSeasonOnItemClickListener(
-						this));
-		tvShowSeasonsGallery
-				.setOnItemLongClickListener(new SeasonOnItemLongClickListener(
-						this));
+  protected void setupSeasons() {
+    TVShowSeasonImageGalleryAdapter adapter = new TVShowSeasonImageGalleryAdapter();
+    adapter.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this, adapter));
+    adapter.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this, adapter));
 
-		tvShowSeasonsGallery.setPadding(5, 5, 5, 5);
-		tvShowSeasonsGallery.setAnimationDuration(1);
-		tvShowSeasonsGallery.setSpacing(15);
-		tvShowSeasonsGallery.setCallbackDuringFling(false);
-		tvShowSeasonsGallery.setAnimationCacheEnabled(true);
+    tvShowSeasonsGallery.setClipChildren(false);
+    tvShowSeasonsGallery.setClipToPadding(false);
+    tvShowSeasonsGallery.setAdapter(adapter);
+    tvShowSeasonsGallery.setItemAnimator(new FadeInAnimator());
+    LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(this);
+    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+    tvShowSeasonsGallery.setLayoutManager(linearLayoutManager);
 
-	}
+    tvShowSeasonsGallery.addItemDecoration(createItemDecorator());
+    tvShowSeasonsGallery.setFocusable(true);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onRestart()
-	 */
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		populateMenuDrawer();
-		restarted_state = true;
-	}
+    SeasonsEpisodePosterImageGalleryAdapter episodeAdapter = new SeasonsEpisodePosterImageGalleryAdapter();
+    adapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(episodeAdapter));
+    gridView.setClipToPadding(false);
+    gridView.setClipChildren(false);
+    gridView.setClipToOutline(false);
+    gridView.setAdapter(episodeAdapter);
+    gridView.addItemDecoration(createItemDecorator());
+    gridView.setItemAnimator(new FadeInAnimator());
+    GridLayoutManager gridLayoutManager = new FocusableGridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false) {
+      @Override public boolean supportsPredictiveItemAnimations() {
+        return false;
+      }
+    };
+    gridView.setLayoutManager(gridLayoutManager);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#createSideMenu()
-	 */
-	@Override
-	protected void createSideMenu() {
-		setContentView(R.layout.activity_tvbrowser_show_seasons);
+    dataLoadingContainer.setVisibility(View.VISIBLE);
+    presenter.retrieveSeasons(key);
+  }
 
-		View fanArt = findViewById(R.id.fanArt);
-		fanArt.setBackgroundResource(R.drawable.tvshows);
+  protected RecyclerView.ItemDecoration createItemDecorator() {
+    return new SpaceItemDecoration(
+        getResources().getDimensionPixelSize(R.dimen.horizontal_spacing));
+  }
 
-		initMenuDrawerViews();
+  @Override protected void onRestart() {
+    super.onRestart();
+    populateMenuDrawer();
+    restarted_state = true;
+  }
 
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-				R.drawable.menudrawer_selector, R.string.drawer_open,
-				R.string.drawer_closed) {
-			@Override
-			public void onDrawerOpened(View drawerView) {
+  @Override protected void createSideMenu() {
+    setContentView(R.layout.activity_tvbrowser_show_seasons);
 
-				super.onDrawerOpened(drawerView);
-				getSupportActionBar().setTitle(R.string.app_name);
-				drawerList.requestFocusFromTouch();
-			}
+    ButterKnife.bind(this);
 
-			@Override
-			public void onDrawerClosed(View drawerView) {
-				super.onDrawerClosed(drawerView);
-				getSupportActionBar().setTitle(R.string.app_name);
-			}
-		};
+    fanArt.setBackgroundResource(R.drawable.tvshows);
 
-		drawerLayout.setDrawerListener(drawerToggle);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setHomeButtonEnabled(true);
+    initMenuDrawerViews();
 
-		populateMenuDrawer();
-	}
+    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector,
+        R.string.drawer_open, R.string.drawer_closed) {
+      @Override public void onDrawerOpened(View drawerView) {
 
-	protected void populateMenuDrawer() {
-		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue",
-				R.drawable.menu_play_all_queue));
+        super.onDrawerOpened(drawerView);
+        getSupportActionBar().setTitle(R.string.app_name);
+        drawerList.requestFocusFromTouch();
+      }
 
-		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-		drawerList
-				.setOnItemClickListener(new TVShowSeasonMenuDrawerOnItemClickedListener(
-						drawerLayout));
-	}
+      @Override public void onDrawerClosed(View drawerView) {
+        super.onDrawerClosed(drawerView);
+        getSupportActionBar().setTitle(R.string.app_name);
+      }
+    };
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
-	 * android.view.KeyEvent)
-	 */
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		boolean menuKeySlidingMenu = PreferenceManager
-				.getDefaultSharedPreferences(this).getBoolean(
-						"remote_control_menu", true);
-		if (menuKeySlidingMenu) {
-			if (keyCode == KeyEvent.KEYCODE_MENU) {
-				if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-					drawerLayout.closeDrawers();
-				} else {
-					drawerLayout.openDrawer(linearDrawerLayout);
-				}
-				return true;
-			}
-		}
+    drawerLayout.setDrawerListener(drawerToggle);
+    actionBar.setDisplayHomeAsUpEnabled(true);
+    actionBar.setHomeButtonEnabled(true);
 
-		if (keyCode == KeyEvent.KEYCODE_BACK
-				&& drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-			drawerLayout.closeDrawers();
-			if (tvShowSeasonsGallery != null) {
-				tvShowSeasonsGallery.requestFocusFromTouch();
-			}
-			return true;
-		}
+    populateMenuDrawer();
+  }
 
-		View focusView = getCurrentFocus();
+  protected void populateMenuDrawer() {
+    List<MenuDrawerItem> drawerMenuItem = new ArrayList<>();
+    drawerMenuItem.add(
+        new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
 
-		SerenityGallery gallery = (SerenityGallery) findViewById(R.id.tvShowSeasonImageGallery);
-		TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.episodeGridView);
-		if (gridView == null) {
-			gridView = (TwoWayGridView) findViewById(R.id.tvShowGridView);
-		}
+    drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+    drawerList.setOnItemClickListener(
+        new TVShowSeasonMenuDrawerOnItemClickedListener(drawerLayout));
+  }
 
-		if (gallery == null && gridView == null) {
-			return super.onKeyDown(keyCode, event);
-		}
+  @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
+    boolean menuKeySlidingMenu =
+        PreferenceManager.getDefaultSharedPreferences(this).getBoolean("remote_control_menu", true);
+    if (menuKeySlidingMenu) {
+      if (keyCode == KeyEvent.KEYCODE_MENU) {
+        if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
+          drawerLayout.closeDrawers();
+        } else {
+          drawerLayout.openDrawer(linearDrawerLayout);
+        }
+        return true;
+      }
+    }
 
-		BaseAdapter adapter = null;
-		if (focusView instanceof TwoWayGridView) {
-			adapter = (BaseAdapter) gridView.getAdapter();
-		} else {
-			adapter = (BaseAdapter) gallery.getAdapter();
-		}
+    if (keyCode == KeyEvent.KEYCODE_BACK && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
+      drawerLayout.closeDrawers();
+      if (tvShowSeasonsGallery != null) {
+        tvShowSeasonsGallery.requestFocusFromTouch();
+      }
+      return true;
+    }
 
-		if (adapter != null) {
-			int itemsCount = adapter.getCount();
+    return super.onKeyDown(keyCode, event);
+  }
 
-			if (contextMenuRequested(keyCode)) {
-				View view = null;
-				if (focusView instanceof TwoWayGridView) {
-					view = gridView.getSelectedView();
-				} else if (gallery != null) {
-					view = gallery.getSelectedView();
-				}
-				if (view == null) {
-					return super.onKeyDown(keyCode, event);
-				}
-				view.performLongClick();
-				return true;
-			}
+  @Override public AbstractPosterImageGalleryAdapter getAdapter() {
+    return adapter;
+  }
 
-			if (gallery != null) {
-				if (isKeyCodeSkipBack(keyCode)) {
-					int selectedItem = gallery.getSelectedItemPosition();
-					int newPosition = selectedItem - 10;
-					if (newPosition < 0) {
-						newPosition = 0;
-					}
-					gallery.setSelection(newPosition);
-					gallery.requestFocusFromTouch();
-					return true;
-				}
-				if (isKeyCodeSkipForward(keyCode)) {
-					int selectedItem = gallery.getSelectedItemPosition();
-					int newPosition = selectedItem + 10;
-					if (newPosition > itemsCount) {
-						newPosition = itemsCount - 1;
-					}
-					gallery.setSelection(newPosition);
-					gallery.requestFocusFromTouch();
-					return true;
-				}
-			}
-		}
+  @Override protected RecyclerView findVideoRecyclerView() {
+    return gridView;
+  }
 
-		return super.onKeyDown(keyCode, event);
+  @Override public void updateEpisodes(List<VideoContentInfo> episodes) {
+    SeasonsEpisodePosterImageGalleryAdapter adapter =
+        (SeasonsEpisodePosterImageGalleryAdapter) gridView.getAdapter();
+    adapter.updateEpisodes(episodes);
+    gridView.setVisibility(View.VISIBLE);
+  }
 
-	}
+  @Override public void populateSeasons(List<SeriesContentInfo> seasons) {
+    if (!seasons.isEmpty()) {
+      TextView titleView = findViewById(R.id.tvShowSeasonsDetailText);
+      titleView.setText(seasons.get(0).getParentTitle());
+      TextView textView = findViewById(R.id.tvShowSeasonsItemCount);
+      textView.setText(Integer.toString(seasons.size()) + getString(R.string._item_s_));
+    }
 
-	/**
-	 * Nothing really to update here now, so will return null.
-	 *
-	 */
-	@Override
-	protected SerenityGallery findGalleryView() {
-		return null;
-	}
+    TVShowSeasonImageGalleryAdapter adapter =
+        (TVShowSeasonImageGalleryAdapter) tvShowSeasonsGallery.getAdapter();
+    adapter.updateSeasonsList(seasons);
 
-	/**
-	 * We want to update playback position and onscreen info when completing.
-	 *
-	 * So pass back the appropriate grid view in this case.
-	 */
-	@Override
-	protected TwoWayGridView findGridView() {
-		return (TwoWayGridView) findViewById(R.id.episodeGridView);
-	}
+    postDelayed.postDelayed(() -> {
+      dataLoadingContainer.setVisibility(View.GONE);
+      tvShowSeasonsGallery.getChildAt(0).requestFocus();
+      adapter.getOnItemSelectedListener().onItemSelected(tvShowSeasonsGallery.getChildAt(0), 0);
+    }, 500);
+  }
+
+  @Override public void fetchEpisodes(String key) {
+    presenter.retrieveEpisodes(key);
+  }
 }

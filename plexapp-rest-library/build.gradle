@@ -1,0 +1,100 @@
+buildscript {
+
+  repositories {
+    google()
+    jcenter()
+    mavenCentral()
+  }
+}
+
+apply plugin: 'java'
+apply plugin: "jacoco"
+apply plugin: 'org.sonarqube'
+apply plugin: 'kotlin-kapt'
+
+sonarqube {
+  properties {
+    property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.organization", "kingargyle-github"
+    property "sonar.login", "cb7af08f0b0e86306ac5365074326dc27aba503e"
+    property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+  }
+}
+
+
+targetCompatibility = '1.8'
+sourceCompatibility = '1.8'
+
+repositories {
+  google()
+  jcenter()
+  mavenCentral()
+  maven {
+    url "http://kingargyle.github.io/repo"
+  }
+}
+
+sourceSets {
+  main {
+    java {
+      srcDirs = ["src/main/java"]
+    }
+  }
+  test {
+    java {
+      srcDirs = ["src/test/java"]
+    }
+  }
+}
+
+
+dependencies {
+
+  implementation project(':serenity-common')
+  implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+  implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+  implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+  implementation("com.squareup.retrofit2:converter-simplexml:$retrofitVersion") {
+    exclude group: 'stax'
+    exclude group: 'xpp3'
+  }
+  implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
+  implementation "me.jessyan:retrofit-url-manager:$urlManager"
+
+  testImplementation "junit:junit:$junitVersion"
+  testImplementation "xmlunit:xmlunit:$xmlUnitVersion"
+}
+
+jar {
+  manifest {
+    attributes("Implementation-Title": "Gradle")
+  }
+}
+
+test {
+  minHeapSize = "128m"
+  maxHeapSize = "512m"
+
+  testLogging {
+    events "passed", "skipped", "failed", "standardOut", "standardError"
+  }
+  dependsOn 'cleanTest'
+
+  finalizedBy jacocoTestReport
+}
+
+jacoco {
+  toolVersion = "0.7.6.201602180812"
+  reportsDir = file("$buildDir/jacoco-report")
+}
+
+jacocoTestReport {
+  reports {
+    xml.enabled true
+    csv.enabled false
+    html.destination file("${buildDir}/jacoco-report/html")
+  }
+}
+
+tasks.jacocoTestReport.dependsOn("test")
+

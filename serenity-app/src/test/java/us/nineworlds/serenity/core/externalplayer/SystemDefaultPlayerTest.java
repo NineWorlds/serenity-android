@@ -23,12 +23,8 @@
 
 package us.nineworlds.serenity.core.externalplayer;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import android.app.Activity;
+import android.content.Intent;
 
 import org.junit.After;
 import org.junit.Before;
@@ -39,13 +35,18 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
-import android.app.Activity;
-import android.content.Intent;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
 public class SystemDefaultPlayerTest {
 
 	SystemDefaultPlayer mxplayer;

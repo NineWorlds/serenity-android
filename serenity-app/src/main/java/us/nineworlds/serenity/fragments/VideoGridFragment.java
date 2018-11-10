@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,90 +23,61 @@
 
 package us.nineworlds.serenity.fragments;
 
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.injection.InjectingFragment;
-import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
-import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
-import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
+import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
+import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
+import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
+import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
+import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
-import com.jess.ui.TwoWayGridView;
+import static butterknife.ButterKnife.bind;
 
-public class VideoGridFragment extends InjectingFragment {
+public class VideoGridFragment extends MovieVideoGalleryFragment {
 
-	@Inject
-	protected GridVideoOnItemClickListener onItemClickListener;
+  public VideoGridFragment() {
+    super();
+  }
 
-	@Inject
-	protected GridVideoOnItemLongClickListener onItemLongClickListener;
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    View view = inflateView(inflater, container);
+    bind(this, view);
+    setupRecyclerView();
+    return view;
+  }
 
-	@Inject
-	protected MovieSelectedCategoryState categoryState;
+  @Override protected void setupRecyclerView() {
+    super.setupRecyclerView();
 
-	@Inject
-	protected PlexappFactory factory;
+  }
 
-	@Inject
-	protected VolleyUtils volleyUtils;
+  @Override protected View inflateView(LayoutInflater inflater, ViewGroup container) {
+    return inflater.inflate(R.layout.video_grid_fragment, null);
+  }
 
-	protected MovieGridPosterOnItemSelectedListener onItemSelectedListener;
+  protected LinearLayoutManager createLayoutManager() {
+    GridLayoutManager layoutManager =
+        new FocusableGridLayoutManager(getActivity(), 3,
+            GridLayoutManager.HORIZONTAL, false);
+    return layoutManager;
+  }
 
-	private TwoWayGridView gridView;
+  @Override protected RecyclerView.ItemDecoration createItemDecorator() {
+    return new ItemOffsetDecoration(resources.getDimensionPixelSize(R.dimen.grid_spacing_dimen));
+  }
 
-	public VideoGridFragment() {
-		setRetainInstance(false);
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		onItemSelectedListener = new MovieGridPosterOnItemSelectedListener();
-		View view = inflater.inflate(R.layout.video_grid_fragment, container);
-		setupGrid(view);
-		return view;
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-
-	}
-
-	protected void setupGrid(View view) {
-		gridView = (TwoWayGridView) view.findViewById(R.id.movieGridView);
-
-		gridView.setOnItemClickListener(onItemClickListener);
-		gridView.setOnItemSelectedListener(new MovieGridPosterOnItemSelectedListener());
-		gridView.setOnItemLongClickListener(onItemLongClickListener);
-
-		MovieBrowserActivity activity = (MovieBrowserActivity) view
-				.getContext();
-		String key = MovieBrowserActivity.getKey();
-
-		MovieCategoryResponseListener response = new MovieCategoryResponseListener(
-				getActivity(), key);
-		String url = factory.getSectionsUrl(key);
-		volleyUtils.volleyXmlGetRequest(url, response,
-				new DefaultLoggingVolleyErrorListener());
-
-		// Handler categoryHandler = new CategoryHandler(getActivity(),
-		// categoryState.getCategory(), key);
-		// Messenger messenger = new Messenger(categoryHandler);
-		// Intent categoriesIntent = new Intent(getActivity(),
-		// CategoryRetrievalIntentService.class);
-		// categoriesIntent.putExtra("key", key);
-		// categoriesIntent.putExtra("MESSENGER", messenger);
-		// activity.startService(categoriesIntent);
-	}
+  @NonNull protected AbstractVideoOnItemSelectedListener createOnItemSelectedListener(MoviePosterImageAdapter adapter) {
+    return new MovieGridPosterOnItemSelectedListener(adapter);
+  }
 
 }

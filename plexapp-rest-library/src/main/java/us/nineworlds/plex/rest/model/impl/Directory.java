@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -24,301 +24,268 @@
 package us.nineworlds.plex.rest.model.impl;
 
 import java.util.List;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+import us.nineworlds.serenity.common.media.model.IDirectory;
+import us.nineworlds.serenity.common.media.model.IGenre;
+import us.nineworlds.serenity.common.media.model.ILocation;
 
-@Root(name="Directory")
-public class Directory extends AbstractPlexObject {
+@Root(name = "Directory")
+public class Directory extends AbstractPlexObject implements IDirectory {
 
-	@Attribute(required=true)
-	private String title;
-	
-	@Attribute(required=false)
-	private String art;
-	
-	@Attribute(required=false)
-	private String banner;
-	
-	@Attribute(required=false)
-	private String thumb;
+  @Attribute(required = true) private String title;
 
-	
-	public String getThumb() {
-		return thumb;
-	}
+  @Attribute(required = false) private String art;
 
-	public void setThumb(String thumb) {
-		this.thumb = thumb;
-	}
+  @Attribute(required = false) private String banner;
 
-	public String getBanner() {
-		return banner;
-	}
+  @Attribute(required = false) private String thumb;
 
-	public void setBanner(String banner) {
-		this.banner = banner;
-	}
+  @Attribute(required = false) private int refreshing;
 
-	@Attribute(required=false)
-	private int refreshing;
-		
-	@Attribute(required=false)
-	private String type;
-	
-	@Attribute(required=false)
-	private String agent;
-	
-	@Attribute(required=false)
-	private String scanner;
-	
-	@Attribute(required=false)
-	private String language;
-	
-	@Attribute(required=false)
-	private String uuid;
-	
-	@Attribute(required=false)
-	private long updatedAt;
-	
-	@Attribute(required=false)
-	private long createdAt;
-	
-	@Attribute(required=false)
-	/**
-	 * Used for searches.
-	 */
-	private String prompt;
-	
-	@Attribute(required=false)
-	/**
-	 * Only appears with prompt.
-	 */
-	private String search;
-	
-	@Attribute(required=false)
-	private int secondary;
-		
-	public int getSecondary() {
-		return secondary;
-	}
+  @Attribute(required = false) private String type;
 
-	public void setSecondary(int secondary) {
-		this.secondary = secondary;
-	}
+  @Attribute(required = false) private String agent;
 
-	public List<Genre> getGenres() {
-		return genres;
-	}
+  @Attribute(required = false) private String scanner;
 
-	public void setGenres(List<Genre> genres) {
-		this.genres = genres;
-	}
+  @Attribute(required = false) private String language;
 
-	public String getRatingKey() {
-		return ratingKey;
-	}
+  @Attribute(required = false) private String uuid;
 
-	public void setRatingKey(String ratingKey) {
-		this.ratingKey = ratingKey;
-	}
+  @Attribute(required = false) private long updatedAt;
 
-	public String getStudio() {
-		return studio;
-	}
+  @Attribute(required = false) private long createdAt;
 
-	public void setStudio(String studio) {
-		this.studio = studio;
-	}
+  @Attribute(required = false) private String prompt;
 
-	public String getRating() {
-		return rating;
-	}
+  @Attribute(required = false) private String search;
 
-	public void setRating(String rating) {
-		this.rating = rating;
-	}
+  @Attribute(required = false) private int secondary;
 
-	public String getYear() {
-		return year;
-	}
+  @ElementList(inline = true, required = false, type = Genre.class) private List<IGenre> genres;
 
-	public void setYear(String year) {
-		this.year = year;
-	}
+  @ElementList(inline = true, name = "Location", required = false, type = Location.class) private List<ILocation>
+      locations;
 
-	public String getContentRating() {
-		return contentRating;
-	}
+  @Attribute(required = false) private String ratingKey;
 
-	public void setContentRating(String contentRating) {
-		this.contentRating = contentRating;
-	}
+  @Attribute(required = false) private String studio;
 
-	public String getSummary() {
-		return summary;
-	}
+  @Attribute(required = false) private String rating;
 
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
+  @Attribute(required = false) private String year;
 
-	public String getLeafCount() {
-		return leafCount;
-	}
+  @Attribute(required = false) private String contentRating;
 
-	public void setLeafCount(String leafCount) {
-		this.leafCount = leafCount;
-	}
+  @Attribute(required = false) private String summary;
 
-	public String getViewedLeafCount() {
-		return viewedLeafCount;
-	}
+  @Attribute(required = false) private String leafCount;
 
-	public void setViewedLeafCount(String viewedLeafCount) {
-		this.viewedLeafCount = viewedLeafCount;
-	}
+  @Attribute(required = false) private String viewedLeafCount;
 
-	@ElementList(inline=true,required=false)
-	private List<Genre> genres;
+  @Override public String getThumb() {
+    return thumb;
+  }
 
-	@ElementList(inline=true,name="Location",required=false)
-	private List<Location> locations;
-	
-	@Attribute(required=false)
-	private String ratingKey;
-	
-	@Attribute(required=false)
-	private String studio;
-	
-	@Attribute(required=false)
-	private String rating;
-	
-	@Attribute(required=false)
-	private String year;
-	
-	@Attribute(required=false)
-	private String contentRating;
-	
-	@Attribute(required=false)
-	private String summary;
-	
-	@Attribute(required=false)
-	private String leafCount;
-	
-	@Attribute(required=false)
-	private String viewedLeafCount;
-	
-	
+  @Override public void setThumb(String thumb) {
+    this.thumb = thumb;
+  }
 
-	public String getTitle() {
-		return title;
-	}
+  @Override public String getBanner() {
+    return banner;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  @Override public void setBanner(String banner) {
+    this.banner = banner;
+  }
 
-	public String getArt() {
-		return art;
-	}
+  @Override public int getSecondary() {
+    return secondary;
+  }
 
-	public void setArt(String art) {
-		this.art = art;
-	}
+  @Override public void setSecondary(int secondary) {
+    this.secondary = secondary;
+  }
 
-	public int getRefreshing() {
-		return refreshing;
-	}
+  @Override public List<IGenre> getGenres() {
+    return genres;
+  }
 
-	public void setRefreshing(int refreshing) {
-		this.refreshing = refreshing;
-	}
+  @Override public void setGenres(List<IGenre> genres) {
+    this.genres = genres;
+  }
 
-	public String getType() {
-		return type;
-	}
+  @Override public String getRatingKey() {
+    return ratingKey;
+  }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+  @Override public void setRatingKey(String ratingKey) {
+    this.ratingKey = ratingKey;
+  }
 
-	public String getAgent() {
-		return agent;
-	}
+  @Override public String getStudio() {
+    return studio;
+  }
 
-	public void setAgent(String agent) {
-		this.agent = agent;
-	}
+  @Override public void setStudio(String studio) {
+    this.studio = studio;
+  }
 
-	public String getScanner() {
-		return scanner;
-	}
+  @Override public String getRating() {
+    return rating;
+  }
 
-	public void setScanner(String scanner) {
-		this.scanner = scanner;
-	}
+  @Override public void setRating(String rating) {
+    this.rating = rating;
+  }
 
-	public String getLanguage() {
-		return language;
-	}
+  @Override public String getYear() {
+    return year;
+  }
 
-	public void setLanguage(String language) {
-		this.language = language;
-	}
+  @Override public void setYear(String year) {
+    this.year = year;
+  }
 
-	public String getUuid() {
-		return uuid;
-	}
+  @Override public String getContentRating() {
+    return contentRating;
+  }
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+  @Override public void setContentRating(String contentRating) {
+    this.contentRating = contentRating;
+  }
 
-	public long getUpdatedAt() {
-		return updatedAt;
-	}
+  @Override public String getSummary() {
+    return summary;
+  }
 
-	public void setUpdatedAt(long updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+  @Override public void setSummary(String summary) {
+    this.summary = summary;
+  }
 
-	public long getCreatedAt() {
-		return createdAt;
-	}
+  @Override public String getLeafCount() {
+    return leafCount;
+  }
 
-	public void setCreatedAt(long createdAt) {
-		this.createdAt = createdAt;
-	}
+  @Override public void setLeafCount(String leafCount) {
+    this.leafCount = leafCount;
+  }
 
-	public List<Location> getLocations() {
-		return locations;
-	}
+  @Override public String getViewedLeafCount() {
+    return viewedLeafCount;
+  }
 
-	public void setLocation(List<Location> location) {
-		this.locations = location;
-	}
-	
-	public String getPrompt() {
-		return prompt;
-	}
+  @Override public void setViewedLeafCount(String viewedLeafCount) {
+    this.viewedLeafCount = viewedLeafCount;
+  }
 
-	public void setPrompt(String prompt) {
-		this.prompt = prompt;
-	}
+  @Override public String getTitle() {
+    return title;
+  }
 
-	public String getSearch() {
-		return search;
-	}
+  @Override public void setTitle(String title) {
+    this.title = title;
+  }
 
-	public void setSearch(String search) {
-		this.search = search;
-	}
-	
-	public void setLocations(List<Location> locations) {
-		this.locations = locations;
-	}
-	
-	
+  @Override public String getArt() {
+    return art;
+  }
+
+  @Override public void setArt(String art) {
+    this.art = art;
+  }
+
+  @Override public int getRefreshing() {
+    return refreshing;
+  }
+
+  @Override public void setRefreshing(int refreshing) {
+    this.refreshing = refreshing;
+  }
+
+  @Override public String getType() {
+    return type;
+  }
+
+  @Override public void setType(String type) {
+    this.type = type;
+  }
+
+  @Override public String getAgent() {
+    return agent;
+  }
+
+  @Override public void setAgent(String agent) {
+    this.agent = agent;
+  }
+
+  @Override public String getScanner() {
+    return scanner;
+  }
+
+  @Override public void setScanner(String scanner) {
+    this.scanner = scanner;
+  }
+
+  @Override public String getLanguage() {
+    return language;
+  }
+
+  @Override public void setLanguage(String language) {
+    this.language = language;
+  }
+
+  @Override public String getUuid() {
+    return uuid;
+  }
+
+  @Override public void setUuid(String uuid) {
+    this.uuid = uuid;
+  }
+
+  @Override public long getUpdatedAt() {
+    return updatedAt;
+  }
+
+  @Override public void setUpdatedAt(long updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  @Override public long getCreatedAt() {
+    return createdAt;
+  }
+
+  @Override public void setCreatedAt(long createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  @Override public List<ILocation> getLocations() {
+    return locations;
+  }
+
+  @Override public void setLocation(List<ILocation> location) {
+    this.locations = location;
+  }
+
+  @Override public String getPrompt() {
+    return prompt;
+  }
+
+  @Override public void setPrompt(String prompt) {
+    this.prompt = prompt;
+  }
+
+  @Override public String getSearch() {
+    return search;
+  }
+
+  @Override public void setSearch(String search) {
+    this.search = search;
+  }
+
+  @Override public void setLocations(List<ILocation> locations) {
+    this.locations = locations;
+  }
 }

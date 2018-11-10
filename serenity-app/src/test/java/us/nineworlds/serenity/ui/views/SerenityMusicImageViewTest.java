@@ -23,21 +23,21 @@
 
 package us.nineworlds.serenity.ui.views;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.robolectric.RuntimeEnvironment.application;
+
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
 public class SerenityMusicImageViewTest {
 
 	@Mock
@@ -47,21 +47,19 @@ public class SerenityMusicImageViewTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		initMocks(this);
 
-		imageView = new SerenityMusicImageView(Robolectric.application,
-				contentInfo);
+		imageView = new SerenityMusicImageView(application, contentInfo);
 	}
 
 	@Test
 	public void verifyThatMetaDataForAlbumIsSet() {
-		assertThat(imageView.getPosterInfo()).isInstanceOf(
-				MusicArtistContentInfo.class);
+		assertThat(imageView.getPosterInfo()).isInstanceOf(MusicArtistContentInfo.class);
 	}
 
 	@Test
 	public void constructorWithContextOnlyDoesNotSetPosterInfo() {
-		imageView = new SerenityMusicImageView(Robolectric.application);
+		imageView = new SerenityMusicImageView(application);
 		assertThat(imageView.getPosterInfo()).isNull();
 	}
 }

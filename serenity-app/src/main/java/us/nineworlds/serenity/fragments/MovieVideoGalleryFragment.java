@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,121 +23,121 @@
 
 package us.nineworlds.serenity.fragments;
 
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.injection.InjectingFragment;
-import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
-import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
-import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.MovieCategoryResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import butterknife.BindView;
+import com.birbit.android.jobqueue.JobManager;
+import javax.inject.Inject;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
+import us.nineworlds.serenity.injection.InjectingFragment;
+import us.nineworlds.serenity.jobs.MovieCategoryJob;
+import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
+import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
+import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
+import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
+import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
+import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
+
+import static android.view.View.*;
+import static butterknife.ButterKnife.bind;
 
 public class MovieVideoGalleryFragment extends InjectingFragment {
 
-	@Inject
-	SharedPreferences preferences;
+  @Inject SharedPreferences preferences;
+  @Inject MovieSelectedCategoryState categoryState;
+  @Inject JobManager jobManager;
+  @Inject SerenityClient factory;
+  @Inject Resources resources;
 
-	@Inject
-	GalleryVideoOnItemClickListener onItemClickListener;
+  @BindView(R.id.moviePosterView) protected RecyclerView recyclerView;
+  @BindView(R.id.data_loading_container) protected FrameLayout dataLoadingContainer;
 
-	@Inject
-	GalleryVideoOnItemLongClickListener onItemLongClickListener;
+  public MovieVideoGalleryFragment() {
+    super();
+    setRetainInstance(true);
+  }
 
-	@Inject
-	protected MovieSelectedCategoryState categoryState;
+  @Override public void onStart() {
+    super.onStart();
+  }
 
-	@Inject
-	protected VolleyUtils volleyUtils;
+  @Override public void onStop() {
+    super.onStop();
+  }
 
-	@Inject
-	PlexappFactory factory;
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    View view = inflateView(inflater, container);
+    bind(this, view);
+    setupRecyclerView();
+    return view;
+  }
 
-	MoviePosterOnItemSelectedListener onItemSelectedListener;
+  protected View inflateView(LayoutInflater inflater, ViewGroup container) {
+    return inflater.inflate(R.layout.video_gallery_fragment, null);
+  }
 
-	private SerenityGallery videoGallery;
+  protected RecyclerView.ItemDecoration createItemDecorator() {
+    return new SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing));
+  }
 
-	public MovieVideoGalleryFragment() {
-		super();
-		setRetainInstance(false);
+  protected void setupRecyclerView() {
+    RecyclerView.LayoutManager linearLayoutManager = createLayoutManager();
+    MoviePosterImageAdapter adapter = new MoviePosterImageAdapter();
+    adapter.setOnItemSelectedListener(createOnItemSelectedListener(adapter));
+    adapter.setOnItemClickListener(createOnItemClickListener(adapter));
 
-	}
+    recyclerView.addItemDecoration(createItemDecorator());
+    recyclerView.setAdapter(adapter);
+    recyclerView.setLayoutManager(linearLayoutManager);
+    recyclerView.setHorizontalFadingEdgeEnabled(false);
+    recyclerView.setItemAnimator(new FadeInAnimator());
+    recyclerView.setClipToPadding(false);
+    recyclerView.setClipChildren(false);
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
+    recyclerView.setHorizontalFadingEdgeEnabled(true);
+    recyclerView.setFocusableInTouchMode(true);
+    recyclerView.requestFocus();
 
-	}
+    MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		onItemSelectedListener = new MoviePosterOnItemSelectedListener();
-		View view = inflater
-				.inflate(R.layout.video_gallery_fragment, container);
-		setupGallery(view);
-		return view;
-	}
+    String key = activity.getKey();
 
-	@Override
-	public void onStart() {
-		super.onStart();
-	}
+    MovieCategoryJob job = new MovieCategoryJob(key);
 
-	protected void setupGallery(View view) {
-		boolean scrollingAnimation = preferences.getBoolean(
-				"animation_gallery_scrolling", true);
+    dataLoadingContainer.setVisibility(VISIBLE);
+    jobManager.addJobInBackground(job);
+  }
 
-		Activity context = (Activity) view.getContext();
+  private AbstractVideoOnItemLongClickListener createOnItemLongClickListener(MoviePosterImageAdapter adapter) {
+    return new GalleryVideoOnItemLongClickListener(adapter);
+  }
 
-		videoGallery = (SerenityGallery) view
-				.findViewById(R.id.moviePosterGallery);
+  @NonNull protected AbstractVideoOnItemClickListener createOnItemClickListener(MoviePosterImageAdapter adapter) {
+    return new GalleryVideoOnItemClickListener(adapter);
+  }
 
-		videoGallery.setOnItemSelectedListener(onItemSelectedListener);
+  @NonNull protected AbstractVideoOnItemSelectedListener createOnItemSelectedListener(MoviePosterImageAdapter adapter) {
+    return new MoviePosterOnItemSelectedListener(adapter);
+  }
 
-		videoGallery.setOnItemClickListener(onItemClickListener);
-
-		videoGallery.setOnItemLongClickListener(onItemLongClickListener);
-		if (scrollingAnimation) {
-			videoGallery.setAnimationDuration(220);
-		} else {
-			videoGallery.setAnimationDuration(1);
-		}
-		videoGallery.setSpacing(25);
-		videoGallery.setAnimationCacheEnabled(true);
-		videoGallery.setCallbackDuringFling(false);
-		videoGallery.setHorizontalFadingEdgeEnabled(true);
-		videoGallery.setFocusableInTouchMode(false);
-		videoGallery.setDrawingCacheEnabled(true);
-		videoGallery.setUnselectedAlpha(0.75f);
-
-		String key = null;
-		key = MovieBrowserActivity.getKey();
-
-		MovieCategoryResponseListener response = new MovieCategoryResponseListener(
-				getActivity(), key);
-		String url = factory.getSectionsUrl(key);
-		volleyUtils.volleyXmlGetRequest(url, response,
-				new DefaultLoggingVolleyErrorListener());
-
-		// Handler categoryHandler = new CategoryHandler(getActivity(),
-		// categoryState.getCategory(), key);
-		// Messenger messenger = new Messenger(categoryHandler);
-		// Intent categoriesIntent = new Intent(getActivity(),
-		// CategoryRetrievalIntentService.class);
-		// categoriesIntent.putExtra("key", key);
-		// categoriesIntent.putExtra("MESSENGER", messenger);
-		// context.startService(categoriesIntent);
-
-	}
+  protected LinearLayoutManager createLayoutManager() {
+    LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(getActivity());
+    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+    return linearLayoutManager;
+  }
 }

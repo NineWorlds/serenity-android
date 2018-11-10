@@ -23,19 +23,17 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
+import android.content.SharedPreferences;
+import android.view.View;
+import app.com.tvrecyclerview.TvRecyclerView;
+import dagger.Module;
+import dagger.Provides;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.inject.Inject;
 import javax.inject.Singleton;
-
+import net.ganin.darv.DpadAwareRecyclerView;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,134 +43,97 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
+import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.TestingModule;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
-import android.content.SharedPreferences;
-import android.view.View;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
-import com.jess.ui.TwoWayAdapterView;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
-
-import dagger.Module;
-import dagger.Provides;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.robolectric.RuntimeEnvironment.application;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
 public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 
-	@Mock
-	PlexappFactory mockPlexFactory;
+  @Inject SerenityClient mockPlexFactory;
 
-	@Mock
-	SerenityImageLoader mockSerenityImageLoader;
+  @Mock VideoContentInfo mockVideoContentInfo;
 
-	@Mock
-	TwoWayAdapterView mockTwoWayAdapterView;
+  @Mock SharedPreferences mockPreferences;
 
-	@Mock
-	VideoContentInfo mockVideoContentInfo;
+  @Mock View mockView;
 
-	@Mock
-	SharedPreferences mockPreferences;
+  @Mock TvRecyclerView mockRecyclerView;
 
-	@Mock
-	ImageLoader mockImageLoader;
+  @Mock AbstractPosterImageGalleryAdapter mockAdapater;
 
-	@Mock
-	View mockView;
+  MovieGridPosterOnItemSelectedListener onItemSelectedListener;
 
-	MovieGridPosterOnItemSelectedListener onItemSelectedListener;
+  MovieBrowserActivity movieBrowserActivity;
 
-	MovieBrowserActivity movieBrowserActivity;
+  @Override @Before public void setUp() throws Exception {
+    ShadowApplication shadowApplication = shadowOf(application);
+    shadowApplication.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
-	@Override
-	@Before
-	public void setUp() throws Exception {
-		ShadowApplication shadowApplication = Robolectric
-				.shadowOf(Robolectric.application);
-		shadowApplication
-		.declareActionUnbindable("com.google.android.gms.analytics.service.START");
+    MockitoAnnotations.initMocks(this);
+    super.setUp();
+    doReturn(true).when(mockPreferences).getBoolean("movie_layout_grid", false);
 
-		MockitoAnnotations.initMocks(this);
-		super.setUp();
-		doReturn(true).when(mockPreferences).getBoolean("movie_layout_grid",
-				false);
-		doReturn(mockImageLoader).when(mockSerenityImageLoader)
-				.getImageLoader();
+    onItemSelectedListener = new MovieGridPosterOnItemSelectedListener(mockAdapater);
+    movieBrowserActivity = Robolectric.buildActivity(MovieBrowserActivity.class).create().start().get();
+    doReturn(movieBrowserActivity).when(mockView).getContext();
+  }
 
-		onItemSelectedListener = new MovieGridPosterOnItemSelectedListener();
-		movieBrowserActivity = Robolectric
-				.buildActivity(MovieBrowserActivity.class).create().start()
-				.get();
-		doReturn(movieBrowserActivity).when(mockView).getContext();
-	}
+  @After public void tearDown() {
+    if (movieBrowserActivity != null) {
+      movieBrowserActivity.finish();
+    }
+  }
 
-	@Test
-	public void whenItemIsSelectedTheBackgroundIsChanged() {
-		doReturn(mockVideoContentInfo).when(mockTwoWayAdapterView)
-		.getSelectedItem();
-		String expectedBackgroundUrl = "http://www.example.com/some/image";
-		doReturn(expectedBackgroundUrl).when(mockVideoContentInfo)
-				.getBackgroundURL();
-		String expectedTranscodingUrl = "http://www.example.com/transcodingUrl";
-		doReturn(expectedTranscodingUrl).when(mockPlexFactory).getImageURL(
-				anyString(), anyInt(), anyInt());
+  @Test public void whenItemIsSelectedTheBackgroundIsChanged() {
+    String expectedBackgroundUrl = "http://www.example.com/some/image";
+    doReturn(expectedBackgroundUrl).when(mockVideoContentInfo).getBackgroundURL();
+    String expectedTranscodingUrl = "http://www.example.com/transcodingUrl";
+    doReturn(expectedTranscodingUrl).when(mockPlexFactory).createImageURL(anyString(), anyInt(), anyInt());
+    doReturn(mockAdapater).when(mockRecyclerView).getAdapter();
+    doReturn(2).when(mockAdapater).getItemCount();
+    doReturn(mockVideoContentInfo).when(mockAdapater).getItem(anyInt());
 
-		onItemSelectedListener.onItemSelected(mockTwoWayAdapterView, mockView,
-				0, 0);
+    onItemSelectedListener.onItemSelected(mockView, 0);
 
-		verifyExpectedFanArtCalls(expectedBackgroundUrl, expectedTranscodingUrl);
-	}
+    verifyExpectedFanArtCalls(expectedBackgroundUrl, expectedTranscodingUrl);
+  }
 
-	protected void verifyExpectedFanArtCalls(String expectedBackgroundUrl,
-			String expectedTranscodingUrl) {
-		verify(mockVideoContentInfo, times(2)).getBackgroundURL();
-		verify(mockPlexFactory).getImageURL(expectedBackgroundUrl, 1280, 720);
-		verify(mockSerenityImageLoader, times(4)).getImageLoader();
-		verify(mockImageLoader).loadImage(eq(expectedTranscodingUrl),
-				any(ImageSize.class),
-				any(SerenityBackgroundLoaderListener.class));
-	}
+  protected void verifyExpectedFanArtCalls(String expectedBackgroundUrl, String expectedTranscodingUrl) {
+    verify(mockVideoContentInfo, atLeast(2)).getBackgroundURL();
+    verify(mockPlexFactory).createImageURL(expectedBackgroundUrl, 1280, 720);
+  }
 
-	@Override
-	public List<Object> getModules() {
-		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
-		modules.add(new TestModule());
+  @Override public List<Object> getModules() {
+    List<Object> modules = new ArrayList<Object>();
+    modules.add(new AndroidModule(application));
+    modules.add(new TestingModule());
+    modules.add(new TestModule());
 
-		return modules;
-	}
+    return modules;
+  }
 
-	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-			MovieGridPosterOnItemSelectedListener.class,
-			MovieGridPosterOnItemSelectedListenerTest.class })
-	public class TestModule {
+  @Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
+      MovieGridPosterOnItemSelectedListener.class, MovieGridPosterOnItemSelectedListenerTest.class
+  })
+  public class TestModule {
 
-		@Provides
-		@Singleton
-		PlexappFactory providesPlexappFactory() {
-			return mockPlexFactory;
-		}
-
-		@Provides
-		@Singleton
-		SerenityImageLoader providesSerenityImageLoader() {
-			return mockSerenityImageLoader;
-		}
-
-		@Provides
-		@Singleton
-		SharedPreferences providesSharedPreferences() {
-			return mockPreferences;
-		}
-
-	}
-
+    @Provides @Singleton SharedPreferences providesSharedPreferences() {
+      return mockPreferences;
+    }
+  }
 }

@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,231 +23,160 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.CategoryInfo;
-import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.TVSecondaryCategoryResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import com.birbit.android.jobqueue.JobManager;
+import javax.inject.Inject;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.jobs.TVCategorySecondaryJob;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
 
-import com.jess.ui.TwoWayGridView;
-
-/**
- * @author dcarver
- *
- */
 public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector
-implements OnItemSelectedListener {
+    implements OnItemSelectedListener {
 
-	private String selected;
-	private static String key;
-	private boolean firstSelection = true;
-	private static SerenityMultiViewVideoActivity context;
-	private static String category;
-	private String savedInstanceCategory;
+  private String selected;
+  private String key;
+  private boolean firstSelection = true;
+  private String category;
+  private String savedInstanceCategory;
 
-	@Inject
-	SharedPreferences prefs;
+  @Inject JobManager jobManager;
+  @Inject SharedPreferences prefs;
+  @Inject TVCategoryState categoryState;
 
-	@Inject
-	TVCategoryState categoryState;
+  @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
 
-	@Inject
-	PlexappFactory factory;
+  public TVCategorySpinnerOnItemSelectedListener(String defaultSelection, String ckey) {
+    selected = defaultSelection;
+    key = ckey;
+  }
 
-	@Inject
-	VolleyUtils volleyUtils;
+  public TVCategorySpinnerOnItemSelectedListener(String defaultSelection, String ckey, boolean sw) {
+    selected = defaultSelection;
+    key = ckey;
+    savedInstanceCategory = defaultSelection;
+    firstSelection = sw;
+  }
 
-	public TVCategorySpinnerOnItemSelectedListener(String defaultSelection,
-			String ckey) {
-		selected = defaultSelection;
-		key = ckey;
-	}
+  @Override
+  public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
+    Activity context = getActivity(viewAdapter.getContext());
+    if (context.isDestroyed()) {
+      return;
+    }
+    ButterKnife.bind(this, context);
 
-	public TVCategorySpinnerOnItemSelectedListener(String defaultSelection,
-			String ckey, boolean sw) {
-		selected = defaultSelection;
-		key = ckey;
-		savedInstanceCategory = defaultSelection;
-		firstSelection = sw;
-	}
+    CategoryInfo item = (CategoryInfo) viewAdapter.getItemAtPosition(position);
 
-	@Override
-	public void onItemSelected(AdapterView<?> viewAdapter, View view,
-			int position, long id) {
-		context = (SerenityMultiViewVideoActivity) view.getContext();
-		CategoryInfo item = (CategoryInfo) viewAdapter
-				.getItemAtPosition(position);
+    if (savedInstanceCategory != null) {
+      int savedInstancePosition = getSavedInstancePosition(viewAdapter);
+      item = (CategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
+      viewAdapter.setSelection(savedInstancePosition);
+      savedInstanceCategory = null;
+      if (item.getLevel() == 0) {
+        populatePrimaryCategory(item, secondarySpinner);
+      } else {
+        populateSecondaryCategory();
+      }
+      return;
+    }
 
-		Spinner secondarySpinner = (Spinner) context
-				.findViewById(R.id.categoryFilter2);
+    if (firstSelection) {
+      String filter = prefs.getString("serenity_series_category_filter", "all");
 
-		if (savedInstanceCategory != null) {
-			int savedInstancePosition = getSavedInstancePosition(viewAdapter);
-			item = (CategoryInfo) viewAdapter
-					.getItemAtPosition(savedInstancePosition);
-			viewAdapter.setSelection(savedInstancePosition);
-			savedInstanceCategory = null;
-			if (item.getLevel() == 0) {
-				populatePrimaryCategory(item, secondarySpinner);
-			} else {
-				populateSecondaryCategory();
-			}
-			return;
-		}
+      int count = viewAdapter.getCount();
+      for (int i = 0; i < count; i++) {
+        CategoryInfo citem = (CategoryInfo) viewAdapter.getItemAtPosition(i);
+        if (citem.getCategory().equals(filter)) {
+          item = citem;
+          selected = citem.getCategory();
+          viewAdapter.setSelection(i);
+          continue;
+        }
+      }
 
-		if (firstSelection) {
-			String filter = prefs.getString("serenity_series_category_filter",
-					"all");
+      if (item.getCategory().equals("newest")
+          || item.getCategory().equals("recentlyAdded")
+          || item.getCategory().equals("recentlyViewed")
+          || item.getCategory().equals("onDeck")) {
+        Intent i = new Intent(context, EpisodeBrowserActivity.class);
+        i.putExtra("key", "/library/sections/" + key + "/" + item.getCategory());
+        context.startActivityForResult(i, 0);
+      } else {
+        setupImageGallery(item);
+      }
+      firstSelection = false;
+      return;
+    }
 
-			int count = viewAdapter.getCount();
-			for (int i = 0; i < count; i++) {
-				CategoryInfo citem = (CategoryInfo) viewAdapter
-						.getItemAtPosition(i);
-				if (citem.getCategory().equals(filter)) {
-					item = citem;
-					selected = citem.getCategory();
-					viewAdapter.setSelection(i);
-					continue;
-				}
-			}
+    if (selected.equalsIgnoreCase(item.getCategory())) {
+      return;
+    }
 
-			if (item.getCategory().equals("newest")
-					|| item.getCategory().equals("recentlyAdded")
-					|| item.getCategory().equals("recentlyViewed")
-					|| item.getCategory().equals("onDeck")) {
-				Intent i = new Intent(context, EpisodeBrowserActivity.class);
-				i.putExtra("key",
-						"/library/sections/" + key + "/" + item.getCategory());
-				context.startActivityForResult(i, 0);
-			} else {
-				setupImageGallery(item);
-			}
-			firstSelection = false;
-			return;
-		}
+    selected = item.getCategory();
+    category = item.getCategory();
+    categoryState.setCategory(selected);
 
-		if (selected.equalsIgnoreCase(item.getCategory())) {
-			return;
-		}
+    if (item.getLevel() == 0) {
+      populatePrimaryCategory(item, secondarySpinner);
+    } else {
+      populateSecondaryCategory();
+    }
+  }
 
-		selected = item.getCategory();
-		category = item.getCategory();
-		categoryState.setCategory(selected);
+  protected void populatePrimaryCategory(CategoryInfo item, Spinner secondarySpinner) {
+    if (item.getCategory().equals("newest")
+        || item.getCategory().equals("recentlyAdded")
+        || item.getCategory().equals("recentlyViewed")
+        || item.getCategory().equals("onDeck")) {
+      Activity context = getActivity(secondarySpinner.getContext());
+      Intent i = new Intent(context, EpisodeBrowserActivity.class);
+      i.putExtra("key", "/library/sections/" + key + "/" + item.getCategory());
+      context.startActivityForResult(i, 0);
+    } else {
+      secondarySpinner.setVisibility(View.INVISIBLE);
+      setupImageGallery(item);
+    }
+  }
 
-		if (item.getLevel() == 0) {
-			populatePrimaryCategory(item, secondarySpinner);
-		} else {
-			populateSecondaryCategory();
-		}
+  protected void populateSecondaryCategory() {
+    TVCategorySecondaryJob tvCategoryJob = new TVCategorySecondaryJob(key, category);
+    jobManager.addJobInBackground(tvCategoryJob);
+  }
 
-	}
+  private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
+    int count = viewAdapter.getCount();
+    for (int i = 0; i < count; i++) {
+      CategoryInfo citem = (CategoryInfo) viewAdapter.getItemAtPosition(i);
+      if (citem.getCategory().equals(savedInstanceCategory)) {
+        return i;
+      }
+    }
+    return 0;
+  }
 
-	protected void populatePrimaryCategory(CategoryInfo item,
-			Spinner secondarySpinner) {
-		if (item.getCategory().equals("newest")
-				|| item.getCategory().equals("recentlyAdded")
-				|| item.getCategory().equals("recentlyViewed")
-				|| item.getCategory().equals("onDeck")) {
-			Intent i = new Intent(context, EpisodeBrowserActivity.class);
-			i.putExtra("key",
-					"/library/sections/" + key + "/" + item.getCategory());
-			context.startActivityForResult(i, 0);
-		} else {
-			secondarySpinner.setVisibility(View.INVISIBLE);
-			setupImageGallery(item);
-		}
-	}
+  protected void setupImageGallery(CategoryInfo item) {
+    refreshData(item);
+  }
 
-	protected void populateSecondaryCategory() {
-		String url = factory.getSectionsURL(key, category);
-		TVSecondaryCategoryResponseListener response = new TVSecondaryCategoryResponseListener(
-				context, category, key);
-		volleyUtils.volleyXmlGetRequest(url, response,
-				new DefaultLoggingVolleyErrorListener());
+  private void refreshData(CategoryInfo item) {
+    Activity activity = getActivity(secondarySpinner.getContext());
+    if (activity instanceof TVShowBrowserActivity) {
+      TVShowBrowserActivity a = (TVShowBrowserActivity) activity;
+      a.requestUpdatedVideos(key, item.getCategory());
+    }
+  }
 
-		// Messenger messenger = new Messenger(secondaryCategoryHandler);
-		// Intent categoriesIntent = new Intent(context,
-		// SecondaryCategoryRetrievalIntentService.class);
-		// categoriesIntent.putExtra("key", key);
-		// categoriesIntent.putExtra("category", category);
-		// categoriesIntent.putExtra("MESSENGER", messenger);
-		// context.startService(categoriesIntent);
-	}
+  @Override public void onNothingSelected(AdapterView<?> va) {
 
-	private int getSavedInstancePosition(AdapterView<?> viewAdapter) {
-		int count = viewAdapter.getCount();
-		for (int i = 0; i < count; i++) {
-			CategoryInfo citem = (CategoryInfo) viewAdapter
-					.getItemAtPosition(i);
-			if (citem.getCategory().equals(savedInstanceCategory)) {
-				return i;
-			}
-		}
-		return 0;
-	}
-
-	protected void setupImageGallery(CategoryInfo item) {
-		View bgLayout = context.findViewById(R.id.tvshowBrowserLayout);
-
-		if (context.isGridViewActive()) {
-			TwoWayGridView gridView = (TwoWayGridView) context
-					.findViewById(R.id.tvShowGridView);
-			gridView.setAdapter(new TVShowPosterImageGalleryAdapter(context,
-					key, item.getCategory()));
-			gridView.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(
-					bgLayout, context));
-			gridView.setOnItemClickListener(new TVShowGridOnItemClickListener(
-					context));
-			gridView.setOnItemLongClickListener(new TVShowGridOnItemLongClickListener());
-			gridView.setOnKeyListener(new TVShowGridOnKeyListener(context));
-		} else {
-			SerenityGallery posterGallery = (SerenityGallery) context
-					.findViewById(R.id.tvShowBannerGallery);
-			if (!context.isPosterLayoutActive()) {
-				posterGallery.setAdapter(new TVShowBannerImageGalleryAdapter(
-						context, key, item.getCategory()));
-			} else {
-				posterGallery.setAdapter(new TVShowPosterImageGalleryAdapter(
-						context, key, item.getCategory()));
-			}
-			posterGallery
-			.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(
-					bgLayout, context));
-			posterGallery
-			.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(
-					context));
-			posterGallery
-			.setOnItemLongClickListener(new ShowOnItemLongClickListener());
-			posterGallery.setCallbackDuringFling(false);
-			posterGallery.setAnimationDuration(1);
-			posterGallery.setSpacing(15);
-			posterGallery.setPadding(5, 5, 5, 5);
-			posterGallery.setAnimationCacheEnabled(true);
-			posterGallery.setHorizontalFadingEdgeEnabled(true);
-			posterGallery.setFocusableInTouchMode(false);
-			posterGallery.setDrawingCacheEnabled(true);
-			posterGallery.setUnselectedAlpha(0.75f);
-
-		}
-
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> va) {
-
-	}
-
+  }
 }

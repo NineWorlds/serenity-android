@@ -23,28 +23,30 @@
 
 package us.nineworlds.serenity.core.services;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Intent;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import dagger.Module;
+import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
-import android.content.Intent;
-import dagger.Module;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
 public class MovieSearchIntentServiceTest extends InjectingTest {
 
 	MockMovieSearchIntentService service;
@@ -79,12 +81,12 @@ public class MovieSearchIntentServiceTest extends InjectingTest {
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(application));
 		modules.add(new TestModule());
 		return modules;
 	}
 
-	@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, injects = {
+	@Module(addsTo = AndroidModule.class, includes = {SerenityModule.class, TestingModule.class}, injects = {
 		MovieSearchIntentService.class, MovieSearchIntentServiceTest.class,
 		MockMovieSearchIntentService.class })
 	public class TestModule {

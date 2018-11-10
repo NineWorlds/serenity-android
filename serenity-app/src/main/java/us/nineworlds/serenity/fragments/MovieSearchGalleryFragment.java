@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,89 +23,9 @@
 
 package us.nineworlds.serenity.fragments;
 
-import javax.inject.Inject;
+public class MovieSearchGalleryFragment extends MovieVideoGalleryFragment {
 
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.injection.InjectingFragment;
-import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
-import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-public class MovieSearchGalleryFragment extends InjectingFragment {
-
-	@Inject
-	SharedPreferences preferences;
-
-	@Inject
-	GalleryVideoOnItemClickListener onItemClickListener;
-
-	@Inject
-	GalleryVideoOnItemLongClickListener onItemLongClickListener;
-
-	@Inject
-	protected MovieSelectedCategoryState categoryState;
-
-	MoviePosterOnItemSelectedListener onItemSelectedListener;
-
-	private SerenityGallery videoGallery;
-
-	public MovieSearchGalleryFragment() {
-		super();
-
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		onItemSelectedListener = new MoviePosterOnItemSelectedListener();
-
-		return inflater.inflate(R.layout.video_gallery_fragment, container);
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-
-		boolean scrollingAnimation = preferences.getBoolean(
-				"animation_gallery_scrolling", true);
-
-		videoGallery = (SerenityGallery) getActivity().findViewById(
-				R.id.moviePosterGallery);
-
-		videoGallery.setOnItemSelectedListener(onItemSelectedListener);
-
-		videoGallery.setOnItemClickListener(onItemClickListener);
-
-		videoGallery.setOnItemLongClickListener(onItemLongClickListener);
-		if (scrollingAnimation) {
-			videoGallery.setAnimationDuration(220);
-		} else {
-			videoGallery.setAnimationDuration(1);
-		}
-		videoGallery.setSpacing(25);
-		videoGallery.setAnimationCacheEnabled(true);
-		videoGallery.setCallbackDuringFling(false);
-		videoGallery.setHorizontalFadingEdgeEnabled(true);
-		videoGallery.setFocusableInTouchMode(false);
-		videoGallery.setDrawingCacheEnabled(true);
-		videoGallery.setUnselectedAlpha(0.75f);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-	}
-
+  public MovieSearchGalleryFragment() {
+    super();
+  }
 }

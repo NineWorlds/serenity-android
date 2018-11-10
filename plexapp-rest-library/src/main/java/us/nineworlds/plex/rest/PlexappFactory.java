@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -24,288 +24,237 @@
 package us.nineworlds.plex.rest;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
-
+import java.util.List;
 import us.nineworlds.plex.rest.config.IConfiguration;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.rest.SerenityClient;
+import us.nineworlds.serenity.common.rest.SerenityUser;
 
 /**
  * This class acts as a factory for retrieving items from Plex.
- * 
+ *
  * This is a singleton so only one of these will ever exist currently.
- * 
+ *
  * @author dcarver
- * 
  */
-public class PlexappFactory {
+public class PlexappFactory implements SerenityClient {
 
-	private static PlexappFactory instance = null;
+  private static SerenityClient instance = null;
 
-	private ResourcePaths resourcePath = null;
-	private Serializer serializer = null;
+  private PlexappClient client;
 
-	private PlexappFactory(IConfiguration config) {
-		resourcePath = new ResourcePaths(config);
-		serializer = new Persister();
-	}
+  private static ResourcePaths resourcePath;
 
-	public static PlexappFactory getInstance(IConfiguration config) {
-		if (instance == null) {
-			instance = new PlexappFactory(config);
-		}
-		return instance;
-	}
+  private PlexappFactory(IConfiguration config) {
+    client = PlexappClient.getInstance(config);
+  }
 
-	/**
-	 * Retrieve the root metadata from the Plex Media Server.
-	 * 
-	 * @return 
-	 * @throws Exception
-	 */
-	public MediaContainer retrieveRootData() throws Exception {
-		String rootURL = resourcePath.getRoot();
-		MediaContainer mediaContainer = serializeResource(rootURL);
-
-		return mediaContainer;
-	}
-
-	/**
-	 * This retrieves the available libraries.  This can include such
-	 * things as Movies, and TV shows.
-	 * 
-	 * @return MediaContainer the media container for the library
-	 * @throws Exception
-	 */
-	public MediaContainer retrieveLibrary() throws Exception {
-		String libraryURL = resourcePath.getLibraryURL();
-		MediaContainer mediaContainer = serializeResource(libraryURL);
-
-		return mediaContainer;
-	}
-	
-	/**
-	 * This retrieves the available libraries.  This can include such
-	 * things as Movies, and TV shows.
-	 * 
-	 * @return MediaContainer the media container for the library
-	 * @throws Exception
-	 */
-	public MediaContainer retrieveSections() throws Exception {
-		String sectionsURL = resourcePath.getSectionsURL();
-		MediaContainer mediaContainer = serializeResource(sectionsURL);
-
-		return mediaContainer;
-	}
-	
-	/**
-	 * This retrieves the available libraries.  This can include such
-	 * things as Movies, and TV shows.
-	 * 
-	 * @return MediaContainer the media container for the library
-	 * @param key the section key
-	 * @throws Exception
-	 */
-	public MediaContainer retrieveSections(String key) throws Exception {
-		String sectionsURL = resourcePath.getSectionsURL(key);
-		MediaContainer mediaContainer = serializeResource(sectionsURL);
-
-		return mediaContainer;
-	}
-	
-	/**
-	 * For Movies this will return a MediaContainer with Videos.  For
-	 * TV Shows this will return a MediaContainer with Directories.
-	 * 
-	 * @param key
-	 * @param category
-	 * @return MediaContainer
-	 * @throws Exception
-	 */
-	public MediaContainer retrieveSections(String key, String category) throws Exception {
-		String moviesURL = resourcePath.getSectionsURL(key, category);
-		MediaContainer mediaContainer = serializeResource(moviesURL);
-		return mediaContainer;
-	}
-	
-	public MediaContainer retrieveSections(String key, String category, String secondaryCategory) throws Exception {
-		String moviesURL = resourcePath.getSectionsURL(key, category, secondaryCategory);
-		MediaContainer mediaContainer = serializeResource(moviesURL);
-		return mediaContainer;
-	}
-	
-	
-	public MediaContainer retrieveSeasons(String key) throws Exception {
-		String seasonsURL = resourcePath.getSeasonsURL(key);
-		MediaContainer mediaContainer = serializeResource(seasonsURL);
-		return mediaContainer;
-	}
-	
-	public MediaContainer retrieveMusicMetaData(String key) throws Exception {
-		String seasonsURL = resourcePath.getSeasonsURL(key);
-		MediaContainer mediaContainer = serializeResource(seasonsURL);
-		return mediaContainer;
-	}
-	
-	
-	public MediaContainer retrieveEpisodes(String key) throws Exception {
-		String episodesURL = resourcePath.getEpisodesURL(key);
-		MediaContainer mediaContainer = serializeResource(episodesURL);
-		return mediaContainer;
-	}
-	
-	public MediaContainer retrieveMovieMetaData(String key) throws Exception {
-		String episodesURL = resourcePath.getMovieMetaDataURL(key);
-		MediaContainer mediaContainer = serializeResource(episodesURL);
-		return mediaContainer;
-	}
-		
-	public MediaContainer searchMovies(String key, String query) throws Exception {
-		String searchURL = resourcePath.getMovieSearchURL(key, query);
-		MediaContainer mediaContainer = serializeResource(searchURL);
-		return mediaContainer;
-	}
-	
-	public MediaContainer searchEpisodes(String key, String query) throws Exception {
-		String searchURL = resourcePath.getEpisodeSearchURL(key, query);
-		MediaContainer mediaContainer = serializeResource(searchURL);
-		return mediaContainer;
-	}
-	
-	public String baseURL() {
-		return resourcePath.getRoot();
-	}
-
-	/**
-	 * Sets a video as watched. viewCount will be 1.
-	 * @param key
-	 * @return
-	 */
-	public boolean setWatched(String key) {
-		String resourceURL = resourcePath.getWatchedUrl(key);
-		return requestSuccessful(resourceURL);
-	}
-	
-	/**
-	 * Sets a vide as unwatched. viewCount will not be present.
-	 * 
-	 * @param key
-	 * @return
-	 */
-	public boolean setUnWatched(String key) {
-		String resourceURL = resourcePath.getUnwatchedUrl(key);
-		return requestSuccessful(resourceURL);
-	}
-	
-	public boolean setProgress(String key, String offset) {
-		String resourceURL = resourcePath.getProgressUrl(key, offset);
-		return requestSuccessful(resourceURL);
-	}
-	
-
-	/**
-	 * @param resourceURL
-	 * @param con
-	 * @return
-	 */
-	protected boolean requestSuccessful(String resourceURL) {
-		HttpURLConnection con = null;
-		try {
-			URL url = new URL(resourceURL);
-			con = (HttpURLConnection) url.openConnection();
-			con.setDefaultUseCaches(false);
-			int responseCode = con.getResponseCode();
-			if (responseCode == 200) {
-				return true;
-			}
-		} catch (Exception ex) {
-			return false;
-		} finally {
-			if (con != null) {
-				con.disconnect();
-			}
-		}
-		return false;
-	}
-	
-	public String getProgressURL(String key, String offset) {
-		return resourcePath.getProgressUrl(key, offset);
-	}
-	
-	public String getMovieSearchURL(String key, String query) {
-		return resourcePath.getMovieSearchURL(key, query);
-	}
-	
-	public String getTVShowSearchURL(String key, String query) {
-		return resourcePath.getMovieSearchURL(key, query);
-	}
-
-	public String getEpisodeSearchURL(String key, String query) {
-		return resourcePath.getMovieSearchURL(key, query);
-	}
-	
-	public String getMediaTagURL(String resourceType, String resourceName, String identifier) {
-		return resourcePath.getMediaTagURL(resourceType, resourceName, identifier);
-	}
-	
-	public String getSectionsURL(String key, String category) {
-		return resourcePath.getSectionsURL(key, category);
-	}
-	
-	public String getSectionsURL() {
-		return resourcePath.getSectionsURL();
-	}
-	
-	public String getSectionsUrl(String key) {
-		return resourcePath.getSectionsURL(key);
-	}
-	
-	public String getMovieMetadataURL(String key) {
-		return resourcePath.getMovieMetaDataURL(key);
-	}
-	
-	public String getEpisodesURL(String key) {
-		return resourcePath.getEpisodesURL(key);
-	}
-	
-	public String getSeasonsURL(String key) {
-		return resourcePath.getSeasonsURL(key);
-	}
-
-    public String getImageURL(String url, int width, int height) {
-        return resourcePath.getImageURL(url, width, height);
+  public static SerenityClient getInstance(IConfiguration config) {
+    if (instance == null) {
+      instance = new PlexappFactory(config);
     }
+    resourcePath = new ResourcePaths(config);
+    return instance;
+  }
 
-    /**
-	 * Given a resource's URL, read and return the serialized MediaContainer
-	 * @param resourceURL
-	 * @return
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 * @throws Exception
-	 */
-	private MediaContainer serializeResource(String resourceURL)
-			throws MalformedURLException, IOException, Exception {
-		MediaContainer mediaContainer;
-		URL url = new URL(resourceURL);
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		// We only want the updated data if something has changed.
-		con.addRequestProperty("Cache-Control", "max-age=0");
-		mediaContainer = serializer.read(MediaContainer.class,
-				con.getInputStream(), false);
-		return mediaContainer;
-	}
-	
-	public MediaContainer serializeResourceFromString(String xmlString) throws Exception {
-		MediaContainer container = serializer.read(MediaContainer.class, xmlString, false);
-		return container;
-	}
+  /**
+   * Retrieve the root metadata from the Plex Media Server.
+   *
+   * @throws Exception
+   */
+  @Override public IMediaContainer retrieveRootData() throws Exception {
+    return client.retrieveRootData();
+  }
 
+  /**
+   * This retrieves the available libraries.  This can include such
+   * things as Movies, and TV shows.
+   *
+   * @return MediaContainer the media container for the library
+   * @throws Exception
+   */
+  @Override public IMediaContainer retrieveLibrary() throws Exception {
+    return client.retrieveLibrary();
+  }
 
+  /**
+   * This retrieves the available libraries.  This can include such
+   * things as Movies, and TV shows.
+   *
+   * @return MediaContainer the media container for the library
+   * @throws Exception
+   */
+  @Override public IMediaContainer retrieveItemByCategories() throws Exception {
+    return client.retrieveSections();
+  }
+
+  /**
+   * This retrieves the available libraries.  This can include such
+   * things as Movies, and TV shows.
+   *
+   * @param key the section key
+   * @return MediaContainer the media container for the library
+   * @throws Exception
+   */
+  @Override public IMediaContainer retrieveItemByIdCategory(String key) throws Exception {
+    return client.retrieveSections(key);
+  }
+
+  /**
+   * For Movies this will return a MediaContainer with Videos.  For
+   * TV Shows this will return a MediaContainer with Directories.
+   *
+   * @return MediaContainer
+   * @throws Exception
+   */
+  @Override public IMediaContainer retrieveItemByIdCategory(String key, String category) throws Exception {
+    return client.retrieveSections(key, category);
+  }
+
+  @Override public IMediaContainer retrieveItemByCategories(String key, String category, String secondaryCategory)
+      throws Exception {
+    return client.retrieveSections(key, category, secondaryCategory);
+  }
+
+  @Override public IMediaContainer retrieveSeasons(String key) throws Exception {
+    return client.retrieveSeasons(key);
+  }
+
+  @Override public IMediaContainer retrieveMusicMetaData(String key) throws Exception {
+    return client.retrieveMusicMetaData(key);
+  }
+
+  @Override public IMediaContainer retrieveEpisodes(String key) throws Exception {
+    return client.retrieveEpisodes(key);
+  }
+
+  @Override public IMediaContainer retrieveMovieMetaData(String key) throws Exception {
+    return client.retrieveMovieMetaData(key);
+  }
+
+  @Override public IMediaContainer searchMovies(String key, String query) throws Exception {
+    return client.searchMovies(key, query);
+  }
+
+  @Override public IMediaContainer searchEpisodes(String key, String query) throws Exception {
+    return client.searchEpisodes(key, query);
+  }
+
+  @Override public void updateBaseUrl(String baseUrl) {
+    throw new UnsupportedOperationException("Multiple User Support is not available for Plex Servers");
+  }
+
+  @Override public String baseURL() {
+    return client.baseURL();
+  }
+
+  /**
+   * Sets a video as watched. viewCount will be 1.
+   */
+  @Override public boolean watched(String key) {
+    try {
+      return client.watched(key);
+    } catch (IOException e) {
+    }
+    return false;
+  }
+
+  /**
+   * Sets a vide as unwatched. viewCount will not be present.
+   */
+  @Override public boolean unwatched(String key) {
+    try {
+      return client.unwatched(key);
+    } catch (IOException e) {
+    }
+    return false;
+  }
+
+  @Override public boolean progress(String key, String offset) {
+    try {
+      return client.progress(key, offset);
+    } catch (IOException e) {
+    }
+    return false;
+  }
+
+  @Override public String createMediaTagURL(String resourceType, String resourceName, String identifier) {
+    return client.createMediaTagURL(resourceType, resourceName, identifier);
+  }
+
+  @Override public String createSectionsURL(String key, String category) {
+    return resourcePath.getSeasonsURL(key);
+  }
+
+  @Override public String createSectionsURL() {
+    return resourcePath.getSectionsURL();
+  }
+
+  @Override public String createSectionsUrl(String key) {
+    return resourcePath.getSectionsURL(key);
+  }
+
+  @Override public String createMovieMetadataURL(String key) {
+    return resourcePath.getMovieMetaDataURL(key);
+  }
+
+  @Override public String createEpisodesURL(String key) {
+    return resourcePath.getEpisodesURL(key);
+  }
+
+  @Override public String createSeasonsURL(String key) {
+    return resourcePath.getSeasonsURL(key);
+  }
+
+  @Override public String createImageURL(String url, int width, int height) {
+    return resourcePath.getImageURL(url, width, height);
+  }
+
+  @Override public String createTranscodeUrl(String id, int offset) {
+    return resourcePath.getTranscoderVideoUrl(id, offset);
+  }
+
+  @Override public void reinitialize() {
+
+  }
+
+  @Override public SerenityUser userInfo(String userId) {
+    throw new UnsupportedOperationException("Multiple User Support is not available for Plex Servers");
+  }
+
+  @Override public List<SerenityUser> allAvailableUsers() {
+    throw new UnsupportedOperationException("Multiple User Support is not available for Plex Servers");
+  }
+
+  @Override public SerenityUser authenticateUser(SerenityUser user) {
+    throw new UnsupportedOperationException("Multiple User Support is not available for Plex Servers");
+  }
+
+  @Override public String createUserImageUrl(SerenityUser user, int width, int height) {
+    throw new UnsupportedOperationException("Multiple User Support is not available for Plex Servers.");
+  }
+
+  @Override public void startPlaying(String key) {
+    // DO NOTHING as plex doesn't care when you start or stop
+  }
+
+  @Override public void stopPlaying(String key) {
+    // DO NOTHING as plex doesn't care when you start or stop
+  }
+
+  @Override public IMediaContainer retrieveSeriesById(String key, String categoryId) {
+    try {
+      return retrieveItemByIdCategory(key, categoryId);
+    } catch (Exception ex) {
+    }
+    return null;
+  }
+
+  @Override public IMediaContainer retrieveSeriesCategoryById(String key) {
+    try {
+      return retrieveItemByIdCategory(key);
+    } catch (Exception e) {
+    }
+    return null;
+  }
 }

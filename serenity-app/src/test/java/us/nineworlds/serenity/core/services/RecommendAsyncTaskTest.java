@@ -23,37 +23,27 @@
 
 package us.nineworlds.serenity.core.services;
 
-import static org.fest.assertions.api.ANDROID.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import android.app.Notification;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
-import android.app.Notification;
+
+import static org.assertj.android.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(sdk = 25)
 public class RecommendAsyncTaskTest {
 
 	RecommendAsyncTask recommendTask;
-
-	@Before
-	public void setUp() throws Exception {
-
-	}
-
-	@After
-	public void tearDown() throws Exception {
-
-	}
 
 	@Test
 	public void createsValidNotificationForSeries() {
@@ -62,16 +52,14 @@ public class RecommendAsyncTaskTest {
 		when(video.getTitle()).thenReturn("Show Title");
 		when(video.getSeriesTitle()).thenReturn("Series Title");
 		when(video.getSeason()).thenReturn("Season 1");
-		when(video.getEpisodeNumber()).thenReturn("Episode 1");
+		when(video.getEpisode()).thenReturn("Episode 1");
 		when(video.getImageURL()).thenReturn("http://www.example.com/");
 		when(video.getBackgroundURL()).thenReturn("http://www.example.com/");
 
-		recommendTask = new RecommendAsyncTask(video, Robolectric.application);
+		recommendTask = new RecommendAsyncTask(video, application);
 
-		Notification notification = (Notification) recommendTask
-				.doInBackground();
-		assertThat(notification).isNotNull().hasPriority(
-				Notification.PRIORITY_LOW);
+		Notification notification = (Notification) recommendTask.doInBackground();
+		assertThat(notification).isNotNull().hasPriority(Notification.PRIORITY_LOW);
 	}
 
 	@Test
@@ -83,7 +71,7 @@ public class RecommendAsyncTaskTest {
 		when(video.getImageURL()).thenReturn("http://www.example.com/");
 		when(video.getBackgroundURL()).thenReturn("http://www.example.com/");
 
-		recommendTask = new RecommendAsyncTask(video, Robolectric.application);
+		recommendTask = new RecommendAsyncTask(video, application);
 
 		Notification notification = (Notification) recommendTask
 				.doInBackground();
@@ -101,7 +89,7 @@ public class RecommendAsyncTaskTest {
 		when(video.getImageURL()).thenReturn("http://www.example.com/");
 		when(video.getBackgroundURL()).thenReturn("http://www.example.com/");
 		when(video.viewedPercentage()).thenReturn(0.81f);
-		recommendTask = new RecommendAsyncTask(video, Robolectric.application);
+		recommendTask = new RecommendAsyncTask(video, application);
 
 		Notification notification = (Notification) recommendTask
 				.doInBackground();
@@ -121,7 +109,7 @@ public class RecommendAsyncTaskTest {
 		when(video.getBackgroundURL()).thenReturn("http://www.example.com/");
 		when(video.viewedPercentage()).thenReturn(0.45f);
 
-		recommendTask = new RecommendAsyncTask(video, Robolectric.application);
+		recommendTask = new RecommendAsyncTask(video, application);
 
 		Notification notification = (Notification) recommendTask
 				.doInBackground();
@@ -140,7 +128,7 @@ public class RecommendAsyncTaskTest {
 		when(video.getImageURL()).thenReturn("http://www.example.com/");
 		when(video.getBackgroundURL()).thenReturn("http://www.example.com/");
 		when(video.viewedPercentage()).thenReturn(0.11f);
-		recommendTask = new RecommendAsyncTask(video, Robolectric.application);
+		recommendTask = new RecommendAsyncTask(video, application);
 
 		Notification notification = (Notification) recommendTask
 				.doInBackground();
@@ -159,7 +147,7 @@ public class RecommendAsyncTaskTest {
 		moviePoster.setImageURL("http://www.example.com");
 		moviePoster.setBackgroundURL("http://www.example.com");
 		recommendTask = new RecommendAsyncTask(moviePoster,
-				Robolectric.application);
+				application);
 
 		Notification notification = (Notification) recommendTask
 				.doInBackground();

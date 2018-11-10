@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -24,126 +24,112 @@
 package us.nineworlds.plex.rest.model.impl;
 
 import java.util.List;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+import us.nineworlds.serenity.common.media.model.IMedia;
+import us.nineworlds.serenity.common.media.model.ITrack;
 
-/**
- * @author dcarver
- *
- */
-@Root(name="Track")
-public class Track {
+@Root(name = "Track")
+public class Track implements ITrack {
 
-	@Attribute(name="key",required=true)
-	private String key;
-	
-	@Attribute(required=false)
-	private String title;
-	
-	@Attribute(required=false)
-	private String summary;
-	
-	@Attribute(required=false)
-	private String type;
-	
-	@Attribute(required=false)
-	private String parentKey;
-	
-	@Attribute(required=false)
-	private int index;
-	
-	@Attribute(name="duration",required=false)
-	private long duration;
-	
-	@Attribute(name="addedAt",required=false)
-	private long timeAdded;
-	
-	@Attribute(name="updatedAt",required=false)
-	private long timeUpdated;
-	
-	@ElementList(inline=true,name="Media",required=true)
-	private List<Media> medias;
+  @Attribute(name = "key", required = true) private String key;
 
-	public String getKey() {
-		return key;
-	}
+  @Attribute(required = false) private String title;
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+  @Attribute(required = false) private String summary;
 
-	public String getTitle() {
-		return title;
-	}
+  @Attribute(required = false) private String type;
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  @Attribute(required = false) private String parentKey;
 
-	public String getSummary() {
-		return summary;
-	}
+  @Attribute(required = false) private int index;
 
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
+  @Attribute(name = "duration", required = false) private long duration;
 
-	public String getType() {
-		return type;
-	}
+  @Attribute(name = "addedAt", required = false) private long timeAdded;
 
-	public void setType(String type) {
-		this.type = type;
-	}
+  @Attribute(name = "updatedAt", required = false) private long timeUpdated;
 
-	public String getParentKey() {
-		return parentKey;
-	}
+  @ElementList(inline = true, name = "Media", required = true, type = Media.class) private List<IMedia> medias;
 
-	public void setParentKey(String parentKey) {
-		this.parentKey = parentKey;
-	}
+  @Override public String getKey() {
+    return key;
+  }
 
-	public int getIndex() {
-		return index;
-	}
+  @Override public void setKey(String key) {
+    this.key = key;
+  }
 
-	public void setIndex(int index) {
-		this.index = index;
-	}
+  @Override public String getTitle() {
+    return title;
+  }
 
-	public long getDuration() {
-		return duration;
-	}
+  @Override public void setTitle(String title) {
+    this.title = title;
+  }
 
-	public void setDuration(long duration) {
-		this.duration = duration;
-	}
+  @Override public String getSummary() {
+    return summary;
+  }
 
-	public long getTimeAdded() {
-		return timeAdded;
-	}
+  @Override public void setSummary(String summary) {
+    this.summary = summary;
+  }
 
-	public void setTimeAdded(long timeAdded) {
-		this.timeAdded = timeAdded;
-	}
+  @Override public String getType() {
+    return type;
+  }
 
-	public long getTimeUpdated() {
-		return timeUpdated;
-	}
+  @Override public void setType(String type) {
+    this.type = type;
+  }
 
-	public void setTimeUpdated(long timeUpdated) {
-		this.timeUpdated = timeUpdated;
-	}
+  @Override public String getParentKey() {
+    return parentKey;
+  }
 
-	public List<Media> getMedias() {
-		return medias;
-	}
+  @Override public void setParentKey(String parentKey) {
+    this.parentKey = parentKey;
+  }
 
-	public void setMedias(List<Media> medias) {
-		this.medias = medias;
-	}
-	
+  @Override public int getIndex() {
+    return index;
+  }
+
+  @Override public void setIndex(int index) {
+    this.index = index;
+  }
+
+  @Override public long getDuration() {
+    return duration;
+  }
+
+  @Override public void setDuration(long duration) {
+    this.duration = duration;
+  }
+
+  @Override public long getTimeAdded() {
+    return timeAdded;
+  }
+
+  @Override public void setTimeAdded(long timeAdded) {
+    this.timeAdded = timeAdded;
+  }
+
+  @Override public long getTimeUpdated() {
+    return timeUpdated;
+  }
+
+  @Override public void setTimeUpdated(long timeUpdated) {
+    this.timeUpdated = timeUpdated;
+  }
+
+  @Override public List<IMedia> getMedias() {
+    return medias;
+  }
+
+  @Override public void setMedias(List<IMedia> medias) {
+    this.medias = medias;
+  }
 }

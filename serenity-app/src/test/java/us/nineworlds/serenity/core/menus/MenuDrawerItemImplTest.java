@@ -23,11 +23,11 @@
 
 package us.nineworlds.serenity.core.menus;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
 import org.junit.Test;
 
 import us.nineworlds.serenity.R;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class MenuDrawerItemImplTest {
 
@@ -50,12 +50,10 @@ public class MenuDrawerItemImplTest {
 
 	@Test
 	public void overridingConstructorSetValuesWorks() {
-		menuItem = new MenuDrawerItemImpl("Grid View",
-				R.drawable.ic_action_collections_view_as_grid);
+		menuItem = new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid);
 		menuItem.setImageResourceID(R.drawable.ic_action_collections_view_detail);
 		menuItem.setText("Detail");
 		assertThat(menuItem.getText()).isEqualTo("Detail");
-		assertThat(menuItem.getImageResourceID()).isEqualTo(
-				R.drawable.ic_action_collections_view_detail);
+		assertThat(menuItem.getImageResourceID()).isEqualTo(R.drawable.ic_action_collections_view_detail);
 	}
 }

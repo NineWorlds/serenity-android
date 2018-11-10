@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,13 +23,10 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.view.View;
-import android.widget.ImageView;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+
+import static android.view.View.*;
 
 /**
  * A listener that handles long press for video content. Includes displaying a
@@ -37,37 +34,22 @@ import android.widget.ImageView;
  * on the TV.
  *
  * @author dcarver
- *
  */
-public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick
-implements OnItemLongClickListener {
+public class ShowOnItemLongClickListener extends AbstractTVShowOnItemLongClick implements OnLongClickListener {
 
-	@Override
-	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
-			int position, long arg3) {
+  public ShowOnItemLongClickListener(TVShowRecyclerAdapter adapter) {
+    super(adapter);
+  }
 
-		videoInfo = (SeriesContentInfo) av.getItemAtPosition(position);
+  @Override public boolean onLongClick(View v) {
+    this.view = v;
 
-		// Google TV is sending back different results than Nexus 7
-		// So we try to handle the different results.
+    init();
 
-		if (v == null) {
-			SerenityGallery g = (SerenityGallery) av;
-			view = g.getSelectedView().findViewById(R.id.posterIndicatorView);
-			videoInfo = (SeriesContentInfo) g.getSelectedItem();
-		} else {
-			if (v instanceof ImageView) {
-				view = av.findViewById(R.id.posterIndicatorView);
-			} else {
-				view = v.findViewById(R.id.posterIndicatorView);
-			}
-		}
+    videoInfo = (SeriesContentInfo) adapter.getItem(position);
 
-		init();
+    createAndShowDialog();
 
-		createAndShowDialog();
-
-		return true;
-	}
-
+    return true;
+  }
 }

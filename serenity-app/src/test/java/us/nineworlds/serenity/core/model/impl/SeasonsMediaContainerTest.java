@@ -23,123 +23,106 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
-
+import dagger.Module;
+import dagger.Provides;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Singleton;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-
-import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Video;
+import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
-import dagger.Module;
-import dagger.Provides;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
 public class SeasonsMediaContainerTest extends InjectingTest {
 
-	@Mock
-	MediaContainer mockMediaContainer;
+  @Mock MediaContainer mockMediaContainer;
 
-	@Mock
-	PlexappFactory mockFactory;
+  @Mock SerenityClient mockFactory;
 
-	SeasonsMediaContainer seasonMediaContainer;
+  SeasonsMediaContainer seasonMediaContainer;
 
-	List<VideoContentInfo> videos;
+  List<VideoContentInfo> videos;
 
-	@Override
-	@Before
-	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
-		super.setUp();
+  @Override @Before public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+    super.setUp();
 
-		videos = new ArrayList<VideoContentInfo>();
+    videos = new ArrayList<VideoContentInfo>();
 
-		doReturn("http://1.1.1.1:32400/").when(mockFactory).baseURL();
+    doReturn("http://1.1.1.1:32400/").when(mockFactory).baseURL();
 
-		seasonMediaContainer = new SeasonsMediaContainer(createTestVideos());
-	}
+    seasonMediaContainer = new SeasonsMediaContainer(createTestVideos());
+  }
 
-	@Test
-	public void createMoviesReturnsAnEmptyListWhenNoItems() {
-		seasonMediaContainer = new SeasonsMediaContainer(mockMediaContainer);
-		doReturn(new ArrayList<Video>()).when(mockMediaContainer).getVideos();
-		List<SeriesContentInfo> result = seasonMediaContainer.createSeries();
-		assertThat(result).isEmpty();
-	}
+  @Test public void createMoviesReturnsAnEmptyListWhenNoItems() {
+    seasonMediaContainer = new SeasonsMediaContainer(mockMediaContainer);
+    doReturn(new ArrayList<Video>()).when(mockMediaContainer).getVideos();
+    List<SeriesContentInfo> result = seasonMediaContainer.createSeries();
+    assertThat(result).isEmpty();
+  }
 
-	@Test
-	public void createMovieReturnsAnEmptyListWhenNoVideos() {
-		seasonMediaContainer = new SeasonsMediaContainer(mockMediaContainer);
-		doReturn(null).when(mockMediaContainer).getVideos();
-		List<SeriesContentInfo> result = seasonMediaContainer.createSeries();
-		assertThat(result).isEmpty();
-	}
+  @Test public void createMovieReturnsAnEmptyListWhenNoVideos() {
+    seasonMediaContainer = new SeasonsMediaContainer(mockMediaContainer);
+    doReturn(null).when(mockMediaContainer).getVideos();
+    List<SeriesContentInfo> result = seasonMediaContainer.createSeries();
+    assertThat(result).isEmpty();
+  }
 
-	@Test
-	public void createMoviesReturnsANonEmptyListWhenThereAreVideos() {
-		List<SeriesContentInfo> result = seasonMediaContainer.createSeries();
-		assertThat(result).isNotEmpty();
-	}
+  @Test public void createMoviesReturnsANonEmptyListWhenThereAreVideos() {
+    List<SeriesContentInfo> result = seasonMediaContainer.createSeries();
+    assertThat(result).isNotEmpty();
+  }
 
-	@Test
-	public void directPlayUrlIsNotNullForAVideo() {
-		List<SeriesContentInfo> result = seasonMediaContainer.createSeries();
-		SeriesContentInfo videoContentInfo = result.get(0);
-		assertThat(videoContentInfo.getTitle()).isNotNull().isNotEmpty();
-	}
+  @Test public void directPlayUrlIsNotNullForAVideo() {
+    List<SeriesContentInfo> result = seasonMediaContainer.createSeries();
+    SeriesContentInfo videoContentInfo = result.get(0);
+    assertThat(videoContentInfo.getTitle()).isNotNull().isNotEmpty();
+  }
 
-	@Override
-	public List<Object> getModules() {
-		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
-		modules.add(new TestModule());
-		return modules;
-	}
+  @Override public List<Object> getModules() {
+    List<Object> modules = new ArrayList<Object>();
+    modules.add(new AndroidModule(application));
+    modules.add(new TestModule());
+    return modules;
+  }
 
-	protected MediaContainer createTestVideos() throws Exception {
-		InputStream inputstream = this.getClass().getResourceAsStream(
-				"/resources/samples/series.xml");
-		Serializer serializer = new Persister();
+  protected MediaContainer createTestVideos() throws Exception {
+    InputStream inputstream = this.getClass().getResourceAsStream("/resources/samples/series.xml");
+    Serializer serializer = new Persister();
 
-		MediaContainer mediaContainer = serializer.read(MediaContainer.class,
-				inputstream, false);
-		IOUtils.closeQuietly(inputstream);
-		return mediaContainer;
-	}
+    MediaContainer mediaContainer = serializer.read(MediaContainer.class, inputstream, false);
+    IOUtils.closeQuietly(inputstream);
+    return mediaContainer;
+  }
 
-	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-		SeasonsMediaContainerTest.class, MovieMediaContainer.class })
-	public class TestModule {
+  @Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
+      SeasonsMediaContainerTest.class, MovieMediaContainer.class
+  })
+  public class TestModule {
 
-		@Provides
-		@Singleton
-		PlexappFactory providesPlexFactory() {
-			return mockFactory;
-		}
-
-	}
-
+    @Provides @Singleton SerenityClient providesPlexFactory() {
+      return mockFactory;
+    }
+  }
 }

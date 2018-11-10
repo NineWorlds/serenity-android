@@ -23,96 +23,175 @@
 
 package us.nineworlds.serenity;
 
-import static org.fest.assertions.api.ANDROID.assertThat;
-
+import android.content.SharedPreferences;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
+import android.view.KeyEvent;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import butterknife.ButterKnife;
+import dagger.Module;
+import dagger.Provides;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.fest.assertions.api.Assertions;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.ganin.darv.DpadAwareRecyclerView;
+import org.assertj.android.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.SerenityShadowResources;
-import org.robolectric.shadows.ShadowActivity;
-
 import us.nineworlds.serenity.fragments.MainMenuFragment;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
+import us.nineworlds.serenity.server.GDMReceiver;
 import us.nineworlds.serenity.test.InjectingTest;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import dagger.Module;
+import us.nineworlds.serenity.widgets.DrawerLayout;
 
-/**
- * @author dcarver
- *
- */
-@RunWith(SerenityRobolectricTestRunner.class)
-@Config(shadows = SerenityShadowResources.class, emulateSdk = 18)
+import static org.assertj.android.api.Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
+
+@RunWith(RobolectricTestRunner.class)
+@Config(qualifiers = "large")
 public class MainActivityTest extends InjectingTest {
 
-	MainActivity activity;
+  @Mock KeyEvent mockKeyEvent;
+  @Mock SharedPreferences mockSharedPreferences;
 
-	@Override
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
+  @Inject LocalBroadcastManager mockLocalBroadcastManager;
 
-		Robolectric.getBackgroundScheduler().pause();
-		Robolectric.getUiThreadScheduler().pause();
+  MainActivity activity;
 
-		try {
-			activity = Robolectric.buildActivity(MainActivity.class).attach()
-					.create().start().resume().get();
-		} catch (NullPointerException ex) {
-			activity = Robolectric.buildActivity(MainActivity.class).create()
-					.start().get();
-		}
+  @Override @Before public void setUp() throws Exception {
+    initMocks(this);
+    super.setUp();
 
-		FragmentManager fragmentManager = activity.getSupportFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager
-				.beginTransaction();
-		fragmentTransaction.add(new MainMenuFragment(), null);
-		fragmentTransaction.commit();
-	}
+    Robolectric.getBackgroundThreadScheduler().pause();
+    Robolectric.getForegroundThreadScheduler().pause();
 
-	@After
-	public void tearDown() throws Exception {
+    activity =
+        Robolectric.buildActivity(MainActivity.class).create().start().resume().visible().pause().restart().get();
+    //     activity = Robolectric.buildActivity(MainActivity.class).create().start().visible().get();
 
-	}
+    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    fragmentTransaction.add(new MainMenuFragment(), null);
+    fragmentTransaction.commit();
+  }
 
-	@Test
-	public void testAssertThatMainActivityIsCreated() throws Exception {
-		assertThat(activity).isNotNull().isNotFinishing();
-	}
+  @After public void tearDown() throws Exception {
+    if (activity != null) {
+      activity.finish();
+    }
+  }
 
-	@Test
-	public void testCreatesMenu() throws Exception {
-		assertThat(activity.findViewById(R.id.mainGalleryBackground))
-		.isVisible();
-	}
+  @Test public void testAssertThatMainActivityIsCreated() throws Exception {
+    assertThat(activity).isNotNull().isNotFinishing();
+  }
 
-	@Test
-	public void testThatActivityIsDestroyed() throws Exception {
-		activity.onDestroy();
-		ShadowActivity a = Robolectric.shadowOf(activity);
-		Assertions.assertThat(a.isDestroyed()).isTrue();
-	}
+  @Test public void testCreatesMenu() throws Exception {
+    assertThat((ImageView)activity.findViewById(R.id.mainGalleryBackground)).isVisible();
+  }
 
-	@Override
-	public List<Object> getModules() {
-		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
-		modules.add(new TestModule());
-		return modules;
-	}
+  @Test public void onKeyDownOpensMenuDrawerWhenKeycodeMenu() {
+    DrawerLayout drawerLayout = ButterKnife.findById(activity, R.id.drawer_layout);
+    ListView listView = ButterKnife.findById(activity, R.id.left_drawer_list);
+    drawerLayout.closeDrawers();
+    doReturn(true).when(mockSharedPreferences).getBoolean("remote_control_menu", true);
 
-	@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, injects = {
-		MainActivity.class, MainActivityTest.class })
-	public class TestModule {
+    assertThat(activity.onKeyDown(KeyEvent.KEYCODE_MENU, mockKeyEvent)).isTrue();
 
-	}
+    verify(mockSharedPreferences).getBoolean("remote_control_menu", true);
+  }
+
+  @Test public void onKeyDownClosesOpenDrawerWhenKeycodeMenu() {
+    DrawerLayout drawerLayout = ButterKnife.findById(activity, R.id.drawer_layout);
+    LinearLayout leftDrawer = ButterKnife.findById(activity, R.id.left_drawer);
+    DpadAwareRecyclerView mainMenu = ButterKnife.findById(activity, (R.id.mainGalleryMenu));
+
+    drawerLayout.openDrawer(leftDrawer);
+
+    doReturn(true).when(mockSharedPreferences).getBoolean("remote_control_menu", true);
+
+    assertThat(activity.onKeyDown(KeyEvent.KEYCODE_MENU, mockKeyEvent)).isTrue();
+    assertThat(mainMenu).hasFocus();
+
+    verify(mockSharedPreferences).getBoolean("remote_control_menu", true);
+  }
+
+  @Test public void onKeyDownClosesOpenDrawerWhenKeycodeBackIsPressed() {
+    DrawerLayout drawerLayout = ButterKnife.findById(activity, R.id.drawer_layout);
+    LinearLayout leftDrawer = ButterKnife.findById(activity, R.id.left_drawer);
+    DpadAwareRecyclerView mainMenu = ButterKnife.findById(activity, (R.id.mainGalleryMenu));
+
+    drawerLayout.openDrawer(leftDrawer);
+
+    doReturn(false).when(mockSharedPreferences).getBoolean("remote_control_menu", true);
+
+    assertThat(activity.onKeyDown(KeyEvent.KEYCODE_BACK, mockKeyEvent)).isTrue();
+    assertThat(mainMenu).hasFocus();
+
+    verify(mockSharedPreferences).getBoolean("remote_control_menu", true);
+  }
+
+  @Test public void onOptionsMenuOpensDrawerAndSetsFocus() {
+    DrawerLayout drawerLayout = ButterKnife.findById(activity, R.id.drawer_layout);
+    LinearLayout leftDrawer = ButterKnife.findById(activity, R.id.left_drawer);
+    drawerLayout.closeDrawers();
+
+    activity.openOptionsMenu();
+
+    assertThat(drawerLayout.isDrawerOpen(leftDrawer)).isTrue();
+  }
+
+  @Test public void onActivityResultCallsRecreateWhenResultCodeIsMainMenuPreferenceResultCode() {
+    MainActivity spy = spy(activity);
+    doNothing().when(spy).recreate();
+
+    spy.onActivityResult(0, 100, null);
+
+    verify(spy).recreate();
+  }
+
+  @Test public void onActivityResultNeverCallsRecreateWhenResultCodeIsNotMainMenuPreferenceResultCode() {
+    MainActivity spy = spy(activity);
+    doNothing().when(spy).recreate();
+
+    spy.onActivityResult(0, 101, null);
+
+    verify(spy, never()).recreate();
+  }
+
+  @Override public List<Object> getModules() {
+    List<Object> modules = new ArrayList<Object>();
+    modules.add(new AndroidModule(RuntimeEnvironment.application));
+    modules.add(new TestingModule());
+    modules.add(new TestModule());
+    return modules;
+  }
+
+  @Module(addsTo = AndroidModule.class, includes = { SerenityModule.class }, overrides = true, injects = {
+      MainActivity.class, MainActivityTest.class
+  })
+  public class TestModule {
+
+    @Provides @Singleton SharedPreferences providesPreferences() {
+      return mockSharedPreferences;
+    }
+  }
 }

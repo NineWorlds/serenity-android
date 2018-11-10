@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,105 +23,73 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import java.util.ArrayList;
+import java.util.List;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.adapters.RecyclerViewDiffUtil;
+import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 
 /**
  * Implementation of the Poster Image Gallery class for TV Shows.
  *
  * @author dcarver
- *
  */
-public class EpisodePosterImageGalleryAdapter extends
-		AbstractPosterImageGalleryAdapter {
+public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 
-	public EpisodePosterImageGalleryAdapter(Context c, String key) {
-		super(c, key);
-	}
+  @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    View view =
+        LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_indicator_view, null);
+    return new EpisodeViewHolder(view);
+  }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = context.getLayoutInflater().inflate(
-				R.layout.poster_indicator_view, null);
+  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    VideoContentInfo pi = posterList.get(position);
 
-		VideoContentInfo pi = posterList.get(position);
-		ImageView mpiv = (ImageView) galleryCellView
-				.findViewById(R.id.posterImageView);
-		mpiv.setBackgroundResource(R.drawable.gallery_item_background);
-		mpiv.setScaleType(ImageView.ScaleType.FIT_XY);
-		int width = ImageUtils.getDPI(300, context);
-		int height = ImageUtils.getDPI(187, context);
-		mpiv.setMaxHeight(height);
-		mpiv.setMaxWidth(width);
-		mpiv.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-		galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(width,
-				height));
+    EpisodeViewHolder viewHolder = (EpisodeViewHolder) holder;
 
-		shrinkPosterAnimation(mpiv, false);
+    viewHolder.reset();
+    viewHolder.createImage(pi, 300, 187);
+    viewHolder.toggleWatchedIndicator(pi);
+    viewHolder.getItemView().setOnClickListener((view)-> onItemViewClick(view, position));
+    viewHolder.getItemView().setOnLongClickListener((view) -> onItemViewLongClick(view, position));
+    viewHolder.getItemView().setOnFocusChangeListener((view, focus)-> onItemViewFocusChanged(focus, view, position));
+  }
 
-		serenityImageLoader.displayImage(pi.getImageURL(), mpiv);
+  public void updateEpisodes(List<VideoContentInfo> episodes) {
+    List<VideoContentInfo> oldList = new ArrayList(posterList);
+    posterList.clear();
+    posterList.addAll(episodes);
+    new RecyclerViewDiffUtil(oldList, posterList).dispatchUpdatesTo(this);
+  }
 
-		setWatchedStatus(galleryCellView, pi);
+  public void onItemViewClick(View view, int i) {
+    onItemClickListener.onItemClick(view, i);
+  }
 
-		return galleryCellView;
-	}
+  public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {
+    view.clearAnimation();
+    view.setBackground(null);
 
-	@Override
-	protected void fetchDataFromService() {
-		context.setSupportProgressBarIndeterminate(true);
-		context.setSupportProgressBarVisibility(false);
-		context.setSupportProgressBarIndeterminateVisibility(true);
+    if (hasFocus && view != null) {
+      view.clearAnimation();
+      view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
+      zoomOut(view);
+      getOnItemSelectedListener().onItemSelected(view, i);
+      return;
+    }
+  }
 
-		retrieveEpisodes();
-	}
-
-	public void retrieveEpisodes() {
-		String url = factory.getEpisodesURL(key);
-
-		volley.volleyXmlGetRequest(url, new EpisodePosterResponseListener(),
-				new EpisodeResponseErrorListener());
-	}
-
-	private class EpisodePosterResponseListener implements
-			Response.Listener<MediaContainer> {
-
-		@Override
-		public void onResponse(MediaContainer response) {
-			EpisodeMediaContainer episodes = new EpisodeMediaContainer(response);
-			posterList = episodes.createVideos();
-			notifyDataSetChanged();
-			SerenityGallery gallery = (SerenityGallery) context
-					.findViewById(R.id.moviePosterGallery);
-			if (gallery != null) {
-				gallery.requestFocus();
-			}
-			context.setSupportProgressBarIndeterminateVisibility(false);
-		}
-	}
-
-	private class EpisodeResponseErrorListener extends
-			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
-
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			super.onErrorResponse(error);
-			context.setSupportProgressBarIndeterminateVisibility(false);
-
-		}
-	}
+  protected boolean onItemViewLongClick(View view, int position) {
+    GalleryVideoOnItemLongClickListener onItemLongClickListener = new GalleryVideoOnItemLongClickListener(this);
+    onItemLongClickListener.setPosition(position);
+    return onItemLongClickListener.onLongClick(view);
+  }
 
 }

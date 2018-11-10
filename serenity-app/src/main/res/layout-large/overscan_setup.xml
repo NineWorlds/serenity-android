@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/holo_color"
+    >
+
+  <RelativeLayout
+      android:id="@+id/center"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_margin="30dp"
+      android:background="@android:color/black"
+      >
+
+    <Button
+        android:id="@+id/swap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="30dp"
+        android:textSize="30sp"
+        android:text="@string/overscan_swap"
+        />
+
+    <TextView
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="25sp"
+        android:text="@string/overscan_instructions"
+        />
+  </RelativeLayout>
+
+</LinearLayout>

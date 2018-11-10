@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,50 +23,27 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.TrailersYouTubeSearch;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
-import us.nineworlds.serenity.core.model.DBMetaData;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.util.DBMetaDataSource;
-import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.SimpleXmlRequest;
-import us.nineworlds.serenity.volley.SubtitleVolleyResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
-import us.nineworlds.serenity.volley.YouTubeTrailerSearchResponseListener;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.util.Log;
-import android.view.Gravity;
+import android.graphics.Bitmap;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.birbit.android.jobqueue.JobManager;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import javax.inject.Inject;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
+import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
+import us.nineworlds.serenity.core.logger.Logger;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
 
 /**
  * Abstract class for handling video selection information. This can either be a
@@ -74,254 +51,124 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
  * scenario.
  *
  * @author dcarver
- *
  */
-public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector
-		implements OnItemSelectedListener {
-	@Inject
-	protected SerenityImageLoader serenityImageLoader;
+public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector {
 
-	@Inject
-	protected PlexappFactory plexFactory;
+  @Inject protected SerenityClient serenityClient;
+  @Inject protected SharedPreferences preferences;
 
-	@Inject
-	protected VolleyUtils volley;
+  @Inject JobManager jobManager;
+  @Inject Logger logger;
 
-	@Inject
-	protected SharedPreferences preferences;
+  public static final int WATCHED_VIEW_ID = 1000;
+  protected View currentView;
+  protected int position;
+  protected VideoContentInfo videoInfo;
+  protected RequestQueue queue;
 
-	public static final String CRLF = "\r\n";
-	public static final int WATCHED_VIEW_ID = 1000;
-	public static final float WATCHED_PERCENT = 0.98f;
-	protected Activity context;
-	public Handler trailerHandler;
-	protected Handler checkDatabaseHandler = new Handler();
-	private Animation fadeIn;
-	private View previous;
-	protected View currentView;
-	protected int position;
-	protected BaseAdapter adapter;
-	protected VideoContentInfo videoInfo;
-	private DBMetaDataSource datasource;
-	protected RequestQueue queue;
-	protected Runnable checkDBRunnable;
+  protected abstract void createVideoDetail(ImageView v);
 
-	protected ImageLoader imageLoader;
+  protected void createVideoMetaData(ImageView v) {
+    //        fetchSubtitle(videoInfo);
+  }
 
-	public AbstractVideoOnItemSelectedListener() {
-		super();
-		imageLoader = serenityImageLoader.getImageLoader();
-	}
+  /**
+   * Create the images representing info such as sound, ratings, etc based on
+   * the currently selected movie poster.
+   */
+  protected void createInfographicDetails(ImageView v) {
+    Activity context = getActivity(v.getContext());
+    LinearLayout infographicsView = context.findViewById(R.id.movieInfoGraphicLayout);
+    infographicsView.removeAllViews();
 
-	protected abstract void createVideoDetail(ImageView v);
+    ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(80, 48);
+    ImageInfographicUtils imageUtilsAudioChannel = new ImageInfographicUtils(90, 48);
 
-	protected void createVideoMetaData(ImageView v) {
-		fetchSubtitle(videoInfo);
-	}
+    TextView durationView = imageUtilsNormal.createDurationView(videoInfo.getDuration(), context);
+    if (durationView != null) {
+      infographicsView.addView(durationView);
+    }
 
-	/**
-	 * Create the images representing info such as sound, ratings, etc based on
-	 * the currently selected movie poster.
-	 *
-	 * @param position
-	 */
-	protected void createInfographicDetails(ImageView v) {
+    ImageView resv = imageUtilsNormal.createVideoCodec(videoInfo.getVideoCodec(), v.getContext());
+    if (resv != null) {
+      infographicsView.addView(resv);
+    }
 
-		LinearLayout infographicsView = (LinearLayout) context
-				.findViewById(R.id.movieInfoGraphicLayout);
-		infographicsView.removeAllViews();
+    ImageView resolution = imageUtilsNormal.createVideoResolutionImage(videoInfo.getVideoResolution(), v.getContext());
+    if (resolution != null) {
+      infographicsView.addView(resolution);
+    }
 
-		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(80,
-				48);
-		ImageInfographicUtils imageUtilsAudioChannel = new ImageInfographicUtils(
-				90, 48);
+    ImageView aspectv = imageUtilsNormal.createAspectRatioImage(videoInfo.getAspectRatio(), context);
+    if (aspectv != null) {
+      infographicsView.addView(aspectv);
+    }
 
-		TextView durationView = imageUtilsNormal.createDurationView(
-				videoInfo.getDuration(), context);
-		if (durationView != null) {
-			infographicsView.addView(durationView);
-		}
+    ImageView acv = imageUtilsNormal.createAudioCodecImage(videoInfo.getAudioCodec(), context);
+    if (acv != null) {
+      infographicsView.addView(acv);
+    }
 
-		ImageView resv = imageUtilsNormal.createVideoCodec(
-				videoInfo.getVideoCodec(), v.getContext());
-		if (resv != null) {
-			infographicsView.addView(resv);
-		}
+    ImageView achannelsv =
+        imageUtilsAudioChannel.createAudioChannlesImage(videoInfo.getAudioChannels(), v.getContext());
+    if (achannelsv != null) {
+      infographicsView.addView(achannelsv);
+    }
 
-		ImageView resolution = imageUtilsNormal.createVideoResolutionImage(
-				videoInfo.getVideoResolution(), v.getContext());
-		if (resolution != null) {
-			infographicsView.addView(resolution);
-		}
+    if (videoInfo.getRating() != 0) {
+      RatingBar ratingBar = new RatingBar(context, null, android.R.attr.ratingBarStyleIndicator);
+      ratingBar.setMax(4);
+      ratingBar.setIsIndicator(true);
+      ratingBar.setStepSize(0.1f);
+      ratingBar.setNumStars(4);
+      ratingBar.setPadding(0, 0, 0, 0);
+      LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+          android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+      params.rightMargin = 15;
+      ratingBar.setLayoutParams(params);
 
-		ImageView aspectv = imageUtilsNormal.createAspectRatioImage(
-				videoInfo.getAspectRatio(), context);
-		if (aspectv != null) {
-			infographicsView.addView(aspectv);
-		}
+      double rating = videoInfo.getRating();
+      ratingBar.setRating((float) (rating / 2.5));
+      infographicsView.addView(ratingBar);
+    }
 
-		ImageView acv = imageUtilsNormal.createAudioCodecImage(
-				videoInfo.getAudioCodec(), context);
-		if (acv != null) {
-			infographicsView.addView(acv);
-		}
+    ImageView studiov =
+        imageUtilsNormal.createStudioImage(videoInfo.getStudio(), context, videoInfo.getMediaTagIdentifier());
+    if (studiov != null) {
+      infographicsView.addView(studiov);
+    }
+  }
 
-		ImageView achannelsv = imageUtilsAudioChannel.createAudioChannlesImage(
-				videoInfo.getAudioChannels(), v.getContext());
-		if (achannelsv != null) {
-			infographicsView.addView(achannelsv);
-		}
+  public void fetchSubtitle(VideoContentInfo mpi) {
+    //        jobManager.addJobInBackground(new SubtitleJob("/library/metadata/" + mpi.id()));
+  }
 
-		if (videoInfo.getRating() != 0) {
-			RatingBar ratingBar = new RatingBar(context, null,
-					android.R.attr.ratingBarStyleIndicator);
-			ratingBar.setMax(4);
-			ratingBar.setIsIndicator(true);
-			ratingBar.setStepSize(0.1f);
-			ratingBar.setNumStars(4);
-			ratingBar.setPadding(0, 0, 0, 0);
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-					android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-					android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-			params.rightMargin = 15;
-			ratingBar.setLayoutParams(params);
+  //    @Subscribe(threadMode = ThreadMode.MAIN)
+  //    public void onSubtitleEvent(SubtitleEvent event) {
+  //        if (event.getVideoContentInfo() != null) {
+  //            new SubtitleResponseListener(event.getVideoContentInfo(), context).onResponse(event.getMediaContainer());
+  //        }
+  //    }
 
-			double rating = videoInfo.getRating();
-			ratingBar.setRating((float) (rating / 2.5));
-			infographicsView.addView(ratingBar);
-		}
+  public void changeBackgroundImage(final Activity context) {
 
-		ImageView studiov = imageUtilsNormal.createStudioImage(
-				videoInfo.getStudio(), context,
-				videoInfo.getMediaTagIdentifier());
-		if (studiov != null) {
-			infographicsView.addView(studiov);
-		}
+    if (videoInfo.getBackgroundURL() == null) {
+      return;
+    }
 
-		if (checkDBRunnable != null) {
-			checkDatabaseHandler.removeCallbacks(checkDBRunnable);
-		}
-		checkDBRunnable = new CheckDatabaseRunnable();
-		checkDatabaseHandler.post(checkDBRunnable);
+    final View fanArt = context.findViewById(R.id.fanArt);
+    logger.debug("Background ImageUrl: " + videoInfo.getBackgroundURL() );
+    String transcodingURL = serenityClient.createImageURL(videoInfo.getBackgroundURL(), 1280, 720);
+    logger.debug("Generated Image Url: " + transcodingURL);
 
-	}
+    SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+      @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+        context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
+      }
+    };
 
-	protected void checkDataBaseForTrailer(VideoContentInfo pi) {
-		datasource = new DBMetaDataSource(context);
-		datasource.open();
-		DBMetaData metaData = datasource.findMetaDataByPlexId(pi.id());
-		if (metaData != null) {
-			pi.setTrailer(true);
-			pi.setTrailerId(metaData.getYouTubeID());
-		}
-		datasource.close();
-	}
+    Glide.with(context).load(transcodingURL).asBitmap().into(target);
+  }
 
-	public void fetchSubtitle(VideoContentInfo mpi) {
-		queue = volley.getRequestQueue();
-		String url = plexFactory.getMovieMetadataURL("/library/metadata/"
-				+ mpi.id());
-		SimpleXmlRequest<MediaContainer> xmlRequest = new SimpleXmlRequest<MediaContainer>(
-				Request.Method.GET, url, MediaContainer.class,
-				new SubtitleVolleyResponseListener(mpi, context),
-				new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						Log.e(getClass().getCanonicalName(),
-								"Subtitle Retrieval failure: ", error);
-					}
-				});
-		queue.add(xmlRequest);
-	}
-
-	public void fetchTrailer(VideoContentInfo mpi, View view) {
-		checkDataBaseForTrailer(mpi);
-		if (mpi.hasTrailer()) {
-			if (videoInfo.hasTrailer()
-					&& YouTubeInitializationResult.SUCCESS
-					.equals(YouTubeApiServiceUtil
-							.isYouTubeApiServiceAvailable(context))) {
-				ImageView ytImage = new ImageView(context);
-				ytImage.setImageResource(R.drawable.yt_social_icon_red_128px);
-				ytImage.setScaleType(ScaleType.FIT_XY);
-				int w = ImageUtils.getDPI(45, context);
-				int h = ImageUtils.getDPI(24, context);
-				ytImage.setLayoutParams(new LinearLayout.LayoutParams(w, h));
-				LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) ytImage
-						.getLayoutParams();
-				p.leftMargin = 5;
-				p.gravity = Gravity.CENTER_VERTICAL;
-				LinearLayout infographicsView = (LinearLayout) context
-						.findViewById(R.id.movieInfoGraphicLayout);
-				infographicsView.addView(ytImage);
-			}
-
-			return;
-		}
-
-		TrailersYouTubeSearch trailerSearch = new TrailersYouTubeSearch();
-		String queryURL = trailerSearch.queryURL(mpi);
-
-		volley.volleyJSonGetRequest(queryURL,
-				new YouTubeTrailerSearchResponseListener(view, mpi),
-				new DefaultLoggingVolleyErrorListener());
-	}
-
-	@Override
-	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
-			long id) {
-		context = (Activity) v.getContext();
-		fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
-
-		videoInfo = (VideoContentInfo) av.getItemAtPosition(position);
-		changeBackgroundImage();
-
-		if (previous != null) {
-			previous.setPadding(0, 0, 0, 0);
-		}
-
-		previous = v;
-
-		v.setPadding(5, 5, 5, 5);
-		v.clearAnimation();
-
-		ImageView posterImageView = (ImageView) v
-				.findViewById(R.id.posterImageView);
-		currentView = posterImageView;
-
-		createVideoDetail(posterImageView);
-		createVideoMetaData(posterImageView);
-		createInfographicDetails(posterImageView);
-	}
-
-	public void changeBackgroundImage() {
-
-		if (videoInfo.getBackgroundURL() == null) {
-			return;
-		}
-
-		View fanArt = context.findViewById(R.id.fanArt);
-		String transcodingURL = plexFactory.getImageURL(
-				videoInfo.getBackgroundURL(), 1280, 720);
-
-		imageLoader
-		.loadImage(transcodingURL, new ImageSize(1280, 720),
-				new SerenityBackgroundLoaderListener(fanArt,
-						R.drawable.movies));
-	}
-
-	protected class CheckDatabaseRunnable implements Runnable {
-
-		@Override
-		public void run() {
-			if (YouTubeInitializationResult.SUCCESS
-					.equals(YouTubeApiServiceUtil
-							.isYouTubeApiServiceAvailable(context))) {
-				fetchTrailer(videoInfo, currentView);
-			}
-		}
-
-	}
-
+  public abstract void onItemSelected(View view, int i);
 }

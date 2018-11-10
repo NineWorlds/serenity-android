@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="small_image">100dp</dimen>
-    <dimen name="actionbarMargin">60dp</dimen>
-</resources>

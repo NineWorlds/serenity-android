@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+The master change log is kept in res/xml/changelog_master.xml.
+Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
+-->
+<changelog>
+  <release
+      version="1.4.0"
+      versioncode="30">
+    <change>Sliding Menu. Press Menu key on remote or menu icon to reveal the menu.</change>
+    <change>Ability to add and play videos from a queue. Long press an item to add the item to
+      the video queue.
+    </change>
+    <change>Play All from queue sliding menu option.</change>
+    <change>Clear video queue menu option.</change>
+    <change>Continuous playback from items in video queue.</change>
+    <change>Limited support for playback queue with external players.</change>
+    <change>Resume from last Plex recorded playback position with external player ViMu on Google
+      TV devices.
+    </change>
+    <change>Improved clarity of some user icons.</change>
+    <change>Some layout tweaks to the Movie and Episode Browsers in detail view.</change>
+  </release>
+</changelog>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="small_image">100dp</dimen>
+  <dimen name="actionbarMargin">60dp</dimen>
+  <dimen name="horizontal_spacing">15dp</dimen>
+  <dimen name="grid_spacing_dimen">5dp</dimen>
+  <dimen name="selector_border_radius">6dp</dimen>
+
+  <!-- Overscan Compensation -->
+  <dimen name="overscan_top_padding">10dp</dimen>
+  <dimen name="overscan_start_padding">30dp</dimen>
+  <dimen name="overscan_end_padding">30dp</dimen>
+  <dimen name="overscan_bottom_padding">15dp</dimen>
+
+</resources>

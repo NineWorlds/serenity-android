@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,267 +23,284 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
+import javax.inject.Provider;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
+import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
+import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
+import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.TVCategoryResponseListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.view.KeyEvent;
-import android.view.View;
 
-import com.jess.ui.TwoWayGridView;
+import static android.view.View.*;
 
-public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity {
+public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
+    implements TVShowBrowserView {
 
-	private boolean restarted_state = false;
-	private static String key;
-	@Inject
-	protected SharedPreferences preferences;
+  public static final String SERIES_LAYOUT_GRID = "series_layout_grid";
+  protected boolean restarted_state = false;
+  protected String key;
 
-	@Inject
-	protected TVCategoryState categoryState;
+  @BindView(R.id.tvShowRecyclerView) RecyclerView tvShowRecyclerView;
+  @BindView(R.id.fanArt) View fanArt;
+  @BindView(R.id.tvShowItemCount) TextView tvShowItemCountView;
+  @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
+  @BindView(R.id.categoryFilter) Spinner categorySpinner;
 
-	@Inject
-	protected VolleyUtils volleyUtils;
+  @InjectPresenter TVShowBrowserPresenter presenter;
+  @Inject Provider<TVShowBrowserPresenter> tvShowBrowserPresenterProvider;
+  @Inject protected SharedPreferences preferences;
+  @Inject protected TVCategoryState categoryState;
 
-	@Inject
-	protected PlexappFactory factory;
+  protected OnKeyDownDelegate onKeyDownDelegate;
+  Handler postDelayed = new Handler();
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		actionBar.setCustomView(R.layout.tvshow_custom_actionbar);
-		actionBar.setDisplayShowCustomEnabled(true);
+  @ProvidePresenter TVShowBrowserPresenter providesTVShowBrowserPresenter() {
+    return tvShowBrowserPresenterProvider.get();
+  }
 
-		key = getIntent().getExtras().getString("key");
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-		createSideMenu();
+    actionBar.setCustomView(R.layout.tvshow_custom_actionbar);
+    actionBar.setDisplayShowCustomEnabled(true);
+    key = getIntent().getExtras().getString("key");
 
-		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
-	}
+    createSideMenu();
+    onKeyDownDelegate = new OnKeyDownDelegate(this);
 
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		restarted_state = true;
-		populateMenuDrawer();
-	}
+    fanArt.setBackgroundResource(R.drawable.tvshows);
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see android.app.Activity#onResume()
-	 */
-	@Override
-	protected void onResume() {
-		super.onResume();
-		populateMenuDrawer();
-		if (!restarted_state) {
-			String url = factory.getSectionsUrl(key);
-			TVCategoryResponseListener response = new TVCategoryResponseListener(
-					this, key);
-			volleyUtils.volleyXmlGetRequest(url, response,
-					new DefaultLoggingVolleyErrorListener());
-		}
+    populateTVShowContent();
 
-	}
+    DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see us.nineworlds.serenity.ui.activity.SerenityActivity#onKeyDown(int,
-	 * android.view.KeyEvent)
-	 */
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		SerenityGallery gallery = (SerenityGallery) findViewById(R.id.tvShowBannerGallery);
+    FrameLayout dataLoadingContainer = findViewById(R.id.data_loading_container);
+    if (dataLoadingContainer != null) {
+      dataLoadingContainer.setVisibility(View.VISIBLE);
+    }
 
-		boolean menuKeySlidingMenu = preferences.getBoolean(
-				"remote_control_menu", true);
-		if (menuKeySlidingMenu) {
-			if (keyCode == KeyEvent.KEYCODE_MENU) {
-				if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-					drawerLayout.closeDrawers();
-				} else {
-					drawerLayout.openDrawer(linearDrawerLayout);
-				}
-				return true;
-			}
-		}
+  }
 
-		if (keyCode == KeyEvent.KEYCODE_BACK
-				&& drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-			drawerLayout.closeDrawers();
-			if (gallery != null) {
-				gallery.requestFocusFromTouch();
-			}
-			return true;
-		}
+  private void populateTVShowContent() {
+    if (gridViewActive) {
+      GridLayoutManager gridLayoutManager = new FocusableGridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false);
+      tvShowRecyclerView.setLayoutManager(gridLayoutManager);
 
-		if (gallery == null) {
-			return super.onKeyDown(keyCode, event);
-		}
+      tvShowRecyclerView.addItemDecoration(
+          new ItemOffsetDecoration(
+              getResources().getDimensionPixelSize(R.dimen.grid_spacing_dimen)));
+      TVShowPosterImageGalleryAdapter adapter = new TVShowPosterImageGalleryAdapter();
+      adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
+      adapter.setOnItemSelectedListener(new TVShowGridOnItemSelectedListener(adapter));
+      tvShowRecyclerView.setAdapter(adapter);
+      return;
+    }
 
-		AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery
-				.getAdapter();
-		if (adapter != null) {
-			int itemsCount = adapter.getCount();
+    LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(this);
+    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+    tvShowRecyclerView.setLayoutManager(linearLayoutManager);
+    tvShowRecyclerView.addItemDecoration(
+        new SpaceItemDecoration(
+            getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
 
-			if (contextMenuRequested(keyCode)) {
-				View view = gallery.getSelectedView();
-				view.performLongClick();
-				return true;
-			}
-			if (isKeyCodeSkipBack(keyCode)) {
-				int selectedItem = gallery.getSelectedItemPosition();
-				int newPosition = selectedItem - 10;
-				if (newPosition < 0) {
-					newPosition = 0;
-				}
-				gallery.setSelection(newPosition);
-				gallery.requestFocusFromTouch();
-				return true;
-			}
-			if (isKeyCodeSkipForward(keyCode)) {
-				int selectedItem = gallery.getSelectedItemPosition();
-				int newPosition = selectedItem + 10;
-				if (newPosition > itemsCount) {
-					newPosition = itemsCount - 1;
-				}
-				gallery.setSelection(newPosition);
-				gallery.requestFocusFromTouch();
-				return true;
-			}
-			if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
-					|| keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
-				SeriesContentInfo info = (SeriesContentInfo) gallery
-						.getSelectedItem();
-				new FindUnwatchedAsyncTask(this).execute(info);
-				return true;
-			}
-		}
+    if (posterLayoutActive) {
+      TVShowPosterImageGalleryAdapter adapter = new TVShowPosterImageGalleryAdapter();
+      adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
+      adapter.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(adapter));
+      tvShowRecyclerView.setAdapter(adapter);
+      return;
+    }
 
-		return super.onKeyDown(keyCode, event);
-	}
+    TVShowRecyclerAdapter adapter = new TVShowRecyclerAdapter();
+    adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
+    adapter.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(adapter));
+    tvShowRecyclerView.setAdapter(adapter);
+  }
 
-	@Override
-	protected void createSideMenu() {
+  @Override protected void onRestart() {
+    super.onRestart();
+    restarted_state = true;
+    populateMenuDrawer();
+  }
 
-		posterLayoutActive = preferences.getBoolean("series_layout_posters",
-				false);
-		gridViewActive = preferences.getBoolean("series_layout_grid", false);
-		if (isGridViewActive()) {
-			setContentView(R.layout.activity_tvbrowser_show_gridview_posters);
-		} else if (posterLayoutActive) {
-			setContentView(R.layout.activity_tvbrowser_show_posters);
-		} else {
-			setContentView(R.layout.activity_tvbrowser_show_banners);
-		}
+  @Override protected void onResume() {
+    super.onResume();
+    populateMenuDrawer();
+    if (!restarted_state) {
+      presenter.fetchTVCategories(key);
+    }
+  }
 
-		View fanArt = findViewById(R.id.fanArt);
-		fanArt.setBackgroundResource(R.drawable.tvshows);
+  @Override protected void createSideMenu() {
+    posterLayoutActive = preferences.getBoolean("series_layout_posters", false);
+    gridViewActive = preferences.getBoolean(SERIES_LAYOUT_GRID, false);
+    if (isGridViewActive()) {
+      setContentView(R.layout.activity_tvbrowser_show_gridview_posters);
+    } else if (posterLayoutActive) {
+      setContentView(R.layout.activity_tvbrowser_show_posters);
+    } else {
+      setContentView(R.layout.activity_tvbrowser_show_banners);
+    }
 
-		initMenuDrawerViews();
+    ButterKnife.bind(this);
 
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-				R.drawable.menudrawer_selector, R.string.drawer_open,
-				R.string.drawer_closed) {
-			@Override
-			public void onDrawerOpened(View drawerView) {
+    initMenuDrawerViews();
 
-				super.onDrawerOpened(drawerView);
-				getSupportActionBar().setTitle(R.string.app_name);
-				drawerList.requestFocusFromTouch();
-			}
+    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector,
+        R.string.drawer_open,
+        R.string.drawer_closed) {
+      @Override public void onDrawerOpened(View drawerView) {
 
-			@Override
-			public void onDrawerClosed(View drawerView) {
-				super.onDrawerClosed(drawerView);
-				getSupportActionBar().setTitle(R.string.app_name);
-			}
-		};
+        super.onDrawerOpened(drawerView);
+        getSupportActionBar().setTitle(R.string.app_name);
+        drawerList.requestFocusFromTouch();
+      }
 
-		drawerLayout.setDrawerListener(drawerToggle);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setHomeButtonEnabled(true);
+      @Override public void onDrawerClosed(View drawerView) {
+        super.onDrawerClosed(drawerView);
+        getSupportActionBar().setTitle(R.string.app_name);
+      }
+    };
 
-		populateMenuDrawer();
-	}
+    drawerLayout.setDrawerListener(drawerToggle);
+    actionBar.setDisplayHomeAsUpEnabled(true);
+    actionBar.setHomeButtonEnabled(true);
 
-	/**
-	 *
-	 */
-	protected void populateMenuDrawer() {
-		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View",
-				R.drawable.ic_action_collections_view_as_grid));
-		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View",
-				R.drawable.ic_action_collections_view_detail));
-		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue",
-				R.drawable.menu_play_all_queue));
+    populateMenuDrawer();
+  }
 
-		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-		drawerList
-		.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(
-				drawerLayout));
-	}
+  protected void populateMenuDrawer() {
+    List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
+    drawerMenuItem.add(
+        new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
+    drawerMenuItem.add(
+        new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
+    drawerMenuItem.add(
+        new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
+    drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+    drawerList.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(drawerLayout));
+  }
 
-		// if (savedCategory != null) {
-		// outState.putString("savedCategory", savedCategory);
-		// }
-	}
+  @Override @Deprecated public AbstractPosterImageGalleryAdapter getAdapter() {
+    return null;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see android.app.Activity#finish()
-	 */
-	@Override
-	public void finish() {
-		super.finish();
-		// savedCategory = null;
-	}
+  @Override protected RecyclerView findVideoRecyclerView() {
+    return tvShowRecyclerView;
+  }
 
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
+  @Override public void updateCategories(List<CategoryInfo> categories) {
+    ArrayAdapter<CategoryInfo> spinnerArrayAdapter =
+        new ArrayAdapter<>(this, R.layout.serenity_spinner_textview, categories);
 
-		// savedCategory = savedInstanceState.getString("savedCategory");
-	}
+    spinnerArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    categorySpinner.setVisibility(VISIBLE);
+    categorySpinner.setAdapter(spinnerArrayAdapter);
 
-	}
+    if (categoryState.getCategory() == null) {
+      categorySpinner.setOnItemSelectedListener(
+          new TVCategorySpinnerOnItemSelectedListener("all", key));
+    } else {
+      categorySpinner.setOnItemSelectedListener(
+          new TVCategorySpinnerOnItemSelectedListener(categoryState.getCategory(), key, false));
+    }
+    categorySpinner.requestFocus();
+  }
 
-	@Override
-	protected SerenityGallery findGalleryView() {
-		return (SerenityGallery) findViewById(R.id.tvShowBannerGallery);
-	}
+  @Override public void displayShows(List<SeriesContentInfo> series, String category) {
+    FrameLayout dataLoadingContainer = findViewById(R.id.data_loading_container);
+    if (dataLoadingContainer != null) {
+      dataLoadingContainer.setVisibility(GONE);
+    }
 
-	@Override
-	protected TwoWayGridView findGridView() {
-		return (TwoWayGridView) findViewById(R.id.tvShowGridView);
-	}
+    if (series.isEmpty()) {
+      Toast.makeText(this, getString(R.string.no_shows_found_for_the_category_) + category,
+          Toast.LENGTH_LONG).show();
+    }
+    tvShowRecyclerView.setClipChildren(false);
+    tvShowRecyclerView.setClipToPadding(false);
+    tvShowRecyclerView.setClipToOutline(false);
+    tvShowRecyclerView.setItemAnimator(new FadeInAnimator());
+    tvShowItemCountView.setText(Integer.toString(series.size()) + getString(R.string._item_s_));
+    TVShowRecyclerAdapter adapter = (TVShowRecyclerAdapter) tvShowRecyclerView.getAdapter();
+    adapter.updateSeries(series);
+    tvShowRecyclerView.setVisibility(VISIBLE);
+
+    postDelayed.postDelayed(() -> tvShowRecyclerView.getChildAt(0).requestFocus(), 500);
+  }
+
+  @Override
+  public void populateSecondaryCategories(List<SecondaryCategoryInfo> categories,
+      String selectedSecondaryCategory) {
+    categorySpinner.setVisibility(VISIBLE);
+    if (categories == null || categories.isEmpty()) {
+      Toast.makeText(this, R.string.no_entries_available_for_category_, Toast.LENGTH_LONG).show();
+      return;
+    }
+
+    secondarySpinner.setVisibility(VISIBLE);
+
+    ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter =
+        new ArrayAdapter<SecondaryCategoryInfo>(this, R.layout.serenity_spinner_textview,
+            categories);
+    spinnerSecArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+    secondarySpinner.setAdapter(spinnerSecArrayAdapter);
+    secondarySpinner.setOnItemSelectedListener(
+        new TVSecondaryCategorySpinnerOnItemSelectedListener(selectedSecondaryCategory, key));
+    secondarySpinner.requestFocusFromTouch();
+  }
+
+  @Override public void recreate() {
+    super.recreate();
+
+    if (categoryState.getGenreCategory() != null) {
+      requestUpdatedVideos(key, categoryState.getGenreCategory());
+    } else {
+      presenter.fetchTVCategories(categoryState.getCategory());
+    }
+  }
+
+  @Override public void requestUpdatedVideos(String key, String category) {
+    presenter.fetchTVShows(key, category);
+  }
+
+  @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
+    if (onKeyDownDelegate.onKeyDown(keyCode, event)) {
+      return true;
+    }
+
+    return super.onKeyDown(keyCode, event);
+  }
 }

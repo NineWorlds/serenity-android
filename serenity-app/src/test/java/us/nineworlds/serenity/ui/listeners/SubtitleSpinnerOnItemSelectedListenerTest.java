@@ -23,43 +23,44 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import android.content.SharedPreferences;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Singleton;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
+import dagger.Module;
+import dagger.Provides;
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
-import android.content.SharedPreferences;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import dagger.Module;
-import dagger.Provides;
+
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.robolectric.RuntimeEnvironment.application;
 
 // UnitTestCodeMash2015
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
 public class SubtitleSpinnerOnItemSelectedListenerTest extends InjectingTest {
 
 	@Mock
@@ -85,7 +86,7 @@ public class SubtitleSpinnerOnItemSelectedListenerTest extends InjectingTest {
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		initMocks(this);
 		super.setUp();
 		subtitleSpinnerOnItemSelectedListener = new SubtitleSpinnerOnItemSelectedListener(
 				mockVideoContentInfo);
@@ -166,7 +167,7 @@ public class SubtitleSpinnerOnItemSelectedListenerTest extends InjectingTest {
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(application));
 		modules.add(new TestModule());
 		return modules;
 	}

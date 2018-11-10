@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,24 +23,22 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemClickListener;
-
 import android.view.View;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
-/**
- * @author dcarver
- * 
- */
-public class GalleryVideoOnItemClickListener extends AbstractVideoOnItemClickListener implements OnItemClickListener {
+public class GalleryVideoOnItemClickListener extends AbstractVideoOnItemClickListener {
 
-	@Override
-	public void onItemClick(SerenityAdapterView<?> av, View v, int arg2,
-			long arg3) {
-		videoInfo = (VideoContentInfo) av.getItemAtPosition(arg2);
-		onItemClick(v.findViewById(R.id.posterImageView));
-	}
+  public GalleryVideoOnItemClickListener(AbstractPosterImageGalleryAdapter adapter) {
+    super(adapter);
+  }
 
+  @Override public void onItemClick(View view, int i) {
+    videoInfo = getVideoInfo(i);
+    onItemClick(view);
+  }
+
+  @Override protected VideoContentInfo getVideoInfo(int position) {
+    return (VideoContentInfo) adapter.getItem(position);
+  }
 }

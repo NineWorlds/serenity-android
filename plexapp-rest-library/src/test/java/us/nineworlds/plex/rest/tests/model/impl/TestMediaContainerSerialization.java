@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -25,75 +25,69 @@ package us.nineworlds.plex.rest.tests.model.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-
 import us.nineworlds.plex.rest.model.impl.Directory;
+import us.nineworlds.serenity.common.media.model.IDirectory;
 
-
-import static org.custommonkey.xmlunit.XMLAssert.*;
+import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
 
 public class TestMediaContainerSerialization extends AbstractSerializationTest {
-	
-	@Test
-	public void testSimpleMediaContainer() throws Exception {
-		String expectedResult = "<MediaContainer size=\"0\" allowSync=\"0\" mediaTagVersion=\"0\" sortAsc=\"0\" viewMode=\"0\"/>";
-		mediaContainer.setSize(0);
-		Serializer serializer = new Persister();
-		serializer.write(mediaContainer, byteArrayOut);
 
-		assertXMLEqual(expectedResult, byteArrayOut.toString());
-	}
-	
-	@Test
-	public void testSimpleMediaContainerDirectory() throws Exception {
-		String expectedResult = "<MediaContainer size=\"0\" allowSync=\"0\" mediaTagVersion=\"0\" sortAsc=\"0\" viewMode=\"0\">" +
-				"<Directory key=\"sections\" title=\"Test Directory\" refreshing=\"0\" updatedAt=\"0\" createdAt=\"0\" secondary=\"0\"/>" +
-				"</MediaContainer>";
+  @Test public void testSimpleMediaContainer() throws Exception {
+    String expectedResult =
+        "<MediaContainer size=\"0\" allowSync=\"0\" mediaTagVersion=\"0\" sortAsc=\"0\" viewMode=\"0\"/>";
+    mediaContainer.setSize(0);
+    Serializer serializer = new Persister();
+    serializer.write(mediaContainer, byteArrayOut);
 
-		mediaContainer.setSize(0);
-		List<Directory> arrayList = new ArrayList();
-		Directory directory = new Directory();
-		directory.setTitle("Test Directory");
-		directory.setKey("sections");
-		arrayList.add(directory);
-		mediaContainer.setDirectories(arrayList);
-		
-		Serializer serializer = new Persister();
-		serializer.write(mediaContainer, byteArrayOut);
-		
-		assertXMLEqual(expectedResult, byteArrayOut.toString());
-	}
-	
-	@Test
-	public void testMultipleDirectories() throws Exception {
-		String expectedResult = "<MediaContainer size=\"0\" allowSync=\"0\" mediaTagVersion=\"0\" sortAsc=\"0\" viewMode=\"0\">" +
-              "<Directory key=\"sections\" title=\"Test Directory\" refreshing=\"0\" updatedAt=\"0\" createdAt=\"0\" secondary=\"0\"/>" +
-              "<Directory key=\"recentlyAdded\" title=\"Test Directory 2\" refreshing=\"0\" updatedAt=\"0\" createdAt=\"0\" secondary=\"0\"/>" +
-              "</MediaContainer>";
-		
-		mediaContainer.setSize(0);
-		List<Directory> arrayList = new ArrayList();
-		Directory directory = new Directory();
-		directory.setTitle("Test Directory");
-		directory.setKey("sections");
-		arrayList.add(directory);
-		directory = new Directory();
-		directory.setTitle("Test Directory 2");
-		directory.setKey("recentlyAdded");
-		arrayList.add(directory);
+    assertXMLEqual(expectedResult, byteArrayOut.toString());
+  }
 
-		mediaContainer.setDirectories(arrayList);
-		
-		Serializer serializer = new Persister();
-		serializer.write(mediaContainer, byteArrayOut);
-		
-		assertXMLEqual("Not equal", expectedResult, byteArrayOut.toString());
-	
-	}
+  @Test public void testSimpleMediaContainerDirectory() throws Exception {
+    String expectedResult =
+        "<MediaContainer size=\"0\" allowSync=\"0\" mediaTagVersion=\"0\" sortAsc=\"0\" viewMode=\"0\">"
+            + "<Directory key=\"sections\" title=\"Test Directory\" refreshing=\"0\" updatedAt=\"0\" createdAt=\"0\" secondary=\"0\"/>"
+            + "</MediaContainer>";
 
-	
+    mediaContainer.setSize(0);
+    List<IDirectory> arrayList = new ArrayList();
+    Directory directory = new Directory();
+    directory.setTitle("Test Directory");
+    directory.setKey("sections");
+    arrayList.add(directory);
+    mediaContainer.setDirectories(arrayList);
 
+    Serializer serializer = new Persister();
+    serializer.write(mediaContainer, byteArrayOut);
+
+    assertXMLEqual(expectedResult, byteArrayOut.toString());
+  }
+
+  @Test public void testMultipleDirectories() throws Exception {
+    String expectedResult =
+        "<MediaContainer size=\"0\" allowSync=\"0\" mediaTagVersion=\"0\" sortAsc=\"0\" viewMode=\"0\">"
+            + "<Directory key=\"sections\" title=\"Test Directory\" refreshing=\"0\" updatedAt=\"0\" createdAt=\"0\" secondary=\"0\"/>"
+            + "<Directory key=\"recentlyAdded\" title=\"Test Directory 2\" refreshing=\"0\" updatedAt=\"0\" createdAt=\"0\" secondary=\"0\"/>"
+            + "</MediaContainer>";
+
+    mediaContainer.setSize(0);
+    List<IDirectory> arrayList = new ArrayList();
+    Directory directory = new Directory();
+    directory.setTitle("Test Directory");
+    directory.setKey("sections");
+    arrayList.add(directory);
+    directory = new Directory();
+    directory.setTitle("Test Directory 2");
+    directory.setKey("recentlyAdded");
+    arrayList.add(directory);
+
+    mediaContainer.setDirectories(arrayList);
+
+    Serializer serializer = new Persister();
+    serializer.write(mediaContainer, byteArrayOut);
+
+    assertXMLEqual("Not equal", expectedResult, byteArrayOut.toString());
+  }
 }

@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,50 +23,45 @@
 
 package us.nineworlds.serenity.core.services;
 
-import java.util.ArrayList;
-
-import us.nineworlds.serenity.core.model.CategoryInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
+import java.util.ArrayList;
+import us.nineworlds.serenity.core.model.CategoryInfo;
 
 /**
  * @author dcarver
- *
  */
-public abstract class AbstractCategoryService extends
-		AbstractPlexRESTIntentService {
+public abstract class AbstractCategoryService extends AbstractPlexRESTIntentService {
 
-	protected ArrayList<CategoryInfo> categories = new ArrayList<CategoryInfo>();
+  protected ArrayList<CategoryInfo> categories = new ArrayList<CategoryInfo>();
 
-	/**
-	 * @param name
-	 */
-	public AbstractCategoryService(String name) {
-		super(name);
-	}
+  /**
+   * @param name
+   */
+  public AbstractCategoryService(String name) {
+    super(name);
+  }
 
-	/**
-	 * Populate the categories available.
-	 */
-	protected abstract void populateCategories();
+  /**
+   * Populate the categories available.
+   */
+  protected abstract void populateCategories();
 
-	@Override
-	public void sendMessageResults(Intent intent) {
-		Bundle extras = intent.getExtras();
-		if (extras != null) {
-			Messenger messenger = (Messenger) extras.get("MESSENGER");
-			Message msg = Message.obtain();
-			msg.obj = categories;
-			try {
-				messenger.send(msg);
-			} catch (RemoteException ex) {
-				Log.e(getClass().getName(), "Unable to send message", ex);
-			}
-		}
-	}
-
+  @Override public void sendMessageResults(Intent intent) {
+    Bundle extras = intent.getExtras();
+    if (extras != null) {
+      Messenger messenger = (Messenger) extras.get("MESSENGER");
+      Message msg = Message.obtain();
+      msg.obj = categories;
+      try {
+        messenger.send(msg);
+      } catch (RemoteException ex) {
+        Log.e(getClass().getName(), "Unable to send message", ex);
+      }
+    }
+  }
 }

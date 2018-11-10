@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -24,425 +24,323 @@
 package us.nineworlds.plex.rest.model.impl;
 
 import java.util.List;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+import us.nineworlds.serenity.common.media.model.ICountry;
+import us.nineworlds.serenity.common.media.model.IDirector;
+import us.nineworlds.serenity.common.media.model.IGenre;
+import us.nineworlds.serenity.common.media.model.IMedia;
+import us.nineworlds.serenity.common.media.model.IRole;
+import us.nineworlds.serenity.common.media.model.IVideo;
+import us.nineworlds.serenity.common.media.model.IWriter;
 
-/**
- * Represents the video container
- * 
- * @author dcarver
- *
- */
-@Root(name="Video")
-public class Video extends AbstractPlexObject {
+@Root(name = "Video")
+public class Video extends AbstractPlexObject implements IVideo {
 
-	@Attribute(required=false)
-	private String studio;
-	
-	@Attribute(required=false)
-	private String summary;
-	
-	@Attribute(required=false)
-	private String titleSort;
-	
-	@Attribute(required=false)
-	private String title;
-	
-	@Attribute(required=false)
-	private int viewCount;
-	
-	@Attribute(required=false)
-	private String tagLine;
-	
-	@Attribute(required=false)
-	/**
-	 * Point where viewing can be resumed.
-	 */
-	private long viewOffset;
-	
-	@Attribute(name="thumb",required=false)
-	/**
-	 * REST path for obtaining thumbnail image
-	 */
-	private String thumbNailImageKey;
-	
-	@Attribute(name="art",required=false)
-	private String backgroundImageKey;
-	
-	@Attribute(name="parentThumb", required=false)
-	private String parentThumbNailImageKey;
-	
-	@Attribute(name="grandparentThumb", required=false)
-	private String grandParentThumbNailImageKey;
+  @Attribute(required = false) private String studio;
 
-	@Attribute(name="grandparentTitle", required=false)
-	private String grandParentTitle;	
+  @Attribute(required = false) private String summary;
 
-	public String getGrandParentTitle() {
-		return grandParentTitle;
-	}
+  @Attribute(required = false) private String titleSort;
 
-	public void setGrandParentTitle(String grandParentTitle) {
-		this.grandParentTitle = grandParentTitle;
-	}
+  @Attribute(required = false) private String title;
 
-	public String getGrandParentThumbNailImageKey() {
-		return grandParentThumbNailImageKey;
-	}
+  @Attribute(required = false) private int viewCount;
 
-	public void setGrandParentThumbNailImageKey(String grandParentThumbNailImageKey) {
-		this.grandParentThumbNailImageKey = grandParentThumbNailImageKey;
-	}
+  @Attribute(required = false) private String tagLine;
 
-	@Attribute(name="duration",required=false)
-	private long duration;
-	
-	@Attribute(name="addedAt",required=false)
-	private long timeAdded;
-	
-	@Attribute(name="updatedAt",required=false)
-	private long timeUpdated;
-	
-	@Attribute(name="originallyAvailableAt",required=false)
-	/**
-	 * Formatted date item was originally available in YYYY-MM-DD format.
-	 */
-	private String originallyAvailableDate;
-	
-	@Attribute(name="contentRating",required=false)
-	private String contentRating;
-	
-	@Attribute(name="year", required=false)
-	private String year;
-	
-	@Attribute(name="ratingKey", required=false)
-	private String ratingKey;
-	
-	@Attribute(name="parentKey", required=false)
-	private String parentKey;
-	
-	@Attribute(name="index", required=false)
-	private String episode;
-	
-	@Attribute(name="parentIndex", required=false)
-	private String season;
-	
-	/**
-	 * 
-	 */
-	@Attribute(name="rating", required=false)
-	private double rating;
-		
-	@ElementList(inline=true,required=false)
-	private List<Country> countries;
+  @Attribute(required = false) private long viewOffset;
 
-	@ElementList(inline=true,required=false)
-	private List<Director> directors;
+  @Attribute(name = "thumb", required = false) private String thumbNailImageKey;
 
-	@ElementList(inline=true,required=false)
-	private List<Role> actors;
+  @Attribute(name = "art", required = false) private String backgroundImageKey;
 
-	@ElementList(inline=true,required=false)
-	private List<Writer> writers;
+  @Attribute(name = "parentThumb", required = false) private String parentThumbNailImageKey;
 
-	@ElementList(inline=true,required=false)
-	private List<Genre> genres;
+  @Attribute(name = "grandparentThumb", required = false) private String grandParentThumbNailImageKey;
 
-	@ElementList(inline=true,name="Media",required=true)
-	private List<Media> medias;
-	
+  @Attribute(name = "grandparentTitle", required = false) private String grandParentTitle;
 
-	public List<Role> getActors() {
-		return actors;
-	}
+  @Attribute(name = "duration", required = false) private long duration;
 
-	/**
-	 * @return the backgroundImageKey
-	 */
-	public String getBackgroundImageKey() {
-		return backgroundImageKey;
-	}
+  @Attribute(name = "addedAt", required = false) private long timeAdded;
 
-	public String getContentRating() {
-		return contentRating;
-	}
+  @Attribute(name = "updatedAt", required = false) private long timeUpdated;
 
-	public List<Country> getCountries() {
-		return countries;
-	}
+  /**
+   * Formatted date item was originally available in YYYY-MM-DD format.
+   */
+  @Attribute(name = "originallyAvailableAt", required = false) private String originallyAvailableDate;
 
-	public List<Director> getDirectors() {
-		return directors;
-	}
+  @Attribute(name = "contentRating", required = false) private String contentRating;
 
-	/**
-	 * @return the duration
-	 */
-	public long getDuration() {
-		return duration;
-	}
+  @Attribute(name = "year", required = false) private String year;
 
-	public List<Genre> getGenres() {
-		return genres;
-	}
+  @Attribute(name = "ratingKey", required = false) private String ratingKey;
 
-	public List<Media> getMedias() {
-		return medias;
-	}
-	
-	/**
-	 * @return the originallyAvailableDate in YYYY-MM-DD format.
-	 */
-	public String getOriginallyAvailableDate() {
-		return originallyAvailableDate;
-	}
-	
-	/**
-	 * @return the summary
-	 */
-	public String getSummary() {
-		return summary;
-	}
-	
-	/**
-	 * @return the tagLine
-	 */
-	public String getTagLine() {
-		return tagLine;
-	}
-	
-	
-	/**
-	 * @return the thumbNailImageKey
-	 */
-	public String getThumbNailImageKey() {
-		return thumbNailImageKey;
-	}
+  @Attribute(name = "parentKey", required = false) private String parentKey;
 
-	/**
-	 * @return the timeAdded
-	 */
-	public long getTimeAdded() {
-		return timeAdded;
-	}
+  @Attribute(name = "index", required = false) private String episode;
 
-	/**
-	 * @return the timeUpdated
-	 */
-	public long getTimeUpdated() {
-		return timeUpdated;
-	}
+  @Attribute(name = "parentIndex", required = false) private String season;
 
-	/**
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
-	}
+  @Attribute(name = "rating", required = false) private double rating;
 
-	/**
-	 * @return the titleSort
-	 */
-	public String getTitleSort() {
-		return titleSort;
-	}
-	
+  @ElementList(inline = true, required = false, type = Country.class) private List<ICountry> countries;
 
-	/**
-	 * @return the viewCount
-	 */
-	public int getViewCount() {
-		return viewCount;
-	}
+  @ElementList(inline = true, required = false, type = Director.class) private List<IDirector> directors;
 
-	/**
-	 * @return the viewOffset
-	 */
-	public long getViewOffset() {
-		return viewOffset;
-	}
+  @ElementList(inline = true, required = false, type = Role.class) private List<IRole> actors;
 
-	public List<Writer> getWriters() {
-		return writers;
-	}
+  @ElementList(inline = true, required = false, type = Writer.class) private List<IWriter> writers;
 
-	public String getYear() {
-		return year;
-	}
+  @ElementList(inline = true, required = false, type = Genre.class) private List<IGenre> genres;
 
-	public void setActors(List<Role> actors) {
-		this.actors = actors;
-	}
+  @ElementList(inline = true, name = "Media", required = true, type = Media.class) private List<IMedia> medias;
 
-	/**
-	 * @param backgroundImageKey the backgroundImageKey to set
-	 */
-	public void setBackgroundImageKey(String backgroundImageKey) {
-		this.backgroundImageKey = backgroundImageKey;
-	}
+  @Override public String getGrandParentTitle() {
+    return grandParentTitle;
+  }
 
-	public void setContentRating(String contentRating) {
-		this.contentRating = contentRating;
-	}
+  @Override public void setGrandParentTitle(String grandParentTitle) {
+    this.grandParentTitle = grandParentTitle;
+  }
 
-	public void setCountries(List<Country> countries) {
-		this.countries = countries;
-	}
+  @Override public String getGrandParentThumbNailImageKey() {
+    return grandParentThumbNailImageKey;
+  }
 
-	public void setDirectors(List<Director> directors) {
-		this.directors = directors;
-	}
+  @Override public void setGrandParentThumbNailImageKey(String grandParentThumbNailImageKey) {
+    this.grandParentThumbNailImageKey = grandParentThumbNailImageKey;
+  }
 
-	/**
-	 * @param duration the duration to set
-	 */
-	public void setDuration(long duration) {
-		this.duration = duration;
-	}
+  @Override public List<IRole> getActors() {
+    return actors;
+  }
 
-	public void setGenres(List<Genre> genres) {
-		this.genres = genres;
-	}
+  @Override public String getBackgroundImageKey() {
+    return backgroundImageKey;
+  }
 
-	public void setMedias(List<Media> medias) {
-		this.medias = medias;
-	}
+  @Override public String getContentRating() {
+    return contentRating;
+  }
 
-	/**
-	 * This needs to be formatted in YYYY-MM-DD format.
-	 * @param originallyAvailableDate the originallyAvailableDate to set
-	 */
-	public void setOriginallyAvailableDate(String originallyAvailableDate) {
-		this.originallyAvailableDate = originallyAvailableDate;
-	}
+  @Override public List<ICountry> getCountries() {
+    return countries;
+  }
 
-	/**
-	 * @param summary the summary to set
-	 */
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
+  @Override public List<IDirector> getDirectors() {
+    return directors;
+  }
 
-	/**
-	 * @param tagLine the tagLine to set
-	 */
-	public void setTagLine(String tagLine) {
-		this.tagLine = tagLine;
-	}
+  @Override public long getDuration() {
+    return duration;
+  }
 
-	/**
-	 * @param thumbNailImageKey the thumbNailImageKey to set
-	 */
-	public void setThumbNailImageKey(String thumbNailImageKey) {
-		this.thumbNailImageKey = thumbNailImageKey;
-	}
+  @Override public List<IGenre> getGenres() {
+    return genres;
+  }
 
-	/**
-	 * @param timeAdded the timeAdded to set
-	 */
-	public void setTimeAdded(long timeAdded) {
-		this.timeAdded = timeAdded;
-	}
+  @Override public List<IMedia> getMedias() {
+    return medias;
+  }
 
-	/**
-	 * @param timeUpdated the timeUpdated to set
-	 */
-	public void setTimeUpdated(long timeUpdated) {
-		this.timeUpdated = timeUpdated;
-	}
+  @Override public String getOriginallyAvailableDate() {
+    return originallyAvailableDate;
+  }
 
-	/**
-	 * @param title the title to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  @Override public String getSummary() {
+    return summary;
+  }
 
-	/**
-	 * @param titleSort the titleSort to set
-	 */
-	public void setTitleSort(String titleSort) {
-		this.titleSort = titleSort;
-	}
+  @Override public String getTagLine() {
+    return tagLine;
+  }
 
-	/**
-	 * @param viewCount the viewCount to set
-	 */
-	public void setViewCount(int viewCount) {
-		this.viewCount = viewCount;
-	}
+  @Override public String getThumbNailImageKey() {
+    return thumbNailImageKey;
+  }
 
-	/**
-	 * @param viewOffset the viewOffset to set
-	 */
-	public void setViewOffset(long viewOffset) {
-		this.viewOffset = viewOffset;
-	}
+  @Override public long getTimeAdded() {
+    return timeAdded;
+  }
 
-	public void setWriters(List<Writer> writers) {
-		this.writers = writers;
-	}
+  @Override public long getTimeUpdated() {
+    return timeUpdated;
+  }
 
-	public void setYear(String year) {
-		this.year = year;
-	}
+  @Override public String getTitle() {
+    return title;
+  }
 
-	public String getRatingKey() {
-		return ratingKey;
-	}
+  @Override public String getTitleSort() {
+    return titleSort;
+  }
 
-	public void setRatingKey(String ratingKey) {
-		this.ratingKey = ratingKey;
-	}
-	
-	public String getParentThumbNailImageKey() {
-		return parentThumbNailImageKey;
-	}
+  @Override public int getViewCount() {
+    return viewCount;
+  }
 
-	public void setParentThumbNailImageKey(String parentThumbNailImageKey) {
-		this.parentThumbNailImageKey = parentThumbNailImageKey;
-	}
+  @Override public long getViewOffset() {
+    return viewOffset;
+  }
 
-	public String getStudio() {
-		return studio;
-	}
+  @Override public List<IWriter> getWriters() {
+    return writers;
+  }
 
-	public void setStudio(String studio) {
-		this.studio = studio;
-	}
+  @Override public String getYear() {
+    return year;
+  }
 
-	public double getRating() {
-		return rating;
-	}
+  @Override public void setActors(List<IRole> actors) {
+    this.actors = actors;
+  }
 
-	public void setRating(double rating) {
-		this.rating = rating;
-	}
-	
-	public void setParentKey(String parentKey) {
-		this.parentKey = parentKey;
-	}
-	
-	public String getParentKey() {
-		return parentKey;
-	}
+  @Override public void setBackgroundImageKey(String backgroundImageKey) {
+    this.backgroundImageKey = backgroundImageKey;
+  }
 
-	public String getEpisode() {
-		return episode;
-	}
+  @Override public void setContentRating(String contentRating) {
+    this.contentRating = contentRating;
+  }
 
-	public void setEpisode(String episode) {
-		this.episode = episode;
-	}
+  @Override public void setCountries(List<ICountry> countries) {
+    this.countries = countries;
+  }
 
-	public String getSeason() {
-		return season;
-	}
+  @Override public void setDirectors(List<IDirector> directors) {
+    this.directors = directors;
+  }
 
-	public void setSeason(String season) {
-		this.season = season;
-	}
-	
+  @Override public void setDuration(long duration) {
+    this.duration = duration;
+  }
+
+  @Override public void setGenres(List<IGenre> genres) {
+    this.genres = genres;
+  }
+
+  @Override public void setMedias(List<IMedia> medias) {
+    this.medias = medias;
+  }
+
+  /**
+   * This needs to be formatted in YYYY-MM-DD format.
+   *
+   * @param originallyAvailableDate the originallyAvailableDate to set
+   */
+  @Override public void setOriginallyAvailableDate(String originallyAvailableDate) {
+    this.originallyAvailableDate = originallyAvailableDate;
+  }
+
+  @Override public void setSummary(String summary) {
+    this.summary = summary;
+  }
+
+  @Override public void setTagLine(String tagLine) {
+    this.tagLine = tagLine;
+  }
+
+  @Override public void setThumbNailImageKey(String thumbNailImageKey) {
+    this.thumbNailImageKey = thumbNailImageKey;
+  }
+
+  @Override public void setTimeAdded(long timeAdded) {
+    this.timeAdded = timeAdded;
+  }
+
+  @Override public void setTimeUpdated(long timeUpdated) {
+    this.timeUpdated = timeUpdated;
+  }
+
+  @Override public void setTitle(String title) {
+    this.title = title;
+  }
+
+  @Override public void setTitleSort(String titleSort) {
+    this.titleSort = titleSort;
+  }
+
+  @Override public void setViewCount(int viewCount) {
+    this.viewCount = viewCount;
+  }
+
+  @Override public void setViewOffset(long viewOffset) {
+    this.viewOffset = viewOffset;
+  }
+
+  @Override public void setWriters(List<IWriter> writers) {
+    this.writers = writers;
+  }
+
+  @Override public void setYear(String year) {
+    this.year = year;
+  }
+
+  @Override public String getRatingKey() {
+    return ratingKey;
+  }
+
+  @Override public void setRatingKey(String ratingKey) {
+    this.ratingKey = ratingKey;
+  }
+
+  @Override public String getParentThumbNailImageKey() {
+    return parentThumbNailImageKey;
+  }
+
+  @Override public void setParentThumbNailImageKey(String parentThumbNailImageKey) {
+    this.parentThumbNailImageKey = parentThumbNailImageKey;
+  }
+
+  @Override public String getStudio() {
+    return studio;
+  }
+
+  @Override public void setStudio(String studio) {
+    this.studio = studio;
+  }
+
+  @Override public double getRating() {
+    return rating;
+  }
+
+  @Override public void setRating(double rating) {
+    this.rating = rating;
+  }
+
+  @Override public void setParentKey(String parentKey) {
+    this.parentKey = parentKey;
+  }
+
+  @Override public String getParentKey() {
+    return parentKey;
+  }
+
+  @Override public String getEpisode() {
+    return episode;
+  }
+
+  @Override public void setEpisode(String episode) {
+    this.episode = episode;
+  }
+
+  @Override public String getSeason() {
+    return season;
+  }
+
+  @Override public void setSeason(String season) {
+    this.season = season;
+  }
+
+  @Override public void setDirectPlayUrl(String url) {
+
+  }
+
+  @Override public String getDirectPlayUrl() {
+    return null;
+  }
 }

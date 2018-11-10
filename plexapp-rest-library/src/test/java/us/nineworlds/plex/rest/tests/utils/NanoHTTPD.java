@@ -881,6 +881,11 @@ public class NanoHTTPD
 		}
 
 		File f = new File( homeDir, uri );
+		try {
+			System.out.println(f.getCanonicalPath());
+		} catch (Exception e) {
+
+		}
 		if ( res == null && !f.exists())
 			res = new Response( HTTP_NOTFOUND, MIME_PLAINTEXT,
 				"Error 404, file not found." );

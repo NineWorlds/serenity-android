@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -22,198 +22,88 @@
  */
 package us.nineworlds.serenity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.core.menus.MenuItem;
-import us.nineworlds.serenity.core.model.impl.MenuMediaContainer;
-import us.nineworlds.serenity.injection.InjectingBaseAdapter;
-import us.nineworlds.serenity.ui.views.MainMenuTextView;
-import us.nineworlds.serenity.volley.DefaultLoggingVolleyErrorListener;
-import us.nineworlds.serenity.volley.VolleyUtils;
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils.TruncateAt;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Gallery;
-import android.widget.Toast;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+import butterknife.BindView;
+import java.util.ArrayList;
+import java.util.List;
+import us.nineworlds.serenity.core.menus.MenuItem;
+import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import static butterknife.ButterKnife.bind;
 
-public class MainMenuTextViewAdapter extends InjectingBaseAdapter {
+public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
-	@Inject
-	PlexappFactory plexFactory;
+  public static List<MenuItem> menuItems = new ArrayList<>();
 
-	@Inject
-	VolleyUtils volley;
+  public MainMenuTextViewAdapter() {
+    super();
+  }
 
-	/** The parent context */
-	private final Context myContext;
-	private RequestQueue queue;
+  @Override public int getItemCount() {
+    return menuItems.size();
+  }
 
-	public static List<MenuItem> menuItems = new ArrayList<MenuItem>();
+  @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    FrameLayout mainMenuTextView =
+        (FrameLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mainmenu, parent, false);
+    return new MainMenuViewHolder(mainMenuTextView);
+  }
 
-	/** Simple Constructor saving the 'parent' context. */
-	public MainMenuTextViewAdapter(Context c) {
-		super();
-		myContext = c;
-		fetchData();
-	}
+  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    MenuItem menuItem = menuItems.get(position);
 
-	protected void fetchData() {
-		queue = volley.getRequestQueue();
+    MainMenuViewHolder mainMenuViewHolder = (MainMenuViewHolder) holder;
+    setDefaults(menuItem.getTitle(), mainMenuViewHolder.mainMenuTextView);
+  }
 
-		String url = plexFactory.getSectionsURL();
-		volley.volleyXmlGetRequest(url, new MainMenuVolleyResponseListener(),
-				new MainMenuResponseErrorListener());
-	}
+  @Override public long getItemId(int position) {
+    return position;
+  }
 
-	@Override
-	public int getCount() {
-		return menuItems.size();
-	}
+  void setDefaults(String title, TextView v) {
+    v.setText(title);
+    v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
+    v.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+    v.setGravity(Gravity.CENTER_VERTICAL);
+    v.setLines(1);
+    v.setHorizontallyScrolling(true);
+    v.setEllipsize(TruncateAt.MARQUEE);
+    v.setLayoutParams(new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+        android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+  }
 
-	@Override
-	public Object getItem(int position) {
-		return position;
-	}
+  public MenuItem getItemAtPosition(int position) {
+    if (position > menuItems.size()) {
+      return null;
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
+    if (position < 0) {
+      position = 0;
+    }
+    return menuItems.get(position);
+  }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		MenuItem menuItem = menuItems.get(position);
+  public void updateMenuItems(List<MenuItem> menuItems) {
+    this.menuItems = menuItems;
+    notifyDataSetChanged();
+  }
 
-		MainMenuTextView v = createView(menuItem);
-		setDefaults(menuItem.getTitle(), v);
+  public class MainMenuViewHolder extends RecyclerView.ViewHolder {
 
-		return v;
-	}
+    @BindView(R.id.main_menu_item) public TextView mainMenuTextView;
 
-	/**
-	 * Create a Main Menu item view for the corresponding MenuItem. If an
-	 * appropriate type can not be found a default MainMenuTextView will be
-	 * created.
-	 *
-	 * @param v
-	 * @param menuItem
-	 * @return
-	 */
-	MainMenuTextView createView(MenuItem menuItem) {
-		MainMenuTextView v = null;
-		if ("movie".equals(menuItem.getType())) {
-			v = new MainMenuTextView(myContext, R.drawable.movies);
-			v.setLibraryKey(menuItem.getSection());
-			v.setActivityType(menuItem.getType());
-			return v;
-		}
-
-		if ("show".equals(menuItem.getType())) {
-			v = new MainMenuTextView(myContext, R.drawable.tvshows);
-			v.setLibraryKey(menuItem.getSection());
-			v.setActivityType(menuItem.getType());
-			return v;
-		}
-
-		if ("artist".equals(menuItem.getType())) {
-			v = new MainMenuTextView(myContext, R.drawable.music);
-			v.setLibraryKey(menuItem.getSection());
-			v.setActivityType(menuItem.getType());
-			return v;
-		}
-
-		if ("settings".equals(menuItem.getType())) {
-			v = new MainMenuTextView(myContext, R.drawable.settings);
-			v.setLibraryKey("0");
-			v.setActivityType(menuItem.getType());
-			return v;
-		}
-
-		if ("options".equals(menuItem.getType())) {
-			v = new MainMenuTextView(myContext, R.drawable.settings);
-			v.setLibraryKey("0");
-			v.setActivityType(menuItem.getType());
-			return v;
-		}
-
-		if ("search".equals(menuItem.getType())) {
-			v = new MainMenuTextView(myContext, R.drawable.search);
-			v.setLibraryKey("0");
-			v.setActivityType(menuItem.getType());
-			return v;
-		}
-
-		return new MainMenuTextView(myContext, R.drawable.serenity_bonsai_logo);
-	}
-
-	/**
-	 * Sets the default values for the view passed to it.
-	 *
-	 * @param position
-	 * @param v
-	 */
-	void setDefaults(String title, MainMenuTextView v) {
-		v.setText(title);
-		v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
-		v.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-		v.setTextColor(Color.parseColor("#414141"));
-		v.setGravity(Gravity.CENTER_VERTICAL);
-		v.setLines(1);
-		v.setHorizontallyScrolling(true);
-		v.setEllipsize(TruncateAt.MARQUEE);
-		v.setLayoutParams(new Gallery.LayoutParams(
-				android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-				android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-	}
-
-	private class MainMenuVolleyResponseListener implements
-			Response.Listener<MediaContainer> {
-
-		@Override
-		public void onResponse(MediaContainer mc) {
-			menuItems = new MenuMediaContainer(mc).createMenuItems();
-			notifyDataSetChanged();
-			Activity c = (Activity) myContext;
-			c.findViewById(R.id.mainGalleryMenu).requestFocus();
-		}
-	}
-
-	private class MainMenuResponseErrorListener extends
-			DefaultLoggingVolleyErrorListener implements Response.ErrorListener {
-
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			super.onErrorResponse(error);
-
-			MenuMediaContainer mc = new MenuMediaContainer(null);
-
-			menuItems.add(mc.createSettingsMenu());
-			menuItems.add(mc.createOptionsMenu());
-			Toast.makeText(
-					myContext,
-					"Unable to connect to Plex Library at "
-							+ plexFactory.getSectionsURL(), Toast.LENGTH_LONG)
-					.show();
-			notifyDataSetChanged();
-
-			Activity c = (Activity) myContext;
-			c.findViewById(R.id.mainGalleryMenu).requestFocus();
-		}
-	}
-
+    public MainMenuViewHolder(View itemView) {
+      super(itemView);
+      bind(this, itemView);
+    }
+  }
 }

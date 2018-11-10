@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -24,185 +24,142 @@
 package us.nineworlds.plex.rest.tests;
 
 import java.io.File;
-import java.net.URL;
 import java.util.List;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import us.nineworlds.plex.rest.PlexappFactory;
 import us.nineworlds.plex.rest.config.IConfiguration;
-import us.nineworlds.plex.rest.model.impl.Directory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.plex.rest.model.impl.Track;
 import us.nineworlds.plex.rest.tests.utils.NanoHTTPD;
+import us.nineworlds.serenity.common.media.model.IDirectory;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.media.model.ITrack;
+import us.nineworlds.serenity.common.rest.SerenityClient;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author dcarver
- *
  */
 public class TestPlexFactory {
-	
-	NanoHTTPD server = null;
-	IConfiguration config = null;
-	
-	@Before
-	public void setUp() throws Exception {
-		config = new MockConfig();
-		URL url = this.getClass().getResource("/");
-		File rootfile = new File(url.getPath());
-		server = new NanoHTTPD(Integer.parseInt(config.getPort()), rootfile);
-	}
-	
-	@After
-	public void tearDown() throws Exception {
-		server.stop();
-	}
-	
-	@Test
-	public void testRetrieveLibrary() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		MediaContainer mediaContainer = factory.retrieveLibrary();
-		assertNotNull(mediaContainer);
-		assertEquals(3, mediaContainer.getSize());
-		assertEquals(3, mediaContainer.getDirectories().size());
-	}
-	
-	@Test
-	public void testRetrieveRoot() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		MediaContainer mediaContainer = factory.retrieveRootData();
-		assertNotNull(mediaContainer);
-		assertEquals(10, mediaContainer.getSize());
-	}
-	
-	@Test
-	public void testRetrieveSections() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		MediaContainer mediaContainer = factory.retrieveSections();
-		assertNotNull(mediaContainer);
-		assertEquals(2, mediaContainer.getSize());
-	}
-	
-	@Test
-	public void testRetrieveSectionByKeyMissing() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		try {
-			factory.retrieveSections("5");
-			fail("Should not get to this point");
-		} catch (Exception ex) {
-			
-		}		
-	}
-	
-	@Test
-	public void testRetrieveSectionByKeyMovies() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		MediaContainer mediaContainer = factory.retrieveSections("4");
-		assertNotNull(mediaContainer);
-		assertEquals(19, mediaContainer.getSize());
-	}
-	
-	@Test
-	public void testRetrieveSectionByKeyTVShows() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		MediaContainer mediaContainer = factory.retrieveSections("6");
-		assertNotNull(mediaContainer);
-		assertEquals(15, mediaContainer.getSize());
-	}
-	
-	@Test
-	public void testRetrieveSectionByKeyMusic() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		MediaContainer mediaContainer = factory.retrieveSections("3");
-		assertNotNull(mediaContainer);
-		assertEquals(11, mediaContainer.getSize());
-	}
-	
-	
-	@Test
-	public void testRetrieveAllTVShows() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		MediaContainer mediaContainer = factory.retrieveSections("6", "all");
-		List<Directory> directories = mediaContainer.getDirectories();
-		assertEquals(6, directories.size());
-	}
-	
-	@Test
-	public void testRetrieveAllMusic() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		MediaContainer mediaContainer = factory.retrieveSections("3", "all");
-		List<Directory> directories = mediaContainer.getDirectories();
-		assertEquals(4, directories.size());
-	}
-	
-	
-	@Test
-	public void testRetrieveSeasonsForTVShow() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		MediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/209/children/");
-		assertEquals(5, mediaContainer.getSize());
-	}
-	
-	@Test
-	public void testRetrieveMusicMetaData() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		MediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/101/children/");
-		assertEquals(1, mediaContainer.getSize());
-	}
-	
-	@Test
-	public void testRetrieveMusicTrackMetaData() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		MediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/102/children/");
-		assertEquals(21, mediaContainer.getSize());
-		assertNotNull(mediaContainer.getTracks());
-		Track track = mediaContainer.getTracks().get(0);
-		assertNotNull(track);
-		assertEquals("Arabian Nights", track.getTitle());
-	}
 
-	@Test
-	public void testRetrieveSeasonsForTVShowBackgroundArt() throws Exception {
-		PlexappFactory factory = PlexappFactory.getInstance(config);
-		MediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/209/children/");
-		assertEquals("/library/metadata/209/art/1354460830",mediaContainer.getArt());
-	}
-	
-	
-	
-	private class MockConfig implements IConfiguration {
+  NanoHTTPD server = null;
+  IConfiguration config = null;
 
-		/* (non-Javadoc)
-		 * @see com.github.kingargyle.plexapp.config.IConfiguration#getHost()
-		 */
-		public String getHost() {
-			return "localhost";
-		}
+  @Before public void setUp() throws Exception {
+    config = new MockConfig();
+    //URL url = this.getClass().getResource("/");
 
-		/* (non-Javadoc)
-		 * @see com.github.kingargyle.plexapp.config.IConfiguration#setHost(java.lang.String)
-		 */
-		public void setHost(String host) {
-			
-		}
+    File rootfile = new File("src/test/resources");
+    server = new NanoHTTPD(Integer.parseInt(config.getPort()), rootfile);
+  }
 
-		/* (non-Javadoc)
-		 * @see com.github.kingargyle.plexapp.config.IConfiguration#getPort()
-		 */
-		public String getPort() {
-			return "32400";
-		}
+  @After public void tearDown() throws Exception {
+    server.stop();
+  }
 
-		/* (non-Javadoc)
-		 * @see com.github.kingargyle.plexapp.config.IConfiguration#setPort(java.lang.String)
-		 */
-		public void setPort(String port) {
-			
-		}
-	}
+  @Test public void testRetrieveLibrary() throws Exception {
+    SerenityClient factory = PlexappFactory.getInstance(config);
+    IMediaContainer mediaContainer = factory.retrieveLibrary();
+    assertNotNull(mediaContainer);
+    assertEquals(3, mediaContainer.getSize());
+    assertEquals(3, mediaContainer.getDirectories().size());
+  }
+
+  @Test public void testRetrieveRoot() throws Exception {
+    SerenityClient factory = PlexappFactory.getInstance(config);
+    IMediaContainer mediaContainer = factory.retrieveRootData();
+    assertNotNull(mediaContainer);
+    assertEquals(10, mediaContainer.getSize());
+  }
+
+  @Test public void testRetrieveSections() throws Exception {
+    SerenityClient factory = PlexappFactory.getInstance(config);
+    IMediaContainer mediaContainer = factory.retrieveItemByCategories();
+    assertNotNull(mediaContainer);
+    assertEquals(2, mediaContainer.getSize());
+  }
+
+  @Test public void testRetrieveSectionByKeyMovies() throws Exception {
+    SerenityClient factory = PlexappFactory.getInstance(config);
+    IMediaContainer mediaContainer = factory.retrieveItemByIdCategory("4");
+    assertNotNull(mediaContainer);
+    assertEquals(19, mediaContainer.getSize());
+  }
+
+  @Test public void testRetrieveSectionByKeyTVShows() throws Exception {
+    SerenityClient factory = PlexappFactory.getInstance(config);
+    IMediaContainer mediaContainer = factory.retrieveItemByIdCategory("6");
+    assertNotNull(mediaContainer);
+    assertEquals(15, mediaContainer.getSize());
+  }
+
+  @Test public void testRetrieveSectionByKeyMusic() throws Exception {
+    SerenityClient factory = PlexappFactory.getInstance(config);
+    IMediaContainer mediaContainer = factory.retrieveItemByIdCategory("3");
+    assertNotNull(mediaContainer);
+    assertEquals(11, mediaContainer.getSize());
+  }
+
+  @Test public void testRetrieveAllTVShows() throws Exception {
+    SerenityClient factory = PlexappFactory.getInstance(config);
+    IMediaContainer mediaContainer = factory.retrieveItemByIdCategory("6", "all");
+    List<IDirectory> directories = mediaContainer.getDirectories();
+    assertEquals(6, directories.size());
+  }
+
+  @Test public void testRetrieveAllMusic() throws Exception {
+    SerenityClient factory = PlexappFactory.getInstance(config);
+    IMediaContainer mediaContainer = factory.retrieveItemByIdCategory("3", "all");
+    List<IDirectory> directories = mediaContainer.getDirectories();
+    assertEquals(4, directories.size());
+  }
+
+  @Test public void testRetrieveSeasonsForTVShow() throws Exception {
+    SerenityClient factory = PlexappFactory.getInstance(config);
+    IMediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/209/children/");
+    assertEquals(5, mediaContainer.getSize());
+  }
+
+  @Test public void testRetrieveMusicMetaData() throws Exception {
+    SerenityClient factory = PlexappFactory.getInstance(config);
+    IMediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/101/children/");
+    assertEquals(1, mediaContainer.getSize());
+  }
+
+  @Test public void testRetrieveMusicTrackMetaData() throws Exception {
+    SerenityClient factory = PlexappFactory.getInstance(config);
+    IMediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/102/children/");
+    assertEquals(21, mediaContainer.getSize());
+    assertNotNull(mediaContainer.getTracks());
+    ITrack track = mediaContainer.getTracks().get(0);
+    assertNotNull(track);
+    assertEquals("Arabian Nights", track.getTitle());
+  }
+
+  @Test public void testRetrieveSeasonsForTVShowBackgroundArt() throws Exception {
+    SerenityClient factory = PlexappFactory.getInstance(config);
+    IMediaContainer mediaContainer = factory.retrieveSeasons("/library/metadata/209/children/");
+    assertEquals("/library/metadata/209/art/1354460830", mediaContainer.getArt());
+  }
+
+  private class MockConfig implements IConfiguration {
+
+    @Override public String getHost() {
+      return "localhost";
+    }
+
+    @Override public void setHost(String host) {
+
+    }
+
+    @Override public String getPort() {
+      return "33400";
+    }
+
+    @Override public void setPort(String port) {
+
+    }
+  }
 }

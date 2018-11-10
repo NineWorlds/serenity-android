@@ -1,0 +1,73 @@
+buildscript {
+
+  repositories {
+    google()
+    jcenter()
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+  }
+
+}
+
+repositories {
+  google()
+  jcenter()
+  mavenCentral()
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+kapt {
+  generateStubs = true
+}
+
+android {
+  compileSdkVersion 28
+  buildToolsVersion '28.0.2'
+
+  defaultConfig {
+    minSdkVersion 21
+    targetSdkVersion 28
+    versionCode 1
+    versionName "1.0"
+  }
+
+  sourceCompatibility = "1.8"
+  targetCompatibility = "1.8"
+
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
+
+  }
+  buildTypes {
+
+    debug {
+      minifyEnabled false
+    }
+
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+}
+
+dependencies {
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation project(':serenity-common')
+  implementation "com.squareup.dagger:dagger:$daggerVersion"
+  implementation "org.greenrobot:eventbus:$eventBus"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+
+
+  implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
+  kapt "com.squareup.dagger:dagger-compiler:$daggerVersion"
+
+  testImplementation "junit:junit:$junitVersion"
+}

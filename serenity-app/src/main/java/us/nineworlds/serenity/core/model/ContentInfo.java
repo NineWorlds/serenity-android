@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -25,32 +25,30 @@ package us.nineworlds.serenity.core.model;
 
 /**
  * @author dcarver
- * 
  */
 public interface ContentInfo {
 
-	public String id();
+  public String id();
 
-	public String getSummary();
+  public String getSummary();
 
-	public String getBackgroundURL();
+  public String getBackgroundURL();
 
-	public String getImageURL();
+  public String getImageURL();
 
-	public String getTitle();
+  public String getTitle();
 
-	public void setTitle(String title);
+  public void setTitle(String title);
 
-	public void setImageURL(String imageURL);
+  public void setImageURL(String imageURL);
 
-	public void setSummary(String summary);
+  public void setSummary(String summary);
 
-	public void setBackgroundURL(String backgroundURL);
+  public void setBackgroundURL(String backgroundURL);
 
-	public void setId(String id);
-	
-	public String getMediaTagIdentifier();
-	
-	public void setMediaTagIdentifier(String mediaTagIdentifier);
+  public void setId(String id);
 
+  public String getMediaTagIdentifier();
+
+  public void setMediaTagIdentifier(String mediaTagIdentifier);
 }

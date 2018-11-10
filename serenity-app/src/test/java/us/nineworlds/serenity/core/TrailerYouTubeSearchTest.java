@@ -23,15 +23,14 @@
 
 package us.nineworlds.serenity.core;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TrailerYouTubeSearchTest {
 
@@ -40,11 +39,6 @@ public class TrailerYouTubeSearchTest {
 	@Before
 	public void setUp() {
 		ytsearch = new TrailersYouTubeSearch();
-	}
-
-	@After
-	public void tearDown() {
-
 	}
 
 	@Test
@@ -67,7 +61,7 @@ public class TrailerYouTubeSearchTest {
 		when(episode.getTitle()).thenReturn("Currahee");
 		when(episode.getSeriesTitle()).thenReturn("Band of Brothers");
 		when(episode.getSeason()).thenReturn("Season 1");
-		when(episode.getEpisodeNumber()).thenReturn("1");
+		when(episode.getEpisode()).thenReturn("1");
 		when(episode.getYear()).thenReturn("2001");
 
 		String result = ytsearch.queryURL(episode);

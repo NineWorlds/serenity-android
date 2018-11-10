@@ -23,11 +23,10 @@
 
 package us.nineworlds.serenity.core.menus;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class MenuItemTest {
 
@@ -38,10 +37,6 @@ public class MenuItemTest {
 		menuItem = new MenuItem();
 	}
 
-	@After
-	public void tearDown() {
-
-	}
 
 	@Test
 	public void typeReturnsValueSet() {
@@ -63,7 +58,7 @@ public class MenuItemTest {
 
 	@Test
 	public void toStringReturnsNullWhenNoTitleHasBeenSet() {
-		assertThat(menuItem.toString()).isNull();
+		assertThat(menuItem.toString()).isEmpty();
 	}
 
 	@Test

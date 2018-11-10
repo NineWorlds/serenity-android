@@ -12,5 +12,12 @@ tmp
 *.orig
 .DS_S*
 .factorypath
-
+*.iml
+gen-external-apklibs
+gen
+*.idea
+.gradle
+local.properties
+build
+keystore.properties
 

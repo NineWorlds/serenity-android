@@ -23,13 +23,10 @@
 
 package us.nineworlds.serenity.ui.adapters;
 
-import static org.fest.assertions.api.ANDROID.assertThat;
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
 
 import org.junit.After;
 import org.junit.Before;
@@ -39,99 +36,45 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import dagger.Module;
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.MainActivity;
-import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
-import android.content.Context;
-import android.support.v7.app.ActionBarActivity;
-import android.view.View;
-import android.view.ViewGroup;
-import dagger.Module;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
+@Config(qualifiers = "large")
 public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
 	AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter;
+	AppCompatActivity activity;
 
 	@Override
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		Robolectric.getBackgroundScheduler().pause();
-		Robolectric.getUiThreadScheduler().pause();
+		Robolectric.getBackgroundThreadScheduler().pause();
+		Robolectric.getForegroundThreadScheduler().pause();
 
-		ActionBarActivity activity = Robolectric
-				.buildActivity(MainActivity.class).create().get();
-		abstractPosterImageGalleryAdapter = new FakePosterImageGalleryAdapter(
-				activity, "12345");
+		activity = Robolectric.buildActivity(MainActivity.class).create().get();
+		abstractPosterImageGalleryAdapter = new FakePosterImageGalleryAdapter();
 	}
 
 	@After
 	public void tearDown() {
-
-	}
-
-	@Test
-	public void watchedViewIsSetInvisible() {
-		View galleryCellView = View.inflate(Robolectric.application,
-				R.layout.poster_indicator_view, null);
-		VideoContentInfo videoContentInfo = mock(VideoContentInfo.class);
-		when(videoContentInfo.isPartiallyWatched()).thenReturn(false);
-		when(videoContentInfo.isWatched()).thenReturn(false);
-
-		abstractPosterImageGalleryAdapter.setWatchedStatus(galleryCellView,
-				videoContentInfo);
-
-		View watchedStatus = galleryCellView
-				.findViewById(R.id.posterWatchedIndicator);
-
-		assertThat(watchedStatus).isInvisible();
-
-	}
-
-	@Test
-	public void progressIndicatorIsVisible() {
-		View galleryCellView = View.inflate(Robolectric.application,
-				R.layout.poster_indicator_view, null);
-		VideoContentInfo videoContentInfo = mock(VideoContentInfo.class);
-		when(videoContentInfo.isPartiallyWatched()).thenReturn(true);
-		when(videoContentInfo.getResumeOffset()).thenReturn(10);
-		when(videoContentInfo.getDuration()).thenReturn(100);
-
-		abstractPosterImageGalleryAdapter.setWatchedStatus(galleryCellView,
-				videoContentInfo);
-
-		View progressIndicator = galleryCellView
-				.findViewById(R.id.posterInprogressIndicator);
-
-		assertThat(progressIndicator).isVisible();
-	}
-
-	@Test
-	public void setViewToWatched() {
-		View galleryCellView = View.inflate(Robolectric.application,
-				R.layout.poster_indicator_view, null);
-		VideoContentInfo videoContentInfo = mock(VideoContentInfo.class);
-		when(videoContentInfo.isPartiallyWatched()).thenReturn(false);
-		when(videoContentInfo.isWatched()).thenReturn(true);
-
-		abstractPosterImageGalleryAdapter.setWatchedStatus(galleryCellView,
-				videoContentInfo);
-
-		View watchedStatus = galleryCellView
-				.findViewById(R.id.posterWatchedIndicator);
-
-		assertThat(watchedStatus).isVisible();
-	}
-
-	@Test
-	public void posterListSizeIsGreaterThanZero() {
-		assertThat(abstractPosterImageGalleryAdapter).hasCount(1);
+		if (activity != null) {
+			activity.finish();
+		}
 	}
 
 	@Test
@@ -147,46 +90,54 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
 	@Test
 	public void getItemsReturnsANonEmptyListOfItems() {
-		assertThat(abstractPosterImageGalleryAdapter).isNotEmpty();
 		assertThat(abstractPosterImageGalleryAdapter.getItems()).isNotEmpty();
 	}
 
 	public class FakePosterImageGalleryAdapter extends
 	AbstractPosterImageGalleryAdapter {
 
-		/**
-		 * @param c
-		 * @param key
-		 */
-		public FakePosterImageGalleryAdapter(Context c, String key) {
-			super(c, key);
+		public FakePosterImageGalleryAdapter() {
+			super();
 
-			posterList = new ArrayList<VideoContentInfo>();
+			posterList = new ArrayList<>();
 			VideoContentInfo videoContentInfo = new MoviePosterInfo();
 			posterList.add(videoContentInfo);
 		}
 
-		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			return null;
 		}
 
 		@Override
-		protected void fetchDataFromService() {
+		public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+			return null;
+		}
+
+		@Override
+		public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
 		}
 
+		public void onItemViewClick(View view, int i) {
+
+		}
+
+		public void onItemViewFocusChanged(boolean b, View view, int i) {
+
+		}
 	}
 
 	@Override
 	public List<Object> getModules() {
 		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(Robolectric.application));
+		modules.add(new AndroidModule(application));
+		modules.add(new TestingModule());
 		modules.add(new TestModule());
 		return modules;
 	}
 
-	@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, injects = {
+	@Module(addsTo = AndroidModule.class,
+			includes = SerenityModule.class, injects = {
 			AbstractPosterImageGalleryAdapterTest.class,
 			FakePosterImageGalleryAdapter.class,
 			AbstractPosterImageGalleryAdapter.class })

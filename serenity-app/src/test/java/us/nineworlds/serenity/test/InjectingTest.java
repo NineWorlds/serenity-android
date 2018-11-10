@@ -24,20 +24,16 @@
 package us.nineworlds.serenity.test;
 
 import java.util.List;
-
 import org.junit.Before;
-
-import us.nineworlds.serenity.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
 
 public abstract class InjectingTest {
 
-	@Before
-	public void setUp() throws Exception {
-		SerenityObjectGraph objectGraph = SerenityObjectGraph.getInstance();
-		objectGraph.createObjectGraph(getModules());
-		objectGraph.inject(this);
-	}
+  @Before public void setUp() throws Exception {
+    SerenityObjectGraph objectGraph = SerenityObjectGraph.Companion.getInstance();
+    objectGraph.createObjectGraph(getModules());
+    objectGraph.inject(this);
+  }
 
-	public abstract List<Object> getModules();
-
+  public abstract List<Object> getModules();
 }

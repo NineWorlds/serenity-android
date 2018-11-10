@@ -1,0 +1,82 @@
+buildscript {
+
+  repositories {
+    jcenter()
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+  }
+}
+
+repositories {
+  google()
+  maven {
+    url "maven.google.com"
+  }
+  jcenter()
+  mavenCentral()
+  flatDir {
+    dirs 'embylib'
+  }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+  defaultConfig {
+    minSdkVersion 21
+    targetSdkVersion 28
+  }
+
+  compileSdkVersion 28
+  buildToolsVersion '28.0.2'
+
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
+  }
+}
+
+dependencies {
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+  implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+
+  implementation project(':serenity-common')
+  implementation project(':serenity-android-common')
+
+  implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
+  implementation "com.squareup.dagger:dagger:$daggerVersion"
+  kapt "com.squareup.dagger:dagger-compiler:$daggerVersion"
+  implementation "org.greenrobot:eventbus:$eventBus"
+  implementation "com.squareup.moshi:moshi-kotlin:$moshiKotlinVersion"
+  implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+  implementation "net.danlew:android.joda:$jodaTimeVersion"
+  implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+  implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+  implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+  implementation "me.jessyan:retrofit-url-manager:$urlManager"
+  implementation "com.jakewharton.timber:timber:$timberVersion"
+  implementation "com.github.nisrulz:easydeviceinfo-base:2.4.1"
+  implementation "com.github.nisrulz:easydeviceinfo-common:2.4.1"
+
+  testImplementation "junit:junit:$junitVersion"
+  testImplementation "org.assertj:assertj-core:$assertjVersion"
+  testImplementation "org.mockito:mockito-core:$mockitoVersion"
+  kaptTest "com.squareup.dagger:dagger-compiler:$daggerVersion"
+  testImplementation("org.robolectric:robolectric:$robolectricVersion") {
+    exclude module: 'support-v4'
+  }
+  testImplementation "org.robolectric:shadows-supportv4:$robolectricVersion"
+  testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
+  testImplementation "org.robolectric:shadowapi:$robolectricVersion"
+  testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
+  testImplementation "org.khronos:opengl-api:$openglApiVersion"
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.7"
+

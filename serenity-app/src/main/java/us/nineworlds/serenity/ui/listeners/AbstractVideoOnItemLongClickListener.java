@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,31 +23,11 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.SerenityApplication;
-import us.nineworlds.serenity.core.menus.DialogMenuItem;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.util.AndroidHelper;
-import us.nineworlds.serenity.handlers.DownloadHandler;
-import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.injection.ForVideoQueue;
-import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
-import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
-import us.nineworlds.serenity.ui.util.VideoQueueHelper;
-import us.nineworlds.serenity.ui.util.YouTubeUtils;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
@@ -55,11 +35,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.castillo.dd.DSInterface;
-import com.castillo.dd.PendingDownload;
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
-import com.google.android.youtube.player.YouTubeInitializationResult;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import javax.inject.Inject;
+import timber.log.Timber;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.menus.DialogMenuItem;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.util.AndroidHelper;
+import us.nineworlds.serenity.injection.BaseInjector;
+import us.nineworlds.serenity.injection.ForVideoQueue;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.dialogs.DirectoryChooserDialog;
+import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
+import us.nineworlds.serenity.ui.util.VideoQueueHelper;
 
 /**
  * A listener that handles long press for video content. Includes displaying a
@@ -67,247 +56,131 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
  * on the TV.
  *
  * @author dcarver
- *
  */
-public class AbstractVideoOnItemLongClickListener extends BaseInjector {
+public abstract class AbstractVideoOnItemLongClickListener extends BaseInjector implements View.OnLongClickListener {
 
-	protected Dialog dialog;
-	protected Activity context;
-	protected VideoContentInfo info;
-	protected ImageView vciv;
+  @Inject protected AndroidHelper androidHelper;
+  @Inject @ForVideoQueue protected LinkedList<VideoContentInfo> videoQueue;
+  @Inject protected SharedPreferences prefs;
+  @Inject protected VideoQueueHelper videoQueueHelper;
 
-	@Inject
-	protected AndroidHelper androidHelper;
+  protected Dialog dialog;
+  protected Activity context;
+  protected VideoContentInfo info;
+  protected View vciv;
+  protected int position;
+  protected AbstractPosterImageGalleryAdapter adapter;
 
-	@Inject
-	@ForVideoQueue
-	protected LinkedList<VideoContentInfo> videoQueue;
 
-	@Inject
-	protected SharedPreferences prefs;
+  public AbstractVideoOnItemLongClickListener(AbstractPosterImageGalleryAdapter adapter) {
+    this.adapter = adapter;
+  }
 
-	@Inject
-	protected YouTubeUtils youTubeUtils;
+  public void setPosition(int position) {
+    this.position = position;
+    Timber.d("Position after setting: " + position);
+  }
 
-	@Inject
-	protected VideoQueueHelper videoQueueHelper;
+  protected boolean onItemLongClick() {
+    context = (Activity) vciv.getContext();
 
-	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
-			int position, long arg3) {
+    Timber.d("Position in OnItemLongClick: " + position);
+    info = (VideoContentInfo) adapter.getItem(position);
 
-		// Google TV is sending back different results than Nexus 7
-		// So we try to handle the different results.
+    dialog = new Dialog(context);
+    AlertDialog.Builder builder = new AlertDialog.Builder(
+        new ContextThemeWrapper(context, android.R.style.Theme_Holo_Dialog));
+    builder.setTitle(context.getString(R.string.video_options));
 
-		info = (VideoContentInfo) av.getSelectedItem();
+    ListView modeList = new ListView(context);
+    modeList.setSelector(R.drawable.menu_item_selector);
+    ArrayList<DialogMenuItem> options = addMenuOptions();
 
-		if (v == null) {
-			SerenityGallery g = (SerenityGallery) av;
-			vciv = (ImageView) g.getSelectedView().findViewById(
-					R.id.posterImageView);
-			info = (VideoContentInfo) g.getSelectedItem();
-		} else {
-			if (v instanceof ImageView) {
-				vciv = (ImageView) v;
-			} else {
-				SerenityGallery g = (SerenityGallery) v;
-				vciv = (ImageView) g.getSelectedView().findViewById(
-						R.id.posterImageView);
-				info = (VideoContentInfo) g.getSelectedItem();
-			}
-		}
+    ArrayAdapter<DialogMenuItem> modeAdapter =
+        new ArrayAdapter<DialogMenuItem>(context, R.layout.simple_list_item, R.id.list_item_text,
+            options);
 
-		return onItemLongClick();
-	}
+    modeList.setAdapter(modeAdapter);
+    modeList.setOnItemClickListener(getDialogSelectedListener());
 
-	protected boolean onItemLongClick() {
-		context = (Activity) vciv.getContext();
+    builder.setView(modeList);
+    dialog = builder.create();
+    dialog.show();
 
-		dialog = new Dialog(context);
-		AlertDialog.Builder builder = new AlertDialog.Builder(
-				new ContextThemeWrapper(context,
-						android.R.style.Theme_Holo_Dialog));
-		builder.setTitle(context.getString(R.string.video_options));
+    return true;
+  }
 
-		ListView modeList = new ListView(context);
-		modeList.setSelector(R.drawable.menu_item_selector);
-		ArrayList<DialogMenuItem> options = addMenuOptions();
+  /**
+   * @return
+   */
+  protected OnItemClickListener getDialogSelectedListener() {
+    return new DialogOnItemSelected();
+  }
 
-		ArrayAdapter<DialogMenuItem> modeAdapter = new ArrayAdapter<DialogMenuItem>(
-				context, R.layout.simple_list_item, R.id.list_item_text,
-				options);
+  protected ArrayList<DialogMenuItem> addMenuOptions() {
+    ArrayList<DialogMenuItem> options = new ArrayList<DialogMenuItem>();
+    options.add(createMenuItemToggleWatchStatus());
+    options.add(createMenuItemAddToQueue());
 
-		modeList.setAdapter(modeAdapter);
-		modeList.setOnItemClickListener(getDialogSelectedListener());
+    return options;
+  }
 
-		builder.setView(modeList);
-		dialog = builder.create();
-		dialog.show();
+  private DialogMenuItem createMenuItemToggleWatchStatus() {
+    return createMenuItem(context.getString(R.string.toggle_watched_status), 0);
+  }
 
-		return true;
-	}
+  private DialogMenuItem createMenuItemAddToQueue() {
+    return createMenuItem(context.getString(R.string.add_video_to_queue), 2);
+  }
 
-	/**
-	 * @return
-	 */
-	protected OnItemClickListener getDialogSelectedListener() {
-		return new DialogOnItemSelected();
-	}
+  protected DialogMenuItem createMenuItem(String title, int action) {
+    DialogMenuItem menuItem = new DialogMenuItem();
+    menuItem.setTitle(title);
+    menuItem.setMenuDialogAction(action);
+    return menuItem;
+  }
 
-	protected ArrayList<DialogMenuItem> addMenuOptions() {
-		ArrayList<DialogMenuItem> options = new ArrayList<DialogMenuItem>();
-		options.add(createMenuItemToggleWatchStatus());
-		options.add(createMenuItemDownload());
-		options.add(createMenuItemAddToQueue());
+  protected void performWatchedToggle() {
+    View posterLayout = vciv;
+    posterLayout.findViewById(R.id.posterInprogressIndicator).setVisibility(View.INVISIBLE);
 
-		if (info.hasTrailer()
-				&& YouTubeInitializationResult.SUCCESS
-				.equals(YouTubeApiServiceUtil
-						.isYouTubeApiServiceAvailable(context))) {
-			options.add(createMenuItemPlayTrailer());
-		}
+    toggleGraphicIndicators(posterLayout);
+    info.toggleWatchStatus();
+  }
 
-		if (!androidHelper.isGoogleTV() && androidHelper.hasSupportedCaster()) {
-			options.add(createMenuItemFling());
-		}
-		return options;
-	}
+  protected void toggleGraphicIndicators(View posterLayout) {
+    if (info.isPartiallyWatched() || info.isUnwatched()) {
+      final float percentWatched = info.viewedPercentage();
+      if (percentWatched <= 0.90f) {
+        ImageInfographicUtils.setWatchedCount(vciv, context, info);
+        ImageView view = posterLayout.findViewById(R.id.posterWatchedIndicator);
+        view.setImageResource(R.drawable.overlaywatched);
+        view.setVisibility(View.VISIBLE);
+        return;
+      }
+    }
 
-	private DialogMenuItem createMenuItemToggleWatchStatus() {
-		return createMenuItem(
-				context.getString(R.string.toggle_watched_status), 0);
-	}
+    ImageInfographicUtils.setUnwatched(vciv, context, info);
+    posterLayout.findViewById(R.id.posterWatchedIndicator).setVisibility(View.INVISIBLE);
+  }
 
-	private DialogMenuItem createMenuItemDownload() {
-		return createMenuItem(
-				context.getString(R.string.download_video_to_device), 1);
-	}
+  protected class DialogOnItemSelected implements OnItemClickListener {
 
-	private DialogMenuItem createMenuItemAddToQueue() {
-		return createMenuItem(context.getString(R.string.add_video_to_queue), 2);
-	}
+    @Override
+    public void onItemClick(android.widget.AdapterView<?> arg0, View v, int position, long arg3) {
 
-	private DialogMenuItem createMenuItemPlayTrailer() {
-		return createMenuItem("Play Trailer", 3);
-	}
+      DialogMenuItem menuItem = (DialogMenuItem) arg0.getItemAtPosition(position);
 
-	private DialogMenuItem createMenuItemFling() {
-		return createMenuItem(context.getString(R.string.cast_fling_with_), 4);
-	}
-
-	protected DialogMenuItem createMenuItem(String title, int action) {
-		DialogMenuItem menuItem = new DialogMenuItem();
-		menuItem.setTitle(title);
-		menuItem.setMenuDialogAction(action);
-		return menuItem;
-	}
-
-	protected void performWatchedToggle() {
-		View posterLayout = (View) vciv.getParent();
-		posterLayout.findViewById(R.id.posterInprogressIndicator)
-		.setVisibility(View.INVISIBLE);
-
-		toggleGraphicIndicators(posterLayout);
-		info.toggleWatchStatus();
-	}
-
-	/**
-	 * @param posterLayout
-	 */
-	protected void toggleGraphicIndicators(View posterLayout) {
-		if (info.isPartiallyWatched() || info.isUnwatched()) {
-			final float percentWatched = info.viewedPercentage();
-			if (percentWatched <= 0.90f) {
-				ImageInfographicUtils.setWatchedCount(vciv, context, info);
-				ImageView view = (ImageView) posterLayout
-						.findViewById(R.id.posterWatchedIndicator);
-				view.setImageResource(R.drawable.overlaywatched);
-				view.setVisibility(View.VISIBLE);
-				return;
-			}
-		}
-
-		ImageInfographicUtils.setUnwatched(vciv, context, info);
-		posterLayout.findViewById(R.id.posterWatchedIndicator).setVisibility(
-				View.INVISIBLE);
-	}
-
-	protected class DialogOnItemSelected implements OnItemClickListener {
-
-		@Override
-		public void onItemClick(android.widget.AdapterView<?> arg0, View v,
-				int position, long arg3) {
-
-			DialogMenuItem menuItem = (DialogMenuItem) arg0
-					.getItemAtPosition(position);
-
-			switch (menuItem.getMenuDialogAction()) {
-			case 0:
-				performWatchedToggle();
-				break;
-			case 1:
-				startDownload();
-				break;
-			case 2:
-				videoQueueHelper.performAddToQueue(info);
-				break;
-			case 3:
-				youTubeUtils.performPlayTrailer(info, context);
-				break;
-			case 4:
-				androidHelper.performGoogleTVSecondScreen(info, dialog);
-			}
-			v.requestFocusFromTouch();
-			dialog.dismiss();
-		}
-
-	}
-
-	protected void startDownload() {
-		directoryChooser();
-	}
-
-	protected void startDownload(String destination) {
-
-		List<PendingDownload> pendingDownloads = SerenityApplication
-				.getPendingDownloads();
-		PendingDownload pendingDownload = new PendingDownload();
-		String filename = info.getTitle() + "." + info.getContainer();
-		pendingDownload.setFilename(filename);
-		pendingDownload.setUrl(info.getDirectPlayUrl());
-
-		pendingDownloads.add(pendingDownload);
-		int pos = pendingDownloads.size() - 1;
-
-		try {
-			DSInterface downloadService = DownloadHandler.getInstance(context)
-					.getDownloadServiceInterface();
-			downloadService.addFileDownloadlist(info.getDirectPlayUrl(),
-					destination, filename, pos);
-			Toast.makeText(
-					context,
-					context.getString(R.string.starting_download_of_)
-					+ info.getTitle(), Toast.LENGTH_LONG).show();
-		} catch (Exception ex) {
-			Log.e(getClass().getName(), "Unable to download " + info.getTitle()
-					+ "." + info.getContainer());
-		}
-	}
-
-	protected void directoryChooser() {
-		// Create DirectoryChooserDialog and register a callback
-		DirectoryChooserDialog directoryChooserDialog = new DirectoryChooserDialog(
-				context, new DirectoryChooserDialog.ChosenDirectoryListener() {
-					@Override
-					public void onChosenDir(String chosenDir) {
-						Toast.makeText(
-								context,
-								context.getString(R.string.chosen_directory_)
-								+ chosenDir, Toast.LENGTH_LONG).show();
-						startDownload(chosenDir);
-					}
-				});
-		directoryChooserDialog.setNewFolderEnabled(true);
-		directoryChooserDialog.chooseDirectory("");
-	}
-
+      switch (menuItem.getMenuDialogAction()) {
+        case 0:
+          performWatchedToggle();
+          break;
+        case 2:
+          videoQueueHelper.performAddToQueue(info);
+          break;
+      }
+      v.requestFocusFromTouch();
+      dialog.dismiss();
+    }
+  }
 }

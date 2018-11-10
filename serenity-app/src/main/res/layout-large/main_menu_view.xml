@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@drawable/content_panel_dark"
+    android:layout_centerInParent="true"
+    >
+  <net.ganin.darv.DpadAwareRecyclerView
+      android:id="@+id/mainGalleryMenu"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="5dp"
+      android:layout_marginRight="5dp"
+      android:layout_marginLeft="5dp"
+      android:paddingLeft="5dp"
+      app:selectorVelocity="1000"
+      android:focusableInTouchMode="true"
+      app:smoothScrolling="true"
+      app:backgroundSelector="@drawable/item_foreground_selector"
+      android:nextFocusUp="@+id/menu_button"
+      android:descendantFocusability="afterDescendants"
+      >
+    <requestFocus/>
+  </net.ganin.darv.DpadAwareRecyclerView>
+
+</FrameLayout>

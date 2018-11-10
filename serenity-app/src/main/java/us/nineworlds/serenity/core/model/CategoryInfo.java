@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -25,45 +25,42 @@ package us.nineworlds.serenity.core.model;
 
 /**
  * Represents a set of Categories
- * 
+ *
  * @author dcarver
- * 
  */
 public class CategoryInfo {
 
-	private int level;
+  private int level;
 
-	private String category;
+  private String category;
 
-	private String categoryDetail;
+  private String categoryDetail;
 
-	public int getLevel() {
-		return level;
-	}
+  public int getLevel() {
+    return level;
+  }
 
-	public void setLevel(int level) {
-		this.level = level;
-	}
+  public void setLevel(int level) {
+    this.level = level;
+  }
 
-	public String getCategory() {
-		return category;
-	}
+  public String getCategory() {
+    return category;
+  }
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
+  public void setCategory(String category) {
+    this.category = category;
+  }
 
-	public String getCategoryDetail() {
-		return categoryDetail;
-	}
+  public String getCategoryDetail() {
+    return categoryDetail;
+  }
 
-	public void setCategoryDetail(String categoryDetail) {
-		this.categoryDetail = categoryDetail;
-	}
+  public void setCategoryDetail(String categoryDetail) {
+    this.categoryDetail = categoryDetail;
+  }
 
-	@Override
-	public String toString() {
-		return categoryDetail;
-	}
-
+  @Override public String toString() {
+    return categoryDetail;
+  }
 }

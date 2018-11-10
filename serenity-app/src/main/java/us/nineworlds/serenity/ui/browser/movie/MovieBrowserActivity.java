@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,183 +23,238 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.menus.MenuDrawerItem;
-import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
-import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
-import us.nineworlds.serenity.fragments.VideoGridFragment;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
-import us.nineworlds.serenity.ui.util.DisplayUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.Spinner;
+import android.widget.Toast;
+import butterknife.ButterKnife;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Inject;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.menus.MenuDrawerItem;
+import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
+import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
+import us.nineworlds.serenity.fragments.VideoGridFragment;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.util.DisplayUtils;
 
-import com.jess.ui.TwoWayGridView;
+import static android.view.View.*;
 
-public class MovieBrowserActivity extends SerenityMultiViewVideoActivity {
+public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
+    implements MovieBrowserContract.MovieBrowserView {
 
-	private static String key;
-	@Inject
-	protected SharedPreferences prefs;
+  @Inject protected SharedPreferences prefs;
+  @Inject protected MovieSelectedCategoryState categoryState;
+  @InjectPresenter MovieBrowserPresenter presenter;
 
-	@Inject
-	protected MovieSelectedCategoryState categoryState;
+  private String key;
 
-	@Override
-	protected void createSideMenu() {
-		setContentView(R.layout.activity_movie_browser);
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager
-				.beginTransaction();
-		MovieVideoGalleryFragment videoGalleryFragment = (MovieVideoGalleryFragment) fragmentManager
-				.findFragmentByTag("videoGallery_fragment");
-		VideoGridFragment videoGridFragment = (VideoGridFragment) fragmentManager
-				.findFragmentByTag("videoGrid_fragment");
+  VideoGridFragment videoGridFragment;
+  MovieVideoGalleryFragment movieVideoGalleryFragment;
+  RecyclerView.Adapter adapter;
 
-		if (gridViewActive) {
-			fragmentTransaction.hide(videoGalleryFragment);
-			fragmentTransaction.show(videoGridFragment);
-			fragmentTransaction.commit();
-		} else {
-			fragmentTransaction.hide(videoGridFragment);
-			fragmentTransaction.show(videoGalleryFragment);
-			fragmentTransaction.commit();
-		}
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    actionBar.setCustomView(R.layout.movie_custom_actionbar);
+    actionBar.setDisplayShowCustomEnabled(true);
 
-		View fanArt = findViewById(R.id.fanArt);
-		fanArt.setBackgroundResource(R.drawable.movies);
+    gridViewActive = prefs.getBoolean("movie_layout_grid", false);
 
-		initMenuDrawerViews();
+    Intent intent = getIntent();
 
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-				R.drawable.menudrawer_selector, R.string.drawer_open,
-				R.string.drawer_closed) {
-			@Override
-			public void onDrawerOpened(View drawerView) {
+    if (intent != null) {
+      if (intent.getExtras() != null) {
+        key = intent.getExtras().getString("key");
+      }
+    }
 
-				super.onDrawerOpened(drawerView);
-				getSupportActionBar().setTitle(R.string.app_name);
-				drawerList.requestFocusFromTouch();
-			}
+    createSideMenu();
 
-			@Override
-			public void onDrawerClosed(View drawerView) {
-				super.onDrawerClosed(drawerView);
-				getSupportActionBar().setTitle(R.string.app_name);
-				View gallery = findViewById(R.id.moviePosterGallery);
-				if (!isGridViewActive()) {
-					gallery.requestFocusFromTouch();
-				}
-			}
-		};
+    DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
+  }
 
-		drawerLayout.setDrawerListener(drawerToggle);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setHomeButtonEnabled(true);
+  @Override protected void onResume() {
+    super.onResume();
+  }
 
-		populateMenuDrawer();
-	}
+  @Override protected void onPause() {
+    RecyclerView galleryView = findVideoRecyclerView();
+    if (galleryView != null) {
+      adapter = galleryView.getAdapter();
+    }
+    super.onPause();
+  }
 
-	protected void populateMenuDrawer() {
-		List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-		drawerMenuItem.add(new MenuDrawerItemImpl("Grid View",
-				R.drawable.ic_action_collections_view_as_grid));
-		drawerMenuItem.add(new MenuDrawerItemImpl("Detail View",
-				R.drawable.ic_action_collections_view_detail));
-		drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue",
-				R.drawable.menu_play_all_queue));
+  @Override protected void onRestart() {
+    super.onRestart();
+    populateMenuDrawer();
+  }
 
-		drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-		drawerList
-		.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(
-				drawerLayout));
+  @Override protected void createSideMenu() {
+    createContentView();
 
-	}
+    initMenuDrawerViews();
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu",
-				true);
-		if (menuKeySlidingMenu) {
-			if (keyCode == KeyEvent.KEYCODE_MENU) {
-				if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-					drawerLayout.closeDrawers();
-				} else {
-					drawerLayout.openDrawer(linearDrawerLayout);
-				}
-				return true;
-			}
-		}
+    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector, R.string.drawer_open,
+        R.string.drawer_closed) {
+      @Override public void onDrawerOpened(View drawerView) {
 
-		if (keyCode == KeyEvent.KEYCODE_BACK
-				&& drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-			drawerLayout.closeDrawers();
-			return true;
-		}
+        super.onDrawerOpened(drawerView);
+        getSupportActionBar().setTitle(R.string.app_name);
+        drawerList.requestFocusFromTouch();
+      }
 
-		return super.onKeyDown(keyCode, event);
-	}
+      @Override public void onDrawerClosed(View drawerView) {
+        super.onDrawerClosed(drawerView);
+        getSupportActionBar().setTitle(R.string.app_name);
+        View gallery = findViewById(R.id.moviePosterView);
+        gallery.requestFocusFromTouch();
+      }
+    };
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		actionBar.setCustomView(R.layout.move_custom_actionbar);
-		actionBar.setDisplayShowCustomEnabled(true);
+    drawerLayout.setDrawerListener(drawerToggle);
+    actionBar.setDisplayHomeAsUpEnabled(true);
+    actionBar.setHomeButtonEnabled(true);
 
-		gridViewActive = prefs.getBoolean("movie_layout_grid", false);
+    populateMenuDrawer();
+  }
 
-		Intent intent = getIntent();
+  protected void createContentView() {
+    setContentView(R.layout.activity_movie_browser);
+    ButterKnife.bind(this);
+    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-		if (intent != null) {
-			if (intent.getExtras() != null) {
-				key = intent.getExtras().getString("key");
-			}
-		}
+    if (gridViewActive) {
+      videoGridFragment = new VideoGridFragment();
+      fragmentTransaction.replace(R.id.fragment_container, videoGridFragment);
+    } else {
+      movieVideoGalleryFragment = new MovieVideoGalleryFragment();
+      fragmentTransaction.replace(R.id.fragment_container, movieVideoGalleryFragment);
+    }
+    fragmentTransaction.commit();
 
-		createSideMenu();
+    View fanArt = findViewById(R.id.fanArt);
+    fanArt.setBackgroundResource(R.drawable.movies);
+  }
 
-		DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
-	}
+  protected void populateMenuDrawer() {
+    List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
+    drawerMenuItem.add(new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
+    drawerMenuItem.add(new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
+    drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
+    drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
+    drawerList.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(drawerLayout));
+  }
 
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		populateMenuDrawer();
-	}
+  @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
+    boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu", true);
+    if (menuKeySlidingMenu) {
+      if (keyCode == KeyEvent.KEYCODE_MENU) {
+        if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
+          drawerLayout.closeDrawers();
+        } else {
+          drawerLayout.openDrawer(linearDrawerLayout);
+        }
+        return true;
+      }
+    }
 
-	public static String getKey() {
-		return key;
-	}
+    if (keyCode == KeyEvent.KEYCODE_BACK && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
+      drawerLayout.closeDrawers();
+      return true;
+    }
 
-	public static void setKey(String key) {
-		MovieBrowserActivity.key = key;
-	}
+    return super.onKeyDown(keyCode, event);
+  }
 
-	@Override
-	protected SerenityGallery findGalleryView() {
-		return (SerenityGallery) findViewById(R.id.moviePosterGallery);
-	}
+  public String getKey() {
+    return key;
+  }
 
-	@Override
-	protected TwoWayGridView findGridView() {
-		return (TwoWayGridView) findViewById(R.id.movieGridView);
-	}
+  @Override protected RecyclerView findVideoRecyclerView() {
+    return findViewById(R.id.moviePosterView);
+  }
 
+  @Override public AbstractPosterImageGalleryAdapter getAdapter() {
+    return (AbstractPosterImageGalleryAdapter) adapter;
+  }
+
+  @Override public void populateCategory(List<CategoryInfo> categories, String key) {
+    ArrayAdapter<CategoryInfo> spinnerArrayAdapter =
+        new ArrayAdapter<CategoryInfo>(this, R.layout.serenity_spinner_textview, categories);
+    spinnerArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+
+    Spinner categorySpinner = (Spinner) findViewById(R.id.categoryFilter);
+    if (categorySpinner == null) {
+      return;
+    }
+    categorySpinner.setVisibility(VISIBLE);
+    categorySpinner.setAdapter(spinnerArrayAdapter);
+
+    if (categoryState.getCategory() == null) {
+      categorySpinner.setOnItemSelectedListener(new MovieCategorySpinnerOnItemSelectedListener("all", key, this));
+    } else {
+      categorySpinner.setOnItemSelectedListener(
+          new MovieCategorySpinnerOnItemSelectedListener(categoryState.getCategory(), key, false, this));
+    }
+    categorySpinner.requestFocus();
+  }
+
+  @Override public void populateSecondaryCategory(List<SecondaryCategoryInfo> categories, String key, String category) {
+    if (categories == null || categories.isEmpty()) {
+      Toast.makeText(this, R.string.no_entries_available_for_category_, Toast.LENGTH_LONG).show();
+      return;
+    }
+
+    Spinner secondarySpinner = (Spinner) findViewById(R.id.categoryFilter2);
+    secondarySpinner.setVisibility(VISIBLE);
+
+    ArrayAdapter<SecondaryCategoryInfo> spinnerSecArrayAdapter =
+        new ArrayAdapter<SecondaryCategoryInfo>(this, R.layout.serenity_spinner_textview, categories);
+    spinnerSecArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
+    secondarySpinner.setAdapter(spinnerSecArrayAdapter);
+    secondarySpinner.setOnItemSelectedListener(new SecondaryCategorySpinnerOnItemSelectedListener(category, key, this));
+  }
+
+  @Override public void displayPosters(List<VideoContentInfo> videos) {
+    FrameLayout dataLoadingContainer = findViewById(R.id.data_loading_container);
+    if (dataLoadingContainer != null) {
+      dataLoadingContainer.setVisibility(GONE);
+    }
+
+    RecyclerView recyclerView = findVideoRecyclerView();
+    MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) recyclerView.getAdapter();
+    adapter.populatePosters(videos);
+    recyclerView.requestFocusFromTouch();
+    if (adapter.getItemCount() > 0) {
+      if (recyclerView.getChildCount() > 0) {
+        recyclerView.getChildAt(0).requestFocus();
+      }
+    }
+  }
+
+  public void requestUpdatedVideos(String key, String category) {
+    FrameLayout dataLoadingContainer = findViewById(R.id.data_loading_container);
+    if (dataLoadingContainer != null) {
+      dataLoadingContainer.setVisibility(View.VISIBLE);
+    }
+
+    presenter.fetchVideos(key, category);
+  }
 }

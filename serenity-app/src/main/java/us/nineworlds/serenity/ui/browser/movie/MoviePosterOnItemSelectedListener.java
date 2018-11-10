@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,13 +23,6 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
-import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -39,102 +32,122 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue.RequestFilter;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.bumptech.glide.Glide;
+import net.ganin.darv.DpadAwareRecyclerView;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
+import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
+import us.nineworlds.serenity.ui.util.ImageUtils;
 
 /**
  * When a poster is selected, update the information displayed in the browser.
  *
  * @author dcarver
- *
  */
-public class MoviePosterOnItemSelectedListener extends
-		AbstractVideoOnItemSelectedListener implements OnItemSelectedListener {
+public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
-	public MoviePosterOnItemSelectedListener() {
-		super();
-	}
+  private AbstractPosterImageGalleryAdapter adapter;
 
-	@Override
-	protected void createVideoDetail(ImageView v) {
-		View cardView = context.findViewById(R.id.video_details_container);
-		if (cardView != null) {
-			cardView.setVisibility(View.VISIBLE);
-		}
+  public MoviePosterOnItemSelectedListener(AbstractPosterImageGalleryAdapter adapter) {
+    super();
+    this.adapter = adapter;
+  }
 
-		ImageView posterImage = (ImageView) context
-				.findViewById(R.id.video_poster);
-		posterImage.setVisibility(View.VISIBLE);
-		posterImage.setScaleType(ScaleType.FIT_XY);
-		posterImage.setMaxWidth(posterImage.getWidth());
-		posterImage.setMaxHeight(posterImage.getHeight());
-		ImageLoader imageLoader = serenityImageLoader.getImageLoader();
-		imageLoader.cancelDisplayTask(posterImage);
-		serenityImageLoader.displayImage(videoInfo.getImageURL(), posterImage);
+  @Override protected void createVideoDetail(ImageView v) {
+    Activity context = getActivity(v.getContext());
+    View cardView = context.findViewById(R.id.video_details_container);
+    if (cardView != null) {
+      cardView.setVisibility(View.VISIBLE);
+    }
 
-		TextView summary = (TextView) context.findViewById(R.id.movieSummary);
-		summary.setText(videoInfo.getSummary());
+    ImageView posterImage = context.findViewById(R.id.video_poster);
+    posterImage.setVisibility(View.VISIBLE);
+    posterImage.setScaleType(ScaleType.FIT_XY);
+    posterImage.setMaxWidth(posterImage.getWidth());
+    posterImage.setMaxHeight(posterImage.getHeight());
 
-		TextView title = (TextView) context
-				.findViewById(R.id.movieBrowserPosterTitle);
-		title.setText(videoInfo.getTitle());
+    Glide.with(context).load(videoInfo.getImageURL()).fitCenter().into(posterImage);
 
-		ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100,
-				58);
+    TextView summary = context.findViewById(R.id.movieSummary);
+    summary.setText(videoInfo.getSummary());
 
-		ImageView crv = imageUtilsNormal.createContentRatingImage(
-				videoInfo.getContentRating(), context);
-		Drawable drawable = crv.getDrawable();
-		BitmapDrawable bmd = (BitmapDrawable) drawable;
+    TextView title = context.findViewById(R.id.movieBrowserPosterTitle);
+    title.setText(videoInfo.getTitle());
 
-		int w = ImageUtils.getDPI(100, (Activity) v.getContext());
-		int h = ImageUtils.getDPI(58, (Activity) v.getContext());
-		Bitmap bitmap = bmd.getBitmap();
+    ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100, 58);
 
-		Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, w, h, false);
+    ImageView crv = imageUtilsNormal.createContentRatingImage(videoInfo.getContentRating(), context);
+    Drawable drawable = crv.getDrawable();
+    BitmapDrawable bmd = (BitmapDrawable) drawable;
 
-		title.setCompoundDrawablesWithIntrinsicBounds(
-				null,
-				null,
-				new BitmapDrawable(v.getContext().getResources(), bitmapResized),
-				null);
-	}
+    int w = ImageUtils.getDPI(100, (Activity) v.getContext());
+    int h = ImageUtils.getDPI(58, (Activity) v.getContext());
+    Bitmap bitmap = bmd.getBitmap();
 
-	@Override
-	protected void createVideoMetaData(ImageView v) {
-		super.createVideoMetaData(v);
-		TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
-		if (subt != null) {
-			subt.setVisibility(View.GONE);
-		}
+    Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, w, h, false);
 
-		Spinner subtitleSpinner = (Spinner) context
-				.findViewById(R.id.videoSubtitle);
-		if (subtitleSpinner != null) {
-			subtitleSpinner.setVisibility(View.GONE);
-		}
-	}
+    title.setCompoundDrawablesWithIntrinsicBounds(null, null,
+        new BitmapDrawable(v.getContext().getResources(), bitmapResized), null);
+  }
 
-	@Override
-	public void onNothingSelected(SerenityAdapterView<?> av) {
+  @Override protected void createVideoMetaData(ImageView v) {
+    super.createVideoMetaData(v);
+    Activity context = getActivity(v.getContext());
+    TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
+    if (subt != null) {
+      subt.setVisibility(View.GONE);
+    }
 
-	}
+    Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);
+    if (subtitleSpinner != null) {
+      subtitleSpinner.setVisibility(View.GONE);
+    }
+  }
 
-	@Override
-	public void fetchSubtitle(VideoContentInfo mpi) {
-		if (queue != null) {
-			queue.cancelAll(new RequestFilter() {
-				@Override
-				public boolean apply(Request<?> request) {
-					request.cancel();
-					return true;
-				}
+  @Override public void fetchSubtitle(VideoContentInfo mpi) {
+    if (queue != null) {
+      queue.cancelAll(new RequestFilter() {
+        @Override public boolean apply(Request<?> request) {
+          request.cancel();
+          return true;
+        }
+      });
+    }
+    super.fetchSubtitle(mpi);
+  }
 
-			});
-		}
-		super.fetchSubtitle(mpi);
-	}
+  @Override public void onItemSelected(View view, int i) {
+    Activity context = getActivity(view.getContext());
+    if (context.isDestroyed()) {
+      return;
+    }
 
+    if (i > adapter.getItemCount()) {
+      return;
+    }
+
+    position = i;
+    if (position < 0) {
+      position = 0;
+    }
+    //		fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
+    videoInfo = (VideoContentInfo) adapter.getItem(position);
+    if (videoInfo == null) {
+      return;
+    }
+
+    changeBackgroundImage(context);
+
+    ImageView posterImageView = (ImageView) view.findViewById(R.id.posterImageView);
+    currentView = posterImageView;
+
+    createVideoDetail(posterImageView);
+    createVideoMetaData(posterImageView);
+    createInfographicDetails(posterImageView);
+  }
 }

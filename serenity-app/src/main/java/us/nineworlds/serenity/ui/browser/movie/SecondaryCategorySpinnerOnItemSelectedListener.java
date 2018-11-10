@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,77 +23,63 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
-import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
+import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 
 /**
  * Populate the movie posters based on the information from the Secondary
  * categories.
  */
-public class SecondaryCategorySpinnerOnItemSelectedListener extends
-		BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
+public class SecondaryCategorySpinnerOnItemSelectedListener
+    extends BaseSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
-	public SecondaryCategorySpinnerOnItemSelectedListener(
-			String defaultSelection, String key) {
-		super(defaultSelection, key);
-	}
+  SerenityMultiViewVideoActivity activity;
 
-	@Override
-	public void onItemSelected(AdapterView<?> viewAdapter, View view,
-			int position, long id) {
+  public SecondaryCategorySpinnerOnItemSelectedListener(String defaultSelection, String key,
+      SerenityMultiViewVideoActivity activity) {
+    super(defaultSelection, key);
+    this.activity = activity;
+  }
 
-		setMultiViewVideoActivity((SerenityMultiViewVideoActivity) view
-				.getContext());
+  @Override
+  public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
 
-		findViews();
+    setMultiViewVideoActivity(activity);
 
-		SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter
-				.getItemAtPosition(position);
+    findViews();
 
-		if (isFirstSelection()) {
-			if (categoryState.getGenreCategory() != null) {
-				int savedInstancePosition = getSavedInstancePosition(viewAdapter);
-				item = (SecondaryCategoryInfo) viewAdapter
-						.getItemAtPosition(savedInstancePosition);
-				viewAdapter.setSelection(savedInstancePosition);
-			}
-			setFirstSelection(false);
-		}
+    SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(position);
 
-		if (selected.equalsIgnoreCase(item.getCategory())) {
-			return;
-		}
+    if (isFirstSelection()) {
+      if (categoryState.getGenreCategory() != null) {
+        int savedInstancePosition = getSavedInstancePosition(viewAdapter);
+        item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(savedInstancePosition);
+        viewAdapter.setSelection(savedInstancePosition);
+      }
+      setFirstSelection(false);
+    }
 
-		selected = item.getCategory();
+    if (selected.equalsIgnoreCase(item.getCategory())) {
+      return;
+    }
 
-		categoryState.setGenreCategory(item.getCategory());
+    selected = item.getCategory();
 
-		AbstractPosterImageGalleryAdapter adapter = getPosterImageAdapter(item);
+    categoryState.setGenreCategory(item.getCategory());
 
-		if (getMultiViewVideoActivity().isGridViewActive()) {
-			refreshGridView(adapter);
-			return;
-		}
+    Activity activity = getActivity(getMultiViewVideoActivity());
+    if (activity instanceof MovieBrowserActivity) {
+      MovieBrowserActivity movieBrowserActivity = (MovieBrowserActivity) activity;
+      movieBrowserActivity.requestUpdatedVideos(key,
+          item.getParentCategory() + "/" + item.getCategory());
+    }
+  }
 
-		refreshGallery(adapter);
-
-	}
-
-	protected AbstractPosterImageGalleryAdapter getPosterImageAdapter(
-			SecondaryCategoryInfo item) {
-		AbstractPosterImageGalleryAdapter adapter = new MoviePosterImageAdapter(
-				getMultiViewVideoActivity(), key, item.getParentCategory()
-						+ "/" + item.getCategory());
-		return adapter;
-	}
-
-	@Override
-	protected String getSavedCategory() {
-		return categoryState.getGenreCategory();
-	}
-
+  @Override protected String getSavedCategory() {
+    return categoryState.getGenreCategory();
+  }
 }

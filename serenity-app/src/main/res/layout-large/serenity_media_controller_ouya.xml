@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mediacontroller"
+    android:layout_margin="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res/us.nineworlds.serenity"
+    >
+
+  <TextView
+      android:id="@+id/mediacontroller_title"
+      style="@android:style/TextAppearance.Holo.Large"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_marginLeft="10dp"
+      android:layout_marginRight="10dp"
+      android:padding="5dp"
+      android:background="#80000000"
+      android:gravity="top"
+      android:textStyle="bold"
+      tools:ignore="SelectableText"
+      />
+
+  <TextView
+      android:id="@+id/mediacontroller_summary"
+      style="@android:style/TextAppearance.Holo.Medium"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/mediacontroller_title"
+      android:layout_marginLeft="10dp"
+      android:layout_marginRight="10dp"
+      android:padding="5dp"
+      android:background="#80000000"
+      android:gravity="top"
+      android:maxLines="5"
+      tools:ignore="SelectableText"
+      />
+
+
+  <us.nineworlds.serenity.widgets.RoundedImageView
+      android:id="@+id/mediacontroller_poster_art"
+      android:layout_width="150dp"
+      android:layout_height="200dp"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentLeft="true"
+      android:layout_marginLeft="10dp"
+      android:paddingBottom="10dp"
+      app:corner_radius="5dp"
+      app:mutate_background="true"
+      android:scaleType="centerInside"
+      android:src="@drawable/default_video_cover"
+      tools:ignore="ContentDescription"
+      />
+
+  <TextView
+      android:id="@+id/mediacontroller_next_video"
+      style="@android:style/TextAppearance.Holo.Medium"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_above="@+id/mediacontroller_infographic_layout"
+      android:layout_toRightOf="@+id/mediacontroller_poster_art"
+      android:layout_marginBottom="15dp"
+      android:layout_marginRight="10dp"
+      android:padding="5dp"
+      android:background="#80000000"
+      android:gravity="top"
+      android:maxLines="1"
+      android:visibility="gone"
+      android:textStyle="bold"
+      tools:ignore="SelectableText"
+      />
+
+
+  <LinearLayout
+      android:orientation="horizontal"
+      android:id="@+id/mediacontroller_infographic_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_above="@+id/mediacontroller_progress_layout"
+      android:layout_marginBottom="15dp"
+      android:layout_toRightOf="@+id/mediacontroller_poster_art"
+      android:background="#50000000"
+      ></LinearLayout>
+
+  <LinearLayout
+      android:id="@+id/mediacontroller_progress_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_above="@+id/mediacontroller_controls_layout"
+      android:layout_centerHorizontal="true"
+      android:layout_marginRight="10dp"
+      android:layout_toRightOf="@+id/mediacontroller_poster_art"
+      android:background="#50000000"
+      android:orientation="horizontal"
+      >
+
+    <TextView
+        android:id="@+id/mediacontroller_time_current"
+        style="@android:style/TextAppearance.Holo.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="#F0F0F0"
+        tools:ignore="SelectableText"
+        />
+
+    <SeekBar
+        android:id="@+id/mediacontroller_seekbar"
+        android:layout_width="500dp"
+        android:layout_height="30dp"
+        android:focusable="true"
+        android:max="1000"
+        android:minWidth="500dp"
+        android:progressDrawable="@drawable/scrubber_progress_holo"
+        android:thumb="@drawable/seekerbar_selector"
+        android:nextFocusDown="@+id/mediacontroller_play_pause"
+        />
+
+    <TextView
+        android:id="@+id/mediacontroller_time_total"
+        style="@android:style/TextAppearance.Holo.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textColor="#F0F0F0"
+        tools:ignore="SelectableText"
+        />
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:id="@+id/mediacontroller_controls_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_centerHorizontal="true"
+      android:background="#50000000"
+      android:orientation="horizontal"
+      >
+
+    <TextView
+        android:id="@+id/useless_spacer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="50dp"
+        tools:ignore="SelectableText"
+        />
+
+    <ImageButton
+        android:id="@+id/osd_rewind_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:focusable="true"
+        android:nextFocusRight="@+id/mediacontroller_play_pause"
+        android:nextFocusUp="@+id/mediacontroller_seekbar"
+        android:scaleType="fitXY"
+        style="@android:style/MediaButton.Rew"
+        android:src="@drawable/skipback_selector"
+        tools:ignore="ContentDescription"
+        />
+
+    <ImageButton
+        android:id="@+id/mediacontroller_play_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        style="@android:style/MediaButton.Pause"
+        android:src="@drawable/pause_selector"
+        android:focusable="true"
+        android:nextFocusLeft="@id/osd_rewind_control"
+        android:nextFocusRight="@+id/osd_ff_control"
+        android:nextFocusUp="@+id/mediacontroller_seekbar"
+        android:scaleType="fitXY"
+        tools:ignore="ContentDescription"
+        ></ImageButton>
+
+    <ImageButton
+        android:id="@+id/osd_ff_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/skipforward_selector"
+        android:focusable="true"
+        android:nextFocusLeft="@+id/mediacontroller_play_pause"
+        android:nextFocusUp="@+id/mediacontroller_seekbar"
+        android:scaleType="fitXY"
+        tools:ignore="ContentDescription"
+        />
+
+  </LinearLayout>
+
+</RelativeLayout>

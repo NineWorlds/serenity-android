@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,47 +23,38 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemClickListener;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import net.ganin.darv.DpadAwareRecyclerView;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
-/**
- * @author dcarver
- *
- */
-public class TVShowSeasonOnItemClickListener implements OnItemClickListener {
+public class TVShowSeasonOnItemClickListener extends AbstractVideoOnItemClickListener {
 
-	private final Activity context;
+  private final Activity context;
 
-	/**
-	 *
-	 */
-	public TVShowSeasonOnItemClickListener(Context c) {
-		context = (Activity) c;
-	}
+  public TVShowSeasonOnItemClickListener(Context c, AbstractPosterImageGalleryAdapter adapter) {
+    super(adapter);
+    context = (Activity) c;
+    this.adapter = adapter;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
-	 * .AdapterView, android.view.View, int, long)
-	 */
-	@Override
-	public void onItemClick(SerenityAdapterView<?> av, View view, int position,
-			long arg3) {
+  @Override protected VideoContentInfo getVideoInfo(int position) {
+    return null;
+  }
 
-		SeriesContentInfo info = (SeriesContentInfo) av
-				.getItemAtPosition(position);
+  @Override
+  public void onItemClick(View view, int i) {
+    SeriesContentInfo info = (SeriesContentInfo) adapter.getItem(i);
 
-		Intent i = new Intent(context, EpisodeBrowserActivity.class);
-		i.putExtra("key", info.getKey());
-		context.startActivityForResult(i, 0);
-	}
-
+    Intent intent = new Intent(context, EpisodeBrowserActivity.class);
+    intent.putExtra("key", info.getKey());
+    context.startActivityForResult(intent, 0);
+  }
 }

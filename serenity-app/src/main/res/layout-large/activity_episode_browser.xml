@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<us.nineworlds.serenity.widgets.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:background="@android:color/background_dark"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+  <!-- The main content view -->
+
+  <RelativeLayout
+      android:id="@+id/movieBrowserBackgroundLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/fanArt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/overscan_start_padding"
+        android:paddingEnd="@dimen/overscan_end_padding"
+        android:paddingBottom="@dimen/overscan_bottom_padding"
+        android:layout_alignParentBottom="true"
+        android:clipToPadding="false"
+        android:clipChildren="false">
+
+      <fragment
+          android:id="@+id/galleryFragmentContainer"
+          android:name="us.nineworlds.serenity.fragments.EpisodeVideoGalleryFragment"
+          android:layout_marginTop="@dimen/actionbarMargin"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:tag="videoGallery_fragment"/>
+
+    </FrameLayout>
+
+    <include layout="@layout/include_loading_progress"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"/>
+
+  </RelativeLayout>
+
+  <!-- The navigation drawer -->
+
+  <include layout="@layout/menu_drawer_with_navigation"/>
+
+</us.nineworlds.serenity.widgets.DrawerLayout>

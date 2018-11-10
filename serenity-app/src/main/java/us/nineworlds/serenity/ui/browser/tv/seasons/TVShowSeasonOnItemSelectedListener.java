@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,112 +23,90 @@
 
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
-import javax.inject.Inject;
-
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.imageloader.SerenityBackgroundLoaderListener;
-import us.nineworlds.serenity.core.imageloader.SerenityImageLoader;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GridVideoOnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemSelectedListener;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import javax.inject.Inject;
+import timber.log.Timber;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.SerenityClient;
+import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
-import com.jess.ui.TwoWayGridView;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
+public class TVShowSeasonOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
-/**
- * @author dcarver
- *
- */
-public class TVShowSeasonOnItemSelectedListener extends BaseInjector implements
-		OnItemSelectedListener {
+  private final Activity context;
+  private SeriesContentInfo info;
 
-	private final Activity context;
-	private final ImageLoader imageLoader;
-	private View previous;
-	private final ImageSize bgImageSize = new ImageSize(1280, 720);
-	private SeriesContentInfo info;
+  @Inject protected SerenityClient plexFactory;
+  boolean firstTimeSw = true;
 
-	@Inject
-	protected SerenityImageLoader serenityImageLoader;
+  AbstractPosterImageGalleryAdapter adapter;
 
-	@Inject
-	protected PlexappFactory plexFactory;
+  public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity, AbstractPosterImageGalleryAdapter adapter) {
+    super();
+    context = activity;
+    this.adapter = adapter;
+  }
 
-	public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity) {
-		context = activity;
+  private void changeBackgroundImage(View v) {
 
-		imageLoader = serenityImageLoader.getImageLoader();
-	}
+    SeriesContentInfo mi = info;
 
-	@Override
-	public void onItemSelected(SerenityAdapterView<?> av, View v, int position,
-			long id) {
-		info = (SeriesContentInfo) av.getItemAtPosition(position);
-		ImageView mpiv = (ImageView) v.findViewById(R.id.posterImageView);
-		TwoWayGridView episodeGrid = (TwoWayGridView) context
-				.findViewById(R.id.episodeGridView);
+    if (mi.getBackgroundURL() != null) {
+      final View fanArt = context.findViewById(R.id.fanArt);
+      String transcodingURL = plexFactory.createImageURL(mi.getBackgroundURL(), 1280, 720);
+      Timber.d("Season Background Image url: " + transcodingURL);
 
-		episodeGrid.setVisibility(View.VISIBLE);
-		episodeGrid.setAdapter(new SeasonsEpisodePosterImageGalleryAdapter(
-				context, info.getKey()));
-		episodeGrid
-		.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
-		episodeGrid.setOnItemClickListener(new GridVideoOnItemClickListener());
-		episodeGrid
-		.setOnItemLongClickListener(new GridVideoOnItemLongClickListener());
+      SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+        @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+          context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.tvshows, fanArt));
+        }
+      };
 
-		if (previous != null) {
-			previous.setPadding(0, 0, 0, 0);
-			previous.refreshDrawableState();
-		}
+      Glide.with(context).load(transcodingURL).asBitmap().into(target);
+    }
+  }
 
-		previous = v;
+  @Override protected void createVideoDetail(ImageView v) {
+    // DO NOTHING
+  }
 
-		v.setPadding(5, 5, 5, 5);
-		v.refreshDrawableState();
+  @Override public void onItemSelected(View view, int i) {
+    Activity context = (Activity) view.getContext();
+    if (context.isDestroyed()) {
+      return;
+    }
 
-		TextView seasonsTitle = (TextView) context
-				.findViewById(R.id.tvShowSeasonsTitle);
-		seasonsTitle.setText(info.getTitle());
+    if (firstTimeSw) {
+      firstTimeSw = false;
+      return;
+    }
 
-		changeBackgroundImage(mpiv);
+    if (i < 0) {
+      Log.e(TVShowSeasonOnItemSelectedListener.class.getCanonicalName(),
+          "Season list size: " + adapter.getItemCount() + " position: " + i);
+      i = 0;
+    }
 
-	}
+    info = (SeriesContentInfo) adapter.getItem(i);
+    ImageView mpiv = view.findViewById(R.id.posterImageView);
 
-	/**
-	 * Change the background image of the activity.
-	 *
-	 * Should be a background activity
-	 *
-	 * @param v
-	 */
-	private void changeBackgroundImage(View v) {
+    TextView seasonsTitle = context.findViewById(R.id.tvShowSeasonsTitle);
+    seasonsTitle.setText(info.getTitle());
 
-		SeriesContentInfo mi = info;
+    changeBackgroundImage(mpiv);
 
-		if (mi.getBackgroundURL() != null) {
-			View fanArt = context.findViewById(R.id.fanArt);
-			String transcodingURL = plexFactory.getImageURL(
-					mi.getBackgroundURL(), 1280, 720);
-
-			imageLoader.loadImage(transcodingURL, bgImageSize,
-					new SerenityBackgroundLoaderListener(fanArt,
-							R.drawable.tvshows));
-		}
-	}
-
-	@Override
-	public void onNothingSelected(SerenityAdapterView<?> arg0) {
-
-	}
+    TVShowSeasonBrowserActivity activity = (TVShowSeasonBrowserActivity) getActivity(context);
+    activity.fetchEpisodes(info.getKey());
+  }
 
 }

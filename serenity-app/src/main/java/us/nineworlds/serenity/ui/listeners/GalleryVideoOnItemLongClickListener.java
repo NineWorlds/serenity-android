@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,49 +23,26 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-
-
-import us.nineworlds.serenity.R;
-
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.widgets.SerenityAdapterView;
-import us.nineworlds.serenity.widgets.SerenityAdapterView.OnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ImageView;
+import timber.log.Timber;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 /**
  * A listener that handles long press for video content in Poster Gallery classes.
- * 
+ *
  * @author dcarver
- * 
  */
-public class GalleryVideoOnItemLongClickListener extends AbstractVideoOnItemLongClickListener implements
-		OnItemLongClickListener {
+public class GalleryVideoOnItemLongClickListener extends AbstractVideoOnItemLongClickListener {
 
+  public GalleryVideoOnItemLongClickListener(AbstractPosterImageGalleryAdapter adapter) {
+    super(adapter);
+  }
 
-	@Override
-	public boolean onItemLongClick(SerenityAdapterView<?> av, View v,
-			int position, long arg3) {
-
-		// Google TV is sending back different results than Nexus 7
-		// So we try to handle the different results.
-		
-		info = (VideoContentInfo) av.getSelectedItem();
-
-		if (v == null) {
-			SerenityGallery g = (SerenityGallery) av;
-			vciv = (ImageView) g.getSelectedView().findViewById(R.id.posterImageView);
-		} else {
-			if (v instanceof ImageView) {
-				vciv = (ImageView) v;
-			} else {
-				
-				vciv = (ImageView) av.getSelectedView().findViewById(R.id.posterImageView);
-			}
-		}
-
-		return onItemLongClick();
-		
-	}
+  @Override public boolean onLongClick(@NonNull View view) {
+    vciv = view;
+    Timber.d("Position: " + position);
+    return onItemLongClick();
+  }
 }

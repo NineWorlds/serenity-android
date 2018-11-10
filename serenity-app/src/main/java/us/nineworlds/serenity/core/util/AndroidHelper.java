@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,124 +23,37 @@
 
 package us.nineworlds.serenity.core.util;
 
-import java.util.List;
-
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.ApplicationContext;
+import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.ui.listeners.SenderAppAdapter;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.FeatureInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.os.Build;
 
 @Singleton
 public class AndroidHelper extends BaseInjector {
 
-	private static final String COM_GOOGLE_ANDROID_TV = "com.google.android.tv";
+  private static final String AMAZON_FEATURE_FIRE_TV = "amazon.hardware.fire_tv";
+  private static final String ANDROID_SOFTWARE_LEANBACK = "android.software.leanback";
+  private static final String AMAZON_TV_MODELS = "AFT";
+  private static final String MANUFACTURER_AMAZON = "Amazon";
+  private static final String ANDROID_HARDWARE_TYPE_TELEVISION = "android.hardware.type.television";
 
-	@Inject
-	@ApplicationContext
-	Context context;
+  @Inject @ApplicationContext Context context;
 
-	public boolean isAndroidTV() {
-		final PackageManager pm = context.getPackageManager();
+  public boolean isAndroidTV() {
+    final PackageManager pm = context.getPackageManager();
+    return isAmazonFireTV() || pm.hasSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION);
+  }
 
-		if (isAmazonFireTV()) {
-			return true;
-		}
-		return pm.hasSystemFeature("android.hardware.type.television");
-	}
+  public boolean isAmazonFireTV() {
+    return context.getPackageManager().hasSystemFeature(AMAZON_FEATURE_FIRE_TV)
+        || Build.MODEL.startsWith(AMAZON_TV_MODELS) && Build.MANUFACTURER.equals(MANUFACTURER_AMAZON);
+  }
 
-	public boolean isAmazonFireTV() {
-		return Build.MODEL.startsWith("AFT")
-				&& Build.MANUFACTURER.equals("Amazon");
-	}
-
-	public boolean isLeanbackSupported() {
-		final PackageManager pm = context.getPackageManager();
-		return pm.hasSystemFeature("android.software.leanback");
-	}
-
-	public boolean isGoogleTV() {
-		final PackageManager pm = context.getPackageManager();
-		FeatureInfo[] features = pm.getSystemAvailableFeatures();
-		return pm.hasSystemFeature(COM_GOOGLE_ANDROID_TV);
-	}
-
-	public boolean isRunningOnOUYA() {
-		if ("OUYA".equals(Build.MANUFACTURER)) {
-			return true;
-		}
-		return false;
-	}
-
-	public void performGoogleTVSecondScreen(VideoContentInfo videoInfo,
-			Dialog dialog) {
-		if (hasSupportedCaster()) {
-			dialog.dismiss();
-
-			final String body = videoInfo.getDirectPlayUrl();
-
-			final SenderAppAdapter adapter = new SenderAppAdapter(context);
-
-			new AlertDialog.Builder(context)
-			.setTitle(R.string.cast_fling_with_)
-			.setCancelable(true)
-			.setSingleChoiceItems(adapter, -1,
-					new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog,
-						int which) {
-					adapter.respondToClick(which, "", body);
-
-					dialog.dismiss();
-
-				}
-			}).show();
-		}
-	}
-
-	public boolean hasSupportedCaster() {
-		return hasAbleRemote() || hasGoogleTVRemote() || hasAllCast();
-	}
-
-	protected boolean hasAbleRemote() {
-		return hasRemoteByName(context, "com.entertailion.android.remote");
-	}
-
-	protected boolean hasGoogleTVRemote() {
-		return hasRemoteByName(context, "com.google.android.apps.tvremote");
-	}
-
-	protected boolean hasAllCast() {
-		return hasRemoteByName(context, "com.koushikdutta.cast");
-	}
-
-	protected boolean hasRemoteByName(Context context, String remotePackageName) {
-
-		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-		final List<ResolveInfo> pkgAppsList = context.getPackageManager()
-				.queryIntentActivities(mainIntent, 0);
-
-		for (ResolveInfo resolveInfo : pkgAppsList) {
-			String packageName = resolveInfo.activityInfo.packageName;
-			if (packageName.contains(remotePackageName)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
+  public boolean isLeanbackSupported() {
+    final PackageManager pm = context.getPackageManager();
+    return pm.hasSystemFeature(ANDROID_SOFTWARE_LEANBACK);
+  }
 }

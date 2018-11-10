@@ -23,6 +23,7 @@
 
 package us.nineworlds.plex.rest.tests.model.impl;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -58,8 +59,14 @@ public class TestMetaDataContainerMusicDeserialization {
 	
 	@Test
 	public void testSimpleDeserialization() throws Exception {
-		InputStream file = this.getClass().getResourceAsStream("/library/sections/3/all/index.xml");
+		File file = testFile("/library/sections/3/all/index.xml");
 		MediaContainer mediaContainer = serializer.read(MediaContainer.class, file, false);
 		assertEquals(4, mediaContainer.getSize());
 	}
+
+	File testFile(String path) {
+		File file = new File("src/test/resources" + path);
+		return file;
+	}
+
 }

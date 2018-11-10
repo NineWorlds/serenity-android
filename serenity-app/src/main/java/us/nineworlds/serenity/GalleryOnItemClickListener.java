@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,75 +23,70 @@
 
 package us.nineworlds.serenity;
 
-import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
-import us.nineworlds.serenity.ui.browser.music.MusicActivity;
-import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
-import us.nineworlds.serenity.ui.preferences.SerenityPreferenceActivity;
-import us.nineworlds.serenity.ui.views.MainMenuTextView;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
+import net.ganin.darv.DpadAwareRecyclerView;
+import us.nineworlds.serenity.core.menus.MenuItem;
+import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
+import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
+import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity;
 
-/**
- * @author dcarver
- * 
- */
+import static net.ganin.darv.DpadAwareRecyclerView.OnItemClickListener;
+
 public class GalleryOnItemClickListener implements OnItemClickListener {
 
-	private static final String MENU_TYPE_SEARCH = "search";
-	private static final String MENU_TYPE_SHOW = "show";
-	private static final String MENU_TYPE_MOVIE = "movie";
-	private static final String MENU_TYPE_MUSIC = "artist";
-	private static final String MENU_TYPE_OPTIONS = "options";
-	private Activity context;
+  private static final String MENU_TYPE_SEARCH = "search";
+  private static final String MENU_TYPE_SHOW = "show";
+  private static final String MENU_TYPE_MOVIE = "movie";
+  private static final String MENU_TYPE_MUSIC = "artist";
+  private static final String MENU_TYPE_OPTIONS = "options";
+  private static final String MENU_TYPE_MOVIES = "movies";
+  private static final String MENU_TYPE_TVSHOWS = "tvshows";
 
-	/**
-	 * 
-	 */
-	public GalleryOnItemClickListener(Context c) {
-		context = (Activity) c;
-	}
+  @Override
+  public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
+    MainMenuTextViewAdapter mainMenuTextViewAdapter =
+        (MainMenuTextViewAdapter) dpadAwareRecyclerView.getAdapter();
+    Activity context = (Activity) dpadAwareRecyclerView.getContext();
+    MenuItem menuItem = mainMenuTextViewAdapter.getItemAtPosition(i);
+    String librarySection = menuItem.getSection();
+    String activityType = menuItem.getType();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
-	 * .AdapterView, android.view.View, int, long)
-	 */
-	@Override
-	public void onItemClick(AdapterView<?> av, View view, int position,
-			long arg3) {
+    if (MENU_TYPE_SEARCH.equalsIgnoreCase(activityType)) {
+      context.onSearchRequested();
+      return;
+    }
 
-		MainMenuTextView v = (MainMenuTextView) view;
-		String librarySection = v.getLibraryKey();
+    if (MENU_TYPE_OPTIONS.equalsIgnoreCase(activityType)) {
+      context.openOptionsMenu();
+      return;
+    }
 
-		String activityType = v.getActivityType();
+    Intent intent;
 
-		Intent i = null;
+    if (MENU_TYPE_MOVIE.equalsIgnoreCase(activityType) || MENU_TYPE_MOVIES.equalsIgnoreCase(activityType)) {
+      intent = new Intent(context, MovieBrowserActivity.class);
+      intent.putExtra("key", librarySection);
+      context.startActivityForResult(intent, 0);
+      return;
+    }
 
-		if (MENU_TYPE_MOVIE.equalsIgnoreCase(activityType)) {
-			i = new Intent(context, MovieBrowserActivity.class);
-		} else if (MENU_TYPE_SHOW.equalsIgnoreCase(activityType)) {
-			i = new Intent(context, TVShowBrowserActivity.class);
-		} else if (MENU_TYPE_SEARCH.equalsIgnoreCase(activityType)) {
-			context.onSearchRequested();
-			return;
-		} else if (MENU_TYPE_OPTIONS.equalsIgnoreCase(activityType)) {
-			context.openOptionsMenu();
-			return;
-		} else if (MENU_TYPE_MUSIC.equalsIgnoreCase(activityType)) {
-			i = new Intent(context, MusicActivity.class);
-		} else {
-			i = new Intent(context, SerenityPreferenceActivity.class);
-		}
+    if (MENU_TYPE_SHOW.equalsIgnoreCase(activityType) || MENU_TYPE_TVSHOWS.equalsIgnoreCase(activityType)) {
+      intent = new Intent(context, TVShowBrowserActivity.class);
+      intent.putExtra("key", librarySection);
+      context.startActivityForResult(intent, 0);
+      return;
+    }
 
-		i.putExtra("key", librarySection);
-		context.startActivityForResult(i, 0);
-	}
+    if (MENU_TYPE_MUSIC.equalsIgnoreCase(activityType)) {
+      Toast.makeText(context, "Music support has been removed.", Toast.LENGTH_LONG);
+      return;
+    }
 
+    intent = new Intent(context, LeanbackSettingsActivity.class);
+    intent.putExtra("key", librarySection);
+    context.startActivityForResult(intent, 0);
+  }
 }

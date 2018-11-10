@@ -23,21 +23,21 @@
 
 package us.nineworlds.serenity.ui.views;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.model.impl.MusicAlbumContentInfo;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.robolectric.RuntimeEnvironment.application;
+
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
 public class MusicAlbumImageViewTest {
 
 	@Mock
@@ -47,10 +47,9 @@ public class MusicAlbumImageViewTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		initMocks(this);
 
-		imageView = new MusicAlbumImageView(Robolectric.application,
-				contentInfo);
+		imageView = new MusicAlbumImageView(application, contentInfo);
 	}
 
 	@Test
@@ -61,7 +60,7 @@ public class MusicAlbumImageViewTest {
 
 	@Test
 	public void constructorWithContextOnlyDoesNotSetPosterInfo() {
-		imageView = new MusicAlbumImageView(Robolectric.application);
+		imageView = new MusicAlbumImageView(application);
 		assertThat(imageView.getPosterInfo()).isNull();
 	}
 }

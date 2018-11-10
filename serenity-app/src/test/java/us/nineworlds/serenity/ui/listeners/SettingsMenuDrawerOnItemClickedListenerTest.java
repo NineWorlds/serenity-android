@@ -23,73 +23,69 @@
 
 package us.nineworlds.serenity.ui.listeners;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-
+import android.content.Intent;
+import android.content.MutableContextWrapper;
+import android.view.View;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
+import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.widgets.DrawerLayout;
-import android.content.Intent;
-import android.view.View;
 
-// UnitTestCodeMash2015
-// Mockito with out building Activity.
-//
-// Using Robolectric.buildActivity(Activity.class).create().get()  adds about 300ms everytime it is called.
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 18)
 public class SettingsMenuDrawerOnItemClickedListenerTest {
 
-	@Mock
-	protected DrawerLayout mockDrawerLayout;
+  @Mock DrawerLayout mockDrawerLayout;
+  @Mock View mockView;
+  @Mock SerenityDrawerLayoutActivity mockSerenityDrawerLayoutActivity;
 
-	@Mock
-	protected View mockView;
+  SettingsMenuDrawerOnItemClickedListener onItemClickedListener;
 
-	@Mock
-	protected SerenityDrawerLayoutActivity mockSerenityDrawerLayoutActivity;
+  @Before public void setUp() {
+    initMocks(this);
+    onItemClickedListener = new SettingsMenuDrawerOnItemClickedListener(mockDrawerLayout);
+  }
 
-	protected SettingsMenuDrawerOnItemClickedListener onItemClickedListener;
+  @Test public void onClickStartsSettingActivity() {
+    doNothing().when(mockSerenityDrawerLayoutActivity).startActivity(any(Intent.class));
+    doReturn(mockSerenityDrawerLayoutActivity).when(mockView).getContext();
 
-	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		onItemClickedListener = new SettingsMenuDrawerOnItemClickedListener(
-				mockDrawerLayout);
+    onItemClickedListener.onClick(mockView);
 
-	}
+    verify(mockSerenityDrawerLayoutActivity).startActivity(any(Intent.class));
+    verify(mockView).getContext();
+  }
 
-	@Test
-	public void onClickStartsSettingActivity() {
-		doNothing().when(mockSerenityDrawerLayoutActivity).startActivity(
-				any(Intent.class));
-		doReturn(mockSerenityDrawerLayoutActivity).when(mockView).getContext();
+  @Test public void onClickClosesMenuDrawer() {
+    doNothing().when(mockSerenityDrawerLayoutActivity).startActivity(any(Intent.class));
+    doReturn(mockSerenityDrawerLayoutActivity).when(mockView).getContext();
+    doNothing().when(mockDrawerLayout).closeDrawers();
 
-		onItemClickedListener.onClick(mockView);
+    onItemClickedListener.onClick(mockView);
 
-		verify(mockSerenityDrawerLayoutActivity).startActivity(
-				any(Intent.class));
-	}
+    verify(mockDrawerLayout).closeDrawers();
+    verify(mockView).getContext();
+  }
 
-	@Test
-	public void onClickClosesMenuDrawer() {
-		doNothing().when(mockSerenityDrawerLayoutActivity).startActivity(
-				any(Intent.class));
-		doReturn(mockSerenityDrawerLayoutActivity).when(mockView).getContext();
-		doNothing().when(mockDrawerLayout).closeDrawers();
+  @Test public void onClickDiscoversActivityFromContextWrapper() {
+    MutableContextWrapper context = new MutableContextWrapper(mockSerenityDrawerLayoutActivity);
 
-		onItemClickedListener.onClick(mockView);
+    doNothing().when(mockSerenityDrawerLayoutActivity).startActivity(any(Intent.class));
+    doReturn(context).when(mockView).getContext();
 
-		verify(mockDrawerLayout).closeDrawers();
-	}
+    onItemClickedListener.onClick(mockView);
+
+    verify(mockSerenityDrawerLayoutActivity).startActivity(any(Intent.class));
+    verify(mockView).getContext();
+  }
 }

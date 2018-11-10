@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,98 +23,71 @@
 
 package us.nineworlds.serenity.fragments;
 
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import javax.inject.Inject;
-
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingFragment;
-import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
+import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserOnLongClickListener;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodePosterOnItemSelectedListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
+import us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickListener;
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 
 public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
-	@Inject
-	SharedPreferences preferences;
+  @Inject SharedPreferences preferences;
+  @Inject protected MovieSelectedCategoryState categoryState;
 
-	@Inject
-	GalleryVideoOnItemClickListener onItemClickListener;
+  private RecyclerView videoGallery;
 
-	@Inject
-	GalleryVideoOnItemLongClickListener onItemLongClickListener;
+  public EpisodeVideoGalleryFragment() {
+    super();
+  }
 
-	@Inject
-	protected MovieSelectedCategoryState categoryState;
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.video_gallery_fragment, container);
+  }
 
-	MoviePosterOnItemSelectedListener onItemSelectedListener;
+  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    if (videoGallery == null) {
 
-	private SerenityGallery videoGallery;
+      videoGallery = getActivity().findViewById(R.id.moviePosterView);
 
-	public EpisodeVideoGalleryFragment() {
-		super();
-	}
+      String key = ((EpisodeBrowserActivity) getActivity()).getKey();
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		onItemSelectedListener = new MoviePosterOnItemSelectedListener();
-		return inflater.inflate(R.layout.video_gallery_fragment, container);
-	}
+      EpisodePosterImageGalleryAdapter adapter = new EpisodePosterImageGalleryAdapter();
+      adapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(adapter));
+      adapter.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(adapter));
+      videoGallery.setAdapter(adapter);
+      videoGallery.setItemAnimator(new FadeInAnimator());
+      videoGallery.setHorizontalFadingEdgeEnabled(false);
 
-	@Override
-	public void onStart() {
-		super.onStart();
+      FocusableLinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(getActivity());
+      linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+      videoGallery.setLayoutManager(linearLayoutManager);
 
-		videoGallery = (SerenityGallery) getActivity().findViewById(
-				R.id.moviePosterGallery);
+      videoGallery.addItemDecoration(new SpaceItemDecoration(
+          getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
+      videoGallery.setClipToPadding(false);
+      videoGallery.setClipChildren(false);
 
-		boolean scrollingAnimation = preferences.getBoolean(
-				"animation_gallery_scrolling", true);
-		String key = ((EpisodeBrowserActivity) getActivity()).getKey();
 
-		videoGallery.setAdapter(new EpisodePosterImageGalleryAdapter(
-				getActivity(), key));
-
-		videoGallery
-				.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener());
-		videoGallery
-				.setOnItemClickListener(new GalleryVideoOnItemClickListener());
-		if (key.contains("onDeck")
-				|| key.contains("recentlyAdded")
-				|| (key.contains("recentlyViewed") && !key
-						.contains("recentlyViewedShows"))) {
-			videoGallery
-					.setOnItemLongClickListener(new EpisodeBrowserOnLongClickListener());
-		} else {
-			videoGallery.setOnItemLongClickListener(onItemLongClickListener);
-		}
-
-		if (scrollingAnimation) {
-			videoGallery.setAnimationDuration(220);
-		} else {
-			videoGallery.setAnimationDuration(1);
-		}
-		videoGallery.setSpacing(25);
-		videoGallery.setCallbackDuringFling(false);
-		videoGallery.setFocusableInTouchMode(false);
-		videoGallery.setDrawingCacheEnabled(true);
-		videoGallery.setHorizontalFadingEdgeEnabled(true);
-		videoGallery.setUnselectedAlpha(0.75f);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-	}
-
+      EpisodeBrowserActivity activity = (EpisodeBrowserActivity) getActivity();
+      activity.fetchEpisodes(key);
+    }
+  }
 }

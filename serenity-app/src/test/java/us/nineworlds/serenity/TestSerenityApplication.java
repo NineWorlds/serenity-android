@@ -23,26 +23,20 @@
 
 package us.nineworlds.serenity;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+
+import org.robolectric.TestLifecycleApplication;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.robolectric.TestLifecycleApplication;
-
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-
-/**
- * @author dcarver
- *
- */
-public class TestSerenityApplication extends SerenityApplication implements
-TestLifecycleApplication {
+public class TestSerenityApplication extends SerenityApplication implements TestLifecycleApplication {
 
 	public TestSerenityApplication() {
 		super();
-		inject();
 	}
 
 	@Override
@@ -51,6 +45,14 @@ TestLifecycleApplication {
 		modules.add(new AndroidModule(this));
 		modules.add(new TestingModule());
 		return modules;
+	}
+
+	@Override protected void discoverServers() {
+
+	}
+
+	@Override protected void setDefaultPreferences() {
+
 	}
 
 	@Override

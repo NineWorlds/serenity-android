@@ -23,11 +23,10 @@
 
 package us.nineworlds.serenity.core.menus;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class DialogMenuItemTest {
 
@@ -38,14 +37,9 @@ public class DialogMenuItemTest {
 		dialogMenuItem = new DialogMenuItem();
 	}
 
-	@After
-	public void tearDown() {
-
-	}
-
 	@Test
 	public void settingActionReturnsExpectedActionNumber() {
 		dialogMenuItem.setMenuDialogAction(0);
-		assertThat(dialogMenuItem.getMenuDialogAction());
+		assertThat(dialogMenuItem.getMenuDialogAction()).isEqualTo(0);
 	}
 }

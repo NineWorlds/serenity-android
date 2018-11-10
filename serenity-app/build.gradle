@@ -1,0 +1,241 @@
+buildscript {
+
+  repositories {
+    google()
+    jcenter()
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
+    classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.12.0'
+  }
+}
+
+evaluationDependsOn(':plexapp-rest-library')
+evaluationDependsOn(':subtitle-converter')
+
+repositories {
+  google()
+  jcenter()
+  mavenCentral()
+  maven {
+    url "http://kingargyle.github.io/repo"
+  }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: "kotlin-kapt"
+apply plugin: "kotlin-allopen"
+apply plugin: 'com.vanniktech.android.junit.jacoco'
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+  properties {
+    property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.organization", "kingargyle-github"
+    property "sonar.login", "cb7af08f0b0e86306ac5365074326dc27aba503e"
+    property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/testDebugUnitTest.exec"
+    property "sonar.coverage.exclusions", "**/*_ViewBinding.class, **/*InjectAdapter.class, android/support/**/*.class,\
+              com/google/**/*.class, com/birbit/**/*.class, butterknife/**/*.class, \
+              com/arellomobile/**/*.class, net/ganin/darv/**/*.class, **/*ViewStateProvider.class,\
+              **/*PresentersBinder.class, us/nineworlds/serenity/R.*.class"
+  }
+}
+
+allOpen {
+  annotation("us.nineworlds.serenity.common.annotations.OpenForTesting")
+}
+
+android {
+  defaultConfig {
+    versionCode 2000010
+    versionName "2.0.0"
+
+    minSdkVersion 21
+    targetSdkVersion 28
+    multiDexEnabled true
+
+  }
+
+  aaptOptions {
+    cruncherEnabled false
+  }
+
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
+  }
+
+  compileSdkVersion 28
+  buildToolsVersion '28.0.2'
+
+  if (project.hasProperty("keystore")) {
+    signingConfigs {
+      release {
+        storeFile file(project.property("keystore"))
+        storePassword project.property("storepass")
+        keyAlias project.property("keyalias")
+        keyPassword project.property("keypass")
+      }
+    }
+  }
+
+  targetCompatibility = '1.8'
+  sourceCompatibility = '1.8'
+
+  buildTypes {
+    debug {
+      minifyEnabled false
+      testCoverageEnabled false
+    }
+    release {
+      if (project.hasProperty("keystore")) {
+        signingConfig signingConfigs.release
+      }
+      zipAlignEnabled true
+      minifyEnabled false
+    }
+  }
+
+  lintOptions {
+    checkReleaseBuilds false
+    // Or, if you prefer, you can continue to check for errors in release builds,
+    // but continue the build even when errors are found:
+    abortOnError false
+  }
+
+  testOptions {
+    unitTests.returnDefaultValues = true
+    unitTests.includeAndroidResources = true
+    unitTests.all {
+      minHeapSize = "512m"
+      maxHeapSize = "1024m"
+
+      jvmArgs '-noverify'
+    }
+  }
+
+  compileOptions {
+    incremental = false
+    targetCompatibility 1.8
+    sourceCompatibility 1.8
+  }
+
+  dexOptions {
+    preDexLibraries = false
+  }
+}
+
+afterEvaluate {
+  tasks.matching {
+    it.name.startsWith('dex')
+  }.each { dx ->
+    if (dx.additionalParameters == null) {
+      dx.additionalParameters = ['--multi-dex']
+    } else {
+      dx.additionalParameters += '--multi-dex'
+    }
+  }
+}
+
+junitJacoco {
+  jacocoVersion = "0.7.2.201409121644" // type String
+  excludes = ["**/*_ViewBinding.class", "**/*InjectAdapter.class", "android/support/**/*.class",
+              "com/google/**/*.class", "com/birbit/**/*.class", "butterknife/**/*.class",
+              "com/arellomobile/**/*.class", "net/ganin/darv/**/*.class", "**/*ViewStateProvider.class",
+              "**/*PresentersBinder.class",
+              "us/nineworlds/serenity/R.*.class"]
+}
+
+dependencies {
+
+  implementation project(':plexapp-rest-library')
+  implementation project(':subtitle-converter')
+  implementation project(':emby-lib')
+  implementation project(':serenity-android-common')
+  implementation project(':serenity-common')
+
+  implementation group: 'com.github.bumptech.glide', name: 'okhttp3-integration', version: "$glideOkHttpVersion"
+  implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion") {
+    exclude module: 'support-annotations'
+  }
+  implementation("com.google.android.exoplayer:exoplayer-ui:$exoplayerVersion") {
+    exclude module: 'support-annotations'
+  }
+
+  implementation("com.google.android.exoplayer:extension-okhttp:$exoplayerVersion") {
+    exclude module: 'support-annotations'
+  }
+
+  implementation("com.squareup.okhttp3:okhttp:$okhttpVersion") {
+    exclude group: 'com.android.support'
+  }
+
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+  implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+  implementation "com.arello-mobile:moxy:$moxyVersion"
+  implementation "com.arello-mobile:moxy-app-compat:$moxyVersion"
+  implementation "com.github.bumptech.glide:glide:$glideVersion"
+  implementation "org.greenrobot:eventbus:$eventBus"
+  implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
+  implementation "com.google.android.gms:play-services-analytics-impl:16.0.3"
+  implementation "com.android.support:appcompat-v7:$androidSupportLibVersion"
+  implementation "com.android.support:leanback-v17:$androidSupportLibVersion"
+  implementation "com.android.support:preference-leanback-v17:$androidSupportLibVersion"
+  implementation "com.android.support:support-v4:$androidSupportLibVersion"
+  implementation "com.googlecode.juniversalchardet:juniversalchardet:$universalCharDetVersion"
+  implementation "com.mcxiaoke.volley:library:$volleyVersion"
+  implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+  implementation "me.jessyan:retrofit-url-manager:$urlManager"
+  implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
+  implementation "com.squareup.dagger:dagger:$daggerVersion"
+  implementation "com.github.vganin:dpadaware-recyclerview:$dpadAwareVersion"
+  implementation "com.jakewharton:butterknife:$butterKnifeVersion"
+  implementation "com.jakewharton.timber:timber:$timberVersion"
+  implementation "com.android.support:cardview-v7:$androidSupportLibVersion"
+  implementation "com.android.support:support-annotations:$androidSupportLibVersion"
+
+  implementation "com.squareup.moshi:moshi-kotlin:$moshiKotlinVersion"
+  implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+  implementation "net.danlew:android.joda:$jodaTimeVersion"
+  implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+  implementation 'com.google.android:flexbox:1.0.0'
+  implementation 'com.henryblue.library:tvrecyclerview:1.1.4'
+  implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
+
+
+  // https://mvnrepository.com/artifact/org.simpleframework/simple-xml
+  implementation("org.simpleframework:simple-xml:$simpleXmlVersion") {
+    exclude group: 'stax'
+    exclude group: 'xpp3'
+  }
+
+  testImplementation "com.nhaarman:mockito-kotlin:1.6.0"
+  testImplementation "org.apache.commons:commons-lang3:$commonsLangVersion"
+  testImplementation("org.robolectric:robolectric:$robolectricVersion") {
+    exclude module: 'support-v4'
+  }
+  testImplementation("com.squareup.assertj:assertj-android:$assertJAndroidVersion") {
+    exclude module: 'support-v4'
+    exclude module: 'support-annotations'
+  }
+
+  testImplementation "org.assertj:assertj-core:$assertjVersion"
+  testImplementation "junit:junit:$junitVersion"
+  testImplementation "org.robolectric:shadows-supportv4:$robolectricVersion"
+  testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
+  testImplementation "org.robolectric:shadowapi:$robolectricVersion"
+  testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
+  testImplementation "androidx.test:core:1.0.0"
+  testImplementation "org.khronos:opengl-api:$openglApiVersion"
+  testImplementation "org.mockito:mockito-core:$mockitoVersion"
+
+  testImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
+  testImplementation "commons-io:commons-io:$commonsioVersion"
+
+  kapt "com.arello-mobile:moxy-compiler:$moxyVersion"
+  kapt "com.squareup.dagger:dagger-compiler:$daggerVersion"
+  kapt "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+  kaptTest "com.squareup.dagger:dagger-compiler:$daggerVersion"
+}

@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,74 +23,17 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import us.nineworlds.serenity.R;
 
-import com.jess.ui.TwoWayAbsListView;
+public class TVShowPosterImageGalleryAdapter extends TVShowRecyclerAdapter {
 
-/**
- *
- * @author dcarver
- *
- */
-public class TVShowPosterImageGalleryAdapter extends
-TVShowBannerImageGalleryAdapter {
-
-	public TVShowPosterImageGalleryAdapter(Context c, String key,
-			String category) {
-		super(c, key, category);
-		showActivity = (SerenityMultiViewVideoActivity) c;
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see android.widget.Adapter#getView(int, android.view.View,
-	 * android.view.ViewGroup)
-	 */
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View galleryCellView = showActivity.getLayoutInflater().inflate(
-        R.layout.poster_tvshow_indicator_view, null);
-
-		SeriesContentInfo pi = tvShowList.get(position);
-
-		createImage(galleryCellView, pi, 120, 180);
-
-		toggleWatchedIndicator(galleryCellView, pi);
-		return galleryCellView;
-	}
-
-	@Override
-	protected void createImage(View galleryCellView, SeriesContentInfo pi,
-			int imageWidth, int imageHeight) {
-		int width = ImageUtils.getDPI(imageWidth, context);
-		int height = ImageUtils.getDPI(imageHeight, context);
-
-		initPosterMetaData(galleryCellView, pi, width, height, true);
-
-		SerenityMultiViewVideoActivity c = showActivity;
-
-		if (c.isGridViewActive()) {
-			galleryCellView.setLayoutParams(new TwoWayAbsListView.LayoutParams(
-					width, height));
-
-		} else {
-			galleryCellView.setLayoutParams(new SerenityGallery.LayoutParams(
-					width, height));
-		}
-	}
-
-	@Override
-	protected void fetchDataFromService() {
-
-	}
-
+  @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    View view = LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.poster_tvshow_indicator_view, parent, false);
+    return new TVShowPosterViewHolder(view);
+  }
 }

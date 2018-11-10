@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -23,181 +23,101 @@
 
 package us.nineworlds.serenity.ui.activity;
 
-import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.UpdateProgressRequest;
-import us.nineworlds.serenity.injection.InjectingActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ImageUtils;
-import us.nineworlds.serenity.widgets.SerenityGallery;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.LinearLayout;
+import timber.log.Timber;
+import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.injection.InjectingMvpActivity;
+import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
-import com.jess.ui.TwoWayGridView;
+public abstract class SerenityActivity extends InjectingMvpActivity {
 
-/**
- * @author dcarver
- *
- */
-public abstract class SerenityActivity extends InjectingActivity {
+  protected Handler scrollingHandler = new Handler();
 
-	protected abstract void createSideMenu();
+  protected abstract void createSideMenu();
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+  @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
+    RecyclerView gallery = findViewById(R.id.moviePosterView);
+    if (gallery == null) {
+      return super.onKeyDown(keyCode, event);
+    }
 
-	}
+    AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+    if (adapter != null) {
+      int itemsCount = adapter.getItemCount();
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
-		TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
-		if (gridView == null) {
-			gridView = (TwoWayGridView) findViewById(R.id.tvShowGridView);
-		}
+      if (contextMenuRequested(keyCode)) {
+        View view = gallery.getFocusedChild();
+        view.performLongClick();
+        return true;
+      }
 
-		if (gallery == null && gridView == null) {
-			return super.onKeyDown(keyCode, event);
-		}
+      if (gallery.getFocusedChild() != null) {
+        int selectedItem = gallery.getLayoutManager().getPosition(gallery.getFocusedChild());
+        Timber.d("SelectedItemPosition: " + selectedItem);
+        if (isKeyCodeSkipBack(keyCode)) {
+          int newPosition = selectedItem - 10;
+          if (newPosition < 0) {
+            newPosition = 0;
+          }
+          gallery.smoothScrollToPosition(newPosition);
+          Timber.d("New ItemPosition: " + newPosition);
+          return true;
+        }
 
-		AbstractPosterImageGalleryAdapter adapter = null;
-		if (gallery != null) {
-			adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
-		} else {
-			adapter = (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
-		}
+        if (isKeyCodeSkipForward(keyCode)) {
+          int newPosition = selectedItem + 10;
+          if (newPosition > itemsCount) {
+            newPosition = itemsCount - 1;
+          }
+          gallery.smoothScrollToPosition(newPosition);
+          Timber.d("New ItemPosition: " + newPosition);
+          return true;
+        }
+      }
+    }
+    return super.onKeyDown(keyCode, event);
+  }
 
-		if (adapter != null) {
-			int itemsCount = adapter.getCount();
+  private void resetFocus(int newPosition, RecyclerView gallery) {
+    RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
+    View childAt = layoutManager.getChildAt(newPosition);
+    if (childAt != null) {
+      gallery.requestChildFocus(childAt, null);
+    }
+  }
 
-			if (contextMenuRequested(keyCode)) {
-				View view = null;
-				if (gallery != null) {
-					view = gallery.getSelectedView();
-				} else {
-					view = gridView.getSelectedView();
-				}
-				view.performLongClick();
-				return true;
-			}
+  protected boolean contextMenuRequested(int keyCode) {
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu", true);
+    return keyCode == KeyEvent.KEYCODE_C
+        || keyCode == KeyEvent.KEYCODE_BUTTON_Y
+        || keyCode == KeyEvent.KEYCODE_BUTTON_R2
+        || keyCode == KeyEvent.KEYCODE_PROG_RED
+        || (keyCode == KeyEvent.KEYCODE_MENU && menuKeySlidingMenu == false);
+  }
 
-			if (gallery != null) {
-				if (isKeyCodeSkipBack(keyCode)) {
-					int selectedItem = gallery.getSelectedItemPosition();
-					int newPosition = selectedItem - 10;
-					if (newPosition < 0) {
-						newPosition = 0;
-					}
-					gallery.setSelection(newPosition);
-					return true;
-				}
-				if (isKeyCodeSkipForward(keyCode)) {
-					int selectedItem = gallery.getSelectedItemPosition();
-					int newPosition = selectedItem + 10;
-					if (newPosition > itemsCount) {
-						newPosition = itemsCount - 1;
-					}
-					gallery.setSelection(newPosition);
-					return true;
-				}
-			}
-		}
+  protected boolean isKeyCodeSkipForward(int keyCode) {
+    return keyCode == KeyEvent.KEYCODE_F
+        || keyCode == KeyEvent.KEYCODE_PAGE_UP
+        || keyCode == KeyEvent.KEYCODE_CHANNEL_UP
+        || keyCode == KeyEvent.KEYCODE_MEDIA_NEXT
+        || keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
+        || keyCode == KeyEvent.KEYCODE_BUTTON_R1;
+  }
 
-		return super.onKeyDown(keyCode, event);
-	}
-
-	/**
-	 * @param keyCode
-	 * @return
-	 */
-	protected boolean contextMenuRequested(int keyCode) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu",
-				true);
-		return keyCode == KeyEvent.KEYCODE_C
-				|| keyCode == KeyEvent.KEYCODE_BUTTON_Y
-				|| keyCode == KeyEvent.KEYCODE_BUTTON_R2
-				|| keyCode == KeyEvent.KEYCODE_PROG_RED
-				|| (keyCode == KeyEvent.KEYCODE_MENU && menuKeySlidingMenu == false);
-	}
-
-	/**
-	 * @param keyCode
-	 * @return
-	 */
-	protected boolean isKeyCodeSkipForward(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_F
-				|| keyCode == KeyEvent.KEYCODE_PAGE_UP
-				|| keyCode == KeyEvent.KEYCODE_CHANNEL_UP
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_NEXT
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
-				|| keyCode == KeyEvent.KEYCODE_BUTTON_R1;
-	}
-
-	/**
-	 * @param keyCode
-	 * @return
-	 */
-	protected boolean isKeyCodeSkipBack(int keyCode) {
-		return keyCode == KeyEvent.KEYCODE_R
-				|| keyCode == KeyEvent.KEYCODE_PAGE_DOWN
-				|| keyCode == KeyEvent.KEYCODE_CHANNEL_DOWN
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
-				|| keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
-				|| keyCode == KeyEvent.KEYCODE_BUTTON_L1;
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == Activity.RESULT_OK) {
-			if (data != null
-					&& data.getAction().equals("com.mxtech.intent.result.VIEW")) {
-				SerenityGallery gallery = (SerenityGallery) findViewById(R.id.moviePosterGallery);
-				VideoContentInfo video = null;
-				View selectedView = null;
-				if (gallery != null) {
-					video = (VideoContentInfo) gallery.getSelectedItem();
-					selectedView = gallery.getSelectedView();
-				} else {
-					TwoWayGridView gridView = (TwoWayGridView) findViewById(R.id.movieGridView);
-					if (gridView != null) {
-						video = (VideoContentInfo) gridView.getSelectedItem();
-						selectedView = gridView.getSelectedView();
-					}
-				}
-				if (video != null) {
-					updateProgress(data, video);
-					ImageUtils.toggleProgressIndicator(selectedView,
-							video.getResumeOffset(), video.getDuration());
-				}
-			}
-		}
-	}
-
-	/**
-	 * @param data
-	 * @param video
-	 */
-	protected void updateProgress(Intent data, VideoContentInfo video) {
-		long position = 0;
-		position = data.getIntExtra("position", 0);
-
-		video.setResumeOffset(Long.valueOf(position).intValue());
-
-		if (video.isPartiallyWatched()) {
-			UpdateProgressRequest request = new UpdateProgressRequest(position,
-					video);
-			video.setResumeOffset(Long.valueOf(position).intValue());
-			request.execute();
-			return;
-		}
-
-	}
+  protected boolean isKeyCodeSkipBack(int keyCode) {
+    return keyCode == KeyEvent.KEYCODE_R
+        || keyCode == KeyEvent.KEYCODE_PAGE_DOWN
+        || keyCode == KeyEvent.KEYCODE_CHANNEL_DOWN
+        || keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS
+        || keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
+        || keyCode == KeyEvent.KEYCODE_BUTTON_L1;
+  }
 }
