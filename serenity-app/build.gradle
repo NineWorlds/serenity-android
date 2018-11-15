@@ -29,6 +29,7 @@ apply plugin: "kotlin-kapt"
 apply plugin: "kotlin-allopen"
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 apply plugin: 'org.sonarqube'
+apply plugin: 'com.google.gms.google-services'
 
 sonarqube {
   properties {
@@ -156,6 +157,7 @@ dependencies {
   implementation project(':serenity-android-common')
   implementation project(':serenity-common')
 
+  implementation 'com.google.firebase:firebase-core:16.0.5'
   implementation group: 'com.github.bumptech.glide', name: 'okhttp3-integration', version: "$glideOkHttpVersion"
   implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion") {
     exclude module: 'support-annotations'
@@ -179,7 +181,7 @@ dependencies {
   implementation "com.github.bumptech.glide:glide:$glideVersion"
   implementation "org.greenrobot:eventbus:$eventBus"
   implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
-  implementation "com.google.android.gms:play-services-analytics-impl:16.0.3"
+  implementation "com.google.android.gms:play-services-analytics-impl:16.0.5"
   implementation "com.android.support:appcompat-v7:$androidSupportLibVersion"
   implementation "com.android.support:leanback-v17:$androidSupportLibVersion"
   implementation "com.android.support:preference-leanback-v17:$androidSupportLibVersion"
@@ -239,3 +241,6 @@ dependencies {
   kapt "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
   kaptTest "com.squareup.dagger:dagger-compiler:$daggerVersion"
 }
+
+com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
+
