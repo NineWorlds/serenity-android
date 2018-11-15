@@ -68,6 +68,8 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   internal val PROGRESS_UPDATE_DELAY = 10000L
 
+  override fun screenName(): String = "Exoplayer Video Player"
+
   @ProvidePresenter
   fun providePresenter(): ExoplayerPresenter = presenterProvider.get()
 

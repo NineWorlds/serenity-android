@@ -181,7 +181,6 @@ dependencies {
   implementation "com.github.bumptech.glide:glide:$glideVersion"
   implementation "org.greenrobot:eventbus:$eventBus"
   implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
-  implementation "com.google.android.gms:play-services-analytics-impl:16.0.5"
   implementation "com.android.support:appcompat-v7:$androidSupportLibVersion"
   implementation "com.android.support:leanback-v17:$androidSupportLibVersion"
   implementation "com.android.support:preference-leanback-v17:$androidSupportLibVersion"

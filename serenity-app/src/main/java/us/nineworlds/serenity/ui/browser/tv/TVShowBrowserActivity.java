@@ -111,6 +111,10 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
 
   }
 
+  @Override protected String screenName() {
+    return "TV Shows Browser";
+  }
+
   private void populateTVShowContent() {
     if (gridViewActive) {
       GridLayoutManager gridLayoutManager = new FocusableGridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false);

@@ -83,6 +83,10 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
   }
 
+  @Override protected String screenName() {
+    return "Seasons Browser";
+  }
+
   @Override protected void onStart() {
     super.onStart();
     if (restarted_state == false) {

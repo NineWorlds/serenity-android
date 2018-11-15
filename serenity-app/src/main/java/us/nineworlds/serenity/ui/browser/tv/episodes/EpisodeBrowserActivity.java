@@ -82,6 +82,10 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
     }
   }
 
+  @Override protected String screenName() {
+    return "Episode Browser";
+  }
+
   @Override protected void createSideMenu() {
     setContentView(R.layout.activity_episode_browser);
     ButterKnife.bind(this);

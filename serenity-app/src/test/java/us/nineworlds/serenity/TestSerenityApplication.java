@@ -23,8 +23,7 @@
 
 package us.nineworlds.serenity;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-
+import com.google.firebase.analytics.FirebaseAnalytics;
 import org.robolectric.TestLifecycleApplication;
 
 import java.lang.reflect.Method;
@@ -47,18 +46,17 @@ public class TestSerenityApplication extends SerenityApplication implements Test
 		return modules;
 	}
 
+	@Override public void onCreate() {
+		super.onCreate();
+		FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(false);
+	}
+
 	@Override protected void discoverServers() {
 
 	}
 
 	@Override protected void setDefaultPreferences() {
 
-	}
-
-	@Override
-	protected void installAnalytics() {
-		GoogleAnalytics.getInstance(this).setAppOptOut(true);
-		disableTracking();
 	}
 
 	@Override

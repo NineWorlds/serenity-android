@@ -86,6 +86,10 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
 
   }
 
+  @Override protected String screenName() {
+    return "Main Menu";
+  }
+
   @Override protected void onRestart() {
     populateMenuOptions();
     super.onRestart();
