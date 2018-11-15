@@ -4,6 +4,9 @@ buildscript {
     google()
     jcenter()
     mavenCentral()
+    maven {
+      url 'https://maven.google.com/'
+    }
   }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
@@ -20,6 +23,9 @@ repositories {
   mavenCentral()
   maven {
     url "http://kingargyle.github.io/repo"
+  }
+  maven {
+    url 'https://maven.google.com/'
   }
 }
 
@@ -158,6 +164,8 @@ dependencies {
   implementation project(':serenity-common')
 
   implementation 'com.google.firebase:firebase-core:16.0.5'
+  implementation 'com.crashlytics.sdk.android:crashlytics:2.9.6'
+
   implementation group: 'com.github.bumptech.glide', name: 'okhttp3-integration', version: "$glideOkHttpVersion"
   implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion") {
     exclude module: 'support-annotations'
