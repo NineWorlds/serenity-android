@@ -36,6 +36,7 @@ apply plugin: "kotlin-allopen"
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 apply plugin: 'org.sonarqube'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 
 sonarqube {
   properties {
@@ -56,8 +57,8 @@ allOpen {
 
 android {
   defaultConfig {
-    versionCode 2000010
-    versionName "2.0.0"
+    versionCode 2000011
+    versionName "2.0.1"
 
     minSdkVersion 21
     targetSdkVersion 28
