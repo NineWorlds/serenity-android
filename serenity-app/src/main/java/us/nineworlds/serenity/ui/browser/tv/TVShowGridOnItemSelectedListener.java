@@ -79,11 +79,9 @@ public class TVShowGridOnItemSelectedListener extends AbstractVideoOnItemSelecte
     if (runnable != null) {
       handler.removeCallbacks(runnable);
     }
-    runnable = new Runnable() {
-      @Override public void run() {
-        changeBackgroundImage(imageView);
-        runnable = null;
-      }
+    runnable = () -> {
+      changeBackgroundImage(imageView);
+      runnable = null;
     };
     handler.postDelayed(runnable, 500);
 
@@ -108,6 +106,8 @@ public class TVShowGridOnItemSelectedListener extends AbstractVideoOnItemSelecte
       }
     };
 
-    Glide.with(context).load(transcodingURL).asBitmap().into(target);
+    if (context != null && !context.isDestroyed()) {
+      Glide.with(context).load(transcodingURL).asBitmap().into(target);
+    }
   }
 }

@@ -4,6 +4,9 @@ buildscript {
     google()
     jcenter()
     mavenCentral()
+    maven {
+      url 'https://maven.google.com/'
+    }
   }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
@@ -21,6 +24,9 @@ repositories {
   maven {
     url "http://kingargyle.github.io/repo"
   }
+  maven {
+    url 'https://maven.google.com/'
+  }
 }
 
 apply plugin: 'com.android.application'
@@ -29,6 +35,8 @@ apply plugin: "kotlin-kapt"
 apply plugin: "kotlin-allopen"
 apply plugin: 'com.vanniktech.android.junit.jacoco'
 apply plugin: 'org.sonarqube'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 
 sonarqube {
   properties {
@@ -49,8 +57,8 @@ allOpen {
 
 android {
   defaultConfig {
-    versionCode 2000010
-    versionName "2.0.0"
+    versionCode 2000011
+    versionName "2.0.1"
 
     minSdkVersion 21
     targetSdkVersion 28
@@ -156,6 +164,9 @@ dependencies {
   implementation project(':serenity-android-common')
   implementation project(':serenity-common')
 
+  implementation 'com.google.firebase:firebase-core:16.0.5'
+  implementation 'com.crashlytics.sdk.android:crashlytics:2.9.6'
+
   implementation group: 'com.github.bumptech.glide', name: 'okhttp3-integration', version: "$glideOkHttpVersion"
   implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion") {
     exclude module: 'support-annotations'
@@ -179,7 +190,6 @@ dependencies {
   implementation "com.github.bumptech.glide:glide:$glideVersion"
   implementation "org.greenrobot:eventbus:$eventBus"
   implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
-  implementation "com.google.android.gms:play-services-analytics-impl:16.0.3"
   implementation "com.android.support:appcompat-v7:$androidSupportLibVersion"
   implementation "com.android.support:leanback-v17:$androidSupportLibVersion"
   implementation "com.android.support:preference-leanback-v17:$androidSupportLibVersion"
@@ -239,3 +249,6 @@ dependencies {
   kapt "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
   kaptTest "com.squareup.dagger:dagger-compiler:$daggerVersion"
 }
+
+com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
+

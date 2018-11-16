@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.activity;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +32,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import timber.log.Timber;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingMvpActivity;
@@ -38,9 +40,18 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 public abstract class SerenityActivity extends InjectingMvpActivity {
 
+  protected FirebaseAnalytics analytics;
   protected Handler scrollingHandler = new Handler();
 
   protected abstract void createSideMenu();
+
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    analytics = FirebaseAnalytics.getInstance(this);
+    analytics.setCurrentScreen(this, screenName(), null);
+  }
+  
+  protected abstract String screenName();
 
   @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
     RecyclerView gallery = findViewById(R.id.moviePosterView);

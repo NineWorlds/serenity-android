@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "270276239728",
+    "firebase_url": "https://nice-limiter-443.firebaseio.com",
+    "project_id": "nice-limiter-443",
+    "storage_bucket": "nice-limiter-443.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270276239728:android:ed97c4f238046250",
+        "android_client_info": {
+          "package_name": "us.nineworlds.serenity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270276239728-15af244itfpr71un1gch89u0u3mot460.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC78somU4ll4G2z1U2hqCJkHFbLVcKEGKQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

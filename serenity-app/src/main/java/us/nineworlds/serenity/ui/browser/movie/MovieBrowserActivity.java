@@ -88,6 +88,10 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
     DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
   }
 
+  @Override protected String screenName() {
+    return "Movie Browser";
+  }
+
   @Override protected void onResume() {
     super.onResume();
   }

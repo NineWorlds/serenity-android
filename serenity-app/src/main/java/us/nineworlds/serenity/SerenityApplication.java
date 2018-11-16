@@ -27,15 +27,12 @@ import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import com.birbit.android.jobqueue.JobManager;
-import com.google.android.gms.analytics.ExceptionReporter;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -72,37 +69,14 @@ public class SerenityApplication extends Application {
 
   private static boolean enableTracking = true;
 
-  public enum TrackerName {
-    APP_TRACKER, // Tracker used only in this app.
-    GLOBAL_TRACKER, // Tracker used by all the apps from a company. eg:
-    // roll-up tracking.
-    ECOMMERCE_TRACKER, // Tracker used by all ecommerce transactions from a
-    // company.
-  }
-
-  HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
-
   public static void disableTracking() {
     enableTracking = false;
-  }
-
-  synchronized Tracker getTracker() {
-    if (!mTrackers.containsKey(TrackerName.GLOBAL_TRACKER)) {
-
-      GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-      Tracker t = analytics.newTracker(R.xml.global_tracker);
-      mTrackers.put(TrackerName.GLOBAL_TRACKER, t);
-    }
-    return mTrackers.get(TrackerName.GLOBAL_TRACKER);
   }
 
   private void init() {
     inject();
 
     JodaTimeAndroid.init(this);
-    if (enableTracking) {
-      installAnalytics();
-    }
     sendStartedApplicationEvent();
     eventBus.register(this);
     jobManager.start();
@@ -119,16 +93,6 @@ public class SerenityApplication extends Application {
     List<Object> modules = new ArrayList<Object>();
     modules.add(new AndroidModule(this));
     return modules;
-  }
-
-  protected void installAnalytics() {
-    Tracker tracker = getTracker();
-    tracker.enableAdvertisingIdCollection(true);
-    Thread.UncaughtExceptionHandler uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
-    if (uncaughtExceptionHandler instanceof ExceptionReporter) {
-      ExceptionReporter exceptionReporter = (ExceptionReporter) uncaughtExceptionHandler;
-      exceptionReporter.setExceptionParser(new AnalyticsExceptionParser());
-    }
   }
 
   @Override public void onCreate() {
@@ -154,12 +118,14 @@ public class SerenityApplication extends Application {
   protected void sendStartedApplicationEvent() {
     String deviceModel = android.os.Build.MODEL;
     if (enableTracking) {
-      Tracker tracker = getTracker();
-      if (tracker != null) {
-        tracker.send(new HitBuilders.EventBuilder().setCategory("Devices")
-            .setAction("Started Application")
-            .setLabel(deviceModel)
-            .build());
+      FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
+      if (analytics != null) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Devices");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, deviceModel);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, deviceModel);
+
+        analytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
       }
     }
   }
