@@ -20,7 +20,7 @@ public class VideoModule extends Module {
     bind(HttpDataSource.Factory.class).toProvider(HttpDataSourceFactoryProvider.class);
     bind(AdaptiveTrackSelection.Factory.class).toProvider(AdaptiveTrackSelectionFactoryProvider.class);
     bind(MappingTrackSelector.class).toProvider(DefaultMappingTrackSelectorProvider.class);
-    bind(EventLogger.class).toProviderInstance(new EventLoggerProvider());
+    bind(EventLogger.class).toProvider(EventLoggerProvider.class);
     bind(ExoplayerPresenter.class).toInstance(new ExoplayerPresenter());
   }
 }

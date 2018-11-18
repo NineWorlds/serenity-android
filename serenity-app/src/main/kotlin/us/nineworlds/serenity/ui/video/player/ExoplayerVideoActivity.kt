@@ -41,9 +41,6 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   @Inject
   lateinit var trackSelector: MappingTrackSelector
 
-  @Inject
-  lateinit var eventLogger: EventLogger
-
   @InjectPresenter
   lateinit var presenter: ExoplayerPresenter
 
@@ -146,11 +143,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   override fun initializePlayer(videoUrl: String, offset: Int) {
     log.debug("Plex Direct Play URL: " + videoUrl)
     player = createSimpleExoplayer()
-    player.addListener(eventLogger)
     player.addListener(presenter)
-    player.setAudioDebugListener(eventLogger)
-    player.setVideoDebugListener(eventLogger)
-    player.setMetadataOutput(eventLogger)
     if (offset > 0) {
       player.seekTo(offset.toLong())
     }
@@ -171,7 +164,8 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   internal fun buildMediaSource(uri: Uri): MediaSource = ExtractorMediaSource(uri, mediaDataSourceFactory,
       DefaultExtractorsFactory(),
-      videoPlayerHandler, eventLogger)
+      videoPlayerHandler, null)
+
 
   internal fun releasePlayer() {
     player.release()
