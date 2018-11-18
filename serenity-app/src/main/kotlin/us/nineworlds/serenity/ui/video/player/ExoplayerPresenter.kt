@@ -13,8 +13,9 @@ import com.google.android.exoplayer2.ui.PlaybackControlView
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode.MAIN
+import toothpick.Toothpick
+import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.annotations.OpenForTesting
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.core.model.VideoContentInfo
@@ -53,11 +54,8 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
 
   private var onScreenControllerShowing: Boolean = false
 
-  init {
-    SerenityObjectGraph.instance.inject(this)
-  }
-
   override fun attachView(view: ExoplayerView?) {
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
     super.attachView(view)
     eventBus.register(this)
   }

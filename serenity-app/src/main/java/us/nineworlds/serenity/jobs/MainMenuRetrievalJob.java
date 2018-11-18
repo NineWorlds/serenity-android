@@ -14,7 +14,7 @@ public class MainMenuRetrievalJob extends InjectingJob {
 
   @Inject SerenityClient client;
 
-  @Inject EventBus eventBus;
+  EventBus eventBus = EventBus.getDefault();
 
   @Override public void onAdded() {
 

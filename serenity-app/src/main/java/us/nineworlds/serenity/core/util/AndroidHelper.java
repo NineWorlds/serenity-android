@@ -31,8 +31,7 @@ import javax.inject.Singleton;
 import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.injection.BaseInjector;
 
-@Singleton
-public class AndroidHelper extends BaseInjector {
+public class AndroidHelper {
 
   private static final String AMAZON_FEATURE_FIRE_TV = "amazon.hardware.fire_tv";
   private static final String ANDROID_SOFTWARE_LEANBACK = "android.software.leanback";
@@ -40,7 +39,11 @@ public class AndroidHelper extends BaseInjector {
   private static final String MANUFACTURER_AMAZON = "Amazon";
   private static final String ANDROID_HARDWARE_TYPE_TELEVISION = "android.hardware.type.television";
 
-  @Inject @ApplicationContext Context context;
+  Context context;
+
+  public AndroidHelper(Context context) {
+    this.context = context;
+  }
 
   public boolean isAndroidTV() {
     final PackageManager pm = context.getPackageManager();

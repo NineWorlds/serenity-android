@@ -8,21 +8,19 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 import java.io.IOException;
 import java.net.URLEncoder;
 import javax.inject.Inject;
 import timber.log.Timber;
-import us.nineworlds.serenity.AndroidTV;
+import toothpick.Toothpick;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.RecommendationBuilder;
 import us.nineworlds.serenity.core.SerenityRecommendationContentProvider;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
-import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
 
 //AndroidTVCodeMash2015-Recommendations
@@ -37,7 +35,7 @@ public class RecommendAsyncTask extends AsyncTask {
   public RecommendAsyncTask(VideoContentInfo video, Context context) {
     this.video = video;
     this.context = context;
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 
   @Override public Object doInBackground(Object... params) {

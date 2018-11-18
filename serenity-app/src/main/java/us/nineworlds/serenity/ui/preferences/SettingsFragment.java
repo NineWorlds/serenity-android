@@ -20,9 +20,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.inject.Inject;
+import toothpick.Toothpick;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.Server;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.ui.activity.OverscanSetupActivity;
 
@@ -64,7 +65,7 @@ public class SettingsFragment extends LeanbackSettingsFragment implements Dialog
     @Inject @ForMediaServers Map<String, Server> mediaServers;
 
     public PrefsFragment() {
-      SerenityObjectGraph.Companion.getInstance().inject(this);
+      Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
     }
 
     @Override

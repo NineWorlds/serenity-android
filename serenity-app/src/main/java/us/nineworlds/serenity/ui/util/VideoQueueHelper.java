@@ -37,12 +37,17 @@ import us.nineworlds.serenity.injection.ForVideoQueue;
 
 @Singleton
 public class VideoQueueHelper extends BaseInjector {
+  protected Context context;
+  protected SharedPreferences sharedPreferences;
+  protected LinkedList<VideoContentInfo> videoQueue;
 
-  @Inject @ApplicationContext protected Context context;
+  @Inject
+  public VideoQueueHelper(@ApplicationContext Context context, SharedPreferences sharedPreferences, @ForVideoQueue LinkedList<VideoContentInfo> videoQueue) {
+    this.context = context;
+    this.sharedPreferences = sharedPreferences;
+    this.videoQueue = videoQueue;
+  }
 
-  @Inject protected SharedPreferences sharedPreferences;
-
-  @Inject @ForVideoQueue protected LinkedList<VideoContentInfo> videoQueue;
 
   public void performAddToQueue(VideoContentInfo videoInfo) {
     boolean extplayer = sharedPreferences.getBoolean("external_player", false);

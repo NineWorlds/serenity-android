@@ -1,44 +1,26 @@
 package us.nineworlds.serenity.injection.modules;
 
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
-import dagger.Module;
-import dagger.Provides;
-import javax.inject.Singleton;
-import okhttp3.OkHttpClient;
+import toothpick.config.Module;
+import us.nineworlds.serenity.injection.modules.providers.AdaptiveTrackSelectionFactoryProvider;
+import us.nineworlds.serenity.injection.modules.providers.DefaultMappingTrackSelectorProvider;
+import us.nineworlds.serenity.injection.modules.providers.EventLoggerProvider;
+import us.nineworlds.serenity.injection.modules.providers.HttpDataSourceFactoryProvider;
 import us.nineworlds.serenity.ui.video.player.EventLogger;
 import us.nineworlds.serenity.ui.video.player.ExoplayerPresenter;
 
-@Module(library = true, includes = SerenityModule.class)
-public class VideoModule {
+public class VideoModule extends Module {
 
-  private static final String userAgent = "SerenityAndroid";
-
-  @Provides @Singleton DefaultBandwidthMeter providesDefaultBandwidthMeter() {
-    return new DefaultBandwidthMeter();
-  }
-
-  @Provides HttpDataSource.Factory buildHttpDataSourceFactory(OkHttpClient okHttpClient) {
-    return new OkHttpDataSourceFactory(okHttpClient, userAgent, null, null);
-  }
-
-  @Provides AdaptiveTrackSelection.Factory proidesAdapativeTrackSelectionFactory(DefaultBandwidthMeter bandwidthMeter) {
-    return new AdaptiveTrackSelection.Factory(bandwidthMeter);
-  }
-
-  @Provides MappingTrackSelector providesMappingTrackSelector(AdaptiveTrackSelection.Factory factory) {
-    return new DefaultTrackSelector(factory);
-  }
-
-  @Provides EventLogger providesEventLogger(MappingTrackSelector trackSelector) {
-    return new EventLogger(trackSelector);
-  }
-
-  @Provides ExoplayerPresenter providesExoPlayerPresenter() {
-    return new ExoplayerPresenter();
+  public VideoModule() {
+    super();
+    bind(DefaultBandwidthMeter.class).toInstance(new DefaultBandwidthMeter());
+    bind(HttpDataSource.Factory.class).toProvider(HttpDataSourceFactoryProvider.class);
+    bind(AdaptiveTrackSelection.Factory.class).toProvider(AdaptiveTrackSelectionFactoryProvider.class);
+    bind(MappingTrackSelector.class).toProvider(DefaultMappingTrackSelectorProvider.class);
+    bind(EventLogger.class).toProviderInstance(new EventLoggerProvider());
+    bind(ExoplayerPresenter.class).toInstance(new ExoplayerPresenter());
   }
 }

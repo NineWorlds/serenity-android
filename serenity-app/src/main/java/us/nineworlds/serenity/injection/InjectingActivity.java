@@ -24,12 +24,13 @@
 package us.nineworlds.serenity.injection;
 
 import android.app.Activity;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import toothpick.Toothpick;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 
 public abstract class InjectingActivity extends Activity {
 
   public InjectingActivity() {
     super();
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 }

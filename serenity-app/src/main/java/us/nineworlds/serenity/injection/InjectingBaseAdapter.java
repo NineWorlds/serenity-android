@@ -1,11 +1,12 @@
 package us.nineworlds.serenity.injection;
 
 import android.widget.BaseAdapter;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import toothpick.Toothpick;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 
 public abstract class InjectingBaseAdapter extends BaseAdapter {
 
   public InjectingBaseAdapter() {
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 }

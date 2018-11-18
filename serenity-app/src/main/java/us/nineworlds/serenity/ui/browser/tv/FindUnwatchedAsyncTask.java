@@ -29,8 +29,9 @@ import android.util.Log;
 import android.widget.Toast;
 import java.util.List;
 import javax.inject.Inject;
+import toothpick.Toothpick;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.common.media.model.IDirectory;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.common.media.model.IVideo;
@@ -50,7 +51,7 @@ public class FindUnwatchedAsyncTask extends AsyncTask<SeriesContentInfo, Void, E
 
   public FindUnwatchedAsyncTask(Activity context) {
     this.activity = context;
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 
   @Override protected EpisodePosterInfo doInBackground(SeriesContentInfo... infos) {

@@ -7,14 +7,15 @@ import java.net.URL;
 import javax.inject.Inject;
 import okhttp3.OkHttpClient;
 import okhttp3.OkUrlFactory;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import toothpick.Toothpick;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 
 public class OkHttpStack extends HurlStack {
 
   @Inject OkHttpClient client;
 
   public OkHttpStack() {
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 
   @Override protected HttpURLConnection createConnection(URL url) throws IOException {

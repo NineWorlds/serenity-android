@@ -6,8 +6,9 @@ import com.birbit.android.jobqueue.JobManager
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode.MAIN
+import toothpick.Toothpick
 import us.nineworlds.serenity.common.Server
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph
+import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.core.logger.Logger
@@ -27,8 +28,7 @@ class LoginUserPresenter : MvpPresenter<LoginUserContract.LoginUserView>(), Logi
   @Inject
   lateinit var client: SerenityClient
 
-  @Inject
-  lateinit var eventBus: EventBus
+  val eventBus =  EventBus.getDefault()
 
   @Inject
   lateinit var jobManager: JobManager
@@ -36,7 +36,7 @@ class LoginUserPresenter : MvpPresenter<LoginUserContract.LoginUserView>(), Logi
   lateinit var server: Server
 
   init {
-    SerenityObjectGraph.instance.inject(this)
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
   }
 
   override fun attachView(view: LoginUserView?) {

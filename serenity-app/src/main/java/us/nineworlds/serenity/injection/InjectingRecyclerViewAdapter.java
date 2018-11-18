@@ -24,12 +24,12 @@
 package us.nineworlds.serenity.injection;
 
 import android.support.v7.widget.RecyclerView;
-import net.ganin.darv.DpadAwareRecyclerView;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import toothpick.Toothpick;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 
 public abstract class InjectingRecyclerViewAdapter extends RecyclerView.Adapter {
 
   public InjectingRecyclerViewAdapter() {
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 }

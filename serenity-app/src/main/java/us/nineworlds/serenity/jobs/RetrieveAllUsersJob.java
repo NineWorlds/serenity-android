@@ -14,7 +14,7 @@ import us.nineworlds.serenity.events.users.AllUsersEvent;
 public class RetrieveAllUsersJob extends InjectingJob {
 
   @Inject SerenityClient client;
-  @Inject EventBus eventBus;
+  EventBus eventBus = EventBus.getDefault();
 
   @Override public void onAdded() {
 

@@ -12,7 +12,7 @@ import us.nineworlds.serenity.events.TVCategorySecondaryEvent;
 
 public class TVCategorySecondaryJob extends InjectingJob {
 
-  @Inject EventBus eventBus;
+  EventBus eventBus = EventBus.getDefault();
 
   @Inject SerenityClient client;
 

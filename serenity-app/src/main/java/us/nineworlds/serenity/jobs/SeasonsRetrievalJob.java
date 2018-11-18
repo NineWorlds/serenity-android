@@ -14,7 +14,7 @@ public class SeasonsRetrievalJob extends InjectingJob {
 
   @Inject SerenityClient client;
 
-  @Inject EventBus eventBus;
+  EventBus eventBus = EventBus.getDefault();
 
   String key;
 

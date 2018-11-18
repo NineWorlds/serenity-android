@@ -42,13 +42,16 @@ import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.video.player.ExoplayerVideoActivity;
 
-public class VideoPlayerIntentUtils extends BaseInjector {
+public class VideoPlayerIntentUtils {
+  protected LinkedList<VideoContentInfo> videoQueue;
+  protected SharedPreferences prefs;
+  protected TimeUtil timeUtil;
 
-  @Inject @ForVideoQueue protected LinkedList<VideoContentInfo> videoQueue;
-
-  @Inject protected SharedPreferences prefs;
-
-  @Inject protected TimeUtil timeUtil;
+  public VideoPlayerIntentUtils(LinkedList<VideoContentInfo> videoQueue, SharedPreferences prefs, TimeUtil timeUtil) {
+    this.videoQueue = videoQueue;
+    this.prefs = prefs;
+    this.timeUtil = timeUtil;
+  }
 
   /**
    * This must run on a UI thread.

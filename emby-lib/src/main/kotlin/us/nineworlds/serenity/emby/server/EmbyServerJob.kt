@@ -6,6 +6,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
+import toothpick.config.Module
 import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.android.injection.ApplicationContext
 import us.nineworlds.serenity.common.android.injection.InjectingJob
@@ -21,8 +22,7 @@ import javax.inject.Inject
 
 class EmbyServerJob : InjectingJob() {
 
-  @Inject
-  lateinit var eventBus: EventBus
+  var eventBus = EventBus.getDefault()
 
   @field:[Inject ApplicationContext]
   lateinit var context: Context

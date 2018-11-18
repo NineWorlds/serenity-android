@@ -30,7 +30,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import javax.inject.Inject;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import toothpick.Toothpick;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.InjectingBroadcastReceiver;
@@ -54,7 +55,7 @@ public class StartupBroadcastReceiver extends InjectingBroadcastReceiver {
   private Context context;
 
   @Override public void onReceive(Context context, Intent intent) {
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
     this.context = context;
 
     if (intent.getAction() == null) {

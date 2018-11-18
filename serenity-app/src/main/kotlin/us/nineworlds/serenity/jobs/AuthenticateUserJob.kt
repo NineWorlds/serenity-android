@@ -10,11 +10,9 @@ import us.nineworlds.serenity.events.users.AuthenticatedUserEvent
 
 class AuthenticateUserJob(val user: SerenityUser) : InjectingJob() {
 
-  @Inject
-  internal lateinit var client: SerenityClient
+  @Inject lateinit var client: SerenityClient
 
-  @Inject
-  internal lateinit var eventBus: EventBus
+  val eventBus = EventBus.getDefault()
 
   override fun onAdded() {
 

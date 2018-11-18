@@ -30,8 +30,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.v17.leanback.app.SearchSupportFragment.SearchResultProvider;
 import android.support.v17.leanback.app.SearchSupportFragment;
+import android.support.v17.leanback.app.SearchSupportFragment.SearchResultProvider;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
@@ -49,8 +49,9 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import java.net.URLEncoder;
 import java.util.List;
 import javax.inject.Inject;
+import toothpick.Toothpick;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.menus.MenuItem;
@@ -73,7 +74,7 @@ public class MovieSearchFragment extends SearchSupportFragment implements Search
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
 
     if (androidHelper.isAmazonFireTV()) {
       setSpeechRecognitionCallback(() -> {

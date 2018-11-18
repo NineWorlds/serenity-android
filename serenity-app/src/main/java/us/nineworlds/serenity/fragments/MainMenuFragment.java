@@ -58,7 +58,7 @@ public class MainMenuFragment extends InjectingFragment {
 
   @Inject SerenityClient plexFactory;
 
-  @Inject EventBus eventBus;
+  EventBus eventBus = EventBus.getDefault();
 
   @Inject JobManager jobManager;
 

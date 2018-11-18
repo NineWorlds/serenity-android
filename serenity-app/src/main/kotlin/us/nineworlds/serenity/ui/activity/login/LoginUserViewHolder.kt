@@ -8,8 +8,9 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.bumptech.glide.Glide
+import toothpick.Toothpick
 import us.nineworlds.serenity.R
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph
+import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import javax.inject.Inject
@@ -24,7 +25,7 @@ class LoginUserViewHolder(view: View) : ViewHolder(view) {
 
   init {
     ButterKnife.bind(this, view)
-    SerenityObjectGraph.instance.inject(this)
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 
   fun loadUser(user: SerenityUser) {

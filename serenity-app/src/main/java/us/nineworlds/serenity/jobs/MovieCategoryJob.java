@@ -12,7 +12,7 @@ import us.nineworlds.serenity.events.MainCategoryEvent;
 
 public class MovieCategoryJob extends InjectingJob {
 
-  @Inject EventBus eventBus;
+  EventBus eventBus = EventBus.getDefault();
 
   @Inject SerenityClient client;
 

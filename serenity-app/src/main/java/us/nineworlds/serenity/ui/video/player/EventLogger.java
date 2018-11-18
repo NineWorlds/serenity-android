@@ -42,20 +42,19 @@ import com.google.android.exoplayer2.metadata.id3.UrlLinkFrame;
 import com.google.android.exoplayer2.source.AdaptiveMediaSourceEventListener;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.Locale;
 import javax.inject.Inject;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import toothpick.Toothpick;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.core.logger.Logger;
 
 /**
@@ -87,7 +86,7 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
     window = new Timeline.Window();
     period = new Timeline.Period();
     startTimeMs = SystemClock.elapsedRealtime();
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 
   // Player.EventListener
@@ -269,7 +268,6 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
   @Override public void onAudioDisabled(DecoderCounters counters) {
     logger.debug("audioDisabled [" + getSessionTimeString() + "]");
   }
-
 
   // VideoRendererEventListener
 
@@ -473,7 +471,6 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
       LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData,
       IOException error, boolean wasCanceled) {
     printInternalError("loadError", error);
-
   }
 
   @Override public void onReadingStarted(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {

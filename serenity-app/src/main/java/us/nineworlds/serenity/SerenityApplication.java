@@ -40,14 +40,22 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import toothpick.Scope;
+import toothpick.Toothpick;
+import toothpick.configuration.Configuration;
+import toothpick.registries.FactoryRegistryLocator;
+import toothpick.registries.MemberInjectorRegistryLocator;
 import us.nineworlds.serenity.common.Server;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.emby.server.EmbyServer;
 import us.nineworlds.serenity.emby.server.EmbyServerJob;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
+import us.nineworlds.serenity.injection.modules.LoginModule;
+import us.nineworlds.serenity.injection.modules.SerenityModule;
+import us.nineworlds.serenity.injection.modules.VideoModule;
 import us.nineworlds.serenity.jobs.GDMServerJob;
 import us.nineworlds.serenity.server.GDMReceiver;
 
@@ -65,7 +73,7 @@ public class SerenityApplication extends Application {
   @Inject Logger logger;
   @Inject LocalBroadcastManager localBroadcastManager;
   private BroadcastReceiver gdmReceiver;
-  @Inject EventBus eventBus;
+  EventBus eventBus;
 
   private static boolean enableTracking = true;
 
@@ -78,15 +86,17 @@ public class SerenityApplication extends Application {
 
     JodaTimeAndroid.init(this);
     sendStartedApplicationEvent();
+    eventBus = EventBus.getDefault();
     eventBus.register(this);
     jobManager.start();
     logger.initialize();
   }
 
   protected void inject() {
-    SerenityObjectGraph objectGraph = SerenityObjectGraph.Companion.getInstance();
-    objectGraph.createObjectGraph(createModules());
-    objectGraph.inject(this);
+
+    Scope scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE);
+    scope.installModules(new AndroidModule(this), new SerenityModule(), new LoginModule(), new VideoModule());
+    Toothpick.inject(this, scope);
   }
 
   protected List<Object> createModules() {

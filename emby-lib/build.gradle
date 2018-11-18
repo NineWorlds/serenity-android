@@ -30,6 +30,13 @@ android {
   defaultConfig {
     minSdkVersion 21
     targetSdkVersion 28
+
+//    javaCompileOptions {
+//      annotationProcessorOptions {
+//        arguments = [ toothpick_registry_package_name : 'us.nineworlds.serenity.emby' ]
+//      }
+//    }
+
   }
 
   compileSdkVersion 28
@@ -48,9 +55,20 @@ dependencies {
   implementation project(':serenity-common')
   implementation project(':serenity-android-common')
 
+  releaseImplementation("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion") {
+    exclude group: 'javax.inject'
+  }
+  releaseImplementation("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion") {
+    exclude group: 'javax.inject'
+  }
+
+  debugImplementation("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion")
+  debugImplementation("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion")
+
+  releaseImplementation "com.github.stephanenicolas.toothpick:toothpick-javax-annotations:$toothPickVersion"
+  kapt "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"
+
   implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
-  implementation "com.squareup.dagger:dagger:$daggerVersion"
-  kapt "com.squareup.dagger:dagger-compiler:$daggerVersion"
   implementation "org.greenrobot:eventbus:$eventBus"
   implementation "com.squareup.moshi:moshi-kotlin:$moshiKotlinVersion"
   implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
@@ -66,7 +84,6 @@ dependencies {
   testImplementation "junit:junit:$junitVersion"
   testImplementation "org.assertj:assertj-core:$assertjVersion"
   testImplementation "org.mockito:mockito-core:$mockitoVersion"
-  kaptTest "com.squareup.dagger:dagger-compiler:$daggerVersion"
   testImplementation("org.robolectric:robolectric:$robolectricVersion") {
     exclude module: 'support-v4'
   }
@@ -75,6 +92,10 @@ dependencies {
   testImplementation "org.robolectric:shadowapi:$robolectricVersion"
   testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
   testImplementation "org.khronos:opengl-api:$openglApiVersion"
+
+  testImplementation "com.github.stephanenicolas.toothpick:toothpick-testing:$toothPickVersion"
+  kaptTest "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"
+
 }
 
 sourceCompatibility = "1.8"

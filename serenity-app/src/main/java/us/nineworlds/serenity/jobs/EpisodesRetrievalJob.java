@@ -15,7 +15,7 @@ public class EpisodesRetrievalJob extends InjectingJob {
 
   @Inject SerenityClient client;
 
-  @Inject EventBus eventBus;
+  EventBus eventBus = EventBus.getDefault();
 
   @Inject Logger logger;
 

@@ -31,8 +31,9 @@ import android.support.v17.leanback.widget.Presenter;
 import android.view.View;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
+import toothpick.Toothpick;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
@@ -41,7 +42,7 @@ public class CardPresenter extends Presenter {
   static Context context;
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent) {
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
     context = parent.getContext();
 
     ImageCardView imageView = new ImageCardView(context);

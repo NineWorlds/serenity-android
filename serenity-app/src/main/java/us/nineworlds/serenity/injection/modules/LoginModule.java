@@ -1,13 +1,12 @@
 package us.nineworlds.serenity.injection.modules;
 
-import dagger.Module;
-import dagger.Provides;
+import toothpick.config.Module;
 import us.nineworlds.serenity.ui.activity.login.LoginUserPresenter;
 
-@Module(library = true)
-public class LoginModule {
+public class LoginModule extends Module {
 
-  @Provides LoginUserPresenter providesLoginUserPresenter() {
-    return new LoginUserPresenter();
+  public LoginModule() {
+    bind(LoginUserPresenter.class).to(LoginUserPresenter.class);
   }
+
 }

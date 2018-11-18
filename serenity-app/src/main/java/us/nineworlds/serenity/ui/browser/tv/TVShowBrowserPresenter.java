@@ -11,7 +11,8 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import toothpick.Toothpick;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
@@ -28,15 +29,14 @@ import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
 @StateStrategyType(SkipStrategy.class)
 public class TVShowBrowserPresenter extends MvpPresenter<TVShowBrowserView> {
 
-  @Inject EventBus eventBus;
+  EventBus eventBus = EventBus.getDefault();
   @Inject JobManager jobManager;
 
   public TVShowBrowserPresenter() {
-    super();
-    SerenityObjectGraph.Companion.getInstance().inject(this);
   }
 
   @Override public void attachView(TVShowBrowserView view) {
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
     super.attachView(view);
     eventBus.register(this);
   }

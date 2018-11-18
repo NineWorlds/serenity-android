@@ -8,7 +8,8 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import toothpick.Toothpick;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer;
 import us.nineworlds.serenity.events.EpisodesRetrievalEvent;
@@ -17,13 +18,13 @@ import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
 @InjectViewState
 public class EpisodeBrowserPresenter extends MvpPresenter<EpisodeBrowserView> {
 
-  @Inject EventBus eventBus;
+  EventBus eventBus = EventBus.getDefault();
 
   @Inject JobManager jobManager;
 
   public EpisodeBrowserPresenter() {
     super();
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 
   @Override public void attachView(EpisodeBrowserView view) {

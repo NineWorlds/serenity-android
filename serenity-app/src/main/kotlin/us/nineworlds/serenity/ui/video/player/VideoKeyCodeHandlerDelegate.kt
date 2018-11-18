@@ -6,8 +6,9 @@ import android.util.Log
 import android.view.KeyEvent
 import com.google.android.exoplayer2.SimpleExoPlayer
 import org.greenrobot.eventbus.EventBus
+import toothpick.Toothpick
+import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.annotations.OpenForTesting
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph
 import us.nineworlds.serenity.events.video.OnScreenDisplayEvent
 import us.nineworlds.serenity.events.video.StartPlaybackEvent
 import us.nineworlds.serenity.events.video.StopPlaybackEvent
@@ -18,10 +19,10 @@ class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val activity: Act
     val presenter: ExoplayerContract.ExoplayerPresenter) {
 
   @Inject lateinit var preferences: SharedPreferences
-  @Inject lateinit var eventBus: EventBus
+  val eventBus = EventBus.getDefault()
 
   init {
-    SerenityObjectGraph.instance.inject(this)
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
   }
 
   fun isPlaying(): Boolean = player.playWhenReady

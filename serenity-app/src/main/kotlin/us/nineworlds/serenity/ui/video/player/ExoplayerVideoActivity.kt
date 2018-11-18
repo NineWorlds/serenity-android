@@ -36,8 +36,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   @Inject
   lateinit var mediaDataSourceFactory: DataSource.Factory
 
-  @field:[Inject VideoPlayerHandler]
-  lateinit var videoPlayerHandler: Handler
+  val videoPlayerHandler = Handler()
 
   @Inject
   lateinit var trackSelector: MappingTrackSelector

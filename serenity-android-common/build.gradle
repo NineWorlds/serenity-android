@@ -61,13 +61,22 @@ android {
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
   implementation project(':serenity-common')
-  implementation "com.squareup.dagger:dagger:$daggerVersion"
   implementation "org.greenrobot:eventbus:$eventBus"
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-
-
   implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
-  kapt "com.squareup.dagger:dagger-compiler:$daggerVersion"
+
+  releaseImplementation("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion") {
+    exclude group: 'javax.inject'
+  }
+  releaseImplementation("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion") {
+    exclude group: 'javax.inject'
+  }
+
+  debugImplementation("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion")
+  debugImplementation("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion")
+
+  releaseImplementation "com.github.stephanenicolas.toothpick:toothpick-javax-annotations:$toothPickVersion"
+  kapt "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"
 
   testImplementation "junit:junit:$junitVersion"
 }

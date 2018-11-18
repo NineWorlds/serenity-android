@@ -24,7 +24,7 @@ public class OnDeckRecommendationsJob extends InjectingJob {
   @Inject @ApplicationContext Context context;
 
   @Inject SerenityClient client;
-  @Inject EventBus eventBus;
+  EventBus eventBus = EventBus.getDefault();
   @Inject JobManager jobManager;
 
   @Override public void onAdded() {

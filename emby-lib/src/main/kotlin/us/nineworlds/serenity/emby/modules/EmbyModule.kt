@@ -1,8 +1,7 @@
 package us.nineworlds.serenity.emby.modules
 
-import dagger.Module
+import toothpick.config.Module
 
-@Module(library = true)
-class EmbyModule {
+class EmbyModule : Module() {
   
 }

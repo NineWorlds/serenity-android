@@ -26,7 +26,8 @@ package us.nineworlds.serenity.core.services;
 import android.os.AsyncTask;
 import java.io.IOException;
 import javax.inject.Inject;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import toothpick.Toothpick;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 
 public class UnWatchVideoAsyncTask extends AsyncTask<String, Void, Void> {
@@ -34,7 +35,7 @@ public class UnWatchVideoAsyncTask extends AsyncTask<String, Void, Void> {
   @Inject SerenityClient factory;
 
   public UnWatchVideoAsyncTask() {
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 
   @Override protected Void doInBackground(String... params) {

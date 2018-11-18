@@ -71,4 +71,5 @@ project.ext {
   assertJAndroidVersion = "1.1.1"
   commonsioVersion = "2.6"
   jacocoVersion = "0.8.2"
+  toothPickVersion = "1.1.1"
 }

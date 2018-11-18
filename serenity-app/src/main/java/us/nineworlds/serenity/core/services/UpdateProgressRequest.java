@@ -2,7 +2,8 @@ package us.nineworlds.serenity.core.services;
 
 import android.os.AsyncTask;
 import javax.inject.Inject;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import toothpick.Toothpick;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
@@ -16,7 +17,7 @@ public class UpdateProgressRequest extends AsyncTask<Void, Void, Void> {
   public UpdateProgressRequest(long position, VideoContentInfo video) {
     this.position = position;
     this.video = video;
-    SerenityObjectGraph.Companion.getInstance().inject(this);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 
   @Override protected Void doInBackground(Void... params) {

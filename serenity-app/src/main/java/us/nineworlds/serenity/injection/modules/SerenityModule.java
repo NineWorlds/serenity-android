@@ -23,68 +23,39 @@
 
 package us.nineworlds.serenity.injection.modules;
 
-import dagger.Module;
-import dagger.Provides;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
+import toothpick.config.Module;
 import us.nineworlds.serenity.common.Server;
 import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.core.logger.TimberLogger;
-import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.ForVideoQueue;
+import us.nineworlds.serenity.injection.modules.providers.VideoPlayerIntentUtilsProvider;
+import us.nineworlds.serenity.injection.modules.providers.VideoQueueHelperProvider;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
 import us.nineworlds.serenity.ui.browser.tv.TVCategoryState;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserPresenter;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.ui.util.VideoQueueHelper;
 
-@Module(library = true)
-public class SerenityModule {
+public class SerenityModule extends Module {
 
-  @Provides @Singleton TimeUtil providesTimeUtil() {
-    return new TimeUtil();
+  public SerenityModule() {
+    super();
+    bind(LinkedList.class).withName(ForVideoQueue.class).toInstance(new LinkedList());
+    bind(TimeUtil.class).toInstance(new TimeUtil());
+    bind(VideoQueueHelper.class).toProvider(VideoQueueHelperProvider.class).providesSingletonInScope();
+    bind(Map.class).withName(ForMediaServers.class).toInstance(new ConcurrentHashMap<String, Server>());
+    bind(VideoPlayerIntentUtils.class).toProvider(VideoPlayerIntentUtilsProvider.class).providesSingletonInScope();
+    bind(OkHttpClient.class).toInstance(new OkHttpClient.Builder().build());
+    bind(MovieSelectedCategoryState.class).toInstance(new MovieSelectedCategoryState());
+    bind(TVCategoryState.class).toInstance(new TVCategoryState());
+    bind(TVShowBrowserPresenter.class).toInstance(new TVShowBrowserPresenter());
+    bind(Logger.class).toInstance(new TimberLogger());
   }
 
-  @Provides @Singleton VideoQueueHelper providesVideoQueueHelper() {
-    return new VideoQueueHelper();
-  }
-
-  @Provides @Singleton @ForMediaServers Map<String, Server> providesMediaServers() {
-    return new ConcurrentHashMap<String, Server>();
-  }
-
-  @Provides @Singleton @ForVideoQueue LinkedList<VideoContentInfo> providesVideoQueue() {
-    return new LinkedList<VideoContentInfo>();
-  }
-
-  @Provides @Singleton VideoPlayerIntentUtils providesVideoPlayerUtils() {
-    return new VideoPlayerIntentUtils();
-  }
-
-  @Provides @Singleton OkHttpClient providesOkHttpClient() {
-    return new OkHttpClient.Builder().build();
-  }
-
-  @Provides @Singleton MovieSelectedCategoryState providesMovieSelectedCategoryState() {
-    return new MovieSelectedCategoryState();
-  }
-
-  @Provides @Singleton TVCategoryState providesTVCategoryState() {
-    return new TVCategoryState();
-  }
-
-  @Provides TVShowBrowserPresenter providesTVShowBrowserPresenter() {
-    return new TVShowBrowserPresenter();
-  }
-
-  @Provides @Singleton Logger providesLogger() {
-    return new TimberLogger();
-  }
 }
