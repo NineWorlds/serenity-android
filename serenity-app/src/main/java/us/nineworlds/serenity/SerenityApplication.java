@@ -99,12 +99,6 @@ public class SerenityApplication extends Application {
     Toothpick.inject(this, scope);
   }
 
-  protected List<Object> createModules() {
-    List<Object> modules = new ArrayList<Object>();
-    modules.add(new AndroidModule(this));
-    return modules;
-  }
-
   @Override public void onCreate() {
     super.onCreate();
     init();

@@ -2,24 +2,14 @@ package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import android.view.View;
 import android.widget.LinearLayout;
-
+import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import dagger.Module;
-import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -31,55 +21,41 @@ import static org.robolectric.RuntimeEnvironment.application;
 @RunWith(RobolectricTestRunner.class)
 public class EpisodePosterImageGalleryAdapterTest extends InjectingTest {
 
-    EpisodePosterImageGalleryAdapter adapter;
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-        adapter = new EpisodePosterImageGalleryAdapter();
-    }
+  EpisodePosterImageGalleryAdapter adapter;
 
-    @Override
-    public List<Object> getModules() {
-        List<Object> modules = new ArrayList<>();
-        modules.add(new AndroidModule(application));
-        modules.add(new TestingModule());
-        modules.add(new TestModule());
-        return modules;
-    }
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    adapter = new EpisodePosterImageGalleryAdapter();
+  }
 
-    @Test
-    public void onCreateViewHolderCreatesTVShowViewHolder() {
-        EpisodeViewHolder viewHolder = createViewHolder();
+  @Override public void installTestModules() {
+    scope.installTestModules(new TestingModule());
+  }
 
-        assertThat(viewHolder).isNotNull();
-    }
+  @Test
+  public void onCreateViewHolderCreatesTVShowViewHolder() {
+    EpisodeViewHolder viewHolder = createViewHolder();
 
-    private EpisodeViewHolder createViewHolder() {
-        LinearLayout linearLayout = new LinearLayout(application);
-        return (EpisodeViewHolder) adapter.onCreateViewHolder(linearLayout, 0);
-    }
+    assertThat(viewHolder).isNotNull();
+  }
 
-    @Test
-    public void onBindViewHolder()  {
-        EpisodeViewHolder mockEpisodeViewHolder = mock(EpisodeViewHolder.class);
-        VideoContentInfo mockSeriesContent = mock(VideoContentInfo.class);
-        doReturn(new View(RuntimeEnvironment.application)).when(mockEpisodeViewHolder).getItemView();
+  private EpisodeViewHolder createViewHolder() {
+    LinearLayout linearLayout = new LinearLayout(application);
+    return (EpisodeViewHolder) adapter.onCreateViewHolder(linearLayout, 0);
+  }
 
-        adapter.updateEpisodes(Collections.singletonList(mockSeriesContent));
-        adapter.onBindViewHolder(mockEpisodeViewHolder, 0);
+  @Test
+  public void onBindViewHolder() {
+    EpisodeViewHolder mockEpisodeViewHolder = mock(EpisodeViewHolder.class);
+    VideoContentInfo mockSeriesContent = mock(VideoContentInfo.class);
+    doReturn(new View(RuntimeEnvironment.application)).when(mockEpisodeViewHolder).getItemView();
 
-        verify(mockEpisodeViewHolder).reset();
-        verify(mockEpisodeViewHolder).createImage(mockSeriesContent, 300, 187);
-        verify(mockEpisodeViewHolder).toggleWatchedIndicator(mockSeriesContent);
-    }
+    adapter.updateEpisodes(Collections.singletonList(mockSeriesContent));
+    adapter.onBindViewHolder(mockEpisodeViewHolder, 0);
 
-    @Module(addsTo = AndroidModule.class,
-            includes = SerenityModule.class,
-            library = true,
-            overrides = true,
-            injects = EpisodePosterImageGalleryAdapterTest.class)
-    public class TestModule {
-
-    }
-
+    verify(mockEpisodeViewHolder).reset();
+    verify(mockEpisodeViewHolder).createImage(mockSeriesContent, 300, 187);
+    verify(mockEpisodeViewHolder).toggleWatchedIndicator(mockSeriesContent);
+  }
 }

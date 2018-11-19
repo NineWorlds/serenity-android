@@ -1,12 +1,9 @@
 package us.nineworlds.serenity.jobs
 
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import dagger.Module
-import dagger.Provides
 import org.apache.commons.lang3.RandomStringUtils
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before
@@ -18,21 +15,19 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.media.model.IDirectory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
-import us.nineworlds.serenity.events.MovieRetrievalEvent
-import us.nineworlds.serenity.injection.modules.AndroidModule
-import us.nineworlds.serenity.injection.modules.SerenityModule
 import us.nineworlds.serenity.test.InjectingTest
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 class OnDeckRecommendationsJobTest : InjectingTest() {
 
-  @Rule @JvmField public val rule = MockitoJUnit.rule().strictness(STRICT_STUBS)
+  @Rule
+  @JvmField
+  public val rule = MockitoJUnit.rule().strictness(STRICT_STUBS)
 
   @Inject
   lateinit var mockClient: SerenityClient
@@ -55,6 +50,7 @@ class OnDeckRecommendationsJobTest : InjectingTest() {
   override fun setUp() {
     super.setUp()
     job = OnDeckRecommendationsJob()
+    job.eventBus = mockEventBus
   }
 
   @Test
@@ -74,7 +70,7 @@ class OnDeckRecommendationsJobTest : InjectingTest() {
     doReturn("title").whenever(mockDirectory).title
     doReturn("1").whenever(mockDirectory).key
 
-    doReturn(mockIMediaContainer).whenever(mockClient).retrieveItemByIdCategory(anyString(), eq("onDeck") )
+    doReturn(mockIMediaContainer).whenever(mockClient).retrieveItemByIdCategory(anyString(), eq("onDeck"))
 
     job.onRun()
 
@@ -89,23 +85,14 @@ class OnDeckRecommendationsJobTest : InjectingTest() {
     doReturn("title").whenever(mockDirectory).title
     doReturn("1").whenever(mockDirectory).key
 
-    doReturn(mockIMediaContainer).whenever(mockClient).retrieveItemByIdCategory(anyString(), eq("onDeck") )
+    doReturn(mockIMediaContainer).whenever(mockClient).retrieveItemByIdCategory(anyString(), eq("onDeck"))
 
     job.onRun()
 
     verify(mockClient).retrieveItemByIdCategory("1", "onDeck")
   }
 
-
-  override fun getModules(): MutableList<Any> = mutableListOf(AndroidModule(RuntimeEnvironment.application),
-      TestModule())
-
-  @Module(injects = arrayOf(OnDeckRecommendationsJobTest::class),
-      includes = arrayOf(SerenityModule::class, TestingModule::class),
-      library = true,
-      overrides = true)
-  inner class TestModule {
-    @Provides
-    fun providesEventBus(): EventBus = mockEventBus
+  override fun installTestModules() {
+    scope.installTestModules(TestingModule())
   }
 }

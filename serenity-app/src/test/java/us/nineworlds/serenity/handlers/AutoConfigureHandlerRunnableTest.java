@@ -24,9 +24,6 @@
 package us.nineworlds.serenity.handlers;
 
 import android.app.Activity;
-import dagger.Module;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import org.junit.After;
@@ -36,15 +33,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowToast;
+import toothpick.config.Module;
 import us.nineworlds.plex.server.GDMServer;
-import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.common.Server;
 import us.nineworlds.serenity.injection.ForMediaServers;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -64,6 +57,8 @@ public class AutoConfigureHandlerRunnableTest extends InjectingTest {
     activity = Robolectric.buildActivity(Activity.class).create().get();
     handler = new AutoConfigureHandlerRunnable(activity);
   }
+
+
 
   @After public void tearDown() {
     mediaServer.clear();
@@ -89,17 +84,7 @@ public class AutoConfigureHandlerRunnableTest extends InjectingTest {
     assertThat(ShadowToast.getTextOfLatestToast()).isNotNull();
   }
 
-  @Override public List<Object> getModules() {
-    List<Object> modules = new ArrayList<Object>();
-    modules.add(new AndroidModule(RuntimeEnvironment.application));
-    modules.add(new TestModule());
-    return modules;
-  }
-
-  @Module(addsTo = AndroidModule.class, includes = SerenityModule.class, injects = {
-      AutoConfigureHandlerRunnable.class, AutoConfigureHandlerRunnableTest.class
-  })
-  public class TestModule {
+  @Override public void installTestModules() {
 
   }
 }

@@ -31,8 +31,10 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
+import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.android.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -41,7 +43,7 @@ import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 25)
-public class RecommendAsyncTaskTest {
+public class RecommendAsyncTaskTest extends InjectingTest {
 
 	RecommendAsyncTask recommendTask;
 
@@ -153,5 +155,9 @@ public class RecommendAsyncTaskTest {
 				.doInBackground();
 
 		assertThat(notification.contentIntent).isNotNull();
+	}
+
+	@Override public void installTestModules() {
+		scope.installTestModules(new TestingModule());
 	}
 }

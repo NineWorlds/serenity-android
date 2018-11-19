@@ -10,13 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.test.core.app.ApplicationProvider;
-import dagger.Module;
-import dagger.Provides;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.inject.Singleton;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -30,36 +26,27 @@ import org.mockito.junit.MockitoRule;
 import org.mockito.quality.Strictness;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowDrawable;
 import org.robolectric.shadows.ShadowToast;
-import us.nineworlds.serenity.BuildConfig;
+import toothpick.config.Module;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.test.ShadowArrayAdapter;
 
 import static org.assertj.android.api.Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.robolectric.RuntimeEnvironment.application;
-import static us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity.SERIES_LAYOUT_GRID;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = ShadowArrayAdapter.class)
@@ -275,28 +262,16 @@ public class TVShowBrowserActivityTest extends InjectingTest {
     activity = Robolectric.buildActivity(TVShowBrowserActivity.class, intent).create().get();
   }
 
-  @Override public List<Object> getModules() {
-    List<Object> modules = new ArrayList<>();
-
-    modules.add(new AndroidModule(ApplicationProvider.getApplicationContext()));
-    modules.add(new TestingModule());
-    modules.add(new TestModule());
-    return modules;
+  @Override public void installTestModules() {
+    scope.installTestModules(new TestingModule(), new TestModule());
   }
 
-  @Module(addsTo = AndroidModule.class, includes = SerenityModule.class, library = true, overrides = true, injects = TVShowBrowserActivityTest.class)
-  public class TestModule {
+  public class TestModule extends Module {
 
-    @Provides @Singleton TVCategoryState providesTVCategoryState() {
-      return mockTVCategoryState;
-    }
-
-    @Provides @Singleton SharedPreferences provideSharedPreferences() {
-      return mockSharedPreferences;
-    }
-
-    @Provides TVShowBrowserPresenter providesTVShowBrowserPresenter() {
-      return mockTVShowBrowserPresenter;
+    public TestModule() {
+      bind(TVCategoryState.class).toInstance(mockTVCategoryState);
+      bind(SharedPreferences.class).toInstance(mockSharedPreferences);
+      bind(TVShowBrowserPresenter.class).toInstance(mockTVShowBrowserPresenter);
     }
   }
 }

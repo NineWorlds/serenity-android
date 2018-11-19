@@ -29,11 +29,6 @@ import android.view.KeyEvent;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import dagger.Module;
-import dagger.Provides;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Singleton;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,11 +36,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
+import toothpick.config.Module;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 
@@ -62,7 +56,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Robolectric.buildActivity;
 import static org.robolectric.Robolectric.getBackgroundThreadScheduler;
 import static org.robolectric.Robolectric.getForegroundThreadScheduler;
-import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
 public class MovieBrowserActivityTest extends InjectingTest {
@@ -163,21 +156,14 @@ public class MovieBrowserActivityTest extends InjectingTest {
     assumeTrue(drawerLayout.isDrawerOpen(Gravity.LEFT));
   }
 
-  @Override public List<Object> getModules() {
-    List<Object> modules = new ArrayList<Object>();
-    modules.add(new AndroidModule(application));
-    modules.add(new TestingModule());
-    modules.add(new TestModule());
-    return modules;
+  @Override public void installTestModules() {
+    scope.installTestModules(new TestingModule(), new TestModule());
   }
 
-  @Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-      MovieBrowserActivity.class, MovieBrowserActivityTest.class,
-  })
-  public class TestModule {
+  public class TestModule extends Module {
 
-    @Provides @Singleton SharedPreferences providesSharedPreferences() {
-      return mockSharedPreferences;
+    public TestModule() {
+      bind(SharedPreferences.class).toInstance(mockSharedPreferences);
     }
   }
 }

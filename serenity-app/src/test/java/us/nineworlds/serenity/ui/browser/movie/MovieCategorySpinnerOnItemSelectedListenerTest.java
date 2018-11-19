@@ -27,9 +27,9 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
-
+import java.util.ArrayList;
+import java.util.List;
 import net.ganin.darv.DpadAwareRecyclerView;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,22 +37,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
-import us.nineworlds.serenity.BuildConfig;
+import toothpick.config.Module;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 
@@ -70,190 +60,168 @@ import static org.robolectric.Shadows.shadowOf;
 @RunWith(RobolectricTestRunner.class)
 public class MovieCategorySpinnerOnItemSelectedListenerTest extends InjectingTest {
 
-	@Mock
-	protected SharedPreferences mockSharedPreferences;
+  @Mock
+  protected SharedPreferences mockSharedPreferences;
 
-	@Mock
-	protected View mockView;
+  @Mock
+  protected View mockView;
 
-	@Mock
-	protected Spinner mockSecondarySpinner;
+  @Mock
+  protected Spinner mockSecondarySpinner;
 
-	@Mock
-	protected AdapterView mockAdapterView;
+  @Mock
+  protected AdapterView mockAdapterView;
 
-	@Mock
-	protected CategoryInfo mockCategoryInfo;
+  @Mock
+  protected CategoryInfo mockCategoryInfo;
 
-	@Mock
-	protected SerenityMultiViewVideoActivity mockMultiViewVideoActivity;
+  @Mock
+  protected SerenityMultiViewVideoActivity mockMultiViewVideoActivity;
 
-	@Mock
-	protected MovieSelectedCategoryState mockCategoryState;
+  @Mock
+  protected MovieSelectedCategoryState mockCategoryState;
 
-	@Mock
-	protected MoviePosterImageAdapter mockPosterImageAdapter;
+  @Mock
+  protected MoviePosterImageAdapter mockPosterImageAdapter;
 
-	@Mock protected DpadAwareRecyclerView mockPosterGallery;
+  @Mock protected DpadAwareRecyclerView mockPosterGallery;
 
-	protected MovieCategorySpinnerOnItemSelectedListener onItemSelectedListener;
-	protected MovieCategorySpinnerOnItemSelectedListener spyOnItemSelectedListener;
+  protected MovieCategorySpinnerOnItemSelectedListener onItemSelectedListener;
+  protected MovieCategorySpinnerOnItemSelectedListener spyOnItemSelectedListener;
 
-	@Override
-	@Before
-	public void setUp() throws Exception {
-		Robolectric.getBackgroundThreadScheduler().pause();
-		Robolectric.getForegroundThreadScheduler().pause();
-		initMocks(this);
-		super.setUp();
+  @Override
+  @Before
+  public void setUp() throws Exception {
+    Robolectric.getBackgroundThreadScheduler().pause();
+    Robolectric.getForegroundThreadScheduler().pause();
+    initMocks(this);
+    super.setUp();
 
-		ShadowApplication shadowApplication = shadowOf(application);
-		shadowApplication
-		.declareActionUnbindable("com.google.android.gms.analytics.service.START");
+    ShadowApplication shadowApplication = shadowOf(application);
+    shadowApplication
+        .declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
-		onItemSelectedListener = new MovieCategorySpinnerOnItemSelectedListener(
-				"All", "59", mockMultiViewVideoActivity);
+    onItemSelectedListener = new MovieCategorySpinnerOnItemSelectedListener(
+        "All", "59", mockMultiViewVideoActivity);
 
-		spyOnItemSelectedListener = spy(onItemSelectedListener);
-	}
+    spyOnItemSelectedListener = spy(onItemSelectedListener);
+  }
 
-	@Test
-	public void verifyCategoryStateSetsGCategoryWhenGenresDoNotMatch() {
-		spyOnItemSelectedListener.setFirstSelection(false);
-		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
-				anyInt());
-		doReturn("action").when(mockCategoryInfo).getCategory();
+  @Test
+  public void verifyCategoryStateSetsGCategoryWhenGenresDoNotMatch() {
+    spyOnItemSelectedListener.setFirstSelection(false);
+    doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
+        anyInt());
+    doReturn("action").when(mockCategoryInfo).getCategory();
 
-		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
-		doReturn(mockSecondarySpinner).when(mockMultiViewVideoActivity)
-				.findViewById(R.id.categoryFilter2);
+    doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
+    doReturn(mockSecondarySpinner).when(mockMultiViewVideoActivity)
+        .findViewById(R.id.categoryFilter2);
 
-		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
-				0);
+    spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
+        0);
 
-		verify(mockCategoryState).setCategory("action");
-	}
+    verify(mockCategoryState).setCategory("action");
+  }
 
+  @Test
+  public void verifyThatFirstTimeSwitchIsSetToFalseAfterRetrievingSavedPosition() {
+    doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
+        anyInt());
+    doReturn("All").when(mockCategoryInfo).getCategory();
+    doReturn("Action").when(mockCategoryState).getGenreCategory();
+    doReturn(0).when(spyOnItemSelectedListener).getSavedInstancePosition(
+        any(AdapterView.class));
 
-	@Test
-	public void verifyThatFirstTimeSwitchIsSetToFalseAfterRetrievingSavedPosition() {
-		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
-				anyInt());
-		doReturn("All").when(mockCategoryInfo).getCategory();
-		doReturn("Action").when(mockCategoryState).getGenreCategory();
-		doReturn(0).when(spyOnItemSelectedListener).getSavedInstancePosition(
-				any(AdapterView.class));
+    doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
 
-		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
+    spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
+        0);
 
-		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
-				0);
+    assertThat(spyOnItemSelectedListener.isFirstSelection()).isFalse();
+  }
 
-		assertThat(spyOnItemSelectedListener.isFirstSelection()).isFalse();
-	}
+  @Test
+  public void verifyCategorySetFromFilterTheFirstTime() {
+    doReturn("all").when(mockSharedPreferences).getString(
+        "serenity_category_filter", "all");
+    doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
+        anyInt());
+    doReturn(1).when(mockAdapterView).getCount();
 
-	@Test
-	public void verifyCategorySetFromFilterTheFirstTime() {
-		doReturn("all").when(mockSharedPreferences).getString(
-				"serenity_category_filter", "all");
-		doReturn(mockCategoryInfo).when(mockAdapterView).getItemAtPosition(
-				anyInt());
-		doReturn(1).when(mockAdapterView).getCount();
+    doReturn("all").when(mockCategoryInfo).getCategory();
+    doReturn("action").when(mockCategoryState).getGenreCategory();
+    doReturn(0).when(spyOnItemSelectedListener).getSavedInstancePosition(
+        any(AdapterView.class));
 
-		doReturn("all").when(mockCategoryInfo).getCategory();
-		doReturn("action").when(mockCategoryState).getGenreCategory();
-		doReturn(0).when(spyOnItemSelectedListener).getSavedInstancePosition(
-				any(AdapterView.class));
+    doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
 
-		doReturn(mockMultiViewVideoActivity).when(mockView).getContext();
+    spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
+        0);
 
-		spyOnItemSelectedListener.onItemSelected(mockAdapterView, mockView, 0,
-				0);
+    verify(mockCategoryInfo, times(2)).getCategory();
+    verify(mockAdapterView).setSelection(anyInt());
+    verify(spyOnItemSelectedListener)
+        .createGallery(any(CategoryInfo.class));
+  }
 
-		verify(mockCategoryInfo, times(2)).getCategory();
-		verify(mockAdapterView).setSelection(anyInt());
-		verify(spyOnItemSelectedListener)
-				.createGallery(any(CategoryInfo.class));
-	}
+  @Test
+  public void returnThePositionForTheSavedCategoryState() {
 
+    doReturn(2).when(mockAdapterView).getCount();
 
-	@Test
-	public void returnThePositionForTheSavedCategoryState() {
+    CategoryInfo mockCategoryInfo1 = Mockito.mock(CategoryInfo.class);
+    CategoryInfo mockCategoryInfo2 = Mockito.mock(CategoryInfo.class);
 
-		doReturn(2).when(mockAdapterView).getCount();
+    doReturn(mockCategoryInfo1).when(mockAdapterView).getItemAtPosition(0);
+    doReturn(mockCategoryInfo2).when(mockAdapterView).getItemAtPosition(1);
 
-		CategoryInfo mockCategoryInfo1 = Mockito.mock(CategoryInfo.class);
-		CategoryInfo mockCategoryInfo2 = Mockito.mock(CategoryInfo.class);
+    demandMockCategory("Action", mockCategoryInfo1);
+    demandMockCategory("All", mockCategoryInfo2);
 
-		doReturn(mockCategoryInfo1).when(mockAdapterView).getItemAtPosition(0);
-		doReturn(mockCategoryInfo2).when(mockAdapterView).getItemAtPosition(1);
+    doReturn("All").when(mockCategoryState).getCategory();
 
-		demandMockCategory("Action", mockCategoryInfo1);
-		demandMockCategory("All", mockCategoryInfo2);
+    int result = onItemSelectedListener
+        .getSavedInstancePosition(mockAdapterView);
 
-		doReturn("All").when(mockCategoryState).getCategory();
+    assertThat(result).isEqualTo(1);
+  }
 
-		int result = onItemSelectedListener
-				.getSavedInstancePosition(mockAdapterView);
+  @Test
+  public void returnTheFirstPositionWhenCategoryStateNotFound() {
 
-		assertThat(result).isEqualTo(1);
+    doReturn(2).when(mockAdapterView).getCount();
 
-	}
+    CategoryInfo mockCategoryInfo1 = Mockito.mock(CategoryInfo.class);
+    CategoryInfo mockCategoryInfo2 = Mockito.mock(CategoryInfo.class);
 
-	@Test
-	public void returnTheFirstPositionWhenCategoryStateNotFound() {
+    doReturn(mockCategoryInfo1).when(mockAdapterView).getItemAtPosition(0);
+    doReturn(mockCategoryInfo2).when(mockAdapterView).getItemAtPosition(1);
 
-		doReturn(2).when(mockAdapterView).getCount();
+    demandMockCategory("Action", mockCategoryInfo1);
+    demandMockCategory("Alpha", mockCategoryInfo2);
 
-		CategoryInfo mockCategoryInfo1 = Mockito.mock(CategoryInfo.class);
-		CategoryInfo mockCategoryInfo2 = Mockito.mock(CategoryInfo.class);
+    doReturn("All").when(mockCategoryState).getCategory();
 
-		doReturn(mockCategoryInfo1).when(mockAdapterView).getItemAtPosition(0);
-		doReturn(mockCategoryInfo2).when(mockAdapterView).getItemAtPosition(1);
+    int result = onItemSelectedListener
+        .getSavedInstancePosition(mockAdapterView);
 
-		demandMockCategory("Action", mockCategoryInfo1);
-		demandMockCategory("Alpha", mockCategoryInfo2);
+    assertThat(result).isEqualTo(0);
+  }
 
-		doReturn("All").when(mockCategoryState).getCategory();
+  private void demandMockCategory(String value, CategoryInfo mockCategoryInfo) {
+    doReturn(value).when(mockCategoryInfo).getCategory();
+  }
 
-		int result = onItemSelectedListener
-				.getSavedInstancePosition(mockAdapterView);
+  @Override public void installTestModules() {
+    scope.installTestModules(new TestingModule(), new TestModule());
+  }
 
-		assertThat(result).isEqualTo(0);
+  public class TestModule extends Module {
 
-	}
-
-	private void demandMockCategory(String value, CategoryInfo mockCategoryInfo) {
-		doReturn(value).when(mockCategoryInfo).getCategory();
-	}
-
-	@Override
-	public List<Object> getModules() {
-		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(application));
-		modules.add(new TestingModule());
-		modules.add(new TestModule());
-		return modules;
-	}
-
-	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-		MovieCategorySpinnerOnItemSelectedListener.class,
-		MovieCategorySpinnerOnItemSelectedListenerTest.class,
-		MovieBrowserActivity.class })
-	public class TestModule {
-
-		@Provides
-		@Singleton
-		SharedPreferences providesSharedPreferences() {
-			return mockSharedPreferences;
-		}
-
-		@Provides
-		@Singleton
-		MovieSelectedCategoryState providesMovieSelectedCategoryState() {
-			return mockCategoryState;
-		}
-
-	}
-
+    public TestModule() {
+      bind(SharedPreferences.class).toInstance(mockSharedPreferences);
+      bind(MovieSelectedCategoryState.class).toInstance(mockCategoryState);
+    }
+  }
 }

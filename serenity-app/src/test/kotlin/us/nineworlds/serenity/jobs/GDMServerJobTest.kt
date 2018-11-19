@@ -2,18 +2,9 @@ package us.nineworlds.serenity.jobs
 
 import android.content.Intent
 import android.support.v4.content.LocalBroadcastManager
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.doThrow
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
-import dagger.Module
-import dagger.Provides
-import org.apache.commons.lang3.RandomStringUtils
+import com.nhaarman.mockito_kotlin.*
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
-import org.greenrobot.eventbus.EventBus
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,13 +13,7 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
-import us.nineworlds.serenity.StartupBroadcastReceiver
 import us.nineworlds.serenity.TestingModule
-import us.nineworlds.serenity.common.rest.SerenityClient
-import us.nineworlds.serenity.events.MovieRetrievalEvent
-import us.nineworlds.serenity.injection.modules.AndroidModule
-import us.nineworlds.serenity.injection.modules.SerenityModule
 import us.nineworlds.serenity.test.InjectingTest
 import java.net.DatagramPacket
 import java.net.DatagramSocket
@@ -43,7 +28,9 @@ class GDMServerJobTest : InjectingTest() {
     const val EXPECTED_VALID_PACKET_RESPONSE = "HTTP/1.0 200 OK"
   }
 
-  @Rule @JvmField public val rule = MockitoJUnit.rule().strictness(STRICT_STUBS)
+  @Rule
+  @JvmField
+  public val rule = MockitoJUnit.rule().strictness(STRICT_STUBS)
 
   @Mock
   lateinit var mockDatagramPacket: DatagramPacket
@@ -107,12 +94,7 @@ class GDMServerJobTest : InjectingTest() {
     assertThat(result.hostName).isEqualTo("239.0.0.250")
   }
 
-  override fun getModules(): MutableList<Any> = mutableListOf(AndroidModule(RuntimeEnvironment.application),
-      TestModule())
-
-  @Module(injects = arrayOf(GDMServerJobTest::class),
-      includes = arrayOf(SerenityModule::class, TestingModule::class),
-      library = true,
-      overrides = true)
-  inner class TestModule
+  override fun installTestModules() {
+    scope.installTestModules(TestingModule())
+  }
 }

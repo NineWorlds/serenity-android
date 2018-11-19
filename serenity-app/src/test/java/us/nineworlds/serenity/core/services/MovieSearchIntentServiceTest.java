@@ -24,73 +24,51 @@
 package us.nineworlds.serenity.core.services;
 
 import android.content.Intent;
-
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import dagger.Module;
-import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
 public class MovieSearchIntentServiceTest extends InjectingTest {
 
-	MockMovieSearchIntentService service;
+  MockMovieSearchIntentService service;
 
-	@Override
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		service = new MockMovieSearchIntentService();
-	}
+  @Override
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    service = new MockMovieSearchIntentService();
+  }
 
-	@Test
-	public void assertThatVideoContentIsEmptyWhenBundleExtrasIsNull() {
-		Intent intent = Mockito.mock(Intent.class);
-		service.onHandleIntent(intent);
-		assertThat(service.getVideos()).isEmpty();
-	}
+  @Test
+  public void assertThatVideoContentIsEmptyWhenBundleExtrasIsNull() {
+    Intent intent = Mockito.mock(Intent.class);
+    service.onHandleIntent(intent);
+    assertThat(service.getVideos()).isEmpty();
+  }
 
-	protected class MockMovieSearchIntentService extends
-	MovieSearchIntentService {
+  protected class MockMovieSearchIntentService extends
+      MovieSearchIntentService {
 
-		@Override
-		public void onHandleIntent(Intent intent) {
-			super.onHandleIntent(intent);
-		}
+    @Override
+    public void onHandleIntent(Intent intent) {
+      super.onHandleIntent(intent);
+    }
 
-		public List<VideoContentInfo> getVideos() {
-			return videoContentList;
-		}
-	}
+    public List<VideoContentInfo> getVideos() {
+      return videoContentList;
+    }
+  }
 
-	@Override
-	public List<Object> getModules() {
-		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(application));
-		modules.add(new TestModule());
-		return modules;
-	}
-
-	@Module(addsTo = AndroidModule.class, includes = {SerenityModule.class, TestingModule.class}, injects = {
-		MovieSearchIntentService.class, MovieSearchIntentServiceTest.class,
-		MockMovieSearchIntentService.class })
-	public class TestModule {
-
-	}
-
+  @Override public void installTestModules() {
+    scope.installTestModules(new TestingModule());
+  }
 }

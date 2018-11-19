@@ -23,14 +23,24 @@
 
 package us.nineworlds.serenity;
 
+import com.birbit.android.jobqueue.JobManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import org.mockito.Mockito;
 import org.robolectric.TestLifecycleApplication;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import toothpick.Scope;
+import toothpick.Toothpick;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
+import us.nineworlds.serenity.injection.modules.LoginModule;
+import us.nineworlds.serenity.injection.modules.SerenityModule;
+import us.nineworlds.serenity.injection.modules.VideoModule;
+
+import static org.mockito.Mockito.*;
 
 public class TestSerenityApplication extends SerenityApplication implements TestLifecycleApplication {
 
@@ -38,13 +48,13 @@ public class TestSerenityApplication extends SerenityApplication implements Test
 		super();
 	}
 
-	@Override
-	protected List<Object> createModules() {
-		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(this));
-		modules.add(new TestingModule());
-		return modules;
+	protected void inject() {
+		Scope scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE);
+		scope.installModules(new AndroidModule(this), new SerenityModule(), new LoginModule(), new VideoModule(), new TestingModule());
+		Toothpick.inject(this, scope);
+		jobManager = mock(JobManager.class);
 	}
+
 
 	@Override public void onCreate() {
 		super.onCreate();

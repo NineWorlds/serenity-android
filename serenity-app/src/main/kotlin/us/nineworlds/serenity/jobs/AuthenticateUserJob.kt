@@ -12,7 +12,7 @@ class AuthenticateUserJob(val user: SerenityUser) : InjectingJob() {
 
   @Inject lateinit var client: SerenityClient
 
-  val eventBus = EventBus.getDefault()
+  var eventBus = EventBus.getDefault()
 
   override fun onAdded() {
 

@@ -25,20 +25,13 @@ package us.nineworlds.serenity;
 
 import android.support.v4.content.LocalBroadcastManager;
 import com.birbit.android.jobqueue.JobManager;
-import dagger.Module;
-import dagger.Provides;
-import javax.inject.Singleton;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import toothpick.config.Module;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.logger.Logger;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 
-@Module(addsTo = AndroidModule.class, includes = SerenityModule.class, library = true, overrides = true, injects = {
-    TestSerenityApplication.class
-})
-public class TestingModule {
+public class TestingModule extends Module {
 
   @Mock JobManager mockJobManager;
   @Mock SerenityClient mockPlexAppFactory;
@@ -47,21 +40,9 @@ public class TestingModule {
 
   public TestingModule() {
     MockitoAnnotations.initMocks(this);
-  }
-
-  @Provides @Singleton JobManager providesJobManager() {
-    return mockJobManager;
-  }
-
-  @Provides @Singleton SerenityClient providesPlexAppFactory() {
-    return mockPlexAppFactory;
-  }
-
-  @Provides @Singleton LocalBroadcastManager providesLocalBroadcastManager() {
-    return mockLocalBroadcastManager;
-  }
-
-  @Provides @Singleton Logger providesLogger() {
-    return mockLogger;
+    bind(JobManager.class).toInstance(mockJobManager);
+    bind(SerenityClient.class).toInstance(mockPlexAppFactory);
+    bind(LocalBroadcastManager.class).toInstance(mockLocalBroadcastManager);
+    bind(Logger.class).toInstance(mockLogger);
   }
 }

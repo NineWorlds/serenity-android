@@ -32,14 +32,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import butterknife.ButterKnife;
-import dagger.Module;
-import dagger.Provides;
-import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import net.ganin.darv.DpadAwareRecyclerView;
-import org.assertj.android.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,18 +41,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import toothpick.config.Module;
 import us.nineworlds.serenity.fragments.MainMenuFragment;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
-import us.nineworlds.serenity.server.GDMReceiver;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 
 import static org.assertj.android.api.Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
@@ -105,7 +95,7 @@ public class MainActivityTest extends InjectingTest {
   }
 
   @Test public void testCreatesMenu() throws Exception {
-    assertThat((ImageView)activity.findViewById(R.id.mainGalleryBackground)).isVisible();
+    assertThat((ImageView) activity.findViewById(R.id.mainGalleryBackground)).isVisible();
   }
 
   @Test public void onKeyDownOpensMenuDrawerWhenKeycodeMenu() {
@@ -177,21 +167,14 @@ public class MainActivityTest extends InjectingTest {
     verify(spy, never()).recreate();
   }
 
-  @Override public List<Object> getModules() {
-    List<Object> modules = new ArrayList<Object>();
-    modules.add(new AndroidModule(RuntimeEnvironment.application));
-    modules.add(new TestingModule());
-    modules.add(new TestModule());
-    return modules;
+  @Override public void installTestModules() {
+    scope.installTestModules(new TestingModule(), new TestModule());
   }
 
-  @Module(addsTo = AndroidModule.class, includes = { SerenityModule.class }, overrides = true, injects = {
-      MainActivity.class, MainActivityTest.class
-  })
-  public class TestModule {
+  public class TestModule extends Module {
 
-    @Provides @Singleton SharedPreferences providesPreferences() {
-      return mockSharedPreferences;
+    public TestModule() {
+      bind(SharedPreferences.class).toInstance(mockSharedPreferences);
     }
   }
 }

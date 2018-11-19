@@ -23,17 +23,27 @@
 
 package us.nineworlds.serenity.test;
 
-import java.util.List;
+import org.junit.After;
 import org.junit.Before;
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph;
+import toothpick.Scope;
+import toothpick.Toothpick;
+import toothpick.config.Module;
+import us.nineworlds.serenity.common.annotations.InjectionConstants;
 
 public abstract class InjectingTest {
 
+  protected Scope scope;
+
   @Before public void setUp() throws Exception {
-    SerenityObjectGraph objectGraph = SerenityObjectGraph.Companion.getInstance();
-    objectGraph.createObjectGraph(getModules());
-    objectGraph.inject(this);
+    scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE);
+    installTestModules();
+    Toothpick.inject(this, scope);
   }
 
-  public abstract List<Object> getModules();
+  @After
+  public void closeScope() {
+    Toothpick.reset();
+  }
+
+  public abstract void installTestModules();
 }

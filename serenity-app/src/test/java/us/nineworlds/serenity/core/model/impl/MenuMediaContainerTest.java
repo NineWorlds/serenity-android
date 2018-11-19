@@ -23,127 +23,108 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import dagger.Module;
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.menus.MenuItem;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doReturn;
-import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
 public class MenuMediaContainerTest extends InjectingTest {
 
-	@Mock
-	MediaContainer mockMediaContainer;
+  @Mock
+  MediaContainer mockMediaContainer;
 
-	MenuMediaContainer menuMediaContainer;
+  MenuMediaContainer menuMediaContainer;
 
-	List<Directory> mockDirectories;
+  List<Directory> mockDirectories;
 
-	@Mock
-	Directory mockDirectory;
+  @Mock
+  Directory mockDirectory;
 
-	@Override
-	@Before
-	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
-		super.setUp();
-		mockDirectories = new ArrayList<Directory>();
+  @Override
+  @Before
+  public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+    super.setUp();
+    mockDirectories = new ArrayList<Directory>();
 
-		doReturn(mockDirectories).when(mockMediaContainer).getDirectories();
+    doReturn(mockDirectories).when(mockMediaContainer).getDirectories();
 
-		menuMediaContainer = new MenuMediaContainer(mockMediaContainer);
-	}
+    menuMediaContainer = new MenuMediaContainer(mockMediaContainer);
+  }
 
-	@Test
-	public void createMenuItemsDoesNotReturnNull() {
-		assertThat(menuMediaContainer.createMenuItems()).isNotNull();
-	}
+  @Test
+  public void createMenuItemsDoesNotReturnNull() {
+    assertThat(menuMediaContainer.createMenuItems()).isNotNull();
+  }
 
-	@Test
-	public void createMenuItemsReturnsOneMovieMenuItem() {
-		demandMovieMenuItem();
+  @Test
+  public void createMenuItemsReturnsOneMovieMenuItem() {
+    demandMovieMenuItem();
 
-		mockDirectories.add(mockDirectory);
+    mockDirectories.add(mockDirectory);
 
-		List<MenuItem> menuItems = menuMediaContainer.createMenuItems();
-		assertThat(menuItems).isNotEmpty().hasSize(4);
-	}
+    List<MenuItem> menuItems = menuMediaContainer.createMenuItems();
+    assertThat(menuItems).isNotEmpty().hasSize(4);
+  }
 
-	@Test
-	public void createMenuItemsReturnsSearchMenuItem() {
-		demandMovieMenuItem();
+  @Test
+  public void createMenuItemsReturnsSearchMenuItem() {
+    demandMovieMenuItem();
 
-		mockDirectories.add(mockDirectory);
+    mockDirectories.add(mockDirectory);
 
-		List<MenuItem> menuItems = menuMediaContainer.createMenuItems();
-		for (MenuItem item : menuItems) {
-			if ("search".equals(item.getType())) {
-				return;
-			}
-		}
-		fail("Did not find Search menu item");
-	}
+    List<MenuItem> menuItems = menuMediaContainer.createMenuItems();
+    for (MenuItem item : menuItems) {
+      if ("search".equals(item.getType())) {
+        return;
+      }
+    }
+    fail("Did not find Search menu item");
+  }
 
-	@Test
-	public void createMenuItemsReturnsSettingsMenuItem() {
-		List<MenuItem> menuItems = menuMediaContainer.createMenuItems();
-		for (MenuItem item : menuItems) {
-			if ("settings".equals(item.getType())) {
-				return;
-			}
-		}
-		fail("Did not find Settings menu item");
-	}
+  @Test
+  public void createMenuItemsReturnsSettingsMenuItem() {
+    List<MenuItem> menuItems = menuMediaContainer.createMenuItems();
+    for (MenuItem item : menuItems) {
+      if ("settings".equals(item.getType())) {
+        return;
+      }
+    }
+    fail("Did not find Settings menu item");
+  }
 
-	@Test
-	public void createMenuItemsReturnsOptionsMenuItem() {
-		List<MenuItem> menuItems = menuMediaContainer.createMenuItems();
-		for (MenuItem item : menuItems) {
-			if ("options".equals(item.getType())) {
-				return;
-			}
-		}
-		fail("Did not find Options menu item");
-	}
+  @Test
+  public void createMenuItemsReturnsOptionsMenuItem() {
+    List<MenuItem> menuItems = menuMediaContainer.createMenuItems();
+    for (MenuItem item : menuItems) {
+      if ("options".equals(item.getType())) {
+        return;
+      }
+    }
+    fail("Did not find Options menu item");
+  }
 
-	private void demandMovieMenuItem() {
-		doReturn("movie").when(mockDirectory).getType();
-		doReturn("title").when(mockDirectory).getTitle();
-		doReturn("1").when(mockDirectory).getKey();
-	}
+  private void demandMovieMenuItem() {
+    doReturn("movie").when(mockDirectory).getType();
+    doReturn("title").when(mockDirectory).getTitle();
+    doReturn("1").when(mockDirectory).getKey();
+  }
 
-	@Override
-	public List<Object> getModules() {
-		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(application));
-		modules.add(new TestModule());
-		return modules;
-	}
-
-	@Module(includes = {SerenityModule.class, TestingModule.class}, addsTo = AndroidModule.class, injects = {
-			MenuMediaContainer.class, MenuMediaContainerTest.class })
-	public class TestModule {
-
-	}
-
+  @Override public void installTestModules() {
+    scope.installTestModules(new TestingModule());
+  }
 }

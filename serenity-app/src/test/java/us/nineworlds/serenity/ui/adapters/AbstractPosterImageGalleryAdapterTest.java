@@ -27,7 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-
+import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,114 +35,90 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import dagger.Module;
-import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(qualifiers = "large")
 public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
-	AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter;
-	AppCompatActivity activity;
+  AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter;
+  AppCompatActivity activity;
 
-	@Override
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		Robolectric.getBackgroundThreadScheduler().pause();
-		Robolectric.getForegroundThreadScheduler().pause();
+  @Override
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    Robolectric.getBackgroundThreadScheduler().pause();
+    Robolectric.getForegroundThreadScheduler().pause();
 
-		activity = Robolectric.buildActivity(MainActivity.class).create().get();
-		abstractPosterImageGalleryAdapter = new FakePosterImageGalleryAdapter();
-	}
+    activity = Robolectric.buildActivity(MainActivity.class).create().get();
+    abstractPosterImageGalleryAdapter = new FakePosterImageGalleryAdapter();
+  }
 
-	@After
-	public void tearDown() {
-		if (activity != null) {
-			activity.finish();
-		}
-	}
+  @After
+  public void tearDown() {
+    if (activity != null) {
+      activity.finish();
+    }
+  }
 
-	@Test
-	public void getItemReturnsExpectedInstance() {
-		assertThat(abstractPosterImageGalleryAdapter.getItem(0)).isInstanceOf(
-				MoviePosterInfo.class);
-	}
+  @Test
+  public void getItemReturnsExpectedInstance() {
+    assertThat(abstractPosterImageGalleryAdapter.getItem(0)).isInstanceOf(
+        MoviePosterInfo.class);
+  }
 
-	@Test
-	public void itemIdReturnsExpectedValueOfZero() {
-		assertThat(abstractPosterImageGalleryAdapter.getItemId(0)).isEqualTo(0);
-	}
+  @Test
+  public void itemIdReturnsExpectedValueOfZero() {
+    assertThat(abstractPosterImageGalleryAdapter.getItemId(0)).isEqualTo(0);
+  }
 
-	@Test
-	public void getItemsReturnsANonEmptyListOfItems() {
-		assertThat(abstractPosterImageGalleryAdapter.getItems()).isNotEmpty();
-	}
+  @Test
+  public void getItemsReturnsANonEmptyListOfItems() {
+    assertThat(abstractPosterImageGalleryAdapter.getItems()).isNotEmpty();
+  }
 
-	public class FakePosterImageGalleryAdapter extends
-	AbstractPosterImageGalleryAdapter {
+  public class FakePosterImageGalleryAdapter extends
+      AbstractPosterImageGalleryAdapter {
 
-		public FakePosterImageGalleryAdapter() {
-			super();
+    public FakePosterImageGalleryAdapter() {
+      super();
 
-			posterList = new ArrayList<>();
-			VideoContentInfo videoContentInfo = new MoviePosterInfo();
-			posterList.add(videoContentInfo);
-		}
+      posterList = new ArrayList<>();
+      VideoContentInfo videoContentInfo = new MoviePosterInfo();
+      posterList.add(videoContentInfo);
+    }
 
-		public View getView(int position, View convertView, ViewGroup parent) {
-			return null;
-		}
+    public View getView(int position, View convertView, ViewGroup parent) {
+      return null;
+    }
 
-		@Override
-		public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-			return null;
-		}
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      return null;
+    }
 
-		@Override
-		public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-		}
+    }
 
-		public void onItemViewClick(View view, int i) {
+    public void onItemViewClick(View view, int i) {
 
-		}
+    }
 
-		public void onItemViewFocusChanged(boolean b, View view, int i) {
+    public void onItemViewFocusChanged(boolean b, View view, int i) {
 
-		}
-	}
+    }
+  }
 
-	@Override
-	public List<Object> getModules() {
-		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(application));
-		modules.add(new TestingModule());
-		modules.add(new TestModule());
-		return modules;
-	}
-
-	@Module(addsTo = AndroidModule.class,
-			includes = SerenityModule.class, injects = {
-			AbstractPosterImageGalleryAdapterTest.class,
-			FakePosterImageGalleryAdapter.class,
-			AbstractPosterImageGalleryAdapter.class })
-	public class TestModule {
-
-	}
-
+  @Override public void installTestModules() {
+    scope.installTestModules(new TestingModule());
+  }
 }

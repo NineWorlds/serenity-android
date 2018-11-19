@@ -26,13 +26,7 @@ package us.nineworlds.serenity.ui.browser.movie;
 import android.content.SharedPreferences;
 import android.view.View;
 import app.com.tvrecyclerview.TvRecyclerView;
-import dagger.Module;
-import dagger.Provides;
-import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.ganin.darv.DpadAwareRecyclerView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,14 +35,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
-import us.nineworlds.serenity.BuildConfig;
+import toothpick.config.Module;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
@@ -56,7 +47,6 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.robolectric.RuntimeEnvironment.application;
 import static org.robolectric.Shadows.shadowOf;
@@ -118,22 +108,14 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
     verify(mockPlexFactory).createImageURL(expectedBackgroundUrl, 1280, 720);
   }
 
-  @Override public List<Object> getModules() {
-    List<Object> modules = new ArrayList<Object>();
-    modules.add(new AndroidModule(application));
-    modules.add(new TestingModule());
-    modules.add(new TestModule());
-
-    return modules;
+  @Override public void installTestModules() {
+    scope.installTestModules(new TestingModule(), new TestModule());
   }
 
-  @Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-      MovieGridPosterOnItemSelectedListener.class, MovieGridPosterOnItemSelectedListenerTest.class
-  })
-  public class TestModule {
+  public class TestModule extends Module {
 
-    @Provides @Singleton SharedPreferences providesSharedPreferences() {
-      return mockPreferences;
+    public TestModule() {
+      bind(SharedPreferences.class).toInstance(mockPreferences);
     }
   }
 }

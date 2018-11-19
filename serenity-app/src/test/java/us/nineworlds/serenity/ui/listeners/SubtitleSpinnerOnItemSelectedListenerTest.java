@@ -27,26 +27,14 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
-import us.nineworlds.serenity.BuildConfig;
+import toothpick.config.Module;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.mockito.Matchers.anyBoolean;
@@ -56,132 +44,121 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.robolectric.RuntimeEnvironment.application;
 
 // UnitTestCodeMash2015
 
 @RunWith(RobolectricTestRunner.class)
 public class SubtitleSpinnerOnItemSelectedListenerTest extends InjectingTest {
 
-	@Mock
-	SharedPreferences mockSharedPreferences;
+  @Mock
+  SharedPreferences mockSharedPreferences;
 
-	@Mock
-	MoviePosterInfo mockVideoContentInfo;
+  @Mock
+  MoviePosterInfo mockVideoContentInfo;
 
-	SubtitleSpinnerOnItemSelectedListener subtitleSpinnerOnItemSelectedListener;
+  SubtitleSpinnerOnItemSelectedListener subtitleSpinnerOnItemSelectedListener;
 
-	@Mock
-	AdapterView mockAdapterView;
+  @Mock
+  AdapterView mockAdapterView;
 
-	@Mock
-	View mockView;
+  @Mock
+  View mockView;
 
-	@Mock
-	Subtitle mockSubtitle;
+  @Mock
+  Subtitle mockSubtitle;
 
-	@Mock
-	ArrayAdapter mockAdapter;
+  @Mock
+  ArrayAdapter mockAdapter;
 
-	@Override
-	@Before
-	public void setUp() throws Exception {
-		initMocks(this);
-		super.setUp();
-		subtitleSpinnerOnItemSelectedListener = new SubtitleSpinnerOnItemSelectedListener(
-				mockVideoContentInfo);
-	}
+  @Override
+  @Before
+  public void setUp() throws Exception {
+    initMocks(this);
+    super.setUp();
+    subtitleSpinnerOnItemSelectedListener = new SubtitleSpinnerOnItemSelectedListener(
+        mockVideoContentInfo);
+  }
 
-	@Test
-	public void onItemSelectedReturnsExistingSubtitleIfNotFirstSelection() {
-		subtitleSpinnerOnItemSelectedListener.setFirstSelection(false);
-		doReturn(mockSubtitle).when(mockAdapterView)
-				.getItemAtPosition(anyInt());
+  @Test
+  public void onItemSelectedReturnsExistingSubtitleIfNotFirstSelection() {
+    subtitleSpinnerOnItemSelectedListener.setFirstSelection(false);
+    doReturn(mockSubtitle).when(mockAdapterView)
+        .getItemAtPosition(anyInt());
 
-		subtitleSpinnerOnItemSelectedListener.onItemSelected(mockAdapterView,
-				mockView, 0, 0);
+    subtitleSpinnerOnItemSelectedListener.onItemSelected(mockAdapterView,
+        mockView, 0, 0);
 
-		verify(mockVideoContentInfo).setSubtitle(mockSubtitle);
-		verify(mockAdapterView).getItemAtPosition(0);
-	}
+    verify(mockVideoContentInfo).setSubtitle(mockSubtitle);
+    verify(mockAdapterView).getItemAtPosition(0);
+  }
 
-	@Test
-	public void onItemSelectedFirstTimeChecksForAutomaticSubtitleSelection() {
-		subtitleSpinnerOnItemSelectedListener.setFirstSelection(true);
-		doReturn(false).when(mockSharedPreferences).getBoolean(anyString(),
-				anyBoolean());
+  @Test
+  public void onItemSelectedFirstTimeChecksForAutomaticSubtitleSelection() {
+    subtitleSpinnerOnItemSelectedListener.setFirstSelection(true);
+    doReturn(false).when(mockSharedPreferences).getBoolean(anyString(),
+        anyBoolean());
 
-		subtitleSpinnerOnItemSelectedListener.onItemSelected(mockAdapterView,
-				mockView, 0, 0);
+    subtitleSpinnerOnItemSelectedListener.onItemSelected(mockAdapterView,
+        mockView, 0, 0);
 
-		verify(mockSharedPreferences).getBoolean(
-				"automatic_subtitle_selection", false);
-	}
+    verify(mockSharedPreferences).getBoolean(
+        "automatic_subtitle_selection", false);
+  }
 
-	@Test
-	public void onItemSelectedFirstTimeGetsDefaultLanuageWhenAutomaticSubtitleSelectionIsTrue() {
-		subtitleSpinnerOnItemSelectedListener.setFirstSelection(true);
-		doReturn(true).when(mockSharedPreferences).getBoolean(
-				eq("automatic_subtitle_selection"), anyBoolean());
-		doReturn("en-us").when(mockSharedPreferences).getString(
-				eq("preferred_subtitle_language"), anyString());
-		doReturn(mockAdapter).when(mockAdapterView).getAdapter();
-		doReturn(0).when(mockAdapter).getCount();
+  @Test
+  public void onItemSelectedFirstTimeGetsDefaultLanuageWhenAutomaticSubtitleSelectionIsTrue() {
+    subtitleSpinnerOnItemSelectedListener.setFirstSelection(true);
+    doReturn(true).when(mockSharedPreferences).getBoolean(
+        eq("automatic_subtitle_selection"), anyBoolean());
+    doReturn("en-us").when(mockSharedPreferences).getString(
+        eq("preferred_subtitle_language"), anyString());
+    doReturn(mockAdapter).when(mockAdapterView).getAdapter();
+    doReturn(0).when(mockAdapter).getCount();
 
-		subtitleSpinnerOnItemSelectedListener.onItemSelected(mockAdapterView,
-				mockView, 0, 0);
+    subtitleSpinnerOnItemSelectedListener.onItemSelected(mockAdapterView,
+        mockView, 0, 0);
 
-		verify(mockSharedPreferences).getBoolean(
-				"automatic_subtitle_selection", false);
-		verify(mockSharedPreferences).getString("preferred_subtitle_language",
-				"");
-	}
+    verify(mockSharedPreferences).getBoolean(
+        "automatic_subtitle_selection", false);
+    verify(mockSharedPreferences).getString("preferred_subtitle_language",
+        "");
+  }
 
-	@Test
-	public void onItemSelectedFirstTimeSetsDefaultLanguageSubtitle() {
-		subtitleSpinnerOnItemSelectedListener.setFirstSelection(true);
-		doReturn(true).when(mockSharedPreferences).getBoolean(
-				eq("automatic_subtitle_selection"), anyBoolean());
-		doReturn("en-us").when(mockSharedPreferences).getString(
-				eq("preferred_subtitle_language"), anyString());
+  @Test
+  public void onItemSelectedFirstTimeSetsDefaultLanguageSubtitle() {
+    subtitleSpinnerOnItemSelectedListener.setFirstSelection(true);
+    doReturn(true).when(mockSharedPreferences).getBoolean(
+        eq("automatic_subtitle_selection"), anyBoolean());
+    doReturn("en-us").when(mockSharedPreferences).getString(
+        eq("preferred_subtitle_language"), anyString());
 
-		doReturn(mockAdapter).when(mockAdapterView).getAdapter();
-		doReturn(mockSubtitle).when(mockAdapterView)
-				.getItemAtPosition(anyInt());
+    doReturn(mockAdapter).when(mockAdapterView).getAdapter();
+    doReturn(mockSubtitle).when(mockAdapterView)
+        .getItemAtPosition(anyInt());
 
-		doReturn(1).when(mockAdapter).getCount();
-		doReturn("en-us").when(mockSubtitle).getLanguageCode();
+    doReturn(1).when(mockAdapter).getCount();
+    doReturn("en-us").when(mockSubtitle).getLanguageCode();
 
-		subtitleSpinnerOnItemSelectedListener.onItemSelected(mockAdapterView,
-				mockView, 0, 0);
+    subtitleSpinnerOnItemSelectedListener.onItemSelected(mockAdapterView,
+        mockView, 0, 0);
 
-		verify(mockSharedPreferences).getBoolean(
-				"automatic_subtitle_selection", false);
-		verify(mockSharedPreferences).getString("preferred_subtitle_language",
-				"");
-		verify(mockAdapterView).setSelection(0);
-		verify(mockSubtitle).getLanguageCode();
-		verify(mockVideoContentInfo).setSubtitle(mockSubtitle);
-	}
+    verify(mockSharedPreferences).getBoolean(
+        "automatic_subtitle_selection", false);
+    verify(mockSharedPreferences).getString("preferred_subtitle_language",
+        "");
+    verify(mockAdapterView).setSelection(0);
+    verify(mockSubtitle).getLanguageCode();
+    verify(mockVideoContentInfo).setSubtitle(mockSubtitle);
+  }
 
-	@Override
-	public List<Object> getModules() {
-		List<Object> modules = new ArrayList<Object>();
-		modules.add(new AndroidModule(application));
-		modules.add(new TestModule());
-		return modules;
-	}
+  @Override public void installTestModules() {
+    scope.installTestModules(new TestModule());
+  }
 
-	@Module(includes = SerenityModule.class, addsTo = AndroidModule.class, injects = {
-			SubtitleSpinnerOnItemSelectedListenerTest.class,
-			SubtitleSpinnerOnItemSelectedListener.class }, overrides = true)
-	public class TestModule {
+  public class TestModule extends Module {
 
-		@Provides
-		@Singleton
-		SharedPreferences providesSharedPreferences() {
-			return mockSharedPreferences;
-		}
-	}
-
+    public TestModule() {
+      bind(SharedPreferences.class).toInstance(mockSharedPreferences);
+    }
+  }
 }

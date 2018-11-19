@@ -8,8 +8,6 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.nhaarman.mockito_kotlin.whenever
-import dagger.Module
-import dagger.Provides
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Before
@@ -18,25 +16,16 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.any
-import org.mockito.Mockito.doNothing
-import org.mockito.Mockito.doReturn
-import org.mockito.Mockito.never
-import org.mockito.Mockito.spy
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations.initMocks
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import org.mockito.quality.Strictness.LENIENT
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment.application
 import org.robolectric.annotation.Config
-import us.nineworlds.serenity.BuildConfig
+import toothpick.config.Module
 import us.nineworlds.serenity.TestingModule
-import us.nineworlds.serenity.injection.modules.AndroidModule
-import us.nineworlds.serenity.injection.modules.SerenityModule
-import us.nineworlds.serenity.injection.modules.VideoModule
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.test.ShadowSubtitleView
 
@@ -48,8 +37,10 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   @JvmField
   var mockitoRule: MockitoRule = MockitoJUnit.rule().strictness(LENIENT)
 
-  @Mock lateinit var mockExoPlayerPresenter: ExoplayerPresenter
-  @Mock lateinit var mockPlayer: SimpleExoPlayer
+  @Mock
+  lateinit var mockExoPlayerPresenter: ExoplayerPresenter
+  @Mock
+  lateinit var mockPlayer: SimpleExoPlayer
 
   lateinit var activity: ExoplayerVideoActivity
 
@@ -58,7 +49,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   override fun setUp() {
     initMocks(this)
     super.setUp()
-    activity = Robolectric.buildActivity(ExoplayerVideoActivity::class.java).create().get();
+    activity = Robolectric.buildActivity(ExoplayerVideoActivity::class.java).create().get()
   }
 
   @Test
@@ -75,26 +66,11 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
 
   @Test
   @Config(sdk = intArrayOf(24))
-  fun onStartCallsPresenterPlayBackFromVideoQueueWhenOnAPI19OrHigher() {
-    activity.onStart()
-
-    verify(mockExoPlayerPresenter).playBackFromVideoQueue()
-  }
-
-  @Test
   fun onResumeCallsPlayBackFromVideoQueue() {
+    activity.presenter = mockExoPlayerPresenter
     activity.onResume()
 
     verify(mockExoPlayerPresenter).playBackFromVideoQueue()
-  }
-
-  @Test
-  @Config(sdk = intArrayOf(24))
-  fun onResumeDoesNotCallsPlayBackFromVideoQueue() {
-    activity.player = mockPlayer
-    activity.onResume()
-
-    verify(mockExoPlayerPresenter, never()).playBackFromVideoQueue()
   }
 
   @Test
@@ -182,18 +158,14 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     assertThat(activity.createSimpleExoplayer()).isNotNull()
   }
 
-  override fun getModules(): MutableList<Any> =
-      mutableListOf(AndroidModule(application),
-          SerenityModule(), VideoModule(),
-          TestModule(), TestingModule())
+  override fun installTestModules() {
+    scope.installTestModules(TestingModule(), TestModule())
+  }
 
-  @Module(library = true,
-      includes = arrayOf(AndroidModule::class),
-      overrides = true,
-      injects = arrayOf(ExoplayerVideoActivityTest::class, ExoplayerVideoActivity::class))
-  inner class TestModule {
+  inner class TestModule : Module() {
 
-    @Provides
-    fun providesExoPlayerPresenter(): ExoplayerPresenter = mockExoPlayerPresenter
+    init {
+      bind(ExoplayerContract.ExoplayerPresenter::class.java).toInstance(mockExoPlayerPresenter)
+    }
   }
 }

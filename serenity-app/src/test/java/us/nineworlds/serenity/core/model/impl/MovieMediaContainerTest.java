@@ -23,12 +23,9 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-import dagger.Module;
-import dagger.Provides;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Singleton;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,21 +33,17 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+import toothpick.config.Module;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Video;
-import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
-import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
 public class MovieMediaContainerTest extends InjectingTest {
@@ -99,11 +92,8 @@ public class MovieMediaContainerTest extends InjectingTest {
     assertThat(videoContentInfo.getDirectPlayUrl()).isNotNull().isNotEmpty();
   }
 
-  @Override public List<Object> getModules() {
-    List<Object> modules = new ArrayList<Object>();
-    modules.add(new AndroidModule(application));
-    modules.add(new TestModule());
-    return modules;
+  @Override public void installTestModules() {
+    scope.installTestModules(new TestModule());
   }
 
   protected MediaContainer createTestVideos() throws Exception {
@@ -115,13 +105,10 @@ public class MovieMediaContainerTest extends InjectingTest {
     return mediaContainer;
   }
 
-  @Module(includes = SerenityModule.class, addsTo = AndroidModule.class, overrides = true, injects = {
-      MovieMediaContainerTest.class, MovieMediaContainer.class
-  })
-  public class TestModule {
+  public class TestModule extends Module {
 
-    @Provides @Singleton SerenityClient providesPlexFactory() {
-      return mockFactory;
+    public TestModule() {
+      bind(SerenityClient.class).toInstance(mockFactory);
     }
   }
 }

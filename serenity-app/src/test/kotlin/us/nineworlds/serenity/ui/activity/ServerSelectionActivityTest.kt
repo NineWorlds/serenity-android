@@ -3,7 +3,6 @@ package us.nineworlds.serenity.ui.activity
 import android.widget.TextView
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.whenever
-import dagger.Module
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -15,13 +14,10 @@ import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.Server
-import us.nineworlds.serenity.injection.modules.AndroidModule
-import us.nineworlds.serenity.injection.modules.SerenityModule
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.ui.activity.login.LoginUserActivity
 import java.util.*
@@ -117,17 +113,7 @@ class ServerSelectionActivityTest : InjectingTest() {
     Assertions.assertThat(shadowActivity.nextStartedActivity).hasComponent(activity, LoginUserActivity::class.java)
   }
 
-
-  override fun getModules(): MutableList<Any> = mutableListOf(AndroidModule(RuntimeEnvironment.application),
-      TestModule())
-
-  @Module(
-      includes = arrayOf(SerenityModule::class, TestingModule::class),
-      injects = arrayOf(ServerSelectionActivityTest::class),
-      overrides = true,
-      library = true)
-  inner class TestModule {
-
+  override fun installTestModules() {
+    scope.installTestModules(TestingModule())
   }
-
 }

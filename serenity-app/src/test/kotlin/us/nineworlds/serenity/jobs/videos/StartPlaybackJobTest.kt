@@ -3,7 +3,6 @@ package us.nineworlds.serenity.jobs.videos
 import com.nhaarman.mockito_kotlin.doNothing
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import dagger.Module
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.Before
 import org.junit.Rule
@@ -13,11 +12,8 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
-import us.nineworlds.serenity.injection.modules.AndroidModule
-import us.nineworlds.serenity.injection.modules.SerenityModule
 import us.nineworlds.serenity.jobs.video.StartPlaybackJob
 import us.nineworlds.serenity.test.InjectingTest
 import javax.inject.Inject
@@ -25,7 +21,9 @@ import javax.inject.Inject
 @RunWith(RobolectricTestRunner::class)
 class StartPlaybackJobTest : InjectingTest() {
 
-  @Rule @JvmField public val rule = MockitoJUnit.rule().strictness(STRICT_STUBS)
+  @Rule
+  @JvmField
+  public val rule = MockitoJUnit.rule().strictness(STRICT_STUBS)
 
   @Inject
   lateinit var mockClient: SerenityClient
@@ -48,12 +46,8 @@ class StartPlaybackJobTest : InjectingTest() {
     verify(mockClient).startPlaying(expectedVideoId)
   }
 
-  override fun getModules(): MutableList<Any> = mutableListOf(AndroidModule(RuntimeEnvironment.application),
-      TestModule())
+  override fun installTestModules() {
+    scope.installTestModules(TestingModule())
+  }
 
-  @Module(injects = arrayOf(StartPlaybackJobTest::class),
-      includes = arrayOf(SerenityModule::class, TestingModule::class),
-      library = true,
-      overrides = true)
-  inner class TestModule
 }

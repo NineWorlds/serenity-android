@@ -40,7 +40,9 @@ import org.simpleframework.xml.core.Persister;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
+import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 
@@ -51,13 +53,14 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
  * 
  */
 @RunWith(RobolectricTestRunner.class)
-public class GridSubtitleVolleyResponseListenerTest {
+public class GridSubtitleVolleyResponseListenerTest extends InjectingTest {
 
 	Serializer serializer;
 	SerenityDrawerLayoutActivity movieBrowserActivity;
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 		serializer = new Persister();
 		Robolectric.getBackgroundThreadScheduler().pause();
 		Robolectric.getForegroundThreadScheduler().pause();
@@ -112,4 +115,7 @@ public class GridSubtitleVolleyResponseListenerTest {
 		assertThat(video.getAvailableSubtitles()).isNullOrEmpty();
 	}
 
+	@Override public void installTestModules() {
+		scope.installTestModules(new TestingModule());
+	}
 }

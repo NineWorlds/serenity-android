@@ -5,8 +5,6 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import dagger.Module
-import dagger.Provides
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before
 import org.junit.Rule
@@ -16,23 +14,21 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.events.users.AllUsersEvent
-import us.nineworlds.serenity.injection.modules.AndroidModule
-import us.nineworlds.serenity.injection.modules.SerenityModule
 import us.nineworlds.serenity.jobs.RetrieveAllUsersJob
 import us.nineworlds.serenity.test.InjectingTest
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @RunWith(RobolectricTestRunner::class)
 class LoginUserPresenterTest : InjectingTest() {
 
-  @Rule @JvmField val rule = MockitoJUnit.rule().strictness(STRICT_STUBS)
+  @Rule
+  @JvmField
+  val rule = MockitoJUnit.rule().strictness(STRICT_STUBS)
 
   @Mock
   lateinit var mockEventBus: EventBus
@@ -58,6 +54,7 @@ class LoginUserPresenterTest : InjectingTest() {
   override fun setUp() {
     super.setUp()
     presenter = LoginUserPresenter()
+    presenter.eventBus = mockEventBus
   }
 
   @Test
@@ -100,15 +97,9 @@ class LoginUserPresenterTest : InjectingTest() {
     verify(mockView).displayUsers(expectedUsers)
   }
 
-  override fun getModules(): MutableList<Any> = mutableListOf(AndroidModule(RuntimeEnvironment.application),
-      TestModule())
-
-  @Module(includes = arrayOf(TestingModule::class, SerenityModule::class),
-      library = true,
-      overrides = true,
-      injects = arrayOf(LoginUserPresenterTest::class))
-  inner class TestModule {
-
-    @Provides @Singleton fun providesEventBus(): EventBus = mockEventBus
+  override fun installTestModules() {
+    scope.installTestModules(TestingModule())
   }
+
+
 }

@@ -39,21 +39,28 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowPackageManager;
 
 import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.TestingModule;
+import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.RuntimeEnvironment.application;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-public class OnDeckRecommendationsTest {
+public class OnDeckRecommendationsTest extends InjectingTest {
 
 	private static final String ANDROID_SOFTWARE_LEANBACK = "android.software.leanback";
 	private static final String ANDROID_HARDWARE_TYPE_TELEVISION = "android.hardware.type.television";
 	private OnDeckRecommendations onDeckRecommendations;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
+		super.setUp();
 		onDeckRecommendations = new OnDeckRecommendations(application);
+	}
+
+	@Override public void installTestModules() {
+		scope.installTestModules(new TestingModule());
 	}
 
 	@After

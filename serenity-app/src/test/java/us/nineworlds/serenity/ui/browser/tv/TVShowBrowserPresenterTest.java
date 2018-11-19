@@ -1,11 +1,7 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import com.birbit.android.jobqueue.JobManager;
-import dagger.Module;
-import dagger.Provides;
-import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Singleton;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.junit.After;
@@ -15,15 +11,13 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
+import toothpick.config.Module;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
-import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.events.TVCategoryEvent;
 import us.nineworlds.serenity.events.TVCategorySecondaryEvent;
 import us.nineworlds.serenity.events.TVShowRetrievalEvent;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
-import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.jobs.TVCategoryJob;
 import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
 import us.nineworlds.serenity.test.InjectingTest;
@@ -34,7 +28,6 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
 public class TVShowBrowserPresenterTest extends InjectingTest {
@@ -50,9 +43,10 @@ public class TVShowBrowserPresenterTest extends InjectingTest {
   TVShowBrowserPresenter presenter;
 
   @Before public void setUp() throws Exception {
-    super.setUp();
     initMocks(this);
+    super.setUp();
     presenter = new TVShowBrowserPresenter();
+    presenter.eventBus = mockEventBus;
     presenter.attachView(mockView);
   }
 
@@ -128,28 +122,15 @@ public class TVShowBrowserPresenterTest extends InjectingTest {
     verify(mockView).populateSecondaryCategories(argument.capture(), eq(expectedCategory));
   }
 
-  @Override public List<Object> getModules() {
-    List<Object> modules = new ArrayList<Object>();
-    modules.add(new AndroidModule(application));
-    modules.add(new TestModule());
-    return modules;
+  @Override public void installTestModules() {
+    scope.installTestModules(new TestingModule(), new TestModule());
   }
 
-  @Module(addsTo = AndroidModule.class, includes = SerenityModule.class, overrides = true, injects = {
-      TVShowBrowserPresenter.class, TVShowBrowserPresenterTest.class
-  })
-  public class TestModule {
+  public class TestModule extends Module {
 
-    @Provides @Singleton JobManager providesJobManager() {
-      return mockJobManager;
-    }
-
-    @Provides @Singleton EventBus providesEventBus() {
-      return mockEventBus;
-    }
-
-    @Provides @Singleton SerenityClient providesSerenityClient() {
-      return mockSerenityClient;
+    public TestModule() {
+      bind(JobManager.class).toInstance(mockJobManager);
+      bind(SerenityClient.class).toInstance(mockSerenityClient);
     }
   }
 }

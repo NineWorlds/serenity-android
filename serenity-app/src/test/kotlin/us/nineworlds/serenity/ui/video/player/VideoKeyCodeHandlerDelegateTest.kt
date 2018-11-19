@@ -3,8 +3,6 @@ package us.nineworlds.serenity.ui.video.player
 import android.content.SharedPreferences
 import android.view.KeyEvent
 import com.google.android.exoplayer2.SimpleExoPlayer
-import dagger.Module
-import dagger.Provides
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.After
 import org.junit.Before
@@ -20,20 +18,12 @@ import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations.initMocks
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment.application
-import org.robolectric.annotation.Config
-import us.nineworlds.serenity.BuildConfig
+import toothpick.config.Module
 import us.nineworlds.serenity.TestingModule
-import us.nineworlds.serenity.injection.modules.AndroidModule
-import us.nineworlds.serenity.injection.modules.SerenityModule
 import us.nineworlds.serenity.test.InjectingTest
-import javax.inject.Singleton
 
 @RunWith(RobolectricTestRunner::class)
 class VideoKeyCodeHandlerDelegateTest : InjectingTest() {
-
-  override fun getModules(): MutableList<Any> = mutableListOf(AndroidModule(application), TestingModule(),
-      SerenityModule(), TestModule())
 
   @Mock
   internal lateinit var mockPreferences: SharedPreferences
@@ -456,16 +446,15 @@ class VideoKeyCodeHandlerDelegateTest : InjectingTest() {
     assertThat(result).isTrue()
   }
 
-  @Module(includes = arrayOf(SerenityModule::class), addsTo = AndroidModule::class, overrides = true,
-      injects = arrayOf(VideoKeyCodeHandlerDelegateTest::class, VideoKeyCodeHandlerDelegate::class))
-  inner class TestModule {
+  override fun installTestModules() {
+    scope.installTestModules(TestingModule(), TestModule())
+  }
 
-    @Provides
-    @Singleton
-    internal fun providesSharedPreferences(): SharedPreferences? {
-      return mockPreferences
+  inner class TestModule : Module() {
+
+    init {
+      bind(SharedPreferences::class.java).toInstance(mockPreferences)
     }
-
   }
 
 }
