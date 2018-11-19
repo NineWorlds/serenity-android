@@ -8,15 +8,16 @@ import org.robolectric.annotation.Resetter;
 
 /**
  * A shadow of SQLiteConnection that does absolutely nothing.
- * <a href="https://github.com/robolectric/robolectric/issues/1510">github.com/robolectric/robolectric/issues/1510</a>
- * <a href="https://github.com/robolectric/robolectric/issues/1986">github.com/robolectric/robolectric/issues/1986</a>
  */
 @Implements(value = android.database.sqlite.SQLiteConnection.class, isInAndroidSdk = false)
 public class DoNothingShadowSQLiteConnection {
 
   public DoNothingShadowSQLiteConnection() {
   }
-  @Implementation public static SQLiteConnection open() { return new SQLiteConnection();}
+
+  @Implementation public static SQLiteConnection open() {
+    return new SQLiteConnection();
+  }
 
   @Implementation public static long nativeOpen(String path, int openFlags, String label, boolean enableTrace, boolean enableProfile) {
     return 0;
@@ -92,8 +93,7 @@ public class DoNothingShadowSQLiteConnection {
     return -0;
   }
 
-  @Implementation
-  public static long nativeExecuteForCursorWindow(
+  @Implementation public static long nativeExecuteForCursorWindow(
       final long connectionPtr, final long statementPtr, final long windowPtr, int startPos, int requiredPos, boolean countAllRows) {
     return -0;
   }
