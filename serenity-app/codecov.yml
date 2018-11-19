@@ -9,3 +9,6 @@ ignore:
   - **/net/ganin/darv/**/*.class
   - **/*ViewStateProvider.class
   - **/*PresentersBinder.class
+  - **/events/**/*.class
+  - **/model/impl/*.class
+  - **/injection/**/*.class
