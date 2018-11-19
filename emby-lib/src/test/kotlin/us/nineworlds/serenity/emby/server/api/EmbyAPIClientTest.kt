@@ -42,7 +42,7 @@ class EmbyAPIClientTest {
   }
 
   @Test fun testCurrentUsersViews() {
-    val authenticate = authenticate()
+    authenticate()
 
     val result = client.currentUserViews()
     assertThat(result.items).isNotEmpty

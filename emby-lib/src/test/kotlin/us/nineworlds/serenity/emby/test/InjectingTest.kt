@@ -1,16 +1,23 @@
 package us.nineworlds.serenity.emby.test
 
 import org.junit.Before
-import us.nineworlds.serenity.common.injection.SerenityObjectGraph
+import toothpick.Scope
+import toothpick.Toothpick
+import us.nineworlds.serenity.common.annotations.InjectionConstants
 
 abstract class InjectingTest {
 
-  @Before @Throws(Exception::class)
+  lateinit var scope: Scope
+
+  @Before
+  @Throws(Exception::class)
   open fun setUp() {
-    val objectGraph = SerenityObjectGraph.instance
-    objectGraph.createObjectGraph(modules)
-    objectGraph.inject(this)
+    scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE)
+    installModules()
+    Toothpick.inject(this, scope)
   }
+
+  abstract fun installModules()
 
   abstract val modules: List<Any>
 }
