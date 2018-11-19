@@ -31,15 +31,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 import java.util.LinkedList;
-import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.externalplayer.ExternalPlayer;
 import us.nineworlds.serenity.core.externalplayer.ExternalPlayerFactory;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
-import us.nineworlds.serenity.injection.BaseInjector;
-import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.video.player.ExoplayerVideoActivity;
 
 public class VideoPlayerIntentUtils {
@@ -62,7 +59,7 @@ public class VideoPlayerIntentUtils {
 
     String externalPlayerValue = prefs.getString("serenity_external_player_filter", "default");
 
-    if (!videoQueue.isEmpty() || "default".equals(externalPlayerValue)) {
+    if (!videoQueue.isEmpty() && "default".equals(externalPlayerValue)) {
       videoContent.setResumeOffset(0);
       launchPlayer(videoContent, activity);
       return;
