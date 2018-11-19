@@ -6,7 +6,11 @@ import android.net.Uri
 import android.os.Build.VERSION_CODES
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
+import com.google.android.exoplayer2.trackselection.TrackSelector
+import com.google.android.exoplayer2.upstream.DataSource
+import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Java6Assertions.assertThat
@@ -39,6 +43,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
 
   @Mock
   lateinit var mockExoPlayerPresenter: ExoplayerPresenter
+
   @Mock
   lateinit var mockPlayer: SimpleExoPlayer
 
@@ -50,6 +55,10 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     initMocks(this)
     super.setUp()
     activity = Robolectric.buildActivity(ExoplayerVideoActivity::class.java).create().get()
+    activity.player = mockPlayer
+    activity.mediaDataSourceFactory = mock<DataSource.Factory>()
+    activity.trackSelector = mock<MappingTrackSelector>()
+
   }
 
   @Test
@@ -62,15 +71,6 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     activity.onStart()
 
     verify(mockExoPlayerPresenter, never()).playBackFromVideoQueue()
-  }
-
-  @Test
-  @Config(sdk = intArrayOf(24))
-  fun onResumeCallsPlayBackFromVideoQueue() {
-    activity.presenter = mockExoPlayerPresenter
-    activity.onResume()
-
-    verify(mockExoPlayerPresenter).playBackFromVideoQueue()
   }
 
   @Test
