@@ -27,7 +27,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import com.birbit.android.jobqueue.JobManager;
@@ -46,7 +45,6 @@ import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.core.util.StringPreference;
 import us.nineworlds.serenity.emby.server.api.EmbyAPIClient;
 import us.nineworlds.serenity.injection.ServerClientPreference;
-import us.nineworlds.serenity.injection.VideoPlayerHandler;
 import us.nineworlds.serenity.injection.modules.providers.DataSourceFactoryProvider;
 
 public class AndroidModule extends Module {
@@ -64,22 +62,28 @@ public class AndroidModule extends Module {
     bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(applicationContext));
     bind(AndroidHelper.class).toInstance(new AndroidHelper(applicationContext));
     bind(Resources.class).toInstance(application.getResources());
-    bind(JobManager.class).toInstance(providesJobManager());
+    bind(JobManager.class).toProvider(JobManagerProvider.class).providesSingletonInScope();
     bind(LocalBroadcastManager.class).toInstance(providesLocalBroadcastManager());
     bind(DataSource.Factory.class).toProvider(DataSourceFactoryProvider.class);
   }
 
-  private JobManager providesJobManager() {
-    Configuration configuration = new Configuration.Builder(applicationContext).minConsumerCount(1)
-        .maxConsumerCount(5)
-        .loadFactor(3)
-        .consumerKeepAlive(120)
-        .build();
-    return new JobManager(configuration);
-  }
 
   private LocalBroadcastManager providesLocalBroadcastManager() {
     return LocalBroadcastManager.getInstance(applicationContext);
+  }
+
+  public static class JobManagerProvider implements Provider<JobManager> {
+
+    @Inject @ApplicationContext Context context;
+
+    @Override public JobManager get() {
+        Configuration configuration = new Configuration.Builder(context).minConsumerCount(1)
+            .maxConsumerCount(5)
+            .loadFactor(3)
+            .consumerKeepAlive(120)
+            .build();
+        return new JobManager(configuration);
+    }
   }
 
   public static class EventBusProvider implements Provider<EventBus> {

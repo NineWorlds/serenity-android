@@ -23,24 +23,24 @@
 
 package us.nineworlds.serenity;
 
+import android.content.SharedPreferences;
+import android.support.v4.content.LocalBroadcastManager;
 import com.birbit.android.jobqueue.JobManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import org.mockito.Mockito;
-import org.robolectric.TestLifecycleApplication;
-
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
+import org.greenrobot.eventbus.EventBus;
+import org.robolectric.TestLifecycleApplication;
 import toothpick.Scope;
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
+import us.nineworlds.serenity.core.logger.Logger;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.LoginModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
 import us.nineworlds.serenity.injection.modules.VideoModule;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 public class TestSerenityApplication extends SerenityApplication implements TestLifecycleApplication {
 
@@ -50,9 +50,13 @@ public class TestSerenityApplication extends SerenityApplication implements Test
 
 	protected void inject() {
 		Scope scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE);
-		scope.installModules(new AndroidModule(this), new SerenityModule(), new LoginModule(), new VideoModule(), new TestingModule());
-		Toothpick.inject(this, scope);
+		scope.installModules(new AndroidModule(this), new SerenityModule(), new LoginModule(), new VideoModule() );
 		jobManager = mock(JobManager.class);
+		androidHelper = mock(AndroidHelper.class);
+		preferences = scope.getInstance(SharedPreferences.class);
+		localBroadcastManager = scope.getInstance(LocalBroadcastManager.class);
+		logger = mock(Logger.class);
+		eventBus = mock(EventBus.class);
 	}
 
 
