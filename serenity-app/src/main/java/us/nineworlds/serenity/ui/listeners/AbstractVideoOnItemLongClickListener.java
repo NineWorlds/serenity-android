@@ -149,7 +149,7 @@ public abstract class AbstractVideoOnItemLongClickListener extends BaseInjector 
     if (info.isPartiallyWatched() || info.isUnwatched()) {
       final float percentWatched = info.viewedPercentage();
       if (percentWatched <= 0.90f) {
-        ImageInfographicUtils.setWatchedCount(vciv, context, info);
+        ImageInfographicUtils.Companion.setWatchedCount(vciv, context, info);
         ImageView view = posterLayout.findViewById(R.id.posterWatchedIndicator);
         view.setImageResource(R.drawable.overlaywatched);
         view.setVisibility(View.VISIBLE);
@@ -157,7 +157,7 @@ public abstract class AbstractVideoOnItemLongClickListener extends BaseInjector 
       }
     }
 
-    ImageInfographicUtils.setUnwatched(vciv, context, info);
+    ImageInfographicUtils.Companion.setUnwatched(vciv, context, info);
     posterLayout.findViewById(R.id.posterWatchedIndicator).setVisibility(View.INVISIBLE);
   }
 
