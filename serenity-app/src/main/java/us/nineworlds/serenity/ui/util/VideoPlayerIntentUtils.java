@@ -59,7 +59,7 @@ public class VideoPlayerIntentUtils {
 
     String externalPlayerValue = prefs.getString("serenity_external_player_filter", "default");
 
-    if (!videoQueue.isEmpty() && "default".equals(externalPlayerValue)) {
+    if ("default".equals(externalPlayerValue)) {
       videoContent.setResumeOffset(0);
       launchPlayer(videoContent, activity);
       return;
