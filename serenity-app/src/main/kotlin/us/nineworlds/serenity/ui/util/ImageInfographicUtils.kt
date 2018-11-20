@@ -45,9 +45,6 @@ import us.nineworlds.serenity.injection.BaseInjector
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener
 import javax.inject.Inject
 
-/**
- * @author dcarver
- */
 class ImageInfographicUtils(private val width: Int, private val height: Int) : BaseInjector() {
 
   @Inject lateinit var factory: SerenityClient
