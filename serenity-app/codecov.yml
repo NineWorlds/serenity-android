@@ -12,3 +12,5 @@ ignore:
   - **/events/**/*.class
   - **/model/impl/*.class
   - **/injection/**/*.class
+  - **/*MemberInject.*
+

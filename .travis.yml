@@ -28,7 +28,7 @@ before_install:
    - pip install --user codecov
 
 script:
-   - travis_wait 40 ./gradlew clean plex-rest-library:jacocoTestReport jacocoTestReportDebug
+   - travis_wait 40 ./gradlew clean jacocoTestReport
    
 after_success:
   - codecov
