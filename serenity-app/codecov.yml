@@ -14,5 +14,8 @@ ignore:
   - **/injection/**/*.class
   - **/*MemberInject.*
   - **/*$$Factory*.*
+  - **/*..State*.*
+  - **/*_ViewBinding*.*
+
 
 
