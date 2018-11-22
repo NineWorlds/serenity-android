@@ -51,7 +51,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
 
   @Inject lateinit var timeUtil: TimeUtil
 
-  fun createAudioCodecImage(codec: String, context: Context): ImageView? {
+  fun createAudioCodecImage(codec: String?, context: Context): ImageView? {
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
     val w = ImageUtils.getDPI(width, v.context as Activity)
@@ -82,26 +82,33 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     return v
   }
 
-  fun createVideoResolutionImage(res: String, context: Context): ImageView? {
+  fun createVideoResolutionImage(res: String?, context: Context): ImageView? {
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
     val w = ImageUtils.getDPI(width, v.context as Activity)
     val h = ImageUtils.getDPI(height, v.context as Activity)
     v.layoutParams = LayoutParams(w, h)
 
-    when (res.toLowerCase()) {
-      "sd", "480" -> v.setImageResource(R.drawable.res480)
-      "576" -> v.setImageResource(R.drawable.res576)
-      "720" -> v.setImageResource(R.drawable.res720)
-      "1080" -> v.setImageResource(R.drawable.res1080)
-      "hd" -> v.setImageResource(R.drawable.hd)
-      else -> return null
+    if (res != null) {
+      when (res.toLowerCase()) {
+        "sd", "480" -> v.setImageResource(R.drawable.res480)
+        "576" -> v.setImageResource(R.drawable.res576)
+        "720" -> v.setImageResource(R.drawable.res720)
+        "1080" -> v.setImageResource(R.drawable.res1080)
+        "hd" -> v.setImageResource(R.drawable.hd)
+        else -> return null
+      }
+    } else {
+      return null
     }
 
     return v
   }
 
-  fun createAspectRatioImage(ratio: String, context: Context): ImageView? {
+  fun createAspectRatioImage(ratio: String?, context: Context): ImageView? {
+    if (ratio == null) {
+      return null;
+    }
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
     val w = ImageUtils.getDPI(width, v.context as Activity)
@@ -121,7 +128,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     return v
   }
 
-  fun createContentRatingImage(contentRating: String, context: Context): ImageView {
+  fun createContentRatingImage(contentRating: String?, context: Context): ImageView {
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
     val w = ImageUtils.getDPI(width, v.context as Activity)
@@ -140,7 +147,10 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     return v
   }
 
-  fun createVideoCodec(codec: String, context: Context): ImageView? {
+  fun createVideoCodec(codec: String?, context: Context): ImageView? {
+    if (codec == null) {
+      return null
+    }
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
     val w = ImageUtils.getDPI(width, v.context as Activity)
@@ -161,7 +171,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     return v
   }
 
-  fun createTVContentRating(contentRating: String, context: Context): ImageView {
+  fun createTVContentRating(contentRating: String?, context: Context): ImageView {
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
     val w = ImageUtils.getDPI(width, v.context as Activity)
@@ -181,7 +191,10 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     return v
   }
 
-  fun createAudioChannlesImage(channels: String, context: Context): ImageView? {
+  fun createAudioChannlesImage(channels: String?, context: Context): ImageView? {
+    if (channels == null) {
+      return null
+    }
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
     val w = ImageUtils.getDPI(width, v.context as Activity)
