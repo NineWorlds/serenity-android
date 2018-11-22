@@ -141,10 +141,11 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   }
 
   override fun initializePlayer(videoUrl: String, offset: Int) {
-    log.debug("Plex Direct Play URL: " + videoUrl)
+    log.debug("Direct Play URL: " + videoUrl)
     player = createSimpleExoplayer()
     player.addListener(presenter)
     if (offset > 0) {
+      log.debug("Resume offset: $offset")
       player.seekTo(offset.toLong())
     }
 
@@ -198,6 +199,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   }
 
   override fun playbackEnded() {
+    releasePlayer()
     finish()
   }
 
