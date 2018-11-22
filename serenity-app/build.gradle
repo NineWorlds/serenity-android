@@ -288,7 +288,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
     html.enabled = true
   }
 
-  def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/*MemberInjector.*']
+  def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/*MemberInjector.*', '**/*$$Factory*.*']
   def mainSrc = "${project.projectDir}/src/main/java"
   def kotlinSrc = "${project.projectDir}/src/main/kotlin"
 

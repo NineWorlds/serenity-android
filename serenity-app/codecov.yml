@@ -13,4 +13,6 @@ ignore:
   - **/model/impl/*.class
   - **/injection/**/*.class
   - **/*MemberInject.*
+  - **/*$$Factory*.*
+
 
