@@ -75,22 +75,6 @@ class ExoplayerPresenterTest : InjectingTest() {
   }
 
   @Test
-  fun onPlayerStateChangedPlaysVideoWhenTrue() {
-    presenter.onPlayerStateChanged(true, 0)
-
-    verify(mockView).play()
-    verify(mockView, never()).pause()
-  }
-
-  @Test
-  fun onPlayerStateChangedPausesVideoWhenFalse() {
-    presenter.onPlayerStateChanged(false, 0)
-
-    verify(mockView).pause()
-    verify(mockView, never()).play()
-  }
-
-  @Test
   fun updateWatchedStatusAddsJobToJobmanager() {
     val expectedId = RandomStringUtils.randomNumeric(5)
     var videoContentInfo = MoviePosterInfo()
