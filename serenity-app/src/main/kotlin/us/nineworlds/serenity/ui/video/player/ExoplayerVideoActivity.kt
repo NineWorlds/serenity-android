@@ -14,18 +14,17 @@ import butterknife.ButterKnife.bind
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.annotations.OpenForTesting
 import us.nineworlds.serenity.core.logger.Logger
-import us.nineworlds.serenity.injection.VideoPlayerHandler
 import us.nineworlds.serenity.ui.activity.SerenityActivity
 import us.nineworlds.serenity.ui.util.DisplayUtils.overscanCompensation
 import javax.inject.Inject
@@ -123,6 +122,12 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   }
 
   override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+    if (keyCode == KeyEvent.KEYCODE_HOME) {
+      pauseAndReleaseVideo();
+      finish()
+      return true
+    }
+
     if (videoKeyHandler!!.onKeyDown(keyCode, event)) {
       return true
     }
@@ -170,6 +175,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
 
   internal fun releasePlayer() {
+    player.clearVideoSurface()
     player.release()
   }
 
@@ -202,6 +208,19 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   override fun playbackEnded() {
     releasePlayer()
     finish()
+  }
+
+  override fun onBackPressed() {
+    pauseAndReleaseVideo()
+    super.onBackPressed()
+  }
+
+  private fun pauseAndReleaseVideo() {
+    if (player.playbackState == Player.STATE_READY ||
+        player.playbackState == Player.STATE_BUFFERING) {
+      pause()
+      releasePlayer()
+    }
   }
 
   protected inner class ProgressRunnable : Runnable {

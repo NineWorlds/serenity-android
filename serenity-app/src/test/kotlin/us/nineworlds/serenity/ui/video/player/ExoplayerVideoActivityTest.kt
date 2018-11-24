@@ -4,6 +4,8 @@ import android.annotation.TargetApi
 import android.content.Intent
 import android.net.Uri
 import android.os.Build.VERSION_CODES
+import android.view.KeyEvent
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
@@ -157,6 +159,49 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     assertThat(activity.createSimpleExoplayer()).isNotNull()
   }
 
+  @Test
+  fun onBackPressedStopsAndReleasesVideoPlayer() {
+    activity.player = mockPlayer
+    activity.presenter = mockExoPlayerPresenter
+    doReturn(Player.STATE_READY).whenever(mockPlayer).playbackState
+
+    activity.onBackPressed()
+
+    verify(mockPlayer).playWhenReady = false
+    verify(mockExoPlayerPresenter).stopPlaying()
+    verify(mockPlayer).clearVideoSurface()
+    verify(mockPlayer).release()
+  }
+
+  @Test
+  fun onBackPressedStopsAndReleasesVideoPlayerWhenBuffering() {
+    activity.player = mockPlayer
+    activity.presenter = mockExoPlayerPresenter
+    doReturn(Player.STATE_BUFFERING).whenever(mockPlayer).playbackState
+
+    activity.onBackPressed()
+
+    verify(mockPlayer).playWhenReady = false
+    verify(mockExoPlayerPresenter).stopPlaying()
+    verify(mockPlayer).clearVideoSurface()
+    verify(mockPlayer).release()
+  }
+
+  @Test
+  fun onKeyCodeDownHandlesHomeEvent() {
+    activity.player = mockPlayer
+    activity.presenter = mockExoPlayerPresenter
+    doReturn(Player.STATE_BUFFERING).whenever(mockPlayer).playbackState
+
+    val result = activity.onKeyDown(KeyEvent.KEYCODE_HOME, null)
+
+    assertThat(result).isTrue()
+    verify(mockPlayer).playWhenReady = false
+    verify(mockExoPlayerPresenter).stopPlaying()
+    verify(mockPlayer).clearVideoSurface()
+    verify(mockPlayer).release()
+  }
+
   override fun installTestModules() {
     scope.installTestModules(TestingModule(), TestModule())
   }
@@ -164,7 +209,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   inner class TestModule : Module() {
 
     init {
-      bind(ExoplayerContract.ExoplayerPresenter::class.java).toInstance(mockExoPlayerPresenter)
+      bind(ExoplayerPresenter::class.java).toInstance(mockExoPlayerPresenter)
     }
   }
 }
