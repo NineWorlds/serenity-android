@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import us.nineworlds.serenity.R
@@ -51,7 +52,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   lateinit var log: Logger
 
   @BindView(R.id.player_view)
-  internal lateinit var playerView: SimpleExoPlayerView
+  internal lateinit var playerView: PlayerView
 
   @BindView(R.id.data_loading_container)
   internal lateinit var dataLoadingContainer: FrameLayout
