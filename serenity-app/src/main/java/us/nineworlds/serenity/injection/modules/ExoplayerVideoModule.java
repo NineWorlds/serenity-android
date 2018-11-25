@@ -15,9 +15,9 @@ import us.nineworlds.serenity.injection.modules.providers.HttpDataSourceFactoryP
 import us.nineworlds.serenity.ui.video.player.EventLogger;
 import us.nineworlds.serenity.ui.video.player.ExoplayerPresenter;
 
-public class VideoModule extends Module {
+public class ExoplayerVideoModule extends Module {
 
-  public VideoModule() {
+  public ExoplayerVideoModule() {
     super();
     bind(DefaultBandwidthMeter.class).toInstance(new DefaultBandwidthMeter());
     bind(HttpDataSource.Factory.class).toProvider(HttpDataSourceFactoryProvider.class);

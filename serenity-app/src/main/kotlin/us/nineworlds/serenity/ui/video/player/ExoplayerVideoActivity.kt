@@ -28,7 +28,7 @@ import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.annotations.OpenForTesting
 import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.injection.AppInjectionConstants
-import us.nineworlds.serenity.injection.modules.VideoModule
+import us.nineworlds.serenity.injection.modules.ExoplayerVideoModule
 import us.nineworlds.serenity.ui.activity.SerenityActivity
 import us.nineworlds.serenity.ui.util.DisplayUtils.overscanCompensation
 import javax.inject.Inject
@@ -79,7 +79,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   override fun inject() {
     scope = Toothpick.openScopes(InjectionConstants.APPLICATION_SCOPE, AppInjectionConstants.EXOPLAYER_SCOPE)
-    scope.installModules(VideoModule())
+    scope.installModules(ExoplayerVideoModule())
     Toothpick.inject(this, scope)
   }
 
