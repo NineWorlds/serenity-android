@@ -64,7 +64,6 @@ public class AndroidModule extends Module {
     bind(Resources.class).toInstance(application.getResources());
     bind(JobManager.class).toProvider(JobManagerProvider.class).providesSingletonInScope();
     bind(LocalBroadcastManager.class).toInstance(providesLocalBroadcastManager());
-    bind(DataSource.Factory.class).toProvider(DataSourceFactoryProvider.class);
   }
 
 

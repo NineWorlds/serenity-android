@@ -2,10 +2,13 @@ package us.nineworlds.serenity.injection.modules;
 
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
+import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
+import javax.inject.Provider;
 import toothpick.config.Module;
 import us.nineworlds.serenity.injection.modules.providers.AdaptiveTrackSelectionFactoryProvider;
+import us.nineworlds.serenity.injection.modules.providers.DataSourceFactoryProvider;
 import us.nineworlds.serenity.injection.modules.providers.DefaultMappingTrackSelectorProvider;
 import us.nineworlds.serenity.injection.modules.providers.EventLoggerProvider;
 import us.nineworlds.serenity.injection.modules.providers.HttpDataSourceFactoryProvider;
@@ -21,6 +24,14 @@ public class VideoModule extends Module {
     bind(AdaptiveTrackSelection.Factory.class).toProvider(AdaptiveTrackSelectionFactoryProvider.class);
     bind(MappingTrackSelector.class).toProvider(DefaultMappingTrackSelectorProvider.class);
     bind(EventLogger.class).toProvider(EventLoggerProvider.class);
-    bind(ExoplayerPresenter.class).toInstance(new ExoplayerPresenter());
+    bind(ExoplayerPresenter.class).to(ExoplayerPresenter.class);
+    bind(DataSource.Factory.class).toProvider(DataSourceFactoryProvider.class);
+  }
+
+  public static class DefaultBandWidthMeterProvider implements Provider<DefaultBandwidthMeter> {
+
+    @Override public DefaultBandwidthMeter get() {
+      return new DefaultBandwidthMeter();
+    }
   }
 }

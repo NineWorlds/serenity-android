@@ -29,8 +29,13 @@ import org.mockito.quality.Strictness.LENIENT
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import toothpick.Scope
+import toothpick.Toothpick
 import toothpick.config.Module
 import us.nineworlds.serenity.TestingModule
+import us.nineworlds.serenity.common.annotations.InjectionConstants
+import us.nineworlds.serenity.injection.AppInjectionConstants
+import us.nineworlds.serenity.injection.modules.VideoModule
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.test.ShadowSubtitleView
 
@@ -49,6 +54,12 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   lateinit var mockPlayer: SimpleExoPlayer
 
   lateinit var activity: ExoplayerVideoActivity
+
+  override fun openScope(): Scope {
+    val scope = Toothpick.openScopes(InjectionConstants.APPLICATION_SCOPE, AppInjectionConstants.EXOPLAYER_SCOPE)
+    scope.installModules(VideoModule())
+    return scope
+  }
 
   @TargetApi(VERSION_CODES.KITKAT)
   @Before

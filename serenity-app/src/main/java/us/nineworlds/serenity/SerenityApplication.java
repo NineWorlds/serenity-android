@@ -95,7 +95,7 @@ public class SerenityApplication extends Application {
   protected void inject() {
 
     Scope scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE);
-    scope.installModules(new AndroidModule(this), new SerenityModule(), new LoginModule(), new VideoModule());
+    scope.installModules(new AndroidModule(this), new SerenityModule(), new LoginModule());
     Toothpick.inject(this, scope);
   }
 

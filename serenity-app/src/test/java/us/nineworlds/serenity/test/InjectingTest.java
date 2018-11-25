@@ -35,9 +35,13 @@ public abstract class InjectingTest {
   protected Scope scope;
 
   @Before public void setUp() throws Exception {
-    scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE);
+    scope = openScope();
     installTestModules();
     Toothpick.inject(this, scope);
+  }
+
+  protected Scope openScope() {
+    return Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE);
   }
 
   @After
