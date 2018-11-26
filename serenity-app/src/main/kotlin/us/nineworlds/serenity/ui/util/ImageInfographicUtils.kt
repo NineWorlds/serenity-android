@@ -83,23 +83,23 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
   }
 
   fun createVideoResolutionImage(res: String?, context: Context): ImageView? {
+    if (res == null) {
+      return null
+    }
+
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
     val w = ImageUtils.getDPI(width, v.context as Activity)
     val h = ImageUtils.getDPI(height, v.context as Activity)
     v.layoutParams = LayoutParams(w, h)
 
-    if (res != null) {
-      when (res.toLowerCase()) {
-        "sd", "480" -> v.setImageResource(R.drawable.res480)
-        "576" -> v.setImageResource(R.drawable.res576)
-        "720" -> v.setImageResource(R.drawable.res720)
-        "1080" -> v.setImageResource(R.drawable.res1080)
-        "hd" -> v.setImageResource(R.drawable.hd)
-        else -> return null
-      }
-    } else {
-      return null
+    when (res.toLowerCase()) {
+      "sd", "480" -> v.setImageResource(R.drawable.res480)
+      "576" -> v.setImageResource(R.drawable.res576)
+      "720" -> v.setImageResource(R.drawable.res720)
+      "1080" -> v.setImageResource(R.drawable.res1080)
+      "hd" -> v.setImageResource(R.drawable.hd)
+      else -> return null
     }
 
     return v
