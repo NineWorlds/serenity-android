@@ -407,7 +407,5 @@ class ImageInfographicUtilsTest : InjectingTest() {
     val view = imageInfographicUtils.createAudioChannlesImage(null, context)
     assertThat(view).isNull()
   }
-
   
-
 }
