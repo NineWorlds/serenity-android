@@ -97,18 +97,6 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
       viewState.playbackEnded()
       return
     }
-
-    if (Player.STATE_BUFFERING == playbackState) {
-      viewState.showLoadingProgress()
-    } else {
-      viewState.hideLoadingProgress()
-    }
-
-    if (playWhenReady) {
-      viewState.play()
-    } else {
-      viewState.pause()
-    }
   }
 
   override fun onLoadingChanged(isLoading: Boolean) {

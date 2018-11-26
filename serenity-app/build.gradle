@@ -10,7 +10,8 @@ buildscript {
   }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
-    classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.12.0'
+    //classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.12.0'
+    classpath "org.jacoco:org.jacoco.core:0.8.2"
   }
 }
 
@@ -33,7 +34,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: "kotlin-kapt"
 apply plugin: "kotlin-allopen"
-apply plugin: 'com.vanniktech.android.junit.jacoco'
+//apply plugin: 'com.vanniktech.android.junit.jacoco'
+apply plugin: "jacoco"
 apply plugin: 'org.sonarqube'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
@@ -103,7 +105,7 @@ android {
   buildTypes {
     debug {
       minifyEnabled false
-      testCoverageEnabled false
+      testCoverageEnabled true
     }
     release {
       if (project.hasProperty("keystore")) {
@@ -155,14 +157,14 @@ afterEvaluate {
   }
 }
 
-junitJacoco {
-  jacocoVersion = "0.7.2.201409121644" // type String
-  excludes = ["**/*_ViewBinding.class", "**/*InjectAdapter.class", "android/support/**/*.class",
-              "com/google/**/*.class", "com/birbit/**/*.class", "butterknife/**/*.class",
-              "com/arellomobile/**/*.class", "net/ganin/darv/**/*.class", "**/*ViewStateProvider.class",
-              "**/*PresentersBinder.class",
-              "us/nineworlds/serenity/R.*.class"]
-}
+//junitJacoco {
+//  jacocoVersion = "0.7.2.201409121644" // type String
+//  excludes = ["**/*_ViewBinding.class", "**/*InjectAdapter.class", "android/support/**/*.class",
+//              "com/google/**/*.class", "com/birbit/**/*.class", "butterknife/**/*.class",
+//              "com/arellomobile/**/*.class", "net/ganin/darv/**/*.class", "**/*ViewStateProvider.class",
+//              "**/*PresentersBinder.class",
+//              "us/nineworlds/serenity/R.*.class"]
+//}
 
 dependencies {
 
@@ -271,3 +273,37 @@ dependencies {
 
 com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
 
+jacoco {
+  toolVersion = "0.8.2"
+}
+
+tasks.withType(Test) {
+  jacoco.includeNoLocationClasses = true
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+
+  reports {
+    xml.enabled = true
+    html.enabled = true
+  }
+
+  def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/*MemberInjector.*',
+                    '**/*$$Factory*.*', '**/*..State*.*', '**/*_ViewBinding*.*']
+  def mainSrc = "${project.projectDir}/src/main/java"
+  def kotlinSrc = "${project.projectDir}/src/main/kotlin"
+
+  classDirectories = fileTree(
+          dir: "$buildDir/intermediates/classes/debug",
+          excludes: fileFilter) + fileTree(
+          dir: "$buildDir/tmp/kotlin-classes/debug",
+          excludes: fileFilter)
+
+  // sources
+  sourceDirectories = files([
+          mainSrc,
+          kotlinSrc
+  ])
+
+  executionData = files("${buildDir}/jacoco/testDebugUnitTest.exec")
+}

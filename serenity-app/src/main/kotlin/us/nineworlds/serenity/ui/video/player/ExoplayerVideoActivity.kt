@@ -14,17 +14,21 @@ import butterknife.ButterKnife.bind
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
+import toothpick.Toothpick
 import us.nineworlds.serenity.R
+import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.annotations.OpenForTesting
 import us.nineworlds.serenity.core.logger.Logger
-import us.nineworlds.serenity.injection.VideoPlayerHandler
+import us.nineworlds.serenity.injection.AppInjectionConstants
+import us.nineworlds.serenity.injection.modules.ExoplayerVideoModule
 import us.nineworlds.serenity.ui.activity.SerenityActivity
 import us.nineworlds.serenity.ui.util.DisplayUtils.overscanCompensation
 import javax.inject.Inject
@@ -35,8 +39,6 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   @Inject
   lateinit var mediaDataSourceFactory: DataSource.Factory
-
-  val videoPlayerHandler = Handler()
 
   @Inject
   lateinit var trackSelector: MappingTrackSelector
@@ -51,12 +53,14 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   lateinit var log: Logger
 
   @BindView(R.id.player_view)
-  internal lateinit var playerView: SimpleExoPlayerView
+  internal lateinit var playerView: PlayerView
 
   @BindView(R.id.data_loading_container)
   internal lateinit var dataLoadingContainer: FrameLayout
 
   lateinit var player: SimpleExoPlayer
+
+  val videoPlayerHandler = Handler()
 
   private val progressReportinghandler = Handler()
   private val progressRunnable = ProgressRunnable()
@@ -71,6 +75,12 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   override fun createSideMenu() {
     // Do Nothing as a side menu isn't needed in this activity
+  }
+
+  override fun inject() {
+    scope = Toothpick.openScopes(InjectionConstants.APPLICATION_SCOPE, AppInjectionConstants.EXOPLAYER_SCOPE)
+    scope.installModules(ExoplayerVideoModule())
+    Toothpick.inject(this, scope)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,6 +107,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   public override fun onPause() {
     super.onPause()
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+      pause()
       releasePlayer()
       progressReportinghandler.removeCallbacks(progressRunnable)
     }
@@ -105,6 +116,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   public override fun onStop() {
     super.onStop()
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+      pause()
       releasePlayer()
       progressReportinghandler.removeCallbacks(progressRunnable)
     }
@@ -113,6 +125,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   override fun finish() {
     setExitResultCodeFinished()
     progressReportinghandler.removeCallbacks(progressRunnable)
+    Toothpick.closeScope(scope)
     super.finish()
   }
 
@@ -122,6 +135,12 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   }
 
   override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+    if (keyCode == KeyEvent.KEYCODE_HOME) {
+      pauseAndReleaseVideo()
+      finish()
+      return true
+    }
+
     if (videoKeyHandler!!.onKeyDown(keyCode, event)) {
       return true
     }
@@ -141,12 +160,9 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   }
 
   override fun initializePlayer(videoUrl: String, offset: Int) {
-    log.debug("Plex Direct Play URL: " + videoUrl)
+    log.debug("Direct Play URL: " + videoUrl)
     player = createSimpleExoplayer()
     player.addListener(presenter)
-    if (offset > 0) {
-      player.seekTo(offset.toLong())
-    }
 
     playerView.player = player
     playerView.setControllerVisibilityListener(presenter)
@@ -154,10 +170,16 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     playerView.player.playWhenReady = true
 
     val mediaSource: MediaSource = buildMediaSource(Uri.parse(videoUrl))
-    player.prepare(mediaSource)
+
 
     videoKeyHandler = VideoKeyCodeHandlerDelegate(player, this, presenter)
     progressReportinghandler.postDelayed(progressRunnable, PROGRESS_UPDATE_DELAY.toLong())
+
+    if (offset > 0) {
+      player.seekTo(offset.toLong())
+    }
+    player.prepare(mediaSource, offset <= 0, false)
+
   }
 
   internal fun createSimpleExoplayer() = ExoPlayerFactory.newSimpleInstance(this, trackSelector)
@@ -168,6 +190,8 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
 
   internal fun releasePlayer() {
+    player.stop()
+    player.clearVideoSurface()
     player.release()
   }
 
@@ -198,7 +222,21 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   }
 
   override fun playbackEnded() {
+    releasePlayer()
     finish()
+  }
+
+  override fun onBackPressed() {
+    pauseAndReleaseVideo()
+    super.onBackPressed()
+  }
+
+  private fun pauseAndReleaseVideo() {
+    if (player.playbackState == Player.STATE_READY ||
+        player.playbackState == Player.STATE_BUFFERING) {
+      pause()
+      releasePlayer()
+    }
   }
 
   protected inner class ProgressRunnable : Runnable {

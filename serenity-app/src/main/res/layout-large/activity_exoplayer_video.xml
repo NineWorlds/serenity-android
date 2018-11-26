@@ -7,26 +7,21 @@
     android:background="@android:color/black"
     android:keepScreenOn="true">
 
-  <FrameLayout
+
+  <com.google.android.exoplayer2.ui.PlayerView
+      android:id="@+id/player_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:paddingStart="@dimen/overscan_start_padding"
-      android:paddingEnd="@dimen/overscan_end_padding"
-      android:paddingBottom="@dimen/overscan_bottom_padding">
+      app:rewind_increment="10000"
+      app:fastforward_increment="30000"
+      app:show_buffering="true"
+      />
 
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/player_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:rewind_increment="300000"
-        app:fastforward_increment="300000"
-        />
-
-  </FrameLayout>
 
   <include layout="@layout/include_loading_progress"
       android:layout_width="150dp"
       android:layout_height="150dp"
-      android:layout_gravity="center"/>
+      android:layout_gravity="center"
+      android:visibility="gone"/>
 
 </FrameLayout>

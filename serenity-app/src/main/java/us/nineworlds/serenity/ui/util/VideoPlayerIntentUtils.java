@@ -146,7 +146,7 @@ public class VideoPlayerIntentUtils {
       return;
     }
 
-    launchInternalPlayer(videoInfo, activity, autoResume);
+    launchInternalPlayer(videoInfo, activity, true);
   }
 
   /**

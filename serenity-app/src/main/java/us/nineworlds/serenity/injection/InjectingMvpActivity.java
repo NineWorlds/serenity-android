@@ -24,13 +24,22 @@
 package us.nineworlds.serenity.injection;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
+import toothpick.Scope;
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 
 public abstract class InjectingMvpActivity extends MvpAppCompatActivity {
 
+  protected Scope scope;
+
   public InjectingMvpActivity() {
     super();
-    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
+    inject();
   }
+
+  public void inject() {
+    scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE);
+    Toothpick.inject(this, scope);
+  }
+
 }

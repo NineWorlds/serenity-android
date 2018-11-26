@@ -12,3 +12,10 @@ ignore:
   - **/events/**/*.class
   - **/model/impl/*.class
   - **/injection/**/*.class
+  - **/*MemberInject.*
+  - **/*$$Factory*.*
+  - **/*..State*.*
+  - **/*_ViewBinding*.*
+
+
+

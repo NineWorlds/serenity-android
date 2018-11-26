@@ -38,7 +38,7 @@ import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.LoginModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
-import us.nineworlds.serenity.injection.modules.VideoModule;
+import us.nineworlds.serenity.injection.modules.ExoplayerVideoModule;
 
 import static org.mockito.Mockito.mock;
 
@@ -50,7 +50,7 @@ public class TestSerenityApplication extends SerenityApplication implements Test
 
 	protected void inject() {
 		Scope scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE);
-		scope.installModules(new AndroidModule(this), new SerenityModule(), new LoginModule(), new VideoModule() );
+		scope.installModules(new AndroidModule(this), new SerenityModule(), new LoginModule(), new ExoplayerVideoModule() );
 		jobManager = mock(JobManager.class);
 		androidHelper = mock(AndroidHelper.class);
 		preferences = scope.getInstance(SharedPreferences.class);
