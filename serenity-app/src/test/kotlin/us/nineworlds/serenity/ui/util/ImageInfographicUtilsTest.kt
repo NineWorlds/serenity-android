@@ -32,7 +32,7 @@ class ImageInfographicUtilsTest : InjectingTest() {
   override fun installTestModules() {
     scope.installTestModules(TestingModule())
   }
-
+R
   @Test fun createAudioCodecImageSetsAACDrawable() {
     val view = imageInfographicUtils.createAudioCodecImage("aac", context)
     val shadowDrawable = shadowOf(view!!.drawable)
