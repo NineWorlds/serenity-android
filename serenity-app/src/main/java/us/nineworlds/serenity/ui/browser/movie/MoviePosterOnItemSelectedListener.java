@@ -35,7 +35,6 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue.RequestFilter;
 import com.bumptech.glide.Glide;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -82,6 +81,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 
     ImageView crv = imageUtilsNormal.createContentRatingImage(videoInfo.getContentRating(), context);
     Drawable drawable = crv.getDrawable();
+
     BitmapDrawable bmd = (BitmapDrawable) drawable;
 
     int w = ImageUtils.getDPI(100, (Activity) v.getContext());
