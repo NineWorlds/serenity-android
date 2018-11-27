@@ -213,8 +213,8 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     return v
   }
 
-  fun createStudioImage(studio: String?, context: Context, identifier: String): ImageView? {
-    if (studio == null) {
+  fun createStudioImage(studio: String?, context: Context, identifier: String?): ImageView? {
+    if (studio == null || identifier == null) {
       return null
     }
 
