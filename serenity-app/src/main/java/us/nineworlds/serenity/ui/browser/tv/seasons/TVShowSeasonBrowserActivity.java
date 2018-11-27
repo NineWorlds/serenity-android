@@ -236,9 +236,12 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
 
     postDelayed.postDelayed(() -> {
       dataLoadingContainer.setVisibility(View.GONE);
-      tvShowSeasonsGallery.getChildAt(0).requestFocus();
-      adapter.getOnItemSelectedListener().onItemSelected(tvShowSeasonsGallery.getChildAt(0), 0);
-    }, 500);
+      View childView = tvShowSeasonsGallery.getChildAt(0);
+      if (childView != null) {
+        tvShowSeasonsGallery.getChildAt(0).requestFocus();
+        adapter.getOnItemSelectedListener().onItemSelected(tvShowSeasonsGallery.getChildAt(0), 0);
+      }
+    }, 750);
   }
 
   @Override public void fetchEpisodes(String key) {
