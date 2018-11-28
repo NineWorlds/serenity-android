@@ -10,7 +10,6 @@ buildscript {
   }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
-    //classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.12.0'
     classpath "org.jacoco:org.jacoco.core:0.8.2"
   }
 }
@@ -34,7 +33,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: "kotlin-kapt"
 apply plugin: "kotlin-allopen"
-//apply plugin: 'com.vanniktech.android.junit.jacoco'
 apply plugin: "jacoco"
 apply plugin: 'org.sonarqube'
 apply plugin: 'com.google.gms.google-services'
@@ -59,8 +57,8 @@ allOpen {
 
 android {
   defaultConfig {
-    versionCode 2010000
-    versionName "2.1.0"
+    versionCode 2000012
+    versionName "2.0.2"
 
     minSdkVersion 21
     targetSdkVersion 28
@@ -156,15 +154,6 @@ afterEvaluate {
     }
   }
 }
-
-//junitJacoco {
-//  jacocoVersion = "0.7.2.201409121644" // type String
-//  excludes = ["**/*_ViewBinding.class", "**/*InjectAdapter.class", "android/support/**/*.class",
-//              "com/google/**/*.class", "com/birbit/**/*.class", "butterknife/**/*.class",
-//              "com/arellomobile/**/*.class", "net/ganin/darv/**/*.class", "**/*ViewStateProvider.class",
-//              "**/*PresentersBinder.class",
-//              "us/nineworlds/serenity/R.*.class"]
-//}
 
 dependencies {
 
