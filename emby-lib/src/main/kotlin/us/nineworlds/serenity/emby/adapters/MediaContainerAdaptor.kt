@@ -155,7 +155,12 @@ class MediaContainerAdaptor {
       video.viewOffset = convertTicksToMilliseconds(item.userData?.playbackPositionTicks ?: 0)
       video.episode = item.episodeNumber
 
-      video.directPlayUrl = "emby/Videos/${item.mediaSources?.get(0)?.id ?: ""}/stream.${item.container}?static=true"
+      val container = if (item.container != null && item.container.contains(",")) {
+        item.container.substringBefore(",")
+      } else {
+        item.container
+      }
+      video.directPlayUrl = "emby/Videos/${item.mediaSources?.get(0)?.id ?: ""}/stream.$container?static=true"
 
       if (item.runTimeTicks != null) {
         val milliseconds = convertTicksToMilliseconds(item.runTimeTicks)
