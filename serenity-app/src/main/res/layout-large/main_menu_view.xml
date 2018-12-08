@@ -8,22 +8,22 @@
     android:background="@drawable/content_panel_dark"
     android:layout_centerInParent="true"
     >
-  <net.ganin.darv.DpadAwareRecyclerView
+
+  <android.support.v7.widget.RecyclerView
       android:id="@+id/mainGalleryMenu"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_marginTop="5dp"
       android:layout_marginRight="5dp"
       android:layout_marginLeft="5dp"
-      android:paddingLeft="5dp"
-      app:selectorVelocity="1000"
-      android:focusableInTouchMode="true"
-      app:smoothScrolling="true"
-      app:backgroundSelector="@drawable/item_foreground_selector"
-      android:nextFocusUp="@+id/menu_button"
       android:descendantFocusability="afterDescendants"
-      >
+      android:nextFocusUp="@+id/menu_button"
+      android:focusable="true"
+      android:layout_gravity="center|center_vertical"
+      android:clipChildren="false"
+      android:clipToPadding="false">
+
     <requestFocus/>
-  </net.ganin.darv.DpadAwareRecyclerView>
+  </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

@@ -44,8 +44,10 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
   public static List<MenuItem> menuItems = new ArrayList<>();
 
+  private GalleryOnItemSelectedListener onItemSelectedListener;
   public MainMenuTextViewAdapter() {
     super();
+    onItemSelectedListener = new GalleryOnItemSelectedListener(this);
   }
 
   @Override public int getItemCount() {
@@ -62,14 +64,15 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
     MenuItem menuItem = menuItems.get(position);
 
     MainMenuViewHolder mainMenuViewHolder = (MainMenuViewHolder) holder;
-    setDefaults(menuItem.getTitle(), mainMenuViewHolder.mainMenuTextView);
+    setDefaults(menuItem.getTitle(), mainMenuViewHolder.mainMenuTextView, position);
+    mainMenuViewHolder.itemView.setOnFocusChangeListener((view, hasFocus) -> onItemSelectedListener.onItemSelected(view, hasFocus, position));
   }
 
   @Override public long getItemId(int position) {
     return position;
   }
 
-  void setDefaults(String title, TextView v) {
+  void setDefaults(String title, TextView v, int position) {
     v.setText(title);
     v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
     v.setTypeface(Typeface.DEFAULT, Typeface.BOLD);

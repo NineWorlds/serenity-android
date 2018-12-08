@@ -25,6 +25,7 @@ package us.nineworlds.serenity;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -33,16 +34,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.injection.BaseInjector;
 
-public class GalleryOnItemSelectedListener extends BaseInjector
-    implements DpadAwareRecyclerView.OnItemSelectedListener {
+public class GalleryOnItemSelectedListener extends BaseInjector {
 
   @Inject SharedPreferences preferences;
 
   @BindView(R.id.mainGalleryBackground) ImageView mainGalleryBackgroundView;
+
+  private MainMenuTextViewAdapter adapter;
+
+  public GalleryOnItemSelectedListener(MainMenuTextViewAdapter adapter) {
+    this.adapter = adapter;
+  }
 
   protected boolean shouldFadeIn() {
     boolean shouldFadein = preferences.getBoolean("animation_background_mainmenu_fadein", true);
@@ -77,32 +82,32 @@ public class GalleryOnItemSelectedListener extends BaseInjector
     return R.drawable.serenity_bonsai_logo;
   }
 
-  @Override
-  public void onItemSelected(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i,
-      long l) {
-    MainMenuTextViewAdapter adapter = (MainMenuTextViewAdapter) dpadAwareRecyclerView.getAdapter();
-    MenuItem menuItem = adapter.getItemAtPosition(i);
+  public void onItemSelected(View view, boolean hasFocus, int position) {
+    MenuItem menuItem = adapter.getItemAtPosition(position);
     Activity context = (Activity) view.getContext();
     if (context.isDestroyed()) {
       return;
     }
 
+    view.clearAnimation();
+    view.setBackground(null);
+
     ButterKnife.bind(context);
 
-    mainGalleryBackgroundView = (ImageView) context.findViewById(R.id.mainGalleryBackground);
-    mainGalleryBackgroundView.clearAnimation();
+    if (hasFocus && view != null) {
+      mainGalleryBackgroundView = context.findViewById(R.id.mainGalleryBackground);
+      mainGalleryBackgroundView.clearAnimation();
 
-    Glide.with(context).load(getBackgroundImageId(menuItem)).into(mainGalleryBackgroundView);
+      Glide.with(context).load(getBackgroundImageId(menuItem)).into(mainGalleryBackgroundView);
 
-    if (shouldFadeIn()) {
-      Animation fadeIn = AnimationUtils.loadAnimation(view.getContext(), R.anim.fade_in);
-      fadeIn.setDuration(500);
-      mainGalleryBackgroundView.startAnimation(fadeIn);
+      view.clearAnimation();
+      view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
+
+      if (shouldFadeIn()) {
+        Animation fadeIn = AnimationUtils.loadAnimation(view.getContext(), R.anim.fade_in);
+        fadeIn.setDuration(500);
+        mainGalleryBackgroundView.startAnimation(fadeIn);
+      }
     }
-  }
-
-  @Override
-  public void onItemFocused(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-
   }
 }

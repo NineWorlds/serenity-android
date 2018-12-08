@@ -28,6 +28,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -57,7 +58,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
   @InjectPresenter MainPresenter presenter;
   @Inject SharedPreferences preferences;
 
-  @BindView(R.id.mainGalleryMenu) DpadAwareRecyclerView mainMenuContainer;
+  @BindView(R.id.mainGalleryMenu) RecyclerView mainMenuContainer;
   @BindView(R.id.drawer_settings) Button settingsButton;
   @BindView(R.id.data_loading_container) View dataLoadingContainer;
 
@@ -135,7 +136,7 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
     actionBar.setDisplayHomeAsUpEnabled(true);
     actionBar.setHomeButtonEnabled(true);
 
-    settingsButton = (Button) findViewById(R.id.drawer_settings);
+    settingsButton = findViewById(R.id.drawer_settings);
     settingsButton.setOnClickListener(new SettingsMenuDrawerOnItemClickedListener(drawerLayout));
 
     populateMenuOptions();

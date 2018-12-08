@@ -26,6 +26,7 @@ package us.nineworlds.serenity.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,7 @@ public class MainMenuFragment extends InjectingFragment {
     setRetainInstance(false);
   }
 
-  @BindView(R.id.mainGalleryMenu) DpadAwareRecyclerView mainGallery;
+  @BindView(R.id.mainGalleryMenu) RecyclerView mainGallery;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.main_menu_view, container);
@@ -108,8 +109,7 @@ public class MainMenuFragment extends InjectingFragment {
 
     MainMenuTextViewAdapter adapter = new MainMenuTextViewAdapter();
     mainGallery.setAdapter(adapter);
-    mainGallery.setOnItemSelectedListener(new GalleryOnItemSelectedListener());
-    mainGallery.setOnItemClickListener(new GalleryOnItemClickListener());
+    //mainGallery.setOnItemClickListener(new GalleryOnItemClickListener());
     mainGallery.setVisibility(View.VISIBLE);
     adapter.updateMenuItems(menuItems);
     Activity activity = getActivity();
