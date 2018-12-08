@@ -35,7 +35,7 @@ import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity;
 
 import static net.ganin.darv.DpadAwareRecyclerView.OnItemClickListener;
 
-public class GalleryOnItemClickListener implements OnItemClickListener {
+public class GalleryOnItemClickListener {
 
   private static final String MENU_TYPE_SEARCH = "search";
   private static final String MENU_TYPE_SHOW = "show";
@@ -45,12 +45,19 @@ public class GalleryOnItemClickListener implements OnItemClickListener {
   private static final String MENU_TYPE_MOVIES = "movies";
   private static final String MENU_TYPE_TVSHOWS = "tvshows";
 
-  @Override
-  public void onItemClick(DpadAwareRecyclerView dpadAwareRecyclerView, View view, int i, long l) {
-    MainMenuTextViewAdapter mainMenuTextViewAdapter =
-        (MainMenuTextViewAdapter) dpadAwareRecyclerView.getAdapter();
-    Activity context = (Activity) dpadAwareRecyclerView.getContext();
-    MenuItem menuItem = mainMenuTextViewAdapter.getItemAtPosition(i);
+  private MainMenuTextViewAdapter adapter;
+  public GalleryOnItemClickListener(MainMenuTextViewAdapter adapter) {
+    this.adapter = adapter;
+  }
+
+
+  public void onItemClick(View view, int i) {
+    Activity context = (Activity) view.getContext();
+    if (context.isDestroyed()) {
+      return;
+    }
+
+    MenuItem menuItem = adapter.getItemAtPosition(i);
     String librarySection = menuItem.getSection();
     String activityType = menuItem.getType();
 

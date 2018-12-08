@@ -45,9 +45,12 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
   public static List<MenuItem> menuItems = new ArrayList<>();
 
   private GalleryOnItemSelectedListener onItemSelectedListener;
+  private GalleryOnItemClickListener onItemClickListener;
   public MainMenuTextViewAdapter() {
     super();
     onItemSelectedListener = new GalleryOnItemSelectedListener(this);
+    onItemClickListener = new GalleryOnItemClickListener(this);
+
   }
 
   @Override public int getItemCount() {
@@ -66,6 +69,7 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
     MainMenuViewHolder mainMenuViewHolder = (MainMenuViewHolder) holder;
     setDefaults(menuItem.getTitle(), mainMenuViewHolder.mainMenuTextView, position);
     mainMenuViewHolder.itemView.setOnFocusChangeListener((view, hasFocus) -> onItemSelectedListener.onItemSelected(view, hasFocus, position));
+    mainMenuViewHolder.itemView.setOnClickListener((view) -> onItemClickListener.onItemClick(view, position));
   }
 
   @Override public long getItemId(int position) {

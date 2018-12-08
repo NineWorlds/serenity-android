@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -112,7 +113,7 @@ public class MainActivityTest extends InjectingTest {
   @Test public void onKeyDownClosesOpenDrawerWhenKeycodeMenu() {
     DrawerLayout drawerLayout = ButterKnife.findById(activity, R.id.drawer_layout);
     LinearLayout leftDrawer = ButterKnife.findById(activity, R.id.left_drawer);
-    DpadAwareRecyclerView mainMenu = ButterKnife.findById(activity, (R.id.mainGalleryMenu));
+    RecyclerView mainMenu = ButterKnife.findById(activity, (R.id.mainGalleryMenu));
 
     drawerLayout.openDrawer(leftDrawer);
 
@@ -127,7 +128,7 @@ public class MainActivityTest extends InjectingTest {
   @Test public void onKeyDownClosesOpenDrawerWhenKeycodeBackIsPressed() {
     DrawerLayout drawerLayout = ButterKnife.findById(activity, R.id.drawer_layout);
     LinearLayout leftDrawer = ButterKnife.findById(activity, R.id.left_drawer);
-    DpadAwareRecyclerView mainMenu = ButterKnife.findById(activity, (R.id.mainGalleryMenu));
+    RecyclerView mainMenu = ButterKnife.findById(activity, (R.id.mainGalleryMenu));
 
     drawerLayout.openDrawer(leftDrawer);
 
