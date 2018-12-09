@@ -76,8 +76,6 @@ public class SettingsFragment extends LeanbackSettingsFragment implements Dialog
 
     @Override public void onStart() {
       super.onStart();
-     // populateAvailablePlexMediaServers();
-     // populateAvailableLocales();
       populateSupportedPlayers();
     }
 
@@ -88,39 +86,6 @@ public class SettingsFragment extends LeanbackSettingsFragment implements Dialog
         return true;
       }
       return false;
-    }
-
-    /**
-     * Populates the Discovered Devices preference list with available Plex
-     * Media Servers. The name of the Device and the device's IP address are
-     * used as values in the entry. The user friendly name is used from the
-     * device itself.
-     */
-    protected void populateAvailablePlexMediaServers() {
-      ListPreference discoveredServers = (ListPreference) findPreference("discoveredServer");
-      if (mediaServers.isEmpty()) {
-        discoveredServers.setEnabled(false);
-        return;
-      }
-
-      discoveredServers.setEnabled(true);
-      String entries[] = new String[mediaServers.size()];
-      String values[] = new String[mediaServers.size()];
-
-      mediaServers.keySet().toArray(entries);
-      discoveredServers.setEntries(entries);
-
-      ArrayList<String> ipAddresses = new ArrayList<String>();
-      Iterator<Map.Entry<String, Server>> entIt = mediaServers.entrySet().iterator();
-      while (entIt.hasNext()) {
-        Map.Entry<String, Server> servers = entIt.next();
-        Server device = servers.getValue();
-        ipAddresses.add(device.getIPAddress());
-      }
-      if (!ipAddresses.isEmpty()) {
-        ipAddresses.toArray(values);
-        discoveredServers.setEntryValues(values);
-      }
     }
 
     protected void populateAvailableLocales() {

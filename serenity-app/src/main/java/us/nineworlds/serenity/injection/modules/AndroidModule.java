@@ -45,6 +45,8 @@ import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.core.util.StringPreference;
 import us.nineworlds.serenity.emby.server.api.EmbyAPIClient;
 import us.nineworlds.serenity.injection.ServerClientPreference;
+import us.nineworlds.serenity.injection.ServerIPPreference;
+import us.nineworlds.serenity.injection.ServerPortPreference;
 import us.nineworlds.serenity.injection.modules.providers.DataSourceFactoryProvider;
 
 public class AndroidModule extends Module {
@@ -58,6 +60,8 @@ public class AndroidModule extends Module {
     bind(EventBus.class).toInstance(EventBus.getDefault());
     bind(Context.class).withName(ApplicationContext.class).toInstance(application);
     bind(StringPreference.class).withName(ServerClientPreference.class).toProvider(ServerClientPreferenceProvider.class).providesSingletonInScope();
+    bind(StringPreference.class).withName(ServerIPPreference.class).toProvider(ServerIPPreferenceProvider.class).providesSingletonInScope();
+    bind(StringPreference.class).withName(ServerPortPreference.class).toProvider(ServerPorPreferenceProvider.class).providesSingletonInScope();
     bind(SerenityClient.class).toProvider(SerentityClientProvider.class);
     bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(applicationContext));
     bind(AndroidHelper.class).toInstance(new AndroidHelper(applicationContext));
@@ -98,6 +102,22 @@ public class AndroidModule extends Module {
 
     @Override public StringPreference get() {
       return new StringPreference(sharedPreferences, "server_client", "");
+    }
+  }
+
+  public static class ServerIPPreferenceProvider implements Provider<StringPreference> {
+    @Inject SharedPreferences sharedPreferences;
+
+    @Override public StringPreference get() {
+      return new StringPreference(sharedPreferences, "server", "");
+    }
+  }
+
+  public static class ServerPorPreferenceProvider implements Provider<StringPreference> {
+    @Inject SharedPreferences sharedPreferences;
+
+    @Override public StringPreference get() {
+      return new StringPreference(sharedPreferences, "serverport", "");
     }
   }
 

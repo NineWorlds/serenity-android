@@ -66,7 +66,7 @@ class ServerSelectionActivityTest : InjectingTest() {
     Robolectric.flushBackgroundThreadScheduler()
     Robolectric.flushForegroundThreadScheduler()
 
-    Assertions.assertThat(activity.serverContainer).hasChildCount(2)
+    Assertions.assertThat(activity.serverContainer).hasChildCount(3)
   }
 
   @Test
@@ -75,7 +75,7 @@ class ServerSelectionActivityTest : InjectingTest() {
     Robolectric.flushForegroundThreadScheduler()
 
     assertThat(activity.servers).isEmpty()
-    Assertions.assertThat(activity.serverContainer).hasChildCount(1);
+    Assertions.assertThat(activity.serverContainer).hasChildCount(2);
   }
 
   @Test
@@ -89,7 +89,7 @@ class ServerSelectionActivityTest : InjectingTest() {
     Robolectric.flushBackgroundThreadScheduler()
     Robolectric.flushForegroundThreadScheduler()
 
-    val view = activity.serverContainer.getChildAt(0)
+    val view = activity.serverContainer.getChildAt(1)
     val textView = view.findViewById<TextView>(R.id.server_name)
 
     Assertions.assertThat(textView).hasText("test")
@@ -106,7 +106,7 @@ class ServerSelectionActivityTest : InjectingTest() {
     Robolectric.flushBackgroundThreadScheduler()
     Robolectric.flushForegroundThreadScheduler()
 
-    val view = activity.serverContainer.getChildAt(0)
+    val view = activity.serverContainer.getChildAt(1)
     view.performClick()
 
     val shadowActivity = shadowOf(activity)

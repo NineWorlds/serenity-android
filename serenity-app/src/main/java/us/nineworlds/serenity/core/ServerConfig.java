@@ -112,7 +112,12 @@ public class ServerConfig extends BaseInjector implements IConfiguration {
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
       if ("serverport".equals(key)) {
+
         serverport = sharedPreferences.getString(key, "32400");
+        if (serverport.equals("8096")) {
+          serverport = "32400";
+        }
+
         return;
       }
 

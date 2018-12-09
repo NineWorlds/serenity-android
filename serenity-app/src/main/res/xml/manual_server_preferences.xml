@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Manual Server Settings">
+
+  <PreferenceCategory android:title="@string/server_settings">
+
+    <ListPreference
+      android:defaultValue=""
+      android:key="server_client"
+      android:title="Server Type"
+      android:entries="@array/serverTypes"
+      android:entryValues="@array/serverTypes"
+      android:summary="Select the type of server.  Either Plex or Emby."/>
+
+    <EditTextPreference
+        android:defaultValue=""
+        android:key="server"
+        android:summary="@string/preferred_ipaddress_summary"
+        android:title="@string/preferred_server_address"/>
+
+    <EditTextPreference
+        android:defaultValue="32400"
+        android:key="serverport"
+        android:summary="@string/default_port_summary"
+        android:title="@string/server_port"/>
+  </PreferenceCategory>
+
+</PreferenceScreen>

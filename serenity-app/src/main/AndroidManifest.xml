@@ -163,6 +163,9 @@
         android:name=".ui.preferences.LeanbackSettingsActivity"
         android:theme="@style/LeanbackPreferences"/>
 
+    <activity android:name=".ui.activity.manualentry.ManualServerActivity"
+      android:theme="@style/LeanbackPreferences"/>
+
     <activity android:name=".ui.activity.OverscanSetupActivity"/>
 
     <service android:name=".core.services.MovieSearchIntentService"/>
