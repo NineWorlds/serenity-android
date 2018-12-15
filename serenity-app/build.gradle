@@ -246,7 +246,7 @@ dependencies {
   testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
   testImplementation "org.robolectric:shadowapi:$robolectricVersion"
   testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
-  testImplementation "androidx.test:core:1.0.0"
+  testImplementation "androidx.test:core:1.1.0"
   testImplementation "org.khronos:opengl-api:$openglApiVersion"
   testImplementation "org.mockito:mockito-core:$mockitoVersion"
 
