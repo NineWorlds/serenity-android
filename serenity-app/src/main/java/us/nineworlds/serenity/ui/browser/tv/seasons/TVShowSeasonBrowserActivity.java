@@ -81,6 +81,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     createSideMenu();
 
     DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
+    setupSeasons();
   }
 
   @Override protected String screenName() {
@@ -89,10 +90,6 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
 
   @Override protected void onStart() {
     super.onStart();
-    if (restarted_state == false) {
-      setupSeasons();
-    }
-    restarted_state = false;
   }
 
   protected void setupSeasons() {

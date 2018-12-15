@@ -150,11 +150,6 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
     return super.onKeyDown(keyCode, event);
   }
 
-  @Override protected void onRestart() {
-    super.onRestart();
-    populateMenuDrawer();
-  }
-
   @Override public AbstractPosterImageGalleryAdapter getAdapter() {
     return seasonEpisodeAdapter;
   }

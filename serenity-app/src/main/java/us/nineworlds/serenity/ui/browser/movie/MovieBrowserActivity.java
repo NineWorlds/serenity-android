@@ -86,14 +86,12 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
     createSideMenu();
 
     DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
+
+    populateMenuDrawer();
   }
 
   @Override protected String screenName() {
     return "Movie Browser";
-  }
-
-  @Override protected void onResume() {
-    super.onResume();
   }
 
   @Override protected void onPause() {
@@ -102,11 +100,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
       adapter = galleryView.getAdapter();
     }
     super.onPause();
-  }
-
-  @Override protected void onRestart() {
-    super.onRestart();
-    populateMenuDrawer();
   }
 
   @Override protected void createSideMenu() {

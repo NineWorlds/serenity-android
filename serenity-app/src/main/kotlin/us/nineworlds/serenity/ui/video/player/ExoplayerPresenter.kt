@@ -4,6 +4,8 @@ import android.util.Log
 import android.view.View
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.birbit.android.jobqueue.JobManager
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil
@@ -33,6 +35,7 @@ import javax.inject.Inject
 
 @OpenForTesting
 @InjectViewState
+@StateStrategyType(SkipStrategy::class)
 class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), ExoplayerPresenter,
     PlaybackControlView.VisibilityListener, Player.EventListener {
 

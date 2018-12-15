@@ -56,11 +56,6 @@ public class VideoGridFragment extends MovieVideoGalleryFragment {
     return view;
   }
 
-  @Override protected void setupRecyclerView() {
-    super.setupRecyclerView();
-
-  }
-
   @Override protected View inflateView(LayoutInflater inflater, ViewGroup container) {
     return inflater.inflate(R.layout.video_grid_fragment, null);
   }

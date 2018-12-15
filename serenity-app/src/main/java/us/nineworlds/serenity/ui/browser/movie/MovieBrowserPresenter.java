@@ -2,6 +2,8 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.birbit.android.jobqueue.JobManager;
 import java.util.List;
 import javax.inject.Inject;
@@ -22,6 +24,7 @@ import us.nineworlds.serenity.events.MovieSecondaryCategoryEvent;
 import us.nineworlds.serenity.jobs.MovieRetrievalJob;
 
 @InjectViewState
+@StateStrategyType(SkipStrategy.class)
 public class MovieBrowserPresenter extends MvpPresenter<MovieBrowserContract.MovieBrowserView>
     implements MovieBrowserContract.MoviewBrowserPresenter {
 

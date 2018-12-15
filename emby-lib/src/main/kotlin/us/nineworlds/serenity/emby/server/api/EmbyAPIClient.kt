@@ -1,6 +1,7 @@
 package us.nineworlds.serenity.emby.server.api
 
 import android.content.Context
+import android.preference.PreferenceManager
 import android.util.Log
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -21,7 +22,7 @@ import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
 import us.nineworlds.serenity.emby.server.model.*
 import java.io.File
 
-class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
+class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
 
   val usersService: UsersService
   val filterService: FilterService
@@ -29,9 +30,10 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
   var baseUrl: String
   var accessToken: String? = null
   lateinit var serverId: String
-  lateinit var userId: String
+  var userId: String? = null
   var deviceId: String
   var deviceName: String
+  val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
   init {
     this.baseUrl = baseUrl
@@ -86,29 +88,48 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
       accessToken = body!!.accesToken
       serverId = body.serverId
       userId = body.userInfo.id!!
+
+      val prefEditor = prefs.edit()
+
+      prefEditor.putString("userId", userId)
+      prefEditor.putString("embyAccessToken", accessToken)
+      prefEditor.apply()
+
       return response.body()!!
     }
     throw IllegalStateException("error logging user in to Emby Server")
   }
 
   fun currentUserViews(): QueryResult {
-    val call = usersService.usersViews(headerMap(), userId)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = usersService.usersViews(headerMap(), userId!!)
     return call.execute().body()!!
   }
 
   fun filters(itemId: String? = null, tags: List<String>? = null): QueryFilters {
-    val call = filterService.availableFilters(headerMap(), userId)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = filterService.availableFilters(headerMap(), userId!!)
     return call.execute().body()!!
   }
 
   fun fetchItem(id: String): QueryResult {
-    val call = usersService.fetchItem(headerMap(), userId, id)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = usersService.fetchItem(headerMap(), userId!!, id)
 
     return call.execute().body()!!
   }
 
   fun fetchItemQuery(id: String): QueryResult {
-    val call = usersService.fetchItemQuery(headerMap(), userId, id, genre = null)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = usersService.fetchItemQuery(headerMap(), userId!!, id, genre = null)
 
     return call.execute().body()!!
   }
@@ -154,7 +175,11 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
 
 
   override fun retrieveRootData(): IMediaContainer {
-    val call = usersService.usersViews(headerMap(), userId)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+
+    val call = usersService.usersViews(headerMap(), userId!!)
 
     val queryResult = call.execute().body()
 
@@ -166,7 +191,10 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
   }
 
   override fun retrieveItemByCategories(): IMediaContainer {
-    val call = usersService.usersViews(headerMap(), userId)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = usersService.usersViews(headerMap(), userId!!)
 
     val queryResult = call.execute().body()
 
@@ -174,7 +202,10 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
   }
 
   override fun retrieveItemByIdCategory(key: String?): IMediaContainer {
-    val call = filterService.availableFilters(headerMap(), userId, key)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = filterService.availableFilters(headerMap(), userId!!, key)
 
     val queryResult = call.execute().body()
 
@@ -190,14 +221,19 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
       else -> category
     }
 
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+
+
     val call = if (category == "ondeck") {
-      usersService.resumableItems(headerMap(), userId = userId, parentId = key)
+      usersService.resumableItems(headerMap(), userId = userId!!, parentId = key)
     } else if (category == "recentlyAdded") {
-      usersService.latestItems(headerMap(), userId = userId, parentId = key)
+      usersService.latestItems(headerMap(), userId = userId!!, parentId = key)
     } else if (category == "unwatched") {
-      usersService.unwatchedItems(headerMap(), userId = userId, parentId = key)
+      usersService.unwatchedItems(headerMap(), userId = userId!!, parentId = key)
     } else {
-      usersService.fetchItemQuery(headerMap(), userId = userId, parentId = key, genre = genre, isPlayed = isPlayed)
+      usersService.fetchItemQuery(headerMap(), userId = userId!!, parentId = key, genre = genre, isPlayed = isPlayed)
     }
 
     val results = call.execute().body()
@@ -209,7 +245,10 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
   }
 
   override fun retrieveSeasons(key: String): IMediaContainer {
-    val call = usersService.fetchItemQuery(headerMap(), userId = userId, parentId = key, includeItemType = "Season", genre = null)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = usersService.fetchItemQuery(headerMap(), userId = userId!!, parentId = key, includeItemType = "Season", genre = null)
 
     val results = call.execute().body()
 
@@ -221,7 +260,10 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
   }
 
   override fun retrieveEpisodes(key: String): IMediaContainer {
-    val call = usersService.fetchItemQuery(headerMap(), userId = userId, parentId = key, includeItemType = "Episode", genre = null)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = usersService.fetchItemQuery(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode", genre = null)
 
     val results = call.execute().body()
 
@@ -233,7 +275,10 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
   }
 
   override fun searchMovies(key: String?, query: String): IMediaContainer {
-    val call = usersService.search(headerMap(), userId, query)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = usersService.search(headerMap(), userId!!, query)
     val results = call.execute().body()
     val itemIds = mutableListOf<String>()
 
@@ -241,7 +286,7 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
       itemIds.add(searchHint.id!!)
     }
 
-    val itemCall = usersService.fetchItemQuery(headerMap(), userId = userId, ids = itemIds.joinToString(separator = ","), genre = null, parentId = null)
+    val itemCall = usersService.fetchItemQuery(headerMap(), userId = userId!!, ids = itemIds.joinToString(separator = ","), genre = null, parentId = null)
 
     val itemResults = itemCall.execute().body()
 
@@ -260,25 +305,34 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
   override fun baseURL(): String = baseUrl
 
   override fun watched(key: String): Boolean {
-    val call = usersService.played(headerMap(), userId, key)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = usersService.played(headerMap(), userId!!, key)
 
     val result = call.execute()
     return result.isSuccessful
   }
 
   override fun unwatched(key: String): Boolean {
-    val call = usersService.unplayed(headerMap(), userId, key)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = usersService.unplayed(headerMap(), userId!!, key)
 
     val result = call.execute()
     return result.isSuccessful
   }
 
   override fun progress(key: String, offset: String): Boolean {
+    if (userId == null) {
+      userId = fetchUserId()
+    }
     var position = offset.toLong()
 
     position = position.times(10000)
 
-    val call = usersService.progress(headerMap(), userId, key, null, position)
+    val call = usersService.progress(headerMap(), userId!!, key, null, position)
     val result = call.execute();
 
     return result.isSuccessful
@@ -334,13 +388,20 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
   }
 
   override fun startPlaying(itemId: String) {
-    val call = usersService.startPlaying(headerMap(), userId, itemId)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+
+    val call = usersService.startPlaying(headerMap(), userId!!, itemId)
 
     call.execute()
   }
 
   override fun stopPlaying(itemId: String) {
-    val call = usersService.stopPlaying(headerMap(), userId, itemId)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = usersService.stopPlaying(headerMap(), userId!!, itemId)
     call.execute()
   }
 
@@ -354,17 +415,27 @@ class EmbyAPIClient(context: Context, baseUrl: String = "http://localhost:8096")
       else -> categoryId
     }
 
-    val call = usersService.fetchItemQuery(headerMap(), userId = userId, parentId = key, genre = genre, isPlayed = isPlayed, includeItemType = itemType, limitCount = 5)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+
+    val call = usersService.fetchItemQuery(headerMap(), userId = userId!!, parentId = key, genre = genre, isPlayed = isPlayed, includeItemType = itemType, limitCount = 5)
 
     val results = call.execute().body()
     return MediaContainerAdaptor().createSeriesList(results!!.items)
   }
 
   override fun retrieveSeriesCategoryById(key: String?): IMediaContainer {
-    val call = filterService.availableFilters(headerMap(), userId, key)
+    if (userId == null) {
+      userId = fetchUserId()
+    }
+    val call = filterService.availableFilters(headerMap(), userId!!, key)
 
     val queryResult = call.execute().body()
 
     return MediaContainerAdaptor().createCategory(queryResult!!.genres!!, true)
   }
+
+  fun fetchUserId() = prefs.getString("userId", "")
+  fun fetchAccessToken() = prefs.getString("embyAccessToken", "")
 }

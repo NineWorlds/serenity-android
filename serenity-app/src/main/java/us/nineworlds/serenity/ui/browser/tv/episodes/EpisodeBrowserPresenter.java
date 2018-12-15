@@ -2,6 +2,8 @@ package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.birbit.android.jobqueue.JobManager;
 import java.util.List;
 import javax.inject.Inject;
@@ -16,6 +18,7 @@ import us.nineworlds.serenity.events.EpisodesRetrievalEvent;
 import us.nineworlds.serenity.jobs.EpisodesRetrievalJob;
 
 @InjectViewState
+@StateStrategyType(SkipStrategy.class)
 public class EpisodeBrowserPresenter extends MvpPresenter<EpisodeBrowserView> {
 
   EventBus eventBus = EventBus.getDefault();

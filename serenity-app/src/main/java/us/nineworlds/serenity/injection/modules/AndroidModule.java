@@ -48,6 +48,7 @@ import us.nineworlds.serenity.injection.ServerClientPreference;
 import us.nineworlds.serenity.injection.ServerIPPreference;
 import us.nineworlds.serenity.injection.ServerPortPreference;
 import us.nineworlds.serenity.injection.modules.providers.DataSourceFactoryProvider;
+import us.nineworlds.serenity.injection.modules.providers.ServerClientPreferenceProvider;
 
 public class AndroidModule extends Module {
 
@@ -62,7 +63,7 @@ public class AndroidModule extends Module {
     bind(StringPreference.class).withName(ServerClientPreference.class).toProvider(ServerClientPreferenceProvider.class).providesSingletonInScope();
     bind(StringPreference.class).withName(ServerIPPreference.class).toProvider(ServerIPPreferenceProvider.class).providesSingletonInScope();
     bind(StringPreference.class).withName(ServerPortPreference.class).toProvider(ServerPorPreferenceProvider.class).providesSingletonInScope();
-    bind(SerenityClient.class).toProvider(SerentityClientProvider.class);
+    bind(SerenityClient.class).toProvider(SerentityClientProvider.class).providesSingletonInScope();
     bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(applicationContext));
     bind(AndroidHelper.class).toInstance(new AndroidHelper(applicationContext));
     bind(Resources.class).toInstance(application.getResources());
@@ -96,14 +97,6 @@ public class AndroidModule extends Module {
     }
   }
 
-  public static class ServerClientPreferenceProvider implements Provider<StringPreference> {
-
-    @Inject SharedPreferences sharedPreferences;
-
-    @Override public StringPreference get() {
-      return new StringPreference(sharedPreferences, "server_client", "");
-    }
-  }
 
   public static class ServerIPPreferenceProvider implements Provider<StringPreference> {
     @Inject SharedPreferences sharedPreferences;

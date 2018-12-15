@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.injection;
 
+import android.os.Bundle;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import toothpick.Scope;
 import toothpick.Toothpick;
@@ -32,9 +33,9 @@ public abstract class InjectingMvpActivity extends MvpAppCompatActivity {
 
   protected Scope scope;
 
-  public InjectingMvpActivity() {
-    super();
+  @Override protected void onCreate(Bundle savedInstanceState) {
     inject();
+    super.onCreate(savedInstanceState);
   }
 
   public void inject() {

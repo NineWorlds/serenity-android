@@ -24,13 +24,24 @@
 package us.nineworlds.serenity.injection;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import toothpick.Scope;
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 
 public abstract class InjectingActivity extends Activity {
 
-  public InjectingActivity() {
-    super();
-    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
+  protected Scope scope;
+
+  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    inject();
   }
+
+  public void inject() {
+    scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE);
+    Toothpick.inject(this, scope);
+  }
+
 }
