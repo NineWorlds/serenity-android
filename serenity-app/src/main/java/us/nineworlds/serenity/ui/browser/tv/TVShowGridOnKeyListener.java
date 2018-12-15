@@ -24,9 +24,9 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -47,10 +47,10 @@ public class TVShowGridOnKeyListener extends BaseInjector implements OnKeyListen
   }
 
   protected SeriesContentInfo getSelectedSeries(View v) {
-    final DpadAwareRecyclerView gridView = (DpadAwareRecyclerView) v;
+    final RecyclerView gridView = (RecyclerView) v;
     AbstractPosterImageGalleryAdapter adapter =
         (AbstractPosterImageGalleryAdapter) gridView.getAdapter();
-    int pos = gridView.getSelectedItemPosition();
+    int pos = gridView.getChildAdapterPosition(gridView.getFocusedChild());
     final SeriesContentInfo info = (SeriesContentInfo) adapter.getItem(pos);
     return info;
   }

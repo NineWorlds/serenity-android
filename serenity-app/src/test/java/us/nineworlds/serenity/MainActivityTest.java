@@ -34,7 +34,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import butterknife.ButterKnife;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

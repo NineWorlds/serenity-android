@@ -37,7 +37,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
@@ -84,7 +83,6 @@ public class MainActivity extends SerenityDrawerLayoutActivity implements MainVi
       editor.putBoolean("watched_status_firsttime", false);
       editor.apply();
     }
-
   }
 
   @Override protected String screenName() {

@@ -1,7 +1,6 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
 import android.view.View;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.ui.views.viewholders.AbstractPosterImageViewHolder;
 

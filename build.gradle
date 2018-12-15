@@ -56,7 +56,6 @@ project.ext {
   androidSupportLibVersion = "27.1.1"
   universalCharDetVersion = "1.0.3"
   volleyVersion = "1.0.16"
-  dpadAwareVersion = "1.0.1"
   butterKnifeVersion = "8.8.1"
   simpleXmlVersion = "2.7.1"
   urlManager = "1.4.0"

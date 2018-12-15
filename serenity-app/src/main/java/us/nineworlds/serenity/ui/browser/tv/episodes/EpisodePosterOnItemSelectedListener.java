@@ -42,7 +42,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -77,7 +76,6 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
   private int fadeInCount = 0;
 
   AbstractPosterImageGalleryAdapter adapter;
-
 
   public EpisodePosterOnItemSelectedListener(AbstractPosterImageGalleryAdapter adapter) {
     super();

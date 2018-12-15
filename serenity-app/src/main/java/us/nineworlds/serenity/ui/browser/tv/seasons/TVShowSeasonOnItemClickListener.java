@@ -27,13 +27,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
 public class TVShowSeasonOnItemClickListener extends AbstractVideoOnItemClickListener {
 

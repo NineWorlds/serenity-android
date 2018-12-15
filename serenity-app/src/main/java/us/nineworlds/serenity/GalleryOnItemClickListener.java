@@ -27,13 +27,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
 import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity;
-
-import static net.ganin.darv.DpadAwareRecyclerView.OnItemClickListener;
 
 public class GalleryOnItemClickListener {
 
@@ -46,10 +43,10 @@ public class GalleryOnItemClickListener {
   private static final String MENU_TYPE_TVSHOWS = "tvshows";
 
   private MainMenuTextViewAdapter adapter;
+
   public GalleryOnItemClickListener(MainMenuTextViewAdapter adapter) {
     this.adapter = adapter;
   }
-
 
   public void onItemClick(View view, int i) {
     Activity context = (Activity) view.getContext();

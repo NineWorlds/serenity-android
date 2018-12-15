@@ -35,10 +35,8 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
-import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
-import us.nineworlds.serenity.widgets.SerenityMenuGridLayoutManager;
 
 import static butterknife.ButterKnife.bind;
 

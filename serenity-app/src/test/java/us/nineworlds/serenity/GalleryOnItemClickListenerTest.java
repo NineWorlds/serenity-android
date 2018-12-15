@@ -1,10 +1,6 @@
 package us.nineworlds.serenity;
 
-import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import androidx.test.core.app.ApplicationProvider;
-import net.ganin.darv.DpadAwareRecyclerView;
 import org.assertj.android.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
@@ -13,11 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowApplication;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
@@ -56,7 +49,7 @@ public class GalleryOnItemClickListenerTest {
     searchMenuItem.setType("search");
     doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
 
-    onItemClickListener.onItemClick(view,  0);
+    onItemClickListener.onItemClick(view, 0);
 
     assertThat(context.onSearchActivtyCalled).isTrue();
   }

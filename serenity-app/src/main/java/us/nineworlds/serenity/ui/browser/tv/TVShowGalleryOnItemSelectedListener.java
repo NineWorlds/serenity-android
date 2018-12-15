@@ -36,12 +36,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import javax.inject.Inject;
-import net.ganin.darv.DpadAwareRecyclerView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
@@ -189,9 +187,7 @@ public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSele
     changeBackgroundImage(imageView);
   }
 
-
   @Override protected void createVideoDetail(ImageView v) {
     // DO Nothing
   }
-
 }

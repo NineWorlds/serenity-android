@@ -24,12 +24,10 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
 import android.content.SharedPreferences;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
-import java.util.ArrayList;
-import java.util.List;
-import net.ganin.darv.DpadAwareRecyclerView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +40,6 @@ import toothpick.config.Module;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.CategoryInfo;
-import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 
@@ -84,7 +81,7 @@ public class MovieCategorySpinnerOnItemSelectedListenerTest extends InjectingTes
   @Mock
   protected MoviePosterImageAdapter mockPosterImageAdapter;
 
-  @Mock protected DpadAwareRecyclerView mockPosterGallery;
+  @Mock protected RecyclerView mockPosterGallery;
 
   protected MovieCategorySpinnerOnItemSelectedListener onItemSelectedListener;
   protected MovieCategorySpinnerOnItemSelectedListener spyOnItemSelectedListener;
