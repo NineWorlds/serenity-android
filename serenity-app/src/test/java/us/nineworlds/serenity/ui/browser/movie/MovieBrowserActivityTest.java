@@ -108,17 +108,6 @@ public class MovieBrowserActivityTest extends InjectingTest {
     assertThat(item.getText()).isEqualTo("Play All from Queue");
   }
 
-  @Test public void restartCallsPopulateMenuDrawer() {
-    doReturn(true).when(mockSharedPreferences).getBoolean(anyString(), anyBoolean());
-    movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
-    MovieBrowserActivity spyActivity = Mockito.spy(movieBrowserActivity);
-    doNothing().when(spyActivity).populateMenuDrawer();
-
-    spyActivity.onRestart();
-
-    verify(spyActivity).populateMenuDrawer();
-  }
-
   @Test public void onKeyDownClosesMenuDrawerWhenMenuKeyIsPressed() {
     doReturn(true).when(mockSharedPreferences).getBoolean("remote_control_menu", true);
 
