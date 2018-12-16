@@ -53,7 +53,7 @@ class LoginUserPresenter : MvpPresenter<LoginUserContract.LoginUserView>(), Logi
     this.server = server
 
     if (server.port != null) {
-      client.updateBaseUrl("http://${server.ipAddress}:${server.port}")
+      client.updateBaseUrl("http://${server.ipAddress}:${server.port}/")
     } else {
       client.updateBaseUrl("http://${server.ipAddress}:8096/")
     }

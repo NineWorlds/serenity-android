@@ -168,6 +168,7 @@ class ServerSelectionActivity : InjectingActivity() {
     }
 
     server.ipAddress = serverIPPreference.get()
+    server.port = serverPortPreference.get()
     server.serverName = "Preferred Server"
     server.setDiscoveryProtocol(serverClientPreference.get())
     servers["Manual"] = server

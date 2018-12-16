@@ -1,10 +1,7 @@
 package us.nineworlds.serenity.ui.activity.login
 
 import com.birbit.android.jobqueue.JobManager
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before
 import org.junit.Rule
@@ -79,6 +76,18 @@ class LoginUserPresenterTest : InjectingTest() {
 
     verify(mockSerenityClient).updateBaseUrl("http://192.168.0.1:8096/")
     verify(mockServer).ipAddress
+  }
+
+  @Test
+  fun initPresenterUpdatesClientWithExpectedUrlWhenServerPortIsNotNull() {
+    doReturn("9999").whenever(mockServer).port
+    doReturn("192.168.0.1").whenever(mockServer).ipAddress
+
+    presenter.initPresenter(mockServer)
+
+    verify(mockSerenityClient).updateBaseUrl("http://192.168.0.1:9999/")
+    verify(mockServer).ipAddress
+    verify(mockServer, atLeastOnce()).port
   }
 
   @Test

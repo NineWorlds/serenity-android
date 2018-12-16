@@ -89,7 +89,7 @@ public class MenuMediaContainer extends AbstractMediaContainer {
   }
 
   protected boolean isImplemented(IDirectory item) {
-    return !"photos".equals(item.getType()) && !"photo".equals(item.getType()) && !"folders".equals(item.getType());
+    return !"playlists".equals(item.getType()) && !"photos".equals(item.getType()) && !"photo".equals(item.getType()) && !"folders".equals(item.getType());
   }
 
   public MenuItem createSettingsMenu() {
