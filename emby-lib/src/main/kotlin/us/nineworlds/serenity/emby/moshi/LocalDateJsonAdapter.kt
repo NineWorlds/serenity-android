@@ -10,7 +10,11 @@ class LocalDateJsonAdapter : JsonAdapter<LocalDateTime>() {
   override fun fromJson(reader: JsonReader?): LocalDateTime? {
 
     val dateTime = reader?.nextString();
-    val dateformater = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'")
+    val dateformater = if (dateTime!!.endsWith("Z")) {
+      DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'")
+    } else {
+      DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ")
+    }
 
     return LocalDateTime.parse(dateTime, dateformater)
   }
