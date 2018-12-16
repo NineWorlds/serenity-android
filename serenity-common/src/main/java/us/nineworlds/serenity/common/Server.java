@@ -49,4 +49,7 @@ public interface Server extends Serializable {
 
     boolean hasMultipleAccounts();
 
+    String getPort();
+
+    void setPort(String portNumber);
 }

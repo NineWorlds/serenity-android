@@ -9,6 +9,7 @@ class EmbyServer : Server, Serializable {
   private var ipAddress: String? = ""
   private var hostName: String? = null
   private var discoveryProtocol: String? = "Emby"
+  private var portNumber: String? = null
 
   override fun setServerName(serverName: String?) {
     this.serverName = serverName
@@ -43,4 +44,13 @@ class EmbyServer : Server, Serializable {
   }
 
   override fun hasMultipleAccounts(): Boolean = true
+
+  override fun getPort(): String? {
+    return portNumber
+  }
+
+  override fun setPort(portNumber: String?){
+    this.portNumber = portNumber
+  }
+
 }

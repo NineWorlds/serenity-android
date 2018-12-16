@@ -76,4 +76,12 @@ public class GDMServer implements Server, Serializable {
     @Override public boolean hasMultipleAccounts() {
         return false;
     }
+
+    @Override public String getPort() {
+        return null;
+    }
+
+    @Override public void setPort(String portNumber) {
+
+    }
 }

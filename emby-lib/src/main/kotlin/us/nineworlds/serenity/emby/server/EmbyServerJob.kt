@@ -19,7 +19,6 @@ import java.net.SocketTimeoutException
 import java.net.URI
 import javax.inject.Inject
 
-
 class EmbyServerJob : InjectingJob() {
 
   var eventBus = EventBus.getDefault()
@@ -138,7 +137,13 @@ class EmbyServerJob : InjectingJob() {
 
       val server = EmbyServer()
       val uri = URI.create(embyServerInfo!!.remoteAddres)
+      Timber.d("Server Remote Address: ${embyServerInfo!!.remoteAddres}")
+      Timber.d("Server host: ${uri.host}")
+
       server.ipAddress = uri.host
+      server.port = uri.port.toString()
+      Timber.d("Server Port: ${uri.port}")
+
       server.serverName = "Emby - " + embyServerInfo.name
 
       eventBus.post(server)

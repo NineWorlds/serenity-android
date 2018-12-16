@@ -52,7 +52,11 @@ class LoginUserPresenter : MvpPresenter<LoginUserContract.LoginUserView>(), Logi
   override fun initPresenter(server: Server) {
     this.server = server
 
-    client.updateBaseUrl("http://${server.ipAddress}:8096/")
+    if (server.port != null) {
+      client.updateBaseUrl("http://${server.ipAddress}:${server.port}")
+    } else {
+      client.updateBaseUrl("http://${server.ipAddress}:8096/")
+    }
   }
 
   override fun retrieveAllUsers() {
