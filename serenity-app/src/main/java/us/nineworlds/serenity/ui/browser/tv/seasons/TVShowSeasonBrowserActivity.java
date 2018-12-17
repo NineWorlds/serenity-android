@@ -54,6 +54,8 @@ import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 
+import static android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS;
+
 public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implements TVShowSeasonBrowserView {
 
   public AbstractPosterImageGalleryAdapter adapter;
@@ -104,6 +106,10 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(this);
     linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
     tvShowSeasonsGallery.setLayoutManager(linearLayoutManager);
+    tvShowSeasonsGallery.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
+    tvShowSeasonsGallery.setHasFixedSize(true);
+    tvShowSeasonsGallery.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
 
     tvShowSeasonsGallery.addItemDecoration(createItemDecorator());
     tvShowSeasonsGallery.setFocusable(true);
@@ -113,6 +119,10 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     gridView.setClipToPadding(false);
     gridView.setClipChildren(false);
     gridView.setClipToOutline(false);
+    gridView.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
+    gridView.setHasFixedSize(true);
+    gridView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
     gridView.setAdapter(episodeAdapter);
     gridView.addItemDecoration(createItemDecorator());
     gridView.setItemAnimator(new FadeInAnimator());

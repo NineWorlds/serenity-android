@@ -89,7 +89,8 @@ public class CardPresenter extends Presenter {
     private VideoContentInfo video;
     private final ImageCardView mCardView;
 
-    public CardPresenterViewHolder(View view) {
+    public
+    CardPresenterViewHolder(View view) {
       super(view);
       mCardView = (ImageCardView) view;
     }

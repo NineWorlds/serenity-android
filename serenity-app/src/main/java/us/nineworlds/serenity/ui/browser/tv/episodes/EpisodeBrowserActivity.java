@@ -185,7 +185,9 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
           dataLoadingContainer.setVisibility(GONE);
         }
         gallery.requestFocus();
-        gallery.getChildAt(0).requestFocus();
+        if (gallery.getChildAt(0) != null) {
+          gallery.getChildAt(0).requestFocus();
+        }
       }
     }, 1000);
 

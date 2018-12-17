@@ -45,6 +45,8 @@ import us.nineworlds.serenity.ui.browser.tv.seasons.EpisodePosterOnItemClickList
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 
+import static android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS;
+
 public class EpisodeVideoGalleryFragment extends InjectingFragment {
 
   @Inject SharedPreferences preferences;
@@ -75,6 +77,9 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
       videoGallery.setAdapter(adapter);
       videoGallery.setItemAnimator(new FadeInAnimator());
       videoGallery.setHorizontalFadingEdgeEnabled(false);
+      videoGallery.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
+      videoGallery.setHasFixedSize(true);
+      videoGallery.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
       FocusableLinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(getActivity());
       linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

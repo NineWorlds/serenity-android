@@ -62,6 +62,7 @@ import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 import static android.view.View.*;
+import static android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS;
 
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     implements TVShowBrowserView {
@@ -116,6 +117,11 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   }
 
   private void populateTVShowContent() {
+    tvShowRecyclerView.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
+    tvShowRecyclerView.setHasFixedSize(true);
+    tvShowRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
+
     if (gridViewActive) {
       GridLayoutManager gridLayoutManager = new FocusableGridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false);
       tvShowRecyclerView.setLayoutManager(gridLayoutManager);

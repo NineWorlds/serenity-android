@@ -54,6 +54,7 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 
 import static android.view.View.*;
+import static android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS;
 import static butterknife.ButterKnife.bind;
 
 public class MovieVideoGalleryFragment extends InjectingFragment {
@@ -101,8 +102,12 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     recyclerView.setClipToPadding(false);
     recyclerView.setClipChildren(false);
 
-    recyclerView.setHorizontalFadingEdgeEnabled(true);
     recyclerView.setFocusableInTouchMode(true);
+
+    recyclerView.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
     recyclerView.requestFocus();
 
     MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
