@@ -13,12 +13,14 @@ import butterknife.BindView
 import butterknife.ButterKnife.bind
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
@@ -182,7 +184,12 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   }
 
-  internal fun createSimpleExoplayer() = ExoPlayerFactory.newSimpleInstance(this, trackSelector)
+  internal fun createSimpleExoplayer(): SimpleExoPlayer {
+    if (trackSelector is DefaultTrackSelector) {
+      (trackSelector as DefaultTrackSelector).setTunnelingAudioSessionId(C.generateAudioSessionIdV21(this))
+    }
+    return ExoPlayerFactory.newSimpleInstance(this, trackSelector)
+  }
 
   internal fun buildMediaSource(uri: Uri): MediaSource = ExtractorMediaSource(uri, mediaDataSourceFactory,
       DefaultExtractorsFactory(),
