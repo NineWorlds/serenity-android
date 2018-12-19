@@ -97,7 +97,6 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
     view.setBackground(null);
 
     if (hasFocus) {
-      view.clearAnimation();
       view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
       getOnItemSelectedListener().onItemSelected(view, i);
       return;

@@ -69,7 +69,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
   }
 
   protected void populatePosters(List<VideoContentInfo> videos) {
-    List<VideoContentInfo> oldList = new ArrayList(posterList);
+    List<VideoContentInfo> oldList = new ArrayList<>(posterList);
     posterList.clear();
     posterList.addAll(videos);
     new RecyclerViewDiffUtil(oldList, posterList).dispatchUpdatesTo(this);
@@ -83,12 +83,10 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
     view.clearAnimation();
     view.setBackground(null);
 
-    if (hasFocus && view != null) {
-      view.clearAnimation();
+    if (hasFocus) {
       view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
       zoomOut(view);
       getOnItemSelectedListener().onItemSelected(view, i);
-      return;
     }
   }
 }
