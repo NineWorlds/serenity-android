@@ -60,6 +60,7 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
     viewHolder.getItemView().setOnClickListener((view)-> onItemViewClick(view, position));
     viewHolder.getItemView().setOnLongClickListener((view) -> onItemViewLongClick(view, position));
     viewHolder.getItemView().setOnFocusChangeListener((view, focus)-> onItemViewFocusChanged(focus, view, position));
+    viewHolder.getItemView().setOnKeyListener(this);
   }
 
   public void updateEpisodes(List<VideoContentInfo> episodes) {
@@ -77,12 +78,13 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
     view.clearAnimation();
     view.setBackground(null);
 
-    if (hasFocus && view != null) {
-      view.clearAnimation();
-      view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
-      zoomOut(view);
-      getOnItemSelectedListener().onItemSelected(view, i);
-      return;
+    if (triggerFocusSelection) {
+      if (hasFocus) {
+        view.clearAnimation();
+        view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
+        zoomOut(view);
+        getOnItemSelectedListener().onItemSelected(view, i);
+      }
     }
   }
 

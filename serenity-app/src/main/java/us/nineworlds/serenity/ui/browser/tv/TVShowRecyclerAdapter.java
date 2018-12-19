@@ -69,6 +69,7 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
     tvShowViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));
     tvShowViewHolder.getItemView().setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));
     tvShowViewHolder.getItemView().setOnLongClickListener((view) -> onItemViewLongClick(view, position));
+    tvShowViewHolder.getItemView().setOnKeyListener(this);
   }
 
   private boolean onItemViewLongClick(View view, int position) {
@@ -96,10 +97,12 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
     view.clearAnimation();
     view.setBackground(null);
 
-    if (hasFocus) {
-      view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
-      getOnItemSelectedListener().onItemSelected(view, i);
-      return;
+    if (triggerFocusSelection) {
+      if (hasFocus) {
+        view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
+        getOnItemSelectedListener().onItemSelected(view, i);
+        return;
+      }
     }
   }
 }

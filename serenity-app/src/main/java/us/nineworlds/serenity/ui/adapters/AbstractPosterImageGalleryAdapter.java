@@ -24,11 +24,14 @@
 package us.nineworlds.serenity.ui.adapters;
 
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import java.util.ArrayList;
 import java.util.List;
+import timber.log.Timber;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
@@ -44,12 +47,15 @@ import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
  *
  * @author dcarver
  */
-public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecyclerViewAdapter {
+public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecyclerViewAdapter implements
+    View.OnKeyListener {
 
   protected static List<VideoContentInfo> posterList = null;
   protected Handler handler;
   protected AbstractVideoOnItemClickListener onItemClickListener;
   protected AbstractVideoOnItemSelectedListener onItemSelectedListener;
+  protected boolean triggerFocusSelection = true;
+
 
   private Animation scaleSmallAnimation;
   private Animation scaleBigAnimation;
@@ -104,5 +110,27 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
       scaleBigAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.anim_scale_big);
     }
     view.startAnimation(scaleBigAnimation);
+  }
+
+  public boolean onKey(View v, int keyCode, KeyEvent event) {
+    triggerFocusSelection = true;
+
+    if (event.getAction() == KeyEvent.ACTION_UP  && isDirectionalPadKeyCode(keyCode)) {
+      v.setBackground(ContextCompat.getDrawable(v.getContext(), R.drawable.rounded_transparent_border));
+      return true;
+    }
+
+    if (event.getRepeatCount() > 1 && isDirectionalPadKeyCode(keyCode)) {
+      triggerFocusSelection = false;
+    }
+
+    return false;
+  }
+
+  protected boolean isDirectionalPadKeyCode(int keyCode) {
+    return keyCode == KeyEvent.KEYCODE_DPAD_LEFT ||
+    keyCode == KeyEvent.KEYCODE_DPAD_RIGHT ||
+    keyCode == KeyEvent.KEYCODE_DPAD_UP ||
+    keyCode == KeyEvent.KEYCODE_DPAD_DOWN;
   }
 }

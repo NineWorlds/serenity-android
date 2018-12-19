@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.browser.movie;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,8 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
     overlayView.setOnClickListener((view) -> onItemViewClick(view, position));
     overlayView.setOnLongClickListener((view -> onItemViewLongClick(view, position)));
     overlayView.setOnFocusChangeListener((view, hasFocus) -> onItemViewFocusChanged(hasFocus, view, position));
+    overlayView.setOnKeyListener(this);
+
   }
 
   private boolean onItemViewLongClick(View view, int position) {
@@ -83,10 +86,12 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
     view.clearAnimation();
     view.setBackground(null);
 
-    if (hasFocus) {
-      view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
-      zoomOut(view);
-      getOnItemSelectedListener().onItemSelected(view, i);
+    if (triggerFocusSelection) {
+      if (hasFocus) {
+        view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
+        zoomOut(view);
+        getOnItemSelectedListener().onItemSelected(view, i);
+      }
     }
   }
 }
