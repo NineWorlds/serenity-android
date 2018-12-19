@@ -24,6 +24,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
+import timber.log.Timber
 import toothpick.Toothpick
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.annotations.InjectionConstants
@@ -186,6 +187,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   internal fun createSimpleExoplayer(): SimpleExoPlayer {
     if (trackSelector is DefaultTrackSelector) {
+      Timber.d("Enabling Tunneling Mode")
       (trackSelector as DefaultTrackSelector).setTunnelingAudioSessionId(C.generateAudioSessionIdV21(this))
     }
     return ExoPlayerFactory.newSimpleInstance(this, trackSelector)
