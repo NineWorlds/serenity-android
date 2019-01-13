@@ -1,9 +1,7 @@
 package us.nineworlds.serenity.ui.video.player
 
-import android.annotation.TargetApi
 import android.content.Intent
 import android.net.Uri
-import android.os.Build.VERSION_CODES
 import android.view.KeyEvent
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -40,7 +38,7 @@ import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.test.ShadowSubtitleView
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [17], shadows = [ShadowSubtitleView::class])
+@Config(sdk = [21], shadows = [ShadowSubtitleView::class])
 open class ExoplayerVideoActivityTest : InjectingTest() {
 
   @Rule
@@ -61,7 +59,6 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     return scope
   }
 
-  @TargetApi(VERSION_CODES.KITKAT)
   @Before
   override fun setUp() {
     initMocks(this)
