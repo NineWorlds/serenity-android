@@ -162,33 +162,32 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
   }
 
   internal fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {
-
-    val isAudioCodecSupported = selectCodec("audio/" + video.audioCodec)
-    val isVideoSupported = if (video.container.contains("mkv")) {
-      true
-    } else {
-      selectCodec("video/" + video.videoCodec)
-    }
+    val mediaCodecInfoUtil = MediaCodecInfoUtil()
+    video.container = if (video.container.contains("mp4")) { "mp4" } else { video.container}
+    val isVideoContainerSupported = mediaCodecInfoUtil.isExoPlayerContainerSupported("video/${video.container.substringBefore(",")}")
+    val isAudioCodecSupported = selectCodec(mediaCodecInfoUtil.findCorrectAudioMimeType("audio/${video.audioCodec}"))
+    val isVideoSupported = selectCodec(mediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
 
     Log.d("ExoPlayerPresenter", "Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
-    Log.d("ExoPlayerPresenter", "Video Codec:  ${video.audioCodec} support returned $isVideoSupported")
+    Log.d("ExoPlayerPresenter", "Video Codec:  ${video.videoCodec} support returned $isVideoSupported")
+    Log.d("ExoPlayerPresenter", "Video Container:  ${video.container} support returned $isVideoContainerSupported")
 
-    if (!isVideoSupported || !isAudioCodecSupported) {
-      return false
+    if (isVideoSupported && isAudioCodecSupported && isVideoContainerSupported!!) {
+      return true
     }
-    return true
+    return false
   }
 
   private fun transcoderUrl(): String {
-    logger.debug("Exoplayer Activity: Container: ${video.container} Audio: ${video.audioCodec}")
+    logger.debug("ExoPlayerPresenter: Container: ${video.container} Audio: ${video.audioCodec}")
     if (isDirectPlaySupportedForContainer(video)) {
-      logger.debug("Exoplayer Activity: Direct playing ${video.directPlayUrl}")
+      logger.debug("ExoPlayerPresenter: Direct playing ${video.directPlayUrl}")
       return video.directPlayUrl
     }
 
     val transcodingUrl = serenityClient.createTranscodeUrl(video.id(), video.resumeOffset);
 
-    logger.debug("Exoplayer Activity: Transcoding Url: $transcodingUrl")
+    logger.debug("ExoPlayerPresenter: Transcoding Url: $transcodingUrl")
     return transcodingUrl
   }
 
