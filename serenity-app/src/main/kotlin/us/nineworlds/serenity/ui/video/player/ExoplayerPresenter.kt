@@ -191,5 +191,5 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
     return transcodingUrl
   }
 
-  private fun selectCodec(mimeType: String): Boolean = MediaCodecInfoUtil().isCodecSupportted(mimeType)
+  private fun selectCodec(mimeType: String): Boolean = MediaCodecInfoUtil().isCodecSupported(mimeType)
 }

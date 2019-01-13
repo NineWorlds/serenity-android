@@ -60,10 +60,10 @@ public class AndroidModule extends Module {
     this.applicationContext = application;
     bind(EventBus.class).toInstance(EventBus.getDefault());
     bind(Context.class).withName(ApplicationContext.class).toInstance(application);
-    bind(StringPreference.class).withName(ServerClientPreference.class).toProvider(ServerClientPreferenceProvider.class).providesSingletonInScope();
-    bind(StringPreference.class).withName(ServerIPPreference.class).toProvider(ServerIPPreferenceProvider.class).providesSingletonInScope();
-    bind(StringPreference.class).withName(ServerPortPreference.class).toProvider(ServerPorPreferenceProvider.class).providesSingletonInScope();
-    bind(SerenityClient.class).toProvider(SerentityClientProvider.class).providesSingletonInScope();
+    bind(StringPreference.class).withName(ServerClientPreference.class).toProvider(ServerClientPreferenceProvider.class);
+    bind(StringPreference.class).withName(ServerIPPreference.class).toProvider(ServerIPPreferenceProvider.class);
+    bind(StringPreference.class).withName(ServerPortPreference.class).toProvider(ServerPorPreferenceProvider.class);
+    bind(SerenityClient.class).toProvider(SerentityClientProvider.class);
     bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(applicationContext));
     bind(AndroidHelper.class).toInstance(new AndroidHelper(applicationContext));
     bind(Resources.class).toInstance(application.getResources());
@@ -135,6 +135,5 @@ public class AndroidModule extends Module {
       return plexClient;
     }
   }
-
 
 }

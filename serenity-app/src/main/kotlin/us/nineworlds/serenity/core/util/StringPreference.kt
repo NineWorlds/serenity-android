@@ -17,7 +17,7 @@ class StringPreference(@NonNull private val preferences: SharedPreferences,
   }
 
   fun set(@Nullable value: String) {
-    preferences.edit().putString(key, value).apply()
+    preferences.edit().putString(key, value).commit()
   }
 
   fun delete() {

@@ -7,6 +7,11 @@ class MediaCodecInfoUtil {
 
   val supportedContainers = hashMapOf<String, Boolean>("video/mkv" to true, "video/mp4" to true, "video/avi" to false, "video/webm" to true, "video/ogg" to true, "video/mv4" to true)
 
+  /**
+   * Logs to the logcat the available audio and video codecs that the device reports it supports.
+   * The log will contain the codec name, whether is supports encoding or decoding, and the mime type it matches too.
+   *
+   */
   fun logAvailableCodecs() {
     val mediaCodecList = MediaCodecList(MediaCodecList.ALL_CODECS)
 
@@ -19,7 +24,13 @@ class MediaCodecInfoUtil {
     }
   }
 
-  fun isCodecSupportted(mimeType : String): Boolean {
+  /**
+   * Looks up a codec by mime type and returns whether the device supports
+   * the codec natively or not.
+   *
+   * @param mimeType The video or audio mimeType string for the codec
+   */
+  fun isCodecSupported(mimeType : String): Boolean {
     val mediaCodecList = MediaCodecList(MediaCodecList.ALL_CODECS)
     for (codecInfo in mediaCodecList.codecInfos) {
       if (!codecInfo.isEncoder) {
@@ -38,8 +49,16 @@ class MediaCodecInfoUtil {
     return false
   }
 
+  /**
+   * Checks to see if ExoPlayer supports the container type.  This is different than the types that the device itself
+   * may support.
+   */
   fun isExoPlayerContainerSupported(mimeType: String) = if (supportedContainers.contains(mimeType)) { supportedContainers.get(mimeType) } else { false }
 
+  /**
+   * Find the correct video mimetype based off information that was returned to us by the server.
+   *
+   */
   fun findCorrectVideoMimeType(mimeType: String): String {
     val videoMimeType = when(mimeType.substringAfter("video/").toLowerCase()) {
       "mpeg-4" -> "video/mp4"

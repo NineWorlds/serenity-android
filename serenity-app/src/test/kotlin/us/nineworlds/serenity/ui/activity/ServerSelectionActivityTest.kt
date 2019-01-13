@@ -102,6 +102,7 @@ class ServerSelectionActivityTest : InjectingTest() {
 
     doReturn("Emby").whenever(mockServer).discoveryProtocol()
     doReturn("test").whenever(mockServer).serverName
+    doReturn("testserver").whenever(mockServer).ipAddress
 
     Robolectric.flushBackgroundThreadScheduler()
     Robolectric.flushForegroundThreadScheduler()

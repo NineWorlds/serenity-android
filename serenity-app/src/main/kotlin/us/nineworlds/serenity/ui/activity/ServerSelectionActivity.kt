@@ -122,6 +122,14 @@ class ServerSelectionActivity : InjectingActivity() {
 
   private fun startNextActivity(serverInfo: Server) {
     serverClientPreference.set(serverInfo.discoveryProtocol())
+    serverIPPreference.set(serverInfo.ipAddress)
+    var serverPort ="32400"
+    if (serverInfo.port != null) {
+      serverPort = serverInfo.port
+    } else if (serverInfo.discoveryProtocol() == "Emby") {
+      serverPort = "8096"
+    }
+    serverPortPreference.set(serverPort)
 
     val analytics = FirebaseAnalytics.getInstance(this)
     val bundle = Bundle()
