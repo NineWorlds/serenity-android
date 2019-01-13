@@ -67,7 +67,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     activity.player = mockPlayer
     activity.mediaDataSourceFactory = mock<DataSource.Factory>()
     activity.trackSelector = mock<MappingTrackSelector>()
-
+    activity.presenter = mockExoPlayerPresenter
   }
 
   @Test
