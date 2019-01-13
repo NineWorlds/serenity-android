@@ -60,23 +60,36 @@ android {
 
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
-  implementation project(':serenity-common')
-  implementation "org.greenrobot:eventbus:$eventBus"
+  api project(':serenity-common')
+  api "org.greenrobot:eventbus:$eventBus"
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-  implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
+  api "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
 
-  releaseImplementation("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion") {
+  releaseApi("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion") {
     exclude group: 'javax.inject'
   }
-  releaseImplementation("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion") {
+  releaseApi("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion") {
     exclude group: 'javax.inject'
   }
 
-  debugImplementation("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion")
-  debugImplementation("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion")
+  debugApi("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion")
+  debugApi("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion")
 
-  releaseImplementation "com.github.stephanenicolas.toothpick:toothpick-javax-annotations:$toothPickVersion"
+  releaseApi "com.github.stephanenicolas.toothpick:toothpick-javax-annotations:$toothPickVersion"
   kapt "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"
 
   testImplementation "junit:junit:$junitVersion"
+  testImplementation "org.assertj:assertj-core:$assertjVersion"
+  testImplementation "org.mockito:mockito-core:$mockitoVersion"
+  testImplementation("org.robolectric:robolectric:$robolectricVersion") {
+    exclude module: 'support-v4'
+  }
+  testImplementation "org.robolectric:shadows-supportv4:$robolectricVersion"
+  testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
+  testImplementation "org.robolectric:shadowapi:$robolectricVersion"
+  testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
+  testImplementation "org.khronos:opengl-api:$openglApiVersion"
+
+  testImplementation "com.github.stephanenicolas.toothpick:toothpick-testing:$toothPickVersion"
+  kaptTest "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"
 }

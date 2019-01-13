@@ -41,6 +41,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import toothpick.Scope;
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.Server;
+import us.nineworlds.serenity.common.android.mediacodec.MediaCodecInfoUtil;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.core.util.AndroidHelper;
@@ -100,6 +101,8 @@ public class SerenityApplication extends Application {
     gdmReceiver = new GDMReceiver();
     registerGDMReceiver();
     discoverServers();
+
+    new MediaCodecInfoUtil().logAvailableCodecs();
   }
 
   protected void setDefaultPreferences() {

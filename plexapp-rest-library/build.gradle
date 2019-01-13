@@ -7,7 +7,7 @@ buildscript {
   }
 }
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: "jacoco"
 apply plugin: 'org.sonarqube'
 apply plugin: 'kotlin-kapt'
@@ -50,16 +50,16 @@ sourceSets {
 
 dependencies {
 
-  implementation project(':serenity-common')
-  implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-  implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
-  implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
-  implementation("com.squareup.retrofit2:converter-simplexml:$retrofitVersion") {
+  api project(':serenity-common')
+  api "com.squareup.retrofit2:retrofit:$retrofitVersion"
+  api "com.squareup.okhttp3:okhttp:$okhttpVersion"
+  api "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+  api("com.squareup.retrofit2:converter-simplexml:$retrofitVersion") {
     exclude group: 'stax'
     exclude group: 'xpp3'
   }
-  implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
-  implementation "me.jessyan:retrofit-url-manager:$urlManager"
+  api "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
+  api "me.jessyan:retrofit-url-manager:$urlManager"
 
   testImplementation "junit:junit:$junitVersion"
   testImplementation "xmlunit:xmlunit:$xmlUnitVersion"

@@ -7,8 +7,10 @@ import com.arellomobile.mvp.MvpPresenter
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.birbit.android.jobqueue.JobManager
-import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.mediacodec.MediaCodecUtil
+import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.PlaybackParameters
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Timeline
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.ui.PlaybackControlView
@@ -16,6 +18,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode.MAIN
 import toothpick.Toothpick
+import us.nineworlds.serenity.common.android.mediacodec.MediaCodecInfoUtil
 import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.annotations.OpenForTesting
 import us.nineworlds.serenity.common.rest.SerenityClient
@@ -29,8 +32,7 @@ import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
 import us.nineworlds.serenity.jobs.video.WatchedStatusJob
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerPresenter
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerView
-import java.lang.Exception
-import java.util.LinkedList
+import java.util.*
 import javax.inject.Inject
 
 @OpenForTesting
@@ -39,7 +41,8 @@ import javax.inject.Inject
 class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), ExoplayerPresenter,
     PlaybackControlView.VisibilityListener, Player.EventListener {
 
-  @Inject lateinit var logger: Logger
+  @Inject
+  lateinit var logger: Logger
 
   @field:[Inject ForVideoQueue]
   internal lateinit var videoQueue: LinkedList<VideoContentInfo>
@@ -161,10 +164,16 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
   internal fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {
 
     val isAudioCodecSupported = selectCodec("audio/" + video.audioCodec)
+    val isVideoSupported = if (video.container.contains("mkv")) {
+      true
+    } else {
+      selectCodec("video/" + video.videoCodec)
+    }
 
-    Log.d("ExoPlayerPresenter", "Audio Codec:  " + video.audioCodec + " support returned " + isAudioCodecSupported)
+    Log.d("ExoPlayerPresenter", "Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
+    Log.d("ExoPlayerPresenter", "Video Codec:  ${video.audioCodec} support returned $isVideoSupported")
 
-    if (video.container.equals("avi") || !isAudioCodecSupported) {
+    if (!isVideoSupported || !isAudioCodecSupported) {
       return false
     }
     return true
@@ -183,12 +192,5 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
     return transcodingUrl
   }
 
-  private fun selectCodec(mimeType: String): Boolean {
-    var actualCode = mimeType;
-    if (actualCode.contains("h264")) {
-      actualCode = "video/avc"
-    }
-    val codec = MediaCodecUtil.getDecoderInfo(actualCode, false) ?: return false
-    return codec.isCodecSupported(mimeType)
-  }
+  private fun selectCodec(mimeType: String): Boolean = MediaCodecInfoUtil().isCodecSupportted(mimeType)
 }

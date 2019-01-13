@@ -52,34 +52,34 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
   implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
-  implementation project(':serenity-common')
-  implementation project(':serenity-android-common')
+  api project(':serenity-common')
+  api project(':serenity-android-common')
 
-  releaseImplementation("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion") {
+  releaseApi("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion") {
     exclude group: 'javax.inject'
   }
-  releaseImplementation("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion") {
+  releaseApi("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion") {
     exclude group: 'javax.inject'
   }
 
   debugImplementation("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion")
   debugImplementation("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion")
 
-  releaseImplementation "com.github.stephanenicolas.toothpick:toothpick-javax-annotations:$toothPickVersion"
+  releaseApi "com.github.stephanenicolas.toothpick:toothpick-javax-annotations:$toothPickVersion"
   kapt "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"
 
-  implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
-  implementation "org.greenrobot:eventbus:$eventBus"
-  implementation "com.squareup.moshi:moshi-kotlin:$moshiKotlinVersion"
-  implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
-  implementation "net.danlew:android.joda:$jodaTimeVersion"
-  implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-  implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
-  implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
-  implementation "me.jessyan:retrofit-url-manager:$urlManager"
-  implementation "com.jakewharton.timber:timber:$timberVersion"
-  implementation "com.github.nisrulz:easydeviceinfo-base:2.4.1"
-  implementation "com.github.nisrulz:easydeviceinfo-common:2.4.1"
+  api "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
+  api "org.greenrobot:eventbus:$eventBus"
+  api "com.squareup.moshi:moshi-kotlin:$moshiKotlinVersion"
+  api "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+  api "net.danlew:android.joda:$jodaTimeVersion"
+  api "com.squareup.retrofit2:retrofit:$retrofitVersion"
+  api "com.squareup.okhttp3:okhttp:$okhttpVersion"
+  api "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+  api "me.jessyan:retrofit-url-manager:$urlManager"
+  api "com.jakewharton.timber:timber:$timberVersion"
+  api "com.github.nisrulz:easydeviceinfo-base:2.4.1"
+  api "com.github.nisrulz:easydeviceinfo-common:2.4.1"
 
   testImplementation "junit:junit:$junitVersion"
   testImplementation "org.assertj:assertj-core:$assertjVersion"
