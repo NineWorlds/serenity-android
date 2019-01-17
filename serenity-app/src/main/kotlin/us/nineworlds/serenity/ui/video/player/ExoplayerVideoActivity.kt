@@ -182,7 +182,6 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
       player.seekTo(offset.toLong())
     }
     player.prepare(mediaSource, offset <= 0, false)
-
   }
 
   internal fun createSimpleExoplayer(): SimpleExoPlayer {
@@ -193,10 +192,11 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     return ExoPlayerFactory.newSimpleInstance(this, trackSelector)
   }
 
-  internal fun buildMediaSource(uri: Uri): MediaSource = ExtractorMediaSource(uri, mediaDataSourceFactory,
-      DefaultExtractorsFactory(),
-      videoPlayerHandler, null)
-
+  internal fun buildMediaSource(uri: Uri): MediaSource = ExtractorMediaSource(
+    uri, mediaDataSourceFactory,
+    DefaultExtractorsFactory(),
+    videoPlayerHandler, null
+  )
 
   internal fun releasePlayer() {
     player.stop()
@@ -242,7 +242,8 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   private fun pauseAndReleaseVideo() {
     if (player.playbackState == Player.STATE_READY ||
-        player.playbackState == Player.STATE_BUFFERING) {
+      player.playbackState == Player.STATE_BUFFERING
+    ) {
       pause()
       releasePlayer()
     }

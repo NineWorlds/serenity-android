@@ -21,5 +21,4 @@ interface LoginUserContract {
 
     fun loadUser(user: SerenityUser)
   }
-
 }

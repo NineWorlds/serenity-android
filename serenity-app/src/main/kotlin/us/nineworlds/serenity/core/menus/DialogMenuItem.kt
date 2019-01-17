@@ -25,7 +25,6 @@
 
 package us.nineworlds.serenity.core.menus
 
-
 /**
  * This class holds the menu options and the action type number to be
  * performed for DialogMenus selection. Used primarily in the
@@ -41,6 +40,4 @@ class DialogMenuItem : MenuItem() {
 
     private val serialVersionUID = -3235438497012856737L
   }
-
-
 }

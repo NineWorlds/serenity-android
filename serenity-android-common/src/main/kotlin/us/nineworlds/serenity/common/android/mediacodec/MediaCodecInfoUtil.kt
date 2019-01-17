@@ -5,7 +5,14 @@ import android.util.Log
 
 class MediaCodecInfoUtil {
 
-  val supportedContainers = hashMapOf<String, Boolean>("video/mkv" to true, "video/mp4" to true, "video/avi" to false, "video/webm" to true, "video/ogg" to true, "video/mv4" to true)
+  val supportedContainers = hashMapOf(
+    "video/mkv" to true,
+    "video/mp4" to true,
+    "video/avi" to false,
+    "video/webm" to true,
+    "video/ogg" to true,
+    "video/mv4" to true
+  )
 
   /**
    * Logs to the logcat the available audio and video codecs that the device reports it supports.
@@ -30,12 +37,12 @@ class MediaCodecInfoUtil {
    *
    * @param mimeType The video or audio mimeType string for the codec
    */
-  fun isCodecSupported(mimeType : String): Boolean {
+  fun isCodecSupported(mimeType: String): Boolean {
     val mediaCodecList = MediaCodecList(MediaCodecList.ALL_CODECS)
     for (codecInfo in mediaCodecList.codecInfos) {
       if (!codecInfo.isEncoder) {
-        val types : Array<String> = codecInfo.supportedTypes
-        for ( type in types) {
+        val types: Array<String> = codecInfo.supportedTypes
+        for (type in types) {
           if (type == mimeType) {
             Log.d(MediaCodecInfoUtil::class.java.simpleName, "MimeType Found for $mimeType!")
             return true
@@ -53,14 +60,18 @@ class MediaCodecInfoUtil {
    * Checks to see if ExoPlayer supports the container type.  This is different than the types that the device itself
    * may support.
    */
-  fun isExoPlayerContainerSupported(mimeType: String) = if (supportedContainers.contains(mimeType)) { supportedContainers.get(mimeType) } else { false }
+  fun isExoPlayerContainerSupported(mimeType: String) = if (supportedContainers.contains(mimeType)) {
+    supportedContainers.get(mimeType)
+  } else {
+    false
+  }
 
   /**
    * Find the correct video mimetype based off information that was returned to us by the server.
    *
    */
   fun findCorrectVideoMimeType(mimeType: String): String {
-    val videoMimeType = when(mimeType.substringAfter("video/").toLowerCase()) {
+    val videoMimeType = when (mimeType.substringAfter("video/").toLowerCase()) {
       "mpeg-4" -> "video/mp4"
       "mpeg4" -> "video/mp4v-es"
       "h264" -> "video/avc"
@@ -72,7 +83,7 @@ class MediaCodecInfoUtil {
   }
 
   fun findCorrectAudioMimeType(mimeType: String): String {
-    val audioMimType = when(mimeType.substringAfter("audio/").toLowerCase()) {
+    val audioMimType = when (mimeType.substringAfter("audio/").toLowerCase()) {
       "mp3" -> "audio/mpeg"
       "aac" -> "audio/mp4a-latm"
       else -> mimeType

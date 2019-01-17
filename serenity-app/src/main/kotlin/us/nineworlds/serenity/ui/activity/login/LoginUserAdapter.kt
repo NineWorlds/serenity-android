@@ -8,7 +8,8 @@ import app.com.tvrecyclerview.TvRecyclerView.OnItemStateListener
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.rest.SerenityUser
 
-class LoginUserAdapter(val presenter: LoginUserPresenter): RecyclerView.Adapter<LoginUserViewHolder>(), OnItemStateListener {
+class LoginUserAdapter(val presenter: LoginUserPresenter) : RecyclerView.Adapter<LoginUserViewHolder>(),
+  OnItemStateListener {
 
   val users: ArrayList<SerenityUser> = ArrayList<SerenityUser>()
 
@@ -44,7 +45,5 @@ class LoginUserAdapter(val presenter: LoginUserPresenter): RecyclerView.Adapter<
   }
 
   override fun onItemViewFocusChanged(p0: Boolean, p1: View?, p2: Int) {
-
   }
-
 }

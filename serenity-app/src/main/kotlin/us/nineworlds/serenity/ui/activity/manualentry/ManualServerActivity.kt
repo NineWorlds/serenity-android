@@ -17,5 +17,4 @@ class ManualServerActivity : InjectingActivity() {
     setResult(MainActivity.MAIN_MENU_PREFERENCE_RESULT_CODE)
     super.finish()
   }
-
 }

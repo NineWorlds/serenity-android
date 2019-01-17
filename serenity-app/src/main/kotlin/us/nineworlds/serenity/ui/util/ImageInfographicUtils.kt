@@ -47,9 +47,11 @@ import javax.inject.Inject
 
 class ImageInfographicUtils(private val width: Int, private val height: Int) : BaseInjector() {
 
-  @Inject lateinit var factory: SerenityClient
+  @Inject
+  lateinit var factory: SerenityClient
 
-  @Inject lateinit var timeUtil: TimeUtil
+  @Inject
+  lateinit var timeUtil: TimeUtil
 
   fun createAudioCodecImage(codec: String?, context: Context): ImageView? {
     val v = ImageView(context)
@@ -115,7 +117,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     val h = ImageUtils.getDPI(height, v.context as Activity)
     v.layoutParams = LayoutParams(w, h)
 
-    when(ratio) {
+    when (ratio) {
       "1.33" -> v.setImageResource(R.drawable.aspect_1_33)
       "1.66" -> v.setImageResource(R.drawable.aspect_1_66)
       "1.78" -> v.setImageResource(R.drawable.aspect_1_78)
@@ -135,7 +137,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     val h = ImageUtils.getDPI(height, v.context as Activity)
     v.layoutParams = LayoutParams(w, h)
 
-    when(contentRating) {
+    when (contentRating) {
       "G" -> v.setImageResource(R.drawable.mpaa_g)
       "PG" -> v.setImageResource(R.drawable.mpaa_pg)
       "PG-13" -> v.setImageResource(R.drawable.mpaa_pg13)
@@ -157,7 +159,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     val h = ImageUtils.getDPI(height, v.context as Activity)
     v.layoutParams = LayoutParams(w, h)
 
-    when(codec.toLowerCase()) {
+    when (codec.toLowerCase()) {
       "divx" -> v.setImageResource(R.drawable.divx)
       "div3" -> v.setImageResource(R.drawable.div3)
       "vc-1" -> v.setImageResource(R.drawable.vc_1)
@@ -178,7 +180,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     val h = ImageUtils.getDPI(height, v.context as Activity)
     v.layoutParams = LayoutParams(w, h)
 
-    when(contentRating) {
+    when (contentRating) {
       "TV-G" -> v.setImageResource(R.drawable.tvg)
       "TV-PG" -> v.setImageResource(R.drawable.tvpg)
       "TV-14" -> v.setImageResource(R.drawable.tv14)
@@ -201,7 +203,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     val h = ImageUtils.getDPI(height, v.context as Activity)
     v.layoutParams = LayoutParams(w, h)
 
-    when(channels.toLowerCase()) {
+    when (channels.toLowerCase()) {
       "0" -> v.setImageResource(R.drawable.audio_0)
       "1" -> v.setImageResource(R.drawable.audio_1)
       "2" -> v.setImageResource(R.drawable.audio_2)

@@ -27,5 +27,4 @@ class TimberLogger : Logger {
   override fun info(message: String) {
     Timber.i(message)
   }
-
 }

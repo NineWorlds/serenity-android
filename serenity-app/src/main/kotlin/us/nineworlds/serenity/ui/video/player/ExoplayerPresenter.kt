@@ -32,14 +32,14 @@ import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
 import us.nineworlds.serenity.jobs.video.WatchedStatusJob
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerPresenter
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerView
-import java.util.*
+import java.util.LinkedList
 import javax.inject.Inject
 
 @OpenForTesting
 @InjectViewState
 @StateStrategyType(SkipStrategy::class)
 class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), ExoplayerPresenter,
-    PlaybackControlView.VisibilityListener, Player.EventListener {
+  PlaybackControlView.VisibilityListener, Player.EventListener {
 
   @Inject
   lateinit var logger: Logger
@@ -163,8 +163,13 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
 
   internal fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {
     val mediaCodecInfoUtil = MediaCodecInfoUtil()
-    video.container = if (video.container.contains("mp4")) { "mp4" } else { video.container}
-    val isVideoContainerSupported = mediaCodecInfoUtil.isExoPlayerContainerSupported("video/${video.container.substringBefore(",")}")
+    video.container = if (video.container.contains("mp4")) {
+      "mp4"
+    } else {
+      video.container
+    }
+    val isVideoContainerSupported =
+      mediaCodecInfoUtil.isExoPlayerContainerSupported("video/${video.container.substringBefore(",")}")
     val isAudioCodecSupported = selectCodec(mediaCodecInfoUtil.findCorrectAudioMimeType("audio/${video.audioCodec}"))
     val isVideoSupported = selectCodec(mediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
 

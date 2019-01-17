@@ -28,7 +28,7 @@ class LoginUserPresenter : MvpPresenter<LoginUserContract.LoginUserView>(), Logi
   @Inject
   lateinit var client: SerenityClient
 
-  var eventBus =  EventBus.getDefault()
+  var eventBus = EventBus.getDefault()
 
   @Inject
   lateinit var jobManager: JobManager
@@ -76,5 +76,4 @@ class LoginUserPresenter : MvpPresenter<LoginUserContract.LoginUserView>(), Logi
   fun showUsersStartScreen(authenticatUserEvent: AuthenticatedUserEvent) {
     viewState.launchNextScreen()
   }
-
 }

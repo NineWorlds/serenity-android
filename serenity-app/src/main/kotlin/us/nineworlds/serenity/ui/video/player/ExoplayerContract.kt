@@ -38,7 +38,5 @@ interface ExoplayerContract {
     fun stopPlaying()
 
     fun startPlaying()
-
   }
-
 }

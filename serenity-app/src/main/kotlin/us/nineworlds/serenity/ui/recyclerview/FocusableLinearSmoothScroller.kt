@@ -1,4 +1,5 @@
 package us.nineworlds.serenity.ui.recyclerview
+
 /**
  * The MIT License (MIT)
  * Copyright (c) 2018 David Carver
@@ -29,7 +30,7 @@ import android.view.View
 
 class FocusableLinearSmoothScroller(context: Context) : LinearSmoothScroller(context) {
 
-  var targetView : View? = null
+  var targetView: View? = null
 
   override fun onTargetFound(targetView: View?, state: RecyclerView.State?, action: Action?) {
     super.onTargetFound(targetView, state, action)

@@ -26,7 +26,6 @@
 package us.nineworlds.serenity.ui.video.player
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
 import us.nineworlds.serenity.R
@@ -40,7 +39,8 @@ import javax.inject.Inject
 
 class RecommendationPlayerActivity : SerenityActivity() {
 
-  @Inject internal lateinit var vpUtils: VideoPlayerIntentUtils
+  @Inject
+  internal lateinit var vpUtils: VideoPlayerIntentUtils
 
   private lateinit var video: VideoContentInfo
 

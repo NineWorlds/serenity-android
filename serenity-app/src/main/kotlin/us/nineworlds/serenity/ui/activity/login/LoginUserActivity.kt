@@ -38,7 +38,7 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
   lateinit var profileContainer: TvRecyclerView
 
   @BindView(R.id.data_loading_container)
-  lateinit var dataLoadingContainer : FrameLayout
+  lateinit var dataLoadingContainer: FrameLayout
 
   lateinit var adapter: LoginUserAdapter
 

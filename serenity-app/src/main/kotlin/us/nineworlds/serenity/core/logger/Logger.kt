@@ -8,5 +8,4 @@ interface Logger {
   fun error(message: String, error: Throwable)
   fun warn(message: String)
   fun info(message: String)
-
 }

@@ -15,10 +15,13 @@ import us.nineworlds.serenity.events.video.StopPlaybackEvent
 import javax.inject.Inject
 
 @OpenForTesting
-class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val activity: Activity,
-    val presenter: ExoplayerContract.ExoplayerPresenter) {
+class VideoKeyCodeHandlerDelegate(
+  val player: SimpleExoPlayer, val activity: Activity,
+  val presenter: ExoplayerContract.ExoplayerPresenter
+) {
 
-  @Inject lateinit var preferences: SharedPreferences
+  @Inject
+  lateinit var preferences: SharedPreferences
   val eventBus = EventBus.getDefault()
 
   init {
@@ -111,13 +114,17 @@ class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val activity: Act
 
       if (isKeyCodeSkipForward(keyCode)) {
         skipToOffset(
-            currentPosition + Integer.valueOf(preferences.getString("skip_forward_time", "30000"))!!)
+          currentPosition + Integer.valueOf(preferences.getString("skip_forward_time", "30000"))!!
+        )
         return true
       }
 
       if (isKeyCodeSkipBack(keyCode)) {
-        skipToOffset(currentPosition - Integer.valueOf(
-            preferences.getString("skip_backward_time", "10000"))!!)
+        skipToOffset(
+          currentPosition - Integer.valueOf(
+            preferences.getString("skip_backward_time", "10000")
+          )!!
+        )
         return true
       }
 
@@ -142,37 +149,37 @@ class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val activity: Act
   fun isHudShowing(): Boolean = presenter.isHudShowing()
 
   internal fun isKeyCodeStop(keyCode: Int): Boolean =
-      keyCode == KeyEvent.KEYCODE_MEDIA_STOP || keyCode == KeyEvent.KEYCODE_S
+    keyCode == KeyEvent.KEYCODE_MEDIA_STOP || keyCode == KeyEvent.KEYCODE_S
 
   internal fun isKeyCodeSkipBack(keyCode: Int): Boolean {
     return keyCode == KeyEvent.KEYCODE_MEDIA_REWIND
-        || keyCode == KeyEvent.KEYCODE_R
-        || keyCode == KeyEvent.KEYCODE_BUTTON_L1
-        || keyCode == KeyEvent.KEYCODE_BUTTON_L2
+      || keyCode == KeyEvent.KEYCODE_R
+      || keyCode == KeyEvent.KEYCODE_BUTTON_L1
+      || keyCode == KeyEvent.KEYCODE_BUTTON_L2
   }
 
   internal fun isKeyCodeSkipForward(keyCode: Int): Boolean {
     return keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
-        || keyCode == KeyEvent.KEYCODE_F
-        || keyCode == KeyEvent.KEYCODE_BUTTON_R1
-        || keyCode == KeyEvent.KEYCODE_BUTTON_R2
+      || keyCode == KeyEvent.KEYCODE_F
+      || keyCode == KeyEvent.KEYCODE_BUTTON_R1
+      || keyCode == KeyEvent.KEYCODE_BUTTON_R2
   }
 
   internal fun isKeyCodePauseResume(keyCode: Int): Boolean {
     return keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
-        || keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
-        || keyCode == KeyEvent.KEYCODE_P
-        || keyCode == KeyEvent.KEYCODE_SPACE
-        || keyCode == KeyEvent.KEYCODE_BUTTON_A
-        || keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
+      || keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE
+      || keyCode == KeyEvent.KEYCODE_P
+      || keyCode == KeyEvent.KEYCODE_SPACE
+      || keyCode == KeyEvent.KEYCODE_BUTTON_A
+      || keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
   }
 
   internal fun isKeyCodeInfo(keyCode: Int): Boolean {
     return keyCode == KeyEvent.KEYCODE_INFO
-        || keyCode == KeyEvent.KEYCODE_I
-        || keyCode == KeyEvent.KEYCODE_MENU
-        || keyCode == KeyEvent.KEYCODE_BUTTON_Y
-        || keyCode == KeyEvent.KEYCODE_DPAD_CENTER
+      || keyCode == KeyEvent.KEYCODE_I
+      || keyCode == KeyEvent.KEYCODE_MENU
+      || keyCode == KeyEvent.KEYCODE_BUTTON_Y
+      || keyCode == KeyEvent.KEYCODE_DPAD_CENTER
   }
 
   internal fun isKeyCodePlay(keyCode: Int): Boolean = keyCode == KeyEvent.KEYCODE_MEDIA_PLAY
@@ -242,6 +249,4 @@ class VideoKeyCodeHandlerDelegate(val player: SimpleExoPlayer, val activity: Act
     }
     player.seekTo(skipOffset)
   }
-
-
 }

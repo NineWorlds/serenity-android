@@ -24,6 +24,4 @@ open class MenuItem : Serializable {
   override fun toString(): String {
     return title
   }
-
-
 }

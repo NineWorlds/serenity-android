@@ -6,7 +6,11 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife.bind
 import com.birbit.android.jobqueue.JobManager
@@ -19,7 +23,11 @@ import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.core.util.StringPreference
 import us.nineworlds.serenity.emby.server.EmbyServer
 import us.nineworlds.serenity.emby.server.EmbyServerJob
-import us.nineworlds.serenity.injection.*
+import us.nineworlds.serenity.injection.ForMediaServers
+import us.nineworlds.serenity.injection.InjectingActivity
+import us.nineworlds.serenity.injection.ServerClientPreference
+import us.nineworlds.serenity.injection.ServerIPPreference
+import us.nineworlds.serenity.injection.ServerPortPreference
 import us.nineworlds.serenity.jobs.GDMServerJob
 import us.nineworlds.serenity.ui.activity.login.LoginUserActivity
 import us.nineworlds.serenity.ui.activity.manualentry.ManualServerActivity
@@ -77,7 +85,8 @@ class ServerSelectionActivity : InjectingActivity() {
   private fun createServerList() {
     serverLoadingContainer.visibility = GONE
 
-    manualEntryButton = LayoutInflater.from(this).inflate(R.layout.button_server_manual, serverContainer, false) as FrameLayout
+    manualEntryButton =
+      LayoutInflater.from(this).inflate(R.layout.button_server_manual, serverContainer, false) as FrameLayout
     manualEntryButton.setOnClickListener {
       val intent = Intent(this, ManualServerActivity::class.java)
       startActivityForResult(intent, 2000)
@@ -90,7 +99,8 @@ class ServerSelectionActivity : InjectingActivity() {
     for ((key, serverInfo) in servers) {
       displayServers(key, serverInfo)
     }
-    refreshButton = LayoutInflater.from(this).inflate(R.layout.button_server_refresh, serverContainer, false) as FrameLayout
+    refreshButton =
+      LayoutInflater.from(this).inflate(R.layout.button_server_refresh, serverContainer, false) as FrameLayout
     refreshButton.setOnClickListener {
       jobManager.addJobInBackground(GDMServerJob())
       jobManager.addJobInBackground(EmbyServerJob())
@@ -123,7 +133,7 @@ class ServerSelectionActivity : InjectingActivity() {
   private fun startNextActivity(serverInfo: Server) {
     serverClientPreference.set(serverInfo.discoveryProtocol())
     serverIPPreference.set(serverInfo.ipAddress)
-    var serverPort ="32400"
+    var serverPort = "32400"
     if (serverInfo.port != null) {
       serverPort = serverInfo.port
     } else if (serverInfo.discoveryProtocol() == "Emby") {
