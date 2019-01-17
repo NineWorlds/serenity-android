@@ -8,8 +8,6 @@ import us.nineworlds.serenity.emby.model.MediaContainer
 import us.nineworlds.serenity.emby.model.Video
 import us.nineworlds.serenity.emby.server.model.Item
 import us.nineworlds.serenity.emby.server.model.NameGuidPair
-import us.nineworlds.serenity.emby.server.model.SearchHint
-import java.util.Collections
 
 class MediaContainerAdaptor {
 
@@ -88,7 +86,7 @@ class MediaContainerAdaptor {
     val mediaContainer = MediaContainer()
     val seriesVideos = ArrayList<IDirectory>()
 
-    for(item in series) {
+    for (item in series) {
       val seriesEntry = Directory()
 
       seriesEntry.title = item.name
@@ -107,7 +105,6 @@ class MediaContainerAdaptor {
           viewdItemsCount = item.userData.playCount
           totalItemCount += viewdItemsCount
         }
-
       }
 
       seriesEntry.leafCount = totalItemCount.toString()
@@ -191,5 +188,4 @@ class MediaContainerAdaptor {
   }
 
   fun convertTicksToMilliseconds(ticks: Long): Long = ticks.div(TICKS_PER_MILLISECOND)
-
 }

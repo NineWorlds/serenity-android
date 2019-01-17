@@ -19,7 +19,11 @@ import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.emby.adapters.MediaContainerAdaptor
 import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
-import us.nineworlds.serenity.emby.server.model.*
+import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
+import us.nineworlds.serenity.emby.server.model.AuthenticationResult
+import us.nineworlds.serenity.emby.server.model.PublicUserInfo
+import us.nineworlds.serenity.emby.server.model.QueryFilters
+import us.nineworlds.serenity.emby.server.model.QueryResult
 import java.io.File
 
 class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
@@ -43,21 +47,20 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     val cacheSize = 10 * 1024 * 1024 // 10 MiB
     val cache = Cache(cacheDir, cacheSize.toLong())
 
-
     val okClient = RetrofitUrlManager.getInstance().with(OkHttpClient.Builder())
     logger.level = HttpLoggingInterceptor.Level.BODY
     okClient.addInterceptor(logger)
     okClient.cache(cache)
 
     val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .add(LocalDateTime::class.java, LocalDateJsonAdapter()).build()
+      .add(KotlinJsonAdapterFactory())
+      .add(LocalDateTime::class.java, LocalDateJsonAdapter()).build()
 
     val builder = Retrofit.Builder()
     val embyRetrofit = builder.baseUrl(baseUrl)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .client(okClient.build())
-        .build()
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
+      .client(okClient.build())
+      .build()
 
     usersService = embyRetrofit.create(UsersService::class.java)
     filterService = embyRetrofit.create(FilterService::class.java)
@@ -136,7 +139,8 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
   private fun headerMap(): Map<String, String> {
     val headers = HashMap<String, String>()
-    val authorizationValue = "MediaBrowser Client=\"Android\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"1.0.0.0\""
+    val authorizationValue =
+      "MediaBrowser Client=\"Android\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"1.0.0.0\""
     headers["X-Emby-Authorization"] = authorizationValue
     if (accessToken != null) {
       headers["X-Emby-Token"] = accessToken!!
@@ -154,9 +158,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     for (user in allPublicUsers) {
       val builder = us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
       val sernityUser = builder.userName(user.name)
-          .userId(user.id)
-          .hasPassword(user.hasPassword)
-          .build()
+        .userId(user.id)
+        .hasPassword(user.hasPassword)
+        .build()
       allUsers.add(sernityUser)
     }
     return allUsers
@@ -166,13 +170,12 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     val authenticatedUser = authenticate(user.userName)
 
     return us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
-        .accessToken(authenticatedUser.accesToken)
-        .userName(user.userName)
-        .userId(user.userId)
-        .hasPassword(user.hasPassword())
-        .build()
+      .accessToken(authenticatedUser.accesToken)
+      .userName(user.userName)
+      .userId(user.userId)
+      .hasPassword(user.hasPassword())
+      .build()
   }
-
 
   override fun retrieveRootData(): IMediaContainer {
     if (userId == null) {
@@ -225,7 +228,6 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
       userId = fetchUserId()
     }
 
-
     val call = if (category == "ondeck") {
       usersService.resumableItems(headerMap(), userId = userId!!, parentId = key)
     } else if (category == "recentlyAdded") {
@@ -248,7 +250,13 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     if (userId == null) {
       userId = fetchUserId()
     }
-    val call = usersService.fetchItemQuery(headerMap(), userId = userId!!, parentId = key, includeItemType = "Season", genre = null)
+    val call = usersService.fetchItemQuery(
+      headerMap(),
+      userId = userId!!,
+      parentId = key,
+      includeItemType = "Season",
+      genre = null
+    )
 
     val results = call.execute().body()
 
@@ -263,7 +271,13 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     if (userId == null) {
       userId = fetchUserId()
     }
-    val call = usersService.fetchItemQuery(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode", genre = null)
+    val call = usersService.fetchItemQuery(
+      headerMap(),
+      userId = userId!!,
+      parentId = key,
+      includeItemType = "Episode",
+      genre = null
+    )
 
     val results = call.execute().body()
 
@@ -282,11 +296,17 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     val results = call.execute().body()
     val itemIds = mutableListOf<String>()
 
-    for(searchHint in results!!.searchHints!!) {
+    for (searchHint in results!!.searchHints!!) {
       itemIds.add(searchHint.id!!)
     }
 
-    val itemCall = usersService.fetchItemQuery(headerMap(), userId = userId!!, ids = itemIds.joinToString(separator = ","), genre = null, parentId = null)
+    val itemCall = usersService.fetchItemQuery(
+      headerMap(),
+      userId = userId!!,
+      ids = itemIds.joinToString(separator = ","),
+      genre = null,
+      parentId = null
+    )
 
     val itemResults = itemCall.execute().body()
 
@@ -419,7 +439,15 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
       userId = fetchUserId()
     }
 
-    val call = usersService.fetchItemQuery(headerMap(), userId = userId!!, parentId = key, genre = genre, isPlayed = isPlayed, includeItemType = itemType, limitCount = 5)
+    val call = usersService.fetchItemQuery(
+      headerMap(),
+      userId = userId!!,
+      parentId = key,
+      genre = genre,
+      isPlayed = isPlayed,
+      includeItemType = itemType,
+      limitCount = 5
+    )
 
     val results = call.execute().body()
     return MediaContainerAdaptor().createSeriesList(results!!.items)

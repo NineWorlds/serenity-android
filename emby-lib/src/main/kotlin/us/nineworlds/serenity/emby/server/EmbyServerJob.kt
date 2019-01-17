@@ -6,7 +6,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
-import toothpick.config.Module
 import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.android.injection.ApplicationContext
 import us.nineworlds.serenity.common.android.injection.InjectingJob
@@ -86,7 +85,8 @@ class EmbyServerJob : InjectingJob() {
           }
 
           Timber.d(
-              ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName())
+            ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName()
+          )
         }
       }
 
@@ -96,7 +96,6 @@ class EmbyServerJob : InjectingJob() {
 
       //Close the port!
       c.close()
-
     } catch (ex: Exception) {
       Timber.e(ex, "Error finding servers")
     }
@@ -163,5 +162,4 @@ class EmbyServerJob : InjectingJob() {
   companion object {
     const val MULTICAST_ADDRESS = "239.255.255.250"
   }
-
 }

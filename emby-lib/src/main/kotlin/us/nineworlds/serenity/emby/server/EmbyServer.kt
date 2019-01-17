@@ -49,8 +49,7 @@ class EmbyServer : Server, Serializable {
     return portNumber
   }
 
-  override fun setPort(portNumber: String?){
+  override fun setPort(portNumber: String?) {
     this.portNumber = portNumber
   }
-
 }
