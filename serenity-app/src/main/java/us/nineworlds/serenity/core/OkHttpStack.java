@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.core;
 
+import android.support.annotation.NonNull;
 import com.android.volley.toolbox.HurlStack;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -18,7 +19,7 @@ public class OkHttpStack extends HurlStack {
     Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 
-  @Override protected HttpURLConnection createConnection(URL url) throws IOException {
+  @Override protected HttpURLConnection createConnection(@NonNull URL url) throws IOException {
     OkUrlFactory factory = new OkUrlFactory(client);
     return factory.open(url);
   }

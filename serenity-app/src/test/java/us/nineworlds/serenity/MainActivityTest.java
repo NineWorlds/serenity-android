@@ -76,7 +76,6 @@ public class MainActivityTest extends InjectingTest {
 
     activity =
         Robolectric.buildActivity(MainActivity.class).create().start().resume().visible().pause().restart().get();
-    //     activity = Robolectric.buildActivity(MainActivity.class).create().start().visible().get();
 
     FragmentManager fragmentManager = activity.getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -99,8 +98,7 @@ public class MainActivityTest extends InjectingTest {
   }
 
   @Test public void onKeyDownOpensMenuDrawerWhenKeycodeMenu() {
-    DrawerLayout drawerLayout = ButterKnife.findById(activity, R.id.drawer_layout);
-    ListView listView = ButterKnife.findById(activity, R.id.left_drawer_list);
+    DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
     drawerLayout.closeDrawers();
     doReturn(true).when(mockSharedPreferences).getBoolean("remote_control_menu", true);
 
@@ -110,9 +108,9 @@ public class MainActivityTest extends InjectingTest {
   }
 
   @Test public void onKeyDownClosesOpenDrawerWhenKeycodeMenu() {
-    DrawerLayout drawerLayout = ButterKnife.findById(activity, R.id.drawer_layout);
-    LinearLayout leftDrawer = ButterKnife.findById(activity, R.id.left_drawer);
-    RecyclerView mainMenu = ButterKnife.findById(activity, (R.id.mainGalleryMenu));
+    DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
+    LinearLayout leftDrawer = activity.findViewById(R.id.left_drawer);
+    RecyclerView mainMenu = activity.findViewById(R.id.mainGalleryMenu);
 
     drawerLayout.openDrawer(leftDrawer);
 
@@ -125,9 +123,9 @@ public class MainActivityTest extends InjectingTest {
   }
 
   @Test public void onKeyDownClosesOpenDrawerWhenKeycodeBackIsPressed() {
-    DrawerLayout drawerLayout = ButterKnife.findById(activity, R.id.drawer_layout);
-    LinearLayout leftDrawer = ButterKnife.findById(activity, R.id.left_drawer);
-    RecyclerView mainMenu = ButterKnife.findById(activity, (R.id.mainGalleryMenu));
+    DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
+    LinearLayout leftDrawer = activity.findViewById(R.id.left_drawer);
+    RecyclerView mainMenu = activity.findViewById(R.id.mainGalleryMenu);
 
     drawerLayout.openDrawer(leftDrawer);
 
@@ -140,8 +138,8 @@ public class MainActivityTest extends InjectingTest {
   }
 
   @Test public void onOptionsMenuOpensDrawerAndSetsFocus() {
-    DrawerLayout drawerLayout = ButterKnife.findById(activity, R.id.drawer_layout);
-    LinearLayout leftDrawer = ButterKnife.findById(activity, R.id.left_drawer);
+    DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
+    LinearLayout leftDrawer = activity.findViewById(R.id.left_drawer);
     drawerLayout.closeDrawers();
 
     activity.openOptionsMenu();

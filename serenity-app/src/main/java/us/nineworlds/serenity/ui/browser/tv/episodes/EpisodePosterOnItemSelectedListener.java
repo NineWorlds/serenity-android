@@ -49,8 +49,6 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 
-import static butterknife.ButterKnife.findById;
-
 public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
   @BindView(R.id.video_poster) ImageView posterImage;
@@ -228,7 +226,7 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
 
     changeBackgroundImage(context);
 
-    posterImageView = findById(view, R.id.posterImageView);
+    posterImageView = view.findViewById(R.id.posterImageView);
     currentView = posterImageView;
 
     createVideoDetail(posterImageView);

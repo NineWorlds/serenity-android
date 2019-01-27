@@ -1,50 +1,47 @@
 <us.nineworlds.serenity.widgets.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
-    android:background="@android:color/background_dark"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                                             android:id="@+id/drawer_layout"
+                                             android:background="@android:color/background_dark"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent">
 
-  <!-- The main content view -->
-
-  <RelativeLayout
-      android:id="@+id/mainLayout"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      >
-
-    <ImageView
-        android:id="@+id/mainGalleryBackground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/serenity_bonsai_splash"
-        />
+    <!-- The main content view -->
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="@dimen/overscan_start_padding"
-        android:paddingEnd="@dimen/overscan_end_padding">
+            android:id="@+id/mainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-      <fragment
-          android:id="@+id/mainMenuFragment"
-          android:name="us.nineworlds.serenity.fragments.MainMenuFragment"
-          android:layout_width="match_parent"
-          android:layout_height="80dp"
-          android:layout_centerInParent="true"
-          />
+        <ImageView
+                android:id="@+id/mainGalleryBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/serenity_bonsai_splash"/>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/overscan_start_padding"
+                android:paddingEnd="@dimen/overscan_end_padding">
+
+            <fragment
+                    android:id="@+id/mainMenuFragment"
+                    android:name="us.nineworlds.serenity.fragments.MainMenuFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"/>xit
+
+        </RelativeLayout>
+
+        <include layout="@layout/include_loading_progress"
+                 android:layout_width="150dp"
+                 android:layout_height="150dp"
+                 android:layout_centerInParent="true"/>
 
     </RelativeLayout>
+    <!-- The navigation drawer -->
 
-    <include layout="@layout/include_loading_progress"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerInParent="true"/>
-
-  </RelativeLayout>
-  <!-- The navigation drawer -->
-
-  <include layout="@layout/menu_drawer_with_navigation"/>
+    <include layout="@layout/menu_drawer_with_navigation"/>
 
 </us.nineworlds.serenity.widgets.DrawerLayout>

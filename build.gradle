@@ -47,7 +47,7 @@ project.ext {
   eventBus = "3.1.1"
   moshiKotlinVersion = "1.6.0"
   retrofitVersion = "2.4.0"
-  jodaTimeVersion = "2.9.9.4"
+  jodaTimeVersion = "2.10.1.1"
   timberVersion = "4.7.1"
   exoplayerVersion = "2.8.4"
   glideOkHttpVersion = "1.5.0"
@@ -57,7 +57,7 @@ project.ext {
   androidSupportLibVersion = "28.0.0"
   universalCharDetVersion = "1.0.3"
   volleyVersion = "1.0.16"
-  butterKnifeVersion = "8.8.1"
+  butterKnifeVersion = "9.0.0"
   simpleXmlVersion = "2.7.1"
   urlManager = "1.4.0"
 
