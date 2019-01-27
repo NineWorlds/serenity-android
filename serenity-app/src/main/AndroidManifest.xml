@@ -4,9 +4,7 @@
     package="us.nineworlds.serenity">
 
   <uses-sdk
-      android:minSdkVersion="21"
-      android:targetSdkVersion="27"
-      tools:overrideLibrary="android.support.v17.leanback"/>
+          tools:overrideLibrary="android.support.v17.leanback"/>
 
   <!-- try to exclude phone devices from the list. Currently only support TVs -->
   <supports-screens

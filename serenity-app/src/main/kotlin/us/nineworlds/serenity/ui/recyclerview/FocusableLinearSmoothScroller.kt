@@ -32,7 +32,7 @@ class FocusableLinearSmoothScroller(context: Context) : LinearSmoothScroller(con
 
   var targetView: View? = null
 
-  override fun onTargetFound(targetView: View?, state: RecyclerView.State?, action: Action?) {
+  override fun onTargetFound(targetView: View, state: RecyclerView.State, action: Action) {
     super.onTargetFound(targetView, state, action)
     this.targetView = targetView
   }
@@ -40,8 +40,10 @@ class FocusableLinearSmoothScroller(context: Context) : LinearSmoothScroller(con
   override fun onStop() {
     super.onStop()
 
-    if (targetView != null && !targetView!!.hasFocus()) {
-      targetView!!.requestFocusFromTouch()
+    targetView?.let { targetView ->
+      if (!targetView.hasFocus()) {
+        targetView.requestFocusFromTouch()
+      }
     }
   }
 }
