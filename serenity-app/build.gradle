@@ -197,6 +197,7 @@ dependencies {
   implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
   implementation "me.jessyan:retrofit-url-manager:$urlManager"
   implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
+  //TODO Upgrade to Android X and upgrade to 10.0.0
   implementation "com.jakewharton:butterknife:$butterKnifeVersion"
   implementation "com.jakewharton.timber:timber:$timberVersion"
   implementation "com.android.support:cardview-v7:$androidSupportLibVersion"
@@ -218,8 +219,10 @@ dependencies {
   implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
   implementation "net.danlew:android.joda:$jodaTimeVersion"
   implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+  //TODO Upgrade to Android X and update to 1.1.0
   implementation 'com.google.android:flexbox:1.0.0'
   implementation 'com.henryblue.library:tvrecyclerview:1.2.2'
+  //TODO Upgrade to Android X and update to 3.0.0
   implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
 
 
