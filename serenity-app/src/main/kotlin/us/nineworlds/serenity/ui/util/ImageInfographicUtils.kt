@@ -56,9 +56,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
   fun createAudioCodecImage(codec: String?, context: Context): ImageView? {
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
-    val w = ImageUtils.getDPI(width, v.context as Activity)
-    val h = ImageUtils.getDPI(height, v.context as Activity)
-    v.layoutParams = LayoutParams(w, h)
+    v.layoutParams = LayoutParams(width, height)
 
     when (codec) {
       "aac" -> v.setImageResource(R.drawable.aac)
@@ -91,9 +89,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
 
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
-    val w = ImageUtils.getDPI(width, v.context as Activity)
-    val h = ImageUtils.getDPI(height, v.context as Activity)
-    v.layoutParams = LayoutParams(w, h)
+    v.layoutParams = LayoutParams(width, height)
 
     when (res.toLowerCase()) {
       "sd", "480" -> v.setImageResource(R.drawable.res480)
@@ -109,13 +105,11 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
 
   fun createAspectRatioImage(ratio: String?, context: Context): ImageView? {
     if (ratio == null) {
-      return null;
+      return null
     }
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
-    val w = ImageUtils.getDPI(width, v.context as Activity)
-    val h = ImageUtils.getDPI(height, v.context as Activity)
-    v.layoutParams = LayoutParams(w, h)
+    v.layoutParams = LayoutParams(width, height)
 
     when (ratio) {
       "1.33" -> v.setImageResource(R.drawable.aspect_1_33)
@@ -133,9 +127,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
   fun createContentRatingImage(contentRating: String?, context: Context): ImageView {
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
-    val w = ImageUtils.getDPI(width, v.context as Activity)
-    val h = ImageUtils.getDPI(height, v.context as Activity)
-    v.layoutParams = LayoutParams(w, h)
+    v.layoutParams = LayoutParams(width, height)
 
     when (contentRating) {
       "G" -> v.setImageResource(R.drawable.mpaa_g)
@@ -155,9 +147,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     }
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
-    val w = ImageUtils.getDPI(width, v.context as Activity)
-    val h = ImageUtils.getDPI(height, v.context as Activity)
-    v.layoutParams = LayoutParams(w, h)
+    v.layoutParams = LayoutParams(width, height)
 
     when (codec.toLowerCase()) {
       "divx" -> v.setImageResource(R.drawable.divx)
@@ -176,9 +166,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
   fun createTVContentRating(contentRating: String?, context: Context): ImageView {
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
-    val w = ImageUtils.getDPI(width, v.context as Activity)
-    val h = ImageUtils.getDPI(height, v.context as Activity)
-    v.layoutParams = LayoutParams(w, h)
+    v.layoutParams = LayoutParams(width, height)
 
     when (contentRating) {
       "TV-G" -> v.setImageResource(R.drawable.tvg)
@@ -199,9 +187,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     }
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
-    val w = ImageUtils.getDPI(width, v.context as Activity)
-    val h = ImageUtils.getDPI(height, v.context as Activity)
-    v.layoutParams = LayoutParams(w, h)
+    v.layoutParams = LayoutParams(width, height)
 
     when (channels.toLowerCase()) {
       "0" -> v.setImageResource(R.drawable.audio_0)
@@ -222,9 +208,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
 
     val v = ImageView(context)
     v.scaleType = ScaleType.FIT_XY
-    val w = ImageUtils.getDPI(width, v.context as Activity)
-    val h = ImageUtils.getDPI(height, v.context as Activity)
-    v.layoutParams = LayoutParams(w, h)
+    v.layoutParams = LayoutParams(width, height)
     val mediaTagUrl = factory!!.createMediaTagURL("studio", studio, identifier)
     Glide.with(context).load(mediaTagUrl).into(v)
     return v

@@ -77,18 +77,19 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
     TextView title = context.findViewById(R.id.movieBrowserPosterTitle);
     title.setText(videoInfo.getTitle());
 
-    ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(100, 58);
+    int width = context.getResources().getDimensionPixelSize(R.dimen.info_graphic_width);
+    int height = context.getResources().getDimensionPixelSize(R.dimen.info_graphic_height);
+
+    ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(width, height);
 
     ImageView crv = imageUtilsNormal.createContentRatingImage(videoInfo.getContentRating(), context);
     Drawable drawable = crv.getDrawable();
 
     BitmapDrawable bmd = (BitmapDrawable) drawable;
 
-    int w = ImageUtils.getDPI(100, (Activity) v.getContext());
-    int h = ImageUtils.getDPI(58, (Activity) v.getContext());
     Bitmap bitmap = bmd.getBitmap();
 
-    Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, w, h, false);
+    Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, width, height, false);
 
     title.setCompoundDrawablesWithIntrinsicBounds(null, null,
         new BitmapDrawable(v.getContext().getResources(), bitmapResized), null);
@@ -97,12 +98,12 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
   @Override protected void createVideoMetaData(ImageView v) {
     super.createVideoMetaData(v);
     Activity context = getActivity(v.getContext());
-    TextView subt = (TextView) context.findViewById(R.id.subtitleFilter);
+    TextView subt = context.findViewById(R.id.subtitleFilter);
     if (subt != null) {
       subt.setVisibility(View.GONE);
     }
 
-    Spinner subtitleSpinner = (Spinner) context.findViewById(R.id.videoSubtitle);
+    Spinner subtitleSpinner = context.findViewById(R.id.videoSubtitle);
     if (subtitleSpinner != null) {
       subtitleSpinner.setVisibility(View.GONE);
     }
@@ -110,11 +111,9 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 
   @Override public void fetchSubtitle(VideoContentInfo mpi) {
     if (queue != null) {
-      queue.cancelAll(new RequestFilter() {
-        @Override public boolean apply(Request<?> request) {
-          request.cancel();
-          return true;
-        }
+      queue.cancelAll(request -> {
+        request.cancel();
+        return true;
       });
     }
     super.fetchSubtitle(mpi);
@@ -143,7 +142,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
 
     changeBackgroundImage(context);
 
-    ImageView posterImageView = (ImageView) view.findViewById(R.id.posterImageView);
+    ImageView posterImageView = view.findViewById(R.id.posterImageView);
     currentView = posterImageView;
 
     createVideoDetail(posterImageView);

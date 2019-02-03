@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
@@ -71,11 +72,11 @@ public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSele
 
     createTitle();
 
-    ImageView imageView = (ImageView) context.findViewById(R.id.tvShowRating);
-    ImageInfographicUtils infog = new ImageInfographicUtils(74, 40);
+    int w = context.getResources().getDimensionPixelSize(R.dimen.tv_show_infographic_width);
+    int h = context.getResources().getDimensionPixelSize(R.dimen.tv_show_infographic_height);
 
-    int w = ImageUtils.getDPI(74, (Activity) v.getContext());
-    int h = ImageUtils.getDPI(40, (Activity) v.getContext());
+    ImageView imageView = context.findViewById(R.id.tvShowRating);
+    ImageInfographicUtils infog = new ImageInfographicUtils(w, h);
 
     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w, h);
     params.topMargin = 10;
@@ -166,12 +167,12 @@ public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSele
     ImageView showImage = context.findViewById(R.id.tvShowImage);
     showImage.setVisibility(View.VISIBLE);
     showImage.setScaleType(ScaleType.FIT_XY);
-    int width = ImageUtils.getDPI(250, context);
-    int height = ImageUtils.getDPI(350, context);
+    int width = context.getResources().getDimensionPixelSize(R.dimen.tv_show_image_width);
+    int height = context.getResources().getDimensionPixelSize(R.dimen.tv_show_image_height);
     showImage.setMaxHeight(height);
     showImage.setMaxWidth(width);
     showImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-    Glide.with(context).load(mi.getThumbNailURL()).into(showImage);
+    Glide.with(context).load(mi.getThumbNailURL()).fitCenter().into(showImage);
   }
 
   @Override public void onItemSelected(View view, int i) {
@@ -181,7 +182,7 @@ public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSele
     }
     info = (SeriesContentInfo) adapter.getItem(i);
 
-    ImageView imageView = (ImageView) view.findViewById(R.id.posterImageView);
+    ImageView imageView = view.findViewById(R.id.posterImageView);
 
     createTVShowDetail(imageView);
     changeBackgroundImage(imageView);

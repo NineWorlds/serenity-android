@@ -81,8 +81,13 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector {
     LinearLayout infographicsView = context.findViewById(R.id.movieInfoGraphicLayout);
     infographicsView.removeAllViews();
 
-    ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(80, 48);
-    ImageInfographicUtils imageUtilsAudioChannel = new ImageInfographicUtils(90, 48);
+    int normalHeight = context.getResources().getDimensionPixelSize(R.dimen.video_infogrpahic_height);
+    int normalWidth = context.getResources().getDimensionPixelSize(R.dimen.video_infographic_width);
+    int audioWidth = context.getResources().getDimensionPixelSize(R.dimen.audio_infographic_width);
+    int audioHeight = context.getResources().getDimensionPixelSize(R.dimen.audio_inographic_height);
+
+    ImageInfographicUtils imageUtilsNormal = new ImageInfographicUtils(normalWidth, normalHeight);
+    ImageInfographicUtils imageUtilsAudioChannel = new ImageInfographicUtils(audioWidth, audioHeight);
 
     TextView durationView = imageUtilsNormal.createDurationView(videoInfo.getDuration(), context);
     if (durationView != null) {
