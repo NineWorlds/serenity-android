@@ -75,6 +75,7 @@ class CardPresenterTest {
   fun onBindViewHolderSetsExpectedImageDimensions() {
     val activity = Robolectric.buildActivity(Activity::class.java).create().get()
     val spy = spy(presenter)
+    spy.context = getApplicationContext()
     doReturn(mockImageCardView).whenever(mockViewHolder).cardView
     doReturn("").whenever(mockVideoContentInfo).imageURL
     doReturn(activity).whenever(spy).getActivity(anyOrNull())
@@ -89,7 +90,7 @@ class CardPresenterTest {
     verify(mockImageCardView).setMainImageDimensions(anyInt(), anyInt())
     verify(mockViewHolder).updateCardViewImage(anyOrNull())
   }
-  
+
   @Test
   fun unBindViewHolderResetsViews() {
 
