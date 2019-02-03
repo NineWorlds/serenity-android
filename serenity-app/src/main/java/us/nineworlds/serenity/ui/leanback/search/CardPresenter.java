@@ -26,8 +26,12 @@ package us.nineworlds.serenity.ui.leanback.search;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.Presenter;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
@@ -39,17 +43,22 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 
 public class CardPresenter extends Presenter {
 
-  static Context context;
+  Context context;
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent) {
     Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
     context = parent.getContext();
 
-    ImageCardView imageView = new ImageCardView(context);
+    ImageCardView imageView = createImageView();
     imageView.setFocusable(true);
     imageView.setFocusableInTouchMode(true);
-    imageView.setBackgroundColor(context.getResources().getColor(R.color.holo_color));
+    imageView.setBackgroundColor(ContextCompat.getColor(context, R.color.holo_color));
     return new CardPresenterViewHolder(imageView);
+  }
+
+  @NonNull
+  protected ImageCardView createImageView() {
+    return new ImageCardView(context);
   }
 
   @Override public void onBindViewHolder(ViewHolder viewHolder, Object item) {
@@ -63,12 +72,14 @@ public class CardPresenter extends Presenter {
       imageCardView.setTitleText(video.getTitle());
       imageCardView.setContentText(video.getStudio());
       Activity activity = getActivity(context);
-      imageCardView.setMainImageDimensions(ImageUtils.getDPI(240, activity), ImageUtils.getDPI(360, activity));
-      cardHolder.updateCardViewImage(video.getImageURL());
+      if (activity != null) {
+        imageCardView.setMainImageDimensions(ImageUtils.getDPI(240, activity), ImageUtils.getDPI(360, activity));
+        cardHolder.updateCardViewImage(video.getImageURL());
+      }
     }
   }
 
-  private Activity getActivity(Context contextWrapper) {
+  @Nullable protected Activity getActivity(Context contextWrapper) {
     Context context = contextWrapper;
     while (context instanceof ContextWrapper) {
       if (context instanceof Activity) {
@@ -81,11 +92,10 @@ public class CardPresenter extends Presenter {
 
   @Override public void onUnbindViewHolder(ViewHolder viewHolder) {
     CardPresenterViewHolder vh = (CardPresenterViewHolder) viewHolder;
-    vh.mCardView.setBadgeImage(null);
-    vh.mCardView.setMainImage(null);
+    vh.reset();
   }
 
-  class CardPresenterViewHolder extends Presenter.ViewHolder {
+  @VisibleForTesting public class CardPresenterViewHolder extends Presenter.ViewHolder {
     private VideoContentInfo video;
     private final ImageCardView mCardView;
 
@@ -93,6 +103,11 @@ public class CardPresenter extends Presenter {
     CardPresenterViewHolder(View view) {
       super(view);
       mCardView = (ImageCardView) view;
+    }
+
+    public void reset() {
+      mCardView.setBadgeImage(null);
+      mCardView.setMainImage(null);
     }
 
     public VideoContentInfo getMovie() {
