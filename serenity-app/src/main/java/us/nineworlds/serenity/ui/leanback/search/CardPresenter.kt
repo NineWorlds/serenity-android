@@ -34,18 +34,18 @@ import android.support.v17.leanback.widget.Presenter
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.ui.util.ImageUtils
 
-class CardPresenter : Presenter() {
+class CardPresenter(private val context: Context) : Presenter() {
 
-  lateinit var context: Context
+  val imageWidth = context.resources.getDimensionPixelSize(R.dimen.search_card_image_width)
+  val imageHeight = context.resources.getDimensionPixelSize(R.dimen.search_card_image_height)
 
   override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
-    context = parent.context
-
     val imageView = createImageView()
     imageView.isFocusable = true
     imageView.isFocusableInTouchMode = true
@@ -67,7 +67,8 @@ class CardPresenter : Presenter() {
       imageCardView.contentText = video.studio
       val activity = getActivity(context)
       activity?.let {
-        imageCardView.setMainImageDimensions(ImageUtils.getDPI(240, activity), ImageUtils.getDPI(360, activity))
+        imageCardView.setMainImageDimensions(imageWidth, imageHeight)
+        imageCardView.setMainImageScaleType(ImageView.ScaleType.FIT_XY)
         cardHolder.updateCardViewImage(video.imageURL)
       }
     }
@@ -100,7 +101,7 @@ class CardPresenter : Presenter() {
     }
 
     fun updateCardViewImage(url: String) {
-      Glide.with(context).load(url).into(cardView.mainImageView)
+      Glide.with(context).load(url).fitCenter().into(cardView.mainImageView)
     }
   }
 }

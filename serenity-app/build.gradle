@@ -27,6 +27,7 @@ repositories {
   maven {
     url 'https://maven.google.com/'
   }
+  maven { url 'https://jitpack.io' }
 }
 
 apply plugin: 'com.android.application'
@@ -224,6 +225,8 @@ dependencies {
   implementation 'com.henryblue.library:tvrecyclerview:1.2.2'
   //TODO Upgrade to Android X and update to 3.0.0
   implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
+
+  implementation 'com.github.rstanic12:Resourceful:1.0.0'
 
 
   // https://mvnrepository.com/artifact/org.simpleframework/simple-xml

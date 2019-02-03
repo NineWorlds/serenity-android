@@ -5,7 +5,6 @@ import android.support.v17.leanback.widget.ImageCardView
 import android.support.v4.content.ContextCompat
 import android.widget.LinearLayout
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.anyOrNull
 import com.nhaarman.mockito_kotlin.atLeast
 import com.nhaarman.mockito_kotlin.doReturn
@@ -44,7 +43,7 @@ class CardPresenterTest {
 
   @Before
   fun setUp() {
-    presenter = CardPresenter()
+    presenter = CardPresenter(getApplicationContext())
   }
 
   @Test
@@ -75,7 +74,6 @@ class CardPresenterTest {
   fun onBindViewHolderSetsExpectedImageDimensions() {
     val activity = Robolectric.buildActivity(Activity::class.java).create().get()
     val spy = spy(presenter)
-    spy.context = getApplicationContext()
     doReturn(mockImageCardView).whenever(mockViewHolder).cardView
     doReturn("").whenever(mockVideoContentInfo).imageURL
     doReturn(activity).whenever(spy).getActivity(anyOrNull())

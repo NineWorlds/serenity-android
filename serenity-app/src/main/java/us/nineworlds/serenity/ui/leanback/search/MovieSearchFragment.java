@@ -158,7 +158,7 @@ public class MovieSearchFragment extends SearchSupportFragment implements Search
   }
 
   protected void loadRows(List<VideoContentInfo> videos) {
-    ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+    ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter(getContext()));
     for (VideoContentInfo video : videos) {
       listRowAdapter.add(video);
     }

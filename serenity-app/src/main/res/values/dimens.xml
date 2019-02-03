@@ -16,5 +16,8 @@
   <dimen name="info_graphic_width">100dp</dimen>
   <dimen name="info_graphic_height">58dp</dimen>
 
+  <dimen name="search_card_image_width">190dp</dimen>
+  <dimen name="search_card_image_height">260dp</dimen>
+
 
 </resources>
