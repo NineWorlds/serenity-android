@@ -56,7 +56,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
   protected AbstractVideoOnItemSelectedListener onItemSelectedListener;
   protected boolean triggerFocusSelection = true;
 
-
   private Animation scaleSmallAnimation;
   private Animation scaleBigAnimation;
 

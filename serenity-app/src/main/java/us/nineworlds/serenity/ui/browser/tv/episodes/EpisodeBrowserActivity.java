@@ -176,6 +176,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
     EpisodePosterImageGalleryAdapter adapter =
         (EpisodePosterImageGalleryAdapter) gallery.getAdapter();
 
+    gallery.setVisibility(View.VISIBLE);
     adapter.updateEpisodes(episodes);
 
     postLoadHandler.postDelayed(new Runnable() {

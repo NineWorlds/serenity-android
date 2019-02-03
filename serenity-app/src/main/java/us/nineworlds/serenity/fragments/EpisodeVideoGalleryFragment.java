@@ -74,6 +74,7 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
       EpisodePosterImageGalleryAdapter adapter = new EpisodePosterImageGalleryAdapter();
       adapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(adapter));
       adapter.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(adapter));
+      videoGallery.setVisibility(View.GONE);
       videoGallery.setAdapter(adapter);
       videoGallery.setItemAnimator(new FadeInAnimator());
       videoGallery.setHorizontalFadingEdgeEnabled(false);
