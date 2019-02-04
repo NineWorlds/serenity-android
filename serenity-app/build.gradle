@@ -287,7 +287,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
   def kotlinSrc = "${project.projectDir}/src/main/kotlin"
 
   classDirectories = fileTree(
-          dir: "$buildDir/intermediates/classes/debug",
+          dir: "$buildDir/intermediates/javac/debug/compileDebugJavaWithJavac/classes",
           excludes: fileFilter) + fileTree(
           dir: "$buildDir/tmp/kotlin-classes/debug",
           excludes: fileFilter)
