@@ -12,6 +12,7 @@ import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.test.InjectingTest;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -40,12 +41,13 @@ public class TVShowSeasonImageGalleryAdapterTest extends InjectingTest {
     SeasonViewHolder mockedViewHolder = mock(SeasonViewHolder.class);
     SeriesContentInfo seriesContentInfo = mock(SeriesContentInfo.class);
     doReturn(new View(RuntimeEnvironment.application)).when(mockedViewHolder).getItemView();
+    doReturn(getApplicationContext()).when(mockedViewHolder).getContext();
 
     adapter.updateSeasonsList(Collections.singletonList(seriesContentInfo));
     adapter.onBindViewHolder(mockedViewHolder, 0);
 
     verify(mockedViewHolder).reset();
-    verify(mockedViewHolder).createImage(seriesContentInfo, 120, 180);
+    verify(mockedViewHolder).createImage(seriesContentInfo, 100, 125);
     verify(mockedViewHolder).toggleWatchedIndicator(seriesContentInfo);
   }
 

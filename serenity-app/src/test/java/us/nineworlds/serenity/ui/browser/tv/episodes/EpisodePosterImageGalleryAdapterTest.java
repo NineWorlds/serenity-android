@@ -12,6 +12,7 @@ import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.test.InjectingTest;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -49,13 +50,14 @@ public class EpisodePosterImageGalleryAdapterTest extends InjectingTest {
   public void onBindViewHolder() {
     EpisodeViewHolder mockEpisodeViewHolder = mock(EpisodeViewHolder.class);
     VideoContentInfo mockSeriesContent = mock(VideoContentInfo.class);
-    doReturn(new View(RuntimeEnvironment.application)).when(mockEpisodeViewHolder).getItemView();
+    doReturn(new View(getApplicationContext())).when(mockEpisodeViewHolder).getItemView();
+    doReturn(getApplicationContext()).when(mockEpisodeViewHolder).getContext();
 
     adapter.updateEpisodes(Collections.singletonList(mockSeriesContent));
     adapter.onBindViewHolder(mockEpisodeViewHolder, 0);
 
     verify(mockEpisodeViewHolder).reset();
-    verify(mockEpisodeViewHolder).createImage(mockSeriesContent, 300, 187);
+    verify(mockEpisodeViewHolder).createImage(mockSeriesContent, 250, 160);
     verify(mockEpisodeViewHolder).toggleWatchedIndicator(mockSeriesContent);
   }
 }

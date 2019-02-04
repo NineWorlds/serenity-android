@@ -23,11 +23,13 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.SeriesContentInfo;
 
 public class TVShowPosterImageGalleryAdapter extends TVShowRecyclerAdapter {
 
@@ -36,4 +38,22 @@ public class TVShowPosterImageGalleryAdapter extends TVShowRecyclerAdapter {
         .inflate(R.layout.poster_tvshow_indicator_view, parent, false);
     return new TVShowPosterViewHolder(view);
   }
+
+  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    SeriesContentInfo pi = tvShowList.get(position);
+    TVShowViewHolder tvShowViewHolder = (TVShowViewHolder) holder;
+
+    Context context = tvShowViewHolder.getContext();
+    int width = context.getResources().getDimensionPixelSize(R.dimen.tvshow_poster_image_width);
+    int height = context.getResources().getDimensionPixelSize(R.dimen.tvshow_poster_image_height);
+
+    tvShowViewHolder.reset();
+    tvShowViewHolder.createImage(pi, width, height);
+    tvShowViewHolder.toggleWatchedIndicator(pi);
+    tvShowViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));
+    tvShowViewHolder.getItemView().setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));
+    tvShowViewHolder.getItemView().setOnLongClickListener((view) -> onItemViewLongClick(view, position));
+    tvShowViewHolder.getItemView().setOnKeyListener(this);
+  }
+
 }

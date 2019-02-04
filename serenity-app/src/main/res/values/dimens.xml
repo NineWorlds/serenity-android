@@ -31,4 +31,22 @@
   <dimen name="tv_show_image_height">300dp</dimen>
   <dimen name="tv_show_image_width">200dp</dimen>
 
+  <dimen name="episode_detail_image_width">200dp</dimen>
+  <dimen name="episode_detail_image_height">250dp</dimen>
+
+  <dimen name="episode_image_width">250dp</dimen>
+  <dimen name="episode_image_height">160dp</dimen>
+
+  <dimen name="seasons_episode_image_width">220dp</dimen>
+  <dimen name="seasons_episode_image_height">130dp</dimen>
+
+  <dimen name="banner_image_width">750dp</dimen>
+  <dimen name="banner_image_height">120dp</dimen>
+
+  <dimen name="tvshow_poster_image_width">100dp</dimen>
+  <dimen name="tvshow_poster_image_height">150dp</dimen>
+
+  <dimen name="seasons_image_width">100dp</dimen>
+  <dimen name="seasons_image_height">125dp</dimen>
+
 </resources>

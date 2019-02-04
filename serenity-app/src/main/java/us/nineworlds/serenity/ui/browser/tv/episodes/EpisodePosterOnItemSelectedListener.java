@@ -88,27 +88,28 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
 
     posterImage.setVisibility(View.VISIBLE);
     posterImage.setScaleType(ScaleType.FIT_XY);
+    int width = context.getResources().getDimensionPixelSize(R.dimen.episode_detail_image_width);
+    int height = context.getResources().getDimensionPixelSize(R.dimen.episode_detail_image_height);
     if (videoInfo.getParentPosterURL() != null) {
-      int width = ImageUtils.getDPI(240, context);
-      int height = ImageUtils.getDPI(330, context);
       posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
       Glide.with(context)
           .load(videoInfo.getParentPosterURL())
+          .fitCenter()
           .diskCacheStrategy(DiskCacheStrategy.ALL)
           .dontAnimate()
           .into(posterImage);
     } else if (videoInfo.getGrandParentPosterURL() != null) {
-      int width = ImageUtils.getDPI(240, context);
-      int height = ImageUtils.getDPI(330, context);
       posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
       Glide.with(context)
           .load(videoInfo.getGrandParentPosterURL())
+          .fitCenter()
           .diskCacheStrategy(DiskCacheStrategy.ALL)
           .dontAnimate()
           .into(posterImage);
     } else {
       Glide.with(context)
           .load(videoInfo.getImageURL())
+          .fitCenter()
           .diskCacheStrategy(DiskCacheStrategy.ALL)
           .dontAnimate()
           .into(posterImage);

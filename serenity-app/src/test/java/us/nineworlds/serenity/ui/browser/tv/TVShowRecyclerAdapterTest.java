@@ -12,6 +12,7 @@ import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.test.InjectingTest;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -41,7 +42,7 @@ public class TVShowRecyclerAdapterTest extends InjectingTest {
   }
 
   private TVShowViewHolder createViewHolder() {
-    LinearLayout linearLayout = new LinearLayout(application);
+    LinearLayout linearLayout = new LinearLayout(getApplicationContext());
     return (TVShowViewHolder) adapter.onCreateViewHolder(linearLayout, 0);
   }
 
@@ -49,13 +50,14 @@ public class TVShowRecyclerAdapterTest extends InjectingTest {
   public void onBindViewHolder() {
     TVShowViewHolder mockTVShowViewHolder = mock(TVShowViewHolder.class);
     SeriesContentInfo mockSeriesContent = mock(SeriesContentInfo.class);
-    doReturn(new ImageView(RuntimeEnvironment.application)).when(mockTVShowViewHolder).getItemView();
+    doReturn(new ImageView(getApplicationContext())).when(mockTVShowViewHolder).getItemView();
+    doReturn(getApplicationContext()).when(mockTVShowViewHolder).getContext();
 
     adapter.updateSeries(Collections.singletonList(mockSeriesContent));
     adapter.onBindViewHolder(mockTVShowViewHolder, 0);
 
     verify(mockTVShowViewHolder).reset();
-    verify(mockTVShowViewHolder).createImage(mockSeriesContent, 758, 140);
+    verify(mockTVShowViewHolder).createImage(mockSeriesContent, 750, 120);
     verify(mockTVShowViewHolder).toggleWatchedIndicator(mockSeriesContent);
   }
 

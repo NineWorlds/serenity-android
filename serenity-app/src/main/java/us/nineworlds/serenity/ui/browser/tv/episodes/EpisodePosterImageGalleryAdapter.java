@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
+import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -54,8 +55,12 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
 
     EpisodeViewHolder viewHolder = (EpisodeViewHolder) holder;
 
+    Context context = viewHolder.getContext();
+    int width = context.getResources().getDimensionPixelSize(R.dimen.episode_image_width);
+    int height = context.getResources().getDimensionPixelSize(R.dimen.episode_image_height);
+
     viewHolder.reset();
-    viewHolder.createImage(pi, 300, 187);
+    viewHolder.createImage(pi, width, height);
     viewHolder.toggleWatchedIndicator(pi);
     viewHolder.getItemView().setOnClickListener((view)-> onItemViewClick(view, position));
     viewHolder.getItemView().setOnLongClickListener((view) -> onItemViewLongClick(view, position));

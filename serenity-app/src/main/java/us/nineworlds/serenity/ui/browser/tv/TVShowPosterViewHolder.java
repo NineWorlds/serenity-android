@@ -13,11 +13,7 @@ public class TVShowPosterViewHolder extends TVShowViewHolder {
   }
 
   @Override public void createImage(SeriesContentInfo pi, int imageWidth, int imageHeight) {
-    int width = ImageUtils.getDPI(130, (Activity) itemView.getContext());
-    int height = ImageUtils.getDPI(200, (Activity) itemView.getContext());
-
-    initPosterMetaData(pi, width, height, true);
-
-    itemView.setLayoutParams(new RecyclerView.LayoutParams(width, height));
+    initPosterMetaData(pi, imageWidth, imageHeight, true);
+    itemView.setLayoutParams(new RecyclerView.LayoutParams(imageWidth, imageHeight));
   }
 }

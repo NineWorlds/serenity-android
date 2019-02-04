@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.tv;
 
+import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,9 +37,6 @@ import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.RecyclerViewDiffUtil;
 
 public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
-
-  private static final int BANNER_PIXEL_HEIGHT = 140;
-  private static final int BANNER_PIXEL_WIDTH = 758;
 
   protected List<SeriesContentInfo> tvShowList = new ArrayList<>();
 
@@ -63,8 +61,12 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
     SeriesContentInfo pi = tvShowList.get(position);
     TVShowViewHolder tvShowViewHolder = (TVShowViewHolder) holder;
 
+    Context context = tvShowViewHolder.getContext();
+    int width = context.getResources().getDimensionPixelSize(R.dimen.banner_image_width);
+    int height = context.getResources().getDimensionPixelSize(R.dimen.banner_image_height);
+
     tvShowViewHolder.reset();
-    tvShowViewHolder.createImage(pi, BANNER_PIXEL_WIDTH, BANNER_PIXEL_HEIGHT);
+    tvShowViewHolder.createImage(pi, width, height);
     tvShowViewHolder.toggleWatchedIndicator(pi);
     tvShowViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));
     tvShowViewHolder.getItemView().setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));
@@ -72,7 +74,7 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
     tvShowViewHolder.getItemView().setOnKeyListener(this);
   }
 
-  private boolean onItemViewLongClick(View view, int position) {
+  protected boolean onItemViewLongClick(View view, int position) {
     ShowOnItemLongClickListener onItemLongClickListener = new ShowOnItemLongClickListener(this);
     onItemLongClickListener.setPosition(position);
     return onItemLongClickListener.onLongClick(view);
