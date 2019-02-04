@@ -52,10 +52,13 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
     AbstractPosterImageViewHolder viewHolder = (AbstractPosterImageViewHolder) holder;
     viewHolder.setZoomedOut(false);
 
+    int width = overlayView.getContext().getResources().getDimensionPixelSize(R.dimen.movie_poster_image_width);
+    int height = overlayView.getContext().getResources().getDimensionPixelSize(R.dimen.movie_poster_image_height);
+
     VideoContentInfo pi = posterList.get(position);
     overlayView.setTag(pi);
     overlayView.reset();
-    overlayView.createImage(pi, 130, 200);
+    overlayView.createImage(pi, width, height);
     overlayView.toggleWatchedIndicator(pi);
     overlayView.setClickable(true);
     overlayView.setOnClickListener((view) -> onItemViewClick(view, position));

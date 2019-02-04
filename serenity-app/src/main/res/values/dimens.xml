@@ -46,6 +46,9 @@
   <dimen name="tvshow_poster_image_width">100dp</dimen>
   <dimen name="tvshow_poster_image_height">150dp</dimen>
 
+  <dimen name="movie_poster_image_width">100dp</dimen>
+  <dimen name="movie_poster_image_height">150dp</dimen>
+
   <dimen name="seasons_image_width">100dp</dimen>
   <dimen name="seasons_image_height">125dp</dimen>
 

@@ -122,6 +122,7 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
 
     Glide.with(getContext())
         .load(url)
+        .fitCenter()
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .placeholder(colorDrawable)
         .dontAnimate()
@@ -143,12 +144,9 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
   }
 
   @Override public void createImage(VideoContentInfo pi, int imageWidth, int imageHeight) {
-    int width = ImageUtils.getDPI(imageWidth, (Activity) getContext());
-    int height = ImageUtils.getDPI(imageHeight, (Activity) getContext());
+    initPosterMetaData(pi, imageWidth, imageHeight);
 
-    initPosterMetaData(pi, width, height);
-
-    setLayoutParams(new RecyclerView.LayoutParams(width, height));
+    setLayoutParams(new RecyclerView.LayoutParams(imageWidth, imageHeight));
   }
 
   @Override public void refresh() {
