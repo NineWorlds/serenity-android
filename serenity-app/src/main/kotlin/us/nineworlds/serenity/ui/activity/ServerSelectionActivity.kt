@@ -54,7 +54,7 @@ class ServerSelectionActivity : InjectingActivity() {
   lateinit var serverPortPreference: StringPreference
 
   @Inject
-  lateinit var jobManager: JobManager;
+  lateinit var jobManager: JobManager
 
   @BindView(R.id.server_container)
   internal lateinit var serverContainer: LinearLayout
