@@ -16,6 +16,8 @@ import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.events.users.AllUsersEvent
+import us.nineworlds.serenity.events.users.AuthenticatedUserEvent
+import us.nineworlds.serenity.jobs.AuthenticateUserJob
 import us.nineworlds.serenity.jobs.RetrieveAllUsersJob
 import us.nineworlds.serenity.test.InjectingTest
 import javax.inject.Inject
@@ -104,6 +106,21 @@ class LoginUserPresenterTest : InjectingTest() {
     presenter.processAllUsersEvent(AllUsersEvent(expectedUsers))
 
     verify(mockView).displayUsers(expectedUsers)
+  }
+
+  @Test
+  fun loadUserAddsJob() {
+    presenter.loadUser(mockSerenityUser)
+
+    verify(mockJobManager).addJobInBackground(any<AuthenticateUserJob>())
+  }
+
+  @Test
+  fun showUsersStartScreenCallesLaunchNextScreen() {
+    presenter.attachView(mockView)
+    presenter.showUsersStartScreen(AuthenticatedUserEvent(mockSerenityUser))
+
+    verify(mockView).launchNextScreen()
   }
 
   override fun installTestModules() {
