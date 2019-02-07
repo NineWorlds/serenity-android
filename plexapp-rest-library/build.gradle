@@ -12,6 +12,10 @@ apply plugin: "jacoco"
 apply plugin: 'org.sonarqube'
 apply plugin: 'kotlin-kapt'
 
+jacoco {
+  toolVersion = "0.8.3"
+}
+
 sonarqube {
   properties {
     property "sonar.host.url", "https://sonarcloud.io"

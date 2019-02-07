@@ -1,8 +1,8 @@
 buildscript {
 
   ext {
-    kotlinVersion = "1.3.11"
-    androidPluginVersion = "3.3.0"
+    kotlinVersion = "1.3.21"
+    androidPluginVersion = "3.3.1"
   }
 
   repositories {
@@ -16,9 +16,9 @@ buildscript {
   }
   dependencies {
     classpath 'com.google.gms:google-services:4.2.0'
-    classpath 'io.fabric.tools:gradle:1.26.1'
+    classpath 'io.fabric.tools:gradle:1.27.0'
     classpath "com.android.tools.build:gradle:$androidPluginVersion"
-    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.1"
+    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.+"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
   }
@@ -41,7 +41,7 @@ dependencies {
 
 project.ext {
   okhttpVersion = "3.8.1"
-  kotlinVersion = "1.3.20"
+  kotlinVersion = "1.3.21"
   androidPriorityJobQueueVersion = "2.0.1"
   daggerVersion = "1.2.5"
   eventBus = "3.1.1"
