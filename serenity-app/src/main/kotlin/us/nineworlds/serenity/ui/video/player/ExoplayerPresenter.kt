@@ -163,23 +163,26 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
 
   internal fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {
     val mediaCodecInfoUtil = MediaCodecInfoUtil()
-    video.container = if (video.container.contains("mp4")) {
-      "mp4"
-    } else {
-      video.container
-    }
-    val isVideoContainerSupported =
-      mediaCodecInfoUtil.isExoPlayerContainerSupported("video/${video.container.substringBefore(",")}")
-    val isAudioCodecSupported = selectCodec(mediaCodecInfoUtil.findCorrectAudioMimeType("audio/${video.audioCodec}"))
-    val isVideoSupported = selectCodec(mediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
+    video.container?.let {
+      video.container = if (video.container.contains("mp4")) {
+        "mp4"
+      } else {
+        video.container
+      }
+      val isVideoContainerSupported =
+        mediaCodecInfoUtil.isExoPlayerContainerSupported("video/${video.container.substringBefore(",")}")
+      val isAudioCodecSupported = selectCodec(mediaCodecInfoUtil.findCorrectAudioMimeType("audio/${video.audioCodec}"))
+      val isVideoSupported = selectCodec(mediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
 
-    Log.d("ExoPlayerPresenter", "Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
-    Log.d("ExoPlayerPresenter", "Video Codec:  ${video.videoCodec} support returned $isVideoSupported")
-    Log.d("ExoPlayerPresenter", "Video Container:  ${video.container} support returned $isVideoContainerSupported")
+      Log.d("ExoPlayerPresenter", "Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
+      Log.d("ExoPlayerPresenter", "Video Codec:  ${video.videoCodec} support returned $isVideoSupported")
+      Log.d("ExoPlayerPresenter", "Video Container:  ${video.container} support returned $isVideoContainerSupported")
 
-    if (isVideoSupported && isAudioCodecSupported && isVideoContainerSupported!!) {
-      return true
+      if (isVideoSupported && isAudioCodecSupported && isVideoContainerSupported!!) {
+        return true
+      }
     }
+
     return false
   }
 
@@ -190,7 +193,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
       return video.directPlayUrl
     }
 
-    val transcodingUrl = serenityClient.createTranscodeUrl(video.id(), video.resumeOffset);
+    val transcodingUrl = serenityClient.createTranscodeUrl(video.id(), video.resumeOffset)
 
     logger.debug("ExoPlayerPresenter: Transcoding Url: $transcodingUrl")
     return transcodingUrl
