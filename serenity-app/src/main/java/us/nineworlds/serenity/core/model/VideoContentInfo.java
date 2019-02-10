@@ -24,6 +24,8 @@
 package us.nineworlds.serenity.core.model;
 
 import java.util.List;
+
+import android.support.annotation.Nullable;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 
 /**

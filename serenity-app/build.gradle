@@ -65,6 +65,14 @@ android {
     targetSdkVersion 28
     multiDexEnabled true
     multiDexKeepProguard file("multidex_keep_file.txt")
+
+//    javaCompileOptions {
+//      annotationProcessorOptions {
+//        arguments = [ toothpick_registry_package_name : "us.nineworlds.serenity",
+//                      toothpick_registry_children_package_names : "us.nineworlds.serenity.emby"]
+//      }
+//    }
+
   }
 
   aaptOptions {
@@ -77,6 +85,7 @@ android {
   }
 
   compileSdkVersion 28
+  buildToolsVersion '28.0.2'
 
   if (project.hasProperty("keystore")) {
     signingConfigs {
