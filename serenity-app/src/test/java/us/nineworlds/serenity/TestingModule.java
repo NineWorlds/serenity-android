@@ -23,11 +23,14 @@
 
 package us.nineworlds.serenity;
 
+import android.content.Context;
 import android.support.v4.content.LocalBroadcastManager;
+import androidx.test.core.app.ApplicationProvider;
 import com.birbit.android.jobqueue.JobManager;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import toothpick.config.Module;
+import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.logger.Logger;
 
@@ -37,6 +40,7 @@ public class TestingModule extends Module {
   @Mock SerenityClient mockPlexAppFactory;
   @Mock LocalBroadcastManager mockLocalBroadcastManager;
   @Mock Logger mockLogger;
+  @Mock Context mockContext;
 
   public TestingModule() {
     MockitoAnnotations.initMocks(this);
@@ -44,5 +48,6 @@ public class TestingModule extends Module {
     bind(SerenityClient.class).toInstance(mockPlexAppFactory);
     bind(LocalBroadcastManager.class).toInstance(mockLocalBroadcastManager);
     bind(Logger.class).toInstance(mockLogger);
+    //bind(Context.class).withName(ApplicationContext.class).toInstance(mockContext);
   }
 }

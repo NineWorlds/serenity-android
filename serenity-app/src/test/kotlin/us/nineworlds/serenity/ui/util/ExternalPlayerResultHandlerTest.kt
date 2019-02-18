@@ -22,6 +22,7 @@ import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.injection.ForVideoQueue
 import us.nineworlds.serenity.test.InjectingTest
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter
 import java.util.*
 

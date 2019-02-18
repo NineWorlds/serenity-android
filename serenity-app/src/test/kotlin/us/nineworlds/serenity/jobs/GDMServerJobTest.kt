@@ -12,21 +12,17 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
-import org.robolectric.RobolectricTestRunner
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.test.InjectingTest
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(PlainAndroidRunner::class)
 class GDMServerJobTest : InjectingTest() {
-
-  companion object {
-    const val EXPECTED_VALID_PACKET_RESPONSE = "HTTP/1.0 200 OK"
-  }
 
   @Rule
   @JvmField
@@ -97,4 +93,9 @@ class GDMServerJobTest : InjectingTest() {
   override fun installTestModules() {
     scope.installTestModules(TestingModule())
   }
+
+  companion object {
+    const val EXPECTED_VALID_PACKET_RESPONSE = "HTTP/1.0 200 OK"
+  }
+
 }
