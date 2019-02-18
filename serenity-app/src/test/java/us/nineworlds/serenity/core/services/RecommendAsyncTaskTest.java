@@ -25,6 +25,7 @@ package us.nineworlds.serenity.core.services;
 
 import android.app.Notification;
 
+import androidx.test.core.app.ApplicationProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -36,6 +37,7 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.test.InjectingTest;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.assertj.android.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -58,7 +60,7 @@ public class RecommendAsyncTaskTest extends InjectingTest {
 		when(video.getImageURL()).thenReturn("http://www.example.com/");
 		when(video.getBackgroundURL()).thenReturn("http://www.example.com/");
 
-		recommendTask = new RecommendAsyncTask(video, application);
+		recommendTask = new RecommendAsyncTask(video, getApplicationContext());
 
 		Notification notification = (Notification) recommendTask.doInBackground();
 		assertThat(notification).isNotNull().hasPriority(Notification.PRIORITY_LOW);
@@ -73,7 +75,7 @@ public class RecommendAsyncTaskTest extends InjectingTest {
 		when(video.getImageURL()).thenReturn("http://www.example.com/");
 		when(video.getBackgroundURL()).thenReturn("http://www.example.com/");
 
-		recommendTask = new RecommendAsyncTask(video, application);
+		recommendTask = new RecommendAsyncTask(video, getApplicationContext());
 
 		Notification notification = (Notification) recommendTask
 				.doInBackground();
@@ -91,14 +93,13 @@ public class RecommendAsyncTaskTest extends InjectingTest {
 		when(video.getImageURL()).thenReturn("http://www.example.com/");
 		when(video.getBackgroundURL()).thenReturn("http://www.example.com/");
 		when(video.viewedPercentage()).thenReturn(0.81f);
-		recommendTask = new RecommendAsyncTask(video, application);
+		recommendTask = new RecommendAsyncTask(video, getApplicationContext());
 
 		Notification notification = (Notification) recommendTask
 				.doInBackground();
 
 		assertThat(notification).isNotNull().hasPriority(
 				Notification.PRIORITY_MAX);
-
 	}
 
 	@Test
@@ -111,7 +112,7 @@ public class RecommendAsyncTaskTest extends InjectingTest {
 		when(video.getBackgroundURL()).thenReturn("http://www.example.com/");
 		when(video.viewedPercentage()).thenReturn(0.45f);
 
-		recommendTask = new RecommendAsyncTask(video, application);
+		recommendTask = new RecommendAsyncTask(video, getApplicationContext());
 
 		Notification notification = (Notification) recommendTask
 				.doInBackground();
@@ -130,14 +131,13 @@ public class RecommendAsyncTaskTest extends InjectingTest {
 		when(video.getImageURL()).thenReturn("http://www.example.com/");
 		when(video.getBackgroundURL()).thenReturn("http://www.example.com/");
 		when(video.viewedPercentage()).thenReturn(0.11f);
-		recommendTask = new RecommendAsyncTask(video, application);
+		recommendTask = new RecommendAsyncTask(video, getApplicationContext());
 
 		Notification notification = (Notification) recommendTask
 				.doInBackground();
 
 		assertThat(notification).isNotNull().hasPriority(
 				Notification.PRIORITY_DEFAULT);
-
 	}
 
 	@Test
@@ -149,7 +149,7 @@ public class RecommendAsyncTaskTest extends InjectingTest {
 		moviePoster.setImageURL("http://www.example.com");
 		moviePoster.setBackgroundURL("http://www.example.com");
 		recommendTask = new RecommendAsyncTask(moviePoster,
-				application);
+				getApplicationContext());
 
 		Notification notification = (Notification) recommendTask
 				.doInBackground();

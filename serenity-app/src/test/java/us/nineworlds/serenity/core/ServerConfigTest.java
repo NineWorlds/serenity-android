@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
+import androidx.test.core.app.ApplicationProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,7 @@ import org.robolectric.annotation.Config;
 
 import us.nineworlds.serenity.BuildConfig;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -54,7 +56,7 @@ public class ServerConfigTest {
 		Robolectric.getForegroundThreadScheduler().pause();
 		Robolectric.getBackgroundThreadScheduler().pause();
 		serverConfig = (ServerConfig) ServerConfig
-				.getInstance(application);
+				.getInstance(getApplicationContext());
 		serverConfigChangeListener = serverConfig
 				.getServerConfigChangeListener();
 	}
@@ -85,8 +87,7 @@ public class ServerConfigTest {
 
 	@Test
 	public void serverSetsNewServerAddressBasedOnDiscoveredServers() {
-		Editor reditor = PreferenceManager.getDefaultSharedPreferences(
-				application).edit();
+		Editor reditor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
 
 		SharedPreferences prefs = mock(SharedPreferences.class);
 		when(prefs.getString("discoveredServer", "")).thenReturn("10.0.0.3");

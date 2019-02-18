@@ -42,11 +42,12 @@ import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(PlainAndroidRunner.class)
 public class SeriesMediaContainerTest extends InjectingTest {
 
   @Mock MediaContainer mockMediaContainer;

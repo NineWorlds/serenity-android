@@ -31,17 +31,27 @@ import android.preference.PreferenceManager;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.internal.junit.JUnitRule;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.mockito.quality.Strictness;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowPackageManager;
 
+import toothpick.config.Module;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.TestingModule;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.robolectric.RuntimeEnvironment.application;
 import static org.robolectric.Shadows.shadowOf;
@@ -56,7 +66,7 @@ public class OnDeckRecommendationsTest extends InjectingTest {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		onDeckRecommendations = new OnDeckRecommendations(application);
+		onDeckRecommendations = new OnDeckRecommendations(getApplicationContext());
 	}
 
 	@Override public void installTestModules() {
@@ -71,7 +81,7 @@ public class OnDeckRecommendationsTest extends InjectingTest {
 	@Test
 	@Config(sdk = 21)
 	public void recommendationsOccurForJellyBeanOrHigher() {
-		ShadowPackageManager shadowPackageManager = shadowOf(ApplicationProvider.getApplicationContext().getPackageManager());
+		ShadowPackageManager shadowPackageManager = shadowOf(getApplicationContext().getPackageManager());
 		shadowPackageManager.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
 		shadowPackageManager.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, true);
 
@@ -90,12 +100,12 @@ public class OnDeckRecommendationsTest extends InjectingTest {
 	@Test
 	@Config(sdk = 21)
 	public void recommendationsOccurForJellyBeanOrHigherFailOnGoogleTV4DevicesWithOutLeanback() {
-		ShadowPackageManager shadowPackageManager = shadowOf(ApplicationProvider.getApplicationContext().getPackageManager());
+		ShadowPackageManager shadowPackageManager = shadowOf(getApplicationContext().getPackageManager());
 		shadowPackageManager.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
 		shadowPackageManager.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, false);
 
 		SharedPreferences prefrences = PreferenceManager
-				.getDefaultSharedPreferences(application);
+				.getDefaultSharedPreferences(getApplicationContext());
 		Editor edit = prefrences.edit();
 		edit.putBoolean(SerenityConstants.PREFERENCE_ONDECK_RECOMMENDATIONS,
 				true);
@@ -109,12 +119,12 @@ public class OnDeckRecommendationsTest extends InjectingTest {
 	@Test
 	@Config(sdk = 21)
 	public void recommendationsOccurForJellyBeanOrHigherFailWhenAndroidTVModeIsFalse() {
-		ShadowPackageManager shadowPackageManager = shadowOf(ApplicationProvider.getApplicationContext().getPackageManager());
+		ShadowPackageManager shadowPackageManager = shadowOf(getApplicationContext().getPackageManager());
 		shadowPackageManager.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
 		shadowPackageManager.setSystemFeature(ANDROID_SOFTWARE_LEANBACK, true);
 
 		SharedPreferences prefrences = PreferenceManager
-				.getDefaultSharedPreferences(application);
+				.getDefaultSharedPreferences(getApplicationContext());
 		Editor edit = prefrences.edit();
 		edit.putBoolean(SerenityConstants.PREFERENCE_ONDECK_RECOMMENDATIONS,
 				true);
@@ -124,5 +134,4 @@ public class OnDeckRecommendationsTest extends InjectingTest {
 		boolean result = onDeckRecommendations.recommended();
 		assertThat(result).isFalse();
 	}
-
 }

@@ -33,12 +33,6 @@ import java.util.TimeZone;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
-/**
- * @author davidcarver
- *
- *         UnitTestExample
- *
- */
 public class TimeUtilsTest {
 
 	TimeUtil timeUtil;

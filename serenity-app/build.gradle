@@ -158,11 +158,30 @@ afterEvaluate {
 
 dependencies {
 
-  api project(':plexapp-rest-library')
-  api project(':subtitle-converter')
-  api project(':emby-lib')
-  api project(':serenity-android-common')
-  api project(':serenity-common')
+  testImplementation("org.robolectric:robolectric:$robolectricVersion") {
+    exclude module: 'support-v4'
+  }
+  testImplementation("com.squareup.assertj:assertj-android:$assertJAndroidVersion") {
+    exclude module: 'support-v4'
+    exclude module: 'support-annotations'
+  }
+
+  testImplementation "org.assertj:assertj-core:$assertjVersion"
+  testImplementation "junit:junit:$junitVersion"
+  testImplementation "org.robolectric:shadows-supportv4:$robolectricVersion"
+  testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
+  testImplementation "org.robolectric:shadowapi:$robolectricVersion"
+  testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
+  testImplementation "androidx.test:core:1.1.0"
+  testImplementation "org.khronos:opengl-api:$openglApiVersion"
+  testImplementation "org.mockito:mockito-core:$mockitoVersion"
+
+
+  implementation project(':plexapp-rest-library')
+  implementation project(':subtitle-converter')
+  implementation project(':emby-lib')
+  implementation project(':serenity-android-common')
+  implementation project(':serenity-common')
 
   implementation 'com.google.firebase:firebase-core:16.0.6'
   implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
@@ -227,8 +246,9 @@ dependencies {
   //TODO Upgrade to Android X and update to 3.0.0
   implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
 
-  implementation 'com.github.rstanic12:Resourceful:1.0.0'
-
+  implementation('com.github.rstanic12:Resourceful:1.0.0') {
+    exclude group: 'com.google.guava'
+  }
 
   // https://mvnrepository.com/artifact/org.simpleframework/simple-xml
   implementation("org.simpleframework:simple-xml:$simpleXmlVersion") {
@@ -238,23 +258,6 @@ dependencies {
 
   testImplementation "com.nhaarman:mockito-kotlin:1.6.0"
   testImplementation "org.apache.commons:commons-lang3:$commonsLangVersion"
-  testImplementation("org.robolectric:robolectric:$robolectricVersion") {
-    exclude module: 'support-v4'
-  }
-  testImplementation("com.squareup.assertj:assertj-android:$assertJAndroidVersion") {
-    exclude module: 'support-v4'
-    exclude module: 'support-annotations'
-  }
-
-  testImplementation "org.assertj:assertj-core:$assertjVersion"
-  testImplementation "junit:junit:$junitVersion"
-  testImplementation "org.robolectric:shadows-supportv4:$robolectricVersion"
-  testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
-  testImplementation "org.robolectric:shadowapi:$robolectricVersion"
-  testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
-  testImplementation "androidx.test:core:1.1.0"
-  testImplementation "org.khronos:opengl-api:$openglApiVersion"
-  testImplementation "org.mockito:mockito-core:$mockitoVersion"
 
   testImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
   testImplementation "commons-io:commons-io:$commonsioVersion"

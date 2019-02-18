@@ -38,6 +38,7 @@ import org.robolectric.annotation.Config;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -46,7 +47,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(PlainAndroidRunner.class)
 public class SystemDefaultPlayerTest {
 
 	SystemDefaultPlayer mxplayer;

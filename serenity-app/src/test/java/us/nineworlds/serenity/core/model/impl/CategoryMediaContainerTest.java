@@ -37,11 +37,12 @@ import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(PlainAndroidRunner.class)
 public class CategoryMediaContainerTest extends InjectingTest {
 
   @Mock
