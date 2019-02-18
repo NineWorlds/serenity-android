@@ -21,6 +21,7 @@ import us.nineworlds.serenity.events.TVShowRetrievalEvent;
 import us.nineworlds.serenity.jobs.TVCategoryJob;
 import us.nineworlds.serenity.jobs.TVShowRetrievalJob;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -29,7 +30,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(PlainAndroidRunner.class)
 public class TVShowBrowserPresenterTest extends InjectingTest {
 
   @Mock JobManager mockJobManager;

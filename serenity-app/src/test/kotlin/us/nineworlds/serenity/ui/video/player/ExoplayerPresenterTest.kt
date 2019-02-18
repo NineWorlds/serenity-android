@@ -22,7 +22,6 @@ import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import org.mockito.quality.Strictness.LENIENT
-import org.robolectric.RobolectricTestRunner
 import toothpick.config.Module
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
@@ -34,10 +33,12 @@ import us.nineworlds.serenity.injection.ForVideoQueue
 import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
 import us.nineworlds.serenity.jobs.video.WatchedStatusJob
 import us.nineworlds.serenity.test.InjectingTest
-import java.util.*
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner
+import java.util.LinkedList
+import java.util.Random
 import javax.inject.Inject
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(PlainAndroidRunner::class)
 class ExoplayerPresenterTest : InjectingTest() {
 
   @Rule
@@ -71,7 +72,6 @@ class ExoplayerPresenterTest : InjectingTest() {
     presenter.attachView(mockView)
 
     doReturn(mockView).`when`(presenter).viewState
-
   }
 
   @Test
@@ -185,6 +185,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
     init {
       bind(LinkedList::class.java).withName(ForVideoQueue::class.java).toInstance(mockVideoQueue)
+      bind(EventBus::class.java).toInstance(mockEventBus)
     }
   }
 }

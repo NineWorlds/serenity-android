@@ -33,6 +33,7 @@ import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.widgets.DrawerLayout;
 
@@ -42,7 +43,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(PlainAndroidRunner.class)
 public class SettingsMenuDrawerOnItemClickedListenerTest {
 
   @Mock DrawerLayout mockDrawerLayout;

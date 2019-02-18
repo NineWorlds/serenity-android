@@ -11,6 +11,7 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
 import org.robolectric.RobolectricTestRunner
+import toothpick.config.Module
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.rest.SerenityClient
@@ -20,9 +21,10 @@ import us.nineworlds.serenity.events.users.AuthenticatedUserEvent
 import us.nineworlds.serenity.jobs.AuthenticateUserJob
 import us.nineworlds.serenity.jobs.RetrieveAllUsersJob
 import us.nineworlds.serenity.test.InjectingTest
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import javax.inject.Inject
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(PlainAndroidRunner::class)
 class LoginUserPresenterTest : InjectingTest() {
 
   @Rule
@@ -124,8 +126,13 @@ class LoginUserPresenterTest : InjectingTest() {
   }
 
   override fun installTestModules() {
-    scope.installTestModules(TestingModule())
+    scope.installTestModules(TestingModule(), TestModule())
   }
 
+  inner class TestModule : Module() {
+    init {
+      bind(EventBus::class.java).toInstance(mockEventBus)
+    }
+  }
 
 }

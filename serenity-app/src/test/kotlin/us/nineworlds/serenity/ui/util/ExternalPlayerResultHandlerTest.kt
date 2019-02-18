@@ -44,7 +44,7 @@ class ExternalPlayerResultHandlerTest : InjectingTest() {
 
   @Before override fun setUp() {
     super.setUp()
-    activity = Robolectric.setupActivity(Activity::class.java)
+    activity = Robolectric.buildActivity(Activity::class.java).create().get()
     resultHander = ExternalPlayerResultHandler(0, mockIntent, activity, mockAbstractPosterImageGalleryAdapter)
   }
 

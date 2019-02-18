@@ -11,16 +11,16 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
-import org.robolectric.RobolectricTestRunner
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.events.users.AuthenticatedUserEvent
 import us.nineworlds.serenity.jobs.AuthenticateUserJob
 import us.nineworlds.serenity.test.InjectingTest
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import javax.inject.Inject
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(PlainAndroidRunner::class)
 class AuthenticateUserJobTest : InjectingTest() {
 
   @Rule
@@ -65,5 +65,4 @@ class AuthenticateUserJobTest : InjectingTest() {
   override fun installTestModules() {
     scope.installTestModules(TestingModule())
   }
-
 }

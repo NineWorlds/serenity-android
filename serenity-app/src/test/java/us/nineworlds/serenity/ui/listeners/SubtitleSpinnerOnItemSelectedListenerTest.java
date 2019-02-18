@@ -36,6 +36,7 @@ import toothpick.config.Module;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
 import us.nineworlds.serenity.core.model.impl.Subtitle;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
 
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
@@ -47,7 +48,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 // UnitTestCodeMash2015
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(PlainAndroidRunner.class)
 public class SubtitleSpinnerOnItemSelectedListenerTest extends InjectingTest {
 
   @Mock

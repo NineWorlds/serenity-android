@@ -11,15 +11,15 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
-import org.robolectric.RobolectricTestRunner
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
 import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
 import us.nineworlds.serenity.test.InjectingTest
+import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import javax.inject.Inject
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(PlainAndroidRunner::class)
 class UpdatePlaybackPositionJobTest : InjectingTest() {
 
   @Rule
