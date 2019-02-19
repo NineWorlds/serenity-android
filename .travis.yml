@@ -28,7 +28,7 @@ before_install:
    - pip install --user codecov
 
 script:
-   - travis_wait 60 ./gradlew clean jacocoTestReport
+   - travis_wait 60 ./gradlew clean jacocoTestReport sonarqube
    
 after_success:
   - codecov
