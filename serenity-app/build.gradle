@@ -45,7 +45,7 @@ sonarqube {
     property "sonar.organization", "kingargyle-github"
     property "sonar.login", "cb7af08f0b0e86306ac5365074326dc27aba503e"
     property "sonar.jacoco.xmlReportPath", "${project.buildDir}/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
-    property "sonar.coverage.exclusions", "**/R.class, **/R$*.class, **/BuildConfig.*, **/Manifest*.*, **/*Test*.*,android/**/*.*, **/*MemberInjector.*, **/*$$Factory*.*, **/*..State*.*, **/*_ViewBinding*.*"
+    property "sonar.coverage.exclusions", "**/R.class, **/R\$*.class, **/BuildConfig.*, **/Manifest*.*, **/*Test*.*,android/**/*.*, **/*MemberInjector.*, **/*\$\$Factory*.*, **/*..State*.*, **/*_ViewBinding*.*"
   }
 }
 
