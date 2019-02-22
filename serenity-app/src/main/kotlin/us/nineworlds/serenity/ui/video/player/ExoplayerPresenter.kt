@@ -1,6 +1,5 @@
 package us.nineworlds.serenity.ui.video.player
 
-import android.util.Log
 import android.view.View
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
@@ -24,6 +23,7 @@ import us.nineworlds.serenity.common.annotations.OpenForTesting
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.core.model.VideoContentInfo
+import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.events.video.OnScreenDisplayEvent
 import us.nineworlds.serenity.injection.ForVideoQueue
 import us.nineworlds.serenity.jobs.video.StartPlaybackJob
@@ -55,6 +55,9 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
 
   @Inject
   internal lateinit var jobManager: JobManager
+
+  @Inject
+  internal lateinit var androidHelper: AndroidHelper
 
   internal lateinit var video: VideoContentInfo
 
@@ -171,12 +174,21 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), Exop
       }
       val isVideoContainerSupported =
         mediaCodecInfoUtil.isExoPlayerContainerSupported("video/${video.container.substringBefore(",")}")
-      val isAudioCodecSupported = selectCodec(mediaCodecInfoUtil.findCorrectAudioMimeType("audio/${video.audioCodec}"))
+      var isAudioCodecSupported = selectCodec(mediaCodecInfoUtil.findCorrectAudioMimeType("audio/${video.audioCodec}"))
       val isVideoSupported = selectCodec(mediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
 
-      Log.d("ExoPlayerPresenter", "Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
-      Log.d("ExoPlayerPresenter", "Video Codec:  ${video.videoCodec} support returned $isVideoSupported")
-      Log.d("ExoPlayerPresenter", "Video Container:  ${video.container} support returned $isVideoContainerSupported")
+      isAudioCodecSupported = if (androidHelper.isNvidiaShield || androidHelper.isBravia) {
+        when (video.audioCodec.toLowerCase()) {
+          "eac3", "ac3", "dts", "truehd" -> true
+          else -> isAudioCodecSupported
+        }
+      } else {
+        isAudioCodecSupported
+      }
+
+      logger.debug("Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
+      logger.debug("Video Codec:  ${video.videoCodec} support returned $isVideoSupported")
+      logger.debug("Video Container:  ${video.container} support returned $isVideoContainerSupported")
 
       if (isVideoSupported && isAudioCodecSupported && isVideoContainerSupported!!) {
         return true

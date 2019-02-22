@@ -40,9 +40,11 @@ class MediaCodecInfoUtil {
   fun isCodecSupported(mimeType: String): Boolean {
     val mediaCodecList = MediaCodecList(MediaCodecList.ALL_CODECS)
     for (codecInfo in mediaCodecList.codecInfos) {
+      Log.d(MediaCodecInfoUtil::class.java.simpleName, "Codec: ${codecInfo.name}" )
       if (!codecInfo.isEncoder) {
         val types: Array<String> = codecInfo.supportedTypes
         for (type in types) {
+          Log.d(MediaCodecInfoUtil::class.java.simpleName, "   Type: $type" )
           if (type == mimeType) {
             Log.d(MediaCodecInfoUtil::class.java.simpleName, "MimeType Found for $mimeType!")
             return true

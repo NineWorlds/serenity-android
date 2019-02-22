@@ -38,6 +38,8 @@ public class AndroidHelper {
   private static final String AMAZON_TV_MODELS = "AFT";
   private static final String MANUFACTURER_AMAZON = "Amazon";
   private static final String ANDROID_HARDWARE_TYPE_TELEVISION = "android.hardware.type.television";
+  private static final String ANDROID_SHIELD_MODEL = "SHIELD";
+  private static final String ANDROID_BRAVIA_MODEL = "Bravia";
 
   Context context;
 
@@ -53,6 +55,14 @@ public class AndroidHelper {
   public boolean isAmazonFireTV() {
     return context.getPackageManager().hasSystemFeature(AMAZON_FEATURE_FIRE_TV)
         || Build.MODEL.startsWith(AMAZON_TV_MODELS) && Build.MANUFACTURER.equals(MANUFACTURER_AMAZON);
+  }
+
+  public boolean isNvidiaShield() {
+    return Build.MODEL.contains(ANDROID_SHIELD_MODEL);
+  }
+
+  public boolean isBravia() {
+    return Build.MODEL.toLowerCase().contains(ANDROID_BRAVIA_MODEL.toLowerCase());
   }
 
   public boolean isLeanbackSupported() {
