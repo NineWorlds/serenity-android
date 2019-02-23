@@ -26,28 +26,50 @@ package us.nineworlds.serenity.core.services;
 import android.app.Notification;
 
 import androidx.test.core.app.ApplicationProvider;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.mockito.quality.Strictness;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import toothpick.config.Module;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.test.InjectingTest;
+
+import javax.inject.Inject;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.assertj.android.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 25)
 public class RecommendAsyncTaskTest extends InjectingTest {
 
+	@Rule
+	public MockitoRule rule = MockitoJUnit.rule().strictness(Strictness.STRICT_STUBS);
+
 	RecommendAsyncTask recommendTask;
+
+	@Inject
+	AndroidHelper mockAndroidHelper;
+
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		doReturn(25).when(mockAndroidHelper).buildNumber();
+	}
 
 	@Test
 	public void createsValidNotificationForSeries() {
@@ -160,4 +182,5 @@ public class RecommendAsyncTaskTest extends InjectingTest {
 	@Override public void installTestModules() {
 		scope.installTestModules(new TestingModule());
 	}
+
 }

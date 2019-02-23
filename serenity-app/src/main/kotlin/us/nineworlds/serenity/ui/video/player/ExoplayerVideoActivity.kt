@@ -30,6 +30,7 @@ import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.annotations.OpenForTesting
 import us.nineworlds.serenity.core.logger.Logger
+import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.injection.AppInjectionConstants
 import us.nineworlds.serenity.injection.modules.ExoplayerVideoModule
 import us.nineworlds.serenity.ui.activity.SerenityActivity
@@ -54,6 +55,9 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   @Inject
   lateinit var log: Logger
+
+  @Inject
+  lateinit var androidHelper: AndroidHelper
 
   @BindView(R.id.player_view)
   internal lateinit var playerView: PlayerView
@@ -95,21 +99,21 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   public override fun onStart() {
     super.onStart()
-    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+    if (androidHelper.buildNumber() > Build.VERSION_CODES.M) {
       presenter.playBackFromVideoQueue()
     }
   }
 
   public override fun onResume() {
     super.onResume()
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+    if (androidHelper.buildNumber() <= Build.VERSION_CODES.M) {
       presenter.playBackFromVideoQueue()
     }
   }
 
   public override fun onPause() {
     super.onPause()
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+    if ( androidHelper.buildNumber() <= Build.VERSION_CODES.M) {
       pause()
       releasePlayer()
       progressReportinghandler.removeCallbacks(progressRunnable)
@@ -118,7 +122,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   public override fun onStop() {
     super.onStop()
-    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+    if (androidHelper.buildNumber() > Build.VERSION_CODES.M) {
       pause()
       releasePlayer()
       progressReportinghandler.removeCallbacks(progressRunnable)

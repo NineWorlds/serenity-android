@@ -48,10 +48,6 @@ public class OnDeckRecommendations extends BaseInjector {
   }
 
   public boolean recommended() {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-      return false;
-    }
-
     if (!androidHelper.isLeanbackSupported()) {
       return false;
     }

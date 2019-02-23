@@ -88,7 +88,6 @@ public class OnDeckRecommendationsTest extends InjectingTest {
 	}
 
 	@Test
-	@Config(sdk = 21)
 	public void recommendationsOccurForJellyBeanOrHigher() {
 		doReturn(true).when(mockAndroidHelper).isLeanbackSupported();
 
@@ -110,7 +109,6 @@ public class OnDeckRecommendationsTest extends InjectingTest {
 	}
 
 	@Test
-	@Config(sdk = 21)
 	public void recommendationsOccurForJellyBeanOrHigherFailOnGoogleTV4DevicesWithOutLeanback() {
 		ShadowPackageManager shadowPackageManager = shadowOf(getApplicationContext().getPackageManager());
 		shadowPackageManager.setSystemFeature(ANDROID_HARDWARE_TYPE_TELEVISION, true);
@@ -129,7 +127,6 @@ public class OnDeckRecommendationsTest extends InjectingTest {
 	}
 
 	@Test
-	@Config(sdk = 21)
 	public void recommendationsOccurForJellyBeanOrHigherFailWhenAndroidTVModeIsFalse() {
 		doReturn(true).when(mockAndroidHelper).isLeanbackSupported();
 		ShadowPackageManager shadowPackageManager = shadowOf(getApplicationContext().getPackageManager());

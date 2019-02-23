@@ -37,12 +37,14 @@ import toothpick.config.Module
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.core.logger.Logger
+import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.injection.AppInjectionConstants
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.test.ShadowSubtitleView
+import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [21], shadows = [ShadowSubtitleView::class])
+@Config(shadows = [ShadowSubtitleView::class])
 open class ExoplayerVideoActivityTest : InjectingTest() {
 
   @Rule
@@ -66,6 +68,9 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
 
   @Mock
   lateinit var mockPlayer: SimpleExoPlayer
+
+  @Inject
+  lateinit var mockAndroidHelper: AndroidHelper
 
   lateinit var activity: ExoplayerVideoActivity
 
@@ -103,8 +108,8 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   }
 
   @Test
-  @Config(sdk = intArrayOf(24))
   fun onPauseDoesNotCallsReleasePlayser() {
+    doReturn(24).whenever(mockAndroidHelper).buildNumber()
     val spy = spy(activity)
     doNothing().whenever(spy).releasePlayer()
     spy.onPause()
@@ -113,8 +118,8 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   }
 
   @Test
-  @Config(sdk = intArrayOf(24))
   fun onStopDCallsReleasePlayser() {
+    doReturn(24).whenever(mockAndroidHelper).buildNumber()
     val spy = spy(activity)
     doNothing().whenever(spy).releasePlayer()
     spy.onStop()

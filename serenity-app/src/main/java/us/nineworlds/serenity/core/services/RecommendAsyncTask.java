@@ -1,6 +1,5 @@
 package us.nineworlds.serenity.core.services;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -21,16 +20,15 @@ import us.nineworlds.serenity.core.SerenityRecommendationContentProvider;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.ui.video.player.RecommendationPlayerActivity;
 
-//AndroidTVCodeMash2015-Recommendations
-
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class RecommendAsyncTask extends AsyncTask {
   private final VideoContentInfo video;
   private final Context context;
 
   @Inject protected SerenityClient factory;
+  @Inject protected AndroidHelper androidHelper;
 
   public RecommendAsyncTask(VideoContentInfo video, Context context) {
     this.video = video;
@@ -40,7 +38,7 @@ public class RecommendAsyncTask extends AsyncTask {
 
   @Override public Object doInBackground(Object... params) {
     RecommendationBuilder builder = new RecommendationBuilder();
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1) {
+    if (androidHelper.buildNumber() <= Build.VERSION_CODES.N_MR1) {
       try {
         Notification notification = null;
         if (video.getSeriesTitle() == null) {

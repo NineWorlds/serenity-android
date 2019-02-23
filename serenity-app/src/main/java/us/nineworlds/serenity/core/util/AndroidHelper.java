@@ -69,4 +69,8 @@ public class AndroidHelper {
     final PackageManager pm = context.getPackageManager();
     return pm.hasSystemFeature(ANDROID_SOFTWARE_LEANBACK);
   }
+
+  public int buildNumber() {
+    return Build.VERSION.SDK_INT;
+  }
 }
