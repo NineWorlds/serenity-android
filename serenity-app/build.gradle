@@ -123,15 +123,17 @@ android {
     unitTests.returnDefaultValues = true
     unitTests.includeAndroidResources = true
     unitTests.all {
-      minHeapSize = "512m"
-      maxHeapSize = "1024m"
+      minHeapSize = "1024m"
+      maxHeapSize = "1512m"
+      forkEvery = 100
+      maxParallelForks = 2
 
       jvmArgs '-noverify'
     }
   }
 
   compileOptions {
-    incremental = false
+    incremental = true
     targetCompatibility 1.8
     sourceCompatibility 1.8
   }
