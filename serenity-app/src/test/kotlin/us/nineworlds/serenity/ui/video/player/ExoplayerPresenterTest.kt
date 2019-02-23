@@ -28,6 +28,7 @@ import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
+import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.events.video.OnScreenDisplayEvent
 import us.nineworlds.serenity.injection.ForVideoQueue
 import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
@@ -62,6 +63,9 @@ class ExoplayerPresenterTest : InjectingTest() {
   lateinit var mockEventBus: EventBus
   @Mock
   lateinit var mockOnScreenDisplayEvent: OnScreenDisplayEvent
+
+  @Mock
+  lateinit var mockAndroidHelper: AndroidHelper
 
   private lateinit var presenter: ExoplayerPresenter
 
@@ -186,6 +190,7 @@ class ExoplayerPresenterTest : InjectingTest() {
     init {
       bind(LinkedList::class.java).withName(ForVideoQueue::class.java).toInstance(mockVideoQueue)
       bind(EventBus::class.java).toInstance(mockEventBus)
+      bind(AndroidHelper::class.java).toInstance(mockAndroidHelper)
     }
   }
 }

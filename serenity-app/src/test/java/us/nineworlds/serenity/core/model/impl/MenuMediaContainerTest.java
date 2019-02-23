@@ -25,12 +25,18 @@ package us.nineworlds.serenity.core.model.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.preference.PreferenceManager;
+import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
+import toothpick.config.Module;
 import us.nineworlds.plex.rest.model.impl.Directory;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.TestingModule;
@@ -125,6 +131,13 @@ public class MenuMediaContainerTest extends InjectingTest {
   }
 
   @Override public void installTestModules() {
-    scope.installTestModules(new TestingModule());
+    scope.installTestModules(new TestingModule(), new TestModule());
+  }
+
+  public class TestModule extends Module {
+    public TestModule() {
+      bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext()));
+      bind(Resources.class).toInstance(ApplicationProvider.getApplicationContext().getResources());
+    }
   }
 }

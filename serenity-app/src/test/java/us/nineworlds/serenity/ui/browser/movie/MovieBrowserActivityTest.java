@@ -24,11 +24,14 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import androidx.test.core.app.ApplicationProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,8 +43,12 @@ import toothpick.config.Module;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.widgets.DrawerLayout;
+
+import java.util.LinkedList;
 
 import static org.assertj.android.api.Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -61,6 +68,7 @@ import static org.robolectric.Robolectric.getForegroundThreadScheduler;
 public class MovieBrowserActivityTest extends InjectingTest {
 
   @Mock SharedPreferences mockSharedPreferences;
+  @Mock VideoPlayerIntentUtils mockVideoPlayerIntentUtils;
 
   MovieBrowserActivity movieBrowserActivity;
 
@@ -153,6 +161,10 @@ public class MovieBrowserActivityTest extends InjectingTest {
 
     public TestModule() {
       bind(SharedPreferences.class).toInstance(mockSharedPreferences);
+      bind(LinkedList.class).withName(ForVideoQueue.class).toInstance(new LinkedList());
+      bind(Resources.class).toInstance(ApplicationProvider.getApplicationContext().getResources());
+      bind(VideoPlayerIntentUtils.class).toInstance(mockVideoPlayerIntentUtils);
     }
   }
+
 }

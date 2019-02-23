@@ -24,7 +24,9 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.view.View;
+import androidx.test.core.app.ApplicationProvider;
 import app.com.tvrecyclerview.TvRecyclerView;
 import javax.inject.Inject;
 import org.junit.After;
@@ -40,8 +42,12 @@ import toothpick.config.Module;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
+
+import java.util.LinkedList;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
@@ -65,6 +71,8 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
   @Mock TvRecyclerView mockRecyclerView;
 
   @Mock AbstractPosterImageGalleryAdapter mockAdapater;
+
+  @Mock VideoPlayerIntentUtils mockVideoPlayerIntentUtils;
 
   MovieGridPosterOnItemSelectedListener onItemSelectedListener;
 
@@ -116,6 +124,9 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
 
     public TestModule() {
       bind(SharedPreferences.class).toInstance(mockPreferences);
+      bind(LinkedList.class).withName(ForVideoQueue.class).toInstance(new LinkedList());
+      bind(Resources.class).toInstance(ApplicationProvider.getApplicationContext().getResources());
+      bind(VideoPlayerIntentUtils.class).toInstance(mockVideoPlayerIntentUtils);
     }
   }
 }

@@ -33,6 +33,7 @@ import toothpick.config.Module;
 import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.logger.Logger;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 
 public class TestingModule extends Module {
 
@@ -41,6 +42,7 @@ public class TestingModule extends Module {
   @Mock LocalBroadcastManager mockLocalBroadcastManager;
   @Mock Logger mockLogger;
   @Mock Context mockContext;
+  @Mock AndroidHelper mockAndroidHelper;
 
   public TestingModule() {
     MockitoAnnotations.initMocks(this);
@@ -48,6 +50,7 @@ public class TestingModule extends Module {
     bind(SerenityClient.class).toInstance(mockPlexAppFactory);
     bind(LocalBroadcastManager.class).toInstance(mockLocalBroadcastManager);
     bind(Logger.class).toInstance(mockLogger);
+    bind(AndroidHelper.class).toInstance(mockAndroidHelper);
     //bind(Context.class).withName(ApplicationContext.class).toInstance(mockContext);
   }
 }

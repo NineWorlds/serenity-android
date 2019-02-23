@@ -1,6 +1,9 @@
 package us.nineworlds.serenity.ui.activity
 
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import android.widget.TextView
+import androidx.test.core.app.ApplicationProvider
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.whenever
 import org.assertj.android.api.Assertions
@@ -15,12 +18,22 @@ import org.mockito.quality.Strictness.STRICT_STUBS
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
+import toothpick.config.Module
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.Server
+import us.nineworlds.serenity.core.util.StringPreference
+import us.nineworlds.serenity.injection.ForMediaServers
+import us.nineworlds.serenity.injection.ServerClientPreference
+import us.nineworlds.serenity.injection.ServerIPPreference
+import us.nineworlds.serenity.injection.ServerPortPreference
+import us.nineworlds.serenity.injection.modules.AndroidModule
+import us.nineworlds.serenity.injection.modules.SerenityModule
+import us.nineworlds.serenity.injection.modules.providers.ServerClientPreferenceProvider
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.ui.activity.login.LoginUserActivity
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 @RunWith(RobolectricTestRunner::class)
 class ServerSelectionActivityTest : InjectingTest() {
@@ -36,6 +49,7 @@ class ServerSelectionActivityTest : InjectingTest() {
 
   @Before
   override fun setUp() {
+    super.setUp()
     Robolectric.getBackgroundThreadScheduler().pause()
     Robolectric.getForegroundThreadScheduler().pause()
     activity = Robolectric.buildActivity(ServerSelectionActivity::class.java).create().visible().get()
@@ -115,6 +129,19 @@ class ServerSelectionActivityTest : InjectingTest() {
   }
 
   override fun installTestModules() {
-    scope.installTestModules(TestingModule())
+    scope.installTestModules(TestingModule(), TestModule())
+  }
+
+  inner class TestModule : Module() {
+    init {
+      bind(MutableMap::class.java).withName(ForMediaServers::class.java).toInstance(ConcurrentHashMap<String, Server>())
+      bind(StringPreference::class.java).withName(ServerIPPreference::class.java)
+        .toProvider(AndroidModule.ServerIPPreferenceProvider::class.java)
+      bind(StringPreference::class.java).withName(ServerPortPreference::class.java)
+        .toProvider(AndroidModule.ServerPorPreferenceProvider::class.java)
+      bind(StringPreference::class.java).withName(ServerClientPreference::class.java).toProvider(
+        ServerClientPreferenceProvider::class.java)
+      bind(SharedPreferences::class.java).toInstance(PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext()))
+    }
   }
 }

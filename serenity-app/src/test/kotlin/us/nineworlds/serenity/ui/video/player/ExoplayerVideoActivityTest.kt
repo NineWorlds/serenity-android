@@ -9,7 +9,7 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.upstream.DataSource
-import com.nhaarman.mockito_kotlin.mock
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.nhaarman.mockito_kotlin.whenever
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Java6Assertions.assertThat
@@ -19,8 +19,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.MockitoAnnotations.initMocks
+import org.mockito.Mockito.any
+import org.mockito.Mockito.doNothing
+import org.mockito.Mockito.doReturn
+import org.mockito.Mockito.never
+import org.mockito.Mockito.spy
+import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import org.mockito.quality.Strictness.LENIENT
@@ -32,8 +36,8 @@ import toothpick.Toothpick
 import toothpick.config.Module
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.annotations.InjectionConstants
+import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.injection.AppInjectionConstants
-import us.nineworlds.serenity.injection.modules.ExoplayerVideoModule
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.test.ShadowSubtitleView
 
@@ -49,25 +53,32 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   lateinit var mockExoPlayerPresenter: ExoplayerPresenter
 
   @Mock
+  lateinit var mockDefaultBandwidthMeter: DefaultBandwidthMeter
+
+  @Mock
+  lateinit var mockDataSourceFactory: DataSource.Factory
+
+  @Mock
+  lateinit var mockMappingTrackSelector: MappingTrackSelector
+
+  @Mock
+  lateinit var mockLogger: Logger
+
+  @Mock
   lateinit var mockPlayer: SimpleExoPlayer
 
   lateinit var activity: ExoplayerVideoActivity
 
   override fun openScope(): Scope {
     val scope = Toothpick.openScopes(InjectionConstants.APPLICATION_SCOPE, AppInjectionConstants.EXOPLAYER_SCOPE)
-    scope.installModules(ExoplayerVideoModule())
     return scope
   }
 
   @Before
   override fun setUp() {
-    initMocks(this)
     super.setUp()
     activity = Robolectric.buildActivity(ExoplayerVideoActivity::class.java).create().get()
     activity.player = mockPlayer
-    activity.mediaDataSourceFactory = mock<DataSource.Factory>()
-    activity.trackSelector = mock<MappingTrackSelector>()
-    activity.presenter = mockExoPlayerPresenter
   }
 
   @Test
@@ -85,7 +96,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   @Test
   fun onPauseCallsReleasePlayser() {
     val spy = spy(activity)
-    doNothing().`when`(spy).releasePlayer()
+    doNothing().whenever(spy).releasePlayer()
     spy.onPause()
 
     verify(spy).releasePlayer()
@@ -95,7 +106,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   @Config(sdk = intArrayOf(24))
   fun onPauseDoesNotCallsReleasePlayser() {
     val spy = spy(activity)
-    doNothing().`when`(spy).releasePlayer()
+    doNothing().whenever(spy).releasePlayer()
     spy.onPause()
 
     verify(spy, never()).releasePlayer()
@@ -105,7 +116,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   @Config(sdk = intArrayOf(24))
   fun onStopDCallsReleasePlayser() {
     val spy = spy(activity)
-    doNothing().`when`(spy).releasePlayer()
+    doNothing().whenever(spy).releasePlayer()
     spy.onStop()
 
     verify(spy).releasePlayer()
@@ -114,7 +125,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   @Test
   fun onStopDoesNotCallsReleasePlayser() {
     val spy = spy(activity)
-    doNothing().`when`(spy).releasePlayer()
+    doNothing().whenever(spy).releasePlayer()
     spy.onStop()
 
     verify(spy, never()).releasePlayer()
@@ -123,7 +134,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   @Test
   fun onNewIntentCallsRelease() {
     val spy = spy(activity)
-    doNothing().`when`(spy).releasePlayer()
+    doNothing().whenever(spy).releasePlayer()
     spy.onNewIntent(Intent())
 
     verify(spy).releasePlayer()
@@ -155,8 +166,6 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
 
   @Test
   fun releasePlayerReleasesWhenPlayerIsNotNull() {
-    activity.player = mockPlayer
-
     activity.releasePlayer()
 
     verify(mockPlayer).release()
@@ -169,8 +178,6 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
 
   @Test
   fun onBackPressedStopsAndReleasesVideoPlayer() {
-    activity.player = mockPlayer
-    activity.presenter = mockExoPlayerPresenter
     doReturn(Player.STATE_READY).whenever(mockPlayer).playbackState
 
     activity.onBackPressed()
@@ -183,8 +190,6 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
 
   @Test
   fun onBackPressedStopsAndReleasesVideoPlayerWhenBuffering() {
-    activity.player = mockPlayer
-    activity.presenter = mockExoPlayerPresenter
     doReturn(Player.STATE_BUFFERING).whenever(mockPlayer).playbackState
 
     activity.onBackPressed()
@@ -197,8 +202,6 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
 
   @Test
   fun onKeyCodeDownHandlesHomeEvent() {
-    activity.player = mockPlayer
-    activity.presenter = mockExoPlayerPresenter
     doReturn(Player.STATE_BUFFERING).whenever(mockPlayer).playbackState
 
     val result = activity.onKeyDown(KeyEvent.KEYCODE_HOME, null)
@@ -218,6 +221,9 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
 
     init {
       bind(ExoplayerPresenter::class.java).toInstance(mockExoPlayerPresenter)
+      bind(DataSource.Factory::class.java).toInstance(mockDataSourceFactory)
+      bind(MappingTrackSelector::class.java).toInstance(mockMappingTrackSelector)
+      bind(Logger::class.java).toInstance(mockLogger)
     }
   }
 }

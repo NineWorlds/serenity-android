@@ -23,28 +23,42 @@
 
 package us.nineworlds.serenity.volley;
 
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.test.core.app.ApplicationProvider;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.mockito.quality.Strictness;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
+import toothpick.config.Module;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.ui.activity.SerenityDrawerLayoutActivity;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
+import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
+
+import java.util.LinkedList;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -54,6 +68,12 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
  */
 @RunWith(RobolectricTestRunner.class)
 public class GridSubtitleVolleyResponseListenerTest extends InjectingTest {
+
+	@Rule
+	public MockitoRule rule = MockitoJUnit.rule().strictness(Strictness.STRICT_STUBS);
+
+	@Mock
+	VideoPlayerIntentUtils mockVideoPlayerIntentUtils;
 
 	Serializer serializer;
 	SerenityDrawerLayoutActivity movieBrowserActivity;
@@ -116,6 +136,15 @@ public class GridSubtitleVolleyResponseListenerTest extends InjectingTest {
 	}
 
 	@Override public void installTestModules() {
-		scope.installTestModules(new TestingModule());
+		scope.installTestModules(new TestingModule(), new TestModule());
+	}
+
+	public class TestModule extends Module {
+		public TestModule() {
+			bind(LinkedList.class).withName(ForVideoQueue.class).toInstance(new LinkedList());
+			bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext()));
+			bind(Resources.class).toInstance(ApplicationProvider.getApplicationContext().getResources());
+			bind(VideoPlayerIntentUtils.class).toInstance(mockVideoPlayerIntentUtils);
+		}
 	}
 }

@@ -2,6 +2,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -12,7 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+
+import androidx.test.core.app.ApplicationProvider;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -38,8 +42,10 @@ import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.test.ShadowArrayAdapter;
+import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 import static org.assertj.android.api.Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -57,6 +63,7 @@ public class TVShowBrowserActivityTest extends InjectingTest {
   @Mock TVCategoryState mockTVCategoryState;
   @Mock SharedPreferences mockSharedPreferences;
   @Mock TVShowBrowserPresenter mockTVShowBrowserPresenter;
+  @Mock VideoPlayerIntentUtils mockVideoPlayerIntentUtils;
 
   TVShowBrowserActivity activity;
 
@@ -272,6 +279,10 @@ public class TVShowBrowserActivityTest extends InjectingTest {
       bind(TVCategoryState.class).toInstance(mockTVCategoryState);
       bind(SharedPreferences.class).toInstance(mockSharedPreferences);
       bind(TVShowBrowserPresenter.class).toInstance(mockTVShowBrowserPresenter);
+      bind(LinkedList.class).withName(ForVideoQueue.class).toInstance(new LinkedList());
+      bind(Resources.class).toInstance(ApplicationProvider.getApplicationContext().getResources());
+      bind(VideoPlayerIntentUtils.class).toInstance(mockVideoPlayerIntentUtils);
     }
   }
+
 }

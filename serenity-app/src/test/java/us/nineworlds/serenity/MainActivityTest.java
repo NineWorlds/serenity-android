@@ -24,6 +24,7 @@
 package us.nineworlds.serenity;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
@@ -32,6 +33,7 @@ import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import androidx.test.core.app.ApplicationProvider;
 import butterknife.ButterKnife;
 import javax.inject.Inject;
 import org.junit.After;
@@ -43,9 +45,14 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import toothpick.config.Module;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.fragments.MainMenuFragment;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.widgets.DrawerLayout;
+
+import java.util.LinkedList;
 
 import static org.assertj.android.api.Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -62,6 +69,8 @@ public class MainActivityTest extends InjectingTest {
 
   @Mock KeyEvent mockKeyEvent;
   @Mock SharedPreferences mockSharedPreferences;
+  @Mock AndroidHelper mockAndroidHelper;
+  @Mock LinkedList<VideoContentInfo> mockVideoQueue;
 
   @Inject LocalBroadcastManager mockLocalBroadcastManager;
 
@@ -173,6 +182,9 @@ public class MainActivityTest extends InjectingTest {
 
     public TestModule() {
       bind(SharedPreferences.class).toInstance(mockSharedPreferences);
+      bind(AndroidHelper.class).toInstance(mockAndroidHelper);
+      bind(LinkedList.class).withName(ForVideoQueue.class).toInstance(mockVideoQueue);
+      bind(Resources.class).toInstance(ApplicationProvider.getApplicationContext().getResources());
     }
   }
 }

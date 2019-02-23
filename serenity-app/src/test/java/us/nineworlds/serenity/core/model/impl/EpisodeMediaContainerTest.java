@@ -26,6 +26,9 @@ package us.nineworlds.serenity.core.model.impl;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import android.content.res.Resources;
+import androidx.test.core.app.ApplicationProvider;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +41,7 @@ import org.simpleframework.xml.core.Persister;
 import toothpick.config.Module;
 import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.plex.rest.model.impl.Video;
+import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
@@ -121,13 +125,14 @@ public class EpisodeMediaContainerTest extends InjectingTest {
   }
 
   @Override public void installTestModules() {
-    scope.installTestModules(new TestModule());
+    scope.installTestModules(new TestingModule(), new TestModule());
   }
 
   public class TestModule extends Module {
 
     public TestModule() {
       bind(SerenityClient.class).toInstance(mockFactory);
+      bind(Resources.class).toInstance(ApplicationProvider.getApplicationContext().getResources());
     }
   }
 }

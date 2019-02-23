@@ -1,5 +1,10 @@
 package us.nineworlds.serenity.jobs
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.res.Resources
+import android.preference.PreferenceManager
+import androidx.test.core.app.ApplicationProvider
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.verify
@@ -15,7 +20,9 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
 import org.robolectric.RobolectricTestRunner
+import toothpick.config.Module
 import us.nineworlds.serenity.TestingModule
+import us.nineworlds.serenity.common.android.injection.ApplicationContext
 import us.nineworlds.serenity.common.media.model.IDirectory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
@@ -94,6 +101,14 @@ class OnDeckRecommendationsJobTest : InjectingTest() {
   }
 
   override fun installTestModules() {
-    scope.installTestModules(TestingModule())
+    scope.installTestModules(TestingModule(), TestModule())
+  }
+
+  inner class TestModule : Module() {
+    init {
+      bind(Context::class.java).withName(ApplicationContext::class.java).toInstance(ApplicationProvider.getApplicationContext())
+      bind(SharedPreferences::class.java).toInstance(PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext()))
+      bind(Resources::class.java).toInstance(ApplicationProvider.getApplicationContext<Context>().resources)
+    }
   }
 }

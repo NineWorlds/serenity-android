@@ -23,11 +23,17 @@
 
 package us.nineworlds.serenity.ui.adapters;
 
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
+import java.util.LinkedList;
+
+import androidx.test.core.app.ApplicationProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,10 +41,12 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import toothpick.config.Module;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo;
+import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -119,6 +127,15 @@ public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
   }
 
   @Override public void installTestModules() {
-    scope.installTestModules(new TestingModule());
+    scope.installTestModules(new TestingModule(), new TestModule());
   }
+
+  public class TestModule extends Module {
+    public TestModule() {
+      bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext()));
+      bind(LinkedList.class).withName(ForVideoQueue.class).toInstance(new LinkedList());
+      bind(Resources.class).toInstance(ApplicationProvider.getApplicationContext().getResources());
+    }
+  }
+
 }

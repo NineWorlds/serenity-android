@@ -36,7 +36,10 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import toothpick.config.Module;
 import us.nineworlds.serenity.BuildConfig;
+import us.nineworlds.serenity.TestingModule;
+import us.nineworlds.serenity.test.InjectingTest;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -46,13 +49,14 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
-public class ServerConfigTest {
+public class ServerConfigTest extends InjectingTest {
 
 	SharedPreferences.OnSharedPreferenceChangeListener serverConfigChangeListener;
 	ServerConfig serverConfig;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
+		super.setUp();
 		Robolectric.getForegroundThreadScheduler().pause();
 		Robolectric.getBackgroundThreadScheduler().pause();
 		serverConfig = (ServerConfig) ServerConfig
@@ -110,4 +114,14 @@ public class ServerConfigTest {
 		assertThat(serverConfig.getPort()).isEqualTo("6666");
 	}
 
+	@Override
+	public void installTestModules() {
+		scope.installTestModules(new TestingModule(), new TestModule());
+	}
+
+	public class TestModule extends Module {
+		public TestModule() {
+			bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext()));
+		}
+	}
 }
