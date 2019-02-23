@@ -104,7 +104,6 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
   }
 
   protected void zoomOut(View view) {
-    view.clearAnimation();
     if (scaleBigAnimation == null) {
       scaleBigAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.anim_scale_big);
     }

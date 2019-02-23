@@ -64,7 +64,6 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageG
     view.setBackground(null);
 
     if (hasFocus && view != null) {
-      view.clearAnimation();
       view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
       zoomOut(view);
       return;
