@@ -1,14 +1,15 @@
 package us.nineworlds.serenity.ui.activity.login
 
-import android.support.graphics.drawable.VectorDrawableCompat
+import android.support.v4.content.ContextCompat
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.bumptech.glide.Glide
 import toothpick.Toothpick
+import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.rest.SerenityClient
@@ -27,13 +28,18 @@ class LoginUserViewHolder(view: View) : ViewHolder(view) {
 
   init {
     ButterKnife.bind(this, view)
-    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
   }
 
   fun loadUser(user: SerenityUser) {
-    Glide.with(profileImage.context)
+
+    val placeHolder = ContextCompat.getDrawable(profileImage.context, R.drawable.ic_generic_user)
+    DrawableCompat.setTint(placeHolder!!, ContextCompat.getColor(profileImage.context, R.color.white))
+
+    GlideApp.with(profileImage.context)
+      .asDrawable()
       .load(serenityClient.createUserImageUrl(user, 150, 150))
-      .placeholder(VectorDrawableCompat.create(profileImage.resources, R.drawable.ic_generic_user, null))
+      .placeholder(placeHolder)
       .centerCrop()
       .into(profileImage)
 

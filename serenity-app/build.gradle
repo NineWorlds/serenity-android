@@ -182,8 +182,8 @@ dependencies {
   implementation project(':serenity-android-common')
   implementation project(':serenity-common')
 
-  implementation 'com.google.firebase:firebase-core:16.0.6'
-  implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
+  implementation 'com.google.firebase:firebase-core:16.0.7'
+  implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
   implementation group: 'com.github.bumptech.glide', name: 'okhttp3-integration', version: "$glideOkHttpVersion"
   implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion") {
@@ -206,6 +206,7 @@ dependencies {
   implementation "com.arello-mobile:moxy:$moxyVersion"
   implementation "com.arello-mobile:moxy-app-compat:$moxyVersion"
   implementation "com.github.bumptech.glide:glide:$glideVersion"
+  kapt "com.github.bumptech.glide:compiler:$glideVersion"
   implementation "org.greenrobot:eventbus:$eventBus"
   implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
   implementation "com.android.support:appcompat-v7:$androidSupportLibVersion"

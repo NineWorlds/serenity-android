@@ -90,8 +90,8 @@ public class MainMenuDrawerOnItemClickedListener extends BaseInjector
 
           @Override public void onClick(DialogInterface dialog, int which) {
 
-            Glide.get(context).clearDiskCache();
-            Glide.get(context).clearMemory();
+            GlideApp.get(context).clearDiskCache();
+            GlideApp.get(context).clearMemory();
           }
         })
         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

@@ -24,6 +24,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -120,7 +121,7 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     ColorDrawable colorDrawable =
         new ColorDrawable(ContextCompat.getColor(roundedImageView.getContext(), android.R.color.black));
 
-    Glide.with(getContext())
+    GlideApp.with(getContext())
         .load(url)
         .fitCenter()
         .diskCacheStrategy(DiskCacheStrategy.ALL)

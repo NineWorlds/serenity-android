@@ -25,15 +25,16 @@ package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import javax.inject.Inject;
+import com.bumptech.glide.request.transition.Transition;
 import timber.log.Timber;
+import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
@@ -41,72 +42,78 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
+import javax.inject.Inject;
+
 public class TVShowSeasonOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
-  private final Activity context;
-  private SeriesContentInfo info;
+    private final Activity context;
+    private SeriesContentInfo info;
 
-  @Inject protected SerenityClient plexFactory;
-  boolean firstTimeSw = true;
+    @Inject
+    protected SerenityClient plexFactory;
+    boolean firstTimeSw = true;
 
-  AbstractPosterImageGalleryAdapter adapter;
+    AbstractPosterImageGalleryAdapter adapter;
 
-  public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity, AbstractPosterImageGalleryAdapter adapter) {
-    super();
-    context = activity;
-    this.adapter = adapter;
-  }
+    public TVShowSeasonOnItemSelectedListener(View bgv, Activity activity, AbstractPosterImageGalleryAdapter adapter) {
+        super();
+        context = activity;
+        this.adapter = adapter;
+    }
 
-  private void changeBackgroundImage(View v) {
+    private void changeBackgroundImage(View v) {
 
-    SeriesContentInfo mi = info;
+        SeriesContentInfo mi = info;
 
-    if (mi.getBackgroundURL() != null) {
-      final View fanArt = context.findViewById(R.id.fanArt);
-      String transcodingURL = plexFactory.createImageURL(mi.getBackgroundURL(), 1280, 720);
-      Timber.d("Season Background Image url: " + transcodingURL);
+        if (mi.getBackgroundURL() != null) {
+            final View fanArt = context.findViewById(R.id.fanArt);
+            String transcodingURL = plexFactory.createImageURL(mi.getBackgroundURL(), 1280, 720);
+            Timber.d("Season Background Image url: " + transcodingURL);
 
-      SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
-        @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-          context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.tvshows, fanArt));
+            SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+                @Override
+                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                    context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.tvshows, fanArt));
+                }
+            };
+
+            GlideApp.with(context).asBitmap().load(transcodingURL).into(target);
         }
-      };
-
-      Glide.with(context).load(transcodingURL).asBitmap().into(target);
-    }
-  }
-
-  @Override protected void createVideoDetail(ImageView v) {
-    // DO NOTHING
-  }
-
-  @Override public void onItemSelected(View view, int i) {
-    Activity context = (Activity) view.getContext();
-    if (context.isDestroyed()) {
-      return;
     }
 
-    if (firstTimeSw) {
-      firstTimeSw = false;
-      return;
+    @Override
+    protected void createVideoDetail(ImageView v) {
+        // DO NOTHING
     }
 
-    if (i < 0) {
-      Log.e(TVShowSeasonOnItemSelectedListener.class.getCanonicalName(),
-          "Season list size: " + adapter.getItemCount() + " position: " + i);
-      i = 0;
+    @Override
+    public void onItemSelected(View view, int i) {
+        Activity context = (Activity) view.getContext();
+        if (context.isDestroyed()) {
+            return;
+        }
+
+        if (firstTimeSw) {
+            firstTimeSw = false;
+            return;
+        }
+
+        if (i < 0) {
+            Log.e(TVShowSeasonOnItemSelectedListener.class.getCanonicalName(),
+                    "Season list size: " + adapter.getItemCount() + " position: " + i);
+            i = 0;
+        }
+
+        info = (SeriesContentInfo) adapter.getItem(i);
+        ImageView mpiv = view.findViewById(R.id.posterImageView);
+
+        TextView seasonsTitle = context.findViewById(R.id.tvShowSeasonsTitle);
+        seasonsTitle.setText(info.getTitle());
+
+        changeBackgroundImage(mpiv);
+
+        TVShowSeasonBrowserActivity activity = (TVShowSeasonBrowserActivity) getActivity(context);
+        activity.fetchEpisodes(info.getKey());
     }
-
-    info = (SeriesContentInfo) adapter.getItem(i);
-    ImageView mpiv = view.findViewById(R.id.posterImageView);
-
-    TextView seasonsTitle = context.findViewById(R.id.tvShowSeasonsTitle);
-    seasonsTitle.setText(info.getTitle());
-
-    changeBackgroundImage(mpiv);
-
-    TVShowSeasonBrowserActivity activity = (TVShowSeasonBrowserActivity) getActivity(context);
-    activity.fetchEpisodes(info.getKey());
-  }
 
 }

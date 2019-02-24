@@ -98,7 +98,7 @@ public class GalleryOnItemSelectedListener extends BaseInjector {
       mainGalleryBackgroundView = context.findViewById(R.id.mainGalleryBackground);
       mainGalleryBackgroundView.clearAnimation();
 
-      Glide.with(context).load(getBackgroundImageId(menuItem)).into(mainGalleryBackgroundView);
+      GlideApp.with(context).load(getBackgroundImageId(menuItem)).into(mainGalleryBackgroundView);
 
       view.clearAnimation();
       view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));

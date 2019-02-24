@@ -28,7 +28,6 @@ package us.nineworlds.serenity.ui.util
 import android.app.Activity
 import android.content.Context
 import android.graphics.Typeface
-import android.support.annotation.DrawableRes
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -37,7 +36,7 @@ import android.widget.ImageView
 import android.widget.ImageView.ScaleType
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.bumptech.glide.Glide
+import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.model.VideoContentInfo
@@ -174,7 +173,6 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     else -> R.drawable.tvnr
   }
 
-
   fun createAudioChannlesImage(channels: String?, context: Context): ImageView? {
     if (channels == null) {
       return null
@@ -204,7 +202,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     v.scaleType = ScaleType.FIT_XY
     v.layoutParams = LayoutParams(width, height)
     val mediaTagUrl = factory!!.createMediaTagURL("studio", studio, identifier)
-    Glide.with(context).load(mediaTagUrl).into(v)
+    GlideApp.with(context).load(mediaTagUrl).into(v)
     return v
   }
 

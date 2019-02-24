@@ -25,12 +25,15 @@ package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.*;
 import android.widget.ImageView.ScaleType;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
@@ -71,7 +74,7 @@ public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSele
         params.topMargin = 10;
         params.rightMargin = 5;
         imageView.setLayoutParams(params);
-        Glide.with(context).load(infog.createTVContentRating(info.getContentRating())).into(imageView);
+        GlideApp.with(context).load(infog.createTVContentRating(info.getContentRating())).into(imageView);
 
         ImageView studiov = context.findViewById(R.id.tvShowStudio);
         if (info.getStudio() != null) {
@@ -85,7 +88,7 @@ public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSele
             String studio = info.getStudio();
             studio = fixStudio(studio);
             String studioUrl = serenityClient.createMediaTagURL("studio", studio, info.getMediaTagIdentifier());
-            Glide.with(context).load(studioUrl).into(studiov);
+            GlideApp.with(context).load(studioUrl).into(studiov);
         } else {
             studiov.setVisibility(View.GONE);
         }
@@ -144,12 +147,12 @@ public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSele
 
         SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
             @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
             }
         };
 
-        Glide.with(context).load(transcodingURL).asBitmap().into(target);
+        GlideApp.with(context).asBitmap().load(transcodingURL).into(target);
 
         ImageView showImage = context.findViewById(R.id.tvShowImage);
         showImage.setVisibility(View.VISIBLE);
@@ -159,7 +162,7 @@ public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSele
         showImage.setMaxHeight(height);
         showImage.setMaxWidth(width);
         showImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-        Glide.with(context).load(mi.getThumbNailURL()).fitCenter().into(showImage);
+        GlideApp.with(context).load(mi.getThumbNailURL()).fitCenter().into(showImage);
     }
 
     @Override
