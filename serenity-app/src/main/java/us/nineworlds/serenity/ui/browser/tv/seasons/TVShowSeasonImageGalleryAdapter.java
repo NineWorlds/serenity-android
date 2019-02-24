@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -102,8 +103,13 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
   }
 
   public void onItemViewClick(View view, int i) {
-    onItemClickListener = new TVShowSeasonOnItemClickListener(view.getContext(),this);
+    onItemClickListener = createOnItemClickListener(view);
     onItemClickListener.onItemClick(view, i);
+  }
+
+  @NonNull
+  protected TVShowSeasonOnItemClickListener createOnItemClickListener(View view) {
+    return new TVShowSeasonOnItemClickListener(view.getContext(),this);
   }
 
   public void onItemViewFocusChanged(boolean hasFocus, View view, int i) {
