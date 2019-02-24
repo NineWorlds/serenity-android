@@ -28,6 +28,7 @@ package us.nineworlds.serenity.ui.util
 import android.app.Activity
 import android.content.Context
 import android.graphics.Typeface
+import android.support.annotation.DrawableRes
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -163,23 +164,16 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     return v
   }
 
-  fun createTVContentRating(contentRating: String?, context: Context): ImageView {
-    val v = ImageView(context)
-    v.scaleType = ScaleType.FIT_XY
-    v.layoutParams = LayoutParams(width, height)
-
-    when (contentRating) {
-      "TV-G" -> v.setImageResource(R.drawable.tvg)
-      "TV-PG" -> v.setImageResource(R.drawable.tvpg)
-      "TV-14" -> v.setImageResource(R.drawable.tv14)
-      "TV-MA" -> v.setImageResource(R.drawable.tvma)
-      "TV-Y" -> v.setImageResource(R.drawable.tvy)
-      "TV-Y7" -> v.setImageResource(R.drawable.tvy7)
-      else -> v.setImageResource(R.drawable.tvnr)
-    }
-
-    return v
+  fun createTVContentRating(contentRating: String?): Int = when (contentRating) {
+    "TV-G" -> R.drawable.tvg
+    "TV-PG" -> R.drawable.tvpg
+    "TV-14" -> R.drawable.tv14
+    "TV-MA" -> R.drawable.tvma
+    "TV-Y" -> R.drawable.tvy
+    "TV-Y7" -> R.drawable.tvy7
+    else -> R.drawable.tvnr
   }
+
 
   fun createAudioChannlesImage(channels: String?, context: Context): ImageView? {
     if (channels == null) {

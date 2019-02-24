@@ -376,51 +376,44 @@ class ImageInfographicUtilsTest : InjectingTest() {
 
   @Test
   fun createTVContentRatingReturnsTVGImage() {
-    val view = imageInfographicUtils.createTVContentRating("TV-G", context)
-    val shadowDrawable = shadowOf(view.drawable)
-    assertThat(shadowDrawable.createdFromResId).isEqualTo(R.drawable.tvg)
+    val result = imageInfographicUtils.createTVContentRating("TV-G")
+    assertThat(result).isEqualTo(R.drawable.tvg)
   }
 
   @Test
   fun createTVContentRatingReturnsTVPGImage() {
-    val view = imageInfographicUtils.createTVContentRating("TV-PG", context)
-    val shadowDrawable = shadowOf(view.drawable)
-    assertThat(shadowDrawable.createdFromResId).isEqualTo(R.drawable.tvpg)
+    val result = imageInfographicUtils.createTVContentRating("TV-PG")
+    assertThat(result).isEqualTo(R.drawable.tvpg)
   }
 
   @Test
   fun createTVContentRatingReturnsTV14Image() {
-    val view = imageInfographicUtils.createTVContentRating("TV-14", context)
-    val shadowDrawable = shadowOf(view.drawable)
-    assertThat(shadowDrawable.createdFromResId).isEqualTo(R.drawable.tv14)
+    val result = imageInfographicUtils.createTVContentRating("TV-14")
+    assertThat(result).isEqualTo(R.drawable.tv14)
   }
 
   @Test
   fun createTVContentRatingReturnsTVMAImage() {
-    val view = imageInfographicUtils.createTVContentRating("TV-MA", context)
-    val shadowDrawable = shadowOf(view.drawable)
-    assertThat(shadowDrawable.createdFromResId).isEqualTo(R.drawable.tvma)
+    val result = imageInfographicUtils.createTVContentRating("TV-MA")
+    assertThat(result).isEqualTo(R.drawable.tvma)
   }
 
   @Test
   fun createTVContentRatingReturnsTVYImage() {
-    val view = imageInfographicUtils.createTVContentRating("TV-Y", context)
-    val shadowDrawable = shadowOf(view.drawable)
-    assertThat(shadowDrawable.createdFromResId).isEqualTo(R.drawable.tvy)
+    val result = imageInfographicUtils.createTVContentRating("TV-Y")
+    assertThat(result).isEqualTo(R.drawable.tvy)
   }
 
   @Test
   fun createTVContentRatingReturnsTVY7Image() {
-    val view = imageInfographicUtils.createTVContentRating("TV-Y7", context)
-    val shadowDrawable = shadowOf(view.drawable)
-    assertThat(shadowDrawable.createdFromResId).isEqualTo(R.drawable.tvy7)
+    val result = imageInfographicUtils.createTVContentRating("TV-Y7")
+    assertThat(result).isEqualTo(R.drawable.tvy7)
   }
 
   @Test
   fun createTVContentRatingReturnsTVNRImage() {
-    val view = imageInfographicUtils.createTVContentRating("unknown", context)
-    val shadowDrawable = shadowOf(view.drawable)
-    assertThat(shadowDrawable.createdFromResId).isEqualTo(R.drawable.tvnr)
+    val result = imageInfographicUtils.createTVContentRating("unknown")
+    assertThat(result).isEqualTo(R.drawable.tvnr)
   }
 
   @Test

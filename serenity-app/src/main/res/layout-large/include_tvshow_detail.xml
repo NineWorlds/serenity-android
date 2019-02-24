@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dip"
         android:layout_marginRight="5dip"
+        android:scaleType="fitXY"
         tools:src="@drawable/tv14"/>
 
     <ImageView

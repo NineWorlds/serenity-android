@@ -24,28 +24,19 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.*;
 import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import javax.inject.Inject;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
-import us.nineworlds.serenity.ui.util.ImageUtils;
 
 /**
  * Display selected TV Show Information.
@@ -54,141 +45,139 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
  */
 public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
-  private SerenityMultiViewVideoActivity context;
-  private SeriesContentInfo info;
+    private Activity context;
+    private SeriesContentInfo info;
 
-  @Inject protected SerenityClient factory;
+    AbstractPosterImageGalleryAdapter adapter;
 
-  AbstractPosterImageGalleryAdapter adapter;
-
-  public TVShowGalleryOnItemSelectedListener(AbstractPosterImageGalleryAdapter adapter) {
-    super();
-    this.adapter = adapter;
-  }
-
-  private void createTVShowDetail(ImageView v) {
-
-    createSummary();
-
-    createTitle();
-
-    int w = context.getResources().getDimensionPixelSize(R.dimen.tv_show_infographic_width);
-    int h = context.getResources().getDimensionPixelSize(R.dimen.tv_show_infographic_height);
-
-    ImageView imageView = context.findViewById(R.id.tvShowRating);
-    ImageInfographicUtils infog = new ImageInfographicUtils(w, h);
-
-    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w, h);
-    params.topMargin = 10;
-    params.rightMargin = 5;
-    imageView.setLayoutParams(params);
-
-    ImageView content = infog.createTVContentRating(info.getContentRating(), context);
-    imageView.setImageDrawable(content.getDrawable());
-    imageView.setScaleType(ScaleType.FIT_XY);
-
-    ImageView studiov = context.findViewById(R.id.tvShowStudio);
-    if (info.getStudio() != null) {
-      studiov.setVisibility(View.VISIBLE);
-      LinearLayout.LayoutParams sparams = new LinearLayout.LayoutParams(w, h);
-      sparams.rightMargin = 5;
-      sparams.topMargin = 10;
-      sparams.leftMargin = 5;
-
-      studiov.setLayoutParams(sparams);
-      String studio = info.getStudio();
-      studio = fixStudio(studio);
-      String studioUrl = factory.createMediaTagURL("studio", studio, info.getMediaTagIdentifier());
-      Glide.with(context).load(studioUrl).into(studiov);
-    } else {
-      studiov.setVisibility(View.GONE);
+    public TVShowGalleryOnItemSelectedListener(AbstractPosterImageGalleryAdapter adapter) {
+        super();
+        this.adapter = adapter;
     }
 
-    createRatings();
-  }
+    private void createTVShowDetail() {
 
-  private String fixStudio(String studio) {
-    if ("FOX".equals(studio)) {
-      return "Fox";
+        createSummary();
+
+        createTitle();
+
+        int w = context.getResources().getDimensionPixelSize(R.dimen.tv_show_infographic_width);
+        int h = context.getResources().getDimensionPixelSize(R.dimen.tv_show_infographic_height);
+
+        ImageView imageView = context.findViewById(R.id.tvShowRating);
+        ImageInfographicUtils infog = new ImageInfographicUtils(w, h);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(w, h);
+        params.topMargin = 10;
+        params.rightMargin = 5;
+        imageView.setLayoutParams(params);
+        Glide.with(context).load(infog.createTVContentRating(info.getContentRating())).into(imageView);
+
+        ImageView studiov = context.findViewById(R.id.tvShowStudio);
+        if (info.getStudio() != null) {
+            studiov.setVisibility(View.VISIBLE);
+            LinearLayout.LayoutParams sparams = new LinearLayout.LayoutParams(w, h);
+            sparams.rightMargin = 5;
+            sparams.topMargin = 10;
+            sparams.leftMargin = 5;
+
+            studiov.setLayoutParams(sparams);
+            String studio = info.getStudio();
+            studio = fixStudio(studio);
+            String studioUrl = serenityClient.createMediaTagURL("studio", studio, info.getMediaTagIdentifier());
+            Glide.with(context).load(studioUrl).into(studiov);
+        } else {
+            studiov.setVisibility(View.GONE);
+        }
+
+        createRatings();
     }
-    if ("Starz!".equals(studio)) {
-      return "Starz";
+
+    private String fixStudio(String studio) {
+        if ("FOX".equals(studio)) {
+            return "Fox";
+        }
+        if ("Starz!".equals(studio)) {
+            return "Starz";
+        }
+        return studio;
     }
-    return studio;
-  }
 
-  protected void createTitle() {
-    TextView title = context.findViewById(R.id.tvBrowserTitle);
-    title.setText(info.getTitle());
-  }
-
-  protected void createSummary() {
-    TextView summary = context.findViewById(R.id.tvShowSeriesSummary);
-    String plotSummary = info.getSummary();
-    if (plotSummary == null) {
-      summary.setText("");
-    } else {
-      summary.setText(plotSummary);
+    protected void createTitle() {
+        TextView title = context.findViewById(R.id.tvBrowserTitle);
+        title.setText(info.getTitle());
     }
-  }
 
-  protected void createRatings() {
-    RatingBar ratingBar = context.findViewById(R.id.tvRatingbar);
-    ratingBar.setMax(4);
-    ratingBar.setIsIndicator(true);
-    ratingBar.setStepSize(0.1f);
-    ratingBar.setNumStars(4);
-    ratingBar.setPadding(0, 0, 5, 0);
-    double rating = info.getRating();
-    ratingBar.setRating((float) (rating / 2.5));
-  }
-
-  /**
-   * Change the background image of the activity.
-   *
-   * Should be a background activity
-   */
-  private void changeBackgroundImage(View v) {
-
-    SeriesContentInfo mi = info;
-
-    final View fanArt = context.findViewById(R.id.fanArt);
-
-    String transcodingURL = factory.createImageURL(mi.getBackgroundURL(), 1280, 720);
-
-    SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
-      @Override public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-        context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
-      }
-    };
-
-    Glide.with(context).load(transcodingURL).asBitmap().into(target);
-
-    ImageView showImage = context.findViewById(R.id.tvShowImage);
-    showImage.setVisibility(View.VISIBLE);
-    showImage.setScaleType(ScaleType.FIT_XY);
-    int width = context.getResources().getDimensionPixelSize(R.dimen.tv_show_image_width);
-    int height = context.getResources().getDimensionPixelSize(R.dimen.tv_show_image_height);
-    showImage.setMaxHeight(height);
-    showImage.setMaxWidth(width);
-    showImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-    Glide.with(context).load(mi.getThumbNailURL()).fitCenter().into(showImage);
-  }
-
-  @Override public void onItemSelected(View view, int i) {
-    context = (SerenityMultiViewVideoActivity) view.getContext();
-    if (context.isDestroyed()) {
-      return;
+    protected void createSummary() {
+        TextView summary = context.findViewById(R.id.tvShowSeriesSummary);
+        String plotSummary = info.getSummary();
+        if (plotSummary == null) {
+            summary.setText("");
+        } else {
+            summary.setText(plotSummary);
+        }
     }
-    info = (SeriesContentInfo) adapter.getItem(i);
 
-    ImageView imageView = view.findViewById(R.id.posterImageView);
+    protected void createRatings() {
+        RatingBar ratingBar = context.findViewById(R.id.tvRatingbar);
+        ratingBar.setMax(4);
+        ratingBar.setIsIndicator(true);
+        ratingBar.setStepSize(0.1f);
+        ratingBar.setNumStars(4);
+        ratingBar.setPadding(0, 0, 5, 0);
+        double rating = info.getRating();
+        ratingBar.setRating((float) (rating / 2.5));
+    }
 
-    createTVShowDetail(imageView);
-    changeBackgroundImage(imageView);
-  }
+    /**
+     * Change the background image of the activity.
+     * <p>
+     * Should be a background activity
+     */
+    private void changeBackgroundImage(View v) {
 
-  @Override protected void createVideoDetail(ImageView v) {
-    // DO Nothing
-  }
+        SeriesContentInfo mi = info;
+
+        final View fanArt = context.findViewById(R.id.fanArt);
+
+        String transcodingURL = serenityClient.createImageURL(mi.getBackgroundURL(), 1280, 720);
+
+        SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
+            @Override
+            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                context.runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
+            }
+        };
+
+        Glide.with(context).load(transcodingURL).asBitmap().into(target);
+
+        ImageView showImage = context.findViewById(R.id.tvShowImage);
+        showImage.setVisibility(View.VISIBLE);
+        showImage.setScaleType(ScaleType.FIT_XY);
+        int width = context.getResources().getDimensionPixelSize(R.dimen.tv_show_image_width);
+        int height = context.getResources().getDimensionPixelSize(R.dimen.tv_show_image_height);
+        showImage.setMaxHeight(height);
+        showImage.setMaxWidth(width);
+        showImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+        Glide.with(context).load(mi.getThumbNailURL()).fitCenter().into(showImage);
+    }
+
+    @Override
+    public void onItemSelected(View view, int i) {
+        context = (Activity) view.getContext();
+        if (context.isDestroyed()) {
+            return;
+        }
+        info = (SeriesContentInfo) adapter.getItem(i);
+
+        ImageView imageView = view.findViewById(R.id.posterImageView);
+
+        createTVShowDetail();
+        changeBackgroundImage(imageView);
+    }
+
+    @Override
+    protected void createVideoDetail(ImageView v) {
+        // DO Nothing
+    }
 }
