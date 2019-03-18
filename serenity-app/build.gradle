@@ -56,7 +56,7 @@ allOpen {
 android {
   defaultConfig {
     versionCode 2010000
-    versionName "2.1.0-M2"
+    versionName "2.1.0-M3"
 
     minSdkVersion 21
     targetSdkVersion 28
