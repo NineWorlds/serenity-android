@@ -20,4 +20,4 @@ gen
 local.properties
 build
 keystore.properties
-
+.settings
