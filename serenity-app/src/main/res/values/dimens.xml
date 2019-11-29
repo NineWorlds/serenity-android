@@ -51,5 +51,7 @@
 
   <dimen name="seasons_image_width">100dp</dimen>
   <dimen name="seasons_image_height">125dp</dimen>
+    <dimen name="video_gallery_image_width">200dp</dimen>
+  <dimen name="video_gallery_image_height">250dp</dimen>
 
 </resources>

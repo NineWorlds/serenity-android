@@ -213,6 +213,8 @@ dependencies {
   implementation "com.android.support:leanback-v17:$androidSupportLibVersion"
   implementation "com.android.support:preference-leanback-v17:$androidSupportLibVersion"
   implementation "com.android.support:support-v4:$androidSupportLibVersion"
+  implementation "com.android.support.constraint:constraint-layout:1.1.3"
+  implementation "com.android.support:percent:$androidSupportLibVersion"
   implementation "com.googlecode.juniversalchardet:juniversalchardet:$universalCharDetVersion"
   implementation "com.mcxiaoke.volley:library:$volleyVersion"
   implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"

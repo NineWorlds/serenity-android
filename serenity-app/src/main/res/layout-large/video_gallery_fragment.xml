@@ -1,150 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_alignParentTop="true"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipChildren="false"
-    android:clipToPadding="false"
-    >
-
-  <RelativeLayout
-      android:id="@+id/video_details_container"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:layout_centerHorizontal="true"
-      android:layout_marginLeft="10dp"
-      android:background="@color/card_background"
-      android:padding="5dp"
-      android:visibility="invisible"
-      android:clipChildren="false"
-      android:clipToPadding="false"
-      >
-
-    <us.nineworlds.serenity.widgets.RoundedImageView
-        android:id="@+id/video_poster"
-        android:layout_width="200dp"
-        android:layout_height="250dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="5dp"
-        app:corner_radius="5dp"
-        app:mutate_background="true"
-        />
-
-    <TextView
-        android:id="@+id/movieBrowserPosterTitle"
-        style="@android:style/TextAppearance.Holo.Large"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_toRightOf="@+id/video_poster"
-        android:gravity="left|center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="0dp"
-        android:textColor="#F0F0F0"
-        android:textStyle="bold"
-        tools:ignore="SelectableText"
-        />
-
-    <TextView
-        android:id="@+id/movieSummary"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/movieBrowserPosterTitle"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_toRightOf="@+id/video_poster"
-        android:ellipsize="marquee"
-        android:maxLines="8"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textColor="#F0F0F0"
-        android:textSize="17.5sp"
-        tools:ignore="SelectableText"
-        />
-
-    <TextView
-        android:id="@+id/videoTextExtra"
-        style="@android:style/TextAppearance.Holo.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/movieInfoGraphicLayout"
-        android:layout_gravity="left"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_toRightOf="@+id/video_poster"
-        android:gravity="left"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        />
-
-    <LinearLayout
-        android:id="@+id/movieInfoGraphicLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/video_poster"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="5dp"
-        android:layout_toRightOf="@+id/video_poster"
-        android:gravity="bottom"
-        android:orientation="horizontal"
-        />
-  </RelativeLayout>
-
-  <LinearLayout
-      android:id="@+id/tableRow2"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
-      android:layout_marginBottom="10dp"
-      android:layout_marginLeft="10dp"
-      android:layout_marginRight="10dp"
-      android:layout_marginTop="5dp"
-      android:background="#A0000000"
-      android:gravity="bottom"
-      android:padding="5dp"
-      android:clipChildren="false"
-      android:clipToPadding="false"
-      >
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/moviePosterView"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="true"
-        android:layout_gravity="center|center_vertical"
-        android:nextFocusUp="@+id/categoryFilter"
+        android:layout_alignParentTop="true"
         android:clipChildren="false"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        tools:background="@drawable/movies">
 
-      <requestFocus/>
-    </android.support.v7.widget.RecyclerView>
-
-    <!--
-        <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
-            android:id="@+id/moviePosterView"
+    <RelativeLayout
+            android:id="@+id/video_details_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center|center_vertical"
-            android:nextFocusUp="@+id/categoryFilter"
-            app:isAutoProcessFocus="true"
-            app:focusScale="@dimen/focus_size_value"
-            app:focusDrawable="@drawable/rounded_transparent_border">
-          <requestFocus/>
-        </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>
-    -->
-  </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/card_background"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:padding="5dp"
+            android:visibility="invisible"
+            tools:visibility="visible">
 
-  <include
-      layout="@layout/include_loading_progress"
-      android:layout_width="150dp"
-      android:layout_height="150dp"
-      android:layout_centerInParent="true"/>
+        <us.nineworlds.serenity.widgets.RoundedImageView
+                android:id="@+id/video_poster"
+                android:layout_width="@dimen/video_gallery_image_width"
+                android:layout_height="@dimen/video_gallery_image_height"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                app:corner_radius="5dp"
+                app:mutate_background="true" />
+
+        <TextView
+                android:id="@+id/movieBrowserPosterTitle"
+                style="@android:style/TextAppearance.Holo.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_toEndOf="@+id/video_poster"
+                android:gravity="left|center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:textColor="#F0F0F0"
+                android:textStyle="bold"
+                tools:ignore="SelectableText"
+                tools:text="Movie Title"
+                tools:textColor="@color/white"
+                tools:visibility="visible" />
+
+        <TextView
+                android:id="@+id/movieSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/movieBrowserPosterTitle"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_toRightOf="@+id/video_poster"
+                android:ellipsize="marquee"
+                android:maxLines="8"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="#F0F0F0"
+                android:textSize="17.5sp"
+                tools:ignore="SelectableText"
+                tools:lines="8"
+                tools:text="Summary of the movie.\r\nSummary of the Movie.\r\n" />
+
+        <TextView
+                android:id="@+id/videoTextExtra"
+                style="@android:style/TextAppearance.Holo.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/movieInfoGraphicLayout"
+                android:layout_gravity="left"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_toEndOf="@+id/video_poster"
+                android:gravity="start"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                tools:text="Aired Date: "
+                tools:visibility="visible" />
+
+        <LinearLayout
+                android:id="@+id/movieInfoGraphicLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/video_poster"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="5dp"
+                android:layout_toEndOf="@+id/video_poster"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                tools:minHeight="@dimen/audio_inographic_height"
+                tools:orientation="horizontal"
+                tools:visibility="visible"
+                />
+    </RelativeLayout>
+
+    <LinearLayout
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#A0000000"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:gravity="bottom"
+            android:padding="5dp">
+
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/moviePosterView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|center_vertical"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:focusable="true"
+                android:nextFocusUp="@+id/categoryFilter"
+                tools:layoutManager="LinearLayoutManager"
+                tools:layout_height="200dp"
+                tools:layout_width="match_parent"
+                tools:listitem="@layout/poster_indicator_view"
+                tools:orientation="horizontal">
+
+            <requestFocus />
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+    <include
+            layout="@layout/include_loading_progress"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true" />
 
 </RelativeLayout>

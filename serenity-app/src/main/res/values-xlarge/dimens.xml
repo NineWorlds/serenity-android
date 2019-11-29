@@ -2,4 +2,5 @@
 <resources>
   <dimen name="small_image">100dp</dimen>
   <dimen name="actionbarMargin">55dp</dimen>
+
 </resources>
