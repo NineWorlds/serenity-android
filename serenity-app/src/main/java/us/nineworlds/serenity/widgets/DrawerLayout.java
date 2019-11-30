@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * state, namely first to any opened drawer, and if no drawer is opened to the
  * main content.
  */
-public class DrawerLayout extends android.support.v4.widget.DrawerLayout {
+public class DrawerLayout extends androidx.drawerlayout.widget.DrawerLayout {
 
   private DrawerListener m_wrappedListener;
 

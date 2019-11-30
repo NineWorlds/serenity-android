@@ -7,7 +7,7 @@
     android:clipToPadding="false"
     >
 
-  <android.support.v7.widget.RecyclerView
+  <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/moviePosterView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
@@ -21,7 +21,7 @@
       android:clipToPadding="false">
 
     <requestFocus/>
-  </android.support.v7.widget.RecyclerView>
+  </androidx.recyclerview.widget.RecyclerView>
 
   <include layout="@layout/include_loading_progress"
       android:layout_width="150dp"

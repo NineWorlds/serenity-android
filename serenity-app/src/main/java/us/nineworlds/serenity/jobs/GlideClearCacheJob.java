@@ -1,12 +1,12 @@
 package us.nineworlds.serenity.jobs;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
-import com.bumptech.glide.Glide;
+
 import us.nineworlds.serenity.GlideApp;
 
 /**

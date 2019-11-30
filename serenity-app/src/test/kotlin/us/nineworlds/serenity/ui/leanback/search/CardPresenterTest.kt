@@ -1,8 +1,8 @@
 package us.nineworlds.serenity.ui.leanback.search
 
 import android.app.Activity
-import android.support.v17.leanback.widget.ImageCardView
-import android.support.v4.content.ContextCompat
+import androidx.leanback.widget.ImageCardView
+import androidx.core.content.ContextCompat
 import android.widget.LinearLayout
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.nhaarman.mockito_kotlin.anyOrNull

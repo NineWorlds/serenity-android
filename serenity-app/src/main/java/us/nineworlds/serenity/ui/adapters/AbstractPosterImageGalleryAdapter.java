@@ -24,19 +24,18 @@
 package us.nineworlds.serenity.ui.adapters;
 
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import java.util.ArrayList;
 import java.util.List;
-import timber.log.Timber;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
 /**

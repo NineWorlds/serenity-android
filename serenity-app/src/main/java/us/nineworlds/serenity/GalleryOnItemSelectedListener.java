@@ -25,14 +25,14 @@ package us.nineworlds.serenity;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.bumptech.glide.Glide;
+
 import javax.inject.Inject;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.injection.BaseInjector;

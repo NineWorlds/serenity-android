@@ -25,16 +25,16 @@ package us.nineworlds.serenity;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+
 import androidx.test.core.app.ApplicationProvider;
-import butterknife.ButterKnife;
+
 import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Before;

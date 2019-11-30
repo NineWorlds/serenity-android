@@ -79,7 +79,6 @@ dependencies {
   testImplementation("org.robolectric:robolectric:$robolectricVersion") {
     exclude module: 'support-v4'
   }
-  testImplementation "org.robolectric:shadows-supportv4:$robolectricVersion"
   testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
   testImplementation "org.robolectric:shadowapi:$robolectricVersion"
   testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"

@@ -1,7 +1,7 @@
 package us.nineworlds.serenity.ui.adapters
 
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import us.nineworlds.serenity.core.model.ContentInfo
 
 class RecyclerViewDiffUtil(private val oldList: List<ContentInfo>?, private val newList: List<ContentInfo>) : DiffUtil.Callback() {
@@ -15,7 +15,7 @@ class RecyclerViewDiffUtil(private val oldList: List<ContentInfo>?, private val 
   override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
       oldList!![oldItemPosition] == newList[newItemPosition]
 
-  fun dispatchUpdatesTo(adapter: RecyclerView.Adapter<*>) {
+  fun dispatchUpdatesTo(adapter: androidx.recyclerview.widget.RecyclerView.Adapter<*>) {
     val diffResult = DiffUtil.calculateDiff(this)
     diffResult.dispatchUpdatesTo(adapter)
   }

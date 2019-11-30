@@ -24,7 +24,8 @@
 package us.nineworlds.serenity.injection;
 
 import android.os.Bundle;
-import com.arellomobile.mvp.MvpAppCompatActivity;
+
+import moxy.MvpAppCompatActivity;
 import toothpick.Scope;
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;

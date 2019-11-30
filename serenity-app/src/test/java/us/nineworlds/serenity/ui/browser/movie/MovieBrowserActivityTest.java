@@ -50,6 +50,7 @@ import us.nineworlds.serenity.widgets.DrawerLayout;
 
 import java.util.LinkedList;
 
+import static android.os.Looper.getMainLooper;
 import static org.assertj.android.api.Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assume.assumeFalse;
@@ -63,6 +64,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Robolectric.buildActivity;
 import static org.robolectric.Robolectric.getBackgroundThreadScheduler;
 import static org.robolectric.Robolectric.getForegroundThreadScheduler;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 public class MovieBrowserActivityTest extends InjectingTest {
@@ -73,8 +75,9 @@ public class MovieBrowserActivityTest extends InjectingTest {
   MovieBrowserActivity movieBrowserActivity;
 
   @Override @Before public void setUp() throws Exception {
-    getBackgroundThreadScheduler().pause();
-    getForegroundThreadScheduler().pause();
+    shadowOf(getMainLooper()).idle();
+//    getBackgroundThreadScheduler().pause();
+//    getForegroundThreadScheduler().pause();
 
     initMocks(this);
     super.setUp();

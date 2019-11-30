@@ -24,7 +24,7 @@
 package us.nineworlds.serenity;
 
 import android.content.SharedPreferences;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.birbit.android.jobqueue.JobManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import java.lang.reflect.Method;

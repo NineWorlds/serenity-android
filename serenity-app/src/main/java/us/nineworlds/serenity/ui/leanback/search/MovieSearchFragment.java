@@ -30,12 +30,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v17.leanback.app.SearchSupportFragment;
-import android.support.v17.leanback.app.SearchSupportFragment.SearchResultProvider;
-import android.support.v17.leanback.widget.*;
-import android.support.v17.leanback.widget.Presenter.ViewHolder;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.leanback.app.SearchSupportFragment;
+import androidx.leanback.app.SearchSupportFragment.SearchResultProvider;
+import androidx.leanback.widget.*;
+import androidx.leanback.widget.Presenter.ViewHolder;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -97,7 +97,7 @@ public class MovieSearchFragment extends SearchSupportFragment implements Search
 
             @Override
             public void onItemSelected(ViewHolder arg0, Object item,
-                                       android.support.v17.leanback.widget.RowPresenter.ViewHolder arg2, Row arg3) {
+                                       androidx.leanback.widget.RowPresenter.ViewHolder arg2, Row arg3) {
                 if (item == null) {
                     return;
                 }

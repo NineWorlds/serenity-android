@@ -24,7 +24,7 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
 import android.content.SharedPreferences;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.widget.AdapterView;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;

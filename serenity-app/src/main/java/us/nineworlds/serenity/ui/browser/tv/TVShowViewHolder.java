@@ -1,9 +1,8 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.viewholders.AbstractPosterImageViewHolder;
 
 public class TVShowViewHolder extends AbstractPosterImageViewHolder<SeriesContentInfo> {

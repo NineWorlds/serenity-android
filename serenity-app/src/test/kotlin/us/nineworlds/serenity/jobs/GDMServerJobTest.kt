@@ -1,7 +1,7 @@
 package us.nineworlds.serenity.jobs
 
 import android.content.Intent
-import android.support.v4.content.LocalBroadcastManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.nhaarman.mockito_kotlin.*
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
@@ -38,7 +38,7 @@ class GDMServerJobTest : InjectingTest() {
   lateinit var mockInetAddress: InetAddress
 
   @Inject
-  lateinit var mockLocalBroadcastManager: LocalBroadcastManager
+  lateinit var mockLocalBroadcastManager: androidx.localbroadcastmanager.content.LocalBroadcastManager
 
   lateinit var job: GDMServerJob
 

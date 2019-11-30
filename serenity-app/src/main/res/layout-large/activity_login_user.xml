@@ -31,7 +31,7 @@
       app:isAutoProcessFocus="true"
       app:focusDrawable="@drawable/rounded_transparent_border"
       tools:itemCount="3"
-      tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
+      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
       tools:layout_height="160dp"
       tools:listItem="@layout/item_user_profile"
       tools:orientation="horizontal"

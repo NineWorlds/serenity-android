@@ -137,15 +137,6 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   }
 
   @Test
-  fun onNewIntentCallsRelease() {
-    val spy = spy(activity)
-    doNothing().whenever(spy).releasePlayer()
-    spy.onNewIntent(Intent())
-
-    verify(spy).releasePlayer()
-  }
-
-  @Test
   fun buildMediaSourceReturnsNonNullSource() {
     assertThat(activity.buildMediaSource(Uri.parse("http://www.example.com/start.mkv"))).isNotNull()
   }

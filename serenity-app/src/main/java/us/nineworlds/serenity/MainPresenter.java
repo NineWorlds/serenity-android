@@ -1,8 +1,8 @@
 package us.nineworlds.serenity;
 
 import android.content.Context;
-import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
+import moxy.InjectViewState;
+import moxy.MvpPresenter;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
 import toothpick.Toothpick;

@@ -1,7 +1,7 @@
 package us.nineworlds.serenity.jobs;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.birbit.android.jobqueue.RetryConstraint;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;

@@ -28,10 +28,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.birbit.android.jobqueue.JobManager;
 import com.birbit.android.jobqueue.config.Configuration;
-import com.google.android.exoplayer2.upstream.DataSource;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 import org.greenrobot.eventbus.EventBus;
@@ -47,7 +47,6 @@ import us.nineworlds.serenity.emby.server.api.EmbyAPIClient;
 import us.nineworlds.serenity.injection.ServerClientPreference;
 import us.nineworlds.serenity.injection.ServerIPPreference;
 import us.nineworlds.serenity.injection.ServerPortPreference;
-import us.nineworlds.serenity.injection.modules.providers.DataSourceFactoryProvider;
 import us.nineworlds.serenity.injection.modules.providers.ServerClientPreferenceProvider;
 
 public class AndroidModule extends Module {

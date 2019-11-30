@@ -26,10 +26,9 @@ package us.nineworlds.serenity.core.imageloader;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.preference.PreferenceManager;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.view.animation.Animation;
 
@@ -41,11 +40,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowView;
 
-import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.R;
 
 import static org.assertj.android.api.Assertions.assertThat;

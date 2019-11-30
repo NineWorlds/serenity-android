@@ -1,7 +1,7 @@
 package us.nineworlds.serenity.ui.preferences;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingActivity;

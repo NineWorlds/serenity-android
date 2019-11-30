@@ -1,6 +1,6 @@
 package us.nineworlds.serenity;
 
-import com.arellomobile.mvp.MvpView;
+import moxy.MvpView;
 
 public interface MainView extends MvpView {
 

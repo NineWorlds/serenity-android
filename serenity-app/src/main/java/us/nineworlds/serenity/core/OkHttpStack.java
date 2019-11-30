@@ -1,6 +1,6 @@
 package us.nineworlds.serenity.core;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.android.volley.toolbox.HurlStack;
 import java.io.IOException;
 import java.net.HttpURLConnection;

@@ -24,13 +24,12 @@
 package us.nineworlds.serenity;
 
 import android.content.Context;
-import android.support.v4.content.LocalBroadcastManager;
-import androidx.test.core.app.ApplicationProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.birbit.android.jobqueue.JobManager;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import toothpick.config.Module;
-import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.core.util.AndroidHelper;

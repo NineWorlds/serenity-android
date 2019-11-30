@@ -27,11 +27,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.LinearLayout;
+
 import com.google.firebase.analytics.FirebaseAnalytics;
 import timber.log.Timber;
 import us.nineworlds.serenity.R;

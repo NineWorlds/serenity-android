@@ -1,10 +1,6 @@
 package us.nineworlds.serenity.ui.video.player
 
 import android.view.View
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
-import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
-import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.birbit.android.jobqueue.JobManager
 import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.PlaybackParameters
@@ -13,6 +9,10 @@ import com.google.android.exoplayer2.Timeline
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.ui.PlaybackControlView
+import moxy.InjectViewState
+import moxy.MvpPresenter
+import moxy.viewstate.strategy.SkipStrategy
+import moxy.viewstate.strategy.StateStrategyType
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode.MAIN
@@ -38,7 +38,7 @@ import javax.inject.Inject
 @OpenForTesting
 @InjectViewState
 @StateStrategyType(SkipStrategy::class)
-class ExoplayerPresenter : MvpPresenter<ExoplayerContract.ExoplayerView>(), ExoplayerPresenter,
+class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   PlaybackControlView.VisibilityListener, Player.EventListener {
 
   @Inject

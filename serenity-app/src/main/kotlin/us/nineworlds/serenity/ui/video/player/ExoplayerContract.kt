@@ -1,25 +1,35 @@
 package us.nineworlds.serenity.ui.video.player
 
-import com.arellomobile.mvp.MvpView
+import moxy.MvpView
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
 interface ExoplayerContract {
 
   interface ExoplayerView : MvpView {
 
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun initializePlayer(videoUrl: String, offset: Int)
 
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun hideController()
 
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun showController()
 
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun pause()
 
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun play()
 
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun hideLoadingProgress()
 
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun showLoadingProgress()
 
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun playbackEnded()
   }
 

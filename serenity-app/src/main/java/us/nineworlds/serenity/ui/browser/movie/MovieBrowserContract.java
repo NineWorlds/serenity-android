@@ -1,7 +1,10 @@
 package us.nineworlds.serenity.ui.browser.movie;
 
-import com.arellomobile.mvp.MvpView;
+import moxy.MvpView;
 import java.util.List;
+
+import moxy.viewstate.strategy.AddToEndSingleStrategy;
+import moxy.viewstate.strategy.StateStrategyType;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -17,10 +20,13 @@ public interface MovieBrowserContract {
 
   interface MovieBrowserView extends MvpView {
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     void populateCategory(List<CategoryInfo> categories, String key);
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     void populateSecondaryCategory(List<SecondaryCategoryInfo> categories, String key, String category);
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     void displayPosters(List<VideoContentInfo> videos);
   }
 

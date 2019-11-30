@@ -9,12 +9,12 @@ import android.widget.FrameLayout
 import app.com.tvrecyclerview.TvRecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxItemDecoration
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.Server

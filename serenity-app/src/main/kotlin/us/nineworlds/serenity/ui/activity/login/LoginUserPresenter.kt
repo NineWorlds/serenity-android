@@ -1,8 +1,10 @@
 package us.nineworlds.serenity.ui.activity.login
 
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import com.birbit.android.jobqueue.JobManager
+import moxy.InjectViewState
+import moxy.MvpPresenter
+import moxy.viewstate.strategy.SkipStrategy
+import moxy.viewstate.strategy.StateStrategyType
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode.MAIN
@@ -20,7 +22,8 @@ import us.nineworlds.serenity.ui.activity.login.LoginUserContract.LoginUserView
 import javax.inject.Inject
 
 @InjectViewState
-class LoginUserPresenter : MvpPresenter<LoginUserContract.LoginUserView>(), LoginUserContract.LoginUserPresnter {
+@StateStrategyType(SkipStrategy::class)
+class LoginUserPresenter : MvpPresenter<LoginUserView>(), LoginUserContract.LoginUserPresnter {
 
   @Inject
   lateinit var logger: Logger

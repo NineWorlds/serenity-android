@@ -1,7 +1,7 @@
 package us.nineworlds.serenity.recyclerutils;
 
 import android.graphics.Rect;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

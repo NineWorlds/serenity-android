@@ -24,7 +24,6 @@
 package us.nineworlds.serenity.ui.listeners;
 
 import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import javax.inject.Inject;
 import us.nineworlds.serenity.core.model.VideoContentInfo;

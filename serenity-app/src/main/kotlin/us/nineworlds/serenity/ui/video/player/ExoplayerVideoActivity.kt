@@ -11,8 +11,6 @@ import android.view.View
 import android.widget.FrameLayout
 import butterknife.BindView
 import butterknife.ButterKnife.bind
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
@@ -24,6 +22,8 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import timber.log.Timber
 import toothpick.Toothpick
 import us.nineworlds.serenity.R
@@ -136,10 +136,11 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     super.finish()
   }
 
-  public override fun onNewIntent(intent: Intent?) {
-    releasePlayer()
-    setIntent(intent)
-  }
+
+//  public override fun onNewIntent(intent: Intent?) {
+//    releasePlayer()
+//    setIntent(intent)
+//  }
 
   override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
     if (keyCode == KeyEvent.KEYCODE_HOME) {

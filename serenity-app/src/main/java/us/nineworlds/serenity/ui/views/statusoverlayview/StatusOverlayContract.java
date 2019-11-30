@@ -1,6 +1,8 @@
 package us.nineworlds.serenity.ui.views.statusoverlayview;
 
-import com.arellomobile.mvp.MvpView;
+import moxy.MvpView;
+import moxy.viewstate.strategy.AddToEndSingleStrategy;
+import moxy.viewstate.strategy.StateStrategyType;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 /**
@@ -10,18 +12,25 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 public interface StatusOverlayContract {
   interface StatusOverlayView extends MvpView {
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     void reset();
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     void initMvp();
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     void toggleProgressIndicator(int dividend, int divisor);
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     void populatePosterImage(String url);
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     void toggleWatchedIndicator(VideoContentInfo contentInfo);
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     void createImage(VideoContentInfo pi, int imageWidth, int imageHeight);
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     void refresh();
   }
 

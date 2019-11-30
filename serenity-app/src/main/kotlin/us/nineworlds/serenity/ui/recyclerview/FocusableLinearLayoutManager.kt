@@ -24,12 +24,12 @@ package us.nineworlds.serenity.ui.recyclerview
  */
 
 import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
-class FocusableLinearLayoutManager(val context: Context) : LinearLayoutManager(context) {
+class FocusableLinearLayoutManager(val context: Context) : androidx.recyclerview.widget.LinearLayoutManager(context) {
 
-  override fun smoothScrollToPosition(recyclerView: RecyclerView?, state: RecyclerView.State?, position: Int) {
+  override fun smoothScrollToPosition(recyclerView: androidx.recyclerview.widget.RecyclerView?, state: androidx.recyclerview.widget.RecyclerView.State?, position: Int) {
     val smoothScroller = FocusableLinearSmoothScroller(context)
     smoothScroller.targetPosition = position
     startSmoothScroll(smoothScroller)

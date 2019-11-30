@@ -4,14 +4,14 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.os.Parcelable;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
-import com.arellomobile.mvp.MvpDelegate;
-import com.arellomobile.mvp.MvpPresenter;
+import moxy.MvpDelegate;
+import moxy.MvpPresenter;
 
 public abstract class MvpFrameLayout extends FrameLayout {
 

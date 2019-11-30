@@ -2,7 +2,7 @@ package us.nineworlds.serenity.ui.browser.tv
 
 import android.app.Activity
 import android.content.SharedPreferences
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.KeyEvent
 import android.widget.LinearLayout
 import butterknife.BindView
@@ -24,7 +24,7 @@ class OnKeyDownDelegate(internal var activity: Activity) : BaseInjector() {
   @BindView(R.id.drawer_layout)
   internal lateinit var drawerLayout: DrawerLayout
   @BindView(R.id.tvShowRecyclerView)
-  internal lateinit var tvRecyclerView: RecyclerView
+  internal lateinit var tvRecyclerView: androidx.recyclerview.widget.RecyclerView
 
   init {
     ButterKnife.bind(this, activity)

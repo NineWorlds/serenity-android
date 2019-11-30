@@ -1,6 +1,6 @@
 package us.nineworlds.serenity.ui.activity.login
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import app.com.tvrecyclerview.TvRecyclerView.OnItemStateListener
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.rest.SerenityUser
 
-class LoginUserAdapter(val presenter: LoginUserPresenter) : RecyclerView.Adapter<LoginUserViewHolder>(),
+class LoginUserAdapter(val presenter: LoginUserPresenter) : androidx.recyclerview.widget.RecyclerView.Adapter<LoginUserViewHolder>(),
   OnItemStateListener {
 
   val users: ArrayList<SerenityUser> = ArrayList<SerenityUser>()
