@@ -9,7 +9,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-allopen:1.3.21"
+    classpath "org.jetbrains.kotlin:kotlin-allopen:1.3.50"
     classpath "org.jacoco:org.jacoco.core:0.8.3"
   }
 }
@@ -157,24 +157,6 @@ afterEvaluate {
 
 dependencies {
 
-  testImplementation("org.robolectric:robolectric:$robolectricVersion") {
-    exclude module: 'support-v4'
-  }
-  testImplementation("com.squareup.assertj:assertj-android:$assertJAndroidVersion") {
-    exclude module: 'support-v4'
-    exclude module: 'support-annotations'
-  }
-
-  testImplementation "org.assertj:assertj-core:$assertjVersion"
-  testImplementation "junit:junit:$junitVersion"
-  testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
-  testImplementation "org.robolectric:shadowapi:$robolectricVersion"
-  testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
-  testImplementation "androidx.test:core:1.2.0"
-  testImplementation "org.khronos:opengl-api:$openglApiVersion"
-  testImplementation "org.mockito:mockito-core:$mockitoVersion"
-
-
   implementation project(':plexapp-rest-library')
   implementation project(':subtitle-converter')
   implementation project(':emby-lib')
@@ -262,6 +244,23 @@ dependencies {
   testImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
   testImplementation "commons-io:commons-io:$commonsioVersion"
   testImplementation "com.github.stephanenicolas.toothpick:toothpick-testing:$toothPickVersion"
+  testImplementation("org.robolectric:robolectric:$robolectricVersion") {
+    exclude module: 'support-v4'
+  }
+  testImplementation("com.squareup.assertj:assertj-android:$assertJAndroidVersion") {
+    exclude module: 'support-v4'
+    exclude module: 'support-annotations'
+  }
+
+  testImplementation "org.assertj:assertj-core:$assertjVersion"
+  testImplementation "junit:junit:$junitVersion"
+  testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
+  testImplementation "org.robolectric:shadowapi:$robolectricVersion"
+  testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
+  testImplementation "androidx.test:core:1.2.0"
+  testImplementation "org.khronos:opengl-api:$openglApiVersion"
+  testImplementation "org.mockito:mockito-core:$mockitoVersion"
+
   kaptTest "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"
 
   kapt "com.github.moxy-community:moxy-compiler:$moxyVersion"
@@ -276,6 +275,7 @@ jacoco {
 
 tasks.withType(Test) {
   jacoco.includeNoLocationClasses = true
+  jacoco.excludes = ['jdk.internal.*']
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
