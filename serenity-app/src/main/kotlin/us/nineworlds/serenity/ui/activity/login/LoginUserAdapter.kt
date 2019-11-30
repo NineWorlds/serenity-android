@@ -8,8 +8,7 @@ import app.com.tvrecyclerview.TvRecyclerView.OnItemStateListener
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.rest.SerenityUser
 
-class LoginUserAdapter(val presenter: LoginUserPresenter) : androidx.recyclerview.widget.RecyclerView.Adapter<LoginUserViewHolder>(),
-  OnItemStateListener {
+class LoginUserAdapter(val presenter: LoginUserPresenter) : RecyclerView.Adapter<LoginUserViewHolder>() {
 
   val users: ArrayList<SerenityUser> = ArrayList<SerenityUser>()
 
@@ -29,6 +28,11 @@ class LoginUserAdapter(val presenter: LoginUserPresenter) : androidx.recyclervie
 
   override fun onBindViewHolder(holder: LoginUserViewHolder, position: Int) {
     holder.loadUser(users[position])
+    holder.itemView.setOnClickListener {
+      val user = users[position]
+
+      presenter.loadUser(user)
+    }
   }
 
   fun loadUsers(newUsers: List<SerenityUser>) {
@@ -38,12 +42,4 @@ class LoginUserAdapter(val presenter: LoginUserPresenter) : androidx.recyclervie
     notifyDataSetChanged()
   }
 
-  override fun onItemViewClick(p0: View?, p1: Int) {
-    val user = users[p1]
-
-    presenter.loadUser(user)
-  }
-
-  override fun onItemViewFocusChanged(p0: Boolean, p1: View?, p2: Int) {
-  }
 }

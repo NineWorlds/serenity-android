@@ -24,9 +24,6 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/actionbarMargin"
-        android:paddingStart="@dimen/overscan_start_padding"
-        android:paddingEnd="@dimen/overscan_start_padding"
-        android:paddingBottom="@dimen/overscan_bottom_padding"
         android:layout_alignParentBottom="true"
         android:layout_height="match_parent"
         />

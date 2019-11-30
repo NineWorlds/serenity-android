@@ -1,34 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:clipChildren="false"
         android:clipToPadding="false"
         tools:background="@drawable/movies">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_start"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_end"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_top"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_center"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.50" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="1" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/video_details_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_height="0dp"
             android:background="@color/card_background"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:padding="5dp"
             android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/guideline_center"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="10dp"
             tools:visibility="visible">
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_details_start"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_details_end"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_details_25"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.25" />
+
 
         <us.nineworlds.serenity.widgets.RoundedImageView
                 android:id="@+id/video_poster"
-                android:layout_width="@dimen/video_gallery_image_width"
-                android:layout_height="@dimen/video_gallery_image_height"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toEndOf="@+id/guideline_vertical_details_start"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_details_25"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_margin="5dp"
                 app:corner_radius="5dp"
                 app:mutate_background="true" />
@@ -36,12 +96,15 @@
         <TextView
                 android:id="@+id/movieBrowserPosterTitle"
                 style="@android:style/TextAppearance.Holo.Large"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_toEndOf="@+id/video_poster"
-                android:gravity="left|center_vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline_details_25"
+                app:layout_constraintEnd_toEndOf="@+id/guideline_vertical_details_end"
+                app:layout_constrainedWidth="true"
+                android:gravity="start|center_vertical"
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:textColor="#F0F0F0"
@@ -53,14 +116,15 @@
 
         <TextView
                 android:id="@+id/movieSummary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/movieBrowserPosterTitle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_toRightOf="@+id/video_poster"
+                app:layout_constraintStart_toEndOf="@+id/guideline_details_25"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_details_end"
+                app:layout_constraintTop_toBottomOf="@+id/movieBrowserPosterTitle"
+                app:layout_constraintBottom_toTopOf="@+id/videoTextExtra"
                 android:ellipsize="marquee"
-                android:maxLines="8"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textColor="#F0F0F0"
@@ -72,13 +136,14 @@
         <TextView
                 android:id="@+id/videoTextExtra"
                 style="@android:style/TextAppearance.Holo.Medium"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/movieInfoGraphicLayout"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_toEndOf="@+id/video_poster"
+                app:layout_constraintStart_toEndOf="@+id/guideline_details_25"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_details_end"
+                app:layout_constraintBottom_toTopOf="@+id/movieInfoGraphicLayout"
                 android:gravity="start"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -89,26 +154,27 @@
 
         <LinearLayout
                 android:id="@+id/movieInfoGraphicLayout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/video_poster"
-                android:layout_centerHorizontal="true"
+                app:layout_constraintStart_toEndOf="@+id/guideline_details_25"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_details_end"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="5dp"
-                android:layout_toEndOf="@+id/video_poster"
                 android:gravity="bottom"
                 android:orientation="horizontal"
                 tools:minHeight="@dimen/audio_inographic_height"
                 tools:orientation="horizontal"
-                tools:visibility="visible"
-                />
-    </RelativeLayout>
+                tools:visibility="visible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
             android:id="@+id/tableRow2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
@@ -123,6 +189,8 @@
                 android:id="@+id/moviePosterView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingStart="@dimen/overscan_start_padding"
+                android:paddingEnd="@dimen/overscan_end_padding"
                 android:layout_gravity="center|center_vertical"
                 android:clipChildren="false"
                 android:clipToPadding="false"
@@ -143,6 +211,9 @@
             layout="@layout/include_loading_progress"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_centerInParent="true" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,7 +28,10 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +92,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
   }
 
   protected void setupRecyclerView() {
-    RecyclerView.LayoutManager linearLayoutManager = createLayoutManager();
+    LinearLayoutManager linearLayoutManager = createLayoutManager();
     MoviePosterImageAdapter adapter = new MoviePosterImageAdapter();
     adapter.setOnItemSelectedListener(createOnItemSelectedListener(adapter));
     adapter.setOnItemClickListener(createOnItemClickListener(adapter));
@@ -109,6 +112,25 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
     recyclerView.requestFocus();
+
+    LinearSnapHelper snapHelper = new LinearSnapHelper();
+    snapHelper.attachToRecyclerView(recyclerView);
+
+    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override
+      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+
+        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+          
+          snapHelper.findSnapView(linearLayoutManager).requestFocusFromTouch();
+//            int position = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+//            recyclerView.findViewHolderForLayoutPosition(position).itemView.requestFocusFromTouch();
+//            adapter.notifyItemChanged(position);
+        }
+      }
+
+    });
 
     MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
 

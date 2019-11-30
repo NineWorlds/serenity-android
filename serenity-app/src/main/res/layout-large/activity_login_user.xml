@@ -22,7 +22,7 @@
       android:textSize="24sp"
       />
 
-  <us.nineworlds.serenity.widgets.SerenityTVRecylcerView
+  <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/login_user_container"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -37,6 +37,6 @@
       tools:orientation="horizontal"
       >
     <requestFocus/>
-  </us.nineworlds.serenity.widgets.SerenityTVRecylcerView>
+  </androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>

@@ -6,6 +6,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.Window
 import android.widget.FrameLayout
+import androidx.recyclerview.widget.RecyclerView
 import app.com.tvrecyclerview.TvRecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -35,7 +36,7 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
   fun providePresenter(): LoginUserPresenter = presenterProvider.get()
 
   @BindView(R.id.login_user_container)
-  lateinit var profileContainer: TvRecyclerView
+  lateinit var profileContainer: RecyclerView
 
   @BindView(R.id.data_loading_container)
   lateinit var dataLoadingContainer: FrameLayout
@@ -68,7 +69,6 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
     layoutManager.justifyContent = JustifyContent.CENTER
     profileContainer.layoutManager = layoutManager
     profileContainer.addItemDecoration(FlexboxItemDecoration(this))
-    profileContainer.setOnItemStateListener(adapter)
   }
 
   override fun displayUsers(serenityUser: List<SerenityUser>) {

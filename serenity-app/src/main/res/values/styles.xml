@@ -4,7 +4,7 @@
       Base application theme, dependent on API level. This theme is replaced
       by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
   -->
-  <style name="AppBaseTheme" parent="android:Theme.NoTitleBar">
+  <style name="AppBaseTheme" parent="Theme.MaterialComponents.NoActionBar.Bridge">
     <item name="android:colorPrimary">@color/primary</item>
     <item name="android:windowAllowReturnTransitionOverlap">true</item>
     <item name="android:windowAllowEnterTransitionOverlap">true</item>
@@ -15,7 +15,7 @@
     -->
   </style>
 
-  <style name="CustomActionBarTheme" parent="@style/Theme.AppCompat">
+  <style name="CustomActionBarTheme" parent="@style/Theme.MaterialComponents.Bridge">
     <item name="android:windowActionBarOverlay">true</item>
     <item name="android:actionBarStyle">@style/TransparentActionBar</item>
 
@@ -30,7 +30,7 @@
     <item name="background">@drawable/content_panel_dark</item>
   </style>
 
-  <style name="Theme.AppCompat.NoActionBar" parent="@style/Theme.AppCompat">
+  <style name="Theme.AppCompat.NoActionBar" parent="@style/Theme.MaterialComponents.NoActionBar.Bridge">
     <item name="android:windowNoTitle">true</item>
     <item name="windowNoTitle">true</item>
   </style>
@@ -65,7 +65,7 @@
     <item name="android:windowExitAnimation">@anim/fade_out_mediacontroller</item>
   </style>
 
-  <style name="Theme.AppCompat.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.NoActionBar">
+  <style name="Theme.AppCompat.NoActionBar.FullScreen" parent="@style/Theme.MaterialComponents.NoActionBar.Bridge">
     <item name="windowNoTitle">true</item>
     <item name="windowActionBar">false</item>
     <item name="android:windowFullscreen">true</item>
