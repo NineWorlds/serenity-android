@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.emby.server.api
 
+import net.danlew.android.joda.JodaTimeAndroid
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -20,9 +21,10 @@ class EmbyAPIClientTest {
   @Before
   fun setUp() {
     ShadowLog.stream = System.out
+    JodaTimeAndroid.init(RuntimeEnvironment.application)
 
     client = EmbyAPIClient(context = RuntimeEnvironment.application)
-    client.updateBaseUrl("http://plexserver:8096")
+    client.updateBaseUrl("http://192.168.86.162:8096")
   }
 
   @Test
