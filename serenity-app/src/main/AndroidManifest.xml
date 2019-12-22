@@ -62,6 +62,7 @@
       android:name=".SerenityApplication"
       android:allowBackup="true"
       android:hardwareAccelerated="true"
+      android:usesCleartextTraffic="true"
       android:icon="@drawable/serenity_bonsai_logo"
       android:label="@string/app_name"
       android:largeHeap="true"

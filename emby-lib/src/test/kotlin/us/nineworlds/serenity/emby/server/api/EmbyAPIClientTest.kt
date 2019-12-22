@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -22,7 +21,7 @@ class EmbyAPIClientTest {
     ShadowLog.stream = System.out
 
     client = EmbyAPIClient(context = RuntimeEnvironment.application)
-    client.updateBaseUrl("http://plexserver:8096")
+    client.updateBaseUrl("http://192.168.86.162:8096")
   }
 
   @Test
@@ -52,7 +51,7 @@ class EmbyAPIClientTest {
     authenticate()
 
     val currentViews = client.currentUserViews()
-    val id = currentViews.items[2].id
+    val id = currentViews.items[1].id
     val result = client.filters(itemId = id)
     assertThat(result).isNotNull()
   }
@@ -70,6 +69,7 @@ class EmbyAPIClientTest {
 
     val result = client.retrieveItemByCategories()
     val parentId = result.directories[1].key
+    val type = result.directories[1].type
 
     val categories = client.retrieveItemByIdCategory(parentId)
 

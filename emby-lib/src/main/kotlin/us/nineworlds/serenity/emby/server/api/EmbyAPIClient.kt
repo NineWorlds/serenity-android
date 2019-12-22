@@ -208,7 +208,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     if (userId == null) {
       userId = fetchUserId()
     }
-    val call = filterService.availableFilters(headerMap(), userId!!, key)
+    val call = filterService.availableFilters(headerMap(), userId = userId!!, itemId =  key)
 
     val queryResult = call.execute().body()
 
@@ -353,7 +353,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     position = position.times(10000)
 
     val call = usersService.progress(headerMap(), userId!!, key, null, position)
-    val result = call.execute();
+    val result = call.execute()
 
     return result.isSuccessful
   }

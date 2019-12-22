@@ -47,7 +47,7 @@ project.ext {
   eventBus = "3.1.1"
   moshiKotlinVersion = "1.6.0"
   retrofitVersion = "2.4.0"
-  jodaTimeVersion = "2.10.1.1"
+  jodaTimeVersion = "2.10.3"
   timberVersion = "4.7.1"
   exoplayerVersion = "2.8.4"
   glideOkHttpVersion = "4.9.0"

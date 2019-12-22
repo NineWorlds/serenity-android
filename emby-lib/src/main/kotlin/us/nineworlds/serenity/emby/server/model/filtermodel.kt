@@ -3,7 +3,7 @@ package us.nineworlds.serenity.emby.server.model
 import com.squareup.moshi.Json
 
 data class QueryFilters(
-  @Json(name = "Genres") val genres: List<NameGuidPair>?,
+  @Json(name = "Items") val genres: List<NameGuidPair>?,
   @Json(name = "Tags") val tags: List<String>?
 )
 

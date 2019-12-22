@@ -268,7 +268,12 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     adapter.updateSeries(series);
     tvShowRecyclerView.setVisibility(VISIBLE);
 
-    postDelayed.postDelayed(() -> tvShowRecyclerView.getChildAt(0).requestFocus(), 500);
+    postDelayed.postDelayed(() ->  {
+      View view = tvShowRecyclerView.getChildAt(0);
+      if (view != null) {
+        view.requestFocusFromTouch();
+      }
+    }, 500);
   }
 
   @Override
