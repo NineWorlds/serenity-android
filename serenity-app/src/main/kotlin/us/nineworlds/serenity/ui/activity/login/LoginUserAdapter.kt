@@ -1,10 +1,9 @@
 package us.nineworlds.serenity.ui.activity.login
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import app.com.tvrecyclerview.TvRecyclerView.OnItemStateListener
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.rest.SerenityUser
 
@@ -32,6 +31,15 @@ class LoginUserAdapter(val presenter: LoginUserPresenter) : RecyclerView.Adapter
       val user = users[position]
 
       presenter.loadUser(user)
+    }
+    holder.itemView.setOnFocusChangeListener { view, hasFocus ->
+      view.clearAnimation()
+      view.background = null
+
+      if (hasFocus) {
+        view.clearAnimation()
+        view.background = ContextCompat.getDrawable(view.context, R.drawable.rounded_transparent_border)
+      }
     }
   }
 

@@ -42,6 +42,7 @@ import javax.inject.Inject;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
+import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.jobs.MovieCategoryJob;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
@@ -67,6 +68,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
   @Inject JobManager jobManager;
   @Inject SerenityClient factory;
   @Inject Resources resources;
+  @Inject AndroidHelper androidHelper;
 
   @BindView(R.id.moviePosterView) protected RecyclerView recyclerView;
   @BindView(R.id.data_loading_container) protected FrameLayout dataLoadingContainer;
@@ -113,24 +115,26 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
     recyclerView.requestFocus();
 
-    LinearSnapHelper snapHelper = new LinearSnapHelper();
-    snapHelper.attachToRecyclerView(recyclerView);
+    if (!androidHelper.isAndroidTV() && !androidHelper.isAmazonFireTV()) {
+      LinearSnapHelper snapHelper = new LinearSnapHelper();
+      snapHelper.attachToRecyclerView(recyclerView);
 
-    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-      @Override
-      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-        super.onScrollStateChanged(recyclerView, newState);
+      recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+          super.onScrollStateChanged(recyclerView, newState);
 
-        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-          
-          snapHelper.findSnapView(linearLayoutManager).requestFocusFromTouch();
+          if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+
+            snapHelper.findSnapView(linearLayoutManager).requestFocusFromTouch();
 //            int position = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
 //            recyclerView.findViewHolderForLayoutPosition(position).itemView.requestFocusFromTouch();
 //            adapter.notifyItemChanged(position);
+          }
         }
-      }
 
-    });
+      });
+    }
 
     MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
 
