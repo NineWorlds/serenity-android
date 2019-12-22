@@ -13,14 +13,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05" />
+            app:layout_constraintGuide_begin="48dp" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_vertical_end"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.95" />
+            app:layout_constraintGuide_end="48dp" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -35,14 +35,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.50" />
+            app:layout_constraintGuide_percent="0.60" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="1" />
+            app:layout_constraintGuide_end="10dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/video_details_container"
@@ -88,7 +88,7 @@
                 app:layout_constraintStart_toEndOf="@+id/guideline_vertical_details_start"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_details_25"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="H,2:3"
                 android:layout_margin="5dp"
                 app:corner_radius="5dp"
                 app:mutate_background="true" />
@@ -172,13 +172,9 @@
             android:id="@+id/tableRow2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
             android:background="#A0000000"
             android:clipChildren="false"
             android:clipToPadding="false"
@@ -200,6 +196,7 @@
                 tools:layout_height="200dp"
                 tools:layout_width="match_parent"
                 tools:listitem="@layout/poster_indicator_view"
+                tools:visibility="visible"
                 tools:orientation="horizontal">
 
             <requestFocus />
