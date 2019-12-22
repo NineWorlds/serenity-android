@@ -27,11 +27,12 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -106,7 +107,7 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
         int width = context.getResources().getDimensionPixelSize(R.dimen.episode_detail_image_width);
         int height = context.getResources().getDimensionPixelSize(R.dimen.episode_detail_image_height);
         if (videoInfo.getParentPosterURL() != null) {
-            posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+            posterImage.setLayoutParams(new ConstraintLayout.LayoutParams(width, height));
             GlideApp.with(context)
                     .load(videoInfo.getParentPosterURL())
                     .fitCenter()
@@ -114,7 +115,7 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
                     .dontAnimate()
                     .into(posterImage);
         } else if (videoInfo.getGrandParentPosterURL() != null) {
-            posterImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+            posterImage.setLayoutParams(new ConstraintLayout.LayoutParams(width, height));
             GlideApp.with(context)
                     .load(videoInfo.getGrandParentPosterURL())
                     .fitCenter()
