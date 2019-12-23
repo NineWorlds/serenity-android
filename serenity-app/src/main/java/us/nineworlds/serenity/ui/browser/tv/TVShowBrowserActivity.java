@@ -176,8 +176,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     gridViewActive = preferences.getBoolean(SERIES_LAYOUT_GRID, false);
     if (isGridViewActive()) {
       setContentView(R.layout.activity_tvbrowser_show_gridview_posters);
-    } else if (posterLayoutActive) {
-      setContentView(R.layout.activity_tvbrowser_show_posters);
     } else {
       setContentView(R.layout.activity_tvbrowser_show_banners);
     }

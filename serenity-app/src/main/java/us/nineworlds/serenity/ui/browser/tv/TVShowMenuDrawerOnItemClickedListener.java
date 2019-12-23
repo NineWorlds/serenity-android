@@ -62,11 +62,7 @@ public class TVShowMenuDrawerOnItemClickedListener extends BaseInjector
         toggleView(activity, true);
         break;
       case DETAIL_VIEW:
-        if (activity.isPosterLayoutActive()) {
-          activity.setContentView(R.layout.activity_tvbrowser_show_posters);
-        } else {
-          activity.setContentView(R.layout.activity_tvbrowser_show_banners);
-        }
+        activity.setContentView(R.layout.activity_tvbrowser_show_banners);
         toggleView(activity, false);
         break;
       case PLAY_ALL_QUEUE:
