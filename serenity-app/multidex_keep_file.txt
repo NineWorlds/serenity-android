@@ -1,2 +1,3 @@
 -keep class us.nineworlds.serenity.** { *; }
+-keep class us.nineworlds.serenity.emby.** { *; }
 -keep class org.greenrobot.** { *; }

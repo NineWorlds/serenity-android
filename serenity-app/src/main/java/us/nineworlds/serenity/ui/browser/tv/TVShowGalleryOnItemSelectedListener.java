@@ -27,6 +27,8 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import android.view.View;
 import android.widget.*;
 import android.widget.ImageView.ScaleType;
@@ -157,11 +159,6 @@ public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSele
         ImageView showImage = context.findViewById(R.id.tvShowImage);
         showImage.setVisibility(View.VISIBLE);
         showImage.setScaleType(ScaleType.FIT_XY);
-        int width = context.getResources().getDimensionPixelSize(R.dimen.tv_show_image_width);
-        int height = context.getResources().getDimensionPixelSize(R.dimen.tv_show_image_height);
-        showImage.setMaxHeight(height);
-        showImage.setMaxWidth(width);
-        showImage.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
         GlideApp.with(context).load(mi.getThumbNailURL()).fitCenter().into(showImage);
     }
 

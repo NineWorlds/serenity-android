@@ -1,95 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/video_details_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="@dimen/actionbarMargin"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
-    android:background="@color/card_background"
-    android:padding="5dp">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/video_details_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-  <us.nineworlds.serenity.widgets.RoundedImageView
-      android:id="@+id/tvShowImage"
-      android:layout_width="200dp"
-      android:layout_height="250dp"
-      android:layout_alignParentStart="true"
-      android:layout_alignParentTop="true"
-      android:layout_margin="5dp"
-      app:corner_radius="5dp"
-      app:mutate_background="true"/>
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_details_25"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2" />
 
-  <LinearLayout
-      android:id="@+id/tvmetadata"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignBottom="@+id/tvShowImage"
-      android:layout_marginLeft="15dp"
-      android:layout_marginRight="15dp"
-      android:layout_toEndOf="@+id/tvShowImage"
-      android:orientation="horizontal">
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_details_end"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
 
-    <ImageView
-        android:id="@+id/tvShowRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dip"
-        android:layout_marginRight="5dip"
-        android:scaleType="fitXY"
-        tools:src="@drawable/tv14"/>
+    <us.nineworlds.serenity.widgets.RoundedImageView
+            android:id="@+id/tvShowImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:corner_radius="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline_details_25"
+            app:layout_constraintDimensionRatio="H,2:3"
+            android:scaleType="fitXY"
+            tools:src="@drawable/tv"
+            tools:scaleType="fitCenter"/>
 
-    <ImageView
-        android:id="@+id/tvShowStudio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="15dp"
-        tools:src="@drawable/tv14"/>
+    <LinearLayout
+            android:id="@+id/tvmetadata"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_details_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_details_25">
 
-    <RatingBar
-        android:id="@+id/tvRatingbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="end"
-        android:numStars="4"
-        android:stepSize="0.1"
-        style="?android:attr/ratingBarStyleIndicator"/>
-  </LinearLayout>
+        <ImageView
+                android:id="@+id/tvShowRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dip"
+                android:layout_marginBottom="5dip"
+                android:scaleType="fitXY"
+                tools:src="@drawable/tv14" />
 
-  <TextView
-      android:id="@+id/tvBrowserTitle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="15dp"
-      android:layout_marginRight="15dp"
-      android:layout_toEndOf="@+id/tvShowImage"
-      android:gravity="start|center_vertical"
-      android:paddingStart="10dp"
-      android:textColor="#F0F0F0"
-      android:textStyle="bold"
-      tools:ignore="SelectableText"
-      tools:text="This is a TV show Title"
-      style="@android:style/TextAppearance.Holo.Large"/>
+        <ImageView
+                android:id="@+id/tvShowStudio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                tools:src="@drawable/tv14" />
 
-  <TextView
-      android:id="@+id/tvShowSeriesSummary"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/tvBrowserTitle"
-      android:layout_marginLeft="15dp"
-      android:layout_marginRight="15dp"
-      android:layout_toEndOf="@+id/tvShowImage"
-      android:ellipsize="marquee"
-      android:maxLines="8"
-      android:paddingEnd="10dp"
-      android:paddingStart="10dp"
-      android:textColor="#F0F0F0"
-      android:textSize="17.5sp"
-      tools:ignore="SelectableText"
-      tools:text="This is a summary of the tv show."/>
-</RelativeLayout>
+        <RatingBar
+                android:id="@+id/tvRatingbar"
+                style="?android:attr/ratingBarStyleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="end"
+                android:numStars="4"
+                android:stepSize="0.1" />
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/tvBrowserTitle"
+            style="@android:style/TextAppearance.Holo.Large"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:gravity="start|center_vertical"
+            android:textColor="#F0F0F0"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_details_end"
+            app:layout_constraintStart_toEndOf="@id/tvShowImage"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SelectableText"
+            tools:text="This is a TV show Title" />
+
+    <TextView
+            android:id="@+id/tvShowSeriesSummary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvBrowserTitle"
+            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_details_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_details_25"
+            android:layout_below="@+id/tvBrowserTitle"
+            android:layout_marginLeft="15dp"
+            android:ellipsize="marquee"
+            android:maxLines="8"
+            android:textColor="#F0F0F0"
+            android:textSize="17.5sp"
+            tools:ignore="SelectableText"
+            tools:text="This is a summary of the tv show." />
+</androidx.constraintlayout.widget.ConstraintLayout>

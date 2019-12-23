@@ -82,7 +82,6 @@ android {
   }
 
   compileSdkVersion 28
-  buildToolsVersion '28.0.2'
 
   if (project.hasProperty("keystore")) {
     signingConfigs {

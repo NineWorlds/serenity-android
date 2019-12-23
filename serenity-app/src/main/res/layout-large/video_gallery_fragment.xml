@@ -72,14 +72,12 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.95" />
 
-
         <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_details_25"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.25" />
-
 
         <us.nineworlds.serenity.widgets.RoundedImageView
                 android:id="@+id/video_poster"

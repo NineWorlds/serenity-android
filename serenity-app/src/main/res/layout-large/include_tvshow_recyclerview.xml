@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tvShowRecyclerView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center|center_vertical"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
-    android:focusable="true"
-    android:descendantFocusability="afterDescendants"
-    android:nextFocusUp="@+id/categoryFilter"
-    android:visibility="gone"
-    android:clipToPadding="false"
-    android:clipChildren="false">
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/tvShowRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center|center_vertical"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:descendantFocusability="afterDescendants"
+        android:focusable="true"
+        android:nextFocusUp="@+id/categoryFilter"
+        android:visibility="gone"
+        tools:listitem="@layout/poster_indicator_view"
+        tools:visibility="visible">
 
-  <requestFocus/>
+    <requestFocus />
 </androidx.recyclerview.widget.RecyclerView>

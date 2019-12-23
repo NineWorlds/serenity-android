@@ -1,65 +1,126 @@
 <us.nineworlds.serenity.widgets.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
-    android:background="@android:color/background_dark"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-  <!-- The main content view -->
-
-  <RelativeLayout
-      android:id="@+id/tvshowBrowserLayout"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      tools:context=".ui.browser.tv.TVShowBrowserActivity"
-      android:clipChildren="false"
-      android:clipToPadding="false">
-
-    <ImageView
-        android:id="@+id/fanArt"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="@dimen/overscan_start_padding"
-        android:paddingEnd="@dimen/overscan_end_padding"
-        android:paddingBottom="@dimen/overscan_bottom_padding"
-        android:clipChildren="false"
-        android:clipToPadding="false">
+        android:background="@android:color/background_dark">
 
-      <include layout="@layout/include_tvshow_detail"/>
+    <!-- The main content view -->
 
-      <FrameLayout
-          android:id="@+id/tvhsow_container"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_alignParentBottom="true"
-          android:layout_marginBottom="15dp"
-          android:layout_marginLeft="10dp"
-          android:layout_marginRight="10dp"
-          android:layout_marginTop="5dp"
-          android:padding="5dp"
-          android:background="@color/card_background"
-          android:gravity="bottom"
-          android:clipChildren="false"
-          android:clipToPadding="false">
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tvshowBrowserLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            tools:context=".ui.browser.tv.TVShowBrowserActivity">
 
-        <include layout="@layout/include_tvshow_recyclerview"/>
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_start"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="48dp" />
 
-      </FrameLayout>
-    </RelativeLayout>
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_end"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="48dp" />
 
-    <include layout="@layout/include_loading_progress"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerInParent="true"/>
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_top"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="50dp" />
 
-  </RelativeLayout>
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_center"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.60" />
 
-  <!-- The navigation drawer -->
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="10dp" />
 
-  <include layout="@layout/menu_drawer_with_navigation"/>
+        <ImageView
+                android:id="@+id/fanArt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:scaleType="fitXY"
+                tools:src="@drawable/tvshows" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/card_background"
+                app:layout_constraintTop_toBottomOf="@id/guideline_top"
+                app:layout_constraintBottom_toTopOf="@id/guideline_center">
+
+            <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical_start_tv_container"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="48dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical_end_tv_container"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="48dp" />
+
+            <include
+                    layout="@layout/include_tvshow_detail"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/guideline_vertical_end_tv_container"
+                    app:layout_constraintStart_toStartOf="@id/guideline_vertical_start_tv_container" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+                android:id="@+id/tvhsow_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/card_background"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:padding="5dp"
+                app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
+                tools:layout_height="148dp">
+
+            <include layout="@layout/include_tvshow_recyclerview" />
+
+        </FrameLayout>
+
+        <include
+                layout="@layout/include_loading_progress"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:elevation="3dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:visibility="visible"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- The navigation drawer -->
+
+    <include layout="@layout/menu_drawer_with_navigation" />
 
 </us.nineworlds.serenity.widgets.DrawerLayout>
