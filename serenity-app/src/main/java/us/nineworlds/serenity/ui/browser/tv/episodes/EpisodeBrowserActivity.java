@@ -64,12 +64,10 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    actionBar.setCustomView(R.layout.movie_custom_actionbar);
-    actionBar.setDisplayShowCustomEnabled(true);
+//    actionBar.setCustomView(R.layout.movie_custom_actionbar);
+//    actionBar.setDisplayShowCustomEnabled(true);
 
     key = getIntent().getExtras().getString("key");
-
-    createSideMenu();
 
     bgLayout = findViewById(R.id.movieBrowserBackgroundLayout);
     metaData = findViewById(R.id.metaDataRow);
@@ -84,70 +82,6 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
 
   @Override protected String screenName() {
     return "Episode Browser";
-  }
-
-  @Override protected void createSideMenu() {
-    setContentView(R.layout.activity_episode_browser);
-    ButterKnife.bind(this);
-
-    initMenuDrawerViews();
-
-    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector,
-        R.string.drawer_open, R.string.drawer_closed) {
-      @Override public void onDrawerOpened(View drawerView) {
-
-        super.onDrawerOpened(drawerView);
-        getSupportActionBar().setTitle(R.string.app_name);
-        drawerList.requestFocusFromTouch();
-      }
-
-      @Override public void onDrawerClosed(View drawerView) {
-        super.onDrawerClosed(drawerView);
-        getSupportActionBar().setTitle(R.string.app_name);
-      }
-    };
-
-    drawerLayout.setDrawerListener(drawerToggle);
-    actionBar.setDisplayHomeAsUpEnabled(true);
-    actionBar.setHomeButtonEnabled(true);
-
-    populateMenuDrawer();
-  }
-
-  protected void populateMenuDrawer() {
-    List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl(getResources().getString(R.string.play_all_from_queue),
-            R.drawable.menu_play_all_queue));
-
-    drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-    drawerList.setOnItemClickListener(new EpisodeMenuDrawerOnItemClickedListener(drawerLayout));
-  }
-
-  @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
-    boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu", true);
-    if (menuKeySlidingMenu) {
-      if (keyCode == KeyEvent.KEYCODE_MENU) {
-        if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-          drawerLayout.closeDrawers();
-        } else {
-          drawerLayout.openDrawer(linearDrawerLayout);
-        }
-        return true;
-      }
-    }
-
-    if (keyCode == KeyEvent.KEYCODE_BACK && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-      drawerLayout.closeDrawers();
-
-      View gallery = findViewById(R.id.moviePosterView);
-      if (gallery != null) {
-        gallery.requestFocusFromTouch();
-      }
-      return true;
-    }
-
-    return super.onKeyDown(keyCode, event);
   }
 
   @Override public AbstractPosterImageGalleryAdapter getAdapter() {

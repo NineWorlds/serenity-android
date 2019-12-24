@@ -70,8 +70,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    actionBar.setCustomView(R.layout.movie_custom_actionbar);
-    actionBar.setDisplayShowCustomEnabled(true);
+//    actionBar.setCustomView(R.layout.movie_custom_actionbar);
+//    actionBar.setDisplayShowCustomEnabled(true);
 
     gridViewActive = prefs.getBoolean("movie_layout_grid", false);
 
@@ -83,11 +83,10 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
       }
     }
 
-    createSideMenu();
+    createContentView();
 
     DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
 
-    populateMenuDrawer();
   }
 
   @Override protected String screenName() {
@@ -102,34 +101,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
     super.onPause();
   }
 
-  @Override protected void createSideMenu() {
-    createContentView();
-
-    initMenuDrawerViews();
-
-    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector, R.string.drawer_open,
-        R.string.drawer_closed) {
-      @Override public void onDrawerOpened(View drawerView) {
-
-        super.onDrawerOpened(drawerView);
-        getSupportActionBar().setTitle(R.string.app_name);
-        drawerList.requestFocusFromTouch();
-      }
-
-      @Override public void onDrawerClosed(View drawerView) {
-        super.onDrawerClosed(drawerView);
-        getSupportActionBar().setTitle(R.string.app_name);
-        View gallery = findViewById(R.id.moviePosterView);
-        gallery.requestFocusFromTouch();
-      }
-    };
-
-    drawerLayout.setDrawerListener(drawerToggle);
-    actionBar.setDisplayHomeAsUpEnabled(true);
-    actionBar.setHomeButtonEnabled(true);
-
-    populateMenuDrawer();
-  }
 
   protected void createContentView() {
     setContentView(R.layout.activity_movie_browser);
@@ -149,36 +120,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
     fanArt.setBackgroundResource(R.drawable.movies);
   }
 
-  protected void populateMenuDrawer() {
-    List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-    drawerMenuItem.add(new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
-    drawerMenuItem.add(new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
-    drawerMenuItem.add(new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
-
-    drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-    drawerList.setOnItemClickListener(new MovieMenuDrawerOnItemClickedListener(drawerLayout));
-  }
-
-  @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
-    boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu", true);
-    if (menuKeySlidingMenu) {
-      if (keyCode == KeyEvent.KEYCODE_MENU) {
-        if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-          drawerLayout.closeDrawers();
-        } else {
-          drawerLayout.openDrawer(linearDrawerLayout);
-        }
-        return true;
-      }
-    }
-
-    if (keyCode == KeyEvent.KEYCODE_BACK && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-      drawerLayout.closeDrawers();
-      return true;
-    }
-
-    return super.onKeyDown(keyCode, event);
-  }
 
   public String getKey() {
     return key;

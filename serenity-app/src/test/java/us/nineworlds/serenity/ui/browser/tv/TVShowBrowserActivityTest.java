@@ -117,30 +117,11 @@ public class TVShowBrowserActivityTest extends InjectingTest {
     assertThat(activity.tvShowItemCountView).hasText("1 Item(s)");
   }
 
-  @Test public void restartCallsPopulateMenuDrawer() {
-    TVShowBrowserActivity spy = spy(activity);
-    doNothing().when(spy).populateMenuDrawer();
-
-    spy.onRestart();
-
-    verify(spy).populateMenuDrawer();
-  }
-
-  @Test public void resumeCallsPopulateDrawer() {
-    TVShowBrowserActivity spy = spy(activity);
-    doNothing().when(spy).populateMenuDrawer();
-
-    spy.restarted_state = true;
-    spy.onResume();
-
-    verify(spy).populateMenuDrawer();
-  }
 
   @Test public void resumeRequestsUpdatedTVCategoriesFromPresenter() {
     String expectedKey = RandomStringUtils.randomAlphanumeric(5);
 
     TVShowBrowserActivity spy = spy(activity);
-    doNothing().when(spy).populateMenuDrawer();
 
     spy.restarted_state = false;
     spy.key = expectedKey;

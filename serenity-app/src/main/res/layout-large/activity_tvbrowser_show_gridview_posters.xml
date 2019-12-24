@@ -1,4 +1,4 @@
-<us.nineworlds.serenity.widgets.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:background="@android:color/background_dark"
     android:layout_width="match_parent"
@@ -42,6 +42,19 @@
 
   </RelativeLayout>
 
-  <include layout="@layout/menu_drawer_with_navigation"/>
+  <com.google.android.material.appbar.AppBarLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@color/card_background"
+          >
 
-</us.nineworlds.serenity.widgets.DrawerLayout>
+    <include layout="@layout/tvshow_custom_actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginStart="@dimen/overscan_start_padding"
+            android:layout_marginEnd="@dimen/overscan_end_padding"/>
+
+  </com.google.android.material.appbar.AppBarLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

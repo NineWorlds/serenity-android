@@ -43,8 +43,6 @@ public abstract class SerenityActivity extends InjectingMvpActivity {
   protected FirebaseAnalytics analytics;
   protected Handler scrollingHandler = new Handler();
 
-  protected abstract void createSideMenu();
-
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     analytics = FirebaseAnalytics.getInstance(this);

@@ -1,4 +1,4 @@
-<us.nineworlds.serenity.widgets.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -39,6 +39,4 @@
   </RelativeLayout>
   <!-- The navigation drawer -->
 
-  <include layout="@layout/menu_drawer_with_navigation"/>
-
-</us.nineworlds.serenity.widgets.DrawerLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -4,7 +4,16 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent">
 
-    <!-- The main content view -->
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/card_background"
+            >
+
+        <include layout="@layout/clock_layout"/>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
             android:id="@+id/mainLayout"

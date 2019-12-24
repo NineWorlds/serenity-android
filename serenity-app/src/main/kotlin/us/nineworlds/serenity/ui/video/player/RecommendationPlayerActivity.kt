@@ -44,8 +44,6 @@ class RecommendationPlayerActivity : SerenityActivity() {
 
   private lateinit var video: VideoContentInfo
 
-  override fun createSideMenu() {}
-
   override fun screenName(): String = "Recommendations Player"
 
   override fun onCreate(savedInstanceState: Bundle?) {

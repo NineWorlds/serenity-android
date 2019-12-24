@@ -41,13 +41,14 @@ import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
 import us.nineworlds.serenity.ui.video.player.ExoplayerVideoActivity;
 
-public abstract class SerenityVideoActivity extends SerenityDrawerLayoutActivity {
+public abstract class SerenityVideoActivity extends SerenityActivity {
 
   @Inject @ForVideoQueue LinkedList<VideoContentInfo> videoQueue;
 
   public abstract AbstractPosterImageGalleryAdapter getAdapter();
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     boolean externalPlayer = prefs.getBoolean("external_player", false);
     RecyclerView videoRecyclerView = findVideoRecyclerView();

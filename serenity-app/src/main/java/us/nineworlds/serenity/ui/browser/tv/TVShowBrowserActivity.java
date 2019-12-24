@@ -26,7 +26,7 @@ package us.nineworlds.serenity.ui.browser.tv;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.legacy.app.ActionBarDrawerToggle;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,14 +41,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
-import java.util.ArrayList;
+
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.menus.MenuDrawerItem;
-import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
@@ -56,7 +54,6 @@ import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
 import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
@@ -92,11 +89,11 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    actionBar.setCustomView(R.layout.tvshow_custom_actionbar);
-    actionBar.setDisplayShowCustomEnabled(true);
+//    actionBar.setCustomView(R.layout.tvshow_custom_actionbar);
+//    actionBar.setDisplayShowCustomEnabled(true);
     key = getIntent().getExtras().getString("key");
 
-    createSideMenu();
+    initContentView();
     onKeyDownDelegate = new OnKeyDownDelegate(this);
 
     fanArt.setBackgroundResource(R.drawable.tvshows);
@@ -160,18 +157,16 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   @Override protected void onRestart() {
     super.onRestart();
     restarted_state = true;
-    populateMenuDrawer();
   }
 
   @Override protected void onResume() {
     super.onResume();
-    populateMenuDrawer();
     if (!restarted_state) {
       presenter.fetchTVCategories(key);
     }
   }
 
-  @Override protected void createSideMenu() {
+  protected void initContentView() {
     posterLayoutActive = preferences.getBoolean("series_layout_posters", false);
     gridViewActive = preferences.getBoolean(SERIES_LAYOUT_GRID, false);
     if (isGridViewActive()) {
@@ -181,43 +176,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     }
 
     ButterKnife.bind(this);
-
-    initMenuDrawerViews();
-
-    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector,
-        R.string.drawer_open,
-        R.string.drawer_closed) {
-      @Override public void onDrawerOpened(View drawerView) {
-
-        super.onDrawerOpened(drawerView);
-        getSupportActionBar().setTitle(R.string.app_name);
-        drawerList.requestFocusFromTouch();
-      }
-
-      @Override public void onDrawerClosed(View drawerView) {
-        super.onDrawerClosed(drawerView);
-        getSupportActionBar().setTitle(R.string.app_name);
-      }
-    };
-
-    drawerLayout.setDrawerListener(drawerToggle);
-    actionBar.setDisplayHomeAsUpEnabled(true);
-    actionBar.setHomeButtonEnabled(true);
-
-    populateMenuDrawer();
-  }
-
-  protected void populateMenuDrawer() {
-    List<MenuDrawerItem> drawerMenuItem = new ArrayList<MenuDrawerItem>();
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl("Grid View", R.drawable.ic_action_collections_view_as_grid));
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl("Detail View", R.drawable.ic_action_collections_view_detail));
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
-
-    drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-    drawerList.setOnItemClickListener(new TVShowMenuDrawerOnItemClickedListener(drawerLayout));
   }
 
   @Override @Deprecated public AbstractPosterImageGalleryAdapter getAdapter() {

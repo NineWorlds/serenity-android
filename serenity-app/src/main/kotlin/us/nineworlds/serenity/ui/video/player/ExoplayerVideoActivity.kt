@@ -80,10 +80,6 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   @ProvidePresenter
   fun providePresenter(): ExoplayerPresenter = presenterProvider.get()
 
-  override fun createSideMenu() {
-    // Do Nothing as a side menu isn't needed in this activity
-  }
-
   override fun inject() {
     scope = Toothpick.openScopes(InjectionConstants.APPLICATION_SCOPE, AppInjectionConstants.EXOPLAYER_SCOPE)
     scope.installModules(ExoplayerVideoModule())

@@ -75,12 +75,12 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    actionBar.setCustomView(R.layout.season_custom_actionbar);
-    actionBar.setDisplayShowCustomEnabled(true);
+//    actionBar.setCustomView(R.layout.season_custom_actionbar);
+//    actionBar.setDisplayShowCustomEnabled(true);
 
     key = getIntent().getExtras().getString("key");
 
-    createSideMenu();
+    initContentView();
 
     DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
     setupSeasons();
@@ -144,74 +144,15 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
 
   @Override protected void onRestart() {
     super.onRestart();
-    populateMenuDrawer();
     restarted_state = true;
   }
 
-  @Override protected void createSideMenu() {
+  protected void initContentView() {
     setContentView(R.layout.activity_tvbrowser_show_seasons);
 
     ButterKnife.bind(this);
 
     fanArt.setBackgroundResource(R.drawable.tvshows);
-
-    initMenuDrawerViews();
-
-    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.menudrawer_selector,
-        R.string.drawer_open, R.string.drawer_closed) {
-      @Override public void onDrawerOpened(View drawerView) {
-
-        super.onDrawerOpened(drawerView);
-        getSupportActionBar().setTitle(R.string.app_name);
-        drawerList.requestFocusFromTouch();
-      }
-
-      @Override public void onDrawerClosed(View drawerView) {
-        super.onDrawerClosed(drawerView);
-        getSupportActionBar().setTitle(R.string.app_name);
-      }
-    };
-
-    drawerLayout.setDrawerListener(drawerToggle);
-    actionBar.setDisplayHomeAsUpEnabled(true);
-    actionBar.setHomeButtonEnabled(true);
-
-    populateMenuDrawer();
-  }
-
-  protected void populateMenuDrawer() {
-    List<MenuDrawerItem> drawerMenuItem = new ArrayList<>();
-    drawerMenuItem.add(
-        new MenuDrawerItemImpl("Play All from Queue", R.drawable.menu_play_all_queue));
-
-    drawerList.setAdapter(new MenuDrawerAdapter(this, drawerMenuItem));
-    drawerList.setOnItemClickListener(
-        new TVShowSeasonMenuDrawerOnItemClickedListener(drawerLayout));
-  }
-
-  @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
-    boolean menuKeySlidingMenu =
-        PreferenceManager.getDefaultSharedPreferences(this).getBoolean("remote_control_menu", true);
-    if (menuKeySlidingMenu) {
-      if (keyCode == KeyEvent.KEYCODE_MENU) {
-        if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-          drawerLayout.closeDrawers();
-        } else {
-          drawerLayout.openDrawer(linearDrawerLayout);
-        }
-        return true;
-      }
-    }
-
-    if (keyCode == KeyEvent.KEYCODE_BACK && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-      drawerLayout.closeDrawers();
-      if (tvShowSeasonsGallery != null) {
-        tvShowSeasonsGallery.requestFocusFromTouch();
-      }
-      return true;
-    }
-
-    return super.onKeyDown(keyCode, event);
   }
 
   @Override public AbstractPosterImageGalleryAdapter getAdapter() {

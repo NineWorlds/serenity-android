@@ -1,65 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tvLine1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="@dimen/overscan_top_padding"
-    android:paddingEnd="@dimen/overscan_end_padding"
-    android:orientation="horizontal">
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
 
-  <TextView
-      android:id="@+id/tvshow_CategoryName"
-      style="@android:style/TextAppearance.Holo.Medium"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="10dp"
-      android:gravity="center_vertical|left"
-      android:focusable="false"
-      android:text="@string/category"/>
+    <LinearLayout
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/tvLine1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/overscan_top_padding"
+            android:paddingEnd="@dimen/overscan_end_padding">
 
-  <Spinner
-      android:id="@+id/categoryFilter"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="5dp"
-      android:focusable="true"
-      android:gravity="center_vertical|left"
-      android:prompt="@string/movie_category_prompt"
-      android:spinnerMode="dropdown"
-      />
+        <TextView
+                android:id="@+id/tvshow_CategoryName"
+                style="@android:style/TextAppearance.Holo.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:focusable="false"
+                android:gravity="center_vertical|left"
+                android:text="@string/category" />
 
-  <Spinner
-      android:id="@+id/categoryFilter2"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="5dp"
-      android:focusable="true"
-      android:gravity="center_vertical|left"
-      android:prompt="@string/movie_category_prompt2"
-      android:spinnerMode="dropdown"
-      android:visibility="invisible"
-      />
+        <Spinner
+                android:id="@+id/categoryFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:focusable="true"
+                android:gravity="center_vertical|left"
+                android:prompt="@string/movie_category_prompt"
+                android:spinnerMode="dropdown" />
 
-  <TextView
-      android:id="@+id/tvShowGridTitle"
-      style="@android:style/TextAppearance.Holo.Medium"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="10dp"
-      android:gravity="center_vertical|left"
-      android:layout_marginRight="10dp"
-      android:textStyle="bold"
-      />
+        <Spinner
+                android:id="@+id/categoryFilter2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:focusable="true"
+                android:gravity="center_vertical|left"
+                android:prompt="@string/movie_category_prompt2"
+                android:spinnerMode="dropdown"
+                android:visibility="invisible" />
 
-  <TextView
-      android:id="@+id/tvShowItemCount"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="right"
-      android:gravity="center_vertical|right"
-      android:textColor="#F0F0F0"
-      android:textSize="20sp"
-      tools:ignore="SelectableText"/>
+        <TextView
+                android:id="@+id/tvShowGridTitle"
+                style="@android:style/TextAppearance.Holo.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical|left"
+                android:textStyle="bold" />
 
-</LinearLayout>
+        <TextView
+                android:id="@+id/tvShowItemCount"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="center_vertical|right"
+                android:textColor="#F0F0F0"
+                android:textSize="20sp"
+                tools:ignore="SelectableText" />
+
+    </LinearLayout>
+
+</androidx.appcompat.widget.Toolbar>

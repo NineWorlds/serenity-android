@@ -18,11 +18,6 @@ import us.nineworlds.serenity.widgets.DrawerLayout
 class OnKeyDownDelegate(internal var activity: Activity) : BaseInjector() {
 
   @Inject internal lateinit var preferences: SharedPreferences
-
-  @BindView(R.id.left_drawer)
-  internal lateinit var linearDrawerLayout: LinearLayout
-  @BindView(R.id.drawer_layout)
-  internal lateinit var drawerLayout: DrawerLayout
   @BindView(R.id.tvShowRecyclerView)
   internal lateinit var tvRecyclerView: androidx.recyclerview.widget.RecyclerView
 
@@ -31,24 +26,6 @@ class OnKeyDownDelegate(internal var activity: Activity) : BaseInjector() {
   }
 
   fun onKeyDown(keyCode: Int, keyEvent: KeyEvent): Boolean {
-    val menuKeySlidingMenu = preferences.getBoolean("remote_control_menu", true)
-    if (menuKeySlidingMenu) {
-      if (keyCode == KeyEvent.KEYCODE_MENU) {
-        if (drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-          drawerLayout.closeDrawers()
-        } else {
-          drawerLayout.openDrawer(linearDrawerLayout)
-        }
-        return true
-      }
-    }
-
-    if (keyCode == KeyEvent.KEYCODE_BACK && drawerLayout.isDrawerOpen(linearDrawerLayout)) {
-      drawerLayout.closeDrawers()
-      tvRecyclerView.requestFocusFromTouch()
-      return true
-    }
-
     val adapter = tvRecyclerView.adapter as AbstractPosterImageGalleryAdapter?
     if (adapter != null) {
       val itemsCount = adapter.itemCount

@@ -105,57 +105,7 @@ public class MainActivityTest extends InjectingTest {
   @Test public void testCreatesMenu() throws Exception {
     assertThat((ImageView) activity.findViewById(R.id.mainGalleryBackground)).isVisible();
   }
-
-  @Test public void onKeyDownOpensMenuDrawerWhenKeycodeMenu() {
-    DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
-    drawerLayout.closeDrawers();
-    doReturn(true).when(mockSharedPreferences).getBoolean("remote_control_menu", true);
-
-    assertThat(activity.onKeyDown(KeyEvent.KEYCODE_MENU, mockKeyEvent)).isTrue();
-
-    verify(mockSharedPreferences).getBoolean("remote_control_menu", true);
-  }
-
-  @Test public void onKeyDownClosesOpenDrawerWhenKeycodeMenu() {
-    DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
-    LinearLayout leftDrawer = activity.findViewById(R.id.left_drawer);
-    RecyclerView mainMenu = activity.findViewById(R.id.mainGalleryMenu);
-
-    drawerLayout.openDrawer(leftDrawer);
-
-    doReturn(true).when(mockSharedPreferences).getBoolean("remote_control_menu", true);
-
-    assertThat(activity.onKeyDown(KeyEvent.KEYCODE_MENU, mockKeyEvent)).isTrue();
-    assertThat(mainMenu).hasFocus();
-
-    verify(mockSharedPreferences).getBoolean("remote_control_menu", true);
-  }
-
-  @Test public void onKeyDownClosesOpenDrawerWhenKeycodeBackIsPressed() {
-    DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
-    LinearLayout leftDrawer = activity.findViewById(R.id.left_drawer);
-    RecyclerView mainMenu = activity.findViewById(R.id.mainGalleryMenu);
-
-    drawerLayout.openDrawer(leftDrawer);
-
-    doReturn(false).when(mockSharedPreferences).getBoolean("remote_control_menu", true);
-
-    assertThat(activity.onKeyDown(KeyEvent.KEYCODE_BACK, mockKeyEvent)).isTrue();
-    assertThat(mainMenu).hasFocus();
-
-    verify(mockSharedPreferences).getBoolean("remote_control_menu", true);
-  }
-
-  @Test public void onOptionsMenuOpensDrawerAndSetsFocus() {
-    DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
-    LinearLayout leftDrawer = activity.findViewById(R.id.left_drawer);
-    drawerLayout.closeDrawers();
-
-    activity.openOptionsMenu();
-
-    assertThat(drawerLayout.isDrawerOpen(leftDrawer)).isTrue();
-  }
-
+  
   @Test public void onActivityResultCallsRecreateWhenResultCodeIsMainMenuPreferenceResultCode() {
     MainActivity spy = spy(activity);
     doNothing().when(spy).recreate();
