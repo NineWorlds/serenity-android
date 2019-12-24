@@ -128,6 +128,10 @@ android {
       maxParallelForks = 2
 
       jvmArgs '-noverify'
+
+      testLogging {
+        exceptionFormat "full"
+      }
     }
   }
 
