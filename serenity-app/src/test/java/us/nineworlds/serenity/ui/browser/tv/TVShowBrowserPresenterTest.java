@@ -30,7 +30,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(PlainAndroidRunner.class)
 public class TVShowBrowserPresenterTest extends InjectingTest {
 
   @Mock JobManager mockJobManager;
@@ -47,7 +46,6 @@ public class TVShowBrowserPresenterTest extends InjectingTest {
     initMocks(this);
     super.setUp();
     presenter = new TVShowBrowserPresenter();
-    presenter.eventBus = mockEventBus;
     presenter.attachView(mockView);
   }
 
@@ -132,6 +130,7 @@ public class TVShowBrowserPresenterTest extends InjectingTest {
     public TestModule() {
       bind(JobManager.class).toInstance(mockJobManager);
       bind(SerenityClient.class).toInstance(mockSerenityClient);
+      bind(EventBus.class).toInstance(mockEventBus);
     }
   }
 }
