@@ -74,4 +74,11 @@ public interface SerenityClient {
   IMediaContainer retrieveSeriesById(String key, String categoryId);
 
   IMediaContainer retrieveSeriesCategoryById(String key);
+
+  /**
+   * Whether the client supports multiple users or not.  Plex is false, Emby is true.
+   * @return true or false if the client supports multiple users
+   */
+  boolean supportsMultipleUsers();
+
 }

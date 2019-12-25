@@ -7,7 +7,6 @@ import android.view.View.VISIBLE
 import android.view.Window
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
-import app.com.tvrecyclerview.TvRecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.google.android.flexbox.FlexDirection
@@ -50,14 +49,14 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
     setContentView(R.layout.activity_login_user)
 
     ButterKnife.bind(this)
-
-    val server = intent.getSerializableExtra("server") as Server
-
     setupProfileContainer()
-
     dataLoadingContainer.visibility = VISIBLE
 
-    presenter.initPresenter(server)
+    if (intent.hasExtra("server")) {
+      val server: Server? = intent.getSerializableExtra("server") as Server
+      server?.let { presenter.initPresenter(server) }
+    }
+
     presenter.retrieveAllUsers()
   }
 

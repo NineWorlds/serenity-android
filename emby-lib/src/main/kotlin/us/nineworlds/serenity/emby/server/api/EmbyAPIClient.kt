@@ -28,8 +28,8 @@ import java.io.File
 
 class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
 
-  val usersService: UsersService
-  val filterService: FilterService
+  private val usersService: UsersService
+  private val filterService: FilterService
 
   var baseUrl: String
   var accessToken: String? = null
@@ -465,5 +465,8 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
   }
 
   fun fetchUserId() = prefs.getString("userId", "")
+
   fun fetchAccessToken() = prefs.getString("embyAccessToken", "")
+
+  override fun supportsMultipleUsers(): Boolean = true
 }

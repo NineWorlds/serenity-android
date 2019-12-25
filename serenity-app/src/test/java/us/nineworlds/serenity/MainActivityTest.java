@@ -33,6 +33,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -101,6 +103,13 @@ public class MainActivityTest extends InjectingTest {
         if (activity != null) {
             activity.finish();
         }
+    }
+
+    @Test
+    public void testToolBarIsAvailable() {
+        MaterialToolbar toolbar = activity.findViewById(R.id.action_toolbar);
+
+        assertThat(toolbar).isNotNull();
     }
 
     @Test

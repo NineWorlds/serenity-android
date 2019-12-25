@@ -257,4 +257,9 @@ public class PlexappFactory implements SerenityClient {
     }
     return null;
   }
+
+  @Override
+  public boolean supportsMultipleUsers() {
+    return false;
+  }
 }

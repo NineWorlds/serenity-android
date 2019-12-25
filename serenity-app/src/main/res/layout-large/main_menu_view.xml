@@ -17,7 +17,6 @@
       android:layout_marginRight="5dp"
       android:layout_marginLeft="5dp"
       android:descendantFocusability="afterDescendants"
-      android:nextFocusUp="@+id/menu_button"
       android:focusable="true"
       android:layout_gravity="center|center_vertical"
       android:clipChildren="false"

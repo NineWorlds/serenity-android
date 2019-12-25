@@ -28,11 +28,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.appbar.MaterialToolbar;
 
 import javax.inject.Inject;
 
@@ -42,6 +41,7 @@ import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
+import us.nineworlds.serenity.ui.activity.login.LoginUserActivity;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 import static butterknife.ButterKnife.bind;
@@ -52,8 +52,10 @@ public class MainActivity extends SerenityActivity implements MainView {
 
     @Inject
     AndroidHelper androidHelper;
+
     @InjectPresenter
     MainPresenter presenter;
+
     @Inject
     SharedPreferences preferences;
 
@@ -62,6 +64,8 @@ public class MainActivity extends SerenityActivity implements MainView {
     @BindView(R.id.data_loading_container)
     View dataLoadingContainer;
 
+    MaterialToolbar toolbar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,12 +73,6 @@ public class MainActivity extends SerenityActivity implements MainView {
         setContentView(R.layout.activity_main);
         DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
         bind(this);
-
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        ActionBar supportActionBar = getSupportActionBar();
-//        supportActionBar.setDisplayShowTitleEnabled(false);
-//        supportActionBar.setDisplayUseLogoEnabled(false);
 
         initPreferences();
 
@@ -87,6 +85,17 @@ public class MainActivity extends SerenityActivity implements MainView {
             editor.putBoolean("watched_status_firsttime", false);
             editor.apply();
         }
+
+        toolbar = findViewById(R.id.action_toolbar);
+        toolbar.setOnMenuItemClickListener(menuItem -> {
+            if (menuItem.getItemId() == R.id.menu_user_selection) {
+                startActivity(new Intent(this, LoginUserActivity.class));
+                return true;
+            }
+            return false;
+        });
+
+        presenter.showOrHideUserSelection();
     }
 
     @Override
@@ -135,5 +144,15 @@ public class MainActivity extends SerenityActivity implements MainView {
             editor.putBoolean("serenity_first_run", false);
             editor.apply();
         }
+    }
+
+    @Override
+    public void hideMultipleUsersOption() {
+        toolbar.findViewById(R.id.menu_user_selection).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showMultipleUsersOption() {
+        toolbar.findViewById(R.id.menu_user_selection).setVisibility(View.VISIBLE);
     }
 }
