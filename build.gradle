@@ -50,7 +50,7 @@ project.ext {
   jodaTimeVersion = "2.10.3"
   timberVersion = "4.7.1"
   exoplayerVersion = "2.8.4"
-  glideOkHttpVersion = "4.9.0"
+  glideOkHttpVersion = "4.10.0"
   moxyVersion = "2.0.2"
   glideVersion = "4.9.0"
   googleAnalyticsVersion = "16.0.4"

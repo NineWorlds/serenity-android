@@ -64,13 +64,6 @@ android {
     multiDexEnabled true
     multiDexKeepProguard file("multidex_keep_file.txt")
 
-//    javaCompileOptions {
-//      annotationProcessorOptions {
-//        arguments = [ toothpick_registry_package_name : "us.nineworlds.serenity",
-//                      toothpick_registry_children_package_names : "us.nineworlds.serenity.emby"]
-//      }
-//    }
-
   }
 
   aaptOptions {
