@@ -46,7 +46,6 @@ interface UsersService {
     @Query("Genres") genre: String?,
     @Query("IsPlayed") isPlayed: Boolean? = null,
     @Query("LimitCount") limitCount: Int? = null,
-    @Query("Filters") filters: String = "IsNotFolder",
     @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,SeasonCount,EpisodeCount",
     @Query("Ids") ids: String? = null
   ): Call<QueryResult>

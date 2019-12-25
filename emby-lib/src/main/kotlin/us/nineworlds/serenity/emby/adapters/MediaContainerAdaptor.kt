@@ -131,7 +131,9 @@ class MediaContainerAdaptor {
     val serenityVideos = ArrayList<Video>()
     mediaContainer.size = videos.size
 
-    for (item in videos) {
+    val items = videos.filter { item -> item.type != "Folder" }
+
+    for (item in items) {
       val video = Video()
 
       video.title = item.name
