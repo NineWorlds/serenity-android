@@ -4,7 +4,7 @@
       Base application theme, dependent on API level. This theme is replaced
       by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
   -->
-  <style name="AppBaseTheme" parent="Theme.MaterialComponents.NoActionBar.Bridge">
+  <style name="AppBaseTheme" parent="Theme.AppCompat.NoActionBar.FullScreen">
     <item name="android:colorPrimary">@color/primary</item>
     <item name="android:windowAllowReturnTransitionOverlap">true</item>
     <item name="android:windowAllowEnterTransitionOverlap">true</item>
@@ -16,12 +16,14 @@
   </style>
 
   <style name="CustomActionBarTheme" parent="@style/Theme.MaterialComponents.Bridge">
-    <item name="android:windowActionBarOverlay">true</item>
-    <item name="android:actionBarStyle">@style/TransparentActionBar</item>
+    <item name="android:windowActionBarOverlay">false</item>
+    <item name="android:windowActionBar">false</item>
+    <item name="android:windowNoTitle">true</item>
 
     <!-- Support library compatibility -->
-    <item name="windowActionBarOverlay">true</item>
-    <item name="actionBarStyle">@style/TransparentActionBar</item>
+    <item name="windowActionBarOverlay">false</item>
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
 
   </style>
 
@@ -37,6 +39,7 @@
 
   <!-- Application theme. -->
   <style name="AppTheme" parent="AppBaseTheme">
+    <item name="android:windowActionBar">false</item>
     <!-- All customizations that are NOT specific to a particular API-level can go here. -->
   </style>
 

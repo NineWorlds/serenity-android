@@ -66,6 +66,7 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
     super.onCreate(savedInstanceState);
 //    actionBar.setCustomView(R.layout.movie_custom_actionbar);
 //    actionBar.setDisplayShowCustomEnabled(true);
+    setContentView(R.layout.activity_episode_browser);
 
     key = getIntent().getExtras().getString("key");
 

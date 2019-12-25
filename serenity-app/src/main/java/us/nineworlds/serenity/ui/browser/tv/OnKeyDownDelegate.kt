@@ -2,22 +2,20 @@ package us.nineworlds.serenity.ui.browser.tv
 
 import android.app.Activity
 import android.content.SharedPreferences
-import androidx.recyclerview.widget.RecyclerView
 import android.view.KeyEvent
-import android.widget.LinearLayout
 import butterknife.BindView
 import butterknife.ButterKnife
-import javax.inject.Inject
 import timber.log.Timber
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.SeriesContentInfo
 import us.nineworlds.serenity.injection.BaseInjector
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter
-import us.nineworlds.serenity.widgets.DrawerLayout
+import javax.inject.Inject
 
 class OnKeyDownDelegate(internal var activity: Activity) : BaseInjector() {
 
-  @Inject internal lateinit var preferences: SharedPreferences
+  @Inject
+  internal lateinit var preferences: SharedPreferences
   @BindView(R.id.tvShowRecyclerView)
   internal lateinit var tvRecyclerView: androidx.recyclerview.widget.RecyclerView
 

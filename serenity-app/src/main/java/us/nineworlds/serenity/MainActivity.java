@@ -30,6 +30,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import javax.inject.Inject;
@@ -57,20 +59,22 @@ public class MainActivity extends SerenityActivity implements MainView {
 
     @BindView(R.id.mainGalleryMenu)
     RecyclerView mainMenuContainer;
-    @BindView(R.id.drawer_settings)
-    Button settingsButton;
     @BindView(R.id.data_loading_container)
     View dataLoadingContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//    actionBar.setCustomView(R.layout.clock_layout);
-//    actionBar.setDisplayShowCustomEnabled(true);
 
         setContentView(R.layout.activity_main);
         DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
         bind(this);
+
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        ActionBar supportActionBar = getSupportActionBar();
+//        supportActionBar.setDisplayShowTitleEnabled(false);
+//        supportActionBar.setDisplayUseLogoEnabled(false);
 
         initPreferences();
 

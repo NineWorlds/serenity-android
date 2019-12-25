@@ -1,33 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="45dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/metaDataRow"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
         <TextView
                 android:id="@+id/tvShowSeasonsDetailText"
                 style="@android:style/TextAppearance.Holo.Medium"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical|left"
                 android:textColor="#F0F0F0"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvShowSeasonsItemCount"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:textColor="@color/white"
+                tools:text="This is some text"
                 tools:ignore="SelectableText" />
 
         <TextView
                 android:id="@+id/tvShowSeasonsItemCount"
                 style="@android:style/TextAppearance.Holo.Medium"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical|right"
                 android:textColor="#F0F0F0"
-                tools:ignore="SelectableText" />
+                android:gravity="center_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="SelectableText"
+                tools:text="7 items"
+                tools:visibility="visible"/>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.Toolbar>

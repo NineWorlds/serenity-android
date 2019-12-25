@@ -101,7 +101,7 @@
           android:background="@color/card_background"
           >
 
-    <include layout="@layout/tvshow_custom_actionbar"
+    <include layout="@layout/season_custom_actionbar"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginStart="@dimen/overscan_start_padding"
