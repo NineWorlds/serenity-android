@@ -87,18 +87,17 @@ class EmbyAPIClientTest {
     assertThat(movies.videos).isNotEmpty
   }
 
-  @Test fun fetchItemsForMoviesForUser() {
+  @Test fun fetchAllLatestMovies() {
     authenticate()
 
     val result = client.retrieveRootData()
 
-    val key = result.directories[1].key
+    val key = result.directories[0].key
 
-    val itemResult = client.fetchItemQuery(key)
+    val itemResult = client.retrieveItemByIdCategory(key, "recentlyAdded")
 
-   // val itemResult = client.fetchItem("d385ceb98f6a84e4c9c8f3301a5c6207")
+    assertThat(itemResult.videos).isNotEmpty
 
-   // assertThat(itemResult.items).isNotEmpty
   }
 
   fun authenticate(): AuthenticationResult {

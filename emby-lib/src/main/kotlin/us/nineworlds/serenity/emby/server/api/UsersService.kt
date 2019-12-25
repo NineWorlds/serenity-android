@@ -46,6 +46,7 @@ interface UsersService {
     @Query("Genres") genre: String?,
     @Query("IsPlayed") isPlayed: Boolean? = null,
     @Query("LimitCount") limitCount: Int? = null,
+    @Query("Filters") filters: String = "IsNotFolder",
     @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,SeasonCount,EpisodeCount",
     @Query("Ids") ids: String? = null
   ): Call<QueryResult>
@@ -74,13 +75,16 @@ interface UsersService {
     @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources"
   ): Call<QueryResult>
 
-  @GET("/emby/Users/{userId}/Items/Latest")
+  @GET("/emby/Users/{userId}/Items?Limit=20")
   fun latestItems(
     @HeaderMap headerMap: Map<String, String>,
     @Path("userId") userId: String,
     @Query("ParentId") parentId: String,
     @Query("Recursive") recursive: Boolean = true,
+    @Query("SortBy") sortOptions: String = "DateCreated",
+    @Query("SortOrder") sortOrder: String = "Descending",
     @Query("IsPlayed") isPlayed: Boolean = false,
+    @Query("Filters") filters: String = "IsNotFolder,IsUnPlayed",
     @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources"
   ): Call<QueryResult>
 
