@@ -90,6 +90,7 @@ public class MainActivity extends SerenityActivity implements MainView {
         toolbar.setOnMenuItemClickListener(menuItem -> {
             if (menuItem.getItemId() == R.id.menu_user_selection) {
                 startActivity(new Intent(this, LoginUserActivity.class));
+                finish();
                 return true;
             }
             return false;
