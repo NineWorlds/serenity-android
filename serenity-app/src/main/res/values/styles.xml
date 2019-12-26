@@ -88,4 +88,8 @@
         <item name="android:layout_margin">5dp</item>
     </style>
 
+    <style name="Widget.AppTheme.CardView.Movie" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">#4d4e4f</item>
+    </style>
+
 </resources>
