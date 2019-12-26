@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        style="@style/Widget.MaterialComponents.CardView"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/server_option_container"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -11,7 +11,8 @@
         android:layout_marginBottom="15dp"
         android:focusable="true"
         android:clickable="true"
-        android:background="@drawable/selector_focused_item"
+        android:background="@drawable/selector_server"
+        android:foreground="?selectableItemBackground"
         android:layout_gravity="center_horizontal">
 
   <TextView

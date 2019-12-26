@@ -11,6 +11,7 @@
     android:focusable="true"
     android:clickable="true"
     android:background="@drawable/selector_server"
+    android:foreground="?selectableItemBackground"
     android:layout_gravity="center_horizontal">
 
   <TextView

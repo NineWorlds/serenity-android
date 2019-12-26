@@ -3,6 +3,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:focusable="true"
+        android:foreground="?selectableItemBackgroundBorderless"
         android:padding="3dp"
         xmlns:tools="http://schemas.android.com/tools"
         tools:layout_width="@dimen/movie_poster_image_width"
