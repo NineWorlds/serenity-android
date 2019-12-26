@@ -1,28 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/server_option_container"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
-    android:layout_marginTop="15dp"
-    android:layout_marginBottom="15dp"
-    android:focusable="true"
-    android:clickable="true"
-    android:background="@drawable/selector_server"
-    android:layout_gravity="center_horizontal">
+<com.google.android.material.button.MaterialButton
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/Widget.AppTheme.Button.OutlinedButton.Manual"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_serenity_corners"
+        android:text="@string/refresh_servers"
+        android:focusable="true"
+        android:layout_gravity="center_horizontal"/>
 
-  <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-      android:layout_width="400dp"
-      android:layout_height="wrap_content"
-      android:text="@string/refresh_servers"
-      android:background="@drawable/rounded_serenity_corners"
-      android:textColor="@color/lb_tv_white"
-      android:textSize="20sp"
-      android:padding="10dp"
-      android:layout_margin="5dp"
-      android:gravity="center">
-
-  </TextView>
-
-</FrameLayout>

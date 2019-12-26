@@ -1,29 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/server_option_container"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
-    android:layout_marginTop="15dp"
-    android:layout_marginBottom="15dp"
-    android:focusable="true"
-    android:clickable="true"
-    android:background="@drawable/selector_server"
-    android:foreground="?selectableItemBackground"
-    android:layout_gravity="center_horizontal">
-
-  <TextView
-      android:id="@+id/server_name"
-      android:layout_width="400dp"
-      android:layout_height="wrap_content"
-      android:textSize="20sp"
-      android:textColor="@color/lb_tv_white"
-      android:gravity="center"
-      android:background="@drawable/rounded_plex_orange_corners"
-      android:padding="10dp"
-      android:layout_margin="5dp"
-      tools:text="Emby Server"/>
-
-</FrameLayout>
+<com.google.android.material.button.MaterialButton xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/server_name"
+        style="@style/Widget.AppTheme.Button.OutlinedButton.Plex"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:clickable="true"
+        android:focusable="true"
+        tools:text="Emby Server" />

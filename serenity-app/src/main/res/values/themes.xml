@@ -95,7 +95,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="colorControlHighlight">@color/lb_grey</item>
+<!--        <item name="colorControlHighlight">@color/lb_grey</item>-->
     </style>
 
     <style name="CustomActionBarTheme" parent="AppTheme">

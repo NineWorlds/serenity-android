@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.FrameLayout
@@ -65,8 +66,8 @@ class ServerSelectionActivity : InjectingActivity() {
   @BindView(R.id.data_loading_container)
   internal lateinit var serverLoadingContainer: FrameLayout
 
-  internal lateinit var refreshButton: FrameLayout
-  internal lateinit var manualEntryButton: FrameLayout
+  private lateinit var refreshButton: View
+  private lateinit var manualEntryButton: View
 
   internal lateinit var serverDisplayHandler: Handler
 
@@ -86,7 +87,7 @@ class ServerSelectionActivity : InjectingActivity() {
     serverLoadingContainer.visibility = GONE
 
     manualEntryButton =
-      LayoutInflater.from(this).inflate(R.layout.button_server_manual, serverContainer, false) as FrameLayout
+      LayoutInflater.from(this).inflate(R.layout.button_server_manual, serverContainer, false)
     manualEntryButton.setOnClickListener {
       val intent = Intent(this, ManualServerActivity::class.java)
       startActivityForResult(intent, 2000)
@@ -99,8 +100,9 @@ class ServerSelectionActivity : InjectingActivity() {
     for ((key, serverInfo) in servers) {
       displayServers(key, serverInfo)
     }
+
     refreshButton =
-      LayoutInflater.from(this).inflate(R.layout.button_server_refresh, serverContainer, false) as FrameLayout
+      LayoutInflater.from(this).inflate(R.layout.button_server_refresh, serverContainer, false)
     refreshButton.setOnClickListener {
       jobManager.addJobInBackground(GDMServerJob())
       jobManager.addJobInBackground(EmbyServerJob())
@@ -123,7 +125,7 @@ class ServerSelectionActivity : InjectingActivity() {
   }
 
   private fun createServerView(layoutId: Int, serverInfo: Server) {
-    val serverView = LayoutInflater.from(this).inflate(layoutId, serverContainer, false) as FrameLayout?
+    val serverView = LayoutInflater.from(this).inflate(layoutId, serverContainer, false)
     val serverNameText = serverView!!.findViewById<TextView>(R.id.server_name)
     serverNameText?.text = serverInfo.serverName
     serverContainer.addView(serverView)
