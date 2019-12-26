@@ -33,4 +33,9 @@
     <item name="android:windowBackground">@android:color/transparent</item>
     <item name="android:backgroundDimEnabled">true</item>
   </style>
+
+  <style name="Widget.AppTheme.Toolbar.Transparent" parent="Widget.MaterialComponents.Toolbar">
+    <item name="android:background">@android:color/transparent</item>
+  </style>
+
 </resources>

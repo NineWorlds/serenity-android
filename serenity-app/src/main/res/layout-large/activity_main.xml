@@ -54,7 +54,7 @@
                 android:paddingEnd="@dimen/overscan_end_padding">
 
             <com.google.android.material.appbar.MaterialToolbar
-                    style="@style/Widget.MaterialComponents.Toolbar"
+                    style="@style/Widget.AppTheme.Toolbar.Transparent"
                     android:id="@+id/action_toolbar"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
