@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
+import android.view.ContextThemeWrapper;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import edu.emory.mathcs.backport.java.util.Collections;
@@ -8,6 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.test.InjectingTest;
@@ -42,7 +45,8 @@ public class TVShowRecyclerAdapterTest extends InjectingTest {
   }
 
   private TVShowViewHolder createViewHolder() {
-    LinearLayout linearLayout = new LinearLayout(getApplicationContext());
+    ContextThemeWrapper context = new ContextThemeWrapper(getApplicationContext(), R.style.AppTheme);
+    LinearLayout linearLayout = new LinearLayout(context);
     return (TVShowViewHolder) adapter.onCreateViewHolder(linearLayout, 0);
   }
 

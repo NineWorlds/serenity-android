@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.ui.activity.login
 
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -44,8 +45,9 @@ class LoginUserViewHolderTest : InjectingTest() {
   @Before
   override fun setUp() {
     super.setUp()
-    linearLayout = LinearLayout(getApplicationContext())
-    view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_user_profile, linearLayout, false)
+    val context = ContextThemeWrapper(getApplicationContext(), R.style.AppTheme)
+    linearLayout = LinearLayout(context)
+    view = LayoutInflater.from(context).inflate(R.layout.item_user_profile, linearLayout, false)
     viewHolder = LoginUserViewHolder(view)
   }
 

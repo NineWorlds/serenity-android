@@ -3,12 +3,8 @@ package us.nineworlds.serenity.ui.video.player
 import android.view.View
 import com.birbit.android.jobqueue.JobManager
 import com.google.android.exoplayer2.ExoPlaybackException
-import com.google.android.exoplayer2.PlaybackParameters
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.Timeline
-import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray
-import com.google.android.exoplayer2.ui.PlaybackControlView
+import com.google.android.exoplayer2.ui.PlayerControlView
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import moxy.viewstate.strategy.SkipStrategy
@@ -39,7 +35,7 @@ import javax.inject.Inject
 @InjectViewState
 @StateStrategyType(SkipStrategy::class)
 class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
-  PlaybackControlView.VisibilityListener, Player.EventListener {
+  PlayerControlView.VisibilityListener, Player.EventListener {
 
   @Inject
   lateinit var logger: Logger
@@ -85,15 +81,6 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   }
 
   override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
-  }
-
-  override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
-  }
-
-  override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
-  }
-
-  override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {
   }
 
   override fun onPlayerError(error: ExoPlaybackException) {
@@ -174,8 +161,10 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
       }
       val isVideoContainerSupported =
         mediaCodecInfoUtil.isExoPlayerContainerSupported("video/${video.container.substringBefore(",")}")
-      var isAudioCodecSupported = selectCodec(mediaCodecInfoUtil.findCorrectAudioMimeType("audio/${video.audioCodec}"))
-      val isVideoSupported = selectCodec(mediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
+      var isAudioCodecSupported =
+        selectCodec(mediaCodecInfoUtil.findCorrectAudioMimeType("audio/${video.audioCodec}"))
+      val isVideoSupported =
+        selectCodec(mediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
 
       isAudioCodecSupported = if (androidHelper.isNvidiaShield || androidHelper.isBravia) {
         when (video.audioCodec.toLowerCase()) {
@@ -211,5 +200,6 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
     return transcodingUrl
   }
 
-  private fun selectCodec(mimeType: String): Boolean = MediaCodecInfoUtil().isCodecSupported(mimeType)
+  private fun selectCodec(mimeType: String): Boolean =
+    MediaCodecInfoUtil().isCodecSupported(mimeType)
 }

@@ -20,6 +20,7 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
+import com.google.android.exoplayer2.trackselection.TrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import moxy.presenter.InjectPresenter
@@ -45,7 +46,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   lateinit var mediaDataSourceFactory: DataSource.Factory
 
   @Inject
-  lateinit var trackSelector: MappingTrackSelector
+  lateinit var trackSelector: TrackSelector
 
   @InjectPresenter
   lateinit var presenter: ExoplayerPresenter
@@ -171,7 +172,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     playerView.player = player
     playerView.setControllerVisibilityListener(presenter)
 
-    playerView.player.playWhenReady = true
+    (playerView.player as SimpleExoPlayer).playWhenReady = true
 
     val mediaSource: MediaSource = buildMediaSource(Uri.parse(videoUrl))
 

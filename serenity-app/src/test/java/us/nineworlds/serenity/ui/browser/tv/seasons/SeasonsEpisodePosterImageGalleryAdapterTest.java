@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.LinearLayout;
 import androidx.test.core.app.ApplicationProvider;
@@ -14,6 +15,8 @@ import org.mockito.junit.MockitoRule;
 import org.mockito.quality.Strictness;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.test.InjectingTest;
@@ -84,7 +87,8 @@ public class SeasonsEpisodePosterImageGalleryAdapterTest extends InjectingTest {
   }
 
   private EpisodeViewHolder createViewHolder() {
-    LinearLayout linearLayout = new LinearLayout(ApplicationProvider.getApplicationContext());
+    ContextThemeWrapper context = new ContextThemeWrapper(getApplicationContext(), R.style.AppTheme);
+    LinearLayout linearLayout = new LinearLayout(context);
     return (EpisodeViewHolder) adapter.onCreateViewHolder(linearLayout, 0);
   }
 

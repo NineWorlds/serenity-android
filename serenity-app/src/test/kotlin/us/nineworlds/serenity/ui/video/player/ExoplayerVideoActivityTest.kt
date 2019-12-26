@@ -8,6 +8,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
+import com.google.android.exoplayer2.trackselection.TrackSelector
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.nhaarman.mockito_kotlin.whenever
@@ -61,7 +62,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   lateinit var mockDataSourceFactory: DataSource.Factory
 
   @Mock
-  lateinit var mockMappingTrackSelector: MappingTrackSelector
+  lateinit var mockMappingTrackSelector: TrackSelector
 
   @Mock
   lateinit var mockLogger: Logger
@@ -218,7 +219,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     init {
       bind(ExoplayerPresenter::class.java).toInstance(mockExoPlayerPresenter)
       bind(DataSource.Factory::class.java).toInstance(mockDataSourceFactory)
-      bind(MappingTrackSelector::class.java).toInstance(mockMappingTrackSelector)
+      bind(TrackSelector::class.java).toInstance(mockMappingTrackSelector)
       bind(Logger::class.java).toInstance(mockLogger)
     }
   }

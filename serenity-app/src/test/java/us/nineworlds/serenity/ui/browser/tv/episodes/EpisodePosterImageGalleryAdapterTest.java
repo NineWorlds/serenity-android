@@ -2,12 +2,17 @@ package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.view.ContextThemeWrapper;
+
 import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+
+import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.test.InjectingTest;
@@ -42,7 +47,8 @@ public class EpisodePosterImageGalleryAdapterTest extends InjectingTest {
   }
 
   private EpisodeViewHolder createViewHolder() {
-    LinearLayout linearLayout = new LinearLayout(application);
+    ContextThemeWrapper context = new ContextThemeWrapper(getApplicationContext(), R.style.AppTheme);
+    LinearLayout linearLayout = new LinearLayout(context);
     return (EpisodeViewHolder) adapter.onCreateViewHolder(linearLayout, 0);
   }
 
