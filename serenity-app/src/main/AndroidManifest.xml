@@ -100,7 +100,7 @@
     <activity
         android:name=".ui.activity.ServerSelectionActivity"
         android:banner="@drawable/serenity_androidtv_banner"
-        android:theme="@style/Theme.Leanback">
+        android:theme="@style/Theme.AppTheme.FullScreen">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
@@ -111,7 +111,7 @@
 
     <activity
         android:name=".ui.activity.login.LoginUserActivity"
-        android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen"/>
+        android:theme="@style/Theme.AppTheme.FullScreen"/>
 
     <activity
         android:name=".ui.leanback.search.SearchActivity"

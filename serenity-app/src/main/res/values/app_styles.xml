@@ -1,0 +1,36 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+  <style name="SerenitySpinner">
+    <item name="android:textSize">15sp</item>
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:gravity">center</item>
+    <item name="android:background">#80000000</item>
+  </style>
+
+  <style name="selected_main_menu_text">
+    <item name="android:textSize">50sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">@android:color/white</item>
+  </style>
+
+  <style name="normal_main_menu_text">
+    <item name="android:textSize">30sp</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textColor">@android:color/white</item>
+  </style>
+
+
+  <style name="PopupAnimation" parent="android:Animation" mce_bogus="1">
+    <item name="android:windowEnterAnimation">@anim/fade_in_mediacontroller</item>
+    <item name="android:windowExitAnimation">@anim/fade_out_mediacontroller</item>
+  </style>
+
+
+  <style name="LeanbackPreferences" parent="Theme.Leanback">
+    <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Leanback</item>
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:backgroundDimEnabled">true</item>
+  </style>
+</resources>

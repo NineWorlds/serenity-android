@@ -1,84 +1,41 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+~ Copyright (C) 2019 The Android Open Source Project
+~
+~ Licensed under the Apache License, Version 2.0 (the "License");
+~ you may not use this file except in compliance with the License.
+~ You may obtain a copy of the License at
+~
+~      http://www.apache.org/licenses/LICENSE-2.0
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+-->
 
-  <!--
-      Base application theme, dependent on API level. This theme is replaced
-      by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-  -->
-  <style name="AppBaseTheme" parent="Theme.AppCompat.NoActionBar.FullScreen">
-    <item name="android:colorPrimary">@color/primary</item>
-    <item name="android:windowAllowReturnTransitionOverlap">true</item>
-    <item name="android:windowAllowEnterTransitionOverlap">true</item>
-    <!--
-        Theme customizations available in newer API levels can go in
-        res/values-vXX/styles.xml, while customizations related to
-        backward-compatibility can go here.
-    -->
-  </style>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="CustomActionBarTheme" parent="@style/Theme.MaterialComponents.Bridge">
-    <item name="android:windowActionBarOverlay">false</item>
-    <item name="android:windowActionBar">false</item>
-    <item name="android:windowNoTitle">true</item>
+    <!--Components-->
 
-    <!-- Support library compatibility -->
-    <item name="windowActionBarOverlay">false</item>
-    <item name="windowActionBar">false</item>
-    <item name="windowNoTitle">true</item>
+    <!--Bottom Sheets-->
+    <style name="ThemeOverlay.AppTheme.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.AppTheme.BottomSheet.Modal</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Widget.AppTheme.BottomSheet.Modal</item>
+        <item name="android:navigationBarColor">?colorSurface</item>
+        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">@android:color/transparent</item>
+    </style>
+    <style name="Widget.AppTheme.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearanceOverlay">?shapeAppearanceLargeComponent</item>
+    </style>
 
-  </style>
+    <!--Navigation Drawer-->
+    <style name="Widget.AppTheme.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextAppearance">?textAppearanceBody2</item>
+    </style>
 
-  <style name="TransparentActionBar" parent="@style/Widget.AppCompat.ActionBar">
-    <item name="android:background">@drawable/content_panel_dark</item>
-    <item name="background">@drawable/content_panel_dark</item>
-  </style>
-
-  <style name="Theme.AppCompat.NoActionBar" parent="@style/Theme.MaterialComponents.NoActionBar.Bridge">
-    <item name="android:windowNoTitle">true</item>
-    <item name="windowNoTitle">true</item>
-  </style>
-
-  <!-- Application theme. -->
-  <style name="AppTheme" parent="AppBaseTheme">
-    <item name="android:windowActionBar">false</item>
-    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-  </style>
-
-  <style name="SerenitySpinner">
-    <item name="android:textSize">15sp</item>
-    <item name="android:textColor">@android:color/white</item>
-    <item name="android:gravity">center</item>
-    <item name="android:background">#80000000</item>
-  </style>
-
-  <style name="selected_main_menu_text">
-    <item name="android:textSize">50sp</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:textColor">@android:color/white</item>
-  </style>
-
-  <style name="normal_main_menu_text">
-    <item name="android:textSize">30sp</item>
-    <item name="android:textStyle">normal</item>
-    <item name="android:textColor">@android:color/white</item>
-  </style>
-
-
-  <style name="PopupAnimation" parent="android:Animation" mce_bogus="1">
-    <item name="android:windowEnterAnimation">@anim/fade_in_mediacontroller</item>
-    <item name="android:windowExitAnimation">@anim/fade_out_mediacontroller</item>
-  </style>
-
-  <style name="Theme.AppCompat.NoActionBar.FullScreen" parent="@style/Theme.MaterialComponents.NoActionBar.Bridge">
-    <item name="windowNoTitle">true</item>
-    <item name="windowActionBar">false</item>
-    <item name="android:windowFullscreen">true</item>
-    <item name="android:windowContentOverlay">@null</item>
-  </style>
-
-  <style name="LeanbackPreferences" parent="Theme.Leanback">
-    <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Leanback</item>
-    <item name="android:windowIsTranslucent">true</item>
-    <item name="android:windowBackground">@android:color/transparent</item>
-    <item name="android:backgroundDimEnabled">true</item>
-  </style>
 </resources>
