@@ -38,4 +38,32 @@
         <item name="itemTextAppearance">?textAppearanceBody2</item>
     </style>
 
+    <style name="Widget.AppTheme.Button.TextButton" parent="@style/Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="rippleColor">?colorOnPrimary</item>
+        <item name="android:strokeColor">@color/serenity_btn_text_stroke_color_selector</item>
+        <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>
+    </style>
+
+    <style name="Widget.AppTheme.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/serenity_btn_stroke_color_selector</item>
+        <item name="rippleColor">?colorOnPrimary</item>
+        <item name="android:textColor">?colorOnPrimary</item>
+    </style>
+
+    <style name="Widget.AppTheme.Button.OutlinedButton.Emby" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/serenity_btn_stroke_color_selector</item>
+        <item name="rippleColor">?colorOnPrimary</item>
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="backgroundTint">@color/serenity_emby_server_background_selector</item>
+    </style>
+
+    <style name="Widget.AppTheme.Button.OutlinedButton.Plex" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/serenity_btn_stroke_color_selector</item>
+        <item name="rippleColor">?colorOnPrimary</item>
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="backgroundTint">@color/serenity_plex_server_background_selector</item>
+    </style>
+
+
 </resources>

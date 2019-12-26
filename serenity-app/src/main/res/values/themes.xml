@@ -37,6 +37,9 @@
         <item name="colorOnBackground">@color/color_on_background</item>
         <item name="colorOnSurface">@color/color_on_surface</item>
         <item name="colorOnError">@color/color_on_error</item>
+        <item name="android:textColorPrimary">@color/lb_tv_white</item>
+        <item name="android:textColorSecondary">@color/lb_tv_white</item>
+
 
         <!--Material type attributes-->
         <item name="textAppearanceHeadline1">@style/TextAppearance.AppTheme.Headline1</item>
