@@ -66,7 +66,7 @@ public class AndroidModule extends Module {
     bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(applicationContext));
     bind(AndroidHelper.class).toInstance(new AndroidHelper(applicationContext));
     bind(Resources.class).toInstance(application.getResources());
-    bind(JobManager.class).toProvider(JobManagerProvider.class).providesSingletonInScope();
+    bind(JobManager.class).toProvider(JobManagerProvider.class).providesSingleton();
     bind(LocalBroadcastManager.class).toInstance(providesLocalBroadcastManager());
   }
 

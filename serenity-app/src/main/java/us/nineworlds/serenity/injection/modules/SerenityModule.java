@@ -48,9 +48,9 @@ public class SerenityModule extends Module {
     super();
     bind(LinkedList.class).withName(ForVideoQueue.class).toInstance(new LinkedList());
     bind(TimeUtil.class).toInstance(new TimeUtil());
-    bind(VideoQueueHelper.class).toProvider(VideoQueueHelperProvider.class).providesSingletonInScope();
+    bind(VideoQueueHelper.class).toProvider(VideoQueueHelperProvider.class).providesSingleton();
     bind(Map.class).withName(ForMediaServers.class).toInstance(new ConcurrentHashMap<String, Server>());
-    bind(VideoPlayerIntentUtils.class).toProvider(VideoPlayerIntentUtilsProvider.class).providesSingletonInScope();
+    bind(VideoPlayerIntentUtils.class).toProvider(VideoPlayerIntentUtilsProvider.class).providesSingleton();
     bind(OkHttpClient.class).toInstance(new OkHttpClient.Builder().build());
     bind(MovieSelectedCategoryState.class).toInstance(new MovieSelectedCategoryState());
     bind(TVCategoryState.class).toInstance(new TVCategoryState());
