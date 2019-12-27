@@ -286,12 +286,13 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
   }
 
   def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/*MemberInjector.*',
-                    '**/*$$Factory*.*', '**/*..State*.*', '**/*_ViewBinding*.*']
+                    '**/*$$Factory*.*', '**/*..State*.*', '**/*_ViewBinding*.*', 'com/bumptech/**/*.*', '**/injection/**/*.*',
+                    '**/*__Factory*.*', '**/*PresenterBinder*.*', '**/*ViewState*.*']
   def mainSrc = "${project.projectDir}/src/main/java"
   def kotlinSrc = "${project.projectDir}/src/main/kotlin"
 
   classDirectories = fileTree(
-          dir: "$buildDir/intermediates/javac/debug/compileDebugJavaWithJavac/classes",
+          dir: "$buildDir/intermediates/javac/debug/classes",
           excludes: fileFilter) + fileTree(
           dir: "$buildDir/tmp/kotlin-classes/debug",
           excludes: fileFilter)
