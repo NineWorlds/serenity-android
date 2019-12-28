@@ -159,7 +159,7 @@ class MediaContainerAdaptor {
       } else {
         item.container
       }
-      video.directPlayUrl = "emby/Videos/${item.mediaSources?.get(0)?.id ?: ""}/stream.$container?static=true"
+      video.directPlayUrl = "emby/Videos/${item.mediaSources?.get(0)?.id ?: item.id}/stream.$container?static=true"
 
       if (item.runTimeTicks != null) {
         val milliseconds = convertTicksToMilliseconds(item.runTimeTicks)
