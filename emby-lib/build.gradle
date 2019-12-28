@@ -30,6 +30,7 @@ android {
   defaultConfig {
     minSdkVersion 21
     targetSdkVersion 28
+
   }
 
   compileSdkVersion 28
@@ -37,6 +38,17 @@ android {
   sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
     test.java.srcDirs += 'src/test/kotlin'
+  }
+
+  buildTypes {
+
+    debug {
+      buildConfigField("String", "CLIENT_VERSION", "\"$appversion\"")
+    }
+    
+    release {
+      buildConfigField("String", "CLIENT_VERSION", "\"$appversion\"")
+    }
   }
 }
 

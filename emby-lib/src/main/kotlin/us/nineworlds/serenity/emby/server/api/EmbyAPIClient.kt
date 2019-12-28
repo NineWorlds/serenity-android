@@ -17,6 +17,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
+import us.nineworlds.serenity.emby.BuildConfig
 import us.nineworlds.serenity.emby.adapters.MediaContainerAdaptor
 import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
 import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
@@ -140,7 +141,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
   private fun headerMap(): Map<String, String> {
     val headers = HashMap<String, String>()
     val authorizationValue =
-      "MediaBrowser Client=\"Android\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"1.0.0.0\""
+      "Emby Client=\"Android\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"${BuildConfig.CLIENT_VERSION}.0\""
     headers["X-Emby-Authorization"] = authorizationValue
     if (accessToken != null) {
       headers["X-Emby-Token"] = accessToken!!
