@@ -14,7 +14,6 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.atMost
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.never
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
@@ -24,6 +23,7 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityUser
@@ -32,7 +32,8 @@ import us.nineworlds.serenity.test.InjectingTest
 @RunWith(RobolectricTestRunner::class)
 class LoginUserAdapterTest : InjectingTest() {
 
-  @get:Rule val rule = MockitoJUnit.rule().strictness(Strictness.STRICT_STUBS)
+  @get:Rule
+  val rule = MockitoJUnit.rule().strictness(Strictness.STRICT_STUBS)
 
   private val mockPresenter = mock<LoginUserPresenter>()
   private val mockUser = mock<SerenityUser>()
@@ -73,6 +74,10 @@ class LoginUserAdapterTest : InjectingTest() {
     adapter.onBindViewHolder(mockViewHolder, 0)
 
     verify(mockViewHolder).loadUser(mockUser)
+
+    val shadowView = shadowOf(view)
+    assertThat(shadowView.onClickListener).isNotNull()
+    assertThat(view.onFocusChangeListener).isNotNull()
   }
 
   @Test
@@ -112,7 +117,6 @@ class LoginUserAdapterTest : InjectingTest() {
     verify(mockView).context
     verify(mockView).background = any<Drawable>()
   }
-
 
   override fun installTestModules() {
     scope.installTestModules(TestingModule())
