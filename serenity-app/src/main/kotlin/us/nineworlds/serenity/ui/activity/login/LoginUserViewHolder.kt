@@ -45,4 +45,6 @@ class LoginUserViewHolder(view: View) : ViewHolder(view) {
 
     profileName.text = user.userName
   }
+
+  fun getItemView(): View = itemView
 }

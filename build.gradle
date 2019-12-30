@@ -64,6 +64,7 @@ project.ext {
 
   commonsLangVersion = "3.7"
   junitVersion = "4.12"
+  assertkVersion = "0.20"
   assertjVersion = "3.11.1"
   mockitoVersion = "3.2.4"
   robolectricVersion = "4.3"

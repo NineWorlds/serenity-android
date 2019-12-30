@@ -1,6 +1,7 @@
 package us.nineworlds.serenity.ui.activity.login
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -27,19 +28,28 @@ class LoginUserAdapter(val presenter: LoginUserPresenter) : RecyclerView.Adapter
 
   override fun onBindViewHolder(holder: LoginUserViewHolder, position: Int) {
     holder.loadUser(users[position])
-    holder.itemView.setOnClickListener {
-      val user = users[position]
-
-      presenter.loadUser(user)
+    holder.getItemView().setOnClickListener {
+      onClicked(position)
     }
-    holder.itemView.setOnFocusChangeListener { view, hasFocus ->
-      view.clearAnimation()
-      view.background = null
+    holder.getItemView().setOnFocusChangeListener { view, hasFocus ->
+      onFocusChanged(view, hasFocus)
+    }
+  }
 
-      if (hasFocus) {
-        view.clearAnimation()
-        view.background = ContextCompat.getDrawable(view.context, R.drawable.rounded_transparent_border)
-      }
+  internal fun onClicked(position: Int) {
+    val user = users[position]
+
+    presenter.loadUser(user)
+  }
+
+  internal fun onFocusChanged(view: View, hasFocus: Boolean) {
+    view.clearAnimation()
+    view.background = null
+
+    if (hasFocus) {
+      view.clearAnimation()
+      view.background =
+        ContextCompat.getDrawable(view.context, R.drawable.rounded_transparent_border)
     }
   }
 

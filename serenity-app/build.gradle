@@ -253,6 +253,7 @@ dependencies {
     exclude module: 'support-annotations'
   }
 
+  testImplementation "com.willowtreeapps.assertk:assertk-jvm:$assertkVersion"
   testImplementation "org.assertj:assertj-core:$assertjVersion"
   testImplementation "junit:junit:$junitVersion"
   testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
