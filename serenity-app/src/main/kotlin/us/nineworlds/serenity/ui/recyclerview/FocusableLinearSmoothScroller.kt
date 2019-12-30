@@ -28,16 +28,16 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 
-class FocusableLinearSmoothScroller(context: Context) : androidx.recyclerview.widget.LinearSmoothScroller(context) {
+open class FocusableLinearSmoothScroller(context: Context) : LinearSmoothScroller(context) {
 
   var targetView: View? = null
 
-  override fun onTargetFound(targetView: View, state: androidx.recyclerview.widget.RecyclerView.State, action: Action) {
+  public override fun onTargetFound(targetView: View, state: RecyclerView.State, action: Action) {
     super.onTargetFound(targetView, state, action)
     this.targetView = targetView
   }
 
-  override fun onStop() {
+  public override fun onStop() {
     super.onStop()
 
     targetView?.let { targetView ->
