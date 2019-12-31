@@ -14,6 +14,7 @@ import org.robolectric.shadows.ShadowActivity;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
+import us.nineworlds.serenity.ui.home.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;

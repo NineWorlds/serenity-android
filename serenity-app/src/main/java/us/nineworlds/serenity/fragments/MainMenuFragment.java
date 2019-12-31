@@ -42,7 +42,7 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import us.nineworlds.serenity.MainMenuTextViewAdapter;
+import us.nineworlds.serenity.ui.home.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.menus.MenuItem;
@@ -106,9 +106,8 @@ public class MainMenuFragment extends InjectingFragment {
 
     MainMenuTextViewAdapter adapter = new MainMenuTextViewAdapter();
     mainGallery.setAdapter(adapter);
-    //mainGallery.setOnItemClickListener(new GalleryOnItemClickListener());
     mainGallery.setVisibility(View.VISIBLE);
-    adapter.updateMenuItems(menuItems);
+    adapter.setItems(menuItems);
     Activity activity = getActivity();
     if (activity != null) {
       FrameLayout dataLoadingContainer = activity.findViewById(R.id.data_loading_container);

@@ -10,9 +10,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import us.nineworlds.serenity.R;
 
-public class OverscanSetupActivity extends Activity
+public class OverscanSetupActivity extends AppCompatActivity
     implements View.OnKeyListener, View.OnClickListener {
 
   private View centerView;

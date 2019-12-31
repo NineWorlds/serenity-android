@@ -6,16 +6,13 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.mockito.quality.Strictness;
 import org.robolectric.RobolectricTestRunner;
 import toothpick.config.Module;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.ui.home.MainMenuTextViewAdapter;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 

@@ -42,19 +42,12 @@ public class GalleryOnItemClickListener {
   private static final String MENU_TYPE_MOVIES = "movies";
   private static final String MENU_TYPE_TVSHOWS = "tvshows";
 
-  private MainMenuTextViewAdapter adapter;
-
-  public GalleryOnItemClickListener(MainMenuTextViewAdapter adapter) {
-    this.adapter = adapter;
-  }
-
-  public void onItemClick(View view, int i) {
+  public void onItemClick(View view, MenuItem menuItem) {
     Activity context = (Activity) view.getContext();
     if (context.isDestroyed()) {
       return;
     }
 
-    MenuItem menuItem = adapter.getItemAtPosition(i);
     String librarySection = menuItem.getSection();
     String activityType = menuItem.getType();
 

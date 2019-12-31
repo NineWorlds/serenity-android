@@ -43,12 +43,6 @@ public class GalleryOnItemSelectedListener extends BaseInjector {
 
   @BindView(R.id.mainGalleryBackground) ImageView mainGalleryBackgroundView;
 
-  private MainMenuTextViewAdapter adapter;
-
-  public GalleryOnItemSelectedListener(MainMenuTextViewAdapter adapter) {
-    this.adapter = adapter;
-  }
-
   protected boolean shouldFadeIn() {
     boolean shouldFadein = preferences.getBoolean("animation_background_mainmenu_fadein", true);
     return shouldFadein;
@@ -82,8 +76,7 @@ public class GalleryOnItemSelectedListener extends BaseInjector {
     return R.drawable.serenity_bonsai_logo;
   }
 
-  public void onItemSelected(View view, boolean hasFocus, int position) {
-    MenuItem menuItem = adapter.getItemAtPosition(position);
+  public void onItemSelected(View view, boolean hasFocus, MenuItem menuItem) {
     Activity context = (Activity) view.getContext();
     if (context.isDestroyed()) {
       return;
