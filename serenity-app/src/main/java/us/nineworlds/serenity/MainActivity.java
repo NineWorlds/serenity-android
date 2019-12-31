@@ -38,7 +38,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import moxy.presenter.InjectPresenter;
 import us.nineworlds.serenity.core.ServerConfig;
-import us.nineworlds.serenity.core.services.OnDeckRecommendationIntentService;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.activity.login.LoginUserActivity;
@@ -107,9 +106,6 @@ public class MainActivity extends SerenityActivity implements MainView {
     @Override
     protected void onResume() {
         super.onResume();
-
-        Intent recommendationIntent = new Intent(getApplicationContext(), OnDeckRecommendationIntentService.class);
-        startService(recommendationIntent);
 
         mainMenuContainer.setFocusable(true);
         mainMenuContainer.requestFocusFromTouch();

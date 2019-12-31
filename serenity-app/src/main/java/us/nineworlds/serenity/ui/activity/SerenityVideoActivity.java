@@ -34,7 +34,6 @@ import javax.inject.Inject;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.OnDeckRecommendationAsyncTask;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
@@ -104,14 +103,9 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
         if (!videoQueue.isEmpty()) {
           Intent vpIntent = new Intent(this, ExoplayerVideoActivity.class);
           startActivityForResult(vpIntent, SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY);
-          return;
         }
       }
     }
-
-    OnDeckRecommendationAsyncTask onDeckRecomendations =
-        new OnDeckRecommendationAsyncTask(getApplicationContext());
-    onDeckRecomendations.execute();
   }
 
   protected abstract RecyclerView findVideoRecyclerView();

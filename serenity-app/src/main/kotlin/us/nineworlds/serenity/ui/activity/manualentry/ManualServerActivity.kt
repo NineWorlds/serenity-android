@@ -1,11 +1,12 @@
 package us.nineworlds.serenity.ui.activity.manualentry
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import us.nineworlds.serenity.MainActivity
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.injection.InjectingActivity
 
-class ManualServerActivity : InjectingActivity() {
+class ManualServerActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

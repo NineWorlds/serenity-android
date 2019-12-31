@@ -192,8 +192,8 @@ dependencies {
   implementation "org.greenrobot:eventbus:$eventBus"
   implementation "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
   implementation "androidx.appcompat:appcompat:1.1.0"
-  implementation "androidx.leanback:leanback:1.0.0"
-  implementation "androidx.leanback:leanback-preference:1.0.0"
+  implementation "androidx.leanback:leanback:1.1.0-alpha03"
+  implementation "androidx.leanback:leanback-preference:1.1.0-alpha03"
   implementation "androidx.legacy:legacy-support-v4:1.0.0"
   implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
   implementation "androidx.percentlayout:percentlayout:1.0.0"
@@ -256,7 +256,7 @@ dependencies {
   testImplementation "com.willowtreeapps.assertk:assertk-jvm:$assertkVersion"
   testImplementation "org.assertj:assertj-core:$assertjVersion"
   testImplementation "junit:junit:$junitVersion"
-  testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
+  testImplementation "org.robolectric:shadows-framework:$robolectricVersion@jar"
   testImplementation "org.robolectric:shadowapi:$robolectricVersion"
   testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
   testImplementation "androidx.test:core:1.2.0"
@@ -272,7 +272,7 @@ dependencies {
 com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
 
 jacoco {
-  toolVersion = "0.8.3"
+  toolVersion = "0.8.5"
 }
 
 tasks.withType(Test) {

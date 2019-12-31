@@ -1,189 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="us.nineworlds.serenity">
+        xmlns:tools="http://schemas.android.com/tools"
+        package="us.nineworlds.serenity">
 
-  <uses-sdk
-          tools:overrideLibrary="android.support.v17.leanback"/>
+    <uses-sdk tools:overrideLibrary="android.support.v17.leanback" />
 
-  <!-- try to exclude phone devices from the list. Currently only support TVs -->
-  <supports-screens
-      android:largeScreens="true"
-      android:normalScreens="false"
-      android:smallScreens="false"
-      android:xlargeScreens="true"/>
+    <!-- try to exclude phone devices from the list. Currently only support TVs -->
+    <supports-screens
+            android:largeScreens="true"
+            android:normalScreens="false"
+            android:smallScreens="false"
+            android:xlargeScreens="true" />
 
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-  <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
-  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-  <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-  <uses-feature
-      android:name="android.hardware.touchscreen"
-      android:required="false"/>
-  <uses-feature
-      android:name="android.hardware.faketouch"
-      android:required="false"/>
-  <uses-feature
-      android:name="android.hardware.telephony"
-      android:required="false"/>
-  <uses-feature
-      android:name="android.hardware.camera"
-      android:required="false"/>
-  <uses-feature
-      android:name="android.hardware.nfc"
-      android:required="false"/>
-  <uses-feature
-      android:name="android.hardware.location.gps"
-      android:required="false"/>
-  <uses-feature
-      android:name="android.hardware.microphone"
-      android:required="false"/>
-  <uses-feature
-      android:name="android.hardware.sensor"
-      android:required="false"/>
-  <uses-feature
-      android:name="android.software.leanback"
-      android:required="false"/>
-  <uses-feature
-      android:name="android.hardware.type.television"
-      android:required="true"/>
-  <uses-feature
-      android:name="android.software.leanback_only"
-      android:required="false"/>
+    <uses-feature
+            android:name="android.hardware.touchscreen"
+            android:required="false" />
+    <uses-feature
+            android:name="android.hardware.faketouch"
+            android:required="false" />
+    <uses-feature
+            android:name="android.hardware.telephony"
+            android:required="false" />
+    <uses-feature
+            android:name="android.hardware.camera"
+            android:required="false" />
+    <uses-feature
+            android:name="android.hardware.nfc"
+            android:required="false" />
+    <uses-feature
+            android:name="android.hardware.location.gps"
+            android:required="false" />
+    <uses-feature
+            android:name="android.hardware.microphone"
+            android:required="false" />
+    <uses-feature
+            android:name="android.hardware.sensor"
+            android:required="false" />
+    <uses-feature
+            android:name="android.software.leanback"
+            android:required="false" />
+    <uses-feature
+            android:name="android.hardware.type.television"
+            android:required="true" />
+    <uses-feature
+            android:name="android.software.leanback_only"
+            android:required="false" />
 
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-  <application
-      android:name=".SerenityApplication"
-      android:allowBackup="true"
-      android:hardwareAccelerated="true"
-      android:usesCleartextTraffic="true"
-      android:icon="@drawable/serenity_bonsai_logo"
-      android:label="@string/app_name"
-      android:largeHeap="true"
-      android:theme="@style/AppTheme">
+    <application
+            android:name=".SerenityApplication"
+            android:allowBackup="true"
+            android:hardwareAccelerated="true"
+            android:icon="@drawable/serenity_bonsai_logo"
+            android:label="@string/app_name"
+            android:largeHeap="true"
+            android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true"
+            tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
-    <meta-data
-        android:name="android.app.default_searchable"
-        android:value="us.nineworlds.serenity.ui.search.SearchableActivity"/>
+        <meta-data
+                android:name="android.app.default_searchable"
+                android:value="us.nineworlds.serenity.ui.search.SearchableActivity" />
 
-    <activity
-        android:name=".ui.browser.movie.MovieBrowserActivity"
-        android:hardwareAccelerated="true"
-        android:label="@string/title_activity_movie_browser"
-        android:screenOrientation="sensorLandscape"
-        android:theme="@style/CustomActionBarTheme"/>
-    <activity
-        android:name=".MainActivity"
-        android:hardwareAccelerated="true"
-        android:label="@string/title_activity_main"
-        android:screenOrientation="sensorLandscape"
-        android:theme="@style/CustomActionBarTheme">
-    </activity>
+        <activity
+                android:name=".ui.browser.movie.MovieBrowserActivity"
+                android:hardwareAccelerated="true"
+                android:label="@string/title_activity_movie_browser"
+                android:screenOrientation="sensorLandscape"
+                android:theme="@style/CustomActionBarTheme" />
+        <activity
+                android:name=".MainActivity"
+                android:hardwareAccelerated="true"
+                android:label="@string/title_activity_main"
+                android:screenOrientation="sensorLandscape"
+                android:theme="@style/CustomActionBarTheme"/>
 
-    <activity
-        android:name=".AndroidTV"
-        android:banner="@drawable/serenity_androidtv_banner"
-        android:hardwareAccelerated="true"
-        android:icon="@drawable/serenity_androidtv_banner"
-        android:label="@string/title_activity_main"
-        android:logo="@drawable/serenity_androidtv_banner"
-        android:screenOrientation="sensorLandscape"
-        android:theme="@style/CustomActionBarTheme">
-    </activity>
+        <activity
+                android:name=".AndroidTV"
+                android:banner="@drawable/serenity_androidtv_banner"
+                android:hardwareAccelerated="true"
+                android:icon="@drawable/serenity_androidtv_banner"
+                android:label="@string/title_activity_main"
+                android:logo="@drawable/serenity_androidtv_banner"
+                android:screenOrientation="sensorLandscape"
+                android:theme="@style/CustomActionBarTheme"/>
 
-    <activity
-        android:name=".ui.activity.ServerSelectionActivity"
-        android:banner="@drawable/serenity_androidtv_banner"
-        android:theme="@style/Theme.AppTheme.FullScreen">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
+        <activity
+                android:name=".ui.activity.ServerSelectionActivity"
+                android:banner="@drawable/serenity_androidtv_banner"
+                android:theme="@style/Theme.AppTheme.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
-      </intent-filter>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
 
-    </activity>
+        </activity>
 
-    <activity
-        android:name=".ui.activity.login.LoginUserActivity"
-        android:theme="@style/Theme.AppTheme.FullScreen"/>
+        <activity
+                android:name=".ui.activity.login.LoginUserActivity"
+                android:theme="@style/Theme.AppTheme.FullScreen" />
 
-    <activity
-        android:name=".ui.leanback.search.SearchActivity"
-        android:hardwareAccelerated="true"
-        android:icon="@drawable/serenity_androidtv_banner"
-        android:label="Search"
-        android:screenOrientation="sensorLandscape"
-        android:theme="@style/Theme.Leanback"/>
+        <activity
+                android:name=".ui.leanback.search.SearchActivity"
+                android:hardwareAccelerated="true"
+                android:icon="@drawable/serenity_androidtv_banner"
+                android:label="Search"
+                android:screenOrientation="sensorLandscape"
+                android:theme="@style/Theme.Leanback" />
 
-    <activity
-        android:name=".ui.browser.tv.TVShowBrowserActivity"
-        android:label="@string/title_activity_tvbrowser_show"
-        android:screenOrientation="sensorLandscape"
-        android:theme="@style/CustomActionBarTheme"/>
-    <activity
-        android:name=".ui.browser.tv.seasons.TVShowSeasonBrowserActivity"
-        android:label="@string/title_activity_tvbrowser_show_season"
-        android:screenOrientation="sensorLandscape"
-        android:theme="@style/CustomActionBarTheme"/>
-    <activity
-        android:name=".ui.browser.tv.episodes.EpisodeBrowserActivity"
-        android:label="@string/title_activity_tvbrowser_show_episodes"
-        android:screenOrientation="sensorLandscape"
-        android:theme="@style/CustomActionBarTheme"/>
+        <activity
+                android:name=".ui.browser.tv.TVShowBrowserActivity"
+                android:label="@string/title_activity_tvbrowser_show"
+                android:screenOrientation="sensorLandscape"
+                android:theme="@style/CustomActionBarTheme" />
+        <activity
+                android:name=".ui.browser.tv.seasons.TVShowSeasonBrowserActivity"
+                android:label="@string/title_activity_tvbrowser_show_season"
+                android:screenOrientation="sensorLandscape"
+                android:theme="@style/CustomActionBarTheme" />
+        <activity
+                android:name=".ui.browser.tv.episodes.EpisodeBrowserActivity"
+                android:label="@string/title_activity_tvbrowser_show_episodes"
+                android:screenOrientation="sensorLandscape"
+                android:theme="@style/CustomActionBarTheme" />
 
-    <activity
-        android:name=".ui.video.player.ExoplayerVideoActivity"
-        android:label="Exo Video Player"
-        android:screenOrientation="landscape"
-        android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen"/>
+        <activity
+                android:name=".ui.video.player.ExoplayerVideoActivity"
+                android:label="Exo Video Player"
+                android:screenOrientation="landscape"
+                android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen" />
 
-    <activity
-        android:name=".ui.video.player.RecommendationPlayerActivity"
-        android:screenOrientation="sensorLandscape"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
+        <activity
+                android:name=".ui.preferences.LeanbackSettingsActivity"
+                android:theme="@style/LeanbackPreferences" />
 
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
-    </activity>
+        <activity
+                android:name=".ui.activity.manualentry.ManualServerActivity"
+                android:theme="@style/LeanbackPreferences" />
 
-    <activity
-        android:name=".ui.preferences.LeanbackSettingsActivity"
-        android:theme="@style/LeanbackPreferences"/>
+        <activity android:name=".ui.activity.OverscanSetupActivity" />
 
-    <activity android:name=".ui.activity.manualentry.ManualServerActivity"
-      android:theme="@style/LeanbackPreferences"/>
+        <service android:name=".core.services.MovieSearchIntentService" />
 
-    <activity android:name=".ui.activity.OverscanSetupActivity"/>
+        <provider
+                android:name=".core.SerenityRecommendationContentProvider"
+                android:authorities="us.nineworlds.serenity.core.SerenityRecommendationContentProvider"
+                android:exported="true" />
 
-    <service android:name=".core.services.MovieSearchIntentService"/>
-    <service
-        android:name=".core.services.OnDeckRecommendationIntentService"
-        android:enabled="true"
-        android:exported="true"/>
+        <receiver android:name=".StartupBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
 
-    <provider
-        android:name=".core.SerenityRecommendationContentProvider"
-        android:authorities="us.nineworlds.serenity.core.SerenityRecommendationContentProvider"
-        android:exported="true"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
-    <receiver android:name=".StartupBroadcastReceiver">
-      <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED"/>
-
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-    </receiver>
-
-  </application>
+    </application>
 
 </manifest>
