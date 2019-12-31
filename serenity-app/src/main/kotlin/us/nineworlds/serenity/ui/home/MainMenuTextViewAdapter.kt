@@ -24,6 +24,7 @@
  */
 package us.nineworlds.serenity.ui.home
 
+import com.hannesdorfmann.adapterdelegates4.AdapterDelegatesManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import us.nineworlds.serenity.GalleryOnItemClickListener
 import us.nineworlds.serenity.GalleryOnItemSelectedListener
@@ -39,4 +40,6 @@ class MainMenuTextViewAdapter : ListDelegationAdapter<List<MenuItem>>() {
       onItemSelectedListener
     )
   }
+
+  fun getDelegateManaer(): AdapterDelegatesManager<List<MenuItem>> = delegatesManager
 }

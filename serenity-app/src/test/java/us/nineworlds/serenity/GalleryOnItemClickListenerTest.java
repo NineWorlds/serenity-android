@@ -35,7 +35,7 @@ public class GalleryOnItemClickListenerTest {
   public void setUp() throws Exception {
     initMocks(this);
     context = Robolectric.setupActivity(MainMenuTestActivity.class);
-    onItemClickListener = new GalleryOnItemClickListener(mockAdapter);
+    onItemClickListener = new GalleryOnItemClickListener();
   }
 
   @After
@@ -48,9 +48,8 @@ public class GalleryOnItemClickListenerTest {
     View view = new View(context);
     MenuItem searchMenuItem = new MenuItem();
     searchMenuItem.setType("search");
-    doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
 
-    onItemClickListener.onItemClick(view, 0);
+    onItemClickListener.onItemClick(view, searchMenuItem);
 
     assertThat(context.onSearchActivtyCalled).isTrue();
   }
@@ -60,9 +59,8 @@ public class GalleryOnItemClickListenerTest {
     View view = new View(context);
     MenuItem searchMenuItem = new MenuItem();
     searchMenuItem.setType("options");
-    doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
 
-    onItemClickListener.onItemClick(view, 0);
+    onItemClickListener.onItemClick(view, searchMenuItem);
 
     assertThat(context.openOptionsMenu).isTrue();
   }
@@ -72,9 +70,8 @@ public class GalleryOnItemClickListenerTest {
     View view = new View(context);
     MenuItem searchMenuItem = new MenuItem();
     searchMenuItem.setType("movie");
-    doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
 
-    onItemClickListener.onItemClick(view, 0);
+    onItemClickListener.onItemClick(view, searchMenuItem);
 
     ShadowActivity shadowActivity = Shadows.shadowOf(context);
     Assertions.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, MovieBrowserActivity.class);
@@ -85,9 +82,8 @@ public class GalleryOnItemClickListenerTest {
     View view = new View(context);
     MenuItem searchMenuItem = new MenuItem();
     searchMenuItem.setType("show");
-    doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
 
-    onItemClickListener.onItemClick(view, 0);
+    onItemClickListener.onItemClick(view, searchMenuItem);
 
     ShadowActivity shadowActivity = Shadows.shadowOf(context);
     Assertions.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, TVShowBrowserActivity.class);
@@ -98,9 +94,8 @@ public class GalleryOnItemClickListenerTest {
     View view = new View(context);
     MenuItem searchMenuItem = new MenuItem();
     searchMenuItem.setType("unknown");
-    doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
 
-    onItemClickListener.onItemClick(view, 0);
+    onItemClickListener.onItemClick(view, searchMenuItem);
 
     ShadowActivity shadowActivity = Shadows.shadowOf(context);
     Assertions.assertThat(shadowActivity.getNextStartedActivity())
