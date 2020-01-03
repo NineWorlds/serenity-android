@@ -27,6 +27,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -50,9 +52,16 @@ public class TVShowSeasonOnItemClickListener extends AbstractVideoOnItemClickLis
   @Override
   public void onItemClick(View view, int i) {
     SeriesContentInfo info = (SeriesContentInfo) adapter.getItem(i);
+    onItemClick(view, info);
+  }
 
+  @Override
+  public void onItemClick(View v, ContentInfo item) {
+    SeriesContentInfo info = (SeriesContentInfo) item;
     Intent intent = new Intent(context, EpisodeBrowserActivity.class);
     intent.putExtra("key", info.getKey());
     context.startActivityForResult(intent, 0);
+
   }
+
 }

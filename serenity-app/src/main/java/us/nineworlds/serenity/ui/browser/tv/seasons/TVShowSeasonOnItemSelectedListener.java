@@ -38,6 +38,7 @@ import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
@@ -88,6 +89,19 @@ public class TVShowSeasonOnItemSelectedListener extends AbstractVideoOnItemSelec
 
     @Override
     public void onItemSelected(View view, int i) {
+        if (i < 0) {
+            Log.e(TVShowSeasonOnItemSelectedListener.class.getCanonicalName(),
+                    "Season list size: " + adapter.getItemCount() + " position: " + i);
+            i = 0;
+        }
+
+        info = (SeriesContentInfo) adapter.getItem(i);
+
+        onItemSelected(view, info);
+    }
+
+    @Override
+    public void onItemSelected(View view, ContentInfo item) {
         Activity context = (Activity) view.getContext();
         if (context.isDestroyed()) {
             return;
@@ -98,13 +112,7 @@ public class TVShowSeasonOnItemSelectedListener extends AbstractVideoOnItemSelec
             return;
         }
 
-        if (i < 0) {
-            Log.e(TVShowSeasonOnItemSelectedListener.class.getCanonicalName(),
-                    "Season list size: " + adapter.getItemCount() + " position: " + i);
-            i = 0;
-        }
-
-        info = (SeriesContentInfo) adapter.getItem(i);
+        info = (SeriesContentInfo) item;
         ImageView mpiv = view.findViewById(R.id.posterImageView);
 
         TextView seasonsTitle = context.findViewById(R.id.tvShowSeasonsTitle);
@@ -115,5 +123,4 @@ public class TVShowSeasonOnItemSelectedListener extends AbstractVideoOnItemSelec
         TVShowSeasonBrowserActivity activity = (TVShowSeasonBrowserActivity) getActivity(context);
         activity.fetchEpisodes(info.getKey());
     }
-
 }

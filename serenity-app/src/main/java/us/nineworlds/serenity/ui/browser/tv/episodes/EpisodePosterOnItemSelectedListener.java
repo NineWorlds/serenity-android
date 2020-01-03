@@ -43,6 +43,7 @@ import com.bumptech.glide.request.transition.Transition;
 import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
@@ -221,13 +222,7 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
 
     @Override
     public void onItemSelected(View view, int i) {
-        Activity context = getActivity(view.getContext());
 
-        if (context.isDestroyed()) {
-            return;
-        }
-
-        ButterKnife.bind(this, context);
 
         if (i < 0) {
             i = 0;
@@ -244,6 +239,15 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
             return;
         }
 
+        onItemSelected(view, videoInfo);
+    }
+
+    @Override
+    public void onItemSelected(View view, ContentInfo item) {
+        Activity context = getActivity(view.getContext());
+        videoInfo = (VideoContentInfo) item;
+
+        ButterKnife.bind(this, context);
         changeBackgroundImage(context);
 
         posterImageView = view.findViewById(R.id.posterImageView);
@@ -252,5 +256,6 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
         createVideoDetail(posterImageView);
         createVideoMetaData(posterImageView);
         createInfographicDetails(posterImageView);
+
     }
 }

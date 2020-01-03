@@ -24,6 +24,8 @@
 package us.nineworlds.serenity.ui.listeners;
 
 import android.view.View;
+
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
@@ -33,9 +35,19 @@ public class GalleryVideoOnItemClickListener extends AbstractVideoOnItemClickLis
     super(adapter);
   }
 
+  public GalleryVideoOnItemClickListener() {
+    super();
+  }
+
   @Override public void onItemClick(View view, int i) {
     videoInfo = getVideoInfo(i);
     onItemClick(view);
+  }
+
+  @Override
+  public void onItemClick(View v, ContentInfo item) {
+    videoInfo = (VideoContentInfo) item;
+    onItemClick(v);
   }
 
   @Override protected VideoContentInfo getVideoInfo(int position) {

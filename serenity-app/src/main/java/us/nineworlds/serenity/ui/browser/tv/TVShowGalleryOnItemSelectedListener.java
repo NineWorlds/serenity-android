@@ -38,6 +38,7 @@ import com.bumptech.glide.request.transition.Transition;
 import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
@@ -164,16 +165,23 @@ public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSele
 
     @Override
     public void onItemSelected(View view, int i) {
+        info = (SeriesContentInfo) adapter.getItem(i);
+        onItemSelected(view, info);
+    }
+
+    @Override
+    public void onItemSelected(View view, ContentInfo item) {
         context = (Activity) view.getContext();
+        info = (SeriesContentInfo) item;
         if (context.isDestroyed()) {
             return;
         }
-        info = (SeriesContentInfo) adapter.getItem(i);
 
         ImageView imageView = view.findViewById(R.id.posterImageView);
 
         createTVShowDetail();
         changeBackgroundImage(imageView);
+
     }
 
     @Override

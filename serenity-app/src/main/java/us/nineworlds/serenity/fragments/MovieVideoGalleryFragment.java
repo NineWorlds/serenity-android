@@ -46,6 +46,7 @@ import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.jobs.MovieCategoryJob;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
+import us.nineworlds.serenity.ui.adapters.VideoContentInfoAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
@@ -95,7 +96,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
   protected void setupRecyclerView() {
     LinearLayoutManager linearLayoutManager = createLayoutManager();
-    MoviePosterImageAdapter adapter = new MoviePosterImageAdapter();
+    VideoContentInfoAdapter adapter = new MoviePosterImageAdapter();
     adapter.setOnItemSelectedListener(createOnItemSelectedListener(adapter));
     adapter.setOnItemClickListener(createOnItemClickListener(adapter));
 

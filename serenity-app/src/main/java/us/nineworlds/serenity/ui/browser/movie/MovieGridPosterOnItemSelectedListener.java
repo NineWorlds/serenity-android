@@ -38,6 +38,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.logger.Logger;
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
@@ -116,8 +117,13 @@ public class MovieGridPosterOnItemSelectedListener extends AbstractVideoOnItemSe
             return;
         }
 
-        changeBackgroundImage(videoContentInfo);
+        onItemSelected(view, videoContentInfo);
+    }
 
-        createMovieMetaData(videoContentInfo);
+    @Override
+    public void onItemSelected(View view, ContentInfo item) {
+        context = (Activity) view.getContext();
+        changeBackgroundImage((VideoContentInfo) item);
+        createMovieMetaData((VideoContentInfo) item);
     }
 }

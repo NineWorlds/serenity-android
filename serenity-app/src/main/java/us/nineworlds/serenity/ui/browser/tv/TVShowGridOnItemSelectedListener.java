@@ -39,7 +39,9 @@ import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 
@@ -77,9 +79,17 @@ public class TVShowGridOnItemSelectedListener extends AbstractVideoOnItemSelecte
 
     @Override
     public void onItemSelected(View view, int i) {
-        ButterKnife.bind(this, (Activity) view.getContext());
         videoInfo = (SeriesContentInfo) adapter.getItem(i);
 
+        onItemSelected(view, videoInfo);
+
+    }
+
+    @Override
+    public void onItemSelected(View view, ContentInfo item) {
+        videoInfo = (SeriesContentInfo) item;
+
+        ButterKnife.bind(this, (Activity) view.getContext());
         final ImageView imageView = view.findViewById(R.id.posterImageView);
 
         if (runnable != null) {
@@ -94,6 +104,7 @@ public class TVShowGridOnItemSelectedListener extends AbstractVideoOnItemSelecte
         if (titleView != null) {
             titleView.setText(videoInfo.getTitle());
         }
+
     }
 
     /**

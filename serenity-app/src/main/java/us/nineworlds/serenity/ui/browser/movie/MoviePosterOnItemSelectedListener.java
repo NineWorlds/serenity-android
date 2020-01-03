@@ -36,6 +36,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue.RequestFilter;
 import com.bumptech.glide.Glide;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
@@ -54,6 +55,10 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
   public MoviePosterOnItemSelectedListener(AbstractPosterImageGalleryAdapter adapter) {
     super();
     this.adapter = adapter;
+  }
+
+  public MoviePosterOnItemSelectedListener() {
+    super();
   }
 
   @Override protected void createVideoDetail(ImageView v) {
@@ -119,6 +124,21 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
     super.fetchSubtitle(mpi);
   }
 
+  @Override
+  public void onItemSelected(View view, ContentInfo item) {
+    videoInfo = (VideoContentInfo) item;
+    Activity context = getActivity(view.getContext());
+    changeBackgroundImage(context);
+
+    ImageView posterImageView = view.findViewById(R.id.posterImageView);
+    currentView = posterImageView;
+
+    createVideoDetail(posterImageView);
+    createVideoMetaData(posterImageView);
+    createInfographicDetails(posterImageView);
+
+  }
+
   @Override public void onItemSelected(View view, int i) {
     Activity context = getActivity(view.getContext());
     if (context.isDestroyed()) {
@@ -135,18 +155,7 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
     }
     //		fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
 
-    videoInfo = (VideoContentInfo) adapter.getItem(position);
-    if (videoInfo == null) {
-      return;
-    }
+    onItemSelected(view, videoInfo);
 
-    changeBackgroundImage(context);
-
-    ImageView posterImageView = view.findViewById(R.id.posterImageView);
-    currentView = posterImageView;
-
-    createVideoDetail(posterImageView);
-    createVideoMetaData(posterImageView);
-    createInfographicDetails(posterImageView);
   }
 }

@@ -42,6 +42,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
 import us.nineworlds.serenity.core.logger.Logger;
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
@@ -184,4 +185,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector {
     }
 
     public abstract void onItemSelected(View view, int i);
+
+    public abstract void onItemSelected(View view, ContentInfo item);
 }

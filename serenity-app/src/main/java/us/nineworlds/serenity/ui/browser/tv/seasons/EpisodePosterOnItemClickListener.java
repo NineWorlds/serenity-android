@@ -24,6 +24,8 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import android.view.View;
+
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
@@ -41,6 +43,12 @@ public class EpisodePosterOnItemClickListener extends AbstractVideoOnItemClickLi
   @Override
   public void onItemClick(View view, int i) {
     videoInfo = getVideoInfo(i);
-    onItemClick(view);
+    onItemClick(view, videoInfo);
+  }
+
+  @Override
+  public void onItemClick(View v, ContentInfo item) {
+    videoInfo = (VideoContentInfo) item;
+    onItemClick(v, item);
   }
 }

@@ -26,6 +26,8 @@ package us.nineworlds.serenity.ui.listeners;
 import android.app.Activity;
 import android.view.View;
 import javax.inject.Inject;
+
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -43,6 +45,10 @@ public abstract class AbstractVideoOnItemClickListener extends BaseInjector {
 
   protected AbstractPosterImageGalleryAdapter adapter;
 
+  public AbstractVideoOnItemClickListener() {
+
+  }
+
   public AbstractVideoOnItemClickListener(AbstractPosterImageGalleryAdapter adapter) {
     super();
     this.adapter = adapter;
@@ -56,4 +62,6 @@ public abstract class AbstractVideoOnItemClickListener extends BaseInjector {
   protected abstract VideoContentInfo getVideoInfo(int position);
 
   public abstract void onItemClick(View v, int position);
+
+  public abstract void onItemClick(View v, ContentInfo item);
 }
