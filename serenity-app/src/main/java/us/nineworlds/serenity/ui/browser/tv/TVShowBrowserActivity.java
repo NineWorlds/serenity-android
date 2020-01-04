@@ -42,18 +42,23 @@ import butterknife.ButterKnife;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
+import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.emby.model.Video;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.adapters.VideoContentInfoAdapter;
 import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
 import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
@@ -89,8 +94,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-//    actionBar.setCustomView(R.layout.tvshow_custom_actionbar);
-//    actionBar.setDisplayShowCustomEnabled(true);
     key = getIntent().getExtras().getString("key");
 
     initContentView();
@@ -140,17 +143,7 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
         new SpaceItemDecoration(
             getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
 
-    if (posterLayoutActive) {
-      TVShowPosterImageGalleryAdapter adapter = new TVShowPosterImageGalleryAdapter();
-      adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
-      adapter.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(adapter));
-      tvShowRecyclerView.setAdapter(adapter);
-      return;
-    }
-
-    TVShowRecyclerAdapter adapter = new TVShowRecyclerAdapter();
-    adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));
-    adapter.setOnItemSelectedListener(new TVShowGalleryOnItemSelectedListener(adapter));
+    VideoContentInfoAdapter adapter = new VideoContentInfoAdapter();
     tvShowRecyclerView.setAdapter(adapter);
   }
 
@@ -215,13 +208,17 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
       Toast.makeText(this, getString(R.string.no_shows_found_for_the_category_) + category,
           Toast.LENGTH_LONG).show();
     }
+
     tvShowRecyclerView.setClipChildren(false);
     tvShowRecyclerView.setClipToPadding(false);
     tvShowRecyclerView.setClipToOutline(false);
     tvShowRecyclerView.setItemAnimator(new FadeInAnimator());
     tvShowItemCountView.setText(Integer.toString(series.size()) + getString(R.string._item_s_));
-    TVShowRecyclerAdapter adapter = (TVShowRecyclerAdapter) tvShowRecyclerView.getAdapter();
-    adapter.updateSeries(series);
+    VideoContentInfoAdapter adapter = (VideoContentInfoAdapter) tvShowRecyclerView.getAdapter();
+    List<ContentInfo> contentInfoList = new ArrayList<>();
+    contentInfoList.addAll(series);
+    adapter.setItems(contentInfoList);
+
     tvShowRecyclerView.setVisibility(VISIBLE);
 
     postDelayed.postDelayed(() ->  {

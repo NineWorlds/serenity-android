@@ -73,7 +73,7 @@ public class TVShowViewHolderTest {
         doReturn("http://www.example.com").when(mockSeriesInfo).getImageURL();
         doNothing().when(spy).loadImage(anyString());
 
-        spy.createImage(mockSeriesInfo, 100, 100);
+        spy.createImage(mockSeriesInfo, 100, 100, false);
 
         verify(spy).loadImage("http://www.example.com");
         verify(spy, never()).loadImage(null);

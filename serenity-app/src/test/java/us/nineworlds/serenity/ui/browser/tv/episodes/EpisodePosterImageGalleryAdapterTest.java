@@ -63,7 +63,7 @@ public class EpisodePosterImageGalleryAdapterTest extends InjectingTest {
     adapter.onBindViewHolder(mockEpisodeViewHolder, 0);
 
     verify(mockEpisodeViewHolder).reset();
-    verify(mockEpisodeViewHolder).createImage(mockSeriesContent, 250, 160);
+    verify(mockEpisodeViewHolder).createImage(mockSeriesContent, 250, 160, false);
     verify(mockEpisodeViewHolder).toggleWatchedIndicator(mockSeriesContent);
   }
 }

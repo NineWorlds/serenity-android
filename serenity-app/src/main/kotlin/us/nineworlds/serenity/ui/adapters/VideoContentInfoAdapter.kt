@@ -7,6 +7,7 @@ class VideoContentInfoAdapter : AsyncListDifferDelegationAdapter<ContentInfo>(Co
 
   init {
     delegatesManager.addDelegate(MoviePosterAdapterDelegate())
+    delegatesManager.addDelegate(TVSeriesAdapterDelegate())
   }
 
   class ContentInfoListDiffer : DiffUtil.ItemCallback<ContentInfo>() {

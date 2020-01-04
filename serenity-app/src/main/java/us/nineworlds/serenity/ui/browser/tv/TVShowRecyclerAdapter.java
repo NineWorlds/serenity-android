@@ -36,6 +36,7 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.RecyclerViewDiffUtil;
 
+@Deprecated
 public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
 
   protected List<SeriesContentInfo> tvShowList = new ArrayList<>();
@@ -66,7 +67,7 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
     int height = context.getResources().getDimensionPixelSize(R.dimen.banner_image_height);
 
     tvShowViewHolder.reset();
-    tvShowViewHolder.createImage(pi, width, height);
+    tvShowViewHolder.createImage(pi, width, height, false);
     tvShowViewHolder.toggleWatchedIndicator(pi);
     tvShowViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));
     tvShowViewHolder.getItemView().setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));

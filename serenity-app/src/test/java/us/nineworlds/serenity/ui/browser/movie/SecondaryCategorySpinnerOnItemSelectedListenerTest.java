@@ -49,6 +49,7 @@ import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.VideoContentInfoAdapter;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 import java.util.LinkedList;
@@ -85,7 +86,7 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends Injectin
     protected MovieSelectedCategoryState mockCategoryState;
 
     @Mock
-    protected MoviePosterImageAdapter mockPosterImageAdapter;
+    protected VideoContentInfoAdapter mockPosterImageAdapter;
 
     @Mock
     VideoPlayerIntentUtils mockVideoPlayerIntentUtils;

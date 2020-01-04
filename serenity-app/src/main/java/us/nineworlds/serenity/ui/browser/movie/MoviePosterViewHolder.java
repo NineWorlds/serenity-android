@@ -14,7 +14,7 @@ public class MoviePosterViewHolder extends AbstractPosterImageViewHolder {
 
   }
 
-  @Override public void createImage(ContentInfo contentInfo, int width, int height) {
+  @Override public void createImage(ContentInfo contentInfo, int width, int height, boolean isPoster) {
 
   }
 

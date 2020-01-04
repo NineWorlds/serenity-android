@@ -61,6 +61,10 @@ public class TVShowGalleryOnItemSelectedListener extends AbstractVideoOnItemSele
         this.adapter = adapter;
     }
 
+    public TVShowGalleryOnItemSelectedListener() {
+        super();
+    }
+
     private void createTVShowDetail() {
 
         createSummary();

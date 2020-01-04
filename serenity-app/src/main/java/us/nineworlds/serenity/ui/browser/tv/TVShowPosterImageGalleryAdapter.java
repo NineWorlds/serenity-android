@@ -48,7 +48,7 @@ public class TVShowPosterImageGalleryAdapter extends TVShowRecyclerAdapter {
     int height = context.getResources().getDimensionPixelSize(R.dimen.tvshow_poster_image_height);
 
     tvShowViewHolder.reset();
-    tvShowViewHolder.createImage(pi, width, height);
+    tvShowViewHolder.createImage(pi, width, height, true);
     tvShowViewHolder.toggleWatchedIndicator(pi);
     tvShowViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));
     tvShowViewHolder.getItemView().setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));

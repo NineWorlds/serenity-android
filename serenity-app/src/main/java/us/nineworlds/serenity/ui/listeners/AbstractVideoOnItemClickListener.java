@@ -59,6 +59,7 @@ public abstract class AbstractVideoOnItemClickListener extends BaseInjector {
     vpUtils.playVideo(activity, videoInfo, false);
   }
 
+  @Deprecated
   protected abstract VideoContentInfo getVideoInfo(int position);
 
   public abstract void onItemClick(View v, int position);

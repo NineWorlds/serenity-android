@@ -61,7 +61,7 @@ public class TVShowRecyclerAdapterTest extends InjectingTest {
     adapter.onBindViewHolder(mockTVShowViewHolder, 0);
 
     verify(mockTVShowViewHolder).reset();
-    verify(mockTVShowViewHolder).createImage(mockSeriesContent, 750, 120);
+    verify(mockTVShowViewHolder).createImage(mockSeriesContent, 750, 120, false);
     verify(mockTVShowViewHolder).toggleWatchedIndicator(mockSeriesContent);
   }
 

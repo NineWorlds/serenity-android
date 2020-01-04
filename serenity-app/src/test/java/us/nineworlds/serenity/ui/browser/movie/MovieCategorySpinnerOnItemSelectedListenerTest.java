@@ -42,6 +42,7 @@ import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
+import us.nineworlds.serenity.ui.adapters.VideoContentInfoAdapter;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -79,7 +80,7 @@ public class MovieCategorySpinnerOnItemSelectedListenerTest extends InjectingTes
   protected MovieSelectedCategoryState mockCategoryState;
 
   @Mock
-  protected MoviePosterImageAdapter mockPosterImageAdapter;
+  protected VideoContentInfoAdapter mockPosterImageAdapter;
 
   @Mock protected RecyclerView mockPosterGallery;
 

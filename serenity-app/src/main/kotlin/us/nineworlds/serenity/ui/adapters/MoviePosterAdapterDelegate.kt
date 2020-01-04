@@ -1,24 +1,35 @@
 package us.nineworlds.serenity.ui.adapters
 
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import toothpick.Toothpick
 import us.nineworlds.serenity.R
+import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.core.model.ContentInfo
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
 import us.nineworlds.serenity.ui.adapters.viewholders.AbstractPosterAdapterDelegate
+import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterViewHolder
 import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener
 import us.nineworlds.serenity.ui.views.statusoverlayview.StatusOverlayFrameLayout
+import javax.inject.Inject
 
 class MoviePosterAdapterDelegate : AbstractPosterAdapterDelegate<MoviePosterInfo, ContentInfo, MoviePosterViewHolder>() {
 
+  @Inject
+  lateinit var sharedPreferences: SharedPreferences
+
   init {
+    val scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE)
+    Toothpick.inject(this, scope)
+    val gridLayout = sharedPreferences.getBoolean("movie_layout_grid", false)
     onItemClickListener = GalleryVideoOnItemClickListener()
-    onItemSelectedListener = MoviePosterOnItemSelectedListener()
+    onItemSelectedListener = if (gridLayout) MovieGridPosterOnItemSelectedListener() else MoviePosterOnItemSelectedListener()
   }
 
   override fun onCreateViewHolder(parent: ViewGroup): MoviePosterViewHolder {

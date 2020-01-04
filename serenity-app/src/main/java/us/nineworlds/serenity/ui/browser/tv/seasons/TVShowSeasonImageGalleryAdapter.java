@@ -72,7 +72,7 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
     int height = context.getResources().getDimensionPixelSize(R.dimen.seasons_image_height);
 
     viewHolder.reset();
-    viewHolder.createImage(pi, width, height);
+    viewHolder.createImage(pi, width, height, true);
     viewHolder.toggleWatchedIndicator(pi);
     viewHolder.getItemView().setOnClickListener((view)-> onItemViewClick(view, position));
     viewHolder.getItemView().setOnFocusChangeListener((view, focus)-> onItemViewFocusChanged(focus, view, position));

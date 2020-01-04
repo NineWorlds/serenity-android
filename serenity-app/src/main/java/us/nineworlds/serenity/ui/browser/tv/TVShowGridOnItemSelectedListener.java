@@ -72,6 +72,10 @@ public class TVShowGridOnItemSelectedListener extends AbstractVideoOnItemSelecte
         this.adapter = adapter;
     }
 
+    public TVShowGridOnItemSelectedListener() {
+        super();
+    }
+
     @Override
     protected void createVideoDetail(ImageView v) {
         // DO NOTHING

@@ -26,19 +26,21 @@ package us.nineworlds.serenity.fragments;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import butterknife.BindView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.birbit.android.jobqueue.JobManager;
+
 import javax.inject.Inject;
+
+import butterknife.BindView;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
@@ -48,106 +50,108 @@ import us.nineworlds.serenity.jobs.MovieCategoryJob;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.adapters.VideoContentInfoAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
-import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
-import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
-import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemLongClickListener;
-import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemClickListener;
-import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
 import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 
-import static android.view.View.*;
+import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS;
 import static butterknife.ButterKnife.bind;
 
 public class MovieVideoGalleryFragment extends InjectingFragment {
 
-  @Inject SharedPreferences preferences;
-  @Inject MovieSelectedCategoryState categoryState;
-  @Inject JobManager jobManager;
-  @Inject SerenityClient factory;
-  @Inject Resources resources;
-  @Inject AndroidHelper androidHelper;
+    @Inject
+    SharedPreferences preferences;
+    @Inject
+    MovieSelectedCategoryState categoryState;
+    @Inject
+    JobManager jobManager;
+    @Inject
+    SerenityClient factory;
+    @Inject
+    Resources resources;
+    @Inject
+    AndroidHelper androidHelper;
 
-  @BindView(R.id.moviePosterView) protected RecyclerView recyclerView;
-  @BindView(R.id.data_loading_container) protected FrameLayout dataLoadingContainer;
+    @BindView(R.id.moviePosterView)
+    protected RecyclerView recyclerView;
+    @BindView(R.id.data_loading_container)
+    protected FrameLayout dataLoadingContainer;
 
-  public MovieVideoGalleryFragment() {
-    super();
-    setRetainInstance(true);
-  }
+    public MovieVideoGalleryFragment() {
+        super();
+        setRetainInstance(true);
+    }
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflateView(inflater, container);
-    bind(this, view);
-    setupRecyclerView();
-    return view;
-  }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflateView(inflater, container);
+        bind(this, view);
+        setupRecyclerView();
+        return view;
+    }
 
-  protected View inflateView(LayoutInflater inflater, ViewGroup container) {
-    return inflater.inflate(R.layout.video_gallery_fragment, null);
-  }
+    protected View inflateView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.video_gallery_fragment, null);
+    }
 
-  protected RecyclerView.ItemDecoration createItemDecorator() {
-    return new SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing));
-  }
+    protected RecyclerView.ItemDecoration createItemDecorator() {
+        return new SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing));
+    }
 
-  protected void setupRecyclerView() {
-    LinearLayoutManager linearLayoutManager = createLayoutManager();
-    VideoContentInfoAdapter adapter = new VideoContentInfoAdapter();
+    protected void setupRecyclerView() {
+        LinearLayoutManager linearLayoutManager = createLayoutManager();
+        VideoContentInfoAdapter adapter = new VideoContentInfoAdapter();
 
-    recyclerView.addItemDecoration(createItemDecorator());
-    recyclerView.setAdapter(adapter);
-    recyclerView.setLayoutManager(linearLayoutManager);
-    recyclerView.setHorizontalFadingEdgeEnabled(false);
-    recyclerView.setItemAnimator(new FadeInAnimator());
-    recyclerView.setClipToPadding(false);
-    recyclerView.setClipChildren(false);
+        recyclerView.addItemDecoration(createItemDecorator());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHorizontalFadingEdgeEnabled(false);
+        recyclerView.setItemAnimator(new FadeInAnimator());
+        recyclerView.setClipToPadding(false);
+        recyclerView.setClipChildren(false);
 
-    recyclerView.setFocusableInTouchMode(true);
+        recyclerView.setFocusableInTouchMode(true);
 
-    recyclerView.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
-    recyclerView.setHasFixedSize(true);
-    recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        recyclerView.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-    recyclerView.requestFocus();
+        recyclerView.requestFocus();
 
-    if (!androidHelper.isAndroidTV() && !androidHelper.isAmazonFireTV()) {
-      LinearSnapHelper snapHelper = new LinearSnapHelper();
-      snapHelper.attachToRecyclerView(recyclerView);
+        if (!androidHelper.isAndroidTV() && !androidHelper.isAmazonFireTV()) {
+            LinearSnapHelper snapHelper = new LinearSnapHelper();
+            snapHelper.attachToRecyclerView(recyclerView);
 
-      recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-          super.onScrollStateChanged(recyclerView, newState);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
 
-          if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
 
-            snapHelper.findSnapView(linearLayoutManager).requestFocusFromTouch();
+                        snapHelper.findSnapView(linearLayoutManager).requestFocusFromTouch();
 //            int position = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
 //            recyclerView.findViewHolderForLayoutPosition(position).itemView.requestFocusFromTouch();
 //            adapter.notifyItemChanged(position);
-          }
+                    }
+                }
+
+            });
         }
 
-      });
+        MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
+
+        String key = activity.getKey();
+
+        MovieCategoryJob job = new MovieCategoryJob(key);
+
+        dataLoadingContainer.setVisibility(VISIBLE);
+        jobManager.addJobInBackground(job);
     }
 
-    MovieBrowserActivity activity = (MovieBrowserActivity) getActivity();
-
-    String key = activity.getKey();
-
-    MovieCategoryJob job = new MovieCategoryJob(key);
-
-    dataLoadingContainer.setVisibility(VISIBLE);
-    jobManager.addJobInBackground(job);
-  }
-
-  protected LinearLayoutManager createLayoutManager() {
-    LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(getActivity());
-    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-    return linearLayoutManager;
-  }
+    protected LinearLayoutManager createLayoutManager() {
+        LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        return linearLayoutManager;
+    }
 }

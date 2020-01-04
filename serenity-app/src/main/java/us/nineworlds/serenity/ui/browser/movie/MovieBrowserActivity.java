@@ -72,8 +72,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-//    actionBar.setCustomView(R.layout.movie_custom_actionbar);
-//    actionBar.setDisplayShowCustomEnabled(true);
 
     gridViewActive = prefs.getBoolean("movie_layout_grid", false);
 

@@ -24,53 +24,50 @@
 package us.nineworlds.serenity.fragments;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
-import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
-import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
-import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
 
 import static butterknife.ButterKnife.bind;
 
 public class VideoGridFragment extends MovieVideoGalleryFragment {
 
-  public VideoGridFragment() {
-    super();
-  }
+    public VideoGridFragment() {
+        super();
+    }
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
-    View view = inflateView(inflater, container);
-    bind(this, view);
-    setupRecyclerView();
-    return view;
-  }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflateView(inflater, container);
+        bind(this, view);
+        setupRecyclerView();
+        return view;
+    }
 
-  @Override protected View inflateView(LayoutInflater inflater, ViewGroup container) {
-    return inflater.inflate(R.layout.video_grid_fragment, null);
-  }
+    @Override
+    protected View inflateView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.video_grid_fragment, null);
+    }
 
-  protected LinearLayoutManager createLayoutManager() {
-    GridLayoutManager layoutManager =
-        new FocusableGridLayoutManager(getActivity(), 3,
-            GridLayoutManager.HORIZONTAL, false);
-    return layoutManager;
-  }
+    protected LinearLayoutManager createLayoutManager() {
+        GridLayoutManager layoutManager =
+                new FocusableGridLayoutManager(getActivity(), 3,
+                        GridLayoutManager.HORIZONTAL, false);
+        return layoutManager;
+    }
 
-  @Override protected RecyclerView.ItemDecoration createItemDecorator() {
-    return new ItemOffsetDecoration(resources.getDimensionPixelSize(R.dimen.grid_spacing_dimen));
-  }
-
-  @NonNull protected AbstractVideoOnItemSelectedListener createOnItemSelectedListener(MoviePosterImageAdapter adapter) {
-    return new MovieGridPosterOnItemSelectedListener(adapter);
-  }
+    @Override
+    protected RecyclerView.ItemDecoration createItemDecorator() {
+        return new ItemOffsetDecoration(resources.getDimensionPixelSize(R.dimen.grid_spacing_dimen));
+    }
 
 }

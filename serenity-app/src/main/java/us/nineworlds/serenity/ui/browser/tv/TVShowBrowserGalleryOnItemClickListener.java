@@ -36,8 +36,13 @@ import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
 
 public class TVShowBrowserGalleryOnItemClickListener extends AbstractVideoOnItemClickListener {
 
+  @Deprecated
   public TVShowBrowserGalleryOnItemClickListener(AbstractPosterImageGalleryAdapter adapter) {
     super(adapter);
+  }
+
+  public TVShowBrowserGalleryOnItemClickListener() {
+    super();
   }
 
   @Override protected VideoContentInfo getVideoInfo(int position) {
@@ -47,7 +52,7 @@ public class TVShowBrowserGalleryOnItemClickListener extends AbstractVideoOnItem
 
   public void onItemClick(View view, int i) {
     SeriesContentInfo videoInfo = (SeriesContentInfo) adapter.getItem(i);
-
+    onItemClick(view, videoInfo);
   }
 
   @Override

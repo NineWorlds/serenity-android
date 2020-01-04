@@ -10,8 +10,8 @@ public class TVShowPosterViewHolder extends TVShowViewHolder {
     super(itemView);
   }
 
-  @Override public void createImage(SeriesContentInfo pi, int imageWidth, int imageHeight) {
-    initPosterMetaData(pi, imageWidth, imageHeight, true);
+  @Override public void createImage(SeriesContentInfo pi, int imageWidth, int imageHeight, boolean isPoster) {
+    initPosterMetaData(pi, imageWidth, imageHeight, isPoster);
     itemView.setLayoutParams(new RecyclerView.LayoutParams(imageWidth, imageHeight));
   }
 }

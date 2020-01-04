@@ -30,8 +30,8 @@ public class TVShowViewHolder extends AbstractPosterImageViewHolder<SeriesConten
     return itemView.getContext();
   }
 
-  public void createImage(SeriesContentInfo pi, int imageWidth, int imageHeight) {
-    initPosterMetaData(pi, imageWidth, imageHeight, false);
+  public void createImage(SeriesContentInfo pi, int imageWidth, int imageHeight, boolean isPoster) {
+    initPosterMetaData(pi, imageWidth, imageHeight, isPoster);
 
     itemView.setLayoutParams(new RecyclerView.LayoutParams(imageWidth, imageHeight));
   }

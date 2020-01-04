@@ -65,6 +65,10 @@ public class MovieGridPosterOnItemSelectedListener extends AbstractVideoOnItemSe
         this.adapter = adapter;
     }
 
+    public MovieGridPosterOnItemSelectedListener() {
+
+    }
+
     private void changeBackgroundImage(VideoContentInfo videoInfo) {
         if (videoInfo.getBackgroundURL() == null) {
             return;
