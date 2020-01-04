@@ -1,11 +1,18 @@
 package us.nineworlds.serenity.ui.adapters
 
-import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
+import androidx.recyclerview.widget.DiffUtil
 import us.nineworlds.serenity.core.model.ContentInfo
 
-class VideoContentInfoAdapter : ListDelegationAdapter<List<ContentInfo>>() {
+class VideoContentInfoAdapter : AsyncListDifferDelegationAdapter<ContentInfo>(ContentInfoListDiffer()) {
 
   init {
     delegatesManager.addDelegate(MoviePosterAdapterDelegate())
   }
+
+  class ContentInfoListDiffer : DiffUtil.ItemCallback<ContentInfo>() {
+    override fun areItemsTheSame(oldItem: ContentInfo, newItem: ContentInfo): Boolean = oldItem.id() == newItem.id()
+
+    override fun areContentsTheSame(oldItem: ContentInfo, newItem: ContentInfo): Boolean = oldItem.id() == newItem.id()
+  }
+
 }

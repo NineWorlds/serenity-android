@@ -36,6 +36,7 @@ import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.adapters.VideoContentInfoAdapter;
 import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
 import us.nineworlds.serenity.ui.video.player.ExoplayerVideoActivity;
@@ -62,6 +63,8 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
 
     View selectedView;
     VideoContentInfo video;
+    //TODO: Add ability to get item at Position.
+    //TODO: Use VideoContentInfoAdapter.
     AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) videoRecyclerView.getAdapter();
     if (adapter == null) {
       return;

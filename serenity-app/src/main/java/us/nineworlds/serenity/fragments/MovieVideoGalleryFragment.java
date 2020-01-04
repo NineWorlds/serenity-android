@@ -96,9 +96,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
   protected void setupRecyclerView() {
     LinearLayoutManager linearLayoutManager = createLayoutManager();
-    VideoContentInfoAdapter adapter = new MoviePosterImageAdapter();
-    adapter.setOnItemSelectedListener(createOnItemSelectedListener(adapter));
-    adapter.setOnItemClickListener(createOnItemClickListener(adapter));
+    VideoContentInfoAdapter adapter = new VideoContentInfoAdapter();
 
     recyclerView.addItemDecoration(createItemDecorator());
     recyclerView.setAdapter(adapter);
@@ -145,18 +143,6 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
     dataLoadingContainer.setVisibility(VISIBLE);
     jobManager.addJobInBackground(job);
-  }
-
-  private AbstractVideoOnItemLongClickListener createOnItemLongClickListener(MoviePosterImageAdapter adapter) {
-    return new GalleryVideoOnItemLongClickListener(adapter);
-  }
-
-  @NonNull protected AbstractVideoOnItemClickListener createOnItemClickListener(MoviePosterImageAdapter adapter) {
-    return new GalleryVideoOnItemClickListener(adapter);
-  }
-
-  @NonNull protected AbstractVideoOnItemSelectedListener createOnItemSelectedListener(MoviePosterImageAdapter adapter) {
-    return new MoviePosterOnItemSelectedListener(adapter);
   }
 
   protected LinearLayoutManager createLayoutManager() {

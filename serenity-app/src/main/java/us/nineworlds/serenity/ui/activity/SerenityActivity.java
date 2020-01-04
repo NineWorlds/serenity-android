@@ -57,7 +57,7 @@ public abstract class SerenityActivity extends InjectingMvpActivity {
       return super.onKeyDown(keyCode, event);
     }
 
-    AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
+    RecyclerView.Adapter adapter = gallery.getAdapter();
     if (adapter != null) {
       int itemsCount = adapter.getItemCount();
 

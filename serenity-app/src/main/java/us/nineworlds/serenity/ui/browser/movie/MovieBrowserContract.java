@@ -6,6 +6,7 @@ import java.util.List;
 import moxy.viewstate.strategy.AddToEndSingleStrategy;
 import moxy.viewstate.strategy.StateStrategyType;
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.events.MainCategoryEvent;

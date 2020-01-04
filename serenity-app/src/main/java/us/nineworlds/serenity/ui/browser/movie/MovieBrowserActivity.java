@@ -51,6 +51,7 @@ import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
+import us.nineworlds.serenity.ui.adapters.VideoContentInfoAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 import static android.view.View.*;
@@ -177,8 +178,8 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
     }
 
     RecyclerView recyclerView = findVideoRecyclerView();
-    MoviePosterImageAdapter adapter = (MoviePosterImageAdapter) recyclerView.getAdapter();
-    adapter.populatePosters(videos);
+    VideoContentInfoAdapter adapter = (VideoContentInfoAdapter) recyclerView.getAdapter();
+    adapter.setItems(videos);
     recyclerView.requestFocusFromTouch();
     if (adapter.getItemCount() > 0) {
       if (recyclerView.getChildCount() > 0) {
