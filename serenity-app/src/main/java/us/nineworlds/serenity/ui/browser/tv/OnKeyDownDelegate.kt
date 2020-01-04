@@ -10,6 +10,7 @@ import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.SeriesContentInfo
 import us.nineworlds.serenity.injection.BaseInjector
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter
+import us.nineworlds.serenity.ui.adapters.VideoContentInfoAdapter
 import javax.inject.Inject
 
 class OnKeyDownDelegate(internal var activity: Activity) : BaseInjector() {
@@ -24,7 +25,7 @@ class OnKeyDownDelegate(internal var activity: Activity) : BaseInjector() {
   }
 
   fun onKeyDown(keyCode: Int, keyEvent: KeyEvent): Boolean {
-    val adapter = tvRecyclerView.adapter as AbstractPosterImageGalleryAdapter?
+    val adapter = tvRecyclerView.adapter as VideoContentInfoAdapter
     if (adapter != null) {
       val itemsCount = adapter.itemCount
 
