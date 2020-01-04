@@ -65,7 +65,7 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
     VideoContentInfo video;
     //TODO: Add ability to get item at Position.
     //TODO: Use VideoContentInfoAdapter.
-    AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) videoRecyclerView.getAdapter();
+    VideoContentInfoAdapter adapter = (VideoContentInfoAdapter) videoRecyclerView.getAdapter();
     if (adapter == null) {
       return;
     }
@@ -76,7 +76,7 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
       return;
     }
 
-    video = (VideoContentInfo) adapter.getItem(videoRecyclerView.getChildAdapterPosition(selectedView));
+    video = (VideoContentInfo) adapter.getItemAtPosition(videoRecyclerView.getChildAdapterPosition(selectedView));
 
     if (data != null) {
       if (externalPlayer) {

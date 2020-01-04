@@ -44,6 +44,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.MenuDrawerItem;
 import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
@@ -179,7 +180,10 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
 
     RecyclerView recyclerView = findVideoRecyclerView();
     VideoContentInfoAdapter adapter = (VideoContentInfoAdapter) recyclerView.getAdapter();
-    adapter.setItems(videos);
+    List<ContentInfo> contentInfoList = new ArrayList<>();
+    contentInfoList.addAll(videos);
+    adapter.setItems(contentInfoList);
+
     recyclerView.requestFocusFromTouch();
     if (adapter.getItemCount() > 0) {
       if (recyclerView.getChildCount() > 0) {

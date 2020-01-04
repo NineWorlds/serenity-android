@@ -28,6 +28,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.LinkedList;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;
@@ -53,7 +56,7 @@ public class ExternalPlayerResultHandler extends PlayerResultHandler {
   @Inject protected SharedPreferences preferences;
 
   public ExternalPlayerResultHandler(int resultCode, Intent data, Activity activity,
-      AbstractPosterImageGalleryAdapter adapter) {
+      RecyclerView.Adapter adapter) {
     super(data, adapter);
     this.activity = activity;
     externalPlayerValue = preferences.getString("serenity_external_player_filter", "default");

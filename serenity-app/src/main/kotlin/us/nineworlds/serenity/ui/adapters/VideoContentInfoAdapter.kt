@@ -15,4 +15,6 @@ class VideoContentInfoAdapter : AsyncListDifferDelegationAdapter<ContentInfo>(Co
     override fun areContentsTheSame(oldItem: ContentInfo, newItem: ContentInfo): Boolean = oldItem.id() == newItem.id()
   }
 
+  fun getItemAtPosition(position: Int) : ContentInfo = differ.currentList[position]
+
 }
