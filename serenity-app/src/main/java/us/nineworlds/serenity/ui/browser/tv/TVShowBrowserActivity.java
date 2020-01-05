@@ -37,6 +37,9 @@ import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hannesdorfmann.adapterdelegates4.AdapterDelegate;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import moxy.presenter.InjectPresenter;
@@ -58,6 +61,7 @@ import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.adapters.TVSeriesAdapterDelegate;
 import us.nineworlds.serenity.ui.adapters.VideoContentInfoAdapter;
 import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
 import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
@@ -144,6 +148,10 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
             getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
 
     VideoContentInfoAdapter adapter = new VideoContentInfoAdapter();
+    List<AdapterDelegate<List<ContentInfo>>> delegates = new ArrayList<>();
+    delegates.add(new TVSeriesAdapterDelegate());
+    adapter.addDelegates(delegates);
+
     tvShowRecyclerView.setAdapter(adapter);
   }
 
