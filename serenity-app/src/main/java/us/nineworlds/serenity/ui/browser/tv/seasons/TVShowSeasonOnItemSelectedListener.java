@@ -47,7 +47,7 @@ import javax.inject.Inject;
 
 public class TVShowSeasonOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
-    private final Activity context;
+    private Activity context;
     private SeriesContentInfo info;
 
     @Inject
@@ -60,6 +60,10 @@ public class TVShowSeasonOnItemSelectedListener extends AbstractVideoOnItemSelec
         super();
         context = activity;
         this.adapter = adapter;
+    }
+
+    public TVShowSeasonOnItemSelectedListener() {
+        super();
     }
 
     private void changeBackgroundImage(View v) {
@@ -102,7 +106,7 @@ public class TVShowSeasonOnItemSelectedListener extends AbstractVideoOnItemSelec
 
     @Override
     public void onItemSelected(View view, ContentInfo item) {
-        Activity context = (Activity) view.getContext();
+        context = (Activity) view.getContext();
         if (context.isDestroyed()) {
             return;
         }

@@ -3,12 +3,14 @@ package us.nineworlds.serenity.ui.views.statusoverlayview;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -41,6 +43,7 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
   @BindView(R.id.subtitleIndicator) ImageView subtitleIndicator;
   @BindView(R.id.trailerIndicator) ImageView trailerIndicator;
   @BindView(R.id.posterInprogressIndicator) ProgressBar posterInProgressIndicator;
+  Drawable placeHolder = null;
 
   public StatusOverlayFrameLayout(@NonNull Context context) {
     super(context);
@@ -67,6 +70,10 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
   protected void init() {
     inflate(getContext(), R.layout.status_overlay_view, this);
     ButterKnife.bind(this, this);
+
+    int colorTint = ContextCompat.getColor(getContext(), R.color.lb_tv_white);
+    placeHolder = DrawableCompat.wrap(ContextCompat.getDrawable(getContext(), R.drawable.ic_image_placeholder));
+    DrawableCompat.setTint(placeHolder, colorTint);
   }
 
   @Override protected MvpPresenter getPresenter() {
@@ -122,8 +129,8 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     GlideApp.with(getContext())
         .load(url)
         .fitCenter()
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .placeholder(colorDrawable)
+        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+        .placeholder(placeHolder)
         .dontAnimate()
         .into(roundedImageView);
   }

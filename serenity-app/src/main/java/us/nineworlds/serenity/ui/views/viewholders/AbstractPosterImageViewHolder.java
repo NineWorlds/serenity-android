@@ -3,7 +3,10 @@ package us.nineworlds.serenity.ui.views.viewholders;
 import android.graphics.drawable.ColorDrawable;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +28,8 @@ public abstract class AbstractPosterImageViewHolder<T extends ContentInfo>
   @BindView(R.id.infoGraphicMeta) @Nullable public LinearLayout infoGraphicMetaContainer;
   @BindView(R.id.posterImageView) public RoundedImageView posterImageView;
 
+  Drawable placeHolder = null;
+
   boolean isZoomedOut = false;
 
   public boolean isZoomedOut() {
@@ -38,6 +43,9 @@ public abstract class AbstractPosterImageViewHolder<T extends ContentInfo>
   public AbstractPosterImageViewHolder(View itemView) {
     super(itemView);
     ButterKnife.bind(this, itemView);
+    int colorTint = ContextCompat.getColor(itemView.getContext(), R.color.lb_tv_white);
+    placeHolder = DrawableCompat.wrap(ContextCompat.getDrawable(itemView.getContext(), R.drawable.ic_image_placeholder));
+    DrawableCompat.setTint(placeHolder, colorTint);
   }
 
   public View getItemView() {
@@ -51,12 +59,10 @@ public abstract class AbstractPosterImageViewHolder<T extends ContentInfo>
   public abstract void toggleWatchedIndicator(T contentInfo);
 
   public void loadImage(String url) {
-    ColorDrawable colorDrawable = new ColorDrawable(
-        ContextCompat.getColor(posterImageView.getContext(), android.R.color.black));
     GlideApp.with(posterImageView.getContext())
         .load(url)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .placeholder(colorDrawable)
+        .diskCacheStrategy(DiskCacheStrategy.NONE)
+        .placeholder(placeHolder)
         .dontAnimate()
         .into(posterImageView);
   }

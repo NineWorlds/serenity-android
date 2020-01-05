@@ -37,12 +37,17 @@ import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemClickListener;
 
 public class TVShowSeasonOnItemClickListener extends AbstractVideoOnItemClickListener {
 
-  private final Activity context;
+  private Activity context;
 
+  @Deprecated
   public TVShowSeasonOnItemClickListener(Context c, AbstractPosterImageGalleryAdapter adapter) {
     super(adapter);
     context = (Activity) c;
     this.adapter = adapter;
+  }
+
+  public TVShowSeasonOnItemClickListener() {
+    super();
   }
 
   @Override protected VideoContentInfo getVideoInfo(int position) {
@@ -57,6 +62,7 @@ public class TVShowSeasonOnItemClickListener extends AbstractVideoOnItemClickLis
 
   @Override
   public void onItemClick(View v, ContentInfo item) {
+    context = getActivity(v.getContext());
     SeriesContentInfo info = (SeriesContentInfo) item;
     Intent intent = new Intent(context, EpisodeBrowserActivity.class);
     intent.putExtra("key", info.getKey());

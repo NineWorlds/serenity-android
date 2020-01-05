@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.emby.adapters
 
+import timber.log.Timber
 import us.nineworlds.serenity.common.media.model.IDirectory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.emby.model.Directory
@@ -112,6 +113,7 @@ class MediaContainerAdaptor {
 
       seriesEntry.art = "/emby/Items/${item.id}/Images/Thumb"
       seriesEntry.thumb = "/emby/Items/${item.id}/Images/Primary"
+      Timber.e("Media Container Series = ${seriesEntry.title} - image url = ${seriesEntry.thumb}")
       seriesEntry.banner = "/emby/Items/${item.id}/Images/Banner"
 
       seriesVideos.add(seriesEntry)

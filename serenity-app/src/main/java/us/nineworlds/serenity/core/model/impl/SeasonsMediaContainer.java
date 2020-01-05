@@ -64,6 +64,7 @@ public class SeasonsMediaContainer extends SeriesMediaContainer {
         turl = baseUrl + show.getThumb().replaceFirst("/", "");
       }
       mpi.setImageURL(turl);
+      mpi.setThumbNailURL(turl);
       mpi.setKey(show.getKey());
 
       mpi.setTitle(show.getTitle());

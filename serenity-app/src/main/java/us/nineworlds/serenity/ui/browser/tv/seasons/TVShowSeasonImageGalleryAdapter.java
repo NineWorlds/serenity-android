@@ -39,6 +39,7 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.adapters.RecyclerViewDiffUtil;
 
+@Deprecated
 public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 
   private List<SeriesContentInfo> seasonList = null;

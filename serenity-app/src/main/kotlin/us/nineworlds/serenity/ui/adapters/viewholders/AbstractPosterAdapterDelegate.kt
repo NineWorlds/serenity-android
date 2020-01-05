@@ -23,7 +23,7 @@ abstract class AbstractPosterAdapterDelegate<I : T, T, VH : ViewHolder> : AbsLis
   private var scaleBigAnimation: Animation? = null
 
   protected var onItemClickListener: AbstractVideoOnItemClickListener? = null
-  protected var onItemSelectedListener: AbstractVideoOnItemSelectedListener? = null
+  var onItemSelectedListener: AbstractVideoOnItemSelectedListener? = null
 
   protected open fun zoomIn(view: View) {
     view.clearAnimation()

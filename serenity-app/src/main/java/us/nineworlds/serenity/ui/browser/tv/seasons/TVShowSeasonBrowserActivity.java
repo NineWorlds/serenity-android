@@ -33,6 +33,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hannesdorfmann.adapterdelegates4.AdapterDelegate;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,11 +43,14 @@ import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import moxy.presenter.InjectPresenter;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
+import us.nineworlds.serenity.ui.adapters.TVSeasonsAdapterDelegate;
+import us.nineworlds.serenity.ui.adapters.VideoContentInfoAdapter;
 import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
 import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
@@ -98,13 +104,14 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     }
 
     protected void setupSeasons() {
-        TVShowSeasonImageGalleryAdapter adapter = new TVShowSeasonImageGalleryAdapter();
-        adapter.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this, adapter));
-        adapter.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this, adapter));
+        VideoContentInfoAdapter seasonsAdapter = new VideoContentInfoAdapter();
+        List<AdapterDelegate<List<ContentInfo>>> seasonsdelegates = new ArrayList<>();
+        seasonsdelegates.add(new TVSeasonsAdapterDelegate());
+        seasonsAdapter.addDelegates(seasonsdelegates);
 
         tvShowSeasonsGallery.setClipChildren(false);
         tvShowSeasonsGallery.setClipToPadding(false);
-        tvShowSeasonsGallery.setAdapter(adapter);
+        tvShowSeasonsGallery.setAdapter(seasonsAdapter);
         tvShowSeasonsGallery.setItemAnimator(new FadeInAnimator());
         LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -118,7 +125,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
         tvShowSeasonsGallery.setFocusable(true);
 
         SeasonsEpisodePosterImageGalleryAdapter episodeAdapter = new SeasonsEpisodePosterImageGalleryAdapter();
-        adapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(episodeAdapter));
+        episodeAdapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(episodeAdapter));
         gridView.setClipToPadding(false);
         gridView.setClipChildren(false);
         gridView.setClipToOutline(false);
@@ -142,8 +149,7 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     }
 
     protected RecyclerView.ItemDecoration createItemDecorator() {
-        return new SpaceItemDecoration(
-                getResources().getDimensionPixelSize(R.dimen.horizontal_spacing));
+        return new SpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.horizontal_spacing));
     }
 
     @Override
@@ -187,16 +193,19 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
             textView.setText(Integer.toString(seasons.size()) + getString(R.string._item_s_));
         }
 
-        TVShowSeasonImageGalleryAdapter adapter =
-                (TVShowSeasonImageGalleryAdapter) tvShowSeasonsGallery.getAdapter();
-        adapter.updateSeasonsList(seasons);
+        VideoContentInfoAdapter adapter =
+                (VideoContentInfoAdapter) tvShowSeasonsGallery.getAdapter();
+        List<ContentInfo> contentInfoList = new ArrayList<>();
+        contentInfoList.addAll(seasons);
+        adapter.setItems(contentInfoList);
 
         postDelayed.postDelayed(() -> {
             dataLoadingContainer.setVisibility(View.GONE);
             View childView = tvShowSeasonsGallery.getChildAt(0);
             if (childView != null) {
-                tvShowSeasonsGallery.getChildAt(0).requestFocus();
-                adapter.getOnItemSelectedListener().onItemSelected(tvShowSeasonsGallery.getChildAt(0), 0);
+                childView.requestFocusFromTouch();
+                adapter.forceSelectionForFirstAdapter(childView);
+                //adapter..onItemSelected(tvShowSeasonsGallery.getChildAt(0), 0);
             }
         }, 750);
     }

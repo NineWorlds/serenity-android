@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap android:src="@drawable/ic_image_placeholder"
+                android:gravity="center"
+                android:tint="@color/lb_tv_white"/>
+    </item>
+</layer-list>

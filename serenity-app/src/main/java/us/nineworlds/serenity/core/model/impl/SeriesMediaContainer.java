@@ -26,6 +26,8 @@ package us.nineworlds.serenity.core.model.impl;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import timber.log.Timber;
 import us.nineworlds.serenity.common.media.model.IDirectory;
 import us.nineworlds.serenity.common.media.model.IGenre;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
@@ -87,6 +89,7 @@ public class SeriesMediaContainer extends AbstractMediaContainer {
           mpi.setImageURL(turl);
 
           String thumbURL = "";
+          Timber.e("Series Media Container thumb url: " + show.getThumb());
           if (show.getThumb() != null) {
             thumbURL = baseUrl + show.getThumb().replaceFirst("/", "");
           }
