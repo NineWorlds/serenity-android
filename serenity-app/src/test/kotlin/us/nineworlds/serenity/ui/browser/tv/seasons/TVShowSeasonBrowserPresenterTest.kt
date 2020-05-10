@@ -2,8 +2,8 @@ package us.nineworlds.serenity.ui.browser.tv.seasons
 
 import android.content.res.Resources
 import com.birbit.android.jobqueue.JobManager
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.verify
 import org.apache.commons.lang3.RandomStringUtils
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before

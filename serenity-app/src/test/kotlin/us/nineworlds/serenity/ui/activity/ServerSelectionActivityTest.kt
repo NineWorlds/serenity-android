@@ -4,8 +4,8 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.whenever
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before

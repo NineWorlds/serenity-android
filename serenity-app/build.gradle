@@ -241,7 +241,7 @@ dependencies {
     exclude group: 'xpp3'
   }
 
-  testImplementation "com.nhaarman:mockito-kotlin:1.6.0"
+  testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
   testImplementation "org.apache.commons:commons-lang3:$commonsLangVersion"
 
   testImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"

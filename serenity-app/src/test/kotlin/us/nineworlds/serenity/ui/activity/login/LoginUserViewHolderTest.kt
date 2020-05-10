@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.whenever
 import org.apache.commons.lang3.RandomStringUtils
 import org.assertj.android.api.Assertions.assertThat
 import org.junit.Before

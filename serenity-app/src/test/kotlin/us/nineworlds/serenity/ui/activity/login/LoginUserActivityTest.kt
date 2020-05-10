@@ -3,8 +3,8 @@ package us.nineworlds.serenity.ui.activity.login
 import android.content.Intent
 import android.view.View.VISIBLE
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.verify
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
