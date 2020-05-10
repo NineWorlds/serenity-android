@@ -20,6 +20,9 @@ repositories {
   flatDir {
     dirs 'embylib'
   }
+  maven {
+    url "https://oss.sonatype.org/content/repositories/snapshots"
+  }
 }
 
 apply plugin: 'com.android.library'
@@ -34,6 +37,7 @@ android {
   }
 
   compileSdkVersion 28
+  testOptions.unitTests.includeAndroidResources = true
 
   sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
@@ -88,13 +92,12 @@ dependencies {
   testImplementation "junit:junit:$junitVersion"
   testImplementation "org.assertj:assertj-core:$assertjVersion"
   testImplementation "org.mockito:mockito-core:$mockitoVersion"
-  testImplementation("org.robolectric:robolectric:$robolectricVersion") {
-    exclude module: 'support-v4'
-  }
+  testImplementation("org.robolectric:robolectric:$robolectricVersion")
   testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
   testImplementation "org.robolectric:shadowapi:$robolectricVersion"
   testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
   testImplementation "org.khronos:opengl-api:$openglApiVersion"
+  testImplementation "androidx.test:core:1.2.0"
 
   testImplementation "com.github.stephanenicolas.toothpick:toothpick-testing:$toothPickVersion"
   kaptTest "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"

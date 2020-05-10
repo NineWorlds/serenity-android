@@ -29,6 +29,7 @@ repositories {
     url 'https://maven.google.com/'
   }
   maven { url 'https://jitpack.io' }
+  maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 apply plugin: 'com.android.application'
@@ -79,6 +80,7 @@ android {
   }
 
   compileSdkVersion 28
+  testOptions.unitTests.includeAndroidResources = true
 
   if (project.hasProperty("keystore")) {
     signingConfigs {
@@ -143,17 +145,17 @@ android {
   }
 }
 
-afterEvaluate {
-  tasks.matching {
-    it.name.startsWith('dex')
-  }.each { dx ->
-    if (dx.additionalParameters == null) {
-      dx.additionalParameters = ['--multi-dex']
-    } else {
-      dx.additionalParameters += '--multi-dex'
-    }
-  }
-}
+//afterEvaluate {
+//  tasks.matching {
+//    it.name.startsWith('dex')
+//  }.each { dx ->
+//    if (dx.additionalParameters == null) {
+//      dx.additionalParameters = ['--multi-dex']
+//    } else {
+//      dx.additionalParameters += '--multi-dex'
+//    }
+//  }
+//}
 
 dependencies {
 
@@ -293,17 +295,17 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
   def mainSrc = "${project.projectDir}/src/main/java"
   def kotlinSrc = "${project.projectDir}/src/main/kotlin"
 
-  classDirectories = fileTree(
+  classDirectories.setFrom(fileTree(
           dir: "$buildDir/intermediates/javac/debug/classes",
           excludes: fileFilter) + fileTree(
           dir: "$buildDir/tmp/kotlin-classes/debug",
-          excludes: fileFilter)
+          excludes: fileFilter))
 
   // sources
-  sourceDirectories = files([
+  sourceDirectories.setFrom(files([
           mainSrc,
           kotlinSrc
-  ])
+  ]))
 
-  executionData = files("${buildDir}/jacoco/testDebugUnitTest.exec")
+  executionData.setFrom(files("${buildDir}/jacoco/testDebugUnitTest.exec"))
 }
