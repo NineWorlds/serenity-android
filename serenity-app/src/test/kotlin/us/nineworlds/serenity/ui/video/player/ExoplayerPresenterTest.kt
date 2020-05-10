@@ -1,8 +1,15 @@
 package us.nineworlds.serenity.ui.video.player
 
 import android.view.View
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.birbit.android.jobqueue.JobManager
 import com.nhaarman.mockito_kotlin.atLeastOnce
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.never
+import com.nhaarman.mockito_kotlin.spy
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.apache.commons.lang3.RandomStringUtils
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.greenrobot.eventbus.EventBus
@@ -15,10 +22,6 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mock
 import org.mockito.Mockito.any
-import org.mockito.Mockito.doReturn
-import org.mockito.Mockito.never
-import org.mockito.Mockito.spy
-import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import org.mockito.quality.Strictness.LENIENT
@@ -34,12 +37,11 @@ import us.nineworlds.serenity.injection.ForVideoQueue
 import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
 import us.nineworlds.serenity.jobs.video.WatchedStatusJob
 import us.nineworlds.serenity.test.InjectingTest
-import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import java.util.LinkedList
 import java.util.Random
 import javax.inject.Inject
 
-@RunWith(PlainAndroidRunner::class)
+@RunWith(AndroidJUnit4::class)
 class ExoplayerPresenterTest : InjectingTest() {
 
   @Rule
@@ -75,7 +77,7 @@ class ExoplayerPresenterTest : InjectingTest() {
     presenter = spy(ExoplayerPresenter())
     presenter.attachView(mockView)
 
-    doReturn(mockView).`when`(presenter).viewState
+    doReturn(mockView).whenever(presenter).viewState
   }
 
   @Test
@@ -92,7 +94,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
   @Test
   fun onScreenDisplayEventShowsControllerWhenHidden() {
-    doReturn(false).`when`(mockOnScreenDisplayEvent).isShowing
+    doReturn(false).whenever(mockOnScreenDisplayEvent).isShowing
 
     presenter.onOnScreenDisplayEvent(mockOnScreenDisplayEvent)
 
@@ -103,7 +105,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
   @Test
   fun onScreenDisplayEventHidesViewControlWhenShowing() {
-    doReturn(true).`when`(mockOnScreenDisplayEvent).isShowing
+    doReturn(true).whenever(mockOnScreenDisplayEvent).isShowing
 
     presenter.onOnScreenDisplayEvent(mockOnScreenDisplayEvent)
 
@@ -150,7 +152,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
   @Test
   fun playBackFromVideoQueueDoesNothingWhenEmpty() {
-    doReturn(true).`when`(mockVideoQueue).isEmpty()
+    doReturn(true).whenever(mockVideoQueue).isEmpty()
 
     presenter.playBackFromVideoQueue()
 
@@ -164,11 +166,11 @@ class ExoplayerPresenterTest : InjectingTest() {
     val expectedId = RandomStringUtils.randomNumeric(1)
     val expectedUrl = "http://www.example.com/start.mkv"
 
-    doReturn(mockVideoContentInfo).`when`(mockVideoQueue).poll()
-    doReturn(false).`when`(mockVideoQueue).isEmpty()
-    doReturn("avi").`when`(mockVideoContentInfo).container
-    doReturn(expectedId).`when`(mockVideoContentInfo).id()
-    doReturn(expectedUrl).`when`(mockPlexFactory).createTranscodeUrl(anyString(), anyInt())
+    doReturn(mockVideoContentInfo).whenever(mockVideoQueue).poll()
+    doReturn(false).whenever(mockVideoQueue).isEmpty()
+    doReturn("avi").whenever(mockVideoContentInfo).container
+    doReturn(expectedId).whenever(mockVideoContentInfo).id()
+    doReturn(expectedUrl).whenever(mockPlexFactory).createTranscodeUrl(anyString(), anyInt())
 
     presenter.playBackFromVideoQueue()
 

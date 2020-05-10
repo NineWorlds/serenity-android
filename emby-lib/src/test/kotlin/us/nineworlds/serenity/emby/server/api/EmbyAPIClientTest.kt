@@ -1,6 +1,5 @@
 package us.nineworlds.serenity.emby.server.api
 
-import android.os.Build.VERSION_CODES.M
 import androidx.test.core.app.ApplicationProvider
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -12,7 +11,7 @@ import org.robolectric.shadows.ShadowLog
 import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 
 @RunWith(RobolectricTestRunner::class)
-@Config(minSdk = M)
+@Config(sdk = intArrayOf(28))
 class EmbyAPIClientTest {
 
   lateinit var client: EmbyAPIClient

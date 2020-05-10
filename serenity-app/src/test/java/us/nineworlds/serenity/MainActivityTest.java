@@ -43,6 +43,7 @@ import org.mockito.Mock;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.LooperMode;
 
 import java.util.LinkedList;
 
@@ -64,6 +65,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(qualifiers = "large")
+@LooperMode(LooperMode.Mode.LEGACY)
 public class MainActivityTest extends InjectingTest {
 
     @Mock

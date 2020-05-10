@@ -43,6 +43,7 @@ import org.mockito.junit.MockitoRule;
 import org.mockito.quality.Strictness;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.LooperMode;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
@@ -66,6 +67,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
  *
  */
 @RunWith(RobolectricTestRunner.class)
+@LooperMode(LooperMode.Mode.LEGACY)
 public class GridSubtitleVolleyResponseListenerTest extends InjectingTest {
 
     @Rule

@@ -79,7 +79,7 @@ android {
     test.java.srcDirs += 'src/test/kotlin'
   }
 
-  compileSdkVersion 28
+  compileSdkVersion 29
   testOptions.unitTests.includeAndroidResources = true
 
   if (project.hasProperty("keystore")) {
@@ -264,6 +264,7 @@ dependencies {
   testImplementation "androidx.test:core:1.2.0"
   testImplementation "org.khronos:opengl-api:$openglApiVersion"
   testImplementation "org.mockito:mockito-core:$mockitoVersion"
+  testImplementation 'androidx.test.ext:junit:1.1.1'
 
   kaptTest "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"
 

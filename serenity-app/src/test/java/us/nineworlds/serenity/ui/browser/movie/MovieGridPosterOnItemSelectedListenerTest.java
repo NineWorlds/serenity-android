@@ -79,8 +79,8 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
   MovieBrowserActivity movieBrowserActivity;
 
   @Override @Before public void setUp() throws Exception {
-    ShadowApplication shadowApplication = shadowOf(application);
-    shadowApplication.declareActionUnbindable("com.google.android.gms.analytics.service.START");
+//    ShadowApplication shadowApplication = shadowOf(application);
+//    shadowApplication.declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
     MockitoAnnotations.initMocks(this);
     super.setUp();

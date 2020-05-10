@@ -41,6 +41,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.LooperMode;
+
 import toothpick.config.Module;
 import us.nineworlds.serenity.MainActivity;
 import us.nineworlds.serenity.TestingModule;
@@ -53,6 +55,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(qualifiers = "large")
+@LooperMode(LooperMode.Mode.LEGACY)
 public class AbstractPosterImageGalleryAdapterTest extends InjectingTest {
 
   AbstractPosterImageGalleryAdapter abstractPosterImageGalleryAdapter;
