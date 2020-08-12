@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/background_dark">
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@android:color/background_dark"
+>
 
-  <include layout="@layout/include_loading_progress"
+  <include
+    layout="@layout/include_loading_progress"
     android:layout_width="150dp"
     android:layout_height="150dp"
-    android:layout_centerInParent="true"/>
+    android:layout_centerInParent="true" />
 
   <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentTop="true"
-      android:layout_margin="20dp"
-      android:focusable="false"
-      android:gravity="center_horizontal"
-      android:text="@string/select_a_user_profile"
-      android:textSize="24sp"
-      />
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_margin="20dp"
+    android:focusable="false"
+    android:gravity="center_horizontal"
+    android:text="@string/select_a_user_profile"
+    android:textSize="24sp" />
 
   <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/login_user_container"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
-      android:visibility="gone"
-      app:isAutoProcessFocus="true"
-      app:focusDrawable="@drawable/rounded_transparent_border"
-      tools:itemCount="3"
-      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      tools:layout_height="160dp"
-      tools:listItem="@layout/item_user_profile"
-      tools:orientation="horizontal"
-      >
-    <requestFocus/>
+    android:id="@+id/login_user_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:visibility="gone"
+    app:isAutoProcessFocus="true"
+    app:focusDrawable="@drawable/rounded_transparent_border"
+    tools:itemCount="3"
+    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    tools:layout_height="160dp"
+    tools:listItem="@layout/item_user_profile"
+    tools:orientation="horizontal"
+  >
+    <requestFocus />
   </androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>

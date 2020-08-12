@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:background="@drawable/content_panel_dark"
-    android:layout_centerInParent="true"
-    >
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="100dp"
+  android:background="@drawable/content_panel_dark"
+  android:layout_centerInParent="true"
+>
 
   <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/mainGalleryMenu"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginTop="5dp"
-      android:layout_marginRight="5dp"
-      android:layout_marginLeft="5dp"
-      android:descendantFocusability="afterDescendants"
-      android:focusable="true"
-      android:layout_gravity="center|center_vertical"
-      android:clipChildren="false"
-      android:clipToPadding="false">
+    android:id="@+id/mainGalleryMenu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginLeft="5dp"
+    android:descendantFocusability="afterDescendants"
+    android:focusable="true"
+    android:layout_gravity="center|center_vertical"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+  >
 
-    <requestFocus/>
+    <requestFocus />
   </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>

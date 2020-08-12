@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="150dp"
   android:layout_height="150dp"
   android:layout_gravity="center"
   android:visibility="gone"
-  android:id="@+id/data_loading_container">
+  android:id="@+id/data_loading_container"
+>
 
   <ProgressBar
     android:id="@+id/data_loading_progress"
@@ -12,6 +14,6 @@
     android:layout_width="100dp"
     android:layout_height="100dp"
     android:layout_gravity="center"
-    android:layout_centerInParent="true"/>
+    android:layout_centerInParent="true" />
 
 </FrameLayout>

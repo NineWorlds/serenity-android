@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
-    android:background="@android:color/background_dark"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/drawer_layout"
+  android:background="@android:color/background_dark"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+>
 
   <!-- The main content view -->
 
   <RelativeLayout
-      android:id="@+id/movieBrowserBackgroundLayout"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      >
+    android:id="@+id/movieBrowserBackgroundLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+  >
 
     <ImageView
-        android:id="@+id/fanArt"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+      android:id="@+id/fanArt"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
 
     <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/actionbarMargin"
-        android:layout_alignParentBottom="true"
-        android:layout_height="match_parent"
-        />
+      android:id="@+id/fragment_container"
+      android:layout_width="match_parent"
+      android:layout_marginTop="@dimen/actionbarMargin"
+      android:layout_alignParentBottom="true"
+      android:layout_height="match_parent" />
 
   </RelativeLayout>
 
   <com.google.android.material.appbar.AppBarLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@color/card_background"
-          >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/card_background"
+  >
 
-    <include layout="@layout/movie_custom_actionbar"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginStart="@dimen/overscan_start_padding"
-            android:layout_marginEnd="@dimen/overscan_end_padding"/>
+    <include
+      layout="@layout/movie_custom_actionbar"
+      android:layout_width="match_parent"
+      android:layout_height="45dp"
+      android:layout_marginStart="@dimen/overscan_start_padding"
+      android:layout_marginEnd="@dimen/overscan_end_padding" />
 
 
   </com.google.android.material.appbar.AppBarLayout>

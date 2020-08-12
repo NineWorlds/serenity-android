@@ -55,6 +55,7 @@ sourceSets {
 dependencies {
 
   api project(':serenity-common')
+//  api 'org.simpleframework:simple-xml:jar:2.7.1'
   api "com.squareup.retrofit2:retrofit:$retrofitVersion"
   api "com.squareup.okhttp3:okhttp:$okhttpVersion"
   api "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
