@@ -5,8 +5,8 @@ import android.view.View
 import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.isNotNull
-import com.nhaarman.mockito_kotlin.spy
-import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockitokotlin2.spy
+import com.nhaarman.mockitokotlin2.verify
 import org.junit.After
 
 import org.junit.Before

@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clipChildren="false"
-    android:clipToPadding="false"
-    >
+<FrameLayout
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+>
 
   <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/moviePosterView"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:background="@color/card_background"
-      android:visibility="visible"
-      android:layout_marginBottom="5dp"
-      android:layout_gravity="center|center_vertical"
-      android:descendantFocusability="afterDescendants"
-      android:nextFocusUp="@+id/categoryFilter"
-      android:clipChildren="false"
-      android:clipToPadding="false">
+    android:id="@+id/moviePosterView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/card_background"
+    android:visibility="visible"
+    android:layout_marginBottom="5dp"
+    android:layout_gravity="center|center_vertical"
+    android:descendantFocusability="afterDescendants"
+    android:nextFocusUp="@+id/categoryFilter"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+  >
 
-    <requestFocus/>
+    <requestFocus />
   </androidx.recyclerview.widget.RecyclerView>
 
-  <include layout="@layout/include_loading_progress"
-      android:layout_width="150dp"
-      android:layout_height="150dp"
-      android:layout_gravity="center"/>
+  <include
+    layout="@layout/include_loading_progress"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:layout_gravity="center" />
 
 </FrameLayout>

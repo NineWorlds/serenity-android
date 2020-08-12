@@ -41,6 +41,7 @@ import org.mockito.junit.MockitoRule;
 import org.mockito.quality.Strictness;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
+import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowApplication;
 import toothpick.config.Module;
 import us.nineworlds.serenity.TestingModule;
@@ -61,6 +62,7 @@ import static org.robolectric.Robolectric.*;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
+@LooperMode(LooperMode.Mode.LEGACY)
 public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends InjectingTest {
 
     @Rule
@@ -102,10 +104,10 @@ public class SecondaryCategorySpinnerOnItemSelectedListenerTest extends Injectin
         super.setUp();
         movieBrowserActivity = buildActivity(MovieBrowserActivity.class).create().get();
 
-        ShadowApplication shadowApplication = Shadows
-                .shadowOf(application);
-        shadowApplication
-                .declareActionUnbindable("com.google.android.gms.analytics.service.START");
+//        ShadowApplication shadowApplication = Shadows
+//                .shadowOf(application);
+//        shadowApplication
+//                .declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
         onItemSelectedListener = new SecondaryCategorySpinnerOnItemSelectedListener(
                 "Action", "59", movieBrowserActivity);

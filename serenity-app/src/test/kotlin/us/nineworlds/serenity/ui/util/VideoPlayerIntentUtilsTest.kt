@@ -2,7 +2,7 @@ package us.nineworlds.serenity.ui.util
 
 import android.app.Activity
 import android.content.SharedPreferences
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import org.assertj.android.api.Assertions.assertThat
 import org.assertj.core.api.Assertions
 import org.junit.After

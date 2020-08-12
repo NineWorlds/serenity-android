@@ -23,8 +23,12 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import android.app.Application;
 import android.content.SharedPreferences;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -35,6 +39,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.LooperMode;
 import org.robolectric.shadows.ShadowApplication;
 import toothpick.config.Module;
 import us.nineworlds.serenity.R;
@@ -51,10 +56,10 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.robolectric.RuntimeEnvironment.application;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(AndroidJUnit4.class)
+@LooperMode(LooperMode.Mode.LEGACY)
 public class MovieCategorySpinnerOnItemSelectedListenerTest extends InjectingTest {
 
   @Mock
@@ -94,9 +99,9 @@ public class MovieCategorySpinnerOnItemSelectedListenerTest extends InjectingTes
     initMocks(this);
     super.setUp();
 
-    ShadowApplication shadowApplication = shadowOf(application);
-    shadowApplication
-        .declareActionUnbindable("com.google.android.gms.analytics.service.START");
+//    ShadowApplication shadowApplication = shadowOf((Application) ApplicationProvider.getApplicationContext());
+//    shadowApplication
+//        .declareActionUnbindable("com.google.android.gms.analytics.service.START");
 
     onItemSelectedListener = new MovieCategorySpinnerOnItemSelectedListener(
         "All", "59", mockMultiViewVideoActivity);

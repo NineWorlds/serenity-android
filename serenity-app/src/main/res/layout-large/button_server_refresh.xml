@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.button.MaterialButton
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/Widget.AppTheme.Button.OutlinedButton.Manual"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_serenity_corners"
-        android:text="@string/refresh_servers"
-        android:focusable="true"
-        android:layout_gravity="center_horizontal"/>
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  style="@style/Widget.AppTheme.Button.OutlinedButton.Manual"
+  android:layout_width="400dp"
+  android:layout_height="wrap_content"
+  android:background="@drawable/rounded_serenity_corners"
+  android:text="@string/refresh_servers"
+  android:focusable="true"
+  android:layout_gravity="center_horizontal" />
 

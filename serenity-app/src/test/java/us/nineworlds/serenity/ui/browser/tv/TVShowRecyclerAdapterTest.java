@@ -3,12 +3,13 @@ package us.nineworlds.serenity.ui.browser.tv;
 import android.view.ContextThemeWrapper;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import edu.emory.mathcs.backport.java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+
+import java.util.Collections;
 
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.TestingModule;

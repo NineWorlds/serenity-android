@@ -1,111 +1,117 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:clipChildren="false">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/drawer_layout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipToPadding="false"
+  android:clipChildren="false"
+>
 
   <!-- The main content view -->
 
   <RelativeLayout
-      android:id="@+id/tvshowSeasonBrowserLayout"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:clipChildren="false"
-      android:clipToPadding="false">
+    android:id="@+id/tvshowSeasonBrowserLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+  >
 
     <ImageView
-        android:id="@+id/fanArt"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+      android:id="@+id/fanArt"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="@dimen/overscan_start_padding"
-        android:paddingEnd="@dimen/overscan_end_padding"
-        android:clipChildren="false"
-        android:clipToPadding="false">
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:paddingStart="@dimen/overscan_start_padding"
+      android:paddingEnd="@dimen/overscan_end_padding"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+    >
 
       <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/episodeGridView"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_above="@+id/tvShowSeasonTitleRow"
-          android:layout_centerHorizontal="true"
-          android:layout_marginBottom="4dp"
-          android:layout_marginRight="10dp"
-          android:layout_marginTop="@dimen/actionbarMargin"
-          android:background="@color/card_background"
-          android:focusable="true"
-          android:nextFocusDown="@+id/tvShowSeasonImageGalleryLayout"
-          android:nextFocusLeft="@+id/tvShowSeasonImageGalleryLayout"
-          android:nextFocusRight="@+id/tvShowSeasonImageGalleryLayout"
-          android:descendantFocusability="afterDescendants"
-          android:visibility="gone"/>
+        android:id="@+id/episodeGridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tvShowSeasonTitleRow"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="@dimen/actionbarMargin"
+        android:background="@color/card_background"
+        android:focusable="true"
+        android:nextFocusDown="@+id/tvShowSeasonImageGalleryLayout"
+        android:nextFocusLeft="@+id/tvShowSeasonImageGalleryLayout"
+        android:nextFocusRight="@+id/tvShowSeasonImageGalleryLayout"
+        android:descendantFocusability="afterDescendants"
+        android:visibility="gone" />
 
       <LinearLayout
-          android:id="@+id/tvShowSeasonTitleRow"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_above="@+id/tvShowSeasonImageGalleryLayout"
-          android:background="@color/card_background"
-          android:orientation="horizontal">
+        android:id="@+id/tvShowSeasonTitleRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvShowSeasonImageGalleryLayout"
+        android:background="@color/card_background"
+        android:orientation="horizontal"
+      >
 
         <TextView
-            android:id="@+id/tvShowSeasonsTitle"
-            style="@android:style/TextAppearance.Holo.Medium"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="#F0F0F0"
-            tools:ignore="SelectableText"
-            />
+          android:id="@+id/tvShowSeasonsTitle"
+          style="@android:style/TextAppearance.Holo.Medium"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:textColor="#F0F0F0"
+          tools:ignore="SelectableText" />
       </LinearLayout>
 
       <LinearLayout
-          android:id="@+id/tvShowSeasonImageGalleryLayout"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:layout_alignParentBottom="true"
-          android:layout_marginBottom="5dp"
-          android:padding="5dp"
-          android:background="@color/card_background"
-          android:orientation="vertical"
-          android:clipChildren="false"
-          android:clipToPadding="false">
+        android:id="@+id/tvShowSeasonImageGalleryLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:padding="5dp"
+        android:background="@color/card_background"
+        android:orientation="vertical"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+      >
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/tvShowSeasonImageGallery"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|center_vertical"
-            android:padding="5dp"
-            android:descendantFocusability="afterDescendants"/>
+          android:id="@+id/tvShowSeasonImageGallery"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center|center_vertical"
+          android:padding="5dp"
+          android:descendantFocusability="afterDescendants" />
       </LinearLayout>
 
     </RelativeLayout>
 
-    <include layout="@layout/include_loading_progress"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerInParent="true"/>
+    <include
+      layout="@layout/include_loading_progress"
+      android:layout_width="150dp"
+      android:layout_height="150dp"
+      android:layout_centerInParent="true" />
 
   </RelativeLayout>
 
   <com.google.android.material.appbar.AppBarLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@color/card_background"
-          >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/card_background"
+  >
 
-    <include layout="@layout/season_custom_actionbar"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginStart="@dimen/overscan_start_padding"
-            android:layout_marginEnd="@dimen/overscan_end_padding"/>
+    <include
+      layout="@layout/season_custom_actionbar"
+      android:layout_width="match_parent"
+      android:layout_height="45dp"
+      android:layout_marginStart="@dimen/overscan_start_padding"
+      android:layout_marginEnd="@dimen/overscan_end_padding" />
 
   </com.google.android.material.appbar.AppBarLayout>
 

@@ -15,7 +15,7 @@ class StringPreference(
 
   @Nullable
   fun get(): String {
-    return preferences.getString(key, defaultValue)
+    return preferences.getString(key, defaultValue)!!
   }
 
   fun set(@Nullable value: String) {

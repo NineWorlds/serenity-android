@@ -1,7 +1,7 @@
 package us.nineworlds.serenity.jobs
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.verify
 import org.apache.commons.lang3.RandomStringUtils
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before
@@ -11,7 +11,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
-import org.robolectric.RobolectricTestRunner
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.events.EpisodesRetrievalEvent

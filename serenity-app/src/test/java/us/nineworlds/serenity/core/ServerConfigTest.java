@@ -35,6 +35,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.LooperMode;
 
 import toothpick.config.Module;
 import us.nineworlds.serenity.BuildConfig;
@@ -49,6 +50,7 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
+@LooperMode(LooperMode.Mode.LEGACY)
 public class ServerConfigTest extends InjectingTest {
 
 	SharedPreferences.OnSharedPreferenceChangeListener serverConfigChangeListener;

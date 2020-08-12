@@ -4,8 +4,8 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.whenever
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -18,6 +18,8 @@ import org.mockito.quality.Strictness.STRICT_STUBS
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
+import org.robolectric.annotation.LooperMode
+import org.robolectric.plugins.LegacyDependencyResolver
 import toothpick.config.Module
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.TestingModule
@@ -36,6 +38,7 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 @RunWith(RobolectricTestRunner::class)
+@LooperMode(LooperMode.Mode.LEGACY)
 class ServerSelectionActivityTest : InjectingTest() {
 
   @Rule

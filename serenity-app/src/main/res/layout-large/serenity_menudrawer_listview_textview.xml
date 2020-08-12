@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/textViewSpinnerItem"
-    android:padding="5dp"
-    style="@android:style/TextAppearance.Holo.Medium"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:textColor="@android:color/white"
-    android:background="@drawable/menu_item_selector"
-    tools:ignore="SelectableText"
-    />
+<TextView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/textViewSpinnerItem"
+  android:padding="5dp"
+  style="@android:style/TextAppearance.Holo.Medium"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:textColor="@android:color/white"
+  android:background="@drawable/menu_item_selector"
+  tools:ignore="SelectableText" />

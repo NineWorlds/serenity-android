@@ -87,7 +87,7 @@ class VideoKeyCodeHandlerDelegate(
       val currentPosition = player.currentPosition
       val duration = player.duration
 
-      if (nextPrevBehavior.endsWith("%")) {
+      if (nextPrevBehavior!!.endsWith("%")) {
         val percent = Integer.valueOf(nextPrevBehavior.substring(0, nextPrevBehavior.length - 1))
         skipTo = currentPosition + duration * percent!! / 100
       } else {
@@ -102,7 +102,7 @@ class VideoKeyCodeHandlerDelegate(
       val duration = player.duration
       if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS && nextPrevBehavior != "queue") {
         val skipTo: Long
-        if (nextPrevBehavior.endsWith("%")) {
+        if (nextPrevBehavior!!.endsWith("%")) {
           val percent = Integer.valueOf(nextPrevBehavior.substring(0, nextPrevBehavior.length - 1))
           skipTo = currentPosition - duration * percent!! / 100
         } else {
@@ -114,7 +114,7 @@ class VideoKeyCodeHandlerDelegate(
 
       if (isKeyCodeSkipForward(keyCode)) {
         skipToOffset(
-          currentPosition + Integer.valueOf(preferences.getString("skip_forward_time", "30000"))!!
+          currentPosition + Integer.valueOf(preferences.getString("skip_forward_time", "30000")!!)
         )
         return true
       }
@@ -122,8 +122,8 @@ class VideoKeyCodeHandlerDelegate(
       if (isKeyCodeSkipBack(keyCode)) {
         skipToOffset(
           currentPosition - Integer.valueOf(
-            preferences.getString("skip_backward_time", "10000")
-          )!!
+            preferences.getString("skip_backward_time", "10000")!!
+          )
         )
         return true
       }

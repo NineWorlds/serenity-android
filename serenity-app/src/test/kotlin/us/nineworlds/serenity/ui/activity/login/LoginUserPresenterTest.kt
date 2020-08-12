@@ -1,7 +1,7 @@
 package us.nineworlds.serenity.ui.activity.login
 
 import com.birbit.android.jobqueue.JobManager
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before
 import org.junit.Rule

@@ -29,6 +29,7 @@ repositories {
     url 'https://maven.google.com/'
   }
   maven { url 'https://jitpack.io' }
+  maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 apply plugin: 'com.android.application'
@@ -78,7 +79,8 @@ android {
     test.java.srcDirs += 'src/test/kotlin'
   }
 
-  compileSdkVersion 28
+  compileSdkVersion 29
+  testOptions.unitTests.includeAndroidResources = true
 
   if (project.hasProperty("keystore")) {
     signingConfigs {
@@ -143,17 +145,17 @@ android {
   }
 }
 
-afterEvaluate {
-  tasks.matching {
-    it.name.startsWith('dex')
-  }.each { dx ->
-    if (dx.additionalParameters == null) {
-      dx.additionalParameters = ['--multi-dex']
-    } else {
-      dx.additionalParameters += '--multi-dex'
-    }
-  }
-}
+//afterEvaluate {
+//  tasks.matching {
+//    it.name.startsWith('dex')
+//  }.each { dx ->
+//    if (dx.additionalParameters == null) {
+//      dx.additionalParameters = ['--multi-dex']
+//    } else {
+//      dx.additionalParameters += '--multi-dex'
+//    }
+//  }
+//}
 
 dependencies {
 
@@ -223,10 +225,8 @@ dependencies {
   implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
   implementation "net.danlew:android.joda:$jodaTimeVersion"
   implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-  //TODO Upgrade to Android X and update to 1.1.0
   implementation 'com.google.android:flexbox:1.1.0'
   implementation 'com.henryblue.library:tvrecyclerview:1.2.2'
-  //TODO Upgrade to Android X and update to 3.0.0
   implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
 
   implementation('com.github.rstanic12:Resourceful:1.0.0') {
@@ -239,7 +239,7 @@ dependencies {
     exclude group: 'xpp3'
   }
 
-  testImplementation "com.nhaarman:mockito-kotlin:1.6.0"
+  testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
   testImplementation "org.apache.commons:commons-lang3:$commonsLangVersion"
 
   testImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
@@ -262,6 +262,7 @@ dependencies {
   testImplementation "androidx.test:core:1.2.0"
   testImplementation "org.khronos:opengl-api:$openglApiVersion"
   testImplementation "org.mockito:mockito-core:$mockitoVersion"
+  testImplementation 'androidx.test.ext:junit:1.1.1'
 
   kaptTest "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"
 
@@ -293,17 +294,17 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
   def mainSrc = "${project.projectDir}/src/main/java"
   def kotlinSrc = "${project.projectDir}/src/main/kotlin"
 
-  classDirectories = fileTree(
+  classDirectories.setFrom(fileTree(
           dir: "$buildDir/intermediates/javac/debug/classes",
           excludes: fileFilter) + fileTree(
           dir: "$buildDir/tmp/kotlin-classes/debug",
-          excludes: fileFilter)
+          excludes: fileFilter))
 
   // sources
-  sourceDirectories = files([
+  sourceDirectories.setFrom(files([
           mainSrc,
           kotlinSrc
-  ])
+  ]))
 
-  executionData = files("${buildDir}/jacoco/testDebugUnitTest.exec")
+  executionData.setFrom(files("${buildDir}/jacoco/testDebugUnitTest.exec"))
 }

@@ -16,6 +16,9 @@ repositories {
   google()
   jcenter()
   mavenCentral()
+  maven {
+    url "https://oss.sonatype.org/content/repositories/snapshots"
+  }
 }
 
 apply plugin: 'com.android.library'
@@ -27,7 +30,7 @@ kapt {
 }
 
 android {
-  compileSdkVersion 28
+  compileSdkVersion 29
 
   defaultConfig {
     minSdkVersion 21

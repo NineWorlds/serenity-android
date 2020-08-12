@@ -1,6 +1,6 @@
 package us.nineworlds.serenity.jobs.videos
 
-import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockitokotlin2.verify
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.Before
 import org.junit.Rule

@@ -1,78 +1,84 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/background_dark">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/drawer_layout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@android:color/background_dark"
+>
+
+  <RelativeLayout
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+  >
+
+    <ImageView
+      android:id="@+id/mainGalleryBackground"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_centerInParent="true"
+      android:scaleType="fitXY"
+      android:src="@drawable/serenity_bonsai_splash" />
 
     <RelativeLayout
-            android:id="@+id/mainLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:paddingStart="@dimen/overscan_start_padding"
+      android:paddingEnd="@dimen/overscan_end_padding"
+    >
 
-        <ImageView
-                android:id="@+id/mainGalleryBackground"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/serenity_bonsai_splash" />
-
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="@dimen/overscan_start_padding"
-                android:paddingEnd="@dimen/overscan_end_padding">
-
-            <fragment
-                    android:id="@+id/mainMenuFragment"
-                    android:name="us.nineworlds.serenity.fragments.MainMenuFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_centerInParent="true" />
-
-        </RelativeLayout>
-
-        <include
-                layout="@layout/include_loading_progress"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_centerInParent="true" />
+      <fragment
+        android:id="@+id/mainMenuFragment"
+        android:name="us.nineworlds.serenity.fragments.MainMenuFragment"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true" />
 
     </RelativeLayout>
 
-    <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/card_background">
+    <include
+      layout="@layout/include_loading_progress"
+      android:layout_width="150dp"
+      android:layout_height="150dp"
+      android:layout_centerInParent="true" />
 
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="@dimen/overscan_start_padding"
-                android:paddingEnd="@dimen/overscan_end_padding">
+  </RelativeLayout>
 
-            <com.google.android.material.appbar.MaterialToolbar
-                    style="@style/Widget.AppTheme.Toolbar.Transparent"
-                    android:id="@+id/action_toolbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="45dp"
-                    android:layout_alignParentEnd="true"
-                    app:maxButtonHeight="45dp"
-                    app:titleTextColor="@color/white"
-                    app:menu="@menu/main_menu_botton_navigation" />
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/appBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/card_background"
+  >
 
-            <us.nineworlds.serenity.ui.views.TextClock
-                    style="@android:style/TextAppearance.Holo.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:textColor="#F0F0F0" />
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:paddingStart="@dimen/overscan_start_padding"
+      android:paddingEnd="@dimen/overscan_end_padding"
+    >
 
-        </RelativeLayout>
+      <com.google.android.material.appbar.MaterialToolbar
+        style="@style/Widget.AppTheme.Toolbar.Transparent"
+        android:id="@+id/action_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        app:maxButtonHeight="45dp"
+        app:titleTextColor="@color/white"
+        app:menu="@menu/main_menu_botton_navigation" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+      <us.nineworlds.serenity.ui.views.TextClock
+        style="@android:style/TextAppearance.Holo.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:textColor="#F0F0F0" />
+
+    </RelativeLayout>
+
+  </com.google.android.material.appbar.AppBarLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

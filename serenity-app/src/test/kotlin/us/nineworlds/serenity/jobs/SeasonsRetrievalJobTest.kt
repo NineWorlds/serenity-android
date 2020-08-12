@@ -1,7 +1,8 @@
 package us.nineworlds.serenity.jobs
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.verify
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.verify
 import org.apache.commons.lang3.RandomStringUtils
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before
@@ -12,6 +13,7 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.LooperMode
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.events.SeasonsRetrievalEvent
@@ -19,7 +21,7 @@ import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import javax.inject.Inject
 
-@RunWith(PlainAndroidRunner::class)
+@RunWith(AndroidJUnit4::class)
 class SeasonsRetrievalJobTest : InjectingTest() {
 
   @Rule
