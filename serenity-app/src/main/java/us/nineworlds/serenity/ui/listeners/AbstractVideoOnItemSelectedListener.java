@@ -33,7 +33,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import com.android.volley.RequestQueue;
 import com.birbit.android.jobqueue.JobManager;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -71,7 +70,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector {
     protected View currentView;
     protected int position;
     protected VideoContentInfo videoInfo;
-    protected RequestQueue queue;
 
     protected abstract void createVideoDetail(ImageView v);
 

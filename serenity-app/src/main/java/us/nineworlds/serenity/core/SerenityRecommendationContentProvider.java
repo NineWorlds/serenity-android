@@ -33,11 +33,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
-import okhttp3.OkHttpClient;
-import okhttp3.OkUrlFactory;
 
 /**
  * Provides a background image for Recommendations for a RecommendationCardView.
@@ -63,8 +61,6 @@ public class SerenityRecommendationContentProvider extends ContentProvider {
   public static final String AUTHORITY = "us.nineworlds.serenity.core.SerenityRecommendationContentProvider";
   public static final String CONTENT_URI = "content://" + AUTHORITY + "/";
 
-  OkHttpClient httpClient = new OkHttpClient();
-
   public SerenityRecommendationContentProvider() {
     super();
   }
@@ -83,9 +79,7 @@ public class SerenityRecommendationContentProvider extends ContentProvider {
       String decodedUrl = URLDecoder.decode(url.replaceFirst("/", ""), "UTF-8");
       pipe = ParcelFileDescriptor.createPipe();
 
-      OkUrlFactory factory = new OkUrlFactory(httpClient);
-
-      HttpURLConnection connection = factory.open(new URL(decodedUrl));
+      URLConnection connection = new URL(decodedUrl).openConnection();
 
       new TransferThread(connection.getInputStream(), new ParcelFileDescriptor.AutoCloseOutputStream(pipe[1])).start();
     } catch (IOException e) {

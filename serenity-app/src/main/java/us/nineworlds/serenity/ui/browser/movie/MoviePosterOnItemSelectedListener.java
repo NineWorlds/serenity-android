@@ -32,15 +32,12 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.Spinner;
 import android.widget.TextView;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue.RequestFilter;
 import com.bumptech.glide.Glide;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
-import us.nineworlds.serenity.ui.util.ImageUtils;
 
 /**
  * When a poster is selected, update the information displayed in the browser.
@@ -110,12 +107,6 @@ public class MoviePosterOnItemSelectedListener extends AbstractVideoOnItemSelect
   }
 
   @Override public void fetchSubtitle(VideoContentInfo mpi) {
-    if (queue != null) {
-      queue.cancelAll(request -> {
-        request.cancel();
-        return true;
-      });
-    }
     super.fetchSubtitle(mpi);
   }
 
