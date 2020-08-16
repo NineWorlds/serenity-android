@@ -60,6 +60,12 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
     presenter.retrieveAllUsers()
   }
 
+  override fun onResume() {
+    super.onResume()
+
+    profileContainer.requestFocusFromTouch()
+  }
+
   private fun setupProfileContainer() {
     profileContainer.visibility = GONE
     adapter = LoginUserAdapter(presenter)
@@ -74,6 +80,7 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
     dataLoadingContainer.visibility = GONE
     profileContainer.visibility = VISIBLE
     adapter.loadUsers(serenityUser)
+    profileContainer.requestFocusFromTouch()
   }
 
   override fun launchNextScreen() {
