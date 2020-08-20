@@ -19,7 +19,6 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
@@ -160,7 +159,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   override fun pause() {
     player.playWhenReady = false
-    presenter.stopPlaying()
+    presenter.stopPlaying(player.currentPosition)
     progressReportinghandler.removeCallbacks(progressRunnable)
   }
 
@@ -176,14 +175,14 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
     val mediaSource: MediaSource = buildMediaSource(Uri.parse(videoUrl))
 
-
     videoKeyHandler = VideoKeyCodeHandlerDelegate(player, this, presenter)
-    progressReportinghandler.postDelayed(progressRunnable, PROGRESS_UPDATE_DELAY.toLong())
 
+    player.prepare(mediaSource, offset <= 0, false)
+    log.debug("Player offset: $offset")
     if (offset > 0) {
       player.seekTo(offset.toLong())
     }
-    player.prepare(mediaSource, offset <= 0, false)
+    progressReportinghandler.postDelayed(progressRunnable, PROGRESS_UPDATE_DELAY.toLong())
   }
 
   internal fun createSimpleExoplayer(): SimpleExoPlayer {

@@ -9,11 +9,13 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations.initMocks
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 import toothpick.config.Module
 import us.nineworlds.serenity.common.android.injection.ApplicationContext
 import us.nineworlds.serenity.emby.test.InjectingTest
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [28])
 class EmbyServerJobTest : InjectingTest() {
 
   @Mock

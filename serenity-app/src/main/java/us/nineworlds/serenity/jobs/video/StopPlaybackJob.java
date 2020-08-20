@@ -12,10 +12,12 @@ public class StopPlaybackJob extends InjectingJob {
   @Inject SerenityClient serenityClient;
 
   private String videoId;
+  private long offset;
 
-  public StopPlaybackJob(String videoId) {
+  public StopPlaybackJob(String videoId, long offset) {
     super();
     this.videoId = videoId;
+    this.offset = offset;
   }
 
   @Override public void onAdded() {
@@ -23,7 +25,7 @@ public class StopPlaybackJob extends InjectingJob {
   }
 
   @Override public void onRun() throws Throwable {
-    serenityClient.stopPlaying(videoId);
+    serenityClient.stopPlaying(videoId, offset);
   }
 
   @Override protected void onCancel(int cancelReason, @Nullable Throwable throwable) {

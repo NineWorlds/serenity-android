@@ -151,7 +151,8 @@ class MediaContainerAdaptor {
       }
       video.thumbNailImageKey = "/emby/Items/${item.id}/Images/Primary"
       video.viewCount = item.userData?.playCount?.toInt() ?: 0
-      video.viewOffset = convertTicksToMilliseconds(item.userData?.playbackPositionTicks ?: 0)
+      val offset = convertTicksToMilliseconds(item.userData?.playbackPositionTicks ?: 0)
+      video.viewOffset = offset
       video.episode = item.episodeNumber
 
       val container = if (item.container != null && item.container.contains(",")) {

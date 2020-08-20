@@ -418,11 +418,13 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     call.execute()
   }
 
-  override fun stopPlaying(itemId: String) {
+  override fun stopPlaying(itemId: String, offset: Long) {
     if (userId == null) {
       userId = fetchUserId()
     }
-    val call = usersService.stopPlaying(headerMap(), userId!!, itemId)
+    val positionTicks = offset.times(10000)
+
+    val call = usersService.stopPlaying(headerMap(), userId!!, itemId, null, positionTicks.toString())
     call.execute()
   }
 

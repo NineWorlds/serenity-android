@@ -238,7 +238,7 @@ public class PlexappFactory implements SerenityClient {
     // DO NOTHING as plex doesn't care when you start or stop
   }
 
-  @Override public void stopPlaying(String key) {
+  @Override public void stopPlaying(String key, long currentPosition) {
     // DO NOTHING as plex doesn't care when you start or stop
   }
 

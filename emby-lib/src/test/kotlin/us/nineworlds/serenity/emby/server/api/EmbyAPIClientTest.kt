@@ -11,7 +11,7 @@ import org.robolectric.shadows.ShadowLog
 import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = intArrayOf(28))
+@Config(sdk = [28])
 class EmbyAPIClientTest {
 
   lateinit var client: EmbyAPIClient
@@ -100,11 +100,10 @@ class EmbyAPIClientTest {
 
   }
 
-  fun authenticate(): AuthenticationResult {
+  private fun authenticate(): AuthenticationResult {
     val users = client.fetchAllPublicUsers()
     val user = users[0]
 
-    val authenticateResult = client.authenticate(user.name!!, "")
-    return authenticateResult
+    return client.authenticate(user.name!!, "")
   }
 }

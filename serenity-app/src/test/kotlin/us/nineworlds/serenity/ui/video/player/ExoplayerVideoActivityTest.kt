@@ -1,16 +1,15 @@
 package us.nineworlds.serenity.ui.video.player
 
-import android.content.Intent
 import android.net.Uri
 import android.view.KeyEvent
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.trackselection.TrackSelector
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
+import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.whenever
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Java6Assertions.assertThat
@@ -180,7 +179,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     activity.onBackPressed()
 
     verify(mockPlayer).playWhenReady = false
-    verify(mockExoPlayerPresenter).stopPlaying()
+    verify(mockExoPlayerPresenter).stopPlaying(anyOrNull())
     verify(mockPlayer).clearVideoSurface()
     verify(mockPlayer).release()
   }
@@ -192,7 +191,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     activity.onBackPressed()
 
     verify(mockPlayer).playWhenReady = false
-    verify(mockExoPlayerPresenter).stopPlaying()
+    verify(mockExoPlayerPresenter).stopPlaying(anyOrNull())
     verify(mockPlayer).clearVideoSurface()
     verify(mockPlayer).release()
   }
@@ -205,7 +204,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
 
     assertThat(result).isTrue()
     verify(mockPlayer).playWhenReady = false
-    verify(mockExoPlayerPresenter).stopPlaying()
+    verify(mockExoPlayerPresenter).stopPlaying(anyOrNull())
     verify(mockPlayer).clearVideoSurface()
     verify(mockPlayer).release()
   }

@@ -89,7 +89,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
 
   override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
     if (Player.STATE_ENDED == playbackState) {
-      stopPlaying()
+      stopPlaying(video.resumeOffset.toLong())
       viewState.playbackEnded()
       return
     }
@@ -103,8 +103,8 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
 
   override fun videoId(): String = video.id()
 
-  override fun stopPlaying() {
-    jobManager.addJobInBackground(StopPlaybackJob(video.id()))
+  override fun stopPlaying(currentPostion: Long) {
+    jobManager.addJobInBackground(StopPlaybackJob(video.id(), currentPostion))
   }
 
   override fun startPlaying() {

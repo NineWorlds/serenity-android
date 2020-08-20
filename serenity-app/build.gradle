@@ -99,7 +99,7 @@ android {
   buildTypes {
     debug {
       minifyEnabled false
-      testCoverageEnabled true
+      testCoverageEnabled false
     }
     release {
       if (project.hasProperty("keystore")) {

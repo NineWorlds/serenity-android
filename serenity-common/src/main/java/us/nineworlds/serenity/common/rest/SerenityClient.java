@@ -69,7 +69,7 @@ public interface SerenityClient {
 
   void startPlaying(String key);
 
-  void stopPlaying(String key);
+  void stopPlaying(String key, long offset);
 
   IMediaContainer retrieveSeriesById(String key, String categoryId);
 

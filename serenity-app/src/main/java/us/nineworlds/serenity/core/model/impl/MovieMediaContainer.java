@@ -69,6 +69,7 @@ public class MovieMediaContainer extends AbstractMediaContainer {
       mpi.setStudio(movie.getStudio());
       mpi.setSummary(movie.getSummary());
 
+      long offset = movie.getViewOffset();
       mpi.setResumeOffset(Long.valueOf(movie.getViewOffset()).intValue());
       mpi.setDuration(Long.valueOf(movie.getDuration()).intValue());
 

@@ -45,7 +45,7 @@ interface ExoplayerContract {
 
     fun videoId(): String
 
-    fun stopPlaying()
+    fun stopPlaying(currentPosition: Long)
 
     fun startPlaying()
   }

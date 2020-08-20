@@ -88,8 +88,6 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
       }
     }
 
-    videoRecyclerView.requestFocus();
-
     if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
 
       if (resultCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {
