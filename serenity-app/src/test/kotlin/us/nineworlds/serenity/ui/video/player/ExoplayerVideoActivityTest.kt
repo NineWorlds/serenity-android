@@ -38,6 +38,7 @@ import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.core.util.AndroidHelper
+import us.nineworlds.serenity.core.util.TimeUtil
 import us.nineworlds.serenity.injection.AppInjectionConstants
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.test.ShadowSubtitleView
@@ -69,6 +70,9 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   @Mock
   lateinit var mockPlayer: SimpleExoPlayer
 
+  @Mock
+  lateinit var mockTimeUtil: TimeUtil
+
   @Inject
   lateinit var mockAndroidHelper: AndroidHelper
 
@@ -95,7 +99,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   fun onStartDoesNotCallsPresenterPlayBackFromVideoQueueWhenOnAPI19OrHigher() {
     activity.onStart()
 
-    verify(mockExoPlayerPresenter, never()).playBackFromVideoQueue()
+    verify(mockExoPlayerPresenter, never()).playBackFromVideoQueue(anyOrNull())
   }
 
   @Test
@@ -220,6 +224,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
       bind(DataSource.Factory::class.java).toInstance(mockDataSourceFactory)
       bind(TrackSelector::class.java).toInstance(mockMappingTrackSelector)
       bind(Logger::class.java).toInstance(mockLogger)
+      bind(TimeUtil::class.java).toInstance(mockTimeUtil)
     }
   }
 }

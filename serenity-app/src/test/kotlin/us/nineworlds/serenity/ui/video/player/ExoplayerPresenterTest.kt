@@ -151,7 +151,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
   @Test
   fun playBackFromVideoQueueDoesNothingWhenEmpty() {
-    presenter.playBackFromVideoQueue()
+    presenter.playBackFromVideoQueue(true)
 
     assertThat(mockVideoQueue).isEmpty()
     verify(mockView, never()).initializePlayer(anyString(), eq(0))
@@ -167,7 +167,7 @@ class ExoplayerPresenterTest : InjectingTest() {
     doReturn(expectedId).whenever(mockVideoContentInfo).id()
     doReturn(expectedUrl).whenever(mockPlexFactory).createTranscodeUrl(anyString(), anyInt())
 
-    presenter.playBackFromVideoQueue()
+    presenter.playBackFromVideoQueue(true)
 
     assertThat(presenter.video).isNotNull().isEqualTo(mockVideoContentInfo)
     verify(mockVideoContentInfo, atLeastOnce()).container

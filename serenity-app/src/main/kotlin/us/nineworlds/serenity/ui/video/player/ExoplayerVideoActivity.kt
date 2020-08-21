@@ -1,6 +1,8 @@
 package us.nineworlds.serenity.ui.video.player
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -30,7 +32,9 @@ import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.annotations.OpenForTesting
 import us.nineworlds.serenity.core.logger.Logger
+import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.util.AndroidHelper
+import us.nineworlds.serenity.core.util.TimeUtil
 import us.nineworlds.serenity.injection.AppInjectionConstants
 import us.nineworlds.serenity.injection.modules.ExoplayerVideoModule
 import us.nineworlds.serenity.ui.activity.SerenityActivity
@@ -59,6 +63,9 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   @Inject
   lateinit var androidHelper: AndroidHelper
 
+  @Inject
+  lateinit var timeUtil: TimeUtil
+
   @BindView(R.id.player_view)
   internal lateinit var playerView: PlayerView
 
@@ -72,6 +79,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   private val progressReportinghandler = Handler()
   private val progressRunnable = ProgressRunnable()
   private var videoKeyHandler: VideoKeyCodeHandlerDelegate? = null
+  private var autoResume: Boolean = false
 
   internal val PROGRESS_UPDATE_DELAY = 10000L
 
@@ -91,19 +99,23 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     setContentView(R.layout.activity_exoplayer_video)
     bind(this)
     overscanCompensation(this, window.decorView)
+    val intent = this.intent
+    intent?.let {intent ->
+      autoResume = intent.getBooleanExtra("autoResume", false)
+    }
   }
 
   public override fun onStart() {
     super.onStart()
     if (androidHelper.buildNumber() > Build.VERSION_CODES.M) {
-      presenter.playBackFromVideoQueue()
+      presenter.playBackFromVideoQueue(autoResume)
     }
   }
 
   public override fun onResume() {
     super.onResume()
     if (androidHelper.buildNumber() <= Build.VERSION_CODES.M) {
-      presenter.playBackFromVideoQueue()
+      presenter.playBackFromVideoQueue(autoResume)
     }
   }
 
@@ -131,12 +143,6 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     Toothpick.closeScope(scope)
     super.finish()
   }
-
-
-//  public override fun onNewIntent(intent: Intent?) {
-//    releasePlayer()
-//    setIntent(intent)
-//  }
 
   override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
     if (keyCode == KeyEvent.KEYCODE_HOME) {
@@ -269,6 +275,28 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
         log.error("Illegalstate exception occurred durring progress update. No further updates will occur.", ex)
       }
     }
+  }
+
+  override fun showResumeDialog(video: VideoContentInfo) {
+    val alertDialogBuilder =
+      AlertDialog.Builder(this, android.R.style.Theme_Holo_Dialog)
+
+    alertDialogBuilder.setTitle(R.string.resume_video)
+    alertDialogBuilder.setMessage(
+      resources.getText(R.string.resume_the_video_from_).toString() + timeUtil.formatDuration(
+        video.resumeOffset.toLong()
+      ) + resources.getText(R.string._or_restart_)
+    )
+      .setCancelable(false)
+      .setPositiveButton(R.string.resume) { _, _ -> presenter.playVideo() }
+      .setNegativeButton(R.string.restart) { _, _ ->
+        video.resumeOffset = 0
+        presenter.playVideo()
+      }
+
+    alertDialogBuilder.create()
+    val dialog = alertDialogBuilder.show()
+    dialog.getButton(DialogInterface.BUTTON_POSITIVE).requestFocusFromTouch()
   }
 }
 

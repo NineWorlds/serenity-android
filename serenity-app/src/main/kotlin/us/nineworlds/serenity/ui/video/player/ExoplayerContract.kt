@@ -3,6 +3,8 @@ package us.nineworlds.serenity.ui.video.player
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
+import us.nineworlds.serenity.core.model.VideoContentInfo
+import us.nineworlds.serenity.emby.model.Video
 
 interface ExoplayerContract {
 
@@ -31,11 +33,14 @@ interface ExoplayerContract {
 
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun playbackEnded()
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun showResumeDialog(video: VideoContentInfo)
   }
 
   interface ExoplayerPresenter {
 
-    fun playBackFromVideoQueue()
+    fun playBackFromVideoQueue(autoResume: Boolean)
 
     fun isHudShowing(): Boolean
 
@@ -48,5 +53,7 @@ interface ExoplayerContract {
     fun stopPlaying(currentPosition: Long)
 
     fun startPlaying()
+
+    fun playVideo()
   }
 }

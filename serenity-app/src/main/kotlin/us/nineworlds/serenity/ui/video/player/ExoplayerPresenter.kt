@@ -139,13 +139,22 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
     jobManager.addJobInBackground(UpdatePlaybackPostionJob(video))
   }
 
-  override fun playBackFromVideoQueue() {
+  override fun playBackFromVideoQueue(autoresume: Boolean) {
     if (videoQueue.isEmpty()) {
       return
     }
 
     this.video = videoQueue.poll()
 
+    if (!autoresume && video.isPartiallyWatched) {
+      viewState.showResumeDialog(video)
+      return
+    }
+
+    playVideo()
+  }
+
+  override fun playVideo() {
     val videoUrl: String = transcoderUrl()
 
     viewState.initializePlayer(videoUrl, video.resumeOffset)

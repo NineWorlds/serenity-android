@@ -92,4 +92,10 @@
         <item name="cardBackgroundColor">#4d4e4f</item>
     </style>
 
+    <style name="ThemeOverlay.App.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="background">@drawable/gallery_item_background</item>
+    </style>
+
 </resources>
