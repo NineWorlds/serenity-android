@@ -596,7 +596,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
       return true;
     }
 
-    if (getResumeOffset() == 0) {
+    if (getResumeOffset() == 0 && getViewCount() > 0) {
       return true;
     }
 
