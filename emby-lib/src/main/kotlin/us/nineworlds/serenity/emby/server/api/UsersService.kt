@@ -46,7 +46,7 @@ interface UsersService {
     @Query("Genres") genre: String?,
     @Query("IsPlayed") isPlayed: Boolean? = null,
     @Query("LimitCount") limitCount: Int? = null,
-    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,SeasonCount,EpisodeCount,UserData",
+    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,SeasonCount,EpisodeCount,UserData,OfficialRating",
     @Query("Ids") ids: String? = null
   ): Call<QueryResult>
 
@@ -59,7 +59,7 @@ interface UsersService {
     @Query("SortBy") sortOptions: String = "DatePlayed",
     @Query("SortOrder") sortOrder: String = "Descending",
     @Query("Filters") filters: String = "IsResumable",
-    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData"
+    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData,OfficialRating"
   ): Call<QueryResult>
 
   @GET("/emby/Users/{userId}/Items")
@@ -71,7 +71,7 @@ interface UsersService {
     @Query("SortBy") sortOptions: String = "DatePlayed",
     @Query("SortOrder") sortOrder: String = "Descending",
     @Query("Filters") filters: String = "IsUnplayed",
-    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData"
+    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData,OfficialRating"
   ): Call<QueryResult>
 
   @GET("/emby/Users/{userId}/Items?Limit=20")
@@ -84,7 +84,7 @@ interface UsersService {
     @Query("SortOrder") sortOrder: String = "Descending",
     @Query("IsPlayed") isPlayed: Boolean = false,
     @Query("Filters") filters: String = "IsNotFolder,IsUnPlayed",
-    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData"
+    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData,OfficialRating"
   ): Call<QueryResult>
 
   @GET("/emby/Users/{userId}/Items/{itemId}")
