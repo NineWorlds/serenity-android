@@ -111,6 +111,8 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
     public MainMenuViewHolder(View itemView) {
       super(itemView);
       bind(this, itemView);
+      itemView.setFocusable(true);
+      itemView.setFocusableInTouchMode(true);
     }
   }
 }

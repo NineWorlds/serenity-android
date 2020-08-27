@@ -25,6 +25,11 @@ package us.nineworlds.serenity.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+import androidx.leanback.widget.HorizontalGridView;
+import androidx.leanback.widget.OnChildSelectedListener;
+import androidx.leanback.widget.OnChildViewHolderSelectedListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,6 +47,8 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import timber.log.Timber;
 import us.nineworlds.serenity.MainMenuTextViewAdapter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
@@ -68,12 +75,19 @@ public class MainMenuFragment extends InjectingFragment {
     setRetainInstance(false);
   }
 
-  @BindView(R.id.mainGalleryMenu) RecyclerView mainGallery;
+  @BindView(R.id.mainGalleryMenu)
+  HorizontalGridView mainGallery;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.main_menu_view, container);
     unbinder = ButterKnife.bind(this, view);
     return view;
+  }
+
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    fetchData();
   }
 
   protected void fetchData() {
@@ -90,7 +104,6 @@ public class MainMenuFragment extends InjectingFragment {
 
   @Override public void onStart() {
     super.onStart();
-    fetchData();
     eventBus.register(this);
   }
 
@@ -100,13 +113,10 @@ public class MainMenuFragment extends InjectingFragment {
   }
 
   private void setupGallery() {
-    LinearLayoutManager linearLayoutManager =
-        new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-    mainGallery.setLayoutManager(linearLayoutManager);
+    mainGallery.setWindowAlignment(HorizontalGridView.WINDOW_ALIGN_BOTH_EDGE);
 
     MainMenuTextViewAdapter adapter = new MainMenuTextViewAdapter();
     mainGallery.setAdapter(adapter);
-    //mainGallery.setOnItemClickListener(new GalleryOnItemClickListener());
     mainGallery.setVisibility(View.VISIBLE);
     adapter.updateMenuItems(menuItems);
     Activity activity = getActivity();
@@ -125,7 +135,7 @@ public class MainMenuFragment extends InjectingFragment {
 
   @Override public void onResume() {
     super.onResume();
-    mainGallery.requestFocusFromTouch();
+    //mainGallery.requestFocusFromTouch();
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN) public void onMainMenuRetrievalResponse(MainMenuEvent event) {

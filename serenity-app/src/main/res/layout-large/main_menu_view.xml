@@ -9,7 +9,7 @@
   android:layout_centerInParent="true"
 >
 
-  <androidx.recyclerview.widget.RecyclerView
+  <androidx.leanback.widget.HorizontalGridView
     android:id="@+id/mainGalleryMenu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,12 +18,13 @@
     android:layout_marginLeft="5dp"
     android:descendantFocusability="afterDescendants"
     android:focusable="true"
+    android:focusableInTouchMode="true"
     android:layout_gravity="center|center_vertical"
     android:clipChildren="false"
     android:clipToPadding="false"
-  >
+    app:rowHeight="wrap_content"
+    app:numberOfRows="1">
 
-    <requestFocus />
-  </androidx.recyclerview.widget.RecyclerView>
+  </androidx.leanback.widget.HorizontalGridView>
 
 </FrameLayout>
