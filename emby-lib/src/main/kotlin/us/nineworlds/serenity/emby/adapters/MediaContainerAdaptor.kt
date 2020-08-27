@@ -93,6 +93,7 @@ class MediaContainerAdaptor {
       seriesEntry.summary = item.oveview
       seriesEntry.key = item.id
       seriesEntry.contentRating = item.officialRating
+      seriesEntry.rating = (item.communityRating ?: 0.00).toString()
 
       var totalItemCount = 0L
       var viewdItemsCount = 0L
