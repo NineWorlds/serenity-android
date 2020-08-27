@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.leanback.widget.HorizontalGridView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -68,7 +69,9 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   protected boolean restarted_state = false;
   protected String key;
 
-  @BindView(R.id.tvShowRecyclerView) RecyclerView tvShowRecyclerView;
+  @BindView(R.id.tvShowRecyclerView)
+  HorizontalGridView tvShowRecyclerView;
+
   @BindView(R.id.fanArt) View fanArt;
   @BindView(R.id.tvShowItemCount) TextView tvShowItemCountView;
   @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
@@ -120,8 +123,9 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
 
 
     if (gridViewActive) {
-      GridLayoutManager gridLayoutManager = new FocusableGridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false);
-      tvShowRecyclerView.setLayoutManager(gridLayoutManager);
+//      GridLayoutManager gridLayoutManager = new FocusableGridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false);
+//      tvShowRecyclerView.setLayoutManager(gridLayoutManager);
+      tvShowRecyclerView.setNumRows(3);
 
       tvShowRecyclerView.addItemDecoration(
           new ItemOffsetDecoration(
@@ -133,9 +137,10 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
       return;
     }
 
-    LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(this);
-    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-    tvShowRecyclerView.setLayoutManager(linearLayoutManager);
+//    LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(this);
+//    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//    tvShowRecyclerView.setLayoutManager(linearLayoutManager);
+    tvShowRecyclerView.setNumRows(1);
     tvShowRecyclerView.addItemDecoration(
         new SpaceItemDecoration(
             getResources().getDimensionPixelSize(R.dimen.horizontal_spacing)));
