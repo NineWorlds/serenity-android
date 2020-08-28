@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.leanback.widget.HorizontalGridView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,9 +66,9 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     @BindView(R.id.tvshowSeasonBrowserLayout)
     View tvShowSeasonsMainView;
     @BindView(R.id.tvShowSeasonImageGallery)
-    RecyclerView tvShowSeasonsGallery;
+    HorizontalGridView tvShowSeasonsGallery;
     @BindView(R.id.episodeGridView)
-    RecyclerView gridView;
+    HorizontalGridView gridView;
     @BindView(R.id.data_loading_container)
     FrameLayout dataLoadingContainer;
 
@@ -102,19 +103,19 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
         adapter.setOnItemClickListener(new TVShowSeasonOnItemClickListener(this, adapter));
         adapter.setOnItemSelectedListener(new TVShowSeasonOnItemSelectedListener(tvShowSeasonsMainView, this, adapter));
 
+        tvShowSeasonsGallery.setNumRows(1);
         tvShowSeasonsGallery.setClipChildren(false);
         tvShowSeasonsGallery.setClipToPadding(false);
         tvShowSeasonsGallery.setAdapter(adapter);
         tvShowSeasonsGallery.setItemAnimator(new FadeInAnimator());
-        LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        tvShowSeasonsGallery.setLayoutManager(linearLayoutManager);
+//        LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(this);
+//        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        tvShowSeasonsGallery.setLayoutManager(linearLayoutManager);
         tvShowSeasonsGallery.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
         tvShowSeasonsGallery.setHasFixedSize(true);
         tvShowSeasonsGallery.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-
-        tvShowSeasonsGallery.addItemDecoration(createItemDecorator());
+//        tvShowSeasonsGallery.addItemDecoration(createItemDecorator());
         tvShowSeasonsGallery.setFocusable(true);
 
         SeasonsEpisodePosterImageGalleryAdapter episodeAdapter = new SeasonsEpisodePosterImageGalleryAdapter();
@@ -125,26 +126,27 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
         gridView.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
         gridView.setHasFixedSize(true);
         gridView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        gridView.setNumRows(2);
 
         gridView.setAdapter(episodeAdapter);
-        gridView.addItemDecoration(createItemDecorator());
+//        gridView.addItemDecoration(createItemDecorator());
         gridView.setItemAnimator(new FadeInAnimator());
-        GridLayoutManager gridLayoutManager = new FocusableGridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false) {
-            @Override
-            public boolean supportsPredictiveItemAnimations() {
-                return false;
-            }
-        };
-        gridView.setLayoutManager(gridLayoutManager);
+//        GridLayoutManager gridLayoutManager = new FocusableGridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false) {
+//            @Override
+//            public boolean supportsPredictiveItemAnimations() {
+//                return false;
+//            }
+//        };
+//        gridView.setLayoutManager(gridLayoutManager);
 
         dataLoadingContainer.setVisibility(View.VISIBLE);
         presenter.retrieveSeasons(key);
     }
 
-    protected RecyclerView.ItemDecoration createItemDecorator() {
-        return new SpaceItemDecoration(
-                getResources().getDimensionPixelSize(R.dimen.horizontal_spacing));
-    }
+//    protected RecyclerView.ItemDecoration createItemDecorator() {
+//        return new SpaceItemDecoration(
+//                getResources().getDimensionPixelSize(R.dimen.horizontal_spacing));
+//    }
 
     @Override
     protected void onRestart() {
@@ -190,13 +192,14 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
         TVShowSeasonImageGalleryAdapter adapter =
                 (TVShowSeasonImageGalleryAdapter) tvShowSeasonsGallery.getAdapter();
         adapter.updateSeasonsList(seasons);
+        dataLoadingContainer.setVisibility(View.GONE);
+        tvShowSeasonsGallery.requestFocusFromTouch();
 
         postDelayed.postDelayed(() -> {
-            dataLoadingContainer.setVisibility(View.GONE);
             View childView = tvShowSeasonsGallery.getChildAt(0);
             if (childView != null) {
-                tvShowSeasonsGallery.getChildAt(0).requestFocus();
-                adapter.getOnItemSelectedListener().onItemSelected(tvShowSeasonsGallery.getChildAt(0), 0);
+                childView.requestFocus();
+                adapter.getOnItemSelectedListener().onItemSelected(childView, 0);
             }
         }, 750);
     }

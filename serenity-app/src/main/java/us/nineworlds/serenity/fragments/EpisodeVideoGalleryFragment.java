@@ -26,6 +26,7 @@ package us.nineworlds.serenity.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.leanback.widget.HorizontalGridView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -50,7 +51,7 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
   @Inject SharedPreferences preferences;
   @Inject protected MovieSelectedCategoryState categoryState;
 
-  private RecyclerView videoGallery;
+  private HorizontalGridView videoGallery;
 
   public EpisodeVideoGalleryFragment() {
     super();
@@ -72,6 +73,7 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
       EpisodePosterImageGalleryAdapter adapter = new EpisodePosterImageGalleryAdapter();
       adapter.setOnItemClickListener(new EpisodePosterOnItemClickListener(adapter));
       adapter.setOnItemSelectedListener(new EpisodePosterOnItemSelectedListener(adapter));
+      videoGallery.setNumRows(1);
       videoGallery.setVisibility(View.GONE);
       videoGallery.setAdapter(adapter);
       videoGallery.setItemAnimator(new FadeInAnimator());
@@ -80,15 +82,15 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
       videoGallery.setHasFixedSize(true);
       videoGallery.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-      FocusableLinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(getActivity());
-      linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-      videoGallery.setLayoutManager(linearLayoutManager);
+//      FocusableLinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(getActivity());
+//      linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//      videoGallery.setLayoutManager(linearLayoutManager);
 
-      videoGallery.addItemDecoration(new SpaceItemDecoration(
-          getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
+//      videoGallery.addItemDecoration(new SpaceItemDecoration(
+//          getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
       videoGallery.setClipToPadding(false);
       videoGallery.setClipChildren(false);
-
+      videoGallery.requestFocusFromTouch();
 
       EpisodeBrowserActivity activity = (EpisodeBrowserActivity) getActivity();
       activity.fetchEpisodes(key);

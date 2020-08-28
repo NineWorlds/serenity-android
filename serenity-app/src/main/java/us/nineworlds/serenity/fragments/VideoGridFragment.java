@@ -54,6 +54,12 @@ public class VideoGridFragment extends MovieVideoGalleryFragment {
     return view;
   }
 
+  @Override
+  protected void setupRecyclerView() {
+    super.setupRecyclerView();
+    recyclerView.setNumRows(3);
+  }
+
   @Override protected View inflateView(LayoutInflater inflater, ViewGroup container) {
     return inflater.inflate(R.layout.video_grid_fragment, null);
   }
@@ -63,10 +69,6 @@ public class VideoGridFragment extends MovieVideoGalleryFragment {
         new FocusableGridLayoutManager(getActivity(), 3,
             GridLayoutManager.HORIZONTAL, false);
     return layoutManager;
-  }
-
-  @Override protected RecyclerView.ItemDecoration createItemDecorator() {
-    return new ItemOffsetDecoration(resources.getDimensionPixelSize(R.dimen.grid_spacing_dimen));
   }
 
   @NonNull protected AbstractVideoOnItemSelectedListener createOnItemSelectedListener(MoviePosterImageAdapter adapter) {

@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.leanback.widget.HorizontalGridView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,7 +71,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
   @Inject Resources resources;
   @Inject AndroidHelper androidHelper;
 
-  @BindView(R.id.moviePosterView) protected RecyclerView recyclerView;
+  @BindView(R.id.moviePosterView) protected HorizontalGridView recyclerView;
   @BindView(R.id.data_loading_container) protected FrameLayout dataLoadingContainer;
 
   public MovieVideoGalleryFragment() {
@@ -89,19 +90,13 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     return inflater.inflate(R.layout.video_gallery_fragment, null);
   }
 
-  protected RecyclerView.ItemDecoration createItemDecorator() {
-    return new SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.horizontal_spacing));
-  }
-
   protected void setupRecyclerView() {
-    LinearLayoutManager linearLayoutManager = createLayoutManager();
     MoviePosterImageAdapter adapter = new MoviePosterImageAdapter();
     adapter.setOnItemSelectedListener(createOnItemSelectedListener(adapter));
     adapter.setOnItemClickListener(createOnItemClickListener(adapter));
 
-    recyclerView.addItemDecoration(createItemDecorator());
+    recyclerView.setNumRows(1);
     recyclerView.setAdapter(adapter);
-    recyclerView.setLayoutManager(linearLayoutManager);
     recyclerView.setHorizontalFadingEdgeEnabled(false);
     recyclerView.setItemAnimator(new FadeInAnimator());
     recyclerView.setClipToPadding(false);
@@ -112,10 +107,14 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     recyclerView.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
     recyclerView.setHasFixedSize(true);
     recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+    recyclerView.setWindowAlignment(HorizontalGridView.WINDOW_ALIGN_BOTH_EDGE);
+    recyclerView.setWindowAlignmentOffsetPercent(35);
 
-    recyclerView.requestFocus();
+    recyclerView.requestFocusFromTouch();
 
     if (!androidHelper.isAndroidTV() && !androidHelper.isAmazonFireTV()) {
+      LinearLayoutManager layoutManager = createLayoutManager();
+      recyclerView.setLayoutManager(layoutManager);
       LinearSnapHelper snapHelper = new LinearSnapHelper();
       snapHelper.attachToRecyclerView(recyclerView);
 
@@ -126,7 +125,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
           if (newState == RecyclerView.SCROLL_STATE_IDLE) {
 
-            snapHelper.findSnapView(linearLayoutManager).requestFocusFromTouch();
+            snapHelper.findSnapView(layoutManager).requestFocusFromTouch();
 //            int position = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
 //            recyclerView.findViewHolderForLayoutPosition(position).itemView.requestFocusFromTouch();
 //            adapter.notifyItemChanged(position);

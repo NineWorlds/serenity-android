@@ -113,19 +113,21 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
 
     gallery.setVisibility(View.VISIBLE);
     adapter.updateEpisodes(episodes);
+    FrameLayout dataLoadingContainer = findViewById(R.id.data_loading_container);
+    if (dataLoadingContainer != null) {
+      dataLoadingContainer.setVisibility(GONE);
+    }
+    gallery.requestFocus();
 
-    postLoadHandler.postDelayed(new Runnable() {
-      @Override public void run() {
-        FrameLayout dataLoadingContainer = findViewById(R.id.data_loading_container);
-        if (dataLoadingContainer != null) {
-          dataLoadingContainer.setVisibility(GONE);
-        }
-        gallery.requestFocus();
-        if (gallery.getChildAt(0) != null) {
-          gallery.getChildAt(0).requestFocus();
-        }
-      }
-    }, 1000);
+
+//    postLoadHandler.postDelayed(new Runnable() {
+//      @Override public void run() {
+//        gallery.requestFocus();
+//        if (gallery.getChildAt(0) != null) {
+//          gallery.getChildAt(0).requestFocus();
+//        }
+//      }
+//    }, 1000);
 
   }
 

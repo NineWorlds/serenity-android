@@ -5,6 +5,8 @@
   android:background="@android:color/background_dark"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:clipToPadding="false"
+  android:clipChildren="false"
 >
 
   <!-- The main content view -->
@@ -13,6 +15,8 @@
     android:id="@+id/movieBrowserBackgroundLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:clipChildren="false"
   >
 
     <ImageView
@@ -25,7 +29,9 @@
       android:layout_width="match_parent"
       android:layout_marginTop="@dimen/actionbarMargin"
       android:layout_alignParentBottom="true"
-      android:layout_height="match_parent" />
+      android:layout_height="match_parent"
+      android:clipChildren="false"
+      android:clipToPadding="false" />
 
   </RelativeLayout>
 
@@ -33,6 +39,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/card_background"
+    android:clipChildren="false"
+    android:clipToPadding="false"
   >
 
     <include

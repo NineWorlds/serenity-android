@@ -24,6 +24,8 @@
 package us.nineworlds.serenity.ui.browser.tv.seasons;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
@@ -34,6 +36,14 @@ import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeViewHolder;
 
 public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageGalleryAdapter {
 
+  private RecyclerView recyclerView;
+
+  @Override
+  public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+    super.onAttachedToRecyclerView(recyclerView);
+    this.recyclerView = recyclerView;
+  }
+
   @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
     EpisodeViewHolder episodeViewHolder = (EpisodeViewHolder) holder;
 
@@ -43,7 +53,7 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageG
     int height = context.getResources().getDimensionPixelSize(R.dimen.seasons_episode_image_height);
 
     episodeViewHolder.reset();
-    episodeViewHolder.createImage(pi, width, height, null);
+    episodeViewHolder.createImage(pi, width, height, recyclerView);
     episodeViewHolder.toggleWatchedIndicator(pi);
     episodeViewHolder.updateSeasonsTitle(pi);
     episodeViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));
@@ -65,7 +75,6 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageG
     if (hasFocus && view != null) {
       view.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.rounded_transparent_border));
       zoomOut(view);
-      return;
     }
   }
 }

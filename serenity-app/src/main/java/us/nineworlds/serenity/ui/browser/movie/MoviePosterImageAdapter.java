@@ -23,6 +23,7 @@
 
 package us.nineworlds.serenity.ui.browser.movie;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,10 +42,18 @@ import us.nineworlds.serenity.ui.views.viewholders.AbstractPosterImageViewHolder
 
 public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
 
+  private RecyclerView recyclerView;
+
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     StatusOverlayFrameLayout view = (StatusOverlayFrameLayout) LayoutInflater.from(parent.getContext())
         .inflate(R.layout.movie_status_overlay, parent, false);
     return new MoviePosterViewHolder(view);
+  }
+
+  @Override
+  public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+    super.onAttachedToRecyclerView(recyclerView);
+    this.recyclerView = recyclerView;
   }
 
   @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
@@ -58,7 +67,7 @@ public class MoviePosterImageAdapter extends AbstractPosterImageGalleryAdapter {
     VideoContentInfo pi = posterList.get(position);
     overlayView.setTag(pi);
     overlayView.reset();
-    overlayView.createImage(pi, width, height);
+    overlayView.createImage(pi, width, height, recyclerView.getLayoutManager());
     overlayView.toggleWatchedIndicator(pi);
     overlayView.setClickable(true);
     overlayView.setOnClickListener((view) -> onItemViewClick(view, position));

@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +20,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 import static org.assertj.android.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doNothing;
@@ -34,6 +37,12 @@ public class EpisodeViewHolderTest {
 
     @Mock
     VideoContentInfo mockVideoContentInfo;
+
+    @Mock
+    RecyclerView mockRecyclerView;
+
+    @Mock
+    RecyclerView.LayoutManager mockLayoutManager;
 
     @Before
     public void setUp() {
@@ -65,8 +74,10 @@ public class EpisodeViewHolderTest {
 
         doReturn("http://www.example.com").when(mockVideoContentInfo).getImageURL();
         doNothing().when(spy).loadImage(anyString());
+        doReturn(mockLayoutManager).when(mockRecyclerView).getLayoutManager();
+        doReturn(new RecyclerView.LayoutParams(100, 100)).when(mockLayoutManager).generateLayoutParams(any());
 
-        spy.createImage(mockVideoContentInfo, 100, 100, null);
+        spy.createImage(mockVideoContentInfo, 100, 100, mockRecyclerView);
 
         verify(spy).loadImage("http://www.example.com");
         verify(spy, never()).loadImage(null);

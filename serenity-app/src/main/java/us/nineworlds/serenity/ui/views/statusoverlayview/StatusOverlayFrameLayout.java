@@ -142,10 +142,10 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     }
   }
 
-  @Override public void createImage(VideoContentInfo pi, int imageWidth, int imageHeight) {
+  @Override public void createImage(VideoContentInfo pi, int imageWidth, int imageHeight, RecyclerView.LayoutManager layoutManager) {
     initPosterMetaData(pi, imageWidth, imageHeight);
 
-    setLayoutParams(new RecyclerView.LayoutParams(imageWidth, imageHeight));
+    setLayoutParams(layoutManager.generateLayoutParams(new RecyclerView.LayoutParams(imageWidth, imageHeight)));
   }
 
   @Override public void refresh() {

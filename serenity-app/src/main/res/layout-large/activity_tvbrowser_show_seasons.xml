@@ -1,6 +1,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/drawer_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -26,28 +27,26 @@
     <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:paddingStart="@dimen/overscan_start_padding"
-      android:paddingEnd="@dimen/overscan_end_padding"
       android:clipChildren="false"
-      android:clipToPadding="false"
-    >
+      android:clipToPadding="false">
 
-      <androidx.recyclerview.widget.RecyclerView
+      <androidx.leanback.widget.HorizontalGridView
         android:id="@+id/episodeGridView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/tvShowSeasonTitleRow"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="4dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="@dimen/actionbarMargin"
+        android:layout_marginTop="@dimen/overscan_start_padding"
         android:background="@color/card_background"
+        android:paddingStart="@dimen/overscan_start_padding"
+        android:paddingEnd="@dimen/overscan_end_padding"
         android:focusable="true"
         android:nextFocusDown="@+id/tvShowSeasonImageGalleryLayout"
         android:nextFocusLeft="@+id/tvShowSeasonImageGalleryLayout"
         android:nextFocusRight="@+id/tvShowSeasonImageGalleryLayout"
         android:descendantFocusability="afterDescendants"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:rowHeight="wrap_content" />
 
       <LinearLayout
         android:id="@+id/tvShowSeasonTitleRow"
@@ -55,8 +54,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/tvShowSeasonImageGalleryLayout"
         android:background="@color/card_background"
-        android:orientation="horizontal"
-      >
+        android:paddingStart="@dimen/overscan_start_padding"
+        android:paddingEnd="@dimen/overscan_end_padding"
+        android:orientation="horizontal">
 
         <TextView
           android:id="@+id/tvShowSeasonsTitle"
@@ -65,12 +65,12 @@
           android:layout_height="wrap_content"
           android:gravity="center"
           android:textColor="#F0F0F0"
-          tools:ignore="SelectableText" />
+          tools:ignore="SelectableText"/>
       </LinearLayout>
 
       <LinearLayout
         android:id="@+id/tvShowSeasonImageGalleryLayout"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="5dp"
@@ -78,16 +78,16 @@
         android:background="@color/card_background"
         android:orientation="vertical"
         android:clipChildren="false"
-        android:clipToPadding="false"
-      >
+        android:clipToPadding="false">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.leanback.widget.HorizontalGridView
           android:id="@+id/tvShowSeasonImageGallery"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
           android:layout_gravity="center|center_vertical"
-          android:padding="5dp"
-          android:descendantFocusability="afterDescendants" />
+          android:padding="@dimen/overscan_start_padding"
+          android:descendantFocusability="afterDescendants"
+          app:rowHeight="wrap_content" />
       </LinearLayout>
 
     </RelativeLayout>

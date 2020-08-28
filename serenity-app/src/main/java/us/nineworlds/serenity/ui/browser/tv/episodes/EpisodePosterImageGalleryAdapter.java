@@ -24,6 +24,8 @@
 package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,10 +46,18 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
  */
 public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 
+  private RecyclerView recyclerView;
+
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View view =
         LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_indicator_view, null);
     return new EpisodeViewHolder(view);
+  }
+
+  @Override
+  public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+    super.onAttachedToRecyclerView(recyclerView);
+    this.recyclerView = recyclerView;
   }
 
   @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -60,7 +70,7 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
     int height = context.getResources().getDimensionPixelSize(R.dimen.episode_image_height);
 
     viewHolder.reset();
-    viewHolder.createImage(pi, width, height, null);
+    viewHolder.createImage(pi, width, height, recyclerView);
     viewHolder.toggleWatchedIndicator(pi);
     viewHolder.getItemView().setOnClickListener((view)-> onItemViewClick(view, position));
     viewHolder.getItemView().setOnLongClickListener((view) -> onItemViewLongClick(view, position));
