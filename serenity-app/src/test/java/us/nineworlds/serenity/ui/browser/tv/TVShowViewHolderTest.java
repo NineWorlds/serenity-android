@@ -21,6 +21,7 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 
 import static org.assertj.android.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doNothing;
@@ -81,6 +82,7 @@ public class TVShowViewHolderTest {
         doReturn("http://www.example.com").when(mockSeriesInfo).getImageURL();
         doNothing().when(spy).loadImage(anyString());
         doReturn(mockLayoutManager).when(mockRecyclerView).getLayoutManager();
+        doReturn(new RecyclerView.LayoutParams(100, 100)).when(mockLayoutManager).generateLayoutParams(any());
 
         spy.createImage(mockSeriesInfo, 100, 100, mockRecyclerView);
 

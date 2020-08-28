@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import java.util.Collections;
 import org.junit.Before;
@@ -20,15 +21,16 @@ import us.nineworlds.serenity.test.InjectingTest;
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.robolectric.RuntimeEnvironment.application;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(AndroidJUnit4.class)
 public class EpisodePosterImageGalleryAdapterTest extends InjectingTest {
 
-  EpisodePosterImageGalleryAdapter adapter;
+  private EpisodePosterImageGalleryAdapter adapter;
 
   @Before
   public void setUp() throws Exception {
@@ -64,7 +66,7 @@ public class EpisodePosterImageGalleryAdapterTest extends InjectingTest {
     adapter.onBindViewHolder(mockEpisodeViewHolder, 0);
 
     verify(mockEpisodeViewHolder).reset();
-    verify(mockEpisodeViewHolder).createImage(mockSeriesContent, 250, 160, any());
+    verify(mockEpisodeViewHolder).createImage(eq(mockSeriesContent), eq(250), eq(160), any());
     verify(mockEpisodeViewHolder).toggleWatchedIndicator(mockSeriesContent);
   }
 }
