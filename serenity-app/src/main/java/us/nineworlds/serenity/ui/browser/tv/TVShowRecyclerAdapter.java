@@ -24,6 +24,8 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,6 +41,13 @@ import us.nineworlds.serenity.ui.adapters.RecyclerViewDiffUtil;
 public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
 
   protected List<SeriesContentInfo> tvShowList = new ArrayList<>();
+  private RecyclerView recyclerView;
+
+  @Override
+  public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+    super.onAttachedToRecyclerView(recyclerView);
+    this.recyclerView = recyclerView;
+  }
 
   public int getItemCount() {
     return tvShowList.size();
@@ -66,7 +75,7 @@ public class TVShowRecyclerAdapter extends AbstractPosterImageGalleryAdapter {
     int height = context.getResources().getDimensionPixelSize(R.dimen.banner_image_height);
 
     tvShowViewHolder.reset();
-    tvShowViewHolder.createImage(pi, width, height);
+    tvShowViewHolder.createImage(pi, width, height, recyclerView);
     tvShowViewHolder.toggleWatchedIndicator(pi);
     tvShowViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));
     tvShowViewHolder.getItemView().setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));

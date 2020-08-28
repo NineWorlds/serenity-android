@@ -43,6 +43,8 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
 
   private List<SeriesContentInfo> seasonList = null;
 
+  private RecyclerView recyclerView;
+
   @Inject SerenityClient serenityClient;
 
   public TVShowSeasonImageGalleryAdapter() {
@@ -55,6 +57,12 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
       return null;
     }
     return seasonList.get(position);
+  }
+
+  @Override
+  public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+    super.onAttachedToRecyclerView(recyclerView);
+    this.recyclerView = recyclerView;
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -72,13 +80,12 @@ public class TVShowSeasonImageGalleryAdapter extends AbstractPosterImageGalleryA
     int height = context.getResources().getDimensionPixelSize(R.dimen.seasons_image_height);
 
     viewHolder.reset();
-    viewHolder.createImage(pi, width, height);
+    viewHolder.createImage(pi, width, height, recyclerView);
     viewHolder.toggleWatchedIndicator(pi);
     viewHolder.getItemView().setOnClickListener((view)-> onItemViewClick(view, position));
     viewHolder.getItemView().setOnFocusChangeListener((view, focus)-> onItemViewFocusChanged(focus, view, position));
     viewHolder.getItemView().setOnLongClickListener((view) -> onItemViewLongClick(view, position));
   }
-
 
   private boolean onItemViewLongClick(View view, int position) {
     SeasonOnItemLongClickListener seasonOnItemLongClickListener = new SeasonOnItemLongClickListener(this);

@@ -17,6 +17,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -54,7 +56,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(AndroidJUnit4.class)
 @Config(shadows = ShadowArrayAdapter.class)
 public class TVShowBrowserActivityTest extends InjectingTest {
 

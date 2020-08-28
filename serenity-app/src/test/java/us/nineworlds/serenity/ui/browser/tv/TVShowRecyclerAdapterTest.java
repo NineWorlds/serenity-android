@@ -18,6 +18,7 @@ import us.nineworlds.serenity.test.InjectingTest;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -62,7 +63,7 @@ public class TVShowRecyclerAdapterTest extends InjectingTest {
     adapter.onBindViewHolder(mockTVShowViewHolder, 0);
 
     verify(mockTVShowViewHolder).reset();
-    verify(mockTVShowViewHolder).createImage(mockSeriesContent, 750, 120);
+    verify(mockTVShowViewHolder).createImage(mockSeriesContent, 750, 120, any());
     verify(mockTVShowViewHolder).toggleWatchedIndicator(mockSeriesContent);
   }
 

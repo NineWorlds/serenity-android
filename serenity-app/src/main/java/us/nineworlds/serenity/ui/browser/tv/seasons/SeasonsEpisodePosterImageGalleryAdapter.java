@@ -43,7 +43,7 @@ public class SeasonsEpisodePosterImageGalleryAdapter extends EpisodePosterImageG
     int height = context.getResources().getDimensionPixelSize(R.dimen.seasons_episode_image_height);
 
     episodeViewHolder.reset();
-    episodeViewHolder.createImage(pi, width, height);
+    episodeViewHolder.createImage(pi, width, height, null);
     episodeViewHolder.toggleWatchedIndicator(pi);
     episodeViewHolder.updateSeasonsTitle(pi);
     episodeViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));

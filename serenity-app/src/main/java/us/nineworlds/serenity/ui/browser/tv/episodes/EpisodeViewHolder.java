@@ -33,7 +33,7 @@ public class EpisodeViewHolder extends AbstractPosterImageViewHolder<VideoConten
     return itemView.getContext();
   }
 
-  public void createImage(VideoContentInfo pi, int imageWidth, int imageHeight) {
+  public void createImage(VideoContentInfo pi, int imageWidth, int imageHeight, RecyclerView recyclerView) {
     initPosterMetaData(pi, imageWidth, imageHeight);
 
     itemView.setLayoutParams(new RecyclerView.LayoutParams(imageWidth, imageHeight));

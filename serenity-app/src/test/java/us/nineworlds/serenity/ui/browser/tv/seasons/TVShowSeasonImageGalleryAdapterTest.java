@@ -65,7 +65,7 @@ public class TVShowSeasonImageGalleryAdapterTest extends InjectingTest {
     adapter.onBindViewHolder(mockedViewHolder, 0);
 
     verify(mockedViewHolder).reset();
-    verify(mockedViewHolder).createImage(seriesContentInfo, 100, 125);
+    verify(mockedViewHolder).createImage(eq(seriesContentInfo), eq(100), eq(125), any());
     verify(mockedViewHolder).toggleWatchedIndicator(seriesContentInfo);
   }
 

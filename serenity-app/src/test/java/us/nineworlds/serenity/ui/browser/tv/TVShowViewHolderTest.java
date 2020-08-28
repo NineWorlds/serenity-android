@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +35,12 @@ public class TVShowViewHolderTest {
 
     @Mock
     SeriesContentInfo mockSeriesInfo;
+
+    @Mock
+    RecyclerView mockRecyclerView;
+
+    @Mock
+    RecyclerView.LayoutManager mockLayoutManager;
 
     Activity activity;
 
@@ -72,8 +80,9 @@ public class TVShowViewHolderTest {
 
         doReturn("http://www.example.com").when(mockSeriesInfo).getImageURL();
         doNothing().when(spy).loadImage(anyString());
+        doReturn(mockLayoutManager).when(mockRecyclerView).getLayoutManager();
 
-        spy.createImage(mockSeriesInfo, 100, 100);
+        spy.createImage(mockSeriesInfo, 100, 100, mockRecyclerView);
 
         verify(spy).loadImage("http://www.example.com");
         verify(spy, never()).loadImage(null);

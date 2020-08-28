@@ -46,7 +46,7 @@ public abstract class AbstractPosterImageViewHolder<T extends ContentInfo>
 
   public abstract void reset();
 
-  public abstract void createImage(T contentInfo, int width, int height);
+  public abstract void createImage(T contentInfo, int width, int height, RecyclerView recyclerView);
 
   public abstract void toggleWatchedIndicator(T contentInfo);
 

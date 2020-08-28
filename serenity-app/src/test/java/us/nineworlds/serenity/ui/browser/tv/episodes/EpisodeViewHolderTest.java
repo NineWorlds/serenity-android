@@ -66,7 +66,7 @@ public class EpisodeViewHolderTest {
         doReturn("http://www.example.com").when(mockVideoContentInfo).getImageURL();
         doNothing().when(spy).loadImage(anyString());
 
-        spy.createImage(mockVideoContentInfo, 100, 100);
+        spy.createImage(mockVideoContentInfo, 100, 100, null);
 
         verify(spy).loadImage("http://www.example.com");
         verify(spy, never()).loadImage(null);

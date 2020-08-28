@@ -60,7 +60,7 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
     int height = context.getResources().getDimensionPixelSize(R.dimen.episode_image_height);
 
     viewHolder.reset();
-    viewHolder.createImage(pi, width, height);
+    viewHolder.createImage(pi, width, height, null);
     viewHolder.toggleWatchedIndicator(pi);
     viewHolder.getItemView().setOnClickListener((view)-> onItemViewClick(view, position));
     viewHolder.getItemView().setOnLongClickListener((view) -> onItemViewLongClick(view, position));

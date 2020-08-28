@@ -19,6 +19,7 @@ import us.nineworlds.serenity.test.InjectingTest;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -63,7 +64,7 @@ public class EpisodePosterImageGalleryAdapterTest extends InjectingTest {
     adapter.onBindViewHolder(mockEpisodeViewHolder, 0);
 
     verify(mockEpisodeViewHolder).reset();
-    verify(mockEpisodeViewHolder).createImage(mockSeriesContent, 250, 160);
+    verify(mockEpisodeViewHolder).createImage(mockSeriesContent, 250, 160, any());
     verify(mockEpisodeViewHolder).toggleWatchedIndicator(mockSeriesContent);
   }
 }
