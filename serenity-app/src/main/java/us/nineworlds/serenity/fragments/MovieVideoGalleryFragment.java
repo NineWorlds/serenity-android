@@ -46,6 +46,7 @@ import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.jobs.MovieCategoryJob;
+import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
@@ -109,6 +110,7 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
     recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
     recyclerView.setWindowAlignment(HorizontalGridView.WINDOW_ALIGN_BOTH_EDGE);
     recyclerView.setWindowAlignmentOffsetPercent(35);
+    recyclerView.addItemDecoration(new ItemOffsetDecoration(5));
 
     recyclerView.requestFocusFromTouch();
 
@@ -126,9 +128,6 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
           if (newState == RecyclerView.SCROLL_STATE_IDLE) {
 
             snapHelper.findSnapView(layoutManager).requestFocusFromTouch();
-//            int position = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-//            recyclerView.findViewHolderForLayoutPosition(position).itemView.requestFocusFromTouch();
-//            adapter.notifyItemChanged(position);
           }
         }
 

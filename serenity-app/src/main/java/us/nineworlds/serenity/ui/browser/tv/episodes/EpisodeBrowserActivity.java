@@ -64,8 +64,6 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-//    actionBar.setCustomView(R.layout.movie_custom_actionbar);
-//    actionBar.setDisplayShowCustomEnabled(true);
     setContentView(R.layout.activity_episode_browser);
 
     key = getIntent().getExtras().getString("key");
@@ -118,17 +116,6 @@ public class EpisodeBrowserActivity extends SerenityVideoActivity implements Epi
       dataLoadingContainer.setVisibility(GONE);
     }
     gallery.requestFocus();
-
-
-//    postLoadHandler.postDelayed(new Runnable() {
-//      @Override public void run() {
-//        gallery.requestFocus();
-//        if (gallery.getChildAt(0) != null) {
-//          gallery.getChildAt(0).requestFocus();
-//        }
-//      }
-//    }, 1000);
-
   }
 
   @Override public void fetchEpisodes(String key) {

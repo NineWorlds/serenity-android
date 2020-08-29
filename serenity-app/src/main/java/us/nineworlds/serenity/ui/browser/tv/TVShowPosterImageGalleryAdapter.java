@@ -24,6 +24,8 @@
 package us.nineworlds.serenity.ui.browser.tv;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,10 +35,18 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo;
 
 public class TVShowPosterImageGalleryAdapter extends TVShowRecyclerAdapter {
 
+  private RecyclerView recyclerView;
+
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View view = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.poster_tvshow_indicator_view, parent, false);
     return new TVShowPosterViewHolder(view);
+  }
+
+  @Override
+  public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+    super.onAttachedToRecyclerView(recyclerView);
+    this.recyclerView = recyclerView;
   }
 
   @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -48,7 +58,7 @@ public class TVShowPosterImageGalleryAdapter extends TVShowRecyclerAdapter {
     int height = context.getResources().getDimensionPixelSize(R.dimen.tvshow_poster_image_height);
 
     tvShowViewHolder.reset();
-    tvShowViewHolder.createImage(pi, width, height, null);
+    tvShowViewHolder.createImage(pi, width, height, recyclerView);
     tvShowViewHolder.toggleWatchedIndicator(pi);
     tvShowViewHolder.getItemView().setOnClickListener((view -> onItemViewClick(view, position)));
     tvShowViewHolder.getItemView().setOnFocusChangeListener((view, focus) -> onItemViewFocusChanged(focus, view, position));

@@ -82,12 +82,6 @@ public class EpisodeVideoGalleryFragment extends InjectingFragment {
       videoGallery.setHasFixedSize(true);
       videoGallery.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-//      FocusableLinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(getActivity());
-//      linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//      videoGallery.setLayoutManager(linearLayoutManager);
-
-//      videoGallery.addItemDecoration(new SpaceItemDecoration(
-//          getResources().getDimensionPixelOffset(R.dimen.horizontal_spacing)));
       videoGallery.setClipToPadding(false);
       videoGallery.setClipChildren(false);
       videoGallery.requestFocusFromTouch();

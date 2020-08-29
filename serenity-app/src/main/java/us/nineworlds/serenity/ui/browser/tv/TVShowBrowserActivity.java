@@ -92,8 +92,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-//    actionBar.setCustomView(R.layout.tvshow_custom_actionbar);
-//    actionBar.setDisplayShowCustomEnabled(true);
     key = getIntent().getExtras().getString("key");
 
     initContentView();
@@ -123,12 +121,6 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
 
 
     if (gridViewActive) {
-//      GridLayoutManager gridLayoutManager = new FocusableGridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false);
-//      tvShowRecyclerView.setLayoutManager(gridLayoutManager);
-//
-//      tvShowRecyclerView.addItemDecoration(
-//          new ItemOffsetDecoration(
-//              getResources().getDimensionPixelSize(R.dimen.grid_spacing_dimen)));
       tvShowRecyclerView.setNumRows(3);
       TVShowPosterImageGalleryAdapter adapter = new TVShowPosterImageGalleryAdapter();
       adapter.setOnItemClickListener(new TVShowBrowserGalleryOnItemClickListener(adapter));

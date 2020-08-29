@@ -30,8 +30,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.leanback.widget.HorizontalGridView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -43,11 +41,9 @@ import moxy.presenter.InjectPresenter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
+import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
-import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 import static android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS;
@@ -55,7 +51,6 @@ import static android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS;
 public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implements TVShowSeasonBrowserView {
 
     public AbstractPosterImageGalleryAdapter adapter;
-    private boolean restarted_state = false;
     private String key;
 
     @InjectPresenter
@@ -77,8 +72,6 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//    actionBar.setCustomView(R.layout.season_custom_actionbar);
-//    actionBar.setDisplayShowCustomEnabled(true);
 
         key = getIntent().getExtras().getString("key");
 
@@ -108,14 +101,11 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
         tvShowSeasonsGallery.setClipToPadding(false);
         tvShowSeasonsGallery.setAdapter(adapter);
         tvShowSeasonsGallery.setItemAnimator(new FadeInAnimator());
-//        LinearLayoutManager linearLayoutManager = new FocusableLinearLayoutManager(this);
-//        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//        tvShowSeasonsGallery.setLayoutManager(linearLayoutManager);
         tvShowSeasonsGallery.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
         tvShowSeasonsGallery.setHasFixedSize(true);
         tvShowSeasonsGallery.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-//        tvShowSeasonsGallery.addItemDecoration(createItemDecorator());
+        tvShowSeasonsGallery.addItemDecoration(new ItemOffsetDecoration(5));
         tvShowSeasonsGallery.setFocusable(true);
 
         SeasonsEpisodePosterImageGalleryAdapter episodeAdapter = new SeasonsEpisodePosterImageGalleryAdapter();
@@ -129,29 +119,11 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
         gridView.setNumRows(2);
 
         gridView.setAdapter(episodeAdapter);
-//        gridView.addItemDecoration(createItemDecorator());
+        gridView.addItemDecoration(new ItemOffsetDecoration(5));
         gridView.setItemAnimator(new FadeInAnimator());
-//        GridLayoutManager gridLayoutManager = new FocusableGridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false) {
-//            @Override
-//            public boolean supportsPredictiveItemAnimations() {
-//                return false;
-//            }
-//        };
-//        gridView.setLayoutManager(gridLayoutManager);
 
         dataLoadingContainer.setVisibility(View.VISIBLE);
         presenter.retrieveSeasons(key);
-    }
-
-//    protected RecyclerView.ItemDecoration createItemDecorator() {
-//        return new SpaceItemDecoration(
-//                getResources().getDimensionPixelSize(R.dimen.horizontal_spacing));
-//    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        restarted_state = true;
     }
 
     protected void initContentView() {

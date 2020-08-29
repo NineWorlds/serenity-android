@@ -133,11 +133,6 @@ public class MainMenuFragment extends InjectingFragment {
     unbinder.unbind();
   }
 
-  @Override public void onResume() {
-    super.onResume();
-    //mainGallery.requestFocusFromTouch();
-  }
-
   @Subscribe(threadMode = ThreadMode.MAIN) public void onMainMenuRetrievalResponse(MainMenuEvent event) {
     menuItems = new MenuMediaContainer(event.getMediaContainer()).createMenuItems();
     setupGallery();

@@ -35,11 +35,9 @@ import androidx.core.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.VideoContentInfo
-import us.nineworlds.serenity.ui.util.ImageUtils
 
 class CardPresenter(private val context: Context) : Presenter() {
 
