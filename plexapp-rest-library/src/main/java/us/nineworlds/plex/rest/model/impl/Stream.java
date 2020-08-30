@@ -169,4 +169,14 @@ public class Stream implements IStream {
   @Override public void setKey(String key) {
     this.key = key;
   }
+
+  @Override
+  public String getMediaSourceKey() {
+    return null;
+  }
+
+  @Override
+  public void setMediaSourceKey(String key) {
+
+  }
 }
