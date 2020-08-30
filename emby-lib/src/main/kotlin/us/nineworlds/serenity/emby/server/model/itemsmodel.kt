@@ -54,7 +54,8 @@ data class MediaStream(
   @Json(name = "Channels") val channels: String?,
   @Json(name = "IsTextSubtitleStream") val isSubtitle: Boolean = false,
   @Json(name = "Index") val index: Int?,
-  @Json(name = "Language") val language: String?
+  @Json(name = "Language") val language: String?,
+  @Json(name = "DisplayLanguage") val displayLanguage: String?
 )
 
 data class MediaSource(

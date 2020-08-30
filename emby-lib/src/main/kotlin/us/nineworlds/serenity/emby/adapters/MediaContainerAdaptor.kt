@@ -194,13 +194,13 @@ class MediaContainerAdaptor {
           val stream = Stream()
           stream.format = "srt"
           stream.index = mediaStream.index?.toString() ?: "0"
-          stream.language = mediaStream.language
+          stream.language = mediaStream.displayLanguage
           stream.languageCode = mediaStream.language
           stream.key = item.id
           stream.mediaSourceKey = item.mediaSources?.get(0)?.id
           stream
         }.orEmpty()
-      video.subtitles = subtitles.toList()
+      video.subtitles = subtitles
 
       serenityVideos.add(video)
     }
