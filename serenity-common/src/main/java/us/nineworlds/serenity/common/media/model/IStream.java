@@ -56,4 +56,8 @@ public interface IStream {
   String getKey();
 
   void setKey(String key);
+
+  String getMediaSourceKey();
+
+  void setMediaSourceKey(String key);
 }

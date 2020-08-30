@@ -2,9 +2,11 @@ package us.nineworlds.serenity.emby.adapters
 
 import us.nineworlds.serenity.common.media.model.IDirectory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
+import us.nineworlds.serenity.common.media.model.IStream
 import us.nineworlds.serenity.emby.model.Directory
 import us.nineworlds.serenity.emby.model.Media
 import us.nineworlds.serenity.emby.model.MediaContainer
+import us.nineworlds.serenity.emby.model.Stream
 import us.nineworlds.serenity.emby.model.Video
 import us.nineworlds.serenity.emby.server.model.Item
 import us.nineworlds.serenity.emby.server.model.NameGuidPair
@@ -173,6 +175,8 @@ class MediaContainerAdaptor {
         val media = Media()
         media.container = item.container
         for (mediaStream in item.mediaStreams) {
+
+
           if (mediaStream.type == "Video") {
             media.aspectRatio = mediaStream.aspectRatio
             media.videoCodec = mediaStream.codec
@@ -184,6 +188,19 @@ class MediaContainerAdaptor {
         }
         video.medias = medias.toList()
       }
+
+      val subtitles = item.mediaStreams?.filter { mediaStream -> mediaStream.isSubtitle  }
+        ?.map { mediaStream ->
+          val stream = Stream()
+          stream.format = "srt"
+          stream.index = mediaStream.index?.toString() ?: "0"
+          stream.language = mediaStream.language
+          stream.languageCode = mediaStream.language
+          stream.key = item.id
+          stream.mediaSourceKey = item.mediaSources?.get(0)?.id
+          stream
+        }.orEmpty()
+      video.subtitles = subtitles.toList()
 
       serenityVideos.add(video)
     }

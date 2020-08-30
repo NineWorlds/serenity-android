@@ -6,6 +6,7 @@ import us.nineworlds.serenity.common.media.model.IDirector;
 import us.nineworlds.serenity.common.media.model.IGenre;
 import us.nineworlds.serenity.common.media.model.IMedia;
 import us.nineworlds.serenity.common.media.model.IRole;
+import us.nineworlds.serenity.common.media.model.IStream;
 import us.nineworlds.serenity.common.media.model.IVideo;
 import us.nineworlds.serenity.common.media.model.IWriter;
 
@@ -45,6 +46,7 @@ public class Video extends AbstractEmbyObject implements IVideo {
   private List<IGenre> genres;
   private List<IMedia> medias;
   private String directPlayUrl;
+  private List<IStream> subtitles;
 
   @Override public String getGrandParentTitle() {
     return grandParentTitle;
@@ -289,5 +291,15 @@ public class Video extends AbstractEmbyObject implements IVideo {
 
   @Override public void setDirectPlayUrl(String directPlayUrl) {
     this.directPlayUrl = directPlayUrl;
+  }
+
+  @Override
+  public List<IStream> getSubtitles() {
+    return subtitles;
+  }
+
+  @Override
+  public void setSubtitles(List<IStream> subtitles) {
+    this.subtitles = subtitles;
   }
 }

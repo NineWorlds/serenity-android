@@ -23,6 +23,7 @@
 
 package us.nineworlds.plex.rest.model.impl;
 
+import java.util.Collections;
 import java.util.List;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
@@ -32,6 +33,7 @@ import us.nineworlds.serenity.common.media.model.IDirector;
 import us.nineworlds.serenity.common.media.model.IGenre;
 import us.nineworlds.serenity.common.media.model.IMedia;
 import us.nineworlds.serenity.common.media.model.IRole;
+import us.nineworlds.serenity.common.media.model.IStream;
 import us.nineworlds.serenity.common.media.model.IVideo;
 import us.nineworlds.serenity.common.media.model.IWriter;
 
@@ -342,5 +344,15 @@ public class Video extends AbstractPlexObject implements IVideo {
 
   @Override public String getDirectPlayUrl() {
     return null;
+  }
+
+  @Override
+  public List<IStream> getSubtitles() {
+    return Collections.emptyList();
+  }
+
+  @Override
+  public void setSubtitles(List<IStream> subtitles) {
+
   }
 }

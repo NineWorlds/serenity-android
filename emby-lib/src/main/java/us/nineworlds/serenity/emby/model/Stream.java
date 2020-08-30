@@ -18,6 +18,7 @@ public class Stream implements IStream {
   private String key;
   private String language;
   private String languageCode;
+  private String mediaSourceKey;
 
   @Override public String getLanguage() {
     return language;
@@ -129,5 +130,15 @@ public class Stream implements IStream {
 
   @Override public void setKey(String key) {
     this.key = key;
+  }
+
+  @Override
+  public String getMediaSourceKey() {
+    return mediaSourceKey;
+  }
+
+  @Override
+  public void setMediaSourceKey(String mediaSourceKey) {
+    this.mediaSourceKey = mediaSourceKey;
   }
 }

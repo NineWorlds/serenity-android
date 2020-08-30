@@ -123,4 +123,7 @@ public interface IVideo extends ClientObject {
 
   String getDirectPlayUrl();
 
+  List<IStream> getSubtitles();
+
+  void setSubtitles(List<IStream> subtitles);
 }
