@@ -14,6 +14,11 @@ android:
 jdk:
    - openjdk11
 
+addons:
+  apt:
+    packages:
+      - python3-pip
+
 before_cache:
  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 
@@ -25,8 +30,7 @@ cache:
  - node_modules
 
 before_install:
-  - "pip install urllib3[secure]"
-  - "pip install codecov"
+  - "pip3 install codecov"
 
 script:
    - travis_wait 60 ./gradlew clean jacocoTestReport sonarqube
