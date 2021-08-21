@@ -82,7 +82,8 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
     List<VideoContentInfo> oldList = new ArrayList(posterList);
     posterList.clear();
     posterList.addAll(episodes);
-    new RecyclerViewDiffUtil(oldList, posterList).dispatchUpdatesTo(this);
+   // new RecyclerViewDiffUtil(oldList, posterList).dispatchUpdatesTo(this);
+    notifyDataSetChanged();
   }
 
   public void onItemViewClick(View view, int i) {

@@ -67,12 +67,17 @@ public abstract class AbstractPosterImageGalleryAdapter extends InjectingRecycle
   }
 
   public Object getItem(int position) {
-    return posterList.get(position);
+    if (position < posterList.size()) {
+      return posterList.get(position);
+    }
+
+    return posterList.get(0);
   }
 
   @Override public long getItemId(int position) {
     return position;
   }
+
 
   public List<VideoContentInfo> getItems() {
     return posterList;
