@@ -4,6 +4,7 @@ android:
   components:
     - tools # to get the new `repository-11.xml`
     - tools # see https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943)
+    - build-tools-30.0.2
     - platform-tools
     - android-29
     - android-30
