@@ -33,7 +33,7 @@ before_install:
 #  - "pip3 install codecov"
 
 script:
-   - travis_wait 60 ./gradlew clean jacocoTestReport sonarqube
+   - ./gradlew clean jacocoTestReport sonarqube
    
 after_success:
 #  - "codecov"
