@@ -1,8 +1,7 @@
 Serenity for Android
 =======================
 
-[![Build Status](https://travis-ci.org/NineWorlds/serenity-android.svg?branch=develop)](https://travis-ci.org/NineWorlds/serenity-android) [![codecov](https://codecov.io/gh/NineWorlds/serenity-android/branch/develop/graph/badge.svg)](https://codecov.io/gh/NineWorlds/serenity-android)
-
+[![Build Status](https://circleci.com/gh/NineWorlds/serenity-android/tree/develop.svg?style=svg)](https://circleci.com/gh/NineWorlds/serenity-android/?branch=develop)[![codecov](https://codecov.io/gh/NineWorlds/serenity-android/branch/develop/graph/badge.svg)](https://codecov.io/gh/NineWorlds/serenity-android)
 Sonar Qube:
 [![SonarQube](https://sonarcloud.io/api/badges/measure?key=serenity-android:serenity-app&metric=coverage)](https://sonarcloud.io/dashboard?id=serenity-android%3Aserenity-app)
 
