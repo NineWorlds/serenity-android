@@ -25,7 +25,8 @@ cache:
  - node_modules
 
 before_install:
-   - "pip install codecov"
+  - "pip install urllib3[secure]"
+  - "pip install codecov"
 
 script:
    - travis_wait 60 ./gradlew clean jacocoTestReport sonarqube
