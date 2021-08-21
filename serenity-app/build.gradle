@@ -60,7 +60,6 @@ android {
   defaultConfig {
     versionCode 2010000
     versionName "2.1.0-M3"
-
     minSdkVersion 21
     targetSdkVersion 29
     multiDexEnabled true
@@ -266,7 +265,7 @@ dependencies {
 com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
 
 jacoco {
-  toolVersion = "0.8.5"
+   toolVersion = "0.8.7"
 }
 
 tasks.withType(Test) {
