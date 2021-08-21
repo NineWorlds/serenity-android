@@ -1,12 +1,10 @@
 language: android
+
 android:
   components:
     - tools # to get the new `repository-11.xml`
     - tools # see https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943)
     - platform-tools
-    - build-tools-28.0.3
-    - android-27
-    - android-28
     - android-29
     - android-30
     - extra-android-m2repository
@@ -14,7 +12,7 @@ android:
     - extra-android-support
     - extra-google-google_play_services
 jdk:
-   - oraclejdk8
+   - openjdk11
 
 before_cache:
  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -27,12 +25,12 @@ cache:
  - node_modules
 
 before_install:
-   - pip install --user codecov
+   - "pip install codecov"
 
 script:
    - travis_wait 60 ./gradlew clean jacocoTestReport sonarqube
    
 after_success:
-  - codecov
+  - "codecov"
 
 sudo: false
