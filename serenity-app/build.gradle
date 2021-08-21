@@ -270,11 +270,12 @@ dependencies {
 com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
 
 jacoco {
-  toolVersion = "0.8.3"
+  toolVersion = "0.8.7"
 }
 
 tasks.withType(Test) {
   jacoco.includeNoLocationClasses = true
+  jacoco.excludes = ['jdk.internal.*']
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
