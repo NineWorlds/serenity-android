@@ -1,24 +1,24 @@
 fixes:
   - "/home/circleci/::/project/"
 
-ignore:
-  - **/*_ViewBinding.class
-  - **/*InjectAdapter.class
-  - **/android/support/**/*.class
-  - **/com/google/**/*.class
-  - **/com/birbit/**/*.class
-  - **/butterknife/**/*.class
-  - **/com/arellomobile/**/*.class
-  - **/net/ganin/darv/**/*.class
-  - **/*ViewStateProvider.class
-  - **/*PresentersBinder.class
-  - **/events/**/*.class
-  - **/model/impl/*.class
-  - **/injection/**/*.class
-  - **/*MemberInject.*
-  - **/*$$Factory*.*
-  - **/*..State*.*
-  - **/*_ViewBinding*.*
+#ignore:
+#  - **/*_ViewBinding.class
+#  - **/*InjectAdapter.class
+#  - **/android/support/**/*.class
+#  - **/com/google/**/*.class
+#  - **/com/birbit/**/*.class
+#  - **/butterknife/**/*.class
+#  - **/com/arellomobile/**/*.class
+#  - **/net/ganin/darv/**/*.class
+#  - **/*ViewStateProvider.class
+#  - **/*PresentersBinder.class
+#  - **/events/**/*.class
+#  - **/model/impl/*.class
+#  - **/injection/**/*.class
+#  - **/*MemberInject.*
+#  - **/*$$Factory*.*
+#  - **/*..State*.*
+#  - **/*_ViewBinding*.*
 
 
 
