@@ -32,7 +32,8 @@ jobs:
       #    name: Assemble release build
       #    command: |
       #      ./gradlew clean testDebugUnitTest
-      - codecov/upload    
+      - codecov/upload:
+           path: serenity-app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
 
 workflows:
   # Below is the definition of your workflow.
