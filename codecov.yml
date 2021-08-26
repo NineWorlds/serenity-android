@@ -1,5 +1,5 @@
 fixes:
-  - "/home/circleci/::"
+  - "/home/circleci/::/project/"
 
 ignore:
   - **/*_ViewBinding.class
