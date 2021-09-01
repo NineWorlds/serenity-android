@@ -1,19 +1,10 @@
-buildscript {
-
-  repositories {
-    google()
-    jcenter()
-    mavenCentral()
-  }
-}
-
 apply plugin: 'java-library'
 apply plugin: "jacoco"
 apply plugin: 'org.sonarqube'
 apply plugin: 'kotlin-kapt'
 
 jacoco {
-  toolVersion = "0.8.5"
+  toolVersion = "0.8.7"
 }
 
 sonarqube {
@@ -28,15 +19,6 @@ sonarqube {
 
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
-
-repositories {
-  google()
-  jcenter()
-  mavenCentral()
-  maven {
-    url "http://kingargyle.github.io/repo"
-  }
-}
 
 sourceSets {
   main {
@@ -55,7 +37,6 @@ sourceSets {
 dependencies {
 
   api project(':serenity-common')
-//  api 'org.simpleframework:simple-xml:jar:2.7.1'
   api "com.squareup.retrofit2:retrofit:$retrofitVersion"
   api "com.squareup.okhttp3:okhttp:$okhttpVersion"
   api "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
@@ -89,7 +70,7 @@ test {
 }
 
 jacoco {
-  toolVersion = "0.8.5"
+  toolVersion = "0.8.7"
   reportsDir = file("$buildDir/jacoco-report")
 }
 
@@ -102,4 +83,3 @@ jacocoTestReport {
 }
 
 tasks.jacocoTestReport.dependsOn("test")
-

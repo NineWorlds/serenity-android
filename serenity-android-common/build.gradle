@@ -1,40 +1,13 @@
-buildscript {
-
-  repositories {
-    google()
-    jcenter()
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-  }
-
-}
-
-repositories {
-  google()
-  jcenter()
-  mavenCentral()
-  maven {
-    url "https://oss.sonatype.org/content/repositories/snapshots"
-  }
-}
-
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
-kapt {
-  generateStubs = true
-}
-
 android {
-  compileSdkVersion 29
+  compileSdkVersion 31
 
   defaultConfig {
-    minSdkVersion 21
-    targetSdkVersion 29
+    minSdkVersion 22
+    targetSdkVersion 31
     versionCode 1
     versionName "1.0"
   }
@@ -64,7 +37,7 @@ dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
   api project(':serenity-common')
   api "org.greenrobot:eventbus:$eventBus"
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
   api "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
 
   releaseApi("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion") {

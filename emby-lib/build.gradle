@@ -1,42 +1,15 @@
-buildscript {
-
-  repositories {
-    jcenter()
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-  }
-}
-
-repositories {
-  google()
-  maven {
-    url "maven.google.com"
-  }
-  jcenter()
-  mavenCentral()
-  flatDir {
-    dirs 'embylib'
-  }
-  maven {
-    url "https://oss.sonatype.org/content/repositories/snapshots"
-  }
-}
-
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
   defaultConfig {
-    minSdkVersion 21
-    targetSdkVersion 29
+    minSdkVersion 22
+    targetSdkVersion 31
 
   }
 
-  compileSdkVersion 29
+  compileSdkVersion 31
   testOptions.unitTests.includeAndroidResources = true
 
   sourceSets {
@@ -57,7 +30,7 @@ android {
 }
 
 dependencies {
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
   implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
   api project(':serenity-common')
@@ -97,7 +70,7 @@ dependencies {
   testImplementation "org.robolectric:shadowapi:$robolectricVersion"
   testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
   testImplementation "org.khronos:opengl-api:$openglApiVersion"
-  testImplementation "androidx.test:core:1.2.0"
+  testImplementation "androidx.test:core:1.4.0"
 
   testImplementation "com.github.stephanenicolas.toothpick:toothpick-testing:$toothPickVersion"
   kaptTest "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"

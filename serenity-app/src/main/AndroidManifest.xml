@@ -98,7 +98,8 @@
         <activity
                 android:name=".ui.activity.ServerSelectionActivity"
                 android:banner="@drawable/serenity_androidtv_banner"
-                android:theme="@style/Theme.AppTheme.FullScreen">
+                android:theme="@style/Theme.AppTheme.FullScreen"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -158,7 +159,8 @@
                 android:authorities="us.nineworlds.serenity.core.SerenityRecommendationContentProvider"
                 android:exported="true" />
 
-        <receiver android:name=".StartupBroadcastReceiver">
+        <receiver android:name=".StartupBroadcastReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
 

@@ -2,12 +2,11 @@ buildscript {
 
 
   ext {
-    kotlinVersion = "1.5.20"
+    kotlinVersion = "1.5.21"
     androidPluginVersion = "4.2.2"
   }
 
   repositories {
-    jcenter()
     mavenCentral()
     google()
     maven {
@@ -22,7 +21,7 @@ buildscript {
     classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
-    classpath "gradle.plugin.com.greensopinion.gradle-android-eclipse:gradle-android-eclipse:1.1"
+    classpath "org.jacoco:org.jacoco.core:0.8.7"
   }
 }
 
@@ -39,6 +38,7 @@ repositories {
   }
 }
 
+
 dependencies {
   project(":serenity-common")
   project(":serenity-android-common")
@@ -50,26 +50,20 @@ dependencies {
 
 
 subprojects {
-  apply plugin: "com.diffplug.gradle.spotless"
-  
-//  if (!it.name.startsWith('plexapp') && !it.name.startsWith('subtitle') && !it.name.startsWith('serenity-common')) {
-//    apply plugin: 'com.greensopinion.gradle-android-eclipse'
-//    apply plugin: 'eclipse'
-//    configurations {
-//      eclipseConfig.extendsFrom implementation
-//      eclipseTestConfig.extendsFrom testImplementation
-//    }
+  repositories {
+    mavenCentral()
+    google()
+    maven {
+      url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+    jcenter() // Currently required by url-manager
+    maven {
+      url "http://kingargyle.github.io/repo"
+    }
+    maven { url 'https://jitpack.io' }
+  }
 
-//	eclipse {
-//	  classpath {
-//	    plusConfigurations += [
-//	        configurations.eclipseConfig,
-//	        configurations.eclipseTestConfig,
-//	    ]
-//	    downloadSources = true
-//	  }
-//	}  
-//  }
+  apply plugin: "com.diffplug.gradle.spotless"
 
   spotless {
     format 'xml', {
@@ -89,31 +83,30 @@ subprojects {
 
 project.ext {
   appversion = "2.1.0"
-  okhttpVersion = "4.9.0"
-  kotlinVersion = "1.5.20"
+  okhttpVersion = "4.9.1"
+  kotlinVersion = "1.5.21"
   androidPriorityJobQueueVersion = "2.0.1"
   daggerVersion = "1.2.5"
   eventBus = "3.1.1"
-  moshiKotlinVersion = "1.6.0"
+  moshiKotlinVersion = "1.12.0"
   retrofitVersion = "2.9.0"
-  jodaTimeVersion = "2.10.3"
-  timberVersion = "4.7.1"
+  jodaTimeVersion = "2.10.9.1"
+  timberVersion = "5.0.1"
   exoplayerVersion = "2.11.1"
-  glideOkHttpVersion = "4.10.0"
-  moxyVersion = "2.0.2"
-  glideVersion = "4.10.0"
+  glideOkHttpVersion = "4.12.0"
+  moxyVersion = "2.2.2"
+  glideVersion = "4.12.0"
   googleAnalyticsVersion = "16.0.4"
-  androidSupportLibVersion = "28.0.0"
   universalCharDetVersion = "1.0.3"
   butterKnifeVersion = "10.2.1"
   simpleXmlVersion = "2.7.1"
   urlManager = "1.4.0"
 
   commonsLangVersion = "3.7"
-  junitVersion = "4.12"
-  assertkVersion = "0.20"
+  junitVersion = "4.13.1"
+  assertkVersion = "0.24"
   assertjVersion = "3.11.1"
-  mockitoVersion = "3.2.4"
+  mockitoVersion = "3.12.4"
   robolectricVersion = "4.6.1"
   openglApiVersion = "gl1.1-android-2.1_r1"
   xmlUnitVersion = "1.3"
