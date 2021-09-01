@@ -38,17 +38,6 @@ repositories {
   }
 }
 
-
-dependencies {
-  project(":serenity-common")
-  project(":serenity-android-common")
-  project(":subtitle-converter")
-  project(":plexapp-rest-library")
-  project(":emby-lib")
-  project(":serenity-app")
-}
-
-
 subprojects {
   repositories {
     mavenCentral()
