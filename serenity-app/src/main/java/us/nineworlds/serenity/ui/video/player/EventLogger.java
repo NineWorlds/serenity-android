@@ -16,23 +16,15 @@
 package us.nineworlds.serenity.ui.video.player;
 
 import android.os.SystemClock;
-import androidx.annotation.Nullable;
 import android.util.Log;
-import android.view.Surface;
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.RendererCapabilities;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.audio.AudioRendererEventListener;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
-import com.google.android.exoplayer2.drm.DefaultDrmSessionEventListener;
-import com.google.android.exoplayer2.drm.DefaultDrmSessionManager;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataOutput;
-import com.google.android.exoplayer2.metadata.MetadataRenderer;
 import com.google.android.exoplayer2.metadata.emsg.EventMessage;
 import com.google.android.exoplayer2.metadata.id3.ApicFrame;
 import com.google.android.exoplayer2.metadata.id3.CommentFrame;
@@ -41,17 +33,12 @@ import com.google.android.exoplayer2.metadata.id3.Id3Frame;
 import com.google.android.exoplayer2.metadata.id3.PrivFrame;
 import com.google.android.exoplayer2.metadata.id3.TextInformationFrame;
 import com.google.android.exoplayer2.metadata.id3.UrlLinkFrame;
-import com.google.android.exoplayer2.source.AdaptiveMediaSourceEventListener;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroup;
+import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.Locale;
 import javax.inject.Inject;
@@ -63,8 +50,7 @@ import us.nineworlds.serenity.core.logger.Logger;
  * Logs player events using {@link Log}.
  */
 public final class EventLogger implements Player.EventListener, AudioRendererEventListener, VideoRendererEventListener,
-    AdaptiveMediaSourceEventListener, ExtractorMediaSource.EventListener, DefaultDrmSessionEventListener,
-        MetadataOutput {
+        MediaSourceEventListener, MetadataOutput {
 
   private static final int MAX_TIMELINE_ITEM_LINES = 3;
   private static final NumberFormat TIME_FORMAT;
@@ -77,16 +63,12 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
   }
 
   private final MappingTrackSelector trackSelector;
-  private final Timeline.Window window;
-  private final Timeline.Period period;
   private final long startTimeMs;
 
   @Inject Logger logger;
 
   public EventLogger(MappingTrackSelector trackSelector) {
     this.trackSelector = trackSelector;
-    window = new Timeline.Window();
-    period = new Timeline.Period();
     startTimeMs = SystemClock.elapsedRealtime();
     Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
@@ -109,10 +91,6 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
 
   }
 
-  public void onPositionDiscontinuity() {
-    logger.debug("positionDiscontinuity");
-  }
-
   @Override public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
     logger.debug("playbackParameters " + String.format("[speed=%.2f, pitch=%.2f]", playbackParameters.speed,
         playbackParameters.pitch));
@@ -122,43 +100,7 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
 
   }
 
-  public void onTimelineChanged(Timeline timeline, Object manifest) {
-    int periodCount = timeline.getPeriodCount();
-    int windowCount = timeline.getWindowCount();
-    logger.debug("sourceInfo [periodCount=" + periodCount + ", windowCount=" + windowCount);
-    for (int i = 0; i < Math.min(periodCount, MAX_TIMELINE_ITEM_LINES); i++) {
-      timeline.getPeriod(i, period);
-      logger.debug("  " + "period [" + getTimeString(period.getDurationMs()) + "]");
-    }
-    if (periodCount > MAX_TIMELINE_ITEM_LINES) {
-      logger.debug("  ...");
-    }
-    for (int i = 0; i < Math.min(windowCount, MAX_TIMELINE_ITEM_LINES); i++) {
-      timeline.getWindow(i, window);
-      logger.debug("  "
-          + "window ["
-          + getTimeString(window.getDurationMs())
-          + ", "
-          + window.isSeekable
-          + ", "
-          + window.isDynamic
-          + "]");
-    }
-    if (windowCount > MAX_TIMELINE_ITEM_LINES) {
-      logger.debug("  ...");
-    }
-    logger.debug("]");
-  }
-
-  @Override public void onPlayerError(ExoPlaybackException e) {
-    logger.error("playerFailed [" + getSessionTimeString() + "]", e);
-  }
-
   @Override public void onPositionDiscontinuity(int reason) {
-
-  }
-
-  @Override public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
 
   }
 
@@ -169,70 +111,6 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
       return;
     }
     logger.debug("Tracks [");
-    // Log tracks associated to renderers.
-    for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.length; rendererIndex++) {
-      TrackGroupArray rendererTrackGroups = mappedTrackInfo.getTrackGroups(rendererIndex);
-      TrackSelection trackSelection = trackSelections.get(rendererIndex);
-      if (rendererTrackGroups.length > 0) {
-        logger.debug("  Renderer:" + rendererIndex + " [");
-        for (int groupIndex = 0; groupIndex < rendererTrackGroups.length; groupIndex++) {
-          TrackGroup trackGroup = rendererTrackGroups.get(groupIndex);
-          String adaptiveSupport = getAdaptiveSupportString(trackGroup.length,
-              mappedTrackInfo.getAdaptiveSupport(rendererIndex, groupIndex, false));
-          logger.debug("    Group:" + groupIndex + ", adaptive_supported=" + adaptiveSupport + " [");
-          for (int trackIndex = 0; trackIndex < trackGroup.length; trackIndex++) {
-            String status = getTrackStatusString(trackSelection, trackGroup, trackIndex);
-            String formatSupport =
-                getFormatSupportString(mappedTrackInfo.getTrackFormatSupport(rendererIndex, groupIndex, trackIndex));
-            logger.debug("      "
-                + status
-                + " Track:"
-                + trackIndex
-                + ", "
-                + Format.toLogString(trackGroup.getFormat(trackIndex))
-                + ", supported="
-                + formatSupport);
-          }
-          logger.debug("    ]");
-        }
-        // Log metadata for at most one of the tracks selected for the renderer.
-        if (trackSelection != null) {
-          for (int selectionIndex = 0; selectionIndex < trackSelection.length(); selectionIndex++) {
-            Metadata metadata = trackSelection.getFormat(selectionIndex).metadata;
-            if (metadata != null) {
-              logger.debug("    Metadata [");
-              printMetadata(metadata, "      ");
-              logger.debug("    ]");
-              break;
-            }
-          }
-        }
-        logger.debug("  ]");
-      }
-    }
-    // Log tracks not associated with a renderer.
-    TrackGroupArray unassociatedTrackGroups = mappedTrackInfo.getUnassociatedTrackGroups();
-    if (unassociatedTrackGroups.length > 0) {
-      logger.debug("  Renderer:None [");
-      for (int groupIndex = 0; groupIndex < unassociatedTrackGroups.length; groupIndex++) {
-        logger.debug("    Group:" + groupIndex + " [");
-        TrackGroup trackGroup = unassociatedTrackGroups.get(groupIndex);
-        for (int trackIndex = 0; trackIndex < trackGroup.length; trackIndex++) {
-          String status = getTrackStatusString(false);
-          String formatSupport = getFormatSupportString(RendererCapabilities.FORMAT_UNSUPPORTED_TYPE);
-          logger.debug("      "
-              + status
-              + " Track:"
-              + trackIndex
-              + ", "
-              + Format.toLogString(trackGroup.getFormat(trackIndex))
-              + ", supported="
-              + formatSupport);
-        }
-        logger.debug("    ]");
-      }
-      logger.debug("  ]");
-    }
     logger.debug("]");
   }
 
@@ -250,10 +128,6 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
     logger.debug("audioEnabled [" + getSessionTimeString() + "]");
   }
 
-  @Override public void onAudioSessionId(int audioSessionId) {
-    logger.debug("audioSessionId [" + audioSessionId + "]");
-  }
-
   @Override
   public void onAudioDecoderInitialized(String decoderName, long elapsedRealtimeMs, long initializationDurationMs) {
     logger.debug("audioDecoderInitialized [" + getSessionTimeString() + ", " + decoderName + "]");
@@ -261,10 +135,6 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
 
   @Override public void onAudioInputFormatChanged(Format format) {
     logger.debug("audioFormatChanged [" + getSessionTimeString() + ", " + Format.toLogString(format) + "]");
-  }
-
-  @Override public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-
   }
 
   @Override public void onAudioDisabled(DecoderCounters counters) {
@@ -294,45 +164,7 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
     logger.debug("droppedFrames [" + getSessionTimeString() + ", " + count + "]");
   }
 
-  @Override
-  public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-    logger.debug("videoSizeChanged [" + width + ", " + height + "]");
-  }
-
-  @Override public void onRenderedFirstFrame(Surface surface) {
-    logger.debug("renderedFirstFrame [" + surface + "]");
-  }
-
-  // DefaultDrmSessionManager.EventListener
-
-  @Override public void onDrmSessionManagerError(Exception e) {
-    printInternalError("drmSessionManagerError", e);
-  }
-
-  @Override public void onDrmKeysRestored() {
-    logger.debug("drmKeysRestored [" + getSessionTimeString() + "]");
-  }
-
-  @Override public void onDrmKeysRemoved() {
-    logger.debug("drmKeysRemoved [" + getSessionTimeString() + "]");
-  }
-
-  @Override public void onDrmKeysLoaded() {
-    logger.debug("drmKeysLoaded [" + getSessionTimeString() + "]");
-  }
-
-  // ExtractorMediaSource.EventListener
-
-  @Override public void onLoadError(IOException error) {
-    printInternalError("loadError", error);
-  }
-
   // Internal methods
-
-  private void printInternalError(String type, Exception e) {
-    logger.error("internalError [" + getSessionTimeString() + ", " + type + "]", e);
-  }
-
   private void printMetadata(Metadata metadata, String prefix) {
     for (int i = 0; i < metadata.length(); i++) {
       Metadata.Entry entry = metadata.get(i);
@@ -393,46 +225,6 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
     }
   }
 
-  private static String getFormatSupportString(int formatSupport) {
-    switch (formatSupport) {
-      case RendererCapabilities.FORMAT_HANDLED:
-        return "YES";
-      case RendererCapabilities.FORMAT_EXCEEDS_CAPABILITIES:
-        return "NO_EXCEEDS_CAPABILITIES";
-      case RendererCapabilities.FORMAT_UNSUPPORTED_SUBTYPE:
-        return "NO_UNSUPPORTED_TYPE";
-      case RendererCapabilities.FORMAT_UNSUPPORTED_TYPE:
-        return "NO";
-      default:
-        return "?";
-    }
-  }
-
-  private static String getAdaptiveSupportString(int trackCount, int adaptiveSupport) {
-    if (trackCount < 2) {
-      return "N/A";
-    }
-    switch (adaptiveSupport) {
-      case RendererCapabilities.ADAPTIVE_SEAMLESS:
-        return "YES";
-      case RendererCapabilities.ADAPTIVE_NOT_SEAMLESS:
-        return "YES_NOT_SEAMLESS";
-      case RendererCapabilities.ADAPTIVE_NOT_SUPPORTED:
-        return "NO";
-      default:
-        return "?";
-    }
-  }
-
-  private static String getTrackStatusString(TrackSelection selection, TrackGroup group, int trackIndex) {
-    return getTrackStatusString(
-        selection != null && selection.getTrackGroup() == group && selection.indexOf(trackIndex) != C.INDEX_UNSET);
-  }
-
-  private static String getTrackStatusString(boolean enabled) {
-    return enabled ? "[X]" : "[ ]";
-  }
-
   private static String getRepeatModeString(@Player.RepeatMode int repeatMode) {
     switch (repeatMode) {
       case Player.REPEAT_MODE_OFF:
@@ -444,48 +236,5 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
       default:
         return "?";
     }
-  }
-
-  @Override public void onMediaPeriodCreated(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
-
-  }
-
-  @Override public void onMediaPeriodReleased(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
-
-  }
-
-  @Override public void onLoadStarted(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId,
-      LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
-
-  }
-
-  @Override public void onLoadCompleted(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId,
-      LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
-
-  }
-
-  @Override public void onLoadCanceled(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId,
-      LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
-
-  }
-
-  @Override public void onLoadError(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId,
-      LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData,
-      IOException error, boolean wasCanceled) {
-    printInternalError("loadError", error);
-  }
-
-  @Override public void onReadingStarted(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
-
-  }
-
-  @Override public void onUpstreamDiscarded(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId,
-      MediaLoadData mediaLoadData) {
-
-  }
-
-  @Override public void onDownstreamFormatChanged(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId,
-      MediaLoadData mediaLoadData) {
-
   }
 }

@@ -158,9 +158,6 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
 
     verify(spy).createSimpleExoplayer()
     verify(mockPlayer).addListener(any(EventLogger::class.java))
-    verify(mockPlayer).setAudioDebugListener(any(EventLogger::class.java))
-    verify(mockPlayer).setVideoDebugListener(any(EventLogger::class.java))
-    verify(mockPlayer).setMetadataOutput(any(EventLogger::class.java))
     verify(mockPlayer).prepare(any(MediaSource::class.java))
   }
 

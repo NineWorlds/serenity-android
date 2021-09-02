@@ -13,8 +13,6 @@
     android:id="@+id/player_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:rewind_increment="10000"
-    app:fastforward_increment="30000"
     app:show_buffering="when_playing" />
 
   <include

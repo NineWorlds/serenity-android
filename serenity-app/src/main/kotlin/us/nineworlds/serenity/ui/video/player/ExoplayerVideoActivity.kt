@@ -8,18 +8,19 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.KeyEvent
 import android.view.View
 import android.widget.FrameLayout
 import butterknife.BindView
 import butterknife.ButterKnife.bind
 import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
@@ -74,14 +75,10 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   lateinit var player: SimpleExoPlayer
 
-  val videoPlayerHandler = Handler()
-
-  private val progressReportinghandler = Handler()
+  private val progressReportinghandler = Handler(Looper.getMainLooper())
   private val progressRunnable = ProgressRunnable()
   private var videoKeyHandler: VideoKeyCodeHandlerDelegate? = null
   private var autoResume: Boolean = false
-
-  internal val PROGRESS_UPDATE_DELAY = 10000L
 
   override fun screenName(): String = "Exoplayer Video Player"
 
@@ -160,7 +157,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   override fun play() {
     player.playWhenReady = true
     presenter.startPlaying()
-    progressReportinghandler.postDelayed(progressRunnable, PROGRESS_UPDATE_DELAY.toLong())
+    progressReportinghandler.postDelayed(progressRunnable, Companion.PROGRESS_UPDATE_DELAY.toLong())
   }
 
   override fun pause() {
@@ -188,22 +185,27 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     if (offset > 0) {
       player.seekTo(offset.toLong())
     }
-    progressReportinghandler.postDelayed(progressRunnable, PROGRESS_UPDATE_DELAY.toLong())
+    progressReportinghandler.postDelayed(progressRunnable, Companion.PROGRESS_UPDATE_DELAY.toLong())
   }
 
   internal fun createSimpleExoplayer(): SimpleExoPlayer {
     if (trackSelector is DefaultTrackSelector) {
       Timber.d("Enabling Tunneling Mode")
-      (trackSelector as DefaultTrackSelector).setTunnelingAudioSessionId(C.generateAudioSessionIdV21(this))
+      val parameters = DefaultTrackSelector.ParametersBuilder(this).setTunnelingEnabled(true).build()
+      (trackSelector as DefaultTrackSelector).parameters = parameters
     }
-    return ExoPlayerFactory.newSimpleInstance(this, trackSelector)
+
+    return SimpleExoPlayer.Builder(this)
+            .setTrackSelector(trackSelector)
+            .build()
   }
 
-  internal fun buildMediaSource(uri: Uri): MediaSource = ExtractorMediaSource(
-    uri, mediaDataSourceFactory,
-    DefaultExtractorsFactory(),
-    videoPlayerHandler, null
-  )
+  internal fun buildMediaSource(uri: Uri): MediaSource {
+    val mediaItem = MediaItem.fromUri(uri)
+    val mediaSourceFactory = ProgressiveMediaSource.Factory(mediaDataSourceFactory, DefaultExtractorsFactory())
+
+    return mediaSourceFactory.createMediaSource(mediaItem)
+  }
 
   internal fun releasePlayer() {
     player.stop()
@@ -267,7 +269,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
         val percentage = player.currentPosition.toFloat() / player.getDuration().toFloat()
         if (percentage <= 90f) {
           presenter.updateServerPlaybackPosition(player.currentPosition)
-          progressReportinghandler.postDelayed(this, PROGRESS_UPDATE_DELAY)
+          progressReportinghandler.postDelayed(this, Companion.PROGRESS_UPDATE_DELAY)
           return
         }
         presenter.updateWatchedStatus()
@@ -297,6 +299,10 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     alertDialogBuilder.create()
     val dialog = alertDialogBuilder.show()
     dialog.getButton(DialogInterface.BUTTON_POSITIVE).requestFocusFromTouch()
+  }
+
+  companion object {
+    internal const val PROGRESS_UPDATE_DELAY = 10000L
   }
 }
 

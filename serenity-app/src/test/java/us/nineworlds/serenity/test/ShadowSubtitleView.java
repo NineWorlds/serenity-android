@@ -1,14 +1,14 @@
 package us.nineworlds.serenity.test;
 
-import com.google.android.exoplayer2.text.CaptionStyleCompat;
+import com.google.android.exoplayer2.ui.CaptionStyleCompat;
 import com.google.android.exoplayer2.ui.SubtitleView;
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 import org.robolectric.annotation.RealObject;
-import org.robolectric.shadows.ShadowView;
+import org.robolectric.shadows.ShadowViewGroup;
 
 @Implements(SubtitleView.class)
-public class ShadowSubtitleView extends ShadowView {
+public class ShadowSubtitleView extends ShadowViewGroup {
 
   @RealObject private SubtitleView subtitleView;
 

@@ -2,7 +2,6 @@ package us.nineworlds.serenity.ui.video.player
 
 import android.view.View
 import com.birbit.android.jobqueue.JobManager
-import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerControlView
 import moxy.InjectViewState
@@ -74,18 +73,11 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
     jobManager.addJobInBackground(WatchedStatusJob(video.id()))
   }
 
-  override fun onSeekProcessed() {
-  }
+  override fun onSeekProcessed() = Unit
 
-  override fun onPositionDiscontinuity(reason: Int) {
-  }
+  override fun onPositionDiscontinuity(reason: Int) = Unit
 
-  override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
-  }
-
-  override fun onPlayerError(error: ExoPlaybackException) {
-    logger.error("Play back error", Exception(error))
-  }
+  override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) = Unit
 
   override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
     if (Player.STATE_ENDED == playbackState) {
@@ -95,16 +87,14 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
     }
   }
 
-  override fun onLoadingChanged(isLoading: Boolean) {
-  }
+  override fun onLoadingChanged(isLoading: Boolean) = Unit
 
-  override fun onRepeatModeChanged(repeatMode: Int) {
-  }
+  override fun onRepeatModeChanged(repeatMode: Int) = Unit
 
   override fun videoId(): String = video.id()
 
-  override fun stopPlaying(currentPostion: Long) {
-    jobManager.addJobInBackground(StopPlaybackJob(video.id(), currentPostion))
+  override fun stopPlaying(currentPosition: Long) {
+    jobManager.addJobInBackground(StopPlaybackJob(video.id(), currentPosition))
   }
 
   override fun startPlaying() {
@@ -139,14 +129,14 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
     jobManager.addJobInBackground(UpdatePlaybackPostionJob(video))
   }
 
-  override fun playBackFromVideoQueue(autoresume: Boolean) {
+  override fun playBackFromVideoQueue(autoResume: Boolean) {
     if (videoQueue.isEmpty()) {
       return
     }
 
     this.video = videoQueue.poll()
 
-    if (!autoresume && video.isPartiallyWatched) {
+    if (!autoResume && video.isPartiallyWatched) {
       viewState.showResumeDialog(video)
       return
     }
