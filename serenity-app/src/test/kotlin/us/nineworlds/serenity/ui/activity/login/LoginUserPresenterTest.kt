@@ -2,7 +2,14 @@ package us.nineworlds.serenity.ui.activity.login
 
 import com.birbit.android.jobqueue.JobManager
 import com.nhaarman.mockitokotlin2.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import org.greenrobot.eventbus.EventBus
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,6 +29,7 @@ import us.nineworlds.serenity.jobs.AuthenticateUserJob
 import us.nineworlds.serenity.jobs.RetrieveAllUsersJob
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.testrunner.PlainAndroidRunner
+import us.nineworlds.serenity.ui.activity.login.LoginRepository.*
 import javax.inject.Inject
 
 @RunWith(PlainAndroidRunner::class)
@@ -32,9 +40,6 @@ class LoginUserPresenterTest : InjectingTest() {
   val rule = MockitoJUnit.rule().strictness(STRICT_STUBS)
 
   @Mock
-  lateinit var mockEventBus: EventBus
-
-  @Mock
   lateinit var mockView: LoginUserContract.LoginUserView
 
   @Mock
@@ -42,6 +47,9 @@ class LoginUserPresenterTest : InjectingTest() {
 
   @Mock
   lateinit var mockSerenityUser: SerenityUser
+
+  @Mock
+  lateinit var mockRepository: LoginRepository
 
   @Inject
   lateinit var mockSerenityClient: SerenityClient
@@ -55,21 +63,12 @@ class LoginUserPresenterTest : InjectingTest() {
   override fun setUp() {
     super.setUp()
     presenter = LoginUserPresenter()
-    presenter.eventBus = mockEventBus
+    Dispatchers.setMain(Dispatchers.Unconfined)
   }
 
-  @Test
-  fun attachViewRegistersEventBus() {
-    presenter.attachView(mockView)
-
-    verify(mockEventBus).register(presenter)
-  }
-
-  @Test
-  fun detachViewUnregistersEventBus() {
-    presenter.detachView(mockView)
-
-    verify(mockEventBus).unregister(presenter)
+  @After
+  fun tearDown() {
+    Dispatchers.resetMain()
   }
 
   @Test
@@ -95,33 +94,25 @@ class LoginUserPresenterTest : InjectingTest() {
   }
 
   @Test
-  fun allUsersJobIsCreatedAndAddedToJobManager() {
+  fun allUsersJobIsCreatedAndAddedToJobManager() = runBlocking {
+    val expectedUsers = listOf(mockSerenityUser)
+    doReturn(Result.Success(expectedUsers)).whenever(mockRepository).loadAllUsers()
+    presenter.attachView(mockView)
+
     presenter.retrieveAllUsers()
 
-    verify(mockJobManager).addJobInBackground(any<RetrieveAllUsersJob>())
-  }
-
-  @Test
-  fun processingAllUserEventsDisplaysAllUsers() {
-    val expectedUsers = arrayListOf<SerenityUser>(mockSerenityUser)
-    presenter.attachView(mockView)
-    presenter.processAllUsersEvent(AllUsersEvent(expectedUsers))
-
+    verify(mockRepository).loadAllUsers()
     verify(mockView).displayUsers(expectedUsers)
   }
 
   @Test
-  fun loadUserAddsJob() {
+  fun loadUserAddsJob() = runBlocking {
+    doReturn(Result.Success(mockSerenityUser)).whenever(mockRepository).authenticateUser(any())
+    presenter.attachView(mockView)
+
     presenter.loadUser(mockSerenityUser)
 
-    verify(mockJobManager).addJobInBackground(any<AuthenticateUserJob>())
-  }
-
-  @Test
-  fun showUsersStartScreenCallesLaunchNextScreen() {
-    presenter.attachView(mockView)
-    presenter.showUsersStartScreen(AuthenticatedUserEvent(mockSerenityUser))
-
+    verify(mockRepository).authenticateUser(mockSerenityUser)
     verify(mockView).launchNextScreen()
   }
 
@@ -131,7 +122,7 @@ class LoginUserPresenterTest : InjectingTest() {
 
   inner class TestModule : Module() {
     init {
-      bind(EventBus::class.java).toInstance(mockEventBus)
+      bind(LoginRepository::class.java).toInstance(mockRepository)
     }
   }
 
