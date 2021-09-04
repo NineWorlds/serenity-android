@@ -38,6 +38,9 @@ android {
 
     vectorDrawables.useSupportLibrary = true
 
+    buildFeatures {
+      viewBinding true
+    }
   }
 
   aaptOptions {
@@ -153,6 +156,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
   implementation "com.github.moxy-community:moxy:$moxyVersion"
   implementation "com.github.moxy-community:moxy-app-compat:$moxyVersion"
+  implementation "com.github.moxy-community:moxy-ktx:$moxyVersion"
   implementation "com.github.bumptech.glide:glide:$glideVersion"
   kapt "com.github.bumptech.glide:compiler:$glideVersion"
   implementation "org.greenrobot:eventbus:$eventBus"

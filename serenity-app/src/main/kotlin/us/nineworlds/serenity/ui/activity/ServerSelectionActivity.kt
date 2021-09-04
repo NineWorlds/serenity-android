@@ -7,13 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import butterknife.BindView
-import butterknife.ButterKnife.bind
 import com.birbit.android.jobqueue.JobManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import us.nineworlds.plex.server.GDMServer
@@ -22,6 +17,8 @@ import us.nineworlds.serenity.MainActivity
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.core.util.StringPreference
+import us.nineworlds.serenity.databinding.ActivityServerSelectionBinding
+import us.nineworlds.serenity.databinding.IncludeLoadingProgressBinding
 import us.nineworlds.serenity.emby.server.EmbyServer
 import us.nineworlds.serenity.emby.server.EmbyServerJob
 import us.nineworlds.serenity.injection.ForMediaServers
@@ -36,8 +33,8 @@ import javax.inject.Inject
 
 class ServerSelectionActivity : InjectingActivity() {
 
-  companion object {
-    const val SERVER_DISPLAY_DELAY = 5000L
+  private companion object {
+    private const val SERVER_DISPLAY_DELAY = 5000L
   }
 
   @field:[Inject ForMediaServers]
@@ -57,43 +54,38 @@ class ServerSelectionActivity : InjectingActivity() {
   @Inject
   lateinit var jobManager: JobManager
 
-  @BindView(R.id.server_container)
-  internal lateinit var serverContainer: LinearLayout
-
-  @BindView(R.id.data_loading_progress)
-  internal lateinit var serverLoadingProgressBar: ProgressBar
-
-  @BindView(R.id.data_loading_container)
-  internal lateinit var serverLoadingContainer: FrameLayout
-
   private lateinit var refreshButton: View
   private lateinit var manualEntryButton: View
 
   internal lateinit var serverDisplayHandler: Handler
+  internal lateinit var binding: ActivityServerSelectionBinding
+  internal lateinit var progressBinding: IncludeLoadingProgressBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_server_selection)
-    bind(this)
+    binding = ActivityServerSelectionBinding.inflate(layoutInflater)
+    progressBinding = IncludeLoadingProgressBinding.bind(binding.root)
+
+    setContentView(binding.root)
 
     serverDisplayHandler = Handler()
-    serverLoadingContainer.visibility = VISIBLE
+    progressBinding.dataLoadingContainer.visibility = VISIBLE
     serverDisplayHandler.postDelayed({
       createServerList()
     }, SERVER_DISPLAY_DELAY)
   }
 
   private fun createServerList() {
-    serverLoadingContainer.visibility = GONE
+    progressBinding.dataLoadingContainer.visibility = GONE
 
     manualEntryButton =
-      LayoutInflater.from(this).inflate(R.layout.button_server_manual, serverContainer, false)
+      LayoutInflater.from(this).inflate(R.layout.button_server_manual, binding.serverContainer, false)
     manualEntryButton.setOnClickListener {
       val intent = Intent(this, ManualServerActivity::class.java)
       startActivityForResult(intent, 2000)
     }
 
-    serverContainer.addView(manualEntryButton)
+    binding.serverContainer.addView(manualEntryButton)
 
     preferredServerEntry()
 
@@ -102,18 +94,18 @@ class ServerSelectionActivity : InjectingActivity() {
     }
 
     refreshButton =
-      LayoutInflater.from(this).inflate(R.layout.button_server_refresh, serverContainer, false)
+      LayoutInflater.from(this).inflate(R.layout.button_server_refresh, binding.serverContainer, false)
     refreshButton.setOnClickListener {
       jobManager.addJobInBackground(GDMServerJob())
       jobManager.addJobInBackground(EmbyServerJob())
       recreate()
     }
-    serverContainer.addView(refreshButton)
+    binding.serverContainer.addView(refreshButton)
 
-    if (serverContainer.childCount > 0) {
-      serverContainer.getChildAt(0).requestFocus()
+    if (binding.serverContainer.childCount > 0) {
+      binding.serverContainer.getChildAt(0).requestFocus()
     }
-    serverContainer.visibility = VISIBLE
+    binding.serverContainer.visibility = VISIBLE
   }
 
   private fun displayServers(key: String, serverInfo: Server) {
@@ -125,10 +117,10 @@ class ServerSelectionActivity : InjectingActivity() {
   }
 
   private fun createServerView(layoutId: Int, serverInfo: Server) {
-    val serverView = LayoutInflater.from(this).inflate(layoutId, serverContainer, false)
+    val serverView = LayoutInflater.from(this).inflate(layoutId, binding.serverContainer, false)
     val serverNameText = serverView!!.findViewById<TextView>(R.id.server_name)
     serverNameText?.text = serverInfo.serverName
-    serverContainer.addView(serverView)
+    binding.serverContainer.addView(serverView)
     serverView.setOnClickListener { _ -> startNextActivity(serverInfo) }
   }
 

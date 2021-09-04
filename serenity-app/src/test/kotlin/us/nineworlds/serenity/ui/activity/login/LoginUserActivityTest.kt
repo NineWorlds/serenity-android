@@ -61,13 +61,13 @@ class LoginUserActivityTest : InjectingTest() {
 
   @Test
   fun expectedLoginPresenterIsCreated() {
-    assertThat(activity.providePresenter()).isEqualTo(mockPresenter)
+    assertThat(activity.presenter).isEqualTo(mockPresenter)
   }
 
   @Test
   fun profileContainerHasContainerSetup() {
-    assertThat(activity.profileContainer).isNotNull
-    assertThat(activity.profileContainer.layoutManager).isInstanceOf(FlexboxLayoutManager::class.java)
+    assertThat(activity.binding.loginUserContainer).isNotNull
+    assertThat(activity.binding.loginUserContainer.layoutManager).isInstanceOf(FlexboxLayoutManager::class.java)
 
     verify(mockPresenter).initPresenter(mockServer)
     verify(mockPresenter).retrieveAllUsers()
@@ -75,11 +75,11 @@ class LoginUserActivityTest : InjectingTest() {
 
   @Test
   fun displayUserHidesProgressBar() {
-    activity.dataLoadingContainer.visibility = VISIBLE
+    activity.progressBinding.dataLoadingContainer.visibility = VISIBLE
     activity.adapter = mockAdapter
     activity.displayUsers(mutableListOf(mockSerenityUser).toList())
 
-    Assertions.assertThat(activity.dataLoadingContainer).isGone
+    Assertions.assertThat(activity.progressBinding.dataLoadingContainer).isGone
     verify(mockAdapter).loadUsers(any())
   }
 
