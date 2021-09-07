@@ -11,7 +11,6 @@ import android.widget.TextView
 import android.widget.Toast
 import com.birbit.android.jobqueue.JobManager
 import com.google.firebase.analytics.FirebaseAnalytics
-import us.nineworlds.plex.server.GDMServer
 import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.MainActivity
 import us.nineworlds.serenity.R
@@ -26,7 +25,6 @@ import us.nineworlds.serenity.injection.InjectingActivity
 import us.nineworlds.serenity.injection.ServerClientPreference
 import us.nineworlds.serenity.injection.ServerIPPreference
 import us.nineworlds.serenity.injection.ServerPortPreference
-import us.nineworlds.serenity.jobs.GDMServerJob
 import us.nineworlds.serenity.ui.activity.login.LoginUserActivity
 import us.nineworlds.serenity.ui.activity.manualentry.ManualServerActivity
 import javax.inject.Inject
@@ -96,7 +94,6 @@ class ServerSelectionActivity : InjectingActivity() {
     refreshButton =
       LayoutInflater.from(this).inflate(R.layout.button_server_refresh, binding.serverContainer, false)
     refreshButton.setOnClickListener {
-      jobManager.addJobInBackground(GDMServerJob())
       jobManager.addJobInBackground(EmbyServerJob())
       recreate()
     }
@@ -173,11 +170,7 @@ class ServerSelectionActivity : InjectingActivity() {
       return
     }
 
-    val server = if (serverClientPreference.get() == "Emby") {
-      EmbyServer()
-    } else {
-      GDMServer()
-    }
+    val server = EmbyServer()
 
     server.ipAddress = serverIPPreference.get()
     server.port = serverPortPreference.get()

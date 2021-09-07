@@ -120,7 +120,6 @@ public class MainActivity extends SerenityActivity implements MainView {
         }
     }
 
-
     protected void initPreferences() {
         ServerConfig config = (ServerConfig) ServerConfig.getInstance();
         if (config != null) {

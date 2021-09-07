@@ -1,6 +1,6 @@
 
 evaluationDependsOn(":emby-lib")
-evaluationDependsOn(':plexapp-rest-library')
+//evaluationDependsOn(':plexapp-rest-library')
 evaluationDependsOn(':subtitle-converter')
 
 apply plugin: 'com.android.application'
@@ -120,7 +120,7 @@ android {
 
 dependencies {
 
-  implementation project(':plexapp-rest-library')
+//  implementation project(':plexapp-rest-library')
   implementation project(':subtitle-converter')
   implementation project(':emby-lib')
   implementation project(':serenity-android-common')

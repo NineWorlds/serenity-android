@@ -37,9 +37,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import toothpick.config.Module;
-import us.nineworlds.plex.rest.model.impl.Directory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.TestingModule;
+import us.nineworlds.serenity.common.media.model.IDirectory;
+import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.test.InjectingTest;
 
@@ -51,21 +51,21 @@ import static org.mockito.Mockito.doReturn;
 public class MenuMediaContainerTest extends InjectingTest {
 
   @Mock
-  MediaContainer mockMediaContainer;
+  IMediaContainer mockMediaContainer;
 
   MenuMediaContainer menuMediaContainer;
 
-  List<Directory> mockDirectories;
+  List<IDirectory> mockDirectories;
 
   @Mock
-  Directory mockDirectory;
+  IDirectory mockDirectory;
 
   @Override
   @Before
   public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
     super.setUp();
-    mockDirectories = new ArrayList<Directory>();
+    mockDirectories = new ArrayList<IDirectory>();
 
     doReturn(mockDirectories).when(mockMediaContainer).getDirectories();
 

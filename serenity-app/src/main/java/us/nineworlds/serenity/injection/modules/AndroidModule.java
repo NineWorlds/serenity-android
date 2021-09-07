@@ -36,11 +36,8 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import org.greenrobot.eventbus.EventBus;
 import toothpick.config.Module;
-import us.nineworlds.plex.rest.PlexappFactory;
-import us.nineworlds.plex.rest.config.IConfiguration;
 import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.common.rest.SerenityClient;
-import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.core.util.StringPreference;
 import us.nineworlds.serenity.emby.server.api.EmbyAPIClient;
@@ -53,7 +50,6 @@ public class AndroidModule extends Module {
 
   private final Context applicationContext;
   private static SerenityClient embyAPIClient;
-  private static SerenityClient plexClient;
 
   public AndroidModule(Application application) {
     this.applicationContext = application;
@@ -119,19 +115,11 @@ public class AndroidModule extends Module {
     @Inject @ServerClientPreference StringPreference serverClientPreference;
 
     @Override public SerenityClient get() {
-      if (plexClient == null) {
-        IConfiguration serverConfig = ServerConfig.getInstance(applicationContext);
-        plexClient = PlexappFactory.getInstance(serverConfig);
-      }
       if (embyAPIClient == null) {
         embyAPIClient = new EmbyAPIClient(applicationContext, "http://localhost:8096/");
       }
 
-      if ("Emby".equals(serverClientPreference.get())) {
-        return embyAPIClient;
-      }
-
-      return plexClient;
+      return embyAPIClient;
     }
   }
 

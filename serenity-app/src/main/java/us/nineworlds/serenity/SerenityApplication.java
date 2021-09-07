@@ -51,8 +51,6 @@ import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
 import us.nineworlds.serenity.injection.modules.LoginModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
-import us.nineworlds.serenity.jobs.GDMServerJob;
-import us.nineworlds.serenity.server.GDMReceiver;
 
 /**
  * Global manager for the Serenity application
@@ -67,7 +65,6 @@ public class SerenityApplication extends Application {
   @Inject JobManager jobManager;
   @Inject Logger logger;
   @Inject LocalBroadcastManager localBroadcastManager;
-  private BroadcastReceiver gdmReceiver;
   EventBus eventBus;
 
   private static boolean enableTracking = true;
@@ -98,8 +95,6 @@ public class SerenityApplication extends Application {
     super.onCreate();
     init();
     setDefaultPreferences();
-    gdmReceiver = new GDMReceiver();
-    registerGDMReceiver();
     discoverServers();
 
     new MediaCodecInfoUtil().logAvailableCodecs();
@@ -134,19 +129,10 @@ public class SerenityApplication extends Application {
   @Override public void onTerminate() {
     eventBus.unregister(this);
     jobManager.stop();
-    localBroadcastManager.unregisterReceiver(gdmReceiver);
     super.onTerminate();
   }
 
-  protected void registerGDMReceiver() {
-    IntentFilter filters = new IntentFilter();
-    filters.addAction(GDMReceiver.GDM_MSG_RECEIVED);
-    filters.addAction(GDMReceiver.GDM_SOCKET_CLOSED);
-    localBroadcastManager.registerReceiver(gdmReceiver, filters);
-  }
-
   protected void discoverServers() {
-    jobManager.addJobInBackground(new GDMServerJob());
     jobManager.addJobInBackground(new EmbyServerJob());
   }
 
