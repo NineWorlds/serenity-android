@@ -3,12 +3,9 @@ package us.nineworlds.serenity.ui.activity.login
 import com.birbit.android.jobqueue.JobManager
 import com.nhaarman.mockitokotlin2.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import org.greenrobot.eventbus.EventBus
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -17,19 +14,14 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
-import org.robolectric.RobolectricTestRunner
 import toothpick.config.Module
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.Server
+import us.nineworlds.serenity.common.repository.Result
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
-import us.nineworlds.serenity.events.users.AllUsersEvent
-import us.nineworlds.serenity.events.users.AuthenticatedUserEvent
-import us.nineworlds.serenity.jobs.AuthenticateUserJob
-import us.nineworlds.serenity.jobs.RetrieveAllUsersJob
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.testrunner.PlainAndroidRunner
-import us.nineworlds.serenity.ui.activity.login.LoginRepository.*
 import javax.inject.Inject
 
 @RunWith(PlainAndroidRunner::class)

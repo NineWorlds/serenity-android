@@ -23,7 +23,8 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     app:rowHeight="wrap_content"
-    app:numberOfRows="1">
+    app:numberOfRows="1"
+  >
 
   </androidx.leanback.widget.HorizontalGridView>
 

@@ -12,6 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
+import us.nineworlds.serenity.common.repository.Result
 
 class LoginRepositoryTest {
 
@@ -40,7 +41,7 @@ class LoginRepositoryTest {
             repository.loadAllUsers()
         }
 
-        assertThat((result as LoginRepository.Result.Success<List<SerenityUser>>).data).isEqualTo(expectedResult)
+        assertThat((result as Result.Success<List<SerenityUser>>).data).isEqualTo(expectedResult)
         verify(mockSerenityClient).allAvailableUsers()
     }
 
@@ -53,7 +54,7 @@ class LoginRepositoryTest {
             repository.authenticateUser(expectedResult)
         }
 
-        assertThat((result as LoginRepository.Result.Success<SerenityUser>).data).isEqualTo(expectedResult)
+        assertThat((result as Result.Success<SerenityUser>).data).isEqualTo(expectedResult)
         verify(mockSerenityClient).authenticateUser(mockSerenityUser)
     }
 
