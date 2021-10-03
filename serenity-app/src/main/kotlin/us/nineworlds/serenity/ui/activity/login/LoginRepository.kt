@@ -5,14 +5,10 @@ import kotlinx.coroutines.withContext
 import toothpick.InjectConstructor
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
+import us.nineworlds.serenity.common.repository.Result
 
 @InjectConstructor
 class LoginRepository(private val client: SerenityClient) {
-
-    sealed class Result<out R> {
-        data class Success<out T>(val data: T) : Result<T>()
-        data class Error(val exception: Exception) : Result<Nothing>()
-    }
 
     suspend fun loadAllUsers(): Result<List<SerenityUser>> = withContext(Dispatchers.IO) {
         val users = client.allAvailableUsers()

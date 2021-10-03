@@ -37,6 +37,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import moxy.presenter.InjectPresenter;
+import moxy.presenter.ProvidePresenter;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;

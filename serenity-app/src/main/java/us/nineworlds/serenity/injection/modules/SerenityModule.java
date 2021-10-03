@@ -32,6 +32,7 @@ import us.nineworlds.serenity.common.Server;
 import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.core.logger.TimberLogger;
 import us.nineworlds.serenity.core.util.TimeUtil;
+import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.injection.modules.providers.VideoPlayerIntentUtilsProvider;
@@ -56,6 +57,7 @@ public class SerenityModule extends Module {
     bind(TVCategoryState.class).toInstance(new TVCategoryState());
     bind(TVShowBrowserPresenter.class).toInstance(new TVShowBrowserPresenter());
     bind(Logger.class).toInstance(new TimberLogger());
+    bind(MainMenuPresenter.class).to(MainMenuPresenter.class);
   }
 
 }

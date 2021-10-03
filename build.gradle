@@ -2,21 +2,18 @@ buildscript {
 
 
   ext {
-    kotlinVersion = "1.5.21"
+    kotlinVersion = "1.5.30"
     androidPluginVersion = "4.2.2"
   }
 
   repositories {
     mavenCentral()
     google()
-    maven {
-      url 'https://maven.fabric.io/public'
-    }
 
   }
   dependencies {
-    classpath 'com.google.gms:google-services:4.2.0'
-    classpath 'io.fabric.tools:gradle:1.28.0'
+    classpath 'com.google.gms:google-services:4.3.10'
+    classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
     classpath "com.android.tools.build:gradle:$androidPluginVersion"
     classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
@@ -81,7 +78,7 @@ project.ext {
   retrofitVersion = "2.9.0"
   jodaTimeVersion = "2.10.9.1"
   timberVersion = "5.0.1"
-  exoplayerVersion = "2.15.0"
+  exoplayerVersion = "2.15.1"
   glideOkHttpVersion = "4.12.0"
   moxyVersion = "2.2.2"
   glideVersion = "4.12.0"
