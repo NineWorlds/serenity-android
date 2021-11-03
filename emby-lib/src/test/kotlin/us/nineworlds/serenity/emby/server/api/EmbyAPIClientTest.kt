@@ -8,6 +8,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowLog
+import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 
 @RunWith(RobolectricTestRunner::class)
@@ -82,7 +83,7 @@ class EmbyAPIClientTest {
     val result = client.retrieveItemByCategories()
     val parentId = result.directories[1].key
 
-    val movies = client.retrieveItemByIdCategory(parentId, "all")
+    val movies = client.retrieveItemByIdCategory(parentId, "all", Types.EPISODE)
 
     assertThat(movies.videos).isNotEmpty
   }
@@ -94,7 +95,7 @@ class EmbyAPIClientTest {
 
     val key = result.directories[0].key
 
-    val itemResult = client.retrieveItemByIdCategory(key, "recentlyAdded")
+    val itemResult = client.retrieveItemByIdCategory(key, "recentlyAdded", Types.MOVIES)
 
     assertThat(itemResult.videos).isNotEmpty
 
