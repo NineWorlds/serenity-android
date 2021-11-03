@@ -137,6 +137,10 @@ class MediaContainerAdaptor {
     for (item in items) {
       val video = Video()
 
+      val sortEpisode = item.episodeNumber?.toInt() ?: 0
+
+      video.titleSort = sortEpisode.toString().padStart(3, '0')
+
       video.title = item.name
       video.key = item.id
       video.parentKey = item.parentId
@@ -176,7 +180,7 @@ class MediaContainerAdaptor {
           if (mediaStream.type == "Video") {
             media.aspectRatio = mediaStream.aspectRatio
             media.videoCodec = mediaStream.codec
-          } else {
+          } else if (mediaStream.type == "Audio") {
             media.audioCodec = mediaStream.codec
             media.audioChannels = mediaStream.channels
           }
@@ -187,7 +191,7 @@ class MediaContainerAdaptor {
 
       serenityVideos.add(video)
     }
-    mediaContainer.videos = serenityVideos.toList()
+    mediaContainer.videos = serenityVideos.sortedBy { item -> item.titleSort } .toList()
     return mediaContainer
   }
 

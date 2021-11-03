@@ -49,6 +49,7 @@ class EmbyServerJob : InjectingJob() {
       val port = 7359
 
       //Try the 255.255.255.255 first
+
       try {
         val sendPacket = DatagramPacket(sendData, sendData.size, InetAddress.getByName("255.255.255.255"), port)
         c.send(sendPacket)
@@ -57,12 +58,12 @@ class EmbyServerJob : InjectingJob() {
         Timber.e(e, "Error sending DatagramPacket")
       }
 
-      try {
-        val sendPacket = DatagramPacket(sendData, sendData.size, useMultiCastAddress(), port)
-        c.send(sendPacket)
-      } catch (e: Exception) {
-        Timber.e(e, "error sending to multicast address")
-      }
+//      try {
+//        val sendPacket = DatagramPacket(sendData, sendData.size, useMultiCastAddress(), port)
+//        c.send(sendPacket)
+//      } catch (e: Exception) {
+//        Timber.e(e, "error sending to multicast address")
+//      }
 
       // Broadcast the message over all the network interfaces
       val interfaces = NetworkInterface.getNetworkInterfaces()
@@ -92,7 +93,7 @@ class EmbyServerJob : InjectingJob() {
 
       Timber.d(">>> Done looping over all network interfaces. Now waiting for a reply!")
 
-      receive(c, 4000L)
+      receive(c, 8000L)
 
       //Close the port!
       c.close()

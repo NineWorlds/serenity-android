@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
+import us.nineworlds.serenity.common.rest.Types;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
 
@@ -102,6 +103,6 @@ public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService 
       category = DEFAULT_CATEGORY;
     }
 
-    return factory.retrieveItemByIdCategory(key, category);
+    return factory.retrieveItemByIdCategory(key, category, Types.MOVIES);
   }
 }

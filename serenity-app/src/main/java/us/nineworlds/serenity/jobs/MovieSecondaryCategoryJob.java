@@ -8,6 +8,7 @@ import org.greenrobot.eventbus.EventBus;
 import us.nineworlds.serenity.common.android.injection.InjectingJob;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.common.rest.SerenityClient;
+import us.nineworlds.serenity.common.rest.Types;
 import us.nineworlds.serenity.events.MovieSecondaryCategoryEvent;
 
 public class MovieSecondaryCategoryJob extends InjectingJob {
@@ -29,7 +30,7 @@ public class MovieSecondaryCategoryJob extends InjectingJob {
   }
 
   @Override public void onRun() throws Throwable {
-    IMediaContainer mediaContainer = client.retrieveItemByIdCategory(key, category);
+    IMediaContainer mediaContainer = client.retrieveItemByIdCategory(key, category, Types.MOVIES);
     eventBus.post(new MovieSecondaryCategoryEvent(mediaContainer, key, category));
   }
 

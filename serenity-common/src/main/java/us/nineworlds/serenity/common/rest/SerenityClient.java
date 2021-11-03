@@ -14,7 +14,7 @@ public interface SerenityClient {
 
   IMediaContainer retrieveItemByIdCategory(String key) throws Exception;
 
-  IMediaContainer retrieveItemByIdCategory(String key, String category) throws Exception;
+  IMediaContainer retrieveItemByIdCategory(String key, String category, Types types) throws Exception;
 
   IMediaContainer retrieveItemByCategories(String key, String category, String secondaryCategory) throws Exception;
 

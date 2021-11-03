@@ -17,6 +17,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
+import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.emby.BuildConfig
 import us.nineworlds.serenity.emby.adapters.MediaContainerAdaptor
 import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
@@ -216,13 +217,20 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     return MediaContainerAdaptor().createCategory(queryResult!!.genres!!)
   }
 
-  override fun retrieveItemByIdCategory(key: String, category: String): IMediaContainer {
+  override fun retrieveItemByIdCategory(key: String, category: String, types: Types): IMediaContainer {
     var genre: String? = null
     var isPlayed: Boolean? = null
 
     genre = when (category) {
       "all", "unwatched" -> null
       else -> category
+    }
+
+    val type  = when (types) {
+       Types.MOVIES -> "Movie"
+       Types.SEASON -> "Season"
+       Types.SERIES -> "Series"
+       else -> "Episode"
     }
 
     if (userId == null) {
@@ -236,7 +244,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     } else if (category == "unwatched") {
       usersService.unwatchedItems(headerMap(), userId = userId!!, parentId = key)
     } else {
-      usersService.fetchItemQuery(headerMap(), userId = userId!!, parentId = key, genre = genre, isPlayed = isPlayed)
+      usersService.fetchItemQuery(headerMap(), userId = userId!!, parentId = key, genre = genre, isPlayed = isPlayed, includeItemType = type )
     }
 
     val results = call.execute().body()
