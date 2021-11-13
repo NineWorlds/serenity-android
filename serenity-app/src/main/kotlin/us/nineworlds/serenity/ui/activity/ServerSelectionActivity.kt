@@ -66,6 +66,12 @@ class ServerSelectionActivity : InjectingActivity() {
 
     setContentView(binding.root)
 
+    if (!(serverIPPreference.get().isNullOrEmpty())) {
+      val server = preferedServer()
+      startNextActivity(server)
+      return
+    }
+
     serverDisplayHandler = Handler()
     progressBinding.dataLoadingContainer.visibility = VISIBLE
     serverDisplayHandler.postDelayed({
@@ -170,12 +176,17 @@ class ServerSelectionActivity : InjectingActivity() {
       return
     }
 
+    val server = preferedServer()
+    servers["Manual"] = server
+  }
+
+  private fun preferedServer(): EmbyServer {
     val server = EmbyServer()
 
     server.ipAddress = serverIPPreference.get()
     server.port = serverPortPreference.get()
     server.serverName = "Preferred Server"
     server.setDiscoveryProtocol(serverClientPreference.get())
-    servers["Manual"] = server
+    return server
   }
 }
