@@ -55,11 +55,9 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
     lateinit var presenterProvider: Provider<MainMenuPresenter>
 
     private lateinit var unbinder: Unbinder
+    lateinit var mainGallery: HorizontalGridView
 
     internal var menuItems: List<MenuItem> = ArrayList()
-
-    @BindView(R.id.mainGalleryMenu)
-    lateinit var mainGallery: HorizontalGridView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.main_menu_view, container)
@@ -83,7 +81,8 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
     }
 
     private fun setupGallery() {
-        mainGallery.windowAlignment = HorizontalGridView.WINDOW_ALIGN_BOTH_EDGE
+        mainGallery = requireActivity().findViewById<HorizontalGridView>(R.id.mainGalleryMenu)
+        //mainGallery.windowAlignment = HorizontalGridView.WINDOW_ALIGN_BOTH_EDGE
         val adapter = MainMenuTextViewAdapter()
         mainGallery.adapter = adapter
         mainGallery.visibility = View.VISIBLE

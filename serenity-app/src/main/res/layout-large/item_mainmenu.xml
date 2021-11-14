@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:focusable="true"
-  android:clickable="true"
-
-  android:descendantFocusability="afterDescendants"
->
-
-  <TextView
-    android:id="@+id/main_menu_item"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textColor="@color/main_menu_text_color_selector"
-    android:padding="10dp"
-    android:duplicateParentState="true" />
+    android:clickable="true"
+    android:descendantFocusability="afterDescendants"
+
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/main_menu_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:duplicateParentState="true"
+        android:padding="10dp"
+        android:textColor="@color/main_menu_text_color_selector"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+
+        />
 </FrameLayout>
