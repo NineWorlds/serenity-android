@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2012, 2021 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -27,14 +27,11 @@ package us.nineworlds.serenity.fragments
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuView
 import javax.inject.Inject
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter
-import butterknife.Unbinder
-import butterknife.BindView
 import us.nineworlds.serenity.R
 import androidx.leanback.widget.HorizontalGridView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.os.Bundle
-import butterknife.ButterKnife
 import android.app.Activity
 import android.view.View
 import android.widget.FrameLayout
@@ -54,14 +51,12 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
     @Inject
     lateinit var presenterProvider: Provider<MainMenuPresenter>
 
-    private lateinit var unbinder: Unbinder
     lateinit var mainGallery: HorizontalGridView
 
     internal var menuItems: List<MenuItem> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.main_menu_view, container, false)
-        unbinder = ButterKnife.bind(this, view)
         return view
     }
 
@@ -82,7 +77,6 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
 
     private fun setupGallery() {
         mainGallery = requireActivity().findViewById<HorizontalGridView>(R.id.mainGalleryMenu)
-        //mainGallery.windowAlignment = HorizontalGridView.WINDOW_ALIGN_BOTH_EDGE
         val adapter = MainMenuTextViewAdapter()
         mainGallery.adapter = adapter
         mainGallery.visibility = View.VISIBLE
@@ -94,19 +88,10 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        unbinder.unbind()
-    }
-
     override fun loadMenu(event: MainMenuEvent) {
         menuItems = MenuMediaContainer(event.mediaContainer).createMenuItems()
         setupGallery()
         mainGallery.visibility = View.VISIBLE
         mainGallery.requestFocusFromTouch()
-    }
-
-    init {
-        retainInstance = false
     }
 }
