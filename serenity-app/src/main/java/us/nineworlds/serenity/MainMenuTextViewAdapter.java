@@ -78,9 +78,9 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
   void setDefaults(String title, TextView v, int position) {
     v.setText(title);
-    v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
-    v.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-    v.setGravity(Gravity.CENTER_VERTICAL);
+    //v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
+    //v.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+    //v.setGravity(Gravity.CENTER_VERTICAL);
     v.setLines(1);
     v.setHorizontallyScrolling(true);
     v.setEllipsize(TruncateAt.MARQUEE);
