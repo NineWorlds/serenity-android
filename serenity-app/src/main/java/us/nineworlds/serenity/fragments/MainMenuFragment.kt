@@ -60,7 +60,7 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
     internal var menuItems: List<MenuItem> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.main_menu_view, container)
+        val view = inflater.inflate(R.layout.main_menu_view, container, false)
         unbinder = ButterKnife.bind(this, view)
         return view
     }
@@ -87,12 +87,10 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
         mainGallery.adapter = adapter
         mainGallery.visibility = View.VISIBLE
         adapter.updateMenuItems(menuItems)
-        val activity: Activity? = activity
-        if (activity != null) {
-            val dataLoadingContainer = activity.findViewById<FrameLayout>(R.id.data_loading_container)
-            if (dataLoadingContainer != null) {
-                dataLoadingContainer.visibility = View.GONE
-            }
+        val activity: Activity = requireActivity()
+        val dataLoadingContainer = activity.findViewById<FrameLayout>(R.id.data_loading_container)
+        if (dataLoadingContainer != null) {
+            dataLoadingContainer.visibility = View.GONE
         }
     }
 
