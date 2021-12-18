@@ -2,10 +2,8 @@ package us.nineworlds.serenity.fragments
 
 import android.os.Bundle
 import androidx.leanback.app.RowsSupportFragment
-import androidx.leanback.widget.ArrayObjectAdapter
-import androidx.leanback.widget.HeaderItem
-import androidx.leanback.widget.ListRow
-import androidx.leanback.widget.ListRowPresenter
+import androidx.leanback.widget.*
+import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
 import us.nineworlds.serenity.ui.leanback.search.CardPresenter
@@ -27,15 +25,34 @@ class VideoContentVerticalGridFragment : RowsSupportFragment() {
         super.onCreate(savedInstanceState)
         adapter = videoContentAdapter
 
-        //setupGallery(sampleCategories)
+    }
 
+    fun clearGallery() = videoContentAdapter.clear()
+
+    fun updateCategory(categoryInfo: CategoryInfo, contentList: List<VideoContentInfo>) {
+        val rows = videoContentAdapter.unmodifiableList<ListRow>()
+        val row = rows.find { row ->
+            row.headerItem.name == categoryInfo.category &&
+                    row.adapter.size() == 0
+        }
+        row?.let { row ->
+            val adapter = row.adapter as ArrayObjectAdapter
+            adapter.setItems(contentList, object : DiffCallback<VideoContentInfo>() {
+                override fun areItemsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean {
+                    return oldItem.id() == newItem.id()
+                }
+
+                override fun areContentsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean {
+                    return oldItem.equals(newItem)
+                }
+
+            } )
+        }
     }
 
     fun setupGallery(categories: Map<String, List<VideoContentInfo>>) {
-        videoContentAdapter.clear()
         for ((category, contentList) in categories) {
             val listContentRowAdapter = ArrayObjectAdapter(CardPresenter(requireContext()))
-
             listContentRowAdapter.addAll(0, contentList)
 
             val header = HeaderItem(category)

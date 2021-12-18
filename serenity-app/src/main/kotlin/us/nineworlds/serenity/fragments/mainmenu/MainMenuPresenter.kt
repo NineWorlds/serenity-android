@@ -48,19 +48,22 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
                 is Result.Success -> {
                     processesCategories(result.data, itemId, type)
                 }
-                else -> {
-                }
             }
         }
     }
 
     private suspend fun processesCategories(categories: List<CategoryInfo>, itemId: String, type: String) {
-        val categoriesMap = mutableMapOf<String, List<VideoContentInfo>>()
-        categories.filter { category -> category.category != "unwatched" }
-                .forEach { category ->
-                    categoriesMap[category.category] = emptyList()
-                }
         if (type == "movies" || type == "tv show" || type == "tvshows") {
+            val categoriesMap = mutableMapOf<String, List<VideoContentInfo>>()
+            categories.filter { category -> category.category != "unwatched" }
+                    .forEach { category ->
+                        categoriesMap[category.category] = emptyList()
+                    }
+
+            withContext(Dispatchers.Main) {
+                viewState.loadCategories(categoriesMap)
+            }
+
             categories.filter { category -> category.category != "unwatched" }
                 .forEach { category ->
                 when (val result = repository.fetchItemsByCategory(category.category, itemId, type)) {
@@ -72,15 +75,16 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
                         }
 
                         withContext(Dispatchers.Main) {
-                            viewState.loadCategories(categoriesMap)
+                            viewState.updateCategories(category, result.data)
                         }
-                    }
-                    else -> {
                     }
                 }
             }
+        } else {
+            withContext(Dispatchers.Main) {
+                viewState.clearCategories()
+            }
         }
-        viewState.loadCategories(categoriesMap)
     }
 
 }
