@@ -24,6 +24,8 @@ public class MainMenuTextViewAdapterTest extends InjectingTest {
 
   MainMenuTextViewAdapter adapter;
 
+
+
   @Before
   public void setUp() throws Exception {
     super.setUp();

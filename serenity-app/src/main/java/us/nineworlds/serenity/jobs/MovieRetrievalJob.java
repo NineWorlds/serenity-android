@@ -32,6 +32,7 @@ public class MovieRetrievalJob extends InjectingJob {
   @Override public void onRun() throws Throwable {
     IMediaContainer mediaContainer = client.retrieveItemByIdCategory(key, category, Types.MOVIES);
     MovieRetrievalEvent event = new MovieRetrievalEvent(mediaContainer);
+
     eventBus.post(event);
   }
 

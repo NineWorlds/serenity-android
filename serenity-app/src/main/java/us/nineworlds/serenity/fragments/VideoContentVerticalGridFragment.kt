@@ -27,14 +27,15 @@ class VideoContentVerticalGridFragment : RowsSupportFragment() {
         super.onCreate(savedInstanceState)
         adapter = videoContentAdapter
 
-        setupGallery(sampleCategories)
+        //setupGallery(sampleCategories)
 
     }
 
     fun setupGallery(categories: Map<String, List<VideoContentInfo>>) {
+        videoContentAdapter.clear()
         for ((category, contentList) in categories) {
-
             val listContentRowAdapter = ArrayObjectAdapter(CardPresenter(requireContext()))
+
             listContentRowAdapter.addAll(0, contentList)
 
             val header = HeaderItem(category)

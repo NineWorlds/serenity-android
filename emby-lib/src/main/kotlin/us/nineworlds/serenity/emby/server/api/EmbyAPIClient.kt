@@ -195,6 +195,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
+  /**
+   *
+   */
   override fun retrieveItemByCategories(): IMediaContainer {
     if (userId == null) {
       userId = fetchUserId()
@@ -218,10 +221,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
   }
 
   override fun retrieveItemByIdCategory(key: String, category: String, types: Types): IMediaContainer {
-    var genre: String? = null
     var isPlayed: Boolean? = null
 
-    genre = when (category) {
+    var genre = when (category) {
       "all", "unwatched" -> null
       else -> category
     }

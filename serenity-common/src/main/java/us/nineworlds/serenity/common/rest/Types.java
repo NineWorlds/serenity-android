@@ -5,5 +5,6 @@ public enum Types {
     MOVIES,
     SERIES,
     SEASON,
-    EPISODE
+    EPISODE,
+    UNKNOWN
 }

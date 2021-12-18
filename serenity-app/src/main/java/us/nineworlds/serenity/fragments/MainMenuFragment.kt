@@ -35,6 +35,7 @@ import android.os.Bundle
 import android.app.Activity
 import android.view.View
 import android.widget.FrameLayout
+import androidx.fragment.app.FragmentContainerView
 import us.nineworlds.serenity.MainMenuTextViewAdapter
 import us.nineworlds.serenity.core.menus.MenuItem
 import us.nineworlds.serenity.events.MainMenuEvent
@@ -42,6 +43,7 @@ import us.nineworlds.serenity.core.model.impl.MenuMediaContainer
 import java.util.ArrayList
 import javax.inject.Provider
 import moxy.ktx.moxyPresenter
+import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.injection.InjectingMvpFragment
 
 class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
@@ -77,7 +79,7 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
 
     private fun setupGallery() {
         mainGallery = requireActivity().findViewById<HorizontalGridView>(R.id.mainGalleryMenu)
-        val adapter = MainMenuTextViewAdapter()
+        val adapter = MainMenuTextViewAdapter(presenter)
         mainGallery.adapter = adapter
         mainGallery.visibility = View.VISIBLE
         adapter.updateMenuItems(menuItems)
@@ -93,5 +95,13 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
         setupGallery()
         mainGallery.visibility = View.VISIBLE
         mainGallery.requestFocusFromTouch()
+    }
+
+    override fun loadCategories(categoriesMap: Map<String, List<VideoContentInfo>>) {
+        val container = requireActivity().findViewById<FragmentContainerView>(R.id.video_content_fragment)
+
+        val videoContainer = container.getFragment<VideoContentVerticalGridFragment>()
+
+        videoContainer.setupGallery(categoriesMap)
     }
 }
