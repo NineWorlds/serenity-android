@@ -2,6 +2,7 @@ package us.nineworlds.serenity.fragments.mainmenu
 
 import androidx.annotation.UiThread
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moxy.InjectViewState
@@ -15,6 +16,8 @@ import us.nineworlds.serenity.fragments.mainmenu.repository.MainMenuRepository
 import us.nineworlds.serenity.common.repository.Result
 import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.CategoryInfo
+import us.nineworlds.serenity.core.model.CategoryVideoInfo
+import us.nineworlds.serenity.core.model.VideoCategory
 import us.nineworlds.serenity.core.model.VideoContentInfo
 
 import javax.inject.Inject
@@ -25,6 +28,8 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
 
     @Inject
     lateinit var repository: MainMenuRepository
+
+    private var galleryJob: Job? = null
 
     init {
         Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
@@ -43,7 +48,10 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
     }
 
     fun populateMovieCategories(itemId: String, type: String) {
-        presenterScope.launch {
+        galleryJob?.let { job ->
+            job.cancel()
+        }
+        galleryJob = presenterScope.launch {
             when (val result = repository.retrieveCategories(itemId)) {
                 is Result.Success -> {
                     processesCategories(result.data, itemId, type)
@@ -54,37 +62,40 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
 
     private suspend fun processesCategories(categories: List<CategoryInfo>, itemId: String, type: String) {
         if (type == "movies" || type == "tv show" || type == "tvshows") {
-            val categoriesMap = mutableMapOf<String, List<VideoContentInfo>>()
-            categories.filter { category -> category.category != "unwatched" }
-                    .forEach { category ->
-                        categoriesMap[category.category] = emptyList()
-                    }
+
+            val filteredCategories = categories.filter { category -> category.category != "unwatched" }
+            val categoryVideoContentInfo = CategoryVideoInfo(categories = filteredCategories)
 
             withContext(Dispatchers.Main) {
-                viewState.loadCategories(categoriesMap)
+                viewState.loadCategories(categoryVideoContentInfo)
             }
 
             categories.filter { category -> category.category != "unwatched" }
-                .forEach { category ->
-                when (val result = repository.fetchItemsByCategory(category.category, itemId, type)) {
-                    is Result.Success -> {
-                        if (!result.data.isNullOrEmpty()) {
-                            categoriesMap[category.category] = result.data
-                        } else {
-                            categoriesMap.remove(category.category)
-                        }
-
-                        withContext(Dispatchers.Main) {
-                            viewState.updateCategories(category, result.data)
+                    .forEach { category ->
+                        when (val result = repository.fetchItemsByCategory(category.category, itemId, type)) {
+                            is Result.Success -> {
+                                withContext(Dispatchers.Main) {
+                                    val videos = result.data.map { videoContentInfo ->
+                                        VideoCategory(
+                                                type = getType(type),
+                                                item = videoContentInfo)
+                                    }
+                                    viewState.updateCategories(category, videos)
+                                }
+                            }
                         }
                     }
-                }
-            }
         } else {
             withContext(Dispatchers.Main) {
                 viewState.clearCategories()
             }
         }
+    }
+
+    private fun getType(type: String): Types = when (type) {
+        "movies", "movie" -> Types.MOVIES
+        "tvshows" -> Types.SERIES
+        else -> Types.UNKNOWN
     }
 
 }
