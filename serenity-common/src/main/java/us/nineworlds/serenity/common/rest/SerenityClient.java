@@ -6,6 +6,8 @@ import us.nineworlds.serenity.common.media.model.IMediaContainer;
 
 public interface SerenityClient {
 
+  IMediaContainer fetchItemById(String itemId) throws Exception;
+
   IMediaContainer retrieveRootData() throws Exception;
 
   IMediaContainer retrieveLibrary() throws Exception;

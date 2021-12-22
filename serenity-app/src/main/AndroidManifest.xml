@@ -152,6 +152,10 @@
 
         <activity android:name=".ui.activity.OverscanSetupActivity" />
 
+        <activity android:name=".ui.activity.leanback.details.DetailsActivity"
+            android:theme="@style/Theme.AppCompat.Leanback.Details"
+            />
+
         <service android:name=".core.services.MovieSearchIntentService" />
 
         <provider

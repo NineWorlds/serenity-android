@@ -1,6 +1,5 @@
 package us.nineworlds.serenity.fragments.mainmenu
 
-import androidx.annotation.UiThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -12,13 +11,12 @@ import moxy.viewstate.strategy.SkipStrategy
 import moxy.viewstate.strategy.StateStrategyType
 import toothpick.Toothpick
 import us.nineworlds.serenity.common.annotations.InjectionConstants
-import us.nineworlds.serenity.fragments.mainmenu.repository.MainMenuRepository
+import us.nineworlds.serenity.core.repository.CategoryRepository
 import us.nineworlds.serenity.common.repository.Result
 import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
 import us.nineworlds.serenity.core.model.VideoCategory
-import us.nineworlds.serenity.core.model.VideoContentInfo
 
 import javax.inject.Inject
 
@@ -27,7 +25,7 @@ import javax.inject.Inject
 class MainMenuPresenter : MvpPresenter<MainMenuView>() {
 
     @Inject
-    lateinit var repository: MainMenuRepository
+    lateinit var repository: CategoryRepository
 
     private var galleryJob: Job? = null
 

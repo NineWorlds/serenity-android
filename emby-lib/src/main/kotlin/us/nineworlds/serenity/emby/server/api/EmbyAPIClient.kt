@@ -21,11 +21,7 @@ import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.emby.BuildConfig
 import us.nineworlds.serenity.emby.adapters.MediaContainerAdaptor
 import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
-import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
-import us.nineworlds.serenity.emby.server.model.AuthenticationResult
-import us.nineworlds.serenity.emby.server.model.PublicUserInfo
-import us.nineworlds.serenity.emby.server.model.QueryFilters
-import us.nineworlds.serenity.emby.server.model.QueryResult
+import us.nineworlds.serenity.emby.server.model.*
 import java.io.File
 
 class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
@@ -121,7 +117,20 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     return call.execute().body()!!
   }
 
-  fun fetchItem(id: String): QueryResult {
+  override fun fetchItemById(itemId: String): IMediaContainer {
+    try {
+      val result = fetchItem(itemId)
+      return when (result.type) {
+        "Series" -> MediaContainerAdaptor().createSeriesList(listOf(result))
+        else -> MediaContainerAdaptor().createVideoList(listOf(result))
+      }
+    } catch (ex: Exception) {
+      ex.printStackTrace()
+    }
+    return MediaContainerAdaptor().createVideoList(emptyList())
+  }
+
+  fun fetchItem(id: String): Item {
     if (userId == null) {
       userId = fetchUserId()
     }

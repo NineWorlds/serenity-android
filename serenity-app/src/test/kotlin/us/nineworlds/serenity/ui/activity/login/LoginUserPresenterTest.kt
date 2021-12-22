@@ -20,6 +20,7 @@ import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.repository.Result
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
+import us.nineworlds.serenity.core.repository.LoginRepository
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import javax.inject.Inject

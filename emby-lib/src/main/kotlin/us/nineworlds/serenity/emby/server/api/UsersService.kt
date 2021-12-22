@@ -8,12 +8,7 @@ import retrofit2.http.HeaderMap
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
-import us.nineworlds.serenity.emby.server.model.AuthenticationResult
-import us.nineworlds.serenity.emby.server.model.PublicUserInfo
-import us.nineworlds.serenity.emby.server.model.QueryResult
-import us.nineworlds.serenity.emby.server.model.Search
-import us.nineworlds.serenity.emby.server.model.UserItemData
+import us.nineworlds.serenity.emby.server.model.*
 
 interface UsersService {
 
@@ -92,7 +87,7 @@ interface UsersService {
     @HeaderMap headerMap: Map<String, String>,
     @Path("userId") userId: String,
     @Path("itemId") itemId: String
-  ): Call<QueryResult>
+  ): Call<Item>
 
   @POST("/emby/Users/{userId}/PlayedItems/{itemId}")
   fun played(

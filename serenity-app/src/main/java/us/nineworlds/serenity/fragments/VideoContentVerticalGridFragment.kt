@@ -8,12 +8,14 @@ import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
 import us.nineworlds.serenity.ui.leanback.search.CardPresenter
 import android.app.Activity
+import android.content.Intent
 import toothpick.Toothpick
 import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
 import us.nineworlds.serenity.core.model.VideoCategory
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
+import us.nineworlds.serenity.ui.activity.leanback.details.DetailsActivity
 import us.nineworlds.serenity.ui.leanback.presenters.CategoryVideoPresenter
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils
 import javax.inject.Inject
@@ -38,6 +40,14 @@ class VideoContentVerticalGridFragment : RowsSupportFragment() {
           if (videoCategory.type == Types.MOVIES) {
               val video = videoCategory.item
               vpUtils.playVideo(requireActivity(), video, false)
+          }
+          if (videoCategory.type == Types.SERIES ) {
+              val itemId = videoCategory.item.id()
+              val type = "tvshows"
+              val intent = Intent(requireActivity(), DetailsActivity::class.java)
+              intent.putExtra("itemId", itemId)
+              intent.putExtra("videoType", type)
+              requireActivity().startActivity(intent)
           }
         }
     }

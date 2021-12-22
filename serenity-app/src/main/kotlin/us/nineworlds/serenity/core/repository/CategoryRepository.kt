@@ -1,6 +1,5 @@
-package us.nineworlds.serenity.fragments.mainmenu.repository
+package us.nineworlds.serenity.core.repository
 
-import android.R.attr
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import toothpick.InjectConstructor
@@ -12,22 +11,10 @@ import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.CategoryMediaContainer
 import us.nineworlds.serenity.events.MainMenuEvent
-import us.nineworlds.serenity.events.MovieRetrievalEvent
-
-import android.R.attr.category
-
-import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer
 
-
-
-
-
-
-
-
 @InjectConstructor
-class MainMenuRepository constructor(private val client: SerenityClient) {
+class CategoryRepository constructor(private val client: SerenityClient) {
 
     suspend fun loadMainMenu(): Result<MainMenuEvent> = withContext(Dispatchers.IO) {
         try {
