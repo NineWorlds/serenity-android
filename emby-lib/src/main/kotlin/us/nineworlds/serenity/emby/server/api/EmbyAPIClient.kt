@@ -46,7 +46,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     val cache = Cache(cacheDir, cacheSize.toLong())
 
     val okClient = RetrofitUrlManager.getInstance().with(OkHttpClient.Builder())
-    logger.level = HttpLoggingInterceptor.Level.BODY
+    logger.level = HttpLoggingInterceptor.Level.BASIC
     okClient.addInterceptor(logger)
     okClient.cache(cache)
 

@@ -24,10 +24,13 @@ import android.content.res.Resources
 
 import android.view.LayoutInflater
 import android.view.ViewGroup.MarginLayoutParams
-import androidx.leanback.util.StateMachine
 
 import androidx.leanback.widget.Presenter
 import us.nineworlds.serenity.core.model.SeriesContentInfo
+import us.nineworlds.serenity.core.model.VideoContentInfo
+import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
+import us.nineworlds.serenity.ui.leanback.presenters.EpisodeVideoPresenter
+import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils
 
 class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView {
 
@@ -35,6 +38,9 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
 
     @Inject
     lateinit var presenterProvider: Provider<DetailsMVPPresenter>
+
+    @Inject
+    lateinit var vpUtils: VideoPlayerIntentUtils
 
     private var stateSaved = false
 
@@ -119,6 +125,12 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
 
     fun setup(itemId: String, type: String) {
         presenter.loadItem(itemId, type)
+
+        setOnItemViewClickedListener { itemViewHolder, item, rowViewHolder, row ->
+            if (item is EpisodePosterInfo) {
+                vpUtils.playVideo(requireActivity(), item, false)
+            }
+        }
     }
 
     override fun getMvpDelegate(): MvpDelegate<*> {
@@ -128,11 +140,12 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
         return mvpDelegate
     }
 
+    private val classPresenterSelector = ClassPresenterSelector()
+
     override fun updateDetails(videoInfo: ContentInfo) {
         val rowsPresenter = FullWidthDetailsOverviewRowPresenter(DetailsPresenter(), VideoLogoPresenter())
         rowsPresenter.initialState = FullWidthDetailsOverviewRowPresenter.STATE_FULL
 
-        val classPresenterSelector = ClassPresenterSelector()
         classPresenterSelector.addClassPresenter(DetailsOverviewRow::class.java, rowsPresenter)
 
         val detailsAdapter = ArrayObjectAdapter(classPresenterSelector)
@@ -142,6 +155,39 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
 
         detailsAdapter.add(detailsOverViewRow)
 
+    }
+
+    override fun addSeasons(videoInfo: List<SeriesContentInfo>) {
+        videoInfo.forEach { season ->
+            classPresenterSelector.addClassPresenter(ListRow::class.java, ListRowPresenter())
+            val seasonAdapter = ArrayObjectAdapter(EpisodeVideoPresenter())
+            seasonAdapter.addAll(0, emptyList<VideoContentInfo>())
+
+            val seasonHeader = HeaderItem(season.title)
+            val seasonRow = ListRow(seasonHeader, seasonAdapter)
+
+            val detailsAdapter = adapter as ArrayObjectAdapter
+            detailsAdapter.add(seasonRow)
+        }
+    }
+
+    override fun updateSeasonEpisodes(season: SeriesContentInfo, episodes: List<VideoContentInfo>) {
+        val detailsAdapter = adapter as ArrayObjectAdapter
+        val content = detailsAdapter.unmodifiableList<Row>()
+        content.filterIsInstance<ListRow>()
+                .filter { listRow -> listRow.headerItem.name == season.title }
+                .forEach { row ->
+                    val adapter = row.adapter as ArrayObjectAdapter
+                    adapter.setItems(episodes, object : DiffCallback<VideoContentInfo>() {
+                        override fun areItemsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean {
+                            return oldItem.id() == newItem.id()
+                        }
+
+                        override fun areContentsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean {
+                            return oldItem.equals(newItem)
+                        }
+                    })
+                }
     }
 
     inner class VideoLogoPresenter : DetailsOverviewLogoPresenter() {
