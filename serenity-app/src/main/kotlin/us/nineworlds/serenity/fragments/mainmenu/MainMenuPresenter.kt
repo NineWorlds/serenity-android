@@ -1,9 +1,6 @@
 package us.nineworlds.serenity.fragments.mainmenu
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import moxy.presenterScope
@@ -68,8 +65,9 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
                 viewState.loadCategories(categoryVideoContentInfo)
             }
 
-            categories.filter { category -> category.category != "unwatched" }
-                    .forEach { category ->
+            presenterScope.launch(Dispatchers.IO) {
+                filteredCategories.forEach { category ->
+                    async {
                         when (val result = repository.fetchItemsByCategory(category.category, itemId, type)) {
                             is Result.Success -> {
                                 withContext(Dispatchers.Main) {
@@ -83,6 +81,8 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
                             }
                         }
                     }
+                }
+            }
         } else {
             withContext(Dispatchers.Main) {
                 viewState.clearCategories()

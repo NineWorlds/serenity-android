@@ -26,6 +26,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup.MarginLayoutParams
 
 import androidx.leanback.widget.Presenter
+import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.SeriesContentInfo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
@@ -143,8 +144,12 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
     private val classPresenterSelector = ClassPresenterSelector()
 
     override fun updateDetails(videoInfo: ContentInfo) {
+        val imageView = requireActivity().findViewById<ImageView>(R.id.detail_background_image)
+
+        GlideApp.with(requireActivity()).load(videoInfo.backgroundURL).fitCenter().into(imageView)
+
         val rowsPresenter = FullWidthDetailsOverviewRowPresenter(DetailsPresenter(), VideoLogoPresenter())
-        rowsPresenter.initialState = FullWidthDetailsOverviewRowPresenter.STATE_FULL
+        rowsPresenter.initialState = FullWidthDetailsOverviewRowPresenter.STATE_SMALL
 
         classPresenterSelector.addClassPresenter(DetailsOverviewRow::class.java, rowsPresenter)
 
@@ -180,7 +185,10 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
                     val adapter = row.adapter as ArrayObjectAdapter
                     adapter.setItems(episodes, object : DiffCallback<VideoContentInfo>() {
                         override fun areItemsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean {
-                            return oldItem.id() == newItem.id()
+                            return oldItem.season == newItem.season &&
+                                   oldItem.seasonNumber == newItem.seasonNumber &&
+                                   oldItem.parentKey == newItem.parentKey
+
                         }
 
                         override fun areContentsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean {
