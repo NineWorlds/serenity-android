@@ -13,6 +13,7 @@ import us.nineworlds.serenity.common.repository.Result.Success
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.core.logger.Logger
+import us.nineworlds.serenity.core.repository.LoginRepository
 import us.nineworlds.serenity.ui.activity.login.LoginUserContract.LoginUserView
 import javax.inject.Inject
 

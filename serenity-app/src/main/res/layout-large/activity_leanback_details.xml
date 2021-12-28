@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:ignore="MissingDefaultResource"
+>
+  <ImageView
+    android:id="@+id/detail_background_image"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+  <androidx.fragment.app.FragmentContainerView
+    android:id="@+id/fragment_leanback_container"
+    android:name="us.nineworlds.serenity.ui.activity.leanback.details.DetailsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/card_background" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

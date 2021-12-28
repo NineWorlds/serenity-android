@@ -13,6 +13,7 @@ import org.junit.Test
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.common.repository.Result
+import us.nineworlds.serenity.core.repository.LoginRepository
 
 class LoginRepositoryTest {
 

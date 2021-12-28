@@ -25,8 +25,8 @@
   <dimen name="tv_show_infographic_width">70dp</dimen>
   <dimen name="tv_show_infographic_height">35dp</dimen>
 
-  <dimen name="search_card_image_width">190dp</dimen>
-  <dimen name="search_card_image_height">260dp</dimen>
+  <dimen name="search_card_image_width">100dp</dimen>
+  <dimen name="search_card_image_height">150dp</dimen>
 
   <dimen name="tv_show_image_height">300dp</dimen>
   <dimen name="tv_show_image_width">200dp</dimen>

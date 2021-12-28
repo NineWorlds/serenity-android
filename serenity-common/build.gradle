@@ -8,6 +8,7 @@ dependencies {
 
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+    implementation "androidx.annotation:annotation:1.2.0"
 
     implementation("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion") {
         exclude group: 'javax.inject'

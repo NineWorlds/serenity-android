@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
+ * Copyright (c) 2012, 2021 David Carver
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -27,17 +27,15 @@ package us.nineworlds.serenity.fragments
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuView
 import javax.inject.Inject
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter
-import butterknife.Unbinder
-import butterknife.BindView
 import us.nineworlds.serenity.R
 import androidx.leanback.widget.HorizontalGridView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.os.Bundle
-import butterknife.ButterKnife
 import android.app.Activity
 import android.view.View
 import android.widget.FrameLayout
+import androidx.fragment.app.FragmentContainerView
 import us.nineworlds.serenity.MainMenuTextViewAdapter
 import us.nineworlds.serenity.core.menus.MenuItem
 import us.nineworlds.serenity.events.MainMenuEvent
@@ -45,6 +43,10 @@ import us.nineworlds.serenity.core.model.impl.MenuMediaContainer
 import java.util.ArrayList
 import javax.inject.Provider
 import moxy.ktx.moxyPresenter
+import us.nineworlds.serenity.core.model.CategoryInfo
+import us.nineworlds.serenity.core.model.CategoryVideoInfo
+import us.nineworlds.serenity.core.model.VideoCategory
+import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.injection.InjectingMvpFragment
 
 class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
@@ -54,14 +56,12 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
     @Inject
     lateinit var presenterProvider: Provider<MainMenuPresenter>
 
-    private lateinit var unbinder: Unbinder
     lateinit var mainGallery: HorizontalGridView
 
     internal var menuItems: List<MenuItem> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.main_menu_view, container)
-        unbinder = ButterKnife.bind(this, view)
+        val view = inflater.inflate(R.layout.main_menu_view, container, false)
         return view
     }
 
@@ -82,23 +82,15 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
 
     private fun setupGallery() {
         mainGallery = requireActivity().findViewById<HorizontalGridView>(R.id.mainGalleryMenu)
-        //mainGallery.windowAlignment = HorizontalGridView.WINDOW_ALIGN_BOTH_EDGE
-        val adapter = MainMenuTextViewAdapter()
+        val adapter = MainMenuTextViewAdapter(presenter)
         mainGallery.adapter = adapter
         mainGallery.visibility = View.VISIBLE
         adapter.updateMenuItems(menuItems)
-        val activity: Activity? = activity
-        if (activity != null) {
-            val dataLoadingContainer = activity.findViewById<FrameLayout>(R.id.data_loading_container)
-            if (dataLoadingContainer != null) {
-                dataLoadingContainer.visibility = View.GONE
-            }
+        val activity: Activity = requireActivity()
+        val dataLoadingContainer = activity.findViewById<FrameLayout>(R.id.data_loading_container)
+        if (dataLoadingContainer != null) {
+            dataLoadingContainer.visibility = View.GONE
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        unbinder.unbind()
     }
 
     override fun loadMenu(event: MainMenuEvent) {
@@ -108,7 +100,30 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
         mainGallery.requestFocusFromTouch()
     }
 
-    init {
-        retainInstance = false
+    override fun loadCategories(categories: CategoryVideoInfo) {
+        val container = requireActivity().findViewById<FragmentContainerView>(R.id.video_content_fragment)
+
+        val videoContainer = container.getFragment<VideoContentVerticalGridFragment>()
+
+        videoContainer.clearGallery()
+
+        videoContainer.setupGallery(categories)
     }
+
+    override fun updateCategories(category: CategoryInfo, items: List<VideoCategory>) {
+        val container = requireActivity().findViewById<FragmentContainerView>(R.id.video_content_fragment)
+
+        val videoContainer = container.getFragment<VideoContentVerticalGridFragment>()
+
+        videoContainer.updateCategory(category, items)
+    }
+
+    override fun clearCategories() {
+        val container = requireActivity().findViewById<FragmentContainerView>(R.id.video_content_fragment)
+
+        val videoContainer = container.getFragment<VideoContentVerticalGridFragment>()
+
+        videoContainer.clearGallery()
+    }
+
 }

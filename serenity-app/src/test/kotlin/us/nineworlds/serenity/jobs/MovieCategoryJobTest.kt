@@ -11,7 +11,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
-import org.robolectric.RobolectricTestRunner
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.events.MainCategoryEvent
@@ -47,14 +46,14 @@ class MovieCategoryJobTest : InjectingTest() {
   fun onRunFetchesCategoriesForTheSpecifiedId() {
     job.onRun()
 
-    verify(mockClient).retrieveItemByIdCategory(expectedVideoId)
+    verify(mockClient).retrieveCategoriesById(expectedVideoId)
   }
 
   @Test
   fun onRunFetchesCategoriesAndPostsMainCategoryEvent() {
     job.onRun()
 
-    verify(mockClient).retrieveItemByIdCategory(expectedVideoId)
+    verify(mockClient).retrieveCategoriesById(expectedVideoId)
     verify(mockEventBus).post(any<MainCategoryEvent>())
   }
 

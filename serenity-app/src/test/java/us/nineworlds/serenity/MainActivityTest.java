@@ -55,6 +55,7 @@ import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.fragments.MainMenuFragment;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.test.InjectingTest;
+import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 import static org.assertj.android.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
@@ -76,6 +77,9 @@ public class MainActivityTest extends InjectingTest {
     AndroidHelper mockAndroidHelper;
     @Mock
     LinkedList<VideoContentInfo> mockVideoQueue;
+
+    @Mock
+    VideoPlayerIntentUtils mockVPUtils;
 
     @Inject
     LocalBroadcastManager mockLocalBroadcastManager;
@@ -156,6 +160,7 @@ public class MainActivityTest extends InjectingTest {
             bind(AndroidHelper.class).toInstance(mockAndroidHelper);
             bind(LinkedList.class).withName(ForVideoQueue.class).toInstance(mockVideoQueue);
             bind(Resources.class).toInstance(ApplicationProvider.getApplicationContext().getResources());
+            bind(VideoPlayerIntentUtils.class).toInstance(mockVPUtils);
         }
     }
 }

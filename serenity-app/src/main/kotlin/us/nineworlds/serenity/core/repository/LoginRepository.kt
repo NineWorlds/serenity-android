@@ -1,4 +1,4 @@
-package us.nineworlds.serenity.ui.activity.login
+package us.nineworlds.serenity.core.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

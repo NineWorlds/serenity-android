@@ -1,109 +1,122 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_layout"
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@android:color/background_dark"
+  tools:ignore="MissingDefaultResource"
+>
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/overscan_top"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_begin="@dimen/overscan_top_padding" />
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/overscan_bottom"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_end="@dimen/overscan_bottom_padding" />
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/overscan_start"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="@dimen/overscan_start_padding" />
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/overscan_end"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_end="@dimen/overscan_end_padding" />
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/content_start"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_begin="60dp" />
+
+  <ImageView
+    android:id="@+id/mainGalleryBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_dark">
+    android:layout_centerInParent="true"
+    android:scaleType="fitXY"
+    android:src="@drawable/serenity_bonsai_splash" />
 
-    <RelativeLayout
-        android:id="@+id/mainLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+  <androidx.fragment.app.FragmentContainerView
+    android:id="@+id/mainMenuFragment"
+    android:name="us.nineworlds.serenity.fragments.MainMenuFragment"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:layout_constraintStart_toEndOf="@id/overscan_start"
+    app:layout_constraintEnd_toStartOf="@id/overscan_end"
+    app:layout_constraintTop_toBottomOf="@id/content_start"
+    app:layout_constraintBottom_toTopOf="@id/overscan_bottom"
+    tools:layout="@layout/main_menu_view" />
 
-        <ImageView
-            android:id="@+id/mainGalleryBackground"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/serenity_bonsai_splash" />
+  <us.nineworlds.serenity.ui.views.TextClock
+    android:id="@+id/main_clock"
+    style="@android:style/TextAppearance.Holo.Medium"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="#F0F0F0"
+    android:gravity="center_vertical"
+    android:paddingTop="5dp"
+    android:minHeight="45dp"
+    app:layout_constraintStart_toEndOf="@id/overscan_start"
+    app:layout_constraintTop_toBottomOf="@id/overscan_top" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="@dimen/overscan_start_padding"
-            android:paddingEnd="@dimen/overscan_end_padding">
+  <androidx.leanback.widget.HorizontalGridView
+    android:id="@+id/mainGalleryMenu"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center|center_vertical"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:nextFocusRight="@id/action_toolbar"
+    app:focusOutEnd="true"
+    app:focusOutFront="true"
+    app:focusOutSideEnd="true"
+    app:focusOutSideStart="true"
+    app:layout_constraintTop_toBottomOf="@id/overscan_top"
+    app:layout_constraintEnd_toStartOf="@+id/action_toolbar"
+    app:layout_constraintStart_toEndOf="@id/main_clock"
+    app:numberOfRows="1"
+    app:rowHeight="wrap_content"
+    tools:listitem="@layout/item_mainmenu"
+    tools:itemCount="5"
+    tools:layout_height="45dp" />
 
-            <fragment
-                android:id="@+id/mainMenuFragment"
-                android:name="us.nineworlds.serenity.fragments.MainMenuFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="100dp"
-                android:layout_centerInParent="true" />
+  <com.google.android.material.appbar.MaterialToolbar
+    android:id="@+id/action_toolbar"
+    style="@style/Widget.AppTheme.Toolbar.Transparent"
+    android:layout_width="wrap_content"
+    android:layout_height="45dp"
+    android:descendantFocusability="afterDescendants"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    app:layout_constraintEnd_toStartOf="@id/overscan_end"
+    app:layout_constraintTop_toBottomOf="@id/overscan_top"
+    app:maxButtonHeight="45dp"
+    app:menu="@menu/main_menu_botton_navigation"
+    app:titleTextColor="@color/white" />
 
-        </RelativeLayout>
+  <include
+    layout="@layout/include_loading_progress"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:layout_centerInParent="true" />
 
-        <include
-            layout="@layout/include_loading_progress"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_centerInParent="true" />
-
-    </RelativeLayout>
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/card_background">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="@dimen/overscan_start_padding"
-            android:paddingEnd="@dimen/overscan_end_padding">
-
-            <us.nineworlds.serenity.ui.views.TextClock
-                style="@android:style/TextAppearance.Holo.Medium"
-                android:id="@+id/main_clock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:gravity="center_vertical"
-                android:textColor="#F0F0F0" />
-
-            <androidx.leanback.widget.HorizontalGridView
-                android:id="@+id/mainGalleryMenu"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center|center_vertical"
-                app:layout_constraintStart_toEndOf="@id/main_clock"
-                app:layout_constraintEnd_toStartOf="@+id/action_toolbar"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="10dp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:descendantFocusability="afterDescendants"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:nextFocusRight="@id/action_toolbar"
-                app:numberOfRows="1"
-                app:rowHeight="wrap_content">
-
-            </androidx.leanback.widget.HorizontalGridView>
-
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/action_toolbar"
-                style="@style/Widget.AppTheme.Toolbar.Transparent"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:descendantFocusability="afterDescendants"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:maxButtonHeight="45dp"
-                app:menu="@menu/main_menu_botton_navigation"
-                app:titleTextColor="@color/white" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
