@@ -175,6 +175,7 @@ dependencies {
   implementation "androidx.legacy:legacy-support-v4:1.0.0"
   implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
   implementation "androidx.percentlayout:percentlayout:1.0.0"
+  implementation "androidx.annotation:annotation:1.2.0"
   implementation "com.googlecode.juniversalchardet:juniversalchardet:$universalCharDetVersion"
   implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
   implementation "me.jessyan:retrofit-url-manager:$urlManager"

@@ -42,7 +42,9 @@ interface UsersService {
     @Query("IsPlayed") isPlayed: Boolean? = null,
     @Query("LimitCount") limitCount: Int? = null,
     @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,SeasonCount,EpisodeCount,UserData,OfficialRating,CommunityRating",
-    @Query("Ids") ids: String? = null
+    @Query("Ids") ids: String? = null,
+    @Query("StartIndex") startIndex: Int = 0,
+    @Query("Limit") limit: Int? = null
   ): Call<QueryResult>
 
   @GET("/emby/Users/{userId}/Items")
@@ -54,8 +56,9 @@ interface UsersService {
     @Query("SortBy") sortOptions: String = "DatePlayed",
     @Query("SortOrder") sortOrder: String = "Descending",
     @Query("Filters") filters: String = "IsResumable",
-    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData,OfficialRating,CommunityRating"
-  ): Call<QueryResult>
+    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData,OfficialRating,CommunityRating",
+    @Query("IncludeItemTypes") includeItemType: String? = null,
+    ): Call<QueryResult>
 
   @GET("/emby/Users/{userId}/Items")
   fun unwatchedItems(
@@ -66,7 +69,8 @@ interface UsersService {
     @Query("SortBy") sortOptions: String = "DatePlayed",
     @Query("SortOrder") sortOrder: String = "Descending",
     @Query("Filters") filters: String = "IsUnplayed",
-    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData,OfficialRating,CommunityRating"
+    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData,OfficialRating,CommunityRating",
+    @Query("IncludeItemTypes") includeItemType: String? = null,
   ): Call<QueryResult>
 
   @GET("/emby/Users/{userId}/Items?Limit=20")
@@ -79,7 +83,8 @@ interface UsersService {
     @Query("SortOrder") sortOrder: String = "Descending",
     @Query("IsPlayed") isPlayed: Boolean = false,
     @Query("Filters") filters: String = "IsNotFolder,IsUnPlayed",
-    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData,OfficialRating,CommunityRating"
+    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData,OfficialRating,CommunityRating",
+    @Query("IncludeItemTypes") includeItemType: String? = null,
   ): Call<QueryResult>
 
   @GET("/emby/Users/{userId}/Items/{itemId}")

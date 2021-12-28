@@ -72,7 +72,7 @@ class EmbyAPIClientTest {
     val parentId = result.directories[1].key
     val type = result.directories[1].type
 
-    val categories = client.retrieveItemByIdCategory(parentId)
+    val categories = client.retrieveCategoriesById(parentId)
 
     assertThat(categories.directories).isNotEmpty
   }

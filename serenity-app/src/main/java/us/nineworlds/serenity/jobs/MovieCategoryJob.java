@@ -27,7 +27,7 @@ public class MovieCategoryJob extends InjectingJob {
   }
 
   @Override public void onRun() throws Throwable {
-    IMediaContainer mediaContainer = client.retrieveItemByIdCategory(key);
+    IMediaContainer mediaContainer = client.retrieveCategoriesById(key);
     eventBus.post(new MainCategoryEvent(mediaContainer, key));
   }
 

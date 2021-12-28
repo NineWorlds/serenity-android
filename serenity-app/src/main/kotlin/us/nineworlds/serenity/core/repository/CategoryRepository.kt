@@ -28,7 +28,7 @@ class CategoryRepository constructor(private val client: SerenityClient) {
 
     suspend fun retrieveCategories(videoId: String): Result<List<CategoryInfo>> = withContext(Dispatchers.IO) {
         try {
-            val result = client.retrieveItemByIdCategory(videoId)
+            val result = client.retrieveCategoriesById(videoId)
             val categoryMediaContainer = CategoryMediaContainer(result)
             val categories = categoryMediaContainer.createCategories()
             Success(categories)
