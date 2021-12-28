@@ -15,22 +15,23 @@ import org.mockito.quality.Strictness;
 import org.robolectric.RobolectricTestRunner;
 import toothpick.config.Module;
 import us.nineworlds.serenity.core.menus.MenuItem;
+import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter;
 import us.nineworlds.serenity.test.InjectingTest;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 public class MainMenuTextViewAdapterTest extends InjectingTest {
 
-  MainMenuTextViewAdapter adapter;
-
+  private MainMenuTextViewAdapter adapter;
 
 
   @Before
   public void setUp() throws Exception {
     super.setUp();
 
-    adapter = new MainMenuTextViewAdapter();
+    adapter = new MainMenuTextViewAdapter(mock(MainMenuPresenter.class));
   }
 
   @Test
