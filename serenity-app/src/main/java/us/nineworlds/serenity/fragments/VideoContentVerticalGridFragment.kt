@@ -9,7 +9,11 @@ import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
 import us.nineworlds.serenity.ui.leanback.search.CardPresenter
 import android.app.Activity
 import android.content.Intent
+import android.widget.ImageView
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import toothpick.Toothpick
+import us.nineworlds.serenity.GlideApp
+import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
@@ -49,6 +53,16 @@ class VideoContentVerticalGridFragment : RowsSupportFragment() {
               intent.putExtra("videoType", type)
               requireActivity().startActivity(intent)
           }
+        }
+
+        setOnItemViewSelectedListener { itemViewHolder, item, rowViewHolder, row ->
+            item?.let {
+                val videoCategory = item as VideoCategory
+
+                val imageView = requireActivity().findViewById<ImageView>(R.id.mainGalleryBackground)
+
+                GlideApp.with(requireActivity()).load(videoCategory.item.backgroundURL).transition(DrawableTransitionOptions.withCrossFade()).fitCenter().into(imageView)
+            }
         }
     }
 
