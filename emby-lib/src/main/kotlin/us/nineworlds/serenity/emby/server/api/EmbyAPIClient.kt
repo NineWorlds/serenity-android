@@ -23,6 +23,9 @@ import us.nineworlds.serenity.emby.adapters.MediaContainerAdaptor
 import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
 import us.nineworlds.serenity.emby.server.model.*
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
 
@@ -411,12 +414,13 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
   }
 
   override fun createTranscodeUrl(id: String, offset: Int): String {
+    val playSessionId = UUID.randomUUID().toString()
     var startOffset: Long = 0
     if (offset > 0) {
       startOffset = offset.toLong().times(10000)
     }
 
-    return "${baseUrl}emby/Videos/$id/stream.mkv?DeviceId=$deviceId&AudioCodec=aac&VideoCodec=h264&CopyTimeStamps=true&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset"
+    return "${baseUrl}emby/Videos/$id/stream.mkv?DeviceId=$deviceId&AudioCodec=aac&VideoCodec=h264&CopyTimeStamps=true&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset&PlaySessionId=$playSessionId"
   }
 
   override fun reinitialize() {
