@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.leanback.app.DetailsSupportFragment
-import androidx.leanback.widget.*
 import moxy.MvpDelegateHolder
 import moxy.ktx.moxyPresenter
 import toothpick.Toothpick
@@ -16,22 +15,25 @@ import javax.inject.Provider
 import moxy.MvpDelegate
 import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.core.model.ContentInfo
-import us.nineworlds.serenity.ui.leanback.presenters.DetailsPresenter
-import androidx.leanback.widget.FullWidthDetailsOverviewRowPresenter
 
-import androidx.leanback.widget.DetailsOverviewLogoPresenter
 import android.content.res.Resources
 
 import android.view.LayoutInflater
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.leanback.widget.*
 
-import androidx.leanback.widget.Presenter
-import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.SeriesContentInfo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
 import us.nineworlds.serenity.ui.leanback.presenters.EpisodeVideoPresenter
+import us.nineworlds.serenity.ui.leanback.presenters.SeriesPresenter
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils
+
+import androidx.leanback.widget.ItemAlignmentFacet.ItemAlignmentDef
+import us.nineworlds.serenity.R
+import us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewRow
+import us.nineworlds.serenity.ui.leanback.presenters.FullWidthDetailsOverviewRowPresenter
+
 
 class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView {
 
@@ -134,6 +136,16 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
         }
     }
 
+    override fun setupPresenter(rowPresenter: Presenter?) {
+//        if (rowPresenter is us.nineworlds.serenity.ui.leanback.presenters.FullWidthDetailsOverviewRowPresenter) {
+//            setupDetailsOverviewRowPresenter(rowPresenter as us.nineworlds.serenity.ui.leanback.presenters.FullWidthDetailsOverviewRowPresenter?)
+//        }
+    }
+
+    fun setupDetailsOverviewRowPresenter(presenter: us.nineworlds.serenity.ui.leanback.presenters.FullWidthDetailsOverviewRowPresenter?) {
+//        presenter!!.setFacet(ItemAlignmentFacet::class.java, facet)
+    }
+
     override fun getMvpDelegate(): MvpDelegate<*> {
         if (!this::mvpDelegate.isInitialized) {
             mvpDelegate = MvpDelegate(this)
@@ -148,7 +160,7 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
 
         GlideApp.with(requireActivity()).load(videoInfo.backgroundURL).fitCenter().into(imageView)
 
-        val rowsPresenter = FullWidthDetailsOverviewRowPresenter(DetailsPresenter(), VideoLogoPresenter())
+        val rowsPresenter = FullWidthDetailsOverviewRowPresenter(SeriesPresenter())
         rowsPresenter.initialState = FullWidthDetailsOverviewRowPresenter.STATE_SMALL
 
         classPresenterSelector.addClassPresenter(DetailsOverviewRow::class.java, rowsPresenter)
@@ -159,7 +171,6 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
         val detailsOverViewRow = DetailsOverviewRow(videoInfo)
 
         detailsAdapter.add(detailsOverViewRow)
-
     }
 
     override fun addSeasons(videoInfo: List<SeriesContentInfo>) {
@@ -198,7 +209,7 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
                 }
     }
 
-    inner class VideoLogoPresenter : DetailsOverviewLogoPresenter() {
+    inner class VideoLogoPresenter : us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewLogoPresenter() {
 
         override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder? {
             val imageView = LayoutInflater.from(parent.context)
@@ -211,7 +222,7 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
             return ViewHolder(imageView)
         }
 
-        override fun isBoundToImage(viewHolder: DetailsOverviewLogoPresenter.ViewHolder?, row: DetailsOverviewRow?): Boolean {
+        override fun isBoundToImage(viewHolder: us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewLogoPresenter.ViewHolder?, row: DetailsOverviewRow?): Boolean {
             return true
         }
 
@@ -232,7 +243,7 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
             }
         }
 
-        inner class ViewHolder(view: View) : DetailsOverviewLogoPresenter.ViewHolder(view) {
+        inner class ViewHolder(view: View) : us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewLogoPresenter.ViewHolder(view) {
             override fun getParentPresenter(): FullWidthDetailsOverviewRowPresenter {
                 return mParentPresenter
             }
