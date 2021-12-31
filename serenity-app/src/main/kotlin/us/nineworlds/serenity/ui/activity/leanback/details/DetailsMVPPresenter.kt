@@ -29,8 +29,7 @@ class DetailsMVPPresenter : MvpPresenter<DetailsView>() {
                     viewState.updateDetails(SeriesMediaContainer(result).createSeries()[0])
                     updateSeries(itemId)
                 }
-
-                "movies" -> viewState.updateDetails(MovieMediaContainer(result).createVideos()[0])
+                else -> viewState.updateDetails(MovieMediaContainer(result).createVideos()[0])
             }
         }
     }

@@ -21,7 +21,7 @@ import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.ui.util.ImageUtils
 
-class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummaryBinding) : Presenter.ViewHolder(binding.root) {
+open class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummaryBinding) : Presenter.ViewHolder(binding.root) {
 
     private val context = binding.root.context
 
@@ -48,7 +48,7 @@ class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummaryBindi
         createInfoGraphics(videoInfo)
     }
 
-    fun createInfoGraphics(videoInfo: TVShowSeriesInfo) {
+    open fun createInfoGraphics(videoInfo: TVShowSeriesInfo) {
         binding.movieInfoGraphicLayout.removeAllViews()
 
         val normalHeight: Int = context.resources.getDimensionPixelSize(R.dimen.video_infogrpahic_height)

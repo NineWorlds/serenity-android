@@ -24,6 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
+
+import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.BaseGridView;
 import androidx.leanback.widget.HorizontalGridView;
@@ -171,6 +173,11 @@ public class FullWidthDetailsOverviewRowPresenter extends RowPresenter {
             mActionBridgeAdapter.setAdapter(adapter);
             mActionsRow.setAdapter(mActionBridgeAdapter);
             mNumItems = mActionBridgeAdapter.getItemCount();
+            if (mNumItems == 0) {
+                mActionsRow.setVisibility(View.GONE);
+            } else {
+                mActionsRow.setVisibility(View.VISIBLE);
+            }
         }
         void onBind() {
             DetailsOverviewRow row = (DetailsOverviewRow) getRow();

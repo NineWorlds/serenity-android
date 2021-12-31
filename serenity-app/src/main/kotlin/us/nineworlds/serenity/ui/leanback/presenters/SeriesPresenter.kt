@@ -6,7 +6,8 @@ import androidx.leanback.widget.Presenter
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo
 import us.nineworlds.serenity.databinding.LeanbackDetailsSummaryBinding
 
-class SeriesPresenter : Presenter() {
+open class SeriesPresenter : Presenter() {
+
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
         val layOutParams = parent.layoutParams
         layOutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT

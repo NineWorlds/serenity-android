@@ -18,10 +18,11 @@ class DetailsActivity: AppCompatActivity() {
         val itemId = detailsIntent.getStringExtra("itemId")
         val type = detailsIntent.getStringExtra("videoType")
 
-        if (type == "tvshows") {
+        if (type == "tvshows" || type == "movies") {
             val fragment = binding.fragmentLeanbackContainer.getFragment<DetailsFragment>()
             fragment.setup(itemId!!, type)
         }
+
     }
 
 }

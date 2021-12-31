@@ -13,8 +13,8 @@
   <dimen name="overscan_bottom_padding">15dp</dimen>
 
   <!-- Video Meta Data Info Graphics -->
-  <dimen name="info_graphic_width">90dp</dimen>
-  <dimen name="info_graphic_height">48dp</dimen>
+  <dimen name="info_graphic_width">80dp</dimen>
+  <dimen name="info_graphic_height">38dp</dimen>
 
   <dimen name="video_infogrpahic_height">30dp</dimen>
   <dimen name="video_infographic_width">70dp</dimen>

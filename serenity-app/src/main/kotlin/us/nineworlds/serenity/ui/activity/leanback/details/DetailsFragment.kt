@@ -20,17 +20,19 @@ import android.content.res.Resources
 
 import android.view.LayoutInflater
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.LinearLayout
 import androidx.leanback.widget.*
 
 import us.nineworlds.serenity.core.model.SeriesContentInfo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
-import us.nineworlds.serenity.ui.leanback.presenters.EpisodeVideoPresenter
-import us.nineworlds.serenity.ui.leanback.presenters.SeriesPresenter
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils
 
 import androidx.leanback.widget.ItemAlignmentFacet.ItemAlignmentDef
 import us.nineworlds.serenity.R
+import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
+import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo
+import us.nineworlds.serenity.ui.leanback.presenters.*
 import us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewRow
 import us.nineworlds.serenity.ui.leanback.presenters.FullWidthDetailsOverviewRowPresenter
 
@@ -136,15 +138,7 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
         }
     }
 
-    override fun setupPresenter(rowPresenter: Presenter?) {
-//        if (rowPresenter is us.nineworlds.serenity.ui.leanback.presenters.FullWidthDetailsOverviewRowPresenter) {
-//            setupDetailsOverviewRowPresenter(rowPresenter as us.nineworlds.serenity.ui.leanback.presenters.FullWidthDetailsOverviewRowPresenter?)
-//        }
-    }
-
-    fun setupDetailsOverviewRowPresenter(presenter: us.nineworlds.serenity.ui.leanback.presenters.FullWidthDetailsOverviewRowPresenter?) {
-//        presenter!!.setFacet(ItemAlignmentFacet::class.java, facet)
-    }
+    override fun setupPresenter(rowPresenter: Presenter?) = Unit
 
     override fun getMvpDelegate(): MvpDelegate<*> {
         if (!this::mvpDelegate.isInitialized) {
@@ -155,13 +149,9 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
 
     private val classPresenterSelector = ClassPresenterSelector()
 
-    override fun updateDetails(videoInfo: ContentInfo) {
-        val imageView = requireActivity().findViewById<ImageView>(R.id.detail_background_image)
-
-        GlideApp.with(requireActivity()).load(videoInfo.backgroundURL).fitCenter().into(imageView)
-
+    fun setupTVShowDetails(videoInfo: ContentInfo) {
         val rowsPresenter = FullWidthDetailsOverviewRowPresenter(SeriesPresenter())
-        rowsPresenter.initialState = FullWidthDetailsOverviewRowPresenter.STATE_SMALL
+        rowsPresenter.initialState = FullWidthDetailsOverviewRowPresenter.STATE_FULL
 
         classPresenterSelector.addClassPresenter(DetailsOverviewRow::class.java, rowsPresenter)
 
@@ -171,6 +161,47 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
         val detailsOverViewRow = DetailsOverviewRow(videoInfo)
 
         detailsAdapter.add(detailsOverViewRow)
+    }
+
+    companion object {
+        const val PLAY_ACTION = 0L
+    }
+
+    fun setupMovieDetails(videoInfo: ContentInfo) {
+        val rowsPresenter = FullWidthDetailsOverviewRowPresenter(MoviePresenter())
+        rowsPresenter.initialState = FullWidthDetailsOverviewRowPresenter.STATE_FULL
+
+        rowsPresenter.setOnActionClickedListener { action ->
+            if (action.id == PLAY_ACTION) {
+                vpUtils.playVideo(requireActivity(), videoInfo as VideoContentInfo, false)
+            }
+        }
+
+        classPresenterSelector.addClassPresenter(DetailsOverviewRow::class.java, rowsPresenter)
+
+        val detailsAdapter = ArrayObjectAdapter(classPresenterSelector)
+        adapter = detailsAdapter
+
+        val detailsOverViewRow = DetailsOverviewRow(videoInfo)
+        val actionsAdapter = SparseArrayObjectAdapter()
+        actionsAdapter.apply {
+            set(PLAY_ACTION.toInt(), Action(PLAY_ACTION, "Play"))
+        }
+
+        detailsOverViewRow.actionsAdapter = actionsAdapter
+
+        detailsAdapter.add(detailsOverViewRow)
+    }
+
+    override fun updateDetails(videoInfo: ContentInfo) {
+        val imageView = requireActivity().findViewById<ImageView>(R.id.detail_background_image)
+
+        GlideApp.with(requireActivity()).load(videoInfo.backgroundURL).fitCenter().into(imageView)
+
+        when(videoInfo) {
+            is TVShowSeriesInfo -> setupTVShowDetails(videoInfo)
+            is VideoContentInfo -> setupMovieDetails(videoInfo)
+        }
     }
 
     override fun addSeasons(videoInfo: List<SeriesContentInfo>) {

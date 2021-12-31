@@ -42,9 +42,15 @@ class VideoContentVerticalGridFragment : RowsSupportFragment() {
           val videoCategory = item as VideoCategory
 
           if (videoCategory.type == Types.MOVIES) {
-              val video = videoCategory.item
-              vpUtils.playVideo(requireActivity(), video, false)
+//              vpUtils.playVideo(requireActivity(), video, false)
+              val itemId = videoCategory.item.id()
+              val type = "movies"
+              val intent = Intent(requireActivity(), DetailsActivity::class.java)
+              intent.putExtra("itemId", itemId)
+              intent.putExtra("videoType", type)
+              requireActivity().startActivity(intent)
           }
+
           if (videoCategory.type == Types.SERIES ) {
               val itemId = videoCategory.item.id()
               val type = "tvshows"
