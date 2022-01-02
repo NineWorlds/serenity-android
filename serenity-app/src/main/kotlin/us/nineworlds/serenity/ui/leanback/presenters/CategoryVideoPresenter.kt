@@ -10,35 +10,26 @@ import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.VideoCategory
 import us.nineworlds.serenity.core.model.VideoContentInfo
+import us.nineworlds.serenity.ui.views.statusoverlayview.StatusOverlayFrameLayout
 
 class CategoryVideoPresenter : Presenter() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
-        val imageView = ImageCardView(parent.context)
-        imageView.isFocusable = true
-        imageView.isFocusableInTouchMode = true
-        imageView.setBackgroundColor(ContextCompat.getColor(parent.context, R.color.holo_color))
-        return CardPresenterViewHolder(imageView)
+        val statusOverlayView = StatusOverlayFrameLayout(parent.context)
+        statusOverlayView.isFocusable = true
+        statusOverlayView.isFocusableInTouchMode = true
+        statusOverlayView.setBackgroundColor(ContextCompat.getColor(parent.context, android.R.color.transparent))
+        //val imageView = ImageCardView(parent.context)
+        return CardPresenterViewHolder(statusOverlayView)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
-        val imageWidth = viewHolder.view.context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_width)
-        val imageHeight = viewHolder.view.context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_height)
-
         val video = item as VideoCategory
 
         val cardHolder = viewHolder as CardPresenterViewHolder
-        val imageCardView = cardHolder.cardView
-        cardHolder.movie = video.item
 
-        video.item.imageURL?.let {
-            imageCardView.titleText = video.item.title
-            imageCardView.contentText = video.item.studio
-            imageCardView.setMainImageDimensions(imageWidth, imageHeight)
-            imageCardView.setMainImageScaleType(ImageView.ScaleType.FIT_XY)
-            cardHolder.updateCardViewImage(video.item.imageURL)
-        }
+        cardHolder.bind(video.item)
     }
 
     override fun onUnbindViewHolder(viewHolder: ViewHolder) {
@@ -47,17 +38,23 @@ class CategoryVideoPresenter : Presenter() {
     }
 
     inner class CardPresenterViewHolder(view: View) : Presenter.ViewHolder(view) {
-        var movie: VideoContentInfo? = null
-        val cardView: ImageCardView = view as ImageCardView
+        val cardView: StatusOverlayFrameLayout = view as StatusOverlayFrameLayout
 
         fun reset() {
-            cardView.badgeImage = null
-            cardView.mainImage = null
+
         }
 
-        fun updateCardViewImage(url: String) {
-            GlideApp.with(view.context).load(url).fitCenter().into(cardView.mainImageView)
+        fun bind(videoContentInfo: VideoContentInfo) {
+            cardView.tag = videoContentInfo
+
+            videoContentInfo.imageURL?.let {
+                val imageWidth = view.context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_width)
+                val imageHeight = view.context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_height)
+                cardView.createImage(videoContentInfo, imageWidth, imageHeight)
+            }
+            cardView.toggleWatchedIndicator(videoContentInfo)
         }
+
     }
 
 }

@@ -5,8 +5,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:layout_centerInParent="true"
-  android:background="@drawable/content_panel_dark"
+  android:background="@color/card_background"
   tools:ignore="MissingDefaultResource"
 >
 
@@ -17,6 +16,7 @@
     android:name="us.nineworlds.serenity.fragments.VideoContentVerticalGridFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="60dp"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:descendantFocusability="afterDescendants"

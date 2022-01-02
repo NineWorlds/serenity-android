@@ -8,9 +8,9 @@
 
   <!-- Overscan Compensation -->
   <dimen name="overscan_top_padding">10dp</dimen>
-  <dimen name="overscan_start_padding">30dp</dimen>
-  <dimen name="overscan_end_padding">30dp</dimen>
-  <dimen name="overscan_bottom_padding">15dp</dimen>
+  <dimen name="overscan_start_padding">25dp</dimen>
+  <dimen name="overscan_end_padding">25dp</dimen>
+  <dimen name="overscan_bottom_padding">10dp</dimen>
 
   <!-- Video Meta Data Info Graphics -->
   <dimen name="info_graphic_width">80dp</dimen>
