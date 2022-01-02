@@ -23,4 +23,10 @@ interface MainMenuView : MvpView {
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun clearCategories()
 
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun showLoading()
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun hideLoading()
+
 }

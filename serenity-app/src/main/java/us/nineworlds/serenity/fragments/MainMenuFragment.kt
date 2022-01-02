@@ -43,6 +43,7 @@ import us.nineworlds.serenity.core.model.impl.MenuMediaContainer
 import java.util.ArrayList
 import javax.inject.Provider
 import moxy.ktx.moxyPresenter
+import us.nineworlds.serenity.MainActivity
 import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
 import us.nineworlds.serenity.core.model.VideoCategory
@@ -124,6 +125,16 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
         val videoContainer = container.getFragment<VideoContentVerticalGridFragment>()
 
         videoContainer.clearGallery()
+    }
+
+    override fun showLoading() {
+        val mainActivity = requireActivity() as MainActivity
+        mainActivity.dataLoadingContainer.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        val mainActivity = requireActivity() as MainActivity
+        mainActivity.dataLoadingContainer.visibility = View.GONE
     }
 
 }

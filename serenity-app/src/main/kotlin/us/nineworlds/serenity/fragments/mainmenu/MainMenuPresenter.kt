@@ -46,6 +46,7 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
         galleryJob?.let { job ->
             job.cancel()
         }
+        viewState.showLoading()
         galleryJob = presenterScope.launch {
             when (val result = repository.retrieveCategories(itemId)) {
                 is Result.Success -> {
@@ -64,23 +65,22 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
             withContext(Dispatchers.Main) {
                 viewState.loadCategories(categoryVideoContentInfo)
             }
-
-            presenterScope.launch(Dispatchers.IO) {
-                filteredCategories.forEach { category ->
-                    async {
-                        when (val result = repository.fetchItemsByCategory(category.category, itemId, type)) {
-                            is Result.Success -> {
-                                withContext(Dispatchers.Main) {
-                                    val videos = result.data.map { videoContentInfo ->
-                                        VideoCategory(
-                                                type = getType(type),
-                                                item = videoContentInfo)
-                                    }
-                                    viewState.updateCategories(category, videos)
-                                }
+            filteredCategories.forEach { category ->
+                when (val result = repository.fetchItemsByCategory(category.category, itemId, type)) {
+                    is Result.Success -> {
+                        withContext(Dispatchers.Main) {
+                            val videos = result.data.map { videoContentInfo ->
+                                VideoCategory(
+                                        type = getType(type),
+                                        item = videoContentInfo)
+                            }
+                            viewState.updateCategories(category, videos)
+                            if (category.category == "all") {
+                                viewState.hideLoading()
                             }
                         }
                     }
+                    else -> {}
                 }
             }
         } else {
@@ -88,6 +88,7 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
                 viewState.clearCategories()
             }
         }
+        viewState.hideLoading()
     }
 
     private fun getType(type: String): Types = when (type) {

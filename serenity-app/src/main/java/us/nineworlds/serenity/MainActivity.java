@@ -62,7 +62,7 @@ public class MainActivity extends SerenityActivity implements MainView {
     @BindView(R.id.mainGalleryMenu)
     RecyclerView mainMenuContainer;
     @BindView(R.id.data_loading_container)
-    View dataLoadingContainer;
+    public View dataLoadingContainer;
 
     MaterialToolbar toolbar;
 
