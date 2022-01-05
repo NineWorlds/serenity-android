@@ -41,7 +41,7 @@ class CategoryVideoPresenter : Presenter() {
         val cardView: StatusOverlayFrameLayout = view as StatusOverlayFrameLayout
 
         fun reset() {
-
+            cardView.reset()
         }
 
         fun bind(videoContentInfo: VideoContentInfo) {

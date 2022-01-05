@@ -77,8 +77,7 @@ class VideoContentVerticalGridFragment : RowsSupportFragment() {
     fun updateCategory(categoryInfo: CategoryInfo, contentList: List<VideoCategory>) {
         val rows = videoContentAdapter.unmodifiableList<ListRow>()
         val row = rows.find { row ->
-            row.headerItem.name == categoryInfo.category &&
-                    row.adapter.size() == 0
+            row.headerItem.name == categoryInfo.categoryDetail
         }
         row?.let { row ->
             val adapter = row.adapter as ArrayObjectAdapter
@@ -100,7 +99,7 @@ class VideoContentVerticalGridFragment : RowsSupportFragment() {
             val listContentRowAdapter = ArrayObjectAdapter(CategoryVideoPresenter())
             listContentRowAdapter.addAll(0, emptyList<VideoCategory>())
 
-            val header = HeaderItem(category.category)
+            val header = HeaderItem(category.categoryDetail)
             val imageListRow = ListRow(header, listContentRowAdapter)
 
             videoContentAdapter.add(imageListRow)
