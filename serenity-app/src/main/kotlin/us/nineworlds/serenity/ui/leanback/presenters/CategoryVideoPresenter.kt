@@ -14,13 +14,11 @@ import us.nineworlds.serenity.ui.views.statusoverlayview.StatusOverlayFrameLayou
 
 class CategoryVideoPresenter : Presenter() {
 
-
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
         val statusOverlayView = StatusOverlayFrameLayout(parent.context)
         statusOverlayView.isFocusable = true
         statusOverlayView.isFocusableInTouchMode = true
         statusOverlayView.setBackgroundColor(ContextCompat.getColor(parent.context, android.R.color.transparent))
-        //val imageView = ImageCardView(parent.context)
         return CardPresenterViewHolder(statusOverlayView)
     }
 
@@ -56,5 +54,4 @@ class CategoryVideoPresenter : Presenter() {
         }
 
     }
-
 }
