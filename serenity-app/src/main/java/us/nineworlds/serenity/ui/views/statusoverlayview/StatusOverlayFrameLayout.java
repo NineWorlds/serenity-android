@@ -24,6 +24,7 @@ import moxy.presenter.InjectPresenter;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.Types;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.mvp.MvpFrameLayout;
@@ -81,9 +82,19 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     }
   }
 
+  public void episodeInfo(VideoContentInfo videoContentInfo) {
+    if (videoContentInfo.getType() == Types.EPISODE) {
+      posterOverlayTitle.setVisibility(VISIBLE);
+      String title = videoContentInfo.getTitle();
+      String info = title;
+      posterOverlayTitle.setText(info);
+    }
+  }
+
   @Override public void reset() {
     posterWatchedIndicator.setVisibility(View.INVISIBLE);
     posterInProgressIndicator.setVisibility(View.INVISIBLE);
+    posterOverlayTitle.setVisibility(View.INVISIBLE);
   }
 
   @Override public void initMvp() {

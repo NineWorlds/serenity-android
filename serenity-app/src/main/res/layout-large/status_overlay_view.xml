@@ -22,16 +22,17 @@
     <TextView
         android:id="@+id/posterOverlayTitle"
         style="@android:style/TextAppearance.Holo.Small"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#80000000"
         android:ellipsize="end"
-        android:maxLines="1"
+        android:maxLines="2"
         android:textColor="#F0F0F0"
         android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
     <TextView

@@ -56,6 +56,7 @@ class CategoryRepository constructor(private val client: SerenityClient) {
                 else -> Types.UNKNOWN
             }
             val result = client.retrieveItemByIdCategory(itemId, categoryId, contentType)
+
             val movies = MovieMediaContainer(result)
             val posterList: List<VideoContentInfo> = movies.createVideos()
             Success(posterList)

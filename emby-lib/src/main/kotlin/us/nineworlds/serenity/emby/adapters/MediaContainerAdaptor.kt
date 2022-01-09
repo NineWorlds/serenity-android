@@ -139,8 +139,8 @@ class MediaContainerAdaptor {
 
       val sortEpisode = item.episodeNumber?.toInt() ?: 0
 
+      video.type = item.type
       video.titleSort = sortEpisode.toString().padStart(3, '0')
-
       video.title = item.name
       video.key = item.id
       video.parentKey = item.parentId
@@ -149,7 +149,7 @@ class MediaContainerAdaptor {
       video.rating = item.communityRating ?: 0.00
       video.season = item.parentIndexNumber
       if (item.type != null && item.type == "Episode") {
-        video.backgroundImageKey = "/emby/Items/${item.parentLogoItemId}/Images/Logo"
+        video.backgroundImageKey = "/emby/Items/${item.parentId}/Images/Backdrop"
         video.parentThumbNailImageKey = "/emby/Items/${item.parentId}/Images/Primary"
       } else {
         video.backgroundImageKey = "/emby/Items/${item.id}/Images/Backdrop"

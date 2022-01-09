@@ -24,6 +24,8 @@
 package us.nineworlds.serenity.core.model.impl;
 
 import java.io.Serializable;
+
+import us.nineworlds.serenity.common.rest.Types;
 import us.nineworlds.serenity.core.model.ArtistContentInfo;
 
 /**
@@ -32,11 +34,22 @@ import us.nineworlds.serenity.core.model.ArtistContentInfo;
 public class MusicArtistContentInfo implements ArtistContentInfo, Serializable {
 
   private static final long serialVersionUID = -3671771266686596176L;
+  private Types type;
   private String id;
   private String summary;
   private String backgroundImageURL;
   private String imageURL;
   private String title;
+
+  @Override
+  public void setType(Types type) {
+    this.type = type;
+  }
+
+  @Override
+  public Types getType() {
+    return type;
+  }
 
   @Override public String id() {
     return id;

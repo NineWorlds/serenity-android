@@ -8,6 +8,7 @@ import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
 import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.R
+import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.VideoCategory
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.ui.views.statusoverlayview.StatusOverlayFrameLayout
@@ -46,12 +47,21 @@ class CategoryVideoPresenter : Presenter() {
             cardView.tag = videoContentInfo
 
             videoContentInfo.imageURL?.let {
-                val imageWidth = view.context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_width)
-                val imageHeight = view.context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_height)
-                cardView.createImage(videoContentInfo, imageWidth, imageHeight)
+                when(videoContentInfo.type) {
+                    Types.EPISODE -> {
+                        val imageWidth = view.context.resources.getDimensionPixelSize(R.dimen.episode_image_width)
+                        val imageHeight = view.context.resources.getDimensionPixelSize(R.dimen.episode_image_height)
+                        cardView.episodeInfo(videoContentInfo)
+                        cardView.createImage(videoContentInfo, imageWidth, imageHeight)
+                    }
+                    else -> {
+                        val imageWidth = view.context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_width)
+                        val imageHeight = view.context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_height)
+                        cardView.createImage(videoContentInfo, imageWidth, imageHeight)
+                    }
+                }
             }
             cardView.toggleWatchedIndicator(videoContentInfo)
         }
-
     }
 }

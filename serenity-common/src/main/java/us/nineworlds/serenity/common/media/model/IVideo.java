@@ -3,6 +3,10 @@ package us.nineworlds.serenity.common.media.model;
 import java.util.List;
 
 public interface IVideo extends ClientObject {
+
+  void setType(String type);
+  String getType();
+
   String getGrandParentTitle();
 
   void setGrandParentTitle(String grandParentTitle);

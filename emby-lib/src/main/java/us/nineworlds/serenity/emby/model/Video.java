@@ -11,6 +11,7 @@ import us.nineworlds.serenity.common.media.model.IWriter;
 
 public class Video extends AbstractEmbyObject implements IVideo {
 
+  private String type;
   private String studio;
   private String summary;
   private String titleSort;
@@ -45,6 +46,16 @@ public class Video extends AbstractEmbyObject implements IVideo {
   private List<IGenre> genres;
   private List<IMedia> medias;
   private String directPlayUrl;
+
+  @Override
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  @Override
+  public String getType() {
+    return type;
+  }
 
   @Override public String getGrandParentTitle() {
     return grandParentTitle;

@@ -41,24 +41,27 @@ class VideoContentVerticalGridFragment : RowsSupportFragment() {
         setOnItemViewClickedListener { _, item, _, _ ->
           val videoCategory = item as VideoCategory
 
-          if (videoCategory.type == Types.MOVIES) {
-//              vpUtils.playVideo(requireActivity(), video, false)
-              val itemId = videoCategory.item.id()
-              val type = "movies"
-              val intent = Intent(requireActivity(), DetailsActivity::class.java)
-              intent.putExtra("itemId", itemId)
-              intent.putExtra("videoType", type)
-              requireActivity().startActivity(intent)
-          }
-
-          if (videoCategory.type == Types.SERIES ) {
-              val itemId = videoCategory.item.id()
-              val type = "tvshows"
-              val intent = Intent(requireActivity(), DetailsActivity::class.java)
-              intent.putExtra("itemId", itemId)
-              intent.putExtra("videoType", type)
-              requireActivity().startActivity(intent)
-          }
+            when {
+                videoCategory.item.type == Types.EPISODE -> {
+                    vpUtils.playVideo(requireActivity(), videoCategory.item, false)
+                }
+                videoCategory.type == Types.MOVIES -> {
+                    val itemId = videoCategory.item.id()
+                    val type = "movies"
+                    val intent = Intent(requireActivity(), DetailsActivity::class.java)
+                    intent.putExtra("itemId", itemId)
+                    intent.putExtra("videoType", type)
+                    requireActivity().startActivity(intent)
+                }
+                videoCategory.type == Types.SERIES -> {
+                    val itemId = videoCategory.item.id()
+                    val type = "tvshows"
+                    val intent = Intent(requireActivity(), DetailsActivity::class.java)
+                    intent.putExtra("itemId", itemId)
+                    intent.putExtra("videoType", type)
+                    requireActivity().startActivity(intent)
+                }
+            }
         }
 
         setOnItemViewSelectedListener { itemViewHolder, item, rowViewHolder, row ->
