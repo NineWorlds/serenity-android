@@ -5,9 +5,12 @@ Serenity for Android
 Sonar Qube:
 [![SonarQube](https://sonarcloud.io/api/badges/measure?key=serenity-android:serenity-app&metric=coverage)](https://sonarcloud.io/dashboard?id=serenity-android%3Aserenity-app)
 
-Serenity for Android is a client for the Plex Media Server developed by Plex.  
-Serenity is not associated with Plex, Inc.   If you value the Plex Media Server,
-consider donating to that project to help fund continued development.
+Plex Media Server support is now Deprecated!!!   Please consider using Emby Media Server instead if you want to use Serenity.
+
+Serenity for Android is a client for the Emby Media Server, Plex Media Server support is no longer actively maintained.  
+Serenity is not associated with Emby or Plex, Inc.   If you value the Emby or Plex Media Server,
+consider donating to the respective project to help fund continued development.
+
 
 Features
 ----
@@ -18,7 +21,6 @@ What does this support
 * Playing back Movies and TV Shows
 * Browsing by Genre for TV Shows and Movies
 * Browsing by Season for TV Shows
-* Download Videos for offline playback
 * Android TV and Fire TV devices running Android 4.1 or higher
 * Playback videos from Queue
 * Optional to playback movie trailers and episode previews from YouTube.
@@ -27,16 +29,16 @@ What does this support
 
 What is currently not targeted:
 
-* MyPlex access
 * Photo Browsing
-* Adding/Managing Channels and addins
+* Live TV Channels
+* Music
 
 With this said, this is an open source project, so if the community wants to contribute
 code it will be welcomed.  Feature requests and bug reports can be opened on the issue
 tracker.
 
 
-Plexapp REST Library
+Plexapp REST Library (Deprecated)
 ----
 
 This project includes a module that provides READ access to the plex media server REST API.
@@ -81,13 +83,13 @@ Open Source Projects:
 
 This project uses several open source projects and source code:
 
-* Android-Universal-ImageLoader (https://github.com/nostra13/Android-Universal-Image-Loader) - a nice library for managing image caches and downloading of images in the background.  Extremely fast response times both in the library and from the developer.
 * Simple (http://simple.sourceforge.net/) - provides a nice interface to Serialize and Deserialize XML information.
-* Dagger 1.2
+* Toothpick
 * Retrofit 2
 * OkHttp 3
 * Android Priority Job Manager
 * GreenRobot EventBus
+* Glide v4 
 
 
 Unit Testing Frameworks
