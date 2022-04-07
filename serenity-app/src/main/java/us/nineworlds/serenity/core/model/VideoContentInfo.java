@@ -198,4 +198,8 @@ public interface VideoContentInfo extends ContentInfo {
   public String getTagLine();
 
   public void setTagLine(String tagLine);
+
+  public String getSeriesName();
+
+  public void setSeriesName(String name);
 }

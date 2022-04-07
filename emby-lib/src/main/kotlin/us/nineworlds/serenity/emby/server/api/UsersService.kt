@@ -41,7 +41,7 @@ interface UsersService {
     @Query("Genres") genre: String?,
     @Query("IsPlayed") isPlayed: Boolean? = null,
     @Query("LimitCount") limitCount: Int? = null,
-    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,SeasonCount,EpisodeCount,UserData,OfficialRating,CommunityRating",
+    @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,SeasonCount,EpisodeCount,UserData,OfficialRating,CommunityRating,SeriesName,SeasonName,",
     @Query("Ids") ids: String? = null,
     @Query("StartIndex") startIndex: Int = 0,
     @Query("Limit") limit: Int? = null
@@ -143,4 +143,15 @@ interface UsersService {
     @Query("IncludeItemTypes") includeItemTypes: String? = "Movie",
     @Query("Limit") limit: Int? = 25
   ): Call<Search>
+
+  @GET("/emby/Movies/{itemId}/Similar")
+  fun fetchSimilarItemById(
+    @HeaderMap headerMap: Map<String, String>,
+    @Path("itemId") itemId: String,
+    @Query("UserId") userId: String,
+    @Query("IncludeItemTypes") includeItemType: String? = null,
+    @Query("Fields") fields: String = "Name,Id,Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,SeasonCount,EpisodeCount,UserData,OfficialRating,CommunityRating,SeriesName,SeasonName",
+    @Query("Limit") limit: Int? = 25,
+  ): Call<QueryResult>
+
 }

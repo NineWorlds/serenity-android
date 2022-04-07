@@ -86,6 +86,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
   private List<Subtitle> subtitles;
   private String tagLine;
+  private String seriesName;
 
   public AbstractVideoContentInfo() {
     this(null);
@@ -93,6 +94,16 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
   public AbstractVideoContentInfo(Resources resources) {
     this.resources = resources;
+  }
+
+  @Override
+  public void setSeriesName(String seriesName) {
+    this.seriesName = seriesName;
+  }
+
+  @Override
+  public String getSeriesName() {
+    return seriesName;
   }
 
   @Override

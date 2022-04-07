@@ -86,7 +86,7 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     if (videoContentInfo.getType() == Types.EPISODE) {
       posterOverlayTitle.setVisibility(VISIBLE);
       String title = videoContentInfo.getTitle();
-      String info = title;
+      String info = videoContentInfo.getSeriesName() + "\r\n" + title;
       posterOverlayTitle.setText(info);
     }
   }

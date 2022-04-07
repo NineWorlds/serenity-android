@@ -127,4 +127,8 @@ public interface IVideo extends ClientObject {
 
   String getDirectPlayUrl();
 
+  String getSeriesName();
+
+  void setSeriesName(String seriesName);
+
 }

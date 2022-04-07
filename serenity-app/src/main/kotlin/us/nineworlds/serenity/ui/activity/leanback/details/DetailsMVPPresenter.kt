@@ -5,6 +5,7 @@ import moxy.MvpPresenter
 import moxy.presenterScope
 import toothpick.Toothpick
 import us.nineworlds.serenity.common.annotations.InjectionConstants
+import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer
 import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer
 import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer
@@ -29,7 +30,33 @@ class DetailsMVPPresenter : MvpPresenter<DetailsView>() {
                     viewState.updateDetails(SeriesMediaContainer(result).createSeries()[0])
                     updateSeries(itemId)
                 }
-                else -> viewState.updateDetails(MovieMediaContainer(result).createVideos()[0])
+                else -> {
+                    viewState.updateDetails(MovieMediaContainer(result).createVideos()[0])
+                    loadSimilarItems(itemId, type)
+                }
+            }
+        }
+    }
+
+    fun loadSimilarItems(itemId: String, type: String) {
+        presenterScope.launch {
+            val itemType = when(type) {
+                "tvshows" -> Types.SERIES
+                else -> Types.MOVIES
+            }
+
+            val result = repository.fetchSimilarItems(itemId, itemType)
+            when (itemType) {
+                Types.MOVIES -> {
+                    val videos = MovieMediaContainer(result)
+                            .createVideos()
+                            .filterNot { item ->
+                                item.type == Types.SERIES
+                            }
+
+                    viewState.addSimilarItems(videos)
+                }
+                else ->  viewState.addSimilarSeries(SeriesMediaContainer(result).createSeries())
             }
         }
     }

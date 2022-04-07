@@ -5,6 +5,10 @@ import java.io.IOException
 import java.lang.Exception
 
 interface SerenityClient {
+
+    @Throws(Exception::class)
+    fun fetchSimilarItemById(itemId: String, types: Types): IMediaContainer
+
     @Throws(Exception::class)
     fun fetchItemById(itemId: String): IMediaContainer
 

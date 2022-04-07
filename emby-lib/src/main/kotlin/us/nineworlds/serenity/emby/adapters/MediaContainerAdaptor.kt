@@ -132,7 +132,8 @@ class MediaContainerAdaptor {
     val serenityVideos = ArrayList<Video>()
     mediaContainer.size = videos.size
 
-    val items = videos.filter { item -> item.type != "Folder" }
+    val items = videos.filter { item -> item.type != "Folder"  }
+                      .filterNot { item -> item.name == "TBA" }
 
     for (item in items) {
       val video = Video()
@@ -148,6 +149,8 @@ class MediaContainerAdaptor {
       video.summary = item.oveview
       video.rating = item.communityRating ?: 0.00
       video.season = item.parentIndexNumber
+      video.seriesName = item.seriesName
+
       if (item.type != null && item.type == "Episode") {
         video.backgroundImageKey = "/emby/Items/${item.parentId}/Images/Backdrop"
         video.parentThumbNailImageKey = "/emby/Items/${item.parentId}/Images/Primary"

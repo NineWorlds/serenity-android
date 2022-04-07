@@ -5,12 +5,10 @@ import kotlinx.coroutines.withContext
 import toothpick.InjectConstructor
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
+import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer
 import us.nineworlds.serenity.events.SeasonsRetrievalEvent
-
-
-
 
 @InjectConstructor
 class VideoRepository constructor(private val client: SerenityClient) {
@@ -26,6 +24,10 @@ class VideoRepository constructor(private val client: SerenityClient) {
     suspend fun fetchEpisodes(itemId: String): List<VideoContentInfo> = withContext(Dispatchers.IO) {
         val result = client.retrieveEpisodes(itemId)
         EpisodeMediaContainer(result).createVideos()
+    }
+
+    suspend fun fetchSimilarItems(itemId: String, type: Types): IMediaContainer = withContext(Dispatchers.IO) {
+        client.fetchSimilarItemById(itemId, type)
     }
 
 }

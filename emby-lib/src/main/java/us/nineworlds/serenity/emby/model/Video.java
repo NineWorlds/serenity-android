@@ -46,6 +46,17 @@ public class Video extends AbstractEmbyObject implements IVideo {
   private List<IGenre> genres;
   private List<IMedia> medias;
   private String directPlayUrl;
+  private String seriesName;
+
+  @Override
+  public void setSeriesName(String seriesName) {
+    this.seriesName = seriesName;
+  }
+
+  @Override
+  public String getSeriesName() {
+    return seriesName;
+  }
 
   @Override
   public void setType(String type) {

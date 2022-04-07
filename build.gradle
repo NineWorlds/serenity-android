@@ -78,7 +78,7 @@ project.ext {
   retrofitVersion = "2.9.0"
   jodaTimeVersion = "2.10.9.1"
   timberVersion = "5.0.1"
-  exoplayerVersion = "2.16.1"
+  exoplayerVersion = "2.17.1"
   glideOkHttpVersion = "4.12.0"
   moxyVersion = "2.2.2"
   glideVersion = "4.12.0"

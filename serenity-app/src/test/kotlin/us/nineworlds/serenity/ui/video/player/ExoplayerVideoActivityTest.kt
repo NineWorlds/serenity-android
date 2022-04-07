@@ -157,7 +157,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     assertThat(spy.player).isInstanceOf(SimpleExoPlayer::class.java)
 
     verify(spy).createSimpleExoplayer()
-    verify(mockPlayer).addListener(any(EventLogger::class.java))
+    verify(mockPlayer).addListener(any(Player.Listener::class.java))
     verify(mockPlayer).prepare(any(MediaSource::class.java))
   }
 

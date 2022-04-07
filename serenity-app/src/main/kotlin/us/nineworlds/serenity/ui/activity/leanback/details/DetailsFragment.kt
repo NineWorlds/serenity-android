@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.ui.activity.leanback.details
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -37,9 +38,9 @@ import us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewRow
 import us.nineworlds.serenity.ui.leanback.presenters.FullWidthDetailsOverviewRowPresenter
 
 
-class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView {
+class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView {
 
-    internal val presenter by moxyPresenter {  presenterProvider.get()  }
+    internal val presenter by moxyPresenter { presenterProvider.get() }
 
     @Inject
     lateinit var presenterProvider: Provider<DetailsMVPPresenter>
@@ -134,6 +135,13 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
         setOnItemViewClickedListener { itemViewHolder, item, rowViewHolder, row ->
             if (item is EpisodePosterInfo) {
                 vpUtils.playVideo(requireActivity(), item, false)
+            } else if (item is VideoContentInfo) {
+                val itemId = item.id()
+                val type = "movies"
+                val intent = Intent(requireActivity(), DetailsActivity::class.java)
+                intent.putExtra("itemId", itemId)
+                intent.putExtra("videoType", type)
+                requireActivity().startActivity(intent)
             }
         }
     }
@@ -198,7 +206,7 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
 
         GlideApp.with(requireActivity()).load(videoInfo.backgroundURL).fitCenter().into(imageView)
 
-        when(videoInfo) {
+        when (videoInfo) {
             is TVShowSeriesInfo -> setupTVShowDetails(videoInfo)
             is VideoContentInfo -> setupMovieDetails(videoInfo)
         }
@@ -228,8 +236,8 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
                     adapter.setItems(episodes, object : DiffCallback<VideoContentInfo>() {
                         override fun areItemsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean {
                             return oldItem.season == newItem.season &&
-                                   oldItem.seasonNumber == newItem.seasonNumber &&
-                                   oldItem.parentKey == newItem.parentKey
+                                    oldItem.seasonNumber == newItem.seasonNumber &&
+                                    oldItem.parentKey == newItem.parentKey
 
                         }
 
@@ -240,49 +248,20 @@ class DetailsFragment: DetailsSupportFragment(), MvpDelegateHolder, DetailsView 
                 }
     }
 
-    inner class VideoLogoPresenter : us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewLogoPresenter() {
+    override fun addSimilarItems(videoInfo: List<VideoContentInfo>) {
+        classPresenterSelector.addClassPresenter(ListRow::class.java, ListRowPresenter())
+        val itemsAdapter = ArrayObjectAdapter(VideoContentInfoPresenter())
 
-        override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder? {
-            val imageView = LayoutInflater.from(parent.context)
-                    .inflate(us.nineworlds.serenity.R.layout.lb_fullwidth_details_overview_logo, parent, false) as ImageView
-            val res: Resources = parent.resources
-            val width: Int = res.getDimensionPixelSize(us.nineworlds.serenity.R.dimen.movie_poster_image_width)
-            val height: Int = res.getDimensionPixelSize(us.nineworlds.serenity.R.dimen.movie_poster_image_height)
-            imageView.layoutParams = MarginLayoutParams(width, height)
-            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            return ViewHolder(imageView)
-        }
+        val header = HeaderItem("Similar")
+        itemsAdapter.addAll(0, videoInfo)
+        val similarRow = ListRow(header, itemsAdapter)
 
-        override fun isBoundToImage(viewHolder: us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewLogoPresenter.ViewHolder?, row: DetailsOverviewRow?): Boolean {
-            return true
-        }
+        val detailsAdapter = adapter as ArrayObjectAdapter
+        detailsAdapter.add(similarRow)
+    }
 
-        override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any) {
-            val row = item as DetailsOverviewRow
-            val videoInfo = row.item as ContentInfo
-            val imageView = viewHolder.view as ImageView
-
-            if (row.item is SeriesContentInfo) {
-                val item = row.item as SeriesContentInfo
-                GlideApp.with(requireContext()).asDrawable().load(item.thumbNailURL).into(imageView)
-            } else {
-                GlideApp.with(requireContext()).asDrawable().load(videoInfo.imageURL).into(imageView)
-            }
-
-            if (isBoundToImage(viewHolder as ViewHolder, row)) {
-                viewHolder.parentPresenter.notifyOnBindLogo(viewHolder.parentViewHolder)
-            }
-        }
-
-        inner class ViewHolder(view: View) : us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewLogoPresenter.ViewHolder(view) {
-            override fun getParentPresenter(): FullWidthDetailsOverviewRowPresenter {
-                return mParentPresenter
-            }
-
-            override fun getParentViewHolder(): FullWidthDetailsOverviewRowPresenter.ViewHolder {
-                return mParentViewHolder
-            }
-        }
+    override fun addSimilarSeries(videoInfo: List<SeriesContentInfo>) {
+        TODO("Not yet implemented")
     }
 }
 

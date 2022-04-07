@@ -34,7 +34,7 @@ import javax.inject.Inject
 @InjectViewState
 @StateStrategyType(SkipStrategy::class)
 class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
-  PlayerControlView.VisibilityListener, Player.EventListener {
+  PlayerControlView.VisibilityListener, Player.Listener {
 
   @Inject
   lateinit var logger: Logger

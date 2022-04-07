@@ -236,6 +236,20 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         return retrieveItemByIdCategory(key, category, types, 0, null)
     }
 
+    override fun fetchSimilarItemById(itemId: String, types: Types): IMediaContainer {
+        val type = when (types) {
+            Types.MOVIES -> "Movie"
+            Types.SEASON -> "Season"
+            Types.SERIES -> "Series"
+            else -> "Episode"
+        }
+
+        val call = usersService.fetchSimilarItemById(headerMap(), itemId = itemId, userId = userId!!, includeItemType = "Movie")
+
+        val results = call.execute().body()
+        return MediaContainerAdaptor().createVideoList(results!!.items)
+    }
+
     override fun retrieveItemByIdCategory(key: String, category: String, types: Types, startIndex: Int, limit: Int?): IMediaContainer {
         var isPlayed: Boolean? = null
 
@@ -255,31 +269,36 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             userId = fetchUserId()
         }
 
-        val call = if (category == "ondeck") {
-            if (type == "Season" || type == "Series") {
-                usersService.resumableItems(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode")
-            } else {
-                usersService.resumableItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
+        val call = when (category) {
+            "ondeck" -> {
+                if (type == "Season" || type == "Series") {
+                    usersService.resumableItems(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode")
+                } else {
+                    usersService.resumableItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
+                }
             }
-        } else if (category == "recentlyAdded") {
-            if (type == "Season" || type == "Series") {
-                usersService.latestItems(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode")
-            } else {
-                usersService.latestItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
+            "recentlyAdded" -> {
+                if (type == "Season" || type == "Series") {
+                    usersService.latestItems(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode")
+                } else {
+                    usersService.latestItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
+                }
             }
-        } else if (category == "unwatched") {
-            usersService.unwatchedItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
-        } else {
-            usersService.fetchItemQuery(
-                    headerMap(),
-                    userId = userId!!,
-                    parentId = key,
-                    genre = genre,
-                    isPlayed = isPlayed,
-                    includeItemType = type,
-                    startIndex = startIndex,
-                    limit = limit
-            )
+            "unwatched" -> {
+                usersService.unwatchedItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
+            }
+            else -> {
+                usersService.fetchItemQuery(
+                        headerMap(),
+                        userId = userId!!,
+                        parentId = key,
+                        genre = genre,
+                        isPlayed = isPlayed,
+                        includeItemType = type,
+                        startIndex = startIndex,
+                        limit = limit
+                )
+            }
         }
 
         val results = call.execute().body()

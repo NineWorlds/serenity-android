@@ -49,7 +49,7 @@ import us.nineworlds.serenity.core.logger.Logger;
 /**
  * Logs player events using {@link Log}.
  */
-public final class EventLogger implements Player.EventListener, AudioRendererEventListener, VideoRendererEventListener,
+public final class EventLogger implements AudioRendererEventListener, VideoRendererEventListener,
         MediaSourceEventListener, MetadataOutput {
 
   private static final int MAX_TIMELINE_ITEM_LINES = 3;
@@ -73,46 +73,6 @@ public final class EventLogger implements Player.EventListener, AudioRendererEve
     Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 
-  // Player.EventListener
-
-  @Override public void onLoadingChanged(boolean isLoading) {
-    logger.debug("loading [" + isLoading + "]");
-  }
-
-  @Override public void onPlayerStateChanged(boolean playWhenReady, int state) {
-    logger.debug("state [" + getSessionTimeString() + ", " + playWhenReady + ", " + getStateString(state) + "]");
-  }
-
-  @Override public void onRepeatModeChanged(@Player.RepeatMode int repeatMode) {
-    logger.debug("repeatMode [" + getRepeatModeString(repeatMode) + "]");
-  }
-
-  @Override public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-
-  }
-
-  @Override public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-    logger.debug("playbackParameters " + String.format("[speed=%.2f, pitch=%.2f]", playbackParameters.speed,
-        playbackParameters.pitch));
-  }
-
-  @Override public void onSeekProcessed() {
-
-  }
-
-  @Override public void onPositionDiscontinuity(int reason) {
-
-  }
-
-  @Override public void onTracksChanged(TrackGroupArray ignored, TrackSelectionArray trackSelections) {
-    MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
-    if (mappedTrackInfo == null) {
-      logger.debug("Tracks []");
-      return;
-    }
-    logger.debug("Tracks [");
-    logger.debug("]");
-  }
 
   // MetadataRenderer.Output
 

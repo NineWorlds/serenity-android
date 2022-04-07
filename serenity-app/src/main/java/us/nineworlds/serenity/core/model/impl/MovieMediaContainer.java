@@ -67,10 +67,13 @@ public class MovieMediaContainer extends AbstractMediaContainer {
       VideoContentInfo mpi = new MoviePosterInfo();
       if (movie.getType().equalsIgnoreCase("episode")) {
         mpi.setType(Types.EPISODE);
+        mpi.setSeriesName(movie.getSeriesName());
       } else if (movie.getType().equalsIgnoreCase("series")) {
         mpi.setType(Types.SERIES);
+        mpi.setSeriesName(movie.getSeriesName());
       } else if (movie.getType().equalsIgnoreCase("season")) {
         mpi.setType(Types.SEASON);
+        mpi.setSeriesName(movie.getSeriesName());
       } else if (movie.getType().equalsIgnoreCase("movie")) {
         mpi.setType(Types.MOVIES);
       } else {
