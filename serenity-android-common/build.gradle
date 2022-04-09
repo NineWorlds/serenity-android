@@ -3,13 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-  compileSdkVersion 31
+  compileSdkVersion Versions.targetSdkVersion
 
   defaultConfig {
-    minSdkVersion 22
-    targetSdkVersion 31
-    versionCode 1
-    versionName "1.0"
+    minSdkVersion Versions.minSdkVersion
+    targetSdkVersion Versions.targetSdkVersion
   }
 
   sourceCompatibility = "1.8"
@@ -36,34 +34,34 @@ android {
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
   api project(':serenity-common')
-  api "org.greenrobot:eventbus:$eventBus"
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-  api "com.birbit:android-priority-jobqueue:$androidPriorityJobQueueVersion"
+  api "org.greenrobot:eventbus:$Versions.eventBus"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$Versions.kotlinVersion"
+  api "com.birbit:android-priority-jobqueue:$Versions.androidPriorityJobQueueVersion"
 
-  releaseApi("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion") {
+  releaseApi("com.github.stephanenicolas.toothpick:toothpick-runtime:$Versions.toothPickVersion") {
     exclude group: 'javax.inject'
   }
-  releaseApi("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion") {
+  releaseApi("com.github.stephanenicolas.toothpick:smoothie:$Versions.toothPickVersion") {
     exclude group: 'javax.inject'
   }
 
-  debugApi("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion")
-  debugApi("com.github.stephanenicolas.toothpick:smoothie:$toothPickVersion")
+  debugApi("com.github.stephanenicolas.toothpick:toothpick-runtime:$Versions.toothPickVersion")
+  debugApi("com.github.stephanenicolas.toothpick:smoothie:$Versions.toothPickVersion")
 
-  releaseApi "com.github.stephanenicolas.toothpick:toothpick-javax-annotations:$toothPickVersion"
-  kapt "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"
+  releaseApi "com.github.stephanenicolas.toothpick:toothpick-javax-annotations:$Versions.toothPickVersion"
+  kapt "com.github.stephanenicolas.toothpick:toothpick-compiler:$Versions.toothPickVersion"
 
-  testImplementation "junit:junit:$junitVersion"
-  testImplementation "org.assertj:assertj-core:$assertjVersion"
-  testImplementation "org.mockito:mockito-core:$mockitoVersion"
-  testImplementation("org.robolectric:robolectric:$robolectricVersion") {
+  testImplementation "junit:junit:$Versions.junitVersion"
+  testImplementation "org.assertj:assertj-core:$Versions.assertjVersion"
+  testImplementation "org.mockito:mockito-core:$Versions.mockitoVersion"
+  testImplementation("org.robolectric:robolectric:$Versions.robolectricVersion") {
     exclude module: 'support-v4'
   }
-  testImplementation "org.robolectric:shadows-framework:$robolectricVersion"
-  testImplementation "org.robolectric:shadowapi:$robolectricVersion"
-  testImplementation "org.robolectric:shadows-playservices:$robolectricVersion"
-  testImplementation "org.khronos:opengl-api:$openglApiVersion"
+  testImplementation "org.robolectric:shadows-framework:$Versions.robolectricVersion"
+  testImplementation "org.robolectric:shadowapi:$Versions.robolectricVersion"
+  testImplementation "org.robolectric:shadows-playservices:$Versions.robolectricVersion"
+  testImplementation "org.khronos:opengl-api:$Versions.openglApiVersion"
 
-  testImplementation "com.github.stephanenicolas.toothpick:toothpick-testing:$toothPickVersion"
-  kaptTest "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothPickVersion"
+  testImplementation "com.github.stephanenicolas.toothpick:toothpick-testing:$Versions.toothPickVersion"
+  kaptTest "com.github.stephanenicolas.toothpick:toothpick-compiler:$Versions.toothPickVersion"
 }

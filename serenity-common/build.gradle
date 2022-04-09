@@ -4,13 +4,13 @@ apply plugin: 'kotlin-kapt'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$Versions.kotlinVersion"
 
-    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+    implementation "com.squareup.okhttp3:okhttp:$Versions.okhttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$Versions.okhttpVersion"
     implementation "androidx.annotation:annotation:1.2.0"
 
-    implementation("com.github.stephanenicolas.toothpick:toothpick-runtime:$toothPickVersion") {
+    implementation("com.github.stephanenicolas.toothpick:toothpick-runtime:$Versions.toothPickVersion") {
         exclude group: 'javax.inject'
     }
 
