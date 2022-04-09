@@ -3,9 +3,7 @@ plugins {
 }
 
 evaluationDependsOn(":emby-lib")
-//evaluationDependsOn(':plexapp-rest-library')
 evaluationDependsOn(':subtitle-converter')
-
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -248,10 +246,6 @@ dependencies {
 
 //com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
 
-jacoco {
-   toolVersion = "0.8.7"
-}
-
 tasks.withType(Test) {
   jacoco.includeNoLocationClasses = true
   jacoco.excludes = ['jdk.internal.*']
@@ -284,6 +278,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
 
   executionData.setFrom(files("${buildDir}/jacoco/testDebugUnitTest.exec"))
 }
+
 
 configurations.all {
   resolutionStrategy {
