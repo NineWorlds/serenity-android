@@ -38,7 +38,7 @@ subprojects {
     }
     jcenter() // Currently required by url-manager
     maven {
-      url "http://kingargyle.github.io/repo"
+      url "https://kingargyle.github.io/repo"
     }
     maven { url 'https://jitpack.io' }
   }
