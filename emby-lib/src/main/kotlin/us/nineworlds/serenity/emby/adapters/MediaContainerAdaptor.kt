@@ -132,11 +132,16 @@ class MediaContainerAdaptor {
     val serenityVideos = ArrayList<Video>()
     mediaContainer.size = videos.size
 
-    val items = videos.filter { item -> item.type != "Folder" }
+    val items = videos.filter { item -> item.type != "Folder"  }
+                      .filterNot { item -> item.name == "TBA" }
 
     for (item in items) {
       val video = Video()
 
+      val sortEpisode = item.episodeNumber?.toInt() ?: 0
+
+      video.type = item.type
+      video.titleSort = sortEpisode.toString().padStart(3, '0')
       video.title = item.name
       video.key = item.id
       video.parentKey = item.parentId
@@ -144,8 +149,10 @@ class MediaContainerAdaptor {
       video.summary = item.oveview
       video.rating = item.communityRating ?: 0.00
       video.season = item.parentIndexNumber
+      video.seriesName = item.seriesName
+
       if (item.type != null && item.type == "Episode") {
-        video.backgroundImageKey = "/emby/Items/${item.parentLogoItemId}/Images/Logo"
+        video.backgroundImageKey = "/emby/Items/${item.parentId}/Images/Backdrop"
         video.parentThumbNailImageKey = "/emby/Items/${item.parentId}/Images/Primary"
       } else {
         video.backgroundImageKey = "/emby/Items/${item.id}/Images/Backdrop"
@@ -176,7 +183,7 @@ class MediaContainerAdaptor {
           if (mediaStream.type == "Video") {
             media.aspectRatio = mediaStream.aspectRatio
             media.videoCodec = mediaStream.codec
-          } else {
+          } else if (mediaStream.type == "Audio") {
             media.audioCodec = mediaStream.codec
             media.audioChannels = mediaStream.channels
           }
@@ -187,7 +194,7 @@ class MediaContainerAdaptor {
 
       serenityVideos.add(video)
     }
-    mediaContainer.videos = serenityVideos.toList()
+    mediaContainer.videos = serenityVideos.sortedBy { item -> item.titleSort } .toList()
     return mediaContainer
   }
 

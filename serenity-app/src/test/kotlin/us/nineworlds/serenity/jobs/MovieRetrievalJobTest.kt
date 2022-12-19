@@ -1,6 +1,7 @@
 package us.nineworlds.serenity.jobs
 
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.verify
 import org.apache.commons.lang3.RandomStringUtils
 import org.greenrobot.eventbus.EventBus
@@ -48,14 +49,14 @@ class MovieRetrievalJobTest : InjectingTest() {
   fun onRunFetchesCategoriesForTheSpecifiedId() {
     job.onRun()
 
-    verify(mockClient).retrieveItemByIdCategory(expectedVideoId, expectedCategory)
+    verify(mockClient).retrieveItemByIdCategory(eq(expectedVideoId), eq(expectedCategory), any())
   }
 
   @Test
   fun onRunFetchesCategoriesAndPostsMainCategoryEvent() {
     job.onRun()
 
-    verify(mockClient).retrieveItemByIdCategory(expectedVideoId, expectedCategory)
+    verify(mockClient).retrieveItemByIdCategory(eq(expectedVideoId), eq(expectedCategory), any())
     verify(mockEventBus).post(any<MovieRetrievalEvent>())
   }
 

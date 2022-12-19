@@ -32,7 +32,9 @@ data class Item(
   @Json(name = "Type") val type: String?,
   @Json(name = "ParentLogoItemId") val parentLogoItemId: String?,
   @Json(name = "SeriesId") val seriesId: String?,
-  @Json(name = "ParentIndexNumber") val parentIndexNumber: String?
+  @Json(name = "ParentIndexNumber") val parentIndexNumber: String?,
+  @Json(name = "SeasonName") val seasonName: String?,
+  @Json(name = "SeriesName") val seriesName: String?
 )
 
 data class UserData(

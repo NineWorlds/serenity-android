@@ -14,7 +14,7 @@
   android:focusable="true"
   android:nextFocusUp="@+id/categoryFilter"
   android:visibility="gone"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   app:rowHeight="wrap_content"
   tools:listitem="@layout/poster_indicator_view"
   tools:visibility="visible"

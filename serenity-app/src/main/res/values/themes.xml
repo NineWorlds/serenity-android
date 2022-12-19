@@ -98,7 +98,7 @@
 <!--        <item name="colorControlHighlight">@color/lb_grey</item>-->
     </style>
 
-    <style name="CustomActionBarTheme" parent="AppTheme">
+    <style name="CustomActionBarTheme" parent="Theme.AppCompat.Leanback">
         <item name="android:windowActionBarOverlay">false</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>

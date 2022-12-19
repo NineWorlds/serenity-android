@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="150dp"
-  android:layout_height="150dp"
-  android:layout_gravity="center"
-  android:visibility="gone"
-  android:id="@+id/data_loading_container"
->
-
-  <ProgressBar
-    android:id="@+id/data_loading_progress"
-    android:theme="@style/Theme.Leanback"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+  <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:layout_centerInParent="true" />
+    android:visibility="gone"
+    android:id="@+id/data_loading_container"
+  >
 
-</FrameLayout>
+    <ProgressBar
+      android:id="@+id/data_loading_progress"
+      android:theme="@style/Theme.Leanback"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      android:layout_gravity="center"
+      android:layout_centerInParent="true" />
+
+  </FrameLayout>
+</merge>

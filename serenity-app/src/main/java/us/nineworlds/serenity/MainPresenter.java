@@ -13,8 +13,6 @@ import us.nineworlds.serenity.jobs.GlideClearCacheJob;
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
 
-  @Inject JobManager jobManager;
-
   @Inject
   SerenityClient client;
 
@@ -23,7 +21,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
   }
 
   public void clearCache(Context context) {
-    jobManager.addJobInBackground(new GlideClearCacheJob(context));
   }
 
   public void showOrHideUserSelection() {

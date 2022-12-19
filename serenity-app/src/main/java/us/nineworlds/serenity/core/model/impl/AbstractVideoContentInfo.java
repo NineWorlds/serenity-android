@@ -27,6 +27,7 @@ import android.content.res.Resources;
 import java.io.Serializable;
 import java.util.List;
 import us.nineworlds.serenity.R;
+import us.nineworlds.serenity.common.rest.Types;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
@@ -43,6 +44,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
   private transient final Resources resources;
 
   private String id;
+  private Types type;
 
   private String plotSummary;
   private String castInfo;
@@ -84,6 +86,7 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
   private List<Subtitle> subtitles;
   private String tagLine;
+  private String seriesName;
 
   public AbstractVideoContentInfo() {
     this(null);
@@ -91,6 +94,26 @@ public abstract class AbstractVideoContentInfo implements VideoContentInfo, Seri
 
   public AbstractVideoContentInfo(Resources resources) {
     this.resources = resources;
+  }
+
+  @Override
+  public void setSeriesName(String seriesName) {
+    this.seriesName = seriesName;
+  }
+
+  @Override
+  public String getSeriesName() {
+    return seriesName;
+  }
+
+  @Override
+  public void setType(Types type) {
+    this.type = type;
+  }
+
+  @Override
+  public Types getType() {
+    return type;
   }
 
   @Override public String getSeriesTitle() {

@@ -37,6 +37,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import moxy.presenter.InjectPresenter;
+import moxy.presenter.ProvidePresenter;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
@@ -61,7 +62,7 @@ public class MainActivity extends SerenityActivity implements MainView {
     @BindView(R.id.mainGalleryMenu)
     RecyclerView mainMenuContainer;
     @BindView(R.id.data_loading_container)
-    View dataLoadingContainer;
+    public View dataLoadingContainer;
 
     MaterialToolbar toolbar;
 
@@ -119,7 +120,6 @@ public class MainActivity extends SerenityActivity implements MainView {
             recreate();
         }
     }
-
 
     protected void initPreferences() {
         ServerConfig config = (ServerConfig) ServerConfig.getInstance();

@@ -17,459 +17,522 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
+import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.emby.BuildConfig
 import us.nineworlds.serenity.emby.adapters.MediaContainerAdaptor
 import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
-import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
-import us.nineworlds.serenity.emby.server.model.AuthenticationResult
-import us.nineworlds.serenity.emby.server.model.PublicUserInfo
-import us.nineworlds.serenity.emby.server.model.QueryFilters
-import us.nineworlds.serenity.emby.server.model.QueryResult
+import us.nineworlds.serenity.emby.server.model.*
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
 
-  private val usersService: UsersService
-  private val filterService: FilterService
+    private val usersService: UsersService
+    private val filterService: FilterService
 
-  var baseUrl: String
-  var accessToken: String? = null
-  lateinit var serverId: String
-  var userId: String? = null
-  var deviceId: String
-  var deviceName: String
-  val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+    var baseUrl: String
+    var accessToken: String? = null
+    lateinit var serverId: String
+    var userId: String? = null
+    var deviceId: String
+    var deviceName: String
+    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
-  init {
-    this.baseUrl = baseUrl
-    val logger = HttpLoggingInterceptor()
-    val cacheDir = File(context.cacheDir, "EmbyClient")
+    init {
+        this.baseUrl = baseUrl
+        val logger = HttpLoggingInterceptor()
+        val cacheDir = File(context.cacheDir, "EmbyClient")
 
-    val cacheSize = 10 * 1024 * 1024 // 10 MiB
-    val cache = Cache(cacheDir, cacheSize.toLong())
+        val cacheSize = 10 * 1024 * 1024 // 10 MiB
+        val cache = Cache(cacheDir, cacheSize.toLong())
 
-    val okClient = RetrofitUrlManager.getInstance().with(OkHttpClient.Builder())
-    logger.level = HttpLoggingInterceptor.Level.BODY
-    okClient.addInterceptor(logger)
-    okClient.cache(cache)
+        val okClient = RetrofitUrlManager.getInstance().with(OkHttpClient.Builder())
+        logger.level = HttpLoggingInterceptor.Level.BASIC
+        okClient.addInterceptor(logger)
+        okClient.cache(cache)
 
-    val moshi = Moshi.Builder()
-      .add(KotlinJsonAdapterFactory())
-      .add(LocalDateTime::class.java, LocalDateJsonAdapter()).build()
+        val moshi = Moshi.Builder()
+                .add(KotlinJsonAdapterFactory())
+                .add(LocalDateTime::class.java, LocalDateJsonAdapter()).build()
 
-    val builder = Retrofit.Builder()
-    val embyRetrofit = builder.baseUrl(baseUrl)
-      .addConverterFactory(MoshiConverterFactory.create(moshi))
-      .client(okClient.build())
-      .build()
+        val builder = Retrofit.Builder()
+        val embyRetrofit = builder.baseUrl(baseUrl)
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .client(okClient.build())
+                .build()
 
-    usersService = embyRetrofit.create(UsersService::class.java)
-    filterService = embyRetrofit.create(FilterService::class.java)
+        usersService = embyRetrofit.create(UsersService::class.java)
+        filterService = embyRetrofit.create(FilterService::class.java)
 
-    val easyDeviceMod = EasyDeviceMod(context)
+        val easyDeviceMod = EasyDeviceMod(context)
 
-    deviceId = EasyIdMod(context).pseudoUniqueID
-    deviceName = "${easyDeviceMod.manufacturer} ${easyDeviceMod.model}"
-    Log.d(this::class.java.simpleName, "Device Id: $deviceId")
-    Log.d(this::class.java.simpleName, "Device Name : $deviceName")
-  }
-
-  fun fetchAllPublicUsers(): List<PublicUserInfo> {
-    val allPublicUsers = usersService.allPublicUsers()
-    return allPublicUsers.execute().body()!!
-  }
-
-  fun userImageUrl(userId: String): String {
-    return "$baseUrl/Users/$userId/Images/Primary"
-  }
-
-  fun authenticate(userName: String, password: String = ""): AuthenticationResult {
-    val authenticationResul = AuthenticateUserByName(userName, "", password, password)
-    val call = usersService.authenticate(authenticationResul, headerMap())
-    val response = call.execute()
-    if (response.isSuccessful) {
-      val body = response.body()
-      accessToken = body!!.accesToken
-      serverId = body.serverId
-      userId = body.userInfo.id!!
-
-      val prefEditor = prefs.edit()
-
-      prefEditor.putString("userId", userId)
-      prefEditor.putString("embyAccessToken", accessToken)
-      prefEditor.apply()
-
-      return response.body()!!
-    }
-    throw IllegalStateException("error logging user in to Emby Server")
-  }
-
-  fun currentUserViews(): QueryResult {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    val call = usersService.usersViews(headerMap(), userId!!)
-    return call.execute().body()!!
-  }
-
-  fun filters(itemId: String? = null, tags: List<String>? = null): QueryFilters {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    val call = filterService.availableFilters(headerMap(), userId!!)
-    return call.execute().body()!!
-  }
-
-  fun fetchItem(id: String): QueryResult {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    val call = usersService.fetchItem(headerMap(), userId!!, id)
-
-    return call.execute().body()!!
-  }
-
-  fun fetchItemQuery(id: String): QueryResult {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    val call = usersService.fetchItemQuery(headerMap(), userId!!, id, genre = null)
-
-    return call.execute().body()!!
-  }
-
-  private fun headerMap(): Map<String, String> {
-    val headers = HashMap<String, String>()
-    val authorizationValue =
-      "Emby Client=\"Android\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"${BuildConfig.CLIENT_VERSION}.0\""
-    headers["X-Emby-Authorization"] = authorizationValue
-    if (accessToken != null) {
-      headers["X-Emby-Token"] = accessToken!!
-    }
-    return headers
-  }
-
-  override fun userInfo(userId: String?): SerenityUser {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun allAvailableUsers(): MutableList<SerenityUser> {
-    val allPublicUsers = fetchAllPublicUsers()
-    val allUsers = ArrayList<SerenityUser>()
-    for (user in allPublicUsers) {
-      val builder = us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
-      val sernityUser = builder.userName(user.name)
-        .userId(user.id)
-        .hasPassword(user.hasPassword)
-        .build()
-      allUsers.add(sernityUser)
-    }
-    return allUsers
-  }
-
-  override fun authenticateUser(user: SerenityUser): SerenityUser {
-    val authenticatedUser = authenticate(user.userName)
-
-    return us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
-      .accessToken(authenticatedUser.accesToken)
-      .userName(user.userName)
-      .userId(user.userId)
-      .hasPassword(user.hasPassword())
-      .build()
-  }
-
-  override fun retrieveRootData(): IMediaContainer {
-    if (userId == null) {
-      userId = fetchUserId()
+        deviceId = EasyIdMod(context).pseudoUniqueID
+        deviceName = "${easyDeviceMod.manufacturer} ${easyDeviceMod.model}"
+        Log.d(this::class.java.simpleName, "Device Id: $deviceId")
+        Log.d(this::class.java.simpleName, "Device Name : $deviceName")
     }
 
-    val call = usersService.usersViews(headerMap(), userId!!)
-
-    val queryResult = call.execute().body()
-
-    return MediaContainerAdaptor().createMainMenu(queryResult!!.items)
-  }
-
-  override fun retrieveLibrary(): IMediaContainer {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun retrieveItemByCategories(): IMediaContainer {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    val call = usersService.usersViews(headerMap(), userId!!)
-
-    val queryResult = call.execute().body()
-
-    return MediaContainerAdaptor().createMainMenu(queryResult!!.items)
-  }
-
-  override fun retrieveItemByIdCategory(key: String?): IMediaContainer {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    val call = filterService.availableFilters(headerMap(), userId = userId!!, itemId =  key)
-
-    val queryResult = call.execute().body()
-
-    return MediaContainerAdaptor().createCategory(queryResult!!.genres!!)
-  }
-
-  override fun retrieveItemByIdCategory(key: String, category: String): IMediaContainer {
-    var genre: String? = null
-    var isPlayed: Boolean? = null
-
-    genre = when (category) {
-      "all", "unwatched" -> null
-      else -> category
+    fun fetchAllPublicUsers(): List<PublicUserInfo> {
+        val allPublicUsers = usersService.allPublicUsers()
+        return allPublicUsers.execute().body()!!
     }
 
-    if (userId == null) {
-      userId = fetchUserId()
+    fun userImageUrl(userId: String): String {
+        return "$baseUrl/Users/$userId/Images/Primary"
     }
 
-    val call = if (category == "ondeck") {
-      usersService.resumableItems(headerMap(), userId = userId!!, parentId = key)
-    } else if (category == "recentlyAdded") {
-      usersService.latestItems(headerMap(), userId = userId!!, parentId = key)
-    } else if (category == "unwatched") {
-      usersService.unwatchedItems(headerMap(), userId = userId!!, parentId = key)
-    } else {
-      usersService.fetchItemQuery(headerMap(), userId = userId!!, parentId = key, genre = genre, isPlayed = isPlayed)
+    fun authenticate(userName: String, password: String = ""): AuthenticationResult {
+        val authenticationResul = AuthenticateUserByName(userName, "", password, password)
+        val call = usersService.authenticate(authenticationResul, headerMap())
+        val response = call.execute()
+        if (response.isSuccessful) {
+            val body = response.body()
+            accessToken = body!!.accesToken
+            serverId = body.serverId
+            userId = body.userInfo.id!!
+
+            val prefEditor = prefs.edit()
+
+            prefEditor.putString("userId", userId)
+            prefEditor.putString("embyAccessToken", accessToken)
+            prefEditor.apply()
+
+            return response.body()!!
+        }
+        throw IllegalStateException("error logging user in to Emby Server")
     }
 
-    val results = call.execute().body()
-    return MediaContainerAdaptor().createVideoList(results!!.items)
-  }
-
-  override fun retrieveItemByCategories(key: String?, category: String?, secondaryCategory: String?): IMediaContainer {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun retrieveSeasons(key: String): IMediaContainer {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    val call = usersService.fetchItemQuery(
-      headerMap(),
-      userId = userId!!,
-      parentId = key,
-      includeItemType = "Season",
-      genre = null
-    )
-
-    val results = call.execute().body()
-
-    return MediaContainerAdaptor().createSeriesList(results!!.items)
-  }
-
-  override fun retrieveMusicMetaData(key: String?): IMediaContainer {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun retrieveEpisodes(key: String): IMediaContainer {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    val call = usersService.fetchItemQuery(
-      headerMap(),
-      userId = userId!!,
-      parentId = key,
-      includeItemType = "Episode",
-      genre = null
-    )
-
-    val results = call.execute().body()
-
-    return MediaContainerAdaptor().createVideoList(results!!.items)
-  }
-
-  override fun retrieveMovieMetaData(key: String?): IMediaContainer {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun searchMovies(key: String?, query: String): IMediaContainer {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    val call = usersService.search(headerMap(), userId!!, query)
-    val results = call.execute().body()
-    val itemIds = mutableListOf<String>()
-
-    for (searchHint in results!!.searchHints!!) {
-      itemIds.add(searchHint.id!!)
+    fun currentUserViews(): QueryResult {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val call = usersService.usersViews(headerMap(), userId!!)
+        return call.execute().body()!!
     }
 
-    val itemCall = usersService.fetchItemQuery(
-      headerMap(),
-      userId = userId!!,
-      ids = itemIds.joinToString(separator = ","),
-      genre = null,
-      parentId = null
-    )
-
-    val itemResults = itemCall.execute().body()
-
-    return MediaContainerAdaptor().createVideoList(itemResults!!.items)
-  }
-
-  override fun searchEpisodes(key: String?, query: String?): IMediaContainer? {
-    return null
-  }
-
-  override fun updateBaseUrl(baseUrl: String) {
-    this.baseUrl = baseUrl
-    RetrofitUrlManager.getInstance().setGlobalDomain(baseUrl)
-  }
-
-  override fun baseURL(): String = baseUrl
-
-  override fun watched(key: String): Boolean {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    val call = usersService.played(headerMap(), userId!!, key)
-
-    val result = call.execute()
-    return result.isSuccessful
-  }
-
-  override fun unwatched(key: String): Boolean {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    val call = usersService.unplayed(headerMap(), userId!!, key)
-
-    val result = call.execute()
-    return result.isSuccessful
-  }
-
-  override fun progress(key: String, offset: String): Boolean {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    var position = offset.toLong()
-
-    position = position.times(10000)
-
-    val call = usersService.progress(headerMap(), userId!!, key, null, position)
-    val result = call.execute()
-
-    return result.isSuccessful
-  }
-
-  override fun createMediaTagURL(resourceType: String?, resourceName: String?, identifier: String?): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun createSectionsURL(key: String?, category: String?): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun createSectionsURL(): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun createSectionsUrl(key: String?): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun createMovieMetadataURL(key: String?): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun createEpisodesURL(key: String?): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun createSeasonsURL(key: String?): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun createImageURL(url: String?, width: Int, height: Int): String {
-    return url!!
-  }
-
-  override fun createTranscodeUrl(id: String, offset: Int): String {
-    var startOffset: Long = 0
-    if (offset > 0) {
-      startOffset = offset.toLong().times(10000)
+    fun filters(itemId: String? = null, tags: List<String>? = null): QueryFilters {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val call = filterService.availableFilters(headerMap(), userId!!)
+        return call.execute().body()!!
     }
 
-    return "${baseUrl}emby/Videos/$id/stream.mkv?DeviceId=$deviceId&AudioCodec=aac&VideoCodec=h264&CopyTimeStamps=true&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset"
-  }
-
-  override fun reinitialize() {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun createUserImageUrl(user: SerenityUser, width: Int, height: Int): String {
-    return "$baseUrl/Emby/Users/${user.userId}/Images/Primary?Width=$width&Height=$height"
-  }
-
-  override fun startPlaying(itemId: String) {
-    if (userId == null) {
-      userId = fetchUserId()
+    override fun fetchItemById(itemId: String): IMediaContainer {
+        try {
+            val result = fetchItem(itemId)
+            return when (result.type) {
+                "Series" -> MediaContainerAdaptor().createSeriesList(listOf(result))
+                else -> MediaContainerAdaptor().createVideoList(listOf(result))
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+        return MediaContainerAdaptor().createVideoList(emptyList())
     }
 
-    val call = usersService.startPlaying(headerMap(), userId!!, itemId)
+    fun fetchItem(id: String): Item {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val call = usersService.fetchItem(headerMap(), userId!!, id)
 
-    call.execute()
-  }
-
-  override fun stopPlaying(itemId: String, offset: Long) {
-    if (userId == null) {
-      userId = fetchUserId()
-    }
-    val positionTicks = offset.times(10000)
-
-    val call = usersService.stopPlaying(headerMap(), userId!!, itemId, null, positionTicks.toString())
-    call.execute()
-  }
-
-  override fun retrieveSeriesById(key: String, categoryId: String): IMediaContainer {
-    var genre: String? = null
-    val isPlayed: Boolean? = null
-    val itemType = "Series"
-
-    genre = when (categoryId) {
-      "all", "unwatched" -> null
-      else -> categoryId
+        return call.execute().body()!!
     }
 
-    if (userId == null) {
-      userId = fetchUserId()
+    fun fetchItemQuery(id: String): QueryResult {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val call = usersService.fetchItemQuery(headerMap(), userId!!, id, genre = null)
+
+        return call.execute().body()!!
     }
 
-    val call = usersService.fetchItemQuery(
-      headerMap(),
-      userId = userId!!,
-      parentId = key,
-      genre = genre,
-      isPlayed = isPlayed,
-      includeItemType = itemType,
-      limitCount = 5
-    )
-
-    val results = call.execute().body()
-    return MediaContainerAdaptor().createSeriesList(results!!.items)
-  }
-
-  override fun retrieveSeriesCategoryById(key: String?): IMediaContainer {
-    if (userId == null) {
-      userId = fetchUserId()
+    private fun headerMap(): Map<String, String> {
+        val headers = HashMap<String, String>()
+        val authorizationValue =
+                "Emby Client=\"Android\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"${BuildConfig.CLIENT_VERSION}.0\""
+        headers["X-Emby-Authorization"] = authorizationValue
+        if (accessToken != null) {
+            headers["X-Emby-Token"] = accessToken!!
+        }
+        return headers
     }
-    val call = filterService.availableFilters(headerMap(), userId!!, key)
 
-    val queryResult = call.execute().body()
+    override fun userInfo(userId: String): SerenityUser {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
-    return MediaContainerAdaptor().createCategory(queryResult!!.genres!!, true)
-  }
+    override fun allAvailableUsers(): MutableList<SerenityUser> {
+        val allPublicUsers = fetchAllPublicUsers()
+        val allUsers = ArrayList<SerenityUser>()
+        for (user in allPublicUsers) {
+            val builder = us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
+            val sernityUser = builder.userName(user.name)
+                    .userId(user.id)
+                    .hasPassword(user.hasPassword)
+                    .build()
+            allUsers.add(sernityUser)
+        }
+        return allUsers
+    }
 
-  fun fetchUserId() = prefs.getString("userId", "")
+    override fun authenticateUser(user: SerenityUser): SerenityUser {
+        val authenticatedUser = authenticate(user.userName)
 
-  fun fetchAccessToken() = prefs.getString("embyAccessToken", "")
+        return us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
+                .accessToken(authenticatedUser.accesToken)
+                .userName(user.userName)
+                .userId(user.userId)
+                .hasPassword(user.hasPassword())
+                .build()
+    }
 
-  override fun supportsMultipleUsers(): Boolean = true
+    override fun retrieveRootData(): IMediaContainer {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+
+        val call = usersService.usersViews(headerMap(), userId!!)
+
+        val queryResult = call.execute().body()
+
+        return MediaContainerAdaptor().createMainMenu(queryResult!!.items)
+    }
+
+    override fun retrieveLibrary(): IMediaContainer {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    /**
+     *
+     */
+    override fun retrieveItemByCategories(): IMediaContainer {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val call = usersService.usersViews(headerMap(), userId!!)
+
+        val queryResult = call.execute().body()
+
+        return MediaContainerAdaptor().createMainMenu(queryResult!!.items)
+    }
+
+    override fun retrieveCategoriesById(key: String): IMediaContainer {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val call = filterService.availableFilters(headerMap(), userId = userId!!, itemId = key)
+
+        val queryResult = call.execute().body()
+
+        return MediaContainerAdaptor().createCategory(queryResult!!.genres!!)
+    }
+
+    override fun retrieveItemByIdCategory(key: String, category: String, types: Types): IMediaContainer {
+        return retrieveItemByIdCategory(key, category, types, 0, null)
+    }
+
+    override fun fetchSimilarItemById(itemId: String, types: Types): IMediaContainer {
+        val type = when (types) {
+            Types.MOVIES -> "Movie"
+            Types.SEASON -> "Season"
+            Types.SERIES -> "Series"
+            else -> "Episode"
+        }
+
+        val call = usersService.fetchSimilarItemById(headerMap(), itemId = itemId, userId = userId!!, includeItemType = "Movie")
+
+        val results = call.execute().body()
+        return MediaContainerAdaptor().createVideoList(results!!.items)
+    }
+
+    override fun retrieveItemByIdCategory(key: String, category: String, types: Types, startIndex: Int, limit: Int?): IMediaContainer {
+        var isPlayed: Boolean? = null
+
+        val genre = when (category) {
+            "all", "unwatched" -> null
+            else -> category
+        }
+
+        val type = when (types) {
+            Types.MOVIES -> "Movie"
+            Types.SEASON -> "Season"
+            Types.SERIES -> "Series"
+            else -> "Episode"
+        }
+
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+
+        val call = when (category) {
+            "ondeck" -> {
+                if (type == "Season" || type == "Series") {
+                    usersService.resumableItems(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode")
+                } else {
+                    usersService.resumableItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
+                }
+            }
+            "recentlyAdded" -> {
+                if (type == "Season" || type == "Series") {
+                    usersService.latestItems(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode")
+                } else {
+                    usersService.latestItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
+                }
+            }
+            "unwatched" -> {
+                usersService.unwatchedItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
+            }
+            else -> {
+                usersService.fetchItemQuery(
+                        headerMap(),
+                        userId = userId!!,
+                        parentId = key,
+                        genre = genre,
+                        isPlayed = isPlayed,
+                        includeItemType = type,
+                        startIndex = startIndex,
+                        limit = limit
+                )
+            }
+        }
+
+        val results = call.execute().body()
+        return MediaContainerAdaptor().createVideoList(results!!.items)
+    }
+
+    override fun retrieveItemByCategories(key: String, category: String, secondaryCategory: String): IMediaContainer {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun retrieveSeasons(key: String): IMediaContainer {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val call = usersService.fetchItemQuery(
+                headerMap(),
+                userId = userId!!,
+                parentId = key,
+                includeItemType = "Season",
+                genre = null
+        )
+
+        val results = call.execute().body()
+
+        return MediaContainerAdaptor().createSeriesList(results!!.items)
+    }
+
+    override fun retrieveMusicMetaData(key: String): IMediaContainer {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun retrieveEpisodes(key: String): IMediaContainer {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val call = usersService.fetchItemQuery(
+                headerMap(),
+                userId = userId!!,
+                parentId = key,
+                includeItemType = "Episode",
+                genre = null
+        )
+
+        val results = call.execute().body()
+
+        return MediaContainerAdaptor().createVideoList(results!!.items)
+    }
+
+    override fun retrieveMovieMetaData(key: String): IMediaContainer {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun searchMovies(key: String, query: String): IMediaContainer {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val call = usersService.search(headerMap(), userId!!, query)
+        val results = call.execute().body()
+        val itemIds = mutableListOf<String>()
+
+        for (searchHint in results!!.searchHints!!) {
+            itemIds.add(searchHint.id!!)
+        }
+
+        val itemCall = usersService.fetchItemQuery(
+                headerMap(),
+                userId = userId!!,
+                ids = itemIds.joinToString(separator = ","),
+                genre = null,
+                parentId = null
+        )
+
+        val itemResults = itemCall.execute().body()
+
+        return MediaContainerAdaptor().createVideoList(itemResults!!.items)
+    }
+
+    override fun searchEpisodes(key: String, query: String): IMediaContainer? {
+        return null
+    }
+
+    override fun updateBaseUrl(baseUrl: String) {
+        this.baseUrl = baseUrl
+        RetrofitUrlManager.getInstance().setGlobalDomain(baseUrl)
+    }
+
+    override fun baseURL(): String = baseUrl
+
+    override fun watched(key: String): Boolean {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val call = usersService.played(headerMap(), userId!!, key)
+
+        val result = call.execute()
+        return result.isSuccessful
+    }
+
+    override fun unwatched(key: String): Boolean {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val call = usersService.unplayed(headerMap(), userId!!, key)
+
+        val result = call.execute()
+        return result.isSuccessful
+    }
+
+    override fun progress(key: String, offset: String): Boolean {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        var position = offset.toLong()
+
+        position = position.times(10000)
+
+        val call = usersService.progress(headerMap(), userId!!, key, null, position)
+        val result = call.execute()
+
+        return result.isSuccessful
+    }
+
+    override fun createMediaTagURL(resourceType: String, resourceName: String, identifier: String): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun createSectionsURL(key: String, category: String): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun createSectionsURL(): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun createSectionsUrl(key: String): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun createMovieMetadataURL(key: String): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun createEpisodesURL(key: String): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun createSeasonsURL(key: String): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun createImageURL(url: String, width: Int, height: Int): String {
+        return url
+    }
+
+    override fun createTranscodeUrl(id: String, offset: Int): String {
+        val playSessionId = UUID.randomUUID().toString()
+        var startOffset: Long = 0
+        if (offset > 0) {
+            startOffset = offset.toLong().times(10000)
+        }
+
+        return "${baseUrl}emby/Videos/$id/stream.mkv?DeviceId=$deviceId&AudioCodec=aac&VideoCodec=h264&CopyTimeStamps=true&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset&PlaySessionId=$playSessionId"
+    }
+
+    override fun reinitialize() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun createUserImageUrl(user: SerenityUser, width: Int, height: Int): String {
+        return "$baseUrl/Emby/Users/${user.userId}/Images/Primary?Width=$width&Height=$height"
+    }
+
+    override fun startPlaying(itemId: String) {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+
+        val call = usersService.startPlaying(headerMap(), userId!!, itemId)
+
+        call.execute()
+    }
+
+    override fun stopPlaying(itemId: String, offset: Long) {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val positionTicks = offset.times(10000)
+
+        val call = usersService.stopPlaying(headerMap(), userId!!, itemId, null, positionTicks.toString())
+        call.execute()
+    }
+
+    override fun retrieveSeriesById(key: String, categoryId: String): IMediaContainer {
+        var genre: String? = null
+        val isPlayed: Boolean? = null
+        val itemType = "Series"
+
+        genre = when (categoryId) {
+            "all", "unwatched" -> null
+            else -> categoryId
+        }
+
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+
+        val call = usersService.fetchItemQuery(
+                headerMap(),
+                userId = userId!!,
+                parentId = key,
+                genre = genre,
+                isPlayed = isPlayed,
+                includeItemType = itemType,
+                limitCount = 5
+        )
+
+        val results = call.execute().body()
+        return MediaContainerAdaptor().createSeriesList(results!!.items)
+    }
+
+    override fun retrieveSeriesCategoryById(key: String): IMediaContainer {
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+        val call = filterService.availableFilters(headerMap(), userId!!, key)
+
+        val queryResult = call.execute().body()
+
+        return MediaContainerAdaptor().createCategory(queryResult!!.genres!!, true)
+    }
+
+    fun fetchUserId() = prefs.getString("userId", "")
+
+    fun fetchAccessToken() = prefs.getString("embyAccessToken", "")
+
+    override fun supportsMultipleUsers(): Boolean = true
 }

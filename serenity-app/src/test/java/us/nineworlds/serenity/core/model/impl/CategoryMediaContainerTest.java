@@ -30,12 +30,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
-import toothpick.config.Module;
-import us.nineworlds.plex.rest.model.impl.Directory;
-import us.nineworlds.plex.rest.model.impl.MediaContainer;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.CategoryInfo;
+import us.nineworlds.serenity.emby.model.Directory;
+import us.nineworlds.serenity.emby.model.MediaContainer;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
 

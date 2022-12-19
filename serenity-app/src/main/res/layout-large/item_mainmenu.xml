@@ -3,17 +3,22 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
-  android:focusable="true"
+  xmlns:tools="http://schemas.android.com/tools"
   android:clickable="true"
-
   android:descendantFocusability="afterDescendants"
+
+  android:focusable="true"
 >
 
   <TextView
     android:id="@+id/main_menu_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textColor="@color/main_menu_text_color_selector"
+    android:duplicateParentState="true"
     android:padding="10dp"
-    android:duplicateParentState="true" />
+    android:textColor="@color/main_menu_text_color_selector"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    android:gravity="center"
+    tools:text="Menu" />
 </FrameLayout>

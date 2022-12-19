@@ -14,10 +14,7 @@ import android.view.View
 import android.widget.FrameLayout
 import butterknife.BindView
 import butterknife.ButterKnife.bind
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -73,7 +70,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   @BindView(R.id.data_loading_container)
   internal lateinit var dataLoadingContainer: FrameLayout
 
-  lateinit var player: SimpleExoPlayer
+  lateinit var player: ExoPlayer
 
   private val progressReportinghandler = Handler(Looper.getMainLooper())
   private val progressRunnable = ProgressRunnable()
@@ -174,7 +171,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     playerView.player = player
     playerView.setControllerVisibilityListener(presenter)
 
-    (playerView.player as SimpleExoPlayer).playWhenReady = true
+    (playerView.player as ExoPlayer).playWhenReady = true
 
     val mediaSource: MediaSource = buildMediaSource(Uri.parse(videoUrl))
 
@@ -188,14 +185,19 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
     progressReportinghandler.postDelayed(progressRunnable, Companion.PROGRESS_UPDATE_DELAY.toLong())
   }
 
-  internal fun createSimpleExoplayer(): SimpleExoPlayer {
+  internal fun createSimpleExoplayer(): ExoPlayer {
     if (trackSelector is DefaultTrackSelector) {
       Timber.d("Enabling Tunneling Mode")
-      val parameters = DefaultTrackSelector.ParametersBuilder(this).setTunnelingEnabled(true).build()
+      val parameters = DefaultTrackSelector.ParametersBuilder(this)
+              .setTunnelingEnabled(androidHelper.enableTunneling())
+              .setAllowAudioMixedDecoderSupportAdaptiveness(true)
+              .setExceedAudioConstraintsIfNecessary(true)
+              .setAllowAudioMixedSampleRateAdaptiveness(true)
+              .build()
       (trackSelector as DefaultTrackSelector).parameters = parameters
     }
 
-    return SimpleExoPlayer.Builder(this)
+    return ExoPlayer.Builder(this)
             .setTrackSelector(trackSelector)
             .build()
   }

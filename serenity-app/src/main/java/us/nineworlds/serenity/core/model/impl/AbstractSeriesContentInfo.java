@@ -26,6 +26,7 @@ package us.nineworlds.serenity.core.model.impl;
 import java.io.Serializable;
 import java.util.List;
 import timber.log.Timber;
+import us.nineworlds.serenity.common.rest.Types;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask;
 import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
@@ -37,6 +38,7 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo, Se
 
   private static final long serialVersionUID = 9068543270225774788L;
 
+  private Types type;
   private String id;
   private String plotSummary;
   private String posterURL;
@@ -54,6 +56,16 @@ public abstract class AbstractSeriesContentInfo implements SeriesContentInfo, Se
   private String mediaTagIdentifier;
   private String studio;
   private double rating;
+
+  @Override
+  public void setType(Types type) {
+    this.type = type;
+  }
+
+  @Override
+  public Types getType() {
+    return type;
+  }
 
   @Override public String id() {
     return id;

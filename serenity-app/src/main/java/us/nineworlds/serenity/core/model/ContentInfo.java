@@ -23,12 +23,18 @@
 
 package us.nineworlds.serenity.core.model;
 
+import us.nineworlds.serenity.common.rest.Types;
+
 /**
  * @author dcarver
  */
 public interface ContentInfo {
 
   public String id();
+
+  public Types getType();
+
+  public void setType(Types type);
 
   public String getSummary();
 

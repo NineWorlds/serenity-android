@@ -40,6 +40,7 @@ public class AndroidHelper {
   private static final String ANDROID_HARDWARE_TYPE_TELEVISION = "android.hardware.type.television";
   private static final String ANDROID_SHIELD_MODEL = "SHIELD";
   private static final String ANDROID_BRAVIA_MODEL = "Bravia";
+  private static final String ANDROID_TCL_BEYONDTV5 = "BeyondTV";
 
   Context context;
 
@@ -63,6 +64,14 @@ public class AndroidHelper {
 
   public boolean isBravia() {
     return Build.MODEL.toLowerCase().contains(ANDROID_BRAVIA_MODEL.toLowerCase());
+  }
+
+  public boolean enableTunneling() {
+    return !isBeyondTV();
+  }
+
+  public boolean isBeyondTV() {
+    return Build.MODEL.toLowerCase().contains(ANDROID_TCL_BEYONDTV5.toLowerCase());
   }
 
   public boolean isLeanbackSupported() {

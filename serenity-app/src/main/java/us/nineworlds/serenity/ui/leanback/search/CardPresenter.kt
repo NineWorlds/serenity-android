@@ -41,8 +41,8 @@ import us.nineworlds.serenity.core.model.VideoContentInfo
 
 class CardPresenter(private val context: Context) : Presenter() {
 
-  val imageWidth = context.resources.getDimensionPixelSize(R.dimen.search_card_image_width)
-  val imageHeight = context.resources.getDimensionPixelSize(R.dimen.search_card_image_height)
+  val imageWidth = context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_width)
+  val imageHeight = context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_height)
 
   override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
     val imageView = createImageView()

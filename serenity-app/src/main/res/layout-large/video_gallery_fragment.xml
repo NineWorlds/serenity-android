@@ -200,7 +200,8 @@
       tools:layout_width="match_parent"
       tools:listitem="@layout/poster_indicator_view"
       tools:visibility="visible"
-      tools:orientation="horizontal">
+      tools:orientation="horizontal"
+    >
 
       <requestFocus />
     </androidx.leanback.widget.HorizontalGridView>

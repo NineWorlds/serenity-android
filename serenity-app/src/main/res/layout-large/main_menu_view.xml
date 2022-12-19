@@ -1,30 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="100dp"
-  android:background="@drawable/content_panel_dark"
-  android:layout_centerInParent="true"
+  android:layout_height="match_parent"
+  android:background="@color/card_background"
+  tools:ignore="MissingDefaultResource"
 >
 
-  <androidx.leanback.widget.HorizontalGridView
-    android:id="@+id/mainGalleryMenu"
+  <!-- Content Here -->
+
+  <androidx.fragment.app.FragmentContainerView
+    android:id="@+id/video_content_fragment"
+    android:name="us.nineworlds.serenity.fragments.VideoContentVerticalGridFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginLeft="5dp"
-    android:descendantFocusability="afterDescendants"
+    android:layout_marginTop="60dp"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:layout_gravity="center|center_vertical"
-    android:clipChildren="false"
-    android:clipToPadding="false"
-    app:rowHeight="wrap_content"
-    app:numberOfRows="1">
+    android:descendantFocusability="afterDescendants"
+    tools:layout="@layout/video_grid_fragment" />
 
-  </androidx.leanback.widget.HorizontalGridView>
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -115,6 +115,7 @@ public class EpisodeMediaContainer extends MovieMediaContainer {
     if (mediacont != null && !mediacont.isEmpty()) {
       // We grab the first media container until we know more about
       // why there can be multiples.
+
       IMedia media = mediacont.get(0);
       epi.setContainer(media.getContainer());
       List<IPart> parts = media.getVideoPart();

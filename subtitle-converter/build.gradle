@@ -4,5 +4,5 @@ targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
 
 dependencies {
-  testImplementation "junit:junit:$junitVersion"
+  testImplementation "junit:junit:$Versions.junitVersion"
 }

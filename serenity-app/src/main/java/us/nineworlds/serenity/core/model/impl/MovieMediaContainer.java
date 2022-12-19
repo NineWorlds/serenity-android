@@ -33,6 +33,7 @@ import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.common.media.model.IPart;
 import us.nineworlds.serenity.common.media.model.IVideo;
 import us.nineworlds.serenity.common.media.model.IWriter;
+import us.nineworlds.serenity.common.rest.Types;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
 /**
@@ -64,12 +65,25 @@ public class MovieMediaContainer extends AbstractMediaContainer {
     String baseImageResource = sbuild.toString();
     for (IVideo movie : videos) {
       VideoContentInfo mpi = new MoviePosterInfo();
+      if (movie.getType().equalsIgnoreCase("episode")) {
+        mpi.setType(Types.EPISODE);
+        mpi.setSeriesName(movie.getSeriesName());
+      } else if (movie.getType().equalsIgnoreCase("series")) {
+        mpi.setType(Types.SERIES);
+        mpi.setSeriesName(movie.getSeriesName());
+      } else if (movie.getType().equalsIgnoreCase("season")) {
+        mpi.setType(Types.SEASON);
+        mpi.setSeriesName(movie.getSeriesName());
+      } else if (movie.getType().equalsIgnoreCase("movie")) {
+        mpi.setType(Types.MOVIES);
+      } else {
+        mpi.setType(Types.UNKNOWN);
+      }
       mpi.setMediaTagIdentifier(mediaTagId);
       mpi.setId(movie.getKey());
       mpi.setStudio(movie.getStudio());
       mpi.setSummary(movie.getSummary());
 
-      long offset = movie.getViewOffset();
       mpi.setResumeOffset(Long.valueOf(movie.getViewOffset()).intValue());
       mpi.setDuration(Long.valueOf(movie.getDuration()).intValue());
 

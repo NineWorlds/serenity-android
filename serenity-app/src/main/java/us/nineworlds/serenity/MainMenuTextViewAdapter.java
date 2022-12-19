@@ -22,11 +22,8 @@
  */
 package us.nineworlds.serenity;
 
-import android.graphics.Typeface;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils.TruncateAt;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +33,7 @@ import butterknife.BindView;
 import java.util.ArrayList;
 import java.util.List;
 import us.nineworlds.serenity.core.menus.MenuItem;
+import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
 
 import static butterknife.ButterKnife.bind;
@@ -46,9 +44,9 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
   private GalleryOnItemSelectedListener onItemSelectedListener;
   private GalleryOnItemClickListener onItemClickListener;
-  public MainMenuTextViewAdapter() {
+  public MainMenuTextViewAdapter(MainMenuPresenter presenter) {
     super();
-    onItemSelectedListener = new GalleryOnItemSelectedListener(this);
+    onItemSelectedListener = new GalleryOnItemSelectedListener(this, presenter);
     onItemClickListener = new GalleryOnItemClickListener(this);
 
   }
@@ -78,9 +76,6 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
   void setDefaults(String title, TextView v, int position) {
     v.setText(title);
-    v.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
-    v.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-    v.setGravity(Gravity.CENTER_VERTICAL);
     v.setLines(1);
     v.setHorizontallyScrolling(true);
     v.setEllipsize(TruncateAt.MARQUEE);

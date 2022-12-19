@@ -151,7 +151,7 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
       categorySpinner.setOnItemSelectedListener(
           new MovieCategorySpinnerOnItemSelectedListener(categoryState.getCategory(), key, false, this));
     }
-    categorySpinner.requestFocus();
+    //categorySpinner.requestFocus();
   }
 
   @Override public void populateSecondaryCategory(List<SecondaryCategoryInfo> categories, String key, String category) {
