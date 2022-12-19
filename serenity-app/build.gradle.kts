@@ -11,9 +11,6 @@ plugins {
 
 apply(from = "../jacoco.gradle")
 
-evaluationDependsOn(":emby-lib")
-evaluationDependsOn(":subtitle-converter")
-
 sonarqube {
   properties {
     property("sonar.host.url", "https://sonarcloud.io")
@@ -43,13 +40,9 @@ android {
     }
   }
 
-//  aaptOptions {
-//    isCruncherEnabled = false
-//  }
-
   sourceSets {
     getByName("main").java.srcDirs("src/main/kotlin", "src/main/java")
-    getByName("test").java.srcDirs("src/test/kotlin", "src/main/java")
+    getByName("test").java.srcDirs("src/test/kotlin", "src/test/java")
   }
 
   compileSdk = Versions.targetSdkVersion

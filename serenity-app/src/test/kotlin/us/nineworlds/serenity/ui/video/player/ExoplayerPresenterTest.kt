@@ -169,7 +169,8 @@ class ExoplayerPresenterTest : InjectingTest() {
 
     presenter.playBackFromVideoQueue(true)
 
-    assertThat(presenter.video).isNotNull().isEqualTo(mockVideoContentInfo)
+    assertThat(presenter.video as VideoContentInfo).isNotNull.isEqualTo(mockVideoContentInfo)
+    //Truth.assertThat(presenter.video).isNotNull().isEqualTo(mockVideoContentInfo)
     verify(mockVideoContentInfo, atLeastOnce()).container
     verify(mockVideoContentInfo).id()
     verify(mockPlexFactory).createTranscodeUrl(expectedId, 0)

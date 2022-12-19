@@ -1,9 +1,9 @@
 object Versions {
 
     const val kotlinVersion = "1.6.20"
-    const val androidPluginVersion = "7.1.3"
-    const val minSdkVersion = 22
-    const val targetSdkVersion = 32
+    const val androidPluginVersion = "7.2.1"
+    const val minSdkVersion = 27
+    const val targetSdkVersion = 33
 
     const val appversion = "2.1.0"
     const val okhttpVersion = "4.9.1"
