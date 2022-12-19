@@ -8,6 +8,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
+import org.robolectric.RobolectricTestRunner
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.jobs.video.WatchedStatusJob
@@ -15,7 +16,7 @@ import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import javax.inject.Inject
 
-@RunWith(PlainAndroidRunner::class)
+@RunWith(RobolectricTestRunner::class)
 class WatchedStatusJobTest : InjectingTest() {
 
   @Rule

@@ -28,7 +28,7 @@ object Versions {
     const val assertkVersion = "0.24"
     const val assertjVersion = "3.11.1"
     const val mockitoVersion = "3.12.4"
-    const val robolectricVersion = "4.7.3"
+    const val robolectricVersion = "4.9.1"
     const val openglApiVersion = "gl1.1-android-2.1_r1"
     const val xmlUnitVersion = "1.3"
     const val assertJAndroidVersion = "1.1.1"

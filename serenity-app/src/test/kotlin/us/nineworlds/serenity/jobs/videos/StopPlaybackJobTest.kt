@@ -14,6 +14,7 @@ import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
+import org.robolectric.RobolectricTestRunner
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.jobs.video.StopPlaybackJob
@@ -21,7 +22,7 @@ import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import javax.inject.Inject
 
-@RunWith(PlainAndroidRunner::class)
+@RunWith(RobolectricTestRunner::class)
 class StopPlaybackJobTest : InjectingTest() {
 
   @Rule

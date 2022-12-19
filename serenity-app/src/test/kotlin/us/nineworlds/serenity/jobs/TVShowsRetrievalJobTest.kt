@@ -19,7 +19,7 @@ import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import javax.inject.Inject
 
-@RunWith(PlainAndroidRunner::class)
+@RunWith(RobolectricTestRunner::class)
 class TVShowsRetrievalJobTest : InjectingTest() {
 
   @Rule
