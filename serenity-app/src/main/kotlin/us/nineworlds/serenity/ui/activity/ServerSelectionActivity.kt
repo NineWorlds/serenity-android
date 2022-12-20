@@ -15,6 +15,7 @@ import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.MainActivity
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.Server
+import us.nineworlds.serenity.common.channels.ServerChannel
 import us.nineworlds.serenity.core.util.StringPreference
 import us.nineworlds.serenity.databinding.ActivityServerSelectionBinding
 import us.nineworlds.serenity.databinding.IncludeLoadingProgressBinding

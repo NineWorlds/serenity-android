@@ -7,7 +7,7 @@
     transcoderVideoQualities="0,1,2,3,4,5,6,7,8,9,10,11,12"
     transcoderVideoResolutions="128,128,160,240,320,480,768,720,720,1080,1080,1080,1080"
     updatedAt="1356805760" version="0.9.7.7.339-5ec3b53">
-    <Directory count="1" key="channels" title="channels" />
+    <Directory count="1" key="us.nineworlds.serenity.common.channels" title="us.nineworlds.serenity.common.channels" />
     <Directory count="1" key="clients" title="clients" />
     <Directory count="1" key="library" title="library" />
     <Directory count="2" key="music" title="music" />

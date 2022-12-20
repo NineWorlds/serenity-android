@@ -19,4 +19,7 @@ dependencies {
     implementation("com.github.stephanenicolas.toothpick:toothpick-runtime:${Versions.toothPickVersion}") {
         exclude(group = "javax.inject")
     }
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1")
+
 }

@@ -43,6 +43,9 @@ dependencies {
   api(project(":serenity-android-common"))
 
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinVersion}")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+
 
   releaseApi("com.github.stephanenicolas.toothpick:toothpick-runtime:${Versions.toothPickVersion}") {
     exclude(group = "javax.inject")
@@ -79,6 +82,7 @@ dependencies {
   testImplementation("org.robolectric:shadows-playservices:${Versions.robolectricVersion}")
   testImplementation("org.khronos:opengl-api:${Versions.openglApiVersion}")
   testImplementation("androidx.test:core:1.4.0")
+  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
 
   testImplementation("com.github.stephanenicolas.toothpick:toothpick-testing:${Versions.toothPickVersion}")
   kaptTest("com.github.stephanenicolas.toothpick:toothpick-compiler:${Versions.toothPickVersion}")

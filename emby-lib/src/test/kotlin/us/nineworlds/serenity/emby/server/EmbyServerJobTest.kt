@@ -31,7 +31,6 @@ class EmbyServerJobTest : InjectingTest() {
     initMocks(this)
     super.setUp()
     job = EmbyServerJob()
-    job.eventBus = mockEventBus
   }
 
   @Test

@@ -81,7 +81,7 @@ class EmbyAPIClientTest {
     authenticate()
 
     val result = client.retrieveItemByCategories()
-    val parentId = result.directories[1].key
+    val parentId = result.directories[2].key
 
     val movies = client.retrieveItemByIdCategory(parentId, "all", Types.EPISODE)
 

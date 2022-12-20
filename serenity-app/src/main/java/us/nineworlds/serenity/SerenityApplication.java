@@ -82,6 +82,7 @@ public class SerenityApplication extends Application {
     eventBus.register(this);
     jobManager.start();
     logger.initialize();
+
   }
 
   protected void inject() {
