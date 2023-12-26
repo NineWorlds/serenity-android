@@ -1,3 +1,10 @@
+pluginManagement {
+   repositories {
+     gradlePluginPortal()
+     google()
+   }
+}
+
 include ':serenity-app', ':emby-lib', ':serenity-common', ':serenity-android-common'
 include ':subtitle-converter'
 //include ':plexapp-rest-library'

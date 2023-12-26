@@ -5,6 +5,10 @@ plugins {
 }
 
 android {
+  namespace = "us.nineworlds.serenity.emby"
+  buildFeatures {
+    buildConfig = true
+  }
   defaultConfig {
     minSdkVersion(Versions.minSdkVersion)
     targetSdkVersion(Versions.targetSdkVersion)

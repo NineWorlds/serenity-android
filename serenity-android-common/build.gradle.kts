@@ -5,6 +5,8 @@ plugins {
 }
 
 android {
+  namespace = "us.nineworlds.serenity.common.android"
+
   compileSdkVersion(Versions.targetSdkVersion)
 
   defaultConfig {

@@ -6,7 +6,7 @@ plugins {
   id("kotlin-allopen")
   id("org.sonarqube")
   id("com.google.firebase.crashlytics")
-  id("com.google.gms.google-services")
+  id("com.google.gms.google-services") version "4.4.0"
 }
 
 apply(from = "../jacoco.gradle")
@@ -27,6 +27,8 @@ allOpen {
 }
 
 android {
+  namespace = "us.nineworlds.serenity"
+
   defaultConfig {
     versionCode = 3000000
     versionName = "3.0.0-M1"

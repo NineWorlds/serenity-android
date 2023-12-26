@@ -6,18 +6,17 @@ buildscript {
 
   }
   dependencies {
-    classpath("com.google.gms:google-services:4.3.10")
     classpath("com.google.firebase:firebase-crashlytics-gradle:2.7.1")
     classpath("com.android.tools.build:gradle:$Versions.androidPluginVersion")
     classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$Versions.kotlinVersion")
     classpath("org.jetbrains.kotlin:kotlin-allopen:$Versions.kotlinVersion")
-    classpath("org.jacoco:org.jacoco.core:0.8.7")
+    classpath("org.jacoco:org.jacoco.core:0.8.8")
   }
 }
 
 plugins {
-  id  "com.diffplug.gradle.spotless" version "3.30.0"
+  id "com.diffplug.spotless" version "6.18.0"
 }
 
 repositories {
@@ -44,7 +43,7 @@ subprojects {
     }
   }
 
-  apply plugin: "com.diffplug.gradle.spotless"
+  apply plugin: "com.diffplug.spotless"
 
   spotless {
     format 'xml', {
