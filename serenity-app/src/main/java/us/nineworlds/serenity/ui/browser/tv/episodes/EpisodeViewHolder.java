@@ -2,13 +2,11 @@ package us.nineworlds.serenity.ui.browser.tv.episodes;
 
 import android.content.Context;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import butterknife.BindView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.util.ImageUtils;
@@ -16,12 +14,14 @@ import us.nineworlds.serenity.ui.views.viewholders.AbstractPosterImageViewHolder
 
 public class EpisodeViewHolder extends AbstractPosterImageViewHolder<VideoContentInfo> {
 
-  @BindView(R.id.metaOverlay) TextView metaData;
+  TextView metaData;
 
-  @BindView(R.id.posterOverlayTitle) TextView title;
+  TextView title;
 
   public EpisodeViewHolder(View itemView) {
     super(itemView);
+    metaData = itemView.findViewById(R.id.metaOverlay);
+    title = itemView.findViewById(R.id.posterOverlayTitle);
   }
 
   @Override public void reset() {

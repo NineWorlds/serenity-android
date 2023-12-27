@@ -34,13 +34,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import moxy.presenter.InjectPresenter;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
+import us.nineworlds.serenity.databinding.ActivityMainBinding;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
@@ -56,15 +55,10 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     @InjectPresenter
     TVShowSeasonBrowserPresenter presenter;
 
-    @BindView(R.id.fanArt)
     View fanArt;
-    @BindView(R.id.tvshowSeasonBrowserLayout)
     View tvShowSeasonsMainView;
-    @BindView(R.id.tvShowSeasonImageGallery)
     HorizontalGridView tvShowSeasonsGallery;
-    @BindView(R.id.episodeGridView)
     HorizontalGridView gridView;
-    @BindView(R.id.data_loading_container)
     FrameLayout dataLoadingContainer;
 
     Handler postDelayed = new Handler();
@@ -127,9 +121,13 @@ public class TVShowSeasonBrowserActivity extends SerenityVideoActivity implement
     }
 
     protected void initContentView() {
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_tvbrowser_show_seasons);
-
-        ButterKnife.bind(this);
+        fanArt = findViewById(R.id.fanArt);
+        tvShowSeasonsMainView = findViewById(R.id.tvshowSeasonBrowserLayout);
+        tvShowSeasonsGallery = findViewById(R.id.tvShowSeasonImageGallery);
+        gridView = findViewById(R.id.episodeGridView);
+        dataLoadingContainer = findViewById(R.id.data_loading_container);
 
         fanArt.setBackgroundResource(R.drawable.tvshows);
     }

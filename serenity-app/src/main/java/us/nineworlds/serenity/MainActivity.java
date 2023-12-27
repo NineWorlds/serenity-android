@@ -35,16 +35,13 @@ import com.google.android.material.appbar.MaterialToolbar;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import moxy.presenter.InjectPresenter;
-import moxy.presenter.ProvidePresenter;
 import us.nineworlds.serenity.core.ServerConfig;
 import us.nineworlds.serenity.core.util.AndroidHelper;
+import us.nineworlds.serenity.databinding.ActivityMainBinding;
 import us.nineworlds.serenity.ui.activity.SerenityActivity;
 import us.nineworlds.serenity.ui.activity.login.LoginUserActivity;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
-
-import static butterknife.ButterKnife.bind;
 
 public class MainActivity extends SerenityActivity implements MainView {
 
@@ -59,10 +56,10 @@ public class MainActivity extends SerenityActivity implements MainView {
     @Inject
     SharedPreferences preferences;
 
-    @BindView(R.id.mainGalleryMenu)
     RecyclerView mainMenuContainer;
-    @BindView(R.id.data_loading_container)
     public View dataLoadingContainer;
+
+    private ActivityMainBinding binding;
 
     MaterialToolbar toolbar;
 
@@ -70,9 +67,11 @@ public class MainActivity extends SerenityActivity implements MainView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         DisplayUtils.overscanCompensation(this, getWindow().getDecorView());
-        bind(this);
+        mainMenuContainer = binding.mainGalleryMenu;
+        dataLoadingContainer = findViewById(R.id.data_loading_container);
 
         initPreferences();
 

@@ -12,6 +12,7 @@
  * the License.
  */
 package us.nineworlds.serenity.ui.leanback.presenters;
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -267,8 +268,8 @@ public class FullWidthDetailsOverviewRowPresenter extends RowPresenter {
             mActionsRow.setOnScrollListener(mScrollListener);
             mActionsRow.setAdapter(mActionBridgeAdapter);
             mActionsRow.setOnChildSelectedListener(mChildSelectedListener);
-            final int fadeLength = rootView.getResources().getDimensionPixelSize(
-                    R.dimen.lb_details_overview_actions_fade_size);
+            @SuppressLint("PrivateResource") final int fadeLength = rootView.getResources().getDimensionPixelSize(
+                    androidx.leanback.R.dimen.lb_details_overview_actions_fade_size);
             mActionsRow.setFadingRightEdgeLength(fadeLength);
             mActionsRow.setFadingLeftEdgeLength(fadeLength);
             mDetailsDescriptionViewHolder =

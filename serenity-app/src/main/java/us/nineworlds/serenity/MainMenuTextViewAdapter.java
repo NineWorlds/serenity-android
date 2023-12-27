@@ -29,14 +29,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import butterknife.BindView;
 import java.util.ArrayList;
 import java.util.List;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
-
-import static butterknife.ButterKnife.bind;
 
 public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
@@ -101,11 +98,11 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
   public class MainMenuViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.main_menu_item) public TextView mainMenuTextView;
+    public TextView mainMenuTextView;
 
     public MainMenuViewHolder(View itemView) {
       super(itemView);
-      bind(this, itemView);
+      itemView.findViewById(R.id.main_menu_item);
       itemView.setFocusable(true);
       itemView.setFocusableInTouchMode(true);
     }

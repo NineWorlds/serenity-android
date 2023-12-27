@@ -31,8 +31,6 @@ import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import us.nineworlds.serenity.GlideApp;
@@ -59,9 +57,7 @@ public class TVShowGridOnItemSelectedListener extends AbstractVideoOnItemSelecte
     @Inject
     SerenityClient factory;
 
-    @BindView(R.id.tvShowGridTitle)
     TextView titleView;
-    @BindView(R.id.fanArt)
     View fanArt;
 
     AbstractPosterImageGalleryAdapter adapter;
@@ -77,7 +73,9 @@ public class TVShowGridOnItemSelectedListener extends AbstractVideoOnItemSelecte
 
     @Override
     public void onItemSelected(View view, int i) {
-        ButterKnife.bind(this, (Activity) view.getContext());
+        Activity activity = (Activity) view.getContext();
+        titleView = activity.findViewById(R.id.tvShowGridTitle);
+        fanArt = activity.findViewById(R.id.fanArt);
         videoInfo = (SeriesContentInfo) adapter.getItem(i);
 
         final ImageView imageView = view.findViewById(R.id.posterImageView);

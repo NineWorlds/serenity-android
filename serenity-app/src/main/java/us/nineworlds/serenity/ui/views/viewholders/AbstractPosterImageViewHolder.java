@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import us.nineworlds.serenity.GlideApp;
@@ -20,10 +18,10 @@ import us.nineworlds.serenity.widgets.RoundedImageView;
 public abstract class AbstractPosterImageViewHolder<T extends ContentInfo>
     extends RecyclerView.ViewHolder {
 
-  @BindView(R.id.posterInprogressIndicator) public ProgressBar posterInprogressIndicator;
-  @BindView(R.id.posterWatchedIndicator) public ImageView watchedView;
-  @BindView(R.id.infoGraphicMeta) @Nullable public LinearLayout infoGraphicMetaContainer;
-  @BindView(R.id.posterImageView) public RoundedImageView posterImageView;
+  public ProgressBar posterInprogressIndicator;
+  public ImageView watchedView;
+  @Nullable public LinearLayout infoGraphicMetaContainer;
+  public RoundedImageView posterImageView;
 
   boolean isZoomedOut = false;
 
@@ -37,7 +35,10 @@ public abstract class AbstractPosterImageViewHolder<T extends ContentInfo>
 
   public AbstractPosterImageViewHolder(View itemView) {
     super(itemView);
-    ButterKnife.bind(this, itemView);
+    infoGraphicMetaContainer = itemView.findViewById(R.id.infoGraphicMeta);
+    posterImageView = itemView.findViewById(R.id.posterImageView);
+    posterInprogressIndicator = itemView.findViewById(R.id.posterInprogressIndicator);
+    watchedView = itemView.findViewById(R.id.posterWatchedIndicator);
   }
 
   public View getItemView() {

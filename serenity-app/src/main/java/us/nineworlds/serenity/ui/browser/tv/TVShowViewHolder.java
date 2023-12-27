@@ -7,17 +7,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import butterknife.BindView;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
 import us.nineworlds.serenity.ui.views.viewholders.AbstractPosterImageViewHolder;
 
 public class TVShowViewHolder extends AbstractPosterImageViewHolder<SeriesContentInfo> {
 
-  @BindView(R.id.badge_count) @Nullable public TextView badgeCount;
+  @Nullable public TextView badgeCount;
 
   public TVShowViewHolder(View itemView) {
     super(itemView);
+    badgeCount = itemView.findViewById(R.id.badge_count);
   }
 
   public void reset() {

@@ -30,8 +30,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;
@@ -40,6 +38,7 @@ import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.jobs.TVCategorySecondaryJob;
 import us.nineworlds.serenity.ui.browser.tv.episodes.EpisodeBrowserActivity;
 
+@Deprecated
 public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector
     implements OnItemSelectedListener {
 
@@ -53,7 +52,7 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector
   @Inject SharedPreferences prefs;
   @Inject TVCategoryState categoryState;
 
-  @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
+  Spinner secondarySpinner;
 
   public TVCategorySpinnerOnItemSelectedListener(String defaultSelection, String ckey) {
     selected = defaultSelection;
@@ -73,7 +72,8 @@ public class TVCategorySpinnerOnItemSelectedListener extends BaseInjector
     if (context.isDestroyed()) {
       return;
     }
-    ButterKnife.bind(this, context);
+
+    secondarySpinner = context.findViewById(R.id.categoryFilter2);
 
     CategoryInfo item = (CategoryInfo) viewAdapter.getItemAtPosition(position);
 

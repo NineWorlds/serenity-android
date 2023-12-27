@@ -60,7 +60,7 @@ open class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummary
         val imageUtilsAudioChannel = ImageInfographicUtils(audioWidth, audioHeight)
 
         if (videoInfo.rating > 0) {
-            val ratingBar = RatingBar(context, null, R.attr.ratingBarStyleIndicator)
+            val ratingBar = RatingBar(context, null, android.R.attr.ratingBarStyleIndicator)
             ratingBar.max = 4
             ratingBar.setIsIndicator(true)
             ratingBar.stepSize = 0.1f

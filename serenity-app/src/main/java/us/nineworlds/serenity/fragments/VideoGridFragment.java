@@ -27,18 +27,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
 import us.nineworlds.serenity.ui.browser.movie.MovieGridPosterOnItemSelectedListener;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener;
 import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
-
-import static butterknife.ButterKnife.bind;
 
 public class VideoGridFragment extends MovieVideoGalleryFragment {
 
@@ -49,7 +45,6 @@ public class VideoGridFragment extends MovieVideoGalleryFragment {
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflateView(inflater, container);
-    bind(this, view);
     setupRecyclerView();
     return view;
   }

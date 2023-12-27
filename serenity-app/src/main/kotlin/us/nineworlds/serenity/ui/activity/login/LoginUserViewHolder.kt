@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import toothpick.Toothpick
 import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.R
@@ -18,16 +16,13 @@ import javax.inject.Inject
 
 class LoginUserViewHolder(view: View) : ViewHolder(view) {
 
-  @BindView(R.id.profile_image)
-  lateinit var profileImage: ImageView
-  @BindView(R.id.profile_name)
-  lateinit var profileName: TextView
+  private val profileImage: ImageView = view.findViewById(R.id.profile_image)
+  val profileName: TextView = view.findViewById(R.id.profile_name)
 
   @Inject
   lateinit var serenityClient: SerenityClient
 
   init {
-    ButterKnife.bind(this, view)
     Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
   }
 

@@ -28,8 +28,6 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.leanback.widget.HorizontalGridView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
@@ -38,8 +36,6 @@ import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 
@@ -51,17 +47,14 @@ import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
-import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
-import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.recyclerview.FocusableGridLayoutManager;
-import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 import static android.view.View.*;
 import static android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS;
 
+@Deprecated
 public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
     implements TVShowBrowserView {
 
@@ -69,13 +62,12 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
   protected boolean restarted_state = false;
   protected String key;
 
-  @BindView(R.id.tvShowRecyclerView)
   HorizontalGridView tvShowRecyclerView;
 
-  @BindView(R.id.fanArt) View fanArt;
-  @BindView(R.id.tvShowItemCount) TextView tvShowItemCountView;
-  @BindView(R.id.categoryFilter2) Spinner secondarySpinner;
-  @BindView(R.id.categoryFilter) Spinner categorySpinner;
+  View fanArt;
+  TextView tvShowItemCountView;
+  Spinner secondarySpinner;
+  Spinner categorySpinner;
 
   @InjectPresenter TVShowBrowserPresenter presenter;
   @Inject Provider<TVShowBrowserPresenter> tvShowBrowserPresenterProvider;
@@ -173,7 +165,12 @@ public class TVShowBrowserActivity extends SerenityMultiViewVideoActivity
       setContentView(R.layout.activity_tvbrowser_show_banners);
     }
 
-    ButterKnife.bind(this);
+    tvShowRecyclerView = findViewById(R.id.tvShowRecyclerView);
+    fanArt = findViewById(R.id.fanArt);
+    tvShowItemCountView = findViewById(R.id.tvShowItemCount);
+    secondarySpinner = findViewById(R.id.categoryFilter2);
+    categorySpinner = findViewById(R.id.categoryFilter);
+
   }
 
   @Override @Deprecated public AbstractPosterImageGalleryAdapter getAdapter() {

@@ -35,14 +35,10 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
-import butterknife.ButterKnife;
 import moxy.presenter.InjectPresenter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.menus.MenuDrawerItem;
-import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -50,7 +46,6 @@ import us.nineworlds.serenity.fragments.MovieVideoGalleryFragment;
 import us.nineworlds.serenity.fragments.VideoGridFragment;
 import us.nineworlds.serenity.ui.activity.SerenityMultiViewVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 import static android.view.View.*;
@@ -104,7 +99,6 @@ public class MovieBrowserActivity extends SerenityMultiViewVideoActivity
 
   protected void createContentView() {
     setContentView(R.layout.activity_movie_browser);
-    ButterKnife.bind(this);
     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
     if (gridViewActive) {

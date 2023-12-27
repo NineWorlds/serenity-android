@@ -160,7 +160,6 @@ dependencies {
   implementation("com.squareup.okhttp3:logging-interceptor:${Versions.okhttpVersion}")
   implementation("me.jessyan:retrofit-url-manager:${Versions.urlManager}")
   implementation("com.squareup.okhttp3:okhttp-urlconnection:${Versions.okhttpVersion}")
-  implementation("com.jakewharton:butterknife:${Versions.butterKnifeVersion}")
   implementation("com.jakewharton.timber:timber:${Versions.timberVersion}")
   implementation("androidx.cardview:cardview:1.0.0")
   implementation("androidx.annotation:annotation:1.2.0")
@@ -224,7 +223,6 @@ dependencies {
   kaptTest("com.github.stephanenicolas.toothpick:toothpick-compiler:${Versions.toothPickVersion}")
 
   kapt("com.github.moxy-community:moxy-compiler:${Versions.moxyVersion}")
-  kapt("com.jakewharton:butterknife-compiler:${Versions.butterKnifeVersion}")
 }
 
 //com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

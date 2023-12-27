@@ -3,8 +3,6 @@ package us.nineworlds.serenity.ui.browser.tv
 import android.app.Activity
 import android.content.SharedPreferences
 import android.view.KeyEvent
-import butterknife.BindView
-import butterknife.ButterKnife
 import timber.log.Timber
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.SeriesContentInfo
@@ -16,12 +14,7 @@ class OnKeyDownDelegate(internal var activity: Activity) : BaseInjector() {
 
   @Inject
   internal lateinit var preferences: SharedPreferences
-  @BindView(R.id.tvShowRecyclerView)
-  internal lateinit var tvRecyclerView: androidx.recyclerview.widget.RecyclerView
-
-  init {
-    ButterKnife.bind(this, activity)
-  }
+  private var tvRecyclerView: androidx.recyclerview.widget.RecyclerView = activity.findViewById(R.id.tvShowRecyclerView)
 
   fun onKeyDown(keyCode: Int, keyEvent: KeyEvent): Boolean {
     val adapter = tvRecyclerView.adapter as AbstractPosterImageGalleryAdapter?

@@ -27,10 +27,8 @@ package us.nineworlds.serenity
 import us.nineworlds.serenity.injection.BaseInjector
 import javax.inject.Inject
 import android.content.SharedPreferences
-import butterknife.BindView
 import android.app.Activity
 import android.view.View
-import butterknife.ButterKnife
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -42,7 +40,6 @@ class GalleryOnItemSelectedListener(private val adapter: MainMenuTextViewAdapter
     @Inject
     lateinit var preferences: SharedPreferences
 
-    @BindView(R.id.mainGalleryBackground)
     lateinit var mainGalleryBackgroundView: ImageView
 
     private var currentlySelectedItem: MenuItem? = null
@@ -72,7 +69,8 @@ class GalleryOnItemSelectedListener(private val adapter: MainMenuTextViewAdapter
         } else R.drawable.serenity_bonsai_logo
     }
 
-    fun onItemSelected(view: View?, hasFocus: Boolean, position: Int) {
+    fun onItemSelected(view: View, hasFocus: Boolean, position: Int) {
+        mainGalleryBackgroundView = view.findViewById(R.id.mainGalleryBackground);
         val menuItem = adapter.getItemAtPosition(position)
         val section = menuItem.section
         if (section != null) {
@@ -88,7 +86,7 @@ class GalleryOnItemSelectedListener(private val adapter: MainMenuTextViewAdapter
         }
         view.clearAnimation()
         view.background = null
-        ButterKnife.bind(context)
+        mainGalleryBackgroundView = context.findViewById(R.id.mainGalleryBackground);
         if (hasFocus && view != null) {
             mainGalleryBackgroundView = context.findViewById(R.id.mainGalleryBackground)
             mainGalleryBackgroundView.clearAnimation()

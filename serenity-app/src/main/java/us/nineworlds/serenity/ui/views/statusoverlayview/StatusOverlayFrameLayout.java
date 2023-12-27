@@ -17,8 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import moxy.MvpPresenter;
 import moxy.presenter.InjectPresenter;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -34,14 +32,14 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
 
   @InjectPresenter StatusOverlayPresenter presenter;
 
-  @BindView(R.id.posterImageView) RoundedImageView roundedImageView;
-  @BindView(R.id.posterOverlayTitle) TextView posterOverlayTitle;
-  @BindView(R.id.metaOverlay) TextView metaOverlay;
-  @BindView(R.id.posterWatchedIndicator) ImageView posterWatchedIndicator;
-  @BindView(R.id.infoGraphicMeta) LinearLayout infoGraphicMetaContainer;
-  @BindView(R.id.subtitleIndicator) ImageView subtitleIndicator;
-  @BindView(R.id.trailerIndicator) ImageView trailerIndicator;
-  @BindView(R.id.posterInprogressIndicator) ProgressBar posterInProgressIndicator;
+  RoundedImageView roundedImageView;
+  TextView posterOverlayTitle;
+  TextView metaOverlay;
+  ImageView posterWatchedIndicator;
+  LinearLayout infoGraphicMetaContainer;
+  ImageView subtitleIndicator;
+  ImageView trailerIndicator;
+  ProgressBar posterInProgressIndicator;
 
   public StatusOverlayFrameLayout(@NonNull Context context) {
     super(context);
@@ -67,7 +65,14 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
 
   protected void init() {
     inflate(getContext(), R.layout.status_overlay_view, this);
-    ButterKnife.bind(this, this);
+    roundedImageView = findViewById(R.id.posterImageView);
+    posterOverlayTitle = findViewById(R.id.posterOverlayTitle);
+    metaOverlay = findViewById(R.id.metaOverlay);
+    posterWatchedIndicator = findViewById(R.id.posterWatchedIndicator);
+    infoGraphicMetaContainer = findViewById(R.id.infoGraphicMeta);
+    subtitleIndicator = findViewById(R.id.subtitleIndicator);
+    trailerIndicator = findViewById(R.id.trailerIndicator);
+    posterInProgressIndicator = findViewById(R.id.posterInprogressIndicator);
   }
 
   @Override protected MvpPresenter getPresenter() {

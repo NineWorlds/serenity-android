@@ -28,7 +28,6 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import butterknife.ButterKnife;
 import javax.inject.Inject;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.core.model.SecondaryCategoryInfo;
@@ -38,6 +37,7 @@ import us.nineworlds.serenity.injection.BaseInjector;
  * Populate the tv show banners based on the information from the Secondary
  * categories.
  */
+@Deprecated
 public class TVSecondaryCategorySpinnerOnItemSelectedListener extends BaseInjector implements OnItemSelectedListener {
 
   @Inject SharedPreferences prefs;
@@ -58,7 +58,6 @@ public class TVSecondaryCategorySpinnerOnItemSelectedListener extends BaseInject
   @Override
   public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
     this.viewAdapter = viewAdapter;
-    ButterKnife.bind(this, getActivity(viewAdapter.getContext()));
 
     SecondaryCategoryInfo item = (SecondaryCategoryInfo) viewAdapter.getItemAtPosition(position);
 

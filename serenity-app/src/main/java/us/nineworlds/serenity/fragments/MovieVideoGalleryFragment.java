@@ -37,7 +37,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import butterknife.BindView;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
@@ -47,7 +46,6 @@ import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.jobs.MovieCategoryJob;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
-import us.nineworlds.serenity.recyclerutils.SpaceItemDecoration;
 import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterImageAdapter;
 import us.nineworlds.serenity.ui.browser.movie.MoviePosterOnItemSelectedListener;
@@ -61,7 +59,6 @@ import us.nineworlds.serenity.ui.recyclerview.FocusableLinearLayoutManager;
 
 import static android.view.View.*;
 import static android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS;
-import static butterknife.ButterKnife.bind;
 
 public class MovieVideoGalleryFragment extends InjectingFragment {
 
@@ -72,8 +69,8 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
   @Inject Resources resources;
   @Inject AndroidHelper androidHelper;
 
-  @BindView(R.id.moviePosterView) protected HorizontalGridView recyclerView;
-  @BindView(R.id.data_loading_container) protected FrameLayout dataLoadingContainer;
+  protected HorizontalGridView recyclerView;
+  protected FrameLayout dataLoadingContainer;
 
   public MovieVideoGalleryFragment() {
     super();
@@ -82,8 +79,9 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflateView(inflater, container);
-    bind(this, view);
     setupRecyclerView();
+    recyclerView = view.findViewById(R.id.moviePosterView);
+    dataLoadingContainer = view.findViewById(R.id.data_loading_container);
     return view;
   }
 

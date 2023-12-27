@@ -43,6 +43,7 @@ import us.nineworlds.serenity.ui.listeners.GalleryVideoOnItemLongClickListener;
  * Implementation of the Poster Image Gallery class for TV Shows.
  *
  * @author dcarver
+ * @deprecated Remove me
  */
 public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGalleryAdapter {
 

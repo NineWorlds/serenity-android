@@ -12,8 +12,6 @@ import android.os.Looper
 import android.view.KeyEvent
 import android.view.View
 import android.widget.FrameLayout
-import butterknife.BindView
-import butterknife.ButterKnife.bind
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.MediaSource
@@ -33,6 +31,7 @@ import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.core.util.TimeUtil
+import us.nineworlds.serenity.databinding.ActivityExoplayerVideoBinding
 import us.nineworlds.serenity.injection.AppInjectionConstants
 import us.nineworlds.serenity.injection.modules.ExoplayerVideoModule
 import us.nineworlds.serenity.ui.activity.SerenityActivity
@@ -64,10 +63,8 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
   @Inject
   lateinit var timeUtil: TimeUtil
 
-  @BindView(R.id.player_view)
   internal lateinit var playerView: PlayerView
 
-  @BindView(R.id.data_loading_container)
   internal lateinit var dataLoadingContainer: FrameLayout
 
   lateinit var player: ExoPlayer
@@ -90,8 +87,11 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_exoplayer_video)
-    bind(this)
+    val binding = ActivityExoplayerVideoBinding.inflate(layoutInflater)
+    setContentView(binding.root)
+    playerView = binding.playerView
+    dataLoadingContainer = findViewById(R.id.data_loading_container)
+
     overscanCompensation(this, window.decorView)
     val intent = this.intent
     intent?.let {intent ->

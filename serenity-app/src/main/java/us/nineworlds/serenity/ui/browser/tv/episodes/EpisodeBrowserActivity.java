@@ -27,27 +27,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.legacy.app.ActionBarDrawerToggle;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import butterknife.ButterKnife;
 import moxy.presenter.InjectPresenter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import us.nineworlds.serenity.R;
-import us.nineworlds.serenity.core.menus.MenuDrawerItem;
-import us.nineworlds.serenity.core.menus.MenuDrawerItemImpl;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.ui.activity.SerenityVideoActivity;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.adapters.MenuDrawerAdapter;
 import us.nineworlds.serenity.ui.util.DisplayUtils;
 
 import static android.view.View.*;
 
+@Deprecated
 public class EpisodeBrowserActivity extends SerenityVideoActivity implements EpisodeBrowserView {
 
   @Inject protected SharedPreferences prefs;

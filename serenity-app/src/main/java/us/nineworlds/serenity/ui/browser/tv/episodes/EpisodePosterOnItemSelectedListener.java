@@ -35,8 +35,6 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.Spinner;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -52,31 +50,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+@Deprecated
 public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSelectedListener {
 
-    @BindView(R.id.video_poster)
     ImageView posterImage;
-    @BindView(R.id.video_details_container)
     View cardView;
-    @BindView(R.id.movieActionBarPosterTitle)
     TextView seriesTitle;
-    @BindView(R.id.movieSummary)
     TextView episodeSummary;
-    @BindView(R.id.movieBrowserPosterTitle)
     TextView title;
-    @BindView(R.id.videoTextExtra)
     TextView videoTextExtra;
-    @BindView(R.id.fanArt)
     View fanArt;
-    @BindView(R.id.categoryFilter)
     View categoryFilter;
-    @BindView(R.id.categoryFilter2)
     View categoryFilter2;
-    @BindView(R.id.movieCategoryName)
     View categoryName;
-    @BindView(R.id.subtitleFilter)
     TextView subtFilter;
-    @BindView(R.id.videoSubtitle)
     Spinner subtitleSpinner;
 
     ImageView posterImageView;
@@ -227,7 +214,18 @@ public class EpisodePosterOnItemSelectedListener extends AbstractVideoOnItemSele
             return;
         }
 
-        ButterKnife.bind(this, context);
+        posterImage = context.findViewById(R.id.video_poster);
+        cardView = context.findViewById(R.id.video_details_container);
+        seriesTitle = context.findViewById(R.id.movieActionBarPosterTitle);
+        episodeSummary = context.findViewById(R.id.movieSummary);
+        title = context.findViewById(R.id.movieBrowserPosterTitle);
+        videoTextExtra = context.findViewById(R.id.videoTextExtra);
+        fanArt = context.findViewById(R.id.fanArt);
+        categoryFilter = context.findViewById(R.id.categoryFilter);
+        categoryFilter2 = context.findViewById(R.id.categoryFilter2);
+        categoryName = context.findViewById(R.id.movieCategoryName);
+        subtFilter = context.findViewById(R.id.subtitleFilter);
+        subtitleSpinner = context.findViewById(R.id.videoSubtitle);
 
         if (i < 0) {
             i = 0;
