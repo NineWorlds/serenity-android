@@ -106,6 +106,7 @@ public class MovieGridPosterOnItemSelectedListenerTest extends InjectingTest {
     doReturn(2).when(mockAdapater).getItemCount();
     doReturn(mockVideoContentInfo).when(mockAdapater).getItem(anyInt());
 
+
     onItemSelectedListener.onItemSelected(mockView, 0);
 
     verifyExpectedFanArtCalls(expectedBackgroundUrl, expectedTranscodingUrl);

@@ -28,9 +28,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
-import us.nineworlds.serenity.BuildConfig;
 import us.nineworlds.serenity.core.model.impl.MusicArtistContentInfo;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;

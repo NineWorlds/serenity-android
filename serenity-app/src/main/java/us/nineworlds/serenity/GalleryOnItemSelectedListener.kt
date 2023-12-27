@@ -69,34 +69,35 @@ class GalleryOnItemSelectedListener(private val adapter: MainMenuTextViewAdapter
         } else R.drawable.serenity_bonsai_logo
     }
 
-    fun onItemSelected(view: View, hasFocus: Boolean, position: Int) {
-        mainGalleryBackgroundView = view.findViewById(R.id.mainGalleryBackground);
-        val menuItem = adapter.getItemAtPosition(position)
-        val section = menuItem.section
-        if (section != null) {
-            if (currentlySelectedItem != menuItem) {
-                currentlySelectedItem = menuItem
-                presenter.populateMovieCategories(section, menuItem.type!!)
+    fun onItemSelected(view: View?, hasFocus: Boolean, position: Int) {
+        view?.let {
+            val menuItem = adapter.getItemAtPosition(position)
+            val section = menuItem.section
+            if (section != null) {
+                if (currentlySelectedItem != menuItem) {
+                    currentlySelectedItem = menuItem
+                    presenter.populateMovieCategories(section, menuItem.type!!)
+                }
             }
-        }
 
-        val context = view!!.context as Activity
-        if (context.isDestroyed) {
-            return
-        }
-        view.clearAnimation()
-        view.background = null
-        mainGalleryBackgroundView = context.findViewById(R.id.mainGalleryBackground);
-        if (hasFocus && view != null) {
-            mainGalleryBackgroundView = context.findViewById(R.id.mainGalleryBackground)
-            mainGalleryBackgroundView.clearAnimation()
-            GlideApp.with(context).load(getBackgroundImageId(menuItem)).into(mainGalleryBackgroundView)
+            val context = view.context as Activity
+            if (context.isDestroyed) {
+                return
+            }
             view.clearAnimation()
-            view.background = ContextCompat.getDrawable(view.context, R.drawable.rounded_transparent_border)
-            if (shouldFadeIn()) {
-                val fadeIn = AnimationUtils.loadAnimation(view.context, R.anim.fade_in)
-                fadeIn.duration = 500
-                mainGalleryBackgroundView.startAnimation(fadeIn)
+            view.background = null
+            mainGalleryBackgroundView = context.findViewById(R.id.mainGalleryBackground);
+            if (hasFocus && view != null) {
+                mainGalleryBackgroundView = context.findViewById(R.id.mainGalleryBackground)
+                mainGalleryBackgroundView.clearAnimation()
+                GlideApp.with(context).load(getBackgroundImageId(menuItem)).into(mainGalleryBackgroundView)
+                view.clearAnimation()
+                view.background = ContextCompat.getDrawable(view.context, R.drawable.rounded_transparent_border)
+                if (shouldFadeIn()) {
+                    val fadeIn = AnimationUtils.loadAnimation(view.context, R.anim.fade_in)
+                    fadeIn.duration = 500
+                    mainGalleryBackgroundView.startAnimation(fadeIn)
+                }
             }
         }
     }

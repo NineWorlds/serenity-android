@@ -43,6 +43,7 @@ import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.util.AndroidHelper;
+import us.nineworlds.serenity.databinding.VideoGalleryFragmentBinding;
 import us.nineworlds.serenity.injection.InjectingFragment;
 import us.nineworlds.serenity.jobs.MovieCategoryJob;
 import us.nineworlds.serenity.recyclerutils.ItemOffsetDecoration;
@@ -79,14 +80,14 @@ public class MovieVideoGalleryFragment extends InjectingFragment {
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflateView(inflater, container);
-    setupRecyclerView();
     recyclerView = view.findViewById(R.id.moviePosterView);
     dataLoadingContainer = view.findViewById(R.id.data_loading_container);
+    setupRecyclerView();
     return view;
   }
 
   protected View inflateView(LayoutInflater inflater, ViewGroup container) {
-    return inflater.inflate(R.layout.video_gallery_fragment, null);
+    return VideoGalleryFragmentBinding.inflate(inflater, container, false).getRoot();
   }
 
   protected void setupRecyclerView() {

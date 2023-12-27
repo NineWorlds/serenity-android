@@ -45,6 +45,8 @@ public class VideoGridFragment extends MovieVideoGalleryFragment {
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflateView(inflater, container);
+    recyclerView = view.findViewById(R.id.moviePosterView);
+    dataLoadingContainer = view.findViewById(R.id.data_loading_container);
     setupRecyclerView();
     return view;
   }
