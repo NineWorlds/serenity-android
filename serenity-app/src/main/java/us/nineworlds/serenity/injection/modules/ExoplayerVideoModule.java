@@ -16,7 +16,6 @@ public class ExoplayerVideoModule extends Module {
 
   public ExoplayerVideoModule() {
     super();
-    bind(DefaultBandwidthMeter.class).toInstance(new DefaultBandwidthMeter());
     bind(HttpDataSource.Factory.class).toProvider(HttpDataSourceFactoryProvider.class);
     bind(TrackSelector.class).toProvider(DefaultMappingTrackSelectorProvider.class);
     bind(EventLogger.class).toProvider(EventLoggerProvider.class);

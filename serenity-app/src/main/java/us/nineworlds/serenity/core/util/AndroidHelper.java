@@ -71,7 +71,7 @@ public class AndroidHelper {
   }
 
   public boolean isBeyondTV() {
-    return Build.MODEL.toLowerCase().contains(ANDROID_TCL_BEYONDTV5.toLowerCase());
+    return Build.MODEL.toLowerCase().contains(ANDROID_TCL_BEYONDTV5.toLowerCase()) || Build.MODEL.toLowerCase().contains("smart tv");
   }
 
   public boolean isLeanbackSupported() {

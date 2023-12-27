@@ -73,8 +73,6 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
     jobManager.addJobInBackground(WatchedStatusJob(video.id()))
   }
 
-  override fun onSeekProcessed() = Unit
-
   override fun onPositionDiscontinuity(reason: Int) = Unit
 
   override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) = Unit

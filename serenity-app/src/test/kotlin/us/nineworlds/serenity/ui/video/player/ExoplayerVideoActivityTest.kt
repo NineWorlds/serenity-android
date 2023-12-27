@@ -56,9 +56,6 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   lateinit var mockExoPlayerPresenter: ExoplayerPresenter
 
   @Mock
-  lateinit var mockDefaultBandwidthMeter: DefaultBandwidthMeter
-
-  @Mock
   lateinit var mockDataSourceFactory: DataSource.Factory
 
   @Mock
