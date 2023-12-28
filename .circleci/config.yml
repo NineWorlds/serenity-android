@@ -6,6 +6,7 @@ version: 2.1
 orbs:
   android: circleci/android@1.0.3
   codecov: circleci/codecov@0.0.5
+  git: ganta/git@1.2.0
 
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
@@ -17,7 +18,7 @@ jobs:
 
     steps:
       # Checkout the code as the first step.
-      - checkout
+      - run: git clone https://github.com/NineWorlds/serenity-android.git --branch "$CIRCLE_BRANCH"
 
       # The next step will run the unit tests
       - android/run-tests:
