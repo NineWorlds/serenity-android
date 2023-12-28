@@ -17,6 +17,7 @@ jobs:
 
     docker:
       - image: cimg/android:2023.12
+    resource-class: large
 
     steps:
       # Checkout the code as the first step.
