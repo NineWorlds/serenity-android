@@ -4,31 +4,35 @@ version: 2.1
 
 # Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
 orbs:
-  android: circleci/android@1.0.3
+#  android: circleci/android@1.0.3
   codecov: circleci/codecov@0.0.5
 
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
-  build-and-test:  
+  build-and-test:
     # These next lines define the Android machine image executor: https://circleci.com/docs/2.0/executor-types/
-    executor:
-      name: android/android-machine
-      resource-class: medium
+    #executor:
+    #  name: android/android-machine
+    #  resource-class: medium
+
+    docker:
+      - image: cimg/android:2023.12
 
     steps:
       # Checkout the code as the first step.
       - checkout
-      - run:
-          name: Install OpenJDK 17
-          command: |
-            sudo apt-get update && sudo apt-get install openjdk-17-jdk
-            sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
-            sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
-            java -version
-            
+#      - run:
+#          name: Install OpenJDK 17
+#          command: |
+#            sudo apt-get update && sudo apt-get install openjdk-17-jdk
+#            sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+#            sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+#            java -version
+
       # The next step will run the unit tests
-      - android/run-tests:
-          test-command: ./gradlew clean jacocoTestReport
+#      - android/run-tests:
+#          test-command: ./gradlew clean jacocoTestReport
+      - run: ./gradlew clean jacocoTestReport
 
       # Then start the emulator and run the Instrumentation tests!
       #- android/start-emulator-and-run-tests:
