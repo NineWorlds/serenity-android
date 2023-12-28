@@ -28,19 +28,13 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 import us.nineworlds.serenity.core.menus.MenuItem;
-import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
-import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
 import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity;
 
 public class GalleryOnItemClickListener {
 
   private static final String MENU_TYPE_SEARCH = "search";
-  private static final String MENU_TYPE_SHOW = "show";
-  private static final String MENU_TYPE_MOVIE = "movie";
   private static final String MENU_TYPE_MUSIC = "artist";
   private static final String MENU_TYPE_OPTIONS = "options";
-  private static final String MENU_TYPE_MOVIES = "movies";
-  private static final String MENU_TYPE_TVSHOWS = "tvshows";
 
   private MainMenuTextViewAdapter adapter;
 
@@ -69,20 +63,6 @@ public class GalleryOnItemClickListener {
     }
 
     Intent intent;
-
-    if (MENU_TYPE_MOVIE.equalsIgnoreCase(activityType) || MENU_TYPE_MOVIES.equalsIgnoreCase(activityType)) {
-      intent = new Intent(context, MovieBrowserActivity.class);
-      intent.putExtra("key", librarySection);
-      context.startActivityForResult(intent, 0);
-      return;
-    }
-
-    if (MENU_TYPE_SHOW.equalsIgnoreCase(activityType) || MENU_TYPE_TVSHOWS.equalsIgnoreCase(activityType)) {
-      intent = new Intent(context, TVShowBrowserActivity.class);
-      intent.putExtra("key", librarySection);
-      context.startActivityForResult(intent, 0);
-      return;
-    }
 
     if (MENU_TYPE_MUSIC.equalsIgnoreCase(activityType)) {
       Toast.makeText(context, "Music support has been removed.", Toast.LENGTH_LONG);

@@ -45,7 +45,6 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
     super();
     onItemSelectedListener = new GalleryOnItemSelectedListener(this, presenter);
     onItemClickListener = new GalleryOnItemClickListener(this);
-
   }
 
   @Override public int getItemCount() {

@@ -13,7 +13,7 @@
 
   <androidx.fragment.app.FragmentContainerView
     android:id="@+id/video_content_fragment"
-    android:name="us.nineworlds.serenity.fragments.VideoContentVerticalGridFragment"
+    android:name="us.nineworlds.serenity.fragments.MainMenuVideoContentVerticalGridFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="60dp"

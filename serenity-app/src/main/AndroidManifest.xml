@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -72,12 +72,6 @@
                 android:value="us.nineworlds.serenity.ui.search.SearchableActivity" />
 
         <activity
-                android:name=".ui.browser.movie.MovieBrowserActivity"
-                android:hardwareAccelerated="true"
-                android:label="@string/title_activity_movie_browser"
-                android:screenOrientation="sensorLandscape"
-                android:theme="@style/CustomActionBarTheme" />
-        <activity
                 android:name=".MainActivity"
                 android:hardwareAccelerated="true"
                 android:label="@string/title_activity_main"
@@ -118,22 +112,6 @@
                 android:label="Search"
                 android:screenOrientation="sensorLandscape"
                 android:theme="@style/Theme.Leanback" />
-
-        <activity
-                android:name=".ui.browser.tv.TVShowBrowserActivity"
-                android:label="@string/title_activity_tvbrowser_show"
-                android:screenOrientation="sensorLandscape"
-                android:theme="@style/CustomActionBarTheme" />
-        <activity
-                android:name=".ui.browser.tv.seasons.TVShowSeasonBrowserActivity"
-                android:label="@string/title_activity_tvbrowser_show_season"
-                android:screenOrientation="sensorLandscape"
-                android:theme="@style/CustomActionBarTheme" />
-        <activity
-                android:name=".ui.browser.tv.episodes.EpisodeBrowserActivity"
-                android:label="@string/title_activity_tvbrowser_show_episodes"
-                android:screenOrientation="sensorLandscape"
-                android:theme="@style/CustomActionBarTheme" />
 
         <activity
                 android:name=".ui.video.player.ExoplayerVideoActivity"

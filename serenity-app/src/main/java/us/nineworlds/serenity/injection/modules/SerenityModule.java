@@ -38,9 +38,6 @@ import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.injection.modules.providers.VideoPlayerIntentUtilsProvider;
 import us.nineworlds.serenity.injection.modules.providers.VideoQueueHelperProvider;
 import us.nineworlds.serenity.ui.activity.leanback.details.DetailsMVPPresenter;
-import us.nineworlds.serenity.ui.browser.movie.MovieSelectedCategoryState;
-import us.nineworlds.serenity.ui.browser.tv.TVCategoryState;
-import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserPresenter;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 import us.nineworlds.serenity.ui.util.VideoQueueHelper;
 
@@ -54,9 +51,6 @@ public class SerenityModule extends Module {
     bind(Map.class).withName(ForMediaServers.class).toInstance(new ConcurrentHashMap<String, Server>());
     bind(VideoPlayerIntentUtils.class).toProvider(VideoPlayerIntentUtilsProvider.class).providesSingleton();
     bind(OkHttpClient.class).toInstance(new OkHttpClient.Builder().build());
-    bind(MovieSelectedCategoryState.class).toInstance(new MovieSelectedCategoryState());
-    bind(TVCategoryState.class).toInstance(new TVCategoryState());
-    bind(TVShowBrowserPresenter.class).toInstance(new TVShowBrowserPresenter());
     bind(Logger.class).toInstance(new TimberLogger());
     bind(MainMenuPresenter.class).to(MainMenuPresenter.class);
     bind(DetailsMVPPresenter.class).to(DetailsMVPPresenter.class);

@@ -4,10 +4,6 @@ import android.os.Bundle
 import androidx.leanback.app.RowsSupportFragment
 import androidx.leanback.widget.*
 import us.nineworlds.serenity.core.model.CategoryInfo
-import us.nineworlds.serenity.core.model.VideoContentInfo
-import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
-import us.nineworlds.serenity.ui.leanback.search.CardPresenter
-import android.app.Activity
 import android.content.Intent
 import android.widget.ImageView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -18,14 +14,13 @@ import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
 import us.nineworlds.serenity.core.model.VideoCategory
-import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
 import us.nineworlds.serenity.ui.activity.leanback.details.DetailsActivity
 import us.nineworlds.serenity.ui.leanback.presenters.CategoryVideoPresenter
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils
 import javax.inject.Inject
 
 
-class VideoContentVerticalGridFragment : RowsSupportFragment() {
+class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
 
     @Inject
     lateinit var vpUtils: VideoPlayerIntentUtils

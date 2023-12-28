@@ -12,8 +12,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowActivity;
 import us.nineworlds.serenity.core.menus.MenuItem;
-import us.nineworlds.serenity.ui.browser.movie.MovieBrowserActivity;
-import us.nineworlds.serenity.ui.browser.tv.TVShowBrowserActivity;
 import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -64,32 +62,6 @@ public class GalleryOnItemClickListenerTest {
     onItemClickListener.onItemClick(view, 0);
 
     assertThat(context.openOptionsMenu).isTrue();
-  }
-
-  @Test
-  public void onClickLaunchesMovieBrowserActivity() {
-    View view = new View(context);
-    MenuItem searchMenuItem = new MenuItem();
-    searchMenuItem.setType("movie");
-    doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
-
-    onItemClickListener.onItemClick(view, 0);
-
-    ShadowActivity shadowActivity = Shadows.shadowOf(context);
-    Assertions.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, MovieBrowserActivity.class);
-  }
-
-  @Test
-  public void onClickLaunchesTVShowBrowserActivity() {
-    View view = new View(context);
-    MenuItem searchMenuItem = new MenuItem();
-    searchMenuItem.setType("show");
-    doReturn(searchMenuItem).when(mockAdapter).getItemAtPosition(anyInt());
-
-    onItemClickListener.onItemClick(view, 0);
-
-    ShadowActivity shadowActivity = Shadows.shadowOf(context);
-    Assertions.assertThat(shadowActivity.getNextStartedActivity()).hasComponent(context, TVShowBrowserActivity.class);
   }
 
   @Test

@@ -94,14 +94,6 @@ public abstract class SerenityActivity extends InjectingMvpActivity {
     return super.onKeyDown(keyCode, event);
   }
 
-  private void resetFocus(int newPosition, RecyclerView gallery) {
-    RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
-    View childAt = layoutManager.getChildAt(newPosition);
-    if (childAt != null) {
-      gallery.requestChildFocus(childAt, null);
-    }
-  }
-
   protected boolean contextMenuRequested(int keyCode) {
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     boolean menuKeySlidingMenu = prefs.getBoolean("remote_control_menu", true);

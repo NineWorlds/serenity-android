@@ -5,7 +5,7 @@ import android.util.Log
 
 class MediaCodecInfoUtil {
 
-  val supportedContainers = hashMapOf(
+  private val supportedContainers = hashMapOf(
     "video/mkv" to true,
     "video/mp4" to true,
     "video/avi" to false,

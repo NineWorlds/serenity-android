@@ -78,12 +78,12 @@ public class MenuMediaContainer extends AbstractMediaContainer {
       }
     }
 
-    if (!menuItems.isEmpty()) {
-      menuItems.add(createSearchMenu());
-    }
+//    if (!menuItems.isEmpty()) {
+//      menuItems.add(createSearchMenu());
+//    }
 
     menuItems.add(createSettingsMenu());
-    menuItems.add(createOptionsMenu());
+//    menuItems.add(createOptionsMenu());
 
     return menuItems;
   }

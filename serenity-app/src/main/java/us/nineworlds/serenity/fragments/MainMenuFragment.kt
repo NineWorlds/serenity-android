@@ -47,7 +47,6 @@ import us.nineworlds.serenity.MainActivity
 import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
 import us.nineworlds.serenity.core.model.VideoCategory
-import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.injection.InjectingMvpFragment
 
 class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
@@ -104,7 +103,7 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
     override fun loadCategories(categories: CategoryVideoInfo) {
         val container = requireActivity().findViewById<FragmentContainerView>(R.id.video_content_fragment)
 
-        val videoContainer = container.getFragment<VideoContentVerticalGridFragment>()
+        val videoContainer = container.getFragment<MainMenuVideoContentVerticalGridFragment>()
 
         videoContainer.clearGallery()
 
@@ -114,7 +113,7 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
     override fun updateCategories(category: CategoryInfo, items: List<VideoCategory>) {
         val container = requireActivity().findViewById<FragmentContainerView>(R.id.video_content_fragment)
 
-        val videoContainer = container.getFragment<VideoContentVerticalGridFragment>()
+        val videoContainer = container.getFragment<MainMenuVideoContentVerticalGridFragment>()
 
         videoContainer.updateCategory(category, items)
     }
@@ -122,7 +121,7 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
     override fun clearCategories() {
         val container = requireActivity().findViewById<FragmentContainerView>(R.id.video_content_fragment)
 
-        val videoContainer = container.getFragment<VideoContentVerticalGridFragment>()
+        val videoContainer = container.getFragment<MainMenuVideoContentVerticalGridFragment>()
 
         videoContainer.clearGallery()
     }

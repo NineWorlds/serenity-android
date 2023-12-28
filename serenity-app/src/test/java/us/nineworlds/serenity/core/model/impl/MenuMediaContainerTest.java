@@ -84,22 +84,7 @@ public class MenuMediaContainerTest extends InjectingTest {
     mockDirectories.add(mockDirectory);
 
     List<MenuItem> menuItems = menuMediaContainer.createMenuItems();
-    assertThat(menuItems).isNotEmpty().hasSize(4);
-  }
-
-  @Test
-  public void createMenuItemsReturnsSearchMenuItem() {
-    demandMovieMenuItem();
-
-    mockDirectories.add(mockDirectory);
-
-    List<MenuItem> menuItems = menuMediaContainer.createMenuItems();
-    for (MenuItem item : menuItems) {
-      if ("search".equals(item.getType())) {
-        return;
-      }
-    }
-    fail("Did not find Search menu item");
+    assertThat(menuItems).isNotEmpty().hasSize(2);
   }
 
   @Test
@@ -111,17 +96,6 @@ public class MenuMediaContainerTest extends InjectingTest {
       }
     }
     fail("Did not find Settings menu item");
-  }
-
-  @Test
-  public void createMenuItemsReturnsOptionsMenuItem() {
-    List<MenuItem> menuItems = menuMediaContainer.createMenuItems();
-    for (MenuItem item : menuItems) {
-      if ("options".equals(item.getType())) {
-        return;
-      }
-    }
-    fail("Did not find Options menu item");
   }
 
   private void demandMovieMenuItem() {
