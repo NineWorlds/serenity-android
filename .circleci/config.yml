@@ -18,7 +18,14 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
-
+      - run:
+          name: Install OpenJDK 17
+          command: |
+            sudo apt-get update && sudo apt-get install openjdk-17-jdk
+            sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+            sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+            java -version
+            
       # The next step will run the unit tests
       - android/run-tests:
           test-command: ./gradlew clean jacocoTestReport
