@@ -4,10 +4,8 @@ version: 2.1
 
 # Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
 orbs:
-  android: circleci/android@1.0.3
+  android: circleci/android@2.3.0
   codecov: circleci/codecov@0.0.5
-  git: ganta/git@1.2.0
-
 
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
@@ -19,8 +17,9 @@ jobs:
 
     steps:
       # Checkout the code as the first step.
-      - run: git clone https://github.com/NineWorlds/serenity-android.git
-      - run: git checkout $CIRCLE_BRANCH
+      #- run: git clone https://github.com/NineWorlds/serenity-android.git
+      #- run: git checkout $CIRCLE_BRANCH
+      - checkout
 
       # The next step will run the unit tests
       - android/run-tests:
