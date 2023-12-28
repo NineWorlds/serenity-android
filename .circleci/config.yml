@@ -45,8 +45,6 @@ jobs:
       #    name: Assemble release build
       #    command: |
       #      ./gradlew clean testDebugUnitTest
-      - codecov/upload:
-           file: serenity-app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
 
 workflows:
   # Below is the definition of your workflow.
@@ -55,4 +53,8 @@ workflows:
   # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
   sample: 
     jobs:
-      - build-and-test
+      - build-and-test:
+          post-steps:
+            - codecov/upload:
+              file: ./serenity-app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+
