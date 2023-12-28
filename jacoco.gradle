@@ -7,10 +7,10 @@ tasks.withType(Test) {
 
 task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
 
-//    reports {
-//        xml.enabled(true)
-//        html.enabled(true)
-//    }
+    reports {
+        xml.required = true
+        html.required = true
+    }
 
     def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/*MemberInjector.*',
                       '**/*$$Factory*.*', '**/*..State*.*', '**/*_ViewBinding*.*', 'com/bumptech/**/*.*', '**/injection/**/*.*',
