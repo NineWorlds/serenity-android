@@ -56,5 +56,5 @@ workflows:
       - build-and-test:
           post-steps:
             - codecov/upload:
-              file: ./serenity-app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+              file: /home/circleci/project/serenity-android/serenity-app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
 
