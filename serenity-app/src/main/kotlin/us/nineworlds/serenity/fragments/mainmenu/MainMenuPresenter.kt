@@ -52,6 +52,8 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
                 is Result.Success -> {
                     processesCategories(result.data, itemId, type)
                 }
+
+                else -> {}
             }
         }
     }

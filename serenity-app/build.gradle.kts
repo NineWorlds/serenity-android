@@ -107,7 +107,7 @@ android {
 
 dependencies {
 
-  implementation(platform("com.google.firebase:firebase-bom:28.4.1"))
+  implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
 
   implementation(project(":subtitle-converter"))
   implementation(project(":emby-lib"))
@@ -142,7 +142,7 @@ dependencies {
   implementation("androidx.fragment:fragment-ktx:1.4.0")
   implementation("com.google.android.material:material:1.4.0")
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinVersion}")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
   implementation("com.github.moxy-community:moxy:${Versions.moxyVersion}")
   implementation("com.github.moxy-community:moxy-app-compat:${Versions.moxyVersion}")
   implementation("com.github.moxy-community:moxy-ktx:${Versions.moxyVersion}")
@@ -196,7 +196,7 @@ dependencies {
 
   testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
   testImplementation("org.apache.commons:commons-lang3:${Versions.commonsLangVersion}")
-  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
   testImplementation("com.squareup.okhttp3:mockwebserver:${Versions.okhttpVersion}")
   testImplementation("commons-io:commons-io:${Versions.commonsioVersion}")
