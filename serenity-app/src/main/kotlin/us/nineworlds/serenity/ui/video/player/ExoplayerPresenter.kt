@@ -81,6 +81,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
     if (Player.STATE_ENDED == playbackState) {
       stopPlaying(video.resumeOffset.toLong())
       viewState.playbackEnded()
+
       return
     }
   }

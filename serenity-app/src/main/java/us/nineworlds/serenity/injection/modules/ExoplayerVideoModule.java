@@ -4,6 +4,8 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.google.android.exoplayer2.upstream.cache.SimpleCache;
+
 import toothpick.config.Module;
 import us.nineworlds.serenity.injection.modules.providers.DataSourceFactoryProvider;
 import us.nineworlds.serenity.injection.modules.providers.DefaultMappingTrackSelectorProvider;
@@ -16,6 +18,8 @@ public class ExoplayerVideoModule extends Module {
 
   public ExoplayerVideoModule() {
     super();
+
+
     bind(HttpDataSource.Factory.class).toProvider(HttpDataSourceFactoryProvider.class);
     bind(TrackSelector.class).toProvider(DefaultMappingTrackSelectorProvider.class);
     bind(EventLogger.class).toProvider(EventLoggerProvider.class);
