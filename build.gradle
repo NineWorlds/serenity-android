@@ -11,7 +11,7 @@ buildscript {
     classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$Versions.kotlinVersion")
     classpath("org.jetbrains.kotlin:kotlin-allopen:$Versions.kotlinVersion")
-    classpath("org.jacoco:org.jacoco.core:0.8.8")
+    classpath("org.jacoco:org.jacoco.core:0.8.12")
   }
 }
 
@@ -25,6 +25,9 @@ repositories {
   maven {
     url("https://oss.sonatype.org/content/repositories/snapshots")
   }
+  maven {
+    url("https://jcenter.bintray.com/")
+  }
 }
 
 subprojects {
@@ -34,7 +37,11 @@ subprojects {
     maven {
       url("https://oss.sonatype.org/content/repositories/snapshots")
     }
-    jcenter() // Currently required by url-manager
+    //jcenter() // Currently required by url-manager
+    maven {
+      url("https://jcenter.bintray.com/")
+    }
+
     maven {
       url("https://kingargyle.github.io/repo")
     }

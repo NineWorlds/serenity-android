@@ -1,9 +1,9 @@
 object Versions {
 
-    const val kotlinVersion = "1.9.10"
-    const val androidPluginVersion = "8.0.0"
+    const val kotlinVersion = "1.9.24"
+    const val androidPluginVersion = "8.5.0"
     const val minSdkVersion = 27
-    const val targetSdkVersion = 33
+    const val targetSdkVersion = 35
 
     const val appversion = "2.1.0"
     const val okhttpVersion = "4.9.1"
@@ -33,7 +33,7 @@ object Versions {
     const val xmlUnitVersion = "1.3"
     const val assertJAndroidVersion = "1.1.1"
     const val commonsioVersion = "2.6"
-    const val jacocoVersion = "0.8.7"
+    const val jacocoVersion = "0.8.12"
     const val toothPickVersion = "3.1.0"
 }
 

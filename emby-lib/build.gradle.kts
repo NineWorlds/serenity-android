@@ -72,7 +72,7 @@ dependencies {
   api("com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}")
   api("com.squareup.okhttp3:okhttp:${Versions.okhttpVersion}")
   api("com.squareup.okhttp3:logging-interceptor:${Versions.okhttpVersion}")
-  api("me.jessyan:retrofit-url-manager:${Versions.urlManager}")
+  api(project(":manager"))
   api("com.jakewharton.timber:timber:${Versions.timberVersion}")
   api("com.github.nisrulz:easydeviceinfo-base:2.4.1")
   api("com.github.nisrulz:easydeviceinfo-common:2.4.1")

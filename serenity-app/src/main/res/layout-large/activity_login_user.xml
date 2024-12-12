@@ -30,8 +30,6 @@
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:visibility="gone"
-    app:isAutoProcessFocus="true"
-    app:focusDrawable="@drawable/rounded_transparent_border"
     tools:itemCount="3"
     tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     tools:layout_height="160dp"

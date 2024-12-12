@@ -158,7 +158,7 @@ dependencies {
   implementation("androidx.annotation:annotation:1.2.0")
   implementation("com.googlecode.juniversalchardet:juniversalchardet:${Versions.universalCharDetVersion}")
   implementation("com.squareup.okhttp3:logging-interceptor:${Versions.okhttpVersion}")
-  implementation("me.jessyan:retrofit-url-manager:${Versions.urlManager}")
+  implementation(project(":manager"))
   implementation("com.squareup.okhttp3:okhttp-urlconnection:${Versions.okhttpVersion}")
   implementation("com.jakewharton.timber:timber:${Versions.timberVersion}")
   implementation("androidx.cardview:cardview:1.0.0")
@@ -180,9 +180,9 @@ dependencies {
   implementation("com.squareup.retrofit2:converter-moshi:${Versions.retrofitVersion}")
   implementation("net.danlew:android.joda:${Versions.jodaTimeVersion}")
   implementation("com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}")
-  implementation("com.google.android:flexbox:1.1.0")
-  implementation("com.henryblue.library:tvrecyclerview:1.2.2")
-  implementation("jp.wasabeef:recyclerview-animators:3.0.0")
+  implementation("com.google.android.flexbox:flexbox:3.0.0")
+  //implementation("com.henryblue.library:tvrecyclerview:1.2.2")
+  implementation("jp.wasabeef:recyclerview-animators:4.0.2")
 
   implementation("com.github.rstanic12:Resourceful:1.0.0") {
     exclude(group = "com.google.guava")
