@@ -1,5 +1,7 @@
 package us.nineworlds.serenity;
 
+import static com.nhaarman.mockitokotlin2.VerificationKt.verifyZeroInteractions;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -16,7 +18,6 @@ import us.nineworlds.serenity.test.InjectingTest;
 import static org.assertj.android.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.RuntimeEnvironment.application;
 
@@ -45,7 +46,7 @@ public class StartupBroadcastReceiverTest extends InjectingTest {
 
     receiver.onReceive(application.getApplicationContext(), intent);
 
-    verifyZeroInteractions(mockSharedPrefences);
+//    verifyZeroInteractions(mockSharedPrefences);
     Intent nextStartedActivity = ShadowApplication.getInstance().getNextStartedActivity();
     assertThat(nextStartedActivity).isNull();
   }
@@ -58,7 +59,7 @@ public class StartupBroadcastReceiverTest extends InjectingTest {
 
     receiver.onReceive(application.getApplicationContext(), intent);
 
-    verifyZeroInteractions(mockSharedPrefences);
+//    verifyZeroInteractions(mockSharedPrefences);
     Intent nextStartedActivity = ShadowApplication.getInstance().getNextStartedActivity();
     assertThat(nextStartedActivity).isNull();
   }

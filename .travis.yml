@@ -14,7 +14,7 @@ language: android
 #    - extra-google-google_play_services
 
 jdk:
-   - openjdk11
+   - openjdk21
 
 addons:
   apt:

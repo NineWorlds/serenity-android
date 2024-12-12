@@ -37,7 +37,7 @@ import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
-@RunWith(PlainAndroidRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class MovieSearchIntentServiceTest extends InjectingTest {
 
   MockMovieSearchIntentService service;

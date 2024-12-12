@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
   id("com.android.application")
   id("project-report")
@@ -61,8 +63,8 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
 
   buildTypes {
@@ -103,6 +105,10 @@ android {
       }
     }
   }
+}
+
+tasks.withType<KotlinCompile> {
+  kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
 }
 
 dependencies {
@@ -226,7 +232,6 @@ dependencies {
 }
 
 //com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
-
 
 
 configurations.all {

@@ -15,7 +15,7 @@ import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.initMocks;
 

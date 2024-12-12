@@ -30,6 +30,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
+
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.emby.model.Directory;
@@ -40,7 +42,7 @@ import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
-@RunWith(PlainAndroidRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class CategoryMediaContainerTest extends InjectingTest {
 
   @Mock
