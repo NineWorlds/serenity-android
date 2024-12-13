@@ -1,9 +1,7 @@
 Serenity for Android
 =======================
 
-[![Build Status](https://circleci.com/gh/NineWorlds/serenity-android/tree/develop.svg?style=shield)](https://circleci.com/gh/NineWorlds/serenity-android/?branch=develop)[![codecov](https://codecov.io/gh/NineWorlds/serenity-android/branch/develop/graph/badge.svg)](https://codecov.io/gh/NineWorlds/serenity-android)
-Sonar Qube:
-[![SonarQube](https://sonarcloud.io/api/badges/measure?key=serenity-android:serenity-app&metric=coverage)](https://sonarcloud.io/dashboard?id=serenity-android%3Aserenity-app)
+[![Serenity Android CI](https://github.com/NineWorlds/serenity-android/actions/workflows/android.yml/badge.svg)](https://github.com/NineWorlds/serenity-android/actions/workflows/android.yml)[![codecov](https://codecov.io/gh/NineWorlds/serenity-android/branch/develop/graph/badge.svg)](https://codecov.io/gh/NineWorlds/serenity-android)
 
 Plex Media Server support is now Deprecated!!!   Please consider using Emby Media Server instead if you want to use Serenity.
 
