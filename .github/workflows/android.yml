@@ -24,3 +24,12 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew clean jacocoTestReport
+    - name: Report Code Coverage
+      uses: codecov/codecov-action@v5
+      with:
+        fail_ci_if_error: true # optional (default = false)
+        files: ./serenity-app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+        flags: unittests # optional
+        name: codecov-umbrella # optional
+        token: ${{ secrets.CODE_COV_SECRET }}
+        verbose: true # optional (default = false)
