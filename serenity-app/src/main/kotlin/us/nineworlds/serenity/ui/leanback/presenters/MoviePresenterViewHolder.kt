@@ -3,16 +3,15 @@ package us.nineworlds.serenity.ui.leanback.presenters
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RatingBar
 import androidx.leanback.widget.RowPresenter
+import com.bumptech.glide.Glide
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.databinding.LeanbackDetailsSummaryBinding
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils
-import android.widget.LinearLayout
-
-import android.widget.RatingBar
-import android.view.ViewGroup
-import com.bumptech.glide.Glide
 
 
 class MoviePresenterViewHolder(private val binding: LeanbackDetailsSummaryBinding) : RowPresenter.ViewHolder(binding.root) {

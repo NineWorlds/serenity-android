@@ -23,9 +23,9 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -35,6 +35,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import toothpick.config.Module;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;
@@ -43,9 +48,6 @@ import us.nineworlds.serenity.emby.model.MediaContainer;
 import us.nineworlds.serenity.emby.model.Video;
 import us.nineworlds.serenity.test.InjectingTest;
 import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
 
 @RunWith(PlainAndroidRunner.class)
 @Ignore("Rework to not use XML Serialization")

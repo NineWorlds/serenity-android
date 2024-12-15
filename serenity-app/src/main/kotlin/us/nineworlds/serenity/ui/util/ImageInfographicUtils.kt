@@ -37,7 +37,6 @@ import android.widget.ImageView.ScaleType
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import timber.log.Timber
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.model.VideoContentInfo

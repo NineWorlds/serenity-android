@@ -23,19 +23,21 @@
 
 package us.nineworlds.serenity.core.services;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+
 import android.content.Intent;
-import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
+
+import java.util.List;
+
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.test.InjectingTest;
-import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 public class MovieSearchIntentServiceTest extends InjectingTest {

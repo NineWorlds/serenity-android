@@ -23,6 +23,8 @@
 
 package us.nineworlds.serenity.core.util;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,8 +32,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class TimeUtilsTest {
 

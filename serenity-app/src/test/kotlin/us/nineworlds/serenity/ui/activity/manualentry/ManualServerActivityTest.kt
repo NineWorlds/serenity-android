@@ -7,8 +7,6 @@ import assertk.assertThat
 import assertk.assertions.isNotNull
 import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.verify
-import org.junit.After
-
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

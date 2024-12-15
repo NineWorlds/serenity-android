@@ -1,7 +1,11 @@
 package us.nineworlds.serenity.ui.activity.login
 
 import com.birbit.android.jobqueue.JobManager
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.atLeastOnce
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
@@ -23,7 +27,6 @@ import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.core.repository.LoginRepository
 import us.nineworlds.serenity.test.InjectingTest
-import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)

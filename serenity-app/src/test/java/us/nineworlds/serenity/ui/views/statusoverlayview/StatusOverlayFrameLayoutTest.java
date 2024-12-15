@@ -1,6 +1,9 @@
 package us.nineworlds.serenity.ui.views.statusoverlayview;
 
+import static org.assertj.android.api.Assertions.assertThat;
+
 import android.app.Activity;
+
 import org.assertj.core.api.Java6Assertions;
 import org.junit.After;
 import org.junit.Before;
@@ -8,8 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-
-import static org.assertj.android.api.Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 public class StatusOverlayFrameLayoutTest {

@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import androidx.leanback.widget.Presenter
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.rest.Types
-import us.nineworlds.serenity.core.model.ContentInfo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.ui.views.statusoverlayview.StatusOverlayFrameLayout
 

@@ -23,24 +23,24 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.core.model.CategoryInfo;
 import us.nineworlds.serenity.emby.model.Directory;
 import us.nineworlds.serenity.emby.model.MediaContainer;
 import us.nineworlds.serenity.test.InjectingTest;
-import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
 
 @RunWith(RobolectricTestRunner.class)
 public class CategoryMediaContainerTest extends InjectingTest {

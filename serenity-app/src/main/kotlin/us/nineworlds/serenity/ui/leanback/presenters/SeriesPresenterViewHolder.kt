@@ -1,24 +1,17 @@
 package us.nineworlds.serenity.ui.leanback.presenters
 
-import androidx.leanback.widget.Presenter
-import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo
-import us.nineworlds.serenity.databinding.LeanbackDetailsSummaryBinding
-import android.widget.LinearLayout
-
-import android.widget.RatingBar
-
-import android.widget.TextView
-
-import us.nineworlds.serenity.ui.util.ImageInfographicUtils
-
-import android.view.ViewGroup
-import android.graphics.drawable.BitmapDrawable
-
 import android.graphics.Bitmap
-
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RatingBar
+import androidx.leanback.widget.Presenter
 import com.bumptech.glide.Glide
 import us.nineworlds.serenity.R
+import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo
+import us.nineworlds.serenity.databinding.LeanbackDetailsSummaryBinding
+import us.nineworlds.serenity.ui.util.ImageInfographicUtils
 
 open class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummaryBinding) : Presenter.ViewHolder(binding.root) {
 

@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.core.model.impl;
 
 import android.content.res.Resources;
+
 import java.io.Serializable;
 
 public class EpisodePosterInfo extends AbstractVideoContentInfo implements Serializable {

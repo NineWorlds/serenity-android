@@ -25,6 +25,7 @@ package us.nineworlds.serenity.ui.util;
 
 import android.view.View;
 import android.widget.ProgressBar;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.SerenityConstants;
 

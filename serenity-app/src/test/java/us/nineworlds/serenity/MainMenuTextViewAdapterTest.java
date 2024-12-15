@@ -1,25 +1,24 @@
 package us.nineworlds.serenity;
 
-import java.util.Collections;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
 import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.mockito.quality.Strictness;
 import org.robolectric.RobolectricTestRunner;
+
+import java.util.Collections;
+
 import toothpick.config.Module;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter;
 import us.nineworlds.serenity.test.InjectingTest;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 public class MainMenuTextViewAdapterTest extends InjectingTest {

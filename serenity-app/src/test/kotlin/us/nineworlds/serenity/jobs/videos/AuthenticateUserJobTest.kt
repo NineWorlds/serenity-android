@@ -18,7 +18,6 @@ import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.events.users.AuthenticatedUserEvent
 import us.nineworlds.serenity.jobs.AuthenticateUserJob
 import us.nineworlds.serenity.test.InjectingTest
-import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)

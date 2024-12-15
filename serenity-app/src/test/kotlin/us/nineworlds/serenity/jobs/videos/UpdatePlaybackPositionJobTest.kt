@@ -17,7 +17,6 @@ import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
 import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
 import us.nineworlds.serenity.test.InjectingTest
-import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)

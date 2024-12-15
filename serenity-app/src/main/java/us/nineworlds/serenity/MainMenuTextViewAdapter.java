@@ -22,15 +22,18 @@
  */
 package us.nineworlds.serenity;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils.TruncateAt;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;

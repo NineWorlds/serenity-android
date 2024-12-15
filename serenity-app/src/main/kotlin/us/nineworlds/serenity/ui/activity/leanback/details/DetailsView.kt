@@ -1,7 +1,6 @@
 package us.nineworlds.serenity.ui.activity.leanback.details
 
 import moxy.MvpView
-import moxy.viewstate.strategy.AddToEndStrategy
 import moxy.viewstate.strategy.OneExecutionStateStrategy
 import moxy.viewstate.strategy.StateStrategyType
 import us.nineworlds.serenity.core.model.ContentInfo

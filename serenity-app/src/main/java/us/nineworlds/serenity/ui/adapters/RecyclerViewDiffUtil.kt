@@ -1,7 +1,6 @@
 package us.nineworlds.serenity.ui.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import us.nineworlds.serenity.core.model.ContentInfo
 
 class RecyclerViewDiffUtil(private val oldList: List<ContentInfo>?, private val newList: List<ContentInfo>) : DiffUtil.Callback() {

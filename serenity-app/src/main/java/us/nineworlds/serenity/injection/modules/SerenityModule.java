@@ -26,6 +26,7 @@ package us.nineworlds.serenity.injection.modules;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import okhttp3.OkHttpClient;
 import toothpick.config.Module;
 import us.nineworlds.serenity.common.Server;

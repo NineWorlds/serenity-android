@@ -2,8 +2,11 @@ package us.nineworlds.serenity.jobs.video;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.birbit.android.jobqueue.RetryConstraint;
+
 import javax.inject.Inject;
+
 import us.nineworlds.serenity.common.android.injection.InjectingJob;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 

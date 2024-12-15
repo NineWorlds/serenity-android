@@ -4,14 +4,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import toothpick.InjectConstructor
 import us.nineworlds.serenity.common.repository.Result
-import us.nineworlds.serenity.common.repository.Result.*
+import us.nineworlds.serenity.common.repository.Result.Error
+import us.nineworlds.serenity.common.repository.Result.Success
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.CategoryMediaContainer
-import us.nineworlds.serenity.events.MainMenuEvent
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer
+import us.nineworlds.serenity.events.MainMenuEvent
 
 @InjectConstructor
 class CategoryRepository constructor(private val client: SerenityClient) {

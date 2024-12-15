@@ -23,12 +23,13 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
 
 import android.content.res.Resources;
+
 import androidx.test.core.app.ApplicationProvider;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -39,6 +40,11 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import toothpick.config.Module;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.common.rest.SerenityClient;
@@ -46,9 +52,6 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.emby.model.MediaContainer;
 import us.nineworlds.serenity.emby.model.Video;
 import us.nineworlds.serenity.test.InjectingTest;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
 
 @RunWith(RobolectricTestRunner.class)
 @Ignore

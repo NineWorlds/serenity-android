@@ -23,24 +23,29 @@
 
 package us.nineworlds.serenity;
 
+import static org.mockito.Mockito.mock;
+
 import android.content.SharedPreferences;
+
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.birbit.android.jobqueue.JobManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import java.lang.reflect.Method;
+
 import org.greenrobot.eventbus.EventBus;
 import org.robolectric.TestLifecycleApplication;
+
+import java.lang.reflect.Method;
+
 import toothpick.Scope;
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.injection.modules.AndroidModule;
+import us.nineworlds.serenity.injection.modules.ExoplayerVideoModule;
 import us.nineworlds.serenity.injection.modules.LoginModule;
 import us.nineworlds.serenity.injection.modules.SerenityModule;
-import us.nineworlds.serenity.injection.modules.ExoplayerVideoModule;
-
-import static org.mockito.Mockito.mock;
 
 public class TestSerenityApplication extends SerenityApplication implements TestLifecycleApplication {
 

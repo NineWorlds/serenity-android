@@ -23,29 +23,32 @@
 
 package us.nineworlds.serenity.core.model.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doReturn;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+
 import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import toothpick.config.Module;
 import us.nineworlds.serenity.TestingModule;
 import us.nineworlds.serenity.common.media.model.IDirectory;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.test.InjectingTest;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.doReturn;
 
 @RunWith(RobolectricTestRunner.class)
 public class MenuMediaContainerTest extends InjectingTest {

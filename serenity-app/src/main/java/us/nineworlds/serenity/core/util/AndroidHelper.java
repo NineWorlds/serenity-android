@@ -26,10 +26,6 @@ package us.nineworlds.serenity.core.util;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import us.nineworlds.serenity.common.android.injection.ApplicationContext;
-import us.nineworlds.serenity.injection.BaseInjector;
 
 public class AndroidHelper {
 

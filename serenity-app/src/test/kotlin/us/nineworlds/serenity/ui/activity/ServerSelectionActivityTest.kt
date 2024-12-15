@@ -19,7 +19,6 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.LooperMode
-import org.robolectric.plugins.LegacyDependencyResolver
 import toothpick.config.Module
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.TestingModule
@@ -30,11 +29,10 @@ import us.nineworlds.serenity.injection.ServerClientPreference
 import us.nineworlds.serenity.injection.ServerIPPreference
 import us.nineworlds.serenity.injection.ServerPortPreference
 import us.nineworlds.serenity.injection.modules.AndroidModule
-import us.nineworlds.serenity.injection.modules.SerenityModule
 import us.nineworlds.serenity.injection.modules.providers.ServerClientPreferenceProvider
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.ui.activity.login.LoginUserActivity
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
 @RunWith(RobolectricTestRunner::class)

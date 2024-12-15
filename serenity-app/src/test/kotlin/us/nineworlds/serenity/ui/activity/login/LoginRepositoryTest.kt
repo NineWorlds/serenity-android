@@ -2,7 +2,11 @@ package us.nineworlds.serenity.ui.activity.login
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
@@ -10,9 +14,9 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import us.nineworlds.serenity.common.repository.Result
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
-import us.nineworlds.serenity.common.repository.Result
 import us.nineworlds.serenity.core.repository.LoginRepository
 
 class LoginRepositoryTest {

@@ -12,13 +12,10 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.quality.Strictness.STRICT_STUBS
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.LooperMode
 import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.events.SeasonsRetrievalEvent
 import us.nineworlds.serenity.test.InjectingTest
-import us.nineworlds.serenity.testrunner.PlainAndroidRunner
 import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)

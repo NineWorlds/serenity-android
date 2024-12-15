@@ -24,9 +24,12 @@
 package us.nineworlds.serenity.core.model.impl;
 
 import android.content.res.Resources;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
+
 import us.nineworlds.serenity.common.media.model.IDirector;
 import us.nineworlds.serenity.common.media.model.IGenre;
 import us.nineworlds.serenity.common.media.model.IMedia;

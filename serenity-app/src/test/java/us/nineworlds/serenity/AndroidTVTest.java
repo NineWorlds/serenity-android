@@ -1,20 +1,13 @@
 package us.nineworlds.serenity;
 
-import android.content.Intent;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
-import org.assertj.android.api.Assertions;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.shadows.ShadowActivity;
-
-import us.nineworlds.serenity.ui.leanback.search.SearchActivity;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Ignore

@@ -1,6 +1,9 @@
 package us.nineworlds.serenity.fragments.mainmenu
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import moxy.presenterScope
@@ -8,13 +11,12 @@ import moxy.viewstate.strategy.SkipStrategy
 import moxy.viewstate.strategy.StateStrategyType
 import toothpick.Toothpick
 import us.nineworlds.serenity.common.annotations.InjectionConstants
-import us.nineworlds.serenity.core.repository.CategoryRepository
 import us.nineworlds.serenity.common.repository.Result
 import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
 import us.nineworlds.serenity.core.model.VideoCategory
-
+import us.nineworlds.serenity.core.repository.CategoryRepository
 import javax.inject.Inject
 
 @InjectViewState

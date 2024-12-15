@@ -24,7 +24,9 @@
 package us.nineworlds.serenity.core.model.impl;
 
 import java.util.List;
+
 import javax.inject.Inject;
+
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.model.VideoContentInfo;

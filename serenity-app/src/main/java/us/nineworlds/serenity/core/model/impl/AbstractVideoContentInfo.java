@@ -24,8 +24,10 @@
 package us.nineworlds.serenity.core.model.impl;
 
 import android.content.res.Resources;
+
 import java.io.Serializable;
 import java.util.List;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.Types;
 import us.nineworlds.serenity.core.SerenityConstants;

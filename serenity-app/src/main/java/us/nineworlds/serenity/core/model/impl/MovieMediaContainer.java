@@ -26,6 +26,7 @@ package us.nineworlds.serenity.core.model.impl;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
 import us.nineworlds.serenity.common.media.model.IDirector;
 import us.nineworlds.serenity.common.media.model.IGenre;
 import us.nineworlds.serenity.common.media.model.IMedia;

@@ -26,6 +26,7 @@ package us.nineworlds.serenity.injection;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 public abstract class BaseInjector {

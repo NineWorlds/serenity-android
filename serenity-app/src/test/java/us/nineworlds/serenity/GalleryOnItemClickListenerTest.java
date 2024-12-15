@@ -1,6 +1,12 @@
 package us.nineworlds.serenity;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 import android.view.View;
+
 import org.assertj.android.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
@@ -11,13 +17,9 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowActivity;
+
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
 public class GalleryOnItemClickListenerTest {

@@ -1,9 +1,10 @@
 package us.nineworlds.serenity.recyclerutils;
 
 import android.graphics.Rect;
+import android.view.View;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 
 public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
   private static final boolean DEFAULT_ADD_SPACE_ABOVE_FIRST_ITEM = false;

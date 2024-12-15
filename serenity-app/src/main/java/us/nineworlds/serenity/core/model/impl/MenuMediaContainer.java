@@ -25,15 +25,17 @@ package us.nineworlds.serenity.core.model.impl;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.media.model.IDirectory;
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
 import us.nineworlds.serenity.core.menus.MenuItem;
-import us.nineworlds.serenity.core.util.AndroidHelper;
 
 /**
  * Represents the meta data returned for the various libraries in media servers. Used to

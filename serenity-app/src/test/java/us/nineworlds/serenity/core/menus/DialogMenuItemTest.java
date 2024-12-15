@@ -23,10 +23,10 @@
 
 package us.nineworlds.serenity.core.menus;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class DialogMenuItemTest {
 

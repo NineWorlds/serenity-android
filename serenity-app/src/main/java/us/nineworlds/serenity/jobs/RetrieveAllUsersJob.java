@@ -2,10 +2,15 @@ package us.nineworlds.serenity.jobs;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.birbit.android.jobqueue.RetryConstraint;
-import java.util.List;
-import javax.inject.Inject;
+
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.common.android.injection.InjectingJob;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.common.rest.SerenityUser;

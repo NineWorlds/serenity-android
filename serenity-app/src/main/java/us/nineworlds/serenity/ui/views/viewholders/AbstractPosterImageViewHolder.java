@@ -1,16 +1,18 @@
 package us.nineworlds.serenity.ui.views.viewholders;
 
 import android.graphics.drawable.ColorDrawable;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.ContentInfo;
 import us.nineworlds.serenity.widgets.RoundedImageView;

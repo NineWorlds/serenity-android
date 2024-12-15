@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.util.Log
 import android.view.KeyEvent
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.SimpleExoPlayer
 import org.greenrobot.eventbus.EventBus
 import toothpick.Toothpick
 import us.nineworlds.serenity.common.annotations.InjectionConstants

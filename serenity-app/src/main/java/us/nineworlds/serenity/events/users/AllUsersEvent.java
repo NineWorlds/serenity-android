@@ -1,7 +1,9 @@
 package us.nineworlds.serenity.events.users;
 
 import androidx.annotation.NonNull;
+
 import java.util.List;
+
 import us.nineworlds.serenity.common.rest.SerenityUser;
 
 public class AllUsersEvent {

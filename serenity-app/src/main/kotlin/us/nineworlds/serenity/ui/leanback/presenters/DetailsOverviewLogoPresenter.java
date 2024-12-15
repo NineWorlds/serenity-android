@@ -1,8 +1,10 @@
 package us.nineworlds.serenity.ui.leanback.presenters;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import androidx.leanback.R;
 import androidx.leanback.widget.Presenter;
 

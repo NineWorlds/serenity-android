@@ -8,7 +8,6 @@ import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer
-import us.nineworlds.serenity.events.SeasonsRetrievalEvent
 
 @InjectConstructor
 class VideoRepository constructor(private val client: SerenityClient) {

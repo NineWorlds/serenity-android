@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+
 import us.nineworlds.serenity.R;
 
 public class OverscanSetupActivity extends Activity

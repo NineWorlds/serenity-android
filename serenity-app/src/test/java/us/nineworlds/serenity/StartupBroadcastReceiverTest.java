@@ -1,9 +1,14 @@
 package us.nineworlds.serenity;
 
-import static com.nhaarman.mockitokotlin2.VerificationKt.verifyZeroInteractions;
+import static org.assertj.android.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.robolectric.RuntimeEnvironment.application;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,15 +16,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowApplication;
+
 import toothpick.config.Module;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.test.InjectingTest;
-
-import static org.assertj.android.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.robolectric.RuntimeEnvironment.application;
 
 @RunWith(RobolectricTestRunner.class)
 public class StartupBroadcastReceiverTest extends InjectingTest {

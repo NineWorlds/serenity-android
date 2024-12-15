@@ -2,9 +2,7 @@ package us.nineworlds.serenity.ui.leanback.presenters
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.rest.Types

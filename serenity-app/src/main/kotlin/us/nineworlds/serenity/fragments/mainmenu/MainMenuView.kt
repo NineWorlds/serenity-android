@@ -6,7 +6,6 @@ import moxy.viewstate.strategy.StateStrategyType
 import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
 import us.nineworlds.serenity.core.model.VideoCategory
-import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.events.MainMenuEvent
 
 interface MainMenuView : MvpView {

@@ -23,16 +23,20 @@
 
 package us.nineworlds.serenity.core.imageloader;
 
+import static org.assertj.android.api.Assertions.assertThat;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.robolectric.RuntimeEnvironment.application;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.TransitionDrawable;
 import android.preference.PreferenceManager;
-import androidx.core.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.view.animation.Animation;
 
 import androidx.test.core.app.ApplicationProvider;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,12 +47,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.LooperMode;
 
 import us.nineworlds.serenity.R;
-
-import static org.assertj.android.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.robolectric.RuntimeEnvironment.application;
-import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @LooperMode(LooperMode.Mode.LEGACY)

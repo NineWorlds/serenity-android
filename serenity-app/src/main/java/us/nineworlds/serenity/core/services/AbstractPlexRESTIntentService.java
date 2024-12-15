@@ -24,7 +24,9 @@
 package us.nineworlds.serenity.core.services;
 
 import android.content.Intent;
+
 import javax.inject.Inject;
+
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.injection.InjectingIntentService;
 

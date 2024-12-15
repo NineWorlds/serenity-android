@@ -27,7 +27,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+
 import javax.inject.Inject;
+
 import us.nineworlds.serenity.injection.BaseInjector;
 
 /**

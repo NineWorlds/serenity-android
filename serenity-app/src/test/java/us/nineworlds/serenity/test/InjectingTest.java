@@ -25,9 +25,9 @@ package us.nineworlds.serenity.test;
 
 import org.junit.After;
 import org.junit.Before;
+
 import toothpick.Scope;
 import toothpick.Toothpick;
-import toothpick.config.Module;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 
 public abstract class InjectingTest {

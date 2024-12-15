@@ -25,6 +25,7 @@ package us.nineworlds.serenity.core.model.impl;
 
 import java.io.Serializable;
 import java.util.List;
+
 import timber.log.Timber;
 import us.nineworlds.serenity.common.rest.Types;
 import us.nineworlds.serenity.core.model.SeriesContentInfo;

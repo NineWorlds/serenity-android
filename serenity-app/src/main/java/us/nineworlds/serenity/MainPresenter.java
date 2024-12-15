@@ -1,14 +1,14 @@
 package us.nineworlds.serenity;
 
 import android.content.Context;
+
+import javax.inject.Inject;
+
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
-import com.birbit.android.jobqueue.JobManager;
-import javax.inject.Inject;
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.common.rest.SerenityClient;
-import us.nineworlds.serenity.jobs.GlideClearCacheJob;
 
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {

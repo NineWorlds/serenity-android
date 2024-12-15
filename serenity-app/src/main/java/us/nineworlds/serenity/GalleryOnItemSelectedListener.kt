@@ -24,10 +24,8 @@
  */
 package us.nineworlds.serenity
 
-import us.nineworlds.serenity.injection.BaseInjector
-import javax.inject.Inject
-import android.content.SharedPreferences
 import android.app.Activity
+import android.content.SharedPreferences
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -35,7 +33,8 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import us.nineworlds.serenity.core.menus.MenuItem
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter
-import javax.inject.Provider
+import us.nineworlds.serenity.injection.BaseInjector
+import javax.inject.Inject
 
 class GalleryOnItemSelectedListener(private val adapter: MainMenuTextViewAdapter, private val presenter: MainMenuPresenter) : BaseInjector(), IGalleryOnItemSelectedListener {
     @Inject

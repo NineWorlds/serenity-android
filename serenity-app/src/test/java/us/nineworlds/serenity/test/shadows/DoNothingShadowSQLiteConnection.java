@@ -2,6 +2,7 @@ package us.nineworlds.serenity.test.shadows;
 
 import android.database.sqlite.SQLiteConnection;
 import android.database.sqlite.SQLiteCustomFunction;
+
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 import org.robolectric.annotation.Resetter;
