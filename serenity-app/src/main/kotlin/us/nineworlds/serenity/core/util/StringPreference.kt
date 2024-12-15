@@ -5,20 +5,20 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 
 class StringPreference(
-  @NonNull private val preferences: SharedPreferences,
-  @NonNull private val key: String,
-  @Nullable private val defaultValue: String
+  private val preferences: SharedPreferences,
+  private val key: String,
+  private val defaultValue: String?
 ) {
 
   val isSet: Boolean
     get() = preferences.contains(key)
 
-  @Nullable
-  fun get(): String {
-    return preferences.getString(key, defaultValue)!!
+
+  fun get(): String? {
+    return preferences.getString(key, defaultValue)
   }
 
-  fun set(@Nullable value: String) {
+  fun set(value: String) {
     preferences.edit().putString(key, value).commit()
   }
 
