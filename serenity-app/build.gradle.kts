@@ -107,10 +107,6 @@ android {
   }
 }
 
-tasks.withType<KotlinCompile> {
-  kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
-}
-
 dependencies {
 
   implementation(platform(libs.firebase.bom))

@@ -6,7 +6,7 @@ buildscript {
 
   }
   dependencies {
-    classpath("com.google.firebase:firebase-crashlytics-gradle:2.7.1")
+    classpath("com.google.firebase:firebase-crashlytics-gradle:3.0.2")
     classpath("com.android.tools.build:gradle:${libs.versions.androidPluginVersion.get()}")
     classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlinVersion.get()}")
@@ -70,7 +70,7 @@ subprojects {
   allprojects {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
       kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
       }
     }
   }
