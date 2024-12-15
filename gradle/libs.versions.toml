@@ -1,0 +1,133 @@
+[versions]
+appVersion = "3.0-M1"
+annotationVersion = "1.9.1"
+appcompatVersion = "1.3.1"
+assertkJvmVersion = "0.24"
+cardviewVersion = "1.0.0"
+commonsIo = "2.6"
+commonsLang3Version = "3.7"
+compilerVersion = "4.12.0"
+constraintlayoutVersion = "2.1.0"
+firebaseBomVersion = "32.7.0"
+flexboxVersion = "3.0.0"
+fragmentKtxVersion = "1.4.0"
+glide = "4.12.0"
+junit = "1.2.1"
+juniversalchardetVersion = "1.0.3"
+kotlinVersion = "1.9.24"
+kotlinCoroutinesVersion = "1.7.3"
+androidPluginVersion = "8.5.0"
+leanbackPreferenceVersion = "1.1.0-rc01"
+leanbackVersion = "1.1.0-rc02"
+legacySupportV4Version = "1.0.0"
+materialVersion = "1.4.0"
+minSdkVersion = "27"
+mockwebserverVersion = "4.9.1"
+moxy = "2.2.2"
+moxyAppCompatVersion = "2.2.2"
+moxyCompilerVersion = "2.2.2"
+moxyKtxVersion = "2.2.2"
+percentlayoutVersion = "1.0.0"
+recyclerviewAnimatorsVersion = "4.0.2"
+targetSdkVersion = "35"
+
+okhttpVersion = "4.10.0"
+androidPriorityJobQueueVersion = "2.0.1"
+eventBus = "3.1.1"
+moshiKotlinVersion = "1.12.0"
+retrofitVersion = "2.9.0"
+jodaTimeVersion = "2.10.9.1"
+timberVersion = "5.0.1"
+exoplayerVersion = "2.17.1"
+simpleXmlVersion = "2.7.1"
+
+junitVersion = "4.13.1"
+assertjVersion = "3.11.1"
+mockitoVersion = "5.14.2"
+robolectricVersion = "4.14.1"
+openglApiVersion = "gl1.1-android-2.1_r1"
+assertJAndroidVersion = "1.1.1"
+toothPickVersion = "3.1.0"
+easydeviceInfoVersion = "2.4.1"
+
+androidxTestCoreVersion = "1.6.1"
+androidxRecyclerViewVersion = "1.3.2"
+resourcefulVersion = "1.1.0"
+
+[libraries]
+androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotationVersion" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
+androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardviewVersion" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtxVersion" }
+androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "fragmentKtxVersion" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junit" }
+androidx-leanback = { module = "androidx.leanback:leanback", version.ref = "leanbackVersion" }
+androidx-leanback-preference = { module = "androidx.leanback:leanback-preference", version.ref = "leanbackPreferenceVersion" }
+androidx-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacySupportV4Version" }
+androidx-percentlayout = { module = "androidx.percentlayout:percentlayout", version.ref = "percentlayoutVersion" }
+androidx-recycler-view = { module = "androidx.recyclerview:recyclerview", version.ref = "androidxRecyclerViewVersion"}
+assertk-jvm = { module = "com.willowtreeapps.assertk:assertk-jvm", version.ref = "assertkJvmVersion" }
+commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commonsLang3Version" }
+exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayerVersion"}
+exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "exoplayerVersion"}
+exoplayer-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "exoplayerVersion"}
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBomVersion" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+github-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+github-glide-okhttp = { module = "com.github.bumptech.glide:okhttp3-integration", version.ref = "glide" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compilerVersion" }
+flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexboxVersion" }
+juniversalchardet = { module = "com.googlecode.juniversalchardet:juniversalchardet", version.ref = "juniversalchardetVersion" }
+kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref="kotlinVersion" }
+kotlin-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref="kotlinCoroutinesVersion" }
+kotlin-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref="kotlinCoroutinesVersion" }
+
+android-priority-jobqueue = { group = "com.birbit", name = "android-priority-jobqueue", version.ref="androidPriorityJobQueueVersion" }
+eventbus = { group = "org.greenrobot", name = "eventbus", version.ref = "eventBus"}
+material = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+moxy-compiler = { module = "com.github.moxy-community:moxy-compiler", version.ref = "moxyCompilerVersion" }
+okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockwebserverVersion" }
+moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshiKotlinVersion" }
+moxy-community-moxy = { module = "com.github.moxy-community:moxy", version.ref = "moxy" }
+moxy-community-moxy-app-compat = { module = "com.github.moxy-community:moxy-app-compat", version.ref = "moxyAppCompatVersion" }
+moxy-ktx = { module = "com.github.moxy-community:moxy-ktx", version.ref = "moxyKtxVersion" }
+okhttp-urlconnection = { module = "com.squareup.okhttp3:okhttp-urlconnection", version.ref = "okhttpVersion" }
+recyclerview-animators = { module = "jp.wasabeef:recyclerview-animators", version.ref = "recyclerviewAnimatorsVersion" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
+retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofitVersion" }
+joda-time = { group = "net.danlew", name = "android.joda", version.ref = "jodaTimeVersion" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttpVersion" }
+okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpVersion" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timberVersion" }
+easydeviceinfo-base = { group = "com.github.nisrulz", name = "easydeviceinfo-base", version.ref = "easydeviceInfoVersion" }
+easydeviceinfo-common = { group = "com.github.nisrulz", name = "easydeviceinfo-common", version.ref = "easydeviceInfoVersion" }
+resourceful = { group = "com.github.rstanic12", name = "Resourceful", version.ref = "resourcefulVersion"}
+simple-xml = { group = "org.simpleframework", name = "simple-xml", version.ref = "simpleXmlVersion" }
+
+# Toothpick
+toothpick-runtime = { group = "com.github.stephanenicolas.toothpick", name = "toothpick-runtime", version.ref = "toothPickVersion"}
+toothpick-smoothie = { group = "com.github.stephanenicolas.toothpick", name = "smoothie", version.ref = "toothPickVersion" }
+toothpick-compiler = { group = "com.github.stephanenicolas.toothpick", name = "toothpick-compiler", version.ref = "toothPickVersion" }
+toothpick-javax-annotations = { group = "com.github.stephanenicolas.toothpick", name = "toothpick-javax-annotations", version.ref = "toothPickVersion" }
+
+# Tests
+junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
+assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "assertjVersion" }
+assertj-android = { group = "com.squareup.assertj", name = "assertj-android", version.ref = "assertJAndroidVersion"}
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoVersion" }
+mockito-kotlin = { module = "com.nhaarman.mockitokotlin2:mockito-kotlin", version = "2.2.0"}
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectricVersion" }
+robolectric-shadows-framework = { group = "org.robolectric", name = "shadows-framework", version.ref = "robolectricVersion" }
+robolectric-shadows-api = { group = "org.robolectric", name = "shadowapi", version.ref = "robolectricVersion" }
+robolectric-shadows-playservices = { group = "org.robolectric", name = "shadows-playservices", version.ref = "robolectricVersion" }
+opengl-api = { group = "org.khronos", name = "opengl-api", version.ref="openglApiVersion" }
+
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCoreVersion" }
+kotlin-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinCoroutinesVersion" }
+
+toothpick-testing = { group = "com.github.stephanenicolas.toothpick", name = "toothpick-testing", version.ref = "toothPickVersion"}
+
+[plugins]

@@ -7,11 +7,11 @@ plugins {
 android {
   namespace = "us.nineworlds.serenity.common.android"
 
-  compileSdkVersion(Versions.targetSdkVersion)
+  compileSdk = libs.versions.targetSdkVersion.get().toInt()
 
   defaultConfig {
-    minSdkVersion(Versions.minSdkVersion)
-    targetSdkVersion(Versions.targetSdkVersion)
+    minSdkVersion(libs.versions.minSdkVersion.get())
+    targetSdkVersion(libs.versions.targetSdkVersion.get())
   }
 
   compileOptions {
@@ -40,34 +40,32 @@ android {
 
 dependencies {
   api(project(":serenity-common"))
-  api("org.greenrobot:eventbus:${Versions.eventBus}")
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinVersion}")
-  api("com.birbit:android-priority-jobqueue:${Versions.androidPriorityJobQueueVersion}")
+  api(libs.eventbus)
+  implementation(libs.kotlin)
+  api(libs.android.priority.jobqueue)
 
-  releaseApi("com.github.stephanenicolas.toothpick:toothpick-runtime:${Versions.toothPickVersion}") {
+  releaseApi(libs.toothpick.runtime) {
     exclude(group = "javax.inject")
   }
-  releaseApi("com.github.stephanenicolas.toothpick:smoothie:${Versions.toothPickVersion}") {
+  releaseApi(libs.toothpick.smoothie) {
     exclude(group = "javax.inject")
   }
 
-  debugApi("com.github.stephanenicolas.toothpick:toothpick-runtime:${Versions.toothPickVersion}")
-  debugApi("com.github.stephanenicolas.toothpick:smoothie:${Versions.toothPickVersion}")
+  debugApi(libs.toothpick.runtime)
+  debugApi(libs.toothpick.smoothie)
 
-  releaseApi("com.github.stephanenicolas.toothpick:toothpick-javax-annotations:${Versions.toothPickVersion}")
-  kapt("com.github.stephanenicolas.toothpick:toothpick-compiler:${Versions.toothPickVersion}")
+  releaseApi(libs.toothpick.javax.annotations)
+  kapt(libs.toothpick.compiler)
 
-  testImplementation("junit:junit:${Versions.junitVersion}")
-  testImplementation("org.assertj:assertj-core:${Versions.assertjVersion}")
-  testImplementation("org.mockito:mockito-core:${Versions.mockitoVersion}")
-  testImplementation("org.robolectric:robolectric:${Versions.robolectricVersion}") {
-    exclude(module = "support-v4")
-  }
-  testImplementation("org.robolectric:shadows-framework:${Versions.robolectricVersion}")
-  testImplementation("org.robolectric:shadowapi:${Versions.robolectricVersion}")
-  testImplementation("org.robolectric:shadows-playservices:${Versions.robolectricVersion}")
-  testImplementation("org.khronos:opengl-api:${Versions.openglApiVersion}")
+  testImplementation(libs.junit)
+  testImplementation(libs.assertj.core)
+  testImplementation(libs.mockito.core)
+  testImplementation(libs.robolectric)
+  testImplementation(libs.robolectric.shadows.framework)
+  testImplementation(libs.robolectric.shadows.api)
+  testImplementation(libs.robolectric.shadows.playservices)
+  testImplementation(libs.opengl.api)
 
-  testImplementation("com.github.stephanenicolas.toothpick:toothpick-testing:${Versions.toothPickVersion}")
-  kaptTest("com.github.stephanenicolas.toothpick:toothpick-compiler:${Versions.toothPickVersion}")
+  testImplementation(libs.toothpick.testing)
+  kaptTest(libs.toothpick.compiler)
 }

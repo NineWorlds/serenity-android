@@ -34,8 +34,8 @@ android {
   defaultConfig {
     versionCode = 3000000
     versionName = "3.0.0-M1"
-    minSdk = Versions.minSdkVersion
-    targetSdk = Versions.targetSdkVersion
+    minSdk = libs.versions.minSdkVersion.get().toInt()
+    targetSdk = libs.versions.targetSdkVersion.get().toInt()
     multiDexEnabled = true
     multiDexKeepProguard = file("multidex_keep_file.txt")
 
@@ -49,7 +49,7 @@ android {
     getByName("test").java.srcDirs("src/test/kotlin", "src/test/java")
   }
 
-  compileSdk = Versions.targetSdkVersion
+  compileSdk = libs.versions.targetSdkVersion.get().toInt()
 
   if (project.hasProperty("keystore")) {
     signingConfigs {
@@ -113,122 +113,118 @@ tasks.withType<KotlinCompile> {
 
 dependencies {
 
-  implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+  implementation(platform(libs.firebase.bom))
 
   implementation(project(":subtitle-converter"))
   implementation(project(":emby-lib"))
   implementation(project(":serenity-android-common"))
   implementation(project(":serenity-common"))
 
-  implementation("androidx.recyclerview:recyclerview:1.2.1") {
-    version {
-      strictly("1.2.1")
-    }
-  }
+  implementation(libs.androidx.recycler.view)
 
-  implementation("com.google.firebase:firebase-analytics")
-  implementation("com.google.firebase:firebase-crashlytics")
+  implementation(libs.firebase.analytics)
+  implementation(libs.firebase.crashlytics)
 
-  implementation(group = "com.github.bumptech.glide", name = "okhttp3-integration", version = "${Versions.glideOkHttpVersion}")
-  implementation("com.google.android.exoplayer:exoplayer-core:${Versions.exoplayerVersion}") {
+  implementation(libs.github.glide.okhttp)
+  implementation(libs.exoplayer.core) {
     exclude(module = "support-annotations")
   }
-  implementation("com.google.android.exoplayer:exoplayer-ui:${Versions.exoplayerVersion}") {
+  implementation(libs.exoplayer.ui) {
     exclude(module = "support-annotations")
   }
 
-  implementation("com.google.android.exoplayer:extension-okhttp:${Versions.exoplayerVersion}") {
+  implementation(libs.exoplayer.okhttp) {
     exclude(module = "support-annotations")
   }
 
-  implementation("com.squareup.okhttp3:okhttp:${Versions.okhttpVersion}") {
+  implementation(libs.okhttp) {
     exclude(group = "com.android.support")
   }
 
-  implementation("androidx.fragment:fragment-ktx:1.4.0")
-  implementation("com.google.android.material:material:1.4.0")
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinVersion}")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-  implementation("com.github.moxy-community:moxy:${Versions.moxyVersion}")
-  implementation("com.github.moxy-community:moxy-app-compat:${Versions.moxyVersion}")
-  implementation("com.github.moxy-community:moxy-ktx:${Versions.moxyVersion}")
-  implementation("com.github.bumptech.glide:glide:${Versions.glideVersion}")
-  kapt("com.github.bumptech.glide:compiler:${Versions.glideVersion}")
-  implementation("com.birbit:android-priority-jobqueue:${Versions.androidPriorityJobQueueVersion}")
-  implementation("androidx.appcompat:appcompat:1.3.1")
-  implementation("androidx.leanback:leanback:1.1.0-rc02")
-  implementation("androidx.leanback:leanback-preference:1.1.0-rc01")
-  implementation("androidx.legacy:legacy-support-v4:1.0.0")
-  implementation("androidx.constraintlayout:constraintlayout:2.1.0")
-  implementation("androidx.percentlayout:percentlayout:1.0.0")
-  implementation("androidx.annotation:annotation:1.2.0")
-  implementation("com.googlecode.juniversalchardet:juniversalchardet:${Versions.universalCharDetVersion}")
-  implementation("com.squareup.okhttp3:logging-interceptor:${Versions.okhttpVersion}")
+  implementation(libs.androidx.fragment.ktx)
+  implementation(libs.material)
+  implementation(libs.kotlin)
+  implementation(libs.kotlin.coroutines.android)
+  implementation(libs.moxy.community.moxy)
+  implementation(libs.moxy.community.moxy.app.compat)
+  implementation(libs.moxy.ktx)
+  implementation(libs.github.glide)
+  kapt(libs.glide.compiler)
+  implementation(libs.android.priority.jobqueue)
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.leanback)
+  implementation(libs.androidx.leanback.preference)
+  implementation(libs.androidx.legacy.support.v4)
+  implementation(libs.androidx.constraintlayout)
+  implementation(libs.androidx.percentlayout)
+  implementation(libs.androidx.annotation)
+  implementation(libs.juniversalchardet)
+  implementation(libs.okhttp.logging.interceptor)
   implementation(project(":manager"))
-  implementation("com.squareup.okhttp3:okhttp-urlconnection:${Versions.okhttpVersion}")
-  implementation("com.jakewharton.timber:timber:${Versions.timberVersion}")
-  implementation("androidx.cardview:cardview:1.0.0")
-  implementation("androidx.annotation:annotation:1.2.0")
+  implementation(libs.okhttp.urlconnection)
+  implementation(libs.timber)
+  implementation(libs.androidx.cardview)
+  implementation(libs.androidx.annotation)
 
-  releaseImplementation("com.github.stephanenicolas.toothpick:toothpick-runtime:${Versions.toothPickVersion}") {
+  releaseImplementation(libs.toothpick.runtime) {
     exclude(group = "javax.inject")
   }
-  releaseImplementation("com.github.stephanenicolas.toothpick:smoothie:${Versions.toothPickVersion}") {
+  releaseImplementation(libs.toothpick.smoothie) {
     exclude(group = "javax.inject")
   }
 
-  debugImplementation("com.github.stephanenicolas.toothpick:toothpick-runtime:${Versions.toothPickVersion}")
+  debugImplementation(libs.toothpick.runtime)
 
-  releaseImplementation("com.github.stephanenicolas.toothpick:toothpick-javax-annotations:${Versions.toothPickVersion}")
-  kapt("com.github.stephanenicolas.toothpick:toothpick-compiler:${Versions.toothPickVersion}")
+  releaseImplementation(libs.toothpick.javax.annotations)
+  kapt(libs.toothpick.compiler)
 
-  implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshiKotlinVersion}")
-  implementation("com.squareup.retrofit2:converter-moshi:${Versions.retrofitVersion}")
-  implementation("net.danlew:android.joda:${Versions.jodaTimeVersion}")
-  implementation("com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}")
-  implementation("com.google.android.flexbox:flexbox:3.0.0")
+  implementation(libs.moshi)
+  implementation(libs.retrofit.moshi)
+  implementation(libs.joda.time)
+  implementation(libs.retrofit)
+  implementation(libs.flexbox)
   //implementation("com.henryblue.library:tvrecyclerview:1.2.2")
-  implementation("jp.wasabeef:recyclerview-animators:4.0.2")
+  implementation(libs.recyclerview.animators)
 
-  implementation("com.github.rstanic12:Resourceful:1.1.0") {
+  implementation(libs.resourceful) {
     exclude(group = "com.google.guava")
   }
 
   // https://mvnrepository.com/artifact/org.simpleframework/simple-xml
-  implementation("org.simpleframework:simple-xml:${Versions.simpleXmlVersion}") {
+  implementation(libs.simple.xml) {
     exclude(group = "stax")
     exclude(group = "xpp3")
   }
 
-  testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
-  testImplementation("org.apache.commons:commons-lang3:${Versions.commonsLangVersion}")
-  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+  testImplementation(libs.mockito.core)
+  testImplementation(libs.mockito.kotlin)
+  testImplementation(libs.commons.lang3)
+  testImplementation(libs.kotlin.coroutines.test)
 
-  testImplementation("com.squareup.okhttp3:mockwebserver:${Versions.okhttpVersion}")
-  testImplementation("commons-io:commons-io:${Versions.commonsioVersion}")
-  testImplementation("com.github.stephanenicolas.toothpick:toothpick-testing:${Versions.toothPickVersion}")
-  testImplementation("org.robolectric:robolectric:${Versions.robolectricVersion}") {
+  testImplementation(libs.okhttp.mockwebserver)
+  testImplementation(libs.commons.io)
+  testImplementation(libs.toothpick.testing)
+  testImplementation(libs.robolectric) {
     exclude(module = "support-v4")
   }
-  testImplementation("com.squareup.assertj:assertj-android:${Versions.assertJAndroidVersion}") {
+  testImplementation(libs.assertj.android) {
     exclude(module = "support-v4")
     exclude(module = "support-annotations")
   }
 
-  testImplementation("com.willowtreeapps.assertk:assertk-jvm:${Versions.assertkVersion}")
-  testImplementation("org.assertj:assertj-core:${Versions.assertjVersion}")
-  testImplementation("junit:junit:${Versions.junitVersion}")
-  testImplementation("org.robolectric:shadows-framework:${Versions.robolectricVersion}@jar")
-  testImplementation("org.robolectric:shadowapi:${Versions.robolectricVersion}")
-  testImplementation("org.robolectric:shadows-playservices:${Versions.robolectricVersion}")
-  testImplementation("androidx.test:core:1.4.0")
-  testImplementation("org.khronos:opengl-api:${Versions.openglApiVersion}")
-  testImplementation("org.mockito:mockito-core:${Versions.mockitoVersion}")
-  testImplementation("androidx.test.ext:junit:1.1.3")
+  testImplementation(libs.assertk.jvm)
+  testImplementation(libs.assertj.core)
+  testImplementation(libs.junit)
+  testImplementation(libs.robolectric.shadows.framework)
+  testImplementation(libs.robolectric.shadows.api)
+  testImplementation(libs.robolectric.shadows.playservices)
+  testImplementation(libs.androidx.test.core)
+  testImplementation(libs.opengl.api)
+  testImplementation(libs.androidx.junit)
 
-  kaptTest("com.github.stephanenicolas.toothpick:toothpick-compiler:${Versions.toothPickVersion}")
+  kaptTest(libs.toothpick.compiler)
 
-  kapt("com.github.moxy-community:moxy-compiler:${Versions.moxyVersion}")
+  kapt(libs.moxy.compiler)
 }
 
 //com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
@@ -236,6 +232,6 @@ dependencies {
 
 configurations.all {
   resolutionStrategy {
-    force("androidx.fragment:fragment:1.4.0")
+    force(libs.androidx.fragment)
   }
 }

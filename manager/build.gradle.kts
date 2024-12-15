@@ -10,11 +10,11 @@ android {
     buildConfig = true
   }
   defaultConfig {
-    minSdkVersion(Versions.minSdkVersion)
-    targetSdkVersion(Versions.targetSdkVersion)
+    minSdkVersion(libs.versions.minSdkVersion.get())
+    targetSdkVersion(libs.versions.targetSdkVersion.get())
   }
 
-  compileSdkVersion(Versions.targetSdkVersion)
+  compileSdk = libs.versions.targetSdkVersion.get().toInt()
   testOptions {
     unitTests {
       isIncludeAndroidResources = true
@@ -41,10 +41,10 @@ android {
 }
 
 dependencies {
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinVersion}")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+  implementation(libs.kotlin)
+  implementation(libs.kotlin.coroutines.android)
+  implementation(libs.kotlin.coroutines.core)
 
-  api("com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}")
+  api(libs.retrofit)
 //  compileOnly("com.squareup.okhttp3:okhttp:${Versions.okhttpVersion}")
 }

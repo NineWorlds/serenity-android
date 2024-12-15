@@ -10,11 +10,11 @@ android {
     buildConfig = true
   }
   defaultConfig {
-    minSdkVersion(Versions.minSdkVersion)
-    targetSdkVersion(Versions.targetSdkVersion)
+    minSdkVersion(libs.versions.minSdkVersion.get())
+    targetSdkVersion(libs.versions.targetSdkVersion.get())
   }
 
-  compileSdkVersion(Versions.targetSdkVersion)
+  compileSdk = libs.versions.targetSdkVersion.get().toInt()
   testOptions {
     unitTests {
       isIncludeAndroidResources = true
@@ -33,11 +33,11 @@ android {
 
   buildTypes {
     getByName("debug") {
-      buildConfigField("String", "CLIENT_VERSION", "\"$Versions.appversion\"")
+      buildConfigField("String", "CLIENT_VERSION", "\"${libs.versions.appVersion.get()}\"")
     }
     
     getByName("release") {
-      buildConfigField("String", "CLIENT_VERSION", "\"$Versions.appversion\"")
+      buildConfigField("String", "CLIENT_VERSION", "\"${libs.versions.appVersion.get()}")
     }
   }
 }
@@ -45,49 +45,49 @@ android {
 dependencies {
   api(project(":serenity-common"))
   api(project(":serenity-android-common"))
-
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinVersion}")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-
-
-  releaseApi("com.github.stephanenicolas.toothpick:toothpick-runtime:${Versions.toothPickVersion}") {
-    exclude(group = "javax.inject")
-  }
-  releaseApi("com.github.stephanenicolas.toothpick:smoothie:${Versions.toothPickVersion}") {
-    exclude(group = "javax.inject")
-  }
-
-  debugImplementation("com.github.stephanenicolas.toothpick:toothpick-runtime:${Versions.toothPickVersion}")
-  debugImplementation("com.github.stephanenicolas.toothpick:smoothie:${Versions.toothPickVersion}")
-
-  releaseApi("com.github.stephanenicolas.toothpick:toothpick-javax-annotations:${Versions.toothPickVersion}")
-  kapt("com.github.stephanenicolas.toothpick:toothpick-compiler:${Versions.toothPickVersion}")
-
-  api("com.birbit:android-priority-jobqueue:${Versions.androidPriorityJobQueueVersion}")
-  api("org.greenrobot:eventbus:${Versions.eventBus}")
-  api("com.squareup.moshi:moshi-kotlin:${Versions.moshiKotlinVersion}")
-  api("com.squareup.retrofit2:converter-moshi:${Versions.retrofitVersion}")
-  api("net.danlew:android.joda:${Versions.jodaTimeVersion}")
-  api("com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}")
-  api("com.squareup.okhttp3:okhttp:${Versions.okhttpVersion}")
-  api("com.squareup.okhttp3:logging-interceptor:${Versions.okhttpVersion}")
   api(project(":manager"))
-  api("com.jakewharton.timber:timber:${Versions.timberVersion}")
-  api("com.github.nisrulz:easydeviceinfo-base:2.4.1")
-  api("com.github.nisrulz:easydeviceinfo-common:2.4.1")
 
-  testImplementation("junit:junit:${Versions.junitVersion}")
-  testImplementation("org.assertj:assertj-core:${Versions.assertjVersion}")
-  testImplementation("org.mockito:mockito-core:${Versions.mockitoVersion}")
-  testImplementation("org.robolectric:robolectric:${Versions.robolectricVersion}")
-  testImplementation("org.robolectric:shadows-framework:${Versions.robolectricVersion}")
-  testImplementation("org.robolectric:shadowapi:${Versions.robolectricVersion}")
-  testImplementation("org.robolectric:shadows-playservices:${Versions.robolectricVersion}")
-  testImplementation("org.khronos:opengl-api:${Versions.openglApiVersion}")
-  testImplementation("androidx.test:core:1.4.0")
-  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+  implementation(libs.kotlin)
+  implementation(libs.kotlin.coroutines.android)
+  implementation(libs.kotlin.coroutines.core)
 
-  testImplementation("com.github.stephanenicolas.toothpick:toothpick-testing:${Versions.toothPickVersion}")
-  kaptTest("com.github.stephanenicolas.toothpick:toothpick-compiler:${Versions.toothPickVersion}")
+
+  releaseApi(libs.toothpick.runtime) {
+    exclude(group = "javax.inject")
+  }
+  releaseApi(libs.toothpick.smoothie) {
+    exclude(group = "javax.inject")
+  }
+
+  debugImplementation(libs.toothpick.runtime)
+  debugImplementation(libs.toothpick.smoothie)
+
+  releaseApi(libs.toothpick.javax.annotations)
+  kapt(libs.toothpick.compiler)
+
+  implementation(libs.android.priority.jobqueue)
+  implementation(libs.eventbus)
+  implementation(libs.moshi)
+  implementation(libs.retrofit.moshi)
+  implementation(libs.joda.time)
+  implementation(libs.retrofit)
+  implementation(libs.okhttp)
+  implementation(libs.okhttp.logging.interceptor)
+  implementation(libs.timber)
+  implementation(libs.easydeviceinfo.base)
+  implementation(libs.easydeviceinfo.common)
+
+  testImplementation(libs.junit)
+  testImplementation(libs.assertj.core)
+  testImplementation(libs.mockito.core)
+  testImplementation(libs.robolectric)
+  testImplementation(libs.robolectric.shadows.framework)
+  testImplementation(libs.robolectric.shadows.api)
+  testImplementation(libs.robolectric.shadows.playservices)
+  testImplementation(libs.opengl.api)
+  testImplementation(libs.androidx.test.core)
+  testImplementation(libs.kotlin.coroutines.test)
+
+  testImplementation(libs.toothpick.testing)
+  kaptTest(libs.toothpick.compiler)
 }
