@@ -31,7 +31,7 @@ percentlayoutVersion = "1.0.0"
 recyclerviewAnimatorsVersion = "4.0.2"
 targetSdkVersion = "35"
 
-okhttpVersion = "4.10.0"
+okhttpVersion = "4.11.0"
 androidPriorityJobQueueVersion = "2.0.1"
 eventBus = "3.1.1"
 moshiKotlinVersion = "1.12.0"
