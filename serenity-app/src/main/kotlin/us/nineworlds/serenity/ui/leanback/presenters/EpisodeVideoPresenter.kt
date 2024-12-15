@@ -6,7 +6,7 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
-import us.nineworlds.serenity.GlideApp
+import com.bumptech.glide.Glide
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
@@ -54,7 +54,7 @@ class EpisodeVideoPresenter : Presenter() {
         }
 
         fun updateCardViewImage(url: String) {
-            GlideApp.with(view.context).load(url).fitCenter().into(cardView.mainImageView)
+            Glide.with(view.context).load(url).fitCenter().into(cardView.mainImageView)
         }
     }
 

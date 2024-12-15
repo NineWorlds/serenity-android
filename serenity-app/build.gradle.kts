@@ -9,6 +9,7 @@ plugins {
   id("org.sonarqube")
   id("com.google.firebase.crashlytics")
   id("com.google.gms.google-services") version "4.4.0"
+  id("com.google.devtools.ksp")
 }
 
 apply(from = "../jacoco.gradle")
@@ -145,7 +146,7 @@ dependencies {
   implementation(libs.moxy.community.moxy.app.compat)
   implementation(libs.moxy.ktx)
   implementation(libs.github.glide)
-  kapt(libs.glide.compiler)
+  ksp(libs.glide.compiler)
   implementation(libs.android.priority.jobqueue)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.leanback)
@@ -172,7 +173,7 @@ dependencies {
   debugImplementation(libs.toothpick.runtime)
 
   releaseImplementation(libs.toothpick.javax.annotations)
-  kapt(libs.toothpick.compiler)
+  ksp(libs.toothpick.ksp.compiler)
 
   implementation(libs.moshi)
   implementation(libs.retrofit.moshi)
@@ -218,7 +219,8 @@ dependencies {
   testImplementation(libs.opengl.api)
   testImplementation(libs.androidx.junit)
 
-  kaptTest(libs.toothpick.compiler)
+//  kaptTest(libs.toothpick.compiler)
+  kspTest(libs.toothpick.ksp.compiler)
 
   kapt(libs.moxy.compiler)
 }

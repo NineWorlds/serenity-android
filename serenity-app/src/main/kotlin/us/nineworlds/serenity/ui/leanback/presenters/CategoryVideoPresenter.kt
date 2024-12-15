@@ -6,7 +6,6 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
-import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.VideoCategory

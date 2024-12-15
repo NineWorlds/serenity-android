@@ -6,8 +6,8 @@ import androidx.annotation.Nullable;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
+import com.bumptech.glide.Glide;
 
-import us.nineworlds.serenity.GlideApp;
 
 /**
  * Created by dcarver on 7/2/17.
@@ -27,8 +27,8 @@ public class GlideClearCacheJob extends Job {
   }
 
   @Override public void onRun() throws Throwable {
-    GlideApp.get(context).clearDiskCache();
-    GlideApp.get(context).clearMemory();
+    Glide.get(context).clearDiskCache();
+    Glide.get(context).clearMemory();
   }
 
   @Override protected void onCancel(int cancelReason, @Nullable Throwable throwable) {

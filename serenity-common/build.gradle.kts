@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 plugins {
     id("java")
     id("kotlin")
-    kotlin("kapt")
 }
 
 java {

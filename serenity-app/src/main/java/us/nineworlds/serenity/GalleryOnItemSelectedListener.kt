@@ -32,6 +32,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import us.nineworlds.serenity.core.menus.MenuItem
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter
 import javax.inject.Provider
@@ -90,7 +91,7 @@ class GalleryOnItemSelectedListener(private val adapter: MainMenuTextViewAdapter
             if (hasFocus && view != null) {
                 mainGalleryBackgroundView = context.findViewById(R.id.mainGalleryBackground)
                 mainGalleryBackgroundView.clearAnimation()
-                GlideApp.with(context).load(getBackgroundImageId(menuItem)).into(mainGalleryBackgroundView)
+                Glide.with(context).load(getBackgroundImageId(menuItem)).into(mainGalleryBackgroundView)
                 view.clearAnimation()
                 view.background = ContextCompat.getDrawable(view.context, R.drawable.rounded_transparent_border)
                 if (shouldFadeIn()) {

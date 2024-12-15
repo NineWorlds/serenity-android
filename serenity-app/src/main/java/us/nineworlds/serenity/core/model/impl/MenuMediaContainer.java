@@ -41,8 +41,8 @@ import us.nineworlds.serenity.core.util.AndroidHelper;
  */
 public class MenuMediaContainer extends AbstractMediaContainer {
 
-  @Inject protected SharedPreferences preferences;
-  @Inject protected Resources resources;
+  @Inject public SharedPreferences preferences;
+  @Inject public Resources resources;
 
   private static final String SETTINGS_SECTION_KEY = "0";
   private static final String SETTINGS_TYPE = "settings";

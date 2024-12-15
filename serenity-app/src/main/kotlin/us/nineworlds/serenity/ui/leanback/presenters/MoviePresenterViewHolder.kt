@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.leanback.widget.RowPresenter
-import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.databinding.LeanbackDetailsSummaryBinding
@@ -13,6 +12,7 @@ import android.widget.LinearLayout
 
 import android.widget.RatingBar
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 
 
 class MoviePresenterViewHolder(private val binding: LeanbackDetailsSummaryBinding) : RowPresenter.ViewHolder(binding.root) {
@@ -23,7 +23,7 @@ class MoviePresenterViewHolder(private val binding: LeanbackDetailsSummaryBindin
         binding.movieBrowserPosterTitle.text = videoInfo.title
         binding.movieSummary.text = videoInfo.summary
 
-        GlideApp.with(context).load(videoInfo.imageURL).fitCenter().into(binding.videoPoster)
+        Glide.with(context).load(videoInfo.imageURL).fitCenter().into(binding.videoPoster)
 
         val width = context.resources.getDimensionPixelSize(R.dimen.info_graphic_width)
         val height = context.resources.getDimensionPixelSize(R.dimen.info_graphic_height)

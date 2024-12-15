@@ -17,9 +17,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.Bitmap
 
 import android.graphics.drawable.Drawable
-import us.nineworlds.serenity.GlideApp
+import com.bumptech.glide.Glide
 import us.nineworlds.serenity.R
-import us.nineworlds.serenity.ui.util.ImageUtils
 
 open class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummaryBinding) : Presenter.ViewHolder(binding.root) {
 
@@ -29,7 +28,7 @@ open class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummary
         binding.movieBrowserPosterTitle.text = videoInfo.title
         binding.movieSummary.text = videoInfo.summary
 
-        GlideApp.with(context).load(videoInfo.thumbNailURL).fitCenter().into(binding.videoPoster)
+        Glide.with(context).load(videoInfo.thumbNailURL).fitCenter().into(binding.videoPoster)
 
         val width = context.resources.getDimensionPixelSize(R.dimen.info_graphic_width)
         val height = context.resources.getDimensionPixelSize(R.dimen.info_graphic_height)

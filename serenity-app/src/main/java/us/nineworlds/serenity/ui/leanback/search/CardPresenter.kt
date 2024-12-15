@@ -35,7 +35,7 @@ import androidx.core.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import us.nineworlds.serenity.GlideApp
+import com.bumptech.glide.Glide
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.VideoContentInfo
 
@@ -100,7 +100,7 @@ class CardPresenter(private val context: Context) : Presenter() {
     }
 
     fun updateCardViewImage(url: String) {
-      GlideApp.with(context).load(url).fitCenter().into(cardView.mainImageView)
+      Glide.with(context).load(url).fitCenter().into(cardView.mainImageView)
     }
   }
 }

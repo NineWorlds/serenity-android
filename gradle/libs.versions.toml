@@ -14,8 +14,9 @@ fragmentKtxVersion = "1.8.5"
 glide = "4.12.0"
 junit = "1.2.1"
 juniversalchardetVersion = "1.0.3"
-kotlinVersion = "1.9.24"
+kotlinVersion = "1.9.25"
 kotlinCoroutinesVersion = "1.7.3"
+kotlinKSPVersion = "1.9.25-1.0.20"
 androidPluginVersion = "8.7.3"
 leanbackPreferenceVersion = "1.1.0-rc01"
 leanbackVersion = "1.1.0-rc02"
@@ -48,6 +49,7 @@ robolectricVersion = "4.14.1"
 openglApiVersion = "gl1.1-android-2.1_r1"
 assertJAndroidVersion = "1.1.1"
 toothPickVersion = "3.1.0"
+toothPickKspVersion = "1.1.0"
 easydeviceInfoVersion = "2.4.1"
 
 androidxTestCoreVersion = "1.6.1"
@@ -111,7 +113,9 @@ simple-xml = { group = "org.simpleframework", name = "simple-xml", version.ref =
 toothpick-runtime = { group = "com.github.stephanenicolas.toothpick", name = "toothpick-runtime", version.ref = "toothPickVersion"}
 toothpick-smoothie = { group = "com.github.stephanenicolas.toothpick", name = "smoothie", version.ref = "toothPickVersion" }
 toothpick-compiler = { group = "com.github.stephanenicolas.toothpick", name = "toothpick-compiler", version.ref = "toothPickVersion" }
+toothpick-ksp-compiler = { group = "com.github.bedrockstreaming.toothpick-ksp", name = "compiler", version.ref = "toothPickKspVersion" }
 toothpick-javax-annotations = { group = "com.github.stephanenicolas.toothpick", name = "toothpick-javax-annotations", version.ref = "toothPickVersion" }
+
 
 # Tests
 junit = { group = "junit", name = "junit", version.ref = "junitVersion" }

@@ -39,10 +39,11 @@ import androidx.leanback.widget.Presenter.ViewHolder;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import toothpick.Toothpick;
-import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.common.rest.SerenityClient;
@@ -123,7 +124,7 @@ public class MovieSearchFragment extends SearchSupportFragment implements Search
                     }
                 };
 
-                GlideApp.with(getContext()).asBitmap().load(transcodingURL).into(target);
+                Glide.with(requireContext()).asBitmap().load(transcodingURL).into(target);
             }
         });
 
@@ -137,12 +138,12 @@ public class MovieSearchFragment extends SearchSupportFragment implements Search
             searchHandler = new MovieSearchHandler();
             Messenger messenger = new Messenger(searchHandler);
 
-            Intent searchIntent = new Intent(getActivity(), MovieSearchIntentService.class);
+            Intent searchIntent = new Intent(requireActivity(), MovieSearchIntentService.class);
 
             searchIntent.putExtra("key", key);
             searchIntent.putExtra("query", URLEncoder.encode(words));
             searchIntent.putExtra("MESSENGER", messenger);
-            getActivity().startService(searchIntent);
+            requireActivity().startService(searchIntent);
         }
     }
 

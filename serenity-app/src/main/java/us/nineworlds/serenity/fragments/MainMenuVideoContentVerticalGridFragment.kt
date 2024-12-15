@@ -6,9 +6,9 @@ import androidx.leanback.widget.*
 import us.nineworlds.serenity.core.model.CategoryInfo
 import android.content.Intent
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import toothpick.Toothpick
-import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.rest.Types
@@ -65,7 +65,7 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
 
                 val imageView = requireActivity().findViewById<ImageView>(R.id.mainGalleryBackground)
 
-                GlideApp.with(requireActivity()).load(videoCategory.item.backgroundURL).transition(DrawableTransitionOptions.withCrossFade()).fitCenter().into(imageView)
+                Glide.with(requireActivity()).load(videoCategory.item.backgroundURL).transition(DrawableTransitionOptions.withCrossFade()).fitCenter().into(imageView)
             }
         }
     }

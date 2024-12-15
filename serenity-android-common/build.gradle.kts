@@ -2,6 +2,7 @@ plugins {
   id("com.android.library")
   kotlin("android")
   kotlin("kapt")
+  id("com.google.devtools.ksp")
 }
 
 android {
@@ -55,7 +56,7 @@ dependencies {
   debugApi(libs.toothpick.smoothie)
 
   releaseApi(libs.toothpick.javax.annotations)
-  kapt(libs.toothpick.compiler)
+  ksp(libs.toothpick.ksp.compiler)
 
   testImplementation(libs.junit)
   testImplementation(libs.assertj.core)
@@ -67,5 +68,5 @@ dependencies {
   testImplementation(libs.opengl.api)
 
   testImplementation(libs.toothpick.testing)
-  kaptTest(libs.toothpick.compiler)
+  kspTest(libs.toothpick.ksp.compiler)
 }

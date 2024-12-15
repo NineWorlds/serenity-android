@@ -34,9 +34,9 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.birbit.android.jobqueue.JobManager;
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
@@ -178,7 +178,7 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector {
             }
         };
 
-        GlideApp.with(context).asBitmap().load(transcodingURL).into(target);
+        Glide.with(context).asBitmap().load(transcodingURL).into(target);
     }
 
     public abstract void onItemSelected(View view, int i);
