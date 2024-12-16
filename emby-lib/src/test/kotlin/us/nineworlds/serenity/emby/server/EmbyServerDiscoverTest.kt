@@ -4,6 +4,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import org.robolectric.shadows.ShadowLog
 
 class EmbyServerDiscoverTest {
 
@@ -11,6 +12,7 @@ class EmbyServerDiscoverTest {
 
     @Before
     fun setUp() {
+        ShadowLog.stream = System.out
         serverDiscovery = EmbyServerDiscover()
     }
 

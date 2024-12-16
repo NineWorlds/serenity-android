@@ -191,6 +191,7 @@ dependencies {
     exclude(group = "xpp3")
   }
 
+  testImplementation(libs.mockk)
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.kotlin)
   testImplementation(libs.commons.lang3)
