@@ -4,24 +4,21 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.clearAllMocks
+import io.mockk.every
+import io.mockk.mockk
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnit
-import org.mockito.quality.Strictness.STRICT_STUBS
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
-import org.robolectric.annotation.LooperMode
 import toothpick.config.Module
+import us.nineworlds.serenity.MockkTestingModule
 import us.nineworlds.serenity.R
-import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.core.util.StringPreference
 import us.nineworlds.serenity.injection.ForMediaServers
@@ -36,24 +33,23 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
 @RunWith(RobolectricTestRunner::class)
-@LooperMode(LooperMode.Mode.LEGACY)
 class ServerSelectionActivityTest : InjectingTest() {
+  companion object {
+    private val mockServer = mockk<Server>(relaxed = true)
+  }
 
-  @Rule
-  @JvmField
-  val rule = MockitoJUnit.rule().strictness(STRICT_STUBS)
-
-  @Mock
-  lateinit var mockServer: Server
-
-  lateinit var activity: ServerSelectionActivity
+  private lateinit var activity: ServerSelectionActivity
 
   @Before
   override fun setUp() {
+    clearAllMocks()
     super.setUp()
-    Robolectric.getBackgroundThreadScheduler().pause()
-    Robolectric.getForegroundThreadScheduler().pause()
     activity = Robolectric.buildActivity(ServerSelectionActivity::class.java).create().visible().get()
+  }
+
+  @After
+  fun tearDown() {
+    activity.finish()
   }
 
   @Test
@@ -64,7 +60,6 @@ class ServerSelectionActivityTest : InjectingTest() {
   @Test
   fun createServerListHidesProgressBarAndDisplaysServerContainer() {
     Robolectric.flushForegroundThreadScheduler()
-    Robolectric.flushBackgroundThreadScheduler()
 
     Assertions.assertThat(activity.progressBinding.dataLoadingContainer).isGone
     Assertions.assertThat(activity.binding.serverContainer).isVisible
@@ -75,10 +70,9 @@ class ServerSelectionActivityTest : InjectingTest() {
     val expectedId = UUID.randomUUID().toString()
     activity.servers[expectedId] = mockServer
 
-    doReturn("Emby").whenever(mockServer).discoveryProtocol()
-    doReturn("test").whenever(mockServer).serverName
+    every { mockServer.discoveryProtocol() } returns "Emby"
+    every { mockServer.serverName } returns "test"
 
-    Robolectric.flushBackgroundThreadScheduler()
     Robolectric.flushForegroundThreadScheduler()
 
     Assertions.assertThat(activity.binding.serverContainer).hasChildCount(3)
@@ -86,7 +80,6 @@ class ServerSelectionActivityTest : InjectingTest() {
 
   @Test
   fun refreshButtonIsOnlyItemWhenServerListIsEmpty() {
-    Robolectric.flushForegroundThreadScheduler()
     Robolectric.flushForegroundThreadScheduler()
 
     assertThat(activity.servers).isEmpty()
@@ -98,10 +91,9 @@ class ServerSelectionActivityTest : InjectingTest() {
     val expectedId = UUID.randomUUID().toString()
     activity.servers[expectedId] = mockServer
 
-    doReturn("Emby").whenever(mockServer).discoveryProtocol()
-    doReturn("test").whenever(mockServer).serverName
+    every { mockServer.discoveryProtocol() } returns "Emby"
+    every { mockServer.serverName } returns "test"
 
-    Robolectric.flushBackgroundThreadScheduler()
     Robolectric.flushForegroundThreadScheduler()
 
     val view = activity.binding.serverContainer.getChildAt(1)
@@ -115,11 +107,10 @@ class ServerSelectionActivityTest : InjectingTest() {
     val expectedId = UUID.randomUUID().toString()
     activity.servers[expectedId] = mockServer
 
-    doReturn("Emby").whenever(mockServer).discoveryProtocol()
-    doReturn("test").whenever(mockServer).serverName
-    doReturn("testserver").whenever(mockServer).ipAddress
+    every { mockServer.discoveryProtocol() } returns "Emby"
+    every { mockServer.serverName } returns "test"
+    every { mockServer.ipAddress } returns "testserver"
 
-    Robolectric.flushBackgroundThreadScheduler()
     Robolectric.flushForegroundThreadScheduler()
 
     val view = activity.binding.serverContainer.getChildAt(1)
@@ -130,7 +121,7 @@ class ServerSelectionActivityTest : InjectingTest() {
   }
 
   override fun installTestModules() {
-    scope.installTestModules(TestingModule(), TestModule())
+    scope.installTestModules(MockkTestingModule(), TestModule())
   }
 
   inner class TestModule : Module() {

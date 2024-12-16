@@ -2,23 +2,25 @@ package us.nineworlds.serenity.ui.util
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import org.assertj.core.api.Assertions.assertThat
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import toothpick.config.Module
+import us.nineworlds.serenity.MockkTestingModule
 import us.nineworlds.serenity.R
-import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.core.util.TimeUtil
 import us.nineworlds.serenity.test.InjectingTest
 
 @RunWith(RobolectricTestRunner::class)
 class ImageInfographicUtilsTest : InjectingTest() {
 
-  lateinit var imageInfographicUtils: ImageInfographicUtils
-  lateinit var context: Context
+  private lateinit var imageInfographicUtils: ImageInfographicUtils
+  private lateinit var context: Context
 
   @Before
   override fun setUp() {
@@ -28,7 +30,7 @@ class ImageInfographicUtilsTest : InjectingTest() {
   }
 
   override fun installTestModules() {
-    scope.installTestModules(TestingModule(), TestModule())
+    scope.installTestModules(MockkTestingModule(), TestModule())
   }
 
   @Test

@@ -5,21 +5,14 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.leanback.widget.ImageCardView
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.atLeast
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.spyk
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnit
-import org.mockito.quality.Strictness
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import us.nineworlds.serenity.R
@@ -28,18 +21,13 @@ import us.nineworlds.serenity.core.model.VideoContentInfo
 @RunWith(RobolectricTestRunner::class)
 class CardPresenterTest {
 
-  @Rule
-  @JvmField
-  public val rule = MockitoJUnit.rule().strictness(Strictness.STRICT_STUBS)
+  private companion object {
+    private val mockImageCardView = mockk<ImageCardView>(relaxed = true)
+    private val mockVideoContentInfo = mockk<VideoContentInfo>(relaxed = true)
+    private val mockViewHolder = mockk<CardPresenter.CardPresenterViewHolder>(relaxed = true)
+  }
 
-  @Mock
-  lateinit var mockImageCardView: ImageCardView
-  @Mock
-  lateinit var mockVideoContentInfo: VideoContentInfo
-  @Mock
-  lateinit var mockViewHolder: CardPresenter.CardPresenterViewHolder
-
-  lateinit var presenter: CardPresenter
+  private lateinit var presenter: CardPresenter
 
   @Before
   fun setUp() {
@@ -49,8 +37,8 @@ class CardPresenterTest {
   @Test
   fun onCreateViewHolderReturnsExpectedViewHolderInstance() {
     val linearLayout = LinearLayout(getApplicationContext())
-    val spy = spy(presenter)
-    doReturn(mockImageCardView).whenever(spy).createImageView()
+    val spy = spyk(presenter)
+    every { spy.createImageView() } returns mockImageCardView
 
     val result = spy.onCreateViewHolder(linearLayout)
 
@@ -60,33 +48,31 @@ class CardPresenterTest {
   @Test
   fun imageCardViewHasExpectedValuesSetWhenViewHolderIsCreated() {
     val linearLayout = LinearLayout(getApplicationContext())
-    val spy = spy(presenter)
-    doReturn(mockImageCardView).whenever(spy).createImageView()
+    val spy = spyk(presenter)
+    every { spy.createImageView() } returns mockImageCardView
 
     spy.onCreateViewHolder(linearLayout)
 
-    verify(mockImageCardView).isFocusable = true
-    verify(mockImageCardView).isFocusableInTouchMode = true
-    verify(mockImageCardView).setBackgroundColor(ContextCompat.getColor(linearLayout.context, R.color.holo_color))
+    verify { mockImageCardView.isFocusable = true }
+    verify { mockImageCardView.isFocusableInTouchMode = true }
+    verify { mockImageCardView.setBackgroundColor(ContextCompat.getColor(linearLayout.context, R.color.holo_color)) }
   }
 
   @Test
   fun onBindViewHolderSetsExpectedImageDimensions() {
     val activity = Robolectric.buildActivity(Activity::class.java).create().get()
-    val spy = spy(presenter)
-    doReturn(mockImageCardView).whenever(mockViewHolder).cardView
-    doReturn("").whenever(mockVideoContentInfo).imageURL
-    doReturn(activity).whenever(spy).getActivity(anyOrNull())
+    val spy = spyk(presenter)
+    every { mockViewHolder.cardView } returns mockImageCardView
+    every { mockVideoContentInfo.imageURL } returns ""
+    every { spy.getActivity(any()) } returns activity
 
     spy.onBindViewHolder(mockViewHolder, mockVideoContentInfo)
 
-    verify(mockViewHolder).movie = mockVideoContentInfo
-    verify(mockVideoContentInfo, atLeast(2)).imageURL
-    verify(mockImageCardView).titleText = null
-    verify(mockImageCardView).contentText = null
-    verify(spy).getActivity(anyOrNull())
-    verify(mockImageCardView).setMainImageDimensions(anyInt(), anyInt())
-    verify(mockViewHolder).updateCardViewImage(anyOrNull())
+    verify { mockViewHolder.movie = mockVideoContentInfo }
+    verify(atLeast = 2) { mockVideoContentInfo.imageURL }
+    verify { spy.getActivity(any()) }
+    verify { mockImageCardView.setMainImageDimensions(any(), any()) }
+    verify { mockViewHolder.updateCardViewImage(any()) }
   }
 
   @Test
@@ -94,7 +80,6 @@ class CardPresenterTest {
 
     presenter.onUnbindViewHolder(mockViewHolder)
 
-    verify(mockViewHolder).reset()
-
+    verify { mockViewHolder.reset() }
   }
 }
