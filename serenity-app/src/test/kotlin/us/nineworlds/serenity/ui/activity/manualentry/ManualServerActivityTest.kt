@@ -5,8 +5,8 @@ import android.view.View
 import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.isNotNull
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.verify
+import io.mockk.spyk
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +23,7 @@ class ManualServerActivityTest {
   @Before
   fun setUp() {
     ApplicationProvider.getApplicationContext<Application>().setTheme(R.style.AppTheme)
-    activity = spy(Robolectric.buildActivity(ManualServerActivity::class.java).create().get())
+    activity = spyk(Robolectric.buildActivity(ManualServerActivity::class.java).create().get())
   }
 
   @Test
@@ -34,6 +34,7 @@ class ManualServerActivityTest {
   @Test
   fun finishSetsResultToMainMenuPreferenceResultCode() {
     activity.finish()
-    verify(activity).setResult(MainActivity.MAIN_MENU_PREFERENCE_RESULT_CODE)
+
+    verify { activity.setResult(MainActivity.MAIN_MENU_PREFERENCE_RESULT_CODE) }
   }
 }

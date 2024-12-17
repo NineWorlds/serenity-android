@@ -1,13 +1,13 @@
 plugins {
-  id("com.android.application")
   id("project-report")
+  id("com.google.devtools.ksp")
+  id("com.android.application")
   id("kotlin-android")
   id("kotlin-kapt")
   id("kotlin-allopen")
   id("org.sonarqube")
   id("com.google.firebase.crashlytics")
   id("com.google.gms.google-services") version "4.4.0"
-  id("com.google.devtools.ksp")
 }
 
 apply(from = "../jacoco.gradle")
@@ -30,6 +30,8 @@ allOpen {
 android {
   namespace = "us.nineworlds.serenity"
 
+  compileSdk = libs.versions.targetSdkVersion.get().toInt()
+
   defaultConfig {
     versionCode = 3000000
     versionName = "3.0.0-M1"
@@ -37,18 +39,18 @@ android {
     targetSdk = libs.versions.targetSdkVersion.get().toInt()
     multiDexEnabled = true
     multiDexKeepProguard = file("multidex_keep_file.txt")
-
-    buildFeatures {
-      viewBinding = true
-    }
   }
+
+  buildFeatures {
+    viewBinding = true
+  }
+
 
   sourceSets {
     getByName("main").java.srcDirs("src/main/kotlin", "src/main/java")
     getByName("test").java.srcDirs("src/test/kotlin", "src/test/java")
   }
 
-  compileSdk = libs.versions.targetSdkVersion.get().toInt()
 
   if (project.hasProperty("keystore")) {
     signingConfigs {
@@ -96,7 +98,6 @@ android {
           maxHeapSize = "1512m"
           setForkEvery(100)
           maxParallelForks = 2
-          jvmArgs("-noverify")
           testLogging {
             setExceptionFormat("full")
           }
@@ -191,6 +192,7 @@ dependencies {
     exclude(group = "xpp3")
   }
 
+  testImplementation(libs.mockk)
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.kotlin)
   testImplementation(libs.commons.lang3)

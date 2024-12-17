@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
@@ -47,9 +48,8 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.emby.model.MediaContainer;
 import us.nineworlds.serenity.emby.model.Video;
 import us.nineworlds.serenity.test.InjectingTest;
-import us.nineworlds.serenity.testrunner.PlainAndroidRunner;
 
-@RunWith(PlainAndroidRunner.class)
+@RunWith(RobolectricTestRunner.class)
 @Ignore("Rework to not require xml serialization")
 public class SeasonsMediaContainerTest extends InjectingTest {
 

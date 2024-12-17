@@ -1,6 +1,7 @@
 package us.nineworlds.serenity.emby.server
 
 import android.content.Context
+import io.mockk.mockk
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before
 import org.junit.Test
@@ -10,6 +11,7 @@ import org.mockito.MockitoAnnotations.initMocks
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowLog
 import toothpick.config.Module
 import us.nineworlds.serenity.common.android.injection.ApplicationContext
 import us.nineworlds.serenity.emby.test.InjectingTest
@@ -18,17 +20,15 @@ import us.nineworlds.serenity.emby.test.InjectingTest
 @Config(sdk = [28])
 class EmbyServerJobTest : InjectingTest() {
 
-  @Mock
-  lateinit var mockEventBus: EventBus
-
   override val modules: List<Any>
     get() = mutableListOf(TestModule())
 
-  lateinit var job: EmbyServerJob
+  private lateinit var job: EmbyServerJob
 
   @Before
   override fun setUp() {
-    initMocks(this)
+    ShadowLog.stream = System.out
+
     super.setUp()
     job = EmbyServerJob()
   }

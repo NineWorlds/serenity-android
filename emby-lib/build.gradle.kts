@@ -64,7 +64,6 @@ dependencies {
   debugImplementation(libs.toothpick.smoothie)
 
   releaseApi(libs.toothpick.javax.annotations)
-//  kapt(libs.toothpick.compiler)
   ksp(libs.toothpick.ksp.compiler)
 
   implementation(libs.android.priority.jobqueue)
@@ -81,7 +80,9 @@ dependencies {
 
   testImplementation(libs.junit)
   testImplementation(libs.assertj.core)
+  testImplementation(libs.assertk.jvm)
   testImplementation(libs.mockito.core)
+  testImplementation(libs.mockk)
   testImplementation(libs.robolectric)
   testImplementation(libs.robolectric.shadows.framework)
   testImplementation(libs.robolectric.shadows.api)

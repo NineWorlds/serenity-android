@@ -1,33 +1,38 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package us.nineworlds.serenity.ui.video.player
 
 import android.view.View
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import assertk.assertThat
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isNotNull
+import assertk.assertions.isTrue
 import com.birbit.android.jobqueue.JobManager
-import com.nhaarman.mockitokotlin2.atLeastOnce
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.clearAllMocks
+import io.mockk.coVerify
+
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.spyk
+import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.apache.commons.lang3.RandomStringUtils
-import org.assertj.core.api.Java6Assertions.assertThat
 import org.greenrobot.eventbus.EventBus
+import org.junit.After
 import org.junit.Before
 import org.junit.Ignore
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyString
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mock
-import org.mockito.Mockito.any
-import org.mockito.junit.MockitoJUnit
-import org.mockito.junit.MockitoRule
-import org.mockito.quality.Strictness.LENIENT
 import toothpick.config.Module
-import us.nineworlds.serenity.TestingModule
+import us.nineworlds.serenity.MockkTestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.core.model.VideoContentInfo
@@ -35,8 +40,6 @@ import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
 import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.events.video.OnScreenDisplayEvent
 import us.nineworlds.serenity.injection.ForVideoQueue
-import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
-import us.nineworlds.serenity.jobs.video.WatchedStatusJob
 import us.nineworlds.serenity.test.InjectingTest
 import java.util.LinkedList
 import java.util.Random
@@ -45,72 +48,70 @@ import javax.inject.Inject
 @RunWith(AndroidJUnit4::class)
 class ExoplayerPresenterTest : InjectingTest() {
 
-  @Rule
-  @JvmField
-  var mockitoRule: MockitoRule = MockitoJUnit.rule().strictness(LENIENT)
+  private companion object {
+    private val mockVideoContentInfo = mockk<VideoContentInfo>(relaxed = true)
+    private val mockVideoQueue = LinkedList<VideoContentInfo>()
+    private val mockView: ExoplayerContract.ExoplayerView = mockk(relaxed = true)
+    private val mockEventBus: EventBus = mockk(relaxed = true)
+    private val mockOnScreenDisplayEvent: OnScreenDisplayEvent = mockk(relaxed = true)
+    private val mockAndroidHelper: AndroidHelper = mockk(relaxed = true)
+    private val mockPlaybackRepository: PlaybackRepository = mockk(relaxed = true)
+  }
 
   @Inject
-  lateinit var mockPlexFactory: SerenityClient
-  @Inject
-  lateinit var mockJobManager: JobManager
+  lateinit var mockSerenityClient: SerenityClient
+
   @Inject
   lateinit var mockLogger: Logger
-
-  private var mockVideoContentInfo = mock<VideoContentInfo>()
-  private var mockVideoQueue = LinkedList<VideoContentInfo>()
-  @Mock
-  lateinit var mockView: ExoplayerContract.ExoplayerView
-  @Mock
-  lateinit var mockEventBus: EventBus
-  @Mock
-  lateinit var mockOnScreenDisplayEvent: OnScreenDisplayEvent
-
-  @Mock
-  lateinit var mockAndroidHelper: AndroidHelper
 
   private lateinit var presenter: ExoplayerPresenter
 
   @Before
   override fun setUp() {
+    Dispatchers.setMain(Dispatchers.Unconfined)
+    clearAllMocks()
     super.setUp()
-    presenter = spy(ExoplayerPresenter())
-    presenter.attachView(mockView)
+    presenter = spyk(ExoplayerPresenter())
+    every { presenter.viewState } returns mockView
 
-    doReturn(mockView).whenever(presenter).viewState
+    presenter.attachView(mockView)
+  }
+
+  @After
+  fun tearDown() {
+    Dispatchers.resetMain()
   }
 
   @Test
-  fun updateWatchedStatusAddsJobToJobmanager() {
+  fun updateWatchedStatusUsingPlaybackRepository() = runTest(UnconfinedTestDispatcher()) {
     val expectedId = RandomStringUtils.randomNumeric(5)
-    var videoContentInfo = MoviePosterInfo()
+    val videoContentInfo = MoviePosterInfo()
     videoContentInfo.setId(expectedId)
     presenter.video = videoContentInfo
 
     presenter.updateWatchedStatus()
 
-    verify(mockJobManager).addJobInBackground(any(WatchedStatusJob::class.java))
+    coVerify { mockPlaybackRepository.watched(any()) }
   }
 
   @Test
   fun onScreenDisplayEventShowsControllerWhenHidden() {
-    doReturn(false).whenever(mockOnScreenDisplayEvent).isShowing
+    every { mockOnScreenDisplayEvent.isShowing } returns false
 
     presenter.onOnScreenDisplayEvent(mockOnScreenDisplayEvent)
 
-    verify(mockView, never()).hideController()
-    verify(mockView).showController()
-    verify(mockOnScreenDisplayEvent).isShowing
+    verify(exactly = 0) { mockView.hideController() }
+    verify { mockView.showController() }
+    verify { mockOnScreenDisplayEvent.isShowing }
   }
 
   @Test
   fun onScreenDisplayEventHidesViewControlWhenShowing() {
-    doReturn(true).whenever(mockOnScreenDisplayEvent).isShowing
 
-    presenter.onOnScreenDisplayEvent(mockOnScreenDisplayEvent)
+    presenter.onOnScreenDisplayEvent(OnScreenDisplayEvent(true))
 
-    verify(mockView).hideController()
-    verify(mockView, never()).showController()
-    verify(mockOnScreenDisplayEvent).isShowing
+    verify { mockView.hideController() }
+    verify(exactly = 0) { mockView.showController() }
   }
 
   @Test
@@ -118,7 +119,7 @@ class ExoplayerPresenterTest : InjectingTest() {
     presenter.eventBus = mockEventBus
     presenter.detachView(mockView)
 
-    verify(mockEventBus).unregister(presenter)
+    verify { mockEventBus.unregister(presenter) }
   }
 
   @Test
@@ -137,8 +138,8 @@ class ExoplayerPresenterTest : InjectingTest() {
   }
 
   @Test
-  fun updateServerPlaybackPositionSetsVideoOffestToExpectedPosition() {
-    var videoContentInfo = MoviePosterInfo()
+  fun updateServerPlaybackPositionSetsVideoOffsetToExpectedPosition() = runTest(UnconfinedTestDispatcher()){
+    val videoContentInfo = MoviePosterInfo()
     val expectedPosition = Random().nextInt()
 
     presenter.video = videoContentInfo
@@ -146,7 +147,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
     assertThat(videoContentInfo.resumeOffset).isEqualTo(expectedPosition)
 
-    verify(mockJobManager).addJobInBackground(any(UpdatePlaybackPostionJob::class.java))
+    coVerify { mockPlaybackRepository.updatePlaybackPosition(any()) }
   }
 
   @Test
@@ -154,7 +155,7 @@ class ExoplayerPresenterTest : InjectingTest() {
     presenter.playBackFromVideoQueue(true)
 
     assertThat(mockVideoQueue).isEmpty()
-    verify(mockView, never()).initializePlayer(anyString(), eq(0))
+    verify (exactly = 0) { mockView.initializePlayer(any<String>(), 0) }
   }
 
   @Test
@@ -163,22 +164,23 @@ class ExoplayerPresenterTest : InjectingTest() {
     val expectedId = RandomStringUtils.randomNumeric(1)
     val expectedUrl = "http://www.example.com/start.mkv"
 
-    doReturn("avi").whenever(mockVideoContentInfo).container
-    doReturn(expectedId).whenever(mockVideoContentInfo).id()
-    doReturn(expectedUrl).whenever(mockPlexFactory).createTranscodeUrl(anyString(), anyInt())
+    every { mockVideoContentInfo.container } returns "avi"
+    every { mockVideoContentInfo.id() } returns expectedId
+    every { mockVideoQueue.poll() } returns mockVideoContentInfo
+    every { mockSerenityClient.createTranscodeUrl(any(), any()) } returns expectedUrl
 
     presenter.playBackFromVideoQueue(true)
 
-    assertThat(presenter.video as VideoContentInfo).isNotNull.isEqualTo(mockVideoContentInfo)
-    //Truth.assertThat(presenter.video).isNotNull().isEqualTo(mockVideoContentInfo)
-    verify(mockVideoContentInfo, atLeastOnce()).container
-    verify(mockVideoContentInfo).id()
-    verify(mockPlexFactory).createTranscodeUrl(expectedId, 0)
-    verify(mockView).initializePlayer(expectedUrl, 0)
+    assertThat(presenter.video).isNotNull().isEqualTo(mockVideoContentInfo)
+
+    verify(atLeast = 1) { mockVideoContentInfo.container }
+    verify { mockVideoContentInfo.id() }
+    verify { mockSerenityClient.createTranscodeUrl(expectedId, 0)}
+    verify { mockView.initializePlayer(expectedUrl, 0) }
   }
 
   override fun installTestModules() {
-    scope.installTestModules(TestingModule(), TestModule())
+    scope.installTestModules(MockkTestingModule(), TestModule())
   }
 
   inner class TestModule : Module() {
@@ -187,6 +189,8 @@ class ExoplayerPresenterTest : InjectingTest() {
       bind(LinkedList::class.java).withName(ForVideoQueue::class.java).toInstance(mockVideoQueue)
       bind(EventBus::class.java).toInstance(mockEventBus)
       bind(AndroidHelper::class.java).toInstance(mockAndroidHelper)
+      bind(JobManager::class.java).toInstance(mockk<JobManager>(relaxed = true))
+      bind(PlaybackRepository::class.java).toInstance(mockPlaybackRepository)
     }
   }
 }

@@ -2,15 +2,12 @@ package us.nineworlds.serenity.ui.util
 
 import android.app.Activity
 import android.content.SharedPreferences
+import io.mockk.mockk
 import org.assertj.android.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnit
-import org.mockito.quality.Strictness
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
@@ -27,18 +24,17 @@ class VideoPlayerIntentUtilsTest : InjectingTest() {
     scope.installTestModules(TestingModule())
   }
 
-  @Rule @JvmField val rule = MockitoJUnit.rule().strictness(Strictness.STRICT_STUBS)
+  private lateinit var videoPlayerIntentUtils: VideoPlayerIntentUtils
 
-  lateinit var videoPlayerIntentUtils: VideoPlayerIntentUtils
+  private companion object {
+    private val mockSharedPreferences = mockk<SharedPreferences>(relaxed = true)
+    private val mockTimeUtil = mockk<TimeUtil>(relaxed = true)
+    private val mockVideoContentInfo = mockk<VideoContentInfo>(relaxed = true)
+  }
 
-  @Mock lateinit var mockSharedPreferences: SharedPreferences
-  @Mock lateinit var mockTimeUtil: TimeUtil
-  @Mock lateinit var mockVideoContentInfo: VideoContentInfo
-  @Mock lateinit var mockActivity : Activity
+  private val videoQueue = LinkedList<VideoContentInfo>()
 
-  val videoQueue = LinkedList<VideoContentInfo>()
-
-  var activity : Activity? = null
+  private lateinit var activity : Activity
 
   @Before fun setup() {
     videoQueue.clear()
@@ -46,11 +42,7 @@ class VideoPlayerIntentUtilsTest : InjectingTest() {
   }
 
   @After fun tearDown() {
-    if (activity != null) {
-      activity!!.finish()
-    }
-
-    activity = null
+    activity.finish()
   }
 
   @Test fun playVideoUsingInternalPlayerWhenExternalPlayerIsFalse() {
