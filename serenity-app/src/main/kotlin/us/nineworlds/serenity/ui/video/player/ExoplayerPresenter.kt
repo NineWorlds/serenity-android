@@ -4,8 +4,10 @@ import android.view.View
 import com.birbit.android.jobqueue.JobManager
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerControlView
+import kotlinx.coroutines.launch
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import moxy.presenterScope
 import moxy.viewstate.strategy.SkipStrategy
 import moxy.viewstate.strategy.StateStrategyType
 import org.greenrobot.eventbus.EventBus
@@ -21,10 +23,6 @@ import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.events.video.OnScreenDisplayEvent
 import us.nineworlds.serenity.injection.ForVideoQueue
-import us.nineworlds.serenity.jobs.video.StartPlaybackJob
-import us.nineworlds.serenity.jobs.video.StopPlaybackJob
-import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
-import us.nineworlds.serenity.jobs.video.WatchedStatusJob
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerPresenter
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerView
 import java.util.LinkedList
@@ -54,6 +52,9 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   @Inject
   internal lateinit var androidHelper: AndroidHelper
 
+  @Inject
+  internal lateinit var playbackRepository: PlaybackRepository
+
   internal lateinit var video: VideoContentInfo
 
   private var onScreenControllerShowing: Boolean = false
@@ -70,7 +71,9 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   }
 
   override fun updateWatchedStatus() {
-    jobManager.addJobInBackground(WatchedStatusJob(video.id()))
+    presenterScope.launch {
+      playbackRepository.watched(video.id())
+    }
   }
 
   override fun onPositionDiscontinuity(reason: Int) = Unit
@@ -93,11 +96,15 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   override fun videoId(): String = video.id()
 
   override fun stopPlaying(currentPosition: Long) {
-    jobManager.addJobInBackground(StopPlaybackJob(video.id(), currentPosition))
+    presenterScope.launch {
+      playbackRepository.stopPlaying(video.id(), currentPosition)
+    }
   }
 
   override fun startPlaying() {
-    jobManager.addJobInBackground(StartPlaybackJob(video.id()))
+    presenterScope.launch {
+      playbackRepository.startPlaying(video.id())
+    }
   }
 
   override fun onVisibilityChange(visibility: Int) {
@@ -124,8 +131,10 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   }
 
   override fun updateServerPlaybackPosition(currentPostion: Long) {
-    video.resumeOffset = currentPostion.toInt()
-    jobManager.addJobInBackground(UpdatePlaybackPostionJob(video))
+    presenterScope.launch {
+      video.resumeOffset = currentPostion.toInt()
+      playbackRepository.updatePlaybackPosition(video)
+    }
   }
 
   override fun playBackFromVideoQueue(autoResume: Boolean) {

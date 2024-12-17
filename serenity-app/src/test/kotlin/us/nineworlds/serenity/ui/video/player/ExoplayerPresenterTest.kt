@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package us.nineworlds.serenity.ui.video.player
 
 import android.view.View
@@ -9,16 +11,22 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import com.birbit.android.jobqueue.JobManager
-import io.mockk.Runs
 import io.mockk.clearAllMocks
+import io.mockk.coVerify
 
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.apache.commons.lang3.RandomStringUtils
 import org.greenrobot.eventbus.EventBus
+import org.junit.After
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -32,7 +40,6 @@ import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
 import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.events.video.OnScreenDisplayEvent
 import us.nineworlds.serenity.injection.ForVideoQueue
-import us.nineworlds.serenity.jobs.video.WatchedStatusJob
 import us.nineworlds.serenity.test.InjectingTest
 import java.util.LinkedList
 import java.util.Random
@@ -48,12 +55,12 @@ class ExoplayerPresenterTest : InjectingTest() {
     private val mockEventBus: EventBus = mockk(relaxed = true)
     private val mockOnScreenDisplayEvent: OnScreenDisplayEvent = mockk(relaxed = true)
     private val mockAndroidHelper: AndroidHelper = mockk(relaxed = true)
+    private val mockPlaybackRepository: PlaybackRepository = mockk(relaxed = true)
   }
 
   @Inject
   lateinit var mockSerenityClient: SerenityClient
-  @Inject
-  lateinit var mockJobManager: JobManager
+
   @Inject
   lateinit var mockLogger: Logger
 
@@ -61,6 +68,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
   @Before
   override fun setUp() {
+    Dispatchers.setMain(Dispatchers.Unconfined)
     clearAllMocks()
     super.setUp()
     presenter = spyk(ExoplayerPresenter())
@@ -69,8 +77,13 @@ class ExoplayerPresenterTest : InjectingTest() {
     presenter.attachView(mockView)
   }
 
+  @After
+  fun tearDown() {
+    Dispatchers.resetMain()
+  }
+
   @Test
-  fun updateWatchedStatusAddsJobToJobmanager() {
+  fun updateWatchedStatusUsingPlaybackRepository() = runTest(UnconfinedTestDispatcher()) {
     val expectedId = RandomStringUtils.randomNumeric(5)
     val videoContentInfo = MoviePosterInfo()
     videoContentInfo.setId(expectedId)
@@ -78,7 +91,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
     presenter.updateWatchedStatus()
 
-    verify { mockJobManager.addJobInBackground(any<WatchedStatusJob>())}
+    coVerify { mockPlaybackRepository.watched(any()) }
   }
 
   @Test
@@ -125,18 +138,16 @@ class ExoplayerPresenterTest : InjectingTest() {
   }
 
   @Test
-  fun updateServerPlaybackPositionSetsVideoOffestToExpectedPosition() {
+  fun updateServerPlaybackPositionSetsVideoOffsetToExpectedPosition() = runTest(UnconfinedTestDispatcher()){
     val videoContentInfo = MoviePosterInfo()
     val expectedPosition = Random().nextInt()
-
-    every { mockJobManager.addJobInBackground(any()) } just Runs
 
     presenter.video = videoContentInfo
     presenter.updateServerPlaybackPosition(expectedPosition.toLong())
 
     assertThat(videoContentInfo.resumeOffset).isEqualTo(expectedPosition)
 
-    verify { mockJobManager.addJobInBackground(any()) }
+    coVerify { mockPlaybackRepository.updatePlaybackPosition(any()) }
   }
 
   @Test
@@ -160,7 +171,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
     presenter.playBackFromVideoQueue(true)
 
-    assertThat(presenter.video as VideoContentInfo).isNotNull().isEqualTo(mockVideoContentInfo)
+    assertThat(presenter.video).isNotNull().isEqualTo(mockVideoContentInfo)
 
     verify(atLeast = 1) { mockVideoContentInfo.container }
     verify { mockVideoContentInfo.id() }
@@ -179,6 +190,7 @@ class ExoplayerPresenterTest : InjectingTest() {
       bind(EventBus::class.java).toInstance(mockEventBus)
       bind(AndroidHelper::class.java).toInstance(mockAndroidHelper)
       bind(JobManager::class.java).toInstance(mockk<JobManager>(relaxed = true))
+      bind(PlaybackRepository::class.java).toInstance(mockPlaybackRepository)
     }
   }
 }

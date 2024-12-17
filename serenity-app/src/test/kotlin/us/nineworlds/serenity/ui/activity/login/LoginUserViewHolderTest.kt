@@ -5,22 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.clearAllMocks
+import io.mockk.every
+import io.mockk.mockk
 import org.apache.commons.lang3.RandomStringUtils
 import org.assertj.android.api.Assertions.assertThat
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnit
-import org.mockito.junit.MockitoRule
-import org.mockito.quality.Strictness
 import org.robolectric.RobolectricTestRunner
 import toothpick.config.Module
+import us.nineworlds.serenity.MockkTestingModule
 import us.nineworlds.serenity.R
-import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.test.InjectingTest
@@ -28,15 +24,10 @@ import us.nineworlds.serenity.test.InjectingTest
 @RunWith(RobolectricTestRunner::class)
 class LoginUserViewHolderTest : InjectingTest() {
 
-  @Rule
-  @JvmField
-  var mockitoRule: MockitoRule = MockitoJUnit.rule().strictness(Strictness.LENIENT)
-
-  @Mock
-  internal lateinit var mockUser: SerenityUser
-
-  @Mock
-  internal lateinit var mockSerenityClient: SerenityClient
+  private companion object {
+    private val mockUser = mockk<SerenityUser>(relaxed = true)
+    private val mockSerenityClient = mockk<SerenityClient>(relaxed = true)
+  }
 
   private lateinit var linearLayout: LinearLayout
   private lateinit var view: View
@@ -44,6 +35,7 @@ class LoginUserViewHolderTest : InjectingTest() {
 
   @Before
   override fun setUp() {
+    clearAllMocks()
     super.setUp()
     val context = ContextThemeWrapper(getApplicationContext(), R.style.AppTheme)
     linearLayout = LinearLayout(context)
@@ -54,7 +46,7 @@ class LoginUserViewHolderTest : InjectingTest() {
   @Test
   fun loadUserSetsUserName() {
     val expectedUser = RandomStringUtils.randomAlphabetic(10)
-    doReturn(expectedUser).whenever(mockUser).userName
+    every { mockUser.userName } returns expectedUser
 
     viewHolder.loadUser(mockUser)
 
@@ -62,7 +54,7 @@ class LoginUserViewHolderTest : InjectingTest() {
   }
 
   override fun installTestModules() {
-    scope.installTestModules(TestingModule(), TestModule())
+    scope.installTestModules(MockkTestingModule(), TestModule())
   }
 
   inner class TestModule : Module() {

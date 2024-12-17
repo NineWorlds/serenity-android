@@ -10,39 +10,34 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.atMost
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.clearAllMocks
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnit
-import org.mockito.quality.Strictness
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
+import us.nineworlds.serenity.MockkTestingModule
 import us.nineworlds.serenity.R
-import us.nineworlds.serenity.TestingModule
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.test.InjectingTest
 
 @RunWith(RobolectricTestRunner::class)
 class LoginUserAdapterTest : InjectingTest() {
 
-  @get:Rule
-  val rule = MockitoJUnit.rule().strictness(Strictness.STRICT_STUBS)
-
-  private val mockPresenter = mock<LoginUserPresenter>()
-  private val mockUser = mock<SerenityUser>()
-  private val mockViewHolder = mock<LoginUserViewHolder>()
+  private companion object {
+    private val mockPresenter = mockk<LoginUserPresenter>(relaxed = true)
+    private val mockUser = mockk<SerenityUser>(relaxed = true)
+    private val mockViewHolder = mockk<LoginUserViewHolder>(relaxed = true)
+  }
 
   private lateinit var adapter: LoginUserAdapter
 
   @Before
   override fun setUp() {
+    clearAllMocks()
     super.setUp()
     adapter = LoginUserAdapter(mockPresenter)
   }
@@ -67,13 +62,13 @@ class LoginUserAdapterTest : InjectingTest() {
   fun onBindViewHolderLoadsTheUserIntoTheView() {
     val view = FrameLayout(ApplicationProvider.getApplicationContext<Application>())
 
-    doReturn(view).whenever(mockViewHolder).getItemView()
+    every { mockViewHolder.getItemView() } returns view
 
     adapter.loadUsers(mutableListOf(mockUser))
 
     adapter.onBindViewHolder(mockViewHolder, 0)
 
-    verify(mockViewHolder).loadUser(mockUser)
+    verify { mockViewHolder.loadUser(mockUser) }
 
     val shadowView = shadowOf(view)
     assertThat(shadowView.onClickListener).isNotNull()
@@ -85,40 +80,47 @@ class LoginUserAdapterTest : InjectingTest() {
     adapter.loadUsers(mutableListOf(mockUser))
     adapter.onClicked(0)
 
-    verify(mockPresenter).loadUser(mockUser)
+    verify { mockPresenter.loadUser(mockUser) }
   }
 
   @Test
   fun onFocusedChangeListenerUpdatesViewSelectionStateWithOutFocus() {
-    val mockView = mock<View>()
+    val mockView = mockk<View>(relaxed = true)
     adapter.loadUsers(mutableListOf(mockUser))
 
     adapter.onFocusChanged(mockView, false)
 
-    verify(mockView).clearAnimation()
-    verify(mockView).background = null
+    verify {
+      mockView.clearAnimation()
+      mockView.background = null
+    }
   }
 
   @Test
   fun onFocusedChangeListenerUpdatesViewSelectionStateWithFocus() {
-    val mockView = mock<View>()
+    val mockView = mockk<View>(relaxed = true)
     val context = ContextThemeWrapper(
       ApplicationProvider.getApplicationContext<Application>(),
       R.style.AppTheme
     )
 
-    doReturn(context).whenever(mockView).context
+    every { mockView.context } returns context
 
     adapter.loadUsers(mutableListOf(mockUser))
     adapter.onFocusChanged(mockView, true)
 
-    verify(mockView, atMost(2)).clearAnimation()
-    verify(mockView).background = null
-    verify(mockView).context
-    verify(mockView).background = any<Drawable>()
+    verify(atMost = 2) {
+      mockView.clearAnimation()
+    }
+
+    verify {
+      mockView.background = null
+      mockView.context
+      mockView.background = any<Drawable>()
+    }
   }
 
   override fun installTestModules() {
-    scope.installTestModules(TestingModule())
+    scope.installTestModules(MockkTestingModule())
   }
 }
