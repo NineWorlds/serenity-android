@@ -1,12 +1,10 @@
 package us.nineworlds.serenity.emby.server.api
 
 import android.content.Context
+import android.os.Build
 import android.preference.PreferenceManager
-import android.util.Log
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import github.nisrulz.easydeviceinfo.base.EasyDeviceMod
-import github.nisrulz.easydeviceinfo.base.EasyIdMod
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -14,6 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.joda.time.LocalDateTime
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import timber.log.Timber
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
@@ -21,11 +20,14 @@ import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.emby.BuildConfig
 import us.nineworlds.serenity.emby.adapters.MediaContainerAdaptor
 import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
-import us.nineworlds.serenity.emby.server.model.*
+import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
+import us.nineworlds.serenity.emby.server.model.AuthenticationResult
+import us.nineworlds.serenity.emby.server.model.Item
+import us.nineworlds.serenity.emby.server.model.PublicUserInfo
+import us.nineworlds.serenity.emby.server.model.QueryFilters
+import us.nineworlds.serenity.emby.server.model.QueryResult
 import java.io.File
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+import java.util.UUID
 
 class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
 
@@ -66,12 +68,11 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         usersService = embyRetrofit.create(UsersService::class.java)
         filterService = embyRetrofit.create(FilterService::class.java)
 
-        val easyDeviceMod = EasyDeviceMod(context)
 
-        deviceId = EasyIdMod(context).pseudoUniqueID
-        deviceName = "${easyDeviceMod.manufacturer} ${easyDeviceMod.model}"
-        Log.d(this::class.java.simpleName, "Device Id: $deviceId")
-        Log.d(this::class.java.simpleName, "Device Name : $deviceName")
+        deviceId = pseudoUniqueID()
+        deviceName = "${Build.MANUFACTURER} ${Build.MODEL} "
+        Timber.d(this::class.java.simpleName, "Device Id: $deviceId")
+        Timber.d(this::class.java.simpleName, "Device Name : $deviceName")
     }
 
     fun fetchAllPublicUsers(): List<PublicUserInfo> {
@@ -535,4 +536,44 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     fun fetchAccessToken() = prefs.getString("embyAccessToken", "")
 
     override fun supportsMultipleUsers(): Boolean = true
+
+    private fun pseudoUniqueID(): String {
+        // If all else fails, if the user does have lower than API 9 (lower
+        // than Gingerbread), has reset their phone or 'Secure.ANDROID_ID'
+        // returns 'null', then simply the ID returned will be solely based
+        // off their Android device information. This is where the collisions
+        // can happen.
+        // Try not to use DISPLAY, HOST or ID - these items could change.
+        // If there are collisions, there will be overlapping data
+        var devIDShort = "35" + (Build.BOARD.length % 10) + (Build.BRAND.length % 10)
+
+        devIDShort += if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            (Build.SUPPORTED_ABIS[0].length % 10)
+        } else {
+            (Build.CPU_ABI.length % 10)
+        }
+
+        devIDShort +=
+            (Build.DEVICE.length % 10) + (Build.MANUFACTURER.length % 10) + (Build.MODEL.length
+                    % 10) + (Build.PRODUCT.length % 10)
+
+        // Only devices with API >= 9 have android.os.Build.SERIAL
+        // http://developer.android.com/reference/android/os/Build.html#SERIAL
+        // If a user upgrades software or roots their phone, there will be a duplicate entry
+        var serial: String
+        try {
+            serial = Build::class.java.getField("SERIAL")[null]?.toString() ?: ""
+
+            // Go ahead and return the serial for api => 9
+            return UUID(devIDShort.hashCode().toLong(), serial.hashCode().toLong()).toString()
+        } catch (e: java.lang.Exception) {
+            // String needs to be initialized
+            Timber.e(EmbyAPIClient::class.java.simpleName, "getPseudoUniqueID: ", e)
+            serial = "ESYDV000" // some value
+        }
+
+        // Finally, combine the values we have found by using the UUID class to create a unique identifier
+        return UUID(devIDShort.hashCode().toLong(), serial.hashCode().toLong()).toString()
+    }
+
 }

@@ -43,7 +43,6 @@ dependencies {
   api(project(":serenity-common"))
   api(libs.eventbus)
   implementation(libs.kotlin)
-  api(libs.android.priority.jobqueue)
 
   releaseApi(libs.toothpick.runtime) {
     exclude(group = "javax.inject")

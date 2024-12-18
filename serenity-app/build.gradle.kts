@@ -137,16 +137,15 @@ dependencies {
     exclude(group = "com.android.support")
   }
 
+  implementation(libs.androidx.lifecycle.runtime)
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.material)
   implementation(libs.kotlin)
   implementation(libs.kotlin.coroutines.android)
   implementation(libs.moxy.community.moxy)
-  implementation(libs.moxy.community.moxy.app.compat)
   implementation(libs.moxy.ktx)
   implementation(libs.github.glide)
   ksp(libs.glide.compiler)
-  implementation(libs.android.priority.jobqueue)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.leanback)
   implementation(libs.androidx.leanback.preference)

@@ -10,7 +10,6 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
-import com.birbit.android.jobqueue.JobManager
 import io.mockk.clearAllMocks
 import io.mockk.coVerify
 
@@ -189,7 +188,6 @@ class ExoplayerPresenterTest : InjectingTest() {
       bind(LinkedList::class.java).withName(ForVideoQueue::class.java).toInstance(mockVideoQueue)
       bind(EventBus::class.java).toInstance(mockEventBus)
       bind(AndroidHelper::class.java).toInstance(mockAndroidHelper)
-      bind(JobManager::class.java).toInstance(mockk<JobManager>(relaxed = true))
       bind(PlaybackRepository::class.java).toInstance(mockPlaybackRepository)
     }
   }

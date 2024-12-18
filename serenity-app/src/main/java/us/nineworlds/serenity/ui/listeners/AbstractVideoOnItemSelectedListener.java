@@ -35,7 +35,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.birbit.android.jobqueue.JobManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -64,8 +63,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector {
     @Inject
     protected SharedPreferences preferences;
 
-    @Inject
-    JobManager jobManager;
     @Inject
     Logger logger;
 

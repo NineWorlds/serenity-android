@@ -1,7 +1,6 @@
 package us.nineworlds.serenity.ui.video.player
 
 import android.view.View
-import com.birbit.android.jobqueue.JobManager
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerControlView
 import kotlinx.coroutines.launch
@@ -45,9 +44,6 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
 
   @Inject
   internal lateinit var eventBus: EventBus
-
-  @Inject
-  internal lateinit var jobManager: JobManager
 
   @Inject
   internal lateinit var androidHelper: AndroidHelper

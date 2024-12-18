@@ -66,7 +66,6 @@ dependencies {
   releaseApi(libs.toothpick.javax.annotations)
   ksp(libs.toothpick.ksp.compiler)
 
-  implementation(libs.android.priority.jobqueue)
   implementation(libs.eventbus)
   implementation(libs.moshi)
   implementation(libs.retrofit.moshi)
@@ -75,8 +74,6 @@ dependencies {
   implementation(libs.okhttp)
   implementation(libs.okhttp.logging.interceptor)
   implementation(libs.timber)
-  implementation(libs.easydeviceinfo.base)
-  implementation(libs.easydeviceinfo.common)
 
   testImplementation(libs.junit)
   testImplementation(libs.assertj.core)

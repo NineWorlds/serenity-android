@@ -27,8 +27,6 @@ import android.content.Context;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.birbit.android.jobqueue.JobManager;
-
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -39,7 +37,6 @@ import us.nineworlds.serenity.core.util.AndroidHelper;
 
 public class TestingModule extends Module {
 
-  @Mock JobManager mockJobManager;
   @Mock SerenityClient mockPlexAppFactory;
   @Mock LocalBroadcastManager mockLocalBroadcastManager;
   @Mock Logger mockLogger;
@@ -48,7 +45,6 @@ public class TestingModule extends Module {
 
   public TestingModule() {
     MockitoAnnotations.initMocks(this);
-    bind(JobManager.class).toInstance(mockJobManager);
     bind(SerenityClient.class).toInstance(mockPlexAppFactory);
     bind(LocalBroadcastManager.class).toInstance(mockLocalBroadcastManager);
     bind(Logger.class).toInstance(mockLogger);

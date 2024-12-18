@@ -29,7 +29,6 @@ import android.content.SharedPreferences;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.birbit.android.jobqueue.JobManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,7 +55,6 @@ public class TestSerenityApplication extends SerenityApplication implements Test
 	protected void inject() {
 		Scope scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE);
 		scope.installModules(new AndroidModule(this), new SerenityModule(), new LoginModule(), new ExoplayerVideoModule() );
-		jobManager = mock(JobManager.class);
 		androidHelper = mock(AndroidHelper.class);
 		preferences = scope.getInstance(SharedPreferences.class);
 		localBroadcastManager = scope.getInstance(LocalBroadcastManager.class);

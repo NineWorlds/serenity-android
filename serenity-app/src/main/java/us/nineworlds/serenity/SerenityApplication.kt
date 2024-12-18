@@ -30,11 +30,12 @@ import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.birbit.android.jobqueue.JobManager
 import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.google.firebase.analytics.FirebaseAnalytics
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import net.danlew.android.joda.JodaTimeAndroid
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -46,7 +47,7 @@ import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.emby.server.EmbyServer
-import us.nineworlds.serenity.emby.server.EmbyServerJob
+import us.nineworlds.serenity.emby.server.EmbyServerDiscover
 import us.nineworlds.serenity.injection.ForMediaServers
 import us.nineworlds.serenity.injection.modules.AndroidModule
 import us.nineworlds.serenity.injection.modules.LoginModule
@@ -70,9 +71,6 @@ open class SerenityApplication : Application() {
     lateinit var preferences: SharedPreferences
 
     @Inject
-    lateinit var jobManager: JobManager
-
-    @Inject
     lateinit var logger: Logger
 
     @Inject
@@ -85,7 +83,6 @@ open class SerenityApplication : Application() {
         sendStartedApplicationEvent()
         eventBus = EventBus.getDefault()
         eventBus.register(this)
-        jobManager.start()
         logger.initialize()
     }
 
@@ -132,12 +129,13 @@ open class SerenityApplication : Application() {
 
     override fun onTerminate() {
         eventBus.unregister(this)
-        jobManager.stop()
         super.onTerminate()
     }
 
     protected open fun discoverServers() {
-        jobManager.addJobInBackground(EmbyServerJob())
+        MainScope().launch {
+            EmbyServerDiscover().findServers()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
