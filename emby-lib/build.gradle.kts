@@ -90,4 +90,5 @@ dependencies {
 
   testImplementation(libs.toothpick.testing)
   kspTest(libs.toothpick.ksp.compiler)
+  testImplementation(libs.turbine)
 }

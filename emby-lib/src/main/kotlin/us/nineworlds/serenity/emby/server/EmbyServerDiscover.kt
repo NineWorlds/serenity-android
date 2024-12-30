@@ -30,19 +30,25 @@ class EmbyServerDiscover {
             //Try the 255.255.255.255 first
 
             try {
-                val sendPacket = DatagramPacket(sendData, sendData.size, InetAddress.getByName("255.255.255.255"), port)
+                val sendPacket = DatagramPacket(
+                    sendData,
+                    sendData.size,
+                    InetAddress.getByName("255.255.255.255"),
+                    port
+                )
                 c.send(sendPacket)
                 Timber.d(">>> Request packet sent to: 255.255.255.255 (DEFAULT)")
             } catch (e: Exception) {
                 Timber.e(e, "Error sending DatagramPacket")
             }
 
-//      try {
-//        val sendPacket = DatagramPacket(sendData, sendData.size, useMultiCastAddress(), port)
-//        c.send(sendPacket)
-//      } catch (e: Exception) {
-//        Timber.e(e, "error sending to multicast address")
-//      }
+            try {
+                val sendPacket =
+                    DatagramPacket(sendData, sendData.size, useMultiCastAddress(), port)
+                c.send(sendPacket)
+            } catch (e: Exception) {
+                Timber.e(e, "error sending to multicast address")
+            }
 
             // Broadcast the message over all the network interfaces
             val interfaces = NetworkInterface.getNetworkInterfaces()
@@ -65,7 +71,7 @@ class EmbyServerDiscover {
                     }
 
                     Timber.d(
-                            ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName()
+                        ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName()
                     )
                 }
             }
@@ -126,6 +132,7 @@ class EmbyServerDiscover {
             server.serverName = "Emby - " + embyServerInfo.name
 
             ServerChannel.invokeServerEvent(server)
+            servers.add(server)
 
             // TODO: Once completely migrated to the ServerChannel remove the event bus.
             eventBus.post(server)
