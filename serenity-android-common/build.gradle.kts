@@ -60,10 +60,6 @@ dependencies {
   testImplementation(libs.junit)
   testImplementation(libs.assertj.core)
   testImplementation(libs.mockito.core)
-  testImplementation(libs.robolectric)
-  testImplementation(libs.robolectric.shadows.framework)
-  testImplementation(libs.robolectric.shadows.api)
-  testImplementation(libs.robolectric.shadows.playservices)
   testImplementation(libs.opengl.api)
 
   testImplementation(libs.toothpick.testing)
