@@ -200,9 +200,7 @@ dependencies {
   testImplementation(libs.okhttp.mockwebserver)
   testImplementation(libs.commons.io)
   testImplementation(libs.toothpick.testing)
-  testImplementation(libs.robolectric) {
-    exclude(module = "support-v4")
-  }
+  testImplementation(libs.robolectric)
   testImplementation(libs.assertj.android) {
     exclude(module = "support-v4")
     exclude(module = "support-annotations")
@@ -212,8 +210,6 @@ dependencies {
   testImplementation(libs.assertj.core)
   testImplementation(libs.junit)
   testImplementation(libs.robolectric.shadows.framework)
-  testImplementation(libs.robolectric.shadows.api)
-  testImplementation(libs.robolectric.shadows.playservices)
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.opengl.api)
   testImplementation(libs.androidx.junit)

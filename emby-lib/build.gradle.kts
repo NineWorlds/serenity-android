@@ -36,7 +36,7 @@ android {
     getByName("debug") {
       buildConfigField("String", "CLIENT_VERSION", "\"${libs.versions.appVersion.get()}\"")
     }
-    
+
     getByName("release") {
       buildConfigField("String", "CLIENT_VERSION", "\"${libs.versions.appVersion.get()}")
     }
@@ -82,8 +82,6 @@ dependencies {
   testImplementation(libs.mockk)
   testImplementation(libs.robolectric)
   testImplementation(libs.robolectric.shadows.framework)
-  testImplementation(libs.robolectric.shadows.api)
-  testImplementation(libs.robolectric.shadows.playservices)
   testImplementation(libs.opengl.api)
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.kotlin.coroutines.test)
