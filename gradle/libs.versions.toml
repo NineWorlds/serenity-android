@@ -45,7 +45,7 @@ simpleXmlVersion = "2.7.1"
 
 junitVersion = "4.13.2"
 assertjVersion = "3.11.1"
-mockitoVersion = "5.14.2"
+mockitoVersion = "5.18.0"
 robolectricVersion = "4.14.1"
 openglApiVersion = "gl1.1-android-2.1_r1"
 assertJAndroidVersion = "1.1.1"
