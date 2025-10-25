@@ -6,9 +6,9 @@ buildscript {
 
   }
   dependencies {
-    classpath("com.google.firebase:firebase-crashlytics-gradle:3.0.2")
+    classpath("com.google.firebase:firebase-crashlytics-gradle:3.0.6")
     classpath("com.android.tools.build:gradle:${libs.versions.androidPluginVersion.get()}")
-    classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8")
+    classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlinVersion.get()}")
     classpath("org.jetbrains.kotlin:kotlin-allopen:${libs.versions.kotlinVersion.get()}")
     classpath("org.jacoco:org.jacoco.core:0.8.12")
