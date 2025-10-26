@@ -51,6 +51,7 @@ import us.nineworlds.serenity.emby.server.EmbyServerDiscover
 import us.nineworlds.serenity.injection.ForMediaServers
 import us.nineworlds.serenity.injection.modules.AndroidModule
 import us.nineworlds.serenity.injection.modules.LoginModule
+import us.nineworlds.serenity.injection.modules.MainPresenterModule
 import us.nineworlds.serenity.injection.modules.SerenityModule
 import javax.inject.Inject
 
@@ -88,7 +89,8 @@ open class SerenityApplication : Application() {
 
     protected open fun inject() {
         val scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE)
-        scope.installModules(AndroidModule(this), SerenityModule(), LoginModule())
+        scope.installModules(AndroidModule(this), SerenityModule(), LoginModule(),
+            MainPresenterModule())
         Toothpick.inject(this, scope)
     }
 
