@@ -21,49 +21,25 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.menus;
+package us.nineworlds.serenity.core.menus
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import org.junit.Before
+import org.junit.Test
 
-import org.junit.Before;
-import org.junit.Test;
+class DialogMenuItemTest {
 
-public class MenuItemTest {
+  private lateinit var dialogMenuItem: DialogMenuItem
 
-	MenuItem menuItem;
+  @Before
+  fun setUp() {
+    dialogMenuItem = DialogMenuItem()
+  }
 
-	@Before
-	public void setUp() {
-		menuItem = new MenuItem();
-	}
-
-
-	@Test
-	public void typeReturnsValueSet() {
-		menuItem.setType("movie");
-		assertThat(menuItem.getType()).isEqualTo("movie");
-	}
-
-	@Test
-	public void titleReturnsExpectedValueSet() {
-		menuItem.setTitle("Movies");
-		assertThat(menuItem.getTitle()).isEqualTo("Movies");
-	}
-
-	@Test
-	public void sectionReturnsExpectuedValueSet() {
-		menuItem.setSection("1234");
-		assertThat(menuItem.getSection()).isEqualTo("1234");
-	}
-
-	@Test
-	public void toStringReturnsNullWhenNoTitleHasBeenSet() {
-		assertThat(menuItem.toString()).isEmpty();
-	}
-
-	@Test
-	public void toStringReturnsGeneratedValue() {
-		menuItem.setTitle("To String!");
-		assertThat(menuItem.toString()).isEqualTo("To String!");
-	}
+  @Test
+  fun `set menu dialog action returns expected action`() {
+    dialogMenuItem.menuDialogAction = 0
+    assertThat(dialogMenuItem.menuDialogAction).isEqualTo(0)
+  }
 }

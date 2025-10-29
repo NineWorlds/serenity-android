@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * <p>
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * <p>
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
@@ -21,18 +21,49 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.menus;
+package us.nineworlds.serenity.core.menus
 
-/**
- * @author dcarver
- */
-public interface MenuDrawerItem {
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isEmpty
+import org.junit.Before
+import org.junit.Test
 
-  String getText();
+class MenuItemTest {
 
-  int getImageResourceID();
+  private lateinit var menuItem: MenuItem
 
-  void setText(String text);
+  @Before
+  fun setUp() {
+    menuItem = MenuItem()
+  }
 
-  void setImageResourceID(int resourceId);
+  @Test
+  fun `type returns value set`() {
+    menuItem.type = "movie"
+    assertThat(menuItem.type).isEqualTo("movie")
+  }
+
+  @Test
+  fun `title returns expected value set`() {
+    menuItem.title = "Movies"
+    assertThat(menuItem.title).isEqualTo("Movies")
+  }
+
+  @Test
+  fun `section returns expected value set`() {
+    menuItem.section = "1234"
+    assertThat(menuItem.section).isEqualTo("1234")
+  }
+
+  @Test
+  fun `toString returns empty when no title has been set`() {
+    assertThat(menuItem.toString()).isEmpty()
+  }
+
+  @Test
+  fun `toString returns generated value`() {
+    menuItem.title = "To String!"
+    assertThat(menuItem.toString()).isEqualTo("To String!")
+  }
 }
