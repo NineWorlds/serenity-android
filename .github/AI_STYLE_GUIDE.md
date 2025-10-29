@@ -4,6 +4,29 @@
 
 This project is a media server client for Android, supporting both Plex and Emby servers. It's built with a focus on a clean, maintainable architecture, leveraging modern Android development practices.
 
+## General Principles
+
+* Restrict actions to only the relevant tasks, do not go outside the guidelines.
+* If you do see a problem mention it and ask before attempting to fix it.
+* Describe how you would like to fix it before proceeding. 
+* Proceed only after permission is granted.
+* Always try to do work that optimizes your token usage but not exceeds it.
+
+## GIT interactions
+
+- Delete unused or obsolete files when your changes make them irrelevant (refactors, feature removals, etc.), and revert files only when the change is yours or explicitly requested. If a git operation leaves you unsure about other agents' in-flight work, stop and coordinate instead of deleting.
+- **Before attempting to delete a file to resolve a local type/lint failure, stop and ask the user.** Other agents are often editing adjacent files; deleting their work to silence an error is never acceptable without explicit approval.
+- NEVER edit `.env` or any environment variable files—only the user may change them.
+- Coordinate with other agents before removing their in-progress edits—don't revert or delete work you didn't author unless everyone agrees.
+- Moving/renaming and restoring files is allowed.
+- ABSOLUTELY NEVER run destructive git operations (e.g., `git reset --hard`, `rm`, `git checkout`/`git restore` to an older commit) unless the user gives an explicit, written instruction in this conversation. Treat these commands as catastrophic; if you are even slightly unsure, stop and ask before touching them. *(When working within Cursor or Codex Web, these git limitations do not apply; use the tooling's capabilities as needed.)*
+- Never use `git restore` (or similar commands) to revert files you didn't author—coordinate with other agents instead so their in-progress work stays intact.
+- Always double-check git status before any commit
+- Keep commits atomic: commit only the files you touched and list each path explicitly. For tracked files run `git commit -m "<scoped message>" -- path/to/file1 path/to/file2`. For brand-new files, use the one-liner `git restore --staged :/ && git add "path/to/file1" "path/to/file2" && git commit -m "<scoped message>" -- path/to/file1 path/to/file2`.
+- Quote any git paths containing brackets or parentheses (e.g., `src/app/[candidate]/**`) when staging or committing so the shell does not treat them as globs or subshells.
+- When running `git rebase`, avoid opening editors—export `GIT_EDITOR=:` and `GIT_SEQUENCE_EDITOR=:` (or pass `--no-edit`) so the default messages are used automatically.
+- Never amend commits unless you have explicit written approval in the task thread.
+
 ## Core Frameworks
 
 *   **MVP (Model-View-Presenter):** The application follows the MVP architectural pattern, using the **Moxy** framework to facilitate this. Presenters are responsible for business logic, while views (Activities and Fragments) are responsible for displaying data and handling user input.
@@ -26,11 +49,47 @@ This project is a media server client for Android, supporting both Plex and Emby
 *   **Testing:**
     *   Write unit tests for all new features and bug fixes.
     *   Use MockK for mocking dependencies in unit tests.
+        *   **Instantiation:** Mocks should be defined as properties within the test class, instantiated directly with the `mockk()` function. The use of `relaxed = true` is preferred to avoid boilerplate stubbing. Do **not** use the `@MockK` annotation or `MockKRule`.
+            
+            *Correct Example (`MainActivityTest.kt`):*
+            '''kotlin
+            private val mockSharedPreferences: SharedPreferences = mockk(relaxed = true)
+            private val mockPresenter: MainPresenter = mockk(relaxed = true)
+            '''
+
+        *   **Lifecycle Management:** Use standard JUnit `@Before` for setup and `@After` for teardown. The `@After` method must call `clearAllMocks()` to ensure tests do not interfere with each other.
+
+            *Correct Example (`MainActivityTest.kt`):*
+            '''kotlin
+            @Before
+            fun setUp() {
+              // Stub mock behavior
+              every { mockSharedPreferences.getBoolean("serenity_first_run", true) } returns true
+            }
+
+            @After
+            fun tearDown() {
+              activity.finish()
+              clearAllMocks()
+              Toothpick.reset()
+            }
+            '''
+
+        *   **Static Mocks:** For mocking objects, companion objects, or constructors (e.g., `mockkStatic`, `mockkObject`), mocking and unmocking should be handled within `@BeforeClass` and `@AfterClass` methods in a `companion object`. Call `unmockAll()` in the `@AfterClass` method.
     *   Use Robolectric to test Android framework-dependent code.
-*   **Naming Conventions:**
-    *   Follow the standard Kotlin naming conventions.
-    *   Name presenters with the `Presenter` suffix (e.g., `MainPresenter`).
-    *   Name views with the `View` suffix (e.g., `MainView`).
+    *   When converting tests from Java to Kotlin, replace AssertJ assertions with their AssertK equivalents.
+    * Toothpick Rules for Tests:
+        * *   **Inherit from `InjectingTest`**: All test classes that require dependency injection must extend the `us.nineworlds.us.nineworlds.serenity.test.InjectingTest` base class.
+        *   **Override `setUp` and Call `super.setUp()` First**: It's critical to override the `@Before setUp()` method. The very first line must be `super.setUp()`. This ensures the scope is opened and your test modules are installed before the component under test (e.g., an Activity) is created.
+        *   **Implement `installTestModules()`**: You must implement the abstract `installTestModules()` method. This is where you will install your test-specific dependency configurations.
+        *   **Define Bindings in an Inner `Module` Class**: Create an inner class that extends `Module` within your test class. This encapsulates all the specific bindings for that test, keeping it self-contained and easy to understand.
+        *   **Manually Bind Mock Instances**: Inside your inner `Module`, manually bind each mock object to its corresponding class or interface using `bind(SomeClass::class.java).toInstance(mockInstance)`.
+        *   **Use `scope.installTestModules()` for Installation**: Within the `installTestModules()` override, use `scope.installTestModules()` to add one or more of your configured test modules. You can add both shared test modules and the specific inner class module you created.
+        *   **Trust the Base Class for Cleanup**: The `InjectingTest` base class automatically handles resetting Toothpick. You can add an `@After` method for other cleanup tasks, like clearing mocks.
+    *   **Naming Conventions:**
+        *   Follow the standard Kotlin naming conventions.
+        *   Name presenters with the `Presenter` suffix (e.g., `MainPresenter`).
+        *   Name views with the `View` suffix (e.g., `MainView`).
 
 ---
 

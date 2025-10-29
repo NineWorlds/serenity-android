@@ -21,49 +21,50 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity.core.menus;
+package us.nineworlds.serenity.core.menus
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isEmpty
+import org.junit.Before
+import org.junit.Test
+import us.nineworlds.serenity.core.menus.MenuItem
 
-import org.junit.Before;
-import org.junit.Test;
+class MenuItemTest {
 
-public class MenuItemTest {
+  private lateinit var menuItem: MenuItem
 
-	MenuItem menuItem;
+  @Before
+  fun setUp() {
+    menuItem = MenuItem()
+  }
 
-	@Before
-	public void setUp() {
-		menuItem = new MenuItem();
-	}
+  @Test
+  fun `type returns value set`() {
+    menuItem.type = "movie"
+    assertThat(menuItem.type).isEqualTo("movie")
+  }
 
+  @Test
+  fun `title returns expected value set`() {
+    menuItem.title = "Movies"
+    assertThat(menuItem.title).isEqualTo("Movies")
+  }
 
-	@Test
-	public void typeReturnsValueSet() {
-		menuItem.setType("movie");
-		assertThat(menuItem.getType()).isEqualTo("movie");
-	}
+  @Test
+  fun `section returns expected value set`() {
+    menuItem.section = "1234"
+    assertThat(menuItem.section).isEqualTo("1234")
+  }
 
-	@Test
-	public void titleReturnsExpectedValueSet() {
-		menuItem.setTitle("Movies");
-		assertThat(menuItem.getTitle()).isEqualTo("Movies");
-	}
+  @Test
+  fun `toString returns empty when no title has been set`() {
+    assertThat(menuItem.toString()).isEmpty()
+  }
 
-	@Test
-	public void sectionReturnsExpectuedValueSet() {
-		menuItem.setSection("1234");
-		assertThat(menuItem.getSection()).isEqualTo("1234");
-	}
-
-	@Test
-	public void toStringReturnsNullWhenNoTitleHasBeenSet() {
-		assertThat(menuItem.toString()).isEmpty();
-	}
-
-	@Test
-	public void toStringReturnsGeneratedValue() {
-		menuItem.setTitle("To String!");
-		assertThat(menuItem.toString()).isEqualTo("To String!");
-	}
+  @Test
+  fun `toString returns generated value`() {
+    menuItem.title = "To String!"
+    assertThat(menuItem.toString()).isEqualTo("To String!")
+  }
 }

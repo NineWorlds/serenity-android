@@ -24,10 +24,8 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
-import toothpick.Scope
 import toothpick.Toothpick
 import toothpick.config.Module
-import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.fragments.MainMenuFragment
@@ -114,7 +112,7 @@ class MainActivityTest : InjectingTest() {
   }
 
   override fun installTestModules() {
-    scope.installTestModules(TestingModule(), TestModule())
+    scope.installTestModules(MockkTestingModule(), TestModule())
   }
 
   inner class TestModule : Module() {

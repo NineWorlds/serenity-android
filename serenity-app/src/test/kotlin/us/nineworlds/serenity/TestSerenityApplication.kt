@@ -1,6 +1,7 @@
 package us.nineworlds.serenity
 
 import org.robolectric.TestLifecycleApplication
+import us.nineworlds.serenity.SerenityApplication
 
 import java.lang.reflect.Method
 

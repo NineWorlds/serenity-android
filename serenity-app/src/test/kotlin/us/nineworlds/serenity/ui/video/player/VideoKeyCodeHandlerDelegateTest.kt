@@ -16,9 +16,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.LooperMode
 import toothpick.config.Module
 import us.nineworlds.serenity.MockkTestingModule
 import us.nineworlds.serenity.test.InjectingTest
