@@ -25,21 +25,46 @@ package us.nineworlds.serenity.core.menus
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isEmpty
 import org.junit.Before
 import org.junit.Test
+import us.nineworlds.serenity.core.menus.MenuItem
 
-class DialogMenuItemTest {
+class MenuItemTest {
 
-  private lateinit var dialogMenuItem: DialogMenuItem
+  private lateinit var menuItem: MenuItem
 
   @Before
   fun setUp() {
-    dialogMenuItem = DialogMenuItem()
+    menuItem = MenuItem()
   }
 
   @Test
-  fun `set menu dialog action returns expected action`() {
-    dialogMenuItem.menuDialogAction = 0
-    assertThat(dialogMenuItem.menuDialogAction).isEqualTo(0)
+  fun `type returns value set`() {
+    menuItem.type = "movie"
+    assertThat(menuItem.type).isEqualTo("movie")
+  }
+
+  @Test
+  fun `title returns expected value set`() {
+    menuItem.title = "Movies"
+    assertThat(menuItem.title).isEqualTo("Movies")
+  }
+
+  @Test
+  fun `section returns expected value set`() {
+    menuItem.section = "1234"
+    assertThat(menuItem.section).isEqualTo("1234")
+  }
+
+  @Test
+  fun `toString returns empty when no title has been set`() {
+    assertThat(menuItem.toString()).isEmpty()
+  }
+
+  @Test
+  fun `toString returns generated value`() {
+    menuItem.title = "To String!"
+    assertThat(menuItem.toString()).isEqualTo("To String!")
   }
 }

@@ -25,16 +25,13 @@ package us.nineworlds.serenity.core.services
 import android.content.Intent
 import assertk.assertThat
 import assertk.assertions.isNullOrEmpty
-import com.google.common.base.CharMatcher.any
 import io.mockk.every
 import io.mockk.mockk
-import org.assertj.core.api.Java6Assertions
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.robolectric.RobolectricTestRunner
-import us.nineworlds.serenity.TestingModule
+import us.nineworlds.serenity.MockkTestingModule
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.test.InjectingTest
 
@@ -67,6 +64,6 @@ class MovieSearchIntentServiceTest : InjectingTest() {
     }
 
     override fun installTestModules() {
-        scope.installTestModules(TestingModule())
+        scope.installTestModules(MockkTestingModule())
     }
 }

@@ -11,8 +11,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import us.nineworlds.serenity.TestingModule
-import us.nineworlds.serenity.core.model.CategoryInfo
+import us.nineworlds.serenity.MockkTestingModule
 import us.nineworlds.serenity.emby.model.Directory
 import us.nineworlds.serenity.emby.model.MediaContainer
 import us.nineworlds.serenity.test.InjectingTest
@@ -48,7 +47,7 @@ class CategoryMediaContainerTest : InjectingTest() {
   }
 
   override fun installTestModules() {
-    scope.installTestModules(TestingModule())
+    scope.installTestModules(MockkTestingModule())
   }
 
   @Test

@@ -21,34 +21,26 @@
  * SOFTWARE.
  */
 
-package us.nineworlds.serenity;
+package us.nineworlds.serenity.core.menus
 
-import android.content.Context;
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import org.junit.Before
+import org.junit.Test
+import us.nineworlds.serenity.core.menus.DialogMenuItem
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+class DialogMenuItemTest {
 
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+  private lateinit var dialogMenuItem: DialogMenuItem
 
-import toothpick.config.Module;
-import us.nineworlds.serenity.common.rest.SerenityClient;
-import us.nineworlds.serenity.core.logger.Logger;
-import us.nineworlds.serenity.core.util.AndroidHelper;
+  @Before
+  fun setUp() {
+    dialogMenuItem = DialogMenuItem()
+  }
 
-public class TestingModule extends Module {
-
-  @Mock SerenityClient mockPlexAppFactory;
-  @Mock LocalBroadcastManager mockLocalBroadcastManager;
-  @Mock Logger mockLogger;
-  @Mock Context mockContext;
-  @Mock AndroidHelper mockAndroidHelper;
-
-  public TestingModule() {
-    MockitoAnnotations.initMocks(this);
-    bind(SerenityClient.class).toInstance(mockPlexAppFactory);
-    bind(LocalBroadcastManager.class).toInstance(mockLocalBroadcastManager);
-    bind(Logger.class).toInstance(mockLogger);
-    bind(AndroidHelper.class).toInstance(mockAndroidHelper);
-    //bind(Context.class).withName(ApplicationContext.class).toInstance(mockContext);
+  @Test
+  fun `set menu dialog action returns expected action`() {
+    dialogMenuItem.menuDialogAction = 0
+    assertThat(dialogMenuItem.menuDialogAction).isEqualTo(0)
   }
 }

@@ -7,7 +7,6 @@ import android.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.hasSize
-import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import io.mockk.clearAllMocks
@@ -19,10 +18,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import toothpick.config.Module
-import us.nineworlds.serenity.TestingModule
+import us.nineworlds.serenity.MockkTestingModule
 import us.nineworlds.serenity.common.media.model.IDirectory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
-import us.nineworlds.serenity.core.menus.MenuItem
 import us.nineworlds.serenity.test.InjectingTest
 
 @RunWith(RobolectricTestRunner::class)
@@ -79,7 +77,7 @@ class MenuMediaContainerTest : InjectingTest() {
   }
 
   override fun installTestModules() {
-    scope.installTestModules(TestingModule(), TestModule())
+    scope.installTestModules(MockkTestingModule(), TestModule())
   }
 
   inner class TestModule : Module() {

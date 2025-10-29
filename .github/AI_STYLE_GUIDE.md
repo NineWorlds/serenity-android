@@ -78,10 +78,18 @@ This project is a media server client for Android, supporting both Plex and Emby
         *   **Static Mocks:** For mocking objects, companion objects, or constructors (e.g., `mockkStatic`, `mockkObject`), mocking and unmocking should be handled within `@BeforeClass` and `@AfterClass` methods in a `companion object`. Call `unmockAll()` in the `@AfterClass` method.
     *   Use Robolectric to test Android framework-dependent code.
     *   When converting tests from Java to Kotlin, replace AssertJ assertions with their AssertK equivalents.
-*   **Naming Conventions:**
-    *   Follow the standard Kotlin naming conventions.
-    *   Name presenters with the `Presenter` suffix (e.g., `MainPresenter`).
-    *   Name views with the `View` suffix (e.g., `MainView`).
+    * Toothpick Rules for Tests:
+        * *   **Inherit from `InjectingTest`**: All test classes that require dependency injection must extend the `us.nineworlds.us.nineworlds.serenity.test.InjectingTest` base class.
+        *   **Override `setUp` and Call `super.setUp()` First**: It's critical to override the `@Before setUp()` method. The very first line must be `super.setUp()`. This ensures the scope is opened and your test modules are installed before the component under test (e.g., an Activity) is created.
+        *   **Implement `installTestModules()`**: You must implement the abstract `installTestModules()` method. This is where you will install your test-specific dependency configurations.
+        *   **Define Bindings in an Inner `Module` Class**: Create an inner class that extends `Module` within your test class. This encapsulates all the specific bindings for that test, keeping it self-contained and easy to understand.
+        *   **Manually Bind Mock Instances**: Inside your inner `Module`, manually bind each mock object to its corresponding class or interface using `bind(SomeClass::class.java).toInstance(mockInstance)`.
+        *   **Use `scope.installTestModules()` for Installation**: Within the `installTestModules()` override, use `scope.installTestModules()` to add one or more of your configured test modules. You can add both shared test modules and the specific inner class module you created.
+        *   **Trust the Base Class for Cleanup**: The `InjectingTest` base class automatically handles resetting Toothpick. You can add an `@After` method for other cleanup tasks, like clearing mocks.
+    *   **Naming Conventions:**
+        *   Follow the standard Kotlin naming conventions.
+        *   Name presenters with the `Presenter` suffix (e.g., `MainPresenter`).
+        *   Name views with the `View` suffix (e.g., `MainView`).
 
 ---
 

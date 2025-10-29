@@ -43,6 +43,7 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.LooperMode
 import us.nineworlds.serenity.R
+import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer
 
 @RunWith(RobolectricTestRunner::class)
 @LooperMode(LooperMode.Mode.LEGACY)
@@ -68,7 +69,8 @@ class BackgroundBitmapDisplayerTest {
 
   @Test
   fun `background view does not have animation when fade in not set`() {
-    backgroundBitmapDisplayer = BackgroundBitmapDisplayer(mockBitmap, R.drawable.movies, backgroundView)
+    backgroundBitmapDisplayer =
+      BackgroundBitmapDisplayer(mockBitmap, R.drawable.movies, backgroundView)
     backgroundBitmapDisplayer.run()
 
     val animation = backgroundView.animation
@@ -82,7 +84,8 @@ class BackgroundBitmapDisplayerTest {
       putBoolean("animation_background_fadein", true)
     }
 
-    backgroundBitmapDisplayer = BackgroundBitmapDisplayer(mockBitmap, R.drawable.movies, backgroundView)
+    backgroundBitmapDisplayer =
+      BackgroundBitmapDisplayer(mockBitmap, R.drawable.movies, backgroundView)
     backgroundBitmapDisplayer.run()
 
     assertThat(backgroundView.background).isInstanceOf(TransitionDrawable::class)
@@ -95,7 +98,8 @@ class BackgroundBitmapDisplayerTest {
       putBoolean("animation_background_fadein", true)
     }
 
-    backgroundBitmapDisplayer = BackgroundBitmapDisplayer(mockBitmap, R.drawable.movies, backgroundView)
+    backgroundBitmapDisplayer =
+      BackgroundBitmapDisplayer(mockBitmap, R.drawable.movies, backgroundView)
     backgroundBitmapDisplayer.run()
 
     val transitionDrawable = backgroundView.background as TransitionDrawable

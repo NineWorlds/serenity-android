@@ -11,7 +11,7 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
-import us.nineworlds.serenity.TestingModule
+import us.nineworlds.serenity.MockkTestingModule
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.util.TimeUtil
 import us.nineworlds.serenity.test.InjectingTest
@@ -21,7 +21,7 @@ import java.util.LinkedList
 @RunWith(RobolectricTestRunner::class)
 class VideoPlayerIntentUtilsTest : InjectingTest() {
   override fun installTestModules() {
-    scope.installTestModules(TestingModule())
+    scope.installTestModules(MockkTestingModule())
   }
 
   private lateinit var videoPlayerIntentUtils: VideoPlayerIntentUtils
