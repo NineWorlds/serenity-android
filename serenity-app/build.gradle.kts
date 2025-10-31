@@ -213,6 +213,7 @@ dependencies {
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.opengl.api)
   testImplementation(libs.androidx.junit)
+  debugImplementation(libs.androidx.fragment.testing)
 
 //  kaptTest(libs.toothpick.compiler)
   kspTest(libs.toothpick.ksp.compiler)

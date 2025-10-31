@@ -65,6 +65,7 @@ androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "card
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtxVersion" }
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "fragmentKtxVersion" }
+androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentKtxVersion" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junit" }
 androidx-leanback = { module = "androidx.leanback:leanback", version.ref = "leanbackVersion" }
 androidx-leanback-preference = { module = "androidx.leanback:leanback-preference", version.ref = "leanbackPreferenceVersion" }
