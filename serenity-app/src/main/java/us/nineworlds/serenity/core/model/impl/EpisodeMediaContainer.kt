@@ -1,0 +1,87 @@
+package us.nineworlds.serenity.core.model.impl
+
+import android.content.res.Resources
+import us.nineworlds.serenity.common.media.model.IMediaContainer
+import us.nineworlds.serenity.common.media.model.IVideo
+import us.nineworlds.serenity.core.model.VideoContentInfo
+import javax.inject.Inject
+
+class EpisodeMediaContainer(mc: IMediaContainer) : MovieMediaContainer(mc) {
+
+  @Inject
+  lateinit var resources: Resources
+
+  override fun createVideoContent(mc: IMediaContainer) {
+    val baseUrl = factory.baseURL()
+    var parentPosterURL: String? = null
+    if (mc.parentPosterURL != null && !mc.parentPosterURL.contains("show")) {
+      parentPosterURL = baseUrl + mc.parentPosterURL.substring(1)
+    }
+    val videos = mc.videos
+    if (videos != null) {
+      for (episode in videos) {
+        videoList!!.add(createEpisodeContentInfo(mc, baseUrl, parentPosterURL, episode))
+      }
+    }
+  }
+
+  private fun createEpisodeContentInfo(
+    mc: IMediaContainer,
+    baseUrl: String,
+    parentPosterURL: String?,
+    episode: IVideo,
+  ): EpisodePosterInfo {
+    val epi = EpisodePosterInfo(resources).apply {
+      if (parentPosterURL != null) {
+        this.parentPosterURL = parentPosterURL
+      }
+      id = episode.key
+      parentKey = episode.parentKey
+      summary = episode.summary
+      viewCount = episode.viewCount
+      resumeOffset = episode.viewOffset.toInt()
+      duration = episode.duration.toInt()
+      originalAirDate = episode.originallyAvailableDate
+      if (episode.parentThumbNailImageKey != null) {
+        this.parentPosterURL = baseUrl + episode.parentThumbNailImageKey.substring(1)
+      }
+      if (episode.grandParentThumbNailImageKey != null) {
+        grandParentPosterURL = baseUrl + episode.grandParentThumbNailImageKey.substring(1)
+      }
+      backgroundURL = when {
+        episode.backgroundImageKey != null -> baseUrl + episode.backgroundImageKey.replaceFirst("/", "")
+        mc.art != null -> baseUrl + mc.art.replaceFirst("/", "")
+        else -> "${factory.baseURL()}:/resources/show-fanart.jpg"
+      }
+      imageURL = episode.thumbNailImageKey?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: ""
+      title = episode.title
+      seriesTitle = episode.grandParentTitle ?: mc.title1
+      contentRating = episode.contentRating
+    }
+
+    episode.medias?.firstOrNull()?.let { media ->
+      epi.container = media.container
+      val part = media.videoPart?.firstOrNull()
+      if (part != null) {
+        epi.directPlayUrl = "${factory.baseURL()}${part.key.replaceFirst("/", "")}"
+      } else {
+        epi.directPlayUrl = "${factory.baseURL()}${episode.directPlayUrl}"
+      }
+      epi.seasonNumber = episode.season?.toIntOrNull() ?: mc.parentIndex?.toIntOrNull() ?: 0
+      epi.episodeNumber = episode.episode?.toIntOrNull() ?: 0
+      epi.audioCodec = media.audioCodec
+      epi.videoCodec = media.videoCodec
+      epi.videoResolution = media.videoResolution
+      epi.aspectRatio = media.aspectRatio
+      epi.audioChannels = media.audioChannels
+    }
+
+    createVideoDetails(episode, epi)
+    epi.castInfo = ""
+    return epi
+  }
+
+  override fun createVideoDetails(video: IVideo, videoContentInfo: VideoContentInfo) {
+    super.createVideoDetails(video, videoContentInfo)
+  }
+}
