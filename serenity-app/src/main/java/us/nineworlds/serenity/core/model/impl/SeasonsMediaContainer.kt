@@ -1,6 +1,7 @@
 package us.nineworlds.serenity.core.model.impl
 
 import us.nineworlds.serenity.common.media.model.IMediaContainer
+import us.nineworlds.serenity.core.model.VideoContentInfo
 
 class SeasonsMediaContainer(mc: IMediaContainer) : SeriesMediaContainer(mc) {
 
@@ -10,12 +11,12 @@ class SeasonsMediaContainer(mc: IMediaContainer) : SeriesMediaContainer(mc) {
 
     for (show in shows) {
       val mpi = TVShowSeriesInfo().apply {
-        id = show.ratingKey
+        setId(show.ratingKey)
         parentTitle = mc.title2
-        backgroundURL = mc.art?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: "$baseUrl:/resources/show-fanart.jpg"
-        imageURL = show.thumb?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: ""
+        setBackgroundURL(mc.art?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: "$baseUrl:/resources/show-fanart.jpg")
+        setImageURL(show.thumb?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: "")
         key = show.key
-        title = show.title
+        setTitle(show.title)
         showsWatched = show.viewedLeafCount
         val totalEpisodes = show.leafCount?.toInt() ?: 0
         val unwatched = totalEpisodes - (show.viewedLeafCount?.toInt() ?: 0)

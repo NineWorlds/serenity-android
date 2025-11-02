@@ -43,8 +43,8 @@ class CategoryVideoPresenter : Presenter() {
         fun bind(videoContentInfo: VideoContentInfo) {
             cardView.tag = videoContentInfo
 
-            videoContentInfo.imageURL?.let {
-                when(videoContentInfo.type) {
+            videoContentInfo.getImageURL()?.let {
+                when(videoContentInfo.getType()) {
                     Types.EPISODE -> {
                         val imageWidth = view.context.resources.getDimensionPixelSize(R.dimen.episode_image_width)
                         val imageHeight = view.context.resources.getDimensionPixelSize(R.dimen.episode_image_height)

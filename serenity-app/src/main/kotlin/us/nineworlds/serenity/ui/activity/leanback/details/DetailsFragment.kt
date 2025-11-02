@@ -197,7 +197,7 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
     override fun updateDetails(videoInfo: ContentInfo) {
         val imageView = requireActivity().findViewById<ImageView>(R.id.detail_background_image)
 
-        Glide.with(requireActivity()).load(videoInfo.backgroundURL).fitCenter().into(imageView)
+        Glide.with(requireActivity()).load(videoInfo.getBackgroundURL()).fitCenter().into(imageView)
 
         when (videoInfo) {
             is TVShowSeriesInfo -> setupTVShowDetails(videoInfo)
@@ -211,7 +211,7 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
             val seasonAdapter = ArrayObjectAdapter(EpisodeVideoPresenter())
             seasonAdapter.addAll(0, emptyList<VideoContentInfo>())
 
-            val seasonHeader = HeaderItem(season.title)
+            val seasonHeader = HeaderItem(season.getTitle())
             val seasonRow = ListRow(seasonHeader, seasonAdapter)
 
             val detailsAdapter = adapter as ArrayObjectAdapter
@@ -223,7 +223,7 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
         val detailsAdapter = adapter as ArrayObjectAdapter
         val content = detailsAdapter.unmodifiableList<Row>()
         content.filterIsInstance<ListRow>()
-                .filter { listRow -> listRow.headerItem.name == season.title }
+                .filter { listRow -> listRow.headerItem.name == season.getTitle() }
                 .forEach { row ->
                     val adapter = row.adapter as ArrayObjectAdapter
                     adapter.setItems(episodes, object : DiffCallback<VideoContentInfo>() {
@@ -235,7 +235,7 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
                         }
 
                         override fun areContentsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean {
-                            return oldItem.equals(newItem)
+                            return oldItem == newItem
                         }
                     })
                 }

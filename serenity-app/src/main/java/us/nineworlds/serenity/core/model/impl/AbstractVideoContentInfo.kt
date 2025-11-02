@@ -11,64 +11,64 @@ import java.io.Serializable
 
 abstract class AbstractVideoContentInfo(private val resources: Resources?) : VideoContentInfo, Serializable {
 
-  private var id: String? = null
-  private var type: Types? = null
+  private var _id: String? = null
+  private var _type: Types? = null
 
-  private var plotSummary: String? = null
-  private var posterURL: String? = null
-  private var backgroundURL: String? = null
-  private var title: String? = null
-  private var originalTitle: String? = null
-  private var mediaTagIdentifier: String? = null
+  private var _plotSummary: String? = null
+  private var _posterURL: String? = null
+  private var _backgroundURL: String? = null
+  private var _title: String? = null
+  private var _originalTitle: String? = null
+  private var _mediaTagIdentifier: String? = null
 
-  override fun id(): String? = id
+  override fun id(): String? = _id
 
-  override fun getType(): Types? = type
+  override fun getType(): Types? = _type
 
   override fun setType(type: Types?) {
-    this.type = type
+    this._type = type
   }
 
-  override fun getSummary(): String? = plotSummary
+  override fun getSummary(): String? = _plotSummary
 
-  override fun getBackgroundURL(): String? = backgroundURL
+  override fun getBackgroundURL(): String? = _backgroundURL
 
-  override fun getImageURL(): String? = posterURL
+  override fun getImageURL(): String? = _posterURL
 
-  override fun getTitle(): String? = title
+  override fun getTitle(): String? = _title
 
   override fun setTitle(title: String?) {
-    this.title = title
+    this._title = title
   }
 
   override fun setImageURL(imageURL: String?) {
-    this.posterURL = imageURL
+    this._posterURL = imageURL
   }
 
   override fun setSummary(summary: String?) {
-    this.plotSummary = summary
+    this._plotSummary = summary
   }
 
   override fun setBackgroundURL(backgroundURL: String?) {
-    this.backgroundURL = backgroundURL
+    this._backgroundURL = backgroundURL
   }
 
   override fun setId(id: String?) {
-    this.id = id
+    this._id = id
   }
 
-  override fun getMediaTagIdentifier(): String? = mediaTagIdentifier
+  override fun getMediaTagIdentifier(): String? = _mediaTagIdentifier
 
   override fun setMediaTagIdentifier(mediaTagIdentifier: String?) {
-    this.mediaTagIdentifier = mediaTagIdentifier
+    this._mediaTagIdentifier = mediaTagIdentifier
   }
 
   override val longTitle: String?
     get() {
       val seriesTitle = seriesTitle
       return if (seriesTitle == null) {
-        title
-      } else resources?.getString(R.string.long_title, seriesTitle, seasonNumber, episodeNumber, title)
+        _title
+      } else resources?.getString(R.string.long_title, seriesTitle, seasonNumber, episodeNumber, _title)
     }
   override var directPlayUrl: String? = null
   override var actors: List<String>? = null
@@ -86,7 +86,7 @@ abstract class AbstractVideoContentInfo(private val resources: Resources?) : Vid
   override var container: String? = null
   override var parentPosterURL: String? = null
   override var grandParentPosterURL: String? = null
-  override val audioChannels: String? = null
+  override var audioChannels: String? = null
   override var resumeOffset: Int = 0
   override var duration: Int = 0
   override val season: String?

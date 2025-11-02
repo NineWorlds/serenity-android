@@ -30,8 +30,8 @@ class EpisodeVideoPresenter : Presenter() {
         val imageCardView = cardHolder.cardView
         cardHolder.movie = video
 
-        video.imageURL?.let {
-            imageCardView.titleText = video.title
+        video.getImageURL()?.let {
+            imageCardView.titleText = video.getTitle()
             imageCardView.contentText = "${video.season}, Episode ${video.episodeNumber}"
             imageCardView.setMainImageDimensions(imageWidth, imageHeight)
             imageCardView.setMainImageScaleType(ImageView.ScaleType.FIT_XY)

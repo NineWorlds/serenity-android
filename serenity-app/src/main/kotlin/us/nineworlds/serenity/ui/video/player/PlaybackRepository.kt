@@ -18,12 +18,12 @@ class PlaybackRepository(private val serenityClient: SerenityClient) {
     }
 
     suspend fun updatePlaybackPosition(video: VideoContentInfo) = withContext(Dispatchers.IO){
-        val videoId: String = video.id()
-        if (video.isWatched()) {
+        val videoId: String = video.id().orEmpty()
+        if (video.isWatched) {
             serenityClient.watched(videoId)
             serenityClient.progress(videoId, "0")
         } else {
-            serenityClient.progress(videoId, video.getResumeOffset().toString())
+            serenityClient.progress(videoId, video.resumeOffset.toString())
         }
     }
 

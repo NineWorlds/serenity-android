@@ -24,7 +24,7 @@ abstract class AbstractSeriesContentInfo : SeriesContentInfo, Serializable {
 
   override fun id(): String? = id
 
-  override var parentTitle: String? = null
+  var parentTitle: String? = null
 
   override var key: String? = null
 
@@ -40,7 +40,7 @@ abstract class AbstractSeriesContentInfo : SeriesContentInfo, Serializable {
 
   override var thumbNailURL: String? = null
 
-  override var contentRating: String? = null
+  var contentRating: String? = null
 
   override fun getSummary(): String? = plotSummary
 
@@ -48,7 +48,7 @@ abstract class AbstractSeriesContentInfo : SeriesContentInfo, Serializable {
 
   override fun getTitle(): String? = title
 
-  override var year: String? = null
+  var year: String? = null
 
   override fun setTitle(title: String?) {
     this.title = title
@@ -76,11 +76,11 @@ abstract class AbstractSeriesContentInfo : SeriesContentInfo, Serializable {
     this.mediaTagIdentifier = mediaTagIdentifier
   }
 
-  override var studio: String? = null
+  var studio: String? = null
 
-  override var rating: Double = 0.0
+  var rating: Double = 0.0
 
-  override val isPartiallyWatched: Boolean
+  val isPartiallyWatched: Boolean
     get() {
       var unwatched = 0
       var watched = 0
@@ -94,13 +94,13 @@ abstract class AbstractSeriesContentInfo : SeriesContentInfo, Serializable {
       return unwatched != total && watched < total
     }
 
-  override val isUnwatched: Boolean
+  val isUnwatched: Boolean
     get() {
       val unwatched = showsUnwatched!!.toInt()
       return unwatched > 0
     }
 
-  override val isWatched: Boolean
+  val isWatched: Boolean
     get() {
       val watchedCount = showsWatched!!.toInt()
       return totalShows() == watchedCount
@@ -112,7 +112,7 @@ abstract class AbstractSeriesContentInfo : SeriesContentInfo, Serializable {
     return unwatched + watched
   }
 
-  override fun viewedPercentage(): Float {
+  fun viewedPercentage(): Float {
     if (totalShows() == 0) {
       return 0f
     }

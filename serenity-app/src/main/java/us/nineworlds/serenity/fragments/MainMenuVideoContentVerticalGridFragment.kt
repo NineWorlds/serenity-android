@@ -41,7 +41,7 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
           val videoCategory = item as VideoCategory
 
             when {
-                videoCategory.item.type == Types.EPISODE -> {
+                videoCategory.item.getType() == Types.EPISODE -> {
                     vpUtils.playVideo(requireActivity(), videoCategory.item, false)
                 }
                 videoCategory.type == Types.MOVIES -> {
@@ -69,7 +69,7 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
 
                 val imageView = requireActivity().findViewById<ImageView>(R.id.mainGalleryBackground)
 
-                Glide.with(requireActivity()).load(videoCategory.item.backgroundURL).transition(DrawableTransitionOptions.withCrossFade()).fitCenter().into(imageView)
+                Glide.with(requireActivity()).load(videoCategory.item.getBackgroundURL()).transition(DrawableTransitionOptions.withCrossFade()).fitCenter().into(imageView)
             }
         }
     }

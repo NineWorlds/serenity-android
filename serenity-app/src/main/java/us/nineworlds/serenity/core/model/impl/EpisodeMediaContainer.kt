@@ -12,7 +12,7 @@ class EpisodeMediaContainer(mc: IMediaContainer) : MovieMediaContainer(mc) {
   lateinit var resources: Resources
 
   override fun createVideoContent(mc: IMediaContainer) {
-    val baseUrl = factory.baseURL()
+    val baseUrl = factory.baseURL().orEmpty()
     var parentPosterURL: String? = null
     if (mc.parentPosterURL != null && !mc.parentPosterURL.contains("show")) {
       parentPosterURL = baseUrl + mc.parentPosterURL.substring(1)
@@ -35,26 +35,27 @@ class EpisodeMediaContainer(mc: IMediaContainer) : MovieMediaContainer(mc) {
       if (parentPosterURL != null) {
         this.parentPosterURL = parentPosterURL
       }
-      id = episode.key
+      setId(episode.key)
       parentKey = episode.parentKey
-      summary = episode.summary
+      setSummary(episode.summary)
       viewCount = episode.viewCount
       resumeOffset = episode.viewOffset.toInt()
       duration = episode.duration.toInt()
       originalAirDate = episode.originallyAvailableDate
-      if (episode.parentThumbNailImageKey != null) {
+      if (episode.parentThumbNailImageKey != null && !episode.parentThumbNailImageKey.isNullOrEmpty()) {
         this.parentPosterURL = baseUrl + episode.parentThumbNailImageKey.substring(1)
       }
-      if (episode.grandParentThumbNailImageKey != null) {
+      if (episode.grandParentThumbNailImageKey != null && !episode.grandParentThumbNailImageKey.isNullOrEmpty()) {
         grandParentPosterURL = baseUrl + episode.grandParentThumbNailImageKey.substring(1)
       }
-      backgroundURL = when {
+      setBackgroundURL(when {
         episode.backgroundImageKey != null -> baseUrl + episode.backgroundImageKey.replaceFirst("/", "")
         mc.art != null -> baseUrl + mc.art.replaceFirst("/", "")
         else -> "${factory.baseURL()}:/resources/show-fanart.jpg"
-      }
-      imageURL = episode.thumbNailImageKey?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: ""
-      title = episode.title
+      })
+
+      setImageURL(episode.thumbNailImageKey?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: "")
+      setTitle(episode.title)
       seriesTitle = episode.grandParentTitle ?: mc.title1
       contentRating = episode.contentRating
     }

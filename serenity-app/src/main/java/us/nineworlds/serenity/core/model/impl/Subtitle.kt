@@ -9,7 +9,7 @@ data class Subtitle(
   var languageCode: String? = null
 ) : Serializable {
   override fun toString(): String {
-    return description!!
+    return description.orEmpty()
   }
 
   companion object {

@@ -4,15 +4,15 @@ import us.nineworlds.serenity.common.media.model.IDirectory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.core.model.SeriesContentInfo
 
-class SeriesMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc) {
+open class SeriesMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc) {
 
-  fun createSeries(): List<SeriesContentInfo> {
+  open fun createSeries(): List<SeriesContentInfo> {
     videoList = mutableListOf()
     createSeriesInfo()
     return videoList as List<SeriesContentInfo>
   }
 
-  private fun createSeriesInfo() {
+  open fun createSeriesInfo() {
     val baseUrl = factory.baseURL()
     if (mc.size > 0) {
       val mediaTagId = mc.mediaTagVersion.toString()
@@ -20,16 +20,16 @@ class SeriesMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc) {
 
       for (show in shows) {
         val mpi = TVShowSeriesInfo().apply {
-          id = show.key
+          setId(show.key)
           key = show.key
-          mediaTagIdentifier = mediaTagId
-          summary = show.summary
+          setMediaTagIdentifier(mediaTagId)
+          setSummary(show.summary)
           studio = show.studio
           rating = show.rating?.toDouble() ?: 0.0
-          backgroundURL = show.art?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: "$baseUrl:/resources/show-fanart.jpg"
-          imageURL = show.banner?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: ""
+          setBackgroundURL(show.art?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: "$baseUrl:/resources/show-fanart.jpg")
+          setImageURL(show.banner?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: "")
           thumbNailURL = show.thumb?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: ""
-          title = show.title
+          setTitle(show.title)
           contentRating = show.contentRating
           generes = processGeneres(show)
 
@@ -39,7 +39,7 @@ class SeriesMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc) {
           showsUnwatched = unwatched.toString()
           showsWatched = viewedEpisodes.toString()
         }
-        videoList?.add(mpi)
+        videoList?.add(mpi as SeriesContentInfo)
       }
     }
   }

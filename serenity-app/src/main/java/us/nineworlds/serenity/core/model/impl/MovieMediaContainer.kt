@@ -5,15 +5,15 @@ import us.nineworlds.serenity.common.media.model.IVideo
 import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.VideoContentInfo
 
-class MovieMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc) {
+open class MovieMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc) {
 
   fun createVideos(): List<VideoContentInfo> {
     videoList = mutableListOf()
     createVideoContent(mc)
-    return videoList!!
+    return videoList as List<VideoContentInfo>
   }
 
-  private fun createVideoContent(mc: IMediaContainer) {
+  protected open fun createVideoContent(mc: IMediaContainer) {
     val baseUrl = factory.baseURL()
     val videos = mc.videos ?: return
 
@@ -22,25 +22,26 @@ class MovieMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc) {
 
     for (movie in videos) {
       val mpi = MoviePosterInfo().apply {
-        type = when (movie.type?.lowercase()) {
+        setType(when (movie.type?.lowercase()) {
           "episode" -> Types.EPISODE.also { seriesName = movie.seriesName }
           "series" -> Types.SERIES.also { seriesName = movie.seriesName }
           "season" -> Types.SEASON.also { seriesName = movie.seriesName }
           "movie" -> Types.MOVIES
           else -> Types.UNKNOWN
-        }
-        mediaTagIdentifier = mediaTagId
-        id = movie.key
+        })
+
+        setMediaTagIdentifier(mediaTagId)
+        setId(movie.key)
         studio = movie.studio
-        summary = movie.summary
+        setSummary(movie.summary)
         resumeOffset = movie.viewOffset.toInt()
         duration = movie.duration.toInt()
         viewCount = movie.viewCount
         rating = movie.rating
         tagLine = movie.tagLine
-        backgroundURL = movie.backgroundImageKey?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: baseImageResource
-        imageURL = movie.thumbNailImageKey?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: ""
-        title = movie.title
+        setBackgroundURL(movie.backgroundImageKey?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: baseImageResource)
+        setImageURL(movie.thumbNailImageKey?.let { "$baseUrl${it.replaceFirst("/", "")}" } ?: "")
+        setTitle(movie.title)
         contentRating = movie.contentRating
         directPlayUrl = "$baseUrl${movie.directPlayUrl}"
 
@@ -62,7 +63,7 @@ class MovieMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc) {
     }
   }
 
-  private fun createVideoDetails(video: IVideo, videoContentInfo: VideoContentInfo) {
+  protected open fun createVideoDetails(video: IVideo, videoContentInfo: VideoContentInfo) {
     videoContentInfo.year = video.year
     videoContentInfo.genres = video.genres?.map { it.tag }
     videoContentInfo.writers = video.writers?.map { it.tag }
