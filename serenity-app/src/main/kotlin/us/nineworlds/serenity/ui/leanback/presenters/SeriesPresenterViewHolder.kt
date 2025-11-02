@@ -18,8 +18,8 @@ open class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummary
     private val context = binding.root.context
 
     fun bind(videoInfo : TVShowSeriesInfo) {
-        binding.movieBrowserPosterTitle.text = videoInfo.title
-        binding.movieSummary.text = videoInfo.summary
+        binding.movieBrowserPosterTitle.text = videoInfo.getTitle()
+        binding.movieSummary.text = videoInfo.getSummary()
 
         Glide.with(context).load(videoInfo.thumbNailURL).fitCenter().into(binding.videoPoster)
 
@@ -67,7 +67,7 @@ open class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummary
             binding.movieInfoGraphicLayout.addView(ratingBar)
         }
 
-        val studiov = imageUtilsNormal.createStudioImage(videoInfo.studio, context, videoInfo.mediaTagIdentifier)
+        val studiov = imageUtilsNormal.createStudioImage(videoInfo.studio, context, videoInfo.getMediaTagIdentifier())
         if (studiov != null) {
             binding.movieInfoGraphicLayout.addView(studiov)
         }

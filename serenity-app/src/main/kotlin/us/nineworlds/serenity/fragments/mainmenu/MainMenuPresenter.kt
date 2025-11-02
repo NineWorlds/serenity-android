@@ -70,7 +70,7 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
                 viewState.loadCategories(categoryVideoContentInfo)
             }
             filteredCategories.forEach { category ->
-                when (val result = repository.fetchItemsByCategory(category.category, itemId, type)) {
+                when (val result = repository.fetchItemsByCategory(category.category.orEmpty(), itemId, type)) {
                     is Result.Success -> {
                         withContext(Dispatchers.Main) {
                             val videos = result.data.map { videoContentInfo ->

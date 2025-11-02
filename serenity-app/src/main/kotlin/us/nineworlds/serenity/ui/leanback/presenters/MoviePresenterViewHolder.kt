@@ -19,10 +19,10 @@ class MoviePresenterViewHolder(private val binding: LeanbackDetailsSummaryBindin
     private val context = binding.root.context
 
     fun bind(videoInfo: VideoContentInfo) {
-        binding.movieBrowserPosterTitle.text = videoInfo.title
-        binding.movieSummary.text = videoInfo.summary
+        binding.movieBrowserPosterTitle.text = videoInfo.getTitle()
+        binding.movieSummary.text = videoInfo.getSummary()
 
-        Glide.with(context).load(videoInfo.imageURL).fitCenter().into(binding.videoPoster)
+        Glide.with(context).load(videoInfo.getImageURL()).fitCenter().into(binding.videoPoster)
 
         val width = context.resources.getDimensionPixelSize(R.dimen.info_graphic_width)
         val height = context.resources.getDimensionPixelSize(R.dimen.info_graphic_height)
@@ -99,7 +99,7 @@ class MoviePresenterViewHolder(private val binding: LeanbackDetailsSummaryBindin
             infographicsView.addView(ratingBar)
         }
 
-        val studiov = imageUtilsNormal.createStudioImage(videoInfo.studio, context, videoInfo.mediaTagIdentifier)
+        val studiov = imageUtilsNormal.createStudioImage(videoInfo.studio, context, videoInfo.getMediaTagIdentifier())
         if (studiov != null) {
             infographicsView.addView(studiov)
         }

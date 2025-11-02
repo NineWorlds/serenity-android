@@ -51,7 +51,7 @@ class DetailsMVPPresenter : MvpPresenter<DetailsView>() {
                     val videos = MovieMediaContainer(result)
                             .createVideos()
                             .filterNot { item ->
-                                item.type == Types.SERIES
+                                item.getType() == Types.SERIES
                             }
 
                     viewState.addSimilarItems(videos)
@@ -70,7 +70,7 @@ class DetailsMVPPresenter : MvpPresenter<DetailsView>() {
         presenterScope.launch(Dispatchers.IO) {
             seasons.forEach { season ->
                 async {
-                    val result = repository.fetchEpisodes(season.key)
+                    val result = repository.fetchEpisodes(season.key.orEmpty())
                     withContext(Dispatchers.Main) {
                         viewState.updateSeasonEpisodes(season, result)
                     }

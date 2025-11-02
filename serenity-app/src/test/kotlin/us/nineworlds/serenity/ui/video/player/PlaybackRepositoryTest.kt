@@ -63,7 +63,7 @@ class PlaybackRepositoryTest {
     fun updatePlaybackPositionUpdatesVideoForWatchedVideos() = runTest(UnconfinedTestDispatcher()) {
         val video = mockk<VideoContentInfo>()
         every { video.id() } returns "12345"
-        every { video.isWatched() } returns true
+        every { video.isWatched } returns true
         every { mockSerenityClient.watched(any()) } returns true
         every { mockSerenityClient.progress(any(), any()) } returns true
 
@@ -77,7 +77,7 @@ class PlaybackRepositoryTest {
     fun updatePlaybackPositionUpdatesVideoUnwatchedVideos() = runTest(UnconfinedTestDispatcher()) {
         val video = mockk<VideoContentInfo>()
         every { video.id() } returns "12345"
-        every { video.isWatched() } returns false
+        every { video.isWatched } returns false
         every { video.resumeOffset } returns 123
         every { mockSerenityClient.progress(any(), any()) } returns true
 

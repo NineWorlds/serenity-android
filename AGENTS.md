@@ -177,6 +177,9 @@ class MainActivityTest : InjectingTest() {
 }
 ```
 
+Do NOT try to call `scope.inject` directly in the test.  That is handled by `InjectingTest`.
+
+
 ---
 
 ## View Binding (conversions)

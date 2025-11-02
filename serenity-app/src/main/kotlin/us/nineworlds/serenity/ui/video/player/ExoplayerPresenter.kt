@@ -68,7 +68,9 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
 
   override fun updateWatchedStatus() {
     presenterScope.launch {
-      playbackRepository.watched(video.id())
+        video.id()?.let {
+            playbackRepository.watched(it)
+        }
     }
   }
 
@@ -89,17 +91,17 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
 
   override fun onRepeatModeChanged(repeatMode: Int) = Unit
 
-  override fun videoId(): String = video.id()
+  override fun videoId(): String = video.id().orEmpty()
 
   override fun stopPlaying(currentPosition: Long) {
     presenterScope.launch {
-      playbackRepository.stopPlaying(video.id(), currentPosition)
+      playbackRepository.stopPlaying(video.id().orEmpty(), currentPosition)
     }
   }
 
   override fun startPlaying() {
     presenterScope.launch {
-      playbackRepository.startPlaying(video.id())
+      playbackRepository.startPlaying(video.id().orEmpty())
     }
   }
 
@@ -157,20 +159,20 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   internal fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {
     val mediaCodecInfoUtil = MediaCodecInfoUtil()
     video.container?.let {
-      video.container = if (video.container.contains("mp4")) {
+      video.container = if (it.contains("mp4")) {
         "mp4"
       } else {
         video.container
       }
       val isVideoContainerSupported =
-        mediaCodecInfoUtil.isExoPlayerContainerSupported("video/${video.container.substringBefore(",")}")
+        mediaCodecInfoUtil.isExoPlayerContainerSupported("video/${it.substringBefore(",")}")
       var isAudioCodecSupported =
         selectCodec(mediaCodecInfoUtil.findCorrectAudioMimeType("audio/${video.audioCodec}"))
       val isVideoSupported =
         selectCodec(mediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
 
       isAudioCodecSupported = if (androidHelper.isNvidiaShield || androidHelper.isBravia) {
-        when (video.audioCodec.toLowerCase()) {
+        when (video.audioCodec?.toLowerCase()) {
           "eac3", "ac3", "dts", "truehd" -> true
           else -> isAudioCodecSupported
         }
@@ -194,10 +196,10 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
     logger.debug("ExoPlayerPresenter: Container: ${video.container} Audio: ${video.audioCodec}")
     if (isDirectPlaySupportedForContainer(video)) {
       logger.debug("ExoPlayerPresenter: Direct playing ${video.directPlayUrl}")
-      return video.directPlayUrl
+      return video.directPlayUrl.orEmpty()
     }
 
-    val transcodingUrl = serenityClient.createTranscodeUrl(video.id(), video.resumeOffset)
+    val transcodingUrl = serenityClient.createTranscodeUrl(video.id().orEmpty(), video.resumeOffset)
 
     logger.debug("ExoPlayerPresenter: Transcoding Url: $transcodingUrl")
     return transcodingUrl

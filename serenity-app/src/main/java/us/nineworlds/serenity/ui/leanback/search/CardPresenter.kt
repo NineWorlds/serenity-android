@@ -41,66 +41,68 @@ import us.nineworlds.serenity.core.model.VideoContentInfo
 
 class CardPresenter(private val context: Context) : Presenter() {
 
-  val imageWidth = context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_width)
-  val imageHeight = context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_height)
+    val imageWidth = context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_width)
+    val imageHeight = context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_height)
 
-  override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
-    val imageView = createImageView()
-    imageView.isFocusable = true
-    imageView.isFocusableInTouchMode = true
-    imageView.setBackgroundColor(ContextCompat.getColor(context, R.color.holo_color))
-    return CardPresenterViewHolder(imageView)
-  }
-
-  internal fun createImageView(): ImageCardView = ImageCardView(context)
-
-  override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any) {
-    val video = item as VideoContentInfo
-
-    val cardHolder = viewHolder as CardPresenterViewHolder
-    val imageCardView = cardHolder.cardView
-    cardHolder.movie = video
-
-    video.imageURL?.let {
-      imageCardView.titleText = video.title
-      imageCardView.contentText = video.studio
-      val activity = getActivity(context)
-      activity?.let {
-        imageCardView.setMainImageDimensions(imageWidth, imageHeight)
-        imageCardView.setMainImageScaleType(ImageView.ScaleType.FIT_XY)
-        cardHolder.updateCardViewImage(video.imageURL)
-      }
-    }
-  }
-
-  internal fun getActivity(contextWrapper: Context): Activity? {
-    var context = contextWrapper
-    while (context is ContextWrapper) {
-      if (context is Activity) {
-        return context
-      }
-      context = context.baseContext
-    }
-    return null
-  }
-
-  override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder) {
-    val vh = viewHolder as CardPresenterViewHolder
-    vh.reset()
-  }
-
-  @VisibleForTesting
-  inner class CardPresenterViewHolder(view: View) : Presenter.ViewHolder(view) {
-    var movie: VideoContentInfo? = null
-    val cardView: ImageCardView = view as ImageCardView
-
-    fun reset() {
-      cardView.badgeImage = null
-      cardView.mainImage = null
+    override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
+        val imageView = createImageView()
+        imageView.isFocusable = true
+        imageView.isFocusableInTouchMode = true
+        imageView.setBackgroundColor(ContextCompat.getColor(context, R.color.holo_color))
+        return CardPresenterViewHolder(imageView)
     }
 
-    fun updateCardViewImage(url: String) {
-      Glide.with(context).load(url).fitCenter().into(cardView.mainImageView)
+    internal fun createImageView(): ImageCardView = ImageCardView(context)
+
+    override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any) {
+        val video = item as VideoContentInfo
+
+        val cardHolder = viewHolder as CardPresenterViewHolder
+        val imageCardView = cardHolder.cardView
+        cardHolder.movie = video
+
+        video.getImageURL()?.let {
+            imageCardView.titleText = video.getTitle()
+            imageCardView.contentText = video.studio
+            val activity = getActivity(context)
+            activity?.let {
+                imageCardView.setMainImageDimensions(imageWidth, imageHeight)
+                imageCardView.setMainImageScaleType(ImageView.ScaleType.FIT_XY)
+                cardHolder.updateCardViewImage(video.getImageURL().orEmpty())
+            }
+        }
     }
-  }
+
+    internal fun getActivity(contextWrapper: Context): Activity? {
+        var context = contextWrapper
+        while (context is ContextWrapper) {
+            if (context is Activity) {
+                return context
+            }
+            context = context.baseContext
+        }
+        return null
+    }
+
+    override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder) {
+        val vh = viewHolder as CardPresenterViewHolder
+        vh.reset()
+    }
+
+    @VisibleForTesting
+    inner class CardPresenterViewHolder(view: View) : Presenter.ViewHolder(view) {
+        var movie: VideoContentInfo? = null
+        val cardView: ImageCardView = view as ImageCardView
+
+        fun reset() {
+            cardView.badgeImage = null
+            cardView.mainImage = null
+        }
+
+        fun updateCardViewImage(url: String) {
+            cardView.mainImageView?.let {
+                Glide.with(context).load(url).fitCenter().into(it)
+            }
+        }
+    }
 }

@@ -63,13 +63,13 @@ class CardPresenterTest {
     val activity = Robolectric.buildActivity(Activity::class.java).create().get()
     val spy = spyk(presenter)
     every { mockViewHolder.cardView } returns mockImageCardView
-    every { mockVideoContentInfo.imageURL } returns ""
+    every { mockVideoContentInfo.getImageURL() } returns ""
     every { spy.getActivity(any()) } returns activity
 
     spy.onBindViewHolder(mockViewHolder, mockVideoContentInfo)
 
     verify { mockViewHolder.movie = mockVideoContentInfo }
-    verify(atLeast = 2) { mockVideoContentInfo.imageURL }
+    verify(atLeast = 2) { mockVideoContentInfo.getImageURL() }
     verify { spy.getActivity(any()) }
     verify { mockImageCardView.setMainImageDimensions(any(), any()) }
     verify { mockViewHolder.updateCardViewImage(any()) }
