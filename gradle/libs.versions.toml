@@ -44,7 +44,7 @@ exoplayerVersion = "2.19.1"
 simpleXmlVersion = "2.7.1"
 
 junitVersion = "4.13.2"
-assertjVersion = "3.11.1"
+assertjVersion = "3.27.6"
 mockitoVersion = "5.14.2"
 robolectricVersion = "4.14.1"
 openglApiVersion = "gl1.1-android-2.1_r1"
