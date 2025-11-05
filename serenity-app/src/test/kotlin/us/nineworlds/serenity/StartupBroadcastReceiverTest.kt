@@ -1,5 +1,6 @@
 package us.nineworlds.serenity
 
+import android.app.Application
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
@@ -16,6 +17,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.shadows.ShadowApplication
 import toothpick.config.Module
 import us.nineworlds.serenity.core.util.AndroidHelper
@@ -46,7 +48,7 @@ class StartupBroadcastReceiverTest : InjectingTest() {
 
     receiver.onReceive(ApplicationProvider.getApplicationContext(), intent)
 
-    val nextStartedActivity = ShadowApplication.getInstance().nextStartedActivity
+    val nextStartedActivity = shadowOf(ApplicationProvider.getApplicationContext<Application>()).nextStartedActivity
     assertThat(nextStartedActivity).isNull()
   }
 
@@ -58,7 +60,7 @@ class StartupBroadcastReceiverTest : InjectingTest() {
 
     receiver.onReceive(ApplicationProvider.getApplicationContext(), intent)
 
-    val nextStartedActivity = ShadowApplication.getInstance().nextStartedActivity
+    val nextStartedActivity = shadowOf(ApplicationProvider.getApplicationContext<Application>()).nextStartedActivity
     assertThat(nextStartedActivity).isNull()
   }
 
@@ -70,7 +72,7 @@ class StartupBroadcastReceiverTest : InjectingTest() {
 
     receiver.onReceive(ApplicationProvider.getApplicationContext(), intent)
 
-    val nextStartedActivity = ShadowApplication.getInstance().peekNextStartedActivity()
+    val nextStartedActivity = shadowOf(ApplicationProvider.getApplicationContext<Application>()).peekNextStartedActivity()
     assertThat(nextStartedActivity).isNotNull()
 
     verify { mockSharedPrefences.getBoolean("serenity_boot_startup", false) }
@@ -86,7 +88,7 @@ class StartupBroadcastReceiverTest : InjectingTest() {
 
     receiver.onReceive(ApplicationProvider.getApplicationContext(), intent)
 
-    val nextStartedActivity = ShadowApplication.getInstance().peekNextStartedActivity()
+    val nextStartedActivity = shadowOf(ApplicationProvider.getApplicationContext<Application>()).peekNextStartedActivity()
     assertThat(nextStartedActivity).isNotNull()
 
     verify { mockSharedPrefences.getBoolean("serenity_boot_startup", false) }
