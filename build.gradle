@@ -16,8 +16,8 @@ buildscript {
 }
 
 plugins {
+  alias(libs.plugins.ksp) apply false
   id "com.diffplug.spotless" version "8.0.0"
-  id 'com.google.devtools.ksp' version "1.9.25-1.0.20" apply false
 }
 
 repositories {

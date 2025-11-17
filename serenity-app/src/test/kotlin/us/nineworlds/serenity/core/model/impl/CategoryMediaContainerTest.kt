@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.core.model.impl
 
+import android.content.res.Resources
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
@@ -11,7 +12,9 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import toothpick.config.Module
 import us.nineworlds.serenity.MockkTestingModule
+import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.emby.model.Directory
 import us.nineworlds.serenity.emby.model.MediaContainer
 import us.nineworlds.serenity.test.InjectingTest
@@ -47,7 +50,7 @@ class CategoryMediaContainerTest : InjectingTest() {
   }
 
   override fun installTestModules() {
-    scope.installTestModules(MockkTestingModule())
+    scope.installTestModules(MockkTestingModule(), TestModule())
   }
 
   @Test
@@ -88,4 +91,11 @@ class CategoryMediaContainerTest : InjectingTest() {
 
     assertThat(category.level).isEqualTo(directories[0].secondary)
   }
+
+    class TestModule : Module() {
+        init {
+            bind(SerenityClient::class.java).toInstance(mockk())
+            bind( Resources::class.java).toInstance(mockk())
+        }
+    }
 }

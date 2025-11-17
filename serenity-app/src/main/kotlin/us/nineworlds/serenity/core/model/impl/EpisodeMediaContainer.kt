@@ -1,17 +1,17 @@
 package us.nineworlds.serenity.core.model.impl
 
 import android.content.res.Resources
+import toothpick.Toothpick
+import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.media.model.IVideo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import javax.inject.Inject
 
+@Suppress("Injectable")
 class EpisodeMediaContainer(mc: IMediaContainer) : MovieMediaContainer(mc) {
 
-  @Inject
-  lateinit var resources: Resources
-
-  override fun createVideoContent(mc: IMediaContainer) {
+    override fun createVideoContent(mc: IMediaContainer) {
     val baseUrl = factory.baseURL().orEmpty()
     var parentPosterURL: String? = null
     if (mc.parentPosterURL != null && !mc.parentPosterURL.contains("show")) {
@@ -86,3 +86,4 @@ class EpisodeMediaContainer(mc: IMediaContainer) : MovieMediaContainer(mc) {
     super.createVideoDetails(video, videoContentInfo)
   }
 }
+

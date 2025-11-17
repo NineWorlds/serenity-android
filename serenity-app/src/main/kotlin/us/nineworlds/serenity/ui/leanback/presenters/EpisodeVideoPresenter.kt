@@ -20,7 +20,7 @@ class EpisodeVideoPresenter : Presenter() {
         return CardPresenterViewHolder(imageView)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any?) {
         val imageWidth = viewHolder.view.context.resources.getDimensionPixelSize(R.dimen.episode_image_width)
         val imageHeight = viewHolder.view.context.resources.getDimensionPixelSize(R.dimen.episode_image_height)
 
@@ -54,7 +54,9 @@ class EpisodeVideoPresenter : Presenter() {
         }
 
         fun updateCardViewImage(url: String) {
-            Glide.with(view.context).load(url).fitCenter().into(cardView.mainImageView)
+            cardView.mainImageView?.let { 
+                Glide.with(view.context).load(url).fitCenter().into(it)
+            }
         }
     }
 

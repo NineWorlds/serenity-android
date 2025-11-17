@@ -54,7 +54,7 @@ class CardPresenter(private val context: Context) : Presenter() {
 
     internal fun createImageView(): ImageCardView = ImageCardView(context)
 
-    override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any?) {
         val video = item as VideoContentInfo
 
         val cardHolder = viewHolder as CardPresenterViewHolder

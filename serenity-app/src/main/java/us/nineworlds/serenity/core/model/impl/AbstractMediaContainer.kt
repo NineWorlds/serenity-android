@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.core.model.impl
 
+import android.content.res.Resources
 import javax.inject.Inject
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
@@ -17,4 +18,8 @@ abstract class AbstractMediaContainer(
 
   @Inject
   lateinit var factory: SerenityClient
+
+  @Inject
+  lateinit var resources: Resources
+
 }

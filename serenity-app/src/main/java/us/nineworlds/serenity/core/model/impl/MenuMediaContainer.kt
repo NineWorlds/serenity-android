@@ -13,9 +13,6 @@ class MenuMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc) {
   @Inject
   lateinit var preferences: SharedPreferences
 
-  @Inject
-  lateinit var resources: Resources
-
   private val menuItems = mutableListOf<MenuItem>()
 
   fun createMenuItems(): List<MenuItem> {
