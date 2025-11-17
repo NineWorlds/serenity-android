@@ -172,7 +172,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
         selectCodec(mediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
 
       isAudioCodecSupported = if (androidHelper.isNvidiaShield || androidHelper.isBravia) {
-        when (video.audioCodec?.toLowerCase()) {
+        when (video.audioCodec?.lowercase()) {
           "eac3", "ac3", "dts", "truehd" -> true
           else -> isAudioCodecSupported
         }

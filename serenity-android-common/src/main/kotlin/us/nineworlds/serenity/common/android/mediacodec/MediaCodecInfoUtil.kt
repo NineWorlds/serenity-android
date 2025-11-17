@@ -73,7 +73,7 @@ class MediaCodecInfoUtil {
    *
    */
   fun findCorrectVideoMimeType(mimeType: String): String {
-    val videoMimeType = when (mimeType.substringAfter("video/").toLowerCase()) {
+    val videoMimeType = when (mimeType.substringAfter("video/").lowercase()) {
       "mpeg-4" -> "video/mp4"
       "mpeg4" -> "video/mp4v-es"
       "h264" -> "video/avc"
@@ -85,7 +85,7 @@ class MediaCodecInfoUtil {
   }
 
   fun findCorrectAudioMimeType(mimeType: String): String {
-    val audioMimType = when (mimeType.substringAfter("audio/").toLowerCase()) {
+    val audioMimType = when (mimeType.substringAfter("audio/").lowercase()) {
       "mp3" -> "audio/mpeg"
       "aac" -> "audio/mp4a-latm"
       else -> mimeType

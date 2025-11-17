@@ -20,7 +20,7 @@ class CategoryVideoPresenter : Presenter() {
         return CardPresenterViewHolder(statusOverlayView)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any?) {
         val video = item as VideoCategory
 
         val cardHolder = viewHolder as CardPresenterViewHolder

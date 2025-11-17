@@ -91,7 +91,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     v.scaleType = ScaleType.FIT_XY
     v.layoutParams = LayoutParams(width, height)
 
-    when (res.toLowerCase()) {
+    when (res.lowercase()) {
       "sd", "480" -> v.setImageResource(R.drawable.res480)
       "576" -> v.setImageResource(R.drawable.res576)
       "720" -> v.setImageResource(R.drawable.res720)
@@ -149,7 +149,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     v.scaleType = ScaleType.FIT_XY
     v.layoutParams = LayoutParams(width, height)
 
-    when (codec.toLowerCase()) {
+    when (codec.lowercase()) {
       "divx" -> v.setImageResource(R.drawable.divx)
       "div3" -> v.setImageResource(R.drawable.div3)
       "vc-1" -> v.setImageResource(R.drawable.vc_1)
@@ -181,7 +181,7 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     v.scaleType = ScaleType.FIT_XY
     v.layoutParams = LayoutParams(width, height)
 
-    when (channels.toLowerCase()) {
+    when (channels.lowercase()) {
       "0" -> v.setImageResource(R.drawable.audio_0)
       "1" -> v.setImageResource(R.drawable.audio_1)
       "2" -> v.setImageResource(R.drawable.audio_2)

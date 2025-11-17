@@ -215,7 +215,6 @@ dependencies {
   testImplementation(libs.androidx.junit)
   debugImplementation(libs.androidx.fragment.testing)
 
-//  kaptTest(libs.toothpick.compiler)
   kspTest(libs.toothpick.ksp.compiler)
 
   kapt(libs.moxy.compiler)

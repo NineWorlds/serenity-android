@@ -19,7 +19,7 @@ class VideoContentInfoPresenter : Presenter() {
         return CardPresenterViewHolder(statusOverlayView)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any?) {
         val video = item as VideoContentInfo
 
         val cardHolder = viewHolder as CardPresenterViewHolder

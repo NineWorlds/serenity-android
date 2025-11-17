@@ -13,7 +13,7 @@ class MoviePresenter : SeriesPresenter() {
         return MoviePresenterViewHolder(binding)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any?) {
         val videoInfo = item as VideoContentInfo
         val vh = viewHolder as MoviePresenterViewHolder
 

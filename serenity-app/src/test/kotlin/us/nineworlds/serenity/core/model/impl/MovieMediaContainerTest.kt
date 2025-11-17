@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.core.model.impl
 
+import android.content.res.Resources
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
@@ -122,6 +123,7 @@ class MovieMediaContainerTest : InjectingTest() {
   inner class TestModule : Module() {
     init {
       bind(SerenityClient::class.java).toInstance(mockSerenityClient)
+      bind( Resources::class.java).toInstance(mockk())
     }
   }
 }
