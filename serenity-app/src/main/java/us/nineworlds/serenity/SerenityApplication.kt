@@ -99,7 +99,7 @@ open class SerenityApplication : Application() {
         init()
         setDefaultPreferences()
         discoverServers()
-        MediaCodecInfoUtil().logAvailableCodecs()
+        MediaCodecInfoUtil.logAvailableCodecs()
 
         val leastRecentlyUsedCacheEvictor = LeastRecentlyUsedCacheEvictor((200 * 1024 * 1024).toLong())
         val exoDatabaseProvider = ExoDatabaseProvider(this)
