@@ -157,39 +157,17 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   }
 
   internal fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {
-    val mediaCodecInfoUtil = MediaCodecInfoUtil()
-    video.container?.let {
-      video.container = if (it.contains("mp4")) {
-        "mp4"
-      } else {
-        video.container
-      }
-      val isVideoContainerSupported =
-        mediaCodecInfoUtil.isExoPlayerContainerSupported("video/${it.substringBefore(",")}")
-      var isAudioCodecSupported =
-        selectCodec(mediaCodecInfoUtil.findCorrectAudioMimeType("audio/${video.audioCodec}"))
-      val isVideoSupported =
-        selectCodec(mediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
+    val audioCodec = video.audioCodec.orEmpty()
+    val hasStandardAudioSupport = selectCodec(MediaCodecInfoUtil.findCorrectAudioMimeType("audio/$audioCodec"))
+    val hasPassthroughAudioSupport = androidHelper.isAudioPassthroughSupported(audioCodec)
+    val isAudioCodecSupported = hasStandardAudioSupport || hasPassthroughAudioSupport
 
-      isAudioCodecSupported = if (androidHelper.isNvidiaShield || androidHelper.isBravia) {
-        when (video.audioCodec?.lowercase()) {
-          "eac3", "ac3", "dts", "truehd" -> true
-          else -> isAudioCodecSupported
-        }
-      } else {
-        isAudioCodecSupported
-      }
+    val isVideoSupported = selectCodec(MediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
 
-      logger.debug("Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
-      logger.debug("Video Codec:  ${video.videoCodec} support returned $isVideoSupported")
-      logger.debug("Video Container:  ${video.container} support returned $isVideoContainerSupported")
+    logger.debug("Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
+    logger.debug("Video Codec:  ${video.videoCodec} support returned $isVideoSupported")
 
-      if (isVideoSupported && isAudioCodecSupported && isVideoContainerSupported!!) {
-        return true
-      }
-    }
-
-    return false
+    return isVideoSupported && isAudioCodecSupported
   }
 
   private fun transcoderUrl(): String {
@@ -206,5 +184,5 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   }
 
   private fun selectCodec(mimeType: String): Boolean =
-    MediaCodecInfoUtil().isCodecSupported(mimeType)
+    MediaCodecInfoUtil.isCodecSupported(mimeType)
 }

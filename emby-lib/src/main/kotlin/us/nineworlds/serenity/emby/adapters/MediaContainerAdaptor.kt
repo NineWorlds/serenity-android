@@ -177,8 +177,8 @@ class MediaContainerAdaptor {
 
       if (item.mediaStreams != null) {
         val medias = ArrayList<Media>()
+        val media = Media()
         for (mediaStream in item.mediaStreams) {
-          val media = Media()
           media.container = item.container
           if (mediaStream.type == "Video") {
             media.aspectRatio = mediaStream.aspectRatio
