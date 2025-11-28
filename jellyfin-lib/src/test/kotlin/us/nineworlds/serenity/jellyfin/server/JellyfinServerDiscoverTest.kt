@@ -3,6 +3,7 @@ package us.nineworlds.serenity.jellyfin.server
 import app.cash.turbine.turbineScope
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -45,6 +46,7 @@ class JellyfinServerDiscoverTest {
     @Test
     fun `discover any known servers`() = runTest {
         fakeServer.start()
+        fakeServer.awaitReady()
         turbineScope {
             val servers = ServerChannel.serverEvents.distinctUntilChanged().testIn(backgroundScope)
             serverDiscovery.findServers()
@@ -61,11 +63,13 @@ class JellyfinServerDiscoverTest {
 class FakeJellyfinServer {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var socket: DatagramSocket? = null
+    private val ready = CompletableDeferred<Unit>()
 
     fun start() {
         scope.launch {
             try {
                 socket = DatagramSocket(7359)
+                ready.complete(Unit)
                 while (isActive) {
                     val buf = ByteArray(256)
                     val packet = DatagramPacket(buf, buf.size)
@@ -97,6 +101,10 @@ class FakeJellyfinServer {
                 socket?.close()
             }
         }
+    }
+
+    suspend fun awaitReady() {
+        ready.await()
     }
 
     fun stop() {

@@ -10,6 +10,7 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.joda.time.LocalDateTime
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
@@ -27,6 +28,7 @@ import us.nineworlds.serenity.emby.server.model.PublicUserInfo
 import us.nineworlds.serenity.emby.server.model.QueryFilters
 import us.nineworlds.serenity.emby.server.model.QueryResult
 import java.io.File
+import java.io.IOException
 import java.util.UUID
 
 class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
@@ -77,7 +79,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
     fun fetchAllPublicUsers(): List<PublicUserInfo> {
         val allPublicUsers = usersService.allPublicUsers()
-        return allPublicUsers.execute().body()!!
+        return allPublicUsers.executeOrThrow()
     }
 
     fun userImageUrl(userId: String): String {
@@ -87,22 +89,19 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     fun authenticate(userName: String, password: String = ""): AuthenticationResult {
         val authenticationResul = AuthenticateUserByName(userName, "", password, password)
         val call = usersService.authenticate(authenticationResul, headerMap())
-        val response = call.execute()
-        if (response.isSuccessful) {
-            val body = response.body()
-            accessToken = body!!.accesToken
-            serverId = body.serverId
-            userId = body.userInfo.id!!
+        val body = call.executeOrThrow()
 
-            val prefEditor = prefs.edit()
+        accessToken = body.accesToken
+        serverId = body.serverId
+        userId = body.userInfo.id!!
 
-            prefEditor.putString("userId", userId)
-            prefEditor.putString("embyAccessToken", accessToken)
-            prefEditor.apply()
+        val prefEditor = prefs.edit()
 
-            return response.body()!!
-        }
-        throw IllegalStateException("error logging user in to Emby Server")
+        prefEditor.putString("userId", userId)
+        prefEditor.putString("embyAccessToken", accessToken)
+        prefEditor.apply()
+
+        return body
     }
 
     fun currentUserViews(): QueryResult {
@@ -110,7 +109,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             userId = fetchUserId()
         }
         val call = usersService.usersViews(headerMap(), userId!!)
-        return call.execute().body()!!
+        return call.executeOrThrow()
     }
 
     fun filters(itemId: String? = null, tags: List<String>? = null): QueryFilters {
@@ -118,7 +117,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             userId = fetchUserId()
         }
         val call = filterService.availableFilters(headerMap(), userId!!)
-        return call.execute().body()!!
+        return call.executeOrThrow()
     }
 
     override fun fetchItemById(itemId: String): IMediaContainer {
@@ -140,7 +139,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         }
         val call = usersService.fetchItem(headerMap(), userId!!, id)
 
-        return call.execute().body()!!
+        return call.executeOrThrow()
     }
 
     fun fetchItemQuery(id: String): QueryResult {
@@ -149,7 +148,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         }
         val call = usersService.fetchItemQuery(headerMap(), userId!!, id, genre = null)
 
-        return call.execute().body()!!
+        return call.executeOrThrow()
     }
 
     private fun headerMap(): Map<String, String> {
@@ -199,9 +198,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         val call = usersService.usersViews(headerMap(), userId!!)
 
-        val queryResult = call.execute().body()
+        val queryResult = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createMainMenu(queryResult!!.items)
+        return MediaContainerAdaptor().createMainMenu(queryResult.items)
     }
 
     override fun retrieveLibrary(): IMediaContainer {
@@ -217,9 +216,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         }
         val call = usersService.usersViews(headerMap(), userId!!)
 
-        val queryResult = call.execute().body()
+        val queryResult = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createMainMenu(queryResult!!.items)
+        return MediaContainerAdaptor().createMainMenu(queryResult.items)
     }
 
     override fun retrieveCategoriesById(key: String): IMediaContainer {
@@ -228,9 +227,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         }
         val call = filterService.availableFilters(headerMap(), userId = userId!!, itemId = key)
 
-        val queryResult = call.execute().body()
+        val queryResult = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createCategory(queryResult!!.genres!!)
+        return MediaContainerAdaptor().createCategory(queryResult.genres!!)
     }
 
     override fun retrieveItemByIdCategory(key: String, category: String, types: Types): IMediaContainer {
@@ -247,8 +246,8 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         val call = usersService.fetchSimilarItemById(headerMap(), itemId = itemId, userId = userId!!, includeItemType = "Movie")
 
-        val results = call.execute().body()
-        return MediaContainerAdaptor().createVideoList(results!!.items)
+        val results = call.executeOrThrow()
+        return MediaContainerAdaptor().createVideoList(results.items)
     }
 
     override fun retrieveItemByIdCategory(key: String, category: String, types: Types, startIndex: Int, limit: Int?): IMediaContainer {
@@ -302,8 +301,8 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             }
         }
 
-        val results = call.execute().body()
-        return MediaContainerAdaptor().createVideoList(results!!.items)
+        val results = call.executeOrThrow()
+        return MediaContainerAdaptor().createVideoList(results.items)
     }
 
     override fun retrieveItemByCategories(key: String, category: String, secondaryCategory: String): IMediaContainer {
@@ -322,9 +321,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
                 genre = null
         )
 
-        val results = call.execute().body()
+        val results = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createSeriesList(results!!.items)
+        return MediaContainerAdaptor().createSeriesList(results.items)
     }
 
     override fun retrieveMusicMetaData(key: String): IMediaContainer {
@@ -343,9 +342,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
                 genre = null
         )
 
-        val results = call.execute().body()
+        val results = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createVideoList(results!!.items)
+        return MediaContainerAdaptor().createVideoList(results.items)
     }
 
     override fun retrieveMovieMetaData(key: String): IMediaContainer {
@@ -357,10 +356,10 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             userId = fetchUserId()
         }
         val call = usersService.search(headerMap(), userId!!, query)
-        val results = call.execute().body()
+        val results = call.executeOrThrow()
         val itemIds = mutableListOf<String>()
 
-        for (searchHint in results!!.searchHints!!) {
+        for (searchHint in results.searchHints!!) {
             itemIds.add(searchHint.id!!)
         }
 
@@ -372,9 +371,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
                 parentId = null
         )
 
-        val itemResults = itemCall.execute().body()
+        val itemResults = itemCall.executeOrThrow()
 
-        return MediaContainerAdaptor().createVideoList(itemResults!!.items)
+        return MediaContainerAdaptor().createVideoList(itemResults.items)
     }
 
     override fun searchEpisodes(key: String, query: String): IMediaContainer? {
@@ -461,7 +460,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             startOffset = offset.toLong().times(10000)
         }
 
-        return "${baseUrl}emby/Videos/$id/stream.mkv?DeviceId=$deviceId&AudioCodec=aac&VideoCodec=h264&CopyTimeStamps=true&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset&PlaySessionId=$playSessionId"
+        return "${baseUrl}Videos/$id/stream.mkv?DeviceId=$deviceId&AudioCodec=aac&VideoCodec=h264&CopyTimeStamps=true&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset&PlaySessionId=$playSessionId"
     }
 
     override fun reinitialize() {
@@ -469,7 +468,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     }
 
     override fun createUserImageUrl(user: SerenityUser, width: Int, height: Int): String {
-        return "$baseUrl/Emby/Users/${user.userId}/Images/Primary?Width=$width&Height=$height"
+        return "$baseUrl/Users/${user.userId}/Images/Primary?Width=$width&Height=$height"
     }
 
     override fun startPlaying(itemId: String) {
@@ -516,8 +515,8 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
                 limitCount = 5
         )
 
-        val results = call.execute().body()
-        return MediaContainerAdaptor().createSeriesList(results!!.items)
+        val results = call.executeOrThrow()
+        return MediaContainerAdaptor().createSeriesList(results.items)
     }
 
     override fun retrieveSeriesCategoryById(key: String): IMediaContainer {
@@ -526,9 +525,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         }
         val call = filterService.availableFilters(headerMap(), userId!!, key)
 
-        val queryResult = call.execute().body()
+        val queryResult = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createCategory(queryResult!!.genres!!, true)
+        return MediaContainerAdaptor().createCategory(queryResult.genres!!, true)
     }
 
     fun fetchUserId() = prefs.getString("userId", "")
@@ -574,6 +573,15 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         // Finally, combine the values we have found by using the UUID class to create a unique identifier
         return UUID(devIDShort.hashCode().toLong(), serial.hashCode().toLong()).toString()
+    }
+
+    private fun <T> Call<T>.executeOrThrow(): T {
+        val response = execute()
+        if (response.isSuccessful) {
+            return response.body()
+                ?: throw IOException("Response from Emby was null. Response Code: ${response.code()} - ${response.message()}")
+        }
+        throw IOException("Request to Emby failed with code ${response.code()}, message: ${response.message()}")
     }
 
 }

@@ -94,14 +94,14 @@ class JellyfinServerDiscover {
 
         val servers = ArrayList<Server>()
 
-        while (timeoutMs > 0) {
+        while (timeout > 0) {
 
             val startTime = System.currentTimeMillis()
 
             // Wait for a response
             val recvBuf = ByteArray(15000)
             val receivePacket = DatagramPacket(recvBuf, recvBuf.size)
-            c.soTimeout = timeoutMs.toInt()
+            c.soTimeout = timeout.toInt()
 
             try {
                 c.receive(receivePacket)
@@ -122,7 +122,7 @@ class JellyfinServerDiscover {
 
             val server = JellyfinServer()
             val uri = URI.create(jellyfinServerInfo!!.remoteAddres)
-            Timber.d("Server Remote Address: ${jellyfinServerInfo!!.remoteAddres}")
+            Timber.d("Server Remote Address: ${jellyfinServerInfo.remoteAddres}")
             Timber.d("Server host: ${uri.host}")
 
             server.ipAddress = uri.host
@@ -137,8 +137,7 @@ class JellyfinServerDiscover {
             // TODO: Once completely migrated to the ServerChannel remove the event bus.
             eventBus.post(server)
 
-            val endTime = System.currentTimeMillis()
-            timeout -= (endTime - startTime)
+            timeout -= (System.currentTimeMillis() - startTime)
         }
 
         Timber.d("Found %d servers", servers.size)

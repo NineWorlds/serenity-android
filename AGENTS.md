@@ -29,6 +29,9 @@ Intended audience:
 - NEVER amend commits unless you have explicit written approval in the task thread.
 - Coordinate with other agents before reverting or deleting work you did not author.
 - Always double-check `git status` before committing.
+- ALWAYS ask before proceeding.
+- NEVER go beyond your existing requested tasks.
+- DO NOT try to fix other errors or issues outside of your current task.
 
 ---
 

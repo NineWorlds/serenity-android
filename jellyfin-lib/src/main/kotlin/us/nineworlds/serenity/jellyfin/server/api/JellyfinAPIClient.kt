@@ -10,6 +10,7 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.joda.time.LocalDateTime
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
@@ -27,6 +28,7 @@ import us.nineworlds.serenity.jellyfin.server.model.PublicUserInfo
 import us.nineworlds.serenity.jellyfin.server.model.QueryFilters
 import us.nineworlds.serenity.jellyfin.server.model.QueryResult
 import java.io.File
+import java.io.IOException
 import java.util.UUID
 
 class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
@@ -77,7 +79,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
 
     fun fetchAllPublicUsers(): List<PublicUserInfo> {
         val allPublicUsers = usersService.allPublicUsers()
-        return allPublicUsers.execute().body()!!
+        return allPublicUsers.executeOrThrow()
     }
 
     fun userImageUrl(userId: String): String {
@@ -87,22 +89,19 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
     fun authenticate(userName: String, password: String = ""): AuthenticationResult {
         val authenticationResul = AuthenticateUserByName(userName, "", password, password)
         val call = usersService.authenticate(authenticationResul, headerMap())
-        val response = call.execute()
-        if (response.isSuccessful) {
-            val body = response.body()
-            accessToken = body!!.accesToken
-            serverId = body.serverId
-            userId = body.userInfo.id!!
+        val body = call.executeOrThrow()
 
-            val prefEditor = prefs.edit()
+        accessToken = body.accesToken
+        serverId = body.serverId
+        userId = body.userInfo.id!!
 
-            prefEditor.putString("userId", userId)
-            prefEditor.putString("jellyfinAccessToken", accessToken)
-            prefEditor.apply()
+        val prefEditor = prefs.edit()
 
-            return response.body()!!
-        }
-        throw IllegalStateException("error logging user in to Jellyfin Server")
+        prefEditor.putString("userId", userId)
+        prefEditor.putString("jellyfinAccessToken", accessToken)
+        prefEditor.apply()
+
+        return body
     }
 
     fun currentUserViews(): QueryResult {
@@ -110,7 +109,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
             userId = fetchUserId()
         }
         val call = usersService.usersViews(headerMap(), userId!!)
-        return call.execute().body()!!
+        return call.executeOrThrow()
     }
 
     fun filters(itemId: String? = null, tags: List<String>? = null): QueryFilters {
@@ -118,7 +117,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
             userId = fetchUserId()
         }
         val call = filterService.availableFilters(headerMap(), userId!!)
-        return call.execute().body()!!
+        return call.executeOrThrow()
     }
 
     override fun fetchItemById(itemId: String): IMediaContainer {
@@ -140,7 +139,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         }
         val call = usersService.fetchItem(headerMap(), userId!!, id)
 
-        return call.execute().body()!!
+        return call.executeOrThrow()
     }
 
     fun fetchItemQuery(id: String): QueryResult {
@@ -149,7 +148,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         }
         val call = usersService.fetchItemQuery(headerMap(), userId!!, id, genre = null)
 
-        return call.execute().body()!!
+        return call.executeOrThrow()
     }
 
     private fun headerMap(): Map<String, String> {
@@ -199,9 +198,9 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
 
         val call = usersService.usersViews(headerMap(), userId!!)
 
-        val queryResult = call.execute().body()
+        val queryResult = call.executeOrThrow()
 
-        return JellyfinMediaContainerAdaptor().createMainMenu(queryResult!!.items)
+        return JellyfinMediaContainerAdaptor().createMainMenu(queryResult.items)
     }
 
     override fun retrieveLibrary(): IMediaContainer {
@@ -217,9 +216,9 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         }
         val call = usersService.usersViews(headerMap(), userId!!)
 
-        val queryResult = call.execute().body()
+        val queryResult = call.executeOrThrow()
 
-        return JellyfinMediaContainerAdaptor().createMainMenu(queryResult!!.items)
+        return JellyfinMediaContainerAdaptor().createMainMenu(queryResult.items)
     }
 
     override fun retrieveCategoriesById(key: String): IMediaContainer {
@@ -228,9 +227,9 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         }
         val call = filterService.availableFilters(headerMap(), userId = userId!!, itemId = key)
 
-        val queryResult = call.execute().body()
+        val queryResult = call.executeOrThrow()
 
-        return JellyfinMediaContainerAdaptor().createCategory(queryResult!!.genres!!)
+        return JellyfinMediaContainerAdaptor().createCategory(queryResult.genres!!)
     }
 
     override fun retrieveItemByIdCategory(key: String, category: String, types: Types): IMediaContainer {
@@ -247,8 +246,8 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
 
         val call = usersService.fetchSimilarItemById(headerMap(), itemId = itemId, userId = userId!!, includeItemType = "Movie")
 
-        val results = call.execute().body()
-        return JellyfinMediaContainerAdaptor().createVideoList(results!!.items)
+        val results = call.executeOrThrow()
+        return JellyfinMediaContainerAdaptor().createVideoList(results.items)
     }
 
     override fun retrieveItemByIdCategory(key: String, category: String, types: Types, startIndex: Int, limit: Int?): IMediaContainer {
@@ -302,8 +301,8 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
             }
         }
 
-        val results = call.execute().body()
-        return JellyfinMediaContainerAdaptor().createVideoList(results!!.items)
+        val results = call.executeOrThrow()
+        return JellyfinMediaContainerAdaptor().createVideoList(results.items)
     }
 
     override fun retrieveItemByCategories(key: String, category: String, secondaryCategory: String): IMediaContainer {
@@ -322,9 +321,9 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
                 genre = null
         )
 
-        val results = call.execute().body()
+        val results = call.executeOrThrow()
 
-        return JellyfinMediaContainerAdaptor().createSeriesList(results!!.items)
+        return JellyfinMediaContainerAdaptor().createSeriesList(results.items)
     }
 
     override fun retrieveMusicMetaData(key: String): IMediaContainer {
@@ -343,9 +342,9 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
                 genre = null
         )
 
-        val results = call.execute().body()
+        val results = call.executeOrThrow()
 
-        return JellyfinMediaContainerAdaptor().createVideoList(results!!.items)
+        return JellyfinMediaContainerAdaptor().createVideoList(results.items)
     }
 
     override fun retrieveMovieMetaData(key: String): IMediaContainer {
@@ -357,10 +356,10 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
             userId = fetchUserId()
         }
         val call = usersService.search(headerMap(), userId!!, query)
-        val results = call.execute().body()
+        val results = call.executeOrThrow()
         val itemIds = mutableListOf<String>()
 
-        for (searchHint in results!!.searchHints!!) {
+        for (searchHint in results.searchHints!!) {
             itemIds.add(searchHint.id!!)
         }
 
@@ -372,9 +371,9 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
                 parentId = null
         )
 
-        val itemResults = itemCall.execute().body()
+        val itemResults = itemCall.executeOrThrow()
 
-        return JellyfinMediaContainerAdaptor().createVideoList(itemResults!!.items)
+        return JellyfinMediaContainerAdaptor().createVideoList(itemResults.items)
     }
 
     override fun searchEpisodes(key: String, query: String): IMediaContainer? {
@@ -449,7 +448,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
     override fun createSeasonsURL(key: String): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
+
     override fun createImageURL(url: String, width: Int, height: Int): String {
         return url
     }
@@ -516,8 +515,8 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
                 limitCount = 5
         )
 
-        val results = call.execute().body()
-        return JellyfinMediaContainerAdaptor().createSeriesList(results!!.items)
+        val results = call.executeOrThrow()
+        return JellyfinMediaContainerAdaptor().createSeriesList(results.items)
     }
 
     override fun retrieveSeriesCategoryById(key: String): IMediaContainer {
@@ -526,9 +525,9 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         }
         val call = filterService.availableFilters(headerMap(), userId!!, key)
 
-        val queryResult = call.execute().body()
+        val queryResult = call.executeOrThrow()
 
-        return JellyfinMediaContainerAdaptor().createCategory(queryResult!!.genres!!, true)
+        return JellyfinMediaContainerAdaptor().createCategory(queryResult.genres!!, true)
     }
 
     fun fetchUserId() = prefs.getString("userId", "")
@@ -574,6 +573,15 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
 
         // Finally, combine the values we have found by using the UUID class to create a unique identifier
         return UUID(devIDShort.hashCode().toLong(), serial.hashCode().toLong()).toString()
+    }
+
+    private fun <T> Call<T>.executeOrThrow(): T {
+        val response = execute()
+        if (response.isSuccessful) {
+            return response.body()
+                ?: throw IOException("Response from Jellyfin was null. Response Code: ${response.code()} - ${response.message()}")
+        }
+        throw IOException("Request to Jellyfin failed with code ${response.code()}, message: ${response.message()}")
     }
 
 }
