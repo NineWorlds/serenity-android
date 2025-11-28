@@ -158,15 +158,11 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
 
   internal fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {
     val audioCodec = video.audioCodec.orEmpty()
-    var isAudioCodecSupported = selectCodec(MediaCodecInfoUtil.findCorrectAudioMimeType("audio/$audioCodec"))
-    val isVideoSupported = selectCodec(MediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
+    val hasStandardAudioSupport = selectCodec(MediaCodecInfoUtil.findCorrectAudioMimeType("audio/$audioCodec"))
+    val hasPassthroughAudioSupport = androidHelper.isAudioPassthroughSupported(audioCodec)
+    val isAudioCodecSupported = hasStandardAudioSupport || hasPassthroughAudioSupport
 
-    isAudioCodecSupported = MediaCodecInfoUtil.isAudioCodecSupportedForDevice(
-      audioCodec,
-      isAudioCodecSupported,
-      androidHelper.isNvidiaShield,
-      androidHelper.isBravia
-    )
+    val isVideoSupported = selectCodec(MediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
 
     logger.debug("Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
     logger.debug("Video Codec:  ${video.videoCodec} support returned $isVideoSupported")

@@ -43,22 +43,6 @@ object MediaCodecInfoUtil {
    */
   fun isCodecSupported(mimeType: String): Boolean = supportedCodecs.contains(mimeType)
 
-  fun isAudioCodecSupportedForDevice(
-    audioCodec: String,
-    isAudioCodecSupported: Boolean,
-    isNvidiaShield: Boolean,
-    isBravia: Boolean
-  ): Boolean {
-    if (isNvidiaShield || isBravia) {
-      return when (audioCodec.lowercase()) {
-        "eac3", "ac3", "dts", "truehd" -> true
-        else -> isAudioCodecSupported
-      }
-    }
-    return isAudioCodecSupported
-  }
-
-
   /**
    * Find the correct video mimetype based off information that was returned to us by the server.
    *
