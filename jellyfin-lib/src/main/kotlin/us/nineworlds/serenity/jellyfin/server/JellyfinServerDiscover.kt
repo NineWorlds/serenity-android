@@ -1,4 +1,4 @@
-package us.nineworlds.serenity.emby.server
+package us.nineworlds.serenity.jellyfin.server
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -12,7 +12,7 @@ import java.io.IOException
 import java.net.*
 
 
-class EmbyServerDiscover {
+class JellyfinServerDiscover {
 
     private val eventBus = EventBus.getDefault()
     private val moshiBuilder = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
@@ -23,7 +23,7 @@ class EmbyServerDiscover {
             val c = DatagramSocket()
             c.setBroadcast(true)
 
-            val sendData = "who is EmbyServer?".toByteArray()
+            val sendData = "who is JellyfinServer?".toByteArray()
 
             val port = 7359
 
@@ -118,18 +118,18 @@ class EmbyServerDiscover {
 
             Timber.d(javaClass.name + ">>> Broadcast response from server: " + message)
 
-            val embyServerInfo = moshiBuilder.adapter(EmbyServerInfo::class.java).fromJson(message)
+            val jellyfinServerInfo = moshiBuilder.adapter(JellyfinServerInfo::class.java).fromJson(message)
 
-            val server = EmbyServer()
-            val uri = URI.create(embyServerInfo!!.remoteAddres)
-            Timber.d("Server Remote Address: ${embyServerInfo.remoteAddres}")
+            val server = JellyfinServer()
+            val uri = URI.create(jellyfinServerInfo!!.remoteAddres)
+            Timber.d("Server Remote Address: ${jellyfinServerInfo.remoteAddres}")
             Timber.d("Server host: ${uri.host}")
 
             server.ipAddress = uri.host
             server.port = uri.port.toString()
             Timber.d("Server Port: ${uri.port}")
 
-            server.serverName = "Emby - " + embyServerInfo.name
+            server.serverName = "Jellyfin - " + jellyfinServerInfo.name
 
             ServerChannel.invokeServerEvent(server)
             servers.add(server)

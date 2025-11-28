@@ -22,3 +22,4 @@ build
 keystore.properties
 .settings
 emby-lib/cache
+*/build

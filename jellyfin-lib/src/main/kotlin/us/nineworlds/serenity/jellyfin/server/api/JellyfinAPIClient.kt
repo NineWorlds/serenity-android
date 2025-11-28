@@ -1,4 +1,4 @@
-package us.nineworlds.serenity.emby.server.api
+package us.nineworlds.serenity.jellyfin.server.api
 
 import android.content.Context
 import android.os.Build
@@ -18,23 +18,23 @@ import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.common.rest.Types
-import us.nineworlds.serenity.emby.BuildConfig
-import us.nineworlds.serenity.emby.adapters.MediaContainerAdaptor
-import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
-import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
-import us.nineworlds.serenity.emby.server.model.AuthenticationResult
-import us.nineworlds.serenity.emby.server.model.Item
-import us.nineworlds.serenity.emby.server.model.PublicUserInfo
-import us.nineworlds.serenity.emby.server.model.QueryFilters
-import us.nineworlds.serenity.emby.server.model.QueryResult
+import us.nineworlds.serenity.jellyfin.BuildConfig
+import us.nineworlds.serenity.jellyfin.adapters.JellyfinMediaContainerAdaptor
+import us.nineworlds.serenity.jellyfin.moshi.LocalDateJsonAdapter
+import us.nineworlds.serenity.jellyfin.server.model.AuthenticateUserByName
+import us.nineworlds.serenity.jellyfin.server.model.AuthenticationResult
+import us.nineworlds.serenity.jellyfin.server.model.Item
+import us.nineworlds.serenity.jellyfin.server.model.PublicUserInfo
+import us.nineworlds.serenity.jellyfin.server.model.QueryFilters
+import us.nineworlds.serenity.jellyfin.server.model.QueryResult
 import java.io.File
 import java.io.IOException
 import java.util.UUID
 
-class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
+class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
 
-    private val usersService: UsersService
-    private val filterService: FilterService
+    private val usersService: JellyfinUsersService
+    private val filterService: JellyfinFilterService
 
     var baseUrl: String
     var accessToken: String? = null
@@ -47,7 +47,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     init {
         this.baseUrl = baseUrl
         val logger = HttpLoggingInterceptor()
-        val cacheDir = File(context.cacheDir, "EmbyClient")
+        val cacheDir = File(context.cacheDir, "JellyfinClient")
 
         val cacheSize = 10 * 1024 * 1024 // 10 MiB
         val cache = Cache(cacheDir, cacheSize.toLong())
@@ -62,13 +62,13 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
                 .add(LocalDateTime::class.java, LocalDateJsonAdapter()).build()
 
         val builder = Retrofit.Builder()
-        val embyRetrofit = builder.baseUrl(baseUrl)
+        val jellyfinRetrofit = builder.baseUrl(baseUrl)
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .client(okClient.build())
                 .build()
 
-        usersService = embyRetrofit.create(UsersService::class.java)
-        filterService = embyRetrofit.create(FilterService::class.java)
+        usersService = jellyfinRetrofit.create(JellyfinUsersService::class.java)
+        filterService = jellyfinRetrofit.create(JellyfinFilterService::class.java)
 
 
         deviceId = pseudoUniqueID()
@@ -98,7 +98,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         val prefEditor = prefs.edit()
 
         prefEditor.putString("userId", userId)
-        prefEditor.putString("embyAccessToken", accessToken)
+        prefEditor.putString("jellyfinAccessToken", accessToken)
         prefEditor.apply()
 
         return body
@@ -124,13 +124,13 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         try {
             val result = fetchItem(itemId)
             return when (result.type) {
-                "Series" -> MediaContainerAdaptor().createSeriesList(listOf(result))
-                else -> MediaContainerAdaptor().createVideoList(listOf(result))
+                "Series" -> JellyfinMediaContainerAdaptor().createSeriesList(listOf(result))
+                else -> JellyfinMediaContainerAdaptor().createVideoList(listOf(result))
             }
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
-        return MediaContainerAdaptor().createVideoList(emptyList())
+        return JellyfinMediaContainerAdaptor().createVideoList(emptyList())
     }
 
     fun fetchItem(id: String): Item {
@@ -154,10 +154,10 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     private fun headerMap(): Map<String, String> {
         val headers = HashMap<String, String>()
         val authorizationValue =
-                "Emby Client=\"Android\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"${BuildConfig.CLIENT_VERSION}.0\""
+                "MediaBrowser Client=\"Jellyfin Client\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"${BuildConfig.CLIENT_VERSION}.0\""
         headers["X-Emby-Authorization"] = authorizationValue
         if (accessToken != null) {
-            headers["X-Emby-Token"] = accessToken!!
+            headers["Authorization"] = "Bearer $accessToken"
         }
         return headers
     }
@@ -200,7 +200,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         val queryResult = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createMainMenu(queryResult.items)
+        return JellyfinMediaContainerAdaptor().createMainMenu(queryResult.items)
     }
 
     override fun retrieveLibrary(): IMediaContainer {
@@ -218,7 +218,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         val queryResult = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createMainMenu(queryResult.items)
+        return JellyfinMediaContainerAdaptor().createMainMenu(queryResult.items)
     }
 
     override fun retrieveCategoriesById(key: String): IMediaContainer {
@@ -229,7 +229,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         val queryResult = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createCategory(queryResult.genres!!)
+        return JellyfinMediaContainerAdaptor().createCategory(queryResult.genres!!)
     }
 
     override fun retrieveItemByIdCategory(key: String, category: String, types: Types): IMediaContainer {
@@ -247,7 +247,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         val call = usersService.fetchSimilarItemById(headerMap(), itemId = itemId, userId = userId!!, includeItemType = "Movie")
 
         val results = call.executeOrThrow()
-        return MediaContainerAdaptor().createVideoList(results.items)
+        return JellyfinMediaContainerAdaptor().createVideoList(results.items)
     }
 
     override fun retrieveItemByIdCategory(key: String, category: String, types: Types, startIndex: Int, limit: Int?): IMediaContainer {
@@ -302,7 +302,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         }
 
         val results = call.executeOrThrow()
-        return MediaContainerAdaptor().createVideoList(results.items)
+        return JellyfinMediaContainerAdaptor().createVideoList(results.items)
     }
 
     override fun retrieveItemByCategories(key: String, category: String, secondaryCategory: String): IMediaContainer {
@@ -323,7 +323,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         val results = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createSeriesList(results.items)
+        return JellyfinMediaContainerAdaptor().createSeriesList(results.items)
     }
 
     override fun retrieveMusicMetaData(key: String): IMediaContainer {
@@ -344,7 +344,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         val results = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createVideoList(results.items)
+        return JellyfinMediaContainerAdaptor().createVideoList(results.items)
     }
 
     override fun retrieveMovieMetaData(key: String): IMediaContainer {
@@ -373,7 +373,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         val itemResults = itemCall.executeOrThrow()
 
-        return MediaContainerAdaptor().createVideoList(itemResults.items)
+        return JellyfinMediaContainerAdaptor().createVideoList(itemResults.items)
     }
 
     override fun searchEpisodes(key: String, query: String): IMediaContainer? {
@@ -448,7 +448,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     override fun createSeasonsURL(key: String): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
+
     override fun createImageURL(url: String, width: Int, height: Int): String {
         return url
     }
@@ -516,7 +516,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         )
 
         val results = call.executeOrThrow()
-        return MediaContainerAdaptor().createSeriesList(results.items)
+        return JellyfinMediaContainerAdaptor().createSeriesList(results.items)
     }
 
     override fun retrieveSeriesCategoryById(key: String): IMediaContainer {
@@ -527,12 +527,12 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         val queryResult = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createCategory(queryResult.genres!!, true)
+        return JellyfinMediaContainerAdaptor().createCategory(queryResult.genres!!, true)
     }
 
     fun fetchUserId() = prefs.getString("userId", "")
 
-    fun fetchAccessToken() = prefs.getString("embyAccessToken", "")
+    fun fetchAccessToken() = prefs.getString("jellyfinAccessToken", "")
 
     override fun supportsMultipleUsers(): Boolean = true
 
@@ -567,7 +567,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             return UUID(devIDShort.hashCode().toLong(), serial.hashCode().toLong()).toString()
         } catch (e: java.lang.Exception) {
             // String needs to be initialized
-            Timber.e(EmbyAPIClient::class.java.simpleName, "getPseudoUniqueID: ", e)
+            Timber.e(JellyfinAPIClient::class.java.simpleName, "getPseudoUniqueID: ", e)
             serial = "ESYDV000" // some value
         }
 
@@ -579,9 +579,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         val response = execute()
         if (response.isSuccessful) {
             return response.body()
-                ?: throw IOException("Response from Emby was null. Response Code: ${response.code()} - ${response.message()}")
+                ?: throw IOException("Response from Jellyfin was null. Response Code: ${response.code()} - ${response.message()}")
         }
-        throw IOException("Request to Emby failed with code ${response.code()}, message: ${response.message()}")
+        throw IOException("Request to Jellyfin failed with code ${response.code()}, message: ${response.message()}")
     }
 
 }

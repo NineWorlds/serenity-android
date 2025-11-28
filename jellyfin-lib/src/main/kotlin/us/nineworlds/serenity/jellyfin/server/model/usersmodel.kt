@@ -1,4 +1,4 @@
-package us.nineworlds.serenity.emby.server.model
+package us.nineworlds.serenity.jellyfin.server.model
 
 import com.squareup.moshi.Json
 import org.joda.time.LocalDateTime

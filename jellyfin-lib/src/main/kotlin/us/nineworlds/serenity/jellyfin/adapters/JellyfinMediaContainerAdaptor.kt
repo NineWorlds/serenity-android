@@ -1,15 +1,15 @@
-package us.nineworlds.serenity.emby.adapters
+package us.nineworlds.serenity.jellyfin.adapters
 
 import us.nineworlds.serenity.common.media.model.IDirectory
 import us.nineworlds.serenity.common.media.model.IMediaContainer
-import us.nineworlds.serenity.emby.model.Directory
-import us.nineworlds.serenity.emby.model.Media
-import us.nineworlds.serenity.emby.model.MediaContainer
-import us.nineworlds.serenity.emby.model.Video
-import us.nineworlds.serenity.emby.server.model.Item
-import us.nineworlds.serenity.emby.server.model.NameGuidPair
+import us.nineworlds.serenity.jellyfin.model.Directory
+import us.nineworlds.serenity.jellyfin.model.Media
+import us.nineworlds.serenity.jellyfin.model.MediaContainer
+import us.nineworlds.serenity.jellyfin.model.Video
+import us.nineworlds.serenity.jellyfin.server.model.Item
+import us.nineworlds.serenity.jellyfin.server.model.NameGuidPair
 
-class MediaContainerAdaptor {
+class JellyfinMediaContainerAdaptor {
 
   companion object {
     const val TICKS_PER_MILLISECOND: Long = 10000
@@ -111,9 +111,9 @@ class MediaContainerAdaptor {
       seriesEntry.leafCount = totalItemCount.toString()
       seriesEntry.viewedLeafCount = viewdItemsCount.toString()
 
-      seriesEntry.art = "/emby/Items/${item.id}/Images/Thumb"
-      seriesEntry.thumb = "/emby/Items/${item.id}/Images/Primary"
-      seriesEntry.banner = "/emby/Items/${item.id}/Images/Banner"
+      seriesEntry.art = "/Items/${item.id}/Images/Thumb"
+      seriesEntry.thumb = "/Items/${item.id}/Images/Primary"
+      seriesEntry.banner = "/Items/${item.id}/Images/Banner"
 
       seriesVideos.add(seriesEntry)
     }
@@ -152,12 +152,12 @@ class MediaContainerAdaptor {
       video.seriesName = item.seriesName
 
       if (item.type != null && item.type == "Episode") {
-        video.backgroundImageKey = "/emby/Items/${item.parentId}/Images/Backdrop"
-        video.parentThumbNailImageKey = "/emby/Items/${item.parentId}/Images/Primary"
+        video.backgroundImageKey = "/Items/${item.parentId}/Images/Backdrop"
+        video.parentThumbNailImageKey = "/Items/${item.parentId}/Images/Primary"
       } else {
-        video.backgroundImageKey = "/emby/Items/${item.id}/Images/Backdrop"
+        video.backgroundImageKey = "/Items/${item.id}/Images/Backdrop"
       }
-      video.thumbNailImageKey = "/emby/Items/${item.id}/Images/Primary"
+      video.thumbNailImageKey = "/Items/${item.id}/Images/Primary"
       video.viewCount = item.userData?.playCount?.toInt() ?: 0
       val offset = convertTicksToMilliseconds(item.userData?.playbackPositionTicks ?: 0)
       video.viewOffset = offset
@@ -168,7 +168,7 @@ class MediaContainerAdaptor {
       } else {
         item.container
       }
-      video.directPlayUrl = "emby/Videos/${item.mediaSources?.get(0)?.id ?: item.id}/stream.$container?static=true"
+      video.directPlayUrl = "Videos/${item.mediaSources?.get(0)?.id ?: item.id}/stream.$container?static=true"
 
       if (item.runTimeTicks != null) {
         val milliseconds = convertTicksToMilliseconds(item.runTimeTicks)
