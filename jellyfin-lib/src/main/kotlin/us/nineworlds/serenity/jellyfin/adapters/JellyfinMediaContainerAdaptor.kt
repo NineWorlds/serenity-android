@@ -177,9 +177,9 @@ class JellyfinMediaContainerAdaptor {
 
       if (item.mediaStreams != null) {
         val medias = ArrayList<Media>()
-        val media = Media()
-        media.container = item.container
         for (mediaStream in item.mediaStreams) {
+          val media = Media()
+          media.container = item.container
           if (mediaStream.type == "Video") {
             media.aspectRatio = mediaStream.aspectRatio
             media.videoCodec = mediaStream.codec
