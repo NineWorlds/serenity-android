@@ -1,0 +1,5 @@
+package us.nineworlds.serenity.jellyfin.model
+
+import us.nineworlds.serenity.common.media.model.ICountry
+
+class Country : AbstractCrew(), ICountry

@@ -57,6 +57,10 @@ androidxRecyclerViewVersion = "1.4.0"
 resourcefulVersion = "1.1.0"
 mockkVersion = "1.14.6"
 turbine = "1.2.0"
+agpVersion = "8.13.1"
+kotlin = "2.2.21"
+coreKtxVersion = "1.10.1"
+espressoCoreVersion = "3.5.1"
 
 [libraries]
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotationVersion" }
@@ -134,7 +138,11 @@ kotlin-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coro
 toothpick-testing = { group = "com.github.stephanenicolas.toothpick", name = "toothpick-testing", version.ref = "toothPickVersion"}
 assertk-jvm = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertkJvmVersion" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine"}
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKSPVersion" }
+android-application = { id = "com.android.application", version.ref = "agpVersion" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
