@@ -66,7 +66,7 @@ public class AndroidHelper {
   }
 
   public boolean enableTunneling() {
-    return !isBeyondTV();
+    return false;
   }
 
   public boolean isBeyondTV() {

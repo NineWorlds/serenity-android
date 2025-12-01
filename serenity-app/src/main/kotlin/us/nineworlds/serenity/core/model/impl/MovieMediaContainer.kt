@@ -45,7 +45,8 @@ open class MovieMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc)
         contentRating = movie.contentRating
         directPlayUrl = "$baseUrl${movie.directPlayUrl}"
 
-        movie.medias?.firstOrNull()?.let { media ->
+        val sortedMedias = movie.medias?.sortedByDescending { isDirectPlaySupported(it) }
+        sortedMedias?.firstOrNull()?.let { media ->
           container = media.container
           media.videoPart?.firstOrNull()?.let {
             directPlayUrl = "$baseUrl${it.key.replaceFirst("/", "")}"
