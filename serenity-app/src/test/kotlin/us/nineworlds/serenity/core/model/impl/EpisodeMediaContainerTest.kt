@@ -10,21 +10,25 @@ import assertk.assertions.isNotNull
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import toothpick.config.Module
+import us.nineworlds.serenity.common.android.mediacodec.MediaCodecInfoUtil
 import us.nineworlds.serenity.common.media.model.IMedia
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.media.model.IPart
 import us.nineworlds.serenity.common.media.model.IVideo
 import us.nineworlds.serenity.common.rest.SerenityClient
+import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.test.InjectingTest
 
 class EpisodeMediaContainerTest : InjectingTest() {
 
   private val mockSerenityClient: SerenityClient = mockk(relaxed = true)
   private val mockResources: Resources = mockk(relaxed = true)
+  private val mockAndroidHelper: AndroidHelper = mockk(relaxed = true)
 
   private lateinit var episodeMediaContainer: EpisodeMediaContainer
 
@@ -36,6 +40,7 @@ class EpisodeMediaContainerTest : InjectingTest() {
   override fun setUp() {
     super.setUp()
     every { mockSerenityClient.baseURL() } returns "http://localhost:8096/"
+    mockkObject(MediaCodecInfoUtil)
   }
 
   @After
@@ -76,6 +81,11 @@ class EpisodeMediaContainerTest : InjectingTest() {
     every { mockMedia.videoResolution } returns "720"
     every { mockMedia.aspectRatio } returns "1.78"
     every { mockMedia.audioChannels } returns "6"
+
+    every { MediaCodecInfoUtil.isCodecSupported(any()) } returns true
+    every { mockAndroidHelper.isAudioPassthroughSupported(any()) } returns false
+    every { MediaCodecInfoUtil.findCorrectAudioMimeType(any()) } returns "audio/aac"
+    every { MediaCodecInfoUtil.findCorrectVideoMimeType(any()) } returns "video/avc"
 
     episodeMediaContainer = EpisodeMediaContainer(mockMediaContainer)
 
@@ -153,10 +163,49 @@ class EpisodeMediaContainerTest : InjectingTest() {
     assertThat(videoContentInfo.getBackgroundURL()).isEqualTo("http://localhost:8096/:/resources/show-fanart.jpg")
   }
 
+  @Test
+  fun `direct play sorting picks supported media`() {
+    val mockMediaContainer = mockk<IMediaContainer>(relaxed = true)
+    val mockVideo = mockk<IVideo>(relaxed = true)
+    val supportedMedia = mockk<IMedia>(relaxed = true) {
+      every { audioCodec } returns "ac3"
+      every { videoCodec } returns "h264"
+    }
+    val unsupportedMedia = mockk<IMedia>(relaxed = true) {
+      every { audioCodec } returns "flac"
+      every { videoCodec } returns "hevc"
+    }
+
+    every { mockMediaContainer.videos } returns listOf(mockVideo)
+    every { mockVideo.medias } returns listOf(unsupportedMedia, supportedMedia)
+
+    every { MediaCodecInfoUtil.isCodecSupported("video/avc") } returns true
+    every { MediaCodecInfoUtil.isCodecSupported("audio/ac4") } returns true
+    every { MediaCodecInfoUtil.isCodecSupported("video/hevc") } returns false
+    every { MediaCodecInfoUtil.isCodecSupported("audio/flac") } returns false
+
+    every { mockAndroidHelper.isAudioPassthroughSupported("ac3") } returns true
+    every { mockAndroidHelper.isAudioPassthroughSupported("flac") } returns false
+    every { MediaCodecInfoUtil.findCorrectAudioMimeType("audio/ac3") } returns "audio/ac4"
+    every { MediaCodecInfoUtil.findCorrectAudioMimeType("audio/flac") } returns "audio/flac"
+    every { MediaCodecInfoUtil.findCorrectVideoMimeType("video/h264") } returns "video/avc"
+    every { MediaCodecInfoUtil.findCorrectVideoMimeType("video/hevc") } returns "video/hevc"
+
+
+    episodeMediaContainer = EpisodeMediaContainer(mockMediaContainer)
+    val videos = episodeMediaContainer.createVideos()
+
+    assertThat(videos).isNotEmpty()
+    val video = videos.first()
+    assertThat(video.videoCodec).isEqualTo("h264")
+    assertThat(video.audioCodec).isEqualTo("ac3")
+  }
+
   inner class TestModule : Module() {
     init {
       bind(SerenityClient::class.java).toInstance(mockSerenityClient)
       bind(Resources::class.java).toInstance(mockResources)
+      bind(AndroidHelper::class.java).toInstance(mockAndroidHelper)
     }
   }
 }

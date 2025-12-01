@@ -14,7 +14,7 @@ class EpisodeMediaContainer(mc: IMediaContainer) : MovieMediaContainer(mc) {
     override fun createVideoContent(mc: IMediaContainer) {
     val baseUrl = factory.baseURL().orEmpty()
     var parentPosterURL: String? = null
-    if (mc.parentPosterURL != null && !mc.parentPosterURL.contains("show")) {
+    if (!mc.parentPosterURL.isNullOrEmpty() && !mc.parentPosterURL.contains("show")) {
       parentPosterURL = baseUrl + mc.parentPosterURL.substring(1)
     }
     val videos = mc.videos
@@ -60,7 +60,9 @@ class EpisodeMediaContainer(mc: IMediaContainer) : MovieMediaContainer(mc) {
       contentRating = episode.contentRating
     }
 
-    episode.medias?.firstOrNull()?.let { media ->
+    val sortedMedias = episode.medias?.sortedByDescending { epi.isDirectPlaySupported(it) }
+
+    sortedMedias?.firstOrNull()?.let { media ->
       epi.container = media.container
       val part = media.videoPart?.firstOrNull()
       if (part != null) {
@@ -86,4 +88,3 @@ class EpisodeMediaContainer(mc: IMediaContainer) : MovieMediaContainer(mc) {
     super.createVideoDetails(video, videoContentInfo)
   }
 }
-
