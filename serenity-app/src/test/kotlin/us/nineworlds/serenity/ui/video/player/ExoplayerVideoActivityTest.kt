@@ -8,6 +8,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.trackselection.TrackSelector
 import com.google.android.exoplayer2.upstream.DataSource
@@ -149,6 +150,17 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   fun createSimpleExoplayer() {
     assertThat(activity.createSimpleExoplayer()).isNotNull()
   }
+
+  @Test
+  fun createSimpleExoplayerWithDefaultTrackSelector() {
+    val mockDefaultTrackSelector = mockk<DefaultTrackSelector>(relaxed = true)
+    activity.trackSelector = mockDefaultTrackSelector
+
+    activity.createSimpleExoplayer()
+
+    verify { mockDefaultTrackSelector.parameters = any() }
+  }
+
 
   @Test
   fun onBackPressedStopsAndReleasesVideoPlayer() {
