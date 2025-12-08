@@ -59,7 +59,7 @@ mockkVersion = "1.14.6"
 turbine = "1.2.0"
 agpVersion = "8.13.1"
 kotlin = "2.2.21"
-coreKtxVersion = "1.10.1"
+coreKtxVersion = "1.17.0"
 espressoCoreVersion = "3.5.1"
 
 [libraries]
