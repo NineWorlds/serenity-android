@@ -21,12 +21,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
+
+import com.bumptech.glide.Glide;
 
 import java.io.IOException;
 
-import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.injection.BaseInjector;
 
 /*
@@ -137,7 +139,7 @@ import us.nineworlds.serenity.injection.BaseInjector;
         .setExtras(extras);
 
     try {
-      Bitmap image = GlideApp.with(mContext).asBitmap().load(mImageUri).into(176, 313).get();
+      Bitmap image = Glide.with(mContext).asBitmap().load(mImageUri).into(176, 313).get();
 
       builder = builder.setLargeIcon(image);
     } catch (Exception ex) {

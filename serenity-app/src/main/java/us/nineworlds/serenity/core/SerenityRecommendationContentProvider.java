@@ -29,6 +29,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;

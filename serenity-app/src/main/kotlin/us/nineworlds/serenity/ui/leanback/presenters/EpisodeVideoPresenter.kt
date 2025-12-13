@@ -6,7 +6,7 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
-import us.nineworlds.serenity.GlideApp
+import com.bumptech.glide.Glide
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
@@ -20,7 +20,7 @@ class EpisodeVideoPresenter : Presenter() {
         return CardPresenterViewHolder(imageView)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any?) {
         val imageWidth = viewHolder.view.context.resources.getDimensionPixelSize(R.dimen.episode_image_width)
         val imageHeight = viewHolder.view.context.resources.getDimensionPixelSize(R.dimen.episode_image_height)
 
@@ -30,8 +30,8 @@ class EpisodeVideoPresenter : Presenter() {
         val imageCardView = cardHolder.cardView
         cardHolder.movie = video
 
-        video.imageURL?.let {
-            imageCardView.titleText = video.title
+        video.getImageURL()?.let {
+            imageCardView.titleText = video.getTitle()
             imageCardView.contentText = "${video.season}, Episode ${video.episodeNumber}"
             imageCardView.setMainImageDimensions(imageWidth, imageHeight)
             imageCardView.setMainImageScaleType(ImageView.ScaleType.FIT_XY)
@@ -54,7 +54,9 @@ class EpisodeVideoPresenter : Presenter() {
         }
 
         fun updateCardViewImage(url: String) {
-            GlideApp.with(view.context).load(url).fitCenter().into(cardView.mainImageView)
+            cardView.mainImageView?.let { 
+                Glide.with(view.context).load(url).fitCenter().into(it)
+            }
         }
     }
 

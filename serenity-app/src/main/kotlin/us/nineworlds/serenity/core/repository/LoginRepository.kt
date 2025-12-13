@@ -3,9 +3,9 @@ package us.nineworlds.serenity.core.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import toothpick.InjectConstructor
+import us.nineworlds.serenity.common.repository.Result
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
-import us.nineworlds.serenity.common.repository.Result
 
 @InjectConstructor
 class LoginRepository(private val client: SerenityClient) {

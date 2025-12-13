@@ -25,7 +25,9 @@ package us.nineworlds.serenity.ui.listeners;
 
 import android.app.Activity;
 import android.view.View;
+
 import javax.inject.Inject;
+
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;

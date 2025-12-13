@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.injection;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 

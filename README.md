@@ -1,9 +1,7 @@
 Serenity for Android
 =======================
 
-[![Build Status](https://circleci.com/gh/NineWorlds/serenity-android/tree/develop.svg?style=shield)](https://circleci.com/gh/NineWorlds/serenity-android/?branch=develop)[![codecov](https://codecov.io/gh/NineWorlds/serenity-android/branch/develop/graph/badge.svg)](https://codecov.io/gh/NineWorlds/serenity-android)
-Sonar Qube:
-[![SonarQube](https://sonarcloud.io/api/badges/measure?key=serenity-android:serenity-app&metric=coverage)](https://sonarcloud.io/dashboard?id=serenity-android%3Aserenity-app)
+[![Serenity Android CI](https://github.com/NineWorlds/serenity-android/actions/workflows/android.yml/badge.svg)](https://github.com/NineWorlds/serenity-android/actions/workflows/android.yml)[![codecov](https://codecov.io/gh/NineWorlds/serenity-android/branch/develop/graph/badge.svg)](https://codecov.io/gh/NineWorlds/serenity-android)
 
 Plex Media Server support is now Deprecated!!!   Please consider using Emby Media Server instead if you want to use Serenity.
 
@@ -64,13 +62,13 @@ How can I help?
 If you are a programmer, fork the project, and provide patches or enhancements via pull requests.
 If you don't have coding skills, but have graphic design skills, the project can always use a Logo, Icons, etc.
 Otherwise, file bugs, and open enhancement requests.   I'm looking into various ways for donations to be sent
-to help the project along as well.   The app will probably be free in the playstore.
+to help the project along as well.   The app will probably be free in the Play Store.
 
 
 Building from Source
 =============
 
-Make sure to set the ANDROID_HOME environement variable to the location where your SDK is deployed.
+Make sure to set the ANDROID_HOME environment variable to the location where your SDK is deployed.
 
 To build the APK and APKLibraries from the command line:
 
@@ -94,8 +92,8 @@ This project uses several open source projects and source code:
 
 Unit Testing Frameworks
 ------
-* Robolectric (http://pivotal.github.com/robolectric/) - Android Integration/Unit Testing framework that allows testing without launching an emulator.
-* XMLUnit (http://xmlunit.sourceforge.net/) - unit testing framework to enhaced xml file verification.
+* Robolectric (https://robolectric.org/) - Android Integration/Unit Testing framework that allows testing without launching an emulator.
+* XMLUnit (http://xmlunit.sourceforge.net/) - unit testing framework to enhanced xml file verification.
 
 Skins
 ====

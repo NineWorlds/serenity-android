@@ -24,8 +24,11 @@
 package us.nineworlds.serenity.core.services;
 
 import android.os.AsyncTask;
+
 import java.io.IOException;
+
 import javax.inject.Inject;
+
 import timber.log.Timber;
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;

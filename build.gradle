@@ -6,17 +6,18 @@ buildscript {
 
   }
   dependencies {
-    classpath("com.google.firebase:firebase-crashlytics-gradle:2.7.1")
-    classpath("com.android.tools.build:gradle:$Versions.androidPluginVersion")
-    classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8")
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$Versions.kotlinVersion")
-    classpath("org.jetbrains.kotlin:kotlin-allopen:$Versions.kotlinVersion")
-    classpath("org.jacoco:org.jacoco.core:0.8.8")
+    classpath("com.google.firebase:firebase-crashlytics-gradle:3.0.6")
+    classpath("com.android.tools.build:gradle:${libs.versions.androidPluginVersion.get()}")
+    classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3")
+    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlinVersion.get()}")
+    classpath("org.jetbrains.kotlin:kotlin-allopen:${libs.versions.kotlinVersion.get()}")
+    classpath("org.jacoco:org.jacoco.core:0.8.14")
   }
 }
 
 plugins {
-  id "com.diffplug.spotless" version "6.18.0"
+  alias(libs.plugins.ksp) apply false
+  id "com.diffplug.spotless" version "8.0.0"
 }
 
 repositories {
@@ -24,6 +25,9 @@ repositories {
   google()
   maven {
     url("https://oss.sonatype.org/content/repositories/snapshots")
+  }
+  maven {
+    url("https://jcenter.bintray.com/")
   }
 }
 
@@ -34,7 +38,11 @@ subprojects {
     maven {
       url("https://oss.sonatype.org/content/repositories/snapshots")
     }
-    jcenter() // Currently required by url-manager
+    //jcenter() // Currently required by url-manager
+    maven {
+      url("https://jcenter.bintray.com/")
+    }
+
     maven {
       url("https://kingargyle.github.io/repo")
     }
@@ -53,7 +61,7 @@ subprojects {
     }
   }
 
- tasks.withType(Test) {
+ tasks.withType(Test).configureEach {
 
    testLogging {
      exceptionFormat = "full"
@@ -63,7 +71,7 @@ subprojects {
   allprojects {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
       kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
       }
     }
   }

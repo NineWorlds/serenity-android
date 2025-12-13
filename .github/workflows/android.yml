@@ -1,0 +1,35 @@
+name: Serenity Android CI
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build with Gradle
+      run: ./gradlew clean jacocoTestReport
+    - name: Report Code Coverage
+      uses: codecov/codecov-action@v5
+      with:
+        fail_ci_if_error: true # optional (default = false)
+        files: ./serenity-app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+        flags: unittests # optional
+        name: codecov-umbrella # optional
+        token: ${{ secrets.CODE_COV_SECRET }}
+        verbose: true # optional (default = false)

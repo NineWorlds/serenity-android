@@ -25,7 +25,9 @@ package us.nineworlds.serenity.ui.leanback.search;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.fragment.app.FragmentActivity;
+
 import us.nineworlds.serenity.R;
 
 public class SearchActivity extends FragmentActivity {

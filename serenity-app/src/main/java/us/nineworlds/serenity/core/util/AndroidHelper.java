@@ -26,10 +26,9 @@ package us.nineworlds.serenity.core.util;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import us.nineworlds.serenity.common.android.injection.ApplicationContext;
-import us.nineworlds.serenity.injection.BaseInjector;
+
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.audio.AudioCapabilities;
 
 public class AndroidHelper {
 
@@ -67,7 +66,7 @@ public class AndroidHelper {
   }
 
   public boolean enableTunneling() {
-    return !isBeyondTV();
+    return false;
   }
 
   public boolean isBeyondTV() {
@@ -77,6 +76,29 @@ public class AndroidHelper {
   public boolean isLeanbackSupported() {
     final PackageManager pm = context.getPackageManager();
     return pm.hasSystemFeature(ANDROID_SOFTWARE_LEANBACK);
+  }
+
+  public boolean isAudioPassthroughSupported(String codec) {
+    AudioCapabilities audioCapabilities = AudioCapabilities.getCapabilities(context);
+    int encoding = 0;
+    switch (codec.toLowerCase()) {
+      case "ac3":
+        encoding = C.ENCODING_AC3;
+        break;
+      case "eac3":
+        encoding = C.ENCODING_E_AC3;
+        break;
+      case "dts":
+        encoding = C.ENCODING_DTS;
+        break;
+      case "truehd":
+        encoding = C.ENCODING_DOLBY_TRUEHD;
+        break;
+      default:
+        return false;
+    }
+
+    return audioCapabilities.supportsEncoding(encoding);
   }
 
   public int buildNumber() {

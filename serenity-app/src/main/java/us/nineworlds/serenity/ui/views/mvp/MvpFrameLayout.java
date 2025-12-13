@@ -4,12 +4,14 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.os.Parcelable;
+import android.util.AttributeSet;
+import android.widget.FrameLayout;
+
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import android.util.AttributeSet;
-import android.widget.FrameLayout;
+
 import moxy.MvpDelegate;
 import moxy.MvpPresenter;
 

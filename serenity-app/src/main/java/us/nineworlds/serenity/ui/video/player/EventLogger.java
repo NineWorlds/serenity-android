@@ -17,9 +17,9 @@ package us.nineworlds.serenity.ui.video.player;
 
 import android.os.SystemClock;
 import android.util.Log;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.audio.AudioRendererEventListener;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
@@ -34,14 +34,14 @@ import com.google.android.exoplayer2.metadata.id3.PrivFrame;
 import com.google.android.exoplayer2.metadata.id3.TextInformationFrame;
 import com.google.android.exoplayer2.metadata.id3.UrlLinkFrame;
 import com.google.android.exoplayer2.source.MediaSourceEventListener;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
+
 import java.text.NumberFormat;
 import java.util.Locale;
+
 import javax.inject.Inject;
+
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.core.logger.Logger;

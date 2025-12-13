@@ -4,12 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import androidx.annotation.AttrRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StyleRes;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,10 +11,19 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import moxy.MvpPresenter;
 import moxy.presenter.InjectPresenter;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.Types;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -135,7 +138,7 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     ColorDrawable colorDrawable =
         new ColorDrawable(ContextCompat.getColor(roundedImageView.getContext(), android.R.color.black));
 
-    GlideApp.with(getContext())
+    Glide.with(getContext())
         .load(url)
         .fitCenter()
         .diskCacheStrategy(DiskCacheStrategy.ALL)

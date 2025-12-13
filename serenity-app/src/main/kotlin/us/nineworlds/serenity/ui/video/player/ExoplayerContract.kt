@@ -4,7 +4,6 @@ import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
 import us.nineworlds.serenity.core.model.VideoContentInfo
-import us.nineworlds.serenity.emby.model.Video
 
 interface ExoplayerContract {
 

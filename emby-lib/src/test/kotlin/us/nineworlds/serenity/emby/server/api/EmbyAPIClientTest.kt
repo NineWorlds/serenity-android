@@ -1,7 +1,10 @@
 package us.nineworlds.serenity.emby.server.api
 
 import androidx.test.core.app.ApplicationProvider
-import org.assertj.core.api.Assertions.assertThat
+import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isNotEmpty
+import assertk.assertions.isNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,37 +18,37 @@ import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 @Config(sdk = [28])
 class EmbyAPIClientTest {
 
-  lateinit var client: EmbyAPIClient
+  private lateinit var client: EmbyAPIClient
 
   @Before
   fun setUp() {
     ShadowLog.stream = System.out
 
     client = EmbyAPIClient(context = ApplicationProvider.getApplicationContext())
-    client.updateBaseUrl("http://192.168.86.162:8096")
+    client.updateBaseUrl("http://192.168.68.95:8096")
   }
 
   @Test
   fun retrieveAllPublicUsers() {
     val result = client.fetchAllPublicUsers()
-    assertThat(result).isNotEmpty.hasSize(2)
+    assertThat(result).hasSize(2)
   }
 
   @Test fun loginAdminUser() {
     val authenticateResult = authenticate()
 
     assertThat(authenticateResult).isNotNull()
-    assertThat(authenticateResult.accessToken).isNotBlank()
-    assertThat(client.serverId).isNotBlank()
-    assertThat(client.accessToken).isNotBlank()
-    assertThat(client.userId).isNotBlank()
+    assertThat(authenticateResult.accesToken).isNotEmpty()
+    assertThat(client.serverId).isNotEmpty()
+    assertThat(client.accessToken).isNotNull()
+    assertThat(client.userId).isNotNull().isNotEmpty()
   }
 
   @Test fun testCurrentUsersViews() {
     authenticate()
 
     val result = client.currentUserViews()
-    assertThat(result.items).isNotEmpty
+    assertThat(result.items).isNotEmpty()
   }
 
   @Test fun availableFiltersForCurrentUser() {
@@ -61,8 +64,8 @@ class EmbyAPIClientTest {
     authenticate()
 
     val result = client.retrieveRootData()
-    assertThat(result).isNotNull
-    assertThat(result!!.directories).isNotEmpty
+    assertThat(result).isNotNull()
+    assertThat(result.directories).isNotEmpty()
   }
 
   @Test fun createCategoriesForParentId() {
@@ -74,7 +77,7 @@ class EmbyAPIClientTest {
 
     val categories = client.retrieveCategoriesById(parentId)
 
-    assertThat(categories.directories).isNotEmpty
+    assertThat(categories.directories).isNotEmpty()
   }
 
   @Test fun fetchAllMovies() {
@@ -85,7 +88,7 @@ class EmbyAPIClientTest {
 
     val movies = client.retrieveItemByIdCategory(parentId, "all", Types.EPISODE)
 
-    assertThat(movies.videos).isNotEmpty
+    assertThat(movies.videos).isNotEmpty()
   }
 
   @Test fun fetchAllLatestMovies() {
@@ -97,7 +100,7 @@ class EmbyAPIClientTest {
 
     val itemResult = client.retrieveItemByIdCategory(key, "recentlyAdded", Types.MOVIES)
 
-    assertThat(itemResult.videos).isNotEmpty
+    assertThat(itemResult.videos).isNotEmpty()
 
   }
 

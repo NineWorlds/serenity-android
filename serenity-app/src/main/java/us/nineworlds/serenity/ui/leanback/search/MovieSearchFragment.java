@@ -30,19 +30,33 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.leanback.app.SearchSupportFragment;
 import androidx.leanback.app.SearchSupportFragment.SearchResultProvider;
-import androidx.leanback.widget.*;
+import androidx.leanback.widget.ArrayObjectAdapter;
+import androidx.leanback.widget.HeaderItem;
+import androidx.leanback.widget.ListRow;
+import androidx.leanback.widget.ListRowPresenter;
+import androidx.leanback.widget.ObjectAdapter;
+import androidx.leanback.widget.OnItemViewSelectedListener;
 import androidx.leanback.widget.Presenter.ViewHolder;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Toast;
+import androidx.leanback.widget.Row;
+
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+
+import java.net.URLEncoder;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import toothpick.Toothpick;
-import us.nineworlds.serenity.GlideApp;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.common.rest.SerenityClient;
@@ -52,10 +66,6 @@ import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.services.MovieSearchIntentService;
 import us.nineworlds.serenity.core.util.AndroidHelper;
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
-
-import javax.inject.Inject;
-import java.net.URLEncoder;
-import java.util.List;
 
 public class MovieSearchFragment extends SearchSupportFragment implements SearchResultProvider {
 
@@ -123,7 +133,7 @@ public class MovieSearchFragment extends SearchSupportFragment implements Search
                     }
                 };
 
-                GlideApp.with(getContext()).asBitmap().load(transcodingURL).into(target);
+                Glide.with(requireContext()).asBitmap().load(transcodingURL).into(target);
             }
         });
 
@@ -137,12 +147,12 @@ public class MovieSearchFragment extends SearchSupportFragment implements Search
             searchHandler = new MovieSearchHandler();
             Messenger messenger = new Messenger(searchHandler);
 
-            Intent searchIntent = new Intent(getActivity(), MovieSearchIntentService.class);
+            Intent searchIntent = new Intent(requireActivity(), MovieSearchIntentService.class);
 
             searchIntent.putExtra("key", key);
             searchIntent.putExtra("query", URLEncoder.encode(words));
             searchIntent.putExtra("MESSENGER", messenger);
-            getActivity().startService(searchIntent);
+            requireActivity().startService(searchIntent);
         }
     }
 

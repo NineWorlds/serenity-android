@@ -12,7 +12,11 @@ import android.os.Looper
 import android.view.KeyEvent
 import android.view.View
 import android.widget.FrameLayout
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.DefaultLoadControl
+import com.google.android.exoplayer2.DefaultRenderersFactory
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -187,11 +191,12 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
     internal fun createSimpleExoplayer(): ExoPlayer {
         if (trackSelector is DefaultTrackSelector) {
-            Timber.d("Enabling Tunneling Mode")
+            val tunnelingEnabled = androidHelper.enableTunneling()
+            Timber.d("Tunneling enabled: %s", tunnelingEnabled)
             val parameters = DefaultTrackSelector.ParametersBuilder(this)
-                    .setTunnelingEnabled(androidHelper.enableTunneling())
+                    .setTunnelingEnabled(tunnelingEnabled)
                     .setAllowAudioMixedDecoderSupportAdaptiveness(true)
-                    .setExceedAudioConstraintsIfNecessary(true)
+                    .setExceedAudioConstraintsIfNecessary(false)
                     .setAllowAudioMixedSampleRateAdaptiveness(true)
                     .build()
             (trackSelector as DefaultTrackSelector).parameters = parameters
@@ -203,7 +208,9 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
                 .setBufferDurationsMs(DefaultLoadControl.DEFAULT_MIN_BUFFER_MS, 60000, 1000, 2000)
                 .build()
 
-        return ExoPlayer.Builder(this)
+        val renderersFactory = DefaultRenderersFactory(this).setEnableAudioOffload(true)
+
+        return ExoPlayer.Builder(this, renderersFactory)
                 .setTrackSelector(trackSelector)
                 .setLoadControl(defaultLoadControl)
                 .build()
@@ -314,4 +321,3 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
         internal const val PROGRESS_UPDATE_DELAY = 10000L
     }
 }
-

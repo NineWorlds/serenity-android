@@ -26,9 +26,12 @@ package us.nineworlds.serenity.ui.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
+
 import java.util.LinkedList;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.core.model.VideoContentInfo;

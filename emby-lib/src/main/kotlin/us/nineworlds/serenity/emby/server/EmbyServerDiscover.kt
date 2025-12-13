@@ -30,19 +30,25 @@ class EmbyServerDiscover {
             //Try the 255.255.255.255 first
 
             try {
-                val sendPacket = DatagramPacket(sendData, sendData.size, InetAddress.getByName("255.255.255.255"), port)
+                val sendPacket = DatagramPacket(
+                    sendData,
+                    sendData.size,
+                    InetAddress.getByName("255.255.255.255"),
+                    port
+                )
                 c.send(sendPacket)
                 Timber.d(">>> Request packet sent to: 255.255.255.255 (DEFAULT)")
             } catch (e: Exception) {
                 Timber.e(e, "Error sending DatagramPacket")
             }
 
-//      try {
-//        val sendPacket = DatagramPacket(sendData, sendData.size, useMultiCastAddress(), port)
-//        c.send(sendPacket)
-//      } catch (e: Exception) {
-//        Timber.e(e, "error sending to multicast address")
-//      }
+            try {
+                val sendPacket =
+                    DatagramPacket(sendData, sendData.size, useMultiCastAddress(), port)
+                c.send(sendPacket)
+            } catch (e: Exception) {
+                Timber.e(e, "error sending to multicast address")
+            }
 
             // Broadcast the message over all the network interfaces
             val interfaces = NetworkInterface.getNetworkInterfaces()
@@ -65,7 +71,7 @@ class EmbyServerDiscover {
                     }
 
                     Timber.d(
-                            ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName()
+                        ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName()
                     )
                 }
             }
@@ -88,14 +94,14 @@ class EmbyServerDiscover {
 
         val servers = ArrayList<Server>()
 
-        while (timeoutMs > 0) {
+        while (timeout > 0) {
 
             val startTime = System.currentTimeMillis()
 
             // Wait for a response
             val recvBuf = ByteArray(15000)
             val receivePacket = DatagramPacket(recvBuf, recvBuf.size)
-            c.soTimeout = timeoutMs.toInt()
+            c.soTimeout = timeout.toInt()
 
             try {
                 c.receive(receivePacket)
@@ -116,7 +122,7 @@ class EmbyServerDiscover {
 
             val server = EmbyServer()
             val uri = URI.create(embyServerInfo!!.remoteAddres)
-            Timber.d("Server Remote Address: ${embyServerInfo!!.remoteAddres}")
+            Timber.d("Server Remote Address: ${embyServerInfo.remoteAddres}")
             Timber.d("Server host: ${uri.host}")
 
             server.ipAddress = uri.host
@@ -126,12 +132,12 @@ class EmbyServerDiscover {
             server.serverName = "Emby - " + embyServerInfo.name
 
             ServerChannel.invokeServerEvent(server)
+            servers.add(server)
 
             // TODO: Once completely migrated to the ServerChannel remove the event bus.
             eventBus.post(server)
 
-            val endTime = System.currentTimeMillis()
-            timeout -= (endTime - startTime)
+            timeout -= (System.currentTimeMillis() - startTime)
         }
 
         Timber.d("Found %d servers", servers.size)

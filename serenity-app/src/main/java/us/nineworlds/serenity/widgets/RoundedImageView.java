@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
+
 import us.nineworlds.serenity.R;
 
 public class RoundedImageView extends ImageView {

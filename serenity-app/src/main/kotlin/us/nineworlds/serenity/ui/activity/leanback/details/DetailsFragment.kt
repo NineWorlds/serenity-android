@@ -14,24 +14,17 @@ import us.nineworlds.serenity.common.annotations.InjectionConstants
 import javax.inject.Inject
 import javax.inject.Provider
 import moxy.MvpDelegate
-import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.core.model.ContentInfo
 
-import android.content.res.Resources
-
-import android.view.LayoutInflater
-import android.view.ViewGroup.MarginLayoutParams
-import android.widget.LinearLayout
 import androidx.leanback.widget.*
+import com.bumptech.glide.Glide
 
 import us.nineworlds.serenity.core.model.SeriesContentInfo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils
 
-import androidx.leanback.widget.ItemAlignmentFacet.ItemAlignmentDef
 import us.nineworlds.serenity.R
-import us.nineworlds.serenity.core.model.impl.MoviePosterInfo
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo
 import us.nineworlds.serenity.ui.leanback.presenters.*
 import us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewRow
@@ -204,7 +197,7 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
     override fun updateDetails(videoInfo: ContentInfo) {
         val imageView = requireActivity().findViewById<ImageView>(R.id.detail_background_image)
 
-        GlideApp.with(requireActivity()).load(videoInfo.backgroundURL).fitCenter().into(imageView)
+        Glide.with(requireActivity()).load(videoInfo.getBackgroundURL()).fitCenter().into(imageView)
 
         when (videoInfo) {
             is TVShowSeriesInfo -> setupTVShowDetails(videoInfo)
@@ -218,7 +211,7 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
             val seasonAdapter = ArrayObjectAdapter(EpisodeVideoPresenter())
             seasonAdapter.addAll(0, emptyList<VideoContentInfo>())
 
-            val seasonHeader = HeaderItem(season.title)
+            val seasonHeader = HeaderItem(season.getTitle())
             val seasonRow = ListRow(seasonHeader, seasonAdapter)
 
             val detailsAdapter = adapter as ArrayObjectAdapter
@@ -230,7 +223,7 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
         val detailsAdapter = adapter as ArrayObjectAdapter
         val content = detailsAdapter.unmodifiableList<Row>()
         content.filterIsInstance<ListRow>()
-                .filter { listRow -> listRow.headerItem.name == season.title }
+                .filter { listRow -> listRow.headerItem.name == season.getTitle() }
                 .forEach { row ->
                     val adapter = row.adapter as ArrayObjectAdapter
                     adapter.setItems(episodes, object : DiffCallback<VideoContentInfo>() {
@@ -242,7 +235,7 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
                         }
 
                         override fun areContentsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean {
-                            return oldItem.equals(newItem)
+                            return oldItem == newItem
                         }
                     })
                 }

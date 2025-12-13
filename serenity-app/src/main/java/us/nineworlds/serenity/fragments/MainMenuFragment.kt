@@ -24,30 +24,29 @@
  */
 package us.nineworlds.serenity.fragments
 
-import us.nineworlds.serenity.fragments.mainmenu.MainMenuView
-import javax.inject.Inject
-import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter
-import us.nineworlds.serenity.R
-import androidx.leanback.widget.HorizontalGridView
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.os.Bundle
 import android.app.Activity
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentContainerView
-import us.nineworlds.serenity.MainMenuTextViewAdapter
-import us.nineworlds.serenity.core.menus.MenuItem
-import us.nineworlds.serenity.events.MainMenuEvent
-import us.nineworlds.serenity.core.model.impl.MenuMediaContainer
-import java.util.ArrayList
-import javax.inject.Provider
+import androidx.leanback.widget.HorizontalGridView
 import moxy.ktx.moxyPresenter
 import us.nineworlds.serenity.MainActivity
+import us.nineworlds.serenity.MainMenuTextViewAdapter
+import us.nineworlds.serenity.R
+import us.nineworlds.serenity.core.menus.MenuItem
 import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
 import us.nineworlds.serenity.core.model.VideoCategory
+import us.nineworlds.serenity.core.model.impl.MenuMediaContainer
+import us.nineworlds.serenity.events.MainMenuEvent
+import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter
+import us.nineworlds.serenity.fragments.mainmenu.MainMenuView
 import us.nineworlds.serenity.injection.InjectingMvpFragment
+import javax.inject.Inject
+import javax.inject.Provider
 
 class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
 

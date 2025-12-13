@@ -2,9 +2,7 @@ package us.nineworlds.serenity.injection.modules;
 
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
-import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 
 import toothpick.config.Module;
 import us.nineworlds.serenity.injection.modules.providers.DataSourceFactoryProvider;

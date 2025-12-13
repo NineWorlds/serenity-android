@@ -7,9 +7,9 @@ import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 
 class LocalDateJsonAdapter : JsonAdapter<LocalDateTime>() {
-  override fun fromJson(reader: JsonReader?): LocalDateTime? {
+  override fun fromJson(reader: JsonReader): LocalDateTime? {
 
-    val dateTime = reader?.nextString()!!.replaceAfter(".", "")
+    val dateTime = reader.nextString()!!.replaceAfter(".", "")
     val dateformater = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH':'mm':'ss'.'")
 //      DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'")
 //    } else if(dateTime!!.contains("+")) {
@@ -20,7 +20,7 @@ class LocalDateJsonAdapter : JsonAdapter<LocalDateTime>() {
     return LocalDateTime.parse(dateTime, dateformater)
   }
 
-  override fun toJson(writer: JsonWriter?, value: LocalDateTime?) {
-    writer?.value(value?.toString())
+  override fun toJson(writer: JsonWriter, value: LocalDateTime?) {
+    writer.value(value?.toString())
   }
 }

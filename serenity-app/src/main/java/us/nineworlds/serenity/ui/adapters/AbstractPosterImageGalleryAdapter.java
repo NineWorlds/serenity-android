@@ -24,11 +24,13 @@
 package us.nineworlds.serenity.ui.adapters;
 
 import android.os.Handler;
-import androidx.core.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
+import androidx.core.content.ContextCompat;
+
 import java.util.ArrayList;
 import java.util.List;
 

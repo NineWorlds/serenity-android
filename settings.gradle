@@ -7,5 +7,5 @@ pluginManagement {
 
 include ':serenity-app', ':emby-lib', ':serenity-common', ':serenity-android-common'
 include ':subtitle-converter'
-//include ':plexapp-rest-library'
-
+include ':manager'
+include ':jellyfin-lib'

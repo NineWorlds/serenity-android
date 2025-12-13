@@ -1,11 +1,12 @@
 package us.nineworlds.serenity.ui.video.player
 
 import android.view.View
-import com.birbit.android.jobqueue.JobManager
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerControlView
+import kotlinx.coroutines.launch
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import moxy.presenterScope
 import moxy.viewstate.strategy.SkipStrategy
 import moxy.viewstate.strategy.StateStrategyType
 import org.greenrobot.eventbus.EventBus
@@ -21,10 +22,6 @@ import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.events.video.OnScreenDisplayEvent
 import us.nineworlds.serenity.injection.ForVideoQueue
-import us.nineworlds.serenity.jobs.video.StartPlaybackJob
-import us.nineworlds.serenity.jobs.video.StopPlaybackJob
-import us.nineworlds.serenity.jobs.video.UpdatePlaybackPostionJob
-import us.nineworlds.serenity.jobs.video.WatchedStatusJob
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerPresenter
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerView
 import java.util.LinkedList
@@ -49,10 +46,10 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   internal lateinit var eventBus: EventBus
 
   @Inject
-  internal lateinit var jobManager: JobManager
+  internal lateinit var androidHelper: AndroidHelper
 
   @Inject
-  internal lateinit var androidHelper: AndroidHelper
+  internal lateinit var playbackRepository: PlaybackRepository
 
   internal lateinit var video: VideoContentInfo
 
@@ -70,7 +67,11 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   }
 
   override fun updateWatchedStatus() {
-    jobManager.addJobInBackground(WatchedStatusJob(video.id()))
+    presenterScope.launch {
+        video.id()?.let {
+            playbackRepository.watched(it)
+        }
+    }
   }
 
   override fun onPositionDiscontinuity(reason: Int) = Unit
@@ -90,14 +91,18 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
 
   override fun onRepeatModeChanged(repeatMode: Int) = Unit
 
-  override fun videoId(): String = video.id()
+  override fun videoId(): String = video.id().orEmpty()
 
   override fun stopPlaying(currentPosition: Long) {
-    jobManager.addJobInBackground(StopPlaybackJob(video.id(), currentPosition))
+    presenterScope.launch {
+      playbackRepository.stopPlaying(video.id().orEmpty(), currentPosition)
+    }
   }
 
   override fun startPlaying() {
-    jobManager.addJobInBackground(StartPlaybackJob(video.id()))
+    presenterScope.launch {
+      playbackRepository.startPlaying(video.id().orEmpty())
+    }
   }
 
   override fun onVisibilityChange(visibility: Int) {
@@ -124,8 +129,10 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   }
 
   override fun updateServerPlaybackPosition(currentPostion: Long) {
-    video.resumeOffset = currentPostion.toInt()
-    jobManager.addJobInBackground(UpdatePlaybackPostionJob(video))
+    presenterScope.launch {
+      video.resumeOffset = currentPostion.toInt()
+      playbackRepository.updatePlaybackPosition(video)
+    }
   }
 
   override fun playBackFromVideoQueue(autoResume: Boolean) {
@@ -150,54 +157,32 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   }
 
   internal fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {
-    val mediaCodecInfoUtil = MediaCodecInfoUtil()
-    video.container?.let {
-      video.container = if (video.container.contains("mp4")) {
-        "mp4"
-      } else {
-        video.container
-      }
-      val isVideoContainerSupported =
-        mediaCodecInfoUtil.isExoPlayerContainerSupported("video/${video.container.substringBefore(",")}")
-      var isAudioCodecSupported =
-        selectCodec(mediaCodecInfoUtil.findCorrectAudioMimeType("audio/${video.audioCodec}"))
-      val isVideoSupported =
-        selectCodec(mediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
+    val audioCodec = video.audioCodec.orEmpty()
+    val hasStandardAudioSupport = selectCodec(MediaCodecInfoUtil.findCorrectAudioMimeType("audio/$audioCodec"))
+    val hasPassthroughAudioSupport = androidHelper.isAudioPassthroughSupported(audioCodec)
+    val isAudioCodecSupported = hasStandardAudioSupport || hasPassthroughAudioSupport
 
-      isAudioCodecSupported = if (androidHelper.isNvidiaShield || androidHelper.isBravia) {
-        when (video.audioCodec.toLowerCase()) {
-          "eac3", "ac3", "dts", "truehd" -> true
-          else -> isAudioCodecSupported
-        }
-      } else {
-        isAudioCodecSupported
-      }
+    val isVideoSupported = selectCodec(MediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
 
-      logger.debug("Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
-      logger.debug("Video Codec:  ${video.videoCodec} support returned $isVideoSupported")
-      logger.debug("Video Container:  ${video.container} support returned $isVideoContainerSupported")
+    logger.debug("Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
+    logger.debug("Video Codec:  ${video.videoCodec} support returned $isVideoSupported")
 
-      if (isVideoSupported && isAudioCodecSupported && isVideoContainerSupported!!) {
-        return true
-      }
-    }
-
-    return false
+    return isVideoSupported && isAudioCodecSupported
   }
 
   private fun transcoderUrl(): String {
     logger.debug("ExoPlayerPresenter: Container: ${video.container} Audio: ${video.audioCodec}")
     if (isDirectPlaySupportedForContainer(video)) {
       logger.debug("ExoPlayerPresenter: Direct playing ${video.directPlayUrl}")
-      return video.directPlayUrl
+      return video.directPlayUrl.orEmpty()
     }
 
-    val transcodingUrl = serenityClient.createTranscodeUrl(video.id(), video.resumeOffset)
+    val transcodingUrl = serenityClient.createTranscodeUrl(video.id().orEmpty(), video.resumeOffset)
 
     logger.debug("ExoPlayerPresenter: Transcoding Url: $transcodingUrl")
     return transcodingUrl
   }
 
   private fun selectCodec(mimeType: String): Boolean =
-    MediaCodecInfoUtil().isCodecSupported(mimeType)
+    MediaCodecInfoUtil.isCodecSupported(mimeType)
 }

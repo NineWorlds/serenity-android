@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import androidx.leanback.widget.Presenter
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.rest.Types
-import us.nineworlds.serenity.core.model.ContentInfo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.ui.views.statusoverlayview.StatusOverlayFrameLayout
 
@@ -20,7 +19,7 @@ class VideoContentInfoPresenter : Presenter() {
         return CardPresenterViewHolder(statusOverlayView)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any?) {
         val video = item as VideoContentInfo
 
         val cardHolder = viewHolder as CardPresenterViewHolder
@@ -43,8 +42,8 @@ class VideoContentInfoPresenter : Presenter() {
         fun bind(videoContentInfo: VideoContentInfo) {
             cardView.tag = videoContentInfo
 
-            videoContentInfo.imageURL?.let {
-                when(videoContentInfo.type) {
+            videoContentInfo.getImageURL()?.let {
+                when(videoContentInfo.getType()) {
                     Types.EPISODE -> {
                         val imageWidth = view.context.resources.getDimensionPixelSize(R.dimen.episode_image_width)
                         val imageHeight = view.context.resources.getDimensionPixelSize(R.dimen.episode_image_height)

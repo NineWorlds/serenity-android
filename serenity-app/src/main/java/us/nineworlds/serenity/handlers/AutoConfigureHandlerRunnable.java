@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.widget.Toast;
+
 import java.util.Map;
+
 import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.Server;
 import us.nineworlds.serenity.injection.BaseInjector;

@@ -33,9 +33,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
+
 import javax.inject.Inject;
+
 import timber.log.Timber;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.menus.DialogMenuItem;

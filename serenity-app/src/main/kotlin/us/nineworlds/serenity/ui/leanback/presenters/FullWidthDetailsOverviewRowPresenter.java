@@ -12,8 +12,8 @@
  * the License.
  */
 package us.nineworlds.serenity.ui.leanback.presenters;
+
 import android.annotation.SuppressLint;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -23,10 +23,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 
-import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.BaseGridView;
 import androidx.leanback.widget.HorizontalGridView;

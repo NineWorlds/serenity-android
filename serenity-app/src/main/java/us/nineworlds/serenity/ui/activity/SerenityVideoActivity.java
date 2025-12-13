@@ -26,17 +26,20 @@ package us.nineworlds.serenity.ui.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.LinkedList;
+
 import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.SerenityConstants;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.ForVideoQueue;
 import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
-import us.nineworlds.serenity.ui.util.ExternalPlayerResultHandler;
 import us.nineworlds.serenity.ui.util.PlayerResultHandler;
 import us.nineworlds.serenity.ui.video.player.ExoplayerVideoActivity;
 
@@ -76,16 +79,10 @@ public abstract class SerenityVideoActivity extends SerenityActivity {
     video = (VideoContentInfo) adapter.getItem(videoRecyclerView.getChildAdapterPosition(selectedView));
 
     if (data != null) {
-      if (externalPlayer) {
-        ExternalPlayerResultHandler externalPlayerHandler =
-            new ExternalPlayerResultHandler(resultCode, data, this, adapter);
-        externalPlayerHandler.updatePlaybackPosition(video, selectedView);
-      } else {
         PlayerResultHandler playerResultHandler =
 
             new PlayerResultHandler(data, adapter);
         playerResultHandler.updateVideoPlaybackPosition(video, selectedView);
-      }
     }
 
     if (requestCode == SerenityConstants.EXIT_PLAYBACK_IMMEDIATELY) {

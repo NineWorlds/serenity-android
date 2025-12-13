@@ -26,17 +26,21 @@ package us.nineworlds.serenity.ui.listeners;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import com.birbit.android.jobqueue.JobManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import us.nineworlds.serenity.GlideApp;
+
+import javax.inject.Inject;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.SerenityClient;
 import us.nineworlds.serenity.core.imageloader.BackgroundBitmapDisplayer;
@@ -44,8 +48,6 @@ import us.nineworlds.serenity.core.logger.Logger;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.injection.BaseInjector;
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils;
-
-import javax.inject.Inject;
 
 /**
  * Abstract class for handling video selection information. This can either be a
@@ -61,8 +63,6 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector {
     @Inject
     protected SharedPreferences preferences;
 
-    @Inject
-    JobManager jobManager;
     @Inject
     Logger logger;
 
@@ -178,7 +178,7 @@ public abstract class AbstractVideoOnItemSelectedListener extends BaseInjector {
             }
         };
 
-        GlideApp.with(context).asBitmap().load(transcodingURL).into(target);
+        Glide.with(context).asBitmap().load(transcodingURL).into(target);
     }
 
     public abstract void onItemSelected(View view, int i);

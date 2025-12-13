@@ -1,9 +1,12 @@
 package us.nineworlds.serenity.injection.modules.providers;
 
 import android.content.SharedPreferences;
+
 import java.util.LinkedList;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
+
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.injection.ForVideoQueue;

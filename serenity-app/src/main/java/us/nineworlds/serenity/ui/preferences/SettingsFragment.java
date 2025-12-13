@@ -5,20 +5,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import androidx.preference.PreferenceDialogFragment;
-import androidx.preference.PreferenceFragment;
+
 import androidx.leanback.preference.LeanbackPreferenceFragment;
 import androidx.leanback.preference.LeanbackSettingsFragment;
 import androidx.preference.DialogPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceDialogFragment;
+import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceScreen;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.inject.Inject;
+
 import toothpick.Toothpick;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.Server;

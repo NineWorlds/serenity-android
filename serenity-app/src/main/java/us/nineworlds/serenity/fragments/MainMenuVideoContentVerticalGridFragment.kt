@@ -1,17 +1,21 @@
 package us.nineworlds.serenity.fragments
 
-import android.os.Bundle
-import androidx.leanback.app.RowsSupportFragment
-import androidx.leanback.widget.*
-import us.nineworlds.serenity.core.model.CategoryInfo
 import android.content.Intent
+import android.os.Bundle
 import android.widget.ImageView
+import androidx.leanback.app.RowsSupportFragment
+import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.DiffCallback
+import androidx.leanback.widget.HeaderItem
+import androidx.leanback.widget.ListRow
+import androidx.leanback.widget.ListRowPresenter
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import toothpick.Toothpick
-import us.nineworlds.serenity.GlideApp
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.common.rest.Types
+import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
 import us.nineworlds.serenity.core.model.VideoCategory
 import us.nineworlds.serenity.ui.activity.leanback.details.DetailsActivity
@@ -37,7 +41,7 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
           val videoCategory = item as VideoCategory
 
             when {
-                videoCategory.item.type == Types.EPISODE -> {
+                videoCategory.item.getType() == Types.EPISODE -> {
                     vpUtils.playVideo(requireActivity(), videoCategory.item, false)
                 }
                 videoCategory.type == Types.MOVIES -> {
@@ -65,7 +69,7 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
 
                 val imageView = requireActivity().findViewById<ImageView>(R.id.mainGalleryBackground)
 
-                GlideApp.with(requireActivity()).load(videoCategory.item.backgroundURL).transition(DrawableTransitionOptions.withCrossFade()).fitCenter().into(imageView)
+                Glide.with(requireActivity()).load(videoCategory.item.getBackgroundURL()).transition(DrawableTransitionOptions.withCrossFade()).fitCenter().into(imageView)
             }
         }
     }

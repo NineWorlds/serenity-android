@@ -9,18 +9,18 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
 import android.widget.Toast
-import com.birbit.android.jobqueue.JobManager
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.analytics.FirebaseAnalytics
+import kotlinx.coroutines.launch
 import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.MainActivity
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.Server
-import us.nineworlds.serenity.common.channels.ServerChannel
 import us.nineworlds.serenity.core.util.StringPreference
 import us.nineworlds.serenity.databinding.ActivityServerSelectionBinding
 import us.nineworlds.serenity.databinding.IncludeLoadingProgressBinding
 import us.nineworlds.serenity.emby.server.EmbyServer
-import us.nineworlds.serenity.emby.server.EmbyServerJob
+import us.nineworlds.serenity.emby.server.EmbyServerDiscover
 import us.nineworlds.serenity.injection.ForMediaServers
 import us.nineworlds.serenity.injection.InjectingActivity
 import us.nineworlds.serenity.injection.ServerClientPreference
@@ -49,9 +49,6 @@ class ServerSelectionActivity : InjectingActivity() {
   @Inject
   @field:[ServerPortPreference]
   lateinit var serverPortPreference: StringPreference
-
-  @Inject
-  lateinit var jobManager: JobManager
 
   private lateinit var refreshButton: View
   private lateinit var manualEntryButton: View
@@ -101,8 +98,11 @@ class ServerSelectionActivity : InjectingActivity() {
     refreshButton =
       LayoutInflater.from(this).inflate(R.layout.button_server_refresh, binding.serverContainer, false)
     refreshButton.setOnClickListener {
-      jobManager.addJobInBackground(EmbyServerJob())
-      recreate()
+
+      lifecycleScope.launch {
+        EmbyServerDiscover().findServers()
+        recreate()
+      }
     }
     binding.serverContainer.addView(refreshButton)
 

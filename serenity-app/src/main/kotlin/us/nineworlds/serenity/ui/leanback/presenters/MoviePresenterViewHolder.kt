@@ -3,16 +3,15 @@ package us.nineworlds.serenity.ui.leanback.presenters
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RatingBar
 import androidx.leanback.widget.RowPresenter
-import us.nineworlds.serenity.GlideApp
+import com.bumptech.glide.Glide
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.databinding.LeanbackDetailsSummaryBinding
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils
-import android.widget.LinearLayout
-
-import android.widget.RatingBar
-import android.view.ViewGroup
 
 
 class MoviePresenterViewHolder(private val binding: LeanbackDetailsSummaryBinding) : RowPresenter.ViewHolder(binding.root) {
@@ -20,10 +19,10 @@ class MoviePresenterViewHolder(private val binding: LeanbackDetailsSummaryBindin
     private val context = binding.root.context
 
     fun bind(videoInfo: VideoContentInfo) {
-        binding.movieBrowserPosterTitle.text = videoInfo.title
-        binding.movieSummary.text = videoInfo.summary
+        binding.movieBrowserPosterTitle.text = videoInfo.getTitle()
+        binding.movieSummary.text = videoInfo.getSummary()
 
-        GlideApp.with(context).load(videoInfo.imageURL).fitCenter().into(binding.videoPoster)
+        Glide.with(context).load(videoInfo.getImageURL()).fitCenter().into(binding.videoPoster)
 
         val width = context.resources.getDimensionPixelSize(R.dimen.info_graphic_width)
         val height = context.resources.getDimensionPixelSize(R.dimen.info_graphic_height)
@@ -100,7 +99,7 @@ class MoviePresenterViewHolder(private val binding: LeanbackDetailsSummaryBindin
             infographicsView.addView(ratingBar)
         }
 
-        val studiov = imageUtilsNormal.createStudioImage(videoInfo.studio, context, videoInfo.mediaTagIdentifier)
+        val studiov = imageUtilsNormal.createStudioImage(videoInfo.studio, context, videoInfo.getMediaTagIdentifier())
         if (studiov != null) {
             infographicsView.addView(studiov)
         }

@@ -28,13 +28,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import com.birbit.android.jobqueue.JobManager;
-import com.birbit.android.jobqueue.config.Configuration;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import org.greenrobot.eventbus.EventBus;
+
 import toothpick.config.Module;
 import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.common.rest.SerenityClient;
@@ -62,27 +63,12 @@ public class AndroidModule extends Module {
     bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(applicationContext));
     bind(AndroidHelper.class).toInstance(new AndroidHelper(applicationContext));
     bind(Resources.class).toInstance(application.getResources());
-    bind(JobManager.class).toProvider(JobManagerProvider.class).providesSingleton();
     bind(LocalBroadcastManager.class).toInstance(providesLocalBroadcastManager());
   }
 
 
   private LocalBroadcastManager providesLocalBroadcastManager() {
     return LocalBroadcastManager.getInstance(applicationContext);
-  }
-
-  public static class JobManagerProvider implements Provider<JobManager> {
-
-    @Inject @ApplicationContext Context context;
-
-    @Override public JobManager get() {
-        Configuration configuration = new Configuration.Builder(context).minConsumerCount(1)
-            .maxConsumerCount(5)
-            .loadFactor(3)
-            .consumerKeepAlive(120)
-            .build();
-        return new JobManager(configuration);
-    }
   }
 
   public static class EventBusProvider implements Provider<EventBus> {

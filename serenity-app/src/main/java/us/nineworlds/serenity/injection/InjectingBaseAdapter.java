@@ -1,6 +1,7 @@
 package us.nineworlds.serenity.injection;
 
 import android.widget.BaseAdapter;
+
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 

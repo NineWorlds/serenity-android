@@ -1,6 +1,8 @@
 package us.nineworlds.serenity.test.util;
 
 
+import static org.robolectric.shadows.ShadowLooper.shadowMainLooper;
+
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
@@ -9,8 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import org.robolectric.Robolectric;
-
-import static org.robolectric.shadows.ShadowLooper.shadowMainLooper;
 
 public final class FragmentTestUtil {
   

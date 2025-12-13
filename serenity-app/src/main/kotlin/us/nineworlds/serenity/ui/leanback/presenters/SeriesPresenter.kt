@@ -17,10 +17,12 @@ open class SeriesPresenter : Presenter() {
         return SeriesPresenterViewHolder(LeanbackDetailsSummaryBinding.inflate(layoutInflater, parent, false))
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any?) {
         val vh = viewHolder as SeriesPresenterViewHolder
         vh.bind(item as TVShowSeriesInfo)
     }
 
-    override fun onUnbindViewHolder(viewHolder: ViewHolder?) = Unit
+    override fun onUnbindViewHolder(viewHolder: ViewHolder) {
+        // No-op
+    }
 }

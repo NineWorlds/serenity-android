@@ -24,6 +24,7 @@
 package us.nineworlds.serenity.injection;
 
 import androidx.fragment.app.Fragment;
+
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 

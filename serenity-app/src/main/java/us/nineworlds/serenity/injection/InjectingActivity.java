@@ -23,14 +23,16 @@
 
 package us.nineworlds.serenity.injection;
 
-import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import toothpick.Scope;
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 
-public abstract class InjectingActivity extends Activity {
+public abstract class InjectingActivity extends AppCompatActivity {
 
   protected Scope scope;
 

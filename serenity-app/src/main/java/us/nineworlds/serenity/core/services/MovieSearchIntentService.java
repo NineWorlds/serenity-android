@@ -26,6 +26,7 @@ package us.nineworlds.serenity.core.services;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
 import us.nineworlds.serenity.common.media.model.IMediaContainer;
 
 /**

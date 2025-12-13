@@ -16,11 +16,13 @@ data class PublicUserInfo(
 
 data class AuthenticateUserByName(
   @Json(name = "Username") val username: String,
+  @Json(name = "PasswordMd5") val passwordMD5: String,
+  @Json(name = "Password") val password: String,
   @Json(name = "Pw") val pw: String
 )
 
 data class AuthenticationResult(
   @Json(name = "User") val userInfo: PublicUserInfo,
-  @Json(name = "AccessToken") val accessToken: String,
+  @Json(name = "AccessToken") val accesToken: String,
   @Json(name = "ServerId") val serverId: String
 )
