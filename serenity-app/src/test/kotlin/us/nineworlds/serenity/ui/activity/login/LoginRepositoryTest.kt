@@ -3,9 +3,9 @@ package us.nineworlds.serenity.ui.activity.login
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import io.mockk.clearAllMocks
-import io.mockk.every
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -23,17 +23,15 @@ import us.nineworlds.serenity.core.repository.LoginRepository
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginRepositoryTest {
 
-    private companion object {
-        private val mockSerenityClient = mockk<SerenityClient>()
-        private val mockSerenityUser = mockk<SerenityUser>()
-    }
+    private val mockSerenityClient = mockk<SerenityClient>(relaxed = true)
+    private val mockSerenityUser = mockk<SerenityUser>(relaxed = true)
 
     private lateinit var repository: LoginRepository
 
     @Before
     fun setUp() {
         clearAllMocks()
-        Dispatchers.setMain(Dispatchers.Unconfined)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
         repository = LoginRepository(mockSerenityClient)
     }
 
@@ -43,26 +41,36 @@ class LoginRepositoryTest {
     }
 
     @Test
-    fun testLoadAllUsersWithSuccess() = runTest(UnconfinedTestDispatcher()) {
+    fun `loadAllUsers returns success on client success`() = runTest {
         val expectedResult = listOf(mockSerenityUser)
-        every { mockSerenityClient.allAvailableUsers() } returns expectedResult
+        coEvery { mockSerenityClient.allAvailableUsers() } returns expectedResult
 
         val result = repository.loadAllUsers()
 
         assertThat((result as Result.Success<List<SerenityUser>>).data).isEqualTo(expectedResult)
 
-        verify { mockSerenityClient.allAvailableUsers() }
+        coVerify { mockSerenityClient.allAvailableUsers() }
     }
 
     @Test
-    fun testAuthenticateUser() = runTest(UnconfinedTestDispatcher()) {
+    fun `authenticate user without password returns success`() = runTest {
         val expectedResult = mockSerenityUser
-        every { mockSerenityClient.authenticateUser(any()) } returns expectedResult
+        coEvery { mockSerenityClient.authenticateUser(any(), null) } returns expectedResult
 
-        val result = repository.authenticateUser(expectedResult)
+        val result = repository.authenticateUser(expectedResult, null)
 
         assertThat((result as Result.Success<SerenityUser>).data).isEqualTo(expectedResult)
-        verify { mockSerenityClient.authenticateUser(expectedResult) }
+        coVerify { mockSerenityClient.authenticateUser(expectedResult, null) }
     }
 
+    @Test
+    fun `authenticate user with password returns success`() = runTest {
+        val expectedResult = mockSerenityUser
+        coEvery { mockSerenityClient.authenticateUser(any(), "password") } returns expectedResult
+
+        val result = repository.authenticateUser(expectedResult, "password")
+
+        assertThat((result as Result.Success<SerenityUser>).data).isEqualTo(expectedResult)
+        coVerify { mockSerenityClient.authenticateUser(expectedResult, "password") }
+    }
 }

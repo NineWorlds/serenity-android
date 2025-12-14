@@ -57,9 +57,9 @@ class LoginUserPresenter : MvpPresenter<LoginUserView>(), LoginUserContract.Logi
     }
   }
 
-  override fun loadUser(user: SerenityUser) {
+  override fun loadUser(user: SerenityUser, password: String?) {
     presenterScope.launch {
-      when (val result = repository.authenticateUser(user)) {
+      when (val result = repository.authenticateUser(user, password)) {
         is Success<SerenityUser> -> viewState.launchNextScreen()
         else -> {
           // Error State

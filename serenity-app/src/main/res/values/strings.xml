@@ -246,4 +246,5 @@
   <string name="select_a_user_profile">Select a User Profile</string>
   <string name="refresh_servers">Refresh Servers</string>
   <string name="manual_server_entry">Manual Server Entry</string>
+  <string name="password">Password</string>
 </resources>

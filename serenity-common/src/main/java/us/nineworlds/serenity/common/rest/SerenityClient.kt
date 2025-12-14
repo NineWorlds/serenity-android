@@ -71,11 +71,11 @@ interface SerenityClient {
     fun createEpisodesURL(key: String): String
     fun createSeasonsURL(key: String): String
     fun createImageURL(url: String, width: Int, height: Int): String
-    fun createTranscodeUrl(id: String, offset: Int): String
+    fun createTranscodeUrl(id: String, offset: Int, token: String? = null): String
     fun reinitialize()
     fun userInfo(userId: String): SerenityUser?
     fun allAvailableUsers(): List<SerenityUser>
-    fun authenticateUser(user: SerenityUser): SerenityUser
+    fun authenticateUser(user: SerenityUser, password: String? = null): SerenityUser
     fun createUserImageUrl(user: SerenityUser, width: Int, height: Int): String
     fun startPlaying(key: String)
     fun stopPlaying(key: String, offset: Long)

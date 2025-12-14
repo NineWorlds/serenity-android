@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.rest.SerenityUser
 
-class LoginUserAdapter(val presenter: LoginUserPresenter) : RecyclerView.Adapter<LoginUserViewHolder>() {
+class LoginUserAdapter(private val userSelectedListener: OnUserSelectedListener) : RecyclerView.Adapter<LoginUserViewHolder>() {
 
   val users: ArrayList<SerenityUser> = ArrayList<SerenityUser>()
 
@@ -38,8 +38,7 @@ class LoginUserAdapter(val presenter: LoginUserPresenter) : RecyclerView.Adapter
 
   internal fun onClicked(position: Int) {
     val user = users[position]
-
-    presenter.loadUser(user)
+    userSelectedListener.onUserSelected(user)
   }
 
   internal fun onFocusChanged(view: View, hasFocus: Boolean) {
@@ -60,4 +59,8 @@ class LoginUserAdapter(val presenter: LoginUserPresenter) : RecyclerView.Adapter
     notifyDataSetChanged()
   }
 
+}
+
+interface OnUserSelectedListener {
+  fun onUserSelected(user: SerenityUser)
 }

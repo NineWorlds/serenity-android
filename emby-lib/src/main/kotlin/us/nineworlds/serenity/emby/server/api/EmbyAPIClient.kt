@@ -99,6 +99,10 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         prefEditor.putString("userId", userId)
         prefEditor.putString("embyAccessToken", accessToken)
+        if (password.isNotEmpty()) {
+           prefEditor.putString("emby_${userId}_password", password)
+        }
+
         prefEditor.apply()
 
         return body
@@ -125,12 +129,12 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             val result = fetchItem(itemId)
             return when (result.type) {
                 "Series" -> MediaContainerAdaptor().createSeriesList(listOf(result))
-                else -> MediaContainerAdaptor().createVideoList(listOf(result))
+                else -> MediaContainerAdaptor().createVideoList(listOf(result), fetchAccessToken())
             }
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
-        return MediaContainerAdaptor().createVideoList(emptyList())
+        return MediaContainerAdaptor().createVideoList(emptyList(), fetchAccessToken())
     }
 
     fun fetchItem(id: String): Item {
@@ -180,8 +184,8 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         return allUsers
     }
 
-    override fun authenticateUser(user: SerenityUser): SerenityUser {
-        val authenticatedUser = authenticate(user.userName)
+    override fun authenticateUser(user: SerenityUser, password: String?): SerenityUser {
+        val authenticatedUser = authenticate(user.userName, password ?: "")
 
         return us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
                 .accessToken(authenticatedUser.accesToken)
@@ -247,7 +251,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         val call = usersService.fetchSimilarItemById(headerMap(), itemId = itemId, userId = userId!!, includeItemType = "Movie")
 
         val results = call.executeOrThrow()
-        return MediaContainerAdaptor().createVideoList(results.items)
+        return MediaContainerAdaptor().createVideoList(results.items, fetchAccessToken())
     }
 
     override fun retrieveItemByIdCategory(key: String, category: String, types: Types, startIndex: Int, limit: Int?): IMediaContainer {
@@ -302,7 +306,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         }
 
         val results = call.executeOrThrow()
-        return MediaContainerAdaptor().createVideoList(results.items)
+        return MediaContainerAdaptor().createVideoList(results.items, fetchAccessToken())
     }
 
     override fun retrieveItemByCategories(key: String, category: String, secondaryCategory: String): IMediaContainer {
@@ -344,7 +348,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         val results = call.executeOrThrow()
 
-        return MediaContainerAdaptor().createVideoList(results.items)
+        return MediaContainerAdaptor().createVideoList(results.items, fetchAccessToken())
     }
 
     override fun retrieveMovieMetaData(key: String): IMediaContainer {
@@ -373,7 +377,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         val itemResults = itemCall.executeOrThrow()
 
-        return MediaContainerAdaptor().createVideoList(itemResults.items)
+        return MediaContainerAdaptor().createVideoList(itemResults.items, fetchAccessToken())
     }
 
     override fun searchEpisodes(key: String, query: String): IMediaContainer? {
@@ -453,14 +457,14 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         return url
     }
 
-    override fun createTranscodeUrl(id: String, offset: Int): String {
+    override fun createTranscodeUrl(id: String, offset: Int, token: String?): String {
         val playSessionId = UUID.randomUUID().toString()
         var startOffset: Long = 0
         if (offset > 0) {
             startOffset = offset.toLong().times(10000)
         }
 
-        return "${baseUrl}Videos/$id/stream.mkv?DeviceId=$deviceId&AudioCodec=aac&VideoCodec=h264&CopyTimeStamps=true&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset&PlaySessionId=$playSessionId"
+        return "${baseUrl}Videos/$id/stream.mkv?DeviceId=$deviceId&AudioCodec=aac&VideoCodec=h264&CopyTimeStamps=true&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset&PlaySessionId=$playSessionId&X-Emby-Token=$token"
     }
 
     override fun reinitialize() {

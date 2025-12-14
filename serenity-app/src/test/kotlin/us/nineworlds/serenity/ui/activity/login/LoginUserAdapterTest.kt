@@ -27,11 +27,9 @@ import us.nineworlds.serenity.test.InjectingTest
 @RunWith(RobolectricTestRunner::class)
 class LoginUserAdapterTest : InjectingTest() {
 
-  private companion object {
-    private val mockPresenter = mockk<LoginUserPresenter>(relaxed = true)
-    private val mockUser = mockk<SerenityUser>(relaxed = true)
-    private val mockViewHolder = mockk<LoginUserViewHolder>(relaxed = true)
-  }
+  private val mockUserSelectedListener = mockk<OnUserSelectedListener>(relaxed = true)
+  private val mockUser = mockk<SerenityUser>(relaxed = true)
+  private val mockViewHolder = mockk<LoginUserViewHolder>(relaxed = true)
 
   private lateinit var adapter: LoginUserAdapter
 
@@ -39,11 +37,11 @@ class LoginUserAdapterTest : InjectingTest() {
   override fun setUp() {
     clearAllMocks()
     super.setUp()
-    adapter = LoginUserAdapter(mockPresenter)
+    adapter = LoginUserAdapter(mockUserSelectedListener)
   }
 
   @Test
-  fun onCreateViewHolderCreatesExpectedInstance() {
+  fun `on create view holder creates expected view holder`() {
     val context = ContextThemeWrapper(
       ApplicationProvider.getApplicationContext<Application>(),
       R.style.AppTheme
@@ -53,13 +51,13 @@ class LoginUserAdapterTest : InjectingTest() {
   }
 
   @Test
-  fun loadUsersSetsInitializesUserList() {
+  fun `load users initializes user list`() {
     adapter.loadUsers(mutableListOf(mockUser))
     assertThat(adapter.itemCount).isEqualTo(1)
   }
 
   @Test
-  fun onBindViewHolderLoadsTheUserIntoTheView() {
+  fun `on bind view holder loads user into view`() {
     val view = FrameLayout(ApplicationProvider.getApplicationContext<Application>())
 
     every { mockViewHolder.getItemView() } returns view
@@ -76,15 +74,15 @@ class LoginUserAdapterTest : InjectingTest() {
   }
 
   @Test
-  fun onClickedLoadsSelectedUser() {
+  fun `on item click notifies listener`() {
     adapter.loadUsers(mutableListOf(mockUser))
     adapter.onClicked(0)
 
-    verify { mockPresenter.loadUser(mockUser) }
+    verify { mockUserSelectedListener.onUserSelected(mockUser) }
   }
 
   @Test
-  fun onFocusedChangeListenerUpdatesViewSelectionStateWithOutFocus() {
+  fun `on focus change without focus clears animation and background`() {
     val mockView = mockk<View>(relaxed = true)
     adapter.loadUsers(mutableListOf(mockUser))
 
@@ -97,7 +95,7 @@ class LoginUserAdapterTest : InjectingTest() {
   }
 
   @Test
-  fun onFocusedChangeListenerUpdatesViewSelectionStateWithFocus() {
+  fun `on focus change with focus updates view background`() {
     val mockView = mockk<View>(relaxed = true)
     val context = ContextThemeWrapper(
       ApplicationProvider.getApplicationContext<Application>(),
@@ -109,13 +107,11 @@ class LoginUserAdapterTest : InjectingTest() {
     adapter.loadUsers(mutableListOf(mockUser))
     adapter.onFocusChanged(mockView, true)
 
-    verify(atMost = 2) {
+    verify(exactly = 2) {
       mockView.clearAnimation()
     }
 
     verify {
-      mockView.background = null
-      mockView.context
       mockView.background = any<Drawable>()
     }
   }

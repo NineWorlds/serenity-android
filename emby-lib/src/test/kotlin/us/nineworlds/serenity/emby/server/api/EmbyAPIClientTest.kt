@@ -1,8 +1,10 @@
 package us.nineworlds.serenity.emby.server.api
 
+import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import org.junit.Before
@@ -12,102 +14,143 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowLog
 import us.nineworlds.serenity.common.rest.Types
+import us.nineworlds.serenity.common.rest.impl.SerenityUser
 import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [28])
 class EmbyAPIClientTest {
 
-  private lateinit var client: EmbyAPIClient
+    private lateinit var client: EmbyAPIClient
+    private lateinit var prefs: SharedPreferences
 
-  @Before
-  fun setUp() {
-    ShadowLog.stream = System.out
+    @Before
+    fun setUp() {
+        ShadowLog.stream = System.out
 
-    client = EmbyAPIClient(context = ApplicationProvider.getApplicationContext())
-    client.updateBaseUrl("http://192.168.68.95:8096")
-  }
+        client = EmbyAPIClient(context = ApplicationProvider.getApplicationContext())
+        // Update this for local testing of the client and make sure it works
+        client.updateBaseUrl("http://yourserver:yourport")
+        prefs = client.prefs
+    }
 
-  @Test
-  fun retrieveAllPublicUsers() {
-    val result = client.fetchAllPublicUsers()
-    assertThat(result).hasSize(2)
-  }
+    @Test
+    fun retrieveAllPublicUsers() {
+        val result = client.fetchAllPublicUsers()
+        assertThat(result).isNotEmpty()
+    }
 
-  @Test fun loginAdminUser() {
-    val authenticateResult = authenticate()
+    @Test
+    fun loginAdminUser() {
+        val authenticateResult = authenticateWithPassword()
 
-    assertThat(authenticateResult).isNotNull()
-    assertThat(authenticateResult.accesToken).isNotEmpty()
-    assertThat(client.serverId).isNotEmpty()
-    assertThat(client.accessToken).isNotNull()
-    assertThat(client.userId).isNotNull().isNotEmpty()
-  }
+        assertThat(authenticateResult).isNotNull()
+        assertThat(authenticateResult.accesToken).isNotEmpty()
+        assertThat(client.serverId).isNotEmpty()
+        assertThat(client.accessToken).isNotNull()
+        assertThat(client.userId).isNotNull().isNotEmpty()
+    }
 
-  @Test fun testCurrentUsersViews() {
-    authenticate()
+    @Test
+    fun loginUserWithPassword() {
+        // This needs to be the url to the server you want to test against
+        client.updateBaseUrl("http://yourserver:yourport")
 
-    val result = client.currentUserViews()
-    assertThat(result.items).isNotEmpty()
-  }
+        val users = client.allAvailableUsers()
+        val user = users.first { it.hasPassword() }
+        client.authenticateUser(user, "unknownpassword")
 
-  @Test fun availableFiltersForCurrentUser() {
-    authenticate()
+        val password = prefs.getString("emby_${user.userId}_password", null)
+        assertThat(password).isNotNull().isEqualTo("unknownpassword")
+    }
 
-    val currentViews = client.currentUserViews()
-    val id = currentViews.items[1].id
-    val result = client.filters(itemId = id)
-    assertThat(result).isNotNull()
-  }
+    @Test
+    fun testCurrentUsersViews() {
+        authenticateWithPassword()
 
-  @Test fun generateMainMenuForCurrentUser() {
-    authenticate()
+        val result = client.currentUserViews()
+        assertThat(result.items).isNotEmpty()
+    }
 
-    val result = client.retrieveRootData()
-    assertThat(result).isNotNull()
-    assertThat(result.directories).isNotEmpty()
-  }
+    @Test
+    fun availableFiltersForCurrentUser() {
+        authenticateWithPassword()
 
-  @Test fun createCategoriesForParentId() {
-    authenticate()
+        val currentViews = client.currentUserViews()
+        val id = currentViews.items[1].id
+        val result = client.filters(itemId = id)
+        assertThat(result).isNotNull()
+    }
 
-    val result = client.retrieveItemByCategories()
-    val parentId = result.directories[1].key
-    val type = result.directories[1].type
+    @Test
+    fun generateMainMenuForCurrentUser() {
+        authenticateWithPassword()
 
-    val categories = client.retrieveCategoriesById(parentId)
+        val result = client.retrieveRootData()
+        assertThat(result).isNotNull()
+        assertThat(result.directories).isNotEmpty()
+    }
 
-    assertThat(categories.directories).isNotEmpty()
-  }
+    @Test
+    fun createCategoriesForParentId() {
+        authenticateWithPassword()
 
-  @Test fun fetchAllMovies() {
-    authenticate()
+        val result = client.retrieveItemByCategories()
+        val parentId = result.directories[1].key
+        val type = result.directories[1].type
 
-    val result = client.retrieveItemByCategories()
-    val parentId = result.directories[2].key
+        val categories = client.retrieveCategoriesById(parentId)
 
-    val movies = client.retrieveItemByIdCategory(parentId, "all", Types.EPISODE)
+        assertThat(categories.directories).isNotEmpty()
+    }
 
-    assertThat(movies.videos).isNotEmpty()
-  }
+    @Test
+    fun fetchAllMovies() {
+        authenticateWithPassword()
 
-  @Test fun fetchAllLatestMovies() {
-    authenticate()
+        val result = client.retrieveItemByCategories()
+        val parentId = result.directories[1].key
 
-    val result = client.retrieveRootData()
+        val movies = client.retrieveItemByIdCategory(parentId, "all", Types.EPISODE)
 
-    val key = result.directories[0].key
+        assertThat(movies.videos).isNotEmpty()
+    }
 
-    val itemResult = client.retrieveItemByIdCategory(key, "recentlyAdded", Types.MOVIES)
+    @Test
+    fun fetchAllLatestMovies() {
+        authenticateWithPassword()
 
-    assertThat(itemResult.videos).isNotEmpty()
+        val result = client.retrieveRootData()
 
-  }
+        val key = result.directories[0].key
 
-  private fun authenticate(): AuthenticationResult {
-    val users = client.fetchAllPublicUsers()
-    val user = users[0]
+        val itemResult = client.retrieveItemByIdCategory(key, "recentlyAdded", Types.MOVIES)
 
-    return client.authenticate(user.name!!, "")
-  }
+        assertThat(itemResult.videos).isNotEmpty()
+
+    }
+
+    private fun authenticate(): AuthenticationResult {
+        val users = client.allAvailableUsers()
+        val user = users.first { !it.hasPassword() }
+        val serenityUser = SerenityUser.builder()
+            .userId(user.userId)
+            .userName(user.userName)
+            .hasPassword(user.hasPassword())
+            .build()
+
+        client.authenticateUser(serenityUser)
+        return client.authenticate(user.userName, "")
+    }
+
+    // This test is not setup to run outside of a developers machine. It
+    // needs an active emby server to connect to.  To authenticate update
+    // the password, and the user selection code.
+    private fun authenticateWithPassword(): AuthenticationResult {
+        val users = client.allAvailableUsers()
+        val user = users.first { it.hasPassword() }
+
+        return client.authenticate(user.userName, "unknownpassword")
+    }
+
 }
