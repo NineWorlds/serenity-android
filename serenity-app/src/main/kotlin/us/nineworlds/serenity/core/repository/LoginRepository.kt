@@ -15,8 +15,8 @@ class LoginRepository(private val client: SerenityClient) {
         Result.Success<List<SerenityUser>>(users)
     }
 
-    suspend fun authenticateUser(user: SerenityUser): Result<SerenityUser> = withContext(Dispatchers.IO) {
-        val authenticatedUser = client.authenticateUser(user)
+    suspend fun authenticateUser(user: SerenityUser, password: String? = null): Result<SerenityUser> = withContext(Dispatchers.IO) {
+        val authenticatedUser = client.authenticateUser(user, password)
         Result.Success<SerenityUser>(authenticatedUser)
     }
 }

@@ -36,10 +36,10 @@ class LoginUserPresenterTest : InjectingTest() {
     private val mockServer = mockk<Server>(relaxed = true)
     private val mockSerenityUser = mockk<SerenityUser>(relaxed = true)
     private val mockRepository = mockk<LoginRepository>(relaxed = true)
-  }
 
-  @Inject
-  lateinit var mockSerenityClient: SerenityClient
+    private val mockSerenityClient = mockk<SerenityClient>(relaxed = true)
+
+  }
 
   private lateinit var presenter: LoginUserPresenter
 
@@ -57,7 +57,7 @@ class LoginUserPresenterTest : InjectingTest() {
   }
 
   @Test
-  fun initPresenterUpdatesClientWithExpectedUrl() {
+  fun `init preseter updates client with port`() {
     every { mockServer.ipAddress } returns "192.168.0.1"
 
     presenter.initPresenter(mockServer)
@@ -67,7 +67,7 @@ class LoginUserPresenterTest : InjectingTest() {
   }
 
   @Test
-  fun initPresenterUpdatesClientWithExpectedUrlWhenServerPortIsNotNull() {
+  fun `init presenter updates client without port`() {
     every { mockServer.port } returns "9999"
     every { mockServer.ipAddress } returns "192.168.0.1"
 
@@ -79,7 +79,7 @@ class LoginUserPresenterTest : InjectingTest() {
   }
 
   @Test
-  fun allUsersJobIsCreatedAndAddedToJobManager() = runTest(UnconfinedTestDispatcher()) {
+  fun `retrieve all users displays users on success`() = runTest {
     val expectedUsers = listOf(mockSerenityUser)
     coEvery { mockRepository.loadAllUsers() } returns Result.Success(expectedUsers)
     presenter.attachView(mockView)
@@ -91,7 +91,7 @@ class LoginUserPresenterTest : InjectingTest() {
   }
 
   @Test
-  fun loadUserAddsJob() = runTest(UnconfinedTestDispatcher()) {
+  fun `load user without password authenticates and launches next screen`() = runTest {
     coEvery { mockRepository.authenticateUser(any()) } returns Result.Success(mockSerenityUser)
     presenter.attachView(mockView)
 
@@ -101,13 +101,26 @@ class LoginUserPresenterTest : InjectingTest() {
     verify { mockView.launchNextScreen() }
   }
 
+  @Test
+  fun `load user with password authenticates and launches next screen`() = runTest {
+    coEvery { mockRepository.authenticateUser(any(), any()) } returns Result.Success(mockSerenityUser)
+    presenter.attachView(mockView)
+
+    presenter.loadUser(mockSerenityUser, "password")
+
+    coVerify { mockRepository.authenticateUser(mockSerenityUser, "password") }
+    verify { mockView.launchNextScreen() }
+  }
+
+
   override fun installTestModules() {
     scope.installTestModules(MockkTestingModule(), TestModule())
   }
 
-  inner class TestModule : Module() {
+  class TestModule : Module() {
     init {
       bind(LoginRepository::class.java).toInstance(mockRepository)
+      bind(SerenityClient::class.java).toInstance(mockSerenityClient)
     }
   }
 

@@ -23,6 +23,6 @@ interface LoginUserContract {
 
     fun retrieveAllUsers()
 
-    fun loadUser(user: SerenityUser)
+    fun loadUser(user: SerenityUser, password: String? = null)
   }
 }

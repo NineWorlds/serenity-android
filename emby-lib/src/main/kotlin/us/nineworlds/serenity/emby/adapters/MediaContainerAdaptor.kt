@@ -127,7 +127,7 @@ class MediaContainerAdaptor {
         return MediaContainer()
     }
 
-    fun createVideoList(videos: List<Item>): IMediaContainer {
+    fun createVideoList(videos: List<Item>, token: String? = null): IMediaContainer {
         val mediaContainer = MediaContainer()
         val serenityVideos = ArrayList<Video>()
         mediaContainer.size = videos.size
@@ -169,7 +169,7 @@ class MediaContainerAdaptor {
                 item.container
             }
             video.directPlayUrl =
-                "emby/Videos/${item.mediaSources?.get(0)?.id ?: item.id}/stream.$container?static=true"
+                "emby/Videos/${item.id}/stream.$container?static=true&X-Emby-Token=${token}"
 
             if (item.runTimeTicks != null) {
                 val milliseconds = convertTicksToMilliseconds(item.runTimeTicks)

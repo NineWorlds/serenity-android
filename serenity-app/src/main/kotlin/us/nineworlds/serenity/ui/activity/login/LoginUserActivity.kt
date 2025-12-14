@@ -2,9 +2,13 @@ package us.nineworlds.serenity.ui.activity.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.Window
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.annotation.VisibleForTesting
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxItemDecoration
@@ -12,6 +16,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import moxy.ktx.moxyPresenter
 import us.nineworlds.serenity.AndroidTV
+import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.databinding.ActivityLoginUserBinding
@@ -20,7 +25,7 @@ import us.nineworlds.serenity.injection.InjectingMvpActivity
 import javax.inject.Inject
 import javax.inject.Provider
 
-class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserView {
+class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserView, OnUserSelectedListener {
 
   @VisibleForTesting
   internal val presenter by moxyPresenter { presenterProvider.get() }
@@ -63,7 +68,7 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
     val context = this
     binding.apply {
       loginUserContainer.visibility = GONE
-      adapter = LoginUserAdapter(presenter)
+      adapter = LoginUserAdapter(this@LoginUserActivity)
       loginUserContainer.adapter = adapter
       val layoutManager = FlexboxLayoutManager(context, FlexDirection.ROW)
       layoutManager.justifyContent = JustifyContent.CENTER
@@ -85,5 +90,38 @@ class LoginUserActivity : InjectingMvpActivity(), LoginUserContract.LoginUserVie
     val intent = Intent(this, AndroidTV::class.java)
     startActivity(intent)
     finish()
+  }
+
+  override fun onUserSelected(user: SerenityUser) {
+    if (user.hasPassword()) {
+      val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+      val password = prefs.getString("emby_${user.userId}_password", null)
+      if (password == null) {
+        showPasswordDialog(user)
+      } else {
+        presenter.loadUser(user, password)
+      }
+    } else {
+      presenter.loadUser(user)
+    }
+  }
+
+  private fun showPasswordDialog(user: SerenityUser) {
+    val builder = AlertDialog.Builder(this)
+    val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_password_input, null)
+    val passwordEditText = dialogView.findViewById<EditText>(R.id.password_edit_text)
+
+    builder.setView(dialogView)
+        .setTitle("Enter Password")
+        .setPositiveButton("Login") { dialog, _ ->
+          val password = passwordEditText.text.toString()
+          presenter.loadUser(user, password)
+          dialog.dismiss()
+        }
+        .setNegativeButton("Cancel") { dialog, _ ->
+          dialog.cancel()
+        }
+
+    builder.create().show()
   }
 }

@@ -180,7 +180,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         return allUsers
     }
 
-    override fun authenticateUser(user: SerenityUser): SerenityUser {
+    override fun authenticateUser(user: SerenityUser, password: String?): SerenityUser {
         val authenticatedUser = authenticate(user.userName)
 
         return us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
@@ -453,7 +453,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         return url
     }
 
-    override fun createTranscodeUrl(id: String, offset: Int): String {
+    override fun createTranscodeUrl(id: String, offset: Int, token: String?): String {
         val playSessionId = UUID.randomUUID().toString()
         var startOffset: Long = 0
         if (offset > 0) {
