@@ -9,7 +9,7 @@ data class PublicUserInfo(
   @Json(name = "Id") val id: String?,
   @Json(name = "HasPassword") val hasPassword: Boolean,
   @Json(name = "HasConfiguredPassword") val hasConfiguredPassword: Boolean,
-  @Json(name = "HasConfiguredEasyPassword") val hasConfiguredEasyPassword: Boolean,
+  @Json(name = "HasConfiguredEasyPassword") val hasConfiguredEasyPassword: Boolean?,
   @Json(name = "LastLoginDate") val lastLoginDate: LocalDateTime?,
   @Json(name = "LastActivityDate") val lastActivityDate: LocalDateTime?
 )

@@ -23,13 +23,14 @@ Intended audience:
 ---
 
 ## Hard Constraints (must follow)
+- ALWAYS ask before proceeding.
+- After generating a plan of action, present it to the user and await for approval before executing it.
 - NEVER edit `.env` or other environment variable files.
 - NEVER run destructive git operations (e.g., `git reset --hard`, `rm`, `git checkout`/`git restore` to an older commit) unless explicitly instructed in writing.
 - BEFORE deleting any file to silence a local failure, stop and ask the user.
 - NEVER amend commits unless you have explicit written approval in the task thread.
 - Coordinate with other agents before reverting or deleting work you did not author.
 - Always double-check `git status` before committing.
-- ALWAYS ask before proceeding.
 - NEVER go beyond your existing requested tasks.
 - DO NOT try to fix other errors or issues outside of your current task.
 

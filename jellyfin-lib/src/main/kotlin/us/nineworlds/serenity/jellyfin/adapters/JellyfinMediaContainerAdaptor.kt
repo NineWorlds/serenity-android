@@ -127,7 +127,7 @@ class JellyfinMediaContainerAdaptor {
     return MediaContainer()
   }
 
-  fun createVideoList(videos: List<Item>): IMediaContainer {
+  fun createVideoList(videos: List<Item>, token: String?): IMediaContainer {
     val mediaContainer = MediaContainer()
     val serenityVideos = ArrayList<Video>()
     mediaContainer.size = videos.size
@@ -168,37 +168,55 @@ class JellyfinMediaContainerAdaptor {
       } else {
         item.container
       }
-      video.directPlayUrl = "Videos/${item.mediaSources?.get(0)?.id ?: item.id}/stream.$container?static=true"
+      video.directPlayUrl = "Videos/${item.mediaSources?.get(0)?.id ?: item.id}/stream.$container?static=true&api_key=$token"
 
       if (item.runTimeTicks != null) {
         val milliseconds = convertTicksToMilliseconds(item.runTimeTicks)
         video.duration = milliseconds
       }
 
-      if (item.mediaStreams != null) {
-        val medias = ArrayList<Media>()
-        // Media needs to be outside as the media streams build up
-        // the type.
-        val media = Media()
-        for (mediaStream in item.mediaStreams) {
-          media.container = item.container
-          if (mediaStream.type == "Video") {
-            media.aspectRatio = mediaStream.aspectRatio
-            media.videoCodec = mediaStream.codec
-          } else if (mediaStream.type == "Audio") {
-            media.audioCodec = mediaStream.codec
-            media.audioChannels = mediaStream.channels
-          }
-          medias.add(media)
-        }
-        video.medias = medias.toList()
-      }
+      video.medias = createPlayableLists(item)
 
       serenityVideos.add(video)
     }
     mediaContainer.videos = serenityVideos.sortedBy { item -> item.titleSort } .toList()
     return mediaContainer
   }
+
+  fun createPlayableLists(item: Item): List<Media> {
+    val medias = mutableListOf<Media>()
+    if (item.mediaStreams.isNullOrEmpty()) {
+      return medias
+    }
+
+    val videoStreams = item.mediaStreams.filter { it.type == "Video" }
+    val audioStreams = item.mediaStreams.filter { it.type == "Audio" }
+
+    // If there's no video or no audio, no valid combination can be made.
+    if (videoStreams.isEmpty() || audioStreams.isEmpty()) {
+      return medias
+    }
+
+    videoStreams.forEach { videoStream ->
+      audioStreams.forEach { audioStream ->
+        val media = Media() // Create a new object for each combination
+        media.container = item.container
+
+        // From video stream
+        media.aspectRatio = videoStream.aspectRatio
+        media.videoCodec = videoStream.codec
+
+        // From audio stream
+        media.audioCodec = audioStream.codec
+        media.audioChannels = audioStream.channels
+
+        medias.add(media)
+      }
+    }
+
+    return medias
+  }
+
 
   fun convertTicksToMilliseconds(ticks: Long): Long = ticks.div(TICKS_PER_MILLISECOND)
 }
