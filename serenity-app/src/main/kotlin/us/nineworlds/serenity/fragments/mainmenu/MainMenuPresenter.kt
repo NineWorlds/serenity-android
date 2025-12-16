@@ -2,6 +2,7 @@ package us.nineworlds.serenity.fragments.mainmenu
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moxy.InjectViewState
@@ -69,22 +70,23 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
             withContext(Dispatchers.Main) {
                 viewState.loadCategories(categoryVideoContentInfo)
             }
-            filteredCategories.forEach { category ->
-                when (val result = repository.fetchItemsByCategory(category.category.orEmpty(), itemId, type)) {
-                    is Result.Success -> {
-                        withContext(Dispatchers.Main) {
-                            val videos = result.data.map { videoContentInfo ->
-                                VideoCategory(
-                                        type = getType(type),
-                                        item = videoContentInfo)
+            coroutineScope {
+                filteredCategories.forEach { category ->
+                    launch {
+                        when (val result = repository.fetchItemsByCategory(category.category.orEmpty(), itemId, type)) {
+                            is Result.Success -> {
+                                withContext(Dispatchers.Main) {
+                                    val videos = result.data.map { videoContentInfo ->
+                                        VideoCategory(
+                                                type = getType(type),
+                                                item = videoContentInfo)
+                                    }
+                                    viewState.updateCategories(category, videos)
+                                }
                             }
-                            viewState.updateCategories(category, videos)
-                            if (category.category == "all") {
-                                viewState.hideLoading()
-                            }
+                            else -> {}
                         }
                     }
-                    else -> {}
                 }
             }
         } else {
