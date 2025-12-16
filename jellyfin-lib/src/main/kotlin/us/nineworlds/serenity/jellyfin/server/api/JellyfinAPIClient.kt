@@ -99,6 +99,10 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
 
         prefEditor.putString("userId", userId)
         prefEditor.putString("jellyfinAccessToken", accessToken)
+        if (password.isNotEmpty()) {
+           prefEditor.putString("jellyfin_${userId}_password", password)
+        }
+
         prefEditor.apply()
 
         return body
@@ -125,12 +129,12 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
             val result = fetchItem(itemId)
             return when (result.type) {
                 "Series" -> JellyfinMediaContainerAdaptor().createSeriesList(listOf(result))
-                else -> JellyfinMediaContainerAdaptor().createVideoList(listOf(result))
+                else -> JellyfinMediaContainerAdaptor().createVideoList(listOf(result), fetchAccessToken())
             }
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
-        return JellyfinMediaContainerAdaptor().createVideoList(emptyList())
+        return JellyfinMediaContainerAdaptor().createVideoList(emptyList(), fetchAccessToken())
     }
 
     fun fetchItem(id: String): Item {
@@ -181,7 +185,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
     }
 
     override fun authenticateUser(user: SerenityUser, password: String?): SerenityUser {
-        val authenticatedUser = authenticate(user.userName)
+        val authenticatedUser = authenticate(user.userName, password ?: "")
 
         return us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
                 .accessToken(authenticatedUser.accesToken)
@@ -247,7 +251,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         val call = usersService.fetchSimilarItemById(headerMap(), itemId = itemId, userId = userId!!, includeItemType = "Movie")
 
         val results = call.executeOrThrow()
-        return JellyfinMediaContainerAdaptor().createVideoList(results.items)
+        return JellyfinMediaContainerAdaptor().createVideoList(results.items, fetchAccessToken())
     }
 
     override fun retrieveItemByIdCategory(key: String, category: String, types: Types, startIndex: Int, limit: Int?): IMediaContainer {
@@ -302,7 +306,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         }
 
         val results = call.executeOrThrow()
-        return JellyfinMediaContainerAdaptor().createVideoList(results.items)
+        return JellyfinMediaContainerAdaptor().createVideoList(results.items, fetchAccessToken())
     }
 
     override fun retrieveItemByCategories(key: String, category: String, secondaryCategory: String): IMediaContainer {
@@ -344,7 +348,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
 
         val results = call.executeOrThrow()
 
-        return JellyfinMediaContainerAdaptor().createVideoList(results.items)
+        return JellyfinMediaContainerAdaptor().createVideoList(results.items, fetchAccessToken())
     }
 
     override fun retrieveMovieMetaData(key: String): IMediaContainer {
@@ -373,7 +377,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
 
         val itemResults = itemCall.executeOrThrow()
 
-        return JellyfinMediaContainerAdaptor().createVideoList(itemResults.items)
+        return JellyfinMediaContainerAdaptor().createVideoList(itemResults.items, fetchAccessToken())
     }
 
     override fun searchEpisodes(key: String, query: String): IMediaContainer? {
@@ -448,7 +452,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
     override fun createSeasonsURL(key: String): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
+
     override fun createImageURL(url: String, width: Int, height: Int): String {
         return url
     }
@@ -543,7 +547,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         // off their Android device information. This is where the collisions
         // can happen.
         // Try not to use DISPLAY, HOST or ID - these items could change.
-        // If there are collisions, there will be overlapping data
+        // If there are collisions, th
         var devIDShort = "35" + (Build.BOARD.length % 10) + (Build.BRAND.length % 10)
 
         devIDShort += if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
