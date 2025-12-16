@@ -24,6 +24,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import moxy.MvpPresenter;
 import moxy.presenter.InjectPresenter;
+import timber.log.Timber;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.Types;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -131,7 +132,7 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     roundedImageView.setMaxHeight(height);
     roundedImageView.setMaxWidth(width);
 
-    populatePosterImage(pi.getImageURL());
+    populatePosterImage(pi.getImageURL() + "?MaxHeight=" + height + "&MaxWidth=" + width);
   }
 
   @Override public void populatePosterImage(String url) {
