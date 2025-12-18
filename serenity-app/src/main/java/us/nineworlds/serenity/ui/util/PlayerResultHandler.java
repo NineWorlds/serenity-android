@@ -94,6 +94,9 @@ public class PlayerResultHandler extends BaseInjector {
      * @param video
      */
     protected void updateProgress(Intent data, VideoContentInfo video) {
+        if (data == null) {
+            return;
+        }
         long position = 0;
         position = data.getIntExtra("position", 0);
         video.setResumeOffset(Long.valueOf(position).intValue());

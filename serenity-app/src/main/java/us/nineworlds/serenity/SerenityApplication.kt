@@ -136,6 +136,7 @@ open class SerenityApplication : Application() {
         eventBus.unregister(this)
         WatchedVideoJob.onFinish()
         UpdateProgressRequestJob.onFinish()
+        UnWatchVideoJob.onFinish()
         super.onTerminate()
     }
 
