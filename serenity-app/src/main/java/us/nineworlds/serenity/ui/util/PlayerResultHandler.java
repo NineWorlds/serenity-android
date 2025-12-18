@@ -69,6 +69,9 @@ public class PlayerResultHandler extends BaseInjector {
     }
 
     public void updateVideoPlaybackPosition(VideoContentInfo video) {
+        if (video == null) {
+            return;
+        }
         updateProgress(data, video);
         if (video.isWatched()) {
             toggleWatched(video);

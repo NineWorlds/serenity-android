@@ -23,45 +23,47 @@ import us.nineworlds.serenity.test.InjectingTest
 @OptIn(ExperimentalCoroutinesApi::class)
 class UnWatchVideoJobTest : InjectingTest() {
 
-  private val mockSerenityClient: SerenityClient = mockk(relaxed = true)
+    private val mockSerenityClient: SerenityClient = mockk(relaxed = true)
 
-  @Before
-  override fun setUp() {
-    super.setUp()
-    Dispatchers.setMain(UnconfinedTestDispatcher())
-    Toothpick.inject(UnWatchVideoJob, scope)
-  }
-
-  @After
-  fun tearDown() {
-    clearAllMocks()
-  }
-
-  override fun installTestModules() {
-    scope.installModules(TestModule())
-  }
-
-  inner class TestModule : Module() {
-    init {
-      bind(SerenityClient::class.java).toInstance(mockSerenityClient)
+    @Before
+    override fun setUp() {
+        super.setUp()
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        Toothpick.inject(UnWatchVideoJob, scope)
     }
-  }
 
-  @Test
-  fun markUnwatchedCallsSerenityClient() = runTest(UnconfinedTestDispatcher()) {
-    coEvery { mockSerenityClient.unwatched(any()) } returns true
+    @After
+    fun tearDown() {
+        UnWatchVideoJob.onFinish()
+        clearAllMocks()
+        Toothpick.reset()
+    }
 
-    UnWatchVideoJob.markUnwatched("1")
+    override fun installTestModules() {
+        scope.installModules(TestModule())
+    }
 
-    coVerify(timeout = 2000) { mockSerenityClient.unwatched("1") }
-  }
+    inner class TestModule : Module() {
+        init {
+            bind(SerenityClient::class.java).toInstance(mockSerenityClient)
+        }
+    }
 
-  @Test
-  fun markUnwatchedHandlesExceptionGracefully() = runTest(UnconfinedTestDispatcher()) {
-    coEvery { mockSerenityClient.unwatched(any()) } throws RuntimeException("Error")
+    @Test
+    fun markUnwatchedCallsSerenityClient() = runTest(UnconfinedTestDispatcher()) {
+        coEvery { mockSerenityClient.unwatched(any()) } returns true
 
-    UnWatchVideoJob.markUnwatched("1")
+        UnWatchVideoJob.markUnwatched("1")
 
-    coVerify(timeout = 2000) { mockSerenityClient.unwatched("1") }
-  }
+        coVerify(timeout = 2000) { mockSerenityClient.unwatched("1") }
+    }
+
+    @Test
+    fun markUnwatchedHandlesExceptionGracefully() = runTest(UnconfinedTestDispatcher()) {
+        coEvery { mockSerenityClient.unwatched(any()) } throws RuntimeException("Error")
+
+        UnWatchVideoJob.markUnwatched("1")
+
+        coVerify(timeout = 2000) { mockSerenityClient.unwatched("1") }
+    }
 }

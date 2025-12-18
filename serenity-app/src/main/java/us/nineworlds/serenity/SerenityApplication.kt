@@ -45,6 +45,9 @@ import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.android.mediacodec.MediaCodecInfoUtil
 import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.core.logger.Logger
+import us.nineworlds.serenity.core.services.UnWatchVideoJob
+import us.nineworlds.serenity.core.services.UpdateProgressRequestJob
+import us.nineworlds.serenity.core.services.WatchedVideoJob
 import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.emby.server.EmbyServer
 import us.nineworlds.serenity.emby.server.EmbyServerDiscover
@@ -131,6 +134,8 @@ open class SerenityApplication : Application() {
 
     override fun onTerminate() {
         eventBus.unregister(this)
+        WatchedVideoJob.onFinish()
+        UpdateProgressRequestJob.onFinish()
         super.onTerminate()
     }
 
@@ -155,4 +160,5 @@ open class SerenityApplication : Application() {
 
         lateinit var simpleCache: SimpleCache
     }
+
 }

@@ -82,33 +82,27 @@ abstract class AbstractSeriesContentInfo : SeriesContentInfo, Serializable {
 
     val isPartiallyWatched: Boolean
         get() {
-            var unwatched = 0
-            var watched = 0
-            if (showsUnwatched != null) {
-                unwatched = showsUnwatched!!.toInt()
-            }
-            if (showsWatched != null) {
-                watched = showsWatched!!.toInt()
-            }
+            val unwatched = showsUnwatched?.toIntOrNull() ?: 0
+            val watched = showsWatched?.toIntOrNull() ?: 0
             val total = watched + unwatched
             return unwatched != total && watched < total
         }
 
     val isUnwatched: Boolean
         get() {
-            val unwatched = showsUnwatched!!.toInt()
+            val unwatched = showsUnwatched?.toIntOrNull() ?: 0
             return unwatched > 0
         }
 
     val isWatched: Boolean
         get() {
-            val watchedCount = showsWatched!!.toInt()
+            val watchedCount = showsWatched?.toIntOrNull() ?: 0
             return totalShows() == watchedCount
         }
 
     override fun totalShows(): Int {
-        val unwatched = showsUnwatched!!.toInt()
-        val watched = showsWatched!!.toInt()
+        val unwatched = showsUnwatched?.toIntOrNull() ?: 0
+        val watched = showsWatched?.toIntOrNull() ?: 0
         return unwatched + watched
     }
 

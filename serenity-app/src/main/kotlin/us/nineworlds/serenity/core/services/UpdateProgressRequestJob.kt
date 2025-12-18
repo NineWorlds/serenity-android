@@ -1,8 +1,11 @@
 package us.nineworlds.serenity.core.services
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import toothpick.Toothpick
@@ -16,16 +19,26 @@ object UpdateProgressRequestJob {
   @Inject
   lateinit var serenityClient: SerenityClient
 
-  private val job = SupervisorJob()
-  private val scope = CoroutineScope(Dispatchers.IO + job)
+  private var job: Job? = null
+  private var scope: CoroutineScope? = null
 
   init {
     Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
   }
 
   fun updateProgress(position: Long, video: VideoContentInfo) {
-    scope.launch {
-      val id = video.id().orEmpty()
+    if (scope == null) {
+      job = SupervisorJob()
+      scope = CoroutineScope(Dispatchers.IO + job!!)
+    }
+
+    scope?.launch {
+      val id = video.id()
+      if (id == null) {
+        Timber.w("Video ID is null. Cannot update progress for video: ${video.id()}")
+        return@launch
+      }
+
       try {
         if (video.isWatched) {
           serenityClient.watched(id)
@@ -34,8 +47,17 @@ object UpdateProgressRequestJob {
           serenityClient.progress(id, position.toString())
         }
       } catch (e: Exception) {
+        if (e is CancellationException) {
+          return@launch
+        }
         Timber.e(e, "Error updating progress")
       }
     }
+  }
+
+  fun onFinish() {
+    scope?.cancel()
+    scope = null
+    job = null
   }
 }

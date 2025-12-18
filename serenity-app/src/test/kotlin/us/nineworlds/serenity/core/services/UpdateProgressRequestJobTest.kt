@@ -26,61 +26,74 @@ import us.nineworlds.serenity.test.InjectingTest
 @OptIn(ExperimentalCoroutinesApi::class)
 class UpdateProgressRequestJobTest : InjectingTest() {
 
-  private val mockSerenityClient: SerenityClient = mockk(relaxed = true)
-  private val mockVideoContentInfo: VideoContentInfo = mockk(relaxed = true)
+    private val mockSerenityClient: SerenityClient = mockk(relaxed = true)
+    private val mockVideoContentInfo: VideoContentInfo = mockk(relaxed = true)
 
-  @Before
-  override fun setUp() {
-    super.setUp()
-    Dispatchers.setMain(UnconfinedTestDispatcher())
-    Toothpick.inject(UpdateProgressRequestJob, scope)
-  }
-
-  @After
-  fun tearDown() {
-    clearAllMocks()
-  }
-
-  override fun installTestModules() {
-    scope.installModules(TestModule())
-  }
-
-  inner class TestModule : Module() {
-    init {
-      bind(SerenityClient::class.java).toInstance(mockSerenityClient)
+    @Before
+    override fun setUp() {
+        super.setUp()
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        Toothpick.inject(UpdateProgressRequestJob, scope)
     }
-  }
 
-  @Test
-  fun updateProgressUpdatesWatchedStatusWhenVideoIsWatched() = runTest(UnconfinedTestDispatcher()) {
-    coEvery { mockVideoContentInfo.id() } returns "1"
-    coEvery { mockVideoContentInfo.isWatched } returns true
+    @After
+    fun tearDown() {
+        UpdateProgressRequestJob.onFinish()
+        clearAllMocks()
+        Toothpick.reset()
+    }
 
-    UpdateProgressRequestJob.updateProgress(1000, mockVideoContentInfo)
+    override fun installTestModules() {
+        scope.installModules(TestModule())
+    }
 
-    coVerify(timeout = 2000) { mockSerenityClient.watched("1") }
-    coVerify(timeout = 2000) { mockSerenityClient.progress("1", "0") }
-  }
+    inner class TestModule : Module() {
+        init {
+            bind(SerenityClient::class.java).toInstance(mockSerenityClient)
+        }
+    }
 
-  @Test
-  fun updateProgressUpdatesProgressWhenVideoIsNotWatched() = runTest(UnconfinedTestDispatcher()){
-    coEvery { mockVideoContentInfo.id() } returns "1"
-    coEvery { mockVideoContentInfo.isWatched } returns false
+    @Test
+    fun updateProgressUpdatesWatchedStatusWhenVideoIsWatched() =
+        runTest(UnconfinedTestDispatcher()) {
+            coEvery { mockVideoContentInfo.id() } returns "1"
+            coEvery { mockVideoContentInfo.isWatched } returns true
 
-    UpdateProgressRequestJob.updateProgress(1000, mockVideoContentInfo)
+            UpdateProgressRequestJob.updateProgress(1000, mockVideoContentInfo)
 
-    coVerify(timeout = 2000) { mockSerenityClient.progress("1", "1000") }
-    coVerify(inverse = true, timeout = 1000) { mockSerenityClient.watched(any()) }
-  }
+            coVerify(timeout = 2000) { mockSerenityClient.watched("1") }
+            coVerify(timeout = 2000) { mockSerenityClient.progress("1", "0") }
+        }
 
-  @Test
-  fun updateProgressHandlesExceptionGracefully() = runTest(UnconfinedTestDispatcher()){
-    coEvery { mockVideoContentInfo.id() } returns "1"
-    coEvery { mockVideoContentInfo.isWatched } returns false
-    coEvery { mockSerenityClient.progress(any(), any()) } throws RuntimeException("Error")
+    @Test
+    fun updateProgressUpdatesProgressWhenVideoIsNotWatched() = runTest(UnconfinedTestDispatcher()) {
+        coEvery { mockVideoContentInfo.id() } returns "1"
+        coEvery { mockVideoContentInfo.isWatched } returns false
 
-    UpdateProgressRequestJob.updateProgress(1000, mockVideoContentInfo)
+        UpdateProgressRequestJob.updateProgress(1000, mockVideoContentInfo)
 
-    coVerify(timeout = 2000) { mockSerenityClient.progress("1", "1000") }
-  }
+        coVerify(timeout = 2000) { mockSerenityClient.progress("1", "1000") }
+        coVerify(inverse = true, timeout = 1000) { mockSerenityClient.watched(any()) }
+    }
+
+    @Test
+    fun updateProgressHandlesExceptionGracefully() = runTest(UnconfinedTestDispatcher()) {
+        coEvery { mockVideoContentInfo.id() } returns "1"
+        coEvery { mockVideoContentInfo.isWatched } returns false
+        coEvery { mockSerenityClient.progress(any(), any()) } throws RuntimeException("Error")
+
+        UpdateProgressRequestJob.updateProgress(1000, mockVideoContentInfo)
+
+        coVerify(timeout = 2000) { mockSerenityClient.progress("1", "1000") }
+    }
+
+    @Test
+    fun updateProgressDoesNotCallClientWhenIdIsNull() = runTest(UnconfinedTestDispatcher()) {
+        coEvery { mockVideoContentInfo.id() } returns null
+
+        UpdateProgressRequestJob.updateProgress(1000, mockVideoContentInfo)
+
+        coVerify(inverse = true, timeout = 1000) { mockSerenityClient.watched(any()) }
+        coVerify(inverse = true, timeout = 1000) { mockSerenityClient.progress(any(), any()) }
+    }
 }
