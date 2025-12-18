@@ -7,17 +7,23 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import io.mockk.clearAllMocks
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkConstructor
+import io.mockk.mockkObject
+import io.mockk.runs
+import io.mockk.unmockkAll
 import io.mockk.verify
+import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
 import toothpick.config.Module
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.Types
-import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask
+import us.nineworlds.serenity.core.services.UnWatchVideoJob
+import us.nineworlds.serenity.core.services.WatchedVideoJob
 import us.nineworlds.serenity.test.InjectingTest
 
 class AbstractSeriesContentInfoTest : InjectingTest() {
@@ -29,15 +35,21 @@ class AbstractSeriesContentInfoTest : InjectingTest() {
     scope.installTestModules(TestModule())
   }
 
+  companion object {
+
+      @AfterClass
+      @JvmStatic
+      fun restMocks() = unmockkAll()
+  }
+
   @Before
   override fun setUp() {
     super.setUp()
     series = TestSeriesContentInfo()
 
-    mockkConstructor(WatchedVideoAsyncTask::class)
-    mockkConstructor(UnWatchVideoAsyncTask::class)
-    every { anyConstructed<WatchedVideoAsyncTask>().execute(any<String>()) } returns mockk()
-    every { anyConstructed<UnWatchVideoAsyncTask>().execute(any<String>()) } returns mockk()
+      mockkObject(WatchedVideoJob, UnWatchVideoJob)
+    every { WatchedVideoJob.updateWatchedStatus(any<String>()) } just runs
+    every { UnWatchVideoJob.markUnwatched(any<String>()) } just runs
   }
 
   @After
@@ -163,7 +175,7 @@ class AbstractSeriesContentInfoTest : InjectingTest() {
 
     series.toggleWatchedStatus()
 
-    verify { anyConstructed<WatchedVideoAsyncTask>().execute("id-123") }
+    verify { WatchedVideoJob.updateWatchedStatus("id-123") }
     assertThat(series.showsWatched).isEqualTo("10")
     assertThat(series.showsUnwatched).isEqualTo("0")
   }
@@ -176,20 +188,20 @@ class AbstractSeriesContentInfoTest : InjectingTest() {
 
     series.toggleWatchedStatus()
 
-    verify { anyConstructed<WatchedVideoAsyncTask>().execute("id-123") }
+    verify { WatchedVideoJob.updateWatchedStatus("id-123") }
     assertThat(series.showsWatched).isEqualTo("10")
     assertThat(series.showsUnwatched).isEqualTo("0")
   }
 
   @Test
-  fun `toggleWatchedStatus calls UnWatchVideoAsyncTask when fully watched`() {
+  fun `toggleWatchedStatus calls UnWatchVideoAsyncTask when fully watched`() = runTest {
     series.setId("id-123")
     series.showsWatched = "10"
     series.showsUnwatched = "0"
 
     series.toggleWatchedStatus()
 
-    verify { anyConstructed<UnWatchVideoAsyncTask>().execute("id-123") }
+    verify { UnWatchVideoJob.markUnwatched("id-123") }
     assertThat(series.showsUnwatched).isEqualTo("10")
     assertThat(series.showsWatched).isEqualTo("0")
   }
@@ -203,7 +215,7 @@ class AbstractSeriesContentInfoTest : InjectingTest() {
 
     series.toggleWatchedStatus()
 
-    verify { anyConstructed<WatchedVideoAsyncTask>().execute("key-123") }
+    verify { WatchedVideoJob.updateWatchedStatus("key-123") }
   }
 
   private class TestSeriesContentInfo : AbstractSeriesContentInfo()
