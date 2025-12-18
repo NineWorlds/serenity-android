@@ -79,7 +79,10 @@ public class PlayerResultHandler extends BaseInjector {
         if (video.isWatched()) {
             video.setResumeOffset(0);
             video.setViewCount(video.getViewCount() + 1);
-            WatchedVideoJob.INSTANCE.updateWatchedStatus(Objects.requireNonNull(video.id()));
+            String id = video.id();
+            if (id != null) {
+                WatchedVideoJob.INSTANCE.updateWatchedStatus(id);
+            }
         }
     }
 
