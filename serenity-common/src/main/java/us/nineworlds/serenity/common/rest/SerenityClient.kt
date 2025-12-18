@@ -63,6 +63,10 @@ interface SerenityClient {
 
     @Throws(IOException::class)
     fun progress(key: String, offset: String): Boolean
+
+    @Throws(IOException::class)
+    fun progress(key: String, offset: String, playSessionId: String? = null): Boolean
+
     fun createMediaTagURL(resourceType: String, resourceName: String, identifier: String): String?
     fun createSectionsURL(key: String, category: String): String
     fun createSectionsURL(): String
@@ -77,7 +81,8 @@ interface SerenityClient {
     fun allAvailableUsers(): List<SerenityUser>
     fun authenticateUser(user: SerenityUser, password: String? = null): SerenityUser
     fun createUserImageUrl(user: SerenityUser, width: Int, height: Int): String
-    fun startPlaying(key: String)
+
+    fun startPlaying(key: String): String?
     fun stopPlaying(key: String, offset: Long)
     fun retrieveSeriesById(key: String, categoryId: String): IMediaContainer
     fun retrieveSeriesCategoryById(key: String): IMediaContainer

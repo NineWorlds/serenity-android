@@ -102,3 +102,17 @@ data class SearchHint(
   @Json(name = "Status") val status: String?,
   @Json(name = "Type") val type: String?
 )
+
+data class PlaybackStartInfo(
+    @Json(name = "QueueItem") val queueItem: QueueItem?,
+    @Json(name = "PlaySessionId") val playSessionId: String?
+)
+
+data class QueueItem(
+    @Json(name = "Id") val id: Long?,
+    @Json(name = "PlaylistItemId") val playlistItemId: String?
+)
+
+data class PlaybackStartRequest(
+    @Json(name = "CanSeek") val canSeek: Boolean = true
+)

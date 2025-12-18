@@ -114,7 +114,8 @@ interface UsersService {
     @Path("userId") userId: String,
     @Path("itemId") itemId: String,
     @Query("MediaSourceId") mediaSourceId: String? = null,
-    @Query("PositionTicks") positionTicks: Long
+    @Query("PositionTicks") positionTicks: Long,
+    @Query("PlaySessionId") playSessionId: String? = null
   ): Call<Void>
 
   @POST("/emby/Users/{userId}/PlayingItems/{itemId}")
@@ -122,8 +123,9 @@ interface UsersService {
     @HeaderMap headerMap: Map<String, String>,
     @Path("userId") userId: String,
     @Path("itemId") itemId: String,
+    @Body playbackStartRequest: PlaybackStartRequest,
     @Query("MediaSourceId") mediaSourceId: String? = null
-  ): Call<Void>
+  ): Call<PlaybackStartInfo>
 
   @DELETE("/emby/Users/{userId}/PlayingItems/{itemId}")
   fun stopPlaying(
@@ -131,7 +133,8 @@ interface UsersService {
     @Path("userId") userId: String,
     @Path("itemId") itemId: String,
     @Query("MediaSourceId") mediaSourceId: String? = null,
-    @Query("PositionTicks") positionTicks: String
+    @Query("PositionTicks") positionTicks: String,
+    @Query("PlaySessionId") playSessionId: String? = null
   ): Call<Void>
 
   @GET("/emby/Search/Hints")

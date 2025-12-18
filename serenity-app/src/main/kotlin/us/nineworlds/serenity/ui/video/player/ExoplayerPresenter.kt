@@ -54,6 +54,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   internal lateinit var video: VideoContentInfo
 
   private var onScreenControllerShowing: Boolean = false
+  private var playSessionId: String? = null
 
   override fun attachView(view: ExoplayerView?) {
     Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
@@ -97,11 +98,15 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
     presenterScope.launch {
       playbackRepository.stopPlaying(video.id().orEmpty(), currentPosition)
     }
+    playSessionId = null
   }
 
   override fun startPlaying() {
     presenterScope.launch {
-      playbackRepository.startPlaying(video.id().orEmpty())
+
+      if (playSessionId == null) {
+          playSessionId = playbackRepository.startPlaying(video.id().orEmpty())
+      }
     }
   }
 
@@ -131,7 +136,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
   override fun updateServerPlaybackPosition(currentPostion: Long) {
     presenterScope.launch {
       video.resumeOffset = currentPostion.toInt()
-      playbackRepository.updatePlaybackPosition(video)
+      playbackRepository.updatePlaybackPosition(video, playSessionId)
     }
   }
 
@@ -152,7 +157,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
 
   override fun playVideo() {
     val videoUrl: String = transcoderUrl()
-
+    startPlaying()
     viewState.initializePlayer(videoUrl, video.resumeOffset)
   }
 

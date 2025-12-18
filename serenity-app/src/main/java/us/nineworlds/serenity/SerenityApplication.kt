@@ -29,12 +29,14 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.google.firebase.analytics.FirebaseAnalytics
-import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.danlew.android.joda.JodaTimeAndroid
 import org.greenrobot.eventbus.EventBus
@@ -141,7 +143,7 @@ open class SerenityApplication : Application() {
     }
 
     protected open fun discoverServers() {
-        MainScope().launch {
+        ProcessLifecycleOwner.get().lifecycleScope.launch(Dispatchers.IO) {
             EmbyServerDiscover().findServers()
         }
     }

@@ -61,6 +61,7 @@ agpVersion = "8.13.1"
 kotlin = "2.2.21"
 coreKtxVersion = "1.17.0"
 espressoCoreVersion = "3.5.1"
+lifecycleProcessVersion = "2.10.0"
 
 [libraries]
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotationVersion" }
@@ -140,6 +141,7 @@ assertk-jvm = { module = "com.willowtreeapps.assertk:assertk", version.ref = "as
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine"}
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
+androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycleProcessVersion" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKSPVersion" }
