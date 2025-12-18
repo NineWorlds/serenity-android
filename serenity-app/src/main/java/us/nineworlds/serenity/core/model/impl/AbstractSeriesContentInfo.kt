@@ -116,7 +116,7 @@ abstract class AbstractSeriesContentInfo : SeriesContentInfo, Serializable {
         if (totalShows() == 0) {
             return 0f
         }
-        val watched = showsWatched!!.toFloat()
+        val watched = showsWatched?.toFloatOrNull() ?: 0f
         return watched / totalShows()
     }
 
