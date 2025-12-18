@@ -43,6 +43,7 @@ import us.nineworlds.serenity.core.model.impl.MovieMediaContainer;
  * A service that retrieves movies information from the Plex Media Server.
  *
  * @author dcarver
+ * @deprecated Use Repository pattern instead of services
  */
 public class MoviesRetrievalIntentService extends AbstractPlexRESTIntentService {
 

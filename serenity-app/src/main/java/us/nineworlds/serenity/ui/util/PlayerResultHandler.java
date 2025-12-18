@@ -28,70 +28,78 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Objects;
+
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
-import us.nineworlds.serenity.core.services.UpdateProgressRequest;
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask;
+import us.nineworlds.serenity.core.services.UpdateProgressRequestJob;
+import us.nineworlds.serenity.core.services.WatchedVideoJob;
 import us.nineworlds.serenity.injection.BaseInjector;
 
 public class PlayerResultHandler extends BaseInjector {
 
-  protected RecyclerView.Adapter adapter;
-  protected Intent data;
+    protected RecyclerView.Adapter adapter;
+    protected Intent data;
 
-  public PlayerResultHandler(Intent data, RecyclerView.Adapter adapter) {
-    super();
-    this.adapter = adapter;
-    this.data = data;
-  }
-
-  public void updateVideoPlaybackPosition(VideoContentInfo video, View selectedView) {
-    if (selectedView == null || video == null) {
-      return;
+    public PlayerResultHandler(Intent data, RecyclerView.Adapter adapter) {
+        super();
+        this.adapter = adapter;
+        this.data = data;
     }
 
-    View watchedView = selectedView.findViewById(R.id.posterWatchedIndicator);
+    public void updateVideoPlaybackPosition(VideoContentInfo video, View selectedView) {
+        if (selectedView == null || video == null) {
+            return;
+        }
 
-    updateProgress(data, video);
-    if (video.isWatched()) {
-      watchedView.setVisibility(View.VISIBLE);
-      toggleWatched(video);
-    } else if (video.isPartiallyWatched()) {
-      if (watchedView.isShown()) {
-        watchedView.setVisibility(View.INVISIBLE);
-      }
-      ImageUtils.toggleProgressIndicator(selectedView, video.getResumeOffset(),
-          video.getDuration());
+        View watchedView = selectedView.findViewById(R.id.posterWatchedIndicator);
+
+        updateProgress(data, video);
+        if (video.isWatched()) {
+            watchedView.setVisibility(View.VISIBLE);
+            toggleWatched(video);
+        } else if (video.isPartiallyWatched()) {
+            if (watchedView.isShown()) {
+                watchedView.setVisibility(View.INVISIBLE);
+            }
+            ImageUtils.toggleProgressIndicator(selectedView, video.getResumeOffset(),
+                    video.getDuration());
+        }
+        adapter.notifyDataSetChanged();
     }
-    adapter.notifyDataSetChanged();
-  }
 
-  public void updateVideoPlaybackPosition(VideoContentInfo video) {
-    updateProgress(data, video);
-    if (video.isWatched()) {
-      toggleWatched(video);
+    public void updateVideoPlaybackPosition(VideoContentInfo video) {
+        if (video == null) {
+            return;
+        }
+        updateProgress(data, video);
+        if (video.isWatched()) {
+            toggleWatched(video);
+        }
     }
-  }
 
-  protected void toggleWatched(VideoContentInfo video) {
-    if (video.isWatched()) {
-      new WatchedVideoAsyncTask().execute(video.id());
-      video.setResumeOffset(0);
-      video.setViewCount(video.getViewCount() + 1);
+    protected void toggleWatched(VideoContentInfo video) {
+        if (video.isWatched()) {
+            video.setResumeOffset(0);
+            video.setViewCount(video.getViewCount() + 1);
+            String id = video.id();
+            if (id != null) {
+                WatchedVideoJob.INSTANCE.updateWatchedStatus(id);
+            }
+        }
     }
-  }
 
-  /**
-   * @param data
-   * @param video
-   */
-  protected void updateProgress(Intent data, VideoContentInfo video) {
-    long position = 0;
-    position = data.getIntExtra("position", 0);
-
-    UpdateProgressRequest request = new UpdateProgressRequest(position, video);
-    video.setResumeOffset(Long.valueOf(position).intValue());
-
-    request.execute();
-  }
+    /**
+     * @param data
+     * @param video
+     */
+    protected void updateProgress(Intent data, VideoContentInfo video) {
+        if (data == null) {
+            return;
+        }
+        long position = 0;
+        position = data.getIntExtra("position", 0);
+        video.setResumeOffset(Long.valueOf(position).intValue());
+        UpdateProgressRequestJob.INSTANCE.updateProgress(position, video);
+    }
 }

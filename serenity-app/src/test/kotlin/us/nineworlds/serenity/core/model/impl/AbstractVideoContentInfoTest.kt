@@ -5,12 +5,16 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
+import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkConstructor
+import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import io.mockk.verify
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.junit.After
 import org.junit.AfterClass
 import org.junit.Before
@@ -19,8 +23,8 @@ import org.junit.Test
 import toothpick.config.Module
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.rest.SerenityClient
-import us.nineworlds.serenity.core.services.UnWatchVideoAsyncTask
-import us.nineworlds.serenity.core.services.WatchedVideoAsyncTask
+import us.nineworlds.serenity.core.services.UnWatchVideoJob
+import us.nineworlds.serenity.core.services.WatchedVideoJob
 import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.test.InjectingTest
 
@@ -32,12 +36,6 @@ class AbstractVideoContentInfoTest : InjectingTest() {
     private val mockAndroidHelper: AndroidHelper = mockk(relaxed = true)
 
     companion object {
-        @JvmStatic
-        @BeforeClass
-        fun setUpBeforeClass() {
-            mockkConstructor(WatchedVideoAsyncTask::class)
-            mockkConstructor(UnWatchVideoAsyncTask::class)
-        }
 
         @JvmStatic
         @AfterClass
@@ -53,9 +51,10 @@ class AbstractVideoContentInfoTest : InjectingTest() {
     @Before
     override fun setUp() {
         super.setUp()
+        mockkObject(WatchedVideoJob, UnWatchVideoJob)
         video = TestVideoContentInfo(mockResources)
-        every { anyConstructed<WatchedVideoAsyncTask>().execute(any<String>()) } returns mockk()
-        every { anyConstructed<UnWatchVideoAsyncTask>().execute(any<String>()) } returns mockk()
+        every { WatchedVideoJob.updateWatchedStatus(any<String>()) } just Runs
+        every { UnWatchVideoJob.markUnwatched(any<String>()) } just Runs
     }
 
     @After
@@ -137,7 +136,7 @@ class AbstractVideoContentInfoTest : InjectingTest() {
 
         video.toggleWatchStatus()
 
-        verify { anyConstructed<WatchedVideoAsyncTask>().execute("id-123") }
+        verify { WatchedVideoJob.updateWatchedStatus("id-123") }
         assertThat(video.viewCount).isEqualTo(1)
     }
 
@@ -148,7 +147,7 @@ class AbstractVideoContentInfoTest : InjectingTest() {
 
         video.toggleWatchStatus()
 
-        verify { anyConstructed<WatchedVideoAsyncTask>().execute("id-123") }
+        verify { WatchedVideoJob.updateWatchedStatus("id-123") }
         assertThat(video.viewCount).isEqualTo(1)
     }
 
@@ -160,7 +159,7 @@ class AbstractVideoContentInfoTest : InjectingTest() {
 
         video.toggleWatchStatus()
 
-        verify { anyConstructed<UnWatchVideoAsyncTask>().execute("id-123") }
+        verify { UnWatchVideoJob.markUnwatched("id-123") }
         assertThat(video.viewCount).isEqualTo(0)
     }
 
