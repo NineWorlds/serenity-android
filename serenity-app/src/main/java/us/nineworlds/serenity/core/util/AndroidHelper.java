@@ -27,8 +27,15 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.audio.AudioCapabilities;
+import androidx.annotation.OptIn;
+import androidx.media3.common.C;
+import androidx.media3.common.MimeTypes;
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.exoplayer.audio.AudioCapabilities;
+import androidx.media3.exoplayer.mediacodec.MediaCodecInfo;
+import androidx.media3.exoplayer.mediacodec.MediaCodecUtil;
+
+import java.util.List;
 
 public class AndroidHelper {
 
@@ -65,12 +72,38 @@ public class AndroidHelper {
     return Build.MODEL.toLowerCase().contains(ANDROID_BRAVIA_MODEL.toLowerCase());
   }
 
-  public boolean enableTunneling() {
-    return false;
-  }
+    /**
+     * Checks if the device supports tunneling for common video formats (HEVC or AVC).
+     * @return true if tunneling is supported for either H.265 or H.264.
+     */
+    @OptIn(markerClass = UnstableApi.class)
+    public boolean enableTunneling() {
+        // Tunneling is practically only useful/stable on API 24+ (Android 7.0)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return false;
+        }
+        return isTunnelingSupported(MimeTypes.VIDEO_H265)
+                || isTunnelingSupported(MimeTypes.VIDEO_H264);
+    }
 
-  public boolean isBeyondTV() {
-    return Build.MODEL.toLowerCase().contains(ANDROID_TCL_BEYONDTV5.toLowerCase()) || Build.MODEL.toLowerCase().contains("smart tv");
+
+    @OptIn(markerClass = UnstableApi.class)
+  public boolean isTunnelingSupported(String mimeType) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+      return false;
+    }
+
+    try {
+      List<MediaCodecInfo> decoderInfos = MediaCodecUtil.getDecoderInfos(mimeType, false, false);
+      for (MediaCodecInfo info : decoderInfos) {
+        if (info.capabilities != null && info.capabilities.isFeatureSupported(android.media.MediaCodecInfo.CodecCapabilities.FEATURE_TunneledPlayback)) {
+          return true;
+        }
+      }
+    } catch (Exception e) {
+      return false;
+    }
+    return false;
   }
 
   public boolean isLeanbackSupported() {
@@ -78,7 +111,8 @@ public class AndroidHelper {
     return pm.hasSystemFeature(ANDROID_SOFTWARE_LEANBACK);
   }
 
-  public boolean isAudioPassthroughSupported(String codec) {
+    @OptIn(markerClass = UnstableApi.class)
+    public boolean isAudioPassthroughSupported(String codec) {
     AudioCapabilities audioCapabilities = AudioCapabilities.getCapabilities(context);
     int encoding = 0;
     switch (codec.toLowerCase()) {

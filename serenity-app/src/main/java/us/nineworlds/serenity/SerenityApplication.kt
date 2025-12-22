@@ -32,9 +32,10 @@ import android.preference.PreferenceManager
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.google.android.exoplayer2.database.ExoDatabaseProvider
-import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.database.ExoDatabaseProvider
+import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor
+import androidx.media3.datasource.cache.SimpleCache
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -99,6 +100,7 @@ open class SerenityApplication : Application() {
         Toothpick.inject(this, scope)
     }
 
+    @UnstableApi
     override fun onCreate() {
         super.onCreate()
         init()
@@ -106,7 +108,8 @@ open class SerenityApplication : Application() {
         discoverServers()
         MediaCodecInfoUtil.logAvailableCodecs()
 
-        val leastRecentlyUsedCacheEvictor = LeastRecentlyUsedCacheEvictor((200 * 1024 * 1024).toLong())
+        val leastRecentlyUsedCacheEvictor =
+            LeastRecentlyUsedCacheEvictor((200 * 1024 * 1024).toLong())
         val exoDatabaseProvider = ExoDatabaseProvider(this)
         simpleCache = SimpleCache(cacheDir, leastRecentlyUsedCacheEvictor, exoDatabaseProvider)
     }

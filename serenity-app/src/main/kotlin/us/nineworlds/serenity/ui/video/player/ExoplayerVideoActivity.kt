@@ -12,18 +12,22 @@ import android.os.Looper
 import android.view.KeyEvent
 import android.view.View
 import android.widget.FrameLayout
-import com.google.android.exoplayer2.DefaultLoadControl
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelector
-import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.DataSource
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MimeTypes
+import androidx.media3.common.Player
+import androidx.media3.common.TrackSelectionParameters
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DataSource
+import androidx.media3.exoplayer.DefaultLoadControl
+import androidx.media3.exoplayer.DefaultRenderersFactory
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.exoplayer.trackselection.TrackSelector
+import androidx.media3.extractor.DefaultExtractorsFactory
+import androidx.media3.ui.PlayerView
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -43,6 +47,7 @@ import us.nineworlds.serenity.ui.util.DisplayUtils.overscanCompensation
 import javax.inject.Inject
 import javax.inject.Provider
 
+@UnstableApi
 @OpenForTesting
 class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerView {
 
@@ -191,13 +196,21 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
     internal fun createSimpleExoplayer(): ExoPlayer {
         if (trackSelector is DefaultTrackSelector) {
+
             val tunnelingEnabled = androidHelper.enableTunneling()
+
             Timber.d("Tunneling enabled: %s", tunnelingEnabled)
-            val parameters = DefaultTrackSelector.ParametersBuilder(this)
+            val audioOffloadPreferences = TrackSelectionParameters.AudioOffloadPreferences.Builder()
+                .setAudioOffloadMode(TrackSelectionParameters.AudioOffloadPreferences.AUDIO_OFFLOAD_MODE_ENABLED)
+                .setIsSpeedChangeSupportRequired(false)
+                .setIsGaplessSupportRequired(false)
+                .build()
+            val parameters = DefaultTrackSelector.Parameters.Builder()
                     .setTunnelingEnabled(tunnelingEnabled)
                     .setAllowAudioMixedDecoderSupportAdaptiveness(true)
                     .setExceedAudioConstraintsIfNecessary(false)
                     .setAllowAudioMixedSampleRateAdaptiveness(true)
+                    .setAudioOffloadPreferences(audioOffloadPreferences)
                     .build()
             (trackSelector as DefaultTrackSelector).parameters = parameters
         }
@@ -205,12 +218,15 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
         // Control how much buffering is done before playback.  This is to help slower devices like lower end TVs such as TCL 4 Series
         // By buffering content, and caching data we can better improve video playback and reduce video stuttering
         val defaultLoadControl = DefaultLoadControl.Builder()
-                .setBufferDurationsMs(DefaultLoadControl.DEFAULT_MIN_BUFFER_MS, 60000, 1000, 2000)
-                .build()
+            .setBufferDurationsMs(DefaultLoadControl.DEFAULT_MIN_BUFFER_MS, 80000, 2500, 5000)
+            .setTargetBufferBytes(40 * 1024 * 1024) // Slightly higher memory cap (40MB)
+            .build()
 
-        val renderersFactory = DefaultRenderersFactory(this).setEnableAudioOffload(true)
 
-        return ExoPlayer.Builder(this, renderersFactory)
+        val renderersFactory = DefaultRenderersFactory(this)
+
+        return ExoPlayer.Builder(this)
+                .setRenderersFactory(renderersFactory)
                 .setTrackSelector(trackSelector)
                 .setLoadControl(defaultLoadControl)
                 .build()

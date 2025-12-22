@@ -6,12 +6,12 @@ import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray
-import com.google.android.exoplayer2.trackselection.TrackSelector
-import com.google.android.exoplayer2.upstream.DataSource
+import androidx.media3.common.Player
+import androidx.media3.datasource.DataSource
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.exoplayer.trackselection.TrackSelectionArray
+import androidx.media3.exoplayer.trackselection.TrackSelector
 import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -48,7 +48,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     private val mockDataSourceFactory = mockk<DataSource.Factory>(relaxed = true)
     private val mockTrackSelector = mockk<TrackSelector>(relaxed = true)
     private val mockLogger = mockk<Logger>(relaxed = true)
-    private val mockPlayer = mockk<SimpleExoPlayer>(relaxed = true)
+    private val mockPlayer = mockk<ExoPlayer>(relaxed = true)
     private val mockTimeUtil = mockk<TimeUtil>(relaxed = true)
   }
 
@@ -71,7 +71,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
   }
 
   @Test
-  fun bindsSimpleExoPlayerView() {
+  fun bindsExoPlayerView() {
     assertThat(activity.playerView).isNotNull()
   }
 
@@ -132,7 +132,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
 
     spy.initializePlayer("http://www.example.com/start.mkv", 0)
 
-    assertThat(spy.player).isInstanceOf(SimpleExoPlayer::class.java)
+    assertThat(spy.player).isInstanceOf(ExoPlayer::class.java)
 
     verify { spy.createSimpleExoplayer() }
     verify { mockPlayer.addListener(any()) }

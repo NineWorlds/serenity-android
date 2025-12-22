@@ -1,7 +1,8 @@
 package us.nineworlds.serenity.injection.modules.providers;
 
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
-import com.google.android.exoplayer2.upstream.HttpDataSource;
+
+import androidx.media3.datasource.HttpDataSource;
+import androidx.media3.datasource.okhttp.OkHttpDataSource;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -15,6 +16,6 @@ public class HttpDataSourceFactoryProvider implements Provider<HttpDataSource.Fa
   @Inject OkHttpClient okHttpClient;
 
   @Override public HttpDataSource.Factory get() {
-    return new OkHttpDataSourceFactory(okHttpClient, userAgent, null, null);
+    return new OkHttpDataSource.Factory(okHttpClient).setUserAgent(userAgent);
   }
 }

@@ -40,7 +40,7 @@ moshiKotlinVersion = "1.15.2"
 retrofitVersion = "2.9.0"
 jodaTimeVersion = "2.10.9.1"
 timberVersion = "5.0.1"
-exoplayerVersion = "2.19.1"
+media3Version = "1.9.0"
 simpleXmlVersion = "2.7.1"
 
 junitVersion = "4.13.2"
@@ -80,9 +80,9 @@ androidx-percentlayout = { module = "androidx.percentlayout:percentlayout", vers
 androidx-recycler-view = { module = "androidx.recyclerview:recyclerview", version.ref = "androidxRecyclerViewVersion"}
 commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commonsLang3Version" }
-exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayerVersion"}
-exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "exoplayerVersion"}
-exoplayer-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "exoplayerVersion"}
+androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3Version" }
+androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3Version" }
+androidx-media3-datasource-okhttp = { module = "androidx.media3:media3-datasource-okhttp", version.ref = "media3Version" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBomVersion" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
@@ -147,4 +147,3 @@ androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-p
 ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKSPVersion" }
 android-application = { id = "com.android.application", version.ref = "agpVersion" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-

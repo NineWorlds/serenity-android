@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.util.Log
 import android.view.KeyEvent
-import com.google.android.exoplayer2.ExoPlayer
+import androidx.media3.exoplayer.ExoPlayer
 import org.greenrobot.eventbus.EventBus
 import toothpick.Toothpick
 import us.nineworlds.serenity.common.annotations.InjectionConstants
@@ -16,8 +16,8 @@ import javax.inject.Inject
 
 @OpenForTesting
 class VideoKeyCodeHandlerDelegate(
-        val player: ExoPlayer, val activity: Activity,
-        val presenter: ExoplayerContract.ExoplayerPresenter
+    val player: ExoPlayer, val activity: Activity,
+    val presenter: ExoplayerContract.ExoplayerPresenter
 ) {
 
   @Inject
