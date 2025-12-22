@@ -55,6 +55,35 @@ object UpdateProgressRequestJob {
     }
   }
 
+  fun updateProgress(position: Long, video: VideoContentInfo, playSessionId: String?) {
+    if (scope == null) {
+      job = SupervisorJob()
+      scope = CoroutineScope(Dispatchers.IO + job!!)
+    }
+
+    scope?.launch {
+      val id = video.id()
+      if (id == null) {
+        Timber.w("Video ID is null. Cannot update progress for video: ${video.id()}")
+        return@launch
+      }
+
+      try {
+        if (video.isWatched) {
+          serenityClient.watched(id)
+          serenityClient.progress(id, "0", playSessionId)
+        } else {
+          serenityClient.progress(id, position.toString(), playSessionId)
+        }
+      } catch (e: Exception) {
+        if (e is CancellationException) {
+          return@launch
+        }
+        Timber.e(e, "Error updating progress")
+      }
+    }
+  }
+
   fun onFinish() {
     scope?.cancel()
     scope = null

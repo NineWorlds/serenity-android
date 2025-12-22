@@ -24,12 +24,14 @@ import us.nineworlds.serenity.emby.moshi.LocalDateJsonAdapter
 import us.nineworlds.serenity.emby.server.model.AuthenticateUserByName
 import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 import us.nineworlds.serenity.emby.server.model.Item
+import us.nineworlds.serenity.emby.server.model.PlaybackStartRequest
 import us.nineworlds.serenity.emby.server.model.PublicUserInfo
 import us.nineworlds.serenity.emby.server.model.QueryFilters
 import us.nineworlds.serenity.emby.server.model.QueryResult
 import java.io.File
 import java.io.IOException
 import java.util.UUID
+import kotlin.uuid.Uuid
 
 class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
 
@@ -53,7 +55,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         val cache = Cache(cacheDir, cacheSize.toLong())
 
         val okClient = RetrofitUrlManager.getInstance().with(OkHttpClient.Builder())
-        logger.level = HttpLoggingInterceptor.Level.BASIC
+        logger.level = HttpLoggingInterceptor.Level.BODY
         okClient.addInterceptor(logger)
         okClient.cache(cache)
 
@@ -412,6 +414,10 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     }
 
     override fun progress(key: String, offset: String): Boolean {
+        return progress(key, offset, null)
+    }
+
+    override fun progress(key: String, offset: String, playSessionId: String?): Boolean {
         if (userId == null) {
             userId = fetchUserId()
         }
@@ -419,7 +425,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
         position = position.times(10000)
 
-        val call = usersService.progress(headerMap(), userId!!, key, null, position)
+        val call = usersService.progress(headerMap(), userId!!, key, null, position, playSessionId)
         val result = call.execute()
 
         return result.isSuccessful
@@ -475,14 +481,18 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         return "$baseUrl/Users/${user.userId}/Images/Primary?Width=$width&Height=$height"
     }
 
-    override fun startPlaying(itemId: String) {
+    override fun startPlaying(itemId: String): String? {
         if (userId == null) {
             userId = fetchUserId()
         }
 
-        val call = usersService.startPlaying(headerMap(), userId!!, itemId)
+        val call = usersService.startPlaying(headerMap(), userId!!, itemId, PlaybackStartRequest(true))
 
-        call.execute()
+        val response = call.execute()
+        if (response.isSuccessful) {
+            return response.body()?.playSessionId ?: UUID.randomUUID().toString()
+        }
+        return UUID.randomUUID().toString()
     }
 
     override fun stopPlaying(itemId: String, offset: Long) {

@@ -17,6 +17,7 @@ import org.junit.Before
 import org.junit.Test
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.model.VideoContentInfo
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PlaybackRepositoryTest {
@@ -42,7 +43,7 @@ class PlaybackRepositoryTest {
     @Test
     fun startPlayingPlaysExpectedVideoKey() = runTest(UnconfinedTestDispatcher()) {
         val expectedId = "12345"
-        every { mockSerenityClient.startPlaying(any()) } just Runs
+        every { mockSerenityClient.startPlaying(any()) } returns UUID.randomUUID().toString()
 
         repository.startPlaying(expectedId)
 
@@ -65,12 +66,12 @@ class PlaybackRepositoryTest {
         every { video.id() } returns "12345"
         every { video.isWatched } returns true
         every { mockSerenityClient.watched(any()) } returns true
-        every { mockSerenityClient.progress(any(), any()) } returns true
+        every { mockSerenityClient.progress(any(), any(), any()) } returns true
 
         repository.updatePlaybackPosition(video)
 
         verify { mockSerenityClient.watched("12345") }
-        verify { mockSerenityClient.progress("12345", "0") }
+        verify { mockSerenityClient.progress("12345", "0", any()) }
     }
 
     @Test
@@ -79,11 +80,11 @@ class PlaybackRepositoryTest {
         every { video.id() } returns "12345"
         every { video.isWatched } returns false
         every { video.resumeOffset } returns 123
-        every { mockSerenityClient.progress(any(), any()) } returns true
+        every { mockSerenityClient.progress(any(), any(), any()) } returns true
 
         repository.updatePlaybackPosition(video)
 
         verify(exactly = 0) { mockSerenityClient.watched("12345") }
-        verify { mockSerenityClient.progress("12345", "123") }
+        verify { mockSerenityClient.progress("12345", "123", any()) }
     }
 }

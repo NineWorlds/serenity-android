@@ -146,7 +146,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
     assertThat(videoContentInfo.resumeOffset).isEqualTo(expectedPosition)
 
-    coVerify { mockPlaybackRepository.updatePlaybackPosition(any()) }
+    coVerify { mockPlaybackRepository.updatePlaybackPosition(any(), any()) }
   }
 
   @Test
