@@ -1,8 +1,8 @@
 package us.nineworlds.serenity.ui.video.player
 
 import android.view.View
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerControlView
+import androidx.media3.common.Player
+import androidx.media3.ui.PlayerControlView
 import kotlinx.coroutines.launch
 import moxy.InjectViewState
 import moxy.MvpPresenter
@@ -75,11 +75,11 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
     }
   }
 
-  override fun onPositionDiscontinuity(reason: Int) = Unit
+  override fun onPositionDiscontinuity(oldPosition: Player.PositionInfo, newPosition: Player.PositionInfo, reason: Int) = Unit
 
   override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) = Unit
 
-  override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+  override fun onPlaybackStateChanged(playbackState: Int) {
     if (Player.STATE_ENDED == playbackState) {
       stopPlaying(video.resumeOffset.toLong())
       viewState.playbackEnded()
@@ -88,7 +88,7 @@ class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
     }
   }
 
-  override fun onLoadingChanged(isLoading: Boolean) = Unit
+  override fun onIsLoadingChanged(isLoading: Boolean) = Unit
 
   override fun onRepeatModeChanged(repeatMode: Int) = Unit
 

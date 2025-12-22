@@ -122,16 +122,9 @@ dependencies {
   implementation(libs.firebase.crashlytics)
 
   implementation(libs.github.glide.okhttp)
-  implementation(libs.exoplayer.core) {
-    exclude(module = "support-annotations")
-  }
-  implementation(libs.exoplayer.ui) {
-    exclude(module = "support-annotations")
-  }
-
-  implementation(libs.exoplayer.okhttp) {
-    exclude(module = "support-annotations")
-  }
+  implementation(libs.androidx.media3.exoplayer)
+  implementation(libs.androidx.media3.ui)
+  implementation(libs.androidx.media3.datasource.okhttp)
 
   implementation(libs.okhttp) {
     exclude(group = "com.android.support")

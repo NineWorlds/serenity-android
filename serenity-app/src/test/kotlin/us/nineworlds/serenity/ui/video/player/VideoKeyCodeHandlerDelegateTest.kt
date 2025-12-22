@@ -2,10 +2,10 @@ package us.nineworlds.serenity.ui.video.player
 
 import android.content.SharedPreferences
 import android.view.KeyEvent
+import androidx.media3.exoplayer.ExoPlayer
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
-import com.google.android.exoplayer2.SimpleExoPlayer
 import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -26,7 +26,7 @@ class VideoKeyCodeHandlerDelegateTest : InjectingTest() {
 
     companion object {
         private val mockPreferences = mockk<SharedPreferences>(relaxed = true)
-        private val mockMediaPlayer = mockk<SimpleExoPlayer>(relaxed = true)
+        private val mockMediaPlayer = mockk<ExoPlayer>(relaxed = true)
         private val mockPresenter = mockk<ExoplayerContract.ExoplayerPresenter>(relaxed = true)
         private val mockActivity = mockk<ExoplayerVideoActivity>(relaxed = true)
     }

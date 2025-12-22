@@ -18,24 +18,27 @@ package us.nineworlds.serenity.ui.video.player;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.audio.AudioRendererEventListener;
-import com.google.android.exoplayer2.decoder.DecoderCounters;
-import com.google.android.exoplayer2.metadata.Metadata;
-import com.google.android.exoplayer2.metadata.MetadataOutput;
-import com.google.android.exoplayer2.metadata.emsg.EventMessage;
-import com.google.android.exoplayer2.metadata.id3.ApicFrame;
-import com.google.android.exoplayer2.metadata.id3.CommentFrame;
-import com.google.android.exoplayer2.metadata.id3.GeobFrame;
-import com.google.android.exoplayer2.metadata.id3.Id3Frame;
-import com.google.android.exoplayer2.metadata.id3.PrivFrame;
-import com.google.android.exoplayer2.metadata.id3.TextInformationFrame;
-import com.google.android.exoplayer2.metadata.id3.UrlLinkFrame;
-import com.google.android.exoplayer2.source.MediaSourceEventListener;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.video.VideoRendererEventListener;
+import androidx.annotation.Nullable;
+import androidx.media3.common.C;
+import androidx.media3.common.Format;
+import androidx.media3.common.Player;
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.exoplayer.audio.AudioRendererEventListener;
+import androidx.media3.exoplayer.DecoderCounters;
+import androidx.media3.exoplayer.DecoderReuseEvaluation;
+import androidx.media3.common.Metadata;
+import androidx.media3.exoplayer.metadata.MetadataOutput;
+import androidx.media3.extractor.metadata.emsg.EventMessage;
+import androidx.media3.extractor.metadata.id3.ApicFrame;
+import androidx.media3.extractor.metadata.id3.CommentFrame;
+import androidx.media3.extractor.metadata.id3.GeobFrame;
+import androidx.media3.extractor.metadata.id3.Id3Frame;
+import androidx.media3.extractor.metadata.id3.PrivFrame;
+import androidx.media3.extractor.metadata.id3.TextInformationFrame;
+import androidx.media3.extractor.metadata.id3.UrlLinkFrame;
+import androidx.media3.exoplayer.source.MediaSourceEventListener;
+import androidx.media3.exoplayer.trackselection.MappingTrackSelector;
+import androidx.media3.exoplayer.video.VideoRendererEventListener;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -49,6 +52,7 @@ import us.nineworlds.serenity.core.logger.Logger;
 /**
  * Logs player events using {@link Log}.
  */
+@UnstableApi
 public final class EventLogger implements AudioRendererEventListener, VideoRendererEventListener,
         MediaSourceEventListener, MetadataOutput {
 
@@ -93,7 +97,7 @@ public final class EventLogger implements AudioRendererEventListener, VideoRende
     logger.debug("audioDecoderInitialized [" + getSessionTimeString() + ", " + decoderName + "]");
   }
 
-  @Override public void onAudioInputFormatChanged(Format format) {
+  @Override public void onAudioInputFormatChanged(Format format, @Nullable DecoderReuseEvaluation decoderReuseEvaluation) {
     logger.debug("audioFormatChanged [" + getSessionTimeString() + ", " + Format.toLogString(format) + "]");
   }
 
@@ -112,7 +116,7 @@ public final class EventLogger implements AudioRendererEventListener, VideoRende
     logger.debug("videoDecoderInitialized [" + getSessionTimeString() + ", " + decoderName + "]");
   }
 
-  @Override public void onVideoInputFormatChanged(Format format) {
+  @Override public void onVideoInputFormatChanged(Format format, @Nullable DecoderReuseEvaluation decoderReuseEvaluation) {
     logger.debug("videoFormatChanged [" + getSessionTimeString() + ", " + Format.toLogString(format) + "]");
   }
 

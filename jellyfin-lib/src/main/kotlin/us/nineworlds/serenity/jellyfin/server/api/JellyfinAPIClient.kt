@@ -425,6 +425,14 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         return result.isSuccessful
     }
 
+    override fun progress(
+        key: String,
+        offset: String,
+        playSessionId: String?
+    ): Boolean {
+        TODO("Not yet implemented")
+    }
+
     override fun createMediaTagURL(resourceType: String, resourceName: String, identifier: String): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -475,7 +483,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         return "$baseUrl/Users/${user.userId}/Images/Primary?Width=$width&Height=$height"
     }
 
-    override fun startPlaying(itemId: String) {
+    override fun startPlaying(itemId: String): String? {
         if (userId == null) {
             userId = fetchUserId()
         }
@@ -483,6 +491,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         val call = usersService.startPlaying(headerMap(), userId!!, itemId)
 
         call.execute()
+        return UUID.randomUUID().toString()
     }
 
     override fun stopPlaying(itemId: String, offset: Long) {

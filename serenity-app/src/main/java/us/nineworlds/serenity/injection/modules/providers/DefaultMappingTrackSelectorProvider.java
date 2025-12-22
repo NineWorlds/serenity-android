@@ -2,9 +2,11 @@ package us.nineworlds.serenity.injection.modules.providers;
 
 import android.content.Context;
 
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
+
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.exoplayer.trackselection.AdaptiveTrackSelection;
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector;
+import androidx.media3.exoplayer.trackselection.MappingTrackSelector;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -17,7 +19,8 @@ public class DefaultMappingTrackSelectorProvider implements Provider<MappingTrac
   @ApplicationContext
   Context context;
 
-  @Override public MappingTrackSelector get() {
+    @UnstableApi
+    @Override public MappingTrackSelector get() {
     return new DefaultTrackSelector(context, new AdaptiveTrackSelection.Factory());
   }
 }
