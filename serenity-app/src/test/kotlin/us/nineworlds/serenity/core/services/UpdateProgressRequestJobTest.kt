@@ -39,6 +39,7 @@ class UpdateProgressRequestJobTest : InjectingTest() {
   @After
   fun tearDown() {
     clearAllMocks()
+    Toothpick.reset()
   }
 
   override fun installTestModules() {
