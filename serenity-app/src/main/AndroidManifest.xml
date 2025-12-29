@@ -12,7 +12,6 @@
             android:xlargeScreens="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
@@ -134,11 +133,6 @@
             />
 
         <service android:name=".core.services.MovieSearchIntentService" />
-
-        <provider
-                android:name=".core.SerenityRecommendationContentProvider"
-                android:authorities="us.nineworlds.serenity.core.SerenityRecommendationContentProvider"
-                android:exported="true" />
 
         <receiver android:name=".StartupBroadcastReceiver"
             android:exported="true">

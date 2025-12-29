@@ -28,16 +28,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
-import android.view.View;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import timber.log.Timber;
-import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.injection.InjectingMvpActivity;
-import us.nineworlds.serenity.ui.adapters.AbstractPosterImageGalleryAdapter;
 
 public abstract class SerenityActivity extends InjectingMvpActivity {
 
@@ -51,49 +45,6 @@ public abstract class SerenityActivity extends InjectingMvpActivity {
   }
   
   protected abstract String screenName();
-
-  @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
-    RecyclerView gallery = findViewById(R.id.moviePosterView);
-    if (gallery == null) {
-      return super.onKeyDown(keyCode, event);
-    }
-
-    AbstractPosterImageGalleryAdapter adapter = (AbstractPosterImageGalleryAdapter) gallery.getAdapter();
-    if (adapter != null) {
-      int itemsCount = adapter.getItemCount();
-
-      if (contextMenuRequested(keyCode)) {
-        View view = gallery.getFocusedChild();
-        view.performLongClick();
-        return true;
-      }
-
-      if (gallery.getFocusedChild() != null) {
-        int selectedItem = gallery.getLayoutManager().getPosition(gallery.getFocusedChild());
-        Timber.d("SelectedItemPosition: " + selectedItem);
-        if (isKeyCodeSkipBack(keyCode)) {
-          int newPosition = selectedItem - 10;
-          if (newPosition < 0) {
-            newPosition = 0;
-          }
-          gallery.smoothScrollToPosition(newPosition);
-          Timber.d("New ItemPosition: " + newPosition);
-          return true;
-        }
-
-        if (isKeyCodeSkipForward(keyCode)) {
-          int newPosition = selectedItem + 10;
-          if (newPosition > itemsCount) {
-            newPosition = itemsCount - 1;
-          }
-          gallery.smoothScrollToPosition(newPosition);
-          Timber.d("New ItemPosition: " + newPosition);
-          return true;
-        }
-      }
-    }
-    return super.onKeyDown(keyCode, event);
-  }
 
   protected boolean contextMenuRequested(int keyCode) {
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
