@@ -42,7 +42,6 @@ import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.util.TimeUtil
 import us.nineworlds.serenity.injection.BaseInjector
-import us.nineworlds.serenity.ui.listeners.AbstractVideoOnItemSelectedListener
 import javax.inject.Inject
 
 class ImageInfographicUtils(private val width: Int, private val height: Int) : BaseInjector() {
@@ -219,16 +218,4 @@ class ImageInfographicUtils(private val width: Int, private val height: Int) : B
     return tv
   }
 
-  companion object {
-
-    fun setWatchedCount(epiv: View, a: Activity, info: VideoContentInfo) {
-      val watchedView = a.findViewById<ImageView>(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID)
-      watchedView?.setImageResource(R.drawable.watched_small)
-    }
-
-    fun setUnwatched(epiv: View, a: Activity, info: VideoContentInfo) {
-      val watchedView = a.findViewById<ImageView>(AbstractVideoOnItemSelectedListener.WATCHED_VIEW_ID)
-      watchedView?.setImageResource(R.drawable.unwatched_small)
-    }
-  }
 }

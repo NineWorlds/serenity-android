@@ -34,7 +34,7 @@ import us.nineworlds.serenity.injection.BaseInjector;
 
 /**
  * A configuration that reads information from the SharedPreferences store. This
- * information contains necessary info for connecting to the plex media server.
+ * information contains necessary info for connecting to the media server.
  *
  * @author dcarver
  */
