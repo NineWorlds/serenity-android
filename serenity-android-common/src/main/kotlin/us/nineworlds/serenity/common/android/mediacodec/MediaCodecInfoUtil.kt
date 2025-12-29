@@ -43,6 +43,30 @@ object MediaCodecInfoUtil {
    */
   fun isCodecSupported(mimeType: String): Boolean = supportedCodecs.contains(mimeType)
 
+  fun getMaxSupportedChannels(mimeType: String): Int {
+    val mediaCodecList = MediaCodecList(MediaCodecList.ALL_CODECS)
+    var maxChannels = 1
+    for (codecInfo in mediaCodecList.codecInfos) {
+      if (!codecInfo.isEncoder) {
+        val types = codecInfo.supportedTypes
+        if (types.any { it.equals(mimeType, ignoreCase = true) }) {
+          try {
+            val capabilities = codecInfo.getCapabilitiesForType(mimeType)
+            val audioCapabilities = capabilities.audioCapabilities
+            if (audioCapabilities != null) {
+              if (audioCapabilities.maxInputChannelCount > maxChannels) {
+                maxChannels = audioCapabilities.maxInputChannelCount
+              }
+            }
+          } catch (e: Exception) {
+            Log.e(TAG, "Could not get capabilities for $mimeType", e)
+          }
+        }
+      }
+    }
+    return maxChannels
+  }
+
   /**
    * Find the correct video mimetype based off information that was returned to us by the server.
    *

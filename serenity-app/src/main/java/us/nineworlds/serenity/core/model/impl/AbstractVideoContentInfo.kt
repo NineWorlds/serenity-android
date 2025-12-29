@@ -187,10 +187,18 @@ abstract class AbstractVideoContentInfo(private val resources: Resources?) : Vid
 
     internal open fun isDirectPlaySupported(media: IMedia): Boolean {
         val audioCodec = media.audioCodec.orEmpty()
-        val hasStandardAudioSupport =
-            MediaCodecInfoUtil.isCodecSupported(MediaCodecInfoUtil.findCorrectAudioMimeType("audio/$audioCodec"))
+        val mimeType = MediaCodecInfoUtil.findCorrectAudioMimeType("audio/$audioCodec")
+
+        val hasStandardAudioSupport = MediaCodecInfoUtil.isCodecSupported(mimeType)
         val hasPassthroughAudioSupport = androidHelper.isAudioPassthroughSupported(audioCodec)
-        val isAudioCodecSupported = hasStandardAudioSupport || hasPassthroughAudioSupport
+
+        val isAudioCodecSupported = if (hasStandardAudioSupport) {
+            val maxChannels = MediaCodecInfoUtil.getMaxSupportedChannels(mimeType)
+            val audioChannels = media.audioChannels?.toIntOrNull() ?: 2
+            audioChannels <= maxChannels
+        } else {
+            hasPassthroughAudioSupport
+        }
 
         val videoCodec = media.videoCodec.orEmpty()
         val isVideoSupported =
@@ -204,4 +212,3 @@ abstract class AbstractVideoContentInfo(private val resources: Resources?) : Vid
         private const val serialVersionUID = 4744447508883279194L
     }
 }
-
