@@ -206,13 +206,19 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
                 .setIsGaplessSupportRequired(false)
                 .build()
             val parameters = DefaultTrackSelector.Parameters.Builder()
-                    .setTunnelingEnabled(tunnelingEnabled)
+                    .setTunnelingEnabled(tunnelingEnabled && !isChromecast())
                     .setAllowAudioMixedDecoderSupportAdaptiveness(true)
                     .setExceedAudioConstraintsIfNecessary(false)
                     .setAllowAudioMixedSampleRateAdaptiveness(true)
                     .setAudioOffloadPreferences(audioOffloadPreferences)
-                    .build()
-            (trackSelector as DefaultTrackSelector).parameters = parameters
+                    .setConstrainAudioChannelCountToDeviceCapabilities(true)
+                    .setPreferredAudioMimeTypes(MimeTypes.AUDIO_AC3, MimeTypes.AUDIO_E_AC3, MimeTypes.AUDIO_TRUEHD, MimeTypes.AUDIO_DTS, MimeTypes.AUDIO_DTS_EXPRESS, MimeTypes.AUDIO_DTS_HD, MimeTypes.AUDIO_AAC)
+
+            if (isChromecast()) {
+                parameters.setMaxAudioChannelCount(6)
+            }
+
+            (trackSelector as DefaultTrackSelector).parameters = parameters.build()
         }
 
         // Control how much buffering is done before playback.  This is to help slower devices like lower end TVs such as TCL 4 Series
@@ -230,6 +236,12 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
                 .setTrackSelector(trackSelector)
                 .setLoadControl(defaultLoadControl)
                 .build()
+    }
+
+    private fun isChromecast(): Boolean {
+        return Build.MODEL.contains("Chromecast", ignoreCase = true) ||
+                Build.DEVICE.contains("sabrina", ignoreCase = true) ||
+                Build.DEVICE.contains("boreal", ignoreCase = true)
     }
 
     internal fun buildMediaSource(uri: Uri): MediaSource {
