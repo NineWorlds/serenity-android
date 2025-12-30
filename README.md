@@ -5,10 +5,9 @@ Serenity for Android
 
 Plex Media Server support is now Deprecated!!!   Please consider using Emby Media Server instead if you want to use Serenity.
 
-Serenity for Android is a client for the Emby Media Server, Plex Media Server support is no longer actively maintained.  
-Serenity is not associated with Emby or Plex, Inc.   If you value the Emby or Plex Media Server,
-consider donating to the respective project to help fund continued development.
-
+Serenity for Android is a client for the Emby Media Server and Jellyfin (in development), Plex Media Server support is no longer actively maintained.  
+Serenity is not associated with Emby or Jellyfin.   If you value the Emby or Jellyfin Media Server,
+consider donating to the respective projects to help fund continued development.
 
 Features
 ----
@@ -20,10 +19,8 @@ What does this support
 * Browsing by Genre for TV Shows and Movies
 * Browsing by Season for TV Shows
 * Android TV and Fire TV devices running Android 4.1 or higher
-* Playback videos from Queue
-* Optional to playback movie trailers and episode previews from YouTube.
-* Multiple views, from Grid View to Detail View.
-* Auto discovery and works with all Plex 9 Media Servers, no server restriction.
+* Playback videos from Queue (in development)
+* Server discovery and works with all Emby Media Servers, no server restriction.
 
 What is currently not targeted:
 
@@ -35,13 +32,6 @@ With this said, this is an open source project, so if the community wants to con
 code it will be welcomed.  Feature requests and bug reports can be opened on the issue
 tracker.
 
-
-Plexapp REST Library (Deprecated)
-----
-
-This project includes a module that provides READ access to the plex media server REST API.
-It can be use outside of the serenity application by others developers to access the metadata provided by a Plex Media Server.  The code is licensed under an MIT License.
-
 What open source license is this using?
 -----
 
@@ -49,12 +39,7 @@ The project is  using one of the more liberal open source licenses available. MI
 
 http://opensource.org/licenses/MIT
 
-Yes this means anybody can fork the project, and try to do their own client.  Commercial opportunities though
-will be limited since the app will more than likely use the free Transcoder KEY that PlexApp provides.  Any
-commercial resell of an app that uses the transcoder features of Plex needs a special key from Plex.  Thus
-one of the reasons this project is open source and will probably stay free in the play store once it is
-released there.
-
+Yes this means anybody can fork the project, and try to do their own client.
 
 How can I help?
 -----
@@ -85,10 +70,8 @@ This project uses several open source projects and source code:
 * Toothpick
 * Retrofit 2
 * OkHttp 3
-* Android Priority Job Manager
 * GreenRobot EventBus
 * Glide v4 
-
 
 Unit Testing Frameworks
 ------
