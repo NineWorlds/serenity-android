@@ -240,8 +240,8 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
     private fun isChromecast(): Boolean {
         return Build.MODEL.contains("Chromecast", ignoreCase = true) ||
-                Build.MANUFACTURER.contains("Google", ignoreCase = true) ||
-                Build.DEVICE.contains("sabrina", ignoreCase = true)
+                Build.DEVICE.contains("sabrina", ignoreCase = true) ||
+                Build.DEVICE.contains("boreal", ignoreCase = true)
     }
 
     internal fun buildMediaSource(uri: Uri): MediaSource {
