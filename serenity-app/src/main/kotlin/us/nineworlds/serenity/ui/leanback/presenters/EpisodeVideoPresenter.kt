@@ -54,11 +54,9 @@ class EpisodeVideoPresenter : Presenter() {
         }
 
         fun updateCardViewImage(url: String) {
-            cardView.mainImageView?.let { 
+            cardView.mainImageView?.let {
                 Glide.with(view.context).load(url).fitCenter().into(it)
             }
         }
     }
-
-
 }

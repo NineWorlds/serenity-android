@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-
 import androidx.leanback.preference.LeanbackPreferenceFragment;
 import androidx.leanback.preference.LeanbackSettingsFragment;
 import androidx.preference.DialogPreference;
@@ -14,15 +13,12 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceDialogFragment;
 import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceScreen;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.inject.Inject;
-
 import toothpick.Toothpick;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.Server;
@@ -30,18 +26,20 @@ import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.injection.ForMediaServers;
 import us.nineworlds.serenity.ui.activity.OverscanSetupActivity;
 
-public class SettingsFragment extends LeanbackSettingsFragment implements DialogPreference.TargetFragment {
+public class SettingsFragment extends LeanbackSettingsFragment
+    implements DialogPreference.TargetFragment {
 
   PrefsFragment fragment;
 
-  @Override public void onPreferenceStartInitialScreen() {
+  @Override
+  public void onPreferenceStartInitialScreen() {
     fragment = new PrefsFragment();
     startPreferenceFragment(fragment);
   }
 
-  @Override public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {
-    final Fragment f =
-        Fragment.instantiate(getActivity(), pref.getFragment(), pref.getExtras());
+  @Override
+  public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {
+    final Fragment f = Fragment.instantiate(getActivity(), pref.getFragment(), pref.getExtras());
     f.setTargetFragment(caller, 0);
     if (f instanceof PreferenceFragment || f instanceof PreferenceDialogFragment) {
       startPreferenceFragment(f);
@@ -51,7 +49,8 @@ public class SettingsFragment extends LeanbackSettingsFragment implements Dialog
     return true;
   }
 
-  @Override public boolean onPreferenceStartScreen(PreferenceFragment caller, PreferenceScreen pref) {
+  @Override
+  public boolean onPreferenceStartScreen(PreferenceFragment caller, PreferenceScreen pref) {
     final Fragment f = new PrefsFragment();
     final Bundle args = new Bundle(1);
     args.putString(PreferenceFragment.ARG_PREFERENCE_ROOT, pref.getKey());
@@ -60,7 +59,8 @@ public class SettingsFragment extends LeanbackSettingsFragment implements Dialog
     return true;
   }
 
-  @Override public Preference findPreference(CharSequence key) {
+  @Override
+  public Preference findPreference(CharSequence key) {
     return fragment.findPreference(key);
   }
 
@@ -77,12 +77,14 @@ public class SettingsFragment extends LeanbackSettingsFragment implements Dialog
       setPreferencesFromResource(R.xml.preferences, rootKey);
     }
 
-    @Override public void onStart() {
+    @Override
+    public void onStart() {
       super.onStart();
       populateSupportedPlayers();
     }
 
-    @Override public boolean onPreferenceTreeClick(Preference preference) {
+    @Override
+    public boolean onPreferenceTreeClick(Preference preference) {
       final String key = preference.getKey();
       if ("overscan_setup".equals(key)) {
         startActivity(new Intent(getActivity(), OverscanSetupActivity.class));
@@ -93,7 +95,8 @@ public class SettingsFragment extends LeanbackSettingsFragment implements Dialog
 
     protected void populateAvailableLocales() {
       Locale[] locales = Locale.getAvailableLocales();
-      ListPreference preferenceLocales = (ListPreference) findPreference("preferred_subtitle_language");
+      ListPreference preferenceLocales =
+          (ListPreference) findPreference("preferred_subtitle_language");
       ArrayList<String> localNames = new ArrayList<String>();
       ArrayList<String> localCodes = new ArrayList<String>();
       for (Locale local : locales) {
@@ -111,7 +114,8 @@ public class SettingsFragment extends LeanbackSettingsFragment implements Dialog
     }
 
     protected void populateSupportedPlayers() {
-      ListPreference supportedPlayers = (ListPreference) findPreference("serenity_external_player_filter");
+      ListPreference supportedPlayers =
+          (ListPreference) findPreference("serenity_external_player_filter");
       Map<String, String> availablePlayers = new HashMap<String, String>();
       Context context = getActivity();
       if (hasPlayerByName(context, "com.mxtech.videoplayer.ad")) {
@@ -149,7 +153,8 @@ public class SettingsFragment extends LeanbackSettingsFragment implements Dialog
 
       final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
       mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-      final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities(mainIntent, 0);
+      final List<ResolveInfo> pkgAppsList =
+          context.getPackageManager().queryIntentActivities(mainIntent, 0);
 
       for (ResolveInfo resolveInfo : pkgAppsList) {
         String packageName = resolveInfo.activityInfo.packageName;

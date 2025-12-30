@@ -3,6 +3,8 @@ package us.nineworlds.serenity.ui.video.player
 import android.view.View
 import androidx.media3.common.Player
 import androidx.media3.ui.PlayerControlView
+import java.util.LinkedList
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import moxy.InjectViewState
 import moxy.MvpPresenter
@@ -24,170 +26,169 @@ import us.nineworlds.serenity.events.video.OnScreenDisplayEvent
 import us.nineworlds.serenity.injection.ForVideoQueue
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerPresenter
 import us.nineworlds.serenity.ui.video.player.ExoplayerContract.ExoplayerView
-import java.util.LinkedList
-import javax.inject.Inject
 
 @OpenForTesting
 @InjectViewState
 @StateStrategyType(SkipStrategy::class)
-class ExoplayerPresenter : MvpPresenter<ExoplayerView>(), ExoplayerPresenter,
-  PlayerControlView.VisibilityListener, Player.Listener {
+class ExoplayerPresenter :
+    MvpPresenter<ExoplayerView>(),
+    ExoplayerPresenter,
+    PlayerControlView.VisibilityListener,
+    Player.Listener {
 
-  @Inject
-  lateinit var logger: Logger
+    @Inject
+    lateinit var logger: Logger
 
-  @field:[Inject ForVideoQueue]
-  internal lateinit var videoQueue: LinkedList<VideoContentInfo>
+    @field:[Inject ForVideoQueue]
+    internal lateinit var videoQueue: LinkedList<VideoContentInfo>
 
-  @Inject
-  internal lateinit var serenityClient: SerenityClient
+    @Inject
+    internal lateinit var serenityClient: SerenityClient
 
-  @Inject
-  internal lateinit var eventBus: EventBus
+    @Inject
+    internal lateinit var eventBus: EventBus
 
-  @Inject
-  internal lateinit var androidHelper: AndroidHelper
+    @Inject
+    internal lateinit var androidHelper: AndroidHelper
 
-  @Inject
-  internal lateinit var playbackRepository: PlaybackRepository
+    @Inject
+    internal lateinit var playbackRepository: PlaybackRepository
 
-  internal lateinit var video: VideoContentInfo
+    internal lateinit var video: VideoContentInfo
 
-  private var onScreenControllerShowing: Boolean = false
-  private var playSessionId: String? = null
+    private var onScreenControllerShowing: Boolean = false
+    private var playSessionId: String? = null
 
-  override fun attachView(view: ExoplayerView?) {
-    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
-    super.attachView(view)
-    eventBus.register(this)
-  }
+    override fun attachView(view: ExoplayerView?) {
+        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
+        super.attachView(view)
+        eventBus.register(this)
+    }
 
-  override fun detachView(view: ExoplayerView?) {
-    super.detachView(view)
-    eventBus.unregister(this)
-  }
+    override fun detachView(view: ExoplayerView?) {
+        super.detachView(view)
+        eventBus.unregister(this)
+    }
 
-  override fun updateWatchedStatus() {
-    presenterScope.launch {
-        video.id()?.let {
-            playbackRepository.watched(it)
+    override fun updateWatchedStatus() {
+        presenterScope.launch {
+            video.id()?.let {
+                playbackRepository.watched(it)
+            }
         }
     }
-  }
 
-  override fun onPositionDiscontinuity(oldPosition: Player.PositionInfo, newPosition: Player.PositionInfo, reason: Int) = Unit
+    override fun onPositionDiscontinuity(oldPosition: Player.PositionInfo, newPosition: Player.PositionInfo, reason: Int) = Unit
 
-  override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) = Unit
+    override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) = Unit
 
-  override fun onPlaybackStateChanged(playbackState: Int) {
-    if (Player.STATE_ENDED == playbackState) {
-      stopPlaying(video.resumeOffset.toLong())
-      viewState.playbackEnded()
+    override fun onPlaybackStateChanged(playbackState: Int) {
+        if (Player.STATE_ENDED == playbackState) {
+            stopPlaying(video.resumeOffset.toLong())
+            viewState.playbackEnded()
 
-      return
-    }
-  }
-
-  override fun onIsLoadingChanged(isLoading: Boolean) = Unit
-
-  override fun onRepeatModeChanged(repeatMode: Int) = Unit
-
-  override fun videoId(): String = video.id().orEmpty()
-
-  override fun stopPlaying(currentPosition: Long) {
-    presenterScope.launch {
-      playbackRepository.stopPlaying(video.id().orEmpty(), currentPosition)
-    }
-    playSessionId = null
-  }
-
-  override fun startPlaying() {
-    presenterScope.launch {
-
-      if (playSessionId == null) {
-          playSessionId = playbackRepository.startPlaying(video.id().orEmpty())
-      }
-    }
-  }
-
-  override fun onVisibilityChange(visibility: Int) {
-    if (visibility == View.GONE) {
-      logger.debug("Controller View was hidden")
-      onScreenControllerShowing = false
+            return
+        }
     }
 
-    if (visibility == View.VISIBLE) {
-      logger.debug("Controller View was shown")
-      onScreenControllerShowing = true
-    }
-  }
+    override fun onIsLoadingChanged(isLoading: Boolean) = Unit
 
-  override fun isHudShowing(): Boolean = onScreenControllerShowing
+    override fun onRepeatModeChanged(repeatMode: Int) = Unit
 
-  @Subscribe(threadMode = MAIN)
-  fun onOnScreenDisplayEvent(event: OnScreenDisplayEvent) {
-    if (event.isShowing) {
-      viewState.hideController()
-    } else {
-      viewState.showController()
-    }
-  }
+    override fun videoId(): String = video.id().orEmpty()
 
-  override fun updateServerPlaybackPosition(currentPostion: Long) {
-    presenterScope.launch {
-      video.resumeOffset = currentPostion.toInt()
-      playbackRepository.updatePlaybackPosition(video, playSessionId)
-    }
-  }
-
-  override fun playBackFromVideoQueue(autoResume: Boolean) {
-    if (videoQueue.isEmpty()) {
-      return
+    override fun stopPlaying(currentPosition: Long) {
+        presenterScope.launch {
+            playbackRepository.stopPlaying(video.id().orEmpty(), currentPosition)
+        }
+        playSessionId = null
     }
 
-    this.video = videoQueue.poll()
-
-    if (!autoResume && video.isPartiallyWatched) {
-      viewState.showResumeDialog(video)
-      return
+    override fun startPlaying() {
+        presenterScope.launch {
+            if (playSessionId == null) {
+                playSessionId = playbackRepository.startPlaying(video.id().orEmpty())
+            }
+        }
     }
 
-    playVideo()
-  }
+    override fun onVisibilityChange(visibility: Int) {
+        if (visibility == View.GONE) {
+            logger.debug("Controller View was hidden")
+            onScreenControllerShowing = false
+        }
 
-  override fun playVideo() {
-    val videoUrl: String = transcoderUrl()
-    startPlaying()
-    viewState.initializePlayer(videoUrl, video.resumeOffset)
-  }
-
-  internal fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {
-    val audioCodec = video.audioCodec.orEmpty()
-    val hasStandardAudioSupport = selectCodec(MediaCodecInfoUtil.findCorrectAudioMimeType("audio/$audioCodec"))
-    val hasPassthroughAudioSupport = androidHelper.isAudioPassthroughSupported(audioCodec)
-    val isAudioCodecSupported = hasStandardAudioSupport || hasPassthroughAudioSupport
-
-    val isVideoSupported = selectCodec(MediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
-
-    logger.debug("Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
-    logger.debug("Video Codec:  ${video.videoCodec} support returned $isVideoSupported")
-
-    return isVideoSupported && isAudioCodecSupported
-  }
-
-  private fun transcoderUrl(): String {
-    logger.debug("ExoPlayerPresenter: Container: ${video.container} Audio: ${video.audioCodec}")
-    if (isDirectPlaySupportedForContainer(video)) {
-      logger.debug("ExoPlayerPresenter: Direct playing ${video.directPlayUrl}")
-      return video.directPlayUrl.orEmpty()
+        if (visibility == View.VISIBLE) {
+            logger.debug("Controller View was shown")
+            onScreenControllerShowing = true
+        }
     }
 
-    val transcodingUrl = serenityClient.createTranscodeUrl(video.id().orEmpty(), video.resumeOffset)
+    override fun isHudShowing(): Boolean = onScreenControllerShowing
 
-    logger.debug("ExoPlayerPresenter: Transcoding Url: $transcodingUrl")
-    return transcodingUrl
-  }
+    @Subscribe(threadMode = MAIN)
+    fun onOnScreenDisplayEvent(event: OnScreenDisplayEvent) {
+        if (event.isShowing) {
+            viewState.hideController()
+        } else {
+            viewState.showController()
+        }
+    }
 
-  private fun selectCodec(mimeType: String): Boolean =
-    MediaCodecInfoUtil.isCodecSupported(mimeType)
+    override fun updateServerPlaybackPosition(currentPostion: Long) {
+        presenterScope.launch {
+            video.resumeOffset = currentPostion.toInt()
+            playbackRepository.updatePlaybackPosition(video, playSessionId)
+        }
+    }
+
+    override fun playBackFromVideoQueue(autoResume: Boolean) {
+        if (videoQueue.isEmpty()) {
+            return
+        }
+
+        this.video = videoQueue.poll()
+
+        if (!autoResume && video.isPartiallyWatched) {
+            viewState.showResumeDialog(video)
+            return
+        }
+
+        playVideo()
+    }
+
+    override fun playVideo() {
+        val videoUrl: String = transcoderUrl()
+        startPlaying()
+        viewState.initializePlayer(videoUrl, video.resumeOffset)
+    }
+
+    internal fun isDirectPlaySupportedForContainer(video: VideoContentInfo): Boolean {
+        val audioCodec = video.audioCodec.orEmpty()
+        val hasStandardAudioSupport = selectCodec(MediaCodecInfoUtil.findCorrectAudioMimeType("audio/$audioCodec"))
+        val hasPassthroughAudioSupport = androidHelper.isAudioPassthroughSupported(audioCodec)
+        val isAudioCodecSupported = hasStandardAudioSupport || hasPassthroughAudioSupport
+
+        val isVideoSupported = selectCodec(MediaCodecInfoUtil.findCorrectVideoMimeType("video/${video.videoCodec}"))
+
+        logger.debug("Audio Codec:  ${video.audioCodec} support returned $isAudioCodecSupported")
+        logger.debug("Video Codec:  ${video.videoCodec} support returned $isVideoSupported")
+
+        return isVideoSupported && isAudioCodecSupported
+    }
+
+    private fun transcoderUrl(): String {
+        logger.debug("ExoPlayerPresenter: Container: ${video.container} Audio: ${video.audioCodec}")
+        if (isDirectPlaySupportedForContainer(video)) {
+            logger.debug("ExoPlayerPresenter: Direct playing ${video.directPlayUrl}")
+            return video.directPlayUrl.orEmpty()
+        }
+
+        val transcodingUrl = serenityClient.createTranscodeUrl(video.id().orEmpty(), video.resumeOffset)
+
+        logger.debug("ExoPlayerPresenter: Transcoding Url: $transcodingUrl")
+        return transcodingUrl
+    }
+
+    private fun selectCodec(mimeType: String): Boolean = MediaCodecInfoUtil.isCodecSupported(mimeType)
 }

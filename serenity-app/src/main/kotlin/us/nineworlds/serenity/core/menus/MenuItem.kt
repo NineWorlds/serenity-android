@@ -10,15 +10,13 @@ import java.io.Serializable
  * It is primarily a data object.
  */
 open class MenuItem : Serializable {
-  var type: String? = null
-  var title: String = ""
-  var section: String? = null
+    var type: String? = null
+    var title: String = ""
+    var section: String? = null
 
-  companion object {
-    private const val serialVersionUID = -5394624840598604518L
-  }
+    companion object {
+        private const val serialVersionUID = -5394624840598604518L
+    }
 
-  override fun toString(): String {
-    return title
-  }
+    override fun toString(): String = title
 }

@@ -17,22 +17,21 @@ import us.nineworlds.serenity.test.util.FragmentTestUtil
 @LooperMode(LooperMode.Mode.LEGACY)
 class ManualServerSettingsFragmentTest {
 
-  private lateinit var fragment: ManualServerSettingsFragment
+    private lateinit var fragment: ManualServerSettingsFragment
 
-  @Before
-  fun setUp() {
-    Robolectric.getForegroundThreadScheduler().pause()
+    @Before
+    fun setUp() {
+        Robolectric.getForegroundThreadScheduler().pause()
 
-    fragment = spyk(ManualServerSettingsFragment())
-    FragmentTestUtil.startFragment(fragment)
-  }
+        fragment = spyk(ManualServerSettingsFragment())
+        FragmentTestUtil.startFragment(fragment)
+    }
 
-  @Test
-  fun startsInitialScreen() {
-    every { fragment.startPreferenceFragment(any()) } just Runs
-    fragment.onPreferenceStartInitialScreen()
+    @Test
+    fun startsInitialScreen() {
+        every { fragment.startPreferenceFragment(any()) } just Runs
+        fragment.onPreferenceStartInitialScreen()
 
-    verify { fragment.startPreferenceFragment(any<ManualServerSettingsFragment.Companion.ServerSettingsPreferenceFragment>()) }
-  }
-
+        verify { fragment.startPreferenceFragment(any<ManualServerSettingsFragment.Companion.ServerSettingsPreferenceFragment>()) }
+    }
 }

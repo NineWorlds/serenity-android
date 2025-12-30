@@ -25,60 +25,60 @@ import us.nineworlds.serenity.R
 @LooperMode(LooperMode.Mode.LEGACY)
 class BackgroundBitmapDisplayerTest {
 
-  private lateinit var backgroundView: View
+    private lateinit var backgroundView: View
 
-  private val mockBitmap: Bitmap = mockk(relaxed = true)
+    private val mockBitmap: Bitmap = mockk(relaxed = true)
 
-  private lateinit var backgroundBitmapDisplayer: BackgroundBitmapDisplayer
+    private lateinit var backgroundBitmapDisplayer: BackgroundBitmapDisplayer
 
-  @Before
-  fun setUp() {
-    Robolectric.getBackgroundThreadScheduler().pause()
-    Robolectric.getForegroundThreadScheduler().pause()
-    backgroundView = View(ApplicationProvider.getApplicationContext())
-  }
-
-  @After
-  fun tearDown() {
-    clearAllMocks()
-  }
-
-  @Test
-  fun `background view does not have animation when fade in not set`() {
-    backgroundBitmapDisplayer =
-      BackgroundBitmapDisplayer(mockBitmap, R.drawable.movies, backgroundView)
-    backgroundBitmapDisplayer.run()
-
-    val animation = backgroundView.animation
-    assertThat(animation).isNull()
-  }
-
-  @Test
-  fun `background view has transition drawable set when fade in is enabled`() {
-    val prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext())
-    prefs.edit {
-      putBoolean("animation_background_fadein", true)
+    @Before
+    fun setUp() {
+        Robolectric.getBackgroundThreadScheduler().pause()
+        Robolectric.getForegroundThreadScheduler().pause()
+        backgroundView = View(ApplicationProvider.getApplicationContext())
     }
 
-    backgroundBitmapDisplayer =
-      BackgroundBitmapDisplayer(mockBitmap, R.drawable.movies, backgroundView)
-    backgroundBitmapDisplayer.run()
-
-    assertThat(backgroundView.background).isInstanceOf(TransitionDrawable::class)
-  }
-
-  @Test
-  fun `background view has transition drawable with crossfade`() {
-    val prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext())
-    prefs.edit {
-      putBoolean("animation_background_fadein", true)
+    @After
+    fun tearDown() {
+        clearAllMocks()
     }
 
-    backgroundBitmapDisplayer =
-      BackgroundBitmapDisplayer(mockBitmap, R.drawable.movies, backgroundView)
-    backgroundBitmapDisplayer.run()
+    @Test
+    fun `background view does not have animation when fade in not set`() {
+        backgroundBitmapDisplayer =
+            BackgroundBitmapDisplayer(mockBitmap, R.drawable.movies, backgroundView)
+        backgroundBitmapDisplayer.run()
 
-    val transitionDrawable = backgroundView.background as TransitionDrawable
-    assertThat(transitionDrawable.isCrossFadeEnabled).isTrue()
-  }
+        val animation = backgroundView.animation
+        assertThat(animation).isNull()
+    }
+
+    @Test
+    fun `background view has transition drawable set when fade in is enabled`() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext())
+        prefs.edit {
+            putBoolean("animation_background_fadein", true)
+        }
+
+        backgroundBitmapDisplayer =
+            BackgroundBitmapDisplayer(mockBitmap, R.drawable.movies, backgroundView)
+        backgroundBitmapDisplayer.run()
+
+        assertThat(backgroundView.background).isInstanceOf(TransitionDrawable::class)
+    }
+
+    @Test
+    fun `background view has transition drawable with crossfade`() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext())
+        prefs.edit {
+            putBoolean("animation_background_fadein", true)
+        }
+
+        backgroundBitmapDisplayer =
+            BackgroundBitmapDisplayer(mockBitmap, R.drawable.movies, backgroundView)
+        backgroundBitmapDisplayer.run()
+
+        val transitionDrawable = backgroundView.background as TransitionDrawable
+        assertThat(transitionDrawable.isCrossFadeEnabled).isTrue()
+    }
 }

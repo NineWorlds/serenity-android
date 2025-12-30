@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
+import java.util.UUID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -17,7 +18,6 @@ import org.junit.Before
 import org.junit.Test
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.model.VideoContentInfo
-import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PlaybackRepositoryTest {

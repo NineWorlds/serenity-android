@@ -18,51 +18,51 @@ import us.nineworlds.serenity.test.InjectingTest
 
 class AbstractMediaContainerTest : InjectingTest() {
 
-  private val mockMediaContainer: IMediaContainer = mockk()
-  private val mockSerenityClient: SerenityClient = mockk(relaxed = true)
+    private val mockMediaContainer: IMediaContainer = mockk()
+    private val mockSerenityClient: SerenityClient = mockk(relaxed = true)
 
-  private lateinit var mediaContainer: TestMediaContainer
+    private lateinit var mediaContainer: TestMediaContainer
 
-  override fun installTestModules() {
-    scope.installTestModules(TestModule())
-  }
-
-  @Before
-  override fun setUp() {
-    super.setUp()
-    mediaContainer = TestMediaContainer(mockMediaContainer)
-  }
-
-  @After
-  fun tearDown() {
-    Toothpick.reset()
-    clearAllMocks()
-  }
-
-  @Test
-  fun `videoList is initialized as null`() {
-    assertThat(mediaContainer.videoList).isNull()
-  }
-
-  @Test
-  fun `media container is correctly assigned from constructor`() {
-    assertThat(mediaContainer.getMediaContainer()).isEqualTo(mockMediaContainer)
-  }
-
-  @Test
-  fun `factory is injected successfully`() {
-    assertThat(mediaContainer.factory).isNotNull()
-    assertThat(mediaContainer.factory).isEqualTo(mockSerenityClient)
-  }
-
-  private class TestMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc) {
-    fun getMediaContainer(): IMediaContainer = mc
-  }
-
-  inner class TestModule : Module() {
-    init {
-      bind(SerenityClient::class.java).toInstance(mockSerenityClient)
-      bind(Resources::class.java).toInstance(mockk())
+    override fun installTestModules() {
+        scope.installTestModules(TestModule())
     }
-  }
+
+    @Before
+    override fun setUp() {
+        super.setUp()
+        mediaContainer = TestMediaContainer(mockMediaContainer)
+    }
+
+    @After
+    fun tearDown() {
+        Toothpick.reset()
+        clearAllMocks()
+    }
+
+    @Test
+    fun `videoList is initialized as null`() {
+        assertThat(mediaContainer.videoList).isNull()
+    }
+
+    @Test
+    fun `media container is correctly assigned from constructor`() {
+        assertThat(mediaContainer.getMediaContainer()).isEqualTo(mockMediaContainer)
+    }
+
+    @Test
+    fun `factory is injected successfully`() {
+        assertThat(mediaContainer.factory).isNotNull()
+        assertThat(mediaContainer.factory).isEqualTo(mockSerenityClient)
+    }
+
+    private class TestMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc) {
+        fun getMediaContainer(): IMediaContainer = mc
+    }
+
+    inner class TestModule : Module() {
+        init {
+            bind(SerenityClient::class.java).toInstance(mockSerenityClient)
+            bind(Resources::class.java).toInstance(mockk())
+        }
+    }
 }

@@ -2,16 +2,16 @@ package us.nineworlds.serenity.ui.video.player
 
 import android.net.Uri
 import android.view.KeyEvent
-import assertk.assertThat
-import assertk.assertions.isInstanceOf
-import assertk.assertions.isNotNull
-import assertk.assertions.isTrue
 import androidx.media3.common.Player
 import androidx.media3.datasource.DataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.TrackSelectionArray
 import androidx.media3.exoplayer.trackselection.TrackSelector
+import assertk.assertThat
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isTrue
 import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -19,6 +19,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
+import javax.inject.Inject
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -37,181 +38,179 @@ import us.nineworlds.serenity.core.util.TimeUtil
 import us.nineworlds.serenity.injection.AppInjectionConstants
 import us.nineworlds.serenity.test.InjectingTest
 import us.nineworlds.serenity.test.ShadowSubtitleView
-import javax.inject.Inject
 
 @RunWith(RobolectricTestRunner::class)
 @Config(shadows = [ShadowSubtitleView::class])
 open class ExoplayerVideoActivityTest : InjectingTest() {
 
-  companion object {
-    private val mockExoPlayerPresenter = mockk<ExoplayerPresenter>(relaxed = true)
-    private val mockDataSourceFactory = mockk<DataSource.Factory>(relaxed = true)
-    private val mockTrackSelector = mockk<TrackSelector>(relaxed = true)
-    private val mockLogger = mockk<Logger>(relaxed = true)
-    private val mockPlayer = mockk<ExoPlayer>(relaxed = true)
-    private val mockTimeUtil = mockk<TimeUtil>(relaxed = true)
-  }
-
-  @Inject
-  lateinit var mockAndroidHelper: AndroidHelper
-
-  lateinit var activity: ExoplayerVideoActivity
-
-  override fun openScope(): Scope {
-    val scope = Toothpick.openScopes(InjectionConstants.APPLICATION_SCOPE, AppInjectionConstants.EXOPLAYER_SCOPE)
-    return scope
-  }
-
-  @Before
-  override fun setUp() {
-    clearAllMocks()
-    super.setUp()
-    activity = Robolectric.buildActivity(ExoplayerVideoActivity::class.java).create().get()
-    activity.player = mockPlayer
-  }
-
-  @Test
-  fun bindsExoPlayerView() {
-    assertThat(activity.playerView).isNotNull()
-  }
-
-  @Test
-  fun onStartDoesNotCallsPresenterPlayBackFromVideoQueueWhenOnAPI19OrHigher() {
-    activity.onStart()
-
-    verify(exactly = 0) { mockExoPlayerPresenter.playBackFromVideoQueue(any())  }
-  }
-
-  @Test
-  fun onPauseCallsReleasePlayser() {
-    activity.onPause()
-
-    verify { mockPlayer.stop() }
-  }
-
-  @Test
-  fun onPauseDoesNotCallsReleasePlayser() {
-    every { mockAndroidHelper.buildNumber() } returns 24
-
-    activity.onPause()
-
-    verify(exactly = 0) { mockPlayer.stop() }
-  }
-
-  @Test
-  fun onStopDCallsReleasePlayser() {
-    every { mockAndroidHelper.buildNumber() } returns 24
-    val spy = spyk(activity)
-    every { spy.releasePlayer() } just Runs
-    spy.onStop()
-
-    verify { spy.releasePlayer() }
-  }
-
-  @Test
-  fun onStopDoesNotCallsReleasePlayser() {
-    val spy = spyk(activity)
-    every { spy.releasePlayer() } just Runs
-
-    spy.onStop()
-
-    verify(exactly = 0 ) { spy.releasePlayer() }
-  }
-
-  @Test
-  fun buildMediaSourceReturnsNonNullSource() {
-    assertThat(activity.buildMediaSource(Uri.parse("http://www.example.com/start.mkv"))).isNotNull()
-  }
-
-  @Test
-  @Ignore
-  fun initializePlayerSetABunchOfRequiredItems() {
-    val spy = spyk(activity)
-    every { spy.createSimpleExoplayer() } returns mockPlayer
-    every { mockPlayer.currentTrackSelections } returns TrackSelectionArray()
-
-    spy.initializePlayer("http://www.example.com/start.mkv", 0)
-
-    assertThat(spy.player).isInstanceOf(ExoPlayer::class.java)
-
-    verify { spy.createSimpleExoplayer() }
-    verify { mockPlayer.addListener(any()) }
-    verify { mockPlayer.prepare(any())}
-  }
-
-  @Test
-  fun releasePlayerReleasesWhenPlayerIsNotNull() {
-    activity.releasePlayer()
-
-    verify { mockPlayer.release() }
-  }
-
-  @Test
-  fun createSimpleExoplayer() {
-    assertThat(activity.createSimpleExoplayer()).isNotNull()
-  }
-
-  @Test
-  fun createSimpleExoplayerWithDefaultTrackSelector() {
-    val mockDefaultTrackSelector = mockk<DefaultTrackSelector>(relaxed = true)
-    activity.trackSelector = mockDefaultTrackSelector
-
-    activity.createSimpleExoplayer()
-
-    verify { mockDefaultTrackSelector.parameters = any() }
-  }
-
-
-  @Test
-  fun onBackPressedStopsAndReleasesVideoPlayer() {
-    every { mockPlayer.playbackState } returns Player.STATE_READY
-
-    activity.onBackPressed()
-
-    verify { mockPlayer.playWhenReady = false }
-    verify { mockExoPlayerPresenter.stopPlaying(any()) }
-    verify { mockPlayer.clearVideoSurface() }
-    verify { mockPlayer.release() }
-  }
-
-  @Test
-  fun onBackPressedStopsAndReleasesVideoPlayerWhenBuffering() {
-    every { mockPlayer.playbackState } returns Player.STATE_BUFFERING
-
-    activity.onBackPressed()
-
-    verify { mockPlayer.playWhenReady = false }
-    verify { mockExoPlayerPresenter.stopPlaying(any()) }
-    verify { mockPlayer.clearVideoSurface() }
-    verify { mockPlayer.release() }
-  }
-
-  @Test
-  fun onKeyCodeDownHandlesHomeEvent() {
-    every { mockPlayer.playbackState } returns Player.STATE_BUFFERING
-
-    val result = activity.onKeyDown(KeyEvent.KEYCODE_HOME, null)
-
-    assertThat(result).isTrue()
-
-    verify { mockPlayer.playWhenReady = false }
-    verify { mockExoPlayerPresenter.stopPlaying(any()) }
-    verify { mockPlayer.clearVideoSurface() }
-    verify { mockPlayer.release() }
-  }
-
-  override fun installTestModules() {
-    scope.installTestModules(MockkTestingModule(), TestModule())
-  }
-
-  inner class TestModule : Module() {
-
-    init {
-      bind(ExoplayerPresenter::class.java).toInstance(mockExoPlayerPresenter)
-      bind(DataSource.Factory::class.java).toInstance(mockDataSourceFactory)
-      bind(TrackSelector::class.java).toInstance(mockTrackSelector)
-      bind(Logger::class.java).toInstance(mockLogger)
-      bind(TimeUtil::class.java).toInstance(mockTimeUtil)
+    companion object {
+        private val mockExoPlayerPresenter = mockk<ExoplayerPresenter>(relaxed = true)
+        private val mockDataSourceFactory = mockk<DataSource.Factory>(relaxed = true)
+        private val mockTrackSelector = mockk<TrackSelector>(relaxed = true)
+        private val mockLogger = mockk<Logger>(relaxed = true)
+        private val mockPlayer = mockk<ExoPlayer>(relaxed = true)
+        private val mockTimeUtil = mockk<TimeUtil>(relaxed = true)
     }
-  }
+
+    @Inject
+    lateinit var mockAndroidHelper: AndroidHelper
+
+    lateinit var activity: ExoplayerVideoActivity
+
+    override fun openScope(): Scope {
+        val scope = Toothpick.openScopes(InjectionConstants.APPLICATION_SCOPE, AppInjectionConstants.EXOPLAYER_SCOPE)
+        return scope
+    }
+
+    @Before
+    override fun setUp() {
+        clearAllMocks()
+        super.setUp()
+        activity = Robolectric.buildActivity(ExoplayerVideoActivity::class.java).create().get()
+        activity.player = mockPlayer
+    }
+
+    @Test
+    fun bindsExoPlayerView() {
+        assertThat(activity.playerView).isNotNull()
+    }
+
+    @Test
+    fun onStartDoesNotCallsPresenterPlayBackFromVideoQueueWhenOnAPI19OrHigher() {
+        activity.onStart()
+
+        verify(exactly = 0) { mockExoPlayerPresenter.playBackFromVideoQueue(any()) }
+    }
+
+    @Test
+    fun onPauseCallsReleasePlayser() {
+        activity.onPause()
+
+        verify { mockPlayer.stop() }
+    }
+
+    @Test
+    fun onPauseDoesNotCallsReleasePlayser() {
+        every { mockAndroidHelper.buildNumber() } returns 24
+
+        activity.onPause()
+
+        verify(exactly = 0) { mockPlayer.stop() }
+    }
+
+    @Test
+    fun onStopDCallsReleasePlayser() {
+        every { mockAndroidHelper.buildNumber() } returns 24
+        val spy = spyk(activity)
+        every { spy.releasePlayer() } just Runs
+        spy.onStop()
+
+        verify { spy.releasePlayer() }
+    }
+
+    @Test
+    fun onStopDoesNotCallsReleasePlayser() {
+        val spy = spyk(activity)
+        every { spy.releasePlayer() } just Runs
+
+        spy.onStop()
+
+        verify(exactly = 0) { spy.releasePlayer() }
+    }
+
+    @Test
+    fun buildMediaSourceReturnsNonNullSource() {
+        assertThat(activity.buildMediaSource(Uri.parse("http://www.example.com/start.mkv"))).isNotNull()
+    }
+
+    @Test
+    @Ignore
+    fun initializePlayerSetABunchOfRequiredItems() {
+        val spy = spyk(activity)
+        every { spy.createSimpleExoplayer() } returns mockPlayer
+        every { mockPlayer.currentTrackSelections } returns TrackSelectionArray()
+
+        spy.initializePlayer("http://www.example.com/start.mkv", 0)
+
+        assertThat(spy.player).isInstanceOf(ExoPlayer::class.java)
+
+        verify { spy.createSimpleExoplayer() }
+        verify { mockPlayer.addListener(any()) }
+        verify { mockPlayer.prepare(any()) }
+    }
+
+    @Test
+    fun releasePlayerReleasesWhenPlayerIsNotNull() {
+        activity.releasePlayer()
+
+        verify { mockPlayer.release() }
+    }
+
+    @Test
+    fun createSimpleExoplayer() {
+        assertThat(activity.createSimpleExoplayer()).isNotNull()
+    }
+
+    @Test
+    fun createSimpleExoplayerWithDefaultTrackSelector() {
+        val mockDefaultTrackSelector = mockk<DefaultTrackSelector>(relaxed = true)
+        activity.trackSelector = mockDefaultTrackSelector
+
+        activity.createSimpleExoplayer()
+
+        verify { mockDefaultTrackSelector.parameters = any() }
+    }
+
+    @Test
+    fun onBackPressedStopsAndReleasesVideoPlayer() {
+        every { mockPlayer.playbackState } returns Player.STATE_READY
+
+        activity.onBackPressed()
+
+        verify { mockPlayer.playWhenReady = false }
+        verify { mockExoPlayerPresenter.stopPlaying(any()) }
+        verify { mockPlayer.clearVideoSurface() }
+        verify { mockPlayer.release() }
+    }
+
+    @Test
+    fun onBackPressedStopsAndReleasesVideoPlayerWhenBuffering() {
+        every { mockPlayer.playbackState } returns Player.STATE_BUFFERING
+
+        activity.onBackPressed()
+
+        verify { mockPlayer.playWhenReady = false }
+        verify { mockExoPlayerPresenter.stopPlaying(any()) }
+        verify { mockPlayer.clearVideoSurface() }
+        verify { mockPlayer.release() }
+    }
+
+    @Test
+    fun onKeyCodeDownHandlesHomeEvent() {
+        every { mockPlayer.playbackState } returns Player.STATE_BUFFERING
+
+        val result = activity.onKeyDown(KeyEvent.KEYCODE_HOME, null)
+
+        assertThat(result).isTrue()
+
+        verify { mockPlayer.playWhenReady = false }
+        verify { mockExoPlayerPresenter.stopPlaying(any()) }
+        verify { mockPlayer.clearVideoSurface() }
+        verify { mockPlayer.release() }
+    }
+
+    override fun installTestModules() {
+        scope.installTestModules(MockkTestingModule(), TestModule())
+    }
+
+    inner class TestModule : Module() {
+
+        init {
+            bind(ExoplayerPresenter::class.java).toInstance(mockExoPlayerPresenter)
+            bind(DataSource.Factory::class.java).toInstance(mockDataSourceFactory)
+            bind(TrackSelector::class.java).toInstance(mockTrackSelector)
+            bind(Logger::class.java).toInstance(mockLogger)
+            bind(TimeUtil::class.java).toInstance(mockTimeUtil)
+        }
+    }
 }

@@ -43,13 +43,14 @@ class VideoContentInfoPresenter : Presenter() {
             cardView.tag = videoContentInfo
 
             videoContentInfo.getImageURL()?.let {
-                when(videoContentInfo.getType()) {
+                when (videoContentInfo.getType()) {
                     Types.EPISODE -> {
                         val imageWidth = view.context.resources.getDimensionPixelSize(R.dimen.episode_image_width)
                         val imageHeight = view.context.resources.getDimensionPixelSize(R.dimen.episode_image_height)
                         cardView.episodeInfo(videoContentInfo)
                         cardView.createImage(videoContentInfo, imageWidth, imageHeight)
                     }
+
                     else -> {
                         val imageWidth = view.context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_width)
                         val imageHeight = view.context.resources.getDimensionPixelSize(R.dimen.movie_poster_image_height)
@@ -60,5 +61,4 @@ class VideoContentInfoPresenter : Presenter() {
             cardView.toggleWatchedIndicator(videoContentInfo)
         }
     }
-
 }

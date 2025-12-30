@@ -12,15 +12,15 @@ class PlaybackRepository(private val serenityClient: SerenityClient) {
 
     suspend fun startPlaying(videoId: String): String? = withContext(Dispatchers.IO) {
         val playSessionId = serenityClient.startPlaying(videoId)
-        Timber.d("Playback Session Id: ${playSessionId}")
+        Timber.d("Playback Session Id: $playSessionId")
         playSessionId
     }
 
-    suspend fun stopPlaying(videoId: String, offset: Long) = withContext(Dispatchers.IO){
+    suspend fun stopPlaying(videoId: String, offset: Long) = withContext(Dispatchers.IO) {
         serenityClient.stopPlaying(videoId, offset)
     }
 
-    suspend fun updatePlaybackPosition(video: VideoContentInfo, playSessionId: String? = null) = withContext(Dispatchers.IO){
+    suspend fun updatePlaybackPosition(video: VideoContentInfo, playSessionId: String? = null) = withContext(Dispatchers.IO) {
         val videoId: String = video.id().orEmpty()
         if (video.isWatched) {
             serenityClient.watched(videoId)

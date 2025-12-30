@@ -21,63 +21,63 @@ import us.nineworlds.serenity.ui.preferences.LeanbackSettingsActivity
 @RunWith(RobolectricTestRunner::class)
 class GalleryOnItemClickListenerTest {
 
-  private val mockAdapter: MainMenuTextViewAdapter = mockk(relaxed = true)
+    private val mockAdapter: MainMenuTextViewAdapter = mockk(relaxed = true)
 
-  private lateinit var context: MainMenuTestActivity
-  private lateinit var onItemClickListener: GalleryOnItemClickListener
+    private lateinit var context: MainMenuTestActivity
+    private lateinit var onItemClickListener: GalleryOnItemClickListener
 
-  @Before
-  fun setUp() {
-    context = Robolectric.setupActivity(MainMenuTestActivity::class.java)
-    onItemClickListener = GalleryOnItemClickListener(mockAdapter)
-  }
-
-  @After
-  fun tearDown() {
-    context.finish()
-    clearAllMocks()
-  }
-
-  @Test
-  fun onClickMenuSearchLaunchesExpectedActivity() {
-    val view = View(context)
-    val searchMenuItem = MenuItem().apply {
-      type = "search"
+    @Before
+    fun setUp() {
+        context = Robolectric.setupActivity(MainMenuTestActivity::class.java)
+        onItemClickListener = GalleryOnItemClickListener(mockAdapter)
     }
-    every { mockAdapter.getItemAtPosition(any()) } returns searchMenuItem
 
-    onItemClickListener.onItemClick(view, 0)
-
-    assertThat(context.onSearchActivtyCalled).isTrue()
-  }
-
-  @Test
-  fun onClickOpensOptionsMenu() {
-    val view = View(context)
-    val optionsMenuItem = MenuItem().apply {
-      type = "options"
+    @After
+    fun tearDown() {
+        context.finish()
+        clearAllMocks()
     }
-    every { mockAdapter.getItemAtPosition(any()) } returns optionsMenuItem
 
-    onItemClickListener.onItemClick(view, 0)
+    @Test
+    fun onClickMenuSearchLaunchesExpectedActivity() {
+        val view = View(context)
+        val searchMenuItem = MenuItem().apply {
+            type = "search"
+        }
+        every { mockAdapter.getItemAtPosition(any()) } returns searchMenuItem
 
-    assertThat(context.openOptionsMenu).isTrue()
-  }
+        onItemClickListener.onItemClick(view, 0)
 
-  @Test
-  fun onClickUnknownRequestLaunchesPreferences() {
-    val view = View(context)
-    val unknownMenuItem = MenuItem().apply {
-      type = "unknown"
+        assertThat(context.onSearchActivtyCalled).isTrue()
     }
-    every { mockAdapter.getItemAtPosition(any()) } returns unknownMenuItem
 
-    onItemClickListener.onItemClick(view, 0)
+    @Test
+    fun onClickOpensOptionsMenu() {
+        val view = View(context)
+        val optionsMenuItem = MenuItem().apply {
+            type = "options"
+        }
+        every { mockAdapter.getItemAtPosition(any()) } returns optionsMenuItem
 
-    val shadowActivity = Shadows.shadowOf(context)
-    val nextStartedActivity = shadowActivity.nextStartedActivity
+        onItemClickListener.onItemClick(view, 0)
 
-    val expectedIntent = Intent(context, LeanbackSettingsActivity::class.java)
-    assertThat(nextStartedActivity.component).isEqualTo(expectedIntent.component)
-  }
+        assertThat(context.openOptionsMenu).isTrue()
+    }
+
+    @Test
+    fun onClickUnknownRequestLaunchesPreferences() {
+        val view = View(context)
+        val unknownMenuItem = MenuItem().apply {
+            type = "unknown"
+        }
+        every { mockAdapter.getItemAtPosition(any()) } returns unknownMenuItem
+
+        onItemClickListener.onItemClick(view, 0)
+
+        val shadowActivity = Shadows.shadowOf(context)
+        val nextStartedActivity = shadowActivity.nextStartedActivity
+
+        val expectedIntent = Intent(context, LeanbackSettingsActivity::class.java)
+        assertThat(nextStartedActivity.component).isEqualTo(expectedIntent.component)
+    }
 }

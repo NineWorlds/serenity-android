@@ -8,18 +8,18 @@ import us.nineworlds.serenity.common.annotations.InjectionConstants
 
 abstract class BaseInjector {
 
-  init {
-    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
-  }
-
-  protected fun getActivity(contextWrapper: Context): Activity? {
-    var context = contextWrapper
-    while (context is ContextWrapper) {
-      if (context is Activity) {
-        return context
-      }
-      context = context.baseContext
+    init {
+        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
     }
-    return null
-  }
+
+    protected fun getActivity(contextWrapper: Context): Activity? {
+        var context = contextWrapper
+        while (context is ContextWrapper) {
+            if (context is Activity) {
+                return context
+            }
+            context = context.baseContext
+        }
+        return null
+    }
 }

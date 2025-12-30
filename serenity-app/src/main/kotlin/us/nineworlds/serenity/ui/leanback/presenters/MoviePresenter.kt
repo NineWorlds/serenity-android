@@ -19,5 +19,4 @@ class MoviePresenter : SeriesPresenter() {
 
         vh.bind(videoInfo)
     }
-
 }

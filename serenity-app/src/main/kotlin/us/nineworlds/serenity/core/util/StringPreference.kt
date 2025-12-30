@@ -4,25 +4,18 @@ import android.content.SharedPreferences
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 
-class StringPreference(
-  private val preferences: SharedPreferences,
-  private val key: String,
-  private val defaultValue: String?
-) {
+class StringPreference(private val preferences: SharedPreferences, private val key: String, private val defaultValue: String?) {
 
-  val isSet: Boolean
-    get() = preferences.contains(key)
+    val isSet: Boolean
+        get() = preferences.contains(key)
 
+    fun get(): String? = preferences.getString(key, defaultValue)
 
-  fun get(): String? {
-    return preferences.getString(key, defaultValue)
-  }
+    fun set(value: String) {
+        preferences.edit().putString(key, value).commit()
+    }
 
-  fun set(value: String) {
-    preferences.edit().putString(key, value).commit()
-  }
-
-  fun delete() {
-    preferences.edit().remove(key).apply()
-  }
+    fun delete() {
+        preferences.edit().remove(key).apply()
+    }
 }

@@ -1,26 +1,20 @@
 /**
- * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- * <p>
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- * <p>
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
- * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2012 David Carver Permission is hereby granted, free of
+ * charge, to any person obtaining a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * <p>The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ * BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 package us.nineworlds.serenity.injection.modules;
 
 import android.app.Application;
@@ -28,14 +22,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
-
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import org.greenrobot.eventbus.EventBus;
-
 import javax.inject.Inject;
 import javax.inject.Provider;
-
+import org.greenrobot.eventbus.EventBus;
 import toothpick.config.Module;
 import us.nineworlds.serenity.common.android.injection.ApplicationContext;
 import us.nineworlds.serenity.common.rest.SerenityClient;
@@ -56,16 +46,22 @@ public class AndroidModule extends Module {
     this.applicationContext = application;
     bind(EventBus.class).toInstance(EventBus.getDefault());
     bind(Context.class).withName(ApplicationContext.class).toInstance(application);
-    bind(StringPreference.class).withName(ServerClientPreference.class).toProvider(ServerClientPreferenceProvider.class);
-    bind(StringPreference.class).withName(ServerIPPreference.class).toProvider(ServerIPPreferenceProvider.class);
-    bind(StringPreference.class).withName(ServerPortPreference.class).toProvider(ServerPorPreferenceProvider.class);
+    bind(StringPreference.class)
+        .withName(ServerClientPreference.class)
+        .toProvider(ServerClientPreferenceProvider.class);
+    bind(StringPreference.class)
+        .withName(ServerIPPreference.class)
+        .toProvider(ServerIPPreferenceProvider.class);
+    bind(StringPreference.class)
+        .withName(ServerPortPreference.class)
+        .toProvider(ServerPorPreferenceProvider.class);
     bind(SerenityClient.class).toProvider(SerentityClientProvider.class);
-    bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(applicationContext));
+    bind(SharedPreferences.class)
+        .toInstance(PreferenceManager.getDefaultSharedPreferences(applicationContext));
     bind(AndroidHelper.class).toInstance(new AndroidHelper(applicationContext));
     bind(Resources.class).toInstance(application.getResources());
     bind(LocalBroadcastManager.class).toInstance(providesLocalBroadcastManager());
   }
-
 
   private LocalBroadcastManager providesLocalBroadcastManager() {
     return LocalBroadcastManager.getInstance(applicationContext);
@@ -73,16 +69,17 @@ public class AndroidModule extends Module {
 
   public static class EventBusProvider implements Provider<EventBus> {
 
-    @Override public EventBus get() {
+    @Override
+    public EventBus get() {
       return EventBus.getDefault();
     }
   }
 
-
   public static class ServerIPPreferenceProvider implements Provider<StringPreference> {
     @Inject SharedPreferences sharedPreferences;
 
-    @Override public StringPreference get() {
+    @Override
+    public StringPreference get() {
       return new StringPreference(sharedPreferences, "server", "");
     }
   }
@@ -90,7 +87,8 @@ public class AndroidModule extends Module {
   public static class ServerPorPreferenceProvider implements Provider<StringPreference> {
     @Inject SharedPreferences sharedPreferences;
 
-    @Override public StringPreference get() {
+    @Override
+    public StringPreference get() {
       return new StringPreference(sharedPreferences, "serverport", "");
     }
   }
@@ -100,7 +98,8 @@ public class AndroidModule extends Module {
     @Inject @ApplicationContext Context applicationContext;
     @Inject @ServerClientPreference StringPreference serverClientPreference;
 
-    @Override public SerenityClient get() {
+    @Override
+    public SerenityClient get() {
       if (embyAPIClient == null) {
         embyAPIClient = new EmbyAPIClient(applicationContext, "http://localhost:8096/");
       }
@@ -108,5 +107,4 @@ public class AndroidModule extends Module {
       return embyAPIClient;
     }
   }
-
 }

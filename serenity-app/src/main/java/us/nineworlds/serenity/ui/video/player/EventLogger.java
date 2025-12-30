@@ -17,17 +17,19 @@ package us.nineworlds.serenity.ui.video.player;
 
 import android.os.SystemClock;
 import android.util.Log;
-
 import androidx.annotation.Nullable;
 import androidx.media3.common.C;
 import androidx.media3.common.Format;
+import androidx.media3.common.Metadata;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
-import androidx.media3.exoplayer.audio.AudioRendererEventListener;
 import androidx.media3.exoplayer.DecoderCounters;
 import androidx.media3.exoplayer.DecoderReuseEvaluation;
-import androidx.media3.common.Metadata;
+import androidx.media3.exoplayer.audio.AudioRendererEventListener;
 import androidx.media3.exoplayer.metadata.MetadataOutput;
+import androidx.media3.exoplayer.source.MediaSourceEventListener;
+import androidx.media3.exoplayer.trackselection.MappingTrackSelector;
+import androidx.media3.exoplayer.video.VideoRendererEventListener;
 import androidx.media3.extractor.metadata.emsg.EventMessage;
 import androidx.media3.extractor.metadata.id3.ApicFrame;
 import androidx.media3.extractor.metadata.id3.CommentFrame;
@@ -36,25 +38,20 @@ import androidx.media3.extractor.metadata.id3.Id3Frame;
 import androidx.media3.extractor.metadata.id3.PrivFrame;
 import androidx.media3.extractor.metadata.id3.TextInformationFrame;
 import androidx.media3.extractor.metadata.id3.UrlLinkFrame;
-import androidx.media3.exoplayer.source.MediaSourceEventListener;
-import androidx.media3.exoplayer.trackselection.MappingTrackSelector;
-import androidx.media3.exoplayer.video.VideoRendererEventListener;
-
 import java.text.NumberFormat;
 import java.util.Locale;
-
 import javax.inject.Inject;
-
 import toothpick.Toothpick;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
 import us.nineworlds.serenity.core.logger.Logger;
 
-/**
- * Logs player events using {@link Log}.
- */
+/** Logs player events using {@link Log}. */
 @UnstableApi
-public final class EventLogger implements AudioRendererEventListener, VideoRendererEventListener,
-        MediaSourceEventListener, MetadataOutput {
+public final class EventLogger
+    implements AudioRendererEventListener,
+        VideoRendererEventListener,
+        MediaSourceEventListener,
+        MetadataOutput {
 
   private static final int MAX_TIMELINE_ITEM_LINES = 3;
   private static final NumberFormat TIME_FORMAT;
@@ -77,10 +74,10 @@ public final class EventLogger implements AudioRendererEventListener, VideoRende
     Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 
-
   // MetadataRenderer.Output
 
-  @Override public void onMetadata(Metadata metadata) {
+  @Override
+  public void onMetadata(Metadata metadata) {
     logger.debug("onMetadata [");
     printMetadata(metadata, "  ");
     logger.debug("]");
@@ -88,43 +85,56 @@ public final class EventLogger implements AudioRendererEventListener, VideoRende
 
   // AudioRendererEventListener
 
-  @Override public void onAudioEnabled(DecoderCounters counters) {
+  @Override
+  public void onAudioEnabled(DecoderCounters counters) {
     logger.debug("audioEnabled [" + getSessionTimeString() + "]");
   }
 
   @Override
-  public void onAudioDecoderInitialized(String decoderName, long elapsedRealtimeMs, long initializationDurationMs) {
+  public void onAudioDecoderInitialized(
+      String decoderName, long elapsedRealtimeMs, long initializationDurationMs) {
     logger.debug("audioDecoderInitialized [" + getSessionTimeString() + ", " + decoderName + "]");
   }
 
-  @Override public void onAudioInputFormatChanged(Format format, @Nullable DecoderReuseEvaluation decoderReuseEvaluation) {
-    logger.debug("audioFormatChanged [" + getSessionTimeString() + ", " + Format.toLogString(format) + "]");
+  @Override
+  public void onAudioInputFormatChanged(
+      Format format, @Nullable DecoderReuseEvaluation decoderReuseEvaluation) {
+    logger.debug(
+        "audioFormatChanged [" + getSessionTimeString() + ", " + Format.toLogString(format) + "]");
   }
 
-  @Override public void onAudioDisabled(DecoderCounters counters) {
+  @Override
+  public void onAudioDisabled(DecoderCounters counters) {
     logger.debug("audioDisabled [" + getSessionTimeString() + "]");
   }
 
   // VideoRendererEventListener
 
-  @Override public void onVideoEnabled(DecoderCounters counters) {
+  @Override
+  public void onVideoEnabled(DecoderCounters counters) {
     logger.debug("videoEnabled [" + getSessionTimeString() + "]");
   }
 
   @Override
-  public void onVideoDecoderInitialized(String decoderName, long elapsedRealtimeMs, long initializationDurationMs) {
+  public void onVideoDecoderInitialized(
+      String decoderName, long elapsedRealtimeMs, long initializationDurationMs) {
     logger.debug("videoDecoderInitialized [" + getSessionTimeString() + ", " + decoderName + "]");
   }
 
-  @Override public void onVideoInputFormatChanged(Format format, @Nullable DecoderReuseEvaluation decoderReuseEvaluation) {
-    logger.debug("videoFormatChanged [" + getSessionTimeString() + ", " + Format.toLogString(format) + "]");
+  @Override
+  public void onVideoInputFormatChanged(
+      Format format, @Nullable DecoderReuseEvaluation decoderReuseEvaluation) {
+    logger.debug(
+        "videoFormatChanged [" + getSessionTimeString() + ", " + Format.toLogString(format) + "]");
   }
 
-  @Override public void onVideoDisabled(DecoderCounters counters) {
+  @Override
+  public void onVideoDisabled(DecoderCounters counters) {
     logger.debug("videoDisabled [" + getSessionTimeString() + "]");
   }
 
-  @Override public void onDroppedFrames(int count, long elapsed) {
+  @Override
+  public void onDroppedFrames(int count, long elapsed) {
     logger.debug("droppedFrames [" + getSessionTimeString() + ", " + count + "]");
   }
 
@@ -134,7 +144,10 @@ public final class EventLogger implements AudioRendererEventListener, VideoRende
       Metadata.Entry entry = metadata.get(i);
       if (entry instanceof TextInformationFrame) {
         TextInformationFrame textInformationFrame = (TextInformationFrame) entry;
-        logger.debug(prefix + String.format("%s: value=%s", textInformationFrame.id, textInformationFrame.value));
+        logger.debug(
+            prefix
+                + String.format(
+                    "%s: value=%s", textInformationFrame.id, textInformationFrame.value));
       } else if (entry instanceof UrlLinkFrame) {
         UrlLinkFrame urlLinkFrame = (UrlLinkFrame) entry;
         logger.debug(prefix + String.format("%s: url=%s", urlLinkFrame.id, urlLinkFrame.url));
@@ -144,24 +157,34 @@ public final class EventLogger implements AudioRendererEventListener, VideoRende
       } else if (entry instanceof GeobFrame) {
         GeobFrame geobFrame = (GeobFrame) entry;
         logger.debug(
-            prefix + String.format("%s: mimeType=%s, filename=%s, description=%s", geobFrame.id, geobFrame.mimeType,
-                geobFrame.filename, geobFrame.description));
+            prefix
+                + String.format(
+                    "%s: mimeType=%s, filename=%s, description=%s",
+                    geobFrame.id, geobFrame.mimeType, geobFrame.filename, geobFrame.description));
       } else if (entry instanceof ApicFrame) {
         ApicFrame apicFrame = (ApicFrame) entry;
-        logger.debug(prefix + String.format("%s: mimeType=%s, description=%s", apicFrame.id, apicFrame.mimeType,
-            apicFrame.description));
+        logger.debug(
+            prefix
+                + String.format(
+                    "%s: mimeType=%s, description=%s",
+                    apicFrame.id, apicFrame.mimeType, apicFrame.description));
       } else if (entry instanceof CommentFrame) {
         CommentFrame commentFrame = (CommentFrame) entry;
-        logger.debug(prefix + String.format("%s: language=%s, description=%s", commentFrame.id, commentFrame.language,
-            commentFrame.description));
+        logger.debug(
+            prefix
+                + String.format(
+                    "%s: language=%s, description=%s",
+                    commentFrame.id, commentFrame.language, commentFrame.description));
       } else if (entry instanceof Id3Frame) {
         Id3Frame id3Frame = (Id3Frame) entry;
         logger.debug(prefix + String.format("%s", id3Frame.id));
       } else if (entry instanceof EventMessage) {
         EventMessage eventMessage = (EventMessage) entry;
         logger.debug(
-            prefix + String.format("EMSG: scheme=%s, id=%d, value=%s", eventMessage.schemeIdUri, eventMessage.id,
-                eventMessage.value));
+            prefix
+                + String.format(
+                    "EMSG: scheme=%s, id=%d, value=%s",
+                    eventMessage.schemeIdUri, eventMessage.id, eventMessage.value));
       }
     }
   }

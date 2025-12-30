@@ -1,6 +1,10 @@
 package us.nineworlds.serenity.ui.activity.leanback.details
 
-import kotlinx.coroutines.*
+import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import moxy.MvpPresenter
 import moxy.presenterScope
 import toothpick.Toothpick
@@ -9,9 +13,7 @@ import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.impl.MovieMediaContainer
 import us.nineworlds.serenity.core.model.impl.SeasonsMediaContainer
 import us.nineworlds.serenity.core.model.impl.SeriesMediaContainer
-import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo
 import us.nineworlds.serenity.core.repository.VideoRepository
-import javax.inject.Inject
 
 class DetailsMVPPresenter : MvpPresenter<DetailsView>() {
 
@@ -19,7 +21,7 @@ class DetailsMVPPresenter : MvpPresenter<DetailsView>() {
     lateinit var repository: VideoRepository
 
     init {
-        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
+        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
     }
 
     fun loadItem(itemId: String, type: String) {
@@ -30,6 +32,7 @@ class DetailsMVPPresenter : MvpPresenter<DetailsView>() {
                     viewState.updateDetails(SeriesMediaContainer(result).createSeries()[0])
                     updateSeries(itemId)
                 }
+
                 else -> {
                     viewState.updateDetails(MovieMediaContainer(result).createVideos()[0])
                     loadSimilarItems(itemId, type)
@@ -40,7 +43,7 @@ class DetailsMVPPresenter : MvpPresenter<DetailsView>() {
 
     fun loadSimilarItems(itemId: String, type: String) {
         presenterScope.launch {
-            val itemType = when(type) {
+            val itemType = when (type) {
                 "tvshows" -> Types.SERIES
                 else -> Types.MOVIES
             }
@@ -49,14 +52,15 @@ class DetailsMVPPresenter : MvpPresenter<DetailsView>() {
             when (itemType) {
                 Types.MOVIES -> {
                     val videos = MovieMediaContainer(result)
-                            .createVideos()
-                            .filterNot { item ->
-                                item.getType() == Types.SERIES
-                            }
+                        .createVideos()
+                        .filterNot { item ->
+                            item.getType() == Types.SERIES
+                        }
 
                     viewState.addSimilarItems(videos)
                 }
-                else ->  viewState.addSimilarSeries(SeriesMediaContainer(result).createSeries())
+
+                else -> viewState.addSimilarSeries(SeriesMediaContainer(result).createSeries())
             }
         }
     }
@@ -78,5 +82,4 @@ class DetailsMVPPresenter : MvpPresenter<DetailsView>() {
             }
         }
     }
-
 }

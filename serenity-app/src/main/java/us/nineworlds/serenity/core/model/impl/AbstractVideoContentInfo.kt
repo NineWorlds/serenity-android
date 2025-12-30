@@ -1,6 +1,8 @@
 package us.nineworlds.serenity.core.model.impl
 
 import android.content.res.Resources
+import java.io.Serializable
+import javax.inject.Inject
 import toothpick.Toothpick
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.android.mediacodec.MediaCodecInfoUtil
@@ -12,10 +14,9 @@ import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.services.UnWatchVideoJob
 import us.nineworlds.serenity.core.services.WatchedVideoJob
 import us.nineworlds.serenity.core.util.AndroidHelper
-import java.io.Serializable
-import javax.inject.Inject
 
-abstract class AbstractVideoContentInfo(private val resources: Resources?) : VideoContentInfo,
+abstract class AbstractVideoContentInfo(private val resources: Resources?) :
+    VideoContentInfo,
     Serializable {
 
     @Inject
@@ -83,13 +84,15 @@ abstract class AbstractVideoContentInfo(private val resources: Resources?) : Vid
             val seriesTitle = seriesTitle
             return if (seriesTitle == null) {
                 _title
-            } else resources?.getString(
-                R.string.long_title,
-                seriesTitle,
-                seasonNumber,
-                episodeNumber,
-                _title
-            )
+            } else {
+                resources?.getString(
+                    R.string.long_title,
+                    seriesTitle,
+                    seasonNumber,
+                    episodeNumber,
+                    _title
+                )
+            }
         }
     override var directPlayUrl: String? = null
     override var actors: List<String>? = null
@@ -140,12 +143,16 @@ abstract class AbstractVideoContentInfo(private val resources: Resources?) : Vid
             }
             return if (resumeOffset == 0 && viewCount > 0) {
                 true
-            } else false
+            } else {
+                false
+            }
         }
     override val isUnwatched: Boolean
         get() = if (viewCount == 0) {
             true
-        } else false
+        } else {
+            false
+        }
 
     override fun viewedPercentage(): Float {
         val duration = duration.toFloat()
@@ -206,7 +213,6 @@ abstract class AbstractVideoContentInfo(private val resources: Resources?) : Vid
 
         return isAudioCodecSupported && isVideoSupported
     }
-
 
     companion object {
         private const val serialVersionUID = 4744447508883279194L

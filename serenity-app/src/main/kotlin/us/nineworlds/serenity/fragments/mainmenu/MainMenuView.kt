@@ -27,5 +27,4 @@ interface MainMenuView : MvpView {
 
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun hideLoading()
-
 }

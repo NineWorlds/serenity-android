@@ -1,0 +1,8 @@
+[*.{kt,kts}]
+ktlint_standard_backing-property-naming = disabled
+ktlint_code_style = android_studio
+max_line_length = 200
+ij_kotlin_packages_to_use_import_on_demand = unset
+ij_kotlin_name_count_to_use_star_import = 2147483647
+ij_kotlin_name_count_to_use_star_import_for_members = 2147483647
+ktlint_standard_kdoc = disabled

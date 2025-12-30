@@ -6,18 +6,17 @@ import toothpick.Toothpick
 import us.nineworlds.serenity.common.annotations.InjectionConstants
 
 abstract class InjectingTest {
+    lateinit var scope: Scope
 
-  lateinit var scope: Scope
+    @Before
+    @Throws(Exception::class)
+    open fun setUp() {
+        scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE)
+        installModules()
+        Toothpick.inject(this, scope)
+    }
 
-  @Before
-  @Throws(Exception::class)
-  open fun setUp() {
-    scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE)
-    installModules()
-    Toothpick.inject(this, scope)
-  }
+    abstract fun installModules()
 
-  abstract fun installModules()
-
-  abstract val modules: List<Any>
+    abstract val modules: List<Any>
 }

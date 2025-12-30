@@ -8,10 +8,10 @@ import androidx.media3.datasource.DefaultDataSourceFactory
 import androidx.media3.datasource.HttpDataSource
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.exoplayer.upstream.DefaultBandwidthMeter
-import us.nineworlds.serenity.SerenityApplication
-import us.nineworlds.serenity.common.android.injection.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Provider
+import us.nineworlds.serenity.SerenityApplication
+import us.nineworlds.serenity.common.android.injection.ApplicationContext
 
 class DataSourceFactoryProvider : Provider<DataSource.Factory> {
     @Inject
@@ -27,7 +27,7 @@ class DataSourceFactoryProvider : Provider<DataSource.Factory> {
         val defaultDataSourceFactory =
             DefaultDataSourceFactory(context, bandwidthMeter, httpDataSourceFactory)
         return CacheDataSource.Factory()
-                .setCache(SerenityApplication.simpleCache)
-                .setUpstreamDataSourceFactory(defaultDataSourceFactory)
+            .setCache(SerenityApplication.simpleCache)
+            .setUpstreamDataSourceFactory(defaultDataSourceFactory)
     }
 }

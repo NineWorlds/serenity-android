@@ -28,5 +28,4 @@ class VideoRepository constructor(private val client: SerenityClient) {
     suspend fun fetchSimilarItems(itemId: String, type: Types): IMediaContainer = withContext(Dispatchers.IO) {
         client.fetchSimilarItemById(itemId, type)
     }
-
 }

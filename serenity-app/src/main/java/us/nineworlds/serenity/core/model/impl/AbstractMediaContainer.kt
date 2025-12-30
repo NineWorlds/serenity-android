@@ -9,17 +9,16 @@ import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.injection.BaseInjector
 
 abstract class AbstractMediaContainer(
-  @JvmField
-  protected var mc: IMediaContainer,
+    @JvmField
+    protected var mc: IMediaContainer
 ) : BaseInjector() {
 
-  @JvmField
-  var videoList: MutableList<in ContentInfo>? = null
+    @JvmField
+    var videoList: MutableList<in ContentInfo>? = null
 
-  @Inject
-  lateinit var factory: SerenityClient
+    @Inject
+    lateinit var factory: SerenityClient
 
-  @Inject
-  lateinit var resources: Resources
-
+    @Inject
+    lateinit var resources: Resources
 }

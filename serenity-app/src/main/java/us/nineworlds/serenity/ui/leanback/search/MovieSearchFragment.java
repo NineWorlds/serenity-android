@@ -1,26 +1,20 @@
 /**
- * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- * <p>
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- * <p>
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
- * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2012 David Carver Permission is hereby granted, free of
+ * charge, to any person obtaining a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * <p>The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ * BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 package us.nineworlds.serenity.ui.leanback.search;
 
 import android.app.Activity;
@@ -33,7 +27,6 @@ import android.os.Messenger;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.leanback.app.SearchSupportFragment;
@@ -46,16 +39,12 @@ import androidx.leanback.widget.ObjectAdapter;
 import androidx.leanback.widget.OnItemViewSelectedListener;
 import androidx.leanback.widget.Presenter.ViewHolder;
 import androidx.leanback.widget.Row;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-
 import java.net.URLEncoder;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import toothpick.Toothpick;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.annotations.InjectionConstants;
@@ -69,133 +58,143 @@ import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils;
 
 public class MovieSearchFragment extends SearchSupportFragment implements SearchResultProvider {
 
-    private ArrayObjectAdapter rowsAdapter;
-    private List<MenuItem> menuItems;
-    private String key;
+  private ArrayObjectAdapter rowsAdapter;
+  private List<MenuItem> menuItems;
+  private String key;
 
-    private Handler searchHandler;
+  private Handler searchHandler;
 
-    @Inject
-    VideoPlayerIntentUtils vpUtils;
-    @Inject
-    SerenityClient plexFactory;
-    @Inject
-    AndroidHelper androidHelper;
+  @Inject VideoPlayerIntentUtils vpUtils;
+  @Inject SerenityClient plexFactory;
+  @Inject AndroidHelper androidHelper;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
 
-        if (androidHelper.isAmazonFireTV()) {
-            setSpeechRecognitionCallback(() -> {
-                // DO NOTHING;
-            });
-        }
+    if (androidHelper.isAmazonFireTV()) {
+      setSpeechRecognitionCallback(
+          () -> {
+            // DO NOTHING;
+          });
+    }
 
-        rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
-        setSearchResultProvider(this);
-        setOnItemViewClickedListener((itemViewHolder, item, rowViewHolder, row) -> {
-            Activity activity = getActivity();
-            VideoContentInfo video = (VideoContentInfo) item;
-            vpUtils.playVideo(activity, video, false);
+    rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
+    setSearchResultProvider(this);
+    setOnItemViewClickedListener(
+        (itemViewHolder, item, rowViewHolder, row) -> {
+          Activity activity = getActivity();
+          VideoContentInfo video = (VideoContentInfo) item;
+          vpUtils.playVideo(activity, video, false);
         });
 
-        setOnItemViewSelectedListener(new OnItemViewSelectedListener() {
+    setOnItemViewSelectedListener(
+        new OnItemViewSelectedListener() {
 
-            private VideoContentInfo video;
+          private VideoContentInfo video;
 
-            @Override
-            public void onItemSelected(ViewHolder arg0, Object item,
-                                       androidx.leanback.widget.RowPresenter.ViewHolder arg2, Row arg3) {
-                if (item == null) {
-                    return;
-                }
-
-                video = (VideoContentInfo) item;
-                changeBackgroundImage();
+          @Override
+          public void onItemSelected(
+              ViewHolder arg0,
+              Object item,
+              androidx.leanback.widget.RowPresenter.ViewHolder arg2,
+              Row arg3) {
+            if (item == null) {
+              return;
             }
 
-            public void changeBackgroundImage() {
+            video = (VideoContentInfo) item;
+            changeBackgroundImage();
+          }
 
-                if (video.getBackgroundURL() == null) {
-                    return;
-                }
+          public void changeBackgroundImage() {
 
-                final View fanArt = getActivity().findViewById(R.id.fanArt);
+            if (video.getBackgroundURL() == null) {
+              return;
+            }
 
-                String transcodingURL = plexFactory.createImageURL(video.getBackgroundURL(), 1280, 720);
+            final View fanArt = getActivity().findViewById(R.id.fanArt);
 
-                SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>(1280, 720) {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        getActivity().runOnUiThread(new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
-                    }
+            String transcodingURL = plexFactory.createImageURL(video.getBackgroundURL(), 1280, 720);
+
+            SimpleTarget<Bitmap> target =
+                new SimpleTarget<Bitmap>(1280, 720) {
+                  @Override
+                  public void onResourceReady(
+                      @NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                    getActivity()
+                        .runOnUiThread(
+                            new BackgroundBitmapDisplayer(resource, R.drawable.movies, fanArt));
+                  }
                 };
 
-                Glide.with(requireContext()).asBitmap().load(transcodingURL).into(target);
-            }
+            Glide.with(requireContext()).asBitmap().load(transcodingURL).into(target);
+          }
         });
 
-        setBadgeDrawable(getResources().getDrawable(R.drawable.androidtv_icon_mono));
+    setBadgeDrawable(getResources().getDrawable(R.drawable.androidtv_icon_mono));
+  }
+
+  private void queryByWords(String words) {
+    rowsAdapter.clear();
+    if (!TextUtils.isEmpty(words)) {
+
+      searchHandler = new MovieSearchHandler();
+      Messenger messenger = new Messenger(searchHandler);
+
+      Intent searchIntent = new Intent(requireActivity(), MovieSearchIntentService.class);
+
+      searchIntent.putExtra("key", key);
+      searchIntent.putExtra("query", URLEncoder.encode(words));
+      searchIntent.putExtra("MESSENGER", messenger);
+      requireActivity().startService(searchIntent);
+    }
+  }
+
+  @Override
+  public ObjectAdapter getResultsAdapter() {
+    return rowsAdapter;
+  }
+
+  @Override
+  public boolean onQueryTextChange(String newQuery) {
+    queryByWords(newQuery);
+    return true;
+  }
+
+  @Override
+  public boolean onQueryTextSubmit(String query) {
+    queryByWords(query);
+    return true;
+  }
+
+  protected void loadRows(List<VideoContentInfo> videos) {
+    ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter(getContext()));
+    for (VideoContentInfo video : videos) {
+      listRowAdapter.add(video);
     }
 
-    private void queryByWords(String words) {
-        rowsAdapter.clear();
-        if (!TextUtils.isEmpty(words)) {
+    HeaderItem header = new HeaderItem(0, "Search Results");
+    rowsAdapter.add(new ListRow(header, listRowAdapter));
+  }
 
-            searchHandler = new MovieSearchHandler();
-            Messenger messenger = new Messenger(searchHandler);
-
-            Intent searchIntent = new Intent(requireActivity(), MovieSearchIntentService.class);
-
-            searchIntent.putExtra("key", key);
-            searchIntent.putExtra("query", URLEncoder.encode(words));
-            searchIntent.putExtra("MESSENGER", messenger);
-            requireActivity().startService(searchIntent);
-        }
-    }
+  protected class MovieSearchHandler extends Handler {
 
     @Override
-    public ObjectAdapter getResultsAdapter() {
-        return rowsAdapter;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newQuery) {
-        queryByWords(newQuery);
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        queryByWords(query);
-        return true;
-    }
-
-    protected void loadRows(List<VideoContentInfo> videos) {
-        ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter(getContext()));
-        for (VideoContentInfo video : videos) {
-            listRowAdapter.add(video);
+    public void handleMessage(Message msg) {
+      if (msg.obj != null) {
+        List<VideoContentInfo> videos = (List<VideoContentInfo>) msg.obj;
+        if (videos != null && videos.isEmpty()) {
+          Toast.makeText(
+                  getActivity(),
+                  R.string.no_videos_found_that_match_the_search_criteria,
+                  Toast.LENGTH_LONG)
+              .show();
+          getActivity().finish();
         }
-
-        HeaderItem header = new HeaderItem(0, "Search Results");
-        rowsAdapter.add(new ListRow(header, listRowAdapter));
+        loadRows(videos);
+      }
     }
-
-    protected class MovieSearchHandler extends Handler {
-
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.obj != null) {
-                List<VideoContentInfo> videos = (List<VideoContentInfo>) msg.obj;
-                if (videos != null && videos.isEmpty()) {
-                    Toast.makeText(getActivity(), R.string.no_videos_found_that_match_the_search_criteria, Toast.LENGTH_LONG)
-                            .show();
-                    getActivity().finish();
-                }
-                loadRows(videos);
-            }
-        }
-    }
+  }
 }

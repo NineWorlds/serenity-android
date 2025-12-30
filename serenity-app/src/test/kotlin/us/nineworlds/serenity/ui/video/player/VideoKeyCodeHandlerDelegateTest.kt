@@ -109,7 +109,8 @@ class VideoKeyCodeHandlerDelegateTest : InjectingTest() {
     fun handlesKeyCodePauseWhenMediaPlayerIsPlayingKeyCodeMediaPlayPause() {
         demandMediaPause()
         val result = keyCodeHandler.onKeyDown(
-            KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, null
+            KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE,
+            null
         )
         assertThat(result).isTrue()
     }
@@ -125,7 +126,8 @@ class VideoKeyCodeHandlerDelegateTest : InjectingTest() {
     fun handlesKeyCodePlayPauseWhenMediaPlayerIsNotPlaying() {
         demandMediaPauseWhenNotPlaying()
         val result = keyCodeHandler.onKeyDown(
-            KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, null
+            KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE,
+            null
         )
         assertThat(result).isTrue()
     }
@@ -202,7 +204,8 @@ class VideoKeyCodeHandlerDelegateTest : InjectingTest() {
         every { mockMediaPlayer.duration } returns 100L
 
         val result = keyCodeHandler.onKeyDown(
-            KeyEvent.KEYCODE_MEDIA_PREVIOUS, null
+            KeyEvent.KEYCODE_MEDIA_PREVIOUS,
+            null
         )
         assertThat(result).isTrue()
 
@@ -217,7 +220,8 @@ class VideoKeyCodeHandlerDelegateTest : InjectingTest() {
         every { mockMediaPlayer.duration } returns 10000L
 
         val result = keyCodeHandler.onKeyDown(
-            KeyEvent.KEYCODE_MEDIA_PREVIOUS, null
+            KeyEvent.KEYCODE_MEDIA_PREVIOUS,
+            null
         )
         assertThat(result).isTrue()
 
@@ -230,7 +234,8 @@ class VideoKeyCodeHandlerDelegateTest : InjectingTest() {
         every { mockMediaPlayer.seekTo(any()) } just Runs
 
         val result = keyCodeHandler.onKeyDown(
-            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, null
+            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD,
+            null
         )
         assertThat(result).isTrue()
     }
@@ -479,6 +484,4 @@ class VideoKeyCodeHandlerDelegateTest : InjectingTest() {
             bind(SharedPreferences::class.java).toInstance(mockPreferences)
         }
     }
-
 }
-

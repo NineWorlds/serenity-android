@@ -2,36 +2,45 @@ package us.nineworlds.serenity.ui.activity.leanback.details
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.leanback.app.DetailsSupportFragment
-import moxy.MvpDelegateHolder
-import moxy.ktx.moxyPresenter
-import toothpick.Toothpick
-import us.nineworlds.serenity.common.annotations.InjectionConstants
+import androidx.leanback.widget.Action
+import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.ClassPresenterSelector
+import androidx.leanback.widget.DiffCallback
+import androidx.leanback.widget.HeaderItem
+import androidx.leanback.widget.ListRow
+import androidx.leanback.widget.ListRowPresenter
+import androidx.leanback.widget.Presenter
+import androidx.leanback.widget.Row
+import androidx.leanback.widget.SparseArrayObjectAdapter
+import com.bumptech.glide.Glide
 import javax.inject.Inject
 import javax.inject.Provider
 import moxy.MvpDelegate
+import moxy.MvpDelegateHolder
+import moxy.ktx.moxyPresenter
+import toothpick.Toothpick
+import us.nineworlds.serenity.R
+import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.core.model.ContentInfo
-
-import androidx.leanback.widget.*
-import com.bumptech.glide.Glide
-
 import us.nineworlds.serenity.core.model.SeriesContentInfo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
+import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo
+import us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewRow
+import us.nineworlds.serenity.ui.leanback.presenters.EpisodeVideoPresenter
+import us.nineworlds.serenity.ui.leanback.presenters.FullWidthDetailsOverviewRowPresenter
+import us.nineworlds.serenity.ui.leanback.presenters.MoviePresenter
+import us.nineworlds.serenity.ui.leanback.presenters.SeriesPresenter
+import us.nineworlds.serenity.ui.leanback.presenters.VideoContentInfoPresenter
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils
 
-import us.nineworlds.serenity.R
-import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo
-import us.nineworlds.serenity.ui.leanback.presenters.*
-import us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewRow
-import us.nineworlds.serenity.ui.leanback.presenters.FullWidthDetailsOverviewRowPresenter
-
-
-class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView {
+class DetailsFragment :
+    DetailsSupportFragment(),
+    MvpDelegateHolder,
+    DetailsView {
 
     internal val presenter by moxyPresenter { presenterProvider.get() }
 
@@ -49,7 +58,7 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
         super.onCreate(savedInstanceState)
         inject()
 
-        getMvpDelegate().onCreate(savedInstanceState);
+        getMvpDelegate().onCreate(savedInstanceState)
     }
 
     override fun onStart() {
@@ -93,7 +102,7 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
     override fun onDestroy() {
         super.onDestroy()
 
-        //We leave the screen and respectively all fragments will be destroyed
+        // We leave the screen and respectively all fragments will be destroyed
         if (requireActivity().isFinishing) {
             getMvpDelegate().onDestroy()
             return
@@ -119,7 +128,7 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
     }
 
     fun inject() {
-        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
+        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
     }
 
     fun setup(itemId: String, type: String) {
@@ -223,22 +232,20 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
         val detailsAdapter = adapter as ArrayObjectAdapter
         val content = detailsAdapter.unmodifiableList<Row>()
         content.filterIsInstance<ListRow>()
-                .filter { listRow -> listRow.headerItem.name == season.getTitle() }
-                .forEach { row ->
-                    val adapter = row.adapter as ArrayObjectAdapter
-                    adapter.setItems(episodes, object : DiffCallback<VideoContentInfo>() {
-                        override fun areItemsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean {
-                            return oldItem.season == newItem.season &&
-                                    oldItem.seasonNumber == newItem.seasonNumber &&
-                                    oldItem.parentKey == newItem.parentKey
+            .filter { listRow -> listRow.headerItem.name == season.getTitle() }
+            .forEach { row ->
+                val adapter = row.adapter as ArrayObjectAdapter
+                adapter.setItems(
+                    episodes,
+                    object : DiffCallback<VideoContentInfo>() {
+                        override fun areItemsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean = oldItem.season == newItem.season &&
+                            oldItem.seasonNumber == newItem.seasonNumber &&
+                            oldItem.parentKey == newItem.parentKey
 
-                        }
-
-                        override fun areContentsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean {
-                            return oldItem == newItem
-                        }
-                    })
-                }
+                        override fun areContentsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean = oldItem == newItem
+                    }
+                )
+            }
     }
 
     override fun addSimilarItems(videoInfo: List<VideoContentInfo>) {
@@ -257,4 +264,3 @@ class DetailsFragment : DetailsSupportFragment(), MvpDelegateHolder, DetailsView
         TODO("Not yet implemented")
     }
 }
-

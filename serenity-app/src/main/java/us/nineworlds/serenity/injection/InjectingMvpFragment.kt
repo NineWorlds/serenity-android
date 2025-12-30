@@ -7,6 +7,6 @@ import us.nineworlds.serenity.common.annotations.InjectionConstants
 abstract class InjectingMvpFragment : MvpAppCompatFragment() {
 
     fun inject() {
-        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
+        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
     }
 }

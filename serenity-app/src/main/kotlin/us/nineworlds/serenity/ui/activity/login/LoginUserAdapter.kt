@@ -10,57 +10,56 @@ import us.nineworlds.serenity.common.rest.SerenityUser
 
 class LoginUserAdapter(private val userSelectedListener: OnUserSelectedListener) : RecyclerView.Adapter<LoginUserViewHolder>() {
 
-  val users: ArrayList<SerenityUser> = ArrayList<SerenityUser>()
+    val users: ArrayList<SerenityUser> = ArrayList<SerenityUser>()
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoginUserViewHolder {
-    val loginUserView = LayoutInflater.from(parent.context).inflate(R.layout.item_user_profile, parent, false)
-    return LoginUserViewHolder(loginUserView)
-  }
-
-  override fun getItemCount(): Int = users.size
-
-  fun getItemAt(postion: Int): SerenityUser? {
-    if (users.isEmpty() || postion < 0) {
-      return null
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoginUserViewHolder {
+        val loginUserView = LayoutInflater.from(parent.context).inflate(R.layout.item_user_profile, parent, false)
+        return LoginUserViewHolder(loginUserView)
     }
-    return users[postion]
-  }
 
-  override fun onBindViewHolder(holder: LoginUserViewHolder, position: Int) {
-    holder.loadUser(users[position])
-    holder.getItemView().setOnClickListener {
-      onClicked(position)
+    override fun getItemCount(): Int = users.size
+
+    fun getItemAt(postion: Int): SerenityUser? {
+        if (users.isEmpty() || postion < 0) {
+            return null
+        }
+        return users[postion]
     }
-    holder.getItemView().setOnFocusChangeListener { view, hasFocus ->
-      onFocusChanged(view, hasFocus)
+
+    override fun onBindViewHolder(holder: LoginUserViewHolder, position: Int) {
+        holder.loadUser(users[position])
+        holder.getItemView().setOnClickListener {
+            onClicked(position)
+        }
+        holder.getItemView().setOnFocusChangeListener { view, hasFocus ->
+            onFocusChanged(view, hasFocus)
+        }
     }
-  }
 
-  internal fun onClicked(position: Int) {
-    val user = users[position]
-    userSelectedListener.onUserSelected(user)
-  }
-
-  internal fun onFocusChanged(view: View, hasFocus: Boolean) {
-    view.clearAnimation()
-    view.background = null
-
-    if (hasFocus) {
-      view.clearAnimation()
-      view.background =
-        ContextCompat.getDrawable(view.context, R.drawable.rounded_transparent_border)
+    internal fun onClicked(position: Int) {
+        val user = users[position]
+        userSelectedListener.onUserSelected(user)
     }
-  }
 
-  fun loadUsers(newUsers: List<SerenityUser>) {
-    users.clear()
-    users.addAll(newUsers)
+    internal fun onFocusChanged(view: View, hasFocus: Boolean) {
+        view.clearAnimation()
+        view.background = null
 
-    notifyDataSetChanged()
-  }
+        if (hasFocus) {
+            view.clearAnimation()
+            view.background =
+                ContextCompat.getDrawable(view.context, R.drawable.rounded_transparent_border)
+        }
+    }
 
+    fun loadUsers(newUsers: List<SerenityUser>) {
+        users.clear()
+        users.addAll(newUsers)
+
+        notifyDataSetChanged()
+    }
 }
 
 interface OnUserSelectedListener {
-  fun onUserSelected(user: SerenityUser)
+    fun onUserSelected(user: SerenityUser)
 }

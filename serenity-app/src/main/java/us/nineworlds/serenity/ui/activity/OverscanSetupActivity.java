@@ -10,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-
 import us.nineworlds.serenity.R;
 
 public class OverscanSetupActivity extends Activity
@@ -20,7 +19,8 @@ public class OverscanSetupActivity extends Activity
   private boolean topLeft = true;
   private SharedPreferences prefs;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -32,14 +32,18 @@ public class OverscanSetupActivity extends Activity
 
     final ViewGroup.MarginLayoutParams layoutParams =
         (ViewGroup.MarginLayoutParams) centerView.getLayoutParams();
-    layoutParams.setMargins(prefs.getInt("overscan_left", 50), prefs.getInt("overscan_top", 50),
-        prefs.getInt("overscan_right", 50), prefs.getInt("overscan_bottom", 50));
+    layoutParams.setMargins(
+        prefs.getInt("overscan_left", 50),
+        prefs.getInt("overscan_top", 50),
+        prefs.getInt("overscan_right", 50),
+        prefs.getInt("overscan_bottom", 50));
     centerView.requestLayout();
     swapView.setOnKeyListener(this);
     swapView.setOnClickListener(this);
   }
 
-  @Override public boolean onKey(View v, int keyCode, KeyEvent event) {
+  @Override
+  public boolean onKey(View v, int keyCode, KeyEvent event) {
     if (event.getAction() != KeyEvent.ACTION_DOWN) {
       return false;
     }
@@ -85,7 +89,8 @@ public class OverscanSetupActivity extends Activity
       default:
         return false;
     }
-    prefs.edit()
+    prefs
+        .edit()
         .putInt("overscan_top", top)
         .putInt("overscan_left", left)
         .putInt("overscan_bottom", bottom)
@@ -97,7 +102,8 @@ public class OverscanSetupActivity extends Activity
     return true;
   }
 
-  @Override public void onClick(View v) {
+  @Override
+  public void onClick(View v) {
     topLeft = !topLeft;
   }
 }

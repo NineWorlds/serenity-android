@@ -13,11 +13,13 @@ public class StatusOverlayPresenter extends MvpPresenter<StatusOverlayContract.S
 
   VideoContentInfo videoContentInfo;
 
-  @Override public void setVideoContentInfo(VideoContentInfo videoContentInfo) {
+  @Override
+  public void setVideoContentInfo(VideoContentInfo videoContentInfo) {
     this.videoContentInfo = videoContentInfo;
   }
 
-  @Override public void refresh() {
+  @Override
+  public void refresh() {
     getViewState().reset();
     getViewState().toggleWatchedIndicator(videoContentInfo);
     getViewState().populatePosterImage(videoContentInfo.getImageURL());

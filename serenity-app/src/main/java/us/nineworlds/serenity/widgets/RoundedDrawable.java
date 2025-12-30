@@ -120,11 +120,13 @@ public class RoundedDrawable extends Drawable {
     return bitmap;
   }
 
-  @Override public boolean isStateful() {
+  @Override
+  public boolean isStateful() {
     return mBorderColor.isStateful();
   }
 
-  @Override protected boolean onStateChange(int[] state) {
+  @Override
+  protected boolean onStateChange(int[] state) {
     int newColor = mBorderColor.getColorForState(state, 0);
     if (mBorderPaint.getColor() != newColor) {
       mBorderPaint.setColor(newColor);
@@ -145,7 +147,8 @@ public class RoundedDrawable extends Drawable {
         mBorderRect.inset((mBorderWidth) / 2, (mBorderWidth) / 2);
 
         mShaderMatrix.set(null);
-        mShaderMatrix.setTranslate((int) ((mBorderRect.width() - mBitmapWidth) * 0.5f + 0.5f),
+        mShaderMatrix.setTranslate(
+            (int) ((mBorderRect.width() - mBitmapWidth) * 0.5f + 0.5f),
             (int) ((mBorderRect.height() - mBitmapHeight) * 0.5f + 0.5f));
         break;
 
@@ -167,7 +170,8 @@ public class RoundedDrawable extends Drawable {
         }
 
         mShaderMatrix.setScale(scale, scale);
-        mShaderMatrix.postTranslate((int) (dx + 0.5f) + mBorderWidth, (int) (dy + 0.5f) + mBorderWidth);
+        mShaderMatrix.postTranslate(
+            (int) (dx + 0.5f) + mBorderWidth, (int) (dy + 0.5f) + mBorderWidth);
         break;
 
       case CENTER_INSIDE:
@@ -228,7 +232,8 @@ public class RoundedDrawable extends Drawable {
     mBitmapShader.setLocalMatrix(mShaderMatrix);
   }
 
-  @Override protected void onBoundsChange(Rect bounds) {
+  @Override
+  protected void onBoundsChange(Rect bounds) {
     super.onBoundsChange(bounds);
 
     mBounds.set(bounds);
@@ -236,7 +241,8 @@ public class RoundedDrawable extends Drawable {
     updateShaderMatrix();
   }
 
-  @Override public void draw(Canvas canvas) {
+  @Override
+  public void draw(Canvas canvas) {
 
     if (mOval) {
       if (mBorderWidth > 0) {
@@ -247,7 +253,8 @@ public class RoundedDrawable extends Drawable {
       }
     } else {
       if (mBorderWidth > 0) {
-        canvas.drawRoundRect(mDrawableRect, Math.max(mCornerRadius, 0), Math.max(mCornerRadius, 0), mBitmapPaint);
+        canvas.drawRoundRect(
+            mDrawableRect, Math.max(mCornerRadius, 0), Math.max(mCornerRadius, 0), mBitmapPaint);
         canvas.drawRoundRect(mBorderRect, mCornerRadius, mCornerRadius, mBorderPaint);
       } else {
         canvas.drawRoundRect(mDrawableRect, mCornerRadius, mCornerRadius, mBitmapPaint);
@@ -255,35 +262,42 @@ public class RoundedDrawable extends Drawable {
     }
   }
 
-  @Override public int getOpacity() {
+  @Override
+  public int getOpacity() {
     return PixelFormat.TRANSLUCENT;
   }
 
-  @Override public void setAlpha(int alpha) {
+  @Override
+  public void setAlpha(int alpha) {
     mBitmapPaint.setAlpha(alpha);
     invalidateSelf();
   }
 
-  @Override public void setColorFilter(ColorFilter cf) {
+  @Override
+  public void setColorFilter(ColorFilter cf) {
     mBitmapPaint.setColorFilter(cf);
     invalidateSelf();
   }
 
-  @Override public void setDither(boolean dither) {
+  @Override
+  public void setDither(boolean dither) {
     mBitmapPaint.setDither(dither);
     invalidateSelf();
   }
 
-  @Override public void setFilterBitmap(boolean filter) {
+  @Override
+  public void setFilterBitmap(boolean filter) {
     mBitmapPaint.setFilterBitmap(filter);
     invalidateSelf();
   }
 
-  @Override public int getIntrinsicWidth() {
+  @Override
+  public int getIntrinsicWidth() {
     return mBitmapWidth;
   }
 
-  @Override public int getIntrinsicHeight() {
+  @Override
+  public int getIntrinsicHeight() {
     return mBitmapHeight;
   }
 

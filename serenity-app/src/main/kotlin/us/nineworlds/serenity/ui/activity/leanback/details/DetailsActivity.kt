@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import us.nineworlds.serenity.databinding.ActivityLeanbackDetailsBinding
 
-class DetailsActivity: AppCompatActivity() {
+class DetailsActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityLeanbackDetailsBinding
+    private lateinit var binding: ActivityLeanbackDetailsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +22,5 @@ class DetailsActivity: AppCompatActivity() {
             val fragment = binding.fragmentLeanbackContainer.getFragment<DetailsFragment>()
             fragment.setup(itemId!!, type)
         }
-
     }
-
 }

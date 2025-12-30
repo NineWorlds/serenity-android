@@ -20,7 +20,6 @@ import us.nineworlds.serenity.emby.server.model.AuthenticationResult
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [28])
 class EmbyAPIClientTest {
-
     private lateinit var client: EmbyAPIClient
     private lateinit var prefs: SharedPreferences
 
@@ -127,17 +126,18 @@ class EmbyAPIClientTest {
         val itemResult = client.retrieveItemByIdCategory(key, "recentlyAdded", Types.MOVIES)
 
         assertThat(itemResult.videos).isNotEmpty()
-
     }
 
     private fun authenticate(): AuthenticationResult {
         val users = client.allAvailableUsers()
         val user = users.first { !it.hasPassword() }
-        val serenityUser = SerenityUser.builder()
-            .userId(user.userId)
-            .userName(user.userName)
-            .hasPassword(user.hasPassword())
-            .build()
+        val serenityUser =
+            SerenityUser
+                .builder()
+                .userId(user.userId)
+                .userName(user.userName)
+                .hasPassword(user.hasPassword())
+                .build()
 
         client.authenticateUser(serenityUser)
         return client.authenticate(user.userName, "")
@@ -152,5 +152,4 @@ class EmbyAPIClientTest {
 
         return client.authenticate(user.userName, "unknownpassword")
     }
-
 }

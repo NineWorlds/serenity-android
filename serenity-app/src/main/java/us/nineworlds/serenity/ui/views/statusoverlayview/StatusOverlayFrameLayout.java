@@ -11,20 +11,16 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import moxy.MvpPresenter;
 import moxy.presenter.InjectPresenter;
-import timber.log.Timber;
 import us.nineworlds.serenity.R;
 import us.nineworlds.serenity.common.rest.Types;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
@@ -32,7 +28,8 @@ import us.nineworlds.serenity.ui.util.ImageUtils;
 import us.nineworlds.serenity.ui.views.mvp.MvpFrameLayout;
 import us.nineworlds.serenity.widgets.RoundedImageView;
 
-public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOverlayContract.StatusOverlayView {
+public class StatusOverlayFrameLayout extends MvpFrameLayout
+    implements StatusOverlayContract.StatusOverlayView {
 
   @InjectPresenter StatusOverlayPresenter presenter;
 
@@ -55,13 +52,17 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     init();
   }
 
-  public StatusOverlayFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+  public StatusOverlayFrameLayout(
+      @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     init();
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  public StatusOverlayFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr,
+  public StatusOverlayFrameLayout(
+      @NonNull Context context,
+      @Nullable AttributeSet attrs,
+      @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
     init();
@@ -79,11 +80,13 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     posterInProgressIndicator = findViewById(R.id.posterInprogressIndicator);
   }
 
-  @Override protected MvpPresenter getPresenter() {
+  @Override
+  protected MvpPresenter getPresenter() {
     return presenter;
   }
 
-  @Override public void setTag(Object tag) {
+  @Override
+  public void setTag(Object tag) {
     super.setTag(tag);
     if (tag instanceof VideoContentInfo) {
       VideoContentInfo videoContentInfo = (VideoContentInfo) tag;
@@ -100,20 +103,23 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     }
   }
 
-  @Override public void reset() {
+  @Override
+  public void reset() {
     posterWatchedIndicator.setVisibility(View.INVISIBLE);
     posterInProgressIndicator.setVisibility(View.INVISIBLE);
     posterOverlayTitle.setVisibility(View.INVISIBLE);
   }
 
-  @Override public void initMvp() {
+  @Override
+  public void initMvp() {
     if (presenter == null) {
       getMvpDelegate().onCreate();
       getMvpDelegate().onAttach();
     }
   }
 
-  @Override public void toggleProgressIndicator(int dividend, int divisor) {
+  @Override
+  public void toggleProgressIndicator(int dividend, int divisor) {
     final float percentWatched = Float.valueOf(dividend) / Float.valueOf(divisor);
 
     int progress = Float.valueOf(percentWatched * 100).intValue();
@@ -135,9 +141,11 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     populatePosterImage(pi.getImageURL() + "?MaxHeight=" + height + "&MaxWidth=" + width);
   }
 
-  @Override public void populatePosterImage(String url) {
+  @Override
+  public void populatePosterImage(String url) {
     ColorDrawable colorDrawable =
-        new ColorDrawable(ContextCompat.getColor(roundedImageView.getContext(), android.R.color.black));
+        new ColorDrawable(
+            ContextCompat.getColor(roundedImageView.getContext(), android.R.color.black));
 
     Glide.with(getContext())
         .load(url)
@@ -148,11 +156,13 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
         .into(roundedImageView);
   }
 
-  @Override public void toggleWatchedIndicator(VideoContentInfo contentInfo) {
+  @Override
+  public void toggleWatchedIndicator(VideoContentInfo contentInfo) {
     posterWatchedIndicator.setVisibility(View.INVISIBLE);
 
     if (contentInfo.isPartiallyWatched()) {
-      ImageUtils.toggleProgressIndicator(this, contentInfo.getResumeOffset(), contentInfo.getDuration());
+      ImageUtils.toggleProgressIndicator(
+          this, contentInfo.getResumeOffset(), contentInfo.getDuration());
       return;
     }
 
@@ -162,17 +172,24 @@ public class StatusOverlayFrameLayout extends MvpFrameLayout implements StatusOv
     }
   }
 
-  @Override public void createImage(VideoContentInfo pi, int imageWidth, int imageHeight, RecyclerView.LayoutManager layoutManager) {
+  @Override
+  public void createImage(
+      VideoContentInfo pi,
+      int imageWidth,
+      int imageHeight,
+      RecyclerView.LayoutManager layoutManager) {
     initPosterMetaData(pi, imageWidth, imageHeight);
 
-    setLayoutParams(layoutManager.generateLayoutParams(new RecyclerView.LayoutParams(imageWidth, imageHeight)));
+    setLayoutParams(
+        layoutManager.generateLayoutParams(new RecyclerView.LayoutParams(imageWidth, imageHeight)));
   }
 
   public void createImage(VideoContentInfo pi, int imageWidth, int imageHeight) {
     initPosterMetaData(pi, imageWidth, imageHeight);
   }
 
-  @Override public void refresh() {
+  @Override
+  public void refresh() {
     presenter.refresh();
   }
 }

@@ -7,6 +7,7 @@ import assertk.assertions.isNotEmpty
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
+import java.util.UUID
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -18,84 +19,83 @@ import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.emby.model.Directory
 import us.nineworlds.serenity.emby.model.MediaContainer
 import us.nineworlds.serenity.test.InjectingTest
-import java.util.UUID
 
 @RunWith(RobolectricTestRunner::class)
 class CategoryMediaContainerTest : InjectingTest() {
 
-  private val mockMediaContainer: MediaContainer = mockk(relaxed = true)
+    private val mockMediaContainer: MediaContainer = mockk(relaxed = true)
 
-  private lateinit var directories: List<Directory>
+    private lateinit var directories: List<Directory>
 
-  private lateinit var categoryMediaContainer: CategoryMediaContainer
+    private lateinit var categoryMediaContainer: CategoryMediaContainer
 
-  @Before
-  override fun setUp() {
-    super.setUp()
+    @Before
+    override fun setUp() {
+        super.setUp()
 
-    categoryMediaContainer = CategoryMediaContainer(mockMediaContainer)
+        categoryMediaContainer = CategoryMediaContainer(mockMediaContainer)
 
-    directories = (0..2).map { i ->
-      Directory().apply {
-        key = UUID.randomUUID().toString()
-        title = "Title No: $i"
-        secondary = if (i % 2 == 0) 1 else 0
-      }
+        directories = (0..2).map { i ->
+            Directory().apply {
+                key = UUID.randomUUID().toString()
+                title = "Title No: $i"
+                secondary = if (i % 2 == 0) 1 else 0
+            }
+        }
     }
-  }
 
-  @After
-  fun tearDown() {
-    clearAllMocks()
-  }
+    @After
+    fun tearDown() {
+        clearAllMocks()
+    }
 
-  override fun installTestModules() {
-    scope.installTestModules(MockkTestingModule(), TestModule())
-  }
+    override fun installTestModules() {
+        scope.installTestModules(MockkTestingModule(), TestModule())
+    }
 
-  @Test
-  fun `create categories does not return an empty categories list`() {
-    every { mockMediaContainer.directories } returns directories
+    @Test
+    fun `create categories does not return an empty categories list`() {
+        every { mockMediaContainer.directories } returns directories
 
-    val result = categoryMediaContainer.createCategories()
+        val result = categoryMediaContainer.createCategories()
 
-    assertThat(result).isNotEmpty()
-  }
+        assertThat(result).isNotEmpty()
+    }
 
-  @Test
-  fun `create categories creates a valid category`() {
-    every { mockMediaContainer.directories } returns directories
+    @Test
+    fun `create categories creates a valid category`() {
+        every { mockMediaContainer.directories } returns directories
 
-    val result = categoryMediaContainer.createCategories()
-    val category = result[0]
+        val result = categoryMediaContainer.createCategories()
+        val category = result[0]
 
-    assertThat(category.category).isEqualTo(directories[0].key)
-  }
+        assertThat(category.category).isEqualTo(directories[0].key)
+    }
 
-  @Test
-  fun `create categories creates expected detail`() {
-    every { mockMediaContainer.directories } returns directories
+    @Test
+    fun `create categories creates expected detail`() {
+        every { mockMediaContainer.directories } returns directories
 
-    val result = categoryMediaContainer.createCategories()
-    val category = result[0]
+        val result = categoryMediaContainer.createCategories()
+        val category = result[0]
 
-    assertThat(category.categoryDetail).isEqualTo(directories[0].title)
-  }
+        assertThat(category.categoryDetail).isEqualTo(directories[0].title)
+    }
 
-  @Test
-  fun `create categories creates expected level for a single level entry`() {
-    every { mockMediaContainer.directories } returns directories
+    @Test
+    fun `create categories creates expected level for a single level entry`() {
+        every { mockMediaContainer.directories } returns directories
 
-    val result = categoryMediaContainer.createCategories()
-    val category = result[0]
+        val result = categoryMediaContainer.createCategories()
+        val category = result[0]
 
-    assertThat(category.level).isEqualTo(directories[0].secondary)
-  }
+        assertThat(category.level).isEqualTo(directories[0].secondary)
+    }
 
     class TestModule : Module() {
         init {
             bind(SerenityClient::class.java).toInstance(mockk())
-            bind( Resources::class.java).toInstance(mockk())
+            bind(Resources::class.java).toInstance(mockk())
         }
     }
 }

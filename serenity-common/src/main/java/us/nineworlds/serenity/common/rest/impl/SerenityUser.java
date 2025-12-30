@@ -22,23 +22,28 @@ public class SerenityUser implements us.nineworlds.serenity.common.rest.Serenity
     return new Builder();
   }
 
-  @Override public String getUserName() {
+  @Override
+  public String getUserName() {
     return userName;
   }
 
-  @Override public String getUserId() {
+  @Override
+  public String getUserId() {
     return userId;
   }
 
-  @Override public String getAccessToken() {
+  @Override
+  public String getAccessToken() {
     return accessToken;
   }
 
-  @Override public boolean hasPassword() {
+  @Override
+  public boolean hasPassword() {
     return hasPassword;
   }
 
-  @Override public Server getUserServer() {
+  @Override
+  public Server getUserServer() {
     return serverInfo;
   }
 

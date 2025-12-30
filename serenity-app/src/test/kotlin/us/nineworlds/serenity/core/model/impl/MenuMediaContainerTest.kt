@@ -26,64 +26,64 @@ import us.nineworlds.serenity.test.InjectingTest
 @RunWith(RobolectricTestRunner::class)
 class MenuMediaContainerTest : InjectingTest() {
 
-  private val mockMediaContainer: IMediaContainer = mockk()
-  private val mockDirectory: IDirectory = mockk()
+    private val mockMediaContainer: IMediaContainer = mockk()
+    private val mockDirectory: IDirectory = mockk()
 
-  private lateinit var menuMediaContainer: MenuMediaContainer
-  private lateinit var mockDirectories: MutableList<IDirectory>
+    private lateinit var menuMediaContainer: MenuMediaContainer
+    private lateinit var mockDirectories: MutableList<IDirectory>
 
-  @Before
-  override fun setUp() {
-    super.setUp()
-    mockDirectories = mutableListOf()
+    @Before
+    override fun setUp() {
+        super.setUp()
+        mockDirectories = mutableListOf()
 
-    every { mockMediaContainer.directories } returns mockDirectories
+        every { mockMediaContainer.directories } returns mockDirectories
 
-    menuMediaContainer = MenuMediaContainer(mockMediaContainer)
-    scope.inject(menuMediaContainer)
-  }
-
-  @After
-  fun tearDown() {
-    clearAllMocks()
-  }
-
-  @Test
-  fun `create menu items does not return null`() {
-    assertThat(menuMediaContainer.createMenuItems()).isNotNull()
-  }
-
-  @Test
-  fun `create menu items returns one movie menu item`() {
-    demandMovieMenuItem()
-
-    mockDirectories.add(mockDirectory)
-
-    val menuItems = menuMediaContainer.createMenuItems()
-    assertThat(menuItems).hasSize(2)
-  }
-
-  @Test
-  fun `create menu items always returns settings menu item`() {
-    val menuItems = menuMediaContainer.createMenuItems()
-
-    assertThat(menuItems.any { it.type == "settings" }).isTrue()
-  }
-
-  private fun demandMovieMenuItem() {
-    every { mockDirectory.type } returns "movie"
-    every { mockDirectory.title } returns "title"
-    every { mockDirectory.key } returns "1"
-  }
-
-  override fun installTestModules() {
-    scope.installTestModules(MockkTestingModule(), TestModule())
-  }
-
-  inner class TestModule : Module() {
-    init {
-      bind(SharedPreferences::class.java).toInstance(PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext<Application>()))
-      bind(Resources::class.java).toInstance(ApplicationProvider.getApplicationContext<Application>().resources)
+        menuMediaContainer = MenuMediaContainer(mockMediaContainer)
+        scope.inject(menuMediaContainer)
     }
-  }
+
+    @After
+    fun tearDown() {
+        clearAllMocks()
+    }
+
+    @Test
+    fun `create menu items does not return null`() {
+        assertThat(menuMediaContainer.createMenuItems()).isNotNull()
+    }
+
+    @Test
+    fun `create menu items returns one movie menu item`() {
+        demandMovieMenuItem()
+
+        mockDirectories.add(mockDirectory)
+
+        val menuItems = menuMediaContainer.createMenuItems()
+        assertThat(menuItems).hasSize(2)
+    }
+
+    @Test
+    fun `create menu items always returns settings menu item`() {
+        val menuItems = menuMediaContainer.createMenuItems()
+
+        assertThat(menuItems.any { it.type == "settings" }).isTrue()
+    }
+
+    private fun demandMovieMenuItem() {
+        every { mockDirectory.type } returns "movie"
+        every { mockDirectory.title } returns "title"
+        every { mockDirectory.key } returns "1"
+    }
+
+    override fun installTestModules() {
+        scope.installTestModules(MockkTestingModule(), TestModule())
+    }
+
+    inner class TestModule : Module() {
+        init {
+            bind(SharedPreferences::class.java).toInstance(PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext<Application>()))
+            bind(Resources::class.java).toInstance(ApplicationProvider.getApplicationContext<Application>().resources)
+        }
+    }
 }

@@ -14,94 +14,94 @@ import org.robolectric.android.controller.ActivityController
 @RunWith(AndroidJUnit4::class)
 class MvpAppCompatActivityTest {
 
-  private lateinit var controller: ActivityController<TestMvpAppCompatActivity>
+    private lateinit var controller: ActivityController<TestMvpAppCompatActivity>
 
-  // A test-only subclass to allow mocking the delegate
-  class TestMvpAppCompatActivity : MvpAppCompatActivity() {
-    val mockDelegate: MvpDelegate<MvpAppCompatActivity> = mockk(relaxed = true)
-    override fun getMvpDelegate(): MvpDelegate<*> = mockDelegate
-  }
-
-  @After
-  fun tearDown() {
-    if (::controller.isInitialized) {
-      controller.destroy()
+    // A test-only subclass to allow mocking the delegate
+    class TestMvpAppCompatActivity : MvpAppCompatActivity() {
+        val mockDelegate: MvpDelegate<MvpAppCompatActivity> = mockk(relaxed = true)
+        override fun getMvpDelegate(): MvpDelegate<*> = mockDelegate
     }
-    clearAllMocks()
-  }
 
-  @Test
-  fun `onCreate calls delegate onCreate`() {
-    controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create()
-    val activity = controller.get()
+    @After
+    fun tearDown() {
+        if (::controller.isInitialized) {
+            controller.destroy()
+        }
+        clearAllMocks()
+    }
 
-    verify { activity.mockDelegate.onCreate(any()) }
-  }
+    @Test
+    fun `onCreate calls delegate onCreate`() {
+        controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create()
+        val activity = controller.get()
 
-  @Test
-  fun `onStart calls delegate onAttach`() {
-    controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create().start()
-    val activity = controller.get()
+        verify { activity.mockDelegate.onCreate(any()) }
+    }
 
-    verify { activity.mockDelegate.onAttach() }
-  }
+    @Test
+    fun `onStart calls delegate onAttach`() {
+        controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create().start()
+        val activity = controller.get()
 
-  @Test
-  fun `onResume calls delegate onAttach`() {
-    controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create().start().resume()
-    val activity = controller.get()
+        verify { activity.mockDelegate.onAttach() }
+    }
 
-    // onAttach is called by both onStart and onResume
-    verify(exactly = 2) { activity.mockDelegate.onAttach() }
-  }
+    @Test
+    fun `onResume calls delegate onAttach`() {
+        controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create().start().resume()
+        val activity = controller.get()
 
-  @Test
-  fun `onSaveInstanceState calls delegate onSaveInstanceState and onDetach`() {
-    controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create().start().resume()
-    val activity = controller.get()
-    val outState = Bundle()
+        // onAttach is called by both onStart and onResume
+        verify(exactly = 2) { activity.mockDelegate.onAttach() }
+    }
 
-    controller.saveInstanceState(outState)
+    @Test
+    fun `onSaveInstanceState calls delegate onSaveInstanceState and onDetach`() {
+        controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create().start().resume()
+        val activity = controller.get()
+        val outState = Bundle()
 
-    verify { activity.mockDelegate.onSaveInstanceState(outState) }
-    verify { activity.mockDelegate.onDetach() }
-  }
+        controller.saveInstanceState(outState)
 
-  @Test
-  fun `onStop calls delegate onDetach`() {
-    controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create().start().resume().stop()
-    val activity = controller.get()
+        verify { activity.mockDelegate.onSaveInstanceState(outState) }
+        verify { activity.mockDelegate.onDetach() }
+    }
 
-    // onDetach is called once by onStop
-    verify(exactly = 1) { activity.mockDelegate.onDetach() }
-  }
+    @Test
+    fun `onStop calls delegate onDetach`() {
+        controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create().start().resume().stop()
+        val activity = controller.get()
 
-  @Test
-  fun `onDestroy calls delegate onDestroyView and onDestroy when finishing`() {
-    val controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create().start().resume()
-    val activity = controller.get()
+        // onDetach is called once by onStop
+        verify(exactly = 1) { activity.mockDelegate.onDetach() }
+    }
 
-    activity.finish()
-    controller.destroy()
+    @Test
+    fun `onDestroy calls delegate onDestroyView and onDestroy when finishing`() {
+        val controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create().start().resume()
+        val activity = controller.get()
 
-    verify { activity.mockDelegate.onDestroyView() }
-    verify { activity.mockDelegate.onDestroy() }
-  }
+        activity.finish()
+        controller.destroy()
 
-  @Test
-  fun `onDestroy calls only onDestroyView when not finishing`() {
-    // 1. Create the initial activity and grab its mock delegate
-    val controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create().start().resume()
-    val activity = controller.get()
-    val mockDelegate = activity.mockDelegate
+        verify { activity.mockDelegate.onDestroyView() }
+        verify { activity.mockDelegate.onDestroy() }
+    }
 
-    // 2. Simulate a configuration change, which destroys the old activity instance
-    controller.recreate()
+    @Test
+    fun `onDestroy calls only onDestroyView when not finishing`() {
+        // 1. Create the initial activity and grab its mock delegate
+        val controller = Robolectric.buildActivity(TestMvpAppCompatActivity::class.java).create().start().resume()
+        val activity = controller.get()
+        val mockDelegate = activity.mockDelegate
 
-    // 3. Verify on the original delegate
-    verify { mockDelegate.onDestroyView() }
-    verify(exactly = 0) { mockDelegate.onDestroy() }
+        // 2. Simulate a configuration change, which destroys the old activity instance
+        controller.recreate()
 
-    controller.destroy()
-  }
+        // 3. Verify on the original delegate
+        verify { mockDelegate.onDestroyView() }
+        verify(exactly = 0) { mockDelegate.onDestroy() }
+
+        controller.destroy()
+    }
 }

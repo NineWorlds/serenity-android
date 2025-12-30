@@ -37,6 +37,7 @@ import androidx.media3.database.ExoDatabaseProvider
 import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor
 import androidx.media3.datasource.cache.SimpleCache
 import com.google.firebase.analytics.FirebaseAnalytics
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.danlew.android.joda.JodaTimeAndroid
@@ -59,7 +60,6 @@ import us.nineworlds.serenity.injection.modules.AndroidModule
 import us.nineworlds.serenity.injection.modules.LoginModule
 import us.nineworlds.serenity.injection.modules.MainPresenterModule
 import us.nineworlds.serenity.injection.modules.SerenityModule
-import javax.inject.Inject
 
 /**
  * Global manager for the Serenity application
@@ -95,8 +95,12 @@ open class SerenityApplication : Application() {
 
     protected open fun inject() {
         val scope = Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE)
-        scope.installModules(AndroidModule(this), SerenityModule(), LoginModule(),
-            MainPresenterModule())
+        scope.installModules(
+            AndroidModule(this),
+            SerenityModule(),
+            LoginModule(),
+            MainPresenterModule()
+        )
         Toothpick.inject(this, scope)
     }
 
@@ -117,9 +121,10 @@ open class SerenityApplication : Application() {
     protected open fun setDefaultPreferences() {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, true)
         val editor = preferences.edit()
-        if (androidHelper.isAndroidTV
-                || androidHelper.isAmazonFireTV
-                || androidHelper.isLeanbackSupported) {
+        if (androidHelper.isAndroidTV ||
+            androidHelper.isAmazonFireTV ||
+            androidHelper.isLeanbackSupported
+        ) {
             editor.putBoolean("serenity_tv_mode", true)
             editor.apply()
         }
@@ -166,5 +171,4 @@ open class SerenityApplication : Application() {
 
         lateinit var simpleCache: SimpleCache
     }
-
 }

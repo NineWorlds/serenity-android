@@ -34,215 +34,283 @@ public class Directory implements IDirectory {
   private List<ILocation> locations;
   private String key;
 
-  @Nullable @Override public String getThumb() {
+  @Nullable
+  @Override
+  public String getThumb() {
     return thumb;
   }
 
-  @Override public void setThumb(@Nullable String thumb) {
+  @Override
+  public void setThumb(@Nullable String thumb) {
     this.thumb = thumb;
   }
 
-  @Nullable @Override public String getBanner() {
+  @Nullable
+  @Override
+  public String getBanner() {
     return banner;
   }
 
-  @Override public void setBanner(@Nullable String banner) {
+  @Override
+  public void setBanner(@Nullable String banner) {
     this.banner = banner;
   }
 
-  @Override public int getSecondary() {
+  @Override
+  public int getSecondary() {
     return secondary;
   }
 
-  @Override public void setSecondary(int secondary) {
+  @Override
+  public void setSecondary(int secondary) {
     this.secondary = secondary;
   }
 
-  @Override public List<IGenre> getGenres() {
+  @Override
+  public List<IGenre> getGenres() {
     return generes;
   }
 
-  @Override public void setGenres(List<IGenre> genres) {
+  @Override
+  public void setGenres(List<IGenre> genres) {
     this.generes = genres;
   }
 
-  @Nullable @Override public String getRatingKey() {
+  @Nullable
+  @Override
+  public String getRatingKey() {
     return ratingKey;
   }
 
-  @Override public void setRatingKey(@Nullable String ratingKey) {
+  @Override
+  public void setRatingKey(@Nullable String ratingKey) {
     this.ratingKey = ratingKey;
   }
 
-  @Override public String getStudio() {
+  @Override
+  public String getStudio() {
     return studio;
   }
 
-  @Override public void setStudio(@Nullable String studio) {
+  @Override
+  public void setStudio(@Nullable String studio) {
     this.studio = studio;
   }
 
-  @Override public String getRating() {
+  @Override
+  public String getRating() {
     return rating;
   }
 
-  @Override public void setRating(@Nullable String rating) {
+  @Override
+  public void setRating(@Nullable String rating) {
     this.rating = rating;
   }
 
-  @Override public String getYear() {
+  @Override
+  public String getYear() {
     return year;
   }
 
-  @Override public void setYear(@Nullable String year) {
+  @Override
+  public void setYear(@Nullable String year) {
     this.year = year;
   }
 
-  @Nullable @Override public String getContentRating() {
+  @Nullable
+  @Override
+  public String getContentRating() {
     return contentRating;
   }
 
-  @Override public void setContentRating(@Nullable String contentRating) {
+  @Override
+  public void setContentRating(@Nullable String contentRating) {
     this.contentRating = contentRating;
   }
 
-  @Override public String getSummary() {
+  @Override
+  public String getSummary() {
     return summary;
   }
 
-  @Override public void setSummary(@Nullable String summary) {
+  @Override
+  public void setSummary(@Nullable String summary) {
     this.summary = summary;
   }
 
-  @Nullable @Override public String getLeafCount() {
+  @Nullable
+  @Override
+  public String getLeafCount() {
     return leafCount;
   }
 
-  @Override public void setLeafCount(@Nullable String leafCount) {
+  @Override
+  public void setLeafCount(@Nullable String leafCount) {
     this.leafCount = leafCount;
   }
 
-  @Override public String getViewedLeafCount() {
+  @Override
+  public String getViewedLeafCount() {
     return viewedLeafCount;
   }
 
-  @Override public void setViewedLeafCount(String viewedLeafCount) {
+  @Override
+  public void setViewedLeafCount(String viewedLeafCount) {
     this.viewedLeafCount = viewedLeafCount;
   }
 
-  @Nullable @Override public String getTitle() {
+  @Nullable
+  @Override
+  public String getTitle() {
     return title;
   }
 
-  @Override public void setTitle(@Nullable String title) {
+  @Override
+  public void setTitle(@Nullable String title) {
     this.title = title;
   }
 
-  @Nullable @Override public String getArt() {
+  @Nullable
+  @Override
+  public String getArt() {
     return art;
   }
 
-  @Override public void setArt(@Nullable String art) {
+  @Override
+  public void setArt(@Nullable String art) {
     this.art = art;
   }
 
-  @Override public int getRefreshing() {
+  @Override
+  public int getRefreshing() {
     return refreshing;
   }
 
-  @Override public void setRefreshing(int refreshing) {
+  @Override
+  public void setRefreshing(int refreshing) {
     this.refreshing = refreshing;
   }
 
-  @Nullable @Override public String getType() {
+  @Nullable
+  @Override
+  public String getType() {
     return type;
   }
 
-  @Override public void setType(@Nullable String type) {
+  @Override
+  public void setType(@Nullable String type) {
     this.type = type;
   }
 
-  @Nullable @Override public String getAgent() {
+  @Nullable
+  @Override
+  public String getAgent() {
     return agent;
   }
 
-  @Override public void setAgent(@Nullable String agent) {
+  @Override
+  public void setAgent(@Nullable String agent) {
     this.agent = agent;
   }
 
-  @Nullable @Override public String getScanner() {
+  @Nullable
+  @Override
+  public String getScanner() {
     return scanner;
   }
 
-  @Override public void setScanner(@Nullable String scanner) {
+  @Override
+  public void setScanner(@Nullable String scanner) {
     this.scanner = scanner;
   }
 
-  @Nullable @Override public String getLanguage() {
+  @Nullable
+  @Override
+  public String getLanguage() {
     return language;
   }
 
-  @Override public void setLanguage(@Nullable String language) {
+  @Override
+  public void setLanguage(@Nullable String language) {
     this.language = language;
   }
 
-  @Nullable @Override public String getUuid() {
+  @Nullable
+  @Override
+  public String getUuid() {
     return uuid;
   }
 
-  @Override public void setUuid(@Nullable String uuid) {
+  @Override
+  public void setUuid(@Nullable String uuid) {
     this.uuid = uuid;
   }
 
-  @Override public long getUpdatedAt() {
+  @Override
+  public long getUpdatedAt() {
     return updatedAt;
   }
 
-  @Override public void setUpdatedAt(long updatedAt) {
+  @Override
+  public void setUpdatedAt(long updatedAt) {
     this.updatedAt = updatedAt;
   }
 
-  @Override public long getCreatedAt() {
+  @Override
+  public long getCreatedAt() {
     return createdAt;
   }
 
-  @Override public void setCreatedAt(long createdAt) {
+  @Override
+  public void setCreatedAt(long createdAt) {
     this.createdAt = createdAt;
   }
 
-  @Nullable @Override public List<ILocation> getLocations() {
+  @Nullable
+  @Override
+  public List<ILocation> getLocations() {
     return locations;
   }
 
-  @Override public void setLocation(@Nullable  List<ILocation> location) {
+  @Override
+  public void setLocation(@Nullable List<ILocation> location) {
     this.locations = location;
   }
 
-  @Nullable @Override public String getPrompt() {
+  @Nullable
+  @Override
+  public String getPrompt() {
     return prompt;
   }
 
-  @Override public void setPrompt(@Nullable String prompt) {
+  @Override
+  public void setPrompt(@Nullable String prompt) {
     this.prompt = prompt;
   }
 
-  @Nullable @Override public String getSearch() {
+  @Nullable
+  @Override
+  public String getSearch() {
     return search;
   }
 
-  @Override public void setSearch(String search) {
+  @Override
+  public void setSearch(String search) {
     this.search = search;
   }
 
-  @Override public void setLocations(List<ILocation> locations) {
+  @Override
+  public void setLocations(List<ILocation> locations) {
     this.locations = locations;
   }
 
-  @Override public String getKey() {
+  @Override
+  public String getKey() {
     return key;
   }
 
-  @Override public void setKey(String key) {
+  @Override
+  public void setKey(String key) {
     this.key = key;
   }
 }

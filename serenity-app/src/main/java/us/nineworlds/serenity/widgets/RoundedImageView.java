@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
-
 import us.nineworlds.serenity.R;
 
 public class RoundedImageView extends ImageView {
@@ -20,8 +19,8 @@ public class RoundedImageView extends ImageView {
   public static final float DEFAULT_RADIUS = 0f;
   public static final float DEFAULT_BORDER_WIDTH = 0f;
   private static final ScaleType[] SCALE_TYPES = {
-      ScaleType.MATRIX, ScaleType.FIT_XY, ScaleType.FIT_START, ScaleType.FIT_CENTER,
-      ScaleType.FIT_END, ScaleType.CENTER, ScaleType.CENTER_CROP, ScaleType.CENTER_INSIDE
+    ScaleType.MATRIX, ScaleType.FIT_XY, ScaleType.FIT_START, ScaleType.FIT_CENTER,
+    ScaleType.FIT_END, ScaleType.CENTER, ScaleType.CENTER_CROP, ScaleType.CENTER_INSIDE
   };
 
   private float cornerRadius = DEFAULT_RADIUS;
@@ -82,7 +81,8 @@ public class RoundedImageView extends ImageView {
     a.recycle();
   }
 
-  @Override protected void drawableStateChanged() {
+  @Override
+  protected void drawableStateChanged() {
     super.drawableStateChanged();
     invalidate();
   }
@@ -93,18 +93,19 @@ public class RoundedImageView extends ImageView {
    * @attr ref android.R.styleable#ImageView_scaleType
    * @see android.widget.ImageView.ScaleType
    */
-  @Override public ScaleType getScaleType() {
+  @Override
+  public ScaleType getScaleType() {
     return mScaleType;
   }
 
   /**
-   * Controls how the image should be resized or moved to match the size of
-   * this ImageView.
+   * Controls how the image should be resized or moved to match the size of this ImageView.
    *
    * @param scaleType The desired scaling mode.
    * @attr ref android.R.styleable#ImageView_scaleType
    */
-  @Override public void setScaleType(ScaleType scaleType) {
+  @Override
+  public void setScaleType(ScaleType scaleType) {
     assert scaleType != null;
 
     if (mScaleType != scaleType) {
@@ -131,21 +132,24 @@ public class RoundedImageView extends ImageView {
     }
   }
 
-  @Override public void setImageDrawable(Drawable drawable) {
+  @Override
+  public void setImageDrawable(Drawable drawable) {
     mResource = 0;
     mDrawable = RoundedDrawable.fromDrawable(drawable);
     updateDrawableAttrs();
     super.setImageDrawable(mDrawable);
   }
 
-  @Override public void setImageBitmap(Bitmap bm) {
+  @Override
+  public void setImageBitmap(Bitmap bm) {
     mResource = 0;
     mDrawable = RoundedDrawable.fromBitmap(bm);
     updateDrawableAttrs();
     super.setImageDrawable(mDrawable);
   }
 
-  @Override public void setImageResource(int resId) {
+  @Override
+  public void setImageResource(int resId) {
     if (mResource != resId) {
       mResource = resId;
       mDrawable = resolveResource();
@@ -154,7 +158,8 @@ public class RoundedImageView extends ImageView {
     }
   }
 
-  @Override public void setImageURI(Uri uri) {
+  @Override
+  public void setImageURI(Uri uri) {
     super.setImageURI(uri);
     setImageDrawable(getDrawable());
   }
@@ -179,7 +184,8 @@ public class RoundedImageView extends ImageView {
     return RoundedDrawable.fromDrawable(d);
   }
 
-  @Override public void setBackground(Drawable background) {
+  @Override
+  public void setBackground(Drawable background) {
     setBackgroundDrawable(background);
   }
 
@@ -202,7 +208,8 @@ public class RoundedImageView extends ImageView {
     }
 
     if (drawable instanceof RoundedDrawable) {
-      ((RoundedDrawable) drawable).setScaleType(mScaleType)
+      ((RoundedDrawable) drawable)
+          .setScaleType(mScaleType)
           .setCornerRadius(cornerRadius)
           .setBorderWidth(borderWidth)
           .setBorderColor(borderColor)
@@ -216,7 +223,9 @@ public class RoundedImageView extends ImageView {
     }
   }
 
-  @Override @Deprecated public void setBackgroundDrawable(Drawable background) {
+  @Override
+  @Deprecated
+  public void setBackgroundDrawable(Drawable background) {
     mBackgroundDrawable = background;
     updateBackgroundDrawableAttrs(true);
     super.setBackgroundDrawable(mBackgroundDrawable);

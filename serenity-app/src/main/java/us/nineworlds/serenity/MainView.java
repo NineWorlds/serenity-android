@@ -6,9 +6,9 @@ import moxy.viewstate.strategy.StateStrategyType;
 
 public interface MainView extends MvpView {
 
-    @StateStrategyType(AddToEndSingleStrategy.class)
-    void hideMultipleUsersOption();
+  @StateStrategyType(AddToEndSingleStrategy.class)
+  void hideMultipleUsersOption();
 
-    @StateStrategyType(AddToEndSingleStrategy.class)
-    void showMultipleUsersOption();
+  @StateStrategyType(AddToEndSingleStrategy.class)
+  void showMultipleUsersOption();
 }
