@@ -3,6 +3,9 @@ package us.nineworlds.serenity.jellyfin.server
 import app.cash.turbine.turbineScope
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.net.SocketException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,14 +23,10 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.shadows.ShadowLog
 import timber.log.Timber
 import us.nineworlds.serenity.common.channels.ServerChannel
-import java.net.DatagramPacket
-import java.net.DatagramSocket
-import java.net.SocketException
 
 @RunWith(RobolectricTestRunner::class)
 class JellyfinServerDiscoverTest {
-
-    private lateinit var serverDiscovery : JellyfinServerDiscover
+    private lateinit var serverDiscovery: JellyfinServerDiscover
     private lateinit var fakeServer: FakeJellyfinServer
 
     @Before
@@ -57,7 +56,6 @@ class JellyfinServerDiscoverTest {
             servers.cancelAndIgnoreRemainingEvents()
         }
     }
-
 }
 
 class FakeJellyfinServer {
@@ -75,20 +73,22 @@ class FakeJellyfinServer {
                     val packet = DatagramPacket(buf, buf.size)
                     socket?.receive(packet) ?: break
 
-                    val response = """
+                    val response =
+                        """
                         {
                            "Address": "http://127.0.0.1:8096",
                            "Id": "someid",
                            "Name": "Jellyfin Server"
                         }
-                    """.trimIndent()
+                        """.trimIndent()
 
-                    val responsePacket = DatagramPacket(
-                        response.toByteArray(),
-                        response.length,
-                        packet.address,
-                        packet.port
-                    )
+                    val responsePacket =
+                        DatagramPacket(
+                            response.toByteArray(),
+                            response.length,
+                            packet.address,
+                            packet.port
+                        )
                     socket?.send(responsePacket)
                 }
             } catch (e: SocketException) {

@@ -10,7 +10,6 @@ import us.nineworlds.serenity.emby.server.model.Item
 import us.nineworlds.serenity.emby.server.model.NameGuidPair
 
 class MediaContainerAdaptor {
-
     companion object {
         const val TICKS_PER_MILLISECOND: Long = 10000
     }
@@ -123,17 +122,17 @@ class MediaContainerAdaptor {
         return mediaContainer
     }
 
-    fun createSeaonsList(seaons: List<Item>): IMediaContainer {
-        return MediaContainer()
-    }
+    fun createSeaonsList(seaons: List<Item>): IMediaContainer = MediaContainer()
 
     fun createVideoList(videos: List<Item>, token: String? = null): IMediaContainer {
         val mediaContainer = MediaContainer()
         val serenityVideos = ArrayList<Video>()
         mediaContainer.size = videos.size
 
-        val items = videos.filter { item -> item.type != "Folder" }
-            .filterNot { item -> item.name == "TBA" }
+        val items =
+            videos
+                .filter { item -> item.type != "Folder" }
+                .filterNot { item -> item.name == "TBA" }
 
         for (item in items) {
             val video = Video()
@@ -163,13 +162,14 @@ class MediaContainerAdaptor {
             video.viewOffset = offset
             video.episode = item.episodeNumber
 
-            val container = if (item.container != null && item.container.contains(",")) {
-                item.container.substringBefore(",")
-            } else {
-                item.container
-            }
+            val container =
+                if (item.container != null && item.container.contains(",")) {
+                    item.container.substringBefore(",")
+                } else {
+                    item.container
+                }
             video.directPlayUrl =
-                "emby/Videos/${item.id}/stream.$container?static=true&X-Emby-Token=${token}"
+                "emby/Videos/${item.id}/stream.$container?static=true&X-Emby-Token=$token"
 
             if (item.runTimeTicks != null) {
                 val milliseconds = convertTicksToMilliseconds(item.runTimeTicks)

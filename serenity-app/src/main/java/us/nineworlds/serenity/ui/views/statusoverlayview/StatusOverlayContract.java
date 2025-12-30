@@ -1,16 +1,12 @@
 package us.nineworlds.serenity.ui.views.statusoverlayview;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import moxy.MvpView;
 import moxy.viewstate.strategy.AddToEndSingleStrategy;
 import moxy.viewstate.strategy.StateStrategyType;
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 
-/**
- * Created by dcarver on 10/10/17.
- */
-
+/** Created by dcarver on 10/10/17. */
 public interface StatusOverlayContract {
   interface StatusOverlayView extends MvpView {
 
@@ -30,7 +26,11 @@ public interface StatusOverlayContract {
     void toggleWatchedIndicator(VideoContentInfo contentInfo);
 
     @StateStrategyType(AddToEndSingleStrategy.class)
-    void createImage(VideoContentInfo pi, int imageWidth, int imageHeight, RecyclerView.LayoutManager layoutManager);
+    void createImage(
+        VideoContentInfo pi,
+        int imageWidth,
+        int imageHeight,
+        RecyclerView.LayoutManager layoutManager);
 
     @StateStrategyType(AddToEndSingleStrategy.class)
     void refresh();

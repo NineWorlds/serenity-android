@@ -20,36 +20,36 @@ import us.nineworlds.serenity.test.InjectingTest
 @RunWith(RobolectricTestRunner::class)
 class MainMenuTextViewAdapterTest : InjectingTest() {
 
-  private val mockPresenter: MainMenuPresenter = mockk(relaxed = true)
-  private lateinit var adapter: MainMenuTextViewAdapter
+    private val mockPresenter: MainMenuPresenter = mockk(relaxed = true)
+    private lateinit var adapter: MainMenuTextViewAdapter
 
-  @Before
-  override fun setUp() {
-    super.setUp()
-    adapter = MainMenuTextViewAdapter(mockPresenter)
-  }
-
-  @After
-  fun tearDown() {
-    clearAllMocks()
-  }
-
-  @Test
-  fun `getItemAtPosition returns item at position zero when position is negative`() {
-    MainMenuTextViewAdapter.menuItems = listOf(MenuItem())
-
-    val result = adapter.getItemAtPosition(-1)
-
-    assertThat(result).isNotNull()
-  }
-
-  override fun installTestModules() {
-    scope.installTestModules(MockkTestingModule(), TestModule())
-  }
-
-  inner class TestModule : Module() {
-    init {
-      bind(SharedPreferences::class.java).toInstance(PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext()))
+    @Before
+    override fun setUp() {
+        super.setUp()
+        adapter = MainMenuTextViewAdapter(mockPresenter)
     }
-  }
+
+    @After
+    fun tearDown() {
+        clearAllMocks()
+    }
+
+    @Test
+    fun `getItemAtPosition returns item at position zero when position is negative`() {
+        MainMenuTextViewAdapter.menuItems = listOf(MenuItem())
+
+        val result = adapter.getItemAtPosition(-1)
+
+        assertThat(result).isNotNull()
+    }
+
+    override fun installTestModules() {
+        scope.installTestModules(MockkTestingModule(), TestModule())
+    }
+
+    inner class TestModule : Module() {
+        init {
+            bind(SharedPreferences::class.java).toInstance(PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext()))
+        }
+    }
 }

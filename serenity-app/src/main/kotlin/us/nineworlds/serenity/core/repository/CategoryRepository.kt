@@ -48,9 +48,9 @@ class CategoryRepository constructor(private val client: SerenityClient) {
         private const val MENU_TYPE_TVSHOWS = "tvshows"
     }
 
-    suspend fun fetchItemsByCategory(categoryId: String, itemId: String, type: String ): Result<List<VideoContentInfo>> = withContext(Dispatchers.IO) {
+    suspend fun fetchItemsByCategory(categoryId: String, itemId: String, type: String): Result<List<VideoContentInfo>> = withContext(Dispatchers.IO) {
         try {
-            val contentType = when(type) {
+            val contentType = when (type) {
                 MENU_TYPE_MOVIE, MENU_TYPE_MOVIES -> Types.MOVIES
                 MENU_TYPE_SHOW, MENU_TYPE_TVSHOWS -> Types.SERIES
                 else -> Types.UNKNOWN
@@ -61,8 +61,7 @@ class CategoryRepository constructor(private val client: SerenityClient) {
             val posterList: List<VideoContentInfo> = movies.createVideos()
             Success(posterList)
         } catch (ex: Exception) {
-           Error(ex)
+            Error(ex)
         }
     }
-
 }

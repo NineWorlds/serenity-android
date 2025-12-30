@@ -6,12 +6,10 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
-
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-
 import moxy.MvpDelegate;
 import moxy.MvpPresenter;
 
@@ -29,13 +27,17 @@ public abstract class MvpFrameLayout extends FrameLayout {
     initMvp();
   }
 
-  public MvpFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+  public MvpFrameLayout(
+      @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     initMvp();
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  public MvpFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr,
+  public MvpFrameLayout(
+      @NonNull Context context,
+      @Nullable AttributeSet attrs,
+      @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
     initMvp();
@@ -49,18 +51,21 @@ public abstract class MvpFrameLayout extends FrameLayout {
     }
   }
 
-  @Override protected void onAttachedToWindow() {
+  @Override
+  protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     getMvpDelegate().onCreate();
     getMvpDelegate().onAttach();
   }
 
-  @Override protected Parcelable onSaveInstanceState() {
+  @Override
+  protected Parcelable onSaveInstanceState() {
     getMvpDelegate().onSaveInstanceState();
     return super.onSaveInstanceState();
   }
 
-  @Override public void onDetachedFromWindow() {
+  @Override
+  public void onDetachedFromWindow() {
     super.onDetachedFromWindow();
     getMvpDelegate().onDetach();
     getMvpDelegate().onDestroyView();

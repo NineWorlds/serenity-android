@@ -14,59 +14,73 @@ public class Media implements IMedia {
   private String audioChannels;
   private List<IPart> videoParts;
 
-  @Override public String getAudioChannels() {
+  @Override
+  public String getAudioChannels() {
     return audioChannels;
   }
 
-  @Override public void setAudioChannels(String audioChannels) {
+  @Override
+  public void setAudioChannels(String audioChannels) {
     this.audioChannels = audioChannels;
   }
 
-  @Override public String getContainer() {
+  @Override
+  public String getContainer() {
     return container;
   }
 
-  @Override public void setContainer(String container) {
+  @Override
+  public void setContainer(String container) {
     this.container = container;
   }
 
-  @Override public List<IPart> getVideoPart() {
+  @Override
+  public List<IPart> getVideoPart() {
     return videoParts;
   }
 
-  @Override public void setVideoPart(List<IPart> videoParts) {
+  @Override
+  public void setVideoPart(List<IPart> videoParts) {
     this.videoParts = videoParts;
   }
 
-  @Override public String getAspectRatio() {
+  @Override
+  public String getAspectRatio() {
     return aspectRatio;
   }
 
-  @Override public void setAspectRatio(String aspectRatio) {
+  @Override
+  public void setAspectRatio(String aspectRatio) {
     this.aspectRatio = aspectRatio;
   }
 
-  @Override public String getAudioCodec() {
+  @Override
+  public String getAudioCodec() {
     return audioCodec;
   }
 
-  @Override public void setAudioCodec(String audioCodec) {
+  @Override
+  public void setAudioCodec(String audioCodec) {
     this.audioCodec = audioCodec;
   }
 
-  @Override public String getVideoCodec() {
+  @Override
+  public String getVideoCodec() {
     return videoCodec;
   }
 
-  @Override public void setVideoCodec(String videoCodec) {
+  @Override
+  public void setVideoCodec(String videoCodec) {
     this.videoCodec = videoCodec;
   }
 
-  @Override public String getVideoResolution() {
+  @Override
+  public String getVideoResolution() {
     return videoResolution;
   }
 
-  @Override public void setVideoResolution(String videoResolution) {
+  @Override
+  public void setVideoResolution(String videoResolution) {
     this.videoResolution = videoResolution;
   }
 }

@@ -5,5 +5,4 @@ public class InjectionConstants {
   public static final String APPLICATION_SCOPE = "Application Scope";
 
   public static final String ACTIVITY_SCOPE = "Activity Scope";
-
 }

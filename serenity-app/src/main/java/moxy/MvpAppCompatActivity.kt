@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
 @Suppress("unused")
-open class MvpAppCompatActivity : AppCompatActivity(), MvpDelegateHolder {
+open class MvpAppCompatActivity :
+    AppCompatActivity(),
+    MvpDelegateHolder {
 
     private val _mvpDelegate: MvpDelegate<out MvpAppCompatActivity> by lazy {
         MvpDelegate<MvpAppCompatActivity>(this)

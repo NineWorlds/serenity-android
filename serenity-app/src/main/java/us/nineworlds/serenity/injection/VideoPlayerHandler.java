@@ -18,5 +18,4 @@ package us.nineworlds.serenity.injection;
 import javax.inject.Qualifier;
 
 @Qualifier
-public @interface VideoPlayerHandler {
-}
+public @interface VideoPlayerHandler {}

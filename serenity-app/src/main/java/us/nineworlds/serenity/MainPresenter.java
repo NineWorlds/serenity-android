@@ -1,9 +1,7 @@
 package us.nineworlds.serenity;
 
 import android.content.Context;
-
 import javax.inject.Inject;
-
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
 import toothpick.Toothpick;
@@ -13,15 +11,13 @@ import us.nineworlds.serenity.common.rest.SerenityClient;
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
 
-  @Inject
-  SerenityClient client;
+  @Inject SerenityClient client;
 
   public MainPresenter() {
     Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
   }
 
-  public void clearCache(Context context) {
-  }
+  public void clearCache(Context context) {}
 
   public void showOrHideUserSelection() {
     if (client.supportsMultipleUsers()) {
@@ -30,5 +26,4 @@ public class MainPresenter extends MvpPresenter<MainView> {
       getViewState().hideMultipleUsersOption();
     }
   }
-
 }

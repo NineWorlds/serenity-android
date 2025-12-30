@@ -1,12 +1,9 @@
 package us.nineworlds.serenity.injection.modules.providers;
 
 import android.content.SharedPreferences;
-
 import java.util.LinkedList;
-
 import javax.inject.Inject;
 import javax.inject.Provider;
-
 import us.nineworlds.serenity.core.model.VideoContentInfo;
 import us.nineworlds.serenity.core.util.TimeUtil;
 import us.nineworlds.serenity.injection.ForVideoQueue;
@@ -18,7 +15,8 @@ public class VideoPlayerIntentUtilsProvider implements Provider<VideoPlayerInten
   @Inject protected SharedPreferences prefs;
   @Inject protected TimeUtil timeUtil;
 
-  @Override public VideoPlayerIntentUtils get() {
+  @Override
+  public VideoPlayerIntentUtils get() {
     return new VideoPlayerIntentUtils(videoQueue, prefs, timeUtil);
   }
 }

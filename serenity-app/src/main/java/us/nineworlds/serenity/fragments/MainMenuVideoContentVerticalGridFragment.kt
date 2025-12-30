@@ -11,6 +11,7 @@ import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import javax.inject.Inject
 import toothpick.Toothpick
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.annotations.InjectionConstants
@@ -21,8 +22,6 @@ import us.nineworlds.serenity.core.model.VideoCategory
 import us.nineworlds.serenity.ui.activity.leanback.details.DetailsActivity
 import us.nineworlds.serenity.ui.leanback.presenters.CategoryVideoPresenter
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils
-import javax.inject.Inject
-
 
 class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
 
@@ -33,17 +32,18 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
     private val videoContentAdapter = ArrayObjectAdapter(videoContentRowsPresenter)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
+        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
         super.onCreate(savedInstanceState)
         adapter = videoContentAdapter
 
         setOnItemViewClickedListener { _, item, _, _ ->
-          val videoCategory = item as VideoCategory
+            val videoCategory = item as VideoCategory
 
             when {
                 videoCategory.item.getType() == Types.EPISODE -> {
                     vpUtils.playVideo(requireActivity(), videoCategory.item, false)
                 }
+
                 videoCategory.type == Types.MOVIES -> {
                     val itemId = videoCategory.item.id()
                     val type = "movies"
@@ -52,6 +52,7 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
                     intent.putExtra("videoType", type)
                     requireActivity().startActivity(intent)
                 }
+
                 videoCategory.type == Types.SERIES -> {
                     val itemId = videoCategory.item.id()
                     val type = "tvshows"
@@ -83,16 +84,14 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
         }
         row?.let { row ->
             val adapter = row.adapter as ArrayObjectAdapter
-            adapter.setItems(contentList, object : DiffCallback<VideoCategory>() {
-                override fun areItemsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean {
-                    return oldItem.item.id() == newItem.item.id()
-                }
+            adapter.setItems(
+                contentList,
+                object : DiffCallback<VideoCategory>() {
+                    override fun areItemsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean = oldItem.item.id() == newItem.item.id()
 
-                override fun areContentsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean {
-                    return oldItem.equals(newItem)
+                    override fun areContentsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean = oldItem.equals(newItem)
                 }
-
-            } )
+            )
         }
     }
 

@@ -13,7 +13,6 @@ import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.databinding.LeanbackDetailsSummaryBinding
 import us.nineworlds.serenity.ui.util.ImageInfographicUtils
 
-
 class MoviePresenterViewHolder(private val binding: LeanbackDetailsSummaryBinding) : RowPresenter.ViewHolder(binding.root) {
 
     private val context = binding.root.context
@@ -35,8 +34,12 @@ class MoviePresenterViewHolder(private val binding: LeanbackDetailsSummaryBindin
         val bitmap = bmd.bitmap
         val bitmapResized = Bitmap.createScaledBitmap(bitmap, width, height, false)
 
-        binding.movieBrowserPosterTitle.setCompoundDrawablesWithIntrinsicBounds(null, null,
-                BitmapDrawable(context.resources, bitmapResized), null)
+        binding.movieBrowserPosterTitle.setCompoundDrawablesWithIntrinsicBounds(
+            null,
+            null,
+            BitmapDrawable(context.resources, bitmapResized),
+            null
+        )
 
         createInfoGraphic(videoInfo)
     }
@@ -90,8 +93,10 @@ class MoviePresenterViewHolder(private val binding: LeanbackDetailsSummaryBindin
             ratingBar.stepSize = 0.1f
             ratingBar.numStars = 4
             ratingBar.setPadding(0, 0, 0, 0)
-            val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT)
+            val params = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
             params.rightMargin = 15
             ratingBar.layoutParams = params
             val rating = videoInfo.rating
@@ -104,5 +109,4 @@ class MoviePresenterViewHolder(private val binding: LeanbackDetailsSummaryBindin
             infographicsView.addView(studiov)
         }
     }
-
 }

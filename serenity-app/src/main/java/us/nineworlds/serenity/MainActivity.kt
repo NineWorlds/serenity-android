@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import javax.inject.Inject
+import javax.inject.Provider
 import moxy.ktx.moxyPresenter
 import toothpick.Toothpick
 import us.nineworlds.serenity.common.annotations.InjectionConstants
@@ -15,10 +17,10 @@ import us.nineworlds.serenity.databinding.IncludeLoadingProgressBinding
 import us.nineworlds.serenity.injection.InjectingMvpActivity
 import us.nineworlds.serenity.ui.activity.login.LoginUserActivity
 import us.nineworlds.serenity.ui.util.DisplayUtils
-import javax.inject.Inject
-import javax.inject.Provider
 
-open class MainActivity : InjectingMvpActivity(), MainView {
+open class MainActivity :
+    InjectingMvpActivity(),
+    MainView {
 
     @Inject
     lateinit var androidHelper: AndroidHelper
@@ -49,7 +51,6 @@ open class MainActivity : InjectingMvpActivity(), MainView {
         dataLoadingContainer = progressBinding.dataLoadingContainer
 
         setSupportActionBar(binding.actionToolbar)
-
 
         initPreferences()
         initializeDefaultPlayer()
@@ -93,8 +94,7 @@ open class MainActivity : InjectingMvpActivity(), MainView {
     private fun initPreferences() {
         val config = ServerConfig.getInstance() as? ServerConfig
         config?.let {
-            preferences.registerOnSharedPreferenceChangeListener(
-                (ServerConfig.getInstance() as ServerConfig).getServerConfigChangeListener())
+            preferences.registerOnSharedPreferenceChangeListener((ServerConfig.getInstance() as ServerConfig).getServerConfigChangeListener())
         }
     }
 
@@ -102,9 +102,9 @@ open class MainActivity : InjectingMvpActivity(), MainView {
         val initialRun = preferences.getBoolean("serenity_first_run", true)
         if (initialRun) {
             val editor = preferences.edit()
-            if (!androidHelper.isAndroidTV
-                && !androidHelper.isAmazonFireTV
-                && !androidHelper.isLeanbackSupported
+            if (!androidHelper.isAndroidTV &&
+                !androidHelper.isAmazonFireTV &&
+                !androidHelper.isLeanbackSupported
             ) {
                 editor.putBoolean("external_player", false)
             }

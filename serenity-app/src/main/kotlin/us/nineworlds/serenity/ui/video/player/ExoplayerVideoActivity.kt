@@ -28,6 +28,8 @@ import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.TrackSelector
 import androidx.media3.extractor.DefaultExtractorsFactory
 import androidx.media3.ui.PlayerView
+import javax.inject.Inject
+import javax.inject.Provider
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -44,12 +46,12 @@ import us.nineworlds.serenity.injection.AppInjectionConstants
 import us.nineworlds.serenity.injection.modules.ExoplayerVideoModule
 import us.nineworlds.serenity.ui.activity.SerenityActivity
 import us.nineworlds.serenity.ui.util.DisplayUtils.overscanCompensation
-import javax.inject.Inject
-import javax.inject.Provider
 
 @UnstableApi
 @OpenForTesting
-class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerView {
+class ExoplayerVideoActivity :
+    SerenityActivity(),
+    ExoplayerContract.ExoplayerView {
 
     @Inject
     lateinit var mediaDataSourceFactory: DataSource.Factory
@@ -196,7 +198,6 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
     internal fun createSimpleExoplayer(): ExoPlayer {
         if (trackSelector is DefaultTrackSelector) {
-
             val tunnelingEnabled = androidHelper.enableTunneling()
 
             Timber.d("Tunneling enabled: %s", tunnelingEnabled)
@@ -206,13 +207,21 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
                 .setIsGaplessSupportRequired(false)
                 .build()
             val parameters = DefaultTrackSelector.Parameters.Builder()
-                    .setTunnelingEnabled(tunnelingEnabled && !isChromecast())
-                    .setAllowAudioMixedDecoderSupportAdaptiveness(true)
-                    .setExceedAudioConstraintsIfNecessary(false)
-                    .setAllowAudioMixedSampleRateAdaptiveness(true)
-                    .setAudioOffloadPreferences(audioOffloadPreferences)
-                    .setConstrainAudioChannelCountToDeviceCapabilities(true)
-                    .setPreferredAudioMimeTypes(MimeTypes.AUDIO_AC3, MimeTypes.AUDIO_E_AC3, MimeTypes.AUDIO_TRUEHD, MimeTypes.AUDIO_DTS, MimeTypes.AUDIO_DTS_EXPRESS, MimeTypes.AUDIO_DTS_HD, MimeTypes.AUDIO_AAC)
+                .setTunnelingEnabled(tunnelingEnabled && !isChromecast())
+                .setAllowAudioMixedDecoderSupportAdaptiveness(true)
+                .setExceedAudioConstraintsIfNecessary(false)
+                .setAllowAudioMixedSampleRateAdaptiveness(true)
+                .setAudioOffloadPreferences(audioOffloadPreferences)
+                .setConstrainAudioChannelCountToDeviceCapabilities(true)
+                .setPreferredAudioMimeTypes(
+                    MimeTypes.AUDIO_AC3,
+                    MimeTypes.AUDIO_E_AC3,
+                    MimeTypes.AUDIO_TRUEHD,
+                    MimeTypes.AUDIO_DTS,
+                    MimeTypes.AUDIO_DTS_EXPRESS,
+                    MimeTypes.AUDIO_DTS_HD,
+                    MimeTypes.AUDIO_AAC
+                )
 
             if (isChromecast()) {
                 parameters.setMaxAudioChannelCount(6)
@@ -228,21 +237,18 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
             .setTargetBufferBytes(40 * 1024 * 1024) // Slightly higher memory cap (40MB)
             .build()
 
-
         val renderersFactory = DefaultRenderersFactory(this)
 
         return ExoPlayer.Builder(this)
-                .setRenderersFactory(renderersFactory)
-                .setTrackSelector(trackSelector)
-                .setLoadControl(defaultLoadControl)
-                .build()
+            .setRenderersFactory(renderersFactory)
+            .setTrackSelector(trackSelector)
+            .setLoadControl(defaultLoadControl)
+            .build()
     }
 
-    private fun isChromecast(): Boolean {
-        return Build.MODEL.contains("Chromecast", ignoreCase = true) ||
-                Build.DEVICE.contains("sabrina", ignoreCase = true) ||
-                Build.DEVICE.contains("boreal", ignoreCase = true)
-    }
+    private fun isChromecast(): Boolean = Build.MODEL.contains("Chromecast", ignoreCase = true) ||
+        Build.DEVICE.contains("sabrina", ignoreCase = true) ||
+        Build.DEVICE.contains("boreal", ignoreCase = true)
 
     internal fun buildMediaSource(uri: Uri): MediaSource {
         val mediaItem = MediaItem.fromUri(uri)
@@ -295,7 +301,7 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
     private fun pauseAndReleaseVideo() {
         if (player.playbackState == Player.STATE_READY ||
-                player.playbackState == Player.STATE_BUFFERING
+            player.playbackState == Player.STATE_BUFFERING
         ) {
             pause()
             releasePlayer()
@@ -325,20 +331,20 @@ class ExoplayerVideoActivity : SerenityActivity(), ExoplayerContract.ExoplayerVi
 
     override fun showResumeDialog(video: VideoContentInfo) {
         val alertDialogBuilder =
-                AlertDialog.Builder(this, android.R.style.Theme_Holo_Dialog)
+            AlertDialog.Builder(this, android.R.style.Theme_Holo_Dialog)
 
         alertDialogBuilder.setTitle(R.string.resume_video)
         alertDialogBuilder.setMessage(
-                resources.getText(R.string.resume_the_video_from_).toString() + timeUtil.formatDuration(
-                        video.resumeOffset.toLong()
-                ) + resources.getText(R.string._or_restart_)
+            resources.getText(R.string.resume_the_video_from_).toString() + timeUtil.formatDuration(
+                video.resumeOffset.toLong()
+            ) + resources.getText(R.string._or_restart_)
         )
-                .setCancelable(false)
-                .setPositiveButton(R.string.resume) { _, _ -> presenter.playVideo() }
-                .setNegativeButton(R.string.restart) { _, _ ->
-                    video.resumeOffset = 0
-                    presenter.playVideo()
-                }
+            .setCancelable(false)
+            .setPositiveButton(R.string.resume) { _, _ -> presenter.playVideo() }
+            .setNegativeButton(R.string.restart) { _, _ ->
+                video.resumeOffset = 0
+                presenter.playVideo()
+            }
 
         alertDialogBuilder.create()
         val dialog = alertDialogBuilder.show()

@@ -8,21 +8,21 @@ import us.nineworlds.serenity.common.rest.SerenityUser
 
 interface LoginUserContract {
 
-  interface LoginUserView : MvpView {
+    interface LoginUserView : MvpView {
 
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun displayUsers(serenityUser: List<SerenityUser>)
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun displayUsers(serenityUser: List<SerenityUser>)
 
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun launchNextScreen()
-  }
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun launchNextScreen()
+    }
 
-  interface LoginUserPresnter {
+    interface LoginUserPresnter {
 
-    fun initPresenter(server: Server)
+        fun initPresenter(server: Server)
 
-    fun retrieveAllUsers()
+        fun retrieveAllUsers()
 
-    fun loadUser(user: SerenityUser, password: String? = null)
-  }
+        fun loadUser(user: SerenityUser, password: String? = null)
+    }
 }

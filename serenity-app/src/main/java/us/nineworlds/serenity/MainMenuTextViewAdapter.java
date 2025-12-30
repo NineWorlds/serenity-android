@@ -1,24 +1,19 @@
 /**
- * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- * <p>
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- * <p>
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
- * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2012 David Carver Permission is hereby granted, free of
+ * charge, to any person obtaining a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * <p>The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ * BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package us.nineworlds.serenity;
 
@@ -28,12 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import us.nineworlds.serenity.core.menus.MenuItem;
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter;
 import us.nineworlds.serenity.injection.InjectingRecyclerViewAdapter;
@@ -44,32 +36,40 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
 
   private GalleryOnItemSelectedListener onItemSelectedListener;
   private GalleryOnItemClickListener onItemClickListener;
+
   public MainMenuTextViewAdapter(MainMenuPresenter presenter) {
     super();
     onItemSelectedListener = new GalleryOnItemSelectedListener(this, presenter);
     onItemClickListener = new GalleryOnItemClickListener(this);
   }
 
-  @Override public int getItemCount() {
+  @Override
+  public int getItemCount() {
     return menuItems.size();
   }
 
-  @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+  @Override
+  public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     FrameLayout mainMenuTextView =
-        (FrameLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mainmenu, parent, false);
+        (FrameLayout)
+            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mainmenu, parent, false);
     return new MainMenuViewHolder(mainMenuTextView);
   }
 
-  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+  @Override
+  public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
     MenuItem menuItem = menuItems.get(position);
 
     MainMenuViewHolder mainMenuViewHolder = (MainMenuViewHolder) holder;
     setDefaults(menuItem.getTitle(), mainMenuViewHolder.mainMenuTextView, position);
-    mainMenuViewHolder.itemView.setOnFocusChangeListener((view, hasFocus) -> onItemSelectedListener.onItemSelected(view, hasFocus, position));
-    mainMenuViewHolder.itemView.setOnClickListener((view) -> onItemClickListener.onItemClick(view, position));
+    mainMenuViewHolder.itemView.setOnFocusChangeListener(
+        (view, hasFocus) -> onItemSelectedListener.onItemSelected(view, hasFocus, position));
+    mainMenuViewHolder.itemView.setOnClickListener(
+        (view) -> onItemClickListener.onItemClick(view, position));
   }
 
-  @Override public long getItemId(int position) {
+  @Override
+  public long getItemId(int position) {
     return position;
   }
 
@@ -78,8 +78,10 @@ public class MainMenuTextViewAdapter extends InjectingRecyclerViewAdapter {
     v.setLines(1);
     v.setHorizontallyScrolling(true);
     v.setEllipsize(TruncateAt.MARQUEE);
-    v.setLayoutParams(new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-        android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+    v.setLayoutParams(
+        new FrameLayout.LayoutParams(
+            android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+            android.view.ViewGroup.LayoutParams.MATCH_PARENT));
   }
 
   public MenuItem getItemAtPosition(int position) {

@@ -18,23 +18,23 @@ import us.nineworlds.serenity.R
 @RunWith(RobolectricTestRunner::class)
 class ManualServerActivityTest {
 
-  private lateinit var activity: ManualServerActivity
+    private lateinit var activity: ManualServerActivity
 
-  @Before
-  fun setUp() {
-    ApplicationProvider.getApplicationContext<Application>().setTheme(R.style.AppTheme)
-    activity = spyk(Robolectric.buildActivity(ManualServerActivity::class.java).create().get())
-  }
+    @Before
+    fun setUp() {
+        ApplicationProvider.getApplicationContext<Application>().setTheme(R.style.AppTheme)
+        activity = spyk(Robolectric.buildActivity(ManualServerActivity::class.java).create().get())
+    }
 
-  @Test
-  fun activityHasManualServerSettingsFragment() {
-    assertThat(activity.findViewById<View>(R.id.settingsFragment)).isNotNull()
-  }
+    @Test
+    fun activityHasManualServerSettingsFragment() {
+        assertThat(activity.findViewById<View>(R.id.settingsFragment)).isNotNull()
+    }
 
-  @Test
-  fun finishSetsResultToMainMenuPreferenceResultCode() {
-    activity.finish()
+    @Test
+    fun finishSetsResultToMainMenuPreferenceResultCode() {
+        activity.finish()
 
-    verify { activity.setResult(MainActivity.MAIN_MENU_PREFERENCE_RESULT_CODE) }
-  }
+        verify { activity.setResult(MainActivity.MAIN_MENU_PREFERENCE_RESULT_CODE) }
+    }
 }

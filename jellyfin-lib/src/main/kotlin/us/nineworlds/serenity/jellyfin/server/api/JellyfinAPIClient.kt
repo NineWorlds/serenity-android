@@ -5,6 +5,9 @@ import android.os.Build
 import android.preference.PreferenceManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import java.io.File
+import java.io.IOException
+import java.util.UUID
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -27,9 +30,6 @@ import us.nineworlds.serenity.jellyfin.server.model.Item
 import us.nineworlds.serenity.jellyfin.server.model.PublicUserInfo
 import us.nineworlds.serenity.jellyfin.server.model.QueryFilters
 import us.nineworlds.serenity.jellyfin.server.model.QueryResult
-import java.io.File
-import java.io.IOException
-import java.util.UUID
 
 class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
 
@@ -58,18 +58,17 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         okClient.cache(cache)
 
         val moshi = Moshi.Builder()
-                .add(KotlinJsonAdapterFactory())
-                .add(LocalDateTime::class.java, LocalDateJsonAdapter()).build()
+            .add(KotlinJsonAdapterFactory())
+            .add(LocalDateTime::class.java, LocalDateJsonAdapter()).build()
 
         val builder = Retrofit.Builder()
         val jellyfinRetrofit = builder.baseUrl(baseUrl)
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .client(okClient.build())
-                .build()
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(okClient.build())
+            .build()
 
         usersService = jellyfinRetrofit.create(JellyfinUsersService::class.java)
         filterService = jellyfinRetrofit.create(JellyfinFilterService::class.java)
-
 
         deviceId = pseudoUniqueID()
         deviceName = "${Build.MANUFACTURER} ${Build.MODEL} "
@@ -82,9 +81,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         return allPublicUsers.executeOrThrow()
     }
 
-    fun userImageUrl(userId: String): String {
-        return "$baseUrl/Users/$userId/Images/Primary"
-    }
+    fun userImageUrl(userId: String): String = "$baseUrl/Users/$userId/Images/Primary"
 
     fun authenticate(userName: String, password: String = ""): AuthenticationResult {
         val authenticationResul = AuthenticateUserByName(userName, "", password, password)
@@ -100,7 +97,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         prefEditor.putString("userId", userId)
         prefEditor.putString("jellyfinAccessToken", accessToken)
         if (password.isNotEmpty()) {
-           prefEditor.putString("jellyfin_${userId}_password", password)
+            prefEditor.putString("jellyfin_${userId}_password", password)
         }
 
         prefEditor.apply()
@@ -158,7 +155,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
     private fun headerMap(): Map<String, String> {
         val headers = HashMap<String, String>()
         val authorizationValue =
-                "MediaBrowser Client=\"Jellyfin Client\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"${BuildConfig.CLIENT_VERSION}.0\""
+            "MediaBrowser Client=\"Jellyfin Client\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"${BuildConfig.CLIENT_VERSION}.0\""
         headers["X-Emby-Authorization"] = authorizationValue
         if (accessToken != null) {
             headers["Authorization"] = "Bearer $accessToken"
@@ -167,7 +164,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
     }
 
     override fun userInfo(userId: String): SerenityUser {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun allAvailableUsers(): MutableList<SerenityUser> {
@@ -176,9 +173,9 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         for (user in allPublicUsers) {
             val builder = us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
             val sernityUser = builder.userName(user.name)
-                    .userId(user.id)
-                    .hasPassword(user.hasPassword)
-                    .build()
+                .userId(user.id)
+                .hasPassword(user.hasPassword)
+                .build()
             allUsers.add(sernityUser)
         }
         return allUsers
@@ -188,11 +185,11 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         val authenticatedUser = authenticate(user.userName, password ?: "")
 
         return us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
-                .accessToken(authenticatedUser.accesToken)
-                .userName(user.userName)
-                .userId(user.userId)
-                .hasPassword(user.hasPassword())
-                .build()
+            .accessToken(authenticatedUser.accesToken)
+            .userName(user.userName)
+            .userId(user.userId)
+            .hasPassword(user.hasPassword())
+            .build()
     }
 
     override fun retrieveRootData(): IMediaContainer {
@@ -208,7 +205,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
     }
 
     override fun retrieveLibrary(): IMediaContainer {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     /**
@@ -236,9 +233,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         return JellyfinMediaContainerAdaptor().createCategory(queryResult.genres!!)
     }
 
-    override fun retrieveItemByIdCategory(key: String, category: String, types: Types): IMediaContainer {
-        return retrieveItemByIdCategory(key, category, types, 0, null)
-    }
+    override fun retrieveItemByIdCategory(key: String, category: String, types: Types): IMediaContainer = retrieveItemByIdCategory(key, category, types, 0, null)
 
     override fun fetchSimilarItemById(itemId: String, types: Types): IMediaContainer {
         val type = when (types) {
@@ -281,6 +276,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
                     usersService.resumableItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
                 }
             }
+
             "recentlyAdded" -> {
                 if (type == "Season" || type == "Series") {
                     usersService.latestItems(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode")
@@ -288,19 +284,21 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
                     usersService.latestItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
                 }
             }
+
             "unwatched" -> {
                 usersService.unwatchedItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
             }
+
             else -> {
                 usersService.fetchItemQuery(
-                        headerMap(),
-                        userId = userId!!,
-                        parentId = key,
-                        genre = genre,
-                        isPlayed = isPlayed,
-                        includeItemType = type,
-                        startIndex = startIndex,
-                        limit = limit
+                    headerMap(),
+                    userId = userId!!,
+                    parentId = key,
+                    genre = genre,
+                    isPlayed = isPlayed,
+                    includeItemType = type,
+                    startIndex = startIndex,
+                    limit = limit
                 )
             }
         }
@@ -310,7 +308,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
     }
 
     override fun retrieveItemByCategories(key: String, category: String, secondaryCategory: String): IMediaContainer {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun retrieveSeasons(key: String): IMediaContainer {
@@ -318,11 +316,11 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
             userId = fetchUserId()
         }
         val call = usersService.fetchItemQuery(
-                headerMap(),
-                userId = userId!!,
-                parentId = key,
-                includeItemType = "Season",
-                genre = null
+            headerMap(),
+            userId = userId!!,
+            parentId = key,
+            includeItemType = "Season",
+            genre = null
         )
 
         val results = call.executeOrThrow()
@@ -331,7 +329,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
     }
 
     override fun retrieveMusicMetaData(key: String): IMediaContainer {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun retrieveEpisodes(key: String): IMediaContainer {
@@ -339,11 +337,11 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
             userId = fetchUserId()
         }
         val call = usersService.fetchItemQuery(
-                headerMap(),
-                userId = userId!!,
-                parentId = key,
-                includeItemType = "Episode",
-                genre = null
+            headerMap(),
+            userId = userId!!,
+            parentId = key,
+            includeItemType = "Episode",
+            genre = null
         )
 
         val results = call.executeOrThrow()
@@ -352,7 +350,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
     }
 
     override fun retrieveMovieMetaData(key: String): IMediaContainer {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun searchMovies(key: String, query: String): IMediaContainer {
@@ -368,11 +366,11 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         }
 
         val itemCall = usersService.fetchItemQuery(
-                headerMap(),
-                userId = userId!!,
-                ids = itemIds.joinToString(separator = ","),
-                genre = null,
-                parentId = null
+            headerMap(),
+            userId = userId!!,
+            ids = itemIds.joinToString(separator = ","),
+            genre = null,
+            parentId = null
         )
 
         val itemResults = itemCall.executeOrThrow()
@@ -380,9 +378,7 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         return JellyfinMediaContainerAdaptor().createVideoList(itemResults.items, fetchAccessToken())
     }
 
-    override fun searchEpisodes(key: String, query: String): IMediaContainer? {
-        return null
-    }
+    override fun searchEpisodes(key: String, query: String): IMediaContainer? = null
 
     override fun updateBaseUrl(baseUrl: String) {
         this.baseUrl = baseUrl
@@ -425,45 +421,39 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         return result.isSuccessful
     }
 
-    override fun progress(
-        key: String,
-        offset: String,
-        playSessionId: String?
-    ): Boolean {
+    override fun progress(key: String, offset: String, playSessionId: String?): Boolean {
         TODO("Not yet implemented")
     }
 
     override fun createMediaTagURL(resourceType: String, resourceName: String, identifier: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun createSectionsURL(key: String, category: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun createSectionsURL(): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun createSectionsUrl(key: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun createMovieMetadataURL(key: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun createEpisodesURL(key: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun createSeasonsURL(key: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun createImageURL(url: String, width: Int, height: Int): String {
-        return url
-    }
+    override fun createImageURL(url: String, width: Int, height: Int): String = url
 
     override fun createTranscodeUrl(id: String, offset: Int, token: String?): String {
         val playSessionId = UUID.randomUUID().toString()
@@ -472,16 +462,15 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
             startOffset = offset.toLong().times(10000)
         }
 
+        @Suppress("ktlint:standard:max-line-length")
         return "${baseUrl}Videos/$id/stream.mkv?DeviceId=$deviceId&AudioCodec=aac&VideoCodec=h264&CopyTimeStamps=true&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset&PlaySessionId=$playSessionId"
     }
 
     override fun reinitialize() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun createUserImageUrl(user: SerenityUser, width: Int, height: Int): String {
-        return "$baseUrl/Users/${user.userId}/Images/Primary?Width=$width&Height=$height"
-    }
+    override fun createUserImageUrl(user: SerenityUser, width: Int, height: Int): String = "$baseUrl/Users/${user.userId}/Images/Primary?Width=$width&Height=$height"
 
     override fun startPlaying(itemId: String): String? {
         if (userId == null) {
@@ -519,13 +508,13 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         }
 
         val call = usersService.fetchItemQuery(
-                headerMap(),
-                userId = userId!!,
-                parentId = key,
-                genre = genre,
-                isPlayed = isPlayed,
-                includeItemType = itemType,
-                limitCount = 5
+            headerMap(),
+            userId = userId!!,
+            parentId = key,
+            genre = genre,
+            isPlayed = isPlayed,
+            includeItemType = itemType,
+            limitCount = 5
         )
 
         val results = call.executeOrThrow()
@@ -566,8 +555,10 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         }
 
         devIDShort +=
-            (Build.DEVICE.length % 10) + (Build.MANUFACTURER.length % 10) + (Build.MODEL.length
-                    % 10) + (Build.PRODUCT.length % 10)
+            (Build.DEVICE.length % 10) + (Build.MANUFACTURER.length % 10) + (
+                Build.MODEL.length %
+                    10
+                ) + (Build.PRODUCT.length % 10)
 
         // Only devices with API >= 9 have android.os.Build.SERIAL
         // http://developer.android.com/reference/android/os/Build.html#SERIAL
@@ -596,5 +587,4 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         }
         throw IOException("Request to Jellyfin failed with code ${response.code()}, message: ${response.message()}")
     }
-
 }

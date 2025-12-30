@@ -2,15 +2,19 @@ package us.nineworlds.serenity.jellyfin.server
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import java.io.IOException
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.net.InetAddress
+import java.net.NetworkInterface
+import java.net.SocketTimeoutException
+import java.net.URI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import us.nineworlds.serenity.common.Server
 import us.nineworlds.serenity.common.channels.ServerChannel
-import java.io.IOException
-import java.net.*
-
 
 class JellyfinServerDiscover {
 
@@ -19,7 +23,7 @@ class JellyfinServerDiscover {
 
     suspend fun findServers() = withContext(Dispatchers.IO) {
         try {
-            //Open a random port to send the package
+            // Open a random port to send the package
             val c = DatagramSocket()
             c.setBroadcast(true)
 
@@ -27,7 +31,7 @@ class JellyfinServerDiscover {
 
             val port = 7359
 
-            //Try the 255.255.255.255 first
+            // Try the 255.255.255.255 first
 
             try {
                 val sendPacket = DatagramPacket(
@@ -80,7 +84,7 @@ class JellyfinServerDiscover {
 
             receive(c, 8000L)
 
-            //Close the port!
+            // Close the port!
             c.close()
         } catch (ex: Exception) {
             Timber.e(ex, "Error finding servers")
@@ -89,13 +93,11 @@ class JellyfinServerDiscover {
 
     @Throws(IOException::class)
     private suspend fun receive(c: DatagramSocket, timeoutMs: Long) {
-
         var timeout = timeoutMs
 
         val servers = ArrayList<Server>()
 
         while (timeout > 0) {
-
             val startTime = System.currentTimeMillis()
 
             // Wait for a response
@@ -144,12 +146,9 @@ class JellyfinServerDiscover {
     }
 
     @Throws(IOException::class)
-    suspend fun useMultiCastAddress(): InetAddress {
-        return InetAddress.getByName(MULTICAST_ADDRESS)
-    }
+    suspend fun useMultiCastAddress(): InetAddress = InetAddress.getByName(MULTICAST_ADDRESS)
 
     companion object {
         const val MULTICAST_ADDRESS = "239.255.255.250"
     }
-
 }

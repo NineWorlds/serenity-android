@@ -5,7 +5,5 @@ import us.nineworlds.serenity.core.model.CategoryInfo
 
 class TVCategoryMediaContainer(mc: IMediaContainer) : AbstractMediaContainer(mc) {
 
-  fun createCategories(): List<CategoryInfo>? {
-    return null
-  }
+    fun createCategories(): List<CategoryInfo>? = null
 }

@@ -1,40 +1,32 @@
 /**
- * The MIT License (MIT)
- * Copyright (c) 2012 David Carver
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- * <p>
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- * <p>
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
- * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2012 David Carver Permission is hereby granted, free of
+ * charge, to any person obtaining a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * <p>The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ * BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 package us.nineworlds.serenity.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-
 import javax.inject.Inject;
-
 import us.nineworlds.serenity.injection.BaseInjector;
 
 /**
- * A configuration that reads information from the SharedPreferences store. This
- * information contains necessary info for connecting to the media server.
+ * A configuration that reads information from the SharedPreferences store. This information
+ * contains necessary info for connecting to the media server.
  *
  * @author dcarver
  */
@@ -49,10 +41,7 @@ public class ServerConfig extends BaseInjector implements IConfiguration {
   private static ServerConfig config;
   private OnSharedPreferenceChangeListener listener;
 
-  /**
-   * Sets up the configuration based on the context of the activity that
-   * called it.
-   */
+  /** Sets up the configuration based on the context of the activity that called it. */
   private ServerConfig(Context context) {
     super();
     serveraddress = preferences.getString("server", "");
@@ -60,22 +49,26 @@ public class ServerConfig extends BaseInjector implements IConfiguration {
     serverport = preferences.getString("serverport", "32400");
   }
 
-  @Override public String getHost() {
+  @Override
+  public String getHost() {
     if (serveraddress.length() == 0) {
       return discoveredServers;
     }
     return serveraddress;
   }
 
-  @Override public String getPort() {
+  @Override
+  public String getPort() {
     return serverport;
   }
 
-  @Override public void setHost(String hostip) {
+  @Override
+  public void setHost(String hostip) {
     serveraddress = hostip;
   }
 
-  @Override public void setPort(String port) {
+  @Override
+  public void setPort(String port) {
     serverport = port;
   }
 
@@ -87,9 +80,7 @@ public class ServerConfig extends BaseInjector implements IConfiguration {
     return config;
   }
 
-  /**
-   * This should only be called after a context has been set.
-   */
+  /** This should only be called after a context has been set. */
   public static IConfiguration getInstance() {
     return config;
   }
@@ -104,7 +95,7 @@ public class ServerConfig extends BaseInjector implements IConfiguration {
   /**
    * Listen for Server Configuration Changes from the SharedPreferences.
    *
-   * This handles updating the variables for accesing a plex media server.
+   * <p>This handles updating the variables for accesing a plex media server.
    *
    * @author dcarver
    */
@@ -136,8 +127,8 @@ public class ServerConfig extends BaseInjector implements IConfiguration {
     }
 
     /**
-     * Store the server address if the discoveredServers has been set. Users
-     * can override this in the preference setting.
+     * Store the server address if the discoveredServers has been set. Users can override this in
+     * the preference setting.
      */
     protected void storeServerAddress() {
       Editor edit = preferences.edit();

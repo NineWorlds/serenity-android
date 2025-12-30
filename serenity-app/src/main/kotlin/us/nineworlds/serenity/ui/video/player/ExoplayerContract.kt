@@ -7,52 +7,52 @@ import us.nineworlds.serenity.core.model.VideoContentInfo
 
 interface ExoplayerContract {
 
-  interface ExoplayerView : MvpView {
+    interface ExoplayerView : MvpView {
 
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun initializePlayer(videoUrl: String, offset: Int)
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun initializePlayer(videoUrl: String, offset: Int)
 
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun hideController()
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun hideController()
 
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun showController()
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun showController()
 
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun pause()
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun pause()
 
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun play()
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun play()
 
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun hideLoadingProgress()
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun hideLoadingProgress()
 
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun showLoadingProgress()
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun showLoadingProgress()
 
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun playbackEnded()
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun playbackEnded()
 
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun showResumeDialog(video: VideoContentInfo)
-  }
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun showResumeDialog(video: VideoContentInfo)
+    }
 
-  interface ExoplayerPresenter {
+    interface ExoplayerPresenter {
 
-    fun playBackFromVideoQueue(autoResume: Boolean)
+        fun playBackFromVideoQueue(autoResume: Boolean)
 
-    fun isHudShowing(): Boolean
+        fun isHudShowing(): Boolean
 
-    fun updateServerPlaybackPosition(currentPostion: Long)
+        fun updateServerPlaybackPosition(currentPostion: Long)
 
-    fun updateWatchedStatus()
+        fun updateWatchedStatus()
 
-    fun videoId(): String
+        fun videoId(): String
 
-    fun stopPlaying(currentPosition: Long)
+        fun stopPlaying(currentPosition: Long)
 
-    fun startPlaying()
+        fun startPlaying()
 
-    fun playVideo()
-  }
+        fun playVideo()
+    }
 }

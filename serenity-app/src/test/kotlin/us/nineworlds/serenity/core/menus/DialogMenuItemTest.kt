@@ -31,16 +31,16 @@ import us.nineworlds.serenity.core.menus.DialogMenuItem
 
 class DialogMenuItemTest {
 
-  private lateinit var dialogMenuItem: DialogMenuItem
+    private lateinit var dialogMenuItem: DialogMenuItem
 
-  @Before
-  fun setUp() {
-    dialogMenuItem = DialogMenuItem()
-  }
+    @Before
+    fun setUp() {
+        dialogMenuItem = DialogMenuItem()
+    }
 
-  @Test
-  fun `set menu dialog action returns expected action`() {
-    dialogMenuItem.menuDialogAction = 0
-    assertThat(dialogMenuItem.menuDialogAction).isEqualTo(0)
-  }
+    @Test
+    fun `set menu dialog action returns expected action`() {
+        dialogMenuItem.menuDialogAction = 0
+        assertThat(dialogMenuItem.menuDialogAction).isEqualTo(0)
+    }
 }

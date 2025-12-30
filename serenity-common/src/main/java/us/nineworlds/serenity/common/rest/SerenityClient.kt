@@ -1,11 +1,10 @@
 package us.nineworlds.serenity.common.rest
 
-import us.nineworlds.serenity.common.media.model.IMediaContainer
 import java.io.IOException
 import java.lang.Exception
+import us.nineworlds.serenity.common.media.model.IMediaContainer
 
 interface SerenityClient {
-
     @Throws(Exception::class)
     fun fetchSimilarItemById(itemId: String, types: Types): IMediaContainer
 
@@ -68,23 +67,39 @@ interface SerenityClient {
     fun progress(key: String, offset: String, playSessionId: String? = null): Boolean
 
     fun createMediaTagURL(resourceType: String, resourceName: String, identifier: String): String?
+
     fun createSectionsURL(key: String, category: String): String
+
     fun createSectionsURL(): String
+
     fun createSectionsUrl(key: String): String
+
     fun createMovieMetadataURL(key: String): String
+
     fun createEpisodesURL(key: String): String
+
     fun createSeasonsURL(key: String): String
+
     fun createImageURL(url: String, width: Int, height: Int): String
+
     fun createTranscodeUrl(id: String, offset: Int, token: String? = null): String
+
     fun reinitialize()
+
     fun userInfo(userId: String): SerenityUser?
+
     fun allAvailableUsers(): List<SerenityUser>
+
     fun authenticateUser(user: SerenityUser, password: String? = null): SerenityUser
+
     fun createUserImageUrl(user: SerenityUser, width: Int, height: Int): String
 
     fun startPlaying(key: String): String?
+
     fun stopPlaying(key: String, offset: Long)
+
     fun retrieveSeriesById(key: String, categoryId: String): IMediaContainer
+
     fun retrieveSeriesCategoryById(key: String): IMediaContainer
 
     /**

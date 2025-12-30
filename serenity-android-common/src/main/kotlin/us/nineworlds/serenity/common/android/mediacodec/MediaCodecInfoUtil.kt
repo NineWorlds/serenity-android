@@ -4,7 +4,6 @@ import android.media.MediaCodecList
 import android.util.Log
 
 object MediaCodecInfoUtil {
-
     private const val TAG = "MediaCodecInfoUtil"
 
     private val supportedCodecs: Set<String> by lazy {
@@ -30,7 +29,7 @@ object MediaCodecInfoUtil {
             val codeInfo = "Codec Name: ${codec.name}\nIs Encoder: ${codec.isEncoder}\n"
             Log.d(TAG, codeInfo)
             for (type in codec.supportedTypes) {
-                Log.d(TAG, "   Type: ${type}")
+                Log.d(TAG, "   Type: $type")
             }
         }
     }
@@ -52,7 +51,7 @@ object MediaCodecInfoUtil {
         for (codecInfo in mediaCodecList.codecInfos) {
             if (!codecInfo.isEncoder) {
                 val types = codecInfo.supportedTypes
-                val matchedType = types.firstOrNull { it.equals(mimeType, ignoreCase = true)}
+                val matchedType = types.firstOrNull { it.equals(mimeType, ignoreCase = true) }
                 if (matchedType != null) {
                     try {
                         val capabilities = codecInfo.getCapabilitiesForType(matchedType)
@@ -76,23 +75,25 @@ object MediaCodecInfoUtil {
      *
      */
     fun findCorrectVideoMimeType(mimeType: String): String {
-        val videoMimeType = when (mimeType.substringAfter("video/").lowercase()) {
-            "mpeg-4" -> "video/mp4"
-            "mpeg4" -> "video/mp4v-es"
-            "h264" -> "video/avc"
-            "h263" -> "video/3gpp"
-            "mpeg2" -> "video/mpeg2"
-            else -> mimeType
-        }
+        val videoMimeType =
+            when (mimeType.substringAfter("video/").lowercase()) {
+                "mpeg-4" -> "video/mp4"
+                "mpeg4" -> "video/mp4v-es"
+                "h264" -> "video/avc"
+                "h263" -> "video/3gpp"
+                "mpeg2" -> "video/mpeg2"
+                else -> mimeType
+            }
         return videoMimeType
     }
 
     fun findCorrectAudioMimeType(mimeType: String): String {
-        val audioMimType = when (mimeType.substringAfter("audio/").lowercase()) {
-            "mp3" -> "audio/mpeg"
-            "aac" -> "audio/mp4a-latm"
-            else -> mimeType
-        }
+        val audioMimType =
+            when (mimeType.substringAfter("audio/").lowercase()) {
+                "mp3" -> "audio/mpeg"
+                "aac" -> "audio/mp4a-latm"
+                else -> mimeType
+            }
         return audioMimType
     }
 }

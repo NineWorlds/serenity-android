@@ -5,6 +5,10 @@ import android.os.Build
 import android.preference.PreferenceManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import java.io.File
+import java.io.IOException
+import java.util.UUID
+import kotlin.uuid.Uuid
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -28,10 +32,6 @@ import us.nineworlds.serenity.emby.server.model.PlaybackStartRequest
 import us.nineworlds.serenity.emby.server.model.PublicUserInfo
 import us.nineworlds.serenity.emby.server.model.QueryFilters
 import us.nineworlds.serenity.emby.server.model.QueryResult
-import java.io.File
-import java.io.IOException
-import java.util.UUID
-import kotlin.uuid.Uuid
 
 class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
 
@@ -60,18 +60,17 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         okClient.cache(cache)
 
         val moshi = Moshi.Builder()
-                .add(KotlinJsonAdapterFactory())
-                .add(LocalDateTime::class.java, LocalDateJsonAdapter()).build()
+            .add(KotlinJsonAdapterFactory())
+            .add(LocalDateTime::class.java, LocalDateJsonAdapter()).build()
 
         val builder = Retrofit.Builder()
         val embyRetrofit = builder.baseUrl(baseUrl)
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .client(okClient.build())
-                .build()
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(okClient.build())
+            .build()
 
         usersService = embyRetrofit.create(UsersService::class.java)
         filterService = embyRetrofit.create(FilterService::class.java)
-
 
         deviceId = pseudoUniqueID()
         deviceName = "${Build.MANUFACTURER} ${Build.MODEL} "
@@ -84,9 +83,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         return allPublicUsers.executeOrThrow()
     }
 
-    fun userImageUrl(userId: String): String {
-        return "$baseUrl/Users/$userId/Images/Primary"
-    }
+    fun userImageUrl(userId: String): String = "$baseUrl/Users/$userId/Images/Primary"
 
     fun authenticate(userName: String, password: String = ""): AuthenticationResult {
         val authenticationResul = AuthenticateUserByName(userName, "", password, password)
@@ -102,7 +99,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         prefEditor.putString("userId", userId)
         prefEditor.putString("embyAccessToken", accessToken)
         if (password.isNotEmpty()) {
-           prefEditor.putString("emby_${userId}_password", password)
+            prefEditor.putString("emby_${userId}_password", password)
         }
 
         prefEditor.apply()
@@ -160,7 +157,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     private fun headerMap(): Map<String, String> {
         val headers = HashMap<String, String>()
         val authorizationValue =
-                "Emby Client=\"Android\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"${BuildConfig.CLIENT_VERSION}.0\""
+            "Emby Client=\"Android\", Device=\"$deviceName\", DeviceId=\"$deviceId\", Version=\"${BuildConfig.CLIENT_VERSION}.0\""
         headers["X-Emby-Authorization"] = authorizationValue
         if (accessToken != null) {
             headers["X-Emby-Token"] = accessToken!!
@@ -169,7 +166,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     }
 
     override fun userInfo(userId: String): SerenityUser {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun allAvailableUsers(): MutableList<SerenityUser> {
@@ -178,9 +175,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         for (user in allPublicUsers) {
             val builder = us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
             val sernityUser = builder.userName(user.name)
-                    .userId(user.id)
-                    .hasPassword(user.hasPassword)
-                    .build()
+                .userId(user.id)
+                .hasPassword(user.hasPassword)
+                .build()
             allUsers.add(sernityUser)
         }
         return allUsers
@@ -190,11 +187,11 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         val authenticatedUser = authenticate(user.userName, password ?: "")
 
         return us.nineworlds.serenity.common.rest.impl.SerenityUser.builder()
-                .accessToken(authenticatedUser.accesToken)
-                .userName(user.userName)
-                .userId(user.userId)
-                .hasPassword(user.hasPassword())
-                .build()
+            .accessToken(authenticatedUser.accesToken)
+            .userName(user.userName)
+            .userId(user.userId)
+            .hasPassword(user.hasPassword())
+            .build()
     }
 
     override fun retrieveRootData(): IMediaContainer {
@@ -210,7 +207,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     }
 
     override fun retrieveLibrary(): IMediaContainer {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     /**
@@ -238,9 +235,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         return MediaContainerAdaptor().createCategory(queryResult.genres!!)
     }
 
-    override fun retrieveItemByIdCategory(key: String, category: String, types: Types): IMediaContainer {
-        return retrieveItemByIdCategory(key, category, types, 0, null)
-    }
+    override fun retrieveItemByIdCategory(key: String, category: String, types: Types): IMediaContainer = retrieveItemByIdCategory(key, category, types, 0, null)
 
     override fun fetchSimilarItemById(itemId: String, types: Types): IMediaContainer {
         val type = when (types) {
@@ -250,7 +245,12 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             else -> "Episode"
         }
 
-        val call = usersService.fetchSimilarItemById(headerMap(), itemId = itemId, userId = userId!!, includeItemType = "Movie")
+        val call = usersService.fetchSimilarItemById(
+            headerMap(),
+            itemId = itemId,
+            userId = userId!!,
+            includeItemType = "Movie"
+        )
 
         val results = call.executeOrThrow()
         return MediaContainerAdaptor().createVideoList(results.items, fetchAccessToken())
@@ -278,31 +278,59 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         val call = when (category) {
             "ondeck" -> {
                 if (type == "Season" || type == "Series") {
-                    usersService.resumableItems(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode")
-                } else {
-                    usersService.resumableItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
-                }
-            }
-            "recentlyAdded" -> {
-                if (type == "Season" || type == "Series") {
-                    usersService.latestItems(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode")
-                } else {
-                    usersService.latestItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
-                }
-            }
-            "unwatched" -> {
-                usersService.unwatchedItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
-            }
-            else -> {
-                usersService.fetchItemQuery(
+                    usersService.resumableItems(
                         headerMap(),
                         userId = userId!!,
                         parentId = key,
-                        genre = genre,
-                        isPlayed = isPlayed,
-                        includeItemType = type,
-                        startIndex = startIndex,
-                        limit = limit
+                        includeItemType = "Episode"
+                    )
+                } else {
+                    usersService.resumableItems(
+                        headerMap(),
+                        userId = userId!!,
+                        parentId = key,
+                        includeItemType = type
+                    )
+                }
+            }
+
+            "recentlyAdded" -> {
+                if (type == "Season" || type == "Series") {
+                    usersService.latestItems(
+                        headerMap(),
+                        userId = userId!!,
+                        parentId = key,
+                        includeItemType = "Episode"
+                    )
+                } else {
+                    usersService.latestItems(
+                        headerMap(),
+                        userId = userId!!,
+                        parentId = key,
+                        includeItemType = type
+                    )
+                }
+            }
+
+            "unwatched" -> {
+                usersService.unwatchedItems(
+                    headerMap(),
+                    userId = userId!!,
+                    parentId = key,
+                    includeItemType = type
+                )
+            }
+
+            else -> {
+                usersService.fetchItemQuery(
+                    headerMap(),
+                    userId = userId!!,
+                    parentId = key,
+                    genre = genre,
+                    isPlayed = isPlayed,
+                    includeItemType = type,
+                    startIndex = startIndex,
+                    limit = limit
                 )
             }
         }
@@ -312,7 +340,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     }
 
     override fun retrieveItemByCategories(key: String, category: String, secondaryCategory: String): IMediaContainer {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun retrieveSeasons(key: String): IMediaContainer {
@@ -320,11 +348,11 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             userId = fetchUserId()
         }
         val call = usersService.fetchItemQuery(
-                headerMap(),
-                userId = userId!!,
-                parentId = key,
-                includeItemType = "Season",
-                genre = null
+            headerMap(),
+            userId = userId!!,
+            parentId = key,
+            includeItemType = "Season",
+            genre = null
         )
 
         val results = call.executeOrThrow()
@@ -333,7 +361,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     }
 
     override fun retrieveMusicMetaData(key: String): IMediaContainer {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun retrieveEpisodes(key: String): IMediaContainer {
@@ -341,11 +369,11 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             userId = fetchUserId()
         }
         val call = usersService.fetchItemQuery(
-                headerMap(),
-                userId = userId!!,
-                parentId = key,
-                includeItemType = "Episode",
-                genre = null
+            headerMap(),
+            userId = userId!!,
+            parentId = key,
+            includeItemType = "Episode",
+            genre = null
         )
 
         val results = call.executeOrThrow()
@@ -354,7 +382,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     }
 
     override fun retrieveMovieMetaData(key: String): IMediaContainer {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun searchMovies(key: String, query: String): IMediaContainer {
@@ -370,11 +398,11 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         }
 
         val itemCall = usersService.fetchItemQuery(
-                headerMap(),
-                userId = userId!!,
-                ids = itemIds.joinToString(separator = ","),
-                genre = null,
-                parentId = null
+            headerMap(),
+            userId = userId!!,
+            ids = itemIds.joinToString(separator = ","),
+            genre = null,
+            parentId = null
         )
 
         val itemResults = itemCall.executeOrThrow()
@@ -382,9 +410,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         return MediaContainerAdaptor().createVideoList(itemResults.items, fetchAccessToken())
     }
 
-    override fun searchEpisodes(key: String, query: String): IMediaContainer? {
-        return null
-    }
+    override fun searchEpisodes(key: String, query: String): IMediaContainer? = null
 
     override fun updateBaseUrl(baseUrl: String) {
         this.baseUrl = baseUrl
@@ -413,9 +439,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         return result.isSuccessful
     }
 
-    override fun progress(key: String, offset: String): Boolean {
-        return progress(key, offset, null)
-    }
+    override fun progress(key: String, offset: String): Boolean = progress(key, offset, null)
 
     override fun progress(key: String, offset: String, playSessionId: String?): Boolean {
         if (userId == null) {
@@ -432,36 +456,34 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
     }
 
     override fun createMediaTagURL(resourceType: String, resourceName: String, identifier: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun createSectionsURL(key: String, category: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun createSectionsURL(): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun createSectionsUrl(key: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun createMovieMetadataURL(key: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun createEpisodesURL(key: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun createSeasonsURL(key: String): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun createImageURL(url: String, width: Int, height: Int): String {
-        return url
-    }
+    override fun createImageURL(url: String, width: Int, height: Int): String = url
 
     override fun createTranscodeUrl(id: String, offset: Int, token: String?): String {
         val playSessionId = UUID.randomUUID().toString()
@@ -470,23 +492,24 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             startOffset = offset.toLong().times(10000)
         }
 
+        Timber.d("createTranscodeUrl")
+        @Suppress("ktlint:standard:max-line-length")
         return "${baseUrl}Videos/$id/stream.mkv?DeviceId=$deviceId&AudioCodec=aac&VideoCodec=h264&CopyTimeStamps=true&EnableAutoStreamCopy=true&StartTimeTicks=$startOffset&PlaySessionId=$playSessionId&X-Emby-Token=$token"
     }
 
     override fun reinitialize() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun createUserImageUrl(user: SerenityUser, width: Int, height: Int): String {
-        return "$baseUrl/Users/${user.userId}/Images/Primary?Width=$width&Height=$height"
-    }
+    override fun createUserImageUrl(user: SerenityUser, width: Int, height: Int): String = "$baseUrl/Users/${user.userId}/Images/Primary?Width=$width&Height=$height"
 
     override fun startPlaying(itemId: String): String? {
         if (userId == null) {
             userId = fetchUserId()
         }
 
-        val call = usersService.startPlaying(headerMap(), userId!!, itemId, PlaybackStartRequest(true))
+        val call =
+            usersService.startPlaying(headerMap(), userId!!, itemId, PlaybackStartRequest(true))
 
         val response = call.execute()
         if (response.isSuccessful) {
@@ -501,7 +524,8 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         }
         val positionTicks = offset.times(10000)
 
-        val call = usersService.stopPlaying(headerMap(), userId!!, itemId, null, positionTicks.toString())
+        val call =
+            usersService.stopPlaying(headerMap(), userId!!, itemId, null, positionTicks.toString())
         call.execute()
     }
 
@@ -520,13 +544,13 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         }
 
         val call = usersService.fetchItemQuery(
-                headerMap(),
-                userId = userId!!,
-                parentId = key,
-                genre = genre,
-                isPlayed = isPlayed,
-                includeItemType = itemType,
-                limitCount = 5
+            headerMap(),
+            userId = userId!!,
+            parentId = key,
+            genre = genre,
+            isPlayed = isPlayed,
+            includeItemType = itemType,
+            limitCount = 5
         )
 
         val results = call.executeOrThrow()
@@ -567,8 +591,10 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         }
 
         devIDShort +=
-            (Build.DEVICE.length % 10) + (Build.MANUFACTURER.length % 10) + (Build.MODEL.length
-                    % 10) + (Build.PRODUCT.length % 10)
+            (Build.DEVICE.length % 10) + (Build.MANUFACTURER.length % 10) + (
+                Build.MODEL.length %
+                    10
+                ) + (Build.PRODUCT.length % 10)
 
         // Only devices with API >= 9 have android.os.Build.SERIAL
         // http://developer.android.com/reference/android/os/Build.html#SERIAL
@@ -597,5 +623,4 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         }
         throw IOException("Request to Emby failed with code ${response.code()}, message: ${response.message()}")
     }
-
 }

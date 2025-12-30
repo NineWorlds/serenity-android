@@ -31,12 +31,14 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import javax.inject.Inject
 import us.nineworlds.serenity.core.menus.MenuItem
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter
 import us.nineworlds.serenity.injection.BaseInjector
-import javax.inject.Inject
 
-class GalleryOnItemSelectedListener(private val adapter: MainMenuTextViewAdapter, private val presenter: MainMenuPresenter) : BaseInjector(), IGalleryOnItemSelectedListener {
+class GalleryOnItemSelectedListener(private val adapter: MainMenuTextViewAdapter, private val presenter: MainMenuPresenter) :
+    BaseInjector(),
+    IGalleryOnItemSelectedListener {
     @Inject
     lateinit var preferences: SharedPreferences
 
@@ -44,9 +46,7 @@ class GalleryOnItemSelectedListener(private val adapter: MainMenuTextViewAdapter
 
     private var currentlySelectedItem: MenuItem? = null
 
-    private fun shouldFadeIn(): Boolean {
-        return preferences.getBoolean("animation_background_mainmenu_fadein", true)
-    }
+    private fun shouldFadeIn(): Boolean = preferences.getBoolean("animation_background_mainmenu_fadein", true)
 
     fun getBackgroundImageId(menuItem: MenuItem): Int {
         if ("movie" == menuItem.type || "movies" == menuItem.type) {
@@ -66,7 +66,9 @@ class GalleryOnItemSelectedListener(private val adapter: MainMenuTextViewAdapter
         }
         return if ("search" == menuItem.type) {
             R.drawable.search
-        } else R.drawable.serenity_bonsai_logo
+        } else {
+            R.drawable.serenity_bonsai_logo
+        }
     }
 
     fun onItemSelected(view: View?, hasFocus: Boolean, position: Int) {
@@ -86,7 +88,7 @@ class GalleryOnItemSelectedListener(private val adapter: MainMenuTextViewAdapter
             }
             view.clearAnimation()
             view.background = null
-            mainGalleryBackgroundView = context.findViewById(R.id.mainGalleryBackground);
+            mainGalleryBackgroundView = context.findViewById(R.id.mainGalleryBackground)
             if (hasFocus && view != null) {
                 mainGalleryBackgroundView = context.findViewById(R.id.mainGalleryBackground)
                 mainGalleryBackgroundView.clearAnimation()

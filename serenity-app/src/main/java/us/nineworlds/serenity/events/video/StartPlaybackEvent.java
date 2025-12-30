@@ -1,4 +1,3 @@
 package us.nineworlds.serenity.events.video;
 
-public class StartPlaybackEvent {
-}
+public class StartPlaybackEvent {}

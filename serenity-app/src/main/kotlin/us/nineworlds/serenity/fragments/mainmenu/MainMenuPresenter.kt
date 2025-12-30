@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.fragments.mainmenu
 
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
@@ -18,7 +19,6 @@ import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
 import us.nineworlds.serenity.core.model.VideoCategory
 import us.nineworlds.serenity.core.repository.CategoryRepository
-import javax.inject.Inject
 
 @InjectViewState
 @StateStrategyType(SkipStrategy::class)
@@ -30,19 +30,19 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
     private var galleryJob: Job? = null
 
     init {
-        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE));
+        Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
     }
 
     fun retrieveMainMenu() {
         presenterScope.launch {
             when (val result = repository.loadMainMenu()) {
                 is Result.Success -> viewState.loadMenu(result.data)
+
                 else -> {
                     // need to handle when the server can't communicate
                 }
             }
         }
-
     }
 
     fun populateMovieCategories(itemId: String, type: String) {
@@ -63,7 +63,6 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
 
     private suspend fun processesCategories(categories: List<CategoryInfo>, itemId: String, type: String) {
         if (type == "movies" || type == "tv show" || type == "tvshows") {
-
             val filteredCategories = categories.filter { category -> category.category != "unwatched" }
             val categoryVideoContentInfo = CategoryVideoInfo(categories = filteredCategories)
 
@@ -78,12 +77,14 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
                                 withContext(Dispatchers.Main) {
                                     val videos = result.data.map { videoContentInfo ->
                                         VideoCategory(
-                                                type = getType(type),
-                                                item = videoContentInfo)
+                                            type = getType(type),
+                                            item = videoContentInfo
+                                        )
                                     }
                                     viewState.updateCategories(category, videos)
                                 }
                             }
+
                             else -> {}
                         }
                     }
@@ -102,5 +103,4 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
         "tvshows" -> Types.SERIES
         else -> Types.UNKNOWN
     }
-
 }

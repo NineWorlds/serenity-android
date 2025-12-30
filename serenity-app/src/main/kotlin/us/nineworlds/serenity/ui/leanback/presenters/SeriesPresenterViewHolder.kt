@@ -17,7 +17,7 @@ open class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummary
 
     private val context = binding.root.context
 
-    fun bind(videoInfo : TVShowSeriesInfo) {
+    fun bind(videoInfo: TVShowSeriesInfo) {
         binding.movieBrowserPosterTitle.text = videoInfo.getTitle()
         binding.movieSummary.text = videoInfo.getSummary()
 
@@ -34,8 +34,12 @@ open class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummary
         val bitmap = bmd.bitmap
         val bitmapResized = Bitmap.createScaledBitmap(bitmap, width, height, false)
 
-        binding.movieBrowserPosterTitle.setCompoundDrawablesWithIntrinsicBounds(null, null,
-                BitmapDrawable(context.resources, bitmapResized), null)
+        binding.movieBrowserPosterTitle.setCompoundDrawablesWithIntrinsicBounds(
+            null,
+            null,
+            BitmapDrawable(context.resources, bitmapResized),
+            null
+        )
 
         createInfoGraphics(videoInfo)
     }
@@ -58,8 +62,10 @@ open class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummary
             ratingBar.stepSize = 0.1f
             ratingBar.numStars = 4
             ratingBar.setPadding(0, 0, 0, 0)
-            val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT)
+            val params = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
             params.rightMargin = 15
             ratingBar.layoutParams = params
             val rating = videoInfo.rating
@@ -71,6 +77,5 @@ open class SeriesPresenterViewHolder(private val binding: LeanbackDetailsSummary
         if (studiov != null) {
             binding.movieInfoGraphicLayout.addView(studiov)
         }
-
     }
 }

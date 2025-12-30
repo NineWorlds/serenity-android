@@ -26,143 +26,186 @@ public class MediaContainer implements IMediaContainer {
   private List<ITrack> tracks;
   private String parentIndex;
 
-  @Nullable @Override public String getTitle2() {
+  @Nullable
+  @Override
+  public String getTitle2() {
     return title2;
   }
 
-  @Override public void setTitle2(@Nullable String title2) {
+  @Override
+  public void setTitle2(@Nullable String title2) {
     this.title2 = title2;
   }
 
-  @Nullable @Override public List<IDirectory> getDirectories() {
+  @Nullable
+  @Override
+  public List<IDirectory> getDirectories() {
     return directoryList;
   }
 
-  @Override public void setDirectories(List<IDirectory> directory) {
+  @Override
+  public void setDirectories(List<IDirectory> directory) {
     this.directoryList = directory;
   }
 
-  @Override public int getSize() {
+  @Override
+  public int getSize() {
     return size;
   }
 
-  @Override public void setSize(int size) {
+  @Override
+  public void setSize(int size) {
     this.size = size;
   }
 
-  @Override public int getAllowSync() {
+  @Override
+  public int getAllowSync() {
     return allowSync;
   }
 
-  @Override public void setAllowSync(int allowSync) {
+  @Override
+  public void setAllowSync(int allowSync) {
     this.allowSync = allowSync;
   }
 
-  @Nullable @Override public String getIdentifier() {
+  @Nullable
+  @Override
+  public String getIdentifier() {
     return id;
   }
 
-  @Override public void setIdentifier(@Nullable String identifier) {
+  @Override
+  public void setIdentifier(@Nullable String identifier) {
     this.id = identifier;
   }
 
-  @Nullable @Override public String getMediaTagPrefix() {
+  @Nullable
+  @Override
+  public String getMediaTagPrefix() {
     return mediaTagPrefix;
   }
 
-  @Override public void setMediaTagPrefix(String mediaTagPrefix) {
+  @Override
+  public void setMediaTagPrefix(String mediaTagPrefix) {
     this.mediaTagPrefix = mediaTagPrefix;
   }
 
-  @Override public long getMediaTagVersion() {
+  @Override
+  public long getMediaTagVersion() {
     return mediaTagVersion;
   }
 
-  @Nullable @Override public String getArt() {
+  @Nullable
+  @Override
+  public String getArt() {
     return art;
   }
 
-  @Override public void setArt(@Nullable String art) {
+  @Override
+  public void setArt(@Nullable String art) {
     this.art = art;
   }
 
-  @Override public int getSortAsc() {
+  @Override
+  public int getSortAsc() {
     return sortAsc;
   }
 
-  @Override public void setSortAsc(int sortAsc) {
+  @Override
+  public void setSortAsc(int sortAsc) {
     this.sortAsc = sortAsc;
   }
 
-  @Nullable @Override public String getContent() {
+  @Nullable
+  @Override
+  public String getContent() {
     return content;
   }
 
-  @Override public void setContent(@Nullable String content) {
+  @Override
+  public void setContent(@Nullable String content) {
     this.content = content;
   }
 
-  @Override public String getViewGroup() {
+  @Override
+  public String getViewGroup() {
     return viewGroup;
   }
 
-  @Override public void setViewGroup(@Nullable String viewGroup) {
+  @Override
+  public void setViewGroup(@Nullable String viewGroup) {
     this.viewGroup = viewGroup;
   }
 
-  @Override public int getViewMode() {
+  @Override
+  public int getViewMode() {
     return viewMode;
   }
 
-  @Override public void setViewMode(int viewMode) {
+  @Override
+  public void setViewMode(int viewMode) {
     this.viewMode = viewMode;
   }
 
-  @Override public void setMediaTagVersion(long mediaTagVersion) {
+  @Override
+  public void setMediaTagVersion(long mediaTagVersion) {
     this.mediaTagVersion = mediaTagVersion;
   }
 
-  @Override public void setMediaTagVersion(int mediaTagVersion) {
+  @Override
+  public void setMediaTagVersion(int mediaTagVersion) {
     this.mediaTagVersion = mediaTagVersion;
   }
 
-  @Nullable @Override public String getTitle1() {
+  @Nullable
+  @Override
+  public String getTitle1() {
     return title1;
   }
 
-  @Override public void setTitle1(String title1) {
+  @Override
+  public void setTitle1(String title1) {
     this.title1 = title1;
   }
 
-  @Override public List<IVideo> getVideos() {
+  @Override
+  public List<IVideo> getVideos() {
     return videoList;
   }
 
-  @Override public void setVideos(@Nullable List<IVideo> videos) {
+  @Override
+  public void setVideos(@Nullable List<IVideo> videos) {
     this.videoList = videos;
   }
 
-  @Nullable @Override public String getParentPosterURL() {
+  @Nullable
+  @Override
+  public String getParentPosterURL() {
     return parentPosterUrl;
   }
 
-  @Override public void setParentPosterURL(@Nullable String parentPosterURL) {
+  @Override
+  public void setParentPosterURL(@Nullable String parentPosterURL) {
     this.parentPosterUrl = parentPosterURL;
   }
 
-  @Override public List<ITrack> getTracks() {
+  @Override
+  public List<ITrack> getTracks() {
     return tracks;
   }
 
-  @Override public void setTracks(List<ITrack> tracks) {
+  @Override
+  public void setTracks(List<ITrack> tracks) {
     this.tracks = tracks;
   }
 
-  @Override public String getParentIndex() {
+  @Override
+  public String getParentIndex() {
     return parentIndex;
   }
 
-  @Override public void setParentIndex(String parentIndex) {
+  @Override
+  public void setParentIndex(String parentIndex) {
     this.parentIndex = parentIndex;
   }
 }

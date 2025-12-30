@@ -1,9 +1,7 @@
 package us.nineworlds.serenity.test;
 
-
 import androidx.media3.ui.CaptionStyleCompat;
 import androidx.media3.ui.SubtitleView;
-
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 import org.robolectric.annotation.RealObject;
@@ -16,7 +14,8 @@ public class ShadowSubtitleView extends ShadowViewGroup {
 
   boolean setUserDefaultTextSize = false;
 
-  @Implementation public void setUserDefaultTextSize() {
+  @Implementation
+  public void setUserDefaultTextSize() {
     setUserDefaultTextSize = true;
   }
 
@@ -24,7 +23,8 @@ public class ShadowSubtitleView extends ShadowViewGroup {
     return setUserDefaultTextSize;
   }
 
-  @Implementation public void setUserDefaultStyle() {
+  @Implementation
+  public void setUserDefaultStyle() {
     subtitleView.setStyle(CaptionStyleCompat.DEFAULT);
   }
 }

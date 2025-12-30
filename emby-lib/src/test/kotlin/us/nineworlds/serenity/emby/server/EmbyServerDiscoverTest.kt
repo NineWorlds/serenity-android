@@ -15,8 +15,7 @@ import us.nineworlds.serenity.common.channels.ServerChannel
 
 @RunWith(RobolectricTestRunner::class)
 class EmbyServerDiscoverTest {
-
-    private lateinit var serverDiscovery : EmbyServerDiscover
+    private lateinit var serverDiscovery: EmbyServerDiscover
 
     @Before
     fun setUp() {
@@ -28,12 +27,13 @@ class EmbyServerDiscoverTest {
     @Test
     fun `discover any known servers`() = runTest {
         turbineScope {
-            val servers = ServerChannel.serverEvents.distinctUntilChanged().testIn(backgroundScope)
+            val servers = ServerChannel.serverEvents.distinctUntilChanged().testIn(
+                backgroundScope
+            )
             serverDiscovery.findServers()
             val serverItem = servers.awaitItem()
             assertThat(serverItem.serverName).isEqualTo("Emby - Emby Server")
             servers.cancelAndIgnoreRemainingEvents()
         }
     }
-
 }

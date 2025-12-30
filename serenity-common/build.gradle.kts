@@ -8,8 +8,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
-
-
 dependencies {
     implementation(libs.kotlin)
 
@@ -22,5 +20,4 @@ dependencies {
     }
 
     implementation(libs.kotlin.coroutines.android)
-
 }

@@ -32,6 +32,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentContainerView
 import androidx.leanback.widget.HorizontalGridView
+import javax.inject.Inject
+import javax.inject.Provider
 import moxy.ktx.moxyPresenter
 import us.nineworlds.serenity.MainActivity
 import us.nineworlds.serenity.MainMenuTextViewAdapter
@@ -45,12 +47,12 @@ import us.nineworlds.serenity.events.MainMenuEvent
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuPresenter
 import us.nineworlds.serenity.fragments.mainmenu.MainMenuView
 import us.nineworlds.serenity.injection.InjectingMvpFragment
-import javax.inject.Inject
-import javax.inject.Provider
 
-class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
+class MainMenuFragment :
+    InjectingMvpFragment(),
+    MainMenuView {
 
-    internal val presenter by moxyPresenter {  presenterProvider.get()  }
+    internal val presenter by moxyPresenter { presenterProvider.get() }
 
     @Inject
     lateinit var presenterProvider: Provider<MainMenuPresenter>
@@ -134,5 +136,4 @@ class MainMenuFragment : InjectingMvpFragment(), MainMenuView {
         val mainActivity = requireActivity() as MainActivity
         mainActivity.dataLoadingContainer.visibility = View.GONE
     }
-
 }

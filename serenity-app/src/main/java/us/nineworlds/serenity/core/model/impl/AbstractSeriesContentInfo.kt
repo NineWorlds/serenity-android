@@ -1,13 +1,15 @@
 package us.nineworlds.serenity.core.model.impl
 
+import java.io.Serializable
 import timber.log.Timber
 import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.SeriesContentInfo
 import us.nineworlds.serenity.core.services.UnWatchVideoJob
 import us.nineworlds.serenity.core.services.WatchedVideoJob
-import java.io.Serializable
 
-abstract class AbstractSeriesContentInfo : SeriesContentInfo, Serializable {
+abstract class AbstractSeriesContentInfo :
+    SeriesContentInfo,
+    Serializable {
     private var type: Types? = null
     private var id: String? = null
     private var plotSummary: String? = null

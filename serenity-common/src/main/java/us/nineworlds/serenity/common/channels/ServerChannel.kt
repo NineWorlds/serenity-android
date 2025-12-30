@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import us.nineworlds.serenity.common.Server
 
 object ServerChannel {
-
     val serverChannel = Channel<Server>(UNLIMITED)
 
     private val serverSharedFlow = MutableSharedFlow<Server>()

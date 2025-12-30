@@ -13,5 +13,4 @@ public interface SerenityUser {
   boolean hasPassword();
 
   Server getUserServer();
-
 }

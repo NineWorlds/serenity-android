@@ -5,6 +5,7 @@ import java.util.List;
 public interface IVideo extends ClientObject {
 
   void setType(String type);
+
   String getType();
 
   String getGrandParentTitle();
@@ -130,5 +131,4 @@ public interface IVideo extends ClientObject {
   String getSeriesName();
 
   void setSeriesName(String seriesName);
-
 }

@@ -54,11 +54,27 @@ subprojects {
   apply plugin: "com.diffplug.spotless"
 
   spotless {
-    format 'xml', {
-      target '**/layout*/*.xml'
-      indentWithSpaces(2)
-      eclipseWtp('xml').configFile rootProject.file('spotless.xml.prefs')
-    }
+      format 'xml', {
+          target '**/layout*/*.xml'
+          leadingTabsToSpaces(2)
+          eclipseWtp('xml').configFile rootProject.file('spotless.xml.prefs')
+      }
+      groovyGradle {
+          target '*.gradle' // default target of groovyGradle
+          greclipse()
+      }
+      kotlinGradle {
+          target('*.gradle.kts') // default target for kotlinGradle
+          ktlint() // or ktfmt() or prettier()
+      }
+      kotlin {
+          ktlint("1.8.0")
+          target('src/**/*.kt')
+      }
+      java {
+          target('src/**/*.java')
+          googleJavaFormat()
+      }
   }
 
  tasks.withType(Test).configureEach {
