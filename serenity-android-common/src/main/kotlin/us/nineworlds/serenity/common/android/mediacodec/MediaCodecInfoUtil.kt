@@ -45,7 +45,10 @@ object MediaCodecInfoUtil {
 
   fun getMaxSupportedChannels(mimeType: String): Int {
     val mediaCodecList = MediaCodecList(MediaCodecList.ALL_CODECS)
-    var maxChannels = 1
+    var maxChannels = 2
+    if (mediaCodecList.codecInfos == null) {
+        return maxChannels
+    }
     for (codecInfo in mediaCodecList.codecInfos) {
       if (!codecInfo.isEncoder) {
         val types = codecInfo.supportedTypes

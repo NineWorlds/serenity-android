@@ -59,7 +59,9 @@ dependencies {
 
   testImplementation(libs.junit)
   testImplementation(libs.assertj.core)
-  testImplementation(libs.mockito.core)
+  testImplementation(libs.robolectric)
+  testImplementation(libs.assertk.jvm)
+  testImplementation(libs.mockk)
   testImplementation(libs.opengl.api)
 
   testImplementation(libs.toothpick.testing)
