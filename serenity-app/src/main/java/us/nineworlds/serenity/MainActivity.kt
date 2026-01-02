@@ -4,12 +4,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import javax.inject.Inject
 import javax.inject.Provider
 import moxy.ktx.moxyPresenter
-import toothpick.Toothpick
-import us.nineworlds.serenity.common.annotations.InjectionConstants
 import us.nineworlds.serenity.core.ServerConfig
 import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.databinding.ActivityMainBinding
@@ -50,11 +49,6 @@ open class MainActivity :
         mainMenuContainer = binding.mainGalleryMenu
         dataLoadingContainer = progressBinding.dataLoadingContainer
 
-        setSupportActionBar(binding.actionToolbar)
-
-        initPreferences()
-        initializeDefaultPlayer()
-
         val watchedStatusFirstTime = preferences.getBoolean("watched_status_firsttime", true)
         if (watchedStatusFirstTime) {
             presenter.clearCache(this)
@@ -64,13 +58,9 @@ open class MainActivity :
                 .apply()
         }
 
-        binding.actionToolbar.setOnMenuItemClickListener { menuItem ->
-            if (menuItem.itemId == R.id.menu_user_selection) {
-                startActivity(Intent(this, LoginUserActivity::class.java))
-                finish()
-                return@setOnMenuItemClickListener true
-            }
-            false
+        binding.ivUsers.setOnClickListener {
+            startActivity(Intent(this, LoginUserActivity::class.java))
+            finish()
         }
 
         presenter.showOrHideUserSelection()
@@ -114,11 +104,11 @@ open class MainActivity :
     }
 
     override fun hideMultipleUsersOption() {
-        binding.actionToolbar.menu.findItem(R.id.menu_user_selection)?.isVisible = false
+        binding.ivUsers.isVisible = false
     }
 
     override fun showMultipleUsersOption() {
-        binding.actionToolbar.menu.findItem(R.id.menu_user_selection)?.isVisible = true
+        binding.ivUsers.isVisible = true
     }
 
     companion object {

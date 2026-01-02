@@ -17,8 +17,10 @@
  */
 package us.nineworlds.serenity.core.util;
 
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import androidx.annotation.OptIn;
 import androidx.media3.common.C;
@@ -104,6 +106,26 @@ public class AndroidHelper {
     final PackageManager pm = context.getPackageManager();
     return pm.hasSystemFeature(ANDROID_SOFTWARE_LEANBACK);
   }
+
+    public boolean isTclAndroidTv(Context context) {
+        String manufacturer = android.os.Build.MANUFACTURER != null ?
+                android.os.Build.MANUFACTURER.toLowerCase() : "";
+        String brand = android.os.Build.BRAND != null ?
+                android.os.Build.BRAND.toLowerCase() : "";
+        String model = android.os.Build.MODEL != null ?
+                android.os.Build.MODEL.toLowerCase() : "";
+
+        boolean isTcl = manufacturer.contains("tcl") || brand.contains("tcl");
+
+        // Some older models report "beyondtv" in the model name
+        boolean isTclModel = model.contains("tcl") || model.contains("beyondtv");
+
+        // Verify it is actually a TV device (Leanback)
+        UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
+        boolean isTv = uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION;
+
+        return (isTcl || isTclModel) && isTv;
+    }
 
   @OptIn(markerClass = UnstableApi.class)
   public boolean isAudioPassthroughSupported(String codec) {

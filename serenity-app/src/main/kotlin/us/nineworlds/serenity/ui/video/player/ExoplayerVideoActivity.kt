@@ -2,8 +2,10 @@ package us.nineworlds.serenity.ui.video.player
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,8 +14,11 @@ import android.os.Looper
 import android.view.KeyEvent
 import android.view.View
 import android.widget.FrameLayout
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.TrackSelectionParameters
 import androidx.media3.common.util.UnstableApi
@@ -21,15 +26,15 @@ import androidx.media3.datasource.DataSource
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.audio.DefaultAudioSink
+import androidx.media3.exoplayer.audio.DefaultAudioTrackBufferSizeProvider
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.TrackSelector
 import androidx.media3.extractor.DefaultExtractorsFactory
+import androidx.media3.extractor.ts.DefaultTsPayloadReaderFactory
 import androidx.media3.ui.PlayerView
-import javax.inject.Inject
-import javax.inject.Provider
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -46,6 +51,8 @@ import us.nineworlds.serenity.injection.AppInjectionConstants
 import us.nineworlds.serenity.injection.modules.ExoplayerVideoModule
 import us.nineworlds.serenity.ui.activity.SerenityActivity
 import us.nineworlds.serenity.ui.util.DisplayUtils.overscanCompensation
+import javax.inject.Inject
+import javax.inject.Provider
 
 @UnstableApi
 @OpenForTesting
@@ -177,7 +184,7 @@ class ExoplayerVideoActivity :
     override fun initializePlayer(videoUrl: String, offset: Int) {
         log.debug("Direct Play URL: " + videoUrl)
         player = createSimpleExoplayer()
-        player.addListener(presenter)
+        player.addListener(PlayerListener())
 
         playerView.player = player
         playerView.setControllerVisibilityListener(presenter)
@@ -197,62 +204,85 @@ class ExoplayerVideoActivity :
     }
 
     internal fun createSimpleExoplayer(): ExoPlayer {
-        if (trackSelector is DefaultTrackSelector) {
-            val tunnelingEnabled = androidHelper.enableTunneling()
+        val tunnelingEnabled = androidHelper.enableTunneling()
+        val audioManager = this.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
-            Timber.d("Tunneling enabled: %s", tunnelingEnabled)
+        // 1. Generate Session ID for tunneling
+        val audioSessionId = if (tunnelingEnabled) audioManager.generateAudioSessionId() else C.AUDIO_SESSION_ID_UNSET
+
+        // 2. Simplified RenderersFactory (no custom sink provider needed)
+        val renderersFactory = DefaultRenderersFactory(this)
+            .setEnableDecoderFallback(true)
+
+        if (trackSelector is DefaultTrackSelector) {
+            // 3. Configure Offload Mode based on Tunneling
+            val offloadMode = if (tunnelingEnabled) {
+                // Force OFF for TCL tunneling stability
+                TrackSelectionParameters.AudioOffloadPreferences.AUDIO_OFFLOAD_MODE_DISABLED
+            } else {
+                // Allow for standard playback
+                TrackSelectionParameters.AudioOffloadPreferences.AUDIO_OFFLOAD_MODE_ENABLED
+            }
+
             val audioOffloadPreferences = TrackSelectionParameters.AudioOffloadPreferences.Builder()
-                .setAudioOffloadMode(TrackSelectionParameters.AudioOffloadPreferences.AUDIO_OFFLOAD_MODE_ENABLED)
+                .setAudioOffloadMode(offloadMode)
                 .setIsSpeedChangeSupportRequired(false)
                 .setIsGaplessSupportRequired(false)
                 .build()
+
             val parameters = DefaultTrackSelector.Parameters.Builder()
-                .setTunnelingEnabled(tunnelingEnabled && !isChromecast())
-                .setAllowAudioMixedDecoderSupportAdaptiveness(true)
-                .setExceedAudioConstraintsIfNecessary(false)
-                .setAllowAudioMixedSampleRateAdaptiveness(true)
+                .setTunnelingEnabled(tunnelingEnabled)
                 .setAudioOffloadPreferences(audioOffloadPreferences)
+                .setAllowAudioMixedDecoderSupportAdaptiveness(true)
+                .setAllowAudioMixedSampleRateAdaptiveness(true)
                 .setConstrainAudioChannelCountToDeviceCapabilities(true)
                 .setPreferredAudioMimeTypes(
                     MimeTypes.AUDIO_AC3,
                     MimeTypes.AUDIO_E_AC3,
                     MimeTypes.AUDIO_TRUEHD,
                     MimeTypes.AUDIO_DTS,
-                    MimeTypes.AUDIO_DTS_EXPRESS,
-                    MimeTypes.AUDIO_DTS_HD,
                     MimeTypes.AUDIO_AAC
                 )
+                .build()
 
-            if (isChromecast()) {
-                parameters.setMaxAudioChannelCount(6)
-            }
-
-            (trackSelector as DefaultTrackSelector).parameters = parameters.build()
+            trackSelector.parameters = parameters
         }
 
-        // Control how much buffering is done before playback.  This is to help slower devices like lower end TVs such as TCL 4 Series
-        // By buffering content, and caching data we can better improve video playback and reduce video stuttering
         val defaultLoadControl = DefaultLoadControl.Builder()
-            .setBufferDurationsMs(DefaultLoadControl.DEFAULT_MIN_BUFFER_MS, 80000, 2500, 5000)
-            .setTargetBufferBytes(40 * 1024 * 1024) // Slightly higher memory cap (40MB)
+            .setBufferDurationsMs(
+                15000, // minBufferMs (15s) - Must be >= bufferForPlaybackAfterRebufferMs
+                50000, // maxBufferMs (50s)
+                2500,  // bufferForPlaybackMs (2.5s)
+                5000   // bufferForPlaybackAfterRebufferMs (5s)
+            )
+            .setTargetBufferBytes(40 * 1024 * 1024)
             .build()
 
-        val renderersFactory = DefaultRenderersFactory(this)
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(C.USAGE_MEDIA)
+            .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
+            .build()
 
-        return ExoPlayer.Builder(this)
+        val player = ExoPlayer.Builder(this)
             .setRenderersFactory(renderersFactory)
             .setTrackSelector(trackSelector)
             .setLoadControl(defaultLoadControl)
+            .setAudioAttributes(audioAttributes, true)
             .build()
+
+        // 5. Apply Session ID immediately
+        if (tunnelingEnabled && audioSessionId != C.AUDIO_SESSION_ID_UNSET) {
+            player.setAudioSessionId(audioSessionId)
+        }
+
+        return player
     }
 
-    private fun isChromecast(): Boolean = Build.MODEL.contains("Chromecast", ignoreCase = true) ||
-        Build.DEVICE.contains("sabrina", ignoreCase = true) ||
-        Build.DEVICE.contains("boreal", ignoreCase = true)
 
     internal fun buildMediaSource(uri: Uri): MediaSource {
         val mediaItem = MediaItem.fromUri(uri)
-        val mediaSourceFactory = ProgressiveMediaSource.Factory(mediaDataSourceFactory, DefaultExtractorsFactory())
+        val extractorsFactory = DefaultExtractorsFactory().setTsExtractorFlags(DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS)
+        val mediaSourceFactory = ProgressiveMediaSource.Factory(mediaDataSourceFactory, extractorsFactory)
 
         return mediaSourceFactory.createMediaSource(mediaItem)
     }
@@ -353,5 +383,48 @@ class ExoplayerVideoActivity :
 
     companion object {
         internal const val PROGRESS_UPDATE_DELAY = 10000L
+    }
+
+    inner class PlayerListener : Player.Listener {
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            if (Player.STATE_ENDED == playbackState) {
+                playbackEnded()
+            }
+        }
+
+        override fun onPlayerError(error: PlaybackException) {
+            // We look for Decoder Init or Audio Track Init failures,
+            // which are the classic symptoms of tunneling hardware issues.
+            val isDecoderFailure = error.errorCode == PlaybackException.ERROR_CODE_DECODER_INIT_FAILED
+            val isAudioTrackFailure = error.errorCode == PlaybackException.ERROR_CODE_AUDIO_TRACK_INIT_FAILED
+
+            if (isDecoderFailure || isAudioTrackFailure) {
+                val currentParameters = trackSelector.parameters as DefaultTrackSelector.Parameters
+
+
+                // Only attempt fallback if tunneling is actually currently enabled
+                if (currentParameters.tunnelingEnabled) {
+                    Timber.w( "Tunneling failed for this stream. Falling back to standard playback.")
+
+                    // 1. Save current state
+                    val currentMediaItem = player.currentMediaItem
+                    val currentPosition = player.currentPosition
+                    val playWhenReady = player.playWhenReady
+
+                    // 2. Update parameters to disable tunneling
+                    trackSelector.parameters = currentParameters.buildUpon()
+                        .setTunnelingEnabled(false)
+                        .build()
+
+                    // 3. Re-prepare the player
+                    currentMediaItem?.let {
+                        player.setMediaItem(it, currentPosition)
+                        player.prepare()
+                        player.playWhenReady = playWhenReady
+                    }
+                }
+            }
+        }
+
     }
 }

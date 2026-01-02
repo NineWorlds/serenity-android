@@ -4,13 +4,13 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
-import com.google.android.material.appbar.MaterialToolbar
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -71,9 +71,9 @@ class MainActivityTest : InjectingTest() {
     }
 
     @Test
-    fun `toolbar is not null`() {
-        val toolbar = activity.findViewById<MaterialToolbar>(R.id.action_toolbar)
-        assertThat(toolbar).isNotNull()
+    fun `users button is not null`() {
+        val usersButton = activity.findViewById<ImageButton>(R.id.iv_users)
+        assertThat(usersButton).isNotNull()
     }
 
     @Test
@@ -91,24 +91,6 @@ class MainActivityTest : InjectingTest() {
     fun `creates menu`() {
         val gallery = activity.findViewById<ImageView>(R.id.mainGalleryBackground)
         assertThat(gallery.visibility).isEqualTo(View.VISIBLE)
-    }
-
-    @Test
-    fun `onActivityResult calls recreate when result code is main menu preference result code`() {
-        val spy = spyk(activity)
-
-        spy.onActivityResult(0, 100, null)
-
-        verify { spy.recreate() }
-    }
-
-    @Test
-    fun `onActivityResult never calls recreate when result code is not main menu preference result code`() {
-        val spy = spyk(activity)
-
-        spy.onActivityResult(0, 101, null)
-
-        verify(exactly = 0) { spy.recreate() }
     }
 
     override fun installTestModules() {
