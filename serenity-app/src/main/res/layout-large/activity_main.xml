@@ -85,13 +85,13 @@
     android:clipToPadding="false"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:nextFocusRight="@id/action_toolbar"
+    android:nextFocusRight="@id/iv_users"
     app:focusOutEnd="true"
     app:focusOutFront="true"
     app:focusOutSideEnd="true"
     app:focusOutSideStart="true"
     app:layout_constraintTop_toBottomOf="@id/overscan_top"
-    app:layout_constraintEnd_toStartOf="@+id/action_toolbar"
+    app:layout_constraintEnd_toStartOf="@+id/iv_users"
     app:layout_constraintStart_toEndOf="@id/main_clock"
     app:numberOfRows="1"
     app:rowHeight="wrap_content"
@@ -99,19 +99,20 @@
     tools:itemCount="5"
     tools:layout_height="45dp" />
 
-  <com.google.android.material.appbar.MaterialToolbar
-    android:id="@+id/action_toolbar"
-    style="@style/Widget.AppTheme.Toolbar.Transparent"
-    android:layout_width="wrap_content"
+  <ImageButton
+    android:id="@+id/iv_users"
+    android:layout_width="45dp"
     android:layout_height="45dp"
-    android:descendantFocusability="afterDescendants"
+    android:background="?attr/selectableItemBackground"
+    android:contentDescription="@string/app_name"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:padding="8dp"
+    android:scaleType="fitCenter"
+    android:src="@drawable/ic_generic_user"
+    app:layout_constraintStart_toEndOf="@+id/mainGalleryMenu"
     app:layout_constraintEnd_toStartOf="@id/overscan_end"
-    app:layout_constraintTop_toBottomOf="@id/overscan_top"
-    app:maxButtonHeight="45dp"
-    app:menu="@menu/main_menu_botton_navigation"
-    app:titleTextColor="@color/white" />
+    app:layout_constraintTop_toBottomOf="@id/overscan_top" />
 
   <include
     layout="@layout/include_loading_progress"
