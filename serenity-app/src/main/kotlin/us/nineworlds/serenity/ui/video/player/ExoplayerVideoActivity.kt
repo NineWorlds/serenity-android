@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.Resources
 import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
@@ -16,25 +17,36 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
+import androidx.media3.common.Format
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.TrackSelectionParameters
+import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.DataSourceBitmapLoader
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.Renderer
 import androidx.media3.exoplayer.audio.DefaultAudioSink
 import androidx.media3.exoplayer.audio.DefaultAudioTrackBufferSizeProvider
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.exoplayer.text.TextOutput
+import androidx.media3.exoplayer.text.TextRenderer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.TrackSelector
 import androidx.media3.extractor.DefaultExtractorsFactory
+import androidx.media3.extractor.text.DefaultSubtitleParserFactory
+import androidx.media3.extractor.text.SubtitleParser
 import androidx.media3.extractor.ts.DefaultTsPayloadReaderFactory
+import androidx.media3.ui.PlayerControlView
 import androidx.media3.ui.PlayerView
+import androidx.media3.ui.TrackNameProvider
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -51,6 +63,7 @@ import us.nineworlds.serenity.injection.AppInjectionConstants
 import us.nineworlds.serenity.injection.modules.ExoplayerVideoModule
 import us.nineworlds.serenity.ui.activity.SerenityActivity
 import us.nineworlds.serenity.ui.util.DisplayUtils.overscanCompensation
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -108,6 +121,7 @@ class ExoplayerVideoActivity :
         val binding = ActivityExoplayerVideoBinding.inflate(layoutInflater)
         setContentView(binding.root)
         playerView = binding.playerView
+
         dataLoadingContainer = findViewById(R.id.data_loading_container)
 
         overscanCompensation(this, window.decorView)
@@ -211,8 +225,24 @@ class ExoplayerVideoActivity :
         val audioSessionId = if (tunnelingEnabled) audioManager.generateAudioSessionId() else C.AUDIO_SESSION_ID_UNSET
 
         // 2. Simplified RenderersFactory (no custom sink provider needed)
-        val renderersFactory = DefaultRenderersFactory(this)
-            .setEnableDecoderFallback(true)
+        val renderersFactory = object : DefaultRenderersFactory(this) {
+            override fun buildTextRenderers(
+                context: Context,
+                output: TextOutput,
+                outputLooper: Looper,
+                extensionRendererMode: Int,
+                out: ArrayList<Renderer>
+            ) {
+                // By using the standard constructor, the TextRenderer
+                // defaults to legacy mode which handles raw samples.
+
+                val renderer = TextRenderer(output, outputLooper)
+                // In 1.9.0, if the setter is missing, use the experimental method:
+                renderer.experimentalSetLegacyDecodingEnabled(true)
+                out.add(renderer)
+
+            }
+        }.setEnableDecoderFallback(true)
 
         if (trackSelector is DefaultTrackSelector) {
             // 3. Configure Offload Mode based on Tunneling
@@ -236,6 +266,11 @@ class ExoplayerVideoActivity :
                 .setAllowAudioMixedDecoderSupportAdaptiveness(true)
                 .setAllowAudioMixedSampleRateAdaptiveness(true)
                 .setConstrainAudioChannelCountToDeviceCapabilities(true)
+                .setPreferredTextLanguage(null)
+                .setIgnoredTextSelectionFlags(C.SELECTION_FLAG_DEFAULT)
+//                .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, false)
+                .setSelectUndeterminedTextLanguage(true)
+                //.setTrackTypeDisabled(C.TRACK_TYPE_TEXT, true)
                 .setPreferredAudioMimeTypes(
                     MimeTypes.AUDIO_AC3,
                     MimeTypes.AUDIO_E_AC3,
@@ -263,6 +298,8 @@ class ExoplayerVideoActivity :
             .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
             .build()
 
+
+
         val player = ExoPlayer.Builder(this)
             .setRenderersFactory(renderersFactory)
             .setTrackSelector(trackSelector)
@@ -281,8 +318,14 @@ class ExoplayerVideoActivity :
 
     internal fun buildMediaSource(uri: Uri): MediaSource {
         val mediaItem = MediaItem.fromUri(uri)
-        val extractorsFactory = DefaultExtractorsFactory().setTsExtractorFlags(DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS)
+        val extractorsFactory = DefaultExtractorsFactory()
+            .setTsExtractorFlags(DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS)
+            .setSubtitleParserFactory(SubtitleParser.Factory.UNSUPPORTED)
+
+
         val mediaSourceFactory = ProgressiveMediaSource.Factory(mediaDataSourceFactory, extractorsFactory)
+            .experimentalParseSubtitlesDuringExtraction(false)
+
 
         return mediaSourceFactory.createMediaSource(mediaItem)
     }
@@ -335,6 +378,18 @@ class ExoplayerVideoActivity :
         ) {
             pause()
             releasePlayer()
+        }
+    }
+
+    class SubtitleTrackNameProvider(val resources: Resources) : TrackNameProvider {
+        override fun getTrackName(format: Format): String {
+            val lang = format.language
+            return if (!lang.isNullOrEmpty()) {
+                // Converts "en" to "English", "es" to "Spanish", etc.
+                Locale(lang).displayLanguage.replaceFirstChar { it.uppercase() }
+            } else {
+                "Unknown Subtitle"
+            }
         }
     }
 
@@ -425,6 +480,39 @@ class ExoplayerVideoActivity :
                 }
             }
         }
+
+        override fun onTracksChanged(tracks: Tracks) {
+            Timber.d( "--- Track Discovery Start ---")
+
+            for (trackGroup in tracks.groups) {
+                // We only care about Text (Subtitles) for this debug
+                if (trackGroup.type == C.TRACK_TYPE_TEXT) {
+                    val groupInfo = trackGroup.mediaTrackGroup
+                    Timber.d( "Found Subtitle Group: ${groupInfo.id} (Length: ${trackGroup.length})")
+
+                    for (i in 0 until trackGroup.length) {
+                        val format = trackGroup.getTrackFormat(i)
+                        val isSupported = trackGroup.isTrackSupported(i)
+                        val isSelected = trackGroup.isTrackSelected(i)
+
+                        // Metadata flags
+                        val isForced = (format.selectionFlags and C.SELECTION_FLAG_FORCED) != 0
+                        val isDefault = (format.selectionFlags and C.SELECTION_FLAG_DEFAULT) != 0
+
+                        Timber.d( """
+                        |   [Track $i] 
+                        |   - Label: ${format.label ?: "No Label"}
+                        |   - Language: ${format.language ?: "und"}
+                        |   - MimeType: ${format.sampleMimeType}
+                        |   - Supported by Device: $isSupported
+                        |   - Currently Selected: $isSelected
+                        |   - Forced Flag: $isForced
+                        |   - Default Flag: $isDefault
+                    """.trimMargin())
+                    }
+                }
+            }
+            Timber.d("--- Track Discovery End ---")        }
 
     }
 }

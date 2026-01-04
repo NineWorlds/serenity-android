@@ -29,5 +29,6 @@ class DataSourceFactoryProvider : Provider<DataSource.Factory> {
         return CacheDataSource.Factory()
             .setCache(SerenityApplication.simpleCache)
             .setUpstreamDataSourceFactory(defaultDataSourceFactory)
+
     }
 }
