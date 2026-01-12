@@ -85,10 +85,8 @@ open class SerenityApplication : Application() {
 
     lateinit var eventBus: EventBus
     private fun init() {
+        JodaTimeAndroid.init(this)
         inject()
-        ProcessLifecycleOwner.get().lifecycleScope.launch(Dispatchers.IO) {
-            JodaTimeAndroid.init(this@SerenityApplication)
-        }
         sendStartedApplicationEvent()
         eventBus = EventBus.getDefault()
         eventBus.register(this)
