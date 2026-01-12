@@ -243,6 +243,7 @@ class ExoplayerVideoActivity :
 
             }
         }.setEnableDecoderFallback(true)
+         .setEnableAudioOutputPlaybackParameters(true)
 
         if (trackSelector is DefaultTrackSelector) {
             // 3. Configure Offload Mode based on Tunneling

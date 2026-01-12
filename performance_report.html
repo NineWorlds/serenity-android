@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serenity Android - Startup Performance Report</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2c3e50; border-bottom: 1px solid #ecf0f1; padding-bottom: 10px; margin-top: 40px; }
+        h3 { color: #34495e; margin-top: 25px; }
+        p { margin-bottom: 15px; }
+        .impact-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; color: white; font-weight: bold; font-size: 0.9em; margin-left: 10px; }
+        .high { background-color: #e74c3c; }
+        .medium { background-color: #f39c12; }
+        .low { background-color: #3498db; }
+        code { background-color: #f4f6f7; padding: 2px 5px; border-radius: 3px; font-family: Consolas, Monaco, 'Andale Mono', monospace; color: #c0392b; }
+        pre { background-color: #f4f6f7; padding: 15px; border-radius: 5px; overflow-x: auto; border: 1px solid #ddd; }
+        .recommendation { background-color: #e8f8f5; border-left: 5px solid #2ecc71; padding: 15px; margin-top: 15px; }
+        .analysis { margin-left: 20px; }
+    </style>
+</head>
+<body>
+
+    <h1>Startup Performance Analysis Report</h1>
+    <p><strong>Target:</strong> Low-end devices (e.g., TCL TVs)</p>
+    <p><strong>Focus:</strong> <code>SerenityApplication.kt</code> and initialization logic.</p>
+
+    <h2>Executive Summary</h2>
+    <p>The application performs several heavy operations on the <strong>Main Thread</strong> during <code>onCreate()</code>. On high-end devices, these might be negligible, but on low-end Android TVs (which often have slow storage and limited CPU), they can cause significant startup delays (black screen or slow UI rendering).</p>
+
+    <h2>1. Critical Bottleneck: Media Codec Logging <span class="impact-badge high">High Impact</span></h2>
+    <p><strong>Location:</strong> <code>SerenityApplication.kt</code> &rarr; <code>MediaCodecInfoUtil.logAvailableCodecs()</code></p>
+    
+    <div class="analysis">
+        <h3>Analysis</h3>
+        <p>You are calling <code>MediaCodecInfoUtil.logAvailableCodecs()</code> synchronously in <code>onCreate()</code>. Inside this utility, you instantiate <code>MediaCodecList(MediaCodecList.ALL_CODECS)</code>. Querying the underlying hardware drivers for all available codecs is an extremely expensive operation on Android TV devices. This can block the main thread for hundreds of milliseconds or even seconds.</p>
+    </div>
+
+    <div class="recommendation">
+        <strong>Recommendation:</strong> Move this to a background thread (e.g., using <code>Dispatchers.Default</code>) or remove it entirely from the release build.
+        <pre><code>// Example fix
+ProcessLifecycleOwner.get().lifecycleScope.launch(Dispatchers.Default) {
+    MediaCodecInfoUtil.logAvailableCodecs()
+}</code></pre>
+    </div>
+
+    <h2>2. Heavy Initialization: Joda-Time <span class="impact-badge medium">Medium Impact</span></h2>
+    <p><strong>Location:</strong> <code>SerenityApplication.kt</code> &rarr; <code>init()</code> &rarr; <code>JodaTimeAndroid.init(this)</code></p>
+
+    <div class="analysis">
+        <h3>Analysis</h3>
+        <p><code>JodaTimeAndroid.init(this)</code> loads time zone data from assets/resources. While optimized, this involves disk I/O and parsing, which adds latency to the startup sequence.</p>
+    </div>
+
+    <div class="recommendation">
+        <strong>Recommendation:</strong> If Joda-Time is not needed immediately for the first frame render, consider moving this to a background thread or a lazy initialization block.
+    </div>
+
+    <h2>3. Disk I/O on Main Thread: Preferences & Cache <span class="impact-badge medium">Medium Impact</span></h2>
+    <p><strong>Location:</strong> <code>SerenityApplication.kt</code> &rarr; <code>onCreate()</code></p>
+
+    <div class="analysis">
+        <h3>Analysis</h3>
+        <ul>
+            <li><strong><code>setDefaultPreferences()</code></strong>: Calls <code>PreferenceManager.setDefaultValues(...)</code>. This reads an XML file from the APK and writes to the shared preferences file on disk if it doesn't exist. This is a blocking I/O operation.</li>
+            <li><strong><code>ExoDatabaseProvider</code> & <code>SimpleCache</code></strong>: Creating these objects involves database and file system interactions. While <code>SimpleCache</code> often initializes its index asynchronously, setting up the <code>ExoDatabaseProvider</code> can still incur checking/opening the SQLite database on the main thread.</li>
+        </ul>
+    </div>
+
+    <div class="recommendation">
+        <strong>Recommendation:</strong>
+        <ul>
+            <li><strong>Preferences:</strong> <code>setDefaultValues</code> has a <code>readAgain</code> parameter. Ensure it is <code>false</code> (it is currently <code>true</code> in your code). Changing this to <code>false</code> prevents re-reading if already set. Even better, run this off the main thread.</li>
+            <li><strong>ExoPlayer Cache:</strong> Initialize the <code>SimpleCache</code> lazily (e.g., using a <code>lazy</code> delegate) so it is only created when the video player actually needs it, rather than at app startup.</li>
+        </ul>
+    </div>
+
+    <h2>4. Dependency Injection Overhead <span class="impact-badge low">Low/Medium Impact</span></h2>
+    <p><strong>Location:</strong> <code>SerenityApplication.kt</code> &rarr; <code>init()</code> &rarr; <code>inject()</code></p>
+
+    <div class="analysis">
+        <h3>Analysis</h3>
+        <p>The <code>Toothpick.openScope(...).installModules(...)</code> call constructs your object graph. While generally fast, the <code>SerenityModule</code> creates a <code>new OkHttpClient.Builder().build()</code>. Building <code>OkHttpClient</code> can be slightly expensive due to SSL context initialization.</p>
+    </div>
+
+    <div class="recommendation">
+        <strong>Recommendation:</strong> Ensure <code>OkHttpClient</code> is lazily instantiated or strictly a singleton reused effectively.
+    </div>
+
+    <h2>Action Plan</h2>
+    <p>To immediately improve startup time on TCL TVs:</p>
+    <ol>
+        <li><strong>Wrap <code>MediaCodecInfoUtil.logAvailableCodecs()</code></strong> in a coroutine (<code>Dispatchers.Default</code>).</li>
+        <li><strong>Move <code>JodaTimeAndroid.init(this)</code></strong> to a background coroutine if safe to do so.</li>
+        <li><strong>Lazily initialize <code>SimpleCache</code></strong> instead of creating it in <code>onCreate</code>.</li>
+    </ol>
+
+</body>
+</html>
