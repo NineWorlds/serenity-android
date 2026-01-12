@@ -12,7 +12,9 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.MainActivity
 import us.nineworlds.serenity.R
@@ -59,16 +61,17 @@ class ServerSelectionActivity : InjectingActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityServerSelectionBinding.inflate(layoutInflater)
-        progressBinding = IncludeLoadingProgressBinding.bind(binding.root)
-
-        setContentView(binding.root)
 
         if (!(serverIPPreference.get().isNullOrEmpty())) {
             val server = preferedServer()
             startNextActivity(server)
             return
         }
+
+        binding = ActivityServerSelectionBinding.inflate(layoutInflater)
+        progressBinding = IncludeLoadingProgressBinding.bind(binding.root)
+
+        setContentView(binding.root)
 
         serverDisplayHandler = Handler()
         progressBinding.dataLoadingContainer.visibility = VISIBLE
@@ -128,35 +131,38 @@ class ServerSelectionActivity : InjectingActivity() {
     }
 
     private fun startNextActivity(serverInfo: Server) {
-        serverClientPreference.set(serverInfo.discoveryProtocol())
-        serverIPPreference.set(serverInfo.ipAddress)
-        var serverPort = "32400"
-        if (serverInfo.port != null) {
-            serverPort = serverInfo.port
-        } else if (serverInfo.discoveryProtocol() == "Emby") {
-            serverPort = "8096"
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                serverClientPreference.set(serverInfo.discoveryProtocol())
+                serverIPPreference.set(serverInfo.ipAddress)
+                var serverPort = "32400"
+                if (serverInfo.port != null) {
+                    serverPort = serverInfo.port
+                } else if (serverInfo.discoveryProtocol() == "Emby") {
+                    serverPort = "8096"
+                }
+                serverPortPreference.set(serverPort)
+
+                val analytics = FirebaseAnalytics.getInstance(this@ServerSelectionActivity)
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Server")
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, serverInfo.discoveryProtocol())
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, serverInfo.discoveryProtocol())
+
+                analytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
+            }
+
+            if (serverInfo.discoveryProtocol() == "Emby") {
+                val intent = Intent(this@ServerSelectionActivity, LoginUserActivity::class.java)
+                intent.putExtra("server", serverInfo)
+                startActivity(intent)
+                finish()
+            } else {
+                val intent = Intent(this@ServerSelectionActivity, AndroidTV::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
-        serverPortPreference.set(serverPort)
-
-        val analytics = FirebaseAnalytics.getInstance(this)
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Server")
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, serverInfo.discoveryProtocol())
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, serverInfo.discoveryProtocol())
-
-        analytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
-
-        if (serverInfo.discoveryProtocol() == "Emby") {
-            val intent = Intent(this, LoginUserActivity::class.java)
-            intent.putExtra("server", serverInfo)
-            startActivity(intent)
-            finish()
-            return
-        }
-
-        val intent = Intent(this, AndroidTV::class.java)
-        startActivity(intent)
-        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
