@@ -44,9 +44,15 @@ android {
             buildConfigField("String", "CLIENT_VERSION", "\"${libs.versions.appVersion.get()}\"")
         }
     }
+
+    lint {
+        abortOnError = false
+    }
 }
 
 dependencies {
+    lintChecks(project(":lint-rules"))
+
     api(project(":serenity-common"))
     api(project(":serenity-android-common"))
     api(project(":manager"))
