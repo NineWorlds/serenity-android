@@ -85,8 +85,8 @@ open class SerenityApplication : Application() {
 
     lateinit var eventBus: EventBus
     private fun init() {
-        inject()
         JodaTimeAndroid.init(this)
+        inject()
         sendStartedApplicationEvent()
         eventBus = EventBus.getDefault()
         eventBus.register(this)
@@ -110,23 +110,28 @@ open class SerenityApplication : Application() {
         init()
         setDefaultPreferences()
         discoverServers()
-        MediaCodecInfoUtil.logAvailableCodecs()
 
-        val leastRecentlyUsedCacheEvictor =
-            LeastRecentlyUsedCacheEvictor((200 * 1024 * 1024).toLong())
-        val exoDatabaseProvider = ExoDatabaseProvider(this)
-        simpleCache = SimpleCache(cacheDir, leastRecentlyUsedCacheEvictor, exoDatabaseProvider)
+        ProcessLifecycleOwner.get().lifecycleScope.launch(Dispatchers.Default) {
+            MediaCodecInfoUtil.logAvailableCodecs()
+        }
+
+        ProcessLifecycleOwner.get().lifecycleScope.launch(Dispatchers.IO) {
+            val leastRecentlyUsedCacheEvictor =
+                LeastRecentlyUsedCacheEvictor((200 * 1024 * 1024).toLong())
+            val exoDatabaseProvider = ExoDatabaseProvider(this@SerenityApplication)
+            simpleCache = SimpleCache(cacheDir, leastRecentlyUsedCacheEvictor, exoDatabaseProvider)
+        }
     }
 
     protected open fun setDefaultPreferences() {
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, true)
-        val editor = preferences.edit()
-        if (androidHelper.isAndroidTV ||
-            androidHelper.isAmazonFireTV ||
-            androidHelper.isLeanbackSupported
-        ) {
-            editor.putBoolean("serenity_tv_mode", true)
-            editor.apply()
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
+        ProcessLifecycleOwner.get().lifecycleScope.launch(Dispatchers.IO) {
+            if (androidHelper.isAndroidTV ||
+                androidHelper.isAmazonFireTV ||
+                androidHelper.isLeanbackSupported
+            ) {
+                preferences.edit().putBoolean("serenity_tv_mode", true).apply()
+            }
         }
     }
 
@@ -169,6 +174,7 @@ open class SerenityApplication : Application() {
             enableTracking = false
         }
 
+        @UnstableApi
         lateinit var simpleCache: SimpleCache
     }
 }

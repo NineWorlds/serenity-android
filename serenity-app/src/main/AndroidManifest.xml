@@ -90,7 +90,7 @@
         <activity
                 android:name=".ui.activity.ServerSelectionActivity"
                 android:banner="@drawable/serenity_androidtv_banner"
-                android:theme="@style/Theme.AppTheme.FullScreen"
+                android:theme="@style/Theme.AppTheme.Launcher"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

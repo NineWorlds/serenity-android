@@ -98,6 +98,10 @@
 <!--        <item name="colorControlHighlight">@color/lb_grey</item>-->
     </style>
 
+    <style name="Theme.AppTheme.Launcher" parent="Theme.AppTheme.FullScreen">
+        <item name="android:windowBackground">@drawable/serenity_bonsai_splash</item>
+    </style>
+
     <style name="CustomActionBarTheme" parent="Theme.AppCompat.Leanback">
         <item name="android:windowActionBarOverlay">false</item>
         <item name="android:windowActionBar">false</item>
