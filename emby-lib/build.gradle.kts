@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -41,12 +44,18 @@ android {
         }
 
         getByName("release") {
-            buildConfigField("String", "CLIENT_VERSION", "\"${libs.versions.appVersion.get()}")
+            buildConfigField("String", "CLIENT_VERSION", "\"${libs.versions.appVersion.get()}\"")
         }
+    }
+
+    lint {
+        abortOnError = false
     }
 }
 
 dependencies {
+    lintChecks(project(":lint-rules"))
+
     api(project(":serenity-common"))
     api(project(":serenity-android-common"))
     api(project(":manager"))

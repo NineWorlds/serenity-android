@@ -91,11 +91,13 @@ android {
         }
     }
 
-    lintOptions {
-        isCheckReleaseBuilds = false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        isAbortOnError = false
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
+
+        // Enable reports
+        htmlReport = true
+        xmlReport = true
     }
 
     testOptions {
@@ -118,6 +120,7 @@ android {
 }
 
 dependencies {
+    lintChecks(project(":lint-rules"))
 
     implementation(platform(libs.firebase.bom))
 
@@ -164,6 +167,7 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.annotation)
+    implementation(libs.androidx.datastore.preferences)
 
     releaseImplementation(libs.toothpick.runtime) {
         exclude(group = "javax.inject")

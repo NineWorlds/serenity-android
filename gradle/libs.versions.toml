@@ -62,6 +62,7 @@ kotlin = "2.2.21"
 coreKtxVersion = "1.17.0"
 espressoCoreVersion = "3.5.1"
 lifecycleProcessVersion = "2.10.0"
+datastore = "1.1.2"
 
 [libraries]
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotationVersion" }
@@ -113,6 +114,8 @@ okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-i
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timberVersion" }
 resourceful = { group = "com.github.rstanic12", name = "Resourceful", version.ref = "resourcefulVersion"}
 simple-xml = { group = "org.simpleframework", name = "simple-xml", version.ref = "simpleXmlVersion" }
+
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
 # Toothpick
 toothpick-runtime = { group = "com.github.stephanenicolas.toothpick", name = "toothpick-runtime", version.ref = "toothPickVersion"}
