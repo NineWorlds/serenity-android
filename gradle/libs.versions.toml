@@ -35,7 +35,7 @@ targetSdkVersion = "35"
 
 okhttpVersion = "4.11.0"
 androidPriorityJobQueueVersion = "2.0.1"
-eventBus = "3.1.1"
+eventBus = "3.3.1"
 moshiKotlinVersion = "1.15.2"
 retrofitVersion = "2.9.0"
 jodaTimeVersion = "2.10.9.1"
