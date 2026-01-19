@@ -96,7 +96,7 @@
       <ImageButton android:id="@+id/exo_debug_toggle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:contentDescription="Toggle Debug Info"
+          android:contentDescription="@string/toggle_debug_info"
           android:src="@android:drawable/ic_menu_info_details"
           app:tint="@color/white"
           style="@style/ExoStyledControls.Button.Bottom"/>
