@@ -21,6 +21,7 @@ import us.nineworlds.serenity.common.annotations.OpenForTesting
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.core.logger.Logger
 import us.nineworlds.serenity.core.model.VideoContentInfo
+import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
 import us.nineworlds.serenity.core.util.AndroidHelper
 import us.nineworlds.serenity.events.video.OnScreenDisplayEvent
 import us.nineworlds.serenity.injection.ForVideoQueue
@@ -161,6 +162,7 @@ class ExoplayerPresenter :
     override fun playVideo() {
         val videoUrl: String = transcoderUrl()
         startPlaying()
+        viewState.setVideoInfo(if (video.seriesName != null) "${video.seriesName}\n${video.getTitle()}" else video.getTitle(), video.getSummary())
         viewState.updateSerenityDebugInfo(isTranscoding, video.videoCodec, video.audioCodec, 0)
         viewState.initializePlayer(videoUrl, video.resumeOffset)
     }

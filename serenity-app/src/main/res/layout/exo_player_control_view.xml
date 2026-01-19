@@ -10,6 +10,35 @@
     android:layout_height="match_parent"
     android:background="#CC000000" />
 
+  <LinearLayout
+    android:id="@+id/video_info_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/overscan_start_padding"
+    android:paddingEnd="@dimen/overscan_end_padding"
+    android:paddingTop="@dimen/overscan_top_padding"
+    android:background="#80000000"
+  >
+    <TextView
+      android:id="@+id/video_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textColor="@android:color/white"
+      android:textSize="24sp"
+      android:textStyle="bold" />
+
+    <TextView
+      android:id="@+id/video_summary"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:textColor="@android:color/white"
+      android:textSize="16sp"
+      android:maxLines="3"
+      android:ellipsize="end" />
+  </LinearLayout>
+
   <FrameLayout
     android:id="@id/exo_center_controls"
     android:layout_width="wrap_content"

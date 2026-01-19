@@ -190,6 +190,9 @@ class ExoplayerPresenterTest : InjectingTest() {
         videoContentInfo.videoCodec = "h264"
         videoContentInfo.audioCodec = "ac3"
         videoContentInfo.directPlayUrl = "http://direct.url"
+        videoContentInfo.seriesTitle = null
+        videoContentInfo.setTitle("Title")
+        videoContentInfo.setSummary("Summary")
         presenter.video = videoContentInfo
 
         every { presenter.isDirectPlaySupportedForContainer(any()) } returns false
@@ -197,6 +200,7 @@ class ExoplayerPresenterTest : InjectingTest() {
 
         presenter.playVideo()
 
+        verify { mockView.setVideoInfo("Title", "Summary") }
         verify { mockView.updateSerenityDebugInfo(true, "h264", "ac3", 0) }
         verify { mockView.initializePlayer("http://transcode.url", 0) }
     }
@@ -207,12 +211,15 @@ class ExoplayerPresenterTest : InjectingTest() {
         videoContentInfo.videoCodec = "h264"
         videoContentInfo.audioCodec = "ac3"
         videoContentInfo.directPlayUrl = "http://direct.url"
+        videoContentInfo.setTitle("Title")
+        videoContentInfo.setSummary("Summary")
         presenter.video = videoContentInfo
 
         every { presenter.isDirectPlaySupportedForContainer(any()) } returns true
 
         presenter.playVideo()
 
+        verify { mockView.setVideoInfo("Title", "Summary") }
         verify { mockView.updateSerenityDebugInfo(false, "h264", "ac3", 0) }
         verify { mockView.initializePlayer("http://direct.url", 0) }
     }
