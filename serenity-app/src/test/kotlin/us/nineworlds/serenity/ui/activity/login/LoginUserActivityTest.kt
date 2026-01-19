@@ -1,11 +1,10 @@
 package us.nineworlds.serenity.ui.activity.login
 
-import android.app.Application
 import android.content.Intent
 import android.os.Looper
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AlertDialog
-import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -24,7 +23,6 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
-import org.robolectric.shadows.ShadowAlertDialog
 import toothpick.config.Module
 import us.nineworlds.serenity.AndroidTV
 import us.nineworlds.serenity.MockkTestingModule
@@ -104,6 +102,31 @@ class LoginUserActivityTest : InjectingTest() {
         activity.onUserSelected(mockSerenityUser)
 
         verify { mockPresenter.loadUser(mockSerenityUser) }
+    }
+
+    @Test
+    fun `showError hides progress and list and shows retry button`() {
+        activity.progressBinding.dataLoadingContainer.visibility = VISIBLE
+        activity.binding.loginUserContainer.visibility = VISIBLE
+        activity.binding.retryButton.visibility = GONE
+
+        activity.showError()
+
+        Assertions.assertThat(activity.progressBinding.dataLoadingContainer).isGone
+        Assertions.assertThat(activity.binding.loginUserContainer).isGone
+        Assertions.assertThat(activity.binding.retryButton).isVisible
+    }
+
+    @Test
+    fun `retry button click calls presenter retrieveAllUsers`() {
+        activity.binding.retryButton.visibility = VISIBLE
+        activity.progressBinding.dataLoadingContainer.visibility = GONE
+
+        activity.binding.retryButton.performClick()
+
+        Assertions.assertThat(activity.progressBinding.dataLoadingContainer).isVisible
+        Assertions.assertThat(activity.binding.retryButton).isGone
+        verify { mockPresenter.retrieveAllUsers() }
     }
 
     @Test

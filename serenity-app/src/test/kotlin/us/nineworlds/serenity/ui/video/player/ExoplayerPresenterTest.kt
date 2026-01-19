@@ -78,6 +78,7 @@ class ExoplayerPresenterTest : InjectingTest() {
     @After
     fun tearDown() {
         Dispatchers.resetMain()
+        clearAllMocks()
     }
 
     @Test
@@ -174,6 +175,46 @@ class ExoplayerPresenterTest : InjectingTest() {
         verify { mockVideoContentInfo.id() }
         verify { mockSerenityClient.createTranscodeUrl(expectedId, 0) }
         verify { mockView.initializePlayer(expectedUrl, 0) }
+    }
+
+    @Test
+    fun toggleDebugModeCallsToggleDebugViewOnViewState() {
+        presenter.toggleDebugMode()
+
+        verify { mockView.toggleDebugView() }
+    }
+
+    @Test
+    fun playVideoSetsIsTranscodingToTrueWhenDirectPlayIsNotSupported() {
+        val videoContentInfo = MoviePosterInfo()
+        videoContentInfo.videoCodec = "h264"
+        videoContentInfo.audioCodec = "ac3"
+        videoContentInfo.directPlayUrl = "http://direct.url"
+        presenter.video = videoContentInfo
+
+        every { presenter.isDirectPlaySupportedForContainer(any()) } returns false
+        every { mockSerenityClient.createTranscodeUrl(any(), any()) } returns "http://transcode.url"
+
+        presenter.playVideo()
+
+        verify { mockView.updateSerenityDebugInfo(true, "h264", "ac3", 0) }
+        verify { mockView.initializePlayer("http://transcode.url", 0) }
+    }
+
+    @Test
+    fun playVideoSetsIsTranscodingToFalseWhenDirectPlayIsSupported() {
+        val videoContentInfo = MoviePosterInfo()
+        videoContentInfo.videoCodec = "h264"
+        videoContentInfo.audioCodec = "ac3"
+        videoContentInfo.directPlayUrl = "http://direct.url"
+        presenter.video = videoContentInfo
+
+        every { presenter.isDirectPlaySupportedForContainer(any()) } returns true
+
+        presenter.playVideo()
+
+        verify { mockView.updateSerenityDebugInfo(false, "h264", "ac3", 0) }
+        verify { mockView.initializePlayer("http://direct.url", 0) }
     }
 
     override fun installTestModules() {

@@ -54,7 +54,7 @@ class LoginUserPresenter :
                 is Success<List<SerenityUser>> -> viewState.displayUsers(result.data)
 
                 else -> {
-                    // Error state
+                    viewState.showError()
                 }
             }
         }
@@ -66,7 +66,7 @@ class LoginUserPresenter :
                 is Success<SerenityUser> -> viewState.launchNextScreen()
 
                 else -> {
-                    // Error State
+                    viewState.showError()
                 }
             }
         }

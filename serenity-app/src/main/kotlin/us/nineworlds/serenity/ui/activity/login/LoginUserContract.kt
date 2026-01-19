@@ -15,6 +15,9 @@ interface LoginUserContract {
 
         @StateStrategyType(AddToEndSingleStrategy::class)
         fun launchNextScreen()
+
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun showError()
     }
 
     interface LoginUserPresnter {

@@ -26,6 +26,7 @@ import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.core.repository.LoginRepository
 import us.nineworlds.serenity.test.InjectingTest
+import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
@@ -47,7 +48,7 @@ class LoginUserPresenterTest : InjectingTest() {
         clearAllMocks()
         super.setUp()
         presenter = LoginUserPresenter()
-        Dispatchers.setMain(Dispatchers.Unconfined)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
     }
 
     @After
@@ -58,11 +59,11 @@ class LoginUserPresenterTest : InjectingTest() {
     @Test
     fun `init preseter updates client with port`() {
         every { mockServer.ipAddress } returns "192.168.0.1"
+        every { mockServer.port } returns null
 
         presenter.initPresenter(mockServer)
 
-        verify { mockSerenityClient.updateBaseUrl(any()) }
-        verify { mockServer.ipAddress }
+        verify { mockSerenityClient.updateBaseUrl("http://192.168.0.1:8096/") }
     }
 
     @Test
@@ -73,8 +74,6 @@ class LoginUserPresenterTest : InjectingTest() {
         presenter.initPresenter(mockServer)
 
         verify { mockSerenityClient.updateBaseUrl("http://192.168.0.1:9999/") }
-        verify { mockServer.ipAddress }
-        verify(atLeast = 1) { mockServer.port }
     }
 
     @Test
@@ -87,6 +86,17 @@ class LoginUserPresenterTest : InjectingTest() {
 
         coVerify { mockRepository.loadAllUsers() }
         verify { mockView.displayUsers(expectedUsers) }
+    }
+
+    @Test
+    fun `retrieve all users calls showError on failure`() = runTest {
+        coEvery { mockRepository.loadAllUsers() } returns Result.Error(IOException("Failed"))
+        presenter.attachView(mockView)
+
+        presenter.retrieveAllUsers()
+
+        coVerify { mockRepository.loadAllUsers() }
+        verify { mockView.showError() }
     }
 
     @Test
@@ -109,6 +119,17 @@ class LoginUserPresenterTest : InjectingTest() {
 
         coVerify { mockRepository.authenticateUser(mockSerenityUser, "password") }
         verify { mockView.launchNextScreen() }
+    }
+
+    @Test
+    fun `load user calls showError on failure`() = runTest {
+        coEvery { mockRepository.authenticateUser(any(), any()) } returns Result.Error(IOException("Failed"))
+        presenter.attachView(mockView)
+
+        presenter.loadUser(mockSerenityUser, "password")
+
+        coVerify { mockRepository.authenticateUser(mockSerenityUser, "password") }
+        verify { mockView.showError() }
     }
 
     override fun installTestModules() {

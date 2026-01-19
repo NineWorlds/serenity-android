@@ -58,6 +58,7 @@ class ExoplayerPresenter :
 
     private var onScreenControllerShowing: Boolean = false
     private var playSessionId: String? = null
+    private var isTranscoding: Boolean = false
 
     override fun attachView(view: ExoplayerView?) {
         Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
@@ -160,6 +161,7 @@ class ExoplayerPresenter :
     override fun playVideo() {
         val videoUrl: String = transcoderUrl()
         startPlaying()
+        viewState.updateSerenityDebugInfo(isTranscoding, video.videoCodec, video.audioCodec, 0)
         viewState.initializePlayer(videoUrl, video.resumeOffset)
     }
 
@@ -181,14 +183,20 @@ class ExoplayerPresenter :
         logger.debug("ExoPlayerPresenter: Container: ${video.container} Audio: ${video.audioCodec}")
         if (isDirectPlaySupportedForContainer(video)) {
             logger.debug("ExoPlayerPresenter: Direct playing ${video.directPlayUrl}")
+            isTranscoding = false
             return video.directPlayUrl.orEmpty()
         }
 
         val transcodingUrl = serenityClient.createTranscodeUrl(video.id().orEmpty(), video.resumeOffset)
 
         logger.debug("ExoPlayerPresenter: Transcoding Url: $transcodingUrl")
+        isTranscoding = true
         return transcodingUrl
     }
 
     private fun selectCodec(mimeType: String): Boolean = MediaCodecInfoUtil.isCodecSupported(mimeType)
+
+    override fun toggleDebugMode() {
+        viewState.toggleDebugView()
+    }
 }

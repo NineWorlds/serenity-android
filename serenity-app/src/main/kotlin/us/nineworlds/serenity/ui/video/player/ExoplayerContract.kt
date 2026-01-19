@@ -35,6 +35,12 @@ interface ExoplayerContract {
 
         @StateStrategyType(AddToEndSingleStrategy::class)
         fun showResumeDialog(video: VideoContentInfo)
+
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun updateSerenityDebugInfo(isTranscoding: Boolean, videoCodec: String?, audioCodec: String?, bitrate: Int)
+
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun toggleDebugView()
     }
 
     interface ExoplayerPresenter {
@@ -54,5 +60,7 @@ interface ExoplayerContract {
         fun startPlaying()
 
         fun playVideo()
+
+        fun toggleDebugMode()
     }
 }

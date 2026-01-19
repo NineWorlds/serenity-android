@@ -16,6 +16,34 @@
     app:show_buffering="when_playing"
     app:show_subtitle_button="true"  />
 
+  <LinearLayout
+    android:id="@+id/exo_debug_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:padding="8dp"
+    android:background="#80000000"
+    android:orientation="vertical"
+    android:visibility="gone"
+  >
+
+    <TextView
+      android:id="@+id/exo_debug_text_view"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="@android:color/white"
+      android:textSize="12sp" />
+
+    <TextView
+      android:id="@+id/serenity_debug_text_view"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:textColor="@android:color/white"
+      android:textSize="12sp" />
+
+  </LinearLayout>
+
   <include
     layout="@layout/include_loading_progress"
     android:layout_width="150dp"

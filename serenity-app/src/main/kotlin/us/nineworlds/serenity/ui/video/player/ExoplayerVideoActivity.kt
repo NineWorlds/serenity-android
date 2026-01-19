@@ -15,6 +15,9 @@ import android.os.Looper
 import android.view.KeyEvent
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.Format
@@ -26,14 +29,10 @@ import androidx.media3.common.TrackSelectionParameters
 import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DataSource
-import androidx.media3.datasource.DataSourceBitmapLoader
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.Renderer
-import androidx.media3.exoplayer.audio.DefaultAudioSink
-import androidx.media3.exoplayer.audio.DefaultAudioTrackBufferSizeProvider
-import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.text.TextOutput
@@ -41,12 +40,11 @@ import androidx.media3.exoplayer.text.TextRenderer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.TrackSelector
 import androidx.media3.extractor.DefaultExtractorsFactory
-import androidx.media3.extractor.text.DefaultSubtitleParserFactory
 import androidx.media3.extractor.text.SubtitleParser
 import androidx.media3.extractor.ts.DefaultTsPayloadReaderFactory
-import androidx.media3.ui.PlayerControlView
 import androidx.media3.ui.PlayerView
 import androidx.media3.ui.TrackNameProvider
+import androidx.media3.exoplayer.util.DebugTextViewHelper
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import timber.log.Timber
@@ -105,6 +103,10 @@ class ExoplayerVideoActivity :
     private var videoKeyHandler: VideoKeyCodeHandlerDelegate? = null
     private var autoResume: Boolean = false
 
+    private var debugTextViewHelper: DebugTextViewHelper? = null
+    private lateinit var exoDebugLayout: LinearLayout
+    private lateinit var serenityDebugTextView: TextView
+
     override fun screenName(): String = "Exoplayer Video Player"
 
     @ProvidePresenter
@@ -123,6 +125,8 @@ class ExoplayerVideoActivity :
         playerView = binding.playerView
 
         dataLoadingContainer = findViewById(R.id.data_loading_container)
+        exoDebugLayout = findViewById(R.id.exo_debug_layout)
+        serenityDebugTextView = findViewById(R.id.serenity_debug_text_view)
 
         overscanCompensation(this, window.decorView)
         val intent = this.intent
@@ -215,6 +219,14 @@ class ExoplayerVideoActivity :
             player.seekTo(offset.toLong())
         }
         progressReportinghandler.postDelayed(progressRunnable, Companion.PROGRESS_UPDATE_DELAY.toLong())
+
+        debugTextViewHelper = DebugTextViewHelper(player, findViewById(R.id.exo_debug_text_view))
+        debugTextViewHelper?.start()
+
+        val debugToggle = playerView.findViewById<ImageButton>(R.id.exo_debug_toggle)
+        debugToggle?.setOnClickListener {
+            presenter.toggleDebugMode()
+        }
     }
 
     internal fun createSimpleExoplayer(): ExoPlayer {
@@ -243,7 +255,6 @@ class ExoplayerVideoActivity :
 
             }
         }.setEnableDecoderFallback(true)
-         .setEnableAudioOutputPlaybackParameters(true)
 
         if (trackSelector is DefaultTrackSelector) {
             // 3. Configure Offload Mode based on Tunneling
@@ -286,12 +297,12 @@ class ExoplayerVideoActivity :
 
         val defaultLoadControl = DefaultLoadControl.Builder()
             .setBufferDurationsMs(
-                15000, // minBufferMs (15s) - Must be >= bufferForPlaybackAfterRebufferMs
-                50000, // maxBufferMs (50s)
-                2500,  // bufferForPlaybackMs (2.5s)
-                5000   // bufferForPlaybackAfterRebufferMs (5s)
+                30000, // minBufferMs
+                50000, // maxBufferMs
+                2500,  // bufferForPlaybackMs
+                5000   // bufferForPlaybackAfterRebufferMs
             )
-            .setTargetBufferBytes(40 * 1024 * 1024)
+//            .setTargetBufferBytes(40 * 1024 * 1024)
             .build()
 
         val audioAttributes = AudioAttributes.Builder()
@@ -299,13 +310,12 @@ class ExoplayerVideoActivity :
             .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
             .build()
 
-
-
         val player = ExoPlayer.Builder(this)
             .setRenderersFactory(renderersFactory)
             .setTrackSelector(trackSelector)
             .setLoadControl(defaultLoadControl)
             .setAudioAttributes(audioAttributes, true)
+            .setUsePlatformDiagnostics(false)
             .build()
 
         // 5. Apply Session ID immediately
@@ -332,6 +342,8 @@ class ExoplayerVideoActivity :
     }
 
     internal fun releasePlayer() {
+        debugTextViewHelper?.stop()
+        debugTextViewHelper = null
         player.stop()
         player.clearVideoSurface()
         player.release()
@@ -379,6 +391,22 @@ class ExoplayerVideoActivity :
         ) {
             pause()
             releasePlayer()
+        }
+    }
+
+    override fun updateSerenityDebugInfo(isTranscoding: Boolean, videoCodec: String?, audioCodec: String?, bitrate: Int) {
+        val transcodingText = if (isTranscoding) "Transcoding: MKV/AAC" else "Direct Play"
+        val originalCodecs = "Original: ${videoCodec ?: "Unknown"}/${audioCodec ?: "Unknown"}"
+        val bitrateText = if (bitrate > 0) "Bitrate: ${bitrate / 1000} kbps" else ""
+
+        serenityDebugTextView.text = "$transcodingText\n$originalCodecs\n$bitrateText"
+    }
+
+    override fun toggleDebugView() {
+        if (exoDebugLayout.visibility == View.VISIBLE) {
+            exoDebugLayout.visibility = View.GONE
+        } else {
+            exoDebugLayout.visibility = View.VISIBLE
         }
     }
 
@@ -460,7 +488,7 @@ class ExoplayerVideoActivity :
 
                 // Only attempt fallback if tunneling is actually currently enabled
                 if (currentParameters.tunnelingEnabled) {
-                    Timber.w( "Tunneling failed for this stream. Falling back to standard playback.")
+                    Timber.w("Tunneling failed for this stream. Falling back to standard playback.")
 
                     // 1. Save current state
                     val currentMediaItem = player.currentMediaItem
@@ -483,13 +511,25 @@ class ExoplayerVideoActivity :
         }
 
         override fun onTracksChanged(tracks: Tracks) {
-            Timber.d( "--- Track Discovery Start ---")
+            Timber.d("--- Track Discovery Start ---")
+            var bitrate = 0
 
             for (trackGroup in tracks.groups) {
+                if (trackGroup.isSelected) {
+                    for (i in 0 until trackGroup.length) {
+                        if (trackGroup.isTrackSelected(i)) {
+                            val format = trackGroup.getTrackFormat(i)
+                            if (format.bitrate > 0) {
+                                bitrate = format.bitrate
+                            }
+                        }
+                    }
+                }
+
                 // We only care about Text (Subtitles) for this debug
                 if (trackGroup.type == C.TRACK_TYPE_TEXT) {
                     val groupInfo = trackGroup.mediaTrackGroup
-                    Timber.d( "Found Subtitle Group: ${groupInfo.id} (Length: ${trackGroup.length})")
+                    Timber.d("Found Subtitle Group: ${groupInfo.id} (Length: ${trackGroup.length})")
 
                     for (i in 0 until trackGroup.length) {
                         val format = trackGroup.getTrackFormat(i)
@@ -500,7 +540,8 @@ class ExoplayerVideoActivity :
                         val isForced = (format.selectionFlags and C.SELECTION_FLAG_FORCED) != 0
                         val isDefault = (format.selectionFlags and C.SELECTION_FLAG_DEFAULT) != 0
 
-                        Timber.d( """
+                        Timber.d(
+                            """
                         |   [Track $i] 
                         |   - Label: ${format.label ?: "No Label"}
                         |   - Language: ${format.language ?: "und"}
@@ -509,11 +550,16 @@ class ExoplayerVideoActivity :
                         |   - Currently Selected: $isSelected
                         |   - Forced Flag: $isForced
                         |   - Default Flag: $isDefault
-                    """.trimMargin())
+                    """.trimMargin()
+                        )
                     }
                 }
             }
-            Timber.d("--- Track Discovery End ---")        }
+            Timber.d("--- Track Discovery End ---")
 
+            presenter.video.let {
+                updateSerenityDebugInfo(presenter.isDirectPlaySupportedForContainer(it).not(), it.videoCodec, it.audioCodec, bitrate)
+            }
+        }
     }
 }

@@ -58,6 +58,12 @@ class LoginUserActivity :
             server?.let { presenter.initPresenter(server) }
         }
 
+        binding.retryButton.setOnClickListener {
+            progressBinding.dataLoadingContainer.visibility = VISIBLE
+            binding.retryButton.visibility = GONE
+            presenter.retrieveAllUsers()
+        }
+
         presenter.retrieveAllUsers()
     }
 
@@ -83,6 +89,7 @@ class LoginUserActivity :
     override fun displayUsers(serenityUser: List<SerenityUser>) {
         progressBinding.dataLoadingContainer.visibility = GONE
         binding.apply {
+            retryButton.visibility = GONE
             loginUserContainer.visibility = VISIBLE
             adapter.loadUsers(serenityUser)
             loginUserContainer.requestFocusFromTouch()
@@ -93,6 +100,13 @@ class LoginUserActivity :
         val intent = Intent(this, AndroidTV::class.java)
         startActivity(intent)
         finish()
+    }
+
+    override fun showError() {
+        progressBinding.dataLoadingContainer.visibility = GONE
+        binding.loginUserContainer.visibility = GONE
+        binding.retryButton.visibility = VISIBLE
+        binding.retryButton.requestFocus()
     }
 
     override fun onUserSelected(user: SerenityUser) {

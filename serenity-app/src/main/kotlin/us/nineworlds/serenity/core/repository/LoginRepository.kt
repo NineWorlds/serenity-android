@@ -11,12 +11,20 @@ import us.nineworlds.serenity.common.rest.SerenityUser
 class LoginRepository(private val client: SerenityClient) {
 
     suspend fun loadAllUsers(): Result<List<SerenityUser>> = withContext(Dispatchers.IO) {
-        val users = client.allAvailableUsers()
-        Result.Success<List<SerenityUser>>(users)
+        try {
+            val users = client.allAvailableUsers()
+            Result.Success<List<SerenityUser>>(users)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
     }
 
     suspend fun authenticateUser(user: SerenityUser, password: String? = null): Result<SerenityUser> = withContext(Dispatchers.IO) {
-        val authenticatedUser = client.authenticateUser(user, password)
-        Result.Success<SerenityUser>(authenticatedUser)
+        try {
+            val authenticatedUser = client.authenticateUser(user, password)
+            Result.Success<SerenityUser>(authenticatedUser)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
     }
 }
