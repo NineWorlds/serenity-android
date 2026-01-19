@@ -14,7 +14,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:show_buffering="when_playing"
-    app:show_subtitle_button="true"  />
+    app:show_subtitle_button="true" />
 
   <LinearLayout
     android:id="@+id/exo_debug_layout"

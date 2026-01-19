@@ -6,6 +6,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,7 +27,6 @@ import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.core.repository.LoginRepository
 import us.nineworlds.serenity.test.InjectingTest
-import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)

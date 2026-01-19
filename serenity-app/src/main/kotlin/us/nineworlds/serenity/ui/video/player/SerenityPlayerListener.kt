@@ -24,10 +24,9 @@ class SerenityPlayerListener(private val presenter: ExoplayerPresenter, private 
         if (isDecoderFailure || isAudioTrackFailure) {
             val currentParameters = videoactivity.trackSelector.parameters as DefaultTrackSelector.Parameters
 
-
             // Only attempt fallback if tunneling is actually currently enabled
             if (currentParameters.tunnelingEnabled) {
-                Timber.w( "Tunneling failed for this stream. Falling back to standard playback.")
+                Timber.w("Tunneling failed for this stream. Falling back to standard playback.")
 
                 // 1. Save current state
                 val currentMediaItem = videoactivity.player.currentMediaItem

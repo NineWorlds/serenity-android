@@ -107,25 +107,23 @@ public class AndroidHelper {
     return pm.hasSystemFeature(ANDROID_SOFTWARE_LEANBACK);
   }
 
-    public boolean isTclAndroidTv(Context context) {
-        String manufacturer = android.os.Build.MANUFACTURER != null ?
-                android.os.Build.MANUFACTURER.toLowerCase() : "";
-        String brand = android.os.Build.BRAND != null ?
-                android.os.Build.BRAND.toLowerCase() : "";
-        String model = android.os.Build.MODEL != null ?
-                android.os.Build.MODEL.toLowerCase() : "";
+  public boolean isTclAndroidTv(Context context) {
+    String manufacturer =
+        android.os.Build.MANUFACTURER != null ? android.os.Build.MANUFACTURER.toLowerCase() : "";
+    String brand = android.os.Build.BRAND != null ? android.os.Build.BRAND.toLowerCase() : "";
+    String model = android.os.Build.MODEL != null ? android.os.Build.MODEL.toLowerCase() : "";
 
-        boolean isTcl = manufacturer.contains("tcl") || brand.contains("tcl");
+    boolean isTcl = manufacturer.contains("tcl") || brand.contains("tcl");
 
-        // Some older models report "beyondtv" in the model name
-        boolean isTclModel = model.contains("tcl") || model.contains("beyondtv");
+    // Some older models report "beyondtv" in the model name
+    boolean isTclModel = model.contains("tcl") || model.contains("beyondtv");
 
-        // Verify it is actually a TV device (Leanback)
-        UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
-        boolean isTv = uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION;
+    // Verify it is actually a TV device (Leanback)
+    UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
+    boolean isTv = uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION;
 
-        return (isTcl || isTclModel) && isTv;
-    }
+    return (isTcl || isTclModel) && isTv;
+  }
 
   @OptIn(markerClass = UnstableApi.class)
   public boolean isAudioPassthroughSupported(String codec) {

@@ -5,8 +5,9 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import io.mockk.clearAllMocks
 import io.mockk.every
-import io.mockk.verify
 import io.mockk.mockk
+import io.mockk.verify
+import java.io.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -20,7 +21,6 @@ import us.nineworlds.serenity.common.repository.Result
 import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.SerenityUser
 import us.nineworlds.serenity.core.repository.LoginRepository
-import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginRepositoryTest {

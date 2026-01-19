@@ -8,18 +8,18 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.media3.common.C
 import androidx.media3.common.Format
 import androidx.media3.common.Player
-import androidx.media3.common.Tracks
 import androidx.media3.common.TrackGroup
-import androidx.media3.common.C
+import androidx.media3.common.Tracks
 import androidx.media3.datasource.DataSource
+import androidx.media3.exoplayer.DefaultLoadControl
+import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.TrackSelectionArray
 import androidx.media3.exoplayer.trackselection.TrackSelector
-import androidx.media3.exoplayer.DefaultLoadControl
-import androidx.media3.exoplayer.DefaultRenderersFactory
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -32,8 +32,8 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkConstructor
-import io.mockk.unmockkConstructor
 import io.mockk.spyk
+import io.mockk.unmockkConstructor
 import io.mockk.verify
 import javax.inject.Inject
 import org.junit.After
@@ -90,7 +90,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
         mockkConstructor(DefaultLoadControl.Builder::class)
         mockkConstructor(DefaultRenderersFactory::class)
         mockkConstructor(ExoPlayer.Builder::class)
-        
+
         val mockBuilder = mockk<ExoPlayer.Builder>(relaxed = true)
         every { anyConstructed<ExoPlayer.Builder>().setRenderersFactory(any()) } returns mockBuilder
         every { mockBuilder.setTrackSelector(any()) } returns mockBuilder
@@ -303,12 +303,12 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
         val spy = spyk(activity)
         every { spy.createSimpleExoplayer() } returns mockPlayer
         every { mockPlayer.currentTrackSelections } returns TrackSelectionArray()
-        
+
         spy.initializePlayer("http://example.com", 0)
-        
+
         val debugToggle = spy.playerView.findViewById<ImageButton>(R.id.exo_debug_toggle)
         assertThat(debugToggle).isNotNull()
-        
+
         debugToggle.performClick()
         verify { mockExoPlayerPresenter.toggleDebugMode() }
     }
@@ -316,7 +316,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     @Test
     fun createSimpleExoplayerSetsRobustBufferDurationsForTCLWithTunneling() {
         every { mockAndroidHelper.enableTunneling() } returns true
-        
+
         activity.createSimpleExoplayer()
 
         verify {
@@ -327,7 +327,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     @Test
     fun createSimpleExoplayerDisablesAudioPlaybackParametersForTCLWithTunneling() {
         every { mockAndroidHelper.enableTunneling() } returns true
-        
+
         activity.createSimpleExoplayer()
 
         verify(exactly = 0) {
@@ -338,7 +338,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
     @Test
     fun createSimpleExoplayerDoesNotSetFixedBufferBytesForTCLWithTunneling() {
         every { mockAndroidHelper.enableTunneling() } returns true
-        
+
         activity.createSimpleExoplayer()
 
         verify(exactly = 0) {
