@@ -346,6 +346,20 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
         }
     }
 
+    @Test
+    fun setVideoInfoUpdatesTitleAndSummary() {
+        val expectedTitle = "Test Title"
+        val expectedSummary = "Test Summary"
+
+        activity.setVideoInfo(expectedTitle, expectedSummary)
+
+        val videoTitle = activity.playerView.findViewById<TextView>(R.id.video_title)
+        val videoSummary = activity.playerView.findViewById<TextView>(R.id.video_summary)
+
+        assertThat(videoTitle.text.toString()).isEqualTo(expectedTitle)
+        assertThat(videoSummary.text.toString()).isEqualTo(expectedSummary)
+    }
+
     override fun installTestModules() {
         Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE).installTestModules(object : Module() {
             init {
@@ -355,7 +369,7 @@ open class ExoplayerVideoActivityTest : InjectingTest() {
         scope.installTestModules(MockkTestingModule(), TestModule())
     }
 
-    inner class TestModule : Module() {
+    class TestModule : Module() {
 
         init {
             bind(ExoplayerPresenter::class.java).toInstance(mockExoPlayerPresenter)

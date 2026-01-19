@@ -41,6 +41,9 @@ interface ExoplayerContract {
 
         @StateStrategyType(AddToEndSingleStrategy::class)
         fun toggleDebugView()
+
+        @StateStrategyType(AddToEndSingleStrategy::class)
+        fun setVideoInfo(title: String?, summary: String?)
     }
 
     interface ExoplayerPresenter {

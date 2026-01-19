@@ -400,6 +400,14 @@ class ExoplayerVideoActivity :
         }
     }
 
+    override fun setVideoInfo(title: String?, summary: String?) {
+        val videoTitle = playerView.findViewById<TextView>(R.id.video_title)
+        val videoSummary = playerView.findViewById<TextView>(R.id.video_summary)
+
+        videoTitle?.text = title
+        videoSummary?.text = summary
+    }
+
     class SubtitleTrackNameProvider(val resources: Resources) : TrackNameProvider {
         override fun getTrackName(format: Format): String {
             val lang = format.language
