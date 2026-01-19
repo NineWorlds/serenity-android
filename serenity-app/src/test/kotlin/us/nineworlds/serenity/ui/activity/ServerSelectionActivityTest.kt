@@ -7,10 +7,10 @@ import androidx.test.core.app.ApplicationProvider
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runTest
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.assertj.android.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
@@ -118,7 +118,7 @@ class ServerSelectionActivityTest : InjectingTest() {
         every { mockServer.ipAddress } returns "testserver"
 
         Robolectric.flushForegroundThreadScheduler()
-        
+
         val view = activity.binding.serverContainer.getChildAt(1)
         assertThat(view).isNotNull
         view.performClick()

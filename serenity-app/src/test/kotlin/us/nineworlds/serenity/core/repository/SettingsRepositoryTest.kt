@@ -2,7 +2,9 @@ package us.nineworlds.serenity.core.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -34,7 +36,7 @@ class SettingsRepositoryTest : InjectingTest() {
         mockkStatic("androidx.datastore.preferences.core.PreferencesDataStoreKt")
         every { mockContext.dataStore } returns mockDataStore
         every { mockDataStore.data } returns flowOf(mockPreferences)
-        
+
         super.setUp()
         repository = scope.getInstance(SettingsRepository::class.java)
     }

@@ -25,6 +25,8 @@
   <string name="option_clear_the_image_cache_">Clear the Image Cache?</string>
   <string name="clear">Clear</string>
   <string name="cancel">Cancel</string>
+  <string name="retry">Retry</string>
+  <string name="toggle_debug_info">Toggle Debug Info</string>
   <string name="download_manager_download_complete_for_">"Download complete for "</string>
   <string name="no_libraries_found">No Movies or TV Show Libraries found. Use the Plex Web App to add some.</string>
   <string name="unknown">Unknown</string>
