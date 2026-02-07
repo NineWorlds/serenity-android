@@ -11,10 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
  * A generic PagingDataAdapter for Serenity that integrates Paging 3 with Leanback.
  * This class wraps androidx.leanback.paging.PagingDataAdapter as it is final and cannot be inherited from.
  */
-class SerenityPagingDataAdapter<T : Any>(
-    presenterSelector: PresenterSelector,
-    diffCallback: DiffUtil.ItemCallback<T>
-) : ObjectAdapter(presenterSelector) {
+class SerenityPagingDataAdapter<T : Any>(presenterSelector: PresenterSelector, diffCallback: DiffUtil.ItemCallback<T>) : ObjectAdapter(presenterSelector) {
 
     private val internalAdapter = PagingDataAdapter(presenterSelector, diffCallback)
 
@@ -41,9 +38,12 @@ class SerenityPagingDataAdapter<T : Any>(
     }
 
     constructor(presenter: Presenter, diffCallback: DiffUtil.ItemCallback<T>) :
-            this(object : PresenterSelector() {
+        this(
+            object : PresenterSelector() {
                 override fun getPresenter(item: Any?): Presenter = presenter
-            }, diffCallback)
+            },
+            diffCallback
+        )
 
     override fun size(): Int = internalAdapter.size()
 

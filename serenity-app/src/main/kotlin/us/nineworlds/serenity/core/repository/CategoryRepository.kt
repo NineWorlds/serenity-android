@@ -48,13 +48,7 @@ class CategoryRepository constructor(private val client: SerenityClient) {
         private const val MENU_TYPE_TVSHOWS = "tvshows"
     }
 
-    suspend fun fetchItemsByCategory(
-        categoryId: String,
-        itemId: String,
-        type: String,
-        startIndex: Int = 0,
-        limit: Int? = null
-    ): Result<List<VideoContentInfo>> = withContext(Dispatchers.IO) {
+    suspend fun fetchItemsByCategory(categoryId: String, itemId: String, type: String, startIndex: Int = 0, limit: Int? = null): Result<List<VideoContentInfo>> = withContext(Dispatchers.IO) {
         try {
             val contentType = when (type) {
                 MENU_TYPE_MOVIE, MENU_TYPE_MOVIES -> Types.MOVIES

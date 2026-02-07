@@ -60,11 +60,9 @@ class DetailsFragment :
     private lateinit var mvpDelegate: MvpDelegate<out DetailsFragment>
 
     private val videoContentDiffCallback = object : DiffUtil.ItemCallback<VideoContentInfo>() {
-        override fun areItemsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean =
-            oldItem.id() == newItem.id()
+        override fun areItemsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean = oldItem.id() == newItem.id()
 
-        override fun areContentsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean =
-            oldItem == newItem
+        override fun areContentsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean = oldItem == newItem
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

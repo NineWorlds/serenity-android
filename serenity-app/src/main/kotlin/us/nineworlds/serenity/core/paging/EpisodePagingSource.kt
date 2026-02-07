@@ -5,10 +5,7 @@ import androidx.paging.PagingState
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.repository.VideoRepository
 
-class EpisodePagingSource(
-    private val repository: VideoRepository,
-    private val itemId: String
-) : PagingSource<Int, VideoContentInfo>() {
+class EpisodePagingSource(private val repository: VideoRepository, private val itemId: String) : PagingSource<Int, VideoContentInfo>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, VideoContentInfo> {
         val position = params.key ?: 0
@@ -26,10 +23,8 @@ class EpisodePagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, VideoContentInfo>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(state.config.pageSize)
-                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(state.config.pageSize)
-        }
+    override fun getRefreshKey(state: PagingState<Int, VideoContentInfo>): Int? = state.anchorPosition?.let { anchorPosition ->
+        state.closestPageToPosition(anchorPosition)?.prevKey?.plus(state.config.pageSize)
+            ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(state.config.pageSize)
     }
 }

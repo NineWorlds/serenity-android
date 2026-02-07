@@ -38,11 +38,9 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
     private val adapterMap = ConcurrentHashMap<String, SerenityPagingDataAdapter<VideoCategory>>()
 
     private val videoCategoryDiffCallback = object : DiffUtil.ItemCallback<VideoCategory>() {
-        override fun areItemsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean =
-            oldItem.item.id() == newItem.item.id()
+        override fun areItemsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean = oldItem.item.id() == newItem.item.id()
 
-        override fun areContentsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean =
-            oldItem == newItem
+        override fun areContentsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean = oldItem == newItem
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

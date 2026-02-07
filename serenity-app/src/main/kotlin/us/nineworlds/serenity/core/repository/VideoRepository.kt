@@ -21,30 +21,16 @@ class VideoRepository constructor(private val client: SerenityClient) {
         client.retrieveSeasons(itemId)
     }
 
-    suspend fun fetchEpisodes(
-        itemId: String,
-        startIndex: Int = 0,
-        limit: Int? = null
-    ): List<VideoContentInfo> = withContext(Dispatchers.IO) {
+    suspend fun fetchEpisodes(itemId: String, startIndex: Int = 0, limit: Int? = null): List<VideoContentInfo> = withContext(Dispatchers.IO) {
         val result = client.retrieveEpisodes(itemId, startIndex, limit)
         EpisodeMediaContainer(result).createVideos()
     }
 
-    suspend fun fetchSimilarItems(
-        itemId: String,
-        type: Types,
-        startIndex: Int = 0,
-        limit: Int? = null
-    ): IMediaContainer = withContext(Dispatchers.IO) {
+    suspend fun fetchSimilarItems(itemId: String, type: Types, startIndex: Int = 0, limit: Int? = null): IMediaContainer = withContext(Dispatchers.IO) {
         client.fetchSimilarItemById(itemId, type, startIndex, limit)
     }
 
-    suspend fun fetchSimilarItemsList(
-        itemId: String,
-        type: Types,
-        startIndex: Int = 0,
-        limit: Int? = null
-    ): List<VideoContentInfo> = withContext(Dispatchers.IO) {
+    suspend fun fetchSimilarItemsList(itemId: String, type: Types, startIndex: Int = 0, limit: Int? = null): List<VideoContentInfo> = withContext(Dispatchers.IO) {
         val result = client.fetchSimilarItemById(itemId, type, startIndex, limit)
         MovieMediaContainer(result).createVideos()
     }

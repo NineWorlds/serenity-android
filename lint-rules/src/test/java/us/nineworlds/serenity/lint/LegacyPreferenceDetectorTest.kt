@@ -1,7 +1,7 @@
 package us.nineworlds.serenity.lint
 
-import com.android.tools.lint.checks.infrastructure.LintDetectorTest.kotlin
 import com.android.tools.lint.checks.infrastructure.LintDetectorTest.java
+import com.android.tools.lint.checks.infrastructure.LintDetectorTest.kotlin
 import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
 import com.android.tools.lint.checks.infrastructure.TestMode
 import org.junit.Test
@@ -72,7 +72,7 @@ class LegacyPreferenceDetectorTest {
             import android.content.SharedPreferences
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             0 errors, 1 warnings
-        """.trimIndent()
+                """.trimIndent()
             )
     }
 
@@ -104,7 +104,7 @@ class LegacyPreferenceDetectorTest {
                     val prefs = context.getSharedPreferences("test", 0)
                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             0 errors, 1 warnings
-        """.trimIndent()
+                """.trimIndent()
             )
     }
 
@@ -140,7 +140,7 @@ class LegacyPreferenceDetectorTest {
                     val prefs = PreferenceManager.getDefaultSharedPreferences(null)
                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             0 errors, 2 warnings
-        """.trimIndent()
+                """.trimIndent()
             )
     }
 
