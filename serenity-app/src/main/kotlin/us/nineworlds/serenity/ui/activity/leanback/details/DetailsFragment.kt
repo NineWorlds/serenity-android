@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import javax.inject.Inject
 import javax.inject.Provider
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import moxy.MvpDelegate
 import moxy.MvpDelegateHolder
@@ -64,6 +65,9 @@ class DetailsFragment :
 
         override fun areContentsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean = oldItem == newItem
     }
+
+    private var seasonEpisodesJob: Job? = null
+    private var similarItemsJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -245,7 +249,8 @@ class DetailsFragment :
             .filter { listRow -> listRow.headerItem.name == season.getTitle() }
             .forEach { row ->
                 val adapter = row.adapter as SerenityPagingDataAdapter<VideoContentInfo>
-                viewLifecycleOwner.lifecycleScope.launch {
+                seasonEpisodesJob?.cancel()
+                seasonEpisodesJob = viewLifecycleOwner.lifecycleScope.launch {
                     adapter.submitData(pagingData)
                 }
             }
@@ -261,7 +266,8 @@ class DetailsFragment :
         val detailsAdapter = adapter as ArrayObjectAdapter
         detailsAdapter.add(similarRow)
 
-        viewLifecycleOwner.lifecycleScope.launch {
+        similarItemsJob?.cancel()
+        similarItemsJob = viewLifecycleOwner.lifecycleScope.launch {
             itemsAdapter.submitData(pagingData)
         }
     }

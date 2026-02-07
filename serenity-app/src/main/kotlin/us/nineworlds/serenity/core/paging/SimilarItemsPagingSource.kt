@@ -17,8 +17,7 @@ class SimilarItemsPagingSource(private val repository: VideoRepository, private 
             LoadResult.Page(
                 data = data,
                 prevKey = if (position == 0) null else position - loadSize,
-                nextKey = if (data.isEmpty() || data.size < loadSize) null else position + data.size
-            )
+                nextKey = if (data.isEmpty() || data.size < loadSize) null else position + loadSize            )
         } catch (ex: Exception) {
             LoadResult.Error(ex)
         }

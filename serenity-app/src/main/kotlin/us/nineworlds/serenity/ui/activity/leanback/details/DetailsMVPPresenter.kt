@@ -91,6 +91,9 @@ class DetailsMVPPresenter : MvpPresenter<DetailsView>() {
         }
 
         seasons.forEach { season ->
+            val seasonsKey = season.key
+            if (seasonsKey.isNullOrEmpty()) return@forEach
+
             val pagingFlow = Pager(
                 config = PagingConfig(
                     pageSize = 15,
@@ -98,7 +101,7 @@ class DetailsMVPPresenter : MvpPresenter<DetailsView>() {
                     enablePlaceholders = false
                 ),
                 pagingSourceFactory = {
-                    EpisodePagingSource(repository, season.key.orEmpty())
+                    EpisodePagingSource(repository, seasonsKey)
                 }
             ).flow
                 .cachedIn(presenterScope)
