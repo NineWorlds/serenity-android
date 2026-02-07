@@ -9,6 +9,9 @@ interface SerenityClient {
     fun fetchSimilarItemById(itemId: String, types: Types): IMediaContainer
 
     @Throws(Exception::class)
+    fun fetchSimilarItemById(itemId: String, types: Types, startIndex: Int = 0, limit: Int? = null): IMediaContainer
+
+    @Throws(Exception::class)
     fun fetchItemById(itemId: String): IMediaContainer
 
     @Throws(Exception::class)
@@ -40,6 +43,9 @@ interface SerenityClient {
 
     @Throws(Exception::class)
     fun retrieveEpisodes(key: String): IMediaContainer
+
+    @Throws(Exception::class)
+    fun retrieveEpisodes(key: String, startIndex: Int = 0, limit: Int? = null): IMediaContainer
 
     @Throws(Exception::class)
     fun retrieveMovieMetaData(key: String): IMediaContainer

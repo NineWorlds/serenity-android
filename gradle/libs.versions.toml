@@ -20,6 +20,7 @@ kotlinKSPVersion = "2.2.21-2.0.4"
 androidPluginVersion = "8.13.1"
 leanbackPreferenceVersion = "1.2.0"
 leanbackVersion = "1.2.0"
+leanbackPagingVersion = "1.1.0"
 legacySupportV4Version = "1.0.0"
 lifecycleVersion = "2.9.4"
 materialVersion = "1.12.0"
@@ -29,6 +30,7 @@ moxy = "2.2.2"
 moxyAppCompatVersion = "2.2.2"
 moxyCompilerVersion = "2.2.2"
 moxyKtxVersion = "2.2.2"
+pagingVersion = "3.4.0"
 percentlayoutVersion = "1.0.0"
 recyclerviewAnimatorsVersion = "4.0.2"
 targetSdkVersion = "35"
@@ -74,9 +76,11 @@ androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "frag
 androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentKtxVersion" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junit" }
 androidx-leanback = { module = "androidx.leanback:leanback", version.ref = "leanbackVersion" }
+androidx-leanback-paging = { module = "androidx.leanback:leanback-paging", version.ref = "leanbackPagingVersion" }
 androidx-leanback-preference = { module = "androidx.leanback:leanback-preference", version.ref = "leanbackPreferenceVersion" }
 androidx-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacySupportV4Version" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref="lifecycleVersion"}
+androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingVersion" }
 androidx-percentlayout = { module = "androidx.percentlayout:percentlayout", version.ref = "percentlayoutVersion" }
 androidx-recycler-view = { module = "androidx.recyclerview:recyclerview", version.ref = "androidxRecyclerViewVersion"}
 commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }

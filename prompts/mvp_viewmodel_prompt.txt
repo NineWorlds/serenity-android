@@ -1,0 +1,43 @@
+Task: Refactor Moxy MVP to Manual Lifecycle-Aware MVP (ViewModel-backed)
+
+Context:
+The project is migrating away from the unmaintained Moxy framework. The goal is to retain a strict Contract-driven, Passive View MVP architecture but use standard Android Jetpack ViewModels to handle configuration changes and lifecycle events.
+
+Constraints:
+1. No Reactive Streams: DO NOT use Kotlin Flow, Channels, or RxJava for this refactor. Keep the direct method-call structure between Presenter and View.
+2. Survival: The Presenter must extend 'androidx.lifecycle.ViewModel' to survive configuration changes.
+3. Lifecycle: The Presenter must implement 'androidx.lifecycle.DefaultLifecycleObserver' to manage view attachment/detachment.
+4. DI: Use Toothpick. Inject the Presenter via a 'Provider<Presenter>' inside a 'ViewModelProvider.Factory'.
+5. Hard Constraint: Remove all Moxy annotations (@InjectPresenter, @ProvidePresenter, @RegisterStrategy).
+
+Step 1: Update the Presenter
+- Extend 'AndroidViewModel(application)'.
+- Implement 'DefaultLifecycleObserver' and the existing Contract.Presenter interface.
+- Add 'private var view: Contract.View? = null'.
+- Create 'fun attachView(view: Contract.View)' and 'fun detachView()'.
+- Override 'onStart(owner: LifecycleOwner)' to call logic if needed, and 'onDestroy(owner: LifecycleOwner)' to call 'detachView()'.
+- Ensure all business logic calls 'view?.method()' instead of the Moxy view-proxy.
+
+Step 2: Update the Activity (The View)
+- Implement the Contract.View interface.
+- Inject 'Provider<Presenter>' via Toothpick.
+- Initialize the presenter using:
+  private val presenter: MyPresenter by viewModels {
+      object : ViewModelProvider.Factory {
+          override fun <T : ViewModel> create(modelClass: Class<T>): T = presenterProvider.get() as T
+      }
+  }
+- In 'onCreate()':
+    1. Call 'presenter.attachView(this)'.
+    2. Call 'lifecycle.addObserver(presenter)'.
+- Remove all Moxy-related field annotations and imports.
+
+Step 3: Testing Compliance
+- Ensure unit tests using MockK remain functional.
+- Mocks should be 'mockk(relaxed = true)'.
+- The test should call 'presenter.attachView(mockView)' during setup.
+
+Compliance Check: [Frameworks Verified] [MockK Verified] [Permission Pending]
+
+Agent Instructions:
+Review 'ExoplayerVideoActivity.kt' and 'ExoplayerPresenter.kt'. Draft a plan to convert them to this manual MVP style. DO NOT start coding until the plan is approved.
