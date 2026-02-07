@@ -1,9 +1,14 @@
 package us.nineworlds.serenity.fragments.mainmenu
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import androidx.paging.map
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moxy.InjectViewState
@@ -18,6 +23,7 @@ import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
 import us.nineworlds.serenity.core.model.VideoCategory
+import us.nineworlds.serenity.core.paging.VideoCategoryPagingSource
 import us.nineworlds.serenity.core.repository.CategoryRepository
 
 @InjectViewState
@@ -69,24 +75,36 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
             withContext(Dispatchers.Main) {
                 viewState.loadCategories(categoryVideoContentInfo)
             }
-            coroutineScope {
-                filteredCategories.forEach { category ->
-                    launch {
-                        when (val result = repository.fetchItemsByCategory(category.category.orEmpty(), itemId, type)) {
-                            is Result.Success -> {
-                                withContext(Dispatchers.Main) {
-                                    val videos = result.data.map { videoContentInfo ->
-                                        VideoCategory(
-                                            type = getType(type),
-                                            item = videoContentInfo
-                                        )
-                                    }
-                                    viewState.updateCategories(category, videos)
-                                }
-                            }
 
-                            else -> {}
+            filteredCategories.forEach { category ->
+                val pagingFlow = Pager(
+                    config = PagingConfig(
+                        pageSize = 8,
+                        initialLoadSize = 10,
+                        enablePlaceholders = false
+                    ),
+                    pagingSourceFactory = {
+                        VideoCategoryPagingSource(
+                            repository,
+                            category.category.orEmpty(),
+                            itemId,
+                            type
+                        )
+                    }
+                ).flow
+                    .map { pagingData ->
+                        pagingData.map { videoContentInfo ->
+                            VideoCategory(
+                                type = getType(type),
+                                item = videoContentInfo
+                            )
                         }
+                    }
+                    .cachedIn(presenterScope)
+
+                presenterScope.launch {
+                    pagingFlow.collectLatest { pagingData ->
+                        viewState.updateCategories(category, pagingData)
                     }
                 }
             }

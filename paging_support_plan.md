@@ -2,7 +2,7 @@
 
 This document outlines the multi-stage plan to implement paging support in the `serenity-app` module using `androidx.leanback:leanback-paging` and `androidx.paging:paging-runtime-ktx`.
 
-## Status: Phase 3 Completed - Moving to Phase 4
+## Status: Phase 5 Completed - Moving to Phase 6
 
 ## Overview
 The goal is to implement paging for Movies, TV Shows, and Seasons.
@@ -42,10 +42,10 @@ The goal is to implement paging for Movies, TV Shows, and Seasons.
 ## Phase 4: Presenter & View Interface Updates
 **Goal**: Refactor MVP components from static Lists to Paging Flows.
 
-- [ ] **Task 4.1**: Update `MainMenuView` and `DetailsView` interface definitions to support `PagingData`.
-- [ ] **Task 4.2**: Refactor `MainMenuPresenter`.
+- [x] **Task 4.1**: Update `MainMenuView` and `DetailsView` interface definitions to support `PagingData`.
+- [x] **Task 4.2**: Refactor `MainMenuPresenter`.
     - Change `processesCategories` to initialize a `Flow<PagingData<VideoCategory>>` for each row.
-- [ ] **Task 4.3**: Refactor `DetailsMVPPresenter`.
+- [x] **Task 4.3**: Refactor `DetailsMVPPresenter`.
     - Update `updateSeries` and `loadSimilarItems` to return Paging flows.
 
 ---
@@ -53,9 +53,11 @@ The goal is to implement paging for Movies, TV Shows, and Seasons.
 ## Phase 5: UI Integration (Leanback)
 **Goal**: Connect the Paging Flows to the Leanback UI.
 
-- [ ] **Task 5.1**: Implement a generic `SerenityPagingDataAdapter` extending `androidx.leanback.paging.PagingDataAdapter`.
-- [ ] **Task 5.2**: Update `MainFragment` (or relevant Browse fragments) to use the new adapter.
-- [ ] **Task 5.3**: Update `VideoDetailsFragment` to use the new adapter for episode and similar item rows.
+- [x] **Task 5.1**: Implement a generic `SerenityPagingDataAdapter` extending `androidx.leanback.paging.PagingDataAdapter`.
+- [x] **Task 5.2**: Fix compilation errors and update `MainMenuFragment` to handle `PagingData`.
+- [x] **Task 5.3**: Update `MainMenuVideoContentVerticalGridFragment` and its adapters to support Paging.
+- [x] **Task 5.4**: Fix compilation errors and update `DetailsFragment` to handle `PagingData` for episodes and similar items.
+- [x] **Task 5.5**: Fix any remaining compilation errors in `DetailsMVPPresenter`.
 
 ---
 

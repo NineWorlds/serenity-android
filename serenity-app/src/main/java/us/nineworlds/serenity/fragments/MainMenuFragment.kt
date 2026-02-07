@@ -32,6 +32,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentContainerView
 import androidx.leanback.widget.HorizontalGridView
+import androidx.paging.PagingData
 import javax.inject.Inject
 import javax.inject.Provider
 import moxy.ktx.moxyPresenter
@@ -111,12 +112,12 @@ class MainMenuFragment :
         videoContainer.setupGallery(categories)
     }
 
-    override fun updateCategories(category: CategoryInfo, items: List<VideoCategory>) {
+    override fun updateCategories(category: CategoryInfo, pagingData: PagingData<VideoCategory>) {
         val container = requireActivity().findViewById<FragmentContainerView>(R.id.video_content_fragment)
 
         val videoContainer = container.getFragment<MainMenuVideoContentVerticalGridFragment>()
 
-        videoContainer.updateCategory(category, items)
+        videoContainer.updateCategory(category, pagingData)
     }
 
     override fun clearCategories() {
