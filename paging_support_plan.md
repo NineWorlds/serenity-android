@@ -76,5 +76,5 @@ The goal is to implement paging for Movies, TV Shows, and Seasons.
     - [x] Test `PagingSource` implementations with mocked `SerenityClient`.
     - [x] Verify `startIndex` and `limit` calculations.
 2. **Manual Verification**:
-    - Scroll through a large category (e.g., "All Movies") and observe network calls for 30 then 15 items.
-    - Verify "watched" status updates correctly across paged items.
+    - [x] Scroll through a large category (e.g., "All Movies") and observe network calls for 30 then 15 items.
+    - [x] Verify "watched" status updates correctly across paged items.
