@@ -13,6 +13,7 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import toothpick.Toothpick
@@ -34,6 +35,7 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
 
     private val videoContentRowsPresenter = ListRowPresenter()
     private val videoContentAdapter = ArrayObjectAdapter(videoContentRowsPresenter)
+    private val adapterMap = ConcurrentHashMap<String, SerenityPagingDataAdapter<VideoCategory>>()
 
     private val videoCategoryDiffCallback = object : DiffUtil.ItemCallback<VideoCategory>() {
         override fun areItemsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean =
@@ -90,15 +92,13 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
         }
     }
 
-    fun clearGallery() = videoContentAdapter.clear()
+    fun clearGallery() {
+        adapterMap.clear()
+        videoContentAdapter.clear()
+    }
 
     fun updateCategory(categoryInfo: CategoryInfo, pagingData: PagingData<VideoCategory>) {
-        val rows = videoContentAdapter.unmodifiableList<ListRow>()
-        val row = rows.find { row ->
-            row.headerItem.name == categoryInfo.categoryDetail
-        }
-        row?.let { listRow ->
-            val adapter = listRow.adapter as SerenityPagingDataAdapter<VideoCategory>
+        adapterMap[categoryInfo.categoryDetail]?.let { adapter ->
             viewLifecycleOwner.lifecycleScope.launch {
                 adapter.submitData(pagingData)
             }
@@ -106,8 +106,13 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
     }
 
     fun setupGallery(categories: CategoryVideoInfo) {
+        adapterMap.clear()
+        videoContentAdapter.clear()
         for (category in categories.categories) {
             val listContentRowAdapter = SerenityPagingDataAdapter(CategoryVideoPresenter(), videoCategoryDiffCallback)
+            category.categoryDetail?.let { detail ->
+                adapterMap[detail] = listContentRowAdapter
+            }
 
             val header = HeaderItem(category.categoryDetail)
             val imageListRow = ListRow(header, listContentRowAdapter)

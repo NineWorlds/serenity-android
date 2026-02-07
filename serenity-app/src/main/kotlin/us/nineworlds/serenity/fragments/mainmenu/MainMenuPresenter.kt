@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.map
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
@@ -52,27 +53,26 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
     }
 
     fun populateMovieCategories(itemId: String, type: String) {
-        galleryJob?.let { job ->
-            job.cancel()
-        }
+        galleryJob?.cancel()
         viewState.showLoading()
         galleryJob = presenterScope.launch {
             when (val result = repository.retrieveCategories(itemId)) {
                 is Result.Success -> {
-                    processesCategories(result.data, itemId, type)
+                    processesCategories(this, result.data, itemId, type)
                 }
 
                 else -> {}
             }
+            viewState.hideLoading()
         }
     }
 
-    private suspend fun processesCategories(categories: List<CategoryInfo>, itemId: String, type: String) {
+    private fun processesCategories(scope: CoroutineScope, categories: List<CategoryInfo>, itemId: String, type: String) {
         if (type == "movies" || type == "tv show" || type == "tvshows") {
             val filteredCategories = categories.filter { category -> category.category != "unwatched" }
             val categoryVideoContentInfo = CategoryVideoInfo(categories = filteredCategories)
 
-            withContext(Dispatchers.Main) {
+            scope.launch(Dispatchers.Main) {
                 viewState.loadCategories(categoryVideoContentInfo)
             }
 
@@ -81,7 +81,8 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
                     config = PagingConfig(
                         pageSize = 8,
                         initialLoadSize = 10,
-                        enablePlaceholders = false
+                        enablePlaceholders = false,
+                        prefetchDistance = 4
                     ),
                     pagingSourceFactory = {
                         VideoCategoryPagingSource(
@@ -100,25 +101,24 @@ class MainMenuPresenter : MvpPresenter<MainMenuView>() {
                             )
                         }
                     }
-                    .cachedIn(presenterScope)
+                    .cachedIn(scope)
 
-                presenterScope.launch {
+                scope.launch {
                     pagingFlow.collectLatest { pagingData ->
                         viewState.updateCategories(category, pagingData)
                     }
                 }
             }
         } else {
-            withContext(Dispatchers.Main) {
+            scope.launch(Dispatchers.Main) {
                 viewState.clearCategories()
             }
         }
-        viewState.hideLoading()
     }
 
     private fun getType(type: String): Types = when (type) {
         "movies", "movie" -> Types.MOVIES
-        "tvshows" -> Types.SERIES
+        "tvshows", "tv show" -> Types.SERIES
         else -> Types.UNKNOWN
     }
 }

@@ -288,14 +288,18 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
                         headerMap(),
                         userId = userId!!,
                         parentId = key,
-                        includeItemType = "Episode"
+                        includeItemType = "Episode",
+                        startIndex = startIndex,
+                        limit = limit
                     )
                 } else {
                     usersService.resumableItems(
                         headerMap(),
                         userId = userId!!,
                         parentId = key,
-                        includeItemType = type
+                        includeItemType = type,
+                        startIndex = startIndex,
+                        limit = limit
                     )
                 }
             }
@@ -306,14 +310,18 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
                         headerMap(),
                         userId = userId!!,
                         parentId = key,
-                        includeItemType = "Episode"
+                        includeItemType = "Episode",
+                        startIndex = startIndex,
+                        limit = limit
                     )
                 } else {
                     usersService.latestItems(
                         headerMap(),
                         userId = userId!!,
                         parentId = key,
-                        includeItemType = type
+                        includeItemType = type,
+                        startIndex = startIndex,
+                        limit = limit
                     )
                 }
             }
@@ -323,7 +331,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
                     headerMap(),
                     userId = userId!!,
                     parentId = key,
-                    includeItemType = type
+                    includeItemType = type,
+                    startIndex = startIndex,
+                    limit = limit
                 )
             }
 
