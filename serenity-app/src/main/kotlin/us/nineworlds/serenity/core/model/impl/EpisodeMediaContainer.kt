@@ -11,7 +11,6 @@ import us.nineworlds.serenity.core.model.VideoContentInfo
 class EpisodeMediaContainer(mc: IMediaContainer) : MovieMediaContainer(mc) {
 
     override fun createVideos(): List<VideoContentInfo> {
-        videoList = mutableListOf()
         val videos = mc.videos ?: return emptyList()
         val baseUrl = factory.baseURL().orEmpty()
         var parentPosterURL: String? = null
