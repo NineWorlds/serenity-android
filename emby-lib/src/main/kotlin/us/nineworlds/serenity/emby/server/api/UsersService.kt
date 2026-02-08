@@ -68,7 +68,9 @@ interface UsersService {
         @Query("Filters") filters: String = "IsResumable",
         @Suppress("ktlint:standard:max-line-length")
         @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData,OfficialRating,CommunityRating",
-        @Query("IncludeItemTypes") includeItemType: String? = null
+        @Query("IncludeItemTypes") includeItemType: String? = null,
+        @Query("StartIndex") startIndex: Int = 0,
+        @Query("Limit") limit: Int? = null
     ): Call<QueryResult>
 
     @GET("/emby/Users/{userId}/Items")
@@ -81,10 +83,12 @@ interface UsersService {
         @Query("SortOrder") sortOrder: String = "Descending",
         @Query("Filters") filters: String = "IsUnplayed",
         @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData,OfficialRating,CommunityRating",
-        @Query("IncludeItemTypes") includeItemType: String? = null
+        @Query("IncludeItemTypes") includeItemType: String? = null,
+        @Query("StartIndex") startIndex: Int = 0,
+        @Query("Limit") limit: Int? = null
     ): Call<QueryResult>
 
-    @GET("/emby/Users/{userId}/Items?Limit=20")
+    @GET("/emby/Users/{userId}/Items")
     fun latestItems(
         @HeaderMap headerMap: Map<String, String>,
         @Path("userId") userId: String,
@@ -96,7 +100,9 @@ interface UsersService {
         @Query("Filters") filters: String = "IsNotFolder,IsUnPlayed",
         @Suppress("ktlint:standard:max-line-length")
         @Query("Fields") fields: String = "Overview,MediaStreams,Studios,ParentId,Genres,MediaSources,UserData,OfficialRating,CommunityRating",
-        @Query("IncludeItemTypes") includeItemType: String? = null
+        @Query("IncludeItemTypes") includeItemType: String? = null,
+        @Query("StartIndex") startIndex: Int = 0,
+        @Query("Limit") limit: Int? = null
     ): Call<QueryResult>
 
     @GET("/emby/Users/{userId}/Items/{itemId}")

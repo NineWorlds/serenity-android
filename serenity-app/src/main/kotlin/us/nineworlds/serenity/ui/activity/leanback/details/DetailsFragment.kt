@@ -8,16 +8,19 @@ import androidx.leanback.app.DetailsSupportFragment
 import androidx.leanback.widget.Action
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.ClassPresenterSelector
-import androidx.leanback.widget.DiffCallback
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.Presenter
 import androidx.leanback.widget.Row
 import androidx.leanback.widget.SparseArrayObjectAdapter
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
+import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import javax.inject.Inject
 import javax.inject.Provider
+import kotlinx.coroutines.launch
 import moxy.MvpDelegate
 import moxy.MvpDelegateHolder
 import moxy.ktx.moxyPresenter
@@ -29,6 +32,8 @@ import us.nineworlds.serenity.core.model.SeriesContentInfo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.EpisodePosterInfo
 import us.nineworlds.serenity.core.model.impl.TVShowSeriesInfo
+import us.nineworlds.serenity.ui.activity.leanback.details.DetailsActivity
+import us.nineworlds.serenity.ui.leanback.adapters.SerenityPagingDataAdapter
 import us.nineworlds.serenity.ui.leanback.presenters.DetailsOverviewRow
 import us.nineworlds.serenity.ui.leanback.presenters.EpisodeVideoPresenter
 import us.nineworlds.serenity.ui.leanback.presenters.FullWidthDetailsOverviewRowPresenter
@@ -53,6 +58,12 @@ class DetailsFragment :
     private var stateSaved = false
 
     private lateinit var mvpDelegate: MvpDelegate<out DetailsFragment>
+
+    private val videoContentDiffCallback = object : DiffUtil.ItemCallback<VideoContentInfo>() {
+        override fun areItemsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean = oldItem.id() == newItem.id()
+
+        override fun areContentsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean = oldItem == newItem
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -217,8 +228,7 @@ class DetailsFragment :
     override fun addSeasons(videoInfo: List<SeriesContentInfo>) {
         videoInfo.forEach { season ->
             classPresenterSelector.addClassPresenter(ListRow::class.java, ListRowPresenter())
-            val seasonAdapter = ArrayObjectAdapter(EpisodeVideoPresenter())
-            seasonAdapter.addAll(0, emptyList<VideoContentInfo>())
+            val seasonAdapter = SerenityPagingDataAdapter(EpisodeVideoPresenter(), videoContentDiffCallback)
 
             val seasonHeader = HeaderItem(season.getTitle())
             val seasonRow = ListRow(seasonHeader, seasonAdapter)
@@ -228,36 +238,32 @@ class DetailsFragment :
         }
     }
 
-    override fun updateSeasonEpisodes(season: SeriesContentInfo, episodes: List<VideoContentInfo>) {
+    override fun updateSeasonEpisodes(season: SeriesContentInfo, pagingData: PagingData<VideoContentInfo>) {
         val detailsAdapter = adapter as ArrayObjectAdapter
         val content = detailsAdapter.unmodifiableList<Row>()
         content.filterIsInstance<ListRow>()
             .filter { listRow -> listRow.headerItem.name == season.getTitle() }
             .forEach { row ->
-                val adapter = row.adapter as ArrayObjectAdapter
-                adapter.setItems(
-                    episodes,
-                    object : DiffCallback<VideoContentInfo>() {
-                        override fun areItemsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean = oldItem.season == newItem.season &&
-                            oldItem.seasonNumber == newItem.seasonNumber &&
-                            oldItem.parentKey == newItem.parentKey
-
-                        override fun areContentsTheSame(oldItem: VideoContentInfo, newItem: VideoContentInfo): Boolean = oldItem == newItem
-                    }
-                )
+                val adapter = row.adapter as SerenityPagingDataAdapter<VideoContentInfo>
+                viewLifecycleOwner.lifecycleScope.launch {
+                    adapter.submitData(pagingData)
+                }
             }
     }
 
-    override fun addSimilarItems(videoInfo: List<VideoContentInfo>) {
+    override fun addSimilarItems(pagingData: PagingData<VideoContentInfo>) {
         classPresenterSelector.addClassPresenter(ListRow::class.java, ListRowPresenter())
-        val itemsAdapter = ArrayObjectAdapter(VideoContentInfoPresenter())
+        val itemsAdapter = SerenityPagingDataAdapter(VideoContentInfoPresenter(), videoContentDiffCallback)
 
         val header = HeaderItem("Similar")
-        itemsAdapter.addAll(0, videoInfo)
         val similarRow = ListRow(header, itemsAdapter)
 
         val detailsAdapter = adapter as ArrayObjectAdapter
         detailsAdapter.add(similarRow)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            itemsAdapter.submitData(pagingData)
+        }
     }
 
     override fun addSimilarSeries(videoInfo: List<SeriesContentInfo>) {

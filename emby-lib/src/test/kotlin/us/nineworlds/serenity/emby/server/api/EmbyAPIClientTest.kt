@@ -7,6 +7,7 @@ import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import net.danlew.android.joda.JodaTimeAndroid
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,10 +27,11 @@ class EmbyAPIClientTest {
     @Before
     fun setUp() {
         ShadowLog.stream = System.out
+        JodaTimeAndroid.init(ApplicationProvider.getApplicationContext())
 
         client = EmbyAPIClient(context = ApplicationProvider.getApplicationContext())
         // Update this for local testing of the client and make sure it works
-        client.updateBaseUrl("http://yourserver:yourport")
+        client.updateBaseUrl("http://192.168.68.97:8096")
         prefs = client.prefs
     }
 

@@ -130,6 +130,8 @@ dependencies {
     implementation(project(":serenity-common"))
 
     implementation(libs.androidx.recycler.view)
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.leanback.paging)
 
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)

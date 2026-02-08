@@ -1,5 +1,6 @@
 package us.nineworlds.serenity.ui.activity.leanback.details
 
+import androidx.paging.PagingData
 import moxy.MvpView
 import moxy.viewstate.strategy.OneExecutionStateStrategy
 import moxy.viewstate.strategy.StateStrategyType
@@ -16,10 +17,10 @@ interface DetailsView : MvpView {
     fun addSeasons(videoInfo: List<SeriesContentInfo>)
 
     @StateStrategyType(OneExecutionStateStrategy::class)
-    fun updateSeasonEpisodes(season: SeriesContentInfo, episodes: List<VideoContentInfo>)
+    fun updateSeasonEpisodes(season: SeriesContentInfo, pagingData: PagingData<VideoContentInfo>)
 
     @StateStrategyType(OneExecutionStateStrategy::class)
-    fun addSimilarItems(videoInfo: List<VideoContentInfo>)
+    fun addSimilarItems(pagingData: PagingData<VideoContentInfo>)
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun addSimilarSeries(videoInfo: List<SeriesContentInfo>)

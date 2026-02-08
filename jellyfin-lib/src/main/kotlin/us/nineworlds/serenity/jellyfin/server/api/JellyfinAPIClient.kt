@@ -235,7 +235,9 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
 
     override fun retrieveItemByIdCategory(key: String, category: String, types: Types): IMediaContainer = retrieveItemByIdCategory(key, category, types, 0, null)
 
-    override fun fetchSimilarItemById(itemId: String, types: Types): IMediaContainer {
+    override fun fetchSimilarItemById(itemId: String, types: Types): IMediaContainer = fetchSimilarItemById(itemId, types, 0, null)
+
+    override fun fetchSimilarItemById(itemId: String, types: Types, startIndex: Int, limit: Int?): IMediaContainer {
         val type = when (types) {
             Types.MOVIES -> "Movie"
             Types.SEASON -> "Season"
@@ -243,7 +245,17 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
             else -> "Episode"
         }
 
-        val call = usersService.fetchSimilarItemById(headerMap(), itemId = itemId, userId = userId!!, includeItemType = "Movie")
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+
+        val call = usersService.fetchSimilarItemById(
+            headerMap(),
+            itemId = itemId,
+            userId = userId!!,
+            includeItemType = type,
+            limit = limit
+        )
 
         val results = call.executeOrThrow()
         return JellyfinMediaContainerAdaptor().createVideoList(results.items, fetchAccessToken())
@@ -271,22 +283,57 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         val call = when (category) {
             "ondeck" -> {
                 if (type == "Season" || type == "Series") {
-                    usersService.resumableItems(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode")
+                    usersService.resumableItems(
+                        headerMap(),
+                        userId = userId!!,
+                        parentId = key,
+                        includeItemType = "Episode",
+                        startIndex = startIndex,
+                        limit = limit
+                    )
                 } else {
-                    usersService.resumableItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
+                    usersService.resumableItems(
+                        headerMap(),
+                        userId = userId!!,
+                        parentId = key,
+                        includeItemType = type,
+                        startIndex = startIndex,
+                        limit = limit
+                    )
                 }
             }
 
             "recentlyAdded" -> {
                 if (type == "Season" || type == "Series") {
-                    usersService.latestItems(headerMap(), userId = userId!!, parentId = key, includeItemType = "Episode")
+                    usersService.latestItems(
+                        headerMap(),
+                        userId = userId!!,
+                        parentId = key,
+                        includeItemType = "Episode",
+                        startIndex = startIndex,
+                        limit = limit
+                    )
                 } else {
-                    usersService.latestItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
+                    usersService.latestItems(
+                        headerMap(),
+                        userId = userId!!,
+                        parentId = key,
+                        includeItemType = type,
+                        startIndex = startIndex,
+                        limit = limit
+                    )
                 }
             }
 
             "unwatched" -> {
-                usersService.unwatchedItems(headerMap(), userId = userId!!, parentId = key, includeItemType = type)
+                usersService.unwatchedItems(
+                    headerMap(),
+                    userId = userId!!,
+                    parentId = key,
+                    includeItemType = type,
+                    startIndex = startIndex,
+                    limit = limit
+                )
             }
 
             else -> {
@@ -332,7 +379,9 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun retrieveEpisodes(key: String): IMediaContainer {
+    override fun retrieveEpisodes(key: String): IMediaContainer = retrieveEpisodes(key, 0, null)
+
+    override fun retrieveEpisodes(key: String, startIndex: Int, limit: Int?): IMediaContainer {
         if (userId == null) {
             userId = fetchUserId()
         }
@@ -341,7 +390,9 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
             userId = userId!!,
             parentId = key,
             includeItemType = "Episode",
-            genre = null
+            genre = null,
+            startIndex = startIndex,
+            limit = limit
         )
 
         val results = call.executeOrThrow()
@@ -407,7 +458,9 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         return result.isSuccessful
     }
 
-    override fun progress(key: String, offset: String): Boolean {
+    override fun progress(key: String, offset: String): Boolean = progress(key, offset, null)
+
+    override fun progress(key: String, offset: String, playSessionId: String?): Boolean {
         if (userId == null) {
             userId = fetchUserId()
         }
@@ -419,10 +472,6 @@ class JellyfinAPIClient(val context: Context, baseUrl: String = "http://localhos
         val result = call.execute()
 
         return result.isSuccessful
-    }
-
-    override fun progress(key: String, offset: String, playSessionId: String?): Boolean {
-        TODO("Not yet implemented")
     }
 
     override fun createMediaTagURL(resourceType: String, resourceName: String, identifier: String): String {

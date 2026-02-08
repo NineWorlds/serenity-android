@@ -8,6 +8,7 @@ import us.nineworlds.serenity.common.rest.SerenityClient
 import us.nineworlds.serenity.common.rest.Types
 import us.nineworlds.serenity.core.model.VideoContentInfo
 import us.nineworlds.serenity.core.model.impl.EpisodeMediaContainer
+import us.nineworlds.serenity.core.model.impl.MovieMediaContainer
 
 @InjectConstructor
 class VideoRepository constructor(private val client: SerenityClient) {
@@ -20,12 +21,17 @@ class VideoRepository constructor(private val client: SerenityClient) {
         client.retrieveSeasons(itemId)
     }
 
-    suspend fun fetchEpisodes(itemId: String): List<VideoContentInfo> = withContext(Dispatchers.IO) {
-        val result = client.retrieveEpisodes(itemId)
+    suspend fun fetchEpisodes(itemId: String, startIndex: Int = 0, limit: Int? = null): List<VideoContentInfo> = withContext(Dispatchers.IO) {
+        val result = client.retrieveEpisodes(itemId, startIndex, limit)
         EpisodeMediaContainer(result).createVideos()
     }
 
-    suspend fun fetchSimilarItems(itemId: String, type: Types): IMediaContainer = withContext(Dispatchers.IO) {
-        client.fetchSimilarItemById(itemId, type)
+    suspend fun fetchSimilarItems(itemId: String, type: Types, startIndex: Int = 0, limit: Int? = null): IMediaContainer = withContext(Dispatchers.IO) {
+        client.fetchSimilarItemById(itemId, type, startIndex, limit)
+    }
+
+    suspend fun fetchSimilarItemsList(itemId: String, type: Types, startIndex: Int = 0, limit: Int? = null): List<VideoContentInfo> = withContext(Dispatchers.IO) {
+        val result = client.fetchSimilarItemById(itemId, type, startIndex, limit)
+        MovieMediaContainer(result).createVideos()
     }
 }

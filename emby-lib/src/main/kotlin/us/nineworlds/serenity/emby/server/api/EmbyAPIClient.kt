@@ -8,7 +8,6 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.File
 import java.io.IOException
 import java.util.UUID
-import kotlin.uuid.Uuid
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -237,7 +236,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
 
     override fun retrieveItemByIdCategory(key: String, category: String, types: Types): IMediaContainer = retrieveItemByIdCategory(key, category, types, 0, null)
 
-    override fun fetchSimilarItemById(itemId: String, types: Types): IMediaContainer {
+    override fun fetchSimilarItemById(itemId: String, types: Types): IMediaContainer = fetchSimilarItemById(itemId, types, 0, null)
+
+    override fun fetchSimilarItemById(itemId: String, types: Types, startIndex: Int, limit: Int?): IMediaContainer {
         val type = when (types) {
             Types.MOVIES -> "Movie"
             Types.SEASON -> "Season"
@@ -245,11 +246,16 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             else -> "Episode"
         }
 
+        if (userId == null) {
+            userId = fetchUserId()
+        }
+
         val call = usersService.fetchSimilarItemById(
             headerMap(),
             itemId = itemId,
             userId = userId!!,
-            includeItemType = "Movie"
+            includeItemType = type,
+            limit = limit
         )
 
         val results = call.executeOrThrow()
@@ -282,14 +288,18 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
                         headerMap(),
                         userId = userId!!,
                         parentId = key,
-                        includeItemType = "Episode"
+                        includeItemType = "Episode",
+                        startIndex = startIndex,
+                        limit = limit
                     )
                 } else {
                     usersService.resumableItems(
                         headerMap(),
                         userId = userId!!,
                         parentId = key,
-                        includeItemType = type
+                        includeItemType = type,
+                        startIndex = startIndex,
+                        limit = limit
                     )
                 }
             }
@@ -300,14 +310,18 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
                         headerMap(),
                         userId = userId!!,
                         parentId = key,
-                        includeItemType = "Episode"
+                        includeItemType = "Episode",
+                        startIndex = startIndex,
+                        limit = limit
                     )
                 } else {
                     usersService.latestItems(
                         headerMap(),
                         userId = userId!!,
                         parentId = key,
-                        includeItemType = type
+                        includeItemType = type,
+                        startIndex = startIndex,
+                        limit = limit
                     )
                 }
             }
@@ -317,7 +331,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
                     headerMap(),
                     userId = userId!!,
                     parentId = key,
-                    includeItemType = type
+                    includeItemType = type,
+                    startIndex = startIndex,
+                    limit = limit
                 )
             }
 
@@ -364,7 +380,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun retrieveEpisodes(key: String): IMediaContainer {
+    override fun retrieveEpisodes(key: String): IMediaContainer = retrieveEpisodes(key, 0, null)
+
+    override fun retrieveEpisodes(key: String, startIndex: Int, limit: Int?): IMediaContainer {
         if (userId == null) {
             userId = fetchUserId()
         }
@@ -373,7 +391,9 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
             userId = userId!!,
             parentId = key,
             includeItemType = "Episode",
-            genre = null
+            genre = null,
+            startIndex = startIndex,
+            limit = limit
         )
 
         val results = call.executeOrThrow()

@@ -5,13 +5,17 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.leanback.app.RowsSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
-import androidx.leanback.widget.DiffCallback
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
+import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 import toothpick.Toothpick
 import us.nineworlds.serenity.R
 import us.nineworlds.serenity.common.annotations.InjectionConstants
@@ -20,6 +24,7 @@ import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
 import us.nineworlds.serenity.core.model.VideoCategory
 import us.nineworlds.serenity.ui.activity.leanback.details.DetailsActivity
+import us.nineworlds.serenity.ui.leanback.adapters.SerenityPagingDataAdapter
 import us.nineworlds.serenity.ui.leanback.presenters.CategoryVideoPresenter
 import us.nineworlds.serenity.ui.util.VideoPlayerIntentUtils
 
@@ -30,6 +35,13 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
 
     private val videoContentRowsPresenter = ListRowPresenter()
     private val videoContentAdapter = ArrayObjectAdapter(videoContentRowsPresenter)
+    private val adapterMap = ConcurrentHashMap<String, SerenityPagingDataAdapter<VideoCategory>>()
+
+    private val videoCategoryDiffCallback = object : DiffUtil.ItemCallback<VideoCategory>() {
+        override fun areItemsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean = oldItem.item.id() == newItem.item.id()
+
+        override fun areContentsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean = oldItem == newItem
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))
@@ -37,6 +49,9 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
         adapter = videoContentAdapter
 
         setOnItemViewClickedListener { _, item, _, _ ->
+            if (item == null) {
+                return@setOnItemViewClickedListener
+            }
             val videoCategory = item as VideoCategory
 
             when {
@@ -64,7 +79,7 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
             }
         }
 
-        setOnItemViewSelectedListener { itemViewHolder, item, rowViewHolder, row ->
+        setOnItemViewSelectedListener { _, item, _, _ ->
             item?.let {
                 val videoCategory = item as VideoCategory
 
@@ -75,30 +90,27 @@ class MainMenuVideoContentVerticalGridFragment : RowsSupportFragment() {
         }
     }
 
-    fun clearGallery() = videoContentAdapter.clear()
+    fun clearGallery() {
+        adapterMap.clear()
+        videoContentAdapter.clear()
+    }
 
-    fun updateCategory(categoryInfo: CategoryInfo, contentList: List<VideoCategory>) {
-        val rows = videoContentAdapter.unmodifiableList<ListRow>()
-        val row = rows.find { row ->
-            row.headerItem.name == categoryInfo.categoryDetail
-        }
-        row?.let { row ->
-            val adapter = row.adapter as ArrayObjectAdapter
-            adapter.setItems(
-                contentList,
-                object : DiffCallback<VideoCategory>() {
-                    override fun areItemsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean = oldItem.item.id() == newItem.item.id()
-
-                    override fun areContentsTheSame(oldItem: VideoCategory, newItem: VideoCategory): Boolean = oldItem.equals(newItem)
-                }
-            )
+    fun updateCategory(categoryInfo: CategoryInfo, pagingData: PagingData<VideoCategory>) {
+        adapterMap[categoryInfo.categoryDetail]?.let { adapter ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                adapter.submitData(pagingData)
+            }
         }
     }
 
     fun setupGallery(categories: CategoryVideoInfo) {
+        adapterMap.clear()
+        videoContentAdapter.clear()
         for (category in categories.categories) {
-            val listContentRowAdapter = ArrayObjectAdapter(CategoryVideoPresenter())
-            listContentRowAdapter.addAll(0, emptyList<VideoCategory>())
+            val listContentRowAdapter = SerenityPagingDataAdapter(CategoryVideoPresenter(), videoCategoryDiffCallback)
+            category.categoryDetail?.let { detail ->
+                adapterMap[detail] = listContentRowAdapter
+            }
 
             val header = HeaderItem(category.categoryDetail)
             val imageListRow = ListRow(header, listContentRowAdapter)

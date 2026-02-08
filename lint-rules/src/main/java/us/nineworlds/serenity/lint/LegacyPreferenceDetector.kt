@@ -1,18 +1,31 @@
 package us.nineworlds.serenity.lint
 
 import com.android.tools.lint.client.api.UElementHandler
-import com.android.tools.lint.detector.api.*
-import org.jetbrains.uast.*
+import com.android.tools.lint.detector.api.Category
+import com.android.tools.lint.detector.api.Detector
+import com.android.tools.lint.detector.api.Implementation
+import com.android.tools.lint.detector.api.Issue
+import com.android.tools.lint.detector.api.JavaContext
+import com.android.tools.lint.detector.api.Scope
+import com.android.tools.lint.detector.api.Severity
+import com.android.tools.lint.detector.api.SourceCodeScanner
+import org.jetbrains.uast.UCallExpression
+import org.jetbrains.uast.UElement
+import org.jetbrains.uast.UFile
+import org.jetbrains.uast.UImportStatement
+import org.jetbrains.uast.UQualifiedReferenceExpression
+import org.jetbrains.uast.USimpleNameReferenceExpression
+import org.jetbrains.uast.getParentOfType
 
-class LegacyPreferenceDetector : Detector(), SourceCodeScanner {
+class LegacyPreferenceDetector :
+    Detector(),
+    SourceCodeScanner {
 
-    override fun getApplicableUastTypes(): List<Class<out UElement>> {
-        return listOf(
-            UImportStatement::class.java,
-            UCallExpression::class.java,
-            USimpleNameReferenceExpression::class.java
-        )
-    }
+    override fun getApplicableUastTypes(): List<Class<out UElement>> = listOf(
+        UImportStatement::class.java,
+        UCallExpression::class.java,
+        USimpleNameReferenceExpression::class.java
+    )
 
     override fun createUastHandler(context: JavaContext): UElementHandler? {
         val packageName = context.uastFile?.packageName
@@ -49,10 +62,10 @@ class LegacyPreferenceDetector : Detector(), SourceCodeScanner {
                             return
                         }
                         if (p is UQualifiedReferenceExpression) {
-                             val selector = p.selector
-                             if (selector is UCallExpression && selector.methodName == "getDefaultSharedPreferences") {
-                                 return
-                             }
+                            val selector = p.selector
+                            if (selector is UCallExpression && selector.methodName == "getDefaultSharedPreferences") {
+                                return
+                            }
                         }
                         p = p.uastParent
                     }
@@ -76,7 +89,7 @@ class LegacyPreferenceDetector : Detector(), SourceCodeScanner {
             override fun visitCallExpression(node: UCallExpression) {
                 val methodName = node.methodName
                 if (methodName == "getSharedPreferences") {
-                     context.report(
+                    context.report(
                         ISSUE,
                         node,
                         context.getLocation(node),

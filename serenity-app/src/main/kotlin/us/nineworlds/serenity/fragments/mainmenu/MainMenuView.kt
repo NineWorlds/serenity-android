@@ -1,7 +1,9 @@
 package us.nineworlds.serenity.fragments.mainmenu
 
+import androidx.paging.PagingData
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.AddToEndStrategy
 import moxy.viewstate.strategy.StateStrategyType
 import us.nineworlds.serenity.core.model.CategoryInfo
 import us.nineworlds.serenity.core.model.CategoryVideoInfo
@@ -16,8 +18,8 @@ interface MainMenuView : MvpView {
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun loadCategories(videoCategories: CategoryVideoInfo)
 
-    @StateStrategyType(AddToEndSingleStrategy::class)
-    fun updateCategories(category: CategoryInfo, items: List<VideoCategory>)
+    @StateStrategyType(AddToEndStrategy::class)
+    fun updateCategories(category: CategoryInfo, pagingData: PagingData<VideoCategory>)
 
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun clearCategories()

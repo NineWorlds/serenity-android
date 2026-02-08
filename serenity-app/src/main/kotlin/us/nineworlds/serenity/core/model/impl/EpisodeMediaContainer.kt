@@ -1,28 +1,35 @@
 package us.nineworlds.serenity.core.model.impl
 
-import android.content.res.Resources
-import javax.inject.Inject
-import toothpick.Toothpick
-import us.nineworlds.serenity.common.annotations.InjectionConstants
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import us.nineworlds.serenity.common.media.model.IMediaContainer
 import us.nineworlds.serenity.common.media.model.IVideo
 import us.nineworlds.serenity.core.model.VideoContentInfo
 
-@Suppress("Injectable")
 class EpisodeMediaContainer(mc: IMediaContainer) : MovieMediaContainer(mc) {
 
-    override fun createVideoContent(mc: IMediaContainer) {
+    override fun createVideos(): List<VideoContentInfo> {
+        videoList = mutableListOf()
+        val videos = mc.videos ?: return emptyList()
         val baseUrl = factory.baseURL().orEmpty()
         var parentPosterURL: String? = null
         if (!mc.parentPosterURL.isNullOrEmpty() && !mc.parentPosterURL.contains("show")) {
             parentPosterURL = baseUrl + mc.parentPosterURL.substring(1)
         }
-        val videos = mc.videos
-        if (videos != null) {
-            for (episode in videos) {
-                videoList!!.add(createEpisodeContentInfo(mc, baseUrl, parentPosterURL, episode))
-            }
+
+        val createdVideos = runBlocking {
+            videos.chunked(25).map { chunk ->
+                async(Dispatchers.Default) {
+                    chunk.map { episode ->
+                        createEpisodeContentInfo(mc, baseUrl, parentPosterURL, episode)
+                    }
+                }
+            }.awaitAll().flatten()
         }
+        videoList = createdVideos.toMutableList()
+        return createdVideos
     }
 
     private fun createEpisodeContentInfo(mc: IMediaContainer, baseUrl: String, parentPosterURL: String?, episode: IVideo): EpisodePosterInfo {

@@ -48,14 +48,14 @@ class CategoryRepository constructor(private val client: SerenityClient) {
         private const val MENU_TYPE_TVSHOWS = "tvshows"
     }
 
-    suspend fun fetchItemsByCategory(categoryId: String, itemId: String, type: String): Result<List<VideoContentInfo>> = withContext(Dispatchers.IO) {
+    suspend fun fetchItemsByCategory(categoryId: String, itemId: String, type: String, startIndex: Int = 0, limit: Int? = null): Result<List<VideoContentInfo>> = withContext(Dispatchers.IO) {
         try {
             val contentType = when (type) {
                 MENU_TYPE_MOVIE, MENU_TYPE_MOVIES -> Types.MOVIES
                 MENU_TYPE_SHOW, MENU_TYPE_TVSHOWS -> Types.SERIES
                 else -> Types.UNKNOWN
             }
-            val result = client.retrieveItemByIdCategory(itemId, categoryId, contentType)
+            val result = client.retrieveItemByIdCategory(itemId, categoryId, contentType, startIndex, limit)
 
             val movies = MovieMediaContainer(result)
             val posterList: List<VideoContentInfo> = movies.createVideos()
