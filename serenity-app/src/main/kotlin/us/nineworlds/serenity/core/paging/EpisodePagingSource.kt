@@ -15,7 +15,7 @@ class EpisodePagingSource(private val repository: VideoRepository, private val i
             val data = repository.fetchEpisodes(itemId, position, loadSize)
             LoadResult.Page(
                 data = data,
-                prevKey = if (position == 0) null else position - loadSize,
+                prevKey = if (position == 0) null else maxOf(0, position - loadSize),
                 nextKey = if (data.isEmpty() || data.size < loadSize) null else position + data.size
             )
         } catch (ex: Exception) {

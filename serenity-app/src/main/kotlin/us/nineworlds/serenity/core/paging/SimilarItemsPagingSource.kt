@@ -16,7 +16,7 @@ class SimilarItemsPagingSource(private val repository: VideoRepository, private 
             val data = repository.fetchSimilarItemsList(itemId, type, position, loadSize)
             LoadResult.Page(
                 data = data,
-                prevKey = if (position == 0) null else position - loadSize,
+                prevKey = if (position == 0) null else maxOf(0, position - loadSize),
                 nextKey = if (data.isEmpty() || data.size < loadSize) null else position + data.size
             )
         } catch (ex: Exception) {

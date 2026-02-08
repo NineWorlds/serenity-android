@@ -16,6 +16,11 @@ class VideoCategoryPagingSource(private val repository: CategoryRepository, priv
         return when (val result = repository.fetchItemsByCategory(categoryId, itemId, type, position, loadSize)) {
             is Result.Success -> {
                 val data = result.data
+                LoadResult.Page(
+                    data = data,
+                    prevKey = if (position <= 0) null else maxOf(0, position - loadSize),
+                    nextKey = if (data.isEmpty() || data.size < loadSize) null else position + data.size
+                )
             }
 
             is Result.Error -> LoadResult.Error(result.exception)
