@@ -25,7 +25,8 @@ class SimilarItemsPagingSource(private val repository: VideoRepository, private 
     }
 
     override fun getRefreshKey(state: PagingState<Int, VideoContentInfo>): Int? = state.anchorPosition?.let { anchorPosition ->
-        state.closestPageToPosition(anchorPosition)?.prevKey?.plus(state.config.pageSize)
-            ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(state.config.pageSize)
+        state.closestPageToPosition(anchorPosition)?.run {
+            prevKey?.plus(state.config.pageSize) ?: nextKey?.minus(state.config.pageSize)
+        }
     }
 }

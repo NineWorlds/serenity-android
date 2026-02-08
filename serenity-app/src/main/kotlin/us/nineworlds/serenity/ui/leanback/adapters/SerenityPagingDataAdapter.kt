@@ -47,7 +47,16 @@ class SerenityPagingDataAdapter<T : Any>(presenterSelector: PresenterSelector, d
 
     override fun size(): Int = internalAdapter.size()
 
-    override fun get(position: Int): Any? = internalAdapter.get(position)
+    override fun get(position: Int): Any? {
+        if (position < 0 || position >= size()) {
+            return null
+        }
+        return try {
+            internalAdapter.get(position)
+        } catch (e: IndexOutOfBoundsException) {
+            null
+        }
+    }
 
     suspend fun submitData(pagingData: PagingData<T>) {
         internalAdapter.submitData(pagingData)

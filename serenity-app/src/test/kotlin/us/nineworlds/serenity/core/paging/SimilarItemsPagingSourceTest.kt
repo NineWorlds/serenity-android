@@ -62,7 +62,7 @@ class SimilarItemsPagingSourceTest : InjectingTest() {
         )
 
         assertThat(result).isInstanceOf(PagingSource.LoadResult.Page::class)
-        val page = result as PagingSource.LoadResult.Page
+        val page = result as PagingSource.LoadResult.Page<Int, VideoContentInfo>
         assertThat(page.data).isEqualTo(similarItems)
         assertThat(page.prevKey).isNull()
         assertThat(page.nextKey).isNull()
@@ -82,7 +82,7 @@ class SimilarItemsPagingSourceTest : InjectingTest() {
         )
 
         assertThat(result).isInstanceOf(PagingSource.LoadResult.Page::class)
-        val page = result as PagingSource.LoadResult.Page
+        val page = result as PagingSource.LoadResult.Page<Int, VideoContentInfo>
         assertThat(page.nextKey).isEqualTo(30)
     }
 
@@ -100,15 +100,82 @@ class SimilarItemsPagingSourceTest : InjectingTest() {
         )
 
         assertThat(result).isInstanceOf(PagingSource.LoadResult.Error::class)
-        val error = result as PagingSource.LoadResult.Error
+        val error = result as PagingSource.LoadResult.Error<Int, VideoContentInfo>
         assertThat(error.throwable).isEqualTo(exception)
     }
 
     @Test
-    fun `getRefreshKey returns correct key`() {
+    fun `getRefreshKey returns null when anchorPosition is null`() {
         val state = PagingState<Int, VideoContentInfo>(
             pages = emptyList(),
-            anchorPosition = 10,
+            anchorPosition = null,
+            config = androidx.paging.PagingConfig(pageSize = 15),
+            leadingPlaceholderCount = 0
+        )
+
+        val refreshKey = pagingSource.getRefreshKey(state)
+        assertThat(refreshKey).isNull()
+    }
+
+    @Test
+    fun `getRefreshKey returns null when anchorPosition is not null but closestPageToPosition is null`() {
+        val state = PagingState<Int, VideoContentInfo>(
+            pages = emptyList(),
+            anchorPosition = 0,
+            config = androidx.paging.PagingConfig(pageSize = 15),
+            leadingPlaceholderCount = 0
+        )
+
+        val refreshKey = pagingSource.getRefreshKey(state)
+        assertThat(refreshKey).isNull()
+    }
+
+    @Test
+    fun `getRefreshKey returns prevKey plus pageSize when prevKey is present`() {
+        val page = PagingSource.LoadResult.Page<Int, VideoContentInfo>(
+            data = listOf(mockVideo),
+            prevKey = 0,
+            nextKey = 30
+        )
+        val state = PagingState<Int, VideoContentInfo>(
+            pages = listOf(page),
+            anchorPosition = 0,
+            config = androidx.paging.PagingConfig(pageSize = 15),
+            leadingPlaceholderCount = 0
+        )
+
+        val refreshKey = pagingSource.getRefreshKey(state)
+        assertThat(refreshKey).isEqualTo(15)
+    }
+
+    @Test
+    fun `getRefreshKey returns nextKey minus pageSize when prevKey is null but nextKey is present`() {
+        val page = PagingSource.LoadResult.Page<Int, VideoContentInfo>(
+            data = listOf(mockVideo),
+            prevKey = null,
+            nextKey = 30
+        )
+        val state = PagingState<Int, VideoContentInfo>(
+            pages = listOf(page),
+            anchorPosition = 0,
+            config = androidx.paging.PagingConfig(pageSize = 15),
+            leadingPlaceholderCount = 0
+        )
+
+        val refreshKey = pagingSource.getRefreshKey(state)
+        assertThat(refreshKey).isEqualTo(15)
+    }
+
+    @Test
+    fun `getRefreshKey returns null when both prevKey and nextKey are null`() {
+        val page = PagingSource.LoadResult.Page<Int, VideoContentInfo>(
+            data = listOf(mockVideo),
+            prevKey = null,
+            nextKey = null
+        )
+        val state = PagingState<Int, VideoContentInfo>(
+            pages = listOf(page),
+            anchorPosition = 0,
             config = androidx.paging.PagingConfig(pageSize = 15),
             leadingPlaceholderCount = 0
         )
