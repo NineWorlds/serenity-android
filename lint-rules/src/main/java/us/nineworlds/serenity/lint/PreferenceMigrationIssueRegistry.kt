@@ -7,7 +7,10 @@ import com.android.tools.lint.detector.api.Issue
 
 class PreferenceMigrationIssueRegistry : IssueRegistry() {
     override val issues: List<Issue>
-        get() = listOf(LegacyPreferenceDetector.ISSUE)
+        get() = listOf(
+            LegacyPreferenceDetector.ISSUE,
+            PredictiveBackDetector.ISSUE
+        )
 
     override val api: Int
         get() = CURRENT_API
