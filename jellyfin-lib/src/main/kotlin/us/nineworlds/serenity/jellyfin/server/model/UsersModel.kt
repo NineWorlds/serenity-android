@@ -1,7 +1,7 @@
 package us.nineworlds.serenity.jellyfin.server.model
 
 import com.squareup.moshi.Json
-import org.joda.time.LocalDateTime
+import java.time.LocalDateTime
 
 data class PublicUserInfo(
     @Json(name = "Name") val name: String?,

@@ -1,7 +1,7 @@
 package us.nineworlds.serenity.emby.server.model
 
 import com.squareup.moshi.Json
-import org.joda.time.LocalDateTime
+import java.time.LocalDateTime
 
 data class QueryResult(@Json(name = "Items") val items: List<Item>, @Json(name = "TotalRecordCount") val totalRecordCount: Int)
 

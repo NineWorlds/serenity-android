@@ -40,7 +40,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import net.danlew.android.joda.JodaTimeAndroid
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -85,7 +84,6 @@ open class SerenityApplication : Application() {
 
     lateinit var eventBus: EventBus
     private fun init() {
-        JodaTimeAndroid.init(this)
         inject()
         sendStartedApplicationEvent()
         eventBus = EventBus.getDefault()

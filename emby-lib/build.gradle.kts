@@ -31,6 +31,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
 
     sourceSets {
@@ -54,6 +55,7 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     lintChecks(project(":lint-rules"))
 
     api(project(":serenity-common"))
@@ -80,11 +82,11 @@ dependencies {
     implementation(libs.eventbus)
     implementation(libs.moshi)
     implementation(libs.retrofit.moshi)
-    implementation(libs.joda.time)
     implementation(libs.retrofit)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.timber)
+    implementation(libs.androidx.annotation)
 
     testImplementation(libs.junit)
     testImplementation(libs.assertj.core)
