@@ -10,6 +10,13 @@ Before providing any code or plan:
 
 ---
 
+## Phased Spec-Driven Development (SDD)
+**PROTOCOL MANDATORY:** For any complex task (> 2 files or architectural changes), you MUST follow the Phased GSD protocol.
+- **Instruction Set:** @./prompts/agents/SPEC_WRITER.md
+- **Task Template:** @./prompts/templates/TASK_SPEC.md
+
+---
+
 ## Core Protocols & Constraints
 @./prompts/agents/CONSTRAINTS.md
 
@@ -36,5 +43,6 @@ Serenity for Android is a media server client for Android (Plex/Emby).
 ## Agent Decision Checklist
 1. **Task Scope**: Is it small/defined?
 2. **Permission**: Received written approval?
-3. **Constraints**: Checked against CONSTRAINTS.md?
-4. **Verification**: Manual steps included?
+3. **Complexity**: Does it require a Phased GSD Spec? (See @SPEC_WRITER.md)
+4. **Constraints**: Checked against CONSTRAINTS.md?
+5. **Verification**: Manual steps included?
