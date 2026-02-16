@@ -1,0 +1,167 @@
+{
+  "Items": [
+    {
+      "Name": "Action",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "343",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Adventure",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "344",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Animation",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "598",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Biography",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "10098",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Comedy",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "345",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Crime",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "475",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Documentary",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "1830",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Drama",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "379",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Family",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "346",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Fantasy",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "509",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Game Show",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "17032",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Game-Show",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "17037",
+      "Type": "Genre"
+    },
+    {
+      "Name": "History",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "563",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Horror",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "7733",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Mini-Series",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "15640",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Music",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "1831",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Mystery",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "521",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Reality",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "17051",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Reality-TV",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "17053",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Romance",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "405",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Sci-Fi",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "15540",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Science Fiction",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "520",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Suspense",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "15537",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Thriller",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "380",
+      "Type": "Genre"
+    },
+    {
+      "Name": "TV Movie",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "4215",
+      "Type": "Genre"
+    },
+    {
+      "Name": "War",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "378",
+      "Type": "Genre"
+    },
+    {
+      "Name": "Western",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "3198",
+      "Type": "Genre"
+    }
+  ],
+  "TotalRecordCount": 27
+}

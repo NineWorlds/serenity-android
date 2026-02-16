@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "Isabella",
+    "ServerId": "9db55b26aba245c1ad621fce931b3058",
+    "Prefix": "I",
+    "Id": "2176f0bff50d4782a1f8734a38372bf6",
+    "HasPassword": true,
+    "HasConfiguredPassword": true,
+    "LastLoginDate": "2026-02-07T20:51:23.3509618Z",
+    "LastActivityDate": "2026-02-07T20:51:23.3509618Z"
+  },
+  {
+    "Name": "test",
+    "ServerId": "9db55b26aba245c1ad621fce931b3058",
+    "Prefix": "K",
+    "Id": "a99be67f778f4ebd82d22ae04153520e",
+    "HasPassword": true,
+    "HasConfiguredPassword": true,
+    "LastLoginDate": "2026-02-16T03:03:10.0505895Z",
+    "LastActivityDate": "2026-02-16T03:03:10.0514948Z"
+  }
+]
