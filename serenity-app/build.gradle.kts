@@ -76,6 +76,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
 
     buildTypes {
@@ -120,6 +121,7 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     lintChecks(project(":lint-rules"))
 
     implementation(platform(libs.firebase.bom))
@@ -185,7 +187,6 @@ dependencies {
 
     implementation(libs.moshi)
     implementation(libs.retrofit.moshi)
-    implementation(libs.joda.time)
     implementation(libs.retrofit)
     implementation(libs.flexbox)
     // implementation("com.henryblue.library:tvrecyclerview:1.2.2")

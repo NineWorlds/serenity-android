@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -28,6 +31,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
 
     sourceSets {
@@ -51,6 +55,7 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     lintChecks(project(":lint-rules"))
 
     api(project(":serenity-common"))
@@ -77,7 +82,6 @@ dependencies {
     implementation(libs.eventbus)
     implementation(libs.moshi)
     implementation(libs.retrofit.moshi)
-    implementation(libs.joda.time)
     implementation(libs.retrofit)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)

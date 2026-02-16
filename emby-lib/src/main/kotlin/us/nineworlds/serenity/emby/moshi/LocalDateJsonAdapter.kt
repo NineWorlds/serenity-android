@@ -1,22 +1,20 @@
 package us.nineworlds.serenity.emby.moshi
 
+import android.annotation.SuppressLint
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
-import org.joda.time.LocalDateTime
-import org.joda.time.format.DateTimeFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
+@SuppressLint("NewApi")
 class LocalDateJsonAdapter : JsonAdapter<LocalDateTime>() {
-    override fun fromJson(reader: JsonReader): LocalDateTime? {
-        val dateTime = reader.nextString()!!.replaceAfter(".", "")
-        val dateformater = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH':'mm':'ss'.'")
-//      DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'")
-//    } else if(dateTime!!.contains("+")) {
-//    } else {
-//      DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ")
-//    }
 
-        return LocalDateTime.parse(dateTime, dateformater)
+    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.")
+
+    override fun fromJson(reader: JsonReader): LocalDateTime? {
+        val dateTimeString = reader.nextString()?.replaceAfter(".", "") ?: return null
+        return LocalDateTime.parse(dateTimeString, dateFormatter)
     }
 
     override fun toJson(writer: JsonWriter, value: LocalDateTime?) {
