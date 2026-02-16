@@ -1,0 +1,77 @@
+{
+  "Items": [
+    {
+      "Name": "Movies",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "3",
+      "Guid": "5746b48ff50047e09fa68106d34d0612",
+      "Etag": "8bc8493ffceb3a5f6cdb4ccdf3b5e644",
+      "DateCreated": "2025-12-08T02:09:32.0000000Z",
+      "DateModified": "0001-01-01T00:00:00.0000000Z",
+      "CanDelete": false,
+      "CanDownload": false,
+      "PresentationUniqueKey": "5746b48ff50047e09fa68106d34d0612",
+      "SortName": "Movies",
+      "ForcedSortName": "Movies",
+      "ExternalUrls": [],
+      "Taglines": [],
+      "RemoteTrailers": [],
+      "ProviderIds": {},
+      "IsFolder": true,
+      "ParentId": "2",
+      "Type": "CollectionFolder",
+      "UserData": {
+        "PlaybackPositionTicks": 0,
+        "IsFavorite": false,
+        "Played": false
+      },
+      "ChildCount": 1,
+      "DisplayPreferencesId": "5746b48ff50047e09fa68106d34d0612",
+      "PrimaryImageAspectRatio": 1.7777777777777777,
+      "CollectionType": "movies",
+      "ImageTags": {
+        "Primary": "003e4405be51c8d34052556bc5992bbb"
+      },
+      "BackdropImageTags": [],
+      "LockedFields": [],
+      "LockData": false
+    },
+    {
+      "Name": "TV shows",
+      "ServerId": "9db55b26aba245c1ad621fce931b3058",
+      "Id": "5",
+      "Guid": "2136a9b5818844b9a18471fda8065af8",
+      "Etag": "8bc8493ffceb3a5f6cdb4ccdf3b5e644",
+      "DateCreated": "2025-12-08T02:12:56.0000000Z",
+      "DateModified": "0001-01-01T00:00:00.0000000Z",
+      "CanDelete": false,
+      "CanDownload": false,
+      "PresentationUniqueKey": "2136a9b5818844b9a18471fda8065af8",
+      "SortName": "TV shows",
+      "ForcedSortName": "TV shows",
+      "ExternalUrls": [],
+      "Taglines": [],
+      "RemoteTrailers": [],
+      "ProviderIds": {},
+      "IsFolder": true,
+      "ParentId": "2",
+      "Type": "CollectionFolder",
+      "UserData": {
+        "PlaybackPositionTicks": 0,
+        "IsFavorite": false,
+        "Played": false
+      },
+      "ChildCount": 1,
+      "DisplayPreferencesId": "2136a9b5818844b9a18471fda8065af8",
+      "PrimaryImageAspectRatio": 1.7777777777777777,
+      "CollectionType": "tvshows",
+      "ImageTags": {
+        "Primary": "47acc5cb642001c30e9e954a0d4139b8"
+      },
+      "BackdropImageTags": [],
+      "LockedFields": [],
+      "LockData": false
+    }
+  ],
+  "TotalRecordCount": 2
+}

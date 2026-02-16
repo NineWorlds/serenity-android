@@ -37,15 +37,29 @@ android {
     sourceSets {
         getByName("main").java.srcDirs("src/main/kotlin", "src/main/java")
         getByName("test").java.srcDirs("src/test/kotlin")
+        getByName("test").resources.srcDirs("src/test/resources")
     }
+
+    val testMode = "MOCK"
+    val serverUrl = "http://localhost:8096/"
+    val testUser = "test"
+    val testPassword = "unknown"
 
     buildTypes {
         getByName("debug") {
             buildConfigField("String", "CLIENT_VERSION", "\"${libs.versions.appVersion.get()}\"")
+            buildConfigField("String", "TEST_MODE", "\"$testMode\"")
+            buildConfigField("String", "SERVER_URL", "\"$serverUrl\"")
+            buildConfigField("String", "TEST_USER", "\"$testUser\"")
+            buildConfigField("String", "TEST_PASSWORD", "\"$testPassword\"")
         }
 
         getByName("release") {
             buildConfigField("String", "CLIENT_VERSION", "\"${libs.versions.appVersion.get()}\"")
+            buildConfigField("String", "TEST_MODE", "\"MOCK\"")
+            buildConfigField("String", "SERVER_URL", "\"http://localhost:8096\"")
+            buildConfigField("String", "TEST_USER", "\"test\"")
+            buildConfigField("String", "TEST_PASSWORD", "\"unknown\"")
         }
     }
 
@@ -102,4 +116,5 @@ dependencies {
     testImplementation(libs.toothpick.testing)
     kspTest(libs.toothpick.ksp.compiler)
     testImplementation(libs.turbine)
+    testImplementation(libs.okhttp.mockwebserver)
 }

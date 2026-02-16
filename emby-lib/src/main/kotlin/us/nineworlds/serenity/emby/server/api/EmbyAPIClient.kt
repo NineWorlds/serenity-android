@@ -11,6 +11,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.Cache
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -32,7 +33,11 @@ import us.nineworlds.serenity.emby.server.model.PublicUserInfo
 import us.nineworlds.serenity.emby.server.model.QueryFilters
 import us.nineworlds.serenity.emby.server.model.QueryResult
 
-class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:8096") : SerenityClient {
+class EmbyAPIClient @JvmOverloads constructor(
+    val context: Context,
+    baseUrl: String = "http://localhost:8096",
+    additionalInterceptors: List<Interceptor> = emptyList()
+) : SerenityClient {
 
     private val usersService: UsersService
     private val filterService: FilterService
@@ -53,10 +58,15 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         val cacheSize = 10 * 1024 * 1024 // 10 MiB
         val cache = Cache(cacheDir, cacheSize.toLong())
 
-        val okClient = RetrofitUrlManager.getInstance().with(OkHttpClient.Builder())
+        val okClientBuilder = RetrofitUrlManager.getInstance().with(OkHttpClient.Builder())
         logger.level = HttpLoggingInterceptor.Level.BASIC
-        okClient.addInterceptor(logger)
-        okClient.cache(cache)
+        okClientBuilder.addInterceptor(logger)
+        
+        additionalInterceptors.forEach {
+            okClientBuilder.addInterceptor(it)
+        }
+        
+        okClientBuilder.cache(cache)
 
         val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
@@ -65,7 +75,7 @@ class EmbyAPIClient(val context: Context, baseUrl: String = "http://localhost:80
         val builder = Retrofit.Builder()
         val embyRetrofit = builder.baseUrl(baseUrl)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .client(okClient.build())
+            .client(okClientBuilder.build())
             .build()
 
         usersService = embyRetrofit.create(UsersService::class.java)
