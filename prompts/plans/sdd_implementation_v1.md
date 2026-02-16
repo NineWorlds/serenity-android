@@ -1,28 +1,32 @@
 # Implementation Plan: Phased Spec-Driven Development (SDD)
 **Status:** PROPOSED  
-**Version:** 1.6.0  
-**Target:** Standardized AI Workflow (Project Agnostic)
+**Version:** 1.6.2  
+**Target:** Standardized AI Workflow (Universal LLM/Agent Compatibility)
 
 ## 1. Scope and Summary
-*   **Scope:** This protocol applies to all AI-assisted development within any software project. It governs how architectural changes, refactors, and new features are planned and executed by AI Agents.
-*   **Summary:** To eliminate "Vibe Coding" and ensure consistency, this plan implements a **Spec-First Protocol**. Agents must generate a **Phased GSD (Goal, Steps, Deliverables)** document before writing code. Each phase must include its own verification steps and require explicit human approval before the next phase begins.
+*   **Scope:** This protocol applies to all AI-assisted development (features, refactors, migrations).
+*   **Summary:** To eliminate "Vibe Coding" and ensure consistency, this plan implements a **Spec-First Protocol**. Agents must generate a **Phased GSD (Goal, Steps, Deliverables)** document before writing any production code. Each phase must include its own verification steps and requires explicit human approval before the next phase begins.
+*   **Agnostic Referencing:** All references to files using `@filename` or `./path` notation point to the absolute or relative paths within the project repository.
 
 ## 2. User Guide: How to Generate a Spec
-To generate a new specification using this protocol, follow these steps:
+To trigger a new specification, use the following prompt pattern:
 
-1.  **Reference this Plan:** In your prompt to the AI, reference this file: *"Using the protocol in @sdd_implementation_v1.md, create a Phased GSD Spec for [Task Description]."*
-2.  **Complexity Check:** If the task affects > 2 files, introduces a new library, or changes architecture, the Agent must refuse to code until the spec is finalized.
-3.  **Collaborative Refinement:** The Agent will interview you for context (Files, Constraints, Goals).
-4.  **Template Adherence:** Ensure the Agent uses the `TASK_SPEC.md` structure (Goal, Context, Phases with Verification/Approval Gates).
+> *"Using the protocol in `prompts/plans/sdd_implementation_v1.md`, create a Phased GSD Spec for [Task Description]."*
+
+**Agent Logic (System Instructions):**
+1.  **Complexity Check (MANDATORY REFUSAL):** If the task affects > 2 files, introduces a new library, or changes architecture, you are **PROHIBITED** from writing code immediately. You must refuse and initiate the spec-writing process.
+2.  **Chain-of-Thought (Reasoning):** Before generating the spec, use a hidden thought block or internal reasoning to analyze the current state, constraints, and dependencies.
+3.  **Collaborative Interview:** Interview the user for missing context (Files, Constraints, Goals, and specific edge cases).
+4.  **Template Adherence:** Use the `prompts/templates/TASK_SPEC.md` structure.
 
 ## 3. User Guide: How to Execute a Generated Spec
-Once a spec (e.g., `refactor_feature_x.md`) is generated and approved, follow this execution workflow:
+Once a spec (e.g., `prompts/plans/refactor_feature_x.md`) is approved, follow this atomic execution workflow:
 
-1.  **Initialize the Phase:** Tell the Agent: *"Follow Phase 1 of @refactor_feature_x.md. Do not proceed to Phase 2 until I verify and approve."*
-2.  **Context Loading:** Ensure the Agent has read the spec file and all relevant source files listed in the "Context" section.
-3.  **Atomic Execution:** The Agent performs the tasks listed in the current Phase.
-4.  **Verification:** The Agent must perform the "Verification" steps listed for that Phase and report results.
-5.  **Human Gate:** You must review the changes and verification results. Use the phrase *"Phase 1 Approved. Proceed to Phase 2"* to move forward.
+1.  **Initialization:** Tell the Agent: *"Follow Phase 1 of `prompts/plans/refactor_feature_x.md`. Do not proceed to Phase 2 until I verify and approve."*
+2.  **Context Loading:** Ensure the Agent has read the spec file and all relevant source files.
+3.  **Atomic Execution:** Perform only the tasks listed in the current Phase. Do not perform speculative work for future phases.
+4.  **Verification:** Perform the "Verification" steps (Unit tests, UI tests, or manual checks) and report results.
+5.  **Human Gate:** You must review the changes. Use the phrase *"Phase [X] Approved. Proceed to Phase [Y]"* to move forward.
 
 ## 4. Example: Phased GSD Spec (Moshi Conversion)
 *Below is an example of what a generated spec looks like.*
@@ -56,18 +60,17 @@ Migrate legacy Java model to Kotlin with Moshi JSON parsing.
 ---
 
 ## Phase 1: Discovery & Templates
-*Goal: Identify the environment and establish the standardized structure for specifications.*
+*Goal: Identify the environment and establish the standardized structure.*
 
 - [ ] **Task 1.1: Identify Target Agent(s)**
   - **Action:** Ask the user which AI tool(s) are being targeted (e.g., GitHub Copilot, Android Studio Gemini, Cursor, Claude).
-  - **Outcome:** Document the target agent(s) to tailor the configuration files in Phase 2.
+  - **Outcome:** Document the target agent(s) to tailor configuration.
 - [ ] **Task 1.2: Define Reporting Requirements**
-  - **Action:** Ask the user if completion summary reports (Markdown files) should be generated.
-  - **Constraint:** If negative, include the instruction: `Do NOT generate summary or report Markdown file upon completion`. (Note: Targets Claude specifically).
+  - **Action:** Ask the user if completion summary reports should be suppressed.
+  - **Constraint:** If negative, include: `Do NOT generate summary or report Markdown file upon completion`.
 - [ ] **Task 1.3: Create Standardized Prompt Directory**
-  - Create a designated directory for AI prompts and templates (e.g., `.ai/templates/` or `prompts/templates/`).
+  - Ensure `prompts/agents/`, `prompts/templates/`, and `prompts/plans/` exist.
 - [ ] **Task 1.4: Create `TASK_SPEC.md` Template**
-  - Define a project-agnostic Phased GSD structure inspired by [GitHub Spec-Kit](https://github.com/github/spec-kit) and [GSD](https://github.com/gsd-build/get-shit-done).
   - **Template Structure:**
     ```markdown
     # [TITLE]
@@ -86,19 +89,12 @@ Migrate legacy Java model to Kotlin with Moshi JSON parsing.
     ### Verification
     - [Test command or manual check]
     ### [WAIT FOR APPROVAL]
-    
-    ## Phase 2: [Name]
-    ...
-    
-    ## Final Deliverables
-    - [List of files/artifacts]
     ```
 
 **Phase 1 Verification:**
 1.  Target agent(s) and reporting preferences documented.
-2.  Template directory exists.
-3.  `TASK_SPEC.md` reviewed for clarity and phasing.
-4.  **STOP: Wait for Human Approval.**
+2.  Template directory and `TASK_SPEC.md` exist.
+3.  **STOP: Wait for Human Approval.**
 
 ---
 
@@ -111,33 +107,26 @@ Migrate legacy Java model to Kotlin with Moshi JSON parsing.
     # Persona: Technical Architect (Spec Writer)
     When a request is complex or vague:
     1. DO NOT write code.
-    2. INTERVIEW the user for missing context (Files, Constraints, Goal).
-    3. GENERATE a Phased GSD Spec using the `TASK_SPEC.md` template.
+    2. INTERVIEW the user for missing context.
+    3. GENERATE a Phased GSD Spec.
     4. MANDATE approval after each Phase.
-    
-    [ADD CONDITIONAL CONSTRAINT FROM TASK 1.2 HERE IF NEGATIVE]
     ```
-  - Add logic to identify "Vibe" requests.
 - [ ] **Task 2.2: Generate Agent-Specific Configuration Files**
-  - Based on Target Agent (Task 1.1):
-    - **GitHub Copilot:** `.github/copilot-instructions.md`
-    - **Cursor:** `.cursorrules`
-    - **Claude/Gemini/Custom:** `AGENTS.md` (Referencing the SDD protocol).
+  - **Files:** `.github/copilot-instructions.md`, `.cursorrules`, or `AGENTS.md`.
 
 **Phase 2 Verification:**
 1.  `SPEC_WRITER.md` enforces phasing and refusal logic.
-2.  Agent-specific config created and correctly references SDD.
-3.  **STOP: Wait for Human Approval.**
+2.  **STOP: Wait for Human Approval.**
 
 ---
 
 ## Phase 3: Protocol Integration
-*Goal: Formalize the "Phased Spec-First" rule in core developer documentation.*
+*Goal: Formalize the rules in core documentation.*
 
 - [ ] **Task 3.1: Update Communication Rules**
-  - Update `COMMUNICATION.md` to include the "Complexity Threshold" (e.g., > 2 files or architectural changes require a Phased Spec).
+  - Update `COMMUNICATION.md` with "Complexity Threshold."
 - [ ] **Task 3.2: Finalize System Prompt Manifest**
-  - Ensure the root AI manifest (e.g., `AGENTS.md`) is updated to include the Spec-First requirement.
+  - Ensure `AGENTS.md` is updated to include the Spec-First requirement.
 
 **Phase 3 Verification:**
 1.  Review `COMMUNICATION.md` and `AGENTS.md` diffs.
@@ -146,11 +135,11 @@ Migrate legacy Java model to Kotlin with Moshi JSON parsing.
 ---
 
 ## Phase 4: Workflow Validation
-*Goal: Prove the system prevents Vibe Coding in the targeted environment.*
+*Goal: Prove the system prevents Vibe Coding.*
 
 - [ ] **Task 4.1: Simulation Test**
   - **Trigger:** "Update the Directory model to use Moshi and Kotlin."
-  - **Expected Result:** Agent refuses code, interviews user, and produces a Phased GSD Spec.
+  - **Expected Result:** Agent refuses code and produces a Phased GSD Spec.
 
 **Phase 4 Verification:**
 1.  Success if Agent follows protocol.
