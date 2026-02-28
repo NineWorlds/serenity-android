@@ -10,19 +10,27 @@ Before providing any code or plan:
 
 ---
 
-## Phased Spec-Driven Development (SDD)
+## Phased Spec-Driven Development (SDD) v2.0
 **PROTOCOL MANDATORY:** For any complex task (> 2 files or architectural changes), you MUST follow the Phased GSD protocol.
+- **Master Protocol:** @./prompts/plans/sdd_implementation_v1.md
 - **Instruction Set:** @./prompts/agents/SPEC_WRITER.md
 - **Task Template:** @./prompts/templates/TASK_SPEC.md
+
+**Organizational Rule:** All plans MUST be created in their own subdirectory under `prompts/plans/<plan_name>/` and include a `memory/` folder for discovery logging.
 
 ---
 
 ## Core Protocols & Constraints
 @./prompts/agents/CONSTRAINTS.md
+@./prompts/agents/TOOLING_CONSTRAINTS.md
 
 ## Framework & Architecture Rules
 @./prompts/agents/FRAMEWORKS.md
 @./prompts/agents/CODE_REVIEW.md
+@./prompts/agents/architecture.md
+@./prompts/agents/ui-standards.md
+@./prompts/agents/communication-protocol.md
+@./prompts/agents/constitution.md
 
 ## Testing & MockK Standards
 @./prompts/agents/TESTING.md
@@ -44,5 +52,7 @@ Serenity for Android is a media server client for Android (Plex/Emby).
 1. **Task Scope**: Is it small/defined?
 2. **Permission**: Received written approval?
 3. **Complexity**: Does it require a Phased GSD Spec? (See @SPEC_WRITER.md)
-4. **Constraints**: Checked against CONSTRAINTS.md?
-5. **Verification**: Manual steps included?
+4. **Tool Selection**: Did you use the highest-level API available (e.g., Domain-Specific vs Terminal)?
+5. **Constraints**: Checked against CONSTRAINTS.md?
+6. **Verification**: Manual steps included?
+7. **Organization**: Is the plan in a subdirectory with a memory log?
