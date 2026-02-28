@@ -1,25 +1,34 @@
-## Code Style & Frameworks
+# Frameworks & Core Libraries Standards
+
+## Mission
+Maintain consistency across the project by adhering to established framework patterns and ensuring seamless integration of new code with the existing codebase.
+
+## Code Style
 - **Language**: Use Kotlin. Convert Java to Kotlin where feasible.
 - **Formatting**: Always run `./gradlew spotlessApply`.
-- **DI (Toothpick)**: Use Toothpick; prefer provider-based injection.
-- **MVP (Moxy)**: Use Kotlin delegation. NEVER use `@InjectPresenter`.
-- **View Binding**: Replace all `findViewById` with View Binding.
+- **Immutability**: Prefer `val` and immutable collections (`List`, `Set`) over `var` and mutable collections.
 
-### MVP (Moxy) Conversion Example
-To make Activities testable and decoupled:
-1. **DO NOT use `@InjectPresenter` on fields.**
-2. **DO inject Providers** and use `moxyPresenter` delegate.
+## Dependency Injection (Toothpick)
+- **Standard**: Use Toothpick; prefer provider-based injection.
+- **Scoping**: Most services and repositories should be bound in `APPLICATION_SCOPE` (within `SerenityApplication`).
+- **InjectConstructor**: Use `@InjectConstructor` on classes where applicable to simplify DI.
+
+## MVP (Moxy)
+- **Standard**: Use Kotlin delegation for presenters.
+- **Hard Constraint**: NEVER use `@InjectPresenter`.
+- **Pattern**: Inject a `Provider<Presenter>` and use the `moxyPresenter` delegate.
 
 ```kotlin
-// Inject Provider and use moxyPresenter
 @Inject
 lateinit var presenterProvider: Provider<MainPresenter>
 
 internal val presenter by moxyPresenter { presenterProvider.get() }
 ```
 
-### View Binding Standards
-Always replace `findViewById` with View Binding. Example:
+## View Binding
+- **Standard**: Always replace `findViewById` with View Binding.
+- **Standard**: Handle included layouts using their generated binding classes (e.g., `IncludeLoadingProgressBinding.bind(binding.root)`).
+
 ```kotlin
 private lateinit var binding: ActivityMainBinding
 private lateinit var progressBinding: IncludeLoadingProgressBinding
@@ -31,3 +40,13 @@ override fun onCreate(savedInstanceState: Bundle?) {
     setContentView(binding.root)
 }
 ```
+
+## Networking & Persistence
+- **Retrofit**: Use for all API communications. Use `executeOrThrow()` for consistent error handling.
+- **Moshi**: Standard for JSON parsing. Use `@Json(name = "...")` for mapping API fields to domain properties.
+- **Glide**: Use for all image loading and caching.
+
+## Testing & Mocking
+- **MockK**: Mandatory for all mocking. No annotations allowed (`mockk(relaxed = true)`).
+- **Tear Down**: Always call `clearAllMocks()` and `Toothpick.reset()` in `@After`.
+- **InjectingTest**: Extend `us.nineworlds.serenity.test.InjectingTest` for tests requiring DI.

@@ -1,4 +1,4 @@
-# [TITLE]
+# [SPEC] Title
 ## Goal
 - [High-level objective]
 
@@ -6,6 +6,20 @@
 - **Current State:** [Brief description]
 - **Constraints:** [Technical/Architectural limits]
 - **Files:** [Paths to relevant files]
+
+## Standards Compliance
+- [ ] **Architecture**: Repository pattern, Coroutines for I/O, Toothpick scoping.
+- [ ] **UI/Leanback**: View Binding, `snake_case` IDs, Focus effects, No MotionLayout.
+- [ ] **Communication**: Retrofit `executeOrThrow`, Moshi mapping, domain decoupling.
+- [ ] **Testing**: MockK (no annotations), `clearAllMocks()`, `InjectingTest` if needed.
+
+## Impact Surface
+- **Dependencies:** [What might break?]
+- **Consumers:** [Who uses the affected files?]
+
+## Risk & Rollback
+- **Potential Risks:** [What could go wrong?]
+- **Rollback Strategy:** [How to undo if it fails? (e.g. git revert)]
 
 ## Phase 1: [Name]
 ### Tasks
@@ -20,3 +34,10 @@
 
 ## Final Deliverables
 - [List of files/artifacts]
+
+## Discovery & Learning Log
+- [ ] Record any unexpected behavior, hidden dependencies, or architectural discoveries here during execution.
+
+## Cleanup & Manual Actions (Human Required)
+- [ ] Task: Delete legacy/obsolete files: `[path/to/old_file]`
+- [ ] Task: [Any other non-agent task]
