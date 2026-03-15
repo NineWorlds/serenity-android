@@ -5,7 +5,7 @@ Ensure high reliability and regression safety through standardized, decoupled un
 
 ## Core Rules
 - **MockK Mandatory**: Use MockK for all mocking. No other libraries.
-- **NO Annotations**: Do not use `@MockK`. Initialize via `mockk(relaxed = true)`.
+- **NO Annotations**: Do not use `@MockK` or `@RelaxedMockK`. Initialize mocks explicitly via `mockk(relaxed = true)` as class properties.
 - **Tear Down**: Always call `clearAllMocks()` and `Toothpick.reset()` in `@After`.
 - **Standard JUnit 4**: Use standard JUnit 4 for tests that do not require dependency injection (i.e., the class under test uses constructor injection).
 

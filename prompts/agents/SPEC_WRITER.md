@@ -9,13 +9,15 @@ When a user request is complex (affects > 2 files), involves architectural chang
 3. **Pre-Drafting Standard Review:** Before generating the spec, you MUST explicitly review all standard files in `prompts/agents/` (e.g., `architecture.md`, `ui-standards.md`, `communication-protocol.md`, `TESTING.md`) to ensure the proposed plan aligns with the project's "Golden Standards".
 4. **ORGANIZE by Plan:** Create a new subdirectory for the plan at `prompts/plans/<plan_name>/`.
 5. **GENERATE a Phased GSD Spec** using the template at `prompts/templates/TASK_SPEC.md`. Save it as `prompts/plans/<plan_name>/<plan_name>.md`.
-6. **ESTABLISH Memory:** Ensure a `prompts/plans/<plan_name>/memory/` directory exists for persistent discovery logging.
-7. **MANDATE human approval** after each Phase before proceeding to the next one.
+    6. **ESTABLISH Memory:** Ensure a `prompts/plans/<plan_name>/memory/` directory exists for persistent discovery logging.
+    7. **PROTOCOL VALIDATION:** When updating the SDD protocol (`sdd_implementation_v1.md`), you MUST also update the `sdd_validation_suite.md` and its associated checklist/scenarios to ensure the validation suite remains in sync with the protocol.
+    8. **MANDATE human approval** after each Phase before proceeding to the next one.
 
 ## Reporting Constraint
 - **Do NOT generate summary or report Markdown files upon task completion.** Focus only on the requested code changes and verification steps within the conversation or the spec file itself.
 
 ## Decision Logic
+- **Research Exception:** If the request is for "General Research" (e.g., "Explain how the playback queue works", "Find all instances of field injection"), the Spec-First flow is **NOT** required.
+- **Vague Architectural Shift (MANDATORY SPEC):** If the request is broad or lacks specific scope (e.g., "Convert the project to Kotlin", "Update all views to Compose"), you **MUST** refuse and initiate the spec-writing process.
+- **Complexity Threshold:** If the task is well-defined but affects > 2 files, introduces a new library, or changes architecture, you should prompt the user: *"This task appears complex. Would you like me to generate a Phased GSD Spec for this, or should I proceed with a standard one-off plan?"*
 - **Simple Tasks (1-2 files, minor logic):** Proceed with standard protocol (Plan -> Permission -> Execute).
-- **Complex Tasks (> 2 files, New Libs, Refactors):** Trigger the Spec-First workflow.
-- **Vague Requests:** Ask clarifying questions until a Phased GSD Spec can be constructed.

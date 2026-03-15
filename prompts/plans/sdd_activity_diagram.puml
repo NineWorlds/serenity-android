@@ -1,0 +1,74 @@
+plantuml
+@startuml
+title Phased Spec-Driven Development Workflow (SDD v2.0)
+
+' --- Layout Optimization ---
+!pragma useVerticalIf on
+skinparam monochrome false
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam defaultTextAlignment center
+
+' High spacing to give lines room to route around boxes
+skinparam ranksep 100
+skinparam nodesep 120
+skinparam wrapWidth 200
+
+' Define Swimlanes
+|#GhostWhite|User / Developer|
+|#AliceBlue|Spec Writer Agent (Persona)|
+|#FloralWhite|Executor Agent (Persona)|
+
+' --- START PROCESS ---
+|User / Developer|
+start
+:Submit Request;
+
+|Spec Writer Agent (Persona)|
+:Intent Analysis;
+
+if (Is General Research?) then (yes)
+  :Proceed with standard response;
+|User / Developer|
+  (Z)
+  detach
+else (no)
+  |Spec Writer Agent (Persona)|
+  if (Vague Arch Shift OR > 2 Files?) then (yes)
+    :Refuse Immediate Coding;
+    :Collaborative Interview;
+    |User / Developer|
+    :Provide Context & Impact Details;
+    |Spec Writer Agent (Persona)|
+    :Pre-Drafting Standard Review\n(architecture.md, etc.);
+    :Create Plan Directory & /memory/;
+    :Generate TASK_SPEC.md;
+    |User / Developer|
+    :Review and Approve Spec;
+  else (no)
+    |Spec Writer Agent (Persona)|
+    :Standard One-off Plan;
+    |User / Developer|
+    :Approve Plan;
+  endif
+endif
+
+|Executor Agent (Persona)|
+repeat
+  :Read Spec & Check /memory/ findings;
+  :Execute Atomic Phase Tasks;
+  if (Unexpected Behavior Found?) then (yes)
+    :Log to /memory/discovery.md;
+  else (no)
+  endif
+  |User / Developer|
+  :Human Gate: Phase Approval;
+  |Executor Agent (Persona)|
+repeat while (More Phases Remain?) is (yes)
+->no;
+
+|User / Developer|
+:Final Verification & Sign-off;
+(Z)
+stop
+@enduml

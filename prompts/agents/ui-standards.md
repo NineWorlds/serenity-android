@@ -11,6 +11,7 @@ Deliver a consistent, high-performance "leanback" experience for Android TV and 
 ## View Binding & Legacy Migration
 - **Mandatory**: All new UI code **MUST** use View Binding.
 - **Legacy Rule**: Any modification to a legacy layout **SHOULD** trigger a migration to View Binding for that component. Replace all `findViewById` calls with binding references.
+- **Forbidden**: `findViewById` is strictly forbidden in new code.
 
 ## Naming Conventions
 - **Layouts**:
@@ -28,8 +29,8 @@ Deliver a consistent, high-performance "leanback" experience for Android TV and 
 
 ## Animations & Transitions
 - **XML Animations**: Use `res/anim` for standard transitions (fades, scales).
-- **Hard Constraint**: **DO NOT use MotionLayout**. It is not a project standard. Simple transitions should stay in XML.
-- **Focus Effects**: TV UI must provide clear visual feedback on focus (e.g., scale up or border highlight).
+- **Forbidden Pattern**: **DO NOT use MotionLayout**. It is not a project standard. Simple transitions should stay in XML.
+- **Focus Effects**: TV UI must provide clear visual feedback on focus (e.g., scale up or border highlight). This is non-negotiable for D-pad navigation.
 
 ## Code Example: View Binding in Activity
 ```kotlin

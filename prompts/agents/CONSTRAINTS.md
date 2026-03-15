@@ -3,6 +3,7 @@
 - **DO NOT edit critical configuration** (e.g., `.env`).
 - **DO NOT perform destructive Git operations** (e.g., `git reset --hard`, `rm`).
 - **DO NOT use @InjectPresenter**: Always use the `moxyPresenter` delegate with Providers.
+- **DO NOT use MotionLayout**: This is not a project standard for animations.
 - **Path-Scoped Commits**: Commit only the files you modified using explicit paths.
 - **Rebases**: Use non-interactive modes (`GIT_EDITOR=:`).
 

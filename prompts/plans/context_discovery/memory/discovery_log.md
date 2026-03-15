@@ -2,64 +2,45 @@
 
 ## Phase 1: Deep Scanning & Pattern Identification - COMPLETE
 
-### Task 1: Scan `serenity-app` for consistent Activity/Fragment/Presenter lifecycle patterns.
-- [x] Initial scan of Activities and Fragments.
-    - Patterns: Activities often extend `InjectingMvpActivity`. Fragments like `DetailsFragment` manually manage `MvpDelegate`.
-    - View Binding: `binding = ActivitySelectionBinding.inflate(layoutInflater)` pattern is consistent.
-- [x] Presenter injection and lifecycle management.
-    - Pattern: `internal val presenter by moxyPresenter { presenterProvider.get() }` with injected `Provider<Presenter>`.
-    - DI: Toothpick is used, typically scoped to `APPLICATION_SCOPE`.
+### Task 1.1: Stack & Ecosystem Identification
+- **Languages:** Kotlin (Primary), Java (Legacy).
+- **Build System:** Gradle with Version Catalogs (`libs.versions.toml`).
+- **Core Frameworks:** Leanback, Moxy, Toothpick, Coroutines, Retrofit, Moshi, Glide, Media3.
+- **Testing:** JUnit 4, MockK (relaxed), Robolectric.
 
-### Task 2: Analyze `emby-lib` and `jellyfin-lib` for data repository and API error handling patterns.
-- [x] Repository structure and interface patterns.
-    - Pattern: Repositories (e.g., `VideoRepository`) use `suspend` functions and `withContext(Dispatchers.IO)`. They wrap the `SerenityClient` interface.
-- [x] Error handling strategy in API clients.
-    - Pattern: `EmbyAPIClient` uses a `Call<T>.executeOrThrow()` extension to handle Retrofit responses, throwing `IOException` on failure.
+### Task 1.2: 'Gravity Well' & Architecture Mapping
+- **Entry Point:** `SerenityApplication` (Toothpick `APPLICATION_SCOPE`).
+- **Base Classes:** `InjectingActivity`, `InjectingMvpActivity`.
+- **Logic Center:** Presenters manage UI state; Repositories handle data fetching via Coroutines.
+- **Presenter Pattern:** `internal val presenter by moxyPresenter { presenterProvider.get() }`.
 
-### Task 3: Identify UI naming conventions and design tokens (colors, dimensions) across modules.
-- [x] Resource naming (XML layouts, IDs).
-    - Layouts: `activity_`, `include_`, `item_`, `dialog_`, `button_`.
-    - IDs: snake_case (e.g., `server_container`, `retry_button`).
-- [x] Color and dimension usage (standardization).
-    - Colors: `res/values/color.xml` and `legacy_colors.xml`.
-    - Dimensions: `res/values/dimens.xml` and `app_dimens.xml`.
+### Task 1.3: Anti-Pattern Identification
+- **Forbidden:** `@InjectPresenter` (Detected violations in `ExoplayerVideoActivity` and `StatusOverlayFrameLayout`).
+- **Forbidden:** `MotionLayout`.
+- **Legacy:** `findViewById` (MUST use View Binding).
+- **Legacy:** Retrofit `.enqueue()` (MUST use `suspend` + `executeOrThrow`).
 
-### Task 4: Compare `framer-motion` vs `css-transitions` equivalents in Android.
-- [x] Animation patterns (XML, MotionLayout, or code-based).
-    - Found XML animations in `res/anim` (e.g., `fade_in.xml`, `main_menu_grow.xml`).
-    - No direct `MotionLayout` usage found in layouts yet, but `motion.xml` exists in `res/values`.
+### Task 1.4: UI, Asset & Multi-Module Mapping
+- **Resource Naming:** `activity_`, `fragment_`, `include_`, `item_`, `dialog_`.
+- **IDs:** `snake_case` (e.g., `retry_button`).
+- **Colors/Dimens:** Centralized in `res/values/`.
+- **Module Flow:** `serenity-app` -> `*-lib` -> `serenity-common`.
 
-### Task 5: Check for a `constitution.md` or high-level philosophy document.
-- [x] Search for philosophy/constitution docs.
-    - Found `README.md`. No `constitution.md` exists. Philosophy: Open source (MIT), community-driven, focuses on Android TV/Fire TV, Emby/Jellyfin support (Plex deprecated).
+### Task 1.5: Tribal Knowledge Synthesis
+- **Testing Strategy:** `InjectingTest` only for field injection. MockK must be used without annotations.
+- **TV Optimization:** Focus effects are non-negotiable for D-pad navigation.
+- **Provider Decoupling:** API models must map to `serenity-common` domain models.
+
+---
 
 ## Phase 2: Extraction & Documentation - COMPLETE
+- Architectural standards formalized in `architecture.md`.
+- UI/Resource standards formalized in `ui-standards.md`.
+- Communication protocols formalized in `communication-protocol.md`.
+- Testing and MockK standards formalized in `TESTING.md`.
+- Forbidden patterns explicitly listed in `CONSTRAINTS.md` and `FRAMEWORKS.md`.
 
-### Task 1: Create or update `prompts/agents/architecture.md`
-- [x] Documented Directory structure, module boundaries, and Data Flow (Golden Standard).
+---
 
-### Task 2: Create or update `prompts/agents/ui-standards.md`
-- [x] Documented Component patterns, naming conventions, and Design Tokens.
-
-### Task 3: Create or update `prompts/agents/communication-protocol.md`
-- [x] Documented API design, error handling (`executeOrThrow`), and logging standards.
-
-### Task 4: Update `prompts/agents/FRAMEWORKS.md`
-- [x] Refreshed with latest "Source of Truth" findings (DI, MVP, View Binding, Testing).
-
-### Task 5: Create/Update `prompts/agents/constitution.md`
-- [x] Formalized project philosophy and "Non-Negotiables" for contributors.
-
-## Phase 3: Conflict Resolution & Refinement - COMPLETE
-
-### Task 1: Present any conflicting patterns discovered.
-- [x] Conflict 1: **DI Scoping in Tests**. (Resolved: `InjectingTest` only for field injection, else JUnit 4).
-- [x] Conflict 2: **View Binding vs. Legacy**. (Resolved: Mandatory for new/modified UI).
-- [x] Conflict 3: **Animation Logic**. (Resolved: Stick to XML, **NO MotionLayout**).
-- [x] Conflict 4: **Repository Access**. (Resolved: Presenters MUST use Repositories).
-
-### Task 2: Ask user for the "Golden Standard" on identified conflicts.
-- [x] User provided feedback and confirmed Golden Standards.
-
-### Task 3: Finalize documentation based on user feedback.
-- [x] Documentation updated in `architecture.md`, `ui-standards.md`, and `TESTING.md`.
+## Phase 3: Validation Dry-Run - PENDING
+*Awaiting user approval to proceed.*

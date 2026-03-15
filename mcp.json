@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "android_studio_mcp": {
+      "url": "http://localhost:64342/sse",
+      "type": "sse"
+    }
+  }
+}

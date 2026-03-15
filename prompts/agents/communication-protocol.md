@@ -6,7 +6,8 @@ Ensure reliable and observable communication between the application and media s
 ## API Design & Implementation
 - **Retrofit**: All network calls must use Retrofit 2 interfaces.
 - **Service Interfaces**: Group related endpoints into specific service interfaces (e.g., `UsersService`, `FilterService`).
-- **Synchronous Execution**: Use `.execute()` within Coroutine-wrapped repository methods rather than Retrofit's `.enqueue()`.
+- **Synchronous Execution**: Use `.execute()` within Coroutine-wrapped repository methods.
+- **Forbidden Pattern**: NEVER use Retrofit's `.enqueue()`. Asynchronous logic must be handled via Coroutines in the Presenter or Repository layer.
 
 ## Error Handling & Reliability
 - **Execute or Throw**: Use the `executeOrThrow()` extension pattern for all `Call<T>` objects to ensure consistent error propagation.
