@@ -10,13 +10,20 @@ Before providing any code or plan:
 
 ---
 
-## Phased Spec-Driven Development (SDD) v2.0
+## Phased Spec-Driven Development (SDD) v3.0 (agentskills.io)
 **PROTOCOL MANDATORY:** For any complex task (> 2 files or architectural changes), you MUST follow the Phased GSD protocol.
 - **Master Protocol:** @./prompts/plans/sdd_implementation_v1.md
 - **Instruction Set:** @./prompts/agents/SPEC_WRITER.md
 - **Task Template:** @./prompts/templates/TASK_SPEC.md
 
+**Skill Discovery (MANDATORY):** At the start of every session, you MUST:
+1. Execute `list_files` on `prompts/skills/`.
+2. Read ONLY the YAML frontmatter of `SKILL.md` files.
+3. If a task matches a skill's description, ANNOUNCE activation and load the full body.
+
 **Organizational Rule:** All plans MUST be created in their own subdirectory under `prompts/plans/<plan_name>/` and include a `memory/` folder for discovery logging.
+
+**PHASE TRANSITION RULE (MANDATORY):** You are strictly prohibited from proceeding to a new phase without explicit user approval. Even if a phase consists of a single "Simulation" or "Cleanup" task, you MUST stop after the previous phase and wait for the user to say "Proceed".
 
 ---
 

@@ -1,7 +1,9 @@
 ## Collaboration & Templates
 - **Permission First**: Request explicit approval before acting.
 - **Complexity Threshold**: Any task affecting more than 2 files, involving architectural changes, or adding new libraries REQUIRES a Phased GSD Spec (see SDD Protocol).
-- **Mandatory Interview**: Before writing a spec, you MUST interview the user to perform an **Impact Analysis** (dependencies/consumers) and identify **Risk/Rollback** scenarios.
+- **Mandatory Interview & Skill Discovery**: Before writing a spec, you MUST:
+    1. Interview the user to perform an **Impact Analysis** (dependencies/consumers) and identify **Risk/Rollback** scenarios.
+    2. Perform **Skill Discovery** by checking `prompts/skills/` for applicable expertise. If a match is found, announce and activate the skill.
 - **Action Plan**: Present summary, paths, risks, and verification steps.
 - **Issue Template**: "I detected [problem]. Proposed fix: [summary]. Files: [paths]. Risks: [brief]. Do you approve?"
 - **Pair Programming**: You are the coder, the end user will run tests. Ask your pair to run any tests.
