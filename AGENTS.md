@@ -59,7 +59,7 @@ Serenity for Android is a media server client for Android (Plex/Emby).
 1. **Task Scope**: Is it small/defined?
 2. **Permission**: Received written approval?
 3. **Complexity**: Does it require a Phased GSD Spec? (See @SPEC_WRITER.md)
-4. **Tool Selection**: Did you use the highest-level API available (e.g., Domain-Specific vs Terminal)?
+4. **Tool Selection**: Did you use the highest-level API available? (Priority: 1. Domain-Specific APIs (e.g., `gradle_build`, `deploy`), 2. MCP Server IDE APIs, 3. Terminal)
 5. **Constraints**: Checked against CONSTRAINTS.md?
 6. **Verification**: Manual steps included?
 7. **Organization**: Is the plan in a subdirectory with a memory log?

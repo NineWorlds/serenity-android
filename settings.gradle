@@ -9,4 +9,4 @@ include ':serenity-app', ':emby-lib', ':serenity-common', ':serenity-android-com
 include ':subtitle-converter'
 include ':manager'
 include ':jellyfin-lib'
-include ':lint-rules'
+include ':lint-rules', ':baseline-profile'
