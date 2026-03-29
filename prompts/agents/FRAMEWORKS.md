@@ -1,45 +1,26 @@
-# Frameworks & Core Libraries Standards
+# Frameworks & Core Libraries
 
 ## Mission
-Maintain consistency across the project by adhering to established framework patterns and ensuring seamless integration of new code with the existing codebase.
+Adhere to the project's standard stack to ensure maintainability and consistency.
 
-## Code Style
-- **Language**: Use Kotlin. Convert Java to Kotlin where feasible.
-- **Formatting**: Always run `./gradlew spotlessApply`.
-- **Immutability**: Prefer `val` and immutable collections (`List`, `Set`) over `var` and mutable collections.
+## Standard Stack & Implementation Skills
+For "How-to" guides and code examples, activate the corresponding skill:
 
-## Dependency Injection (Toothpick)
-- **Standard**: Use Toothpick; prefer provider-based injection.
-- **Scoping**: Most services and repositories should be bound in `APPLICATION_SCOPE` (within `SerenityApplication`).
-- **InjectConstructor**: Use `@InjectConstructor` on classes where applicable to simplify DI.
-- **Manual Injection**: In Presenters or other components where constructor injection is not feasible, use manual injection in the `init` block: `Toothpick.inject(this, Toothpick.openScope(InjectionConstants.APPLICATION_SCOPE))`.
+- **Dependency Injection**: Use **Toothpick**.
+    - Skill: `framework-toothpick`
+- **MVP (Model-View-Presenter)**: Use **Moxy**.
+    - Skill: `framework-moxy`
+- **Networking**: Use **Retrofit** and **Moshi**.
+    - Skill: `network-retrofit`
+- **UI (Android TV/Leanback)**: Use **View Binding** and **Glide**.
+    - Skill: `ui-leanback`
+- **Architecture**: Follow the **Repository Pattern**.
+    - Skill: `architecture-core`
+- **Testing**: Use **MockK** (no annotations) and **JUnit 4**.
+    - Skill: `testing-mockk`
 
-## MVP (Moxy)
-- **Standard**: Use Kotlin delegation for presenters.
-- **Hard Constraint**: NEVER use `@InjectPresenter`.
-- **Pattern**: Inject a `Provider<Presenter>` and use the `moxyPresenter` delegate.
-
-```kotlin
-@Inject
-lateinit var presenterProvider: Provider<MainPresenter>
-
-internal val presenter by moxyPresenter { presenterProvider.get() }
-```
-
-## View Binding
-- **Standard**: Always replace `findViewById` with View Binding. Mandatory for new UI and refactors.
-- **Standard**: Handle included layouts using their generated binding classes (e.g., `IncludeLoadingProgressBinding.bind(binding.root)`).
-
-## Networking & Persistence
-- **Retrofit**: Use for all API communications. Use `executeOrThrow()` for consistent error handling.
-- **Constraint**: DO NOT use `.enqueue()`. Use `suspend` functions in repositories.
-- **Moshi**: Standard for JSON parsing. Use `@Json(name = "...")` for mapping API fields to domain properties.
-- **Glide**: Use for all image loading and caching.
-
-## Animations
-- **Constraint**: **DO NOT use MotionLayout**. Stick to XML animations in `res/anim`.
-
-## Testing & Mocking
-- **MockK**: Mandatory for all mocking. No annotations allowed (`mockk(relaxed = true)`).
-- **Tear Down**: Always call `clearAllMocks()` and `Toothpick.reset()` in `@After`.
-- **InjectingTest**: Extend `us.nineworlds.serenity.test.InjectingTest` for tests requiring DI (field injection).
+## Framework Constraints
+- **Moxy**: NEVER use `@InjectPresenter`. Use the `moxyPresenter` delegate.
+- **Retrofit**: NEVER use `.enqueue()`. Use Coroutines.
+- **UI**: NEVER use `MotionLayout`. Use XML animations.
+- **DI**: Prefer `@InjectConstructor` over manual injection.
