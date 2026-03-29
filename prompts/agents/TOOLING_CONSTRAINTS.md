@@ -28,7 +28,7 @@
 ## 5. Tool Selection Hierarchy
 To ensure consistency and safety, always prioritize tools in the following order:
 
-1. **Domain-Specific APIs**: Use tools designed for a specific task or lifecycle (e.g., use `Build` tools for formatting/compiling, `Test` tools for verification, `Deploy` for running).
-2. **Context-Aware IDE APIs**: Use tools that leverage IDE indexing and semantic understanding (e.g., find usages, resolve symbols, or semantic refactoring).
+1. **Domain-Specific APIs**: Use tools designed for a specific task or lifecycle (e.g., `gradle_build`, `deploy`, `test` tools).
+2. **Context-Aware IDE APIs (MCP Server)**: Use tools that leverage IDE indexing and semantic understanding (e.g., `find_usages`, `replace_text_in_file`, `get_file_problems`).
 3. **General Filesystem APIs**: Use direct file read/write/list tools for basic manipulation.
 4. **Terminal/Shell**: Use ONLY as a last resort for actions not supported by any of the above (e.g., complex Git operations not covered by standard tools).

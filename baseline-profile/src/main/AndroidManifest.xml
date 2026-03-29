@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="us.nineworlds.serenity.baselineprofile">
+
+    <application
+        android:label="Baseline Profile Generator"
+        android:theme="@android:style/Theme.NoDisplay" />
+
+    <instrumentation
+        android:name="androidx.test.runner.AndroidJUnitRunner"
+        android:targetPackage="us.nineworlds.serenity" />
+
+</manifest>

@@ -124,6 +124,7 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     lintChecks(project(":lint-rules"))
 
+    implementation(libs.androidx.profileinstaller)
     implementation(platform(libs.firebase.bom))
 
     implementation(project(":subtitle-converter"))
@@ -238,3 +239,11 @@ configurations.all {
         force(libs.androidx.fragment)
     }
 }
+
+tasks.whenTaskAdded {
+    if (name == "uploadCrashlyticsMappingFileBenchmark") {
+        enabled = false
+    }
+}
+
+//apply(plugin = "com.google.gms.google-services")
