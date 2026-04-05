@@ -17,7 +17,7 @@ Before providing any code or plan:
 - **Task Template:** @./prompts/templates/TASK_SPEC.md
 
 **Skill Discovery (MANDATORY):** At the start of every session, you MUST:
-1. Execute `list_files` on `prompts/skills/`.
+1. Execute `list_files` on `.skills/`.
 2. Read ONLY the YAML frontmatter of `SKILL.md` files.
 3. If a task matches a skill's description, ANNOUNCE activation and load the full body.
 

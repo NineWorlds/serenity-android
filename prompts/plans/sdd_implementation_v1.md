@@ -21,9 +21,9 @@ To trigger a new specification, use the following prompt pattern:
     *   **Complexity Threshold:** If the task affects > 2 files or changes architecture, you MUST initiate or offer a spec.
 2.  **Organization:** Create a directory at `prompts/plans/<plan_name>/`. Place the spec file inside: `prompts/plans/<plan_name>/<plan_name>.md`.
 3.  **Collaborative Interview & Skill Discovery:**
-    *   **Discovery**: Execute `list_files` on `prompts/skills/` to identify available expertise.
+    *   **Discovery**: Execute `list_files` on `.skills/` to identify available expertise.
     *   **Context Economy**: Read **ONLY** the YAML frontmatter of `SKILL.md` files during discovery.
-    *   **Task Match**: If a skill matches the request, announce: *"Activating Skill: [Name] from prompts/skills/[name]/."* and load the full content.
+    *   **Task Match**: If a skill matches the request, announce: *"Activating Skill: [Name] from .skills/[name]/."* and load the full content.
 4.  **Template Adherence:** Use the `prompts/templates/TASK_SPEC.md` structure.
 
 ## 3. User Guide: How to Execute a Generated Spec
@@ -41,7 +41,7 @@ Once a spec is approved, follow this atomic execution workflow:
 *Goal: Enable modular, pull-on-demand expertise while preserving context window.*
 
 - [ ] **Task 1.1: Formal Skill Discovery**
-  - **Requirement:** At the start of every session, the agent **MUST** execute `list_files` on `prompts/skills/` to identify available expertise.
+  - **Requirement:** At the start of every session, the agent **MUST** execute `list_files` on `.skills/` to identify available expertise.
 - [ ] **Task 1.2: Context Economy (Metadata Extraction)**
   - **Constraint:** For every discovered skill, the agent MUST read **ONLY** the YAML frontmatter of the `SKILL.md` file.
 - [ ] **Task 1.3: On-Demand Activation Workflow**
