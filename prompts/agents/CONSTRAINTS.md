@@ -7,19 +7,15 @@
 - **Path-Scoped Commits**: Commit only the files you modified using explicit paths.
 - **Rebases**: Use non-interactive modes (`GIT_EDITOR=:`).
 
+### Kotlin & Code Style (Golden Rules)
+- **Language**: Use Kotlin. Convert Java to Kotlin where feasible.
+- **Formatting**: Always run `./gradlew spotlessApply` before requesting review.
+- **Immutability**: Prefer `val` and immutable collections (`List`, `Set`) over `var` and mutable collections.
+- **Naming**: Use `snake_case` for all XML IDs. Use `PascalCase` for classes and `camelCase` for variables/functions.
+
 ### Git Interaction Rules
-Agents must follow these explicit Git workflow rules:
 - **Path-Scoped Commits**: Commit only the files you modified.
-    - Commit tracked files with:
-        ```bash
-        git commit -m "<scoped message>" -- path/to/file1 path/to/file2
-        ```
-    - Add and commit new files explicitly:
-        ```bash
-        git add path/to/new/file && git commit -m "<message>"
-        ```
+    - Commit tracked files with: `git commit -m "<scoped message>" -- path/to/file1 path/to/file2`
+    - Add and commit new files explicitly: `git add path/to/new/file && git commit -m "<message>"`
 - **Quoted Paths**: Files with special characters (e.g., brackets/parentheses) must be enclosed in quotes.
-- **Rebases without Editors**: Use non-interactive modes for rebasing:
-    ```bash
-    GIT_EDITOR=: GIT_SEQUENCE_EDITOR=: git rebase --no-edit
-    ```
+- **Rebases without Editors**: Use `GIT_EDITOR=: GIT_SEQUENCE_EDITOR=: git rebase --no-edit`.

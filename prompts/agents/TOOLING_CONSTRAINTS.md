@@ -1,17 +1,21 @@
 # AGENT CAPABILITY PROTOCOL
 
-## 1. Filesystem Fallbacks
+## 1. Tool Selection Strategy: "Best Tool for the Job"
+You should not be dogmatic about any single protocol (like MCP). Instead, choose the tool that provides the highest fidelity, safety, and efficiency for the specific task at hand.
+
+### Hierarchy of Preference:
+1.  **Domain-Specific Specialized Tools**: Use tools built for the Android/Gradle lifecycle (e.g., `gradle_build`, `deploy`, `test`, `render_compose_preview`). These understand the project state better than generic file tools.
+2.  **Native Agent Capabilities**: Use the high-level tools provided by your specific platform (e.g., Claude's file manipulation tools, Gemini's indexing tools, Cursor's semantic search). These are "closest to the model" and usually the most efficient.
+3.  **Standardized Interfaces (MCP)**: Use MCP-based tools (e.g., `find_usages`, `analyze_current_file`) when you need IDE-level semantic understanding that isn't provided natively by the agent.
+4.  **General Filesystem APIs**: Use basic `read_file`, `write_file`, and `list_files` for simple I/O when semantic understanding isn't required.
+5.  **Terminal/Shell (LAST RESORT)**: Use the terminal ONLY when no higher-level API can perform the action (e.g., complex Git rebasing, specialized CLI utilities).
+
+## 2. Filesystem & Environment Safety
 - **No Directory Creation Tool:** Use your `Write` tool to create a placeholder `.gitkeep` file in the target path.
 - **No Delete/Move Tools:**
   1. Write the new file to the destination.
   2. Add the old file path to the "Cleanup & Manual Actions" section of the task spec for human action.
-
-## 2. Environment Restrictions
-- **No Direct Shell:** Do not assume shell access (`bash`/`zsh`).
-- **Tool Discovery:** Use high-level APIs instead of terminal commands:
-  - Discovery: Use `List`, `Find`, or `Search` APIs.
-  - Execution: Use `Build` or `Test` APIs.
-  - Device: Use `Log` or `Input` APIs.
+- **Explicit Paths:** All file operations MUST use explicit, absolute, or repository-relative paths.
 
 ## 3. Terminal & Human Fallback
 - **Terminal as Last Resort:** If high-level APIs cannot perform a necessary action, fall back to using a terminal tool (if available).
@@ -21,14 +25,6 @@
   3. Explicitly ask the user to run the commands.
   4. **Wait** for the user to confirm completion before proceeding.
 
-## 4. Operational Standards
-- **Read/Write Only:** Unless a delete tool is provided, assume a Read/Write-Only environment.
-- **Explicit Paths:** All file operations MUST use explicit, absolute, or repository-relative paths.
-
-## 5. Tool Selection Hierarchy
-To ensure consistency and safety, always prioritize tools in the following order:
-
-1. **Domain-Specific APIs**: Use tools designed for a specific task or lifecycle (e.g., `gradle_build`, `deploy`, `test` tools).
-2. **Context-Aware IDE APIs (MCP Server)**: Use tools that leverage IDE indexing and semantic understanding (e.g., `find_usages`, `replace_text_in_file`, `get_file_problems`).
-3. **General Filesystem APIs**: Use direct file read/write/list tools for basic manipulation.
-4. **Terminal/Shell**: Use ONLY as a last resort for actions not supported by any of the above (e.g., complex Git operations not covered by standard tools).
+## 4. Context Economy
+- **Avoid Context Bloat**: Do not request massive amounts of data via generic search tools if a specific tool (like `resolve_symbol`) can give you the exact information you need.
+- **Lazy Discovery**: Prioritize the "Pull" model (reading metadata first) before loading full file contents.

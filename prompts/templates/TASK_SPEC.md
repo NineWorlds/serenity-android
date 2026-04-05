@@ -8,10 +8,10 @@
 - **Files:** [Paths to relevant files]
 
 ## Standards Compliance
-- [ ] **Architecture**: Repository pattern, Coroutines for I/O, Toothpick scoping.
-- [ ] **UI/Leanback**: View Binding, `snake_case` IDs, Focus effects, No MotionLayout.
-- [ ] **Communication**: Retrofit `executeOrThrow`, Moshi mapping, domain decoupling.
-- [ ] **Testing**: MockK (no annotations), `clearAllMocks()`, `InjectingTest` if needed.
+- [ ] **Architecture**: Repository pattern, Coroutines for I/O, Toothpick scoping. (See `architecture-core`)
+- [ ] **UI/Leanback**: View Binding, `snake_case` IDs, Focus effects, No MotionLayout. (See `ui-leanback`)
+- [ ] **Communication**: Retrofit `executeOrThrow`, Moshi mapping, domain decoupling. (See `network-retrofit`)
+- [ ] **Testing**: MockK (no annotations), `clearAllMocks()`, `InjectingTest` if needed. (See `testing-mockk`)
 
 ## Impact Surface
 - **Dependencies:** [What might break?]

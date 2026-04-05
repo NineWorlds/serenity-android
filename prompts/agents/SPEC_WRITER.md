@@ -7,8 +7,8 @@ When a user request is complex (affects > 2 files), involves architectural chang
 1. **DO NOT write code immediately.**
 2. **INTERVIEW the user** to gather missing context. Specifically perform an **Impact Analysis** (dependencies/consumers) and identify **Risk/Rollback** scenarios.
 3. **Pre-Drafting Standard & Skill Review:** Before generating the spec, you MUST:
-       - **Skill Discovery**: Execute `list_files` on `prompts/skills/` and read the YAML frontmatter of available skills.
-       - **Task Matching**: Determine if any skill's `description` matches the current task. If so, announce: *"Activating Skill: [Name] from prompts/skills/[name]/."* and load the full skill content.
+       - **Skill Discovery**: Execute `list_files` on `.skills/` and read the YAML frontmatter of available skills.
+       - **Task Matching**: Determine if any skill's `description` matches the current task. If so, announce: *"Activating Skill: [Name] from .skills/[name]/."* and load the full skill content.
        - **Standard Review**: Review all standard files in `prompts/agents/` (e.g., `architecture.md`, `ui-standards.md`, `communication-protocol.md`, `TESTING.md`) to ensure the proposed plan aligns with the project's "Golden Standards".
 4. **ORGANIZE by Plan:** Create a new subdirectory for the plan at `prompts/plans/<plan_name>/`.
 5. **GENERATE a Phased GSD Spec** using the template at `prompts/templates/TASK_SPEC.md`. Save it as `prompts/plans/<plan_name>/<plan_name>.md`.

@@ -3,33 +3,15 @@
 ## Mission
 Ensure reliable and observable communication between the application and media servers.
 
-## API Design & Implementation
-- **Retrofit**: All network calls must use Retrofit 2 interfaces.
-- **Service Interfaces**: Group related endpoints into specific service interfaces (e.g., `UsersService`, `FilterService`).
-- **Synchronous Execution**: Use `.execute()` within Coroutine-wrapped repository methods.
-- **Forbidden Pattern**: NEVER use Retrofit's `.enqueue()`. Asynchronous logic must be handled via Coroutines in the Presenter or Repository layer.
-
-## Error Handling & Reliability
-- **Execute or Throw**: Use the `executeOrThrow()` extension pattern for all `Call<T>` objects to ensure consistent error propagation.
-- **Exceptions**: Throw `IOException` for network failures. Let the Presenter layer handle high-level user messaging.
-- **Interceptors**: Use OkHttp Interceptors for cross-cutting concerns like logging and authorization headers.
-
-## Data Schema & Mapping
+## Protocol Mandates
+- **Retrofit Only**: All network calls must use Retrofit 2 interfaces.
+- **Service Segregation**: Group related endpoints into specific service interfaces.
+- **Synchronous Execution Pattern**: Use `.execute()` within Coroutine-wrapped repository methods.
+- **FORBIDDEN**: NEVER use Retrofit's `.enqueue()`. All async logic must be handled via Coroutines.
+- **Error Propagation**: Use the `executeOrThrow()` extension pattern for all `Call<T>` objects.
+- **Data Mapping**: API models (DTOs) MUST be mapped to domain models in `:serenity-common` to decouple the application from server-specific schemas.
 - **Moshi**: Use Moshi for JSON serialization/deserialization.
-- **Adapters**: Create custom Moshi `JsonAdapter`s for non-standard types (e.g., `LocalDateTime`).
-- **Domain Mapping**: API models should be mapped to domain models (in `:serenity-common`) as soon as possible to decouple the app from specific API schemas.
-
-## Logging & Observability
 - **Timber**: Use Timber for all logging. Avoid `Log.*` or `println`.
-- **HttpLogging**: Enable `HttpLoggingInterceptor` (Level.BASIC or BODY) in debug builds only.
 
-## Code Example: executeOrThrow Extension
-```kotlin
-private fun <T> Call<T>.executeOrThrow(): T {
-    val response = execute()
-    if (response.isSuccessful) {
-        return response.body() ?: throw IOException("Response was null")
-    }
-    throw IOException("Request failed with code ${response.code()}")
-}
-```
+## Implementation Guide
+See `network-retrofit` skill for Moshi adapter examples, `executeOrThrow` code, and service interface templates.
