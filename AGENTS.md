@@ -27,9 +27,9 @@ Before providing any code or plan:
 
 ---
 
-## Core Protocols & Constraints
-@./prompts/agents/CONSTRAINTS.md
+## Core Protocols & Constraints (MUST REVIEW FIRST)
 @./prompts/agents/TOOLING_CONSTRAINTS.md
+@./prompts/agents/CONSTRAINTS.md
 
 ## Framework & Architecture Rules
 @./prompts/agents/FRAMEWORKS.md

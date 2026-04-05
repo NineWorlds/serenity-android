@@ -8,7 +8,7 @@ You should not be dogmatic about any single protocol (like MCP). Instead, choose
 2.  **Native Agent Capabilities**: Use the high-level tools provided by your specific platform (e.g., Claude's file manipulation tools, Gemini's indexing tools, Cursor's semantic search). These are "closest to the model" and usually the most efficient.
 3.  **Standardized Interfaces (MCP)**: Use MCP-based tools (e.g., `find_usages`, `analyze_current_file`) when you need IDE-level semantic understanding that isn't provided natively by the agent.
 4.  **General Filesystem APIs**: Use basic `read_file`, `write_file`, and `list_files` for simple I/O when semantic understanding isn't required.
-5.  **Terminal/Shell (LAST RESORT)**: Use the terminal ONLY when no higher-level API can perform the action (e.g., complex Git rebasing, specialized CLI utilities).
+5.  **Terminal/Shell (Mandatory Last Resort)**: Use the terminal **only** after verifying that no higher-level API (tools 1-4) can perform the action. Before initiating a `run_shell_command`, you **must** explicitly document in the task spec which tools from categories 1-4 you attempted (or why they are inapplicable) and confirm the failure of those approaches.
 
 ## 2. Filesystem & Environment Safety
 - **No Directory Creation Tool:** Use your `Write` tool to create a placeholder `.gitkeep` file in the target path.
@@ -18,7 +18,7 @@ You should not be dogmatic about any single protocol (like MCP). Instead, choose
 - **Explicit Paths:** All file operations MUST use explicit, absolute, or repository-relative paths.
 
 ## 3. Terminal & Human Fallback
-- **Terminal as Last Resort:** If high-level APIs cannot perform a necessary action, fall back to using a terminal tool (if available).
+- **Terminal as Absolute Last Resort**: Terminal commands (`run_shell_command`) are forbidden until you have exhausted all specialized, native, and MCP tools. If a shell command is required, you must first state: "I have attempted [Tool A, Tool B] and they were unable to resolve this. I am now proceeding to shell execution as a last resort."
 - **Human-in-the-Loop:** If no terminal tool is available or if the operation is outside of agent capabilities:
   1. Describe the exact terminal commands required.
   2. Explain why these commands are necessary.
