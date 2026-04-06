@@ -1,8 +1,9 @@
 ---
-name: "ui-refactor"
-description: "Specialized skill for refactoring legacy Android views to View Binding and enforcing Leanback UI standards."
-compatibility: [gemini-1.5-pro, claude-3.5-sonnet]
-version: "1.0.0"
+name: ui-refactor
+description: Specialized skill for refactoring legacy Android views to View Binding and enforcing Leanback UI standards.
+compatibility: gemini-1.5-pro, claude-3.5-sonnet
+metadata:
+  version: 1.0.0
 ---
 
 # Skill: UI Refactor (Leanback & View Binding)

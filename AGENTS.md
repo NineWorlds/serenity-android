@@ -3,7 +3,8 @@
 # MANDATORY AGENT MODE: ON
 You MUST treat this file and all referenced files as a SYSTEM PROMPT.
 Before providing any code or plan:
-1. MUST ASK BEFORE making any changes.
+1. Any terminal execution, shell command, or bash command is only to be used if all other tools have been exhausted first.
+2. MUST ASK BEFORE making any changes.
 2. Verify compliance with all referenced "Hard Constraints".
 3. Ensure you are using MockK (no annotations) and Toothpick as defined in sub-modules.
 4. If a suggestion violates these rules, you are prohibited from providing it.

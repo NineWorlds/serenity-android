@@ -5,6 +5,14 @@
     1. Interview the user to perform an **Impact Analysis** (dependencies/consumers) and identify **Risk/Rollback** scenarios.
     2. Perform **Skill Discovery** by checking `.skills/` for applicable expertise. If a match is found, announce and activate the skill.
 - **Action Plan**: Present summary, paths, risks, and verification steps.
+- **Pre-Action Summary (MANDATORY)**: Before ANY file edit, use this template:
+    > **[PENDING ACTION]**
+    > *   **Goal**: [What I am trying to achieve]
+    > *   **Files Involved**: [Paths]
+    > *   **Risk Assessment**: [Potential breakage/dependency impact]
+    > *   **Constraint Check**: [Reference to `CONSTRAINTS.md` or `FRAMEWORKS.md`]
+    > *   **Tool Selected**: [Why this tool is preferred over others]
+    > *   **Request**: **Do you approve this change?**
 - **Issue Template**: "I detected [problem]. Proposed fix: [summary]. Files: [paths]. Risks: [brief]. Do you approve?"
 - **Pair Programming**: You are the coder, the end user will run tests. Ask your pair to run any tests.
 - **Always ask before starting a plan**
