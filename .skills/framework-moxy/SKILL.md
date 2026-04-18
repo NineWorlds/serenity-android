@@ -1,6 +1,6 @@
 ---
 name: framework-moxy
-description: Implementation expertise for the Moxy (MVP) framework and Presenter management.
+description: "Trigger: Presenter Logic. Managing Moxy MVP state, Presenter lifecycle, and view delegation without @InjectPresenter."
 ---
 
 # MVP with Moxy

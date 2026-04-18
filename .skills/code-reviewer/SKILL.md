@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Expertise in reviewing Serenity code for architectural alignment, security, performance, and testing standards.
+description: "Trigger: Pre-Commit/Final Review. Validating code against Serenity’s 'Golden Standards' for architecture, security, performance, and testing before merging."
 ---
 
 # Code Review Criteria

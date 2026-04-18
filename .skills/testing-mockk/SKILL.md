@@ -1,6 +1,6 @@
 ---
 name: testing-mockk
-description: Implementation expertise for unit testing with MockK and Toothpick in Serenity.
+description: "Trigger: Unit Testing. Writing unit tests using MockK (no annotations), constructor injection, and InjectingTest patterns."
 ---
 
 # Testing with MockK & Toothpick

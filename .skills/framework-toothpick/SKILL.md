@@ -1,6 +1,6 @@
 ---
 name: framework-toothpick
-description: Implementation expertise for Dependency Injection using Toothpick.
+description: "Trigger: Dependency Injection. Managing Toothpick scopes, binding modules, and implementing constructor or provider-based injection."
 ---
 
 # Dependency Injection with Toothpick

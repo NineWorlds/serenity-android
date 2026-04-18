@@ -1,6 +1,6 @@
 ---
 name: architecture-core
-description: Implementation expertise for Serenity's MVP architecture, Repository pattern, and Coroutines.
+description: "Trigger: Data Flow & Modules. Implementing Repositories, managing cross-module boundaries, and handling async work with Coroutines."
 ---
 
 # Architecture Core & Data Flow

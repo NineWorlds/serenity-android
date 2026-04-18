@@ -1,6 +1,6 @@
 ---
 name: ui-refactor
-description: Specialized skill for refactoring legacy Android views to View Binding and enforcing Leanback UI standards.
+description: "Trigger: Legacy View Migration. Refactoring legacy Android views to View Binding, migrating XML layouts, and enforcing Leanback TV UI standards."
 compatibility: gemini-1.5-pro, claude-3.5-sonnet
 metadata:
   version: 1.0.0

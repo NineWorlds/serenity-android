@@ -1,6 +1,6 @@
 ---
 name: ui-leanback
-description: Implementation expertise for Android TV (Leanback) UI, View Binding, Glide, and animations.
+description: "Trigger: TV UI & Media Clients. Implementing Leanback-compliant interfaces, handling D-pad focus, View Binding, and Glide image loading."
 ---
 
 # UI Leanback & Media Client Standards

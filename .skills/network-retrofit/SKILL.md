@@ -1,6 +1,6 @@
 ---
 name: network-retrofit
-description: Implementation expertise for networking with Retrofit, Moshi, and Coroutines.
+description: "Trigger: API & Networking. Implementing Retrofit services, Moshi adapters, DTO mapping, and synchronous execution patterns."
 ---
 
 # Networking with Retrofit & Moshi

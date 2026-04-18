@@ -1,6 +1,6 @@
 ---
 name: skill-validator
-description: Strict validator for auditing skills against the agentskills.io specification (directory structure, YAML, progressive disclosure, and best practices).
+description: "Trigger: Skill Auditing & Compliance. Validating agent skills against the agentskills.io specification and generating compliance reports."
 ---
 
 # Skill Validator Standards
