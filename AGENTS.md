@@ -11,20 +11,24 @@ Before providing any code or plan:
 
 ---
 
-## Phased Spec-Driven Development (SDD) v3.0 (agentskills.io)
+## Phased Spec-Driven Development (SDD) v3.0
 **PROTOCOL MANDATORY:** For any complex task (> 2 files or architectural changes), you MUST follow the Phased GSD protocol.
 - **Master Protocol:** @./prompts/plans/sdd_implementation_v1.md
 - **Instruction Set:** @./prompts/agents/SPEC_WRITER.md
 - **Task Template:** @./prompts/templates/TASK_SPEC.md
 
-**Skill Discovery (MANDATORY):** At the start of every session, you MUST:
-1. Execute `list_files` on `.skills/`.
-2. Read ONLY the YAML frontmatter of `SKILL.md` files.
-3. If a task matches a skill's description, ANNOUNCE activation and load the full body.
-
-**Organizational Rule:** All plans MUST be created in their own subdirectory under `prompts/plans/<plan_name>/` and include a `memory/` folder for discovery logging.
+**Organizational Rule:** All specs MUST be created in their own subdirectory under `prompts/plans/<plan_name>/` and include a `memory/` folder for discovery logging.
 
 **PHASE TRANSITION RULE (MANDATORY):** You are strictly prohibited from proceeding to a new phase without explicit user approval. Even if a phase consists of a single "Simulation" or "Cleanup" task, you MUST stop after the previous phase and wait for the user to say "Proceed".
+**Skill Discovery (Native-First Agent Check):**
+1. **Detect**: Search your system prompt for an `<available_skills>` block or native skill-specific tools.
+2. **Branch**:
+   - **IF NATIVE**: Follow your native **Operational Protocol** (Identification -> Activation -> Execution).
+   - **ELSE (FALLBACK)**: Perform **Manual Emulation**:
+     - **Discovery**: Use `list_files` on `.skills/` to find relevant expertise.
+     - **Activation**: State *"Activating Skill: [Name]"* and read the file content from `.skills/`.
+     - **Compliance**: Treat the skill instructions as high-priority constraints.
+3. **Always Announce**: Regardless of discovery mode, you MUST explicitly state when a skill is utilized.
 
 ---
 
@@ -63,4 +67,4 @@ Serenity for Android is a media server client for Android (Plex/Emby).
 4. **Tool Selection**: Did you use the best tool for the job? (Priority: 1. Specialized APIs, 2. Native Agent Tools, 3. MCP/Semantic Index, 4. Terminal/Shell as Last Resort)
 5. **Constraints**: Checked against CONSTRAINTS.md?
 6. **Verification**: Manual steps included?
-7. **Organization**: Is the plan in a subdirectory with a memory log?
+7. **Organization**: Is the spec in a subdirectory with a memory log?

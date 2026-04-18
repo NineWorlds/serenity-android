@@ -20,10 +20,12 @@ To trigger a new specification, use the following prompt pattern:
     *   **Vague Architectural Shift (MANDATORY SPEC):** If the request is broad or lacks specific scope, you **MUST** refuse and initiate the spec-writing process.
     *   **Complexity Threshold:** If the task affects > 2 files or changes architecture, you MUST initiate or offer a spec.
 2.  **Organization:** Create a directory at `prompts/plans/<plan_name>/`. Place the spec file inside: `prompts/plans/<plan_name>/<plan_name>.md`.
-3.  **Collaborative Interview & Skill Discovery:**
-    *   **Discovery**: Execute `list_files` on `.skills/` to identify available expertise.
-    *   **Context Economy**: Read **ONLY** the YAML frontmatter of `SKILL.md` files during discovery.
-    *   **Task Match**: If a skill matches the request, announce: *"Activating Skill: [Name] from .skills/[name]/."* and load the full content.
+3.  **Collaborative Interview & Skill Discovery (Native-First Check):**
+    *   **Detect**: Search the system prompt for an `<available_skills>` block or native skill tools.
+    *   **Branch**:
+        - **IF NATIVE**: Follow the native **Operational Protocol** (Identification -> Activation -> Execution).
+        - **ELSE (FALLBACK)**: Perform **Manual Emulation** using `.skills/`.
+    *   **Activation**: Always announce: *"Activating Skill: [Name]."*
 4.  **Template Adherence:** Use the `prompts/templates/TASK_SPEC.md` structure.
 
 ## 3. User Guide: How to Execute a Generated Spec
@@ -40,16 +42,14 @@ Once a spec is approved, follow this atomic execution workflow:
 ## Phase 1: Agent Skills Integration (agentskills.io)
 *Goal: Enable modular, pull-on-demand expertise while preserving context window.*
 
-- [ ] **Task 1.1: Formal Skill Discovery**
-  - **Requirement:** At the start of every session, the agent **MUST** execute `list_files` on `.skills/` to identify available expertise.
-- [ ] **Task 1.2: Context Economy (Metadata Extraction)**
-  - **Constraint:** For every discovered skill, the agent MUST read **ONLY** the YAML frontmatter of the `SKILL.md` file.
-- [ ] **Task 1.3: On-Demand Activation Workflow**
-  - **Logic:** Match task to `description` -> **Announce** -> **Load Body** -> **Persona Shift**.
+- [ ] **Task 1.1: Skill Discovery (Native-First)**
+  - **Requirement:** Check for native skill support. Fallback to manual discovery via `.skills/` if native support is absent.
+- [ ] **Task 1.2: Proactive Activation**
+  - **Logic:** Always announce activation before utilizing skill content, regardless of discovery mode.
 
 **Phase 1 Verification:**
-1. Agent identifies available skills using `list_files`.
-2. Agent announces activation before reading full skill content.
+1. Agent identifies available skills using native environment and tools.
+2. Agent announces activation before utilizing skill content.
 3. **STOP: Wait for Human Approval.**
 
 ---
@@ -75,7 +75,7 @@ Once a spec is approved, follow this atomic execution workflow:
 - [ ] **Task 3.1: Update `SPEC_WRITER.md` Instruction Set**
   - **Persona:** Senior Architect enforcing the SDD protocol and Skill Discovery.
 - [ ] **Task 3.2: Update `AGENTS.md` and Configuration**
-  - **Requirement:** Add "Manual Skill Emulation" for IDE-integrated assistants.
+  - **Requirement:** Implement "Native-First Agent Check" logic for universal compatibility.
 
 **Phase 3 Verification:**
 1. `SPEC_WRITER.md` mandates Skill Discovery before drafting.

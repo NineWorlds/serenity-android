@@ -12,13 +12,14 @@ Implement the `agentskills.io` standard into the project's Phased Spec-Driven De
     - `prompts/agents/SPEC_WRITER.md` (Persona definition)
 
 ## Standards Compliance
-- [x] **Architecture**: SDD Protocol v3.0, persistent context management via `/memory`.
-- [x] **Discovery**: Automated via `list_files` on `.skills/`.
-- [x] **Native Preference**: Native skill ability, if it exists, MUST be preferred when using skills. Fall back to manual emulation only if native support is unavailable.
-- [x] **Context Economy**: Read only YAML frontmatter during discovery; body content is "Pull-on-Demand".
-- [x] **Metadata**: Mandatory `name`, `description`, `compatibility`, and `version` fields.
-- [x] **Activation**: Explicit "Activating Skill" announcement before loading full content.
-- [x] **Universal Access**: Symbolic links from `.claude/skills` to `.skills/`, and `.opencode/skills` to `.skills/`.
+- [ ] **Architecture**: SDD Protocol v3.0, persistent context management via `/memory`.
+- [ ] **Discovery**: Automated via `available_skills` block in the system prompt or native agent tools.
+- [ ] **Native Preference**: If the agent's system prompt includes the `### Operational Protocol` for skills or native skill tools, this MUST be used exclusively.
+- [ ] **Emulated Fallback**: If no native support is detected, agents MUST fallback to manual discovery via the `.skills/` directory.
+- [ ] **Context Economy**: Read only YAML frontmatter during discovery; body content is "Pull-on-Demand".
+- [ ] **Metadata**: Mandatory `name`, `description`, `compatibility`, and `version` fields.
+- [ ] **Activation**: Explicit "Activating Skill" announcement before loading full content.
+- [ ] **Universal Access**: Symbolic links from `.claude/skills` to `.skills/`, and `.opencode/skills` to `.skills/`.
 
 ## Impact Surface
 - **Dependencies:** `sdd_implementation_v1.md` is the master protocol. Updating it affects all future spec-writing and execution.
@@ -30,11 +31,10 @@ Implement the `agentskills.io` standard into the project's Phased Spec-Driven De
 
 ## Phase 1: Infrastructure & Compatibility Setup
 ### Tasks
-- [x] **Task 1.1: Initialize Persistent Memory**
-- [x] **Task 1.2: Multi-Agent Compatibility Check (Symbolic Links)**
-  - **Action:** Created links from `.claude/skills` and `.opencode/skills` directly to the universal `.skills/` repository.
-- [x] **Task 1.3: Create Universal Skills Directory**
-- [x] **Task 1.4: Update Artifact Log**
+- [ ] **Task 1.1: Initialize Persistent Memory**
+- [ ] **Task 1.2: Multi-Agent Compatibility Check (Symbolic Links)**
+- [ ] **Task 1.3: Create Universal Skills Directory**
+- [ ] **Task 1.4: Update Artifact Log**
 
 ### Verification
 - `memory/discovered_artifacts.md` exists and is populated.
@@ -43,22 +43,19 @@ Implement the `agentskills.io` standard into the project's Phased Spec-Driven De
 
 ## Phase 2: Migration & Global Path Updates
 ### Tasks
-- [x] **Task 2.1: Migrate Legacy Skills**
-  - **Action:** Moved all sub-directories from `prompts/skills/` to `.skills/`.
-- [x] **Task 2.2: Update Global Discovery Paths**
-  - **Action:** Updated `AGENTS.md`, `sdd_implementation_v1.md`, `SPEC_WRITER.md`, and `COMMUNICATION.md` to point to `.skills/`.
-- [x] **Task 2.3: Memory Sync**
-  - **Action:** Documented migration in `memory/discovery_log.md`.
+- [ ] **Task 2.1: Migrate Legacy Skills**
+- [ ] **Task 2.2: Update Global Discovery Paths**
+- [ ] **Task 2.3: Memory Sync**
 
 ### Verification
 - `prompts/skills/` is empty or removed.
 - `AGENTS.md` reflects the new `.skills/` path and Native Preference rule.
 
-## Phase 3: Validation & Simulation
+## Phase 3: Universal Protocol Integration
 ### Tasks
-- [x] **Task 3.1: Discovery Simulation**
-- [x] **Task 3.2: Activation Simulation**
-- [x] **Task 3.3: Final Memory Audit**
+- [ ] **Task 3.1: Implement Branching Logic**
+- [ ] **Task 3.2: Persona-Specific Alignment**
+- [ ] **Task 3.3: Dual-Mode Validation**
 
 ### Verification
 - Agent successfully identifies the skill from metadata only.
@@ -75,4 +72,4 @@ Implement the `agentskills.io` standard into the project's Phased Spec-Driven De
 - `prompts/plans/agent_skills_integration/memory/discovery_log.md`
 
 ## Discovery & Learning Log
-- [x] Migration successful; discovery logic now unified across all agents.
+- [ ] Migration successful; discovery logic now unified across all agents.

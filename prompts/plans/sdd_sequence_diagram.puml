@@ -1,0 +1,62 @@
+@startuml
+skinparam handwritten false
+skinparam ParticipantPadding 20
+skinparam BoxPadding 10
+skinparam sequence {
+    GroupBodyBackgroundColor transparent
+    LifeLineBackgroundColor #F0F0F0
+}
+
+actor User
+participant Agent
+database "Filesystem & Memory" as FS
+
+title SDD v3.0: User Interaction & Approval Flow
+
+== Phase 0: Discovery & Intent Analysis ==
+
+User -> Agent: Request Task (Description)
+Agent -> FS: list_files(".skills/")
+FS --> Agent: Skill List
+Agent -> FS: Read YAML frontmatter of matching skills
+Agent -> Agent: **Announce Skill Activation**
+Agent -> Agent: Complexity Check (> 2 files / Arch Change?)
+
+alt Complexity Threshold Met
+    Agent -> User: Conduct Interview (Impact Analysis / Risk)
+    User -> Agent: Provide Context & Requirements
+
+    Agent -> FS: Create `prompts/plans/<plan_name>/`
+    Agent -> FS: Generate Phased GSD Spec (using TASK_SPEC.md)
+    Agent -> User: **Present Spec for Approval**
+
+    User -> Agent: "Approve Spec"
+else Simple Task
+    Agent -> User: Propose One-off Plan
+    User -> Agent: "Approve Plan"
+end
+
+== Atomic Phase Execution ==
+
+loop For each Phase in Spec
+    Agent -> FS: Read Phase Tasks & `memory/` log
+    Agent -> FS: Execute Phase Logic (Atomic edits)
+    Agent -> FS: Update `memory/` with discoveries/unexpected behavior
+    Agent -> Agent: Run Verification Steps
+    Agent -> User: Report Phase Completion & Verification Results
+
+    note over Agent, User #FFAAAA
+        **HARD STOP RULE**
+        Agent is prohibited from proceeding to next phase
+    end note
+
+    User -> Agent: **"Proceed" / Phase Approval**
+end
+
+== Finalization & Cleanup ==
+
+Agent -> FS: Execute Final Cleanup (Cleanup & Manual Actions)
+Agent -> User: Present Final Deliverables & Logs
+User -> Agent: Final Acceptance
+
+@enduml
