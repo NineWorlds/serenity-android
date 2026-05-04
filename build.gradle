@@ -8,7 +8,7 @@ buildscript {
   dependencies {
     classpath("com.google.firebase:firebase-crashlytics-gradle:3.0.6")
     classpath("com.android.tools.build:gradle:${libs.versions.androidPluginVersion.get()}")
-    classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3")
+    classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:5.1.0.4882")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlinVersion.get()}")
     classpath("org.jetbrains.kotlin:kotlin-allopen:${libs.versions.kotlinVersion.get()}")
     classpath("org.jacoco:org.jacoco.core:0.8.14")
@@ -28,6 +28,21 @@ repositories {
   }
   maven {
     url("https://jcenter.bintray.com/")
+  }
+}
+
+apply plugin: "org.sonarqube"
+
+sonarqube {
+  properties {
+    property "sonar.projectKey", "NineWorlds_serenity-android"
+    property "sonar.organization", "nineworlds"
+    property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.token", "cb7af08f0b0e86306ac5365074326dc27aba503e"
+    property "sonar.sourceEncoding", "UTF-8"
+
+    property "sonar.coverage.exclusions", "**/R.class, **/R\$*.class, **/BuildConfig.*, **/Manifest*.*, **/*Test*.*,android/**/*.*, **/*MemberInjector.*, **/*\$\$Factory*.*, **/*..State*.*, **/*_ViewBinding*.*, **/*PresentersBinder*.*, **/SafeCollector*, **/Emitters*, **/Comparisons*, **/*Binding.java, **/*Binding.class"
+    property "sonar.cpd.exclusions", "**/R.java, **/BuildConfig.java, **/Manifest.java, **/*Binding.java"
   }
 }
 
@@ -52,6 +67,70 @@ subprojects {
   }
 
   apply plugin: "com.diffplug.spotless"
+
+  sonarqube {
+    properties {
+      def sourceDirs = []
+      ["src/main/java", "src/main/kotlin", "src/main/res"].each { dir ->
+          def folder = project.file(dir)
+          if (folder.exists()) {
+              sourceDirs << folder.absolutePath
+          }
+      }
+
+      // Add generated sources so Sonar can resolve them for coverage and lint mapping
+      ["build/generated/source/kapt/debug", 
+       "build/generated/source/kaptKotlin/debug", 
+       "build/generated/ap_generated_sources/debug/out", 
+       "build/generated/ksp/debug/kotlin",
+       "build/generated/data_binding_base_class_source_out/debug/out"].each { dir ->
+          def folder = project.file(dir)
+          if (folder.exists()) {
+              sourceDirs << folder.absolutePath
+          }
+      }
+
+      def binaryDirs = []
+      def javaDir = project.file("build/intermediates/javac/debug/compileDebugJavaWithJavac/classes")
+      if (javaDir.exists()) binaryDirs << javaDir.absolutePath
+      
+      def kotlinDir = project.file("build/tmp/kotlin-classes/debug")
+      if (kotlinDir.exists()) binaryDirs << kotlinDir.absolutePath
+
+      property "sonar.sources", sourceDirs.join(",")
+      if (!binaryDirs.isEmpty()) {
+          property "sonar.java.binaries", binaryDirs.join(",")
+      }
+      property "sonar.androidLint.reportPaths", "${project.buildDir}/reports/lint-results-debug.xml"
+      property "sonar.java.coveragePlugin", "jacoco"
+      property "sonar.java.ignoreUninstallableReports", "true"
+
+      // Pull branch info for manual analysis override
+      def branch = System.getenv("GITHUB_REF_NAME") ?: "git rev-parse --abbrev-ref HEAD".execute().text.trim()
+      if (branch) {
+          property "sonar.branch.name", branch
+      }
+
+      if (project.name == "serenity-app") {
+        property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+      }
+    }
+  }
+
+  plugins.withId('com.android.application') {
+    android {
+      lint {
+        xmlReport true
+      }
+    }
+  }
+  plugins.withId('com.android.library') {
+    android {
+      lint {
+        xmlReport true
+      }
+    }
+  }
 
   spotless {
       format 'xml', {

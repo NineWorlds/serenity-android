@@ -23,7 +23,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew clean jacocoTestReport
+      run: ./gradlew clean serenity-app:lintDebug jacocoTestReport sonarqube
     - name: Report Code Coverage
       uses: codecov/codecov-action@v5
       with:

@@ -5,26 +5,11 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-allopen")
-    id("org.sonarqube")
     id("com.google.firebase.crashlytics")
     id("com.google.gms.google-services") version "4.4.4"
 }
 
 apply(from = "../jacoco.gradle")
-
-sonarqube {
-    properties {
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.organization", "kingargyle-github")
-        property("sonar.login", "cb7af08f0b0e86306ac5365074326dc27aba503e")
-        property("sonar.jacoco.reportPath", "${project.buildDir}/jacoco/testDebugUnitTest.exec")
-//    property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
-        property(
-            "sonar.coverage.exclusions",
-            "**/R.class, **/R\$*.class, **/BuildConfig.*, **/Manifest*.*, **/*Test*.*,android/**/*.*, **/*MemberInjector.*, **/*\$\$Factory*.*, **/*..State*.*, **/*_ViewBinding*.*"
-        )
-    }
-}
 
 allOpen {
     annotation("us.nineworlds.serenity.common.annotations.OpenForTesting")

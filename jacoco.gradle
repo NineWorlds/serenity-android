@@ -13,16 +13,43 @@ tasks.register('jacocoTestReport', JacocoReport) {
         html.required = true
     }
 
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/*MemberInjector.*',
-                      '**/*$$Factory*.*', '**/*..State*.*', '**/*_ViewBinding*.*', 'com/bumptech/**/*.*', '**/injection/**/*.*',
-                      '**/*__Factory*.*', '**/*PresenterBinder*.*', '**/*ViewState*.*']
+    def fileFilter = [
+        '**/R.class',
+        '**/R$*.class',
+        '**/BuildConfig.*',
+        '**/Manifest*.*',
+        '**/*Test*.*',
+        'android/**/*.*',
+        '**/*MemberInjector.*',
+        '**/*$$Factory*.*',
+        '**/*..State*.*',
+        '**/*_ViewBinding*.*',
+        'com/bumptech/**/*.*',
+        '**/injection/**/*.*',
+        '**/*__Factory*.*',
+        '**/*PresenterBinder*.*',
+        '**/*ViewState*.*',
+        '**/*$ViewBinder*.*',
+        '**/*$State*.*',
+        '**/*_MembersInjector*.*',
+        '**/*$MembersInjector*.*',
+        '**/*_Factory*.*',
+        '**/*$Factory*.*',
+        '**/*Binding.class',
+        '**/Emitters*.*',
+        '**/SafeCollector.common.*',
+        '**/*PresentersBinder*.*',
+        '**/Comparisons*.*'
+    ]
     def mainSrc = "${project.projectDir}/src/main/java"
     def kotlinSrc = "${project.projectDir}/src/main/kotlin"
 
     classDirectories.setFrom(fileTree(
-            dir: "$buildDir/intermediates/javac/debug/classes",
+            dir: "$buildDir/intermediates/javac/debug/compileDebugJavaWithJavac/classes",
+            includes: ['us/nineworlds/serenity/**'],
             excludes: fileFilter) + fileTree(
             dir: "$buildDir/tmp/kotlin-classes/debug",
+            includes: ['us/nineworlds/serenity/**'],
             excludes: fileFilter))
 
     // sources

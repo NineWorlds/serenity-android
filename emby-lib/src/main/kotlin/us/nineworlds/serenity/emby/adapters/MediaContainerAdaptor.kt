@@ -89,7 +89,7 @@ class MediaContainerAdaptor {
             val seriesEntry = Directory()
 
             seriesEntry.title = item.name
-            seriesEntry.summary = item.oveview
+            seriesEntry.summary = item.overview
             seriesEntry.key = item.id
             seriesEntry.contentRating = item.officialRating
             seriesEntry.rating = (item.communityRating ?: 0.00).toString()
@@ -145,7 +145,7 @@ class MediaContainerAdaptor {
             video.key = item.id
             video.parentKey = item.parentId
             video.contentRating = item.officialRating
-            video.summary = item.oveview
+            video.summary = item.overview
             video.rating = item.communityRating ?: 0.00
             video.season = item.parentIndexNumber
             video.seriesName = item.seriesName
@@ -209,7 +209,7 @@ class MediaContainerAdaptor {
 
                 // From audio stream
                 media.audioCodec = audioStream.codec
-                media.audioChannels = audioStream.channels
+                media.audioChannels = audioStream.channels?.toString() ?: "0"
 
                 medias.add(media)
             }
