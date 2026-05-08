@@ -1,0 +1,11 @@
+<html>
+  <body>
+    <h1>Audit Report</h1>
+    <table border="1">
+      <tr><th>Skill</th><th>Violations</th><th>Strengths/Best Practices</th><th>Remediation Steps</th></tr>
+      {{#results}}
+      <tr><td>{{skill_name}}</td><td>{{violations}}</td><td>{{strengths}}</td><td>{{steps}}</td></tr>
+      {{/results}}
+    </table>
+  </body>
+</html>

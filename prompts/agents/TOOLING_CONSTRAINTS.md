@@ -1,14 +1,14 @@
 # AGENT CAPABILITY PROTOCOL
 
 ## 1. Tool Selection Strategy: "Best Tool for the Job"
-You should not be dogmatic about any single protocol (like MCP). Instead, choose the tool that provides the highest fidelity, safety, and efficiency for the specific task at hand.
+You should not be dogmatic about any single protocol. Instead, choose the tool that provides the highest fidelity, safety, and efficiency for the specific task at hand.
 
 ### Hierarchy of Preference:
-1.  **Domain-Specific Specialized Tools**: Use tools built for the Android/Gradle lifecycle (e.g., `gradle_build`, `deploy`, `test`, `render_compose_preview`). These understand the project state better than generic file tools.
-2.  **Native Agent Capabilities**: Use the high-level tools provided by your specific platform (e.g., Claude's file manipulation tools, Gemini's indexing tools, Cursor's semantic search). These are "closest to the model" and usually the most efficient.
-3.  **Standardized Interfaces (MCP)**: Use MCP-based tools (e.g., `find_usages`, `analyze_current_file`) when you need IDE-level semantic understanding that isn't provided natively by the agent.
-4.  **General Filesystem APIs**: Use basic `read_file`, `write_file`, and `list_files` for simple I/O when semantic understanding isn't required.
-5.  **Terminal/Shell (Mandatory Last Resort)**: Use the terminal **only** after verifying that no higher-level API (tools 1-4) can perform the action. Before initiating a `run_shell_command`, you **must** explicitly document in the task spec which tools from categories 1-4 you attempted (or why they are inapplicable) and confirm the failure of those approaches.
+1. **Internal Native Agent Tools**: Use native, platform-provided capabilities first. These are "closest to the model" and highly optimized. Only bypass these if a specialized tool provides significantly higher precision, context, or safety for the specific task.
+2. **Domain-Specific Specialized Tools**: Use tools built for the Android/Gradle lifecycle (e.g., `gradle_build`, `deploy`, `test`, `render_compose_preview`). These understand the project state better than generic tools.
+3. **Standardized Interfaces (MCP)**: Use MCP-based tools (e.g., `find_usages`, `analyze_current_file`) when you need IDE-level semantic understanding that isn't provided natively.
+4. **General Filesystem APIs**: Use basic `read_file`, `write_file`, and `list_files` for simple I/O when semantic understanding isn't required.
+5. **Terminal/Shell (Mandatory Last Resort)**: Use the terminal **only** after verifying that no higher-level API (tools 1-4) can perform the action. Before initiating a `run_shell_command`, you **must** explicitly document in the task spec which tools from categories 1-4 you attempted (or why they are inapplicable) and confirm the failure of those approaches.
 
 ## 2. Filesystem & Environment Safety
 - **No Directory Creation Tool:** Use your `Write` tool to create a placeholder `.gitkeep` file in the target path.

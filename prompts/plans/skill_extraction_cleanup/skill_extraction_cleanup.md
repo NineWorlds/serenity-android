@@ -10,7 +10,7 @@ Decompose detailed implementation expertise into modular, discoverable skills wh
 
 ## Standards Compliance
 - [ ] **Skill Structure**: Mandatory YAML frontmatter.
-- [ ] **Discovery**: Skills placed in `prompts/skills/<skill-name>/SKILL.md`.
+- [ ] **Discovery**: Skills placed in `prompts/skills/<skill-name>/tmp_SKILL.md`.
 - [ ] **Context Economy**: Agent files reduced to essential constraints; implementation details moved to skills.
 - [ ] **Size Constraint**: **Each skill MUST be at most 500 lines long.**
 

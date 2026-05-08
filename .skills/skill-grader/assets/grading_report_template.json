@@ -1,0 +1,27 @@
+{
+  "skill_name": "{{skill_name}}",
+  "audit_date": "{{audit_date}}",
+  "score": {{score}},
+  "grade": "{{grade}}",
+  "findings": {
+    "discoverability": {
+      "text": "{{findings.discoverability.text}}",
+      "score": {{findings.discoverability.score}}
+    },
+    "instruction_clarity": {
+      "text": "{{findings.instruction_clarity.text}}",
+      "score": {{findings.instruction_clarity.score}}
+    },
+    "token_efficiency": {
+      "text": "{{findings.token_efficiency.text}}",
+      "score": {{findings.token_efficiency.score}}
+    },
+    "simulated_consumption": {
+      "text": "{{findings.simulated_consumption.text}}",
+      "score": {{findings.simulated_consumption.score}}
+    }
+  },
+  "suggestions": [
+    {% for suggestion in suggestions %}"{{suggestion}}"{% if not loop.last %}, {% endif %}{% endfor %}
+  ]
+}

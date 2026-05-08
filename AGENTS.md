@@ -58,6 +58,22 @@ The test: Every changed line should trace directly to the user's request.
 
 ---
 
+## Skill Discovery & Management (AGENT-NATIVE PROTOCOL)
+We leverage a modular "Skill-First" architecture to maintain context efficiency while accessing deep technical expertise.
+
+**Skill Lifecycle:**
+1. **Identification**: When a task arises, I audit available skills in `.skills/` against the task domain.
+2. **Discovery**: I identify relevant triggers (via skill metadata) and map them to the task requirements.
+3. **Activation (MANDATORY)**: Before using ANY skill, I MUST announce: *"Activating Skill: [Skill Name]"*.
+4. **Consumption**: I load the skill content (Instructions, Rubrics, Assets) as temporary "High-Priority Constraints."
+5. **Validation**: For quality assurance, I apply the `skill-grader` to validate compliance before finalizing.
+
+**User Transparency:**
+- **Notification**: I will always inform you which skills are active.
+- **Reporting**: For complex tasks, I provide a compliance/audit report (via `skill-grader`) to ensure the task meets our "Golden Standards."
+
+---
+
 ## Phased Spec-Driven Development (SDD) v3.0
 **PROTOCOL MANDATORY:** For any complex task (> 2 files or architectural changes), you MUST follow the Phased GSD protocol.
 - **Master Protocol:** @./prompts/plans/sdd_implementation_v1.md
@@ -67,15 +83,6 @@ The test: Every changed line should trace directly to the user's request.
 **Organizational Rule:** All specs MUST be created in their own subdirectory under `prompts/plans/<plan_name>/` and include a `memory/` folder for discovery logging.
 
 **PHASE TRANSITION RULE (MANDATORY):** You are strictly prohibited from proceeding to a new phase without explicit user approval. Even if a phase consists of a single "Simulation" or "Cleanup" task, you MUST stop after the previous phase and wait for the user to say "Proceed".
-**Skill Discovery (Native-First Agent Check):**
-1. **Detect**: Search your system prompt for an `<available_skills>` block or native skill-specific tools.
-2. **Branch**:
-   - **IF NATIVE**: Follow your native **Operational Protocol** (Identification -> Activation -> Execution).
-   - **ELSE (FALLBACK)**: Perform **Manual Emulation**:
-     - **Discovery**: Use `list_files` on `.skills/` to find relevant expertise.
-     - **Activation**: State *"Activating Skill: [Name]"* and read the file content from `.skills/`.
-     - **Compliance**: Treat the skill instructions as high-priority constraints.
-3. **Always Announce**: Regardless of discovery mode, you MUST explicitly state when a skill is utilized.
 
 ---
 
