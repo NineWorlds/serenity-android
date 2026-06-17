@@ -50,7 +50,7 @@ assertjVersion = "3.27.6"
 mockitoVersion = "5.14.2"
 robolectricVersion = "4.16"
 openglApiVersion = "gl1.1-android-2.1_r1"
-assertJAndroidVersion = "1.1.1"
+assertJAndroidVersion = "1.2.0"
 toothPickVersion = "3.1.0"
 toothPickKspVersion = "1.1.0"
 
